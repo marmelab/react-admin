@@ -309,11 +309,9 @@ const OfficeList = () => {
 
 ## Access Control
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `useListController` hook will call it with the resource name to determine if the current user can access data from the current resource.
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `useListController` hook will call it to determine if the current user can access the `list` view (`{ action: "list", resource: "[resourceName]" }`).
 
- 
-  
-    For instance, given the following code:
+For instance, given the following code:
 
 ```tsx
 import { useState } from 'react';
@@ -335,7 +333,6 @@ const OfficeList = () => {
 };
 ```
 
-`useListController` calls `authProvider.canAccess()` with the following parameters: 
+`useListController` calls `authProvider.canAccess()` with the following parameters:
 
-- `{ action: "read", resource: "offices" }`.
-
+- `{ action: "list", resource: "offices" }`.

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 import {
     AuthProvider,
     CoreAdminContext,
     DataProvider,
-    DataProviderContext,
     RecordContextProvider,
     ResourceContextProvider,
     TestMemoryRouter,
@@ -63,29 +62,35 @@ export const Wrapper = ({
 
 export const Basic = () => (
     <Wrapper
-        dataProvider={{
-            getManyReference: () =>
-                Promise.resolve({
-                    data: [comments.filter(c => c.post_id === 1)[0]],
-                    total: comments.filter(c => c.post_id === 1).length,
-                }),
-        }}
+        dataProvider={
+            {
+                getManyReference: () =>
+                    Promise.resolve({
+                        data: [comments.filter(c => c.post_id === 1)[0]],
+                        total: comments.filter(c => c.post_id === 1).length,
+                    }),
+            } as any
+        }
     >
         <ReferenceManyCount reference="comments" target="post_id" />
     </Wrapper>
 );
 
 export const LoadingState = () => (
-    <Wrapper dataProvider={{ getManyReference: () => new Promise(() => {}) }}>
+    <Wrapper
+        dataProvider={{ getManyReference: () => new Promise(() => {}) } as any}
+    >
         <ReferenceManyCount reference="comments" target="post_id" />
     </Wrapper>
 );
 
 export const ErrorState = () => (
     <Wrapper
-        dataProvider={{
-            getManyReference: () => Promise.reject(new Error('problem')),
-        }}
+        dataProvider={
+            {
+                getManyReference: () => Promise.reject(new Error('problem')),
+            } as any
+        }
     >
         <ReferenceManyCount reference="comments" target="post_id" />
     </Wrapper>
@@ -93,25 +98,27 @@ export const ErrorState = () => (
 
 export const WithFilter = () => (
     <Wrapper
-        dataProvider={{
-            getManyReference: (resource, params) =>
-                Promise.resolve({
-                    data: comments
-                        .filter(c => c.post_id === 1)
-                        .filter(post =>
-                            Object.keys(params.filter).every(
-                                key => post[key] === params.filter[key]
-                            )
-                        ),
-                    total: comments
-                        .filter(c => c.post_id === 1)
-                        .filter(post =>
-                            Object.keys(params.filter).every(
-                                key => post[key] === params.filter[key]
-                            )
-                        ).length,
-                }),
-        }}
+        dataProvider={
+            {
+                getManyReference: (resource, params) =>
+                    Promise.resolve({
+                        data: comments
+                            .filter(c => c.post_id === 1)
+                            .filter(post =>
+                                Object.keys(params.filter).every(
+                                    key => post[key] === params.filter[key]
+                                )
+                            ),
+                        total: comments
+                            .filter(c => c.post_id === 1)
+                            .filter(post =>
+                                Object.keys(params.filter).every(
+                                    key => post[key] === params.filter[key]
+                                )
+                            ).length,
+                    }),
+            } as any
+        }
     >
         <ReferenceManyCount
             reference="comments"
@@ -123,13 +130,15 @@ export const WithFilter = () => (
 
 export const Link = () => (
     <Wrapper
-        dataProvider={{
-            getManyReference: () =>
-                Promise.resolve({
-                    data: [comments.filter(c => c.post_id === 1)[0]],
-                    total: comments.filter(c => c.post_id === 1).length,
-                }),
-        }}
+        dataProvider={
+            {
+                getManyReference: () =>
+                    Promise.resolve({
+                        data: [comments.filter(c => c.post_id === 1)[0]],
+                        total: comments.filter(c => c.post_id === 1).length,
+                    }),
+            } as any
+        }
     >
         <ReferenceManyCount reference="comments" target="post_id" link />
     </Wrapper>
@@ -137,25 +146,27 @@ export const Link = () => (
 
 export const LinkWithFilter = () => (
     <Wrapper
-        dataProvider={{
-            getManyReference: (resource, params) =>
-                Promise.resolve({
-                    data: comments
-                        .filter(c => c.post_id === 1)
-                        .filter(post =>
-                            Object.keys(params.filter).every(
-                                key => post[key] === params.filter[key]
-                            )
-                        ),
-                    total: comments
-                        .filter(c => c.post_id === 1)
-                        .filter(post =>
-                            Object.keys(params.filter).every(
-                                key => post[key] === params.filter[key]
-                            )
-                        ).length,
-                }),
-        }}
+        dataProvider={
+            {
+                getManyReference: (resource, params) =>
+                    Promise.resolve({
+                        data: comments
+                            .filter(c => c.post_id === 1)
+                            .filter(post =>
+                                Object.keys(params.filter).every(
+                                    key => post[key] === params.filter[key]
+                                )
+                            ),
+                        total: comments
+                            .filter(c => c.post_id === 1)
+                            .filter(post =>
+                                Object.keys(params.filter).every(
+                                    key => post[key] === params.filter[key]
+                                )
+                            ).length,
+                    }),
+            } as any
+        }
     >
         <ReferenceManyCount
             reference="comments"
@@ -168,13 +179,15 @@ export const LinkWithFilter = () => (
 
 export const WithCustomVariant = () => (
     <Wrapper
-        dataProvider={{
-            getManyReference: () =>
-                Promise.resolve({
-                    data: [comments.filter(c => c.post_id === 1)[0]],
-                    total: comments.filter(c => c.post_id === 1).length,
-                }),
-        }}
+        dataProvider={
+            {
+                getManyReference: () =>
+                    Promise.resolve({
+                        data: [comments.filter(c => c.post_id === 1)[0]],
+                        total: comments.filter(c => c.post_id === 1).length,
+                    }),
+            } as any
+        }
     >
         <ReferenceManyCount
             reference="comments"
@@ -186,22 +199,26 @@ export const WithCustomVariant = () => (
 
 export const Slow = () => (
     <Wrapper
-        dataProvider={{
-            getManyReference: () =>
-                new Promise(resolve =>
-                    setTimeout(
-                        () =>
-                            resolve({
-                                data: [
-                                    comments.filter(c => c.post_id === 1)[0],
-                                ],
-                                total: comments.filter(c => c.post_id === 1)
-                                    .length,
-                            }),
-                        2000
-                    )
-                ),
-        }}
+        dataProvider={
+            {
+                getManyReference: () =>
+                    new Promise(resolve =>
+                        setTimeout(
+                            () =>
+                                resolve({
+                                    data: [
+                                        comments.filter(
+                                            c => c.post_id === 1
+                                        )[0],
+                                    ],
+                                    total: comments.filter(c => c.post_id === 1)
+                                        .length,
+                                }),
+                            2000
+                        )
+                    ),
+            } as any
+        }
     >
         <ReferenceManyCount reference="comments" target="post_id" />
     </Wrapper>
@@ -253,13 +270,15 @@ const AdminWithAccessControl = ({
         <Wrapper
             queryClient={queryClient}
             authProvider={authProvider}
-            dataProvider={{
-                getManyReference: () =>
-                    Promise.resolve({
-                        data: [comments.filter(c => c.post_id === 1)[0]],
-                        total: comments.filter(c => c.post_id === 1).length,
-                    }),
-            }}
+            dataProvider={
+                {
+                    getManyReference: () =>
+                        Promise.resolve({
+                            data: [comments.filter(c => c.post_id === 1)[0]],
+                            total: comments.filter(c => c.post_id === 1).length,
+                        }),
+                } as any
+            }
         >
             <AccessControlUI
                 authorizedResources={authorizedResources}

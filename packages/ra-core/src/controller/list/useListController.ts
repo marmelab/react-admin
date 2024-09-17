@@ -90,7 +90,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         isLoading: canAccessLoading,
     } = useCanAccess({
         resource,
-        action: 'read',
+        action: 'list',
     });
 
     const {

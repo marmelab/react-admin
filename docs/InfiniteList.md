@@ -127,7 +127,11 @@ export const BookList = () => (
 
 ## `unauthorized`
 
-The component to display when users don't have access to the list:
+The component to display when users don't have access to the list view (see [Access Control](#access-control)).
+
+By default, `<InfiniteList>` displays a warning message ("You are not authorized to access this page.") that you can customize using the `ra.message.unauthorized` translation key.
+
+You can also pass a custom component to the `unauthorized` prop. For instance, to display a message with a link to contact the administrator:
 
 ```tsx
 import { CreateButton, InfiniteList } from 'react-admin';
@@ -300,12 +304,12 @@ const ProductList = () => {
 ## Access Control
 
 Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<InfiniteList>` component will call it to only display data the current user has the right to access.
- 
+
 ### Page Access
 
-`<InfiniteList>` only renders if the user has the right to display the page (`{ action: "read", resource: "[resourceName]" }`).
+`<InfiniteList>` only renders if the user has the right to display the page (`{ action: "list", resource: "[resourceName]" }`).
 
-For instance, given the following `<InfiniteList>`: 
+For instance, given the following `<InfiniteList>`:
 
 ```tsx
 import { InfiniteList, Datagrid, TextField } from 'react-admin';
@@ -322,15 +326,19 @@ const PostList = () => (
 );
 ```
 
-The `<InfiniteList>` will call `authProvider.canAccess()` using the following parameters: 
+The `<InfiniteList>` will call `authProvider.canAccess()` using the following parameters:
 
-- `{ action: "read", resource: "posts" }`.
+- `{ action: "list", resource: "posts" }`.
+
+Users without access will see [the `unauthorized` component](#unauthorized) instead of the list view.
 
 **Tip**: If you want to control what columns users can see in the `<Datagrid>`, leverage [its access control feature](./Datagrid.md#access-control).
 
 ### Exported Fields
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the [`exporter`](#exporter) hook will call it to export only fields the current user has the right to export. For instance, given the following record shape:
+The `<ExportButton>` only exports fields the current user has the right to export (`{ action: "export", resource: "[resourceName].[fieldName]" }`).
+
+For instance, given the following record shape:
 
 ```json
 {
@@ -340,7 +348,7 @@ Should your authProvider implement the [`canAccess` method](./AuthProviderWritin
 }
 ```
 
-`<InfiniteList>` will call `authProvider.canAccess()` 3 times with the following parameters:
+When a user clicks on the `<ExportButtonW`, `<InfiniteList>` will call `authProvider.canAccess()` 3 times with the following parameters:
 
 1. `{ action: "export", resource: "posts.id" }`
 2. `{ action: "export", resource: "posts.title" }`

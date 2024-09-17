@@ -191,7 +191,11 @@ To override the style of all instances of `<ReferenceField>` using the [applicat
 
 ## `unauthorized`
 
-The component to display when users don't have access to the referenced resource:
+The component to display when users don't have access to the referenced resource (see [Access Control](#access-control)).
+
+By default, `<ReferenceField>` displays a warning message ("You are not authorized to access this resource.") that you can customize using the `ra.message.unauthorized_reference` translation key.
+
+You can also pass a custom component to the `unauthorized` prop. For instance, to display a message with a link to contact the administrator:
 
 ```tsx
 import { List, Datagrid, ReferenceField, TextField } from 'react-admin';
@@ -336,7 +340,9 @@ You can prevent `<ReferenceField>` from adding a link to its children by setting
 
 ## Access Control
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<ReferenceField>` component call it to only display data the current user has the right to access. For instance, given the following `<ReferenceField>`: 
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), `<ReferenceField>` will call it to check if the current user has the right to access the related record (`{ action: "read", resource: "[resourceName]", record }`).
+
+For instance, given the following `<ReferenceField>`:
 
 ```tsx
 <ReferenceField source="user_id" reference="users" />
@@ -345,3 +351,5 @@ Should your authProvider implement the [`canAccess` method](./AuthProviderWritin
 The `<ReferenceField>` will call `authProvider.canAccess()` using the following parameters:
 
 - `{ action: "read", resource: "users" }`.
+
+Users without access will see [the `unauthorized` component](#unauthorized) instead of the referenced record.

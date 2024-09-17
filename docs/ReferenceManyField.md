@@ -357,10 +357,14 @@ Name of the field carrying the relationship on the referenced resource. For inst
 
 ## `unauthorized`
 
-The component to display when users don't have access to the referenced resource:
+The component to display when users don't have access to the referenced resource (see [Access Control](#access-control)).
+
+By default, `<ReferenceManyField>` displays a warning message ("You are not authorized to access this resource.") that you can customize using the `ra.message.unauthorized_reference` translation key.
+
+You can also pass a custom component to the `unauthorized` prop. For instance, to display a message with a link to contact the administrator:
 
 ```tsx
-import { Datagrid, ReferenceArrayField, TextField } from 'react-admin';
+import { Datagrid, ReferenceManyField, TextField } from 'react-admin';
 import { Box, Button, Typography } from '@mui/material';
 
 const Unauthorized = () => (
@@ -476,7 +480,9 @@ const EmployerEdit = () => (
 
 ## Access Control
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<ReferenceManyField>` component call it to only display data the current user has the right to access. For instance, given the following `<ReferenceManyField>`: 
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<ReferenceArrayField>` component call it to only display data the current user has the right to access (`{ action: "read", resource: "[resourceName]", record }`).
+
+For instance, given the following `<ReferenceManyField>`:
 
 ```tsx
 <ReferenceManyField label="Books" reference="books" target="author_id">
@@ -487,8 +493,10 @@ Should your authProvider implement the [`canAccess` method](./AuthProviderWritin
 </ReferenceManyField>
 ```
 
-The `<ReferenceManyField>` will call `authProvider.canAccess()` using the following parameters: 
+The `<ReferenceManyField>` will call `authProvider.canAccess()` using the following parameters:
 
 - `{ action: "read", resource: "books" }`.
+
+Users without access will see [the `unauthorized` component](#unauthorized) instead of the referenced records.
 
 **Tip**: If you want to control what columns users can see in the `<Datagrid>`, leverage [its access control feature](./Datagrid.md#access-control).

@@ -93,7 +93,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isLoading: canAccessLoading,
     } = useCanAccess({
         resource,
-        action: 'read',
+        action: 'list',
     });
 
     const {

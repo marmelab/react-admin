@@ -294,7 +294,11 @@ To override the style of all instances of `<ReferenceArrayField>` using the [app
 
 ## `unauthorized`
 
-The component to display when users don't have access to the referenced resource:
+The component to display when users don't have access to the referenced resource (see [Access Control](#access-control)).
+
+By default, `<ReferenceArrayField>` displays a warning message ("You are not authorized to access this resource.") that you can customize using the `ra.message.unauthorized_reference` translation key.
+
+You can also pass a custom component to the `unauthorized` prop. For instance, to display a message with a link to contact the administrator:
 
 ```tsx
 import { ReferenceArrayField } from 'react-admin';
@@ -311,17 +315,31 @@ const Unauthorized = () => (
     </Box>
 );
 
-<ReferenceArrayField reference="tags" source="tag_ids" label="Tags" unauthorized={<Unauthorized />} />
+<ReferenceArrayField
+    reference="tags"
+    source="tag_ids"
+    label="Tags"
+    unauthorized={<Unauthorized />}
+/>
 ```
 
 ## Access Control
 
-Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<ReferenceArrayField>` component call it to only display data the current user has the right to access. For instance, given the following `<ReferenceArrayField>`: 
+Should your authProvider implement the [`canAccess` method](./AuthProviderWriting.md#canaccess), the `<ReferenceArrayField>` component call it to only display data the current user has the right to access (`{ action: "read", resource: "[resourceName]", record }`).
+
+For instance, given the following `<ReferenceArrayField>`:
 
 ```tsx
-<ReferenceArrayField reference="tags" source="tag_ids" label="Tags" />
+<ReferenceArrayField
+    reference="tags"
+    source="tag_ids"
+    label="Tags"
+    unauthorized={<Unauthorized />}
+/>
 ```
 
 The `<ReferenceArrayField>` will call `authProvider.canAccess()` using the following parameters:
 
 - `{ action: "read", resource: "tags" }`.
+
+Users without access will see [the `unauthorized` component](#unauthorized) instead of the referenced records.
