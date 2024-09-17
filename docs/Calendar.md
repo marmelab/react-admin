@@ -403,6 +403,8 @@ You will need to:
 
 Here is an example:
 
+{% raw %}
+
 ```tsx
 import { DatesSetArg } from '@fullcalendar/core';
 import { add, set, sub } from 'date-fns';
@@ -465,6 +467,8 @@ const EventListEventFormat = () => {
     );
 };
 ```
+
+{% endraw %}
 
 ## `<Calendar>`
 
