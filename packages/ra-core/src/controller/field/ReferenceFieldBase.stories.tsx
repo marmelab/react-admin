@@ -354,7 +354,7 @@ export const Meta = ({
 const MyReferenceField = (props: { children: React.ReactNode }) => {
     const context = useReferenceFieldContext();
 
-    if (context.isLoading) {
+    if (context.isPending) {
         return <p>Loading...</p>;
     }
 

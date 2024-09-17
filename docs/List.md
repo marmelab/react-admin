@@ -1167,8 +1167,8 @@ This is often used by APIs to return facets, aggregations, statistics, or other 
 //     },
 // }
 const Facets = () => {
-    const { isLoading, error, meta } = useListContext();
-    if (isLoading || error) return null;
+    const { isPending, error, meta } = useListContext();
+    if (isPending || error) return null;
     return (
         <Box>
             <Typography variant="subtitle2">
