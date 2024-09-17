@@ -27,6 +27,12 @@ React-Admin provides button components for all the common uses.
     - [`<DeleteWithConfirmButton>`](#deletewithconfirmbutton)
     - [`<CloneButton>`](#clonebutton)
 
+- **Miscellaneous**
+    - [`<Button>`](#button)
+    - [`<RefreshButton>`](#refreshbutton)
+    - [`<SkipNavigationButton>`](#skipnavigationbutton)
+    - [`<UserMenu>`](#usermenu)
+
 ## `<EditButton>`
 
 Opens the Edit view of the current record:
@@ -871,18 +877,6 @@ const MyEdit = () => (
 
 ## `<CloneButton>`
 
-## Performance
-
-## `disableRipple`
-
-The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) for large datagrids. It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
-
-It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`. 
-
-Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplemented due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The Material UI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
-
-## Miscellaneous
-
 ## `<Button>`
 
 Base component for most react-admin buttons. Responsive (displays only the icon with a tooltip on mobile) and accessible.
@@ -922,97 +916,6 @@ To override the style of all instances of `<Button>` using the [application-wide
 
 To override the style of all instances of `<SkipNavigationButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSkipNavigationButton` key.
 
-## `<MenuItemLink>`
-
-The `<MenuItemLink>` component displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized. It also handles the automatic closing of the menu on tap on mobile.
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/custom-menu.webm" type="video/webm"/>
-  <source src="./img/custom-menu.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-
-| Prop          | Required | Type                 | Default | Description                              |
-| ------------- | -------- | -------------------- | ------- | ---------------------------------------- |
-| `to`          | Required | `string | location`  | -       | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. |
-| `primaryText` | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
-| `leftIcon`    | Optional | `ReactNode`          | -       | The menu icon |
-
-Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
-
-You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
-
-```jsx
-// in src/Menu.js
-import * as React from 'react';
-import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
-import BookIcon from '@mui/icons-material/Book';
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import PeopleIcon from '@mui/icons-material/People';
-import LabelIcon from '@mui/icons-material/Label';
-
-export const Menu = () => (
-    <Menu>
-        <DashboardMenuItem />
-        <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
-        <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
-        <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
-        <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
-    </Menu>
-);
-```
-
-To use this custom menu component, pass it to a custom Layout:
-
-```jsx
-// in src/Layout.js
-import { Layout } from 'react-admin';
-import { Menu } from './Menu';
-
-export const Layout = ({ children }) => (
-    <Layout menu={Menu}>
-        {children}
-    </Layout>
-);
-```
-
-Then, use this layout in the `<Admin>` `layout` prop:
-
-```jsx
-// in src/App.js
-import { Layout }  from './Layout';
-
-const App = () => (
-    <Admin layout={Layout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
-
-See [The Menu documentation](./Menu.md) for more details.
-
-**Tip**: If you need a multi-level menu, or a Mega Menu opening panels with custom content, check out [the `ra-navigation`<img class="icon" src="./img/premium.svg" /> module](https://react-admin-ee.marmelab.com/documentation/ra-navigation) (part of the [Enterprise Edition](https://react-admin-ee.marmelab.com))
-
-<video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-item.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-<video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-### `sx`: CSS API
-
-| Rule name                   | Description                                                         |
-|-----------------------------|---------------------------------------------------------------------|
-| `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
-| `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
-
-To override the style of all instances of `<MenuItemLink>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuItemLink` key.
-
 ## `<UserMenu>`
 
 | Prop         | Required | Type            | Default             | Description                         |
@@ -1031,3 +934,12 @@ To override the style of all instances of `<MenuItemLink>` using the [applicatio
 To override the style of all instances of `<UserMenu>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaUserMenu` key.
 
 See [The AppBar documentation](./AppBar.md#usermenu) for more details.
+
+## Performance
+
+The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) for large datagrids. It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
+
+It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`. 
+
+Note: The `disableRipple` was set to `true` in React Admin for a time, but was reimplemented due to accessibility concerns. If you'd like to reimplement the static ripple colour effect, you can use the [React Admin's previous implementation](https://github.com/marmelab/react-admin/blob/994079cbca810a2e74d85329e684811645b04ae2/packages/ra-ui-materialui/src/defaultTheme.ts#L31) as a starting point. [The Material UI docs](https://mui.com/material-ui/api/button-base/#props) also gives details on how to reimplement focus styles using the `Mui-focusVisible` class.
+
