@@ -128,7 +128,7 @@ The calendar can display a list of _Events_. Events must be resources with at le
 },
 ```
 
-That means that in order to be able to use `ra-calendar`, your `dataProvider` must return event-like objects for at least one resource. In case your event records don't exactly match this format, ra-calendar allows to specify [a function to convert records to Events](#converttoevent).
+That means that in order to be able to use `ra-calendar`, your `dataProvider` must return event-like objects for at least one resource. In case your event records don't exactly match this format, ra-calendar allows to specify [a function to convert records to Events](#converttoevent). See [Using A Custom Event Format](#using-a-custom-event-format) for an example.
 
 Events can have many more fields, e.g. for recurrent events, groups, colors, etc. Check the [Event format on the Full Calendar documentation](https://fullcalendar.io/docs/event-parsing).
 
@@ -143,7 +143,7 @@ In addition, the calendar queries a list of events in a time interval. Your data
 }
 ```
 
-The `ra-calendar` provides [a function to transform the display interval into a dataProvider filter](#getfiltervaluesfrominterval).
+The `ra-calendar` provides [a function to transform the display interval into a dataProvider filter](#getfiltervaluesfrominterval). Again, see [Using A Custom Event Format](#using-a-custom-event-format) for an example.
 
 ## `<CompleteCalendar>`
 
@@ -385,6 +385,81 @@ const EventList = () => {
                 <TextInput source="title" autoFocus />
                 <DateTimeInput source="start" />
                 <DateTimeInput source="end" />
+            </SimpleForm>
+        </CompleteCalendar>
+    );
+};
+```
+
+### Using A Custom Event Format
+
+If your events don't match the Full Calendar event format, you can still use `<CompleteCalendar>`.
+
+You will need to:
+
+- Use the `convertToEvent` prop to tell `<CompleteCalendar>` how to convert the events
+- Use a custom function to compute the filter values from the current date interval (called `customGetFilterValues` in our example)
+- Use your own field names in the form (e.g. use `start_date` and `end_date` instead of `start` and `end`)
+
+Here is an example:
+
+```tsx
+import { DatesSetArg } from '@fullcalendar/core';
+import { add, set, sub } from 'date-fns';
+import {
+    BooleanInput,
+    DateTimeInput,
+    SimpleForm,
+    TextInput,
+} from 'react-admin';
+import { CompleteCalendar } from '@react-admin/ra-calendar';
+
+const EventListEventFormat = () => {
+    const converter = ({ start_date, end_date, ...rest }) => ({
+        ...rest,
+        start: start_date,
+        end: end_date,
+    });
+    const customGetFilterValues = (
+        dateInfo?: DatesSetArg,
+        filterValues: any = {}
+    ): any => {
+        const now = set(new Date(), {
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
+            milliseconds: 0,
+        });
+        const nowMinus1Month = sub(now, { months: 1 });
+        const nowPlus2Months = add(now, { months: 2 });
+        return !dateInfo ||
+            (dateInfo.start > nowMinus1Month && dateInfo.end < nowPlus2Months)
+            ? {
+                  ...filterValues,
+                  start_date_gte: nowMinus1Month.toISOString(),
+                  start_date_lte: nowPlus2Months.toISOString(),
+              }
+            : {
+                  ...filterValues,
+                  start_date_gte: dateInfo.startStr,
+                  start_date_lte: dateInfo.endStr,
+              };
+    };
+    return (
+        <CompleteCalendar
+            ListProps={{
+                filterDefaultValues: customGetFilterValues(),
+            }}
+            CalendarProps={{
+                getFilterValueFromInterval: customGetFilterValues,
+                convertToEvent: converter,
+            }}
+        >
+            <SimpleForm>
+                <TextInput source="title" autoFocus isRequired />
+                <DateTimeInput source="start_date" />
+                <DateTimeInput source="end_date" />
+                <BooleanInput source="allDay" fullWidth />
             </SimpleForm>
         </CompleteCalendar>
     );
@@ -650,14 +725,14 @@ For instance, let's say your `dataProvider` returns records like the following:
 }
 ```
 
-Full Calendar won't work unless you convert these rcords to events looking like the following:
+Full Calendar won't work unless you convert these records to events looking like the following:
 
 ```json
 {
     "id": 8,
-    "name": "Interview Helen",
-    "begin": "2020-04-23 11:30:00",
-    "finish": "2020-04-23 12:00:00",
+    "title": "Interview Helen",
+    "start": "2020-04-23 11:30:00",
+    "end": "2020-04-23 12:00:00",
     "backgroundColor": "orange",
     "borderColor": "orange",
     "editable": false,
