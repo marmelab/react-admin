@@ -88,8 +88,31 @@ export const NotificationDefault = () => {
         delete: () => Promise.resolve({ data: { id: 1 } }),
     } as any;
     return (
-        <AdminContext dataProvider={dataProvider}>
-            <DeleteButton record={{ id: 1 }} resource="post" />
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <DeleteButton record={{ id: 1 }} resource="books" />
+            <Notification />
+        </AdminContext>
+    );
+};
+
+export const NotificationTranslated = () => {
+    const dataProvider = {
+        delete: () => Promise.resolve({ data: { id: 1 } }),
+    } as any;
+    return (
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={polyglotI18nProvider(
+                () => ({
+                    ...englishMessages,
+                    resources: {
+                        books: { notifications: { deleted: 'Book deleted' } },
+                    },
+                }),
+                'en'
+            )}
+        >
+            <DeleteButton record={{ id: 1 }} resource="books" />
             <Notification />
         </AdminContext>
     );

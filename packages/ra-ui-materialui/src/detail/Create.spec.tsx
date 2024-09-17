@@ -4,7 +4,14 @@ import { CoreAdminContext, testDataProvider } from 'ra-core';
 import { screen, render } from '@testing-library/react';
 
 import { Create } from './Create';
-import { Basic, Title, TitleFalse, TitleElement } from './Create.stories';
+import {
+    Basic,
+    Title,
+    TitleFalse,
+    TitleElement,
+    NotificationDefault,
+    NotificationTranslated,
+} from './Create.stories';
 
 describe('<Create />', () => {
     const defaultCreateProps = {
@@ -67,6 +74,20 @@ describe('<Create />', () => {
             render(<TitleFalse />);
             await screen.findByText('Create content');
             expect(screen.queryByText('Create Book')).toBeNull();
+        });
+    });
+
+    describe('success notification', () => {
+        it('should use a generic success message by default', async () => {
+            render(<NotificationDefault />);
+            (await screen.findByText('Save')).click();
+            await screen.findByText('Element created');
+        });
+
+        it('should allow to use a custom translation per resource', async () => {
+            render(<NotificationTranslated />);
+            (await screen.findByText('Save')).click();
+            await screen.findByText('Book created');
         });
     });
 });
