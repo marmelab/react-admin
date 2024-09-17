@@ -348,7 +348,7 @@ For instance, given the following record shape:
 }
 ```
 
-When a user clicks on the `<ExportButtonW`, `<InfiniteList>` will call `authProvider.canAccess()` 3 times with the following parameters:
+When a user clicks on the `<ExportButton>`, `<InfiniteList>` will call `authProvider.canAccess()` 3 times with the following parameters:
 
 1. `{ action: "export", resource: "posts.id" }`
 2. `{ action: "export", resource: "posts.title" }`
