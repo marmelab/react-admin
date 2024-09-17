@@ -395,7 +395,18 @@ const PostCreate = () => (
 
 ## Changing The Notification Message
 
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created"). You can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
+![Create notification](./img/CreateSuccess.png)
+
+Once the `dataProvider.create()` request returns successfully, users see a generic notification ("Element created"). 
+
+`<Create>` uses two successive translation keys to build the success message:
+
+- `resources.{resource}.notifications.create` as a first choice
+- `ra.notification.create` as a fallback
+
+To customize the notification message, you can set custom translation for these keys in your i18nProvider.
+
+Alternately, you can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
 
 {% raw %}
 ```jsx
@@ -407,7 +418,7 @@ const PostCreate = () => {
     const redirect = useRedirect();
 
     const onSuccess = (data) => {
-        notify(`Post created successfully`); // default message is 'ra.notification.created'
+        notify(`Post created successfully`);
         redirect('edit', 'posts', data.id, data);
     };
 
