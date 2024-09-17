@@ -54,7 +54,7 @@ title: "Index"
 * [`<DateField>`](./DateField.md)
 * [`<DateInput>`](./DateInput.md)
 * [`<DateTimeInput>`](./DateTimeInput.md)
-* `<DeleteButton>`
+* [`<DeleteButton>`](./Buttons.md#deletebutton)
 * [`<DualListInput>`](./DualListInput.md)<img class="icon" src="./img/premium.svg" />
 
 **- E -**
@@ -199,7 +199,7 @@ title: "Index"
 * [`<Toolbar>`](./Toolbar.md)
 
 **- U -**
-* [`<UpdateButton>`](./UpdateButton.md)
+* [`<UpdateButton>`](./Buttons.md#updatebutton)
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./AppBar.md#usermenu)
 
