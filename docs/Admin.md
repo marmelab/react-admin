@@ -1042,9 +1042,9 @@ React-admin uses [the react-router library](https://reactrouter.com/) to handle 
 But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. React-admin will detect that it's already inside a router, and skip its own router. 
 
 ```tsx
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Admin, Resource } from "react-admin";
-import { dataProvider } from "./dataProvider";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
 
 const App = () => {
     const router = createBrowserRouter([
