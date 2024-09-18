@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useGetList } from 'react-admin';
 
 const CustomRouteNoLayout = ({ title = 'Posts' }) => {
-    const { isLoading, total } = useGetList('posts', {
+    const { isPending, total } = useGetList('posts', {
         pagination: { page: 0, perPage: 10 },
         sort: { field: 'id', order: 'ASC' },
     });
@@ -10,7 +10,7 @@ const CustomRouteNoLayout = ({ title = 'Posts' }) => {
     return (
         <div>
             <h1>{title}</h1>
-            {isLoading ? (
+            {isPending ? (
                 <p className="app-loader">Loading...</p>
             ) : (
                 <p>

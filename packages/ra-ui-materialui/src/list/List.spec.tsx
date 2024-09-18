@@ -106,8 +106,8 @@ describe('<List />', () => {
 
     it('should render an invite when the list is empty', async () => {
         const Dummy = () => {
-            const { isLoading } = useListContext();
-            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
+            const { isPending } = useListContext();
+            return <div>{isPending ? 'loading' : 'dummy'}</div>;
         };
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
@@ -129,8 +129,8 @@ describe('<List />', () => {
 
     it('should not render an invite when the list is empty with an empty prop set to false', async () => {
         const Dummy = () => {
-            const { isLoading } = useListContext();
-            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
+            const { isPending } = useListContext();
+            return <div>{isPending ? 'loading' : 'dummy'}</div>;
         };
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
@@ -179,8 +179,8 @@ describe('<List />', () => {
 
     it('should not render an invite when a filter is active', async () => {
         const Dummy = () => {
-            const { isLoading } = useListContext();
-            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
+            const { isPending } = useListContext();
+            return <div>{isPending ? 'loading' : 'dummy'}</div>;
         };
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),

@@ -626,8 +626,8 @@ export const ErrorInFetch = () => (
 );
 
 const Facets = () => {
-    const { isLoading, error, meta } = useListContext();
-    if (isLoading || error) return null;
+    const { isPending, error, meta } = useListContext();
+    if (isPending || error) return null;
     return (
         <Box order={-1} width={200} mt={7}>
             <Typography variant="subtitle2" gutterBottom>

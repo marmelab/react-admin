@@ -270,7 +270,7 @@ import { useState } from 'react';
 import { useListController } from 'react-admin';
 
 const OfficeList = () => {
-    const { filterValues, setFilters, data, isLoading } = useListController({ resource: 'offices' });
+    const { filterValues, setFilters, data, isPending } = useListController({ resource: 'offices' });
     const [formValues, setFormValues] = useState(filterValues);
 
     const handleChange = (event) => {
@@ -285,7 +285,7 @@ const OfficeList = () => {
         setFilters(filterFormValues);
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isPending) return <div>Loading...</div>;
 
     return (
         <>
