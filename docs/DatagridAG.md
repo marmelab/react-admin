@@ -58,13 +58,15 @@ yarn add @react-admin/ra-datagrid-ag
 This package proposes 2 components, each with its own data fetching strategy:
 
 -  [`<DatagridAG>`](#datagridag) works just like `<Datagrid>`, displaying the data fetched by its parent component (usually a `<List>`) and calling the API each time the user changes the sorting, filtering, or pagination. However it is not compatible with some of the features provided by `ag-grid` (see [limitations](#limitations)).
--  [`<DatagridAGClient>`](#datagridagclient) fetches all the data from the API at once, and then performs filtering, sorting and pagination **client-side**. This allows for a more responsive UI and enabled some client-side only features, but only works for limited datasets (around a few thousand records). The client-side performance isn't affected by a large number of records, as ag-grid uses [DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/).
+-  [`<DatagridAGClient>`](#datagridagclient) fetches all the data from the API at once, and then performs filtering, sorting and pagination **client-side**. This allows for a more responsive UI and enables some client-side only features, but only works for limited datasets (around a few thousand records). The client-side performance isn't affected by a large number of records, as ag-grid uses [DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/).
 
-`ra-datagrid-ag` doesn't currently support ag-grid's [server-side row model](https://www.ag-grid.com/react-data-grid/row-models/).
+`<DatagridAG>` doesn't currently support ag-grid's [server-side row model](https://www.ag-grid.com/react-data-grid/row-models/).
 
 ## `<DatagridAG>`
 
 `<DatagridAG>` is an alternative datagrid component with advanced features, based on [ag-grid](https://www.ag-grid.com/).
+
+![DatagridAG PostList](./img/DatagridAG-PostList.png)
 
 ### Usage
 
@@ -93,15 +95,13 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAG PostList](./img/DatagridAG-PostList.png)
-
 Here are the important things to note:
 
 -   You need to import the ag-grid stylesheets `ag-grid.css` and `ag-theme-alpine.css`.
 -   The columns are defined using the `columnDefs` prop. See [the dedicated doc section](#columndefs) for more information.
 -   [`<InfiniteList>`](./InfiniteList.md) is not supported.
 
-### Data Fetching And Filtering
+### Filter Syntax
 
 `<DatagridAG>` displays the data fetched by its parent (usually `<List>`).
 
@@ -140,8 +140,6 @@ Here are the important things to note:
     country_eq: null,
 }
 ```
-
-It offers the ability to transform those filters into a `filters` object that your dataProvider will understand.
 
 This conversion is done via to the [`getRaFilters`](#getrafilters) and [`getAgGridFilters`](#getaggridfilters) callbacks, that you can override to customize the format of the filter param sent to the dataProvider.
 
@@ -224,77 +222,6 @@ If you need to use these features, you can use the [`<DatagridAGClient>`](#datag
 
 `<DatagridAG>` also accepts the same props as [`<AgGridReact>`](https://www.ag-grid.com/react-data-grid/grid-options/) with the exception of `rowData`, since the data is fetched from the List context.
 
-### Defaults
-
-Under the hood, `<DatagridAG>` is a wrapper around `<AgGridReact>`. However it sets some important default values:
-
--   `pagination` is set to `false` as the `<List>` component handles it
--   `paginationAutoPageSize` is set to `false`
--   `animateRows` is set to `true`
--   `rowSelection` is set to `'multiple'`
--   `suppressRowClickSelection` is set to `true`
--   `readOnlyEdit` is set to `true`
--   `getRowId` is set to use the record `id` field
-
-It also register the following default [modules](https://www.ag-grid.com/react-data-grid/modules/): `ClientSideRowModelModule`, `CommunityFeaturesModule` and `CsvExportModule`. If you wish to add custom modules, make sure you have at least the `ClientSideRowModelModule`:
-
-{% raw %}
-```tsx
-import '@ag-grid-community/styles/ag-grid.css';
-import '@ag-grid-community/styles/ag-theme-alpine.css';
-import React from 'react';
-import { List } from 'react-admin';
-import { DatagridAG } from '@react-admin/ra-datagrid-ag';
-import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
-import { CsvExportModule } from '@ag-grid-community/csv-export';
-import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
-
-const modules = [ClientSideRowModelModule, CsvExportModule, ClipboardModule];
-
-export const PostList = () => {
-    const columnDefs = [
-        {
-            field: 'id',
-            editable: false,
-            headerCheckboxSelection: true,
-            checkboxSelection: true,
-            minWidth: 48,
-            maxWidth: 48,
-            suppressColumnsToolPanel: true,
-            suppressHeaderFilterButton: true,
-        },
-        { field: 'title' },
-        {
-            field: 'published_at',
-            headerName: 'Publication Date',
-        },
-    ];
-    return (
-        <List>
-            <DatagridAG columnDefs={columnDefs} modules={modules} />
-        </List>
-    );
-};
-```
-{% endraw %}
-
-It also includes a [`defaultColDef`](#defaultcoldef) object with the following properties:
-
-{% raw %}
-```js
-{
-    resizable: true,
-    filter: true,
-    sortable: true,
-    editable: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    headerCheckboxSelectionCurrentPageOnly: true,
-}
-```
-{% endraw %}
-
-You may override any of these defaults by passing the corresponding props to `<DatagridAG>` (`defaultColDef` will be merged with the defaults).
-
 ### `bulkActionButtons`
 
 You can use the `bulkActionButtons` prop to customize the bulk action buttons, displayed when at least one row is selected. Don't forget to add an initial column in the `columnDefs` to allow row selection.
@@ -370,9 +297,7 @@ export const CommentList = () => {
             field: 'post_id',
             headerName: 'Post',
             cellRenderer: (
-                <ReferenceField source="post_id" reference="posts">
-                    <TextField source="title" />
-                </ReferenceField>
+                <ReferenceField source="post_id" reference="posts" />
             ),
         },
         { field: 'created_at' },
@@ -847,7 +772,7 @@ If, instead, you want to disable the persistence of the columns order and size, 
 
 ### `sx`
 
-You can also use [the `sx` prop](./SX.md) to customize the grid's style:
+You can use [the `sx` prop](./SX.md) to customize the grid's style:
 
 {% raw %}
 ```tsx
@@ -935,6 +860,77 @@ export const PostList = () => {
 ![DatagridAG Dark](./img/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
+
+### AgGrid Defaults
+
+Under the hood, `<DatagridAG>` is a wrapper around `<AgGridReact>`. However it sets some important default values:
+
+-   `pagination` is set to `false` as the `<List>` component handles it
+-   `paginationAutoPageSize` is set to `false`
+-   `animateRows` is set to `true`
+-   `rowSelection` is set to `'multiple'`
+-   `suppressRowClickSelection` is set to `true`
+-   `readOnlyEdit` is set to `true`
+-   `getRowId` is set to use the record `id` field
+
+It also register the following default [modules](https://www.ag-grid.com/react-data-grid/modules/): `ClientSideRowModelModule`, `CommunityFeaturesModule` and `CsvExportModule`. If you wish to add custom modules, make sure you have at least the `ClientSideRowModelModule`:
+
+{% raw %}
+```tsx
+import '@ag-grid-community/styles/ag-grid.css';
+import '@ag-grid-community/styles/ag-theme-alpine.css';
+import React from 'react';
+import { List } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { CsvExportModule } from '@ag-grid-community/csv-export';
+import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
+
+const modules = [ClientSideRowModelModule, CsvExportModule, ClipboardModule];
+
+export const PostList = () => {
+    const columnDefs = [
+        {
+            field: 'id',
+            editable: false,
+            headerCheckboxSelection: true,
+            checkboxSelection: true,
+            minWidth: 48,
+            maxWidth: 48,
+            suppressColumnsToolPanel: true,
+            suppressHeaderFilterButton: true,
+        },
+        { field: 'title' },
+        {
+            field: 'published_at',
+            headerName: 'Publication Date',
+        },
+    ];
+    return (
+        <List>
+            <DatagridAG columnDefs={columnDefs} modules={modules} />
+        </List>
+    );
+};
+```
+{% endraw %}
+
+It also includes a [`defaultColDef`](#defaultcoldef) object with the following properties:
+
+{% raw %}
+```js
+{
+    resizable: true,
+    filter: true,
+    sortable: true,
+    editable: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    headerCheckboxSelectionCurrentPageOnly: true,
+}
+```
+{% endraw %}
+
+You may override any of these defaults by passing the corresponding props to `<DatagridAG>` (`defaultColDef` will be merged with the defaults).
 
 ### Accessing The Grid API
 
@@ -1390,6 +1386,8 @@ export const PostList = () => {
 
 The client-side performance isn't affected by a large number of records, as ag-grid uses [DOM virtualization](https://www.ag-grid.com/react-data-grid/dom-virtualisation/).
 
+![DatagridAGClient PostList](./img/DatagridAGClient.png)
+
 ### Usage
 
 Use `<DatagridAGClient>` as a child of a react-admin `<List>`, `<ReferenceManyField>`, or any other component that creates a `ListContext`.
@@ -1417,8 +1415,6 @@ export const PostList = () => {
 ```
 {% endraw %}
 
-![DatagridAGClient PostList](./img/DatagridAG-PostList.png)
-
 Here are the important things to note:
 
 -   You need to import the ag-grid stylesheets `ag-grid.css` and `ag-theme-alpine.css`.
@@ -1445,77 +1441,6 @@ The client-side performance isn't affected by a large number of records, as ag-g
 | `pagination`        | Optional | Boolean                     | `true`                       | Enable or disable pagination                                                                                                           |
 
 `<DatagridAGClient>` also accepts the same props as [`<AgGridReact>`](https://www.ag-grid.com/react-data-grid/grid-options/) with the exception of `rowData`, since the data is fetched from the List context.
-
-### Defaults
-
-Under the hood, `<DatagridAGClient>` is a wrapper around `<AgGridReact>`. However, it sets some important default values:
-
--   `pagination` is set to `true`
--   `paginationAutoPageSize` is set to `true`
--   `animateRows` is set to `true`
--   `rowSelection` is set to `'multiple'`
--   `suppressRowClickSelection` is set to `true`
--   `readOnlyEdit` is set to `true`
--   `getRowId` is set to use the record `id` field
-
-It also register the following default [modules](https://www.ag-grid.com/react-data-grid/modules/): `ClientSideRowModelModule`, `CommunityFeaturesModule` and `CsvExportModule`. If you wish to add custom modules, make sure you have at least the `ClientSideRowModelModule`:
-
-{% raw %}
-```tsx
-import '@ag-grid-community/styles/ag-grid.css';
-import '@ag-grid-community/styles/ag-theme-alpine.css';
-import React from 'react';
-import { List } from 'react-admin';
-import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
-import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
-import { CsvExportModule } from '@ag-grid-community/csv-export';
-import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
-
-const modules = [ClientSideRowModelModule, CsvExportModule, ClipboardModule];
-
-export const PostList = () => {
-    const columnDefs = [
-        {
-            field: 'id',
-            editable: false,
-            headerCheckboxSelection: true,
-            checkboxSelection: true,
-            minWidth: 48,
-            maxWidth: 48,
-            suppressColumnsToolPanel: true,
-            suppressHeaderFilterButton: true,
-        },
-        { field: 'title' },
-        {
-            field: 'published_at',
-            headerName: 'Publication Date',
-        },
-    ];
-    return (
-        <List perPage={10000} pagination={false}>
-            <DatagridAGClient columnDefs={columnDefs} modules={modules} />
-        </List>
-    );
-};
-```
-{% endraw %}
-
-It also includes a [`defaultColDef`](#defaultcoldef) object with the following properties:
-
-{% raw %}
-```js
-{
-    resizable: true,
-    filter: true,
-    sortable: true,
-    editable: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    headerCheckboxSelectionCurrentPageOnly: true,
-}
-```
-{% endraw %}
-
-You may override any of these defaults by passing the corresponding props to `<DatagridAGClient>` (`defaultColDef` will be merged with the defaults).
 
 ### `bulkActionButtons`
 
@@ -1590,9 +1515,7 @@ export const CommentList = () => {
             field: 'post_id',
             headerName: 'Post',
             cellRenderer: (
-                <ReferenceField source="post_id" reference="posts">
-                    <TextField source="title" />
-                </ReferenceField>
+                <ReferenceField source="post_id" reference="posts" />
             ),
         },
         { field: 'created_at' },
@@ -2012,6 +1935,77 @@ export const PostList = () => {
 ![DatagridAGClient Dark](./img/DatagridAG-dark.png)
 
 **Tip:** Remember to import the corresponding stylesheet (e.g. `ag-theme-balham[.min].css` for `ag-theme-balham`).
+
+### AgGrid Defaults
+
+Under the hood, `<DatagridAGClient>` is a wrapper around `<AgGridReact>`. However, it sets some important default values:
+
+-   `pagination` is set to `true`
+-   `paginationAutoPageSize` is set to `true`
+-   `animateRows` is set to `true`
+-   `rowSelection` is set to `'multiple'`
+-   `suppressRowClickSelection` is set to `true`
+-   `readOnlyEdit` is set to `true`
+-   `getRowId` is set to use the record `id` field
+
+It also register the following default [modules](https://www.ag-grid.com/react-data-grid/modules/): `ClientSideRowModelModule`, `CommunityFeaturesModule` and `CsvExportModule`. If you wish to add custom modules, make sure you have at least the `ClientSideRowModelModule`:
+
+{% raw %}
+```tsx
+import '@ag-grid-community/styles/ag-grid.css';
+import '@ag-grid-community/styles/ag-theme-alpine.css';
+import React from 'react';
+import { List } from 'react-admin';
+import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { CsvExportModule } from '@ag-grid-community/csv-export';
+import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
+
+const modules = [ClientSideRowModelModule, CsvExportModule, ClipboardModule];
+
+export const PostList = () => {
+    const columnDefs = [
+        {
+            field: 'id',
+            editable: false,
+            headerCheckboxSelection: true,
+            checkboxSelection: true,
+            minWidth: 48,
+            maxWidth: 48,
+            suppressColumnsToolPanel: true,
+            suppressHeaderFilterButton: true,
+        },
+        { field: 'title' },
+        {
+            field: 'published_at',
+            headerName: 'Publication Date',
+        },
+    ];
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAGClient columnDefs={columnDefs} modules={modules} />
+        </List>
+    );
+};
+```
+{% endraw %}
+
+It also includes a [`defaultColDef`](#defaultcoldef) object with the following properties:
+
+{% raw %}
+```js
+{
+    resizable: true,
+    filter: true,
+    sortable: true,
+    editable: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    headerCheckboxSelectionCurrentPageOnly: true,
+}
+```
+{% endraw %}
+
+You may override any of these defaults by passing the corresponding props to `<DatagridAGClient>` (`defaultColDef` will be merged with the defaults).
 
 ### Accessing The Grid API
 
