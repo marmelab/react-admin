@@ -49,7 +49,7 @@ const authors = [
     { id: 5, first_name: 'Marcel', last_name: 'Proust', language: 'French' },
 ];
 
-export const dataProviderWithAuthors = {
+const dataProviderWithAuthors = {
     getOne: () =>
         Promise.resolve({
             data: {
@@ -105,7 +105,7 @@ const AutocompleteInput = (
                 name={`${source}-search`}
                 list={`${source}-choices`}
                 onChange={e => {
-                    const choice = allChoices.find(
+                    const choice = allChoices?.find(
                         choice =>
                             getChoiceText(choice).toString() === e.target.value
                     );
@@ -118,7 +118,7 @@ const AutocompleteInput = (
             />
 
             <datalist id={`${source}-choices`}>
-                {allChoices.map(choice => (
+                {allChoices?.map(choice => (
                     <option
                         key={getChoiceValue(choice)}
                         value={getChoiceText(choice).toString()}
@@ -148,7 +148,7 @@ const SelectInput = (
             <label htmlFor={field.name}>{props.label || field.name}</label>
             <select id={field.name} {...field}>
                 {isLoading && <option value="">Loading...</option>}
-                {allChoices.map(choice => (
+                {allChoices?.map(choice => (
                     <option
                         key={getChoiceValue(choice)}
                         value={getChoiceValue(choice)}
