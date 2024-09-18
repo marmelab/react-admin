@@ -4,7 +4,6 @@ import { Menu } from './Menu';
 import { Layout, LayoutProps } from './Layout';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { ListGuesser } from '../list/ListGuesser';
 
 export default {
     title: 'ra-ui-materialui/layout/ResourceMenuItem',
@@ -28,8 +27,8 @@ export const Basic = () => (
     <TestMemoryRouter>
         <AdminContext dataProvider={dataProvider}>
             <AdminUI layout={CustomLayout}>
-                <Resource name="users" list={ListGuesser} />
-                <Resource name="posts" list={ListGuesser} />
+                <Resource name="users" list={<p>The users page</p>} />
+                <Resource name="posts" list={<p>The posts page</p>} />
             </AdminUI>
         </AdminContext>
     </TestMemoryRouter>
@@ -44,8 +43,8 @@ export const InsideAdminChildFunction = () => (
     <TestMemoryRouter>
         <AdminContext dataProvider={dataProvider} authProvider={authProvider}>
             <AdminUI layout={CustomLayout}>
-                <Resource name="users" list={ListGuesser} />
-                {() => <Resource name="posts" list={ListGuesser} />}
+                <Resource name="users" list={<p>The users page</p>} />
+                {() => <Resource name="posts" list={<p>The posts page</p>} />}
             </AdminUI>
         </AdminContext>
     </TestMemoryRouter>
@@ -58,7 +57,7 @@ const authProviderForAccessControl: any = {
 };
 
 export const AccessControl = () => (
-    <TestMemoryRouter initialEntries={['/posts']}>
+    <TestMemoryRouter>
         <AdminContext
             dataProvider={dataProvider}
             authProvider={authProviderForAccessControl}
@@ -66,14 +65,17 @@ export const AccessControl = () => (
             <AdminUI layout={CustomLayout}>
                 {() => (
                     <>
-                        <Resource name="users" list={ListGuesser} />
+                        <Resource name="users" list={<p>The users page</p>} />
                         <Resource
                             name="posts"
                             list={() => (
-                                <p>
-                                    The menu item for resource "users" should
-                                    not be displayed
-                                </p>
+                                <>
+                                    <p>The posts page</p>
+                                    <p>
+                                        The menu item for resource "users"
+                                        should not be displayed
+                                    </p>
+                                </>
                             )}
                         />
                     </>
@@ -84,20 +86,23 @@ export const AccessControl = () => (
 );
 
 export const AccessControlInsideAdminChildFunction = () => (
-    <TestMemoryRouter initialEntries={['/posts']}>
+    <TestMemoryRouter>
         <AdminContext
             dataProvider={dataProvider}
             authProvider={authProviderForAccessControl}
         >
             <AdminUI layout={CustomLayout}>
-                <Resource name="users" list={ListGuesser} />
+                <Resource name="users" list={<p>The users page</p>} />
                 <Resource
                     name="posts"
                     list={() => (
-                        <p>
-                            The menu item for resource "users" should not be
-                            displayed
-                        </p>
+                        <>
+                            <p>The posts page</p>
+                            <p>
+                                The menu item for resource "users" should not be
+                                displayed
+                            </p>
+                        </>
                     )}
                 />
             </AdminUI>
