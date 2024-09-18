@@ -33,277 +33,6 @@ React-Admin provides button components for all the common uses.
     - [`<SkipNavigationButton>`](#skipnavigationbutton)
     - [`<UserMenu>`](#usermenu)
 
-## `<EditButton>`
-
-Opens the Edit view of the current record. 
-
-![Edit button](./img/edit-button.png)
-
-### Usage
-
-`<EditButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
-
-```jsx
-import { EditButton, TopToolbar } from 'react-admin';
-
-const ShowActions = () => (
-    <TopToolbar>
-        <EditButton />
-    </TopToolbar>
-);
-
-const CommentShow = () => (
-    <Show actions={<ShowActions />}>
-        {/* ... */}
-    </Show>
-);
-```
-
-`<EditButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
-
-### Props
-
-| Prop          | Required | Type            | Default          | Description                                      |
-| ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
-| `resource`    | Optional | `string`        | -                | Resource to link to, e.g. 'posts'                |
-| `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
-| `label`       | Optional | `string`        | 'ra.action.edit' | Label or translation message to use              |
-| `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
-| `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
-
-It also supports [all the other `<Button>` props](#button).
-
-**Tip**: You can use it as `<Datagrid>` child, too. However, you should use the `<Datagrid rowClick="edit">` prop instead to avoid using one column for the Edit button.
-
-**Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
-
-**Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
-
-## `<ShowButton>`
-
-Opens the Show view of the current record:
-
-![Show button](./img/show-button.png)
-
-### Usage
-
-`<ShowButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
-
-```jsx
-import { ShowButton, TopToolbar, Edit } from 'react-admin';
-
-const EditActions = () => (
-    <TopToolbar>
-        <ShowButton />
-    </TopToolbar>
-);
-
-const CommentEdit = () => (
-    <Edit actions={<EditActions />}>
-        {/* ... */}
-    </Edit>
-);
-```
-
-`<ShowButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
-
-### Props
-
-| Prop          | Required | Type            | Default          | Description                                      |
-| ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
-| `resource`    | Optional | `string`        | -                | The target resource, e.g. 'posts'                |
-| `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
-| `component`   | Optional | `ReactElement`  | -                | Base path to resource, e.g. '/posts'             |
-| `label`       | Optional | `string`        | 'ra.action.show' | Label or translation message to use              |
-| `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
-| `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
-
-It also supports [all the other `<Button>` props](#button).
-
-**Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
-
-**Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
-
-## `<CreateButton>`
-
-Opens the Create view of the current resource:
-
-![Create button](./img/create-button.png)
-
-On mobile, it turns into a "Floating Action Button".
-
-![Create button FAB](./img/create-button-fab.png)
-
-### Usage
-
-`<CreateButton>` reads the current resource from `ResourceContext`, so in general it doesn't need any props:
-
-```jsx
-import { CreateButton, TopToolbar, List } from 'react-admin';
-
-const ListActions = () => (
-    <TopToolbar>
-        <CreateButton />
-    </TopToolbar>
-);
-
-const CommentList = () => (
-    <List actions={<ListActions />}>
-        {/* ... */}
-    </List>
-);
-```
-
-`<CreateButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
-
-### Props
-
-| Prop          | Required | Type            | Default            | Description                                  |
-| ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
-| `resource`    | Optional | `string`        | -                  | Target resource, e.g. 'posts'                |
-| `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
-| `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
-| `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
-
-It also supports [all the other `<Button>` props](#button).
-
-**Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
-
-**Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
-
-### `sx`: CSS API
-
-| Rule name                   | Description                                                        |
-|-----------------------------|--------------------------------------------------------------------|
-| `&.RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
-
-To override the style of all instances of `<CreateButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCreateButton` key.
-
-## `<ListButton>`
-
-Opens the List view of a given resource.
-
-![List button](./img/list-button.png)
-
-`<ListButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
-
-### Usage
-
-By default, react-admin doesn't display a `<ListButton>` in Edit and Show views action toolbar. This saves visual clutter, and users can always use the back button.
-
-You can add it by specifying your own `actions`:
-
-```jsx
-// linking back to the list from the Show view
-import { TopToolbar, ListButton, Show } from 'react-admin';
-
-const PostShowActions = () => (
-    <TopToolbar>
-        <ListButton />
-    </TopToolbar>
-);
-
-export const PostShow = () => (
-    <Show actions={<PostShowActions />}>
-        ...
-    </Show>
-);
-```
-
-**Tip**: If you want to link to the List view manually, use the `/{resource}` location.
-
-### Props
-
-| Prop       | Required | Type            | Default          | Description                                  |
-| ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
-| `resource` | Optional | `string`        | -                | target resource, e.g. 'posts'                |
-| `label`    | Optional | `string`        | 'ra.action.list' | label or translation message to use          |
-| `icon`     | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`          |
-
-It also supports [all the other `<Button>` props](#button).
-
-## `<ExportButton>`
-
-Exports the current list, with filters applied, but without pagination.
-
-![Export button](./img/export-button.png)
-
-It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
-
-### Usage
-
-By default, the `<ExportButton>` is included in the List actions.
-
-You can add it to a custom actions toolbar:
-
-```jsx
-import { CreateButton, ExportButton, TopToolbar } from 'react-admin';
-
-const PostListActions = () => (
-    <TopToolbar>
-        <PostFilter context="button" />
-        <CreateButton />
-        <ExportButton />
-    </TopToolbar>
-);
-
-export const PostList = () => (
-    <List actions={<PostListActions />}>
-        ...
-    </List>
-);
-```
-
-### Props
-
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `maxResults` | Optional | `number`        | 1000               | Maximum number of records to export |
-| `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
-| `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
-| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
-
-**Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
-
-## `<BulkExportButton>`
-
-Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
-
-![Bulk Export button](./img/bulk-export-button.png)
-
-### Usage
-
-```jsx
-import * as React from 'react';
-import { Fragment } from 'react';
-import { BulkDeleteButton, BulkExportButton } from 'react-admin';
-
-const PostBulkActionButtons = () => (
-    <Fragment>
-        <BulkExportButton />
-        <BulkDeleteButton />
-    </Fragment>
-);
-
-export const PostList = () => (
-    <List>
-        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-
-### Props
-
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
-| `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
-| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
-
 ## `<BulkDeleteButton>`
 
 Deletes the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons) (where it's enabled by default).
@@ -381,6 +110,44 @@ Alternately, pass a `successMessage` prop:
 ```jsx
 <BulkDeleteButton successMessage="Posts deleted successfully" />
 ```
+
+## `<BulkExportButton>`
+
+Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
+
+![Bulk Export button](./img/bulk-export-button.png)
+
+### Usage
+
+```jsx
+import * as React from 'react';
+import { Fragment } from 'react';
+import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+
+const PostBulkActionButtons = () => (
+    <Fragment>
+        <BulkExportButton />
+        <BulkDeleteButton />
+    </Fragment>
+);
+
+export const PostList = () => (
+    <List>
+        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+### Props
+
+| Prop         | Required | Type            | Default            | Description                         |
+| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
+| `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
+| `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
+| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
 ## `<BulkUpdateButton>`
 
@@ -769,6 +536,388 @@ However since we are in the context of a list, there is no `<RecordContext>` ava
 - `<ReferenceManyInput>`
 - `<ReferenceManyToManyInput>`
 
+## `<Button>`
+
+Base component for most react-admin buttons. Responsive (displays only the icon with a tooltip on mobile) and accessible.
+
+| Prop         | Required | Type                           | Default | Description                              |
+| ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
+| `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
+| `children`   | Optional | `ReactElement`                 | -        | icon to use                             |
+| `className`  | Optional | `string`                       | -        | Class name to customize the look and feel of the button element itself          |
+| `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
+| `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
+| `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
+
+Other props are passed down to [the underlying Material UI `<Button>`](https://mui.com/material-ui/api/button/).
+
+### `sx`: CSS API
+
+| Rule name                    | Description                                                                                     |
+|------------------------------|-------------------------------------------------------------------------------------------------|
+| `& .RaButton-button`         | Applied to the underlying `MuiButton` component                                                 |
+| `& .RaButton-label`          | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
+| `& .RaButton-labelRightIcon` | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
+| `& .RaButton-smallIcon`      | Applied to the Button's `children` when `size` prop is `small` and `alignIcon` prop is 'right'  |
+| `& .RaButton-mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
+| `& .RaButton-largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
+
+To override the style of all instances of `<Button>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaButton` key.
+
+### `sx`: CSS API
+
+| Rule name                                     | Description                                     |
+|-----------------------------------------------|-------------------------------------------------|
+| `&.RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
+
+To override the style of all instances of `<SkipNavigationButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSkipNavigationButton` key.
+
+## `<CloneButton>`
+
+## `<CreateButton>`
+
+Opens the Create view of the current resource:
+
+![Create button](./img/create-button.png)
+
+On mobile, it turns into a "Floating Action Button".
+
+![Create button FAB](./img/create-button-fab.png)
+
+### Usage
+
+`<CreateButton>` reads the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { CreateButton, TopToolbar, List } from 'react-admin';
+
+const ListActions = () => (
+    <TopToolbar>
+        <CreateButton />
+    </TopToolbar>
+);
+
+const CommentList = () => (
+    <List actions={<ListActions />}>
+        {/* ... */}
+    </List>
+);
+```
+
+`<CreateButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Props
+
+| Prop          | Required | Type            | Default            | Description                                  |
+| ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
+| `resource`    | Optional | `string`        | -                  | Target resource, e.g. 'posts'                |
+| `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
+| `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
+| `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
+
+It also supports [all the other `<Button>` props](#button).
+
+**Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
+
+**Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
+
+### `sx`: CSS API
+
+| Rule name                   | Description                                                        |
+|-----------------------------|--------------------------------------------------------------------|
+| `&.RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
+
+To override the style of all instances of `<CreateButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCreateButton` key.
+
+## `<DeleteButton>`
+
+Delete the current record.
+
+![Delete button](./img/DeleteButton.png)
+
+### Usage
+
+`<DeleteButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { DeleteButton } from 'react-admin';
+
+const CommentShow = () => (
+    <>
+        {/* ... */}
+        <DeleteButton />
+    </>
+);
+```
+
+When pressed, it will call `dataProvider.delete()` with the current record's `id`.
+
+You can also call it with a record and a resource:
+
+{% raw %}
+```jsx
+<DeleteButton record={{ id: 123, author: 'John Doe' }} resource="comments" />
+```
+{% endraw %}
+
+### Props
+
+| Prop                | Required | Type                             | Default           | Description                                                             |
+|-------------------- |----------|--------------------------------- |-------------------|-------------------------------------------------------------------------|
+| `className`         | Optional | `string`                         | -                 | Class name to customize the look and feel of the button element itself  |
+| `label`             | Optional | `string`                         | 'Delete'          | label or translation message to use                                     |
+| `icon`              | Optional | `ReactElement`                   | `<DeleteIcon>`    | iconElement, e.g. `<CommentIcon />`                                     |
+| `mutationMode`      | Optional | `string`                         | `'undoable'`      | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)         |
+| `mutation Options`  | Optional |                                  | null              | options for react-query `useMutation` hook                              |
+| `record`            | Optional | `Object`                         | -                 | Record to delete, e.g. `{ id: 12, foo: 'bar' }`                         |
+| `redirect`          | Optional | `string | false | Function`      | 'list'            | Custom redirection after success side effect                            |
+| `resource`          | Optional | `string`                         | -                 | Resource to delete, e.g. 'posts'                                        |
+| `sx`                | Optional | `SxProps`                        | -                 | The custom styling for the button                                       |
+| `success Message`   | Optional | `string`                         | 'Element deleted' | Lets you customize the success notification message.                    |
+
+### `label`
+
+By default, the label is `Delete` in English. In other languages, it's the translation of the `'ra.action.delete'` key.
+
+To customize the `<DeleteButton>` label, you can either change the translation in your i18nProvider, or pass a `label` prop:
+
+```jsx
+<DeleteButton label="Delete this comment" />
+```
+
+Custom labels are automatically translated, so you can use a translation key, too:
+
+```jsx
+<DeleteButton label="resources.comments.actions.delete" />
+```
+
+### `icon`
+
+Customize the icon of the button by passing an `icon` prop:
+
+```jsx
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
+<DeleteButton icon={<DeleteForeverIcon />} />
+```
+
+### `mutationMode`
+
+`<DeleteButton>` has three modes, depending on the `mutationMode` prop:
+
+- `'undoable'` (default): Clicking the button will update the UI optimistically and display a confirmation snackbar with an undo button. If the user clicks the undo button, the record will not be deleted and the UI will be rolled back. Otherwise, the record will be deleted after 5 seconds.
+- `optimistic`: Clicking the button will update the UI optimistically and delete the record. If the deletion fails, the UI will be rolled back.
+- `pessimistic`: Clicking the button will display a confirmation dialog. If the user confirms, the record will be deleted. If the user cancels, nothing will happen.
+
+**Note**: When choosing the `pessimistic` mode, `<DeleteButton>` will actually render a `<DeleteWithConfirmButton>` component and accept additional props to customize the confirm dialog (see below).
+
+### `mutationOptions`
+
+`<DeleteButton>` calls the `useMutation` hook internally to delete the record. You can pass options to this hook using the `mutationOptions` prop.
+
+{% raw %}
+```jsx
+<DeleteButton mutationOptions={{ onError: () => alert('Record not deleted, please retry') }} />
+```
+{% endraw %}
+
+Check out the [useMutation documentation](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) for more information on the available options.
+
+### `record`
+
+By default, `<DeleteButton>` reads the current record from the `RecordContext`. If you want to delete a different record, you can pass it as a prop:
+
+{% raw %}
+```jsx
+<DeleteButton record={{ id: 123, author: 'John Doe' }} />
+```
+{% endraw %}
+
+### `redirect`
+
+By default, `<DeleteButton>` redirects to the list page after a successful deletion. You can customize the redirection by passing a path as the `redirect` prop:
+
+```jsx
+<DeleteButton redirect="/comments" />
+```
+
+### `resource`
+
+By default, `<DeleteButton>` reads the current resource from the `ResourceContext`. If you want to delete a record from a different resource, you can pass it as a prop:
+
+{% raw %}
+```jsx
+<DeleteButton record={{ id: 123, author: 'John Doe' }} resource="comments" />
+```
+{% endraw %}
+
+### `successMessage`
+
+![Delete button success message](./img/DeleteButton_success.png)
+
+On success, `<DeleteButton>` displays a "Element deleted" notification in English. `<DeleteButton>` uses two successive translation keys to build the success message:
+
+- `resources.{resource}.notifications.deleted` as a first choice
+- `ra.notification.deleted` as a fallback
+
+To customize the notification message, you can set custom translation for these keys in your i18nProvider.
+
+**Tip**: If you choose to use a custom translation, be aware that react-admin uses the same translation message for the `<BulkDeleteButton>`, so the message must support [pluralization](./TranslationTranslating.md#interpolation-pluralization-and-default-translation):
+
+```jsx
+const englishMessages = {
+    resources: {
+        comments: {
+            notifications: {
+                deleted: 'Comment deleted |||| %{smart_count} comments deleted',
+                // ...
+            },
+        },
+    },
+};
+```
+
+Alternately, pass a `successMessage` prop:
+
+```jsx
+<DeleteButton successMessage="Comment deleted successfully" />
+```
+
+## `<DeleteWithConfirmButton>`
+
+Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
+
+| Prop               | Required | Type                                             | Default                     | Description                                                             |
+|------------------- |----------|--------------------------------------------------|-----------------------------|-------------------------------------------------------------------------|
+| `className`        | Optional | `string`                                         | -                           | Class name to customize the look and feel of the button element itself  |
+| `label`            | Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
+| `icon`             | Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
+| `confirmTitle`     | Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
+| `confirmContent`   | Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
+| `confirmColor`     | Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
+| `redirect`         | Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
+| `translateOptions` | Optional | `{ id?: string, name?: string }`                 | {}                          | Custom id and name to be used in the confirm dialog's title             |
+| `mutationOptions`  | Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
+| `successMessage`   | Optional | `string`                                         | 'ra.notification.deleted'   | Lets you customize the success notification message.                                                                                 |
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton,useRecordContext } from 'react-admin';
+
+const EditToolbar = () => {
+    const record = useRecordContext();
+
+    <Toolbar>
+        <SaveButton/>
+        <DeleteWithConfirmButton
+            confirmContent="You will not be able to recover this record. Are you sure?"
+            confirmColor="warning"
+            translateOptions={{ name: record.name }}
+        />
+    </Toolbar>
+};
+
+const MyEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<EditToolbar />}>
+            ...
+        </SimpleForm>        
+    </Edit>    
+);
+```
+{% endraw %}
+
+## `<EditButton>`
+
+Opens the Edit view of the current record. 
+
+![Edit button](./img/edit-button.png)
+
+### Usage
+
+`<EditButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { EditButton, TopToolbar } from 'react-admin';
+
+const ShowActions = () => (
+    <TopToolbar>
+        <EditButton />
+    </TopToolbar>
+);
+
+const CommentShow = () => (
+    <Show actions={<ShowActions />}>
+        {/* ... */}
+    </Show>
+);
+```
+
+`<EditButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Props
+
+| Prop          | Required | Type            | Default          | Description                                      |
+| ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
+| `resource`    | Optional | `string`        | -                | Resource to link to, e.g. 'posts'                |
+| `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
+| `label`       | Optional | `string`        | 'ra.action.edit' | Label or translation message to use              |
+| `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
+| `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
+
+It also supports [all the other `<Button>` props](#button).
+
+**Tip**: You can use it as `<Datagrid>` child, too. However, you should use the `<Datagrid rowClick="edit">` prop instead to avoid using one column for the Edit button.
+
+**Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
+
+**Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
+## `<ExportButton>`
+
+Exports the current list, with filters applied, but without pagination.
+
+![Export button](./img/export-button.png)
+
+It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
+
+### Usage
+
+By default, the `<ExportButton>` is included in the List actions.
+
+You can add it to a custom actions toolbar:
+
+```jsx
+import { CreateButton, ExportButton, TopToolbar } from 'react-admin';
+
+const PostListActions = () => (
+    <TopToolbar>
+        <PostFilter context="button" />
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
+export const PostList = () => (
+    <List actions={<PostListActions />}>
+        ...
+    </List>
+);
+```
+
+### Props
+
+| Prop         | Required | Type            | Default            | Description                         |
+| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
+| `maxResults` | Optional | `number`        | 1000               | Maximum number of records to export |
+| `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
+| `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
+| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
+| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
+
+**Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
+
 ## `<FilterButton>`
 
 This button is an internal component used by react-admin in [the Filter button/form combo](./FilteringTutorial.md#the-filter-buttonform-combo).
@@ -783,6 +932,98 @@ This button is an internal component used by react-admin in [the Filter button/f
 ### `sx`: CSS API
 
 To override the style of all instances of `<FilterButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaFilterButton` key.
+
+## `<ListButton>`
+
+Opens the List view of a given resource.
+
+![List button](./img/list-button.png)
+
+`<ListButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Usage
+
+By default, react-admin doesn't display a `<ListButton>` in Edit and Show views action toolbar. This saves visual clutter, and users can always use the back button.
+
+You can add it by specifying your own `actions`:
+
+```jsx
+// linking back to the list from the Show view
+import { TopToolbar, ListButton, Show } from 'react-admin';
+
+const PostShowActions = () => (
+    <TopToolbar>
+        <ListButton />
+    </TopToolbar>
+);
+
+export const PostShow = () => (
+    <Show actions={<PostShowActions />}>
+        ...
+    </Show>
+);
+```
+
+**Tip**: If you want to link to the List view manually, use the `/{resource}` location.
+
+### Props
+
+| Prop       | Required | Type            | Default          | Description                                  |
+| ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
+| `resource` | Optional | `string`        | -                | target resource, e.g. 'posts'                |
+| `label`    | Optional | `string`        | 'ra.action.list' | label or translation message to use          |
+| `icon`     | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`          |
+
+It also supports [all the other `<Button>` props](#button).
+
+## `<RefreshButton>`
+
+## `<SkipNavigationButton>`
+
+## `<ShowButton>`
+
+Opens the Show view of the current record:
+
+![Show button](./img/show-button.png)
+
+### Usage
+
+`<ShowButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { ShowButton, TopToolbar, Edit } from 'react-admin';
+
+const EditActions = () => (
+    <TopToolbar>
+        <ShowButton />
+    </TopToolbar>
+);
+
+const CommentEdit = () => (
+    <Edit actions={<EditActions />}>
+        {/* ... */}
+    </Edit>
+);
+```
+
+`<ShowButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Props
+
+| Prop          | Required | Type            | Default          | Description                                      |
+| ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
+| `resource`    | Optional | `string`        | -                | The target resource, e.g. 'posts'                |
+| `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
+| `component`   | Optional | `ReactElement`  | -                | Base path to resource, e.g. '/posts'             |
+| `label`       | Optional | `string`        | 'ra.action.show' | Label or translation message to use              |
+| `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
+| `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
+
+It also supports [all the other `<Button>` props](#button).
+
+**Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
+
+**Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
 
 ## `<UpdateButton>`
 
@@ -1079,246 +1320,6 @@ const PostEditActions = () => (
 );
 ```
 {% endraw %}
-
-## `<DeleteButton>`
-
-Delete the current record.
-
-![Delete button](./img/DeleteButton.png)
-
-### Usage
-
-`<DeleteButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any props:
-
-```jsx
-import { DeleteButton } from 'react-admin';
-
-const CommentShow = () => (
-    <>
-        {/* ... */}
-        <DeleteButton />
-    </>
-);
-```
-
-When pressed, it will call `dataProvider.delete()` with the current record's `id`.
-
-You can also call it with a record and a resource:
-
-{% raw %}
-```jsx
-<DeleteButton record={{ id: 123, author: 'John Doe' }} resource="comments" />
-```
-{% endraw %}
-
-### Props
-
-| Prop                | Required | Type                             | Default           | Description                                                             |
-|-------------------- |----------|--------------------------------- |-------------------|-------------------------------------------------------------------------|
-| `className`         | Optional | `string`                         | -                 | Class name to customize the look and feel of the button element itself  |
-| `label`             | Optional | `string`                         | 'Delete'          | label or translation message to use                                     |
-| `icon`              | Optional | `ReactElement`                   | `<DeleteIcon>`    | iconElement, e.g. `<CommentIcon />`                                     |
-| `mutationMode`      | Optional | `string`                         | `'undoable'`      | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)         |
-| `mutation Options`  | Optional |                                  | null              | options for react-query `useMutation` hook                              |
-| `record`            | Optional | `Object`                         | -                 | Record to delete, e.g. `{ id: 12, foo: 'bar' }`                         |
-| `redirect`          | Optional | `string | false | Function`      | 'list'            | Custom redirection after success side effect                            |
-| `resource`          | Optional | `string`                         | -                 | Resource to delete, e.g. 'posts'                                        |
-| `sx`                | Optional | `SxProps`                        | -                 | The custom styling for the button                                       |
-| `success Message`   | Optional | `string`                         | 'Element deleted' | Lets you customize the success notification message.                    |
-
-### `label`
-
-By default, the label is `Delete` in English. In other languages, it's the translation of the `'ra.action.delete'` key.
-
-To customize the `<DeleteButton>` label, you can either change the translation in your i18nProvider, or pass a `label` prop:
-
-```jsx
-<DeleteButton label="Delete this comment" />
-```
-
-Custom labels are automatically translated, so you can use a translation key, too:
-
-```jsx
-<DeleteButton label="resources.comments.actions.delete" />
-```
-
-### `icon`
-
-Customize the icon of the button by passing an `icon` prop:
-
-```jsx
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-
-<DeleteButton icon={<DeleteForeverIcon />} />
-```
-
-### `mutationMode`
-
-`<DeleteButton>` has three modes, depending on the `mutationMode` prop:
-
-- `'undoable'` (default): Clicking the button will update the UI optimistically and display a confirmation snackbar with an undo button. If the user clicks the undo button, the record will not be deleted and the UI will be rolled back. Otherwise, the record will be deleted after 5 seconds.
-- `optimistic`: Clicking the button will update the UI optimistically and delete the record. If the deletion fails, the UI will be rolled back.
-- `pessimistic`: Clicking the button will display a confirmation dialog. If the user confirms, the record will be deleted. If the user cancels, nothing will happen.
-
-**Note**: When choosing the `pessimistic` mode, `<DeleteButton>` will actually render a `<DeleteWithConfirmButton>` component and accept additional props to customize the confirm dialog (see below).
-
-### `mutationOptions`
-
-`<DeleteButton>` calls the `useMutation` hook internally to delete the record. You can pass options to this hook using the `mutationOptions` prop.
-
-{% raw %}
-```jsx
-<DeleteButton mutationOptions={{ onError: () => alert('Record not deleted, please retry') }} />
-```
-{% endraw %}
-
-Check out the [useMutation documentation](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) for more information on the available options.
-
-### `record`
-
-By default, `<DeleteButton>` reads the current record from the `RecordContext`. If you want to delete a different record, you can pass it as a prop:
-
-{% raw %}
-```jsx
-<DeleteButton record={{ id: 123, author: 'John Doe' }} />
-```
-{% endraw %}
-
-### `redirect`
-
-By default, `<DeleteButton>` redirects to the list page after a successful deletion. You can customize the redirection by passing a path as the `redirect` prop:
-
-```jsx
-<DeleteButton redirect="/comments" />
-```
-
-### `resource`
-
-By default, `<DeleteButton>` reads the current resource from the `ResourceContext`. If you want to delete a record from a different resource, you can pass it as a prop:
-
-{% raw %}
-```jsx
-<DeleteButton record={{ id: 123, author: 'John Doe' }} resource="comments" />
-```
-{% endraw %}
-
-### `successMessage`
-
-![Delete button success message](./img/DeleteButton_success.png)
-
-On success, `<DeleteButton>` displays a "Element deleted" notification in English. `<DeleteButton>` uses two successive translation keys to build the success message:
-
-- `resources.{resource}.notifications.deleted` as a first choice
-- `ra.notification.deleted` as a fallback
-
-To customize the notification message, you can set custom translation for these keys in your i18nProvider.
-
-**Tip**: If you choose to use a custom translation, be aware that react-admin uses the same translation message for the `<BulkDeleteButton>`, so the message must support [pluralization](./TranslationTranslating.md#interpolation-pluralization-and-default-translation):
-
-```jsx
-const englishMessages = {
-    resources: {
-        comments: {
-            notifications: {
-                deleted: 'Comment deleted |||| %{smart_count} comments deleted',
-                // ...
-            },
-        },
-    },
-};
-```
-
-Alternately, pass a `successMessage` prop:
-
-```jsx
-<DeleteButton successMessage="Comment deleted successfully" />
-```
-
-## `<DeleteWithConfirmButton>`
-
-Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
-
-| Prop               | Required | Type                                             | Default                     | Description                                                             |
-|------------------- |----------|--------------------------------------------------|-----------------------------|-------------------------------------------------------------------------|
-| `className`        | Optional | `string`                                         | -                           | Class name to customize the look and feel of the button element itself  |
-| `label`            | Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
-| `icon`             | Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
-| `confirmTitle`     | Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
-| `confirmContent`   | Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
-| `confirmColor`     | Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
-| `redirect`         | Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
-| `translateOptions` | Optional | `{ id?: string, name?: string }`                 | {}                          | Custom id and name to be used in the confirm dialog's title             |
-| `mutationOptions`  | Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
-| `successMessage`   | Optional | `string`                                         | 'ra.notification.deleted'   | Lets you customize the success notification message.                                                                                 |
-
-{% raw %}
-```jsx
-import * as React from 'react';
-import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton,useRecordContext } from 'react-admin';
-
-const EditToolbar = () => {
-    const record = useRecordContext();
-
-    <Toolbar>
-        <SaveButton/>
-        <DeleteWithConfirmButton
-            confirmContent="You will not be able to recover this record. Are you sure?"
-            confirmColor="warning"
-            translateOptions={{ name: record.name }}
-        />
-    </Toolbar>
-};
-
-const MyEdit = () => (
-    <Edit>
-        <SimpleForm toolbar={<EditToolbar />}>
-            ...
-        </SimpleForm>        
-    </Edit>    
-);
-```
-{% endraw %}
-
-## `<CloneButton>`
-
-## `<Button>`
-
-Base component for most react-admin buttons. Responsive (displays only the icon with a tooltip on mobile) and accessible.
-
-| Prop         | Required | Type                           | Default | Description                              |
-| ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
-| `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
-| `children`   | Optional | `ReactElement`                 | -        | icon to use                             |
-| `className`  | Optional | `string`                       | -        | Class name to customize the look and feel of the button element itself          |
-| `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
-| `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
-| `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
-
-Other props are passed down to [the underlying Material UI `<Button>`](https://mui.com/material-ui/api/button/).
-
-### `sx`: CSS API
-
-| Rule name                    | Description                                                                                     |
-|------------------------------|-------------------------------------------------------------------------------------------------|
-| `& .RaButton-button`         | Applied to the underlying `MuiButton` component                                                 |
-| `& .RaButton-label`          | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
-| `& .RaButton-labelRightIcon` | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
-| `& .RaButton-smallIcon`      | Applied to the Button's `children` when `size` prop is `small` and `alignIcon` prop is 'right'  |
-| `& .RaButton-mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
-| `& .RaButton-largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
-
-To override the style of all instances of `<Button>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaButton` key.
-
-## `<RefreshButton>`
-## `<SkipNavigationButton>`
-
-### `sx`: CSS API
-
-| Rule name                                     | Description                                     |
-|-----------------------------------------------|-------------------------------------------------|
-| `&.RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
-
-To override the style of all instances of `<SkipNavigationButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSkipNavigationButton` key.
 
 ## `<UserMenu>`
 
