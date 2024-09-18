@@ -74,6 +74,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![strapi Logo](./img/backend-logos/strapi.png "strapi Logo")**[Strapi v3/v4](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
 * ![strapi Logo](./img/backend-logos/strapi.png "strapi Logo")**[Strapi v4](https://strapi.io/)**: [garridorafa/ra-strapi-v4-rest](https://github.com/garridorafa/ra-strapi-v4-rest)
 * ![supabase Logo](./img/backend-logos/supabase.svg "supabase Logo")**[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase/blob/main/packages/ra-supabase/README.md)
+* ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[Supabase](https://supabase.io/) (GraphQL)**: [@groovestack/ra-data-graphql-supabase](https://github.com/maxschridde1494/ra-data-graphql-supabase)
 * ![surrealDB Logo](./img/backend-logos/surrealdb.svg "surrealDB Logo")**[SurrealDB](https://surrealdb.com/)**: [djedi23/ra-surrealdb](https://github.com/djedi23/ra-surrealdb)
 * ![treeql Logo](./img/backend-logos/treeql.png "treeql Logo")**[TreeQL / PHP-CRUD-API](https://treeql.org/)**: [nkappler/ra-data-treeql](https://github.com/nkappler/ra-data-treeql)
 * ![wooCommerce Logo](./img/backend-logos/wooCommerce.png "wooCommerce Logo")**[WooCommerce REST API](https://woocommerce.github.io/woocommerce-rest-api-docs)**: [zackha/ra-data-woocommerce](https://github.com/zackha/ra-data-woocommerce)
