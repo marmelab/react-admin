@@ -125,44 +125,62 @@ export default App;
 
 ## Using A Custom Router
 
-By default, react-admin creates a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
+React-admin uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
 
-But you may want to use another routing strategy, e.g. to allow server-side rendering. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply wrap it around your app. React-admin will detect that it's already inside a router, and skip its own router. 
+But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. React-admin will detect that it's already inside a router, and skip its own router. 
 
-```jsx
-import { BrowserRouter } from 'react-router-dom';
-import { Admin, Resource } from 'react-admin';
+```tsx
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Admin, Resource } from "react-admin";
+import { dataProvider } from "./dataProvider";
 
-const App = () => (
-    <BrowserRouter>
-        <Admin dataProvider={...}>
-            <Resource name="posts" />
-        </Admin>
-    </BrowserRouter>
-);
+const App = () => {
+    const router = createBrowserRouter([
+        {
+            path: "*",
+            element: (
+                <Admin dataProvider={dataProvider}>
+                    <Resource name="posts" />
+                </Admin>
+            ),
+        },
+    ]);
+    return <RouterProvider router={router} />;
+};
 ```
 
 ## Using React-Admin In A Sub Path
 
 React-admin links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), react-admin works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
 
-However, if you serve your admin from a sub path AND use another Router (like `BrowserRouter` for instance), you need to set the `<BrowserRouter basename>` prop, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
+However, if you serve your admin from a sub path AND use another Router (like [`createBrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-router) for instance), you need to set the `<Admin basename>` prop and the [`opts.basename`](https://reactrouter.com/en/main/routers/create-browser-router#optsbasename) of `createBrowserRouter` function, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
 
-```jsx
+```tsx
 import { Admin, Resource } from 'react-admin';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { dataProvider } from './dataProvider';
 
-const App = () => (
-    <BrowserRouter basename="/admin">
-        <Admin dataProvider={...}>
-            <Resource name="posts" />
-        </Admin>
-    </BrowserRouter>
-);
+const App = () => {
+    const router = createBrowserRouter(
+        [
+            {
+                path: "*",
+                element: (
+                    <Admin basename="/admin" dataProvider={dataProvider}>
+                        <Resource name="posts" />
+                    </Admin>
+                ),
+            },
+        ],
+        { basename: "/admin" },
+    );
+    return <RouterProvider router={router} />;
+};
 ```
 
 This makes all links be prefixed with `/admin`.
 
-Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `homepage` field in your `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
+Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `base` field in `vite.config.ts` if you use [Vite.js](https://vitejs.dev/config/shared-options.html#base), or the `homepage` field in `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
 
 If you want to use react-admin as a sub path of a larger React application, check the next section for instructions. 
 
@@ -170,29 +188,40 @@ If you want to use react-admin as a sub path of a larger React application, chec
 
 You can include a react-admin app inside another app, using a react-router `<Route>`:
 
-```jsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+```tsx
+import { RouterProvider, Routes, Route, createBrowserRouter } from 'react-router-dom';
 import { StoreFront } from './StoreFront';
 import { StoreAdmin } from './StoreAdmin';
 
-export const App = () => (
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<StoreFront />} />
-            <Route path="/admin/*" element={<StoreAdmin />} />
-        </Routes>
-    </BrowserRouter>
-);
+export const App = () => {
+    const router = createBrowserRouter(
+        [
+            {
+                path: "*",
+                element: (
+                    <Routes>
+                        <Route path="/" element={<StoreFront />} />
+                        <Route path="/admin/*" element={<StoreAdmin />} />
+                    </Routes>
+                ),
+            },
+        ],
+        { basename: "/admin" },
+    );
+    return <RouterProvider router={router} />;
+};
 ```
 
 React-admin will have to prefix all the internal links with `/admin`. Use the `<Admin basename>` prop for that:
 
-```jsx
+```tsx
 // in src/StoreAdmin.js
 import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import posts from './posts';
 
 export const StoreAdmin = () => (
-    <Admin basename="/admin" dataProvider={...}>
+    <Admin basename="/admin" dataProvider={dataProvider}>
         <Resource name="posts" {...posts} />
     </Admin>
 );
