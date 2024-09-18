@@ -156,13 +156,10 @@ export default (
     updateMany: (resource, params) =>
         Promise.all(
             params.ids.map(id =>
-                httpClient(
-                    `${apiUrl}/${resource}/${encodeURIComponent(typeof id === 'object' ? id.id : String(id))}`,
-                    {
-                        method: 'PUT',
-                        body: JSON.stringify(params.data),
-                    }
-                )
+                httpClient(`${apiUrl}/${resource}/${encodeURIComponent(id)}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(params.data),
+                })
             )
         ).then(responses => ({
             data: responses.map(({ json }) => json.id),
@@ -186,15 +183,12 @@ export default (
     deleteMany: (resource, params) =>
         Promise.all(
             params.ids.map(id =>
-                httpClient(
-                    `${apiUrl}/${resource}/${encodeURIComponent(typeof id === 'object' ? id['id'] : String(id))}`,
-                    {
-                        method: 'DELETE',
-                        headers: new Headers({
-                            'Content-Type': 'text/plain',
-                        }),
-                    }
-                )
+                httpClient(`${apiUrl}/${resource}/${encodeURIComponent(id)}`, {
+                    method: 'DELETE',
+                    headers: new Headers({
+                        'Content-Type': 'text/plain',
+                    }),
+                })
             )
         ).then(responses => ({
             data: responses.map(({ json }) => json.id),

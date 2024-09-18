@@ -70,7 +70,7 @@ describe('Data Simple REST Client', () => {
     });
     describe('getOne', () => {
         it('should allow numeric id in path', async () => {
-            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const httpClient = jest.fn().mockResolvedValue({ id: 123 });
             const client = simpleClient('http://localhost:3000', httpClient);
 
             await client.getOne('posts', { id: 123 });
@@ -113,12 +113,12 @@ describe('Data Simple REST Client', () => {
         it('should escape id in path', async () => {
             const httpClient = jest
                 .fn()
-                .mockResolvedValue({ json: { id: 'Post#123' } });
+                .mockResolvedValue({ json: ['Post#123'] });
             const client = simpleClient('http://localhost:3000', httpClient);
 
             await client.updateMany('posts', {
-                data: undefined,
-                ids: [{ id: 'Post#123' }],
+                data: { body: '' },
+                ids: ['Post#123'],
             });
 
             expect(httpClient).toHaveBeenCalledWith(
@@ -165,7 +165,7 @@ describe('Data Simple REST Client', () => {
     });
     describe('deleteMany', () => {
         it('should set the `Content-Type` header to `text/plain`', async () => {
-            const httpClient = jest.fn().mockResolvedValue({ json: { id: 1 } });
+            const httpClient = jest.fn().mockResolvedValue({ json: [1] });
 
             const client = simpleClient('http://localhost:3000', httpClient);
 
@@ -196,11 +196,11 @@ describe('Data Simple REST Client', () => {
         it('should escape id in path', async () => {
             const httpClient = jest
                 .fn()
-                .mockResolvedValue({ json: { id: 'Post#123' } });
+                .mockResolvedValue({ json: ['Post#123'] });
             const client = simpleClient('http://localhost:3000', httpClient);
 
             await client.deleteMany('posts', {
-                ids: [{ id: 'Post#123' }],
+                ids: ['Post#123'],
             });
 
             expect(httpClient).toHaveBeenCalledWith(
