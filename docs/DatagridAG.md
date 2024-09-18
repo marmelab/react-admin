@@ -18,6 +18,7 @@ Here is a (non-exhaustive) list of [features](https://www.ag-grid.com/react-data
 -   Advanced filtering
 -   Multi-column sorting
 -   Columns resizing and reordering
+-   Draggable rows
 -   Automatic page size
 -   Automatic column size
 -   Themes
