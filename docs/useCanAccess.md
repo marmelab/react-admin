@@ -5,39 +5,38 @@ title: "useCanAccess"
 
 # `useCanAccess`
 
-This hook, part of [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac)<img class="icon" src="./img/premium.svg" />, calls the `authProvider.getPermissions()` to get the role definitions, then checks whether the requested action and resource are allowed for the current user. 
+This hook calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). It returns an object containing a `canAccess` boolean set to `true` if users have access to the resource and action. 
 
 ## Usage
 
-`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the RBAC request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
+`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
 
 ```jsx
-import { useCanAccess } from '@react-admin/ra-rbac';
-import { useRecordContext, DeleteButton } from 'react-admin';
+import { useCanAccess, useRecordContext, DeleteButton } from 'react-admin';
 
 const DeleteUserButton = () => {
     const record = useRecordContext();
-    const { isPending, canAccess } = useCanAccess({ action: 'delete', resource: 'users', record });
+    const { isPending, canAccess, error } = useCanAccess({ action: 'delete', resource: 'users', record });
     if (isPending || !canAccess) return null;
+    if (error) return <div>{error.message}</div>
     return <DeleteButton record={record} resource="users" />;
 };
 ```
 
-When checking if a user can access a resource, ra-rbac grabs the permissions corresponding to his roles. If at least one of these permissions allows him to access the resource, the user is granted access. Otherwise, the user is denied.
-
 ```jsx
+const permissions = [
+    { action: ["read", "create", "edit", "export"], resource: "companies" },
+    { action: ["read", "create", "edit", "delete"], resource: "users" },
+];
 const authProvider= {
     // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ["read", "create", "edit", "export"], resource: "companies" },
-            { action: ["read", "create", "edit"], resource: "people" },
-            { action: ["read", "create", "edit", "export"], resource: "deals" },
-            { action: ["read", "create"], resource: "comments" },
-            { action: ["read", "create", "edit", "delete"], resource: "tasks" },
-            { action: ["read", "write"], resource: "sales", record: { "id": "123" } },
-        ],
-    }),
+    canAccess: ({ resource, action, record }) => {
+        const permission = permissions.find(p => {
+            if (p.resource !== resource) return false;
+            if (p.action.includes(action)) return false;
+            return true;
+        })
+    },
 };
 
 const { canAccess: canUseCompanyResource } = useCanAccess({
@@ -55,10 +54,6 @@ const { canAccess: canDeleteComments } = useCanAccess({ action: "delete", resour
 const { canAccess: canReadSales } = useCanAccess({ action: "read", resource: "sales" }); // canReadSales is false
 const { canAccess: canReadSelfSales } = useCanAccess({ action: "read", resource: "sales" }, { id: "123" }); // canReadSelfSales is true
 ```
-
-**Tip**: The *order* of permissions as returned by the `authProvider` isn't significant. As soon as at least one permission grants access to an action on a resource, the user will be able to perform it.
-
-**Tip**: `useCanAccess` is asynchronous, because it calls `usePermissions` internally. If you have to use `useCanAccess` several times in a component, the rendered result will "blink" as the multiple calls to `authProvider.getPermissions()` resolve. To avoid that behavior, you can use the `usePermissions` hook once, then call [the `canAccess` helper](./canAccess.md). 
 
 ## Parameters
 

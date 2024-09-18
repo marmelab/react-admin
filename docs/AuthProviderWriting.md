@@ -17,6 +17,7 @@ const authProvider = {
     getIdentity: () => Promise.resolve(/* ... */),
     handleCallback: () => Promise.resolve(/* ... */), // for third-party authentication only
     // authorization
+    canAccess: params => Promise.resolve(/* ... */)
     getPermissions: () => Promise.resolve(/* ... */),
 };
 ```
@@ -65,6 +66,7 @@ const authProvider = {
             fullName: 'John Doe',
         }),
     getPermissions: () => Promise.resolve(''),
+    canAccess: ({ action, resource, record }) => Promise.resolve(true),
 };
 
 export default authProvider;
@@ -402,6 +404,10 @@ React-admin doesn't use permissions by default, but it provides [the `usePermiss
 
 [The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps, and specifies a custom return format for `authProvider.getPermissions()`. Check [the RBAC documentation](./AuthRBAC.md#authprovider-methods) for more information.
 
+### `canAccess`
+
+This method should return a boolean indicating whether users can perform the provided action on the provided resource (in the [Role-Based Access Control (RBAC)](https://en.wikipedia.org/wiki/Role-based_access_control) sense).
+
 ### `handleCallback`
 
 This method is used when integrating a third-party authentication provider such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
@@ -475,6 +481,7 @@ React-admin calls the `authProvider` methods with the following params:
 | `getIdentity`    | Get the current user identity                   |                    | 
 | `handleCallback` | Validate users after third party authentication service redirection                |  |
 | `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
+| `canAccess`      | Check authorization for an action over a resource | `{ action: string, resource: string, record: string }` |
 
 ## Response Format
 
@@ -489,6 +496,7 @@ React-admin calls the `authProvider` methods with the following params:
 | `getIdentity`    | Auth backend returned identity    | `{ id: string | number, fullName?: string, avatar?: string }`  | 
 | `handleCallback` | User is authenticated   | `void | { redirectTo?: string | boolean  }` route to redirect to after login |
 | `getPermissions` | Auth backend returned permissions | `Object | Array` free format - the response will be returned when `usePermissions()` is called |
+| `canAccess`      | Auth backend returned authorization | `boolean |
 
 ## Error Format
 
@@ -503,4 +511,35 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
 | `handleCallback` | Failed to authenticate users after redirection | `void | { redirectTo?: string, logoutOnFailure?: boolean, message?: string }` |
 | `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called. The error will be passed to `checkError` |
+| `canAccess`      | Auth backend failed to return authorization | `Object` free format - returned as `error` when `useCanAccess()` is called. The error will be passed to `checkError` |
 
+## Query Cancellation
+
+React-admin supports [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation), which means that when a component is unmounted, any pending query that it initiated is cancelled. This is useful to avoid out-of-date side effects and to prevent unnecessary network requests.
+
+To enable this feature, your auth provider must have a `supportAbortSignal` property set to `true`.
+
+```tsx
+const authProvider = { /* ... */ };
+authProvider.supportAbortSignal = true;
+```
+
+Now, every call to the auth provider will receive an additional `signal` parameter (an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) instance). You must pass this signal down to the fetch call:
+
+```tsx
+const authProvider = {
+    canAccess: async ({ resource, action, record, signal }) => {
+        const url = `${API_URL}/can_access?resource=${resource}&action=${action}`;
+        const options = { signal: params.signal };
+        const res = await fetch(url, options);
+        if (!res.ok) {
+            throw new HttpError(res.statusText);
+        }
+        return res.json();
+    },
+}
+```
+
+Some auth providers may already support query cancellation. Check their documentation for details.
+
+**Note**: In development, if your app is using [`<React.StrictMode>`](https://react.dev/reference/react/StrictMode), enabling query cancellation will duplicate the API queries. This is only a development issue and won't happen in production.

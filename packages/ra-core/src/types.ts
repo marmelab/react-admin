@@ -69,7 +69,15 @@ export type AuthProvider = {
     handleCallback?: (
         params?: QueryFunctionContext
     ) => Promise<AuthRedirectResult | void | any>;
+    canAccess?: (
+        params: QueryFunctionContext & {
+            action?: string;
+            resource: string;
+            record?: unknown;
+        }
+    ) => Promise<boolean>;
     [key: string]: any;
+    supportAbortSignal?: boolean;
 };
 
 export type AuthRedirectResult = {
@@ -323,6 +331,7 @@ export type AdminChildren =
 
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
+export type UnauthorizedComponent = ComponentType<{ title?: TitleComponent }>;
 
 export type LoginComponent = ComponentType<{}> | ReactElement<any>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
