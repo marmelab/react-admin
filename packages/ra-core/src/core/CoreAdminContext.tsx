@@ -22,7 +22,11 @@ import {
     AdminChildren,
     DashboardComponent,
     LegacyDataProvider,
+    LoadingComponent,
+    UnauthorizedComponent,
 } from '../types';
+import { LoadingContextProvider } from './LoadingContextProvider';
+import { UnauthorizedContextProvider } from './UnauthorizedContextProvider';
 
 const defaultStore = memoryStore();
 
@@ -98,6 +102,11 @@ export interface CoreAdminContextProps {
     dataProvider?: DataProvider | LegacyDataProvider;
 
     /**
+     * The component displayed while fetching the auth provider if the admin child is an async function
+     */
+    loading?: LoadingComponent;
+
+    /**
      * The adapter for storing user preferences
      *
      * @see https://marmelab.com/react-admin/Admin.html#store
@@ -163,6 +172,38 @@ export interface CoreAdminContextProps {
      * );
      */
     i18nProvider?: I18nProvider;
+
+    /**
+     * A react component to display when users don't have access to the page they're trying to access
+     *
+     * @see https://marmelab.com/react-admin/Admin.html#unauthorized
+     * @example
+     * // in src/Unauthorized.js
+     * import Card from '@mui/material/Card';
+     * import CardContent from '@mui/material/CardContent';
+     * import { Title } from 'react-admin';
+     *
+     * export const Unauthorized = () => (
+     *     <Card>
+     *         <Title title="Unauthorized" />
+     *         <CardContent>
+     *             <h1>You're not authorized to see this page</h1>
+     *         </CardContent>
+     *     </Card>
+     * );
+     *
+     * // in src/App.js
+     * import { Admin } from 'react-admin';
+     * import { dataProvider } from './dataProvider';
+     * import { Unauthorized } from './Unauthorized';
+     *
+     * const App = () => (
+     *     <Admin unauthorized={Unauthorized} dataProvider={dataProvider}>
+     *         ...
+     *     </Admin>
+     * );
+     */
+    unauthorized?: UnauthorizedComponent;
 }
 
 export const CoreAdminContext = (props: CoreAdminContextProps) => {
@@ -174,6 +215,8 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         store = defaultStore,
         children,
         queryClient,
+        loading = Noop,
+        unauthorized = Noop,
     } = props;
 
     if (!dataProvider) {
@@ -206,21 +249,29 @@ React-admin requires a valid dataProvider function to work.`);
         <AuthContext.Provider value={finalAuthProvider}>
             <DataProviderContext.Provider value={finalDataProvider}>
                 <StoreContextProvider value={store}>
-                    <PreferencesEditorContextProvider>
-                        <QueryClientProvider client={finalQueryClient}>
-                            <AdminRouter basename={basename}>
-                                <I18nContextProvider value={i18nProvider}>
-                                    <NotificationContextProvider>
-                                        <ResourceDefinitionContextProvider>
-                                            {children}
-                                        </ResourceDefinitionContextProvider>
-                                    </NotificationContextProvider>
-                                </I18nContextProvider>
-                            </AdminRouter>
-                        </QueryClientProvider>
-                    </PreferencesEditorContextProvider>
+                    <LoadingContextProvider value={loading}>
+                        <UnauthorizedContextProvider value={unauthorized}>
+                            <PreferencesEditorContextProvider>
+                                <QueryClientProvider client={finalQueryClient}>
+                                    <AdminRouter basename={basename}>
+                                        <I18nContextProvider
+                                            value={i18nProvider}
+                                        >
+                                            <NotificationContextProvider>
+                                                <ResourceDefinitionContextProvider>
+                                                    {children}
+                                                </ResourceDefinitionContextProvider>
+                                            </NotificationContextProvider>
+                                        </I18nContextProvider>
+                                    </AdminRouter>
+                                </QueryClientProvider>
+                            </PreferencesEditorContextProvider>
+                        </UnauthorizedContextProvider>
+                    </LoadingContextProvider>
                 </StoreContextProvider>
             </DataProviderContext.Provider>
         </AuthContext.Provider>
     );
 };
+
+const Noop = () => null;

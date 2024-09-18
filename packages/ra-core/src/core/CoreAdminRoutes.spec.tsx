@@ -13,6 +13,7 @@ import { TestMemoryRouter } from '../routing';
 
 const Layout = ({ children }: CoreLayoutProps) => <div>Layout {children}</div>;
 const CatchAll = () => <div />;
+const Unauthorized = () => <div />;
 const Loading = () => <>Loading</>;
 
 describe('<CoreAdminRoutes>', () => {
@@ -34,6 +35,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             catchAll={CatchAll}
                             loading={Loading}
+                            unauthorized={Unauthorized}
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/foo" element={<div>Foo</div>} />
@@ -81,6 +83,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             catchAll={CatchAll}
                             loading={Loading}
+                            unauthorized={Unauthorized}
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/foo" element={<div>Foo</div>} />
@@ -133,6 +136,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             catchAll={CatchAll}
                             loading={Loading}
+                            unauthorized={Unauthorized}
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/foo" element={<div>Foo</div>} />
@@ -197,6 +201,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
+                            unauthorized={Unauthorized}
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/foo" element={<Custom />} />
@@ -237,6 +242,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
+                            unauthorized={Unauthorized}
                         >
                             <Resource
                                 name="posts"
@@ -273,6 +279,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
+                            unauthorized={Unauthorized}
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/custom" element={<i>Custom</i>} />
@@ -317,6 +324,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
+                            unauthorized={Unauthorized}
                             requireAuth
                         >
                             <Resource
@@ -355,6 +363,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
+                            unauthorized={Unauthorized}
                             requireAuth
                         >
                             <CustomRoutes noLayout>
@@ -396,6 +405,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
+                            unauthorized={Unauthorized}
                             requireAuth
                         >
                             <CustomRoutes>
@@ -436,6 +446,7 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
+                            unauthorized={Unauthorized}
                             requireAuth
                         >
                             <CustomRoutes noLayout>

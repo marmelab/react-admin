@@ -34,6 +34,7 @@ const MyLayout = ({ children }: CoreLayoutProps) => (
 );
 const CatchAll = () => <div />;
 const Loading = () => <>Loading</>;
+const Unauthorized = () => <>Unauthorized</>;
 const Ready = () => <>Ready</>;
 
 const TestedComponent = ({ role }) => {
@@ -44,6 +45,7 @@ const TestedComponent = ({ role }) => {
                     layout={MyLayout}
                     catchAll={CatchAll}
                     loading={Loading}
+                    unauthorized={Unauthorized}
                 >
                     <Resource name="posts" />
                     <Resource name="comments" />
@@ -71,6 +73,7 @@ const TestedComponentReturningNull = ({ role }) => {
                     layout={MyLayout}
                     catchAll={CatchAll}
                     loading={Loading}
+                    unauthorized={Unauthorized}
                 >
                     <Resource name="posts" />
                     <Resource name="comments" />
@@ -106,6 +109,7 @@ const TestedComponentWithAuthProvider = ({ callback }) => {
                     layout={MyLayout}
                     catchAll={CatchAll}
                     loading={Loading}
+                    unauthorized={Unauthorized}
                 >
                     <Resource name="posts" />
                     <Resource name="comments" />
@@ -169,6 +173,7 @@ const TestedComponentWithPermissions = () => {
                     layout={MyLayout}
                     catchAll={CatchAll}
                     loading={Loading}
+                    unauthorized={Unauthorized}
                 >
                     <ResourceWithPermissions
                         name="posts"
@@ -221,6 +226,7 @@ const TestedComponentWithOnlyLazyCustomRoutes = ({ navigateCallback }) => {
                     layout={MyLayout}
                     catchAll={CatchAll}
                     loading={Loading}
+                    unauthorized={Unauthorized}
                     ready={Ready}
                 >
                     {lazyRoutes}
@@ -238,6 +244,7 @@ const TestedComponentWithForcedRoutes = () => {
                     layout={MyLayout}
                     catchAll={CatchAll}
                     loading={Loading}
+                    unauthorized={Unauthorized}
                 >
                     <Resource
                         name="posts"

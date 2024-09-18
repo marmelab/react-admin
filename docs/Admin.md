@@ -159,6 +159,7 @@ Here are all the props accepted by the component:
 | `store`            | Optional | `Store`         | -                    | The Store for managing user preferences                         |
 | `theme`            | Optional | `object`        | `default LightTheme` | The main (light) theme configuration                            |
 | `title`            | Optional | `string`        | -                    | The error page title                                            |
+| `unauthorized`     | Optional | `Component`     | -                    | The component displayed in the `/unauthorized` page             |
 
 
 ## `dataProvider`
@@ -1003,6 +1004,30 @@ const MyTitle = () => {
     const defaultTitle = useDefaultTitle();
     return <span>{defaultTitle}</span>; // My Custom Admin
 };
+```
+
+## `unauthorized`
+
+When using an authProvider that supports [the `canAccess` method](./AuthProviderWriting.md#canaccess), react-admin will check whether users can access a resource page and display the `unauthorized` component when they can't.
+
+You can replace that "unauthorized" screen by passing a custom component as the `unauthorized` prop:
+
+```tsx
+import * as React from 'react';
+import { Admin } from 'react-admin';
+
+const Unauthorized = () => (
+    <div>
+        <h1>Authorization error</h1>
+        <p>You don't have access to this page.</p>
+    </div>
+)
+
+const App = () => (
+    <Admin unauthorized={Unauthorized}>
+        ...
+    </Admin>
+);
 ```
 
 ## Adding Custom Pages

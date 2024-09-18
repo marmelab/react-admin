@@ -435,3 +435,20 @@ const App = () => (
 When users navigate to the `/posts` route, react-admin will display a loading indicator while the `PostList` component is being loaded.
 
 ![Loading indicator](./img/lazy-resource.png)
+
+## Access Control
+
+When using an authProvider that supports [the `canAccess` method](./AuthProviderWriting.md#canaccess), react-admin will check whether users can access a resource page and display [the `unauthorized` component](./Admin.md#unauthorized) when they can't.
+
+For instance, given the following resource:
+
+```tsx
+<Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
+```
+
+React-admin will call the `authProvider.canAccess` method when users try to access the pages with the following parameters:
+
+- For the list page: `{ action: "list", resource: "posts" }`
+- For the create page: `{ action: "create", resource: "posts" }`
+- For the edit page: `{ action: "edit", resource: "posts" }`
+- For the show page: `{ action: "show", resource: "posts" }`

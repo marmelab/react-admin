@@ -1,55 +1,57 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
-import { CoreAdminContext } from './CoreAdminContext';
-
-import { Resource } from './Resource';
-import { Route } from 'react-router';
-import { TestMemoryRouter } from '../routing';
-
-const PostList = () => <div>PostList</div>;
-const PostEdit = () => <div>PostEdit</div>;
-const PostCreate = () => <div>PostCreate</div>;
-const PostShow = () => <div>PostShow</div>;
-const PostIcon = () => <div>PostIcon</div>;
-
-const PostCustomRoute = () => <div>PostCustomRoute</div>;
-
-const resource = {
-    name: 'posts',
-    options: { foo: 'bar' },
-    list: PostList,
-    edit: PostEdit,
-    create: PostCreate,
-    show: PostShow,
-    icon: PostIcon,
-    children: <Route path="customroute" element={<PostCustomRoute />} />,
-};
+import { fireEvent, render, screen } from '@testing-library/react';
+import { AccessControl, Basic } from './Resource.stories';
 
 describe('<Resource>', () => {
     it('renders resource routes by default', async () => {
         let navigate;
         render(
-            <TestMemoryRouter
+            <Basic
                 navigateCallback={n => {
                     navigate = n;
                 }}
-            >
-                <CoreAdminContext>
-                    <Resource {...resource} />
-                </CoreAdminContext>
-            </TestMemoryRouter>
+            />
         );
-        // Resource does not declare a route matching its name, it only renders its child routes
-        // so we don't need to navigate to a path matching its name
-        navigate('/');
+        navigate('/posts');
         await screen.findByText('PostList');
-        navigate('/123');
+        navigate('/posts/123');
         await screen.findByText('PostEdit');
-        navigate('/123/show');
+        navigate('/posts/123/show');
         await screen.findByText('PostShow');
-        navigate('/create');
+        navigate('/posts/create');
         await screen.findByText('PostCreate');
-        navigate('/customroute');
+        navigate('/posts/customroute');
         await screen.findByText('PostCustomRoute');
+    });
+
+    it('renders not render the resource routes if the authProvider.canAccess function returns false this route matching action', async () => {
+        render(<AccessControl />);
+        await screen.findByText('PostList');
+        await fireEvent.click(screen.getByText('create'));
+        await screen.findByText('Unauthorized');
+        await fireEvent.click(screen.getByText('list'));
+        await fireEvent.click(screen.getByLabelText('posts.create access'));
+        await fireEvent.click(await screen.findByText('create'));
+        await screen.findByText('PostCreate');
+        await fireEvent.click(screen.getByText('list'));
+        await fireEvent.click(screen.getByText('edit'));
+        await screen.findByText('Unauthorized');
+        await fireEvent.click(screen.getByText('list'));
+        await fireEvent.click(screen.getByLabelText('posts.edit access'));
+        await fireEvent.click(await screen.findByText('edit'));
+        await screen.findByText('PostEdit');
+        await fireEvent.click(screen.getByText('list'));
+        await fireEvent.click(screen.getByText('show'));
+        await screen.findByText('PostShow');
+        await fireEvent.click(screen.getByText('list'));
+        await fireEvent.click(screen.getByLabelText('posts.show access'));
+        await fireEvent.click(await screen.findByText('show'));
+        await screen.findByText('Unauthorized');
+        await fireEvent.click(screen.getByText('list'));
+        await fireEvent.click(screen.getByText('custom'));
+        await screen.findByText('PostCustomRoute');
+        await fireEvent.click(screen.getByText('list'));
+        await fireEvent.click(screen.getByLabelText('posts.list access'));
+        await screen.findByText('Unauthorized');
     });
 });
