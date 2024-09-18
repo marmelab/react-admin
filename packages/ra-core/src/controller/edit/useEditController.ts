@@ -148,9 +148,14 @@ export const useEditController = <
                 if (onSuccess) {
                     return onSuccess(data, variables, context);
                 }
-                notify('ra.notification.updated', {
+                notify(`resources.${resource}.notifications.updated`, {
                     type: 'info',
-                    messageArgs: { smart_count: 1 },
+                    messageArgs: {
+                        smart_count: 1,
+                        _: translate('ra.notification.updated', {
+                            smart_count: 1,
+                        }),
+                    },
                     undoable: mutationMode === 'undoable',
                 });
                 redirect(redirectTo, resource, data.id, data);

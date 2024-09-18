@@ -20,7 +20,14 @@ import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
-import { Basic, Title, TitleFalse, TitleElement } from './Edit.stories';
+import {
+    Basic,
+    Title,
+    TitleFalse,
+    TitleElement,
+    NotificationDefault,
+    NotificationTranslated,
+} from './Edit.stories';
 
 describe('<Edit />', () => {
     const defaultEditProps = {
@@ -887,6 +894,20 @@ describe('<Edit />', () => {
                 </AdminContext>
             );
             await screen.findByText('Foo lorem');
+        });
+    });
+
+    describe('success notification', () => {
+        it('should use a generic success message by default', async () => {
+            render(<NotificationDefault />);
+            (await screen.findByText('Save')).click();
+            await screen.findByText('Element updated');
+        });
+
+        it('should allow to use a custom translation per resource', async () => {
+            render(<NotificationTranslated />);
+            (await screen.findByText('Save')).click();
+            await screen.findByText('Book updated');
         });
     });
 });

@@ -676,7 +676,33 @@ const PostEdit = () => (
 
 ## Changing The Notification Message
 
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element updated"). You can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
+![Edit notification](./img/EditSuccess.png)
+
+Once the `dataProvider.update()` request returns successfully, users see a generic notification ("Element updated"). 
+
+`<Edit>` uses two successive translation keys to build the success message:
+
+- `resources.{resource}.notifications.updated` as a first choice
+- `ra.notification.updated` as a fallback
+
+To customize the notification message, you can set custom translation for these keys in your i18nProvider.
+
+**Tip**: If you choose to use a custom translation, be aware that react-admin uses the same translation message for the `<BulkUpdateButton>`, so the message must support [pluralization](./TranslationTranslating.md#interpolation-pluralization-and-default-translation):
+
+```jsx
+const englishMessages = {
+    resources: {
+        comments: {
+            notifications: {
+                updated: 'Comment updated |||| %{smart_count} comments updated',
+                // ...
+            },
+        },
+    },
+};
+```
+
+Alternately, you can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
 
 {% raw %}
 ```jsx
@@ -688,7 +714,7 @@ const PostEdit = () => {
     const redirect = useRedirect();
 
     const onSuccess = () => {
-        notify(`Post updated successfully`); // default message is 'ra.notification.updated'
+        notify(`Post updated successfully`);
         redirect('list', 'posts');
     };
 

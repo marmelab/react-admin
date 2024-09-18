@@ -23,14 +23,14 @@ const BulkAcceptButton = () => {
         {
             mutationMode: 'undoable',
             onSuccess: () => {
-                notify('resources.reviews.notification.approved_success', {
+                notify('resources.reviews.notifications.approved_success', {
                     type: 'info',
                     undoable: true,
                 });
                 unselectAll();
             },
             onError: () => {
-                notify('resources.reviews.notification.approved_error', {
+                notify('resources.reviews.notifications.approved_error', {
                     type: 'error',
                 });
             },
