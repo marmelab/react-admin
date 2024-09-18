@@ -6,15 +6,21 @@ import {
     useResourceDefinitions,
     useGetResourceLabel,
     useCreatePath,
+    useCanAccess,
 } from 'ra-core';
 
 import { MenuItemLink } from './MenuItemLink';
 
 export const ResourceMenuItem = ({ name }: { name: string }) => {
     const resources = useResourceDefinitions();
+    const { canAccess, isPending } = useCanAccess({
+        action: 'list',
+        resource: name,
+    });
     const getResourceLabel = useGetResourceLabel();
     const createPath = useCreatePath();
-    if (!resources || !resources[name]) return null;
+    if (!resources || !resources[name] || isPending || canAccess === false)
+        return null;
     return (
         <MenuItemLink
             to={createPath({
