@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     QueryObserverLoadingErrorResult,
     QueryObserverLoadingResult,
@@ -8,6 +8,7 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
+import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 
 /**
  * A hook that calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
@@ -48,6 +49,7 @@ export const useCanAccess = <ErrorType = Error>(
     params: UseCanAccessOptions<ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
+    const logout = useLogoutIfAccessDenied();
 
     const queryResult = useQuery({
         queryKey: ['auth', 'canAccess', JSON.stringify(params)],
@@ -62,6 +64,12 @@ export const useCanAccess = <ErrorType = Error>(
         },
         ...params,
     });
+
+    useEffect(() => {
+        if (queryResult.error) {
+            logout(queryResult.error);
+        }
+    }, [logout, queryResult.error]);
 
     const result = useMemo(() => {
         // Don't check for the authProvider or authProvider.canAccess method in the useMemo

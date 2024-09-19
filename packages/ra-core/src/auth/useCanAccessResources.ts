@@ -1,10 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import {
     useQueries,
     UseQueryOptions,
     UseQueryResult,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
+import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 
 /**
  * Checks whether users can access the provided resources.
@@ -48,6 +49,7 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
     params: UseCanAccessResourcesOptions<ErrorType>
 ): UseCanAccessResourcesResult<ErrorType> => {
     const authProvider = useAuthProvider();
+    const logout = useLogoutIfAccessDenied();
 
     const { action, resources, record } = params;
 
@@ -74,6 +76,12 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
         }),
         combine: combineSourceAccessResults<ErrorType>,
     });
+
+    useEffect(() => {
+        if (queryResult.error) {
+            logout(queryResult.error);
+        }
+    }, [logout, queryResult.error]);
 
     const result = useMemo(() => {
         return {
