@@ -24,7 +24,7 @@ describe('<Resource>', () => {
         await screen.findByText('PostCustomRoute');
     });
 
-    it('renders not render the resource routes if the authProvider.canAccess function returns false this route matching action', async () => {
+    it('does not render the resource routes if the authProvider.canAccess function returns false for the corresponding actions', async () => {
         render(<AccessControl />);
         await screen.findByText('PostList');
         await fireEvent.click(screen.getByText('create'));
