@@ -1010,6 +1010,8 @@ const MyTitle = () => {
 
 When using an authProvider that supports [the `canAccess` method](./AuthProviderWriting.md#canaccess), react-admin will check whether users can access a resource page and display the `unauthorized` component when they can't.
 
+![Default unauthorized component](./img/unauthorized.png)
+
 You can replace the default "unauthorized" screen by passing a custom component as the `unauthorized` prop:
 
 ```tsx

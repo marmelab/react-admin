@@ -58,6 +58,7 @@ const englishMessages: TranslationMessages = {
             show: '%{name} %{recordRepresentation}',
             empty: 'No %{name} yet.',
             invite: 'Do you want to add one?',
+            unauthorized: 'Unauthorized',
         },
         input: {
             file: {
@@ -110,6 +111,8 @@ const englishMessages: TranslationMessages = {
             yes: 'Yes',
             unsaved_changes:
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
+            unauthorized:
+                "You don't have the right permissions to access this page",
         },
         navigation: {
             clear_filters: 'Clear filters',

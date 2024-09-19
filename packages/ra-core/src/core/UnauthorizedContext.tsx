@@ -1,6 +1,3 @@
-import { createContext } from 'react';
-import { UnauthorizedComponent } from '../types';
+import { ComponentType, createContext } from 'react';
 
-export const UnauthorizedContext = createContext<UnauthorizedComponent>(
-    () => null
-);
+export const UnauthorizedContext = createContext<ComponentType>(() => null);

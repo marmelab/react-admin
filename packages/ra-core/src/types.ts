@@ -331,7 +331,6 @@ export type AdminChildren =
 
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
-export type UnauthorizedComponent = ComponentType<{ title?: TitleComponent }>;
 
 export type LoginComponent = ComponentType<{}> | ReactElement<any>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;

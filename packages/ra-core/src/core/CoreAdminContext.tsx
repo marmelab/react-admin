@@ -23,7 +23,6 @@ import {
     DashboardComponent,
     LegacyDataProvider,
     LoadingComponent,
-    UnauthorizedComponent,
 } from '../types';
 import { LoadingContextProvider } from './LoadingContextProvider';
 import { UnauthorizedContextProvider } from './UnauthorizedContextProvider';
@@ -203,7 +202,7 @@ export interface CoreAdminContextProps {
      *     </Admin>
      * );
      */
-    unauthorized?: UnauthorizedComponent;
+    unauthorized?: React.ComponentType;
 }
 
 export const CoreAdminContext = (props: CoreAdminContextProps) => {

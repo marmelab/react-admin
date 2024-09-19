@@ -59,6 +59,7 @@ const frenchMessages: TranslationMessages = {
             show: '%{name} %{recordRepresentation}',
             empty: 'Pas encore de %{name}.',
             invite: 'Voulez-vous en créer un ?',
+            unauthorized: 'Non autorisé',
         },
         input: {
             file: {
@@ -115,6 +116,7 @@ const frenchMessages: TranslationMessages = {
             yes: 'Oui',
             unsaved_changes:
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
+            unauthorized: "Vous n'avez pas les droits d'accès à cette page",
         },
         navigation: {
             clear_filters: 'Effacer les filtres',
