@@ -10,10 +10,10 @@ import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
 import { testDataProvider } from '../dataProvider';
 import { TestMemoryRouter } from '../routing';
+import { Basic } from './CoreAdminRoutes.stories';
 
 const Layout = ({ children }: CoreLayoutProps) => <div>Layout {children}</div>;
 const CatchAll = () => <div />;
-const Unauthorized = () => <div />;
 const Loading = () => <>Loading</>;
 
 describe('<CoreAdminRoutes>', () => {
@@ -25,35 +25,11 @@ describe('<CoreAdminRoutes>', () => {
         it('should render resources and custom routes with and without layout', async () => {
             let navigate: NavigateFunction | null = null;
             render(
-                <TestMemoryRouter
+                <Basic
                     navigateCallback={n => {
                         navigate = n;
                     }}
-                >
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <CoreAdminRoutes
-                            layout={Layout}
-                            catchAll={CatchAll}
-                            loading={Loading}
-                            unauthorized={Unauthorized}
-                        >
-                            <CustomRoutes noLayout>
-                                <Route path="/foo" element={<div>Foo</div>} />
-                            </CustomRoutes>
-                            <CustomRoutes>
-                                <Route path="/bar" element={<div>Bar</div>} />
-                            </CustomRoutes>
-                            <Resource
-                                name="posts"
-                                list={() => <span>PostList</span>}
-                            />
-                            <Resource
-                                name="comments"
-                                list={() => <span>CommentList</span>}
-                            />
-                        </CoreAdminRoutes>
-                    </CoreAdminContext>
-                </TestMemoryRouter>
+                />
             );
             await screen.findByText('Layout');
             navigate('/posts');
@@ -70,7 +46,7 @@ describe('<CoreAdminRoutes>', () => {
     });
 
     describe('With children returned from a function as children', () => {
-        it('should render resources and custom routes with and without layout', async () => {
+        it('should render resources and custom routes with and without layout when there is no authProvider', async () => {
             let navigate: NavigateFunction | null = null;
             render(
                 <TestMemoryRouter
@@ -83,7 +59,6 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             catchAll={CatchAll}
                             loading={Loading}
-                            unauthorized={Unauthorized}
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/foo" element={<div>Foo</div>} />
@@ -123,45 +98,22 @@ describe('<CoreAdminRoutes>', () => {
             await screen.findByText('CommentList');
         });
 
-        it('should render resources and custom routes with and without layout even without an authProvider', async () => {
+        it('should render resources and custom routes with and without layout when there is an authProvider', async () => {
             let navigate: NavigateFunction | null = null;
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
             render(
-                <TestMemoryRouter
+                <Basic
+                    authProvider={authProvider}
                     navigateCallback={n => {
                         navigate = n;
                     }}
-                >
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <CoreAdminRoutes
-                            layout={Layout}
-                            catchAll={CatchAll}
-                            loading={Loading}
-                            unauthorized={Unauthorized}
-                        >
-                            <CustomRoutes noLayout>
-                                <Route path="/foo" element={<div>Foo</div>} />
-                            </CustomRoutes>
-                            {() => (
-                                <>
-                                    <CustomRoutes>
-                                        <Route
-                                            path="/bar"
-                                            element={<div>Bar</div>}
-                                        />
-                                    </CustomRoutes>
-                                    <Resource
-                                        name="posts"
-                                        list={() => <span>PostList</span>}
-                                    />
-                                    <Resource
-                                        name="comments"
-                                        list={() => <span>CommentList</span>}
-                                    />
-                                </>
-                            )}
-                        </CoreAdminRoutes>
-                    </CoreAdminContext>
-                </TestMemoryRouter>
+                />
             );
             navigate('/foo');
             await screen.findByText('Foo');
@@ -172,6 +124,51 @@ describe('<CoreAdminRoutes>', () => {
             navigate('/posts');
             await screen.findByText('PostList');
             navigate('/comments');
+            await screen.findByText('CommentList');
+        });
+
+        it('should show the first resource by default when there is no authProvider', async () => {
+            render(<Basic />);
+            await screen.findByText('PostList');
+        });
+
+        it('should show the first resource by default when there is an authProvider', async () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+            render(<Basic authProvider={authProvider} />);
+            await screen.findByText('PostList');
+        });
+
+        it('should show the first resource by default when there is an authProvider that supports canAccess', async () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+                canAccess: jest.fn().mockResolvedValue(true),
+            };
+            render(<Basic authProvider={authProvider} />);
+            await screen.findByText('PostList');
+        });
+
+        it('should show the first allowed resource by default when there is an authProvider that supports canAccess', async () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+                canAccess: jest.fn(({ resource }) =>
+                    Promise.resolve(resource === 'comments')
+                ),
+            };
+            render(<Basic authProvider={authProvider} />);
             await screen.findByText('CommentList');
         });
 
@@ -201,7 +198,6 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
-                            unauthorized={Unauthorized}
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/foo" element={<Custom />} />
@@ -242,7 +238,6 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
-                            unauthorized={Unauthorized}
                         >
                             <Resource
                                 name="posts"
@@ -279,7 +274,6 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
-                            unauthorized={Unauthorized}
                         >
                             <CustomRoutes noLayout>
                                 <Route path="/custom" element={<i>Custom</i>} />
@@ -324,7 +318,6 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
-                            unauthorized={Unauthorized}
                             requireAuth
                         >
                             <Resource
@@ -363,7 +356,6 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
-                            unauthorized={Unauthorized}
                             requireAuth
                         >
                             <CustomRoutes noLayout>
@@ -405,7 +397,6 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
-                            unauthorized={Unauthorized}
                             requireAuth
                         >
                             <CustomRoutes>
@@ -446,7 +437,6 @@ describe('<CoreAdminRoutes>', () => {
                             layout={Layout}
                             loading={Loading}
                             catchAll={CatchAll}
-                            unauthorized={Unauthorized}
                             requireAuth
                         >
                             <CustomRoutes noLayout>
