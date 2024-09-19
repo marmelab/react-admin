@@ -6,9 +6,7 @@ import { isValidElementType } from 'react-is';
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
 import { RestoreScrollPosition } from '../routing/RestoreScrollPosition';
-import { useCanAccess } from '../auth';
-import { useLoadingContext } from './useLoadingContext';
-import { useUnauthorizedContext } from './useUnauthorizedContext';
+import { CanAccess } from '../auth/CanAccess';
 
 export const Resource = (props: ResourceProps) => {
     const { create, edit, list, name, show } = props;
@@ -20,9 +18,9 @@ export const Resource = (props: ResourceProps) => {
                     <Route
                         path="create/*"
                         element={
-                            <ResourcePage action="create" resource={name}>
+                            <CanAccess action="create" resource={name}>
                                 {getElement(create)}
-                            </ResourcePage>
+                            </CanAccess>
                         }
                     />
                 )}
@@ -30,9 +28,9 @@ export const Resource = (props: ResourceProps) => {
                     <Route
                         path=":id/show/*"
                         element={
-                            <ResourcePage action="show" resource={name}>
+                            <CanAccess action="show" resource={name}>
                                 {getElement(show)}
-                            </ResourcePage>
+                            </CanAccess>
                         }
                     />
                 )}
@@ -40,9 +38,9 @@ export const Resource = (props: ResourceProps) => {
                     <Route
                         path=":id/*"
                         element={
-                            <ResourcePage action="edit" resource={name}>
+                            <CanAccess action="edit" resource={name}>
                                 {getElement(edit)}
-                            </ResourcePage>
+                            </CanAccess>
                         }
                     />
                 )}
@@ -50,45 +48,19 @@ export const Resource = (props: ResourceProps) => {
                     <Route
                         path="/*"
                         element={
-                            <ResourcePage action="list" resource={name}>
+                            <CanAccess action="list" resource={name}>
                                 <RestoreScrollPosition
                                     storeKey={`${name}.list.scrollPosition`}
                                 >
                                     {getElement(list)}
                                 </RestoreScrollPosition>
-                            </ResourcePage>
+                            </CanAccess>
                         }
                     />
                 )}
                 {props.children}
             </Routes>
         </ResourceContextProvider>
-    );
-};
-
-const ResourcePage = ({
-    action,
-    resource,
-    children,
-}: {
-    action: string;
-    resource: string;
-    children: React.ReactNode;
-}) => {
-    const { canAccess, isPending } = useCanAccess({
-        action,
-        resource,
-    });
-
-    const Loading = useLoadingContext();
-    const Unauthorized = useUnauthorizedContext();
-
-    return isPending ? (
-        <Loading />
-    ) : canAccess === false ? (
-        <Unauthorized />
-    ) : (
-        children
     );
 };
 

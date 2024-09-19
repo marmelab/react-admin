@@ -10,6 +10,7 @@ import convertLegacyAuthProvider from './convertLegacyAuthProvider';
 
 export * from './Authenticated';
 export * from './AuthContext';
+export * from './CanAccess';
 export * from './LogoutOnMount';
 export * from './types';
 export * from './useAuthenticated';
