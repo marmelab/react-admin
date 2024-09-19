@@ -9,7 +9,7 @@ import { Resource } from './Resource';
 import { CoreAdmin } from './CoreAdmin';
 
 export default {
-    title: 'ra-core/Admin/Resource',
+    title: 'ra-core/core/Resource',
 };
 
 const PostList = () => (
