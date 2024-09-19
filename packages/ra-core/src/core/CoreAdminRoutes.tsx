@@ -1,20 +1,7 @@
 import * as React from 'react';
-import {
-    useState,
-    useEffect,
-    Children,
-    ComponentType,
-    ReactElement,
-} from 'react';
+import { useState, useEffect, Children, ComponentType } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-
-import {
-    WithPermissions,
-    useCheckAuth,
-    LogoutOnMount,
-    useAuthProvider,
-    useLogoutIfAccessDenied,
-} from '../auth';
+import { WithPermissions, useCheckAuth, LogoutOnMount } from '../auth';
 import { useScrollToTop, useCreatePath } from '../routing';
 import {
     AdminChildren,
@@ -25,6 +12,7 @@ import {
 } from '../types';
 import { useConfigureAdminRouterFromChildren } from './useConfigureAdminRouterFromChildren';
 import { HasDashboardContextProvider } from './HasDashboardContext';
+import { useFirstResourceWithListAccess } from './useFirstResourceWithListAccess';
 
 export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     useScrollToTop();
@@ -168,63 +156,3 @@ export interface CoreAdminRoutesProps {
 }
 
 const defaultAuthParams = { params: { route: 'dashboard' } };
-
-const useFirstResourceWithListAccess = (resources: ReactElement[]) => {
-    const authProvider = useAuthProvider();
-    const logout = useLogoutIfAccessDenied();
-    const [firstResourceWithListAccess, setFirstResourceWithListAccess] =
-        useState<{ isPending: boolean; resource: string | null }>({
-            isPending: !!authProvider && !!authProvider.canAccess,
-            resource:
-                !authProvider || !authProvider.canAccess
-                    ? resources.find(resource => !!resource.props.list)?.props
-                          .name
-                    : null,
-        });
-
-    useEffect(() => {
-        if (!authProvider || !authProvider.canAccess) {
-            setFirstResourceWithListAccess({
-                isPending: false,
-                resource: resources.find(resource => !!resource.props.list)
-                    ?.props.name,
-            });
-            return;
-        }
-
-        const findFirstResourceWithListAccess = async () => {
-            if (!authProvider || !authProvider.canAccess) {
-                return;
-            }
-
-            for (const resource of resources) {
-                if (!resource.props.list) {
-                    continue;
-                }
-
-                if (!authProvider || !authProvider.canAccess) {
-                    break;
-                }
-
-                const hasAccess = await authProvider
-                    .canAccess({
-                        action: 'list',
-                        resource: resource.props.name,
-                    })
-                    .catch(error => logout(error));
-
-                if (hasAccess) {
-                    setFirstResourceWithListAccess({
-                        isPending: false,
-                        resource: resource.props.name,
-                    });
-                    break;
-                }
-            }
-        };
-
-        findFirstResourceWithListAccess();
-    }, [authProvider, logout, resources]);
-
-    return firstResourceWithListAccess;
-};
