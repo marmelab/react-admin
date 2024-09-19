@@ -15,6 +15,7 @@ export * from './LogoutOnMount';
 export * from './types';
 export * from './useAuthenticated';
 export * from './useCanAccess';
+export * from './useCanAccessResources';
 export * from './useCheckAuth';
 export * from './useGetIdentity';
 export * from './useHandleAuthCallback';
