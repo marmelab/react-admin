@@ -406,7 +406,12 @@ React-admin doesn't use permissions by default, but it provides [the `usePermiss
 
 ### `canAccess`
 
-This method should return a boolean indicating whether users can perform the provided action on the provided resource (in the [Role-Based Access Control (RBAC)](https://en.wikipedia.org/wiki/Role-based_access_control) sense).
+This method should return a `Promise` that resolves to a boolean indicating whether users can perform the provided action on the provided resource:
+
+- Returns `true` when users are authorized
+- Returns `false` when users are not authorized
+
+If any errors is thrown by the `canAccess` method, it will be passed to the [`authProvider.checkError`](#checkerror) method.
 
 ### `handleCallback`
 
