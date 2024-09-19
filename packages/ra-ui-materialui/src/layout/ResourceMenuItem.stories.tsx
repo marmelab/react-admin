@@ -44,7 +44,18 @@ export const InsideAdminChildFunction = () => (
         <AdminContext dataProvider={dataProvider} authProvider={authProvider}>
             <AdminUI layout={CustomLayout}>
                 <Resource name="users" list={<p>The users page</p>} />
-                {() => <Resource name="posts" list={<p>The posts page</p>} />}
+                {() =>
+                    new Promise(resolve =>
+                        setTimeout(
+                            resolve,
+                            300,
+                            <Resource
+                                name="posts"
+                                list={<p>The posts page</p>}
+                            />
+                        )
+                    )
+                }
             </AdminUI>
         </AdminContext>
     </TestMemoryRouter>
@@ -56,36 +67,42 @@ const authProviderForAccessControl: any = {
     canAccess: ({ resource }) => Promise.resolve(resource !== 'users'),
 };
 
-export const AccessControl = () => (
+export const AccessControlInsideAdminChildFunction = () => (
     <TestMemoryRouter>
         <AdminContext
             dataProvider={dataProvider}
             authProvider={authProviderForAccessControl}
         >
             <AdminUI layout={CustomLayout}>
-                {() => (
-                    <>
-                        <Resource name="users" list={<p>The users page</p>} />
-                        <Resource
-                            name="posts"
-                            list={() => (
-                                <>
-                                    <p>The posts page</p>
-                                    <p>
-                                        The menu item for resource "users"
-                                        should not be displayed
-                                    </p>
-                                </>
-                            )}
-                        />
-                    </>
-                )}
+                <Resource name="users" list={<p>The users page</p>} />
+                {() =>
+                    new Promise(resolve =>
+                        setTimeout(
+                            resolve,
+                            300,
+                            <>
+                                <Resource
+                                    name="posts"
+                                    list={
+                                        <>
+                                            <p>The posts page</p>
+                                            <p>
+                                                The menu item for resource
+                                                "users" should not be displayed
+                                            </p>
+                                        </>
+                                    }
+                                />
+                            </>
+                        )
+                    )
+                }
             </AdminUI>
         </AdminContext>
     </TestMemoryRouter>
 );
 
-export const AccessControlInsideAdminChildFunction = () => (
+export const AccessControl = () => (
     <TestMemoryRouter>
         <AdminContext
             dataProvider={dataProvider}
@@ -95,7 +112,7 @@ export const AccessControlInsideAdminChildFunction = () => (
                 <Resource name="users" list={<p>The users page</p>} />
                 <Resource
                     name="posts"
-                    list={() => (
+                    list={
                         <>
                             <p>The posts page</p>
                             <p>
@@ -103,7 +120,7 @@ export const AccessControlInsideAdminChildFunction = () => (
                                 displayed
                             </p>
                         </>
-                    )}
+                    }
                 />
             </AdminUI>
         </AdminContext>
