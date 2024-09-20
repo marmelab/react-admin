@@ -11,7 +11,7 @@ React-Admin provides button components for all the common uses.
 
 These buttons allow users to navigate between the various react-admin views.
 
-### `<EditButton>`
+### `<EditButton>``
 
 Opens the Edit view of the current record:
 
@@ -40,6 +40,12 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
 **Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
+**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), `<EditButton>` will only render after calling it with the following parameters:
+
+- `action`: `edit`
+- `resource`: the current resource
+- `record`: the current record
 
 ### `<ShowButton>`
 
@@ -70,6 +76,12 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
 
+**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), `<ShowButton>` will only render after calling it with the following parameters:
+
+- `action`: `show`
+- `resource`: the current resource
+- `record`: the current record
+
 ### `<CreateButton>`
 
 Opens the Create view of the current resource:
@@ -98,6 +110,11 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
 
 **Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
+
+**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), `<CreateButton>` will only render after calling it with the following parameters:
+
+- `action`: `create`
+- `resource`: the current resource
 
 #### `sx`: CSS API
 
@@ -150,6 +167,10 @@ export const PostEdit = () => (
 It also supports [all the other `<Button>` props](#button).
 
 **Tip**: If you want to link to the List view manually, use the `/{resource}` location.
+
+**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), `<ListButton>` will only render after calling it with the following parameters:
+- `action`: `list`
+- `resource`: the current resource
 
 ## List Buttons
 
