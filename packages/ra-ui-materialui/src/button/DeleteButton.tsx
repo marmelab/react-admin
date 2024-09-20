@@ -65,6 +65,7 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
     const { canAccess, isPending } = useCanAccess({
         action: 'delete',
         resource,
+        record,
     });
     const saveContext = useSaveContext(props);
     if (!record || record.id == null || !canAccess || isPending) {
