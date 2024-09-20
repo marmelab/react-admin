@@ -396,3 +396,9 @@ export type SetOnSave = (
 export type FormFunctions = {
     setOnSave?: SetOnSave;
 };
+
+// Type for a string that accept one of the known values but also any other string
+// Useful for IDE autocompletion without preventing custom values
+export type HintedString<KnownValues extends string> =
+    | (string & {})
+    | KnownValues;

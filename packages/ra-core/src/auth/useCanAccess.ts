@@ -9,6 +9,7 @@ import {
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
+import { HintedString } from '../types';
 
 /**
  * A hook that calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
@@ -116,7 +117,7 @@ const emptyQueryObserverResult = {
 export interface UseCanAccessOptions<ErrorType = Error>
     extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
     resource: string;
-    action: string;
+    action: HintedString<'list' | 'create' | 'edit' | 'show' | 'delete'>;
     record?: unknown;
 }
 
