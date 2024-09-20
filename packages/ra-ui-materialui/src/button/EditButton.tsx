@@ -47,6 +47,7 @@ export const EditButton = <RecordType extends RaRecord = any>(
     const { canAccess, isPending } = useCanAccess({
         action: 'edit',
         resource,
+        record,
     });
     if (!record || !canAccess || isPending) return null;
     return (

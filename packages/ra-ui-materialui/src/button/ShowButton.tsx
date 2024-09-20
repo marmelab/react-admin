@@ -47,6 +47,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
     const { canAccess, isPending } = useCanAccess({
         action: 'show',
         resource,
+        record,
     });
     if (!record || !canAccess || isPending) return null;
     return (
