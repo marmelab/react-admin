@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
-import { HintedString } from '../types';
+import { HintedString, RaRecord } from '../types';
 
 /**
  * Checks whether users can access the provided resources.
@@ -115,7 +115,7 @@ export interface UseCanAccessResourcesOptions<ErrorType = Error>
     extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
     resources: string[];
     action: HintedString<'list' | 'create' | 'edit' | 'show' | 'delete'>;
-    record?: unknown;
+    record?: RaRecord;
 }
 
 export type UseCanAccessResourcesResult<ErrorType = Error> =

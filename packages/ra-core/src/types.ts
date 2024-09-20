@@ -73,7 +73,7 @@ export type AuthProvider = {
         params: QueryFunctionContext & {
             action?: string;
             resource: string;
-            record?: unknown;
+            record?: RaRecord;
         }
     ) => Promise<boolean>;
     [key: string]: any;
