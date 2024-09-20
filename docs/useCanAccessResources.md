@@ -11,7 +11,7 @@ This hook calls the `authProvider.canAccess()` method on mount for an array of r
 
 ## Usage
 
-`useCanAccessResources` takes an object `{ action, resource, record, sources }` as argument. The `source` parameter is an array of the record properties names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object that has a property for each provided source determining whether the user has access to it.
+`useCanAccessResources` takes an object `{ action, resources, record }` as argument. The `source` parameter is an array of the record properties names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object that has a property for each provided source determining whether the user has access to it.
 
 ```jsx
 import { useCanAccessResources, SimpleList } from 'react-admin';

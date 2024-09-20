@@ -49,7 +49,7 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
     params: UseCanAccessResourcesOptions<ErrorType>
 ): UseCanAccessResourcesResult<ErrorType> => {
     const authProvider = useAuthProvider();
-    const logout = useLogoutIfAccessDenied();
+    const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const { action, resources, record } = params;
 
@@ -79,7 +79,7 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
 
     useEffect(() => {
         if (queryResult.error) {
-            logout(queryResult.error);
+            logoutIfAccessDenied(queryResult.error);
         }
     }, [logout, queryResult.error]);
 

@@ -18,7 +18,7 @@ const UserEdit = () => {
             <SimpleForm>
                 <TextInput source="lastName">
                 <TextInput source="firstName">
-                <CanAccess action="editPermissions">
+                <CanAccess action="edit" resource="users.role">
                     <SelectInput source="role" choices={['admin', 'user']}>
                 </CanAccess>
             </SimpleForm>
@@ -27,7 +27,7 @@ const UserEdit = () => {
 };
 ```
 
-`<CanAccess>` will call the `authProvider.canAccess` method with the following parameters: `{ action: "editPermissions", resource: "users", record: {} }` where `record` wil be the currently edited record.
+`<CanAccess>` will call the `authProvider.canAccess` method with the following parameters: `{ action: "edit", resource: "users.role", record: {} }` where `record` will be the currently edited record.
 
 ## Parameters
 
@@ -36,9 +36,9 @@ const UserEdit = () => {
 | Name           | Required | Type           | Default                               | Description |
 | -------------- | -------- | -------------- | ------------------------------------- | --- |
 | `action`       | Required | `string`       | -                                     | The action to check, e.g. 'read', 'list', 'export', 'delete', etc. |
-| `resource`     | Optional | `string`       | Resource from current ResourceContext | The resource to check, e.g. 'users', 'comments', 'posts', etc. |
-| `record`       | Optional | `object`       | Record from current RecordContext     | The record to check. If passed, the child only renders if the user has permissions for that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
-| `loading`      | Optional | `ReactElement` | `loading` from `Admin>`               | The element displayed when authorizations are being checked |
-| `unauthorized` | Optional | `ReactElement` | `unauthorized` from `Admin>`          | The element displayed when users are not authorized to see a page |
+| `resource`     | Optional | `string`       | ResourceContext value | The resource to check, e.g. 'users', 'comments', 'posts', etc. |
+| `record`       | Optional | `object`       | RecordContext value  | The record to check. If passed, the child only renders if the user has access to that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
+| `loading`      | Optional | `ReactElement` | `loading` from `<Admin>`               | The element displayed while the `canAccess` call is pending |
+| `unauthorized` | Optional | `ReactElement` | `unauthorized` from `<Admin>`          | The element displayed when users don't have access to the resource |
 
 

@@ -49,7 +49,7 @@ export const useCanAccess = <ErrorType = Error>(
     params: UseCanAccessOptions<ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
-    const logout = useLogoutIfAccessDenied();
+    const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const queryResult = useQuery({
         queryKey: ['auth', 'canAccess', JSON.stringify(params)],
@@ -67,7 +67,7 @@ export const useCanAccess = <ErrorType = Error>(
 
     useEffect(() => {
         if (queryResult.error) {
-            logout(queryResult.error);
+            logoutIfAccessDenied(queryResult.error);
         }
     }, [logout, queryResult.error]);
 
