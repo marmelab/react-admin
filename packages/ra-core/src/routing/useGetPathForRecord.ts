@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useResourceContext } from '../core';
-import { useRecordContext } from '../controller';
+import { useCanAccessCallback } from '../auth/useCanAccessCallback';
+import { useResourceContext } from '../core/useResourceContext';
+import { useRecordContext } from '../controller/record/useRecordContext';
 import type { RaRecord } from '../types';
 import type { LinkToType } from './types';
 import { useGetPathForRecordCallback } from './useGetPathForRecordCallback';
@@ -50,36 +51,36 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
         );
     }
     const getPathForRecord = useGetPathForRecordCallback<RecordType>(options);
+    const canAccess = useCanAccessCallback();
 
     // we initialize the path with the link value
-    const [path, setPath] = useState<string | false | undefined>(() => {
-        getPathForRecord({
-            record,
-            resource,
-            link,
-        }).then(resolvedLink => {
-            if (resolvedLink === false) {
-                // already set to false by default
-                return;
-            }
-            // update the path when the promise resolves
-            setPath(resolvedLink);
-        });
-
-        return false;
-    });
+    const [path, setPath] = useState<string | false | undefined>();
 
     // update the path if the record changes
     useEffect(() => {
-        getPathForRecord({
-            record,
-            resource,
-            link,
-        }).then(resolvedLink => {
+        const updatePath = async () => {
+            const resolvedLink = await getPathForRecord({
+                record,
+                resource,
+                link,
+            });
+            if (resolvedLink && ['edit', 'show'].includes(resolvedLink)) {
+                if (
+                    !(await canAccess({
+                        action: resolvedLink,
+                        resource,
+                        record,
+                    }))
+                ) {
+                    setPath(false);
+                }
+            }
             // update the path when the promise resolves
             setPath(resolvedLink);
-        });
-    }, [getPathForRecord, link, record, resource]);
+        };
+
+        updatePath();
+    }, [canAccess, getPathForRecord, link, record, resource]);
 
     return path;
 };

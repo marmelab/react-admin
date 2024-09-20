@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
-import { useResourceContext, useResourceDefinitions } from '../core';
+import { useResourceContext } from '../core/useResourceContext';
+import { useResourceDefinitions } from '../core/useResourceDefinitions';
+import { useCanAccessCallback } from '../auth/useCanAccessCallback';
 import type { RaRecord } from '../types';
 import { useCreatePath } from './useCreatePath';
 import { UseGetRouteForRecordOptions } from './useGetPathForRecord';
@@ -12,6 +14,7 @@ export const useGetPathForRecordCallback = <
     const resource = useResourceContext(options);
     const resourceDefinitions = useResourceDefinitions();
     const createPath = useCreatePath();
+    const canAccess = useCanAccessCallback();
 
     return useCallback(
         async (params: UseGetRouteForRecordOptions<RecordType>) => {
@@ -41,17 +44,39 @@ export const useGetPathForRecordCallback = <
             const linkResultIsPromise = isPromise(linkResult);
 
             if (linkResultIsPromise) {
-                return linkResult.then(resolvedLink => {
-                    if (resolvedLink === false) {
-                        // already set to false by default
-                        return;
+                const resolvedLink = await linkResult;
+                if (resolvedLink === false) {
+                    // already set to false by default
+                    return;
+                }
+                if (['edit', 'show'].includes(resolvedLink)) {
+                    if (
+                        !(await canAccess({
+                            action: resolvedLink,
+                            resource: finalResource,
+                            record,
+                        }))
+                    ) {
+                        return false;
                     }
-                    return createPath({
-                        resource: finalResource,
-                        id: record.id,
-                        type: resolvedLink,
-                    });
+                }
+                return createPath({
+                    resource: finalResource,
+                    id: record.id,
+                    type: resolvedLink,
                 });
+            }
+
+            if (linkResult !== false && ['edit', 'show'].includes(linkResult)) {
+                if (
+                    !(await canAccess({
+                        action: linkResult,
+                        resource: finalResource,
+                        record,
+                    }))
+                ) {
+                    return false;
+                }
             }
 
             return linkResult === false || linkResultIsPromise
@@ -62,7 +87,7 @@ export const useGetPathForRecordCallback = <
                       type: linkResult,
                   });
         },
-        [createPath, resourceDefinitions, resource]
+        [canAccess, createPath, resourceDefinitions, resource]
     );
 };
 

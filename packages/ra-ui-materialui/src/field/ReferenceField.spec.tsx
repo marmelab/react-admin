@@ -219,7 +219,7 @@ describe('<ReferenceField />', () => {
                 expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
             );
             expect(screen.queryByRole('progressbar')).toBeNull();
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
         });
 
         it('should not display a loader if the dataProvider query completes without finding the reference', async () => {
@@ -485,8 +485,8 @@ describe('<ReferenceField />', () => {
     describe('link', () => {
         it('should render a link to specified link type', async () => {
             render(<LinkShow />);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
             const referenceField = await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
             expect(referenceField?.parentElement?.getAttribute('href')).toBe(
                 '/book_details/1/show'
             );
@@ -494,8 +494,8 @@ describe('<ReferenceField />', () => {
 
         it('should link to edit by default if there is an edit view', async () => {
             render(<LinkDefaultEditView />);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
             const referenceField = await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
             expect(referenceField?.parentElement?.getAttribute('href')).toBe(
                 '/book_details/1'
             );
@@ -503,8 +503,8 @@ describe('<ReferenceField />', () => {
 
         it('should link to edit by default if there is no edit view but a show view', async () => {
             render(<LinkDefaultShowView />);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
             const referenceField = await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
             expect(referenceField?.parentElement?.getAttribute('href')).toBe(
                 '/book_details/1/show'
             );
@@ -512,8 +512,8 @@ describe('<ReferenceField />', () => {
 
         it('should render a link even though link view does not exist', async () => {
             render(<LinkMissingView />);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
             const referenceField = await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
             expect(referenceField?.parentElement?.getAttribute('href')).toBe(
                 '/book_details/1/show'
             );
@@ -623,6 +623,7 @@ describe('<ReferenceField />', () => {
         });
         it('should override the default styles when using link', async () => {
             render(<SXLink />);
+            await screen.findByRole('link');
             const elt = await screen.findByText('9780393966473');
             const root = elt.parentNode!.parentNode as HTMLElement;
             expect(
