@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
-import { useResourceContext, useCreatePath } from 'ra-core';
+import { useResourceContext, useCreatePath, useCanAccess } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -41,7 +41,21 @@ export const ListButton = (props: ListButtonProps) => {
         ...rest
     } = props;
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<ListButton> components should be used inside a <Resource> component or provided the resource prop.'
+        );
+    }
+    const { canAccess, isPending } = useCanAccess({
+        action: 'list',
+        resource,
+    });
     const createPath = useCreatePath();
+
+    if (!canAccess || isPending) {
+        return null;
+    }
+
     return (
         <Button
             component={Link}
