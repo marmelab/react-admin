@@ -52,6 +52,7 @@ const FullAppAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
     const [resourcesAccesses, setResourcesAccesses] = React.useState({
         'books.list': true,
         'books.create': true,
+        'books.delete': true,
         'books.show': false,
         'books.show.1': false,
     });
