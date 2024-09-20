@@ -112,12 +112,14 @@ describe('useFormGroup', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm mode="onChange">
-                    <FormGroupContextProvider name="simplegroup">
-                        <IsDirty />
-                        <TextInput source="url" />
-                    </FormGroupContextProvider>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm mode="onChange">
+                        <FormGroupContextProvider name="simplegroup">
+                            <IsDirty />
+                            <TextInput source="url" />
+                        </FormGroupContextProvider>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -131,7 +133,7 @@ describe('useFormGroup', () => {
             });
         });
 
-        const input = screen.getByLabelText('resources.undefined.fields.url');
+        const input = screen.getByLabelText('resources.posts.fields.url');
         fireEvent.change(input, {
             target: { value: 'test' },
         });
@@ -171,15 +173,17 @@ describe('useFormGroup', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm mode="onChange">
-                    <FormGroupContextProvider name="simplegroup">
-                        <TextInput source="url" />
-                    </FormGroupContextProvider>
-                    <FormGroupContextProvider name="simplegroup2">
-                        <TextInput source="test" />
-                    </FormGroupContextProvider>
-                    <IsDirty />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm mode="onChange">
+                        <FormGroupContextProvider name="simplegroup">
+                            <TextInput source="url" />
+                        </FormGroupContextProvider>
+                        <FormGroupContextProvider name="simplegroup2">
+                            <TextInput source="test" />
+                        </FormGroupContextProvider>
+                        <IsDirty />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -193,7 +197,7 @@ describe('useFormGroup', () => {
             });
         });
 
-        const input = screen.getByLabelText('resources.undefined.fields.url');
+        const input = screen.getByLabelText('resources.posts.fields.url');
         fireEvent.change(input, {
             target: { value: 'test' },
         });

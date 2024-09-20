@@ -1,7 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
 import { TextInput } from './TextInput';
-import { testDataProvider, useTranslatableContext } from 'ra-core';
+import {
+    ResourceContextProvider,
+    testDataProvider,
+    useTranslatableContext,
+} from 'ra-core';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Tabs } from '@mui/material';
 
@@ -35,13 +39,15 @@ describe('<TranslatableInputs />', () => {
         const handleSubmit = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm record={record} onSubmit={handleSubmit}>
-                    <TranslatableInputs locales={['en', 'fr']}>
-                        <TextInput source="name" />
-                        <TextInput source="description" />
-                        <TextInput source="nested.field" />
-                    </TranslatableInputs>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm record={record} onSubmit={handleSubmit}>
+                        <TranslatableInputs locales={['en', 'fr']}>
+                            <TextInput source="name" />
+                            <TextInput source="description" />
+                            <TextInput source="nested.field" />
+                        </TranslatableInputs>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -101,18 +107,20 @@ describe('<TranslatableInputs />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    record={record}
-                    onSubmit={handleSubmit}
-                    mode="onBlur"
-                >
-                    <TranslatableInputs
-                        locales={['en', 'fr']}
-                        selector={<Selector />}
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        record={record}
+                        onSubmit={handleSubmit}
+                        mode="onBlur"
                     >
-                        <TextInput source="name" validate={() => 'error'} />
-                    </TranslatableInputs>
-                </SimpleForm>
+                        <TranslatableInputs
+                            locales={['en', 'fr']}
+                            selector={<Selector />}
+                        >
+                            <TextInput source="name" validate={() => 'error'} />
+                        </TranslatableInputs>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -124,17 +132,17 @@ describe('<TranslatableInputs />', () => {
         );
 
         fireEvent.change(
-            screen.getAllByLabelText('resources.undefined.fields.name')[0],
+            screen.getAllByLabelText('resources.posts.fields.name')[0],
             {
                 target: { value: 'english value' },
             }
         );
         fireEvent.click(screen.getByText('ra.locales.fr'));
         fireEvent.focus(
-            screen.getAllByLabelText('resources.undefined.fields.name')[1]
+            screen.getAllByLabelText('resources.posts.fields.name')[1]
         );
         fireEvent.blur(
-            screen.getAllByLabelText('resources.undefined.fields.name')[1]
+            screen.getAllByLabelText('resources.posts.fields.name')[1]
         );
         await waitFor(() => {
             expect(screen.queryByText('error')).not.toBeNull();
@@ -151,13 +159,15 @@ describe('<TranslatableInputs />', () => {
         const save = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm record={record} onSubmit={save}>
-                    <TranslatableInputs locales={['en', 'fr']}>
-                        <TextInput source="name" />
-                        <TextInput source="description" />
-                        <TextInput source="nested.field" />
-                    </TranslatableInputs>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm record={record} onSubmit={save}>
+                        <TranslatableInputs locales={['en', 'fr']}>
+                            <TextInput source="name" />
+                            <TextInput source="description" />
+                            <TextInput source="nested.field" />
+                        </TranslatableInputs>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -224,16 +234,18 @@ describe('<TranslatableInputs />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm record={record}>
-                    <TranslatableInputs
-                        locales={['en', 'fr']}
-                        selector={<Selector />}
-                    >
-                        <TextInput source="name" />
-                        <TextInput source="description" />
-                        <TextInput source="nested.field" />
-                    </TranslatableInputs>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm record={record}>
+                        <TranslatableInputs
+                            locales={['en', 'fr']}
+                            selector={<Selector />}
+                        >
+                            <TextInput source="name" />
+                            <TextInput source="description" />
+                            <TextInput source="nested.field" />
+                        </TranslatableInputs>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 

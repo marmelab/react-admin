@@ -2,6 +2,7 @@ import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {
+    ResourceContextProvider,
     testDataProvider,
     TestTranslationProvider,
     useRecordContext,
@@ -26,15 +27,18 @@ describe('<AutocompleteArrayInput />', () => {
     it('should extract suggestions from choices', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            optionText="foobar.name"
+                            choices={[
+                                { id: 't', foobar: { name: 'Technical' } },
+                                { id: 'p', foobar: { name: 'Programming' } },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -53,16 +57,18 @@ describe('<AutocompleteArrayInput />', () => {
     it('should use optionText with a string value as text identifier', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        optionText="foobar"
-                        choices={[
-                            { id: 't', foobar: 'Technical' },
-                            { id: 'p', foobar: 'Programming' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            optionText="foobar"
+                            choices={[
+                                { id: 't', foobar: 'Technical' },
+                                { id: 'p', foobar: 'Programming' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -81,16 +87,18 @@ describe('<AutocompleteArrayInput />', () => {
     it('should use optionText with a string value including "." as text identifier', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        optionText="foobar.name"
-                        choices={[
-                            { id: 't', foobar: { name: 'Technical' } },
-                            { id: 'p', foobar: { name: 'Programming' } },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            optionText="foobar.name"
+                            choices={[
+                                { id: 't', foobar: { name: 'Technical' } },
+                                { id: 'p', foobar: { name: 'Programming' } },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -109,16 +117,18 @@ describe('<AutocompleteArrayInput />', () => {
     it('should use optionText with a function value as text identifier', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        optionText={choice => choice.foobar}
-                        choices={[
-                            { id: 't', foobar: 'Technical' },
-                            { id: 'p', foobar: 'Programming' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            optionText={choice => choice.foobar}
+                            choices={[
+                                { id: 't', foobar: 'Technical' },
+                                { id: 'p', foobar: 'Programming' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -138,15 +148,17 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TestTranslationProvider translate={x => `**${x}**`}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <AutocompleteArrayInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 't', name: 'Technical' },
-                                { id: 'p', name: 'Programming' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <AutocompleteArrayInput
+                                {...defaultProps}
+                                choices={[
+                                    { id: 't', name: 'Technical' },
+                                    { id: 'p', name: 'Programming' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </TestTranslationProvider>
             </AdminContext>
         );
@@ -167,16 +179,18 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TestTranslationProvider translate={x => `**${x}**`}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <AutocompleteArrayInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 't', name: 'Technical' },
-                                { id: 'p', name: 'Programming' },
-                            ]}
-                            translateChoice={false}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <AutocompleteArrayInput
+                                {...defaultProps}
+                                choices={[
+                                    { id: 't', name: 'Technical' },
+                                    { id: 'p', name: 'Programming' },
+                                ]}
+                                translateChoice={false}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </TestTranslationProvider>
             </AdminContext>
         );
@@ -197,13 +211,15 @@ describe('<AutocompleteArrayInput />', () => {
         const setFilter = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[{ id: 't', name: 'Technical' }]}
-                        setFilter={setFilter}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[{ id: 't', name: 'Technical' }]}
+                            setFilter={setFilter}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -223,14 +239,16 @@ describe('<AutocompleteArrayInput />', () => {
     it('should respect shouldRenderSuggestions over default if passed in', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[{ id: 't', name: 'Technical' }]}
-                        shouldRenderSuggestions={v => v.length > 2}
-                        noOptionsText="No choices"
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[{ id: 't', name: 'Technical' }]}
+                            shouldRenderSuggestions={v => v.length > 2}
+                            noOptionsText="No choices"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
@@ -247,23 +265,27 @@ describe('<AutocompleteArrayInput />', () => {
     it('should not fail when value is empty and new choices are applied', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[{ id: 't', name: 'Technical' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[{ id: 't', name: 'Technical' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[{ id: 't', name: 'Technical' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[{ id: 't', name: 'Technical' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -275,12 +297,14 @@ describe('<AutocompleteArrayInput />', () => {
     it('should repopulate the suggestions after the suggestions are dismissed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[{ id: 't', name: 'Technical' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[{ id: 't', name: 'Technical' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -301,12 +325,14 @@ describe('<AutocompleteArrayInput />', () => {
     it('should not rerender searchText while having focus and new choices arrive', async () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[{ id: 't', name: 'Technical' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[{ id: 't', name: 'Technical' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -320,15 +346,17 @@ describe('<AutocompleteArrayInput />', () => {
 
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 't', name: 'Technical' },
+                                { id: 'p', name: 'Programming' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -338,12 +366,14 @@ describe('<AutocompleteArrayInput />', () => {
     it('should revert the searchText on blur', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[{ id: 't', name: 'Technical' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[{ id: 't', name: 'Technical' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -364,13 +394,15 @@ describe('<AutocompleteArrayInput />', () => {
         const onChange = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        onChange={onChange}
-                        choices={[{ id: 't', name: 'Technical' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            onChange={onChange}
+                            choices={[{ id: 't', name: 'Technical' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -392,16 +424,18 @@ describe('<AutocompleteArrayInput />', () => {
         const setFilter = jest.fn();
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} record={{ tags: ['t'] }}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                        setFilter={setFilter}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()} record={{ tags: ['t'] }}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 't', name: 'Technical' },
+                                { id: 'p', name: 'Programming' },
+                            ]}
+                            setFilter={setFilter}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
@@ -412,16 +446,18 @@ describe('<AutocompleteArrayInput />', () => {
         expect(setFilter).toHaveBeenCalledWith('p');
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} record={{ tags: ['p'] }}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                        setFilter={setFilter}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()} record={{ tags: ['p'] }}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 't', name: 'Technical' },
+                                { id: 'p', name: 'Programming' },
+                            ]}
+                            setFilter={setFilter}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -434,21 +470,25 @@ describe('<AutocompleteArrayInput />', () => {
         const setFilter = jest.fn();
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn()}
-                    record={{ tags: [{ id: 't' }] }}
-                >
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                        parse={value => value && value.map(v => ({ id: v }))}
-                        format={value => value && value.map(v => v.id)}
-                        setFilter={setFilter}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        record={{ tags: [{ id: 't' }] }}
+                    >
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 't', name: 'Technical' },
+                                { id: 'p', name: 'Programming' },
+                            ]}
+                            parse={value =>
+                                value && value.map(v => ({ id: v }))
+                            }
+                            format={value => value && value.map(v => v.id)}
+                            setFilter={setFilter}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
@@ -459,21 +499,25 @@ describe('<AutocompleteArrayInput />', () => {
         expect(setFilter).toHaveBeenCalledWith('p');
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn()}
-                    record={{ tags: [{ id: 'p' }] }}
-                >
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                        parse={value => value && value.map(v => ({ id: v }))}
-                        format={value => value && value.map(v => v.id)}
-                        setFilter={setFilter}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        record={{ tags: [{ id: 'p' }] }}
+                    >
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 't', name: 'Technical' },
+                                { id: 'p', name: 'Programming' },
+                            ]}
+                            parse={value =>
+                                value && value.map(v => ({ id: v }))
+                            }
+                            format={value => value && value.map(v => v.id)}
+                            setFilter={setFilter}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -490,18 +534,20 @@ describe('<AutocompleteArrayInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                        optionText={<SuggestionItem />}
-                        inputText={choice => choice?.name}
-                        matchSuggestion={() => true}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 't', name: 'Technical' },
+                                { id: 'p', name: 'Programming' },
+                            ]}
+                            optionText={<SuggestionItem />}
+                            inputText={choice => choice?.name}
+                            matchSuggestion={() => true}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         userEvent.type(
@@ -515,12 +561,14 @@ describe('<AutocompleteArrayInput />', () => {
     it('should display helperText', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        helperText="Can I help you?"
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            helperText="Can I help you?"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.getByText('Can I help you?')).not.toBeNull();
@@ -532,13 +580,15 @@ describe('<AutocompleteArrayInput />', () => {
         it('should not be displayed if field is pristine', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <AutocompleteArrayInput
-                            {...defaultProps}
-                            choices={[{ id: 1, name: 'hello' }]}
-                            validate={failingValidator}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <AutocompleteArrayInput
+                                {...defaultProps}
+                                choices={[{ id: 1, name: 'hello' }]}
+                                validate={failingValidator}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByText('ra.validation.error')).toBeNull();
@@ -547,13 +597,15 @@ describe('<AutocompleteArrayInput />', () => {
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
-                        <AutocompleteArrayInput
-                            {...defaultProps}
-                            choices={[{ id: 1, name: 'hello' }]}
-                            validate={failingValidator}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                            <AutocompleteArrayInput
+                                {...defaultProps}
+                                choices={[{ id: 1, name: 'hello' }]}
+                                validate={failingValidator}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.tags');
@@ -571,16 +623,18 @@ describe('<AutocompleteArrayInput />', () => {
     it('updates suggestions when input is blurred and refocused', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 1, name: 'ab' },
-                            { id: 2, name: 'abc' },
-                            { id: 3, name: '123' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 1, name: 'ab' },
+                                { id: 2, name: 'abc' },
+                                { id: 3, name: '123' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
@@ -600,16 +654,18 @@ describe('<AutocompleteArrayInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 1, name: 'ab' },
-                            { id: 2, name: 'abc' },
-                            { id: 3, name: '123' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 1, name: 'ab' },
+                                { id: 2, name: 'abc' },
+                                { id: 3, name: '123' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
@@ -623,16 +679,18 @@ describe('<AutocompleteArrayInput />', () => {
     it('should limit suggestions when suggestionLimit is passed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                        suggestionLimit={1}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 't', name: 'Technical' },
+                                { id: 'p', name: 'Programming' },
+                            ]}
+                            suggestionLimit={1}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
@@ -658,14 +716,16 @@ describe('<AutocompleteArrayInput />', () => {
 
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -678,14 +738,16 @@ describe('<AutocompleteArrayInput />', () => {
         await new Promise(resolve => setTimeout(resolve));
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -710,14 +772,16 @@ describe('<AutocompleteArrayInput />', () => {
 
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -730,14 +794,16 @@ describe('<AutocompleteArrayInput />', () => {
         await new Promise(resolve => setTimeout(resolve));
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -763,14 +829,16 @@ describe('<AutocompleteArrayInput />', () => {
 
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        create={<Create />}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            create={<Create />}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -784,14 +852,16 @@ describe('<AutocompleteArrayInput />', () => {
         await new Promise(resolve => setTimeout(resolve));
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        create={<Create />}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            create={<Create />}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -817,14 +887,16 @@ describe('<AutocompleteArrayInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        create={<Create />}
-                        optionText={choice => choice.foobar}
-                        choices={choices}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            create={<Create />}
+                            optionText={choice => choice.foobar}
+                            choices={choices}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -860,14 +932,16 @@ describe('<AutocompleteArrayInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        create={<Create />}
-                        optionText="foobar.name"
-                        choices={choices}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            create={<Create />}
+                            optionText="foobar.name"
+                            choices={choices}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -901,15 +975,17 @@ describe('<AutocompleteArrayInput />', () => {
 
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                        optionText={() => `Choice is not displayed`}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                            optionText={() => `Choice is not displayed`}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -922,15 +998,17 @@ describe('<AutocompleteArrayInput />', () => {
         await new Promise(resolve => setTimeout(resolve));
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        source="language"
-                        resource="posts"
-                        choices={choices}
-                        onCreate={handleCreate}
-                        optionText={choice => `Choice is ${choice.name}`}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                            optionText={choice => `Choice is ${choice.name}`}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -942,22 +1020,26 @@ describe('<AutocompleteArrayInput />', () => {
     it('should show the suggestions when the input value is empty and the input is focused and choices arrived late', async () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteArrayInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 't', name: 'Technical' },
-                            { id: 'p', name: 'Programming' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 't', name: 'Technical' },
+                                { id: 'p', name: 'Programming' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -1029,19 +1111,21 @@ describe('<AutocompleteArrayInput />', () => {
     it('should not crash if its value is not an array', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn()}
-                    defaultValues={{ tags: 'programming' }}
-                >
-                    <AutocompleteArrayInput
-                        choices={[
-                            { id: 'programming', name: 'Programming' },
-                            { id: 'lifestyle', name: 'Lifestyle' },
-                            { id: 'photography', name: 'Photography' },
-                        ]}
-                        {...defaultProps}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ tags: 'programming' }}
+                    >
+                        <AutocompleteArrayInput
+                            choices={[
+                                { id: 'programming', name: 'Programming' },
+                                { id: 'lifestyle', name: 'Lifestyle' },
+                                { id: 'photography', name: 'Photography' },
+                            ]}
+                            {...defaultProps}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByRole('combobox')).not.toBeNull();
@@ -1050,16 +1134,21 @@ describe('<AutocompleteArrayInput />', () => {
     it('should not crash if its value is not an array and is empty', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ tags: '' }}>
-                    <AutocompleteArrayInput
-                        choices={[
-                            { id: 'programming', name: 'Programming' },
-                            { id: 'lifestyle', name: 'Lifestyle' },
-                            { id: 'photography', name: 'Photography' },
-                        ]}
-                        {...defaultProps}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ tags: '' }}
+                    >
+                        <AutocompleteArrayInput
+                            choices={[
+                                { id: 'programming', name: 'Programming' },
+                                { id: 'lifestyle', name: 'Lifestyle' },
+                                { id: 'photography', name: 'Photography' },
+                            ]}
+                            {...defaultProps}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByRole('combobox')).not.toBeNull();

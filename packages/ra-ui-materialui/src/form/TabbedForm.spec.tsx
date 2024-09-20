@@ -27,10 +27,12 @@ describe('<TabbedForm />', () => {
         render(
             <TestMemoryRouter>
                 <AdminContext dataProvider={testDataProvider()}>
-                    <TabbedForm>
-                        <TabbedForm.Tab label="tab1" />
-                        <TabbedForm.Tab label="tab2" />
-                    </TabbedForm>
+                    <ResourceContextProvider value="posts">
+                        <TabbedForm>
+                            <TabbedForm.Tab label="tab1" />
+                            <TabbedForm.Tab label="tab2" />
+                        </TabbedForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             </TestMemoryRouter>
         );
