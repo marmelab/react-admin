@@ -300,3 +300,45 @@ export const Default = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const emptyWhileLoading = () => {
+    // getOne: () => new Promise(() => setTimeout(dataProvider.getOne, 1000)),
+    const customDataProvider = {
+        getOne: () =>
+            new Promise(resolve =>
+                setTimeout(
+                    () =>
+                        resolve({
+                            data: {
+                                id: 1,
+                                title: 'War and Peace',
+                                author: 'Leo Tolstoy',
+                                summary:
+                                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                                year: 1869,
+                            },
+                        }),
+                    2000
+                )
+            ),
+    } as any;
+    return (
+        <TestMemoryRouter initialEntries={['/books/1/Edit']}>
+            <Admin dataProvider={customDataProvider}>
+                <Resource
+                    name="books"
+                    edit={() => (
+                        <Edit emptyWhileLoading>
+                            <SimpleForm>
+                                <TextInput source="title" />
+                                <TextInput source="author" />
+                                <TextInput source="summary" />
+                                <TextInput source="year" />
+                            </SimpleForm>
+                        </Edit>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
