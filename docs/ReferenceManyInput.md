@@ -72,7 +72,7 @@ const ProductEdit = () => (
 
 `<ReferenceManyInput>` persists the changes in the reference records (variants in the above example) after persisting the changes in the main resource (product in the above example). This means that you can also use `<ReferenceManyInput>` in `<Create>` views.
 
-**Tip**: `<ReferenceManyInput>` cannot be used with `undoable` mutations. You have to set `mutationMode="optimistic"` or `mutationMode="pessimistic"` in the parent `<Edit>` or `<Create>`, as in the example above.
+**Tip**: `<ReferenceManyInput>` cannot be used with `undoable` mutations. You have to set `mutationMode="optimistic"` or `mutationMode="pessimistic"` in the parent `<Edit>`, as in the example above.
 
 ## Props
 
