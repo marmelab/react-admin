@@ -315,6 +315,8 @@ Below is an example of an `<Edit>` page, including a 'create a new customer' but
   Your browser does not support the video tag.
 </video>
 
+{% raw %}
+
 ```tsx
 import React, { useCallback, useState } from 'react';
 import {
@@ -405,3 +407,5 @@ const EmployerEdit = () => (
     </Edit>
 );
 ```
+
+{% endraw %}
