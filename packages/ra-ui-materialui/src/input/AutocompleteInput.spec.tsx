@@ -515,7 +515,7 @@ describe('<AutocompleteInput />', () => {
             ];
             const OptionText = () => {
                 const record = useRecordContext();
-                return <span>option:{record.name}</span>;
+                return <span>option:{record?.name}</span>;
             };
             render(
                 <AdminContext>
@@ -1054,7 +1054,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     describe('onCreate', () => {
-        it('should include an option with the createLabel when the input is empty', async () => {
+        it("shouldn't include an option with the createLabel when the input is empty", async () => {
             const choices = [
                 { id: 'ang', name: 'Angular' },
                 { id: 'rea', name: 'React' },
@@ -1093,7 +1093,53 @@ describe('<AutocompleteInput />', () => {
                 target: { value: '' },
             });
 
-            expect(screen.queryByText('ra.action.create')).not.toBeNull();
+            expect(screen.queryByText('ra.action.create')).toBeNull();
+            expect(screen.queryByText('ra.action.create_item')).toBeNull();
+        });
+        it('should include an option with the custom createLabel when the input is empty', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const handleCreate = filter => {
+                const newChoice = {
+                    id: 'js_fatigue',
+                    name: filter,
+                };
+                choices.push(newChoice);
+                return newChoice;
+            };
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                        defaultValues={{ language: 'ang' }}
+                    >
+                        <AutocompleteInput
+                            source="language"
+                            resource="posts"
+                            choices={choices}
+                            onCreate={handleCreate}
+                            createLabel="Start typing to create a new item"
+                        />
+                    </SimpleForm>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+
+            expect(
+                screen.queryByText('Start typing to create a new item')
+            ).not.toBeNull();
+            expect(screen.queryByText('ra.action.create')).toBeNull();
             expect(screen.queryByText('ra.action.create_item')).toBeNull();
         });
         it('should include an option with the createItemLabel when the input not empty', async () => {
