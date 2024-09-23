@@ -310,7 +310,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 </InputLabel>
                 <Select
                     id={id}
-                    autoWidth
                     labelId={`${id}-outlined-label`}
                     label={
                         <FieldTitle
