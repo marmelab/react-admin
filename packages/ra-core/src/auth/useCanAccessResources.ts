@@ -6,6 +6,8 @@ import {
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
+import { RaRecord } from '../types';
+import { useRecordContext } from '../controller';
 
 /**
  * Checks whether users can access the provided resources.
@@ -45,13 +47,17 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
  *     );
  * };
  */
-export const useCanAccessResources = <ErrorType extends Error = Error>(
-    params: UseCanAccessResourcesOptions<ErrorType>
+export const useCanAccessResources = <
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+>(
+    params: UseCanAccessResourcesOptions<RecordType, ErrorType>
 ): UseCanAccessResourcesResult<ErrorType> => {
     const authProvider = useAuthProvider();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
+    const record = useRecordContext<RecordType>(params);
 
-    const { action, resources, record } = params;
+    const { action, resources } = params;
 
     const queryResult = useQueries({
         queries: resources.map(resource => {
@@ -110,11 +116,13 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
         : result;
 };
 
-export interface UseCanAccessResourcesOptions<ErrorType = Error>
-    extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
+export interface UseCanAccessResourcesOptions<
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+> extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
     resources: string[];
     action: string;
-    record?: unknown;
+    record?: RecordType;
 }
 
 export type UseCanAccessResourcesResult<ErrorType = Error> =

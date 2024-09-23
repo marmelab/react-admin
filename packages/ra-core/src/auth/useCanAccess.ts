@@ -9,6 +9,9 @@ import {
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
+import { useResourceContext } from '../core';
+import { useRecordContext } from '../controller';
+import { RaRecord } from '../types';
 
 /**
  * A hook that calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
@@ -45,20 +48,32 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
  *         return <PostEdit />;
  *     };
  */
-export const useCanAccess = <ErrorType = Error>(
-    params: UseCanAccessOptions<ErrorType>
+export const useCanAccess = <
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+>(
+    params: UseCanAccessOptions<RecordType, ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
+    const resource = useResourceContext(params);
+    if (!resource) {
+        throw new Error(
+            'useCanAccess must be used inside a <Resource> component or provide a resource prop'
+        );
+    }
+    const record = useRecordContext<RecordType>(params);
 
     const queryResult = useQuery({
-        queryKey: ['auth', 'canAccess', JSON.stringify(params)],
+        queryKey: ['auth', 'canAccess', { ...params, record, resource }],
         queryFn: async ({ signal }) => {
             if (!authProvider || !authProvider.canAccess) {
                 return true;
             }
             return authProvider.canAccess({
                 ...params,
+                record,
+                resource,
                 signal: authProvider.supportAbortSignal ? signal : undefined,
             });
         },
@@ -113,11 +128,13 @@ const emptyQueryObserverResult = {
     refetch: () => Promise.resolve(emptyQueryObserverResult),
 };
 
-export interface UseCanAccessOptions<ErrorType = Error>
-    extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
-    resource: string;
+export interface UseCanAccessOptions<
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+> extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
+    resource?: string;
     action: string;
-    record?: unknown;
+    record?: RecordType;
 }
 
 export type UseCanAccessResult<ErrorType = Error> =

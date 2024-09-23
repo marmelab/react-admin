@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { useLoadingContext } from '../core/useLoadingContext';
 import { useUnauthorizedContext } from '../core/useUnauthorizedContext';
-import { useCanAccess } from './useCanAccess';
+import { useCanAccess, UseCanAccessOptions } from './useCanAccess';
 import { RaRecord } from '../types';
-import { useRecordContext } from '../controller';
-import { useResourceContext } from '../core';
 
 /**
  * A component that only displays its children after checking whether users are authorized to access the provided resource and action.
@@ -15,24 +13,21 @@ import { useResourceContext } from '../core';
  * @param options.loading An optional element to render while the authorization is being checked. Defaults to the loading component provided on `Admin`.
  * @param options.unauthorized An optional element to render if users are not authorized. Defaults to the unauthorized component provided on `Admin`.
  */
-export const CanAccess = ({
+export const CanAccess = <
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+>({
     action,
     children,
     loading,
     unauthorized,
-    ...props
-}: CanAccessProps) => {
-    const resource = useResourceContext(props);
-    if (!resource) {
-        throw new Error(
-            '<CanAccess> must be used inside a <Resource> component or provide a resource prop'
-        );
-    }
-    const record = useRecordContext(props);
+    record,
+    resource,
+}: CanAccessProps<RecordType, ErrorType>) => {
     const { canAccess, isPending } = useCanAccess({
         action,
-        resource,
         record,
+        resource,
     });
 
     const Loading = useLoadingContext();
@@ -45,10 +40,10 @@ export const CanAccess = ({
           : children;
 };
 
-export interface CanAccessProps {
-    action: string;
-    resource?: string;
-    record?: RaRecord;
+export interface CanAccessProps<
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+> extends UseCanAccessOptions<RecordType, ErrorType> {
     children: React.ReactNode;
     loading?: React.ReactElement;
     unauthorized?: React.ReactElement;
