@@ -346,6 +346,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     readOnly={readOnly}
                     data-testid="selectArray"
                     size={size}
+                    MenuProps={defaultMenuProps}
                     {...field}
                     {...options}
                     onChange={handleChangeWithCreateSupport}
@@ -377,6 +378,13 @@ export type SelectArrayInputProps = ChoicesProps &
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
+
+const defaultMenuProps = {
+    anchorOrigin: {
+        vertical: 'bottom' as const,
+        horizontal: 'left' as const,
+    },
+};
 
 const sanitizeRestProps = ({
     alwaysOn,
