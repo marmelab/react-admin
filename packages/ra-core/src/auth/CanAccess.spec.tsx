@@ -8,7 +8,7 @@ import {
     Unauthorized,
 } from './CanAccess.stories';
 
-describe('CanAccess', () => {
+describe('<CanAccess>', () => {
     it('shows the default loading component while loading', async () => {
         render(<Basic />);
         await screen.findByText('Loading...');
@@ -19,7 +19,7 @@ describe('CanAccess', () => {
     });
     it('shows the default unauthorized component when users are unauthorized', async () => {
         render(<Unauthorized />);
-        await screen.findByText('Loading...');
+        await screen.findByText('Unauthorized');
     });
     it('shows the custom unauthorized element when users are unauthorized', async () => {
         render(<CustomUnauthorized />);
