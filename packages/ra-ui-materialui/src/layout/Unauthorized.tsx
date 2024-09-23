@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Typography, SxProps } from '@mui/material';
+import clsx from 'clsx';
 import { useTranslate } from 'ra-core';
 
 export const Unauthorized = (props: UnauthorizedProps) => {
@@ -12,7 +13,7 @@ export const Unauthorized = (props: UnauthorizedProps) => {
     } = props;
     const translate = useTranslate();
     return (
-        <Root className={className} {...rest}>
+        <Root className={clsx(UnauthorizedClasses.root, className)} {...rest}>
             <div className={UnauthorizedClasses.message}>
                 <Typography variant="h5" mt={3} color="text.secondary">
                     {translate(unauthorizedPrimary, { _: unauthorizedPrimary })}
@@ -44,16 +45,14 @@ export const UnauthorizedClasses = {
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     height: '100%',
     [`& .${UnauthorizedClasses.message}`]: {
         textAlign: 'center',
-        fontFamily: 'Roboto, sans-serif',
-        color: theme.palette.text.disabled,
         paddingTop: '1em',
         paddingBottom: '1em',
     },
-}));
+});

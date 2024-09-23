@@ -54,6 +54,7 @@ export const FullApp = () => (
             dataProvider={testDataProvider()}
             authProvider={authProvider}
             i18nProvider={i18nProvider}
+            unauthorized={Unauthorized}
         >
             <AdminUI>
                 <Resource name="users" list={UserList} />
