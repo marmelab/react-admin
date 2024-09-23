@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.2.1
+
+* Fix `<SelectArrayInput>` options panel width and placement ([#10232](https://github.com/marmelab/react-admin/pull/10232)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicated dependencies in dev packages ([#10212](https://github.com/marmelab/react-admin/pull/10212)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix for ids not being escaped in paths in the Simple Rest Data Provider ([#10206](https://github.com/marmelab/react-admin/pull/10206)) ([ckhsponge](https://github.com/ckhsponge))
+* [Doc] Fix `mutationMode` reference in `create` documentation ([#10231](https://github.com/marmelab/react-admin/pull/10231)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix remaining `isLoading` should be renamed to `isPending` ([#10218](https://github.com/marmelab/react-admin/pull/10218)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add `ra-data-graphql-supabase` to data provider list ([#10216](https://github.com/marmelab/react-admin/pull/10216)) ([maxschridde1494](https://github.com/maxschridde1494))
+* [Doc] Update `<Calendar>` doc to explain custom event format ([#10214](https://github.com/marmelab/react-admin/pull/10214)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix outdated `isLoading` in Data Provider chapter ([#10209](https://github.com/marmelab/react-admin/pull/10209)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add doc for `<DatagridAgClient>`, make `<DatagridAg>` stable ([#10205](https://github.com/marmelab/react-admin/pull/10205)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Build(deps): Bump dompurify from 2.4.3 to 2.5.4 ([#10208](https://github.com/marmelab/react-admin/pull/10208)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10211](https://github.com/marmelab/react-admin/pull/10211)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Build(deps-dev): Bump vite from 5.3.1 to 5.3.6 ([#10217](https://github.com/marmelab/react-admin/pull/10217)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.2.0
 
 * Add support for response metadata in `dataProvider.getList()` ([#10179](https://github.com/marmelab/react-admin/pull/10179)) ([fzaninotto](https://github.com/fzaninotto))
@@ -198,6 +213,19 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* Fix `<SelectArrayInput>` options panel width and placement ([#10232](https://github.com/marmelab/react-admin/pull/10232)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `mutationMode` reference in `create` documentation ([#10231](https://github.com/marmelab/react-admin/pull/10231)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix remaining `isLoading` should be renamed to `isPending` ([#10218](https://github.com/marmelab/react-admin/pull/10218)) ([smeng9](https://github.com/smeng9))
+* Build(deps-dev): Bump vite from 5.3.1 to 5.3.6 ([#10217](https://github.com/marmelab/react-admin/pull/10217)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc] Add `ra-data-graphql-supabase` to data provider list ([#10216](https://github.com/marmelab/react-admin/pull/10216)) ([maxschridde1494](https://github.com/maxschridde1494))
+* [Doc] Update `<Calendar>` doc to explain custom event format ([#10214](https://github.com/marmelab/react-admin/pull/10214)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix duplicated dependencies in dev packages ([#10212](https://github.com/marmelab/react-admin/pull/10212)) ([fzaninotto](https://github.com/fzaninotto))
+* Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10211](https://github.com/marmelab/react-admin/pull/10211)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc] Fix outdated `isLoading` in Data Provider chapter ([#10209](https://github.com/marmelab/react-admin/pull/10209)) ([smeng9](https://github.com/smeng9))
+* Build(deps): Bump dompurify from 2.4.3 to 2.5.4 ([#10208](https://github.com/marmelab/react-admin/pull/10208)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Fix for ids not being escaped in paths in the Simple Rest Data Provider ([#10206](https://github.com/marmelab/react-admin/pull/10206)) ([ckhsponge](https://github.com/ckhsponge))
+* [Doc] Add doc for `<DatagridAgClient>`, make `<DatagridAg>` stable ([#10205](https://github.com/marmelab/react-admin/pull/10205)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 
 * Fix filter button accessibility ([#10204](https://github.com/marmelab/react-admin/pull/10204)) ([djhi](https://github.com/djhi))
 * [Doc] Create a doc page for `<DateRangeInput>` ([#10202](https://github.com/marmelab/react-admin/pull/10202)) ([erwanMarmelab](https://github.com/erwanMarmelab))
