@@ -38,9 +38,9 @@ import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
  *     }
  *     return (
  *         <SimpleList
- *              primaryText={record => canAccess.name ? record.name : ''}
- *              secondaryText={record => canAccess.email ? record.email : ''}
- *              tertiaryText={record => canAccess.id ? record.id : ''}
+ *              primaryText={record => canAccess.users.name ? record.name : ''}
+ *              secondaryText={record => canAccess.users.email ? record.email : ''}
+ *              tertiaryText={record => canAccess.users.id ? record.id : ''}
  *          />
  *     );
  * };
