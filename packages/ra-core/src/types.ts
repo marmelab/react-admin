@@ -71,7 +71,7 @@ export type AuthProvider = {
     ) => Promise<AuthRedirectResult | void | any>;
     canAccess?: (
         params: QueryFunctionContext & {
-            action?: string;
+            action: string;
             resource: string;
             record?: unknown;
         }
