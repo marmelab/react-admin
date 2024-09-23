@@ -535,8 +535,7 @@ Now, every call to the auth provider will receive an additional `signal` paramet
 const authProvider = {
     canAccess: async ({ resource, action, record, signal }) => {
         const url = `${API_URL}/can_access?resource=${resource}&action=${action}`;
-        const options = { signal: params.signal };
-        const res = await fetch(url, options);
+        const res = await fetch(url, { signal });
         if (!res.ok) {
             throw new HttpError(res.statusText);
         }
