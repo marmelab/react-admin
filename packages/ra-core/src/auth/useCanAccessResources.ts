@@ -81,7 +81,7 @@ export const useCanAccessResources = <ErrorType extends Error = Error>(
         if (queryResult.error) {
             logoutIfAccessDenied(queryResult.error);
         }
-    }, [logout, queryResult.error]);
+    }, [logoutIfAccessDenied, queryResult.error]);
 
     const result = useMemo(() => {
         return {

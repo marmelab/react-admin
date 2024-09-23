@@ -69,7 +69,7 @@ export const useCanAccess = <ErrorType = Error>(
         if (queryResult.error) {
             logoutIfAccessDenied(queryResult.error);
         }
-    }, [logout, queryResult.error]);
+    }, [logoutIfAccessDenied, queryResult.error]);
 
     const result = useMemo(() => {
         // Don't check for the authProvider or authProvider.canAccess method in the useMemo
