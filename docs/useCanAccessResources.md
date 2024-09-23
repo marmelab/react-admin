@@ -11,7 +11,7 @@ This hook calls the `authProvider.canAccess()` method on mount for an array of r
 
 ## Usage
 
-`useCanAccessResources` takes an object `{ action, resources, record }` as argument. The `source` parameter is an array of the record properties names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object that has a property for each provided source determining whether the user has access to it.
+`useCanAccessResources` takes an object `{ action, resources, record }` as argument. The `resources` parameter is an array of resource names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object that has a property for each provided resource determining whether the user has access to it.
 
 ```jsx
 import { useCanAccessResources, SimpleList } from 'react-admin';
@@ -19,7 +19,7 @@ import { useCanAccessResources, SimpleList } from 'react-admin';
 const UserList = ({ record }) => {
     const { isPending, canAccess } = useCanAccessResources({
         action: 'delete',
-        resource: ['users.id', 'users.name', 'users.email'],
+        resources: ['users.id', 'users.name', 'users.email'],
         record,
     });
     if (isPending) {
@@ -27,9 +27,9 @@ const UserList = ({ record }) => {
     }
     return (
         <SimpleList
-             primaryText={record => canAccess.users.name ? record.name : ''}
-             secondaryText={record => canAccess.users.email ? record.email : ''}
-             tertiaryText={record => canAccess.users.id ? record.id : ''}
+             primaryText={record => canAccess['users.name'] ? record.name : ''}
+             secondaryText={record => canAccess['users.email'] ? record.email : ''}
+             tertiaryText={record => canAccess['users.id'] ? record.id : ''}
          />
     );
 };
