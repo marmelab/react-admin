@@ -6,7 +6,7 @@ This package takes a JSON object as input, then creates a client-side data provi
 
 All operations carried out in react-admin are local to the browser, and last only for the current browser session. A browser refresh erases all modifications.
 
-[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://www.youtube.com/watch?v=gW6BvodBIzE)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://www.youtube.com/watch?v=bJEo1O1oT6o)
 
 ## Installation
 
