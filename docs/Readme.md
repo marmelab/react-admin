@@ -6,7 +6,7 @@ title: "Documentation"
 
 A frontend Framework for building data-driven applications running in the browser, on top of REST/GraphQL APIs, using [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
-[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://www.youtube.com/watch?v=gW6BvodBIzE&ab_channel=react-admin)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://www.youtube.com/watch?v=gW6BvodBIzE)
 
 Check out [the demos page](./Demos.md) for real-life examples.
 
