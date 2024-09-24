@@ -209,7 +209,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.
 
 <div style="padding:56.25% 0 0 0;position:relative;">
-<iframe width="1264" height="711" src="https://www.youtube.com/embed/gW6BvodBIzE" title="react admin e commerce demo" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/gW6BvodBIzE" title="react admin e commerce demo" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 <br>
 
