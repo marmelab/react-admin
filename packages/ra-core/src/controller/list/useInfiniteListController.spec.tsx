@@ -21,6 +21,8 @@ import {
 } from './useListController';
 import { CoreAdminContext } from '../../core';
 import { TestMemoryRouter } from '../../routing';
+import { Authenticated } from './useInfiniteListController.security.stories';
+import { AuthProvider } from '../../types';
 
 const InfiniteListController = ({
     children,
@@ -550,6 +552,41 @@ describe('useInfiniteListController', () => {
             expect(totalInnerHTML).not.toEqual('undefined');
             expect(totalValue).not.toBeNaN();
             expect(totalValue).toEqual(0);
+        });
+    });
+
+    describe('security', () => {
+        it('should not call the dataProvider until the authentication check pass', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(
+                    () => new Promise(resolve => setTimeout(resolve, 500))
+                ),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getList: jest.fn(() =>
+                    Promise.resolve({
+                        data: [{ id: 1, title: 'A post', votes: 0 }],
+                        total: 0,
+                    })
+                ),
+            });
+
+            render(
+                <Authenticated
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await waitFor(() => {
+                expect(authProvider.checkAuth).toHaveBeenCalled();
+            });
+            expect(dataProvider.getList).not.toHaveBeenCalled();
+            await screen.findByText('A post - 0 votes');
         });
     });
 });
