@@ -384,6 +384,37 @@ export const CreateLabel = () => (
     </Wrapper>
 );
 
+export const CreateItemLabel = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={[
+                { id: 1, name: 'Leo Tolstoy' },
+                { id: 2, name: 'Victor Hugo' },
+                { id: 3, name: 'William Shakespeare' },
+                { id: 4, name: 'Charles Baudelaire' },
+                { id: 5, name: 'Marcel Proust' },
+            ]}
+            onCreate={filter => {
+                const newAuthorName = window.prompt(
+                    'Enter a new author',
+                    filter
+                );
+
+                if (newAuthorName) {
+                    const newAuthor = {
+                        id: choicesForCreationSupport.length + 1,
+                        name: newAuthorName,
+                    };
+                    choicesForCreationSupport.push(newAuthor);
+                    return newAuthor;
+                }
+            }}
+            createItemLabel="Add a new author: %{item}"
+        />
+    </Wrapper>
+);
+
 const authorsWithFirstAndLastName = [
     { id: 1, first_name: 'Leo', last_name: 'Tolstoy', language: 'Russian' },
     { id: 2, first_name: 'Victor', last_name: 'Hugo', language: 'French' },
