@@ -297,6 +297,5 @@ const ProductEdit = () => (
 ## Limitations
 
 -   `<ReferenceManyInput>` cannot be used inside an `<ArrayInput>` or a `<ReferenceOneInput>`.
--   `<ReferenceManyInput>` cannot be used with `undoable` mutations in a `<Create>` view.
 -   `<ReferenceManyInput>` cannot have a `<ReferenceOneInput>` or a `<ReferenceManyToManyInput>` as one of its children.
 -   `<ReferenceManyInput>` does not support server side validation.
