@@ -179,7 +179,7 @@ describe('useShowController', () => {
     });
 
     describe('security', () => {
-        it('should not call the dataProvider until the authentication check pass', async () => {
+        it('should not call the dataProvider until the authentication check passes', async () => {
             const authProvider: AuthProvider = {
                 checkAuth: jest.fn(
                     () => new Promise(resolve => setTimeout(resolve, 500))
