@@ -5,8 +5,10 @@ import { Route, Routes } from 'react-router';
 import { ShowController } from './ShowController';
 
 import { CoreAdminContext } from '../../core';
-import { DataProvider } from '../../types';
+import { AuthProvider, DataProvider } from '../../types';
 import { TestMemoryRouter } from '../../routing';
+import { testDataProvider } from '../../dataProvider';
+import { Authenticated } from './useShowController.security.stories';
 
 describe('useShowController', () => {
     const defaultProps = {
@@ -173,6 +175,40 @@ describe('useShowController', () => {
                 meta: { foo: 'bar' },
                 signal: undefined,
             });
+        });
+    });
+
+    describe('security', () => {
+        it('should not call the dataProvider until the authentication check pass', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(
+                    () => new Promise(resolve => setTimeout(resolve, 500))
+                ),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getOne: jest.fn(() =>
+                    Promise.resolve({
+                        data: { id: 1, title: 'A post', votes: 0 },
+                    })
+                ),
+            });
+
+            render(
+                <Authenticated
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await waitFor(() => {
+                expect(authProvider.checkAuth).toHaveBeenCalled();
+            });
+            expect(dataProvider.getOne).not.toHaveBeenCalled();
+            await screen.findByText('A post - 0 votes');
         });
     });
 });

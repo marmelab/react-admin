@@ -53,13 +53,15 @@ export const useShowController = <RecordType extends RaRecord = any>(
     props: ShowControllerProps<RecordType> = {}
 ): ShowControllerResult<RecordType> => {
     const { disableAuthentication, id: propsId, queryOptions = {} } = props;
-    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
             `useShowController requires a non-empty resource prop or context`
         );
     }
+    const { isPending: isPendingAuthState } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
@@ -85,6 +87,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
         resource,
         { id, meta },
         {
+            enabled: !isPendingAuthState,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',

@@ -63,15 +63,15 @@ export const useEditController = <
         redirect: redirectTo = DefaultRedirect,
         transform,
     } = props;
-    const { isPending: isPendingAuthState } = useAuthenticated({
-        enabled: !disableAuthentication,
-    });
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
             'useEditController requires a non-empty resource prop or context'
         );
     }
+    const { isPending: isPendingAuthState } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
