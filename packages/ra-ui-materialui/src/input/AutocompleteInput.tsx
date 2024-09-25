@@ -133,7 +133,7 @@ export const AutocompleteInput = <
         closeText = 'ra.action.close',
         create,
         createLabel,
-        createItemLabel,
+        createItemLabel = 'ra.action.create_item',
         createValue,
         debounce: debounceDelay = 250,
         defaultValue,
@@ -465,7 +465,13 @@ If you provided a React element for the optionText prop, you must also provide t
             event?.type === 'change' ||
             !doesQueryMatchSelection(newInputValue)
         ) {
-            setFilterValue(newInputValue);
+            const createOption = translate(createItemLabel, {
+                item: filterValue,
+                _: createItemLabel,
+            });
+            const isCreate = newInputValue === createOption;
+            const valueToSet = isCreate ? filterValue : newInputValue;
+            setFilterValue(valueToSet);
             debouncedSetFilter(newInputValue);
         }
         if (reason === 'clear') {
