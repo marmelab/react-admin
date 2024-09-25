@@ -301,7 +301,7 @@ export const Default = () => (
     </TestMemoryRouter>
 );
 
-export const emptyWhileLoading = () => {
+export const EmptyWhileLoading = () => {
     // getOne: () => new Promise(() => setTimeout(dataProvider.getOne, 1000)),
     const customDataProvider = {
         getOne: () =>
