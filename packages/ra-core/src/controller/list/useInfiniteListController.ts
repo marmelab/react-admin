@@ -47,8 +47,8 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
 ): InfiniteListControllerResult<RecordType> => {
     const {
         debounce = 500,
-        disableAuthentication,
-        disableSyncWithLocation,
+        disableAuthentication = false,
+        disableSyncWithLocation = false,
         exporter = defaultExporter,
         filter,
         filterDefaultValues,
@@ -116,7 +116,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            enabled: !isPendingAuthState,
+            enabled: !isPendingAuthState || disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>

@@ -3,7 +3,7 @@ import fakeDataProvider from 'ra-data-fakerest';
 
 import { CoreAdminContext, CoreAdminUI, Resource } from '../../core';
 import { AuthProvider, DataProvider } from '../../types';
-import { useListController } from './useListController';
+import { ListControllerProps, useListController } from './useListController';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -35,9 +35,10 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const Posts = () => {
+const Posts = (props: Partial<ListControllerProps>) => {
     const params = useListController({
         resource: 'posts',
+        ...props,
     });
     return (
         <div style={styles.mainContainer}>
@@ -80,6 +81,25 @@ export const Authenticated = ({
         >
             <CoreAdminUI>
                 <Resource name="posts" list={Posts} />
+            </CoreAdminUI>
+        </CoreAdminContext>
+    );
+};
+
+export const DisableAuthentication = ({
+    authProvider = defaultAuthProvider,
+    dataProvider = defaultDataProvider,
+}: {
+    authProvider?: AuthProvider;
+    dataProvider?: DataProvider;
+}) => {
+    return (
+        <CoreAdminContext
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+        >
+            <CoreAdminUI>
+                <Resource name="posts" list={<Posts disableAuthentication />} />
             </CoreAdminUI>
         </CoreAdminContext>
     );

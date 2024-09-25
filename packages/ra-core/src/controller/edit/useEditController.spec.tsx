@@ -23,7 +23,10 @@ import { AuthProvider, DataProvider } from '../../types';
 import { Middleware, useRegisterMutationMiddleware } from '../saveContext';
 import { EditController } from './EditController';
 import { RedirectionSideEffect, TestMemoryRouter } from '../../routing';
-import { Authenticated } from './useEditController.security.stories';
+import {
+    Authenticated,
+    DisableAuthentication,
+} from './useEditController.security.stories';
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -1238,6 +1241,34 @@ describe('useEditController', () => {
             expect(dataProvider.getOne).not.toHaveBeenCalled();
             resolveAuthCheck!();
             await screen.findByText('A post - 0 votes');
+        });
+
+        it('should call the dataProvider if disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getOne: jest.fn(() =>
+                    Promise.resolve({
+                        data: { id: 1, title: 'A post', votes: 0 },
+                    })
+                ),
+            });
+
+            render(
+                <DisableAuthentication
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await screen.findByText('A post - 0 votes');
+            expect(dataProvider.getOne).toHaveBeenCalled();
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
         });
     });
 });

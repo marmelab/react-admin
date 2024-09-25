@@ -3,7 +3,7 @@ import fakeDataProvider from 'ra-data-fakerest';
 
 import { CoreAdminContext, CoreAdminUI, Resource } from '../../core';
 import { AuthProvider, DataProvider } from '../../types';
-import { useEditController } from './useEditController';
+import { EditControllerProps, useEditController } from './useEditController';
 import { TestMemoryRouter } from '../..';
 
 export default {
@@ -31,10 +31,11 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const Post = () => {
+const Post = (props: Partial<EditControllerProps>) => {
     const params = useEditController({
         id: 1,
         resource: 'posts',
+        ...props,
     });
     return (
         <div style={styles.mainContainer}>
@@ -72,6 +73,30 @@ export const Authenticated = ({
             >
                 <CoreAdminUI>
                     <Resource name="posts" edit={Post} />
+                </CoreAdminUI>
+            </CoreAdminContext>
+        </TestMemoryRouter>
+    );
+};
+
+export const DisableAuthentication = ({
+    authProvider = defaultAuthProvider,
+    dataProvider = defaultDataProvider,
+}: {
+    authProvider?: AuthProvider;
+    dataProvider?: DataProvider;
+}) => {
+    return (
+        <TestMemoryRouter initialEntries={['/posts/1']}>
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+            >
+                <CoreAdminUI>
+                    <Resource
+                        name="posts"
+                        edit={<Post disableAuthentication />}
+                    />
                 </CoreAdminUI>
             </CoreAdminContext>
         </TestMemoryRouter>

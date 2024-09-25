@@ -3,7 +3,10 @@ import fakeDataProvider from 'ra-data-fakerest';
 
 import { CoreAdminContext, CoreAdminUI, Resource } from '../../core';
 import { AuthProvider, DataProvider } from '../../types';
-import { useInfiniteListController } from './useInfiniteListController';
+import {
+    InfiniteListControllerProps,
+    useInfiniteListController,
+} from './useInfiniteListController';
 
 export default {
     title: 'ra-core/controller/list/useInfiniteListController',
@@ -35,9 +38,10 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const Posts = () => {
+const Posts = (props: Partial<InfiniteListControllerProps>) => {
     const params = useInfiniteListController({
         resource: 'posts',
+        ...props,
     });
     return (
         <div style={styles.mainContainer}>
@@ -80,6 +84,25 @@ export const Authenticated = ({
         >
             <CoreAdminUI>
                 <Resource name="posts" list={Posts} />
+            </CoreAdminUI>
+        </CoreAdminContext>
+    );
+};
+
+export const DisableAuthentication = ({
+    authProvider = defaultAuthProvider,
+    dataProvider = defaultDataProvider,
+}: {
+    authProvider?: AuthProvider;
+    dataProvider?: DataProvider;
+}) => {
+    return (
+        <CoreAdminContext
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+        >
+            <CoreAdminUI>
+                <Resource name="posts" list={<Posts disableAuthentication />} />
             </CoreAdminUI>
         </CoreAdminContext>
     );

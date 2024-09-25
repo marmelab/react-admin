@@ -21,7 +21,10 @@ import {
 } from './useListController';
 import { CoreAdminContext } from '../../core';
 import { TestMemoryRouter } from '../../routing';
-import { Authenticated } from './useInfiniteListController.security.stories';
+import {
+    Authenticated,
+    DisableAuthentication,
+} from './useInfiniteListController.security.stories';
 import { AuthProvider } from '../../types';
 
 const InfiniteListController = ({
@@ -592,6 +595,35 @@ describe('useInfiniteListController', () => {
             expect(dataProvider.getList).not.toHaveBeenCalled();
             resolveAuthCheck!();
             await screen.findByText('A post - 0 votes');
+        });
+
+        it('should call the dataProvider if disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getList: jest.fn(() =>
+                    Promise.resolve({
+                        data: [{ id: 1, title: 'A post', votes: 0 }],
+                        total: 0,
+                    })
+                ),
+            });
+
+            render(
+                <DisableAuthentication
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await screen.findByText('A post - 0 votes');
+            expect(dataProvider.getList).toHaveBeenCalled();
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
         });
     });
 });

@@ -52,7 +52,11 @@ import {
 export const useShowController = <RecordType extends RaRecord = any>(
     props: ShowControllerProps<RecordType> = {}
 ): ShowControllerResult<RecordType> => {
-    const { disableAuthentication, id: propsId, queryOptions = {} } = props;
+    const {
+        disableAuthentication = false,
+        id: propsId,
+        queryOptions = {},
+    } = props;
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
@@ -87,7 +91,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
         resource,
         { id, meta },
         {
-            enabled: !isPendingAuthState,
+            enabled: !isPendingAuthState || disableAuthentication,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',

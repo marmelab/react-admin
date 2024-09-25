@@ -38,8 +38,8 @@ export const useListController = <RecordType extends RaRecord = any>(
 ): ListControllerResult<RecordType> => {
     const {
         debounce = 500,
-        disableAuthentication,
-        disableSyncWithLocation,
+        disableAuthentication = false,
+        disableSyncWithLocation = false,
         exporter = defaultExporter,
         filter,
         filterDefaultValues,
@@ -110,7 +110,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            enabled: !isPendingAuthState,
+            enabled: !isPendingAuthState || disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
@@ -173,7 +173,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
-        isPending: isPendingAuthState || isPending,
+        isPending,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,

@@ -3,7 +3,7 @@ import fakeDataProvider from 'ra-data-fakerest';
 
 import { CoreAdminContext, CoreAdminUI, Resource } from '../../core';
 import { AuthProvider, DataProvider } from '../../types';
-import { useShowController } from './useShowController';
+import { ShowControllerProps, useShowController } from './useShowController';
 import { TestMemoryRouter } from '../..';
 
 export default {
@@ -31,10 +31,11 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const Post = () => {
+const Post = (props: Partial<ShowControllerProps>) => {
     const params = useShowController({
         id: 1,
         resource: 'posts',
+        ...props,
     });
     return (
         <div style={styles.mainContainer}>
@@ -65,13 +66,37 @@ export const Authenticated = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <TestMemoryRouter initialEntries={['/posts/1']}>
+        <TestMemoryRouter initialEntries={['/posts/1/show']}>
             <CoreAdminContext
                 dataProvider={dataProvider}
                 authProvider={authProvider}
             >
                 <CoreAdminUI>
-                    <Resource name="posts" edit={Post} />
+                    <Resource name="posts" show={Post} />
+                </CoreAdminUI>
+            </CoreAdminContext>
+        </TestMemoryRouter>
+    );
+};
+
+export const DisableAuthentication = ({
+    authProvider = defaultAuthProvider,
+    dataProvider = defaultDataProvider,
+}: {
+    authProvider?: AuthProvider;
+    dataProvider?: DataProvider;
+}) => {
+    return (
+        <TestMemoryRouter initialEntries={['/posts/1/show']}>
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+            >
+                <CoreAdminUI>
+                    <Resource
+                        name="posts"
+                        show={<Post disableAuthentication />}
+                    />
                 </CoreAdminUI>
             </CoreAdminContext>
         </TestMemoryRouter>

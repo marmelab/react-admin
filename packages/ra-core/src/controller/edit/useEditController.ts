@@ -55,7 +55,7 @@ export const useEditController = <
     props: EditControllerProps<RecordType, ErrorType> = {}
 ): EditControllerResult<RecordType> => {
     const {
-        disableAuthentication,
+        disableAuthentication = false,
         id: propsId,
         mutationMode = 'undoable',
         mutationOptions = {},
@@ -107,7 +107,7 @@ export const useEditController = <
         resource,
         { id, meta: queryMeta },
         {
-            enabled: !isPendingAuthState,
+            enabled: !isPendingAuthState || disableAuthentication,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
