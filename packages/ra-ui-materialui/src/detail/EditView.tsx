@@ -16,7 +16,6 @@ export const EditView = (props: EditViewProps) => {
         children,
         className,
         component: Content = Card,
-        emptyWhileLoading = false,
         title,
         ...rest
     } = props;
@@ -26,7 +25,7 @@ export const EditView = (props: EditViewProps) => {
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
-    if (!children || (!record && emptyWhileLoading)) {
+    if (!children) {
         return null;
     }
 
@@ -59,7 +58,6 @@ export interface EditViewProps
     actions?: ReactElement | false;
     aside?: ReactElement;
     component?: ElementType;
-    emptyWhileLoading?: boolean;
     title?: string | ReactElement | false;
     sx?: SxProps;
 }
