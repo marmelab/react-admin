@@ -27,6 +27,7 @@ import {
     TitleElement,
     NotificationDefault,
     NotificationTranslated,
+    EmptyWhileLoading,
 } from './Edit.stories';
 
 describe('<Edit />', () => {
@@ -104,6 +105,13 @@ describe('<Edit />', () => {
                 previousData: { id: 1234, title: 'lorem' },
             });
         });
+    });
+
+    it("shoudln't display the record while loading", async () => {
+        render(<EmptyWhileLoading />);
+        expect(screen.queryByText('Book War and Peace')).toBeNull();
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        expect(screen.queryByText('Book War and Peace')).not.toBeNull();
     });
 
     describe('mutationMode prop', () => {
