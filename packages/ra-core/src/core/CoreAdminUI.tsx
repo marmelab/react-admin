@@ -260,6 +260,28 @@ export interface CoreAdminUIProps {
      * );
      */
     title?: TitleComponent;
+
+    /**
+     * The page to display when an authentication error occurs
+     *
+     * @see https://marmelab.com/react-admin/Admin.html#authenticationError
+     * @example
+     * import { Admin } from 'react-admin';
+     *
+     * const AuthenticationError = () => (
+     *     <div>
+     *         <h1>AuthenticationError</h1>
+     *         <p>Please contact the administrator</p>
+     *     </div>
+     * )
+     *
+     * const App = () => (
+     *     <Admin authenticationError={AuthenticationError}>
+     *         ...
+     *     </Admin>
+     * );
+     */
+    authenticationError?: ComponentType;
 }
 
 export const CoreAdminUI = (props: CoreAdminUIProps) => {
@@ -277,6 +299,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         ready = Ready,
         requireAuth = false,
         title = 'React Admin',
+        authenticationError = Noop,
     } = props;
 
     useEffect(() => {
@@ -335,6 +358,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
                                 loading={loading}
                                 requireAuth={requireAuth}
                                 ready={ready}
+                                authenticationError={authenticationError}
                             >
                                 {children}
                             </CoreAdminRoutes>

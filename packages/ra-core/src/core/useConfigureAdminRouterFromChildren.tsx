@@ -10,8 +10,9 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useLogout, usePermissions } from '../auth';
-import { useSafeSetState } from '../util';
+import useLogout from '../auth/useLogout';
+import usePermissions from '../auth/usePermissions';
+import { useSafeSetState } from '../util/hooks';
 import {
     AdminChildren,
     RenderResourcesFunction,

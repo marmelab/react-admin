@@ -32,6 +32,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         loading: LoadingPage,
         requireAuth,
         ready: Ready,
+        authenticationError: AuthenticationError = Noop,
     } = props;
 
     const [onlyAnonymousRoutes, setOnlyAnonymousRoutes] = useState(requireAuth);
@@ -135,6 +136,10 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                                         ) : null
                                     }
                                 />
+                                <Route
+                                    path="/authentication-error"
+                                    element={<AuthenticationError />}
+                                />
                                 <Route path="*" element={<CatchAll />} />
                             </Routes>
                         </Layout>
@@ -153,6 +158,8 @@ export interface CoreAdminRoutesProps {
     loading: LoadingComponent;
     requireAuth?: boolean;
     ready?: ComponentType;
+    authenticationError?: ComponentType;
 }
 
 const defaultAuthParams = { params: { route: 'dashboard' } };
+const Noop = () => null;
