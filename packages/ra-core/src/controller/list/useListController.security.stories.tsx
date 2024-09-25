@@ -46,12 +46,11 @@ const Posts = () => {
             ) : (
                 <div>
                     <ul style={styles.ul}>
-                        {!params.isPending &&
-                            params.data?.map(post => (
-                                <li key={`post_${post.id}`}>
-                                    {post.title} - {post.votes} votes
-                                </li>
-                            ))}
+                        {params.data?.map(post => (
+                            <li key={`post_${post.id}`}>
+                                {post.title} - {post.votes} votes
+                            </li>
+                        ))}
                     </ul>
                 </div>
             )}

@@ -42,11 +42,7 @@ const Post = () => {
                 <p>Loading...</p>
             ) : (
                 <div>
-                    {!params.isPending && (
-                        <div>
-                            {params.record.title} - {params.record.votes} votes
-                        </div>
-                    )}
+                    {params.record.title} - {params.record.votes} votes
                 </div>
             )}
         </div>
