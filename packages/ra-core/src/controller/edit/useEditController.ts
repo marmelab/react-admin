@@ -63,7 +63,9 @@ export const useEditController = <
         redirect: redirectTo = DefaultRedirect,
         transform,
     } = props;
-    useAuthenticated({ enabled: !disableAuthentication });
+    const { isPending: isPendingAuthState } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
@@ -105,6 +107,7 @@ export const useEditController = <
         resource,
         { id, meta: queryMeta },
         {
+            enabled: !isPendingAuthState,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
