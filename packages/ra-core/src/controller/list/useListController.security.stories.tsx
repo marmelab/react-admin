@@ -75,7 +75,7 @@ export const Authenticated = ({
             dataProvider={dataProvider}
             authProvider={authProvider}
         >
-            <CoreAdminUI unauthorized={() => <p>Unauthorized</p>}>
+            <CoreAdminUI>
                 <Resource name="posts" list={Posts} />
             </CoreAdminUI>
         </CoreAdminContext>
