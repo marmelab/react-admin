@@ -9,8 +9,8 @@ export const Unauthorized = (props: UnauthorizedProps) => {
     const {
         className,
         icon = DEFAULT_ICON,
-        unauthorizedPrimary = 'ra.page.unauthorized',
-        unauthorizedSecondary = 'ra.message.unauthorized',
+        textPrimary = 'ra.page.unauthorized',
+        textSecondary = 'ra.message.unauthorized',
         ...rest
     } = props;
     const translate = useTranslate();
@@ -19,11 +19,11 @@ export const Unauthorized = (props: UnauthorizedProps) => {
             <div className={UnauthorizedClasses.message}>
                 {icon}
                 <Typography variant="h5" mt={3} color="text.secondary">
-                    {translate(unauthorizedPrimary, { _: unauthorizedPrimary })}
+                    {translate(textPrimary, { _: textPrimary })}
                 </Typography>
                 <Typography variant="body2">
-                    {translate(unauthorizedSecondary, {
-                        _: unauthorizedSecondary,
+                    {translate(textSecondary, {
+                        _: textSecondary,
                     })}
                 </Typography>
             </div>
@@ -33,8 +33,8 @@ export const Unauthorized = (props: UnauthorizedProps) => {
 
 export interface UnauthorizedProps {
     className?: string;
-    unauthorizedPrimary?: string;
-    unauthorizedSecondary?: string;
+    textPrimary?: string;
+    textSecondary?: string;
     icon?: React.ReactNode;
     sx?: SxProps;
 }

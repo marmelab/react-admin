@@ -1,42 +1,48 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, SxProps } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import WarningAmber from '@mui/icons-material/WarningAmber';
 import clsx from 'clsx';
 import { useDefaultTitle, useTranslate } from 'ra-core';
 import { Title } from './Title';
 
-export const AuthenticationError = props => {
-    const { className, ...rest } = props;
+export const AuthenticationError = (props: AuthenticationErrorProps) => {
+    const {
+        className,
+        icon = DEFAULT_ICON,
+        textPrimary = 'ra.page.authentication_error',
+        textSecondary = 'ra.message.authentication_error',
+        ...rest
+    } = props;
 
     const translate = useTranslate();
     const title = useDefaultTitle();
     return (
         <Root
             className={clsx(AuthenticationErrorClasses.root, className)}
-            {...sanitizeRestProps(rest)}
+            {...rest}
         >
             <Title defaultTitle={title} />
             <div className={AuthenticationErrorClasses.message}>
-                <WarningAmber className={AuthenticationErrorClasses.icon} />
-                <Typography variant="h4" component="h1">
-                    {translate('ra.page.authentication_error')}
+                {icon}
+                <Typography variant="h5" mt={3} color="text.secondary">
+                    {translate(textPrimary, { _: textPrimary })}
                 </Typography>
-                <Typography>
-                    {translate('ra.message.authentication_error')}
+                <Typography variant="body2">
+                    {translate(textSecondary, { _: textSecondary })}
                 </Typography>
             </div>
         </Root>
     );
 };
 
-const sanitizeRestProps = ({
-    staticContext,
-    history,
-    location,
-    match,
-    ...rest
-}) => rest;
+export interface AuthenticationErrorProps {
+    className?: string;
+    textPrimary?: string;
+    textSecondary?: string;
+    icon?: React.ReactNode;
+    sx?: SxProps;
+}
 
 const PREFIX = 'RaAuthenticationError';
 
@@ -49,26 +55,26 @@ export const AuthenticationErrorClasses = {
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
+})({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    [theme.breakpoints.up('md')]: {
-        height: '100%',
-    },
-    [theme.breakpoints.down('md')]: {
-        height: '100vh',
-        marginTop: '-3em',
+    alignItems: 'center',
+    height: '100%',
+
+    [`& .${AuthenticationErrorClasses.message}`]: {
+        textAlign: 'center',
+        paddingTop: '1em',
+        paddingBottom: '1em',
+        opacity: 0.5,
     },
 
     [`& .${AuthenticationErrorClasses.icon}`]: {
         width: '9em',
         height: '9em',
     },
+});
 
-    [`& .${AuthenticationErrorClasses.message}`]: {
-        textAlign: 'center',
-        opacity: 0.5,
-        margin: '0 1em',
-    },
-}));
+const DEFAULT_ICON = (
+    <WarningAmber className={AuthenticationErrorClasses.icon} />
+);
