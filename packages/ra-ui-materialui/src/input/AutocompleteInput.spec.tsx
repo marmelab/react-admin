@@ -26,6 +26,7 @@ import {
     InsideReferenceInputOnChange,
     WithInputProps,
     OnCreate,
+    OnCreateSlow,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -1291,7 +1292,6 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
             expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
         });
-
         it('should allow the creation of a new choice with a promise', async () => {
             const choices = [
                 { id: 'ang', name: 'Angular' },
@@ -1360,6 +1360,31 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
             expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
         });
+        it('should not use the createItemLabel as the value of the input', async () => {
+            render(<OnCreateSlow />);
+            await screen.findByText('Book War and Peace', undefined, {
+                timeout: 2000,
+            });
+            const input = screen.getByLabelText('Author') as HTMLInputElement;
+            await waitFor(
+                () => {
+                    expect(input.value).toBe('Leo Tolstoy');
+                },
+                { timeout: 2000 }
+            );
+            fireEvent.focus(input);
+            expect(screen.getAllByRole('option')).toHaveLength(4);
+            fireEvent.change(input, { target: { value: 'x' } });
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('option')).toHaveLength(1);
+                },
+                { timeout: 2000 }
+            );
+            fireEvent.click(screen.getByText('Create x'));
+            expect(input.value).not.toBe('Create x');
+            expect(input.value).toBe('x');
+        }, 10000);
     });
     describe('create', () => {
         it('should allow the creation of a new choice', async () => {
