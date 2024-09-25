@@ -1204,9 +1204,13 @@ describe('useEditController', () => {
 
     describe('security', () => {
         it('should not call the dataProvider until the authentication check passes', async () => {
+            let resolveAuthCheck: () => void;
             const authProvider: AuthProvider = {
                 checkAuth: jest.fn(
-                    () => new Promise(resolve => setTimeout(resolve, 500))
+                    () =>
+                        new Promise(resolve => {
+                            resolveAuthCheck = resolve;
+                        })
                 ),
                 login: () => Promise.resolve(),
                 logout: () => Promise.resolve(),
@@ -1232,6 +1236,7 @@ describe('useEditController', () => {
                 expect(authProvider.checkAuth).toHaveBeenCalled();
             });
             expect(dataProvider.getOne).not.toHaveBeenCalled();
+            resolveAuthCheck!();
             await screen.findByText('A post - 0 votes');
         });
     });
