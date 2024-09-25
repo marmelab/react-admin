@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 import WarningAmber from '@mui/icons-material/WarningAmber';
 import clsx from 'clsx';
-
 import { useDefaultTitle, useTranslate } from 'ra-core';
 import { Title } from './Title';
 
@@ -19,8 +19,12 @@ export const AuthenticationError = props => {
             <Title defaultTitle={title} />
             <div className={AuthenticationErrorClasses.message}>
                 <WarningAmber className={AuthenticationErrorClasses.icon} />
-                <h1>{translate('ra.page.authentication_error')}</h1>
-                <div>{translate('ra.message.authentication_error')}.</div>
+                <Typography variant="h4" component="h1">
+                    {translate('ra.page.authentication_error')}
+                </Typography>
+                <Typography>
+                    {translate('ra.message.authentication_error')}
+                </Typography>
             </div>
         </Root>
     );
