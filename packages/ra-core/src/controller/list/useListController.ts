@@ -66,7 +66,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         );
     }
 
-    const { authenticated, isPending: isPendingAuthState } = useAuthenticated({
+    const { isPending: isPendingAuthState } = useAuthenticated({
         enabled: !disableAuthentication,
         logoutOnFailure: true,
     });
@@ -111,7 +111,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            enabled: !!authenticated && !isPendingAuthState,
+            enabled: !isPendingAuthState,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
