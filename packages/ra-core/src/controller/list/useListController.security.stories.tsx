@@ -39,18 +39,22 @@ const Posts = () => {
     const params = useListController({
         resource: 'posts',
     });
-    return params.isPending ? (
-        <p>Loading...</p>
-    ) : (
-        <div>
-            <ul style={styles.ul}>
-                {!params.isPending &&
-                    params.data?.map(post => (
-                        <li key={`post_${post.id}`}>
-                            {post.title} - {post.votes} votes
-                        </li>
-                    ))}
-            </ul>
+    return (
+        <div style={styles.mainContainer}>
+            {params.isPending ? (
+                <p>Loading...</p>
+            ) : (
+                <div>
+                    <ul style={styles.ul}>
+                        {!params.isPending &&
+                            params.data?.map(post => (
+                                <li key={`post_${post.id}`}>
+                                    {post.title} - {post.votes} votes
+                                </li>
+                            ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 };
