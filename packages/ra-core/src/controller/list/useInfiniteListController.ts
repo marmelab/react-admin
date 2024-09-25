@@ -73,7 +73,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
 
     const { isPending: isPendingAuthState } = useAuthenticated({
         enabled: !disableAuthentication,
-        logoutOnFailure: true,
     });
 
     const translate = useTranslate();
