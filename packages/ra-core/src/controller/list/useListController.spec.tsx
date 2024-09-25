@@ -235,7 +235,7 @@ describe('useListController', () => {
             );
 
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
-            expect(children).toHaveBeenCalledTimes(3);
+            expect(children).toHaveBeenCalledTimes(2);
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     displayedFilters: {},
