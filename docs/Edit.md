@@ -225,15 +225,15 @@ const PostEdit = () => (
 
 ## `emptyWhileLoading`
 
-By default, `<Edit>` renders its child component even before the `dataProvider.getOne()` call returns. And default layout components return null when the data is loading. If you use a custom layout component instead, you'll have to handle the case where the `data` is not yet defined.
+By default, `<Edit>` doesn't render its child component even before the `dataProvider.getOne()` call returns, but it returns its [`aside`](#aside), [`actions`](#actions) and [`title`](#title) components.
 
-But if you use a custom child component that expects the record context to be defined, your component will throw an error. For instance, the following will fail on load with a "ReferenceError: data is not defined" error:
+If you use one of those components customized with a record, your component will throw an error. For instance, the following will fail on load with a "ReferenceError: record is not defined" error:
 
 ```jsx
 import { Edit, useEditContext } from 'react-admin';
-import { Stack, Typography } from '@mui/icons-material/Star';
+import { Typography } from '@mui/icons-material/Star';
 
-const SimpleBookEdit = () => {
+const AsideComponent = () => {
     const { record } = useEditContext();
     return (
         <Typography>
@@ -243,8 +243,8 @@ const SimpleBookEdit = () => {
 }
 
 const BookEdit = () => (
-    <Edit>
-        <SimpleBookEdit />
+    <Edit aside={AsideComponent}>
+        {/* ... */}
     </Edit>
 );
 ```
@@ -252,7 +252,7 @@ const BookEdit = () => (
 You can handle this case by getting the `isPending` variable from the [`useEditContext`](./useEditContext.md) hook:
 
 ```jsx
-const SimpleBookEdit = () => {
+const AsideComponent = () => {
     const { record, isPending } = useEditContext();
     if (isPending) return null;
     return (
@@ -267,9 +267,9 @@ The `<Edit emptyWhileLoading>` prop provides a convenient shortcut for that use 
 
 ```diff
 const BookEdit = () => (
--   <Edit>
-+   <Edit emptyWhileLoading>
-        <SimpleBookEdit />
+-   <Edit aside={AsideComponent}>
++   <Edit aside={AsideComponent} emptyWhileLoading>
+        {/* ... */}
     </Edit>
 );
 ```
