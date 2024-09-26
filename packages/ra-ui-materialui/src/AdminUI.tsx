@@ -5,6 +5,7 @@ import { CssBaseline } from '@mui/material';
 
 import {
     Layout as DefaultLayout,
+    AuthenticationError,
     LoadingPage,
     NotFound,
     Notification,
@@ -14,6 +15,7 @@ import { Login, AuthCallback } from './auth';
 
 export const AdminUI = ({
     layout = DefaultLayout,
+    authenticationError = AuthenticationError,
     catchAll = NotFound,
     loading = LoadingPage,
     loginPage = Login,
@@ -30,6 +32,7 @@ export const AdminUI = ({
             loginPage={loginPage}
             authCallbackPage={authCallbackPage}
             error={error}
+            authenticationError={authenticationError}
             {...props}
         />
         {createElement(notification)}

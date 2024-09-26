@@ -55,7 +55,7 @@ export const useEditController = <
     props: EditControllerProps<RecordType, ErrorType> = {}
 ): EditControllerResult<RecordType> => {
     const {
-        disableAuthentication,
+        disableAuthentication = false,
         id: propsId,
         mutationMode = 'undoable',
         mutationOptions = {},
@@ -63,13 +63,15 @@ export const useEditController = <
         redirect: redirectTo = DefaultRedirect,
         transform,
     } = props;
-    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
             'useEditController requires a non-empty resource prop or context'
         );
     }
+    const { isPending: isPendingAuthState } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
@@ -105,6 +107,7 @@ export const useEditController = <
         resource,
         { id, meta: queryMeta },
         {
+            enabled: !isPendingAuthState || disableAuthentication,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',

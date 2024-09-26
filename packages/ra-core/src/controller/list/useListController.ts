@@ -1,17 +1,18 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 
-import { useAuthenticated } from '../../auth';
-import { useTranslate } from '../../i18n';
-import { useNotify } from '../../notification';
+import { useAuthenticated } from '../../auth/useAuthenticated';
+import { useTranslate } from '../../i18n/useTranslate';
+import { useNotify } from '../../notification/useNotify';
 import {
     useGetList,
     UseGetListHookValue,
     UseGetListOptions,
-} from '../../dataProvider';
+} from '../../dataProvider/useGetList';
 import { SORT_ASC } from './queryReducer';
-import { defaultExporter } from '../../export';
+import { defaultExporter } from '../../export/defaultExporter';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
-import { useResourceContext, useGetResourceLabel } from '../../core';
+import { useResourceContext } from '../../core/useResourceContext';
+import { useGetResourceLabel } from '../../core/useGetResourceLabel';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 
@@ -37,8 +38,8 @@ export const useListController = <RecordType extends RaRecord = any>(
 ): ListControllerResult<RecordType> => {
     const {
         debounce = 500,
-        disableAuthentication,
-        disableSyncWithLocation,
+        disableAuthentication = false,
+        disableSyncWithLocation = false,
         exporter = defaultExporter,
         filter,
         filterDefaultValues,
@@ -47,7 +48,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         sort = defaultSort,
         storeKey,
     } = props;
-    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions;
 
@@ -65,6 +65,10 @@ export const useListController = <RecordType extends RaRecord = any>(
             'useListController received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
+
+    const { isPending: isPendingAuthState } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
 
     const translate = useTranslate();
     const notify = useNotify();
@@ -106,6 +110,7 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
+            enabled: !isPendingAuthState || disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>

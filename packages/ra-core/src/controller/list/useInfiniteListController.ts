@@ -47,8 +47,8 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
 ): InfiniteListControllerResult<RecordType> => {
     const {
         debounce = 500,
-        disableAuthentication,
-        disableSyncWithLocation,
+        disableAuthentication = false,
+        disableSyncWithLocation = false,
         exporter = defaultExporter,
         filter,
         filterDefaultValues,
@@ -57,7 +57,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         sort,
         storeKey,
     } = props;
-    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions ?? {};
 
@@ -71,6 +70,10 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             '<InfiniteList> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
+
+    const { isPending: isPendingAuthState } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
 
     const translate = useTranslate();
     const notify = useNotify();
@@ -113,6 +116,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
+            enabled: !isPendingAuthState || disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>

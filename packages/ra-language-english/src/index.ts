@@ -59,6 +59,7 @@ const englishMessages: TranslationMessages = {
             empty: 'No %{name} yet.',
             invite: 'Do you want to add one?',
             unauthorized: 'Unauthorized',
+            authentication_error: 'Authentication error',
         },
         input: {
             file: {
@@ -113,6 +114,8 @@ const englishMessages: TranslationMessages = {
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
             unauthorized:
                 "You don't have the right permissions to access this page",
+            authentication_error:
+                'The authentication server returned an error and your credentials could not be checked.',
         },
         navigation: {
             clear_filters: 'Clear filters',
