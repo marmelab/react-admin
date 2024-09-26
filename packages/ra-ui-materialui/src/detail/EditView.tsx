@@ -22,11 +22,11 @@ export const EditView = (props: EditViewProps) => {
     } = props;
 
     const { hasShow } = useResourceDefinition();
-    const { resource, defaultTitle, record } = useEditContext();
+    const { resource, defaultTitle, record, isPending } = useEditContext();
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
-    if (!children || (!record && emptyWhileLoading)) {
+    if (!children || (!record && isPending && emptyWhileLoading)) {
         return null;
     }
 
