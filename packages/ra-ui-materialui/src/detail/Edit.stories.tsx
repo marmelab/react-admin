@@ -332,7 +332,10 @@ export const EmptyWhileLoading = () => {
                             <Typography variant="h6" sx={{ mt: 2, mb: -1 }}>
                                 Book Edition
                             </Typography>
-                            <Edit emptyWhileLoading>
+                            <Edit
+                                emptyWhileLoading
+                                aside={<AsideComponentWithRecord />}
+                            >
                                 <SimpleForm>
                                     <TextInput source="title" />
                                     <TextInput source="author" />
@@ -345,5 +348,14 @@ export const EmptyWhileLoading = () => {
                 />
             </Admin>
         </TestMemoryRouter>
+    );
+};
+
+const AsideComponentWithRecord = () => {
+    const { record } = useEditContext();
+    return (
+        <Typography>
+            <i>{record.title}</i>, by {record.author} ({record.year})
+        </Typography>
     );
 };
