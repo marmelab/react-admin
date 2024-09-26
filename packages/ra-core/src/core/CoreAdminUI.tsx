@@ -270,8 +270,8 @@ export interface CoreAdminUIProps {
      *
      * const AuthenticationError = () => (
      *     <div>
-     *         <h1>AuthenticationError</h1>
-     *         <p>Please contact the administrator</p>
+     *         <h1>Authentication Error</h1>
+     *         <p>The authentication server returned an error and your credentials could not be checked.</p>
      *     </div>
      * )
      *
