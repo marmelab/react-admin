@@ -66,6 +66,7 @@ You can customize the `<Edit>` component using the following props:
 * `className`: passed to the root component
 * [`component`](#component): override the root component
 * [`disableAuthentication`](#disableauthentication): disable the authentication check
+* [`emptyWhileLoading`](#emptywhileloading): Set to `true` to return `null` while the edit is loading.
 * [`id`](#id): the id of the record to edit
 * [`mutationMode`](#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
 * [`mutationOptions`](#mutationoptions): options for the `dataProvider.update()` call
@@ -224,7 +225,7 @@ const PostEdit = () => (
 
 ## `emptyWhileLoading`
 
-By default, `<Edit>` renders its child component even before the `dataProvider.getOne()` call returns. And default layout components (`<Datagrid>` and `<SimpleList>`) return null when the data is loading. If you use a custom layout component instead, you'll have to handle the case where the `data` is not yet defined.
+By default, `<Edit>` renders its child component even before the `dataProvider.getOne()` call returns. And default layout components return null when the data is loading. If you use a custom layout component instead, you'll have to handle the case where the `data` is not yet defined.
 
 But if you use a custom child component that expects the record context to be defined, your component will throw an error. For instance, the following will fail on load with a "ReferenceError: data is not defined" error:
 
