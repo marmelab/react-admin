@@ -43,7 +43,7 @@ describe('<Edit />', () => {
         } as any;
         const FakeForm = () => {
             const record = useRecordContext();
-            return <>{record.title}</>;
+            return <>{record?.title}</>;
         };
         render(
             <AdminContext dataProvider={dataProvider}>
@@ -71,7 +71,7 @@ describe('<Edit />', () => {
             const { save } = useSaveContext();
             return (
                 <>
-                    <span>{record.title}</span>
+                    <span>{record?.title}</span>
                     <button
                         onClick={() =>
                             save && save({ ...record, title: 'ipsum' })
@@ -132,7 +132,7 @@ describe('<Edit />', () => {
 
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -190,7 +190,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -246,7 +246,7 @@ describe('<Edit />', () => {
 
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -307,7 +307,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -364,7 +364,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save &&
@@ -430,7 +430,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -485,7 +485,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save &&
@@ -557,7 +557,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -623,7 +623,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save &&
@@ -693,7 +693,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -758,7 +758,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save &&
@@ -893,7 +893,12 @@ describe('<Edit />', () => {
                     i18nProvider={i18nProvider}
                 >
                     <ResourceDefinitionContextProvider
-                        definitions={{ foo: { recordRepresentation: 'title' } }}
+                        definitions={{
+                            foo: {
+                                recordRepresentation: 'title',
+                                name: '',
+                            },
+                        }}
                     >
                         <Edit {...defaultEditProps}>
                             <Title />
