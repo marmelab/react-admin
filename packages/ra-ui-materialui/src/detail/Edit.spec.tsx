@@ -107,7 +107,7 @@ describe('<Edit />', () => {
         });
     });
 
-    it("shoudln't display the record while loading", async () => {
+    it("shoudln't display the Edit child while loading when emptyWhileLoading is true", async () => {
         render(<EmptyWhileLoading />);
         expect(screen.queryByText('Book War and Peace')).toBeNull();
         await new Promise(resolve => setTimeout(resolve, 3000));
