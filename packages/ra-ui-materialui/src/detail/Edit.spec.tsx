@@ -109,17 +109,23 @@ describe('<Edit />', () => {
 
     it("shoudln't display the Edit child while loading when emptyWhileLoading is true", async () => {
         render(<EmptyWhileLoading />);
+
         expect(screen.queryByText('Book Edition')).not.toBeNull();
-        expect(screen.queryByDisplayValue('Leo Tolstoy')).toBeNull();
+        expect(
+            screen.queryByText('War and Peace, by Leo Tolstoy (1869)')
+        ).toBeNull();
+        expect(screen.queryByText('Something went wrong')).toBeNull();
+
         await waitFor(
             () => {
                 expect(
-                    screen.queryByDisplayValue('Leo Tolstoy')
+                    screen.queryByText('War and Peace, by Leo Tolstoy (1869)')
                 ).not.toBeNull();
             },
             { timeout: 2500 }
         );
         expect(screen.queryByText('Book Edition')).not.toBeNull();
+        expect(screen.queryByText('Something went wrong')).toBeNull();
     });
 
     describe('mutationMode prop', () => {

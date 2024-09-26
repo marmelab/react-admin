@@ -355,7 +355,7 @@ const AsideComponentWithRecord = () => {
     const { record } = useEditContext();
     return (
         <Typography>
-            <i>{record.title}</i>, by {record.author} ({record.year})
+            {record.title}, by {record.author} ({record.year})
         </Typography>
     );
 };
