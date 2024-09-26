@@ -479,7 +479,7 @@ import * as React from "react";
 import { Edit, SimpleForm, TextInput, SelectInput } from "react-admin";
 
 export const BookEdit = () => (
-  <Edit emptyWhileLoading>
+  <Edit>
     <SimpleForm>
       <TextInput source="title" />
       <TextInput source="author" />
