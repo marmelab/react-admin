@@ -9,7 +9,7 @@ import {
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Box, Card, Stack } from '@mui/material';
+import { Box, Card, Stack, Typography } from '@mui/material';
 
 import { TextInput } from '../input';
 import { SimpleForm } from '../form/SimpleForm';
@@ -328,14 +328,19 @@ export const EmptyWhileLoading = () => {
                 <Resource
                     name="books"
                     edit={() => (
-                        <Edit emptyWhileLoading>
-                            <SimpleForm>
-                                <TextInput source="title" />
-                                <TextInput source="author" />
-                                <TextInput source="summary" />
-                                <TextInput source="year" />
-                            </SimpleForm>
-                        </Edit>
+                        <Box>
+                            <Typography variant="h6" sx={{ mt: 2, mb: -1 }}>
+                                Book Edition
+                            </Typography>
+                            <Edit emptyWhileLoading>
+                                <SimpleForm>
+                                    <TextInput source="title" />
+                                    <TextInput source="author" />
+                                    <TextInput source="summary" />
+                                    <TextInput source="year" />
+                                </SimpleForm>
+                            </Edit>
+                        </Box>
                     )}
                 />
             </Admin>
