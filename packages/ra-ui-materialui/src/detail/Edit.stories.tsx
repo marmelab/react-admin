@@ -302,7 +302,6 @@ export const Default = () => (
 );
 
 export const EmptyWhileLoading = () => {
-    // getOne: () => new Promise(() => setTimeout(dataProvider.getOne, 1000)),
     const customDataProvider = {
         getOne: () =>
             new Promise(resolve =>

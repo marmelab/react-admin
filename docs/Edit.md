@@ -263,7 +263,7 @@ const AsideComponent = () => {
 }
 ```
 
-The `<Edit emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<Edit>` won't render its child until `data` is defined.
+The `<Edit emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<Edit>` won't render its `aside`, `actions` and `title` components until `record` is defined.
 
 ```diff
 const BookEdit = () => (
