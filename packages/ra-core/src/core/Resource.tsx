@@ -24,16 +24,7 @@ export const Resource = (props: ResourceProps) => {
                         }
                     />
                 )}
-                {show && (
-                    <Route
-                        path=":id/show/*"
-                        element={
-                            <CanAccess action="show" resource={name}>
-                                {getElement(show)}
-                            </CanAccess>
-                        }
-                    />
-                )}
+                {show && <Route path=":id/show/*" element={getElement(show)} />}
                 {edit && (
                     <Route
                         path=":id/*"

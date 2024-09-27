@@ -125,6 +125,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
                 loginPage={loginPage}
                 requireAuth={requireAuth}
                 ready={ready}
+                unauthorized={unauthorized}
             >
                 {children}
             </CoreAdminUI>

@@ -1,21 +1,20 @@
 import { useParams } from 'react-router-dom';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated } from '../../auth/useAuthenticated';
+import { useRequireAccess } from '../../auth/useRequireAccess';
 import { RaRecord } from '../../types';
 import {
     useGetOne,
-    useRefresh,
     UseGetOneHookValue,
     UseGetOneOptions,
-} from '../../dataProvider';
-import { useTranslate } from '../../i18n';
-import { useRedirect } from '../../routing';
-import { useNotify } from '../../notification';
-import {
-    useResourceContext,
-    useGetResourceLabel,
-    useGetRecordRepresentation,
-} from '../../core';
+} from '../../dataProvider/useGetOne';
+import { useRefresh } from '../../dataProvider/useRefresh';
+import { useTranslate } from '../../i18n/useTranslate';
+import { useRedirect } from '../../routing/useRedirect';
+import { useNotify } from '../../notification/useNotify';
+import { useResourceContext } from '../../core/useResourceContext';
+import { useGetResourceLabel } from '../../core/useGetResourceLabel';
+import { useGetRecordRepresentation } from '../../core/useGetRecordRepresentation';
 
 /**
  * Prepare data for the Show view.
@@ -66,6 +65,11 @@ export const useShowController = <RecordType extends RaRecord = any>(
     const { isPending: isPendingAuthState } = useAuthenticated({
         enabled: !disableAuthentication,
     });
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'show',
+        resource,
+        enabled: !disableAuthentication,
+    });
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
@@ -91,7 +95,9 @@ export const useShowController = <RecordType extends RaRecord = any>(
         resource,
         { id, meta },
         {
-            enabled: !isPendingAuthState || disableAuthentication,
+            enabled:
+                (!isPendingAuthState && !isPendingCanAccess) ||
+                disableAuthentication,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
