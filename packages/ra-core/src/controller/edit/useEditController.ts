@@ -1,30 +1,28 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated } from '../../auth/useAuthenticated';
+import { useRequireAccess } from '../../auth/useRequireAccess';
 import { RaRecord, MutationMode, TransformData } from '../../types';
-import { useRedirect, RedirectionSideEffect } from '../../routing';
-import { useNotify } from '../../notification';
+import { useRedirect, RedirectionSideEffect } from '../../routing/useRedirect';
+import { useNotify } from '../../notification/useNotify';
 import {
     useGetOne,
-    useUpdate,
-    useRefresh,
     UseGetOneHookValue,
-    HttpError,
     UseGetOneOptions,
-    UseUpdateOptions,
 } from '../../dataProvider';
-import { useTranslate } from '../../i18n';
-import {
-    useResourceContext,
-    useGetResourceLabel,
-    useGetRecordRepresentation,
-} from '../../core';
+import { useUpdate, UseUpdateOptions } from '../../dataProvider';
+import { useRefresh } from '../../dataProvider/useRefresh';
+import HttpError from '../../dataProvider/HttpError';
+import { useTranslate } from '../../i18n/useTranslate';
+import { useResourceContext } from '../../core/useResourceContext';
+import { useGetResourceLabel } from '../../core/useGetResourceLabel';
+import { useGetRecordRepresentation } from '../../core/useGetRecordRepresentation';
 import {
     SaveContextValue,
     SaveHandlerCallbacks,
-    useMutationMiddlewares,
-} from '../saveContext';
+} from '../saveContext/SaveContext';
+import { useMutationMiddlewares } from '../saveContext/useMutationMiddlewares';
 
 /**
  * Prepare data for the Edit view.
@@ -72,6 +70,11 @@ export const useEditController = <
     const { isPending: isPendingAuthState } = useAuthenticated({
         enabled: !disableAuthentication,
     });
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'edit',
+        resource,
+        enabled: !disableAuthentication,
+    });
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
@@ -107,7 +110,9 @@ export const useEditController = <
         resource,
         { id, meta: queryMeta },
         {
-            enabled: !isPendingAuthState || disableAuthentication,
+            enabled:
+                (!isPendingAuthState && !isPendingCanAccess) ||
+                disableAuthentication,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',

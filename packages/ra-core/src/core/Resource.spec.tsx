@@ -43,17 +43,6 @@ describe('<Resource>', () => {
         await fireEvent.click(await screen.findByText('create'));
         await screen.findByText('PostCreate');
     });
-    it('only renders the resource edit route if the authProvider.canAccess function returns true for the action=edit', async () => {
-        render(<AccessControl />);
-        // Check that the edit route is not rendered when unauthorized
-        await fireEvent.click(await screen.findByText('edit'));
-        await screen.findByText('Unauthorized');
-        await fireEvent.click(screen.getByText('list'));
-        // Check that the edit route is rendered when authorized
-        await fireEvent.click(screen.getByLabelText('posts.edit access'));
-        await fireEvent.click(await screen.findByText('edit'));
-        await screen.findByText('PostEdit');
-    });
     it('always render the resource custom routes', async () => {
         render(<AccessControl />);
         await fireEvent.click(await screen.findByText('custom'));

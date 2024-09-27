@@ -25,6 +25,7 @@ import { EditController } from './EditController';
 import { RedirectionSideEffect, TestMemoryRouter } from '../../routing';
 import {
     Authenticated,
+    CanAccess,
     DisableAuthentication,
 } from './useEditController.security.stories';
 
@@ -1241,6 +1242,25 @@ describe('useEditController', () => {
             expect(dataProvider.getOne).not.toHaveBeenCalled();
             resolveAuthCheck!();
             await screen.findByText('A post - 0 votes');
+        });
+
+        it('should redirect to the /unauthorized page when users do not have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('Loading...');
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('posts.edit access'));
+            fireEvent.click(await screen.findByText('Edit'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Unauthorized');
+        });
+
+        it('should display the edit view when users have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('Loading...');
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('Edit'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Post #1 - 90 votes');
         });
 
         it('should call the dataProvider if disableAuthentication is true', async () => {
