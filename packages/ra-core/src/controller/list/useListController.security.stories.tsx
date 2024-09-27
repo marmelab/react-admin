@@ -209,57 +209,6 @@ const AccessControlUI = ({
                     />
                     posts.list access
                 </label>
-                <br />
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={authorizedResources['posts.create']}
-                        onChange={() => {
-                            setAuthorizedResources(state => ({
-                                ...state,
-                                'posts.create':
-                                    !authorizedResources['posts.create'],
-                            }));
-
-                            queryClient.clear();
-                        }}
-                    />
-                    posts.create access
-                </label>
-                <br />
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={authorizedResources['posts.edit']}
-                        onChange={() => {
-                            setAuthorizedResources(state => ({
-                                ...state,
-                                'posts.edit':
-                                    !authorizedResources['posts.edit'],
-                            }));
-
-                            queryClient.clear();
-                        }}
-                    />
-                    posts.edit access
-                </label>
-                <br />
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={authorizedResources['posts.show']}
-                        onChange={() => {
-                            setAuthorizedResources(state => ({
-                                ...state,
-                                'posts.show':
-                                    !authorizedResources['posts.show'],
-                            }));
-
-                            queryClient.clear();
-                        }}
-                    />
-                    posts.show access
-                </label>
             </div>
             <Browser>{children}</Browser>
         </div>

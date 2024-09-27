@@ -8,11 +8,14 @@ import { CoreAdminContext } from '../../core/CoreAdminContext';
 import { CoreAdminUI } from '../../core/CoreAdminUI';
 import { Resource } from '../../core/Resource';
 import { AuthProvider, DataProvider } from '../../types';
-import { TestMemoryRouter } from '../../routing';
-import { ShowControllerProps, useShowController } from './useShowController';
+import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
+import {
+    CreateControllerProps,
+    useCreateController,
+} from './useCreateController';
 
 export default {
-    title: 'ra-core/controller/useShowController',
+    title: 'ra-core/controller/useCreateController',
 };
 
 const styles = {
@@ -36,21 +39,14 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const Post = (props: Partial<ShowControllerProps>) => {
-    const params = useShowController({
-        id: 1,
+const Post = (props: Partial<CreateControllerProps>) => {
+    const params = useCreateController({
         resource: 'posts',
         ...props,
     });
     return (
         <div style={styles.mainContainer}>
-            {params.isPending ? (
-                <p>Loading...</p>
-            ) : (
-                <div>
-                    {params.record.title} - {params.record.votes} votes
-                </div>
-            )}
+            {params.isPending ? <p>Loading...</p> : <div>Create view</div>}
         </div>
     );
 };
@@ -71,13 +67,13 @@ export const Authenticated = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <TestMemoryRouter initialEntries={['/posts/create']}>
             <CoreAdminContext
                 dataProvider={dataProvider}
                 authProvider={authProvider}
             >
                 <CoreAdminUI>
-                    <Resource name="posts" show={Post} />
+                    <Resource name="posts" create={Post} />
                 </CoreAdminUI>
             </CoreAdminContext>
         </TestMemoryRouter>
@@ -92,7 +88,7 @@ export const DisableAuthentication = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <TestMemoryRouter initialEntries={['/posts/create']}>
             <CoreAdminContext
                 dataProvider={dataProvider}
                 authProvider={authProvider}
@@ -100,7 +96,7 @@ export const DisableAuthentication = ({
                 <CoreAdminUI>
                     <Resource
                         name="posts"
-                        show={<Post disableAuthentication />}
+                        create={<Post disableAuthentication />}
                     />
                 </CoreAdminUI>
             </CoreAdminContext>
@@ -132,9 +128,9 @@ const AccessControlAdmin = ({
 }) => {
     const [authorizedResources, setAuthorizedResources] = React.useState({
         'posts.list': true,
-        'posts.create': false,
+        'posts.create': true,
         'posts.edit': false,
-        'posts.show': true,
+        'posts.show': false,
     });
 
     const authProvider: AuthProvider = {
@@ -169,10 +165,10 @@ const AccessControlAdmin = ({
                     list={
                         <div>
                             <div>List</div>
-                            <Link to="/posts/1/show">Show</Link>
+                            <Link to="/posts/create">Create</Link>
                         </div>
                     }
-                    show={<Post />}
+                    edit={<Post />}
                 />
             </CoreAdmin>
         </AccessControlUI>
@@ -205,14 +201,14 @@ const AccessControlUI = ({
                         onChange={() => {
                             setAuthorizedResources(state => ({
                                 ...state,
-                                'posts.show':
-                                    !authorizedResources['posts.show'],
+                                'posts.create':
+                                    !authorizedResources['posts.create'],
                             }));
 
                             queryClient.clear();
                         }}
                     />
-                    posts.show access
+                    posts.create access
                 </label>
             </div>
             <Browser>{children}</Browser>

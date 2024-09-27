@@ -297,6 +297,7 @@ export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
+    saving: boolean;
 }
 
 export interface EditControllerLoadingResult<RecordType extends RaRecord = any>

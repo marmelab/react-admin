@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { AccessControl, Basic } from './Resource.stories';
+import { render, screen } from '@testing-library/react';
+import { Basic } from './Resource.stories';
 
 describe('<Resource>', () => {
     it('renders resource routes by default', async () => {
@@ -21,22 +21,6 @@ describe('<Resource>', () => {
         navigate('/posts/create');
         await screen.findByText('PostCreate');
         navigate('/posts/customroute');
-        await screen.findByText('PostCustomRoute');
-    });
-    it('only renders the resource create route if the authProvider.canAccess function returns true for the action=create', async () => {
-        render(<AccessControl />);
-        // Check that the create route is not rendered when unauthorized
-        await fireEvent.click(await screen.findByText('create'));
-        await screen.findByText('Unauthorized');
-        await fireEvent.click(screen.getByText('list'));
-        // Check that the create route is rendered when authorized
-        await fireEvent.click(screen.getByLabelText('posts.create access'));
-        await fireEvent.click(await screen.findByText('create'));
-        await screen.findByText('PostCreate');
-    });
-    it('always render the resource custom routes', async () => {
-        render(<AccessControl />);
-        await fireEvent.click(await screen.findByText('custom'));
         await screen.findByText('PostCustomRoute');
     });
 });

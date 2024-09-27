@@ -222,7 +222,6 @@ describe('useShowController', () => {
 
         it('should redirect to the /unauthorized page when users do not have access', async () => {
             render(<CanAccess />);
-            await screen.findByText('Loading...');
             await screen.findByText('List');
             fireEvent.click(await screen.findByText('posts.show access'));
             fireEvent.click(await screen.findByText('Show'));
@@ -232,7 +231,6 @@ describe('useShowController', () => {
 
         it('should display the show view when users have access', async () => {
             render(<CanAccess />);
-            await screen.findByText('Loading...');
             await screen.findByText('List');
             fireEvent.click(await screen.findByText('Show'));
             await screen.findByText('Loading...');

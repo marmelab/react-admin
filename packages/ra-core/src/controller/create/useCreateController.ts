@@ -3,7 +3,7 @@ import { parse } from 'query-string';
 import { useLocation, Location } from 'react-router-dom';
 import { UseMutationOptions } from '@tanstack/react-query';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useRequireAccess } from '../../auth';
 import {
     HttpError,
     useCreate,
@@ -60,13 +60,18 @@ export const useCreateController = <
         mutationOptions = {},
     } = props;
 
-    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
             'useCreateController requires a non-empty resource prop or context'
         );
     }
+    useAuthenticated({ enabled: !disableAuthentication });
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'create',
+        resource,
+        enabled: !disableAuthentication,
+    });
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const finalRedirectTo =
         redirectTo ?? getDefaultRedirectRoute(hasShow, hasEdit);
@@ -182,7 +187,7 @@ export const useCreateController = <
     return {
         isFetching: false,
         isLoading: false,
-        isPending: saving,
+        isPending: isPendingCanAccess,
         saving,
         defaultTitle,
         save,
@@ -223,6 +228,7 @@ export interface CreateControllerResult<
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;
+    saving: boolean;
 }
 
 /**

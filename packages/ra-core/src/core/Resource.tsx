@@ -6,7 +6,6 @@ import { isValidElementType } from 'react-is';
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
 import { RestoreScrollPosition } from '../routing/RestoreScrollPosition';
-import { CanAccess } from '../auth/CanAccess';
 
 export const Resource = (props: ResourceProps) => {
     const { create, edit, list, name, show } = props;
@@ -15,14 +14,7 @@ export const Resource = (props: ResourceProps) => {
         <ResourceContextProvider value={name}>
             <Routes>
                 {create && (
-                    <Route
-                        path="create/*"
-                        element={
-                            <CanAccess action="create" resource={name}>
-                                {getElement(create)}
-                            </CanAccess>
-                        }
-                    />
+                    <Route path="create/*" element={getElement(create)} />
                 )}
                 {show && <Route path=":id/show/*" element={getElement(show)} />}
                 {edit && <Route path=":id/*" element={getElement(edit)} />}

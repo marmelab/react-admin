@@ -1246,7 +1246,6 @@ describe('useEditController', () => {
 
         it('should redirect to the /unauthorized page when users do not have access', async () => {
             render(<CanAccess />);
-            await screen.findByText('Loading...');
             await screen.findByText('List');
             fireEvent.click(await screen.findByText('posts.edit access'));
             fireEvent.click(await screen.findByText('Edit'));
@@ -1256,7 +1255,6 @@ describe('useEditController', () => {
 
         it('should display the edit view when users have access', async () => {
             render(<CanAccess />);
-            await screen.findByText('Loading...');
             await screen.findByText('List');
             fireEvent.click(await screen.findByText('Edit'));
             await screen.findByText('Loading...');
