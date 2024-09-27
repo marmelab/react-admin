@@ -1,16 +1,16 @@
 import * as React from 'react';
+import { QueryClient } from '@tanstack/react-query';
+import { Route, Routes } from 'react-router';
 import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core';
-import { useCanAccess, UseCanAccessResult } from './useCanAccess';
-import { QueryClient } from '@tanstack/react-query';
+import { useRequireAccess, UseRequireAccessResult } from './useRequireAccess';
 import { TestMemoryRouter } from '..';
-import { Route, Routes } from 'react-router';
 
 export default {
-    title: 'ra-core/auth/useCanAccess',
+    title: 'ra-core/auth/useRequireAccess',
 };
 
-const UseCanAccess = ({
+const UseRequireAccess = ({
     children,
     action,
     resource,
@@ -21,7 +21,7 @@ const UseCanAccess = ({
     resource: string;
     record?: any;
 }) => {
-    const res = useCanAccess({
+    const res = useRequireAccess({
         action,
         resource,
         record,
@@ -31,13 +31,10 @@ const UseCanAccess = ({
     return children(res);
 };
 
-const StateInspector = ({ state }: { state: UseCanAccessResult }) => (
+const StateInspector = ({ state }: { state: UseRequireAccessResult }) => (
     <div>
-        <span>{state.isPending && 'LOADING'}</span>
-        {state.canAccess !== undefined && (
-            <span>canAccess: {state.canAccess ? 'YES' : 'NO'}</span>
-        )}
-        <span>{state.error && 'ERROR'}</span>
+        <span>{state.isPending ? 'Loading' : 'Protected Content'}</span>
+        <span>{state.error ? 'Error' : null}</span>
     </div>
 );
 
@@ -67,9 +64,9 @@ export const Basic = ({
                 <Route
                     path="/"
                     element={
-                        <UseCanAccess action="read" resource="test">
+                        <UseRequireAccess action="read" resource="test">
                             {state => <StateInspector state={state} />}
-                        </UseCanAccess>
+                        </UseRequireAccess>
                     }
                 />
                 <Route path="/unauthorized" element={<div>Unauthorized</div>} />
@@ -93,9 +90,9 @@ export const NoAuthProvider = ({
                 <Route
                     path="/"
                     element={
-                        <UseCanAccess action="read" resource="test">
+                        <UseRequireAccess action="read" resource="test">
                             {state => <StateInspector state={state} />}
-                        </UseCanAccess>
+                        </UseRequireAccess>
                     }
                 />
                 <Route path="/unauthorized" element={<div>Unauthorized</div>} />

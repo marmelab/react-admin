@@ -3,29 +3,29 @@ import expect from 'expect';
 import { waitFor, render, screen } from '@testing-library/react';
 
 import { QueryClient } from '@tanstack/react-query';
-import { Basic } from './useCanAccess.stories';
+import { Basic } from './useRequireAccess.stories';
 
-describe('useCanAccess', () => {
+describe('useRequireAccess', () => {
     it('should return a loading state on mount', () => {
         render(<Basic />);
-        screen.getByText('LOADING');
+        screen.getByText('Loading');
     });
 
     it('should return isPending: true by default after a tick', async () => {
         render(<Basic />);
-        screen.getByText('LOADING');
+        screen.getByText('Loading');
         await waitFor(() => {
-            expect(screen.queryByText('LOADING')).toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
         });
     });
 
     it('should allow access on mount when there is no authProvider', () => {
         render(<Basic authProvider={null} />);
-        expect(screen.queryByText('LOADING')).toBeNull();
-        screen.getByText('canAccess: YES');
+        expect(screen.queryByText('Loading')).toBeNull();
+        screen.getByText('Protected Content');
     });
 
-    it('should return that the resource is accessible when canAccess return true', async () => {
+    it('should allow its caller to render when canAccess return true', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -36,12 +36,12 @@ describe('useCanAccess', () => {
         };
         render(<Basic authProvider={authProvider} />);
         await waitFor(() => {
-            expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+            expect(screen.queryByText('Protected Content')).not.toBeNull();
         });
     });
 
-    it('should return that the resource is accessible when auth provider does not have an canAccess method', async () => {
+    it('should allow its caller to render when auth provider does not have an canAccess method', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -53,12 +53,12 @@ describe('useCanAccess', () => {
         render(<Basic authProvider={authProvider} />);
 
         await waitFor(() => {
-            expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('canAccess: YES')).not.toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+            expect(screen.queryByText('Protected Content')).not.toBeNull();
         });
     });
 
-    it('should return that the resource is not accessible when canAccess return false', async () => {
+    it('should redirect to /unauthorized when users do not have access', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -69,11 +69,8 @@ describe('useCanAccess', () => {
         };
         render(<Basic authProvider={authProvider} />);
 
-        await waitFor(() => {
-            expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('canAccess: NO')).not.toBeNull();
-            expect(screen.queryByText('ERROR')).toBeNull();
-        });
+        await screen.findByText('Loading');
+        await screen.findByText('Unauthorized');
     });
 
     it('should redirect to /authentication-error when auth.canAccess call fails', async () => {
@@ -86,7 +83,7 @@ describe('useCanAccess', () => {
             canAccess: () => Promise.reject('not good'),
         };
         render(<Basic authProvider={authProvider} />);
-        await screen.findByText('LOADING');
+        await screen.findByText('Loading');
         await screen.findByText('Authentication Error');
     });
 
