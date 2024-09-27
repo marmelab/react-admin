@@ -171,9 +171,7 @@ The `disabled` prop set to true makes the element not mutable, focusable, or eve
 
 Contrary to read-only controls, disabled controls can not receive focus and are not submitted with the form.
 
-**Warning:** Note that `disabled` inputs are **not** included in the form values, and hence may trigger `warnWhenUnsavedChanges` if the input previously had a value in the record.
-
-**Tip:** To include the input in the form values, you can use `readOnly` instead of `disabled`.
+**Warning:** **React-hook-form sets the value of `disabled` inputs to `undefined`**, which is probably not what you want. For instance, when used on the `id` source, the `disabled` prop will *erase* the `id`. Another example is that `disabled` inputs trigger the `warnWhenUnsavedChanges` warning if the input previously had a value in the record. To avoid this, use the `readOnly` prop instead.
 
 ## `format`
 
