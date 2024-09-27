@@ -15,26 +15,33 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 Here is a (non-exhaustive) list of [features](https://www.ag-grid.com/react-data-grid/) that `<DatagridAG>` offers:
 
 -   In place editing of cells or rows
--   Advanced filtering
--   Multi-column sorting
 -   Columns resizing and reordering
+-   Row and column pinning
+-   Advanced filtering
+-   DOM Virtualization
+-   Row selection and bulk actions
+-   Row animation
 -   Draggable rows
+-   Multi-column sorting
+-   Keyboard navigation
+-   Themes
 -   Automatic page size
 -   Automatic column size
--   Themes
--   Row selection and bulk actions
 -   Compatibility with React Admin fields
 
 Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/), which offers even more features:
 
 -   Row Grouping
+-   Range selection
 -   Aggregation
 -   Tree Data
 -   Pivoting
--   More advanced filtering
 -   Master Detail views
 -   Range Selection
 -   Excel Export
+-   Status bar
+-   Context menu
+-   More advanced filtering
 -   And more...
 
 <video controls autoplay playsinline muted loop>

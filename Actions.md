@@ -668,6 +668,64 @@ The following hooks accept a `mutationMode` option:
 * [`useDelete`](./useDelete.md)
 * [`useDeleteMany`](./useDeleteMany.md)
 
+## Forcing A Partial Refresh
+
+<iframe src="https://www.youtube-nocookie.com/embed/kMYA9E9Yhbc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+If you need to refresh part of the UI after a user action, you can use TanStack Query's [`invalidateQueries`](https://tanstack.com/query/latest/docs/framework/react/guides/query-invalidation) function. This function invalidates the cache for a specific query key, forcing a refetch of the data.
+
+For example, the following button deletes an order and refreshes the list of orders so that the deleted order disappears:
+
+```jsx
+import { useDataProvider, useNotify } from "react-admin";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { IconButton, Tooltip } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import type { Order } from "data-generator-retail";
+
+export const OrderCancelButton = ({ order }: Props) => {
+  const notify = useNotify();
+  const queryClient = useQueryClient();
+
+  const dataProvider = useDataProvider();
+
+  const mutation = useMutation({
+    mutationFn: (order: Order) =>
+      dataProvider.update("orders", {
+        id: order.id,
+        data: { status: "cancelled" },
+        previousData: order,
+      }),
+    onSuccess: ({ data: order }) => {
+      notify(`Order ${order.reference} cancelled`);
+      // refresh the list
+      queryClient.invalidateQueries({
+        queryKey: ["orders", "getList"],
+      });
+    },
+  });
+
+  const handleCancel = (order: Order) => {
+    mutation.mutate(order);
+  };
+
+  return (
+    <Tooltip title="Cancel order" placement="left">
+      <IconButton
+        color="error"
+        aria-label="Cancel order"
+        onClick={() => handleCancel(order)}
+        disabled={mutation.isPending}
+      >
+        <CancelIcon />
+      </IconButton>
+    </Tooltip>
+  );
+};
+```
+
+`invalidateQuery` requires a query key to identify the query to invalidate. The query key is an array of strings or numbers. You can find the query key for the active queries in the React Query DevTools or in source of the query you use. 
+
 ## Querying The API With `fetch`
 
 Data Provider method hooks are "the react-admin way" to query the API. But nothing prevents you from using `fetch` if you want. For instance, when you don't want to add some routing logic to the data provider for an RPC method on your API, that makes perfect sense.
