@@ -30,13 +30,11 @@ export const Resource = (props: ResourceProps) => {
                     <Route
                         path="/*"
                         element={
-                            <CanAccess action="list" resource={name}>
-                                <RestoreScrollPosition
-                                    storeKey={`${name}.list.scrollPosition`}
-                                >
-                                    {getElement(list)}
-                                </RestoreScrollPosition>
-                            </CanAccess>
+                            <RestoreScrollPosition
+                                storeKey={`${name}.list.scrollPosition`}
+                            >
+                                {getElement(list)}
+                            </RestoreScrollPosition>
                         }
                     />
                 )}

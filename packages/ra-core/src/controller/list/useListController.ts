@@ -1,6 +1,7 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 
 import { useAuthenticated } from '../../auth/useAuthenticated';
+import { useRequireAccess } from '../../auth/useRequireAccess';
 import { useTranslate } from '../../i18n/useTranslate';
 import { useNotify } from '../../notification/useNotify';
 import {
@@ -69,6 +70,11 @@ export const useListController = <RecordType extends RaRecord = any>(
     const { isPending: isPendingAuthState } = useAuthenticated({
         enabled: !disableAuthentication,
     });
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'list',
+        resource,
+        enabled: !disableAuthentication,
+    });
 
     const translate = useTranslate();
     const notify = useNotify();
@@ -110,7 +116,9 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            enabled: !isPendingAuthState || disableAuthentication,
+            enabled:
+                (!isPendingAuthState && !isPendingCanAccess) ||
+                disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>

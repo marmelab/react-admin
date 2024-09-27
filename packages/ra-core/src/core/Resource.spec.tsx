@@ -23,15 +23,6 @@ describe('<Resource>', () => {
         navigate('/posts/customroute');
         await screen.findByText('PostCustomRoute');
     });
-
-    it('only renders the resource list route if the authProvider.canAccess function returns true for the action=list', async () => {
-        render(<AccessControl />);
-        // Check that the list route is rendered when authorized
-        await screen.findByText('PostList');
-        // Check that the list route is not rendered when unauthorized
-        await fireEvent.click(screen.getByLabelText('posts.list access'));
-        await screen.findByText('Unauthorized');
-    });
     it('only renders the resource create route if the authProvider.canAccess function returns true for the action=create', async () => {
         render(<AccessControl />);
         // Check that the create route is not rendered when unauthorized

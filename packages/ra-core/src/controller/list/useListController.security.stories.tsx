@@ -1,9 +1,16 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
+import { QueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
-import { CoreAdminContext, CoreAdminUI, Resource } from '../../core';
+import { Browser } from '../../storybook/FakeBrowser';
+import { CoreAdmin } from '../../core/CoreAdmin';
+import { CoreAdminContext } from '../../core/CoreAdminContext';
+import { CoreAdminUI } from '../../core/CoreAdminUI';
+import { Resource } from '../../core/Resource';
 import { AuthProvider, DataProvider } from '../../types';
 import { ListControllerProps, useListController } from './useListController';
+import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -104,3 +111,175 @@ export const DisableAuthentication = ({
         </CoreAdminContext>
     );
 };
+
+export const CanAccess = ({
+    authProviderDelay = 300,
+}: {
+    authProviderDelay?: number;
+}) => {
+    return (
+        <TestMemoryRouter initialEntries={['/posts']}>
+            <AccessControlAdmin
+                authProviderDelay={authProviderDelay}
+                queryClient={new QueryClient()}
+            />
+        </TestMemoryRouter>
+    );
+};
+
+const AccessControlAdmin = ({
+    authProviderDelay,
+    queryClient,
+}: {
+    authProviderDelay?: number;
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState({
+        'posts.list': true,
+        'posts.create': false,
+        'posts.edit': true,
+        'posts.show': false,
+    });
+
+    const authProvider: AuthProvider = {
+        login: () => Promise.reject(new Error('Not implemented')),
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        getPermissions: () => Promise.resolve(undefined),
+        canAccess: ({ action, resource }) =>
+            new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(authorizedResources[`${resource}.${action}`]);
+                }, authProviderDelay);
+            }),
+    };
+    return (
+        <AccessControlUI
+            queryClient={queryClient}
+            authorizedResources={authorizedResources}
+            setAuthorizedResources={setAuthorizedResources}
+        >
+            <CoreAdmin
+                authProvider={authProvider}
+                dataProvider={defaultDataProvider}
+                queryClient={queryClient}
+                unauthorized={Unauthorized}
+                loading={Loading}
+                authenticationError={AuthenticationError}
+            >
+                <Resource name="posts" list={<Posts />} />
+            </CoreAdmin>
+        </AccessControlUI>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        'posts.list': boolean;
+        'posts.create': boolean;
+        'posts.edit': boolean;
+        'posts.show': boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['posts.list']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'posts.list':
+                                    !authorizedResources['posts.list'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    posts.list access
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['posts.create']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'posts.create':
+                                    !authorizedResources['posts.create'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    posts.create access
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['posts.edit']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'posts.edit':
+                                    !authorizedResources['posts.edit'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    posts.edit access
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['posts.show']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'posts.show':
+                                    !authorizedResources['posts.show'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    posts.show access
+                </label>
+            </div>
+            <Browser>{children}</Browser>
+        </div>
+    );
+};
+
+const Unauthorized = () => {
+    return (
+        <div>
+            <div>Unauthorized</div>
+            <Link to="/posts">List</Link>
+        </div>
+    );
+};
+const AuthenticationError = () => {
+    return (
+        <div>
+            <div>AuthenticationError</div>
+        </div>
+    );
+};
+
+const Loading = () => <div>Loading...</div>;
