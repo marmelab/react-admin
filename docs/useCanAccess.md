@@ -7,8 +7,6 @@ title: "useCanAccess"
 
 This hook calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). It returns an object containing a `canAccess` boolean set to `true` if users have access to the resource and action. 
 
-Should an error occur, the hook will call [`authProvider.checkError`](./AuthProviderWriting.md#checkerror).
-
 ## Usage
 
 `useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
