@@ -8,8 +8,9 @@ import {
 import { useNavigate } from 'react-router';
 
 /**
- * A hook that calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
- * It redirects to the /authentication-error page if the user doesn't have the required permissions.
+ * A hook that calls the authProvider.canAccess() method for a provided resource and action (and optionally a record).
+ * It redirects to the /unauthorized page if the user doesn't have the required permissions.
+ * It redirects to the /authentication-error page if the authProvider.canAccess throws an error.
  *
  * The return value updates according to the request state:
  *
@@ -24,7 +25,7 @@ import { useNavigate } from 'react-router';
  * @param {string} params.action The action to check access for
  * @param {Object} params.record Optional. The record to check access for
  *
- * @returns Return the react-query result and a canAccess property which is a boolean indicating the access status
+ * @returns Return the react-query result.
  *
  * @example
  *     import { useRequireAccess } from 'react-admin';
