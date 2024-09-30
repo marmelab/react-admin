@@ -6,12 +6,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { Basic } from './useRequireAccess.stories';
 
 describe('useRequireAccess', () => {
-    it('should return a loading state on mount', () => {
-        render(<Basic />);
-        screen.getByText('Loading');
-    });
-
-    it('should return isPending: true by default after a tick', async () => {
+    it('should return a loading state on mount', async () => {
         render(<Basic />);
         screen.getByText('Loading');
         await waitFor(() => {
@@ -35,10 +30,7 @@ describe('useRequireAccess', () => {
             canAccess: () => Promise.resolve(true),
         };
         render(<Basic authProvider={authProvider} />);
-        await waitFor(() => {
-            expect(screen.queryByText('Loading')).toBeNull();
-            expect(screen.queryByText('Protected Content')).not.toBeNull();
-        });
+        await screen.findByText('Protected Content');
     });
 
     it('should allow its caller to render when auth provider does not have an canAccess method', async () => {
@@ -51,11 +43,9 @@ describe('useRequireAccess', () => {
             canAccess: undefined,
         };
         render(<Basic authProvider={authProvider} />);
+        expect(screen.queryByText('Loading')).toBeNull();
 
-        await waitFor(() => {
-            expect(screen.queryByText('Loading')).toBeNull();
-            expect(screen.queryByText('Protected Content')).not.toBeNull();
-        });
+        await screen.findByText('Protected Content');
     });
 
     it('should redirect to /unauthorized when users do not have access', async () => {
