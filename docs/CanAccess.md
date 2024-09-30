@@ -34,11 +34,11 @@ const UserEdit = () => {
 `<CanAccess>` expects the following props:
 
 | Name           | Required | Type           | Default                               | Description |
-| -------------- | -------- | -------------- | ------------------------------------- | --- |
-| `action`       | Required | `string`       | -                                     | The action to check, e.g. 'read', 'list', 'export', 'delete', etc. |
+| -------------- | -------- | -------------- | --------------------- | --- |
+| `action`       | Required | `string`       | -                     | The action to check, e.g. 'read', 'list', 'export', 'delete', etc. |
 | `resource`     | Optional | `string`       | ResourceContext value | The resource to check, e.g. 'users', 'comments', 'posts', etc. |
-| `record`       | Optional | `object`       | RecordContext value  | The record to check. If passed, the child only renders if the user has access to that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
-| `loading`      | Optional | `ReactElement` | `loading` from `<Admin>`               | The element displayed while the `canAccess` call is pending |
-| `unauthorized` | Optional | `ReactElement` | `unauthorized` from `<Admin>`          | The element displayed when users don't have access to the resource |
+| `record`       | Optional | `object`       | RecordContext value   | The record to check. If passed, the child only renders if the user has access to that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
+| `loading`      | Optional | `ReactElement` | -                     | The element displayed while the `canAccess` call is pending |
+| `unauthorized` | Optional | `ReactElement` | -                     | The element displayed when users don't have access to the resource |
 
 
