@@ -15,18 +15,12 @@ export const CanAccess = <
     RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
     ErrorType extends Error = Error,
 >({
-    action,
     children,
     loading = null,
     unauthorized = null,
-    record,
-    resource,
+    ...props
 }: CanAccessProps<RecordType, ErrorType>) => {
-    const { canAccess, isPending } = useCanAccess({
-        action,
-        record,
-        resource,
-    });
+    const { canAccess, isPending } = useCanAccess(props);
 
     if (isPending) {
         return loading;

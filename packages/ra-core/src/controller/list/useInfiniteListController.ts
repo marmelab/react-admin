@@ -4,7 +4,7 @@ import {
     InfiniteData,
 } from '@tanstack/react-query';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
@@ -75,6 +75,12 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         enabled: !disableAuthentication,
     });
 
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'list',
+        resource,
+        enabled: !disableAuthentication,
+    });
+
     const translate = useTranslate();
     const notify = useNotify();
 
@@ -116,7 +122,9 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            enabled: !isPendingAuthState || disableAuthentication,
+            enabled:
+                (!isPendingAuthState && !isPendingCanAccess) ||
+                disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
