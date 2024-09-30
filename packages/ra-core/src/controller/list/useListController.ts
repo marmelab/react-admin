@@ -1,21 +1,19 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 
-import { useAuthenticated } from '../../auth/useAuthenticated';
-import { useRequireAccess } from '../../auth/useRequireAccess';
-import { useTranslate } from '../../i18n/useTranslate';
-import { useNotify } from '../../notification/useNotify';
+import { useAuthenticated, useRequireAccess } from '../../auth';
+import { useTranslate } from '../../i18n';
+import { useNotify } from '../../notification';
 import {
     useGetList,
     UseGetListHookValue,
     UseGetListOptions,
-} from '../../dataProvider/useGetList';
-import { SORT_ASC } from './queryReducer';
-import { defaultExporter } from '../../export/defaultExporter';
+} from '../../dataProvider';
+import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
-import { useResourceContext } from '../../core/useResourceContext';
-import { useGetResourceLabel } from '../../core/useGetResourceLabel';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import { SORT_ASC } from './queryReducer';
 
 /**
  * Prepare data for the List view

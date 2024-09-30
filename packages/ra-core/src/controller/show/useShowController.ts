@@ -1,20 +1,21 @@
 import { useParams } from 'react-router-dom';
 
-import { useAuthenticated } from '../../auth/useAuthenticated';
-import { useRequireAccess } from '../../auth/useRequireAccess';
+import { useAuthenticated, useRequireAccess } from '../../auth';
 import { RaRecord } from '../../types';
 import {
     useGetOne,
+    useRefresh,
     UseGetOneHookValue,
     UseGetOneOptions,
-} from '../../dataProvider/useGetOne';
-import { useRefresh } from '../../dataProvider/useRefresh';
-import { useTranslate } from '../../i18n/useTranslate';
-import { useRedirect } from '../../routing/useRedirect';
-import { useNotify } from '../../notification/useNotify';
-import { useResourceContext } from '../../core/useResourceContext';
-import { useGetResourceLabel } from '../../core/useGetResourceLabel';
-import { useGetRecordRepresentation } from '../../core/useGetRecordRepresentation';
+} from '../../dataProvider';
+import { useTranslate } from '../../i18n';
+import { useRedirect } from '../../routing';
+import { useNotify } from '../../notification';
+import {
+    useResourceContext,
+    useGetResourceLabel,
+    useGetRecordRepresentation,
+} from '../../core';
 
 /**
  * Prepare data for the Show view.
