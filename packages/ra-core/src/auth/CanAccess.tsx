@@ -8,8 +8,8 @@ import { RaRecord } from '../types';
  * @param options.action The action to check. One of 'list', 'create', 'edit', 'show', 'delete', or a custom action.
  * @param options.resource The resource to check. e.g. 'posts', 'comments', 'users'
  * @param options.children The component to render if users are authorized.
- * @param options.loading An optional element to render while the authorization is being checked. Defaults to the loading component provided on `Admin`.
- * @param options.unauthorized An optional element to render if users are not authorized. Defaults to the unauthorized component provided on `Admin`.
+ * @param options.loading An optional element to render while the authorization is being checked. Defaults to null.
+ * @param options.unauthorized An optional element to render if users are not authorized. Defaults to null.
  */
 export const CanAccess = <
     RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
