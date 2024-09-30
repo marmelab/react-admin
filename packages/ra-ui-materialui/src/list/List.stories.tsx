@@ -342,7 +342,7 @@ export const PartialPagination = () => (
         <Admin
             dataProvider={
                 {
-                    getList: async (resource, params) => ({
+                    getList: async (_resource, _params) => ({
                         data: [
                             {
                                 id: 1,
@@ -391,7 +391,7 @@ export const EmptyPartialPagination = () => (
         <Admin
             dataProvider={
                 {
-                    getList: async (resource, params) => ({
+                    getList: async (_resource, _params) => ({
                         data: [],
                         pageInfo: {
                             hasNextPage: false,
