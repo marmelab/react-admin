@@ -75,7 +75,7 @@ export const ListView = <RecordType extends RaRecord = any>(
             (total == null &&
                 hasPreviousPage === false &&
                 hasNextPage === false &&
-                // @ts-ignore FIXME total my be undefined when using partial pagination
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
                 data.length === 0)) &&
         // the user didn't set any filters
         !Object.keys(filterValues).length &&
