@@ -132,7 +132,13 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             }
             return [
                 ...old.slice(0, index),
-                { ...old[index], ...data } as RecordType,
+                {
+                    ...old[index],
+                    // Stringify and parse the data to remove undefined values.
+                    // If we don't do this, an update with { id: undefined } as payload
+                    // would remove the id from the record, which no real data provider does.
+                    ...JSON.parse(JSON.stringify(data)),
+                } as RecordType,
                 ...old.slice(index + 1),
             ];
         };

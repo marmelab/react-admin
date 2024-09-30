@@ -116,10 +116,7 @@ const PostEdit = () => {
                         justifyContent="space-between"
                         fullWidth
                     >
-                        <TextInput
-                            InputProps={{ disabled: true }}
-                            source="id"
-                        />
+                        <TextInput disabled source="id" />
                         <TextInput
                             source="title"
                             validate={required()}

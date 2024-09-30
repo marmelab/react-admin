@@ -124,7 +124,13 @@ export const useUpdateMany = <
                 }
                 newCollection = [
                     ...newCollection.slice(0, index),
-                    { ...newCollection[index], ...data },
+                    {
+                        ...newCollection[index],
+                        // Stringify and parse the data to remove undefined values.
+                        // If we don't do this, an update with { id: undefined } as payload
+                        // would remove the id from the record, which no real data provider does.
+                        ...JSON.parse(JSON.stringify(data)),
+                    },
                     ...newCollection.slice(index + 1),
                 ];
             });
