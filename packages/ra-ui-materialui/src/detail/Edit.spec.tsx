@@ -107,7 +107,7 @@ describe('<Edit />', () => {
         });
     });
 
-    it("shoudln't display the Edit child while loading when emptyWhileLoading is true", async () => {
+    it("shoudln't display the Edit aside while loading with the emptyWhileLoading prop", async () => {
         render(<EmptyWhileLoading />);
 
         expect(screen.queryByText('Book Edition')).not.toBeNull();
