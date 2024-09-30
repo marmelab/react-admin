@@ -5,7 +5,7 @@ title: "CanAccess"
 
 # `CanAccess`
 
-This component calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). It will only display its children when users are authorized.
+This component calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). It will only display its children when users are authorized. By default, it will redirect users to `/authentication-error` if an error occurs.
 
 ## Usage
 
@@ -40,5 +40,6 @@ const UserEdit = () => {
 | `record`       | Optional | `object`       | RecordContext value   | The record to check. If passed, the child only renders if the user has access to that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
 | `loading`      | Optional | `ReactElement` | -                     | The element displayed while the `canAccess` call is pending |
 | `unauthorized` | Optional | `ReactElement` | -                     | The element displayed when users don't have access to the resource |
+| `error`        | Optional | `ReactElement` | -                     | The element displayed when an error occurs while calling `authProvider.canAccess` |
 
 

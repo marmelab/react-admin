@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useCanAccess, UseCanAccessOptions } from './useCanAccess';
 import { RaRecord } from '../types';
+import { Navigate } from 'react-router';
 
 /**
  * A component that only displays its children after checking whether users are authorized to access the provided resource and action.
@@ -10,6 +11,7 @@ import { RaRecord } from '../types';
  * @param options.children The component to render if users are authorized.
  * @param options.loading An optional element to render while the authorization is being checked. Defaults to null.
  * @param options.unauthorized An optional element to render if users are not authorized. Defaults to null.
+ * @param options.error An optional element to render if an error occur while checking users access rights. Redirect users to `/authentication-error` by default.
  */
 export const CanAccess = <
     RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
@@ -18,12 +20,17 @@ export const CanAccess = <
     children,
     loading = null,
     unauthorized = null,
+    error: errorElement = DEFAULT_ERROR,
     ...props
 }: CanAccessProps<RecordType, ErrorType>) => {
-    const { canAccess, isPending } = useCanAccess(props);
+    const { canAccess, error, isPending } = useCanAccess(props);
 
     if (isPending) {
         return loading;
+    }
+
+    if (error) {
+        return errorElement;
     }
 
     if (canAccess === false) {
@@ -42,3 +49,5 @@ export interface CanAccessProps<
     unauthorized?: React.ReactNode;
     error?: React.ReactNode;
 }
+
+const DEFAULT_ERROR = <Navigate to="/authentication-error" />;
