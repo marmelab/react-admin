@@ -11,21 +11,22 @@ This hook calls the `authProvider.canAccess()` method on mount for a provided re
 
 `useRequireAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
 
+For instance, here's how you can protect a [custom route](./CustomRoutes.md) for editing users settings:
+
 ```jsx
 import { useRequireAccess, useRecordContext, DeleteButton } from 'react-admin';
 
-const DeleteUserButton = () => {
+export export const SettingsPage = () => {
     const record = useRecordContext();
-    const { isPending } = useRequireAccess({ action: 'delete', resource: 'users', record });
+    const { isPending } = useRequireAccess({ action: 'edit', resource: 'settings', record });
     if (isPending) return null;
-    return <DeleteButton record={record} resource="users" />;
+    return <p>Protected content</p>;
 };
 ```
 
 ```jsx
 const permissions = [
-    { action: ["read", "create", "edit", "export"], resource: "companies" },
-    { action: ["read", "create", "edit", "delete"], resource: "users" },
+    { action: ["edit"], resource: "settings" },
 ];
 const authProvider= {
     // ...
