@@ -111,8 +111,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             i18nProvider={i18nProvider}
             queryClient={queryClient}
             store={store}
-            loading={loading}
-            unauthorized={unauthorized}
         >
             <CoreAdminUI
                 layout={layout}
