@@ -47,7 +47,7 @@ export const useRequireAccess = <
 >(
     params: UseRequireAccessOptions<RecordType, ErrorType>
 ) => {
-    const { canAccess, data, ...rest } = useCanAccess(params);
+    const { canAccess, data, error, ...rest } = useCanAccess(params);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -57,6 +57,12 @@ export const useRequireAccess = <
             navigate('/unauthorized');
         }
     }, [canAccess, navigate, rest.isPending]);
+
+    useEffect(() => {
+        if (error) {
+            navigate('/authentication-error');
+        }
+    }, [navigate, error]);
 
     return rest;
 };

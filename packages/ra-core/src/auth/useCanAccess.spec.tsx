@@ -76,18 +76,18 @@ describe('useCanAccess', () => {
         });
     });
 
-    it('should redirect to /authentication-error when auth.canAccess call fails', async () => {
+    it('should returns the error when auth.canAccess call fails', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
             checkAuth: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
             checkError: () => Promise.reject('bad method'),
-            canAccess: () => Promise.reject('not good'),
+            canAccess: () => Promise.reject(new Error('not good')),
         };
         render(<Basic authProvider={authProvider} />);
         await screen.findByText('LOADING');
-        await screen.findByText('Authentication Error');
+        await screen.findByText('not good');
     });
 
     it('should abort the request if the query is canceled', async () => {

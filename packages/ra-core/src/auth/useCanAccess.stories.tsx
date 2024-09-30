@@ -37,7 +37,7 @@ const StateInspector = ({ state }: { state: UseCanAccessResult }) => (
         {state.canAccess !== undefined && (
             <span>canAccess: {state.canAccess ? 'YES' : 'NO'}</span>
         )}
-        <span>{state.error && 'ERROR'}</span>
+        {state.error ? <span>{state.error.message}</span> : null}
     </div>
 );
 
