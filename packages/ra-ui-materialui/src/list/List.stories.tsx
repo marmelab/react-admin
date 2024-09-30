@@ -5,6 +5,7 @@ import {
     Resource,
     useListContext,
     TestMemoryRouter,
+    DataProvider,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Box, Card, Typography, Button, Link as MuiLink } from '@mui/material';
@@ -336,6 +337,39 @@ export const Component = () => (
     </TestMemoryRouter>
 );
 
+export const PartialPagination = () => (
+    <TestMemoryRouter initialEntries={['/authors']}>
+        <Admin
+            dataProvider={
+                {
+                    getList: async (_resource, _params) => ({
+                        data: [
+                            {
+                                id: 1,
+                                name: 'John Doe',
+                            },
+                        ],
+                        pageInfo: {
+                            hasNextPage: false,
+                            hasPreviousPage: false,
+                        },
+                    }),
+                } as DataProvider
+            }
+        >
+            <Resource
+                name="authors"
+                list={() => (
+                    <List pagination={false}>
+                        <SimpleList primaryText="%{name}" />
+                    </List>
+                )}
+                create={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 export const Empty = () => (
     <TestMemoryRouter initialEntries={['/authors']}>
         <Admin dataProvider={dataProvider}>
@@ -344,6 +378,34 @@ export const Empty = () => (
                 list={() => (
                     <List>
                         <span />
+                    </List>
+                )}
+                create={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const EmptyPartialPagination = () => (
+    <TestMemoryRouter initialEntries={['/authors']}>
+        <Admin
+            dataProvider={
+                {
+                    getList: async (_resource, _params) => ({
+                        data: [],
+                        pageInfo: {
+                            hasNextPage: false,
+                            hasPreviousPage: false,
+                        },
+                    }),
+                } as unknown as DataProvider
+            }
+        >
+            <Resource
+                name="authors"
+                list={() => (
+                    <List pagination={false}>
+                        <SimpleList primaryText="%{name}" />
                     </List>
                 )}
                 create={() => <span />}
