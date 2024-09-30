@@ -37,6 +37,7 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
     - [Updates to bulkActionButtons Syntax](#updates-to-bulkactionbuttons-syntax)
     - [`<PaginationLimit>` Component Was Removed](#paginationlimit-component-was-removed)
     - [`<DatagridBody>` No Longer Provides record Prop To `<DatagridRow>`](#datagridbody-no-longer-provides-record-prop-to-datagridrow)
+    - [`useRecordSelection` Props have changed](#userecordselection-props-have-changed)
 - [Show and Edit Pages](#show-and-edit-pages)
     - [Custom Edit or Show Actions No Longer Receive Any Props](#custom-edit-or-show-actions-no-longer-receive-any-props)
     - [Inputs default ids are auto-generated](#inputs-default-ids-are-auto-generated)
@@ -847,6 +848,20 @@ const MyDatagridRow = ({
 ```
 
 See the [`<Datagrid body/>`](./Datagrid.md#body) documentation to learn how to create your own row component.
+
+### `useRecordSelection` Props Have Changed
+
+The props passed to the `useRecordSelection` hook have changed.
+You have to pass an object with a `resource` attribute instead of a string.
+
+```diff
+const MyComponent = () => {
+-    const [selectedIds, selectionModifiers] = useRecordSelection('posts');
++    const [selectedIds, selectionModifiers] = useRecordSelection( { resource: 'posts' });
+
+    ...
+};
+```
 
 ## Show and Edit Pages
 
