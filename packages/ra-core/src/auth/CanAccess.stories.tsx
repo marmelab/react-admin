@@ -17,36 +17,36 @@ const defaultAuthProvider: AuthProvider = {
         new Promise(resolve => setTimeout(resolve, 500, action === 'read')),
 };
 
-export const Basic = () => (
-    <CoreAdminContext
-        authProvider={defaultAuthProvider}
-        loading={() => <div>Loading...</div>}
-        unauthorized={() => <div>Unauthorized</div>}
-    >
+export const Basic = ({
+    authProvider = defaultAuthProvider,
+}: {
+    authProvider?: AuthProvider;
+}) => (
+    <CoreAdminContext authProvider={authProvider}>
         <CanAccess action="read" resource="test">
             protected content
         </CanAccess>
     </CoreAdminContext>
 );
 
-export const Unauthorized = () => (
-    <CoreAdminContext
-        authProvider={defaultAuthProvider}
-        loading={() => <div>Loading...</div>}
-        unauthorized={() => <div>Unauthorized</div>}
-    >
+export const Unauthorized = ({
+    authProvider = defaultAuthProvider,
+}: {
+    authProvider?: AuthProvider;
+}) => (
+    <CoreAdminContext authProvider={authProvider}>
         <CanAccess action="show" resource="test">
             protected content
         </CanAccess>
     </CoreAdminContext>
 );
 
-export const CustomLoading = () => (
-    <CoreAdminContext
-        authProvider={defaultAuthProvider}
-        loading={() => <div>Loading...</div>}
-        unauthorized={() => <div>Unauthorized</div>}
-    >
+export const CustomLoading = ({
+    authProvider = defaultAuthProvider,
+}: {
+    authProvider?: AuthProvider;
+}) => (
+    <CoreAdminContext authProvider={authProvider}>
         <CanAccess
             action="read"
             resource="test"
@@ -57,12 +57,12 @@ export const CustomLoading = () => (
     </CoreAdminContext>
 );
 
-export const CustomUnauthorized = () => (
-    <CoreAdminContext
-        authProvider={defaultAuthProvider}
-        loading={() => <div>Loading...</div>}
-        unauthorized={() => <div>Unauthorized</div>}
-    >
+export const CustomUnauthorized = ({
+    authProvider = defaultAuthProvider,
+}: {
+    authProvider?: AuthProvider;
+}) => (
+    <CoreAdminContext authProvider={authProvider}>
         <CanAccess
             action="show"
             resource="test"
@@ -74,11 +74,7 @@ export const CustomUnauthorized = () => (
 );
 
 export const NoAuthProvider = () => (
-    <CoreAdminContext
-        authProvider={undefined}
-        loading={() => <div>Loading...</div>}
-        unauthorized={() => <div>Unauthorized</div>}
-    >
+    <CoreAdminContext authProvider={undefined}>
         <CanAccess action="read" resource="test">
             protected content
         </CanAccess>

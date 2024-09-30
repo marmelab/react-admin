@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { useLoadingContext } from '../core/useLoadingContext';
-import { useUnauthorizedContext } from '../core/useUnauthorizedContext';
 import { useCanAccess, UseCanAccessOptions } from './useCanAccess';
 import { RaRecord } from '../types';
 
@@ -19,8 +17,8 @@ export const CanAccess = <
 >({
     action,
     children,
-    loading,
-    unauthorized,
+    loading = null,
+    unauthorized = null,
     record,
     resource,
 }: CanAccessProps<RecordType, ErrorType>) => {
@@ -30,14 +28,15 @@ export const CanAccess = <
         resource,
     });
 
-    const Loading = useLoadingContext();
-    const Unauthorized = useUnauthorizedContext();
+    if (isPending) {
+        return loading;
+    }
 
-    return isPending
-        ? loading ?? <Loading />
-        : canAccess === false
-          ? unauthorized ?? <Unauthorized />
-          : children;
+    if (canAccess === false) {
+        return unauthorized;
+    }
+
+    return children;
 };
 
 export interface CanAccessProps<
@@ -45,6 +44,7 @@ export interface CanAccessProps<
     ErrorType extends Error = Error,
 > extends UseCanAccessOptions<RecordType, ErrorType> {
     children: React.ReactNode;
-    loading?: React.ReactElement;
-    unauthorized?: React.ReactElement;
+    loading?: React.ReactNode;
+    unauthorized?: React.ReactNode;
+    error?: React.ReactNode;
 }
