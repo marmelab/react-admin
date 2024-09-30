@@ -25,6 +25,7 @@ export * from './SidebarToggleButton';
 export * from './Title';
 export * from './TitlePortal';
 export * from './TopToolbar';
+export * from './Unauthorized';
 export * from './UserMenu';
 export * from './UserMenuContext';
 export * from './useSidebarState';
