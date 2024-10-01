@@ -44,12 +44,12 @@ For example, let's assume that on login, the application receives a list of perm
 const authProvider = {
     login: async ({ username, password }) => {
         // ...
+        const permissions = await fetchPermissions();
         // permissions look like 
         // [
         //   { action: 'read', resource: 'posts' },
         //   { action: 'write', resource: 'posts' }
-        //]
-        const permissions = await fetchPermissions();
+        // ]
         localStorage.setItem('permissions', JSON.stringify(permissions));
     },
     logout: async () => {
