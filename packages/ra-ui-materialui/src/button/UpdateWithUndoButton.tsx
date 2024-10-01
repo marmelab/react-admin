@@ -10,6 +10,7 @@ import {
     useRecordContext,
     useUpdate,
     UpdateParams,
+    useTranslate,
 } from 'ra-core';
 import { UseMutationOptions } from '@tanstack/react-query';
 
@@ -20,6 +21,7 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
     const notify = useNotify();
     const resource = useResourceContext(props);
     const refresh = useRefresh();
+    const translate = useTranslate();
 
     const {
         data,
@@ -35,9 +37,12 @@ export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
     const {
         meta: mutationMeta,
         onSuccess = () => {
-            notify('ra.notification.updated', {
+            notify(`resources.${resource}.notifications.updated`, {
                 type: 'info',
-                messageArgs: { smart_count: 1 },
+                messageArgs: {
+                    smart_count: 1,
+                    _: translate('ra.notification.updated', { smart_count: 1 }),
+                },
                 undoable: true,
             });
         },

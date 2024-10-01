@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { FullApp } from './DeleteButton.stories';
+import {
+    NotificationDefault,
+    NotificationTranslated,
+    FullApp,
+} from './DeleteButton.stories';
 
 describe('<DeleteButton />', () => {
     it('should only render when users have the right to delete', async () => {
@@ -22,6 +26,19 @@ describe('<DeleteButton />', () => {
         fireEvent.click(screen.getByLabelText('Allow deleting War and Peace'));
         await waitFor(() => {
             expect(screen.queryAllByLabelText('Delete')).toHaveLength(1);
+        });
+    });
+    describe('success notification', () => {
+        it('should use a generic success message by default', async () => {
+            render(<NotificationDefault />);
+            (await screen.findByText('Delete')).click();
+            await screen.findByText('Element deleted');
+        });
+
+        it('should allow to use a custom translation per resource', async () => {
+            render(<NotificationTranslated />);
+            (await screen.findByText('Delete')).click();
+            await screen.findByText('Book deleted');
         });
     });
 });

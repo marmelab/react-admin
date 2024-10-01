@@ -16,7 +16,7 @@ import {
 
 import Aside from './Aside';
 
-const UserEditToolbar = ({ permissions, ...props }) => {
+const UserCreateToolbar = ({ permissions, ...props }) => {
     const notify = useNotify();
     const { reset } = useFormContext();
 
@@ -28,7 +28,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
                     label="user.action.save_and_add"
                     mutationOptions={{
                         onSuccess: () => {
-                            notify('ra.notification.created', {
+                            notify('resources.users.notifications.created', {
                                 type: 'info',
                                 messageArgs: {
                                     smart_count: 1,
@@ -60,7 +60,7 @@ const UserCreate = () => {
             <TabbedForm
                 mode="onBlur"
                 warnWhenUnsavedChanges
-                toolbar={<UserEditToolbar permissions={permissions} />}
+                toolbar={<UserCreateToolbar permissions={permissions} />}
             >
                 <TabbedForm.Tab label="user.form.summary" path="">
                     <TextInput

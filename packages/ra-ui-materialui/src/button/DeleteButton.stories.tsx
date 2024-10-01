@@ -4,19 +4,20 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import { QueryClient } from '@tanstack/react-query';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     AuthProvider,
     Resource,
     ResourceContextProvider,
     TestMemoryRouter,
 } from 'ra-core';
-import fakeRestDataProvider from 'ra-data-fakerest';
 import { AdminContext } from '../AdminContext';
 import { DeleteButton } from './DeleteButton';
 import { List } from '../list/List';
 import { Datagrid } from '../list/datagrid/Datagrid';
 import { TextField } from '../field/TextField';
 import { AdminUI } from '../AdminUI';
+import { Notification } from '../layout';
 
 const theme = createTheme({
     palette: {
@@ -164,6 +165,18 @@ const FullAppAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
     );
 };
 
+export const NotificationDefault = () => {
+    const dataProvider = {
+        delete: () => Promise.resolve({ data: { id: 1 } }),
+    } as any;
+    return (
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <DeleteButton record={{ id: 1 }} resource="books" />
+            <Notification />
+        </AdminContext>
+    );
+};
+
 const AccessControlLayout = ({
     children,
     resourcesAccesses,
@@ -306,3 +319,42 @@ const dataProvider = fakeRestDataProvider(
     },
     process.env.NODE_ENV === 'development'
 );
+
+export const NotificationTranslated = () => {
+    const dataProvider = {
+        delete: () => Promise.resolve({ data: { id: 1 } }),
+    } as any;
+    return (
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={polyglotI18nProvider(
+                () => ({
+                    ...englishMessages,
+                    resources: {
+                        books: { notifications: { deleted: 'Book deleted' } },
+                    },
+                }),
+                'en'
+            )}
+        >
+            <DeleteButton record={{ id: 1 }} resource="books" />
+            <Notification />
+        </AdminContext>
+    );
+};
+
+export const SuccessMessage = () => {
+    const dataProvider = {
+        delete: () => Promise.resolve({ data: { id: 1 } }),
+    } as any;
+    return (
+        <AdminContext dataProvider={dataProvider}>
+            <DeleteButton
+                record={{ id: 1 }}
+                resource="post"
+                successMessage="Post deleted!"
+            />
+            <Notification />
+        </AdminContext>
+    );
+};

@@ -128,7 +128,7 @@ describe('<DeleteWithConfirmButton />', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText('ra.notification.deleted')
+                screen.queryByText('resources.posts.notifications.deleted')
             ).not.toBeNull();
         });
         expect(screen.queryByText('ra.action.undo')).not.toBeNull();
@@ -319,7 +319,10 @@ describe('<DeleteWithConfirmButton />', () => {
                     message: successMessage,
                     type: 'info',
                     notificationOptions: {
-                        messageArgs: { smart_count: 1 },
+                        messageArgs: {
+                            smart_count: 1,
+                            _: 'ra.notification.deleted',
+                        },
                         undoable: false,
                     },
                 },

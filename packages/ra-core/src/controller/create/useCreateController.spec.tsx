@@ -137,9 +137,14 @@ describe('useCreateController', () => {
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(notificationsSpy).toEqual([
             {
-                message: 'ra.notification.created',
+                message: 'resources.posts.notifications.created',
                 type: 'info',
-                notificationOptions: { messageArgs: { smart_count: 1 } },
+                notificationOptions: {
+                    messageArgs: {
+                        smart_count: 1,
+                        _: 'ra.notification.created',
+                    },
+                },
             },
         ]);
     });

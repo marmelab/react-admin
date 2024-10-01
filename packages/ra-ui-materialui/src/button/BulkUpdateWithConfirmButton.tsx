@@ -39,9 +39,14 @@ export const BulkUpdateWithConfirmButton = (
         mutationMode = 'pessimistic',
         onClick,
         onSuccess = () => {
-            notify('ra.notification.updated', {
+            notify(`resources.${resource}.notifications.updated`, {
                 type: 'info',
-                messageArgs: { smart_count: selectedIds.length },
+                messageArgs: {
+                    smart_count: selectedIds.length,
+                    _: translate('ra.notification.updated', {
+                        smart_count: selectedIds.length,
+                    }),
+                },
                 undoable: mutationMode === 'undoable',
             });
             unselectAll();

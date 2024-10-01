@@ -57,7 +57,10 @@ describe('<BulkDeleteWithUndoButton />', () => {
                     message: successMessage,
                     type: 'info',
                     notificationOptions: {
-                        messageArgs: { smart_count: 1 },
+                        messageArgs: {
+                            smart_count: 1,
+                            _: 'ra.notification.deleted',
+                        },
                         undoable: true,
                     },
                 },

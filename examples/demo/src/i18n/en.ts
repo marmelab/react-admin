@@ -89,6 +89,14 @@ const customEnglishMessages: TranslationMessages = {
                 password_mismatch:
                     'The password confirmation is not the same as the password.',
             },
+            notifications: {
+                created:
+                    'Customer created |||| %{smart_count} customers created',
+                updated:
+                    'Customer updated |||| %{smart_count} customers updated',
+                deleted:
+                    'Customer deleted |||| %{smart_count} customers deleted',
+            },
         },
         orders: {
             name: 'Order |||| Orders',
@@ -121,6 +129,11 @@ const customEnglishMessages: TranslationMessages = {
                 items: 'Items',
                 total: 'Totals',
             },
+            notifications: {
+                created: 'Order created |||| %{smart_count} orders created',
+                updated: 'Order updated |||| %{smart_count} orders updated',
+                deleted: 'Order deleted |||| %{smart_count} orders deleted',
+            },
         },
         invoices: {
             name: 'Invoice |||| Invoices',
@@ -132,6 +145,11 @@ const customEnglishMessages: TranslationMessages = {
                 date_lte: 'Passed Before',
                 total_gte: 'Min amount',
                 address: 'Address',
+            },
+            notifications: {
+                created: 'Invoice created |||| %{smart_count} invoices created',
+                updated: 'Invoice updated |||| %{smart_count} invoices updated',
+                deleted: 'Invoice deleted |||| %{smart_count} invoices deleted',
             },
         },
         products: {
@@ -171,11 +189,24 @@ const customEnglishMessages: TranslationMessages = {
                 low_sellers: 'Low',
                 never_sold: 'Never sold',
             },
+            notifications: {
+                created: 'Poster created |||| %{smart_count} posters created',
+                updated: 'Poster updated |||| %{smart_count} posters updated',
+                deleted: 'Poster deleted |||| %{smart_count} posters deleted',
+            },
         },
         categories: {
             name: 'Category |||| Categories',
             fields: {
                 products: 'Products',
+            },
+            notifications: {
+                created:
+                    'Category created |||| %{smart_count} categories created',
+                updated:
+                    'Category updated |||| %{smart_count} categories updated',
+                deleted:
+                    'Category deleted |||| %{smart_count} categories deleted',
             },
         },
         reviews: {
@@ -197,7 +228,10 @@ const customEnglishMessages: TranslationMessages = {
                 accept: 'Accept',
                 reject: 'Reject',
             },
-            notification: {
+            notifications: {
+                created: 'Review created |||| %{smart_count} reviews created',
+                updated: 'Review updated |||| %{smart_count} reviews updated',
+                deleted: 'Review deleted |||| %{smart_count} reviews deleted',
                 approved_success: 'Review approved',
                 approved_error: 'Error: Review not approved',
                 rejected_success: 'Review rejected',

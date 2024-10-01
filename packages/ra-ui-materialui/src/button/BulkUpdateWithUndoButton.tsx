@@ -12,6 +12,7 @@ import {
     useListContext,
     RaRecord,
     UpdateManyParams,
+    useTranslate,
 } from 'ra-core';
 import { UseMutationOptions } from '@tanstack/react-query';
 
@@ -26,18 +27,28 @@ export const BulkUpdateWithUndoButton = (
     const resource = useResourceContext(props);
     const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
+    const translate = useTranslate();
 
     const {
         data,
         label = 'ra.action.update',
         icon = defaultIcon,
+        successMessage,
         onClick,
         onSuccess = () => {
-            notify('ra.notification.updated', {
-                type: 'info',
-                messageArgs: { smart_count: selectedIds.length },
-                undoable: true,
-            });
+            notify(
+                successMessage ?? `resources.${resource}.notifications.updated`,
+                {
+                    type: 'info',
+                    messageArgs: {
+                        smart_count: selectedIds.length,
+                        _: translate('ra.notification.updated', {
+                            smart_count: selectedIds.length,
+                        }),
+                    },
+                    undoable: true,
+                }
+            );
             unselectAll();
         },
         onError = (error: Error | string) => {
@@ -116,6 +127,7 @@ export interface BulkUpdateWithUndoButtonProps<
         MutationOptionsError,
         UpdateManyParams<RecordType>
     > & { meta?: any };
+    successMessage?: string;
 }
 
 const PREFIX = 'RaBulkUpdateWithUndoButton';
