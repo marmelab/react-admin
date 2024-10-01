@@ -35,12 +35,15 @@ import { HintedString } from '../types';
  *         );
  *     };
  */
-export const useCanAccessCallback = <ErrorType = Error>(
+export const useCanAccessCallback = <
+    RecordType extends Record<string, any> = Record<string, any>,
+    ErrorType = Error,
+>(
     options: Omit<
         UseMutationOptions<
             UseCanAccessCallbackResult,
             ErrorType,
-            UseCanAccessCallbackOptions
+            UseCanAccessCallbackOptions<RecordType>
         >,
         'mutationFn'
     > = {}
@@ -67,17 +70,22 @@ export const useCanAccessCallback = <ErrorType = Error>(
     return mutateAsync;
 };
 
-export type UseCanAccessCallback<ErrorType = Error> = UseMutateAsyncFunction<
+export type UseCanAccessCallback<
+    RecordType extends Record<string, any> = Record<string, any>,
+    ErrorType = Error,
+> = UseMutateAsyncFunction<
     UseCanAccessCallbackResult,
     ErrorType,
-    UseCanAccessCallbackOptions,
+    UseCanAccessCallbackOptions<RecordType>,
     unknown
 >;
 
-export type UseCanAccessCallbackOptions = {
+export type UseCanAccessCallbackOptions<
+    RecordType extends Record<string, any> = Record<string, any>,
+> = {
     resource: string;
     action: HintedString<'list' | 'create' | 'edit' | 'show' | 'delete'>;
-    record?: unknown;
+    record?: RecordType;
 };
 
 export type UseCanAccessCallbackResult = boolean;
