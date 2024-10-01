@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.2.2
+
+- Fix disabled inputs temporarily erase values ([#10249](https://github.com/marmelab/react-admin/pull/10249)) ([fzaninotto](https://github.com/fzaninotto))
+- Fix List empty component wrongly appears when using partial pagination ([#10248](https://github.com/marmelab/react-admin/pull/10248)) ([fzaninotto ](https://github.com/fzaninotto))
+- [Doc] Remove extra TOC in upgrade guide ([#10246](https://github.com/marmelab/react-admin/pull/10246)) ([smeng9](https://github.com/smeng9))
+- [Doc] Fix `<DateRangeInput>`'s reference EE icon ([#10245](https://github.com/marmelab/react-admin/pull/10245)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update migration guide with useRecordSelection changes ([#10244](https://github.com/marmelab/react-admin/pull/10244)) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Add "standalaone usage" doc section in dialog views ([#10241](https://github.com/marmelab/react-admin/pull/10241)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update outdated ecommerce demo video ([#10236](https://github.com/marmelab/react-admin/pull/10236)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update <Filterbutton>'s screencast ([#10213](https://github.com/marmelab/react-admin/pull/10213)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- Build(deps): Bump rollup from 4.21.3 to 4.22.4 ([#10234](https://github.com/marmelab/react-admin/pull/10234)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.2.1
 
 * Fix `<SelectArrayInput>` options panel width and placement ([#10232](https://github.com/marmelab/react-admin/pull/10232)) ([fzaninotto](https://github.com/fzaninotto))
