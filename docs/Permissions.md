@@ -70,7 +70,7 @@ const authProvider = {
 
 ### Built-In Access Control
 
-The `<Resource>` component has built-in access control. Before rendering the `list`, `create`, `edit`, and `show` components of a resource, react-admin calls `authProvider.canAccess()` with the appropriate `action` and `resource` parameters.
+The **page components** (`<List>`, `<Create>`, `<Edit>`, and `<Show>`) have built-in access control. Before rendering them, react-admin calls `authProvider.canAccess()` with the appropriate `action` and `resource` parameters.
 
 ```tsx
 <Resource
@@ -91,6 +91,25 @@ If the `authProvider` doesn't implement the `canAccess` method, react-admin assu
 If the current user tries to access a page they don't have access to, they are redirected to an "Access Denied" page. You can customize this page by adding a custom route on the `/accessDenied` path.
 
 If the `authProvider.canAccess()` method returns an error, the user is redirected to an "Access Control Error" page. You can customize this page by adding a custom route on the `/accessControlError` path.
+
+The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButtoon>`) also have built-in access control. They are only displayed if the user has access to the corresponding action on the resource.
+
+```tsx
+const MyToolbar = () => (
+    <Toolbar>
+        {/* only displayed if canAccess({ action: 'edit', resource: 'posts' }) returns true */}
+        <EditButton />
+        {/* only displayed if canAccess({ action: 'create', resource: 'posts' }) returns true */}
+        <CreateButton />
+        {/* only displayed if canAccess({ action: 'delete', resource: 'posts' }) returns true */}
+        <DeleteButton />
+        {/* only displayed if canAccess({ action: 'show', resource: 'posts' }) returns true */}
+        <ShowButton />
+        {/* only displayed if canAccess({ action: 'list', resource: 'posts' }) returns true */}
+        <ListButton />
+    </Toolbar>
+);
+```
 
 ### `useCanAccess`
 
