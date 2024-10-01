@@ -227,7 +227,7 @@ const PostEdit = () => (
 
 By default, `<Edit>` doesn't render its child component even before the `dataProvider.getOne()` call returns, but it returns its [`aside`](#aside), [`actions`](#actions) and [`title`](#title) components.
 
-If you use one of those components customized with a record, your component will throw an error. For instance, the following will fail on load with a "ReferenceError: record is not defined" error:
+If a component you use in those props relies on the record, it will throw an error. For instance, the following will fail on load with a "ReferenceError: record is not defined" error:
 
 ```jsx
 import { Edit, useEditContext } from 'react-admin';

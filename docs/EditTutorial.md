@@ -496,6 +496,3 @@ export const BookEdit = () => (
 React-admin components are not magic, they are React components designed to let you focus on the business logic and avoid repetitive tasks. 
 
 **Tip:** Actually, `<Edit>` does more than the code it replaces in the previous example: it handles notification and redirection upon submission, it sets the page title, and handles the error logic.
-
-**Tip**: With `emptyWhileLoading` turned on, the `<Edit>` component doesn't render its `aside`, `actions` and `title` components until the record is available. Without this flag, those components would render even during the loading phase, and may break if they aren't planned to work with an empty record context.
-You could grab the `isPending` state from the `EditContext` instead, but `emptyWhileLoading` is usually more convenient.
