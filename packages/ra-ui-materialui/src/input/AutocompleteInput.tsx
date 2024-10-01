@@ -465,11 +465,11 @@ If you provided a React element for the optionText prop, you must also provide t
             event?.type === 'change' ||
             !doesQueryMatchSelection(newInputValue)
         ) {
-            const createOption = translate(createItemLabel, {
+            const createOptionLabel = translate(createItemLabel, {
                 item: filterValue,
                 _: createItemLabel,
             });
-            const isCreate = newInputValue === createOption;
+            const isCreate = newInputValue === createOptionLabel;
             const valueToSet = isCreate ? filterValue : newInputValue;
             setFilterValue(valueToSet);
             debouncedSetFilter(newInputValue);
