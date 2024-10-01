@@ -1,16 +1,13 @@
 import { useMemo } from 'react';
 import {
-    QueryObserverLoadingErrorResult,
-    QueryObserverLoadingResult,
-    QueryObserverRefetchErrorResult,
-    QueryObserverSuccessResult,
     useQuery,
     UseQueryOptions,
+    UseQueryResult,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import { useResourceContext } from '../core';
 import { useRecordContext } from '../controller';
-import { RaRecord } from '../types';
+import { HintedString } from '../types';
 
 /**
  * A hook that calls the authProvider.canAccess() method using react-query for a provided resource and action (and optionally a record).
@@ -48,7 +45,7 @@ import { RaRecord } from '../types';
  *     };
  */
 export const useCanAccess = <
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    RecordType extends Record<string, any> = Record<string, any>,
     ErrorType extends Error = Error,
 >(
     params: UseCanAccessOptions<RecordType, ErrorType>
@@ -122,33 +119,17 @@ const emptyQueryObserverResult = {
 };
 
 export interface UseCanAccessOptions<
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    RecordType extends Record<string, any> = Record<string, any>,
     ErrorType extends Error = Error,
 > extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
     resource?: string;
-    action: string;
+    action: HintedString<'list' | 'create' | 'edit' | 'show' | 'delete'>;
     record?: RecordType;
 }
 
-export type UseCanAccessResult<ErrorType = Error> =
-    | UseCanAccessLoadingResult<ErrorType>
-    | UseCanAccessLoadingErrorResult<ErrorType>
-    | UseCanAccessRefetchErrorResult<ErrorType>
-    | UseCanAccessSuccessResult<ErrorType>;
-
-export interface UseCanAccessLoadingResult<ErrorType = Error>
-    extends QueryObserverLoadingResult<boolean, ErrorType> {
-    canAccess: undefined;
-}
-export interface UseCanAccessLoadingErrorResult<ErrorType = Error>
-    extends QueryObserverLoadingErrorResult<boolean, ErrorType> {
-    canAccess: undefined;
-}
-export interface UseCanAccessRefetchErrorResult<ErrorType = Error>
-    extends QueryObserverRefetchErrorResult<boolean, ErrorType> {
-    canAccess: boolean;
-}
-export interface UseCanAccessSuccessResult<ErrorType = Error>
-    extends QueryObserverSuccessResult<boolean, ErrorType> {
-    canAccess: boolean;
-}
+export type UseCanAccessResult<ErrorType = Error> = UseQueryResult<
+    boolean,
+    ErrorType
+> & {
+    canAccess: UseQueryResult<boolean, ErrorType>['data'];
+};

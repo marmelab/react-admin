@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
-import { RaRecord } from '../types';
+import { HintedString } from '../types';
 import { useRecordContext } from '../controller';
 
 /**
@@ -48,7 +48,7 @@ import { useRecordContext } from '../controller';
  * };
  */
 export const useCanAccessResources = <
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    RecordType extends Record<string, any> = Record<string, any>,
     ErrorType extends Error = Error,
 >(
     params: UseCanAccessResourcesOptions<RecordType, ErrorType>
@@ -117,11 +117,11 @@ export const useCanAccessResources = <
 };
 
 export interface UseCanAccessResourcesOptions<
-    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    RecordType extends Record<string, any> = Record<string, any>,
     ErrorType extends Error = Error,
 > extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
     resources: string[];
-    action: string;
+    action: HintedString<'list' | 'create' | 'edit' | 'show' | 'delete'>;
     record?: RecordType;
 }
 

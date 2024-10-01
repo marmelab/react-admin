@@ -69,11 +69,11 @@ export type AuthProvider = {
     handleCallback?: (
         params?: QueryFunctionContext
     ) => Promise<AuthRedirectResult | void | any>;
-    canAccess?: (
+    canAccess?: <RecordType extends Record<string, any> = Record<string, any>>(
         params: QueryFunctionContext & {
             action: string;
             resource: string;
-            record?: unknown;
+            record?: RecordType;
         }
     ) => Promise<boolean>;
     [key: string]: any;
@@ -396,3 +396,9 @@ export type SetOnSave = (
 export type FormFunctions = {
     setOnSave?: SetOnSave;
 };
+
+// Type for a string that accept one of the known values but also any other string
+// Useful for IDE autocompletion without preventing custom values
+export type HintedString<KnownValues extends string> =
+    | (string & {})
+    | KnownValues;

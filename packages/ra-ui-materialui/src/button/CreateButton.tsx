@@ -5,7 +5,12 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
-import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
+import {
+    useTranslate,
+    useResourceContext,
+    useCreatePath,
+    useCanAccess,
+} from 'ra-core';
 import { Link, To } from 'react-router-dom';
 
 import { Button, ButtonProps, LocationDescriptor } from './Button';
@@ -37,6 +42,17 @@ const CreateButton = (props: CreateButtonProps) => {
     } = props;
 
     const resource = useResourceContext(props);
+
+    if (!resource) {
+        throw new Error(
+            '<CreateButton> components should be used inside a <Resource> component or provided the resource prop.'
+        );
+    }
+
+    const { canAccess, isPending } = useCanAccess({
+        action: 'create',
+        resource,
+    });
     const createPath = useCreatePath();
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
@@ -47,9 +63,12 @@ const CreateButton = (props: CreateButtonProps) => {
         scrollStates.get(String(scrollToTop)),
         initialState
     );
-    // Duplicated behaviour of Button component (legacy use) which will be removed in v5.
+    // Duplicated behavior of Button component (legacy use) which will be removed in v5.
     const linkParams = getLinkParams(locationDescriptor);
 
+    if (!canAccess || isPending) {
+        return null;
+    }
     return isSmall ? (
         <StyledFab
             component={Link}
