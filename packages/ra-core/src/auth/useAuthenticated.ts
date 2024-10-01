@@ -12,19 +12,23 @@ import useAuthState from './useAuthState';
  * requires it.
  *
  * @example
- *     import { Admin, CustomRoutes, useAuthenticated } from 'react-admin';
- *     const FooPage = () => {
- *         useAuthenticated();
- *         return <Foo />;
- *     }
- *     const customRoutes = [
- *         <Route path="/foo" element={<FooPage />} />
- *     ];
- *     const App = () => (
- *         <Admin>
- *             <CustomRoutes>{customRoutes}</CustomRoutes>
- *         </Admin>
- *     );
+ * import { Admin, CustomRoutes, useAuthenticated } from 'react-admin';
+ *
+ * const FooPage = () => {
+ *     const { isPending } = useAuthenticated();
+ *     if (isPending) return null;
+ *     return <Foo />;
+ * }
+ *
+ * const customRoutes = [
+ *     <Route path="/foo" element={<FooPage />} />
+ * ];
+ *
+ * const App = () => (
+ *     <Admin>
+ *         <CustomRoutes>{customRoutes}</CustomRoutes>
+ *     </Admin>
+ * );
  */
 export const useAuthenticated = <ParamsType = any>({
     params,

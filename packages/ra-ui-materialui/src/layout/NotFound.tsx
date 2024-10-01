@@ -3,16 +3,19 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
-
 import { useAuthenticated, useDefaultTitle, useTranslate } from 'ra-core';
+
 import { Title } from './Title';
+import { Loading } from './Loading';
 
 export const NotFound = props => {
     const { className, ...rest } = props;
 
     const translate = useTranslate();
-    useAuthenticated();
+    const { isPending } = useAuthenticated();
     const title = useDefaultTitle();
+
+    if (isPending) return <Loading />;
     return (
         <Root className={className} {...sanitizeRestProps(rest)}>
             <Title defaultTitle={title} />
