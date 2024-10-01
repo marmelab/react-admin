@@ -31,7 +31,7 @@ const permissions = [
 const authProvider= {
     // ...
     canAccess: ({ resource, action, record }) => {
-        const permission = permissions.find(p => {
+        return permissions.some(p => {
             if (p.resource !== resource) return false;
             if (!p.action.includes(action)) return false;
             return true;

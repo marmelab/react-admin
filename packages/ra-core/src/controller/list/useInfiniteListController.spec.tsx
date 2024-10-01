@@ -21,6 +21,12 @@ import {
 } from './useListController';
 import { CoreAdminContext } from '../../core';
 import { TestMemoryRouter } from '../../routing';
+import {
+    Authenticated,
+    CanAccess,
+    DisableAuthentication,
+} from './useInfiniteListController.security.stories';
+import { AuthProvider } from '../../types';
 
 const InfiniteListController = ({
     children,
@@ -550,6 +556,89 @@ describe('useInfiniteListController', () => {
             expect(totalInnerHTML).not.toEqual('undefined');
             expect(totalValue).not.toBeNaN();
             expect(totalValue).toEqual(0);
+        });
+    });
+
+    describe('security', () => {
+        it('should not call the dataProvider until the authentication check passes', async () => {
+            let resolveAuthCheck: () => void;
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(
+                    () =>
+                        new Promise(resolve => {
+                            resolveAuthCheck = resolve;
+                        })
+                ),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getList: jest.fn(() =>
+                    Promise.resolve({
+                        data: [{ id: 1, title: 'A post', votes: 0 }],
+                        total: 0,
+                    })
+                ),
+            });
+
+            render(
+                <Authenticated
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await waitFor(() => {
+                expect(authProvider.checkAuth).toHaveBeenCalled();
+            });
+            expect(dataProvider.getList).not.toHaveBeenCalled();
+            resolveAuthCheck!();
+            await screen.findByText('A post - 0 votes');
+        });
+
+        it('should redirect to the /access-denied page when users do not have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('Loading...');
+            await screen.findByText('Post #1 - 90 votes');
+            fireEvent.click(await screen.findByText('posts.list access'));
+            await screen.findByText('Access denied');
+        });
+
+        it('should display the show view when users have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('Loading...');
+            await screen.findByText('Post #1 - 90 votes');
+        });
+
+        it('should call the dataProvider if disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getList: jest.fn(() =>
+                    Promise.resolve({
+                        data: [{ id: 1, title: 'A post', votes: 0 }],
+                        total: 0,
+                    })
+                ),
+            });
+
+            render(
+                <DisableAuthentication
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await screen.findByText('A post - 0 votes');
+            expect(dataProvider.getList).toHaveBeenCalled();
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
         });
     });
 });

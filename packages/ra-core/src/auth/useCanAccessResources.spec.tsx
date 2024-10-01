@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { Basic } from './useCanAccessResources.stories';
 
 describe('useCanAccessResources', () => {
-    it('should call authProvider.canAccess for every resources', async () => {
+    it('should call authProvider.canAccess for every resource', async () => {
         const canAccess = jest.fn().mockImplementation(async () => true);
         const authProvider = {
             login: () => Promise.reject('bad method'),

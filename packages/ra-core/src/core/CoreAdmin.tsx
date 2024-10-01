@@ -101,7 +101,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         requireAuth,
         store,
         title = 'React Admin',
-        unauthorized,
+        accessDenied,
     } = props;
     return (
         <CoreAdminContext
@@ -111,8 +111,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             i18nProvider={i18nProvider}
             queryClient={queryClient}
             store={store}
-            loading={loading}
-            unauthorized={unauthorized}
         >
             <CoreAdminUI
                 layout={layout}
@@ -125,6 +123,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
                 loginPage={loginPage}
                 requireAuth={requireAuth}
                 ready={ready}
+                accessDenied={accessDenied}
             >
                 {children}
             </CoreAdminUI>

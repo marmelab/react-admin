@@ -8,7 +8,6 @@ import {
     defaultLightTheme,
     defaultDarkTheme,
 } from './theme';
-import { Unauthorized } from './layout/Unauthorized';
 
 export const AdminContext = (props: AdminContextProps) => {
     const {
@@ -17,11 +16,10 @@ export const AdminContext = (props: AdminContextProps) => {
         darkTheme,
         defaultTheme,
         children,
-        unauthorized = Unauthorized,
         ...rest
     } = props;
     return (
-        <CoreAdminContext unauthorized={unauthorized} {...rest}>
+        <CoreAdminContext {...rest}>
             <ThemesContext.Provider
                 value={{
                     lightTheme: theme || lightTheme,

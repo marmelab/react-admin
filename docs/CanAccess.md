@@ -5,7 +5,7 @@ title: "CanAccess"
 
 # `CanAccess`
 
-This component calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). It will only display its children when users are authorized.
+This component calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). It will only display its children when users are authorized. By default, it will redirect users to `/authentication-error` if an error occurs.
 
 ## Usage
 
@@ -18,7 +18,7 @@ const UserEdit = () => {
             <SimpleForm>
                 <TextInput source="lastName">
                 <TextInput source="firstName">
-                <CanAccess action="editPermissions">
+                <CanAccess action="edit" resource="users.role">
                     <SelectInput source="role" choices={['admin', 'user']}>
                 </CanAccess>
             </SimpleForm>
@@ -27,18 +27,19 @@ const UserEdit = () => {
 };
 ```
 
-`<CanAccess>` will call the `authProvider.canAccess` method with the following parameters: `{ action: "editPermissions", resource: "users", record: {} }` where `record` wil be the currently edited record.
+`<CanAccess>` will call the `authProvider.canAccess` method with the following parameters: `{ action: "edit", resource: "users.role", record: {} }` where `record` will be the currently edited record.
 
 ## Parameters
 
 `<CanAccess>` expects the following props:
 
 | Name           | Required | Type           | Default                               | Description |
-| -------------- | -------- | -------------- | ------------------------------------- | --- |
-| `action`       | Required | `string`       | -                                     | The action to check, e.g. 'read', 'list', 'export', 'delete', etc. |
-| `resource`     | Optional | `string`       | Resource from current ResourceContext | The resource to check, e.g. 'users', 'comments', 'posts', etc. |
-| `record`       | Optional | `object`       | Record from current RecordContext     | The record to check. If passed, the child only renders if the user has permissions for that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
-| `loading`      | Optional | `ReactElement` | `loading` from `Admin>`               | The element displayed when authorizations are being checked |
-| `unauthorized` | Optional | `ReactElement` | `unauthorized` from `Admin>`          | The element displayed when users are not authorized to see a page |
+| -------------- | -------- | -------------- | --------------------- | --- |
+| `action`       | Required | `string`       | -                     | The action to check, e.g. 'read', 'list', 'export', 'delete', etc. |
+| `resource`     | Optional | `string`       | ResourceContext value | The resource to check, e.g. 'users', 'comments', 'posts', etc. |
+| `record`       | Optional | `object`       | RecordContext value   | The record to check. If passed, the child only renders if the user has access to that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
+| `loading`      | Optional | `ReactElement` | -                     | The element displayed while the `canAccess` call is pending |
+| `accessDenied` | Optional | `ReactElement` | -                     | The element displayed when users are denied access to the resource |
+| `error`        | Optional | `ReactElement` | -                     | The element displayed when an error occurs while calling `authProvider.canAccess` |
 
 

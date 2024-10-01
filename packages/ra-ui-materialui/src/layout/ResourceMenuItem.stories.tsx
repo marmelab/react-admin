@@ -80,20 +80,18 @@ export const AccessControlInsideAdminChildFunction = () => (
                         setTimeout(
                             resolve,
                             300,
-                            <>
-                                <Resource
-                                    name="posts"
-                                    list={
-                                        <>
-                                            <p>The posts page</p>
-                                            <p>
-                                                The menu item for resource
-                                                "users" should not be displayed
-                                            </p>
-                                        </>
-                                    }
-                                />
-                            </>
+                            <Resource
+                                name="posts"
+                                list={
+                                    <>
+                                        <p>The posts page</p>
+                                        <p>
+                                            The menu item for resource "users"
+                                            should not be displayed
+                                        </p>
+                                    </>
+                                }
+                            />
                         )
                     )
                 }
