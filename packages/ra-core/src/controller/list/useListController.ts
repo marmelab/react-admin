@@ -65,13 +65,15 @@ export const useListController = <RecordType extends RaRecord = any>(
         );
     }
 
-    const { isPending: isPendingAuthState } = useAuthenticated({
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
         enabled: !disableAuthentication,
     });
+
     const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
         action: 'list',
         resource,
-        enabled: !disableAuthentication,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
     });
 
     const translate = useTranslate();
@@ -115,7 +117,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         },
         {
             enabled:
-                (!isPendingAuthState && !isPendingCanAccess) ||
+                (!isPendingAuthenticated && !isPendingCanAccess) ||
                 disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,

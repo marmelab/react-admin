@@ -69,14 +69,17 @@ export const useEditController = <
             'useEditController requires a non-empty resource prop or context'
         );
     }
-    const { isPending: isPendingAuthState } = useAuthenticated({
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
         enabled: !disableAuthentication,
     });
+
     const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
         action: 'edit',
         resource,
-        enabled: !disableAuthentication,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
     });
+
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
@@ -113,7 +116,7 @@ export const useEditController = <
         { id, meta: queryMeta },
         {
             enabled:
-                (!isPendingAuthState && !isPendingCanAccess) ||
+                (!isPendingAuthenticated && !isPendingCanAccess) ||
                 disableAuthentication,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {

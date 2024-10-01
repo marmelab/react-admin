@@ -66,11 +66,14 @@ export const useCreateController = <
             'useCreateController requires a non-empty resource prop or context'
         );
     }
-    useAuthenticated({ enabled: !disableAuthentication });
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
     const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
         action: 'create',
         resource,
-        enabled: !disableAuthentication,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
     });
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const finalRedirectTo =
