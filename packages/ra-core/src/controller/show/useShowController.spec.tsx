@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { ShowController } from './ShowController';
 
@@ -10,6 +10,7 @@ import { TestMemoryRouter } from '../../routing';
 import { testDataProvider } from '../../dataProvider';
 import {
     Authenticated,
+    CanAccess,
     DisableAuthentication,
 } from './useShowController.security.stories';
 
@@ -217,6 +218,23 @@ describe('useShowController', () => {
             expect(dataProvider.getOne).not.toHaveBeenCalled();
             resolveAuthCheck!();
             await screen.findByText('A post - 0 votes');
+        });
+
+        it('should redirect to the /access-denied page when users do not have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('posts.show access'));
+            fireEvent.click(await screen.findByText('Show'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Access denied');
+        });
+
+        it('should display the show view when users have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('Show'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Post #1 - 90 votes');
         });
 
         it('should call the dataProvider if disableAuthentication is true', async () => {

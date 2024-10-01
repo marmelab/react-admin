@@ -33,6 +33,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         requireAuth,
         ready: Ready,
         authenticationError: AuthenticationError = Noop,
+        accessDenied: AccessDenied = Noop,
     } = props;
 
     const [onlyAnonymousRoutes, setOnlyAnonymousRoutes] = useState(requireAuth);
@@ -140,6 +141,10 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                                     path="/authentication-error"
                                     element={<AuthenticationError />}
                                 />
+                                <Route
+                                    path="/access-denied"
+                                    element={<AccessDenied />}
+                                />
                                 <Route path="*" element={<CatchAll />} />
                             </Routes>
                         </Layout>
@@ -159,6 +164,7 @@ export interface CoreAdminRoutesProps {
     requireAuth?: boolean;
     ready?: ComponentType;
     authenticationError?: ComponentType;
+    accessDenied?: React.ComponentType;
 }
 
 const defaultAuthParams = { params: { route: 'dashboard' } };

@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useRequireAccess } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
@@ -69,9 +69,17 @@ export const useEditController = <
             'useEditController requires a non-empty resource prop or context'
         );
     }
-    const { isPending: isPendingAuthState } = useAuthenticated({
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
         enabled: !disableAuthentication,
     });
+
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'edit',
+        resource,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
+    });
+
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
@@ -107,7 +115,9 @@ export const useEditController = <
         resource,
         { id, meta: queryMeta },
         {
-            enabled: !isPendingAuthState || disableAuthentication,
+            enabled:
+                (!isPendingAuthenticated && !isPendingCanAccess) ||
+                disableAuthentication,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
@@ -292,6 +302,7 @@ export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
+    saving: boolean;
 }
 
 export interface EditControllerLoadingResult<RecordType extends RaRecord = any>

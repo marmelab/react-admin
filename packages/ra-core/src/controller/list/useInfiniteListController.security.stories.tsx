@@ -1,12 +1,15 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
-
-import { CoreAdminContext, CoreAdminUI, Resource } from '../../core';
+import { QueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import { CoreAdmin, CoreAdminContext, CoreAdminUI, Resource } from '../../core';
 import { AuthProvider, DataProvider } from '../../types';
 import {
     InfiniteListControllerProps,
     useInfiniteListController,
 } from './useInfiniteListController';
+import { Browser } from '../../storybook/FakeBrowser';
+import { TestMemoryRouter } from '../../routing';
 
 export default {
     title: 'ra-core/controller/list/useInfiniteListController',
@@ -78,14 +81,16 @@ export const Authenticated = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <CoreAdminContext
-            dataProvider={dataProvider}
-            authProvider={authProvider}
-        >
-            <CoreAdminUI>
-                <Resource name="posts" list={Posts} />
-            </CoreAdminUI>
-        </CoreAdminContext>
+        <TestMemoryRouter>
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+            >
+                <CoreAdminUI>
+                    <Resource name="posts" list={Posts} />
+                </CoreAdminUI>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
@@ -97,13 +102,133 @@ export const DisableAuthentication = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <CoreAdminContext
-            dataProvider={dataProvider}
-            authProvider={authProvider}
-        >
-            <CoreAdminUI>
-                <Resource name="posts" list={<Posts disableAuthentication />} />
-            </CoreAdminUI>
-        </CoreAdminContext>
+        <TestMemoryRouter>
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+            >
+                <CoreAdminUI>
+                    <Resource
+                        name="posts"
+                        list={<Posts disableAuthentication />}
+                    />
+                </CoreAdminUI>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
+
+export const CanAccess = ({
+    authProviderDelay = 300,
+}: {
+    authProviderDelay?: number;
+}) => {
+    return (
+        <TestMemoryRouter>
+            <AccessControlAdmin
+                authProviderDelay={authProviderDelay}
+                queryClient={new QueryClient()}
+            />
+        </TestMemoryRouter>
+    );
+};
+
+const AccessControlAdmin = ({
+    authProviderDelay,
+    queryClient,
+}: {
+    authProviderDelay?: number;
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState({
+        'posts.list': true,
+    });
+
+    const authProvider: AuthProvider = {
+        login: () => Promise.reject(new Error('Not implemented')),
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        getPermissions: () => Promise.resolve(undefined),
+        canAccess: ({ action, resource }) =>
+            new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(authorizedResources[`${resource}.${action}`]);
+                }, authProviderDelay);
+            }),
+    };
+    return (
+        <AccessControlUI
+            queryClient={queryClient}
+            authorizedResources={authorizedResources}
+            setAuthorizedResources={setAuthorizedResources}
+        >
+            <CoreAdmin
+                authProvider={authProvider}
+                dataProvider={defaultDataProvider}
+                queryClient={queryClient}
+                accessDenied={AccessDenied}
+                loading={Loading}
+                authenticationError={AuthenticationError}
+            >
+                <Resource name="posts" list={<Posts />} />
+            </CoreAdmin>
+        </AccessControlUI>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        'posts.list': boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['posts.list']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'posts.list':
+                                    !authorizedResources['posts.list'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    posts.list access
+                </label>
+            </div>
+            <Browser>{children}</Browser>
+        </div>
+    );
+};
+
+const AccessDenied = () => {
+    return (
+        <div>
+            <div>Access denied</div>
+            <Link to="/posts">List</Link>
+        </div>
+    );
+};
+const AuthenticationError = () => {
+    return (
+        <div>
+            <div>AuthenticationError</div>
+        </div>
+    );
+};
+
+const Loading = () => <div>Loading...</div>;

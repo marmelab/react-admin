@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useRequireAccess } from '../../auth';
 import { RaRecord } from '../../types';
 import {
     useGetOne,
@@ -63,9 +63,18 @@ export const useShowController = <RecordType extends RaRecord = any>(
             `useShowController requires a non-empty resource prop or context`
         );
     }
-    const { isPending: isPendingAuthState } = useAuthenticated({
+
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
         enabled: !disableAuthentication,
     });
+
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'show',
+        resource,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
+    });
+
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
@@ -91,7 +100,9 @@ export const useShowController = <RecordType extends RaRecord = any>(
         resource,
         { id, meta },
         {
-            enabled: !isPendingAuthState || disableAuthentication,
+            enabled:
+                (!isPendingAuthenticated && !isPendingCanAccess) ||
+                disableAuthentication,
             onError: () => {
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',

@@ -1,20 +1,19 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 
-import { useAuthenticated } from '../../auth/useAuthenticated';
-import { useTranslate } from '../../i18n/useTranslate';
-import { useNotify } from '../../notification/useNotify';
+import { useAuthenticated, useRequireAccess } from '../../auth';
+import { useTranslate } from '../../i18n';
+import { useNotify } from '../../notification';
 import {
     useGetList,
     UseGetListHookValue,
     UseGetListOptions,
-} from '../../dataProvider/useGetList';
-import { SORT_ASC } from './queryReducer';
-import { defaultExporter } from '../../export/defaultExporter';
+} from '../../dataProvider';
+import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
-import { useResourceContext } from '../../core/useResourceContext';
-import { useGetResourceLabel } from '../../core/useGetResourceLabel';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import { SORT_ASC } from './queryReducer';
 
 /**
  * Prepare data for the List view
@@ -66,8 +65,15 @@ export const useListController = <RecordType extends RaRecord = any>(
         );
     }
 
-    const { isPending: isPendingAuthState } = useAuthenticated({
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
         enabled: !disableAuthentication,
+    });
+
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'list',
+        resource,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
     });
 
     const translate = useTranslate();
@@ -110,7 +116,9 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
-            enabled: !isPendingAuthState || disableAuthentication,
+            enabled:
+                (!isPendingAuthenticated && !isPendingCanAccess) ||
+                disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>

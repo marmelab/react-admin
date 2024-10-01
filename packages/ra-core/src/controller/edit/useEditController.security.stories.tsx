@@ -1,13 +1,18 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
-
-import { CoreAdminContext, CoreAdminUI, Resource } from '../../core';
+import { QueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import { Browser } from '../../storybook/FakeBrowser';
+import { CoreAdmin } from '../../core/CoreAdmin';
+import { CoreAdminContext } from '../../core/CoreAdminContext';
+import { CoreAdminUI } from '../../core/CoreAdminUI';
+import { Resource } from '../../core/Resource';
 import { AuthProvider, DataProvider } from '../../types';
+import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
 import { EditControllerProps, useEditController } from './useEditController';
-import { TestMemoryRouter } from '../..';
 
 export default {
-    title: 'ra-core/controller/list/useEditController',
+    title: 'ra-core/controller/useEditController',
 };
 
 const styles = {
@@ -102,3 +107,128 @@ export const DisableAuthentication = ({
         </TestMemoryRouter>
     );
 };
+
+export const CanAccess = ({
+    authProviderDelay = 300,
+}: {
+    authProviderDelay?: number;
+}) => {
+    return (
+        <TestMemoryRouter initialEntries={['/posts']}>
+            <AccessControlAdmin
+                authProviderDelay={authProviderDelay}
+                queryClient={new QueryClient()}
+            />
+        </TestMemoryRouter>
+    );
+};
+
+const AccessControlAdmin = ({
+    authProviderDelay,
+    queryClient,
+}: {
+    authProviderDelay?: number;
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState({
+        'posts.list': true,
+        'posts.edit': true,
+    });
+
+    const authProvider: AuthProvider = {
+        login: () => Promise.reject(new Error('Not implemented')),
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        getPermissions: () => Promise.resolve(undefined),
+        canAccess: ({ action, resource }) =>
+            new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(authorizedResources[`${resource}.${action}`]);
+                }, authProviderDelay);
+            }),
+    };
+    return (
+        <AccessControlUI
+            queryClient={queryClient}
+            authorizedResources={authorizedResources}
+            setAuthorizedResources={setAuthorizedResources}
+        >
+            <CoreAdmin
+                authProvider={authProvider}
+                dataProvider={defaultDataProvider}
+                queryClient={queryClient}
+                accessDenied={AccessDenied}
+                loading={Loading}
+                authenticationError={AuthenticationError}
+            >
+                <Resource
+                    name="posts"
+                    list={
+                        <div>
+                            <div>List</div>
+                            <Link to="/posts/1">Edit</Link>
+                        </div>
+                    }
+                    edit={<Post />}
+                />
+            </CoreAdmin>
+        </AccessControlUI>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        'posts.list': boolean;
+        'posts.edit': boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['posts.edit']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'posts.edit':
+                                    !authorizedResources['posts.edit'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    posts.edit access
+                </label>
+            </div>
+            <Browser>{children}</Browser>
+        </div>
+    );
+};
+
+const AccessDenied = () => {
+    return (
+        <div>
+            <div>Access denied</div>
+        </div>
+    );
+};
+const AuthenticationError = () => {
+    return (
+        <div>
+            <div>AuthenticationError</div>
+        </div>
+    );
+};
+
+const Loading = () => <div>Loading...</div>;

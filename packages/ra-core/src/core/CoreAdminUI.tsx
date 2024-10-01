@@ -282,6 +282,38 @@ export interface CoreAdminUIProps {
      * );
      */
     authenticationError?: ComponentType;
+
+    /**
+     * A react component to display when users don't have access to the page they're trying to access
+     *
+     * @see https://marmelab.com/react-admin/Admin.html#accessDenied
+     * @example
+     * // in src/AccessDenied.js
+     * import Card from '@mui/material/Card';
+     * import CardContent from '@mui/material/CardContent';
+     * import { Title } from 'react-admin';
+     *
+     * export const AccessDenied = () => (
+     *     <Card>
+     *         <Title title="AccessDenied" />
+     *         <CardContent>
+     *             <h1>You're not authorized to see this page</h1>
+     *         </CardContent>
+     *     </Card>
+     * );
+     *
+     * // in src/App.js
+     * import { Admin } from 'react-admin';
+     * import { dataProvider } from './dataProvider';
+     * import { AccessDenied } from './AccessDenied';
+     *
+     * const App = () => (
+     *     <Admin accessDenied={AccessDenied} dataProvider={dataProvider}>
+     *         ...
+     *     </Admin>
+     * );
+     */
+    accessDenied?: React.ComponentType;
 }
 
 export const CoreAdminUI = (props: CoreAdminUIProps) => {
@@ -300,6 +332,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         requireAuth = false,
         title = 'React Admin',
         authenticationError = Noop,
+        accessDenied = Noop,
     } = props;
 
     useEffect(() => {
@@ -359,6 +392,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
                                 requireAuth={requireAuth}
                                 ready={ready}
                                 authenticationError={authenticationError}
+                                accessDenied={accessDenied}
                             >
                                 {children}
                             </CoreAdminRoutes>

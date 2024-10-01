@@ -11,11 +11,11 @@ import {
 
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { Unauthorized } from './Unauthorized';
+import { AccessDenied } from './AccessDenied';
 import { Link } from 'react-router-dom';
 
 export default {
-    title: 'ra-ui-materialui/layout/Unauthorized',
+    title: 'ra-ui-materialui/layout/AccessDenied',
 };
 
 const i18nProvider = polyglotI18nProvider(
@@ -27,13 +27,13 @@ const i18nProvider = polyglotI18nProvider(
     ]
 );
 
-export const Basic = () => <Unauthorized />;
+export const Basic = () => <AccessDenied />;
 
 export const I18N = () => {
     return (
         <TestMemoryRouter>
             <I18nContextProvider value={i18nProvider}>
-                <Unauthorized />
+                <AccessDenied />
             </I18nContextProvider>
         </TestMemoryRouter>
     );
@@ -54,9 +54,8 @@ export const FullApp = () => (
             dataProvider={testDataProvider()}
             authProvider={authProvider}
             i18nProvider={i18nProvider}
-            unauthorized={Unauthorized}
         >
-            <AdminUI>
+            <AdminUI accessDenied={AccessDenied}>
                 <Resource name="users" list={UserList} />
                 <Resource name="posts" list={PostList} />
             </AdminUI>

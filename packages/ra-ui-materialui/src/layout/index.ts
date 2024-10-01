@@ -1,3 +1,4 @@
+export * from './AccessDenied';
 export * from './AppBar';
 export * from './ApplicationUpdatedNotification';
 export * from './AuthenticationError';

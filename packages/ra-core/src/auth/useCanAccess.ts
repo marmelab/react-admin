@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
     QueryObserverLoadingErrorResult,
     QueryObserverLoadingResult,
@@ -8,7 +8,6 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
-import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import { useResourceContext } from '../core';
 import { useRecordContext } from '../controller';
 import { RaRecord } from '../types';
@@ -55,8 +54,8 @@ export const useCanAccess = <
     params: UseCanAccessOptions<RecordType, ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
-    const logoutIfAccessDenied = useLogoutIfAccessDenied();
     const resource = useResourceContext(params);
+
     if (!resource) {
         throw new Error(
             'useCanAccess must be used inside a <Resource> component or provide a resource prop'
@@ -79,12 +78,6 @@ export const useCanAccess = <
         },
         ...params,
     });
-
-    useEffect(() => {
-        if (queryResult.error) {
-            logoutIfAccessDenied(queryResult.error);
-        }
-    }, [logoutIfAccessDenied, queryResult.error]);
 
     const result = useMemo(() => {
         // Don't check for the authProvider or authProvider.canAccess method in the useMemo
