@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { testDataProvider } from 'ra-core';
+import { ResourceContextProvider, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from './SimpleForm';
@@ -12,27 +12,31 @@ describe('<SimpleForm />', () => {
     it('should embed a form with given component children', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <TextInput source="name" />
-                    <TextInput source="city" />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <TextInput source="name" />
+                        <TextInput source="city" />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(
-            screen.queryByLabelText('resources.undefined.fields.name')
+            screen.queryByLabelText('resources.posts.fields.name')
         ).not.toBeNull();
         expect(
-            screen.queryByLabelText('resources.undefined.fields.city')
+            screen.queryByLabelText('resources.posts.fields.city')
         ).not.toBeNull();
     });
 
     it('should display <Toolbar />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <TextInput source="name" />
-                    <TextInput source="city" />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <TextInput source="name" />
+                        <TextInput source="city" />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByLabelText('ra.action.save')).not.toBeNull();

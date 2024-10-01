@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { required, testDataProvider, useRecordContext } from 'ra-core';
+import {
+    required,
+    ResourceContextProvider,
+    testDataProvider,
+    useRecordContext,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -19,7 +24,6 @@ import {
 describe('<SelectInput />', () => {
     const defaultProps = {
         source: 'language',
-        resource: 'posts',
         choices: [
             { id: 'ang', name: 'Angular' },
             { id: 'rea', name: 'React' },
@@ -29,12 +33,14 @@ describe('<SelectInput />', () => {
     it('should use the input parameter value as the initial input value', async () => {
         const { container } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{ language: 'ang' }}
-                    onSubmit={jest.fn()}
-                >
-                    <SelectInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ language: 'ang' }}
+                        onSubmit={jest.fn()}
+                    >
+                        <SelectInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = container.querySelector('input');
@@ -45,9 +51,11 @@ describe('<SelectInput />', () => {
         it('should render choices as mui MenuItem components', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -73,15 +81,21 @@ describe('<SelectInput />', () => {
         it('should render disabled choices marked so', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 'ang', name: 'Angular' },
-                                { id: 'rea', name: 'React', disabled: true },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                choices={[
+                                    { id: 'ang', name: 'Angular' },
+                                    {
+                                        id: 'rea',
+                                        name: 'React',
+                                        disabled: true,
+                                    },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -99,9 +113,11 @@ describe('<SelectInput />', () => {
         it('should include an empty option by default', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -113,9 +129,14 @@ describe('<SelectInput />', () => {
         it('should not include an empty option if the field is required', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} validate={required()} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -147,9 +168,14 @@ describe('<SelectInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput emptyText={emptyText} {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                emptyText={emptyText}
+                                {...defaultProps}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -170,9 +196,14 @@ describe('<SelectInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput emptyText={emptyText} {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                emptyText={emptyText}
+                                {...defaultProps}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -189,16 +220,18 @@ describe('<SelectInput />', () => {
         it('should use optionValue as value identifier', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionValue="foobar"
-                            choices={[
-                                { foobar: 'ang', name: 'Angular' },
-                                { foobar: 'rea', name: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                optionValue="foobar"
+                                choices={[
+                                    { foobar: 'ang', name: 'Angular' },
+                                    { foobar: 'rea', name: 'React' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -213,16 +246,18 @@ describe('<SelectInput />', () => {
         it('should use optionValue including "." as value identifier', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionValue="foobar.id"
-                            choices={[
-                                { foobar: { id: 'ang' }, name: 'Angular' },
-                                { foobar: { id: 'rea' }, name: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                optionValue="foobar.id"
+                                choices={[
+                                    { foobar: { id: 'ang' }, name: 'Angular' },
+                                    { foobar: { id: 'rea' }, name: 'React' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -239,16 +274,18 @@ describe('<SelectInput />', () => {
         it('should use optionText with a string value as text identifier', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionText="foobar"
-                            choices={[
-                                { id: 'ang', foobar: 'Angular' },
-                                { id: 'rea', foobar: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                optionText="foobar"
+                                choices={[
+                                    { id: 'ang', foobar: 'Angular' },
+                                    { id: 'rea', foobar: 'React' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -263,16 +300,18 @@ describe('<SelectInput />', () => {
         it('should use optionText with a string value including "." as text identifier', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionText="foobar.name"
-                            choices={[
-                                { id: 'ang', foobar: { name: 'Angular' } },
-                                { id: 'rea', foobar: { name: 'React' } },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                optionText="foobar.name"
+                                choices={[
+                                    { id: 'ang', foobar: { name: 'Angular' } },
+                                    { id: 'rea', foobar: { name: 'React' } },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -287,16 +326,18 @@ describe('<SelectInput />', () => {
         it('should use optionText with a function value as text identifier', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionText={choice => choice.foobar}
-                            choices={[
-                                { id: 'ang', foobar: 'Angular' },
-                                { id: 'rea', foobar: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                optionText={choice => choice.foobar}
+                                choices={[
+                                    { id: 'ang', foobar: 'Angular' },
+                                    { id: 'rea', foobar: 'React' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -317,16 +358,18 @@ describe('<SelectInput />', () => {
             };
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionText={<Foobar />}
-                            choices={[
-                                { id: 'ang', foobar: 'Angular' },
-                                { id: 'rea', foobar: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                optionText={<Foobar />}
+                                choices={[
+                                    { id: 'ang', foobar: 'Angular' },
+                                    { id: 'rea', foobar: 'React' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -377,15 +420,17 @@ describe('<SelectInput />', () => {
     it('should display helperText if prop is present', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{ language: 'ang' }}
-                    onSubmit={jest.fn()}
-                >
-                    <SelectInput
-                        {...defaultProps}
-                        helperText="Can I help you?"
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ language: 'ang' }}
+                        onSubmit={jest.fn()}
+                    >
+                        <SelectInput
+                            {...defaultProps}
+                            helperText="Can I help you?"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const helperText = screen.getByText('Can I help you?');
@@ -396,16 +441,18 @@ describe('<SelectInput />', () => {
         it('should not be displayed if field is pristine', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ language: 'ang' }}
-                        onSubmit={jest.fn()}
-                    >
-                        <SelectInput
-                            {...defaultProps}
-                            helperText="helperText"
-                            validate={() => 'error'}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ language: 'ang' }}
+                            onSubmit={jest.fn()}
+                        >
+                            <SelectInput
+                                {...defaultProps}
+                                helperText="helperText"
+                                validate={() => 'error'}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             screen.getByText('helperText');
@@ -415,17 +462,19 @@ describe('<SelectInput />', () => {
         it('should not be displayed if field has been touched but is valid', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ language: 'ang' }}
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                    >
-                        <SelectInput
-                            {...defaultProps}
-                            helperText="helperText"
-                            validate={() => undefined}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ language: 'ang' }}
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                        >
+                            <SelectInput
+                                {...defaultProps}
+                                helperText="helperText"
+                                validate={() => undefined}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText(
@@ -440,14 +489,16 @@ describe('<SelectInput />', () => {
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm mode="onChange" onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            helperText="helperText"
-                            emptyText="Empty"
-                            validate={() => 'error'}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onChange" onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                helperText="helperText"
+                                emptyText="Empty"
+                                validate={() => 'error'}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -469,9 +520,11 @@ describe('<SelectInput />', () => {
         it('should not render a LinearProgress if isPending is true and a second has not passed yet', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} isPending />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput {...defaultProps} isPending />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -481,9 +534,11 @@ describe('<SelectInput />', () => {
         it('should render a LinearProgress if isPending is true and a second has passed', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} isPending />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput {...defaultProps} isPending />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -495,9 +550,11 @@ describe('<SelectInput />', () => {
         it('should not render a LinearProgress if isPending is false', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -516,16 +573,18 @@ describe('<SelectInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={choices}
-                            onCreate={() => {
-                                choices.push(newChoice);
-                                return newChoice;
-                            }}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                choices={choices}
+                                onCreate={() => {
+                                    choices.push(newChoice);
+                                    return newChoice;
+                                }}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -549,21 +608,23 @@ describe('<SelectInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={choices}
-                            defaultValue="ang"
-                            onCreate={() => {
-                                return new Promise(resolve => {
-                                    setTimeout(() => {
-                                        choices.push(newChoice);
-                                        resolve(newChoice);
-                                    }, 50);
-                                });
-                            }}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                choices={choices}
+                                defaultValue="ang"
+                                onCreate={() => {
+                                    return new Promise(resolve => {
+                                        setTimeout(() => {
+                                            choices.push(newChoice);
+                                            resolve(newChoice);
+                                        }, 50);
+                                    });
+                                }}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -592,17 +653,19 @@ describe('<SelectInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={choices}
-                            onCreate={() => {
-                                choices.push(newChoice);
-                                return newChoice;
-                            }}
-                            optionText="name.en"
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                choices={choices}
+                                onCreate={() => {
+                                    choices.push(newChoice);
+                                    return newChoice;
+                                }}
+                                optionText="name.en"
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -634,13 +697,15 @@ describe('<SelectInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <SelectInput
-                        {...defaultProps}
-                        choices={choices}
-                        create={<Create />}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectInput
+                            {...defaultProps}
+                            choices={choices}
+                            create={<Create />}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -661,15 +726,17 @@ describe('<SelectInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <SelectInput
-                        {...defaultProps}
-                        choices={choices}
-                        defaultValue="ang"
-                        inputProps={{ 'data-testid': 'content-input' }}
-                        onChange={onChange}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <SelectInput
+                            {...defaultProps}
+                            choices={choices}
+                            defaultValue="ang"
+                            inputProps={{ 'data-testid': 'content-input' }}
+                            onChange={onChange}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -710,14 +777,16 @@ describe('<SelectInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <SelectInput
-                        {...defaultProps}
-                        choices={choices}
-                        create={<Create />}
-                        onChange={onChange}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectInput
+                            {...defaultProps}
+                            choices={choices}
+                            create={<Create />}
+                            onChange={onChange}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 

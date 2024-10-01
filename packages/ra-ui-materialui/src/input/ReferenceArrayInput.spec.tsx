@@ -12,6 +12,7 @@ import {
     CoreAdminContext,
     Form,
     useInput,
+    ResourceContextProvider,
 } from 'ra-core';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -26,7 +27,6 @@ import { DifferentIdTypes } from './ReferenceArrayInput.stories';
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
         reference: 'tags',
-        resource: 'posts',
         source: 'tag_ids',
     };
 
@@ -48,11 +48,13 @@ describe('<ReferenceArrayInput />', () => {
                     getList: () => Promise.reject(new Error('fetch error')),
                 })}
             >
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceArrayInput {...defaultProps}>
-                        <SelectArrayInput optionText="name" />
-                    </ReferenceArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ReferenceArrayInput {...defaultProps}>
+                            <SelectArrayInput optionText="name" />
+                        </ReferenceArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -66,11 +68,13 @@ describe('<ReferenceArrayInput />', () => {
         };
         render(
             <AdminContext>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceArrayInput {...defaultProps}>
-                        <MyComponent />
-                    </ReferenceArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ReferenceArrayInput {...defaultProps}>
+                            <MyComponent />
+                        </ReferenceArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -93,11 +97,13 @@ describe('<ReferenceArrayInput />', () => {
         });
         render(
             <AdminContext dataProvider={dataProvider}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceArrayInput {...defaultProps}>
-                        <Children />
-                    </ReferenceArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ReferenceArrayInput {...defaultProps}>
+                            <Children />
+                        </ReferenceArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -119,11 +125,13 @@ describe('<ReferenceArrayInput />', () => {
 
         render(
             <AdminContext dataProvider={dataProvider}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceArrayInput {...defaultProps}>
-                        <MyComponent />
-                    </ReferenceArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ReferenceArrayInput {...defaultProps}>
+                            <MyComponent />
+                        </ReferenceArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -155,20 +163,18 @@ describe('<ReferenceArrayInput />', () => {
         });
         render(
             <AdminContext dataProvider={dataProvider}>
-                <SimpleForm
-                    onSubmit={jest.fn()}
-                    defaultValues={{ tag_ids: [5] }}
-                >
-                    <ReferenceArrayInput
-                        reference="tags"
-                        resource="posts"
-                        source="tag_ids"
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ tag_ids: [5] }}
                     >
-                        <DatagridInput>
-                            <TextField source="name" />
-                        </DatagridInput>
-                    </ReferenceArrayInput>
-                </SimpleForm>
+                        <ReferenceArrayInput reference="tags" source="tag_ids">
+                            <DatagridInput>
+                                <TextField source="name" />
+                            </DatagridInput>
+                        </ReferenceArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -188,31 +194,31 @@ describe('<ReferenceArrayInput />', () => {
         const getCheckboxAll = () =>
             screen.getByLabelText('ra.action.select_all');
         await waitFor(() => {
-            expect(getCheckbox1().checked).toEqual(true);
-            expect(getCheckbox2().checked).toEqual(false);
+            expect(getCheckbox1()?.checked).toEqual(true);
+            expect(getCheckbox2()?.checked).toEqual(false);
         });
 
         fireEvent.click(getCheckbox2());
 
         await waitFor(() => {
-            expect(getCheckbox1().checked).toEqual(true);
-            expect(getCheckbox2().checked).toEqual(true);
+            expect(getCheckbox1()?.checked).toEqual(true);
+            expect(getCheckbox2()?.checked).toEqual(true);
             expect(getCheckboxAll().checked).toEqual(true);
         });
 
         fireEvent.click(getCheckboxAll());
 
         await waitFor(() => {
-            expect(getCheckbox1().checked).toEqual(false);
-            expect(getCheckbox2().checked).toEqual(false);
+            expect(getCheckbox1()?.checked).toEqual(false);
+            expect(getCheckbox2()?.checked).toEqual(false);
             expect(getCheckboxAll().checked).toEqual(false);
         });
 
         fireEvent.click(getCheckboxAll());
 
         await waitFor(() => {
-            expect(getCheckbox1().checked).toEqual(true);
-            expect(getCheckbox2().checked).toEqual(true);
+            expect(getCheckbox1()?.checked).toEqual(true);
+            expect(getCheckbox2()?.checked).toEqual(true);
             expect(getCheckboxAll().checked).toEqual(true);
         });
     });
