@@ -7,246 +7,33 @@ title: "Buttons"
 
 React-Admin provides button components for all the common uses.
 
-## Navigation Buttons
-
-These buttons allow users to navigate between the various react-admin views.
-
-### `<EditButton>`
-
-Opens the Edit view of the current record:
-
-```js
-import { EditButton } from 'react-admin';
-
-const CommentEditButton = () => <EditButton label="Edit comment" />;
-```
-
-![Edit button](./img/edit-button.png)
-
-`<EditButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
-
-| Prop          | Required | Type            | Default          | Description                                      |
-| ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
-| `resource`    | Optional | `string`        | -                | Resource to link to, e.g. 'posts'                |
-| `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
-| `label`       | Optional | `string`        | 'ra.action.edit' | Label or translation message to use              |
-| `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
-| `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
-
-It also supports [all the other `<Button>` props](#button).
-
-**Tip**: You can use it as `<Datagrid>` child, too. However, you should use the `<Datagrid rowClick="edit">` prop instead to avoid using one column for the Edit button.
-
-**Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
-
-**Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
-
-**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), `<EditButton>` will only render after calling it with the following parameters:
-
-- `action`: `edit`
-- `resource`: the current resource
-- `record`: the current record
-
-### `<ShowButton>`
-
-Opens the Show view of the current record:
-
-```js
-import { ShowButton } from 'react-admin';
-
-const CommentShowButton = () => <ShowButton label="Show comment" />;
-```
-
-![Show button](./img/show-button.png)
-
-`<ShowButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
-
-| Prop          | Required | Type            | Default          | Description                                      |
-| ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
-| `resource`    | Optional | `string`        | -                | The target resource, e.g. 'posts'                |
-| `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
-| `component`   | Optional | `ReactElement`  | -                | Base path to resource, e.g. '/posts'             |
-| `label`       | Optional | `string`        | 'ra.action.show' | Label or translation message to use              |
-| `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
-| `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
-
-It also supports [all the other `<Button>` props](#button).
-
-**Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
-
-**Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
-
-**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), `<ShowButton>` will only render after calling it with the following parameters:
-
-- `action`: `show`
-- `resource`: the current resource
-- `record`: the current record
-
-### `<CreateButton>`
-
-Opens the Create view of the current resource:
-
-```js
-import { CreateButton } from 'react-admin';
-
-const CommentCreateButton = () => <CreateButton label="Create comment" />;
-```
-
-![Create button](./img/create-button.png)
-
-`<CreateButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable. On mobile, it turns into a "Floating Action Button".
-
-![Create button FAB](./img/create-button-fab.png)
-
-| Prop          | Required | Type            | Default            | Description                                  |
-| ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
-| `resource`    | Optional | `string`        | -                  | Target resource, e.g. 'posts'                |
-| `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
-| `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
-| `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
-
-It also supports [all the other `<Button>` props](#button).
-
-**Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
-
-**Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
-
-**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), `<CreateButton>` will only render after calling it with the following parameters:
-
-- `action`: `create`
-- `resource`: the current resource
-
-#### `sx`: CSS API
-
-| Rule name                   | Description                                                        |
-|-----------------------------|--------------------------------------------------------------------|
-| `&.RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
-
-To override the style of all instances of `<CreateButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCreateButton` key.
-
-### `<ListButton>`
-
-Opens the List view of a given resource:
-
-```js
-import { ListButton } from 'react-admin';
-
-const CommentListButton = () => <ListButton label="Comments" />;
-```
-
-![List button](./img/list-button.png)
-
-`<ListButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
-
-By default, react-admin doesn't display a `<ListButton>` in Edit and Show views action toolbar. This saves visual clutter, and users can always use the back button. You can add it by specifying your own `actions`:
-
-```jsx
-// linking back to the list from the Edit view
-import { TopToolbar, ListButton, ShowButton, Edit } from 'react-admin';
-
-const PostEditActions = () => (
-    <TopToolbar>
-        <ListButton />
-        <ShowButton />
-    </TopToolbar>
-);
-
-export const PostEdit = () => (
-    <Edit actions={<PostEditActions />}>
-        ...
-    </Edit>
-);
-```
-
-| Prop       | Required | Type            | Default          | Description                                  |
-| ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
-| `resource` | Optional | `string`        | -                | target resource, e.g. 'posts'                |
-| `label`    | Optional | `string`        | 'ra.action.list' | label or translation message to use          |
-| `icon`     | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`          |
-
-It also supports [all the other `<Button>` props](#button).
-
-**Tip**: If you want to link to the List view manually, use the `/{resource}` location.
-
-**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), `<ListButton>` will only render after calling it with the following parameters:
-- `action`: `list`
-- `resource`: the current resource
-
-## List Buttons
-
-The following buttons are designed to be used in List views.
-
-### `<ExportButton>`
-
-Exports the current list, with filters applied, but without pagination. It relies on [the `exporter` function](./List.md#exporter) passed to the `<List>` component, via the `ListContext`. It's disabled for empty lists.
-
-By default, the `<ExportButton>` is included in the List actions.
-
-```jsx
-import { CreateButton, ExportButton, TopToolbar } from 'react-admin';
-
-const PostListActions = () => (
-    <TopToolbar>
-        <PostFilter context="button" />
-        <CreateButton />
-        <ExportButton />
-    </TopToolbar>
-);
-
-export const PostList = () => (
-    <List actions={<PostListActions />}>
-        ...
-    </List>
-);
-```
-
-![Export button](./img/export-button.png)
-
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `maxResults` | Optional | `number`        | 1000               | Maximum number of records to export |
-| `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
-| `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
-| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
-
-**Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
-
-### `<BulkExportButton>`
-
-Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
-
-```jsx
-import * as React from 'react';
-import { Fragment } from 'react';
-import { BulkDeleteButton, BulkExportButton } from 'react-admin';
-
-const PostBulkActionButtons = () => (
-    <Fragment>
-        <BulkExportButton />
-        <BulkDeleteButton />
-    </Fragment>
-);
-
-export const PostList = () => (
-    <List>
-        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-
-![Bulk Export button](./img/bulk-export-button.png)
-
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `label`      | Optional | `string`        | 'ra.action.export' | label or translation message to use |
-| `icon`       | Optional | `ReactElement`  | `<DownloadIcon>`   | iconElement, e.g. `<CommentIcon />` |
-| `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
-| `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
-
-### `<BulkDeleteButton>`
+- **Navigation Buttons**: to navigate between the various react-admin views.
+    - [`<EditButton>`](#editbutton)
+    - [`<ShowButton>`](#showbutton)
+    - [`<CreateButton>`](#createbutton)
+    - [`<ListButton>`](#listbutton)
+
+- **List Buttons**: to be used in List views.
+    - [`<ExportButton>`](#exportbutton)
+    - [`<BulkExportButton>`](#bulkexportbutton)
+    - [`<BulkDeleteButton>`](#bulkdeletebutton)
+    - [`<BulkUpdateButton>`](#bulkupdatebutton)
+    - [`<BulkUpdateFormButton>`](#bulkupdateformbutton)
+    - [`<FilterButton>`](#filterbutton)
+
+- **Record Buttons**: To be used in detail views
+    - [`<UpdateButton>`](#updatebutton)
+    - [`<DeleteButton>`](#deletebutton)
+    - [`<DeleteWithConfirmButton>`](#deletewithconfirmbutton)
+    - [`<CloneButton>`](#clonebutton)
+
+- **Miscellaneous**
+    - [`<Button>`](#button)
+    - [`<RefreshButton>`](#refreshbutton)
+    - [`<SkipNavigationButton>`](#skipnavigationbutton)
+    - [`<UserMenu>`](#usermenu)
+
+## `<BulkDeleteButton>`
 
 Deletes the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons) (where it's enabled by default).
 
