@@ -79,6 +79,7 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 
 For instance, for the `<PostCreate>` page below:
 
+{% raw %}
 ```tsx
 import { useCreateController, SimpleForm, TextInput } from 'react-admin';
 
@@ -95,6 +96,7 @@ const PostCreate = ({ id }) => {
   );
 }
 ```
+{% endraw %}
 
 `useEditController` will call `authProvider.canAccess()` using the following parameters:
 
