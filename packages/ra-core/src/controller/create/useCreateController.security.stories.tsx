@@ -39,7 +39,7 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const Post = (props: Partial<CreateControllerProps>) => {
+const CreatePost = (props: Partial<CreateControllerProps>) => {
     const params = useCreateController({
         resource: 'posts',
         ...props,
@@ -73,7 +73,7 @@ export const Authenticated = ({
                 authProvider={authProvider}
             >
                 <CoreAdminUI>
-                    <Resource name="posts" create={Post} />
+                    <Resource name="posts" create={CreatePost} />
                 </CoreAdminUI>
             </CoreAdminContext>
         </TestMemoryRouter>
@@ -96,7 +96,7 @@ export const DisableAuthentication = ({
                 <CoreAdminUI>
                     <Resource
                         name="posts"
-                        create={<Post disableAuthentication />}
+                        create={<CreatePost disableAuthentication />}
                     />
                 </CoreAdminUI>
             </CoreAdminContext>
@@ -129,8 +129,6 @@ const AccessControlAdmin = ({
     const [authorizedResources, setAuthorizedResources] = React.useState({
         'posts.list': true,
         'posts.create': true,
-        'posts.edit': false,
-        'posts.show': false,
     });
 
     const authProvider: AuthProvider = {
@@ -168,7 +166,7 @@ const AccessControlAdmin = ({
                             <Link to="/posts/create">Create</Link>
                         </div>
                     }
-                    edit={<Post />}
+                    create={<CreatePost />}
                 />
             </CoreAdmin>
         </AccessControlUI>
@@ -186,8 +184,6 @@ const AccessControlUI = ({
     authorizedResources: {
         'posts.list': boolean;
         'posts.create': boolean;
-        'posts.edit': boolean;
-        'posts.show': boolean;
     };
     queryClient: QueryClient;
 }) => {
@@ -197,7 +193,7 @@ const AccessControlUI = ({
                 <label>
                     <input
                         type="checkbox"
-                        checked={authorizedResources['posts.show']}
+                        checked={authorizedResources['posts.create']}
                         onChange={() => {
                             setAuthorizedResources(state => ({
                                 ...state,

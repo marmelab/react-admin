@@ -142,9 +142,6 @@ const AccessControlAdmin = ({
 }) => {
     const [authorizedResources, setAuthorizedResources] = React.useState({
         'posts.list': true,
-        'posts.create': false,
-        'posts.edit': true,
-        'posts.show': false,
     });
 
     const authProvider: AuthProvider = {
@@ -190,9 +187,6 @@ const AccessControlUI = ({
     setAuthorizedResources: Function;
     authorizedResources: {
         'posts.list': boolean;
-        'posts.create': boolean;
-        'posts.edit': boolean;
-        'posts.show': boolean;
     };
     queryClient: QueryClient;
 }) => {
