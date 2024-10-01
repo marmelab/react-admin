@@ -76,7 +76,7 @@ describe('useCanAccess', () => {
         });
     });
 
-    it('should returns the error when auth.canAccess call fails', async () => {
+    it('should return the error when auth.canAccess call fails', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),

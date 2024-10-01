@@ -20,7 +20,7 @@ describe('useRequireAccess', () => {
         screen.getByText('Protected Content');
     });
 
-    it('should allow its caller to render when canAccess return true', async () => {
+    it('should allow access when canAccess return true', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -33,7 +33,7 @@ describe('useRequireAccess', () => {
         await screen.findByText('Protected Content');
     });
 
-    it('should allow its caller to render when auth provider does not have an canAccess method', async () => {
+    it('should allow access when auth provider does not have an canAccess method', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),

@@ -9,7 +9,7 @@ This hook calls the `authProvider.canAccess()` method on mount for a provided re
 
 ## Usage
 
-`useRequireAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
+`useRequireAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state.
 
 For instance, here's how you can protect a [custom route](./CustomRoutes.md) for editing users settings:
 
