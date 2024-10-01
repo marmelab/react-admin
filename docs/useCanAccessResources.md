@@ -11,25 +11,24 @@ This hook calls the `authProvider.canAccess()` method on mount for an array of r
 
 ## Usage
 
-`useCanAccessResources` takes an object `{ action, resource, record, sources }` as argument. The `source` parameter is an array of the record properties names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object that has a property for each provided source determining whether the user has access to it.
+`useCanAccessResources` takes an object `{ action, resources, record }` as argument. The `resources` parameter is an array of resource names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object that has a property for each provided resource determining whether the user has access to it.
 
 ```jsx
 import { useCanAccessResources, SimpleList } from 'react-admin';
 
-const UserList = ({ record }) => {
+const UserList = () => {
     const { isPending, canAccess } = useCanAccessResources({
         action: 'delete',
-        resource: ['users.id', 'users.name', 'users.email'],
-        record,
+        resources: ['users.id', 'users.name', 'users.email'],
     });
     if (isPending) {
         return null;
     }
     return (
         <SimpleList
-             primaryText={record => canAccess.name ? record.name : ''}
-             secondaryText={record => canAccess.email ? record.email : ''}
-             tertiaryText={record => canAccess.id ? record.id : ''}
+             primaryText={record => canAccess['users.name'] ? record.name : ''}
+             secondaryText={record => canAccess['users.email'] ? record.email : ''}
+             tertiaryText={record => canAccess['users.id'] ? record.id : ''}
          />
     );
 };
@@ -41,7 +40,7 @@ const UserList = ({ record }) => {
 
 | Name | Required | Type | Default | Description |
 | --- | --- | --- | --- | --- |
-| `resources` | Required | `string[]` | - | An array of the resources for which to check access, e.g `['users.id', 'users.title']` |
 | `action` | Required | `string` | - | The action to check, e.g. 'read', 'list', 'export', 'delete', etc. |
 | `record` | Optional | `object` | - | The record to check. If passed, the child only renders if the user has permissions for that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
+| `resources` | Required | `string[]` | - | An array of the resources for which to check access, e.g `['users.id', 'users.title']` |
 

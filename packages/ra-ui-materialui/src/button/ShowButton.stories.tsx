@@ -38,21 +38,20 @@ export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
     </TestMemoryRouter>
 );
 
-export const FullApp = () => {
+export const AccessControl = () => {
     const queryClient = new QueryClient();
 
     return (
         <TestMemoryRouter>
-            <FullAppAdmin queryClient={queryClient} />
+            <AccessControlAdmin queryClient={queryClient} />
         </TestMemoryRouter>
     );
 };
 
-const FullAppAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
+const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
     const [resourcesAccesses, setResourcesAccesses] = React.useState({
         'books.list': true,
-        'books.create': true,
-        'books.delete': true,
+        'books.delete': false,
         'books.show': false,
         'books.show.1': false,
     });
@@ -110,7 +109,7 @@ const AccessControlLayout = ({
     children: React.ReactNode;
     resourcesAccesses: {
         'books.list': boolean;
-        'books.create': boolean;
+        'books.delete': boolean;
         'books.show': boolean;
         'books.show.1': boolean;
     };

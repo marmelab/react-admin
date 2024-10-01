@@ -69,11 +69,11 @@ export type AuthProvider = {
     handleCallback?: (
         params?: QueryFunctionContext
     ) => Promise<AuthRedirectResult | void | any>;
-    canAccess?: (
+    canAccess?: <RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord>(
         params: QueryFunctionContext & {
-            action?: string;
+            action: string;
             resource: string;
-            record?: RaRecord;
+            record?: RecordType;
         }
     ) => Promise<boolean>;
     [key: string]: any;

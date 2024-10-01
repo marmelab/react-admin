@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import expect from 'expect';
-import { Basic, FullApp } from './CreateButton.stories';
+import { Basic, AccessControl } from './CreateButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -24,7 +24,7 @@ describe('<CreateButton />', () => {
     });
 
     it('should only render when users have the right to create', async () => {
-        render(<FullApp />);
+        render(<AccessControl />);
         await screen.findByText('War and Peace');
         expect(screen.queryByLabelText('Create')).toBeNull();
         fireEvent.click(screen.getByLabelText('Allow creating books'));

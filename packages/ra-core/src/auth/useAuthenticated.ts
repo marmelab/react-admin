@@ -28,9 +28,10 @@ import useAuthState from './useAuthState';
  */
 export const useAuthenticated = <ParamsType = any>({
     params,
+    logoutOnFailure = true,
     ...options
 }: UseAuthenticatedOptions<ParamsType> = {}) => {
-    useAuthState(params ?? emptyParams, true, options);
+    return useAuthState(params ?? emptyParams, logoutOnFailure, options);
 };
 
 export type UseAuthenticatedOptions<ParamsType> = Omit<
@@ -38,6 +39,8 @@ export type UseAuthenticatedOptions<ParamsType> = Omit<
         params?: ParamsType;
     },
     'queryKey' | 'queryFn'
->;
+> & {
+    logoutOnFailure?: boolean;
+};
 
 const emptyParams = {};

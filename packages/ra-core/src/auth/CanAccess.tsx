@@ -1,10 +1,7 @@
 import * as React from 'react';
-import { useLoadingContext } from '../core/useLoadingContext';
-import { useUnauthorizedContext } from '../core/useUnauthorizedContext';
-import { useCanAccess } from './useCanAccess';
+import { useCanAccess, UseCanAccessOptions } from './useCanAccess';
 import { RaRecord } from '../types';
-import { useRecordContext } from '../controller';
-import { useResourceContext } from '../core';
+import { Navigate } from 'react-router';
 
 /**
  * A component that only displays its children after checking whether users are authorized to access the provided resource and action.
@@ -12,44 +9,45 @@ import { useResourceContext } from '../core';
  * @param options.action The action to check. One of 'list', 'create', 'edit', 'show', 'delete', or a custom action.
  * @param options.resource The resource to check. e.g. 'posts', 'comments', 'users'
  * @param options.children The component to render if users are authorized.
- * @param options.loading An optional element to render while the authorization is being checked. Defaults to the loading component provided on `Admin`.
- * @param options.unauthorized An optional element to render if users are not authorized. Defaults to the unauthorized component provided on `Admin`.
+ * @param options.loading An optional element to render while the authorization is being checked. Defaults to null.
+ * @param options.accessDenied An optional element to render if users are denied access. Defaults to null.
+ * @param options.error An optional element to render if an error occur while checking users access rights. Redirect users to `/authentication-error` by default.
  */
-export const CanAccess = ({
-    action,
+export const CanAccess = <
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+>({
     children,
-    loading,
-    unauthorized,
+    loading = null,
+    accessDenied = null,
+    error: errorElement = DEFAULT_ERROR,
     ...props
-}: CanAccessProps) => {
-    const resource = useResourceContext(props);
-    if (!resource) {
-        throw new Error(
-            '<CanAccess> must be used inside a <Resource> component or provide a resource prop'
-        );
+}: CanAccessProps<RecordType, ErrorType>) => {
+    const { canAccess, error, isPending } = useCanAccess(props);
+
+    if (isPending) {
+        return loading;
     }
-    const record = useRecordContext(props);
-    const { canAccess, isPending } = useCanAccess({
-        action,
-        resource,
-        record,
-    });
 
-    const Loading = useLoadingContext();
-    const Unauthorized = useUnauthorizedContext();
+    if (error) {
+        return errorElement;
+    }
 
-    return isPending
-        ? loading ?? <Loading />
-        : canAccess === false
-          ? unauthorized ?? <Unauthorized />
-          : children;
+    if (canAccess === false) {
+        return accessDenied;
+    }
+
+    return children;
 };
 
-export interface CanAccessProps {
-    action: string;
-    resource?: string;
-    record?: RaRecord;
+export interface CanAccessProps<
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+> extends UseCanAccessOptions<RecordType, ErrorType> {
     children: React.ReactNode;
-    loading?: React.ReactElement;
-    unauthorized?: React.ReactElement;
+    loading?: React.ReactNode;
+    accessDenied?: React.ReactNode;
+    error?: React.ReactNode;
 }
+
+const DEFAULT_ERROR = <Navigate to="/authentication-error" />;

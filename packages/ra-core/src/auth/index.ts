@@ -19,6 +19,7 @@ export * from './useCanAccessResources';
 export * from './useCheckAuth';
 export * from './useGetIdentity';
 export * from './useHandleAuthCallback';
+export * from './useRequireAccess';
 export * from './addRefreshAuthToAuthProvider';
 export * from './addRefreshAuthToDataProvider';
 

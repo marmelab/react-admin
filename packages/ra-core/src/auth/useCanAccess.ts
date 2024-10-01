@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
     QueryObserverLoadingErrorResult,
     QueryObserverLoadingResult,
@@ -8,7 +8,8 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
-import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
+import { useResourceContext } from '../core';
+import { useRecordContext } from '../controller';
 import { HintedString, RaRecord } from '../types';
 
 /**
@@ -46,31 +47,37 @@ import { HintedString, RaRecord } from '../types';
  *         return <PostEdit />;
  *     };
  */
-export const useCanAccess = <ErrorType = Error>(
-    params: UseCanAccessOptions<ErrorType>
+export const useCanAccess = <
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+>(
+    params: UseCanAccessOptions<RecordType, ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
-    const logout = useLogoutIfAccessDenied();
+    const resource = useResourceContext(params);
+
+    if (!resource) {
+        throw new Error(
+            'useCanAccess must be used inside a <Resource> component or provide a resource prop'
+        );
+    }
+    const record = useRecordContext<RecordType>(params);
 
     const queryResult = useQuery({
-        queryKey: ['auth', 'canAccess', JSON.stringify(params)],
+        queryKey: ['auth', 'canAccess', { ...params, record, resource }],
         queryFn: async ({ signal }) => {
             if (!authProvider || !authProvider.canAccess) {
                 return true;
             }
             return authProvider.canAccess({
                 ...params,
+                record,
+                resource,
                 signal: authProvider.supportAbortSignal ? signal : undefined,
             });
         },
         ...params,
     });
-
-    useEffect(() => {
-        if (queryResult.error) {
-            logout(queryResult.error);
-        }
-    }, [logout, queryResult.error]);
 
     const result = useMemo(() => {
         // Don't check for the authProvider or authProvider.canAccess method in the useMemo
@@ -114,11 +121,13 @@ const emptyQueryObserverResult = {
     refetch: () => Promise.resolve(emptyQueryObserverResult),
 };
 
-export interface UseCanAccessOptions<ErrorType = Error>
-    extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
-    resource: string;
+export interface UseCanAccessOptions<
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord,
+    ErrorType extends Error = Error,
+> extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
+    resource?: string;
     action: HintedString<'list' | 'create' | 'edit' | 'show' | 'delete'>;
-    record?: RaRecord;
+    record?: RecordType;
 }
 
 export type UseCanAccessResult<ErrorType = Error> =

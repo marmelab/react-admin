@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { Basic, FullApp } from './ShowButton.stories';
+import { Basic, AccessControl } from './ShowButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -24,7 +24,7 @@ describe('<ShowButton />', () => {
     });
 
     it('should only render when users have the right to show', async () => {
-        render(<FullApp />);
+        render(<AccessControl />);
         await screen.findByText('War and Peace');
         expect(screen.queryAllByLabelText('Show')).toHaveLength(0);
         fireEvent.click(screen.getByLabelText('Allow accessing books'));
@@ -35,7 +35,7 @@ describe('<ShowButton />', () => {
     });
 
     it('should only render when users have the right to show the specific record', async () => {
-        render(<FullApp />);
+        render(<AccessControl />);
         await screen.findByText('War and Peace');
         expect(screen.queryByLabelText('Show')).toBeNull();
         fireEvent.click(screen.getByLabelText('Allow accessing War and Peace'));
