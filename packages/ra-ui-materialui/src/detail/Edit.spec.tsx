@@ -108,23 +108,35 @@ describe('<Edit />', () => {
     });
 
     it("shoudln't display the Edit aside while loading with the emptyWhileLoading prop", async () => {
-        render(<EmptyWhileLoading />);
+        let resolveGetOne;
+        const RenderedComponent = () => {
+            const myDataProvider = {
+                getOne: jest.fn(
+                    () => new Promise(resolve => (resolveGetOne = resolve))
+                ),
+            } as any;
+            return <EmptyWhileLoading myDataProvider={myDataProvider} />;
+        };
+        render(<RenderedComponent />);
 
-        expect(screen.queryByText('Book Edition')).not.toBeNull();
+        await screen.findByText('Book Edition');
         expect(
             screen.queryByText('War and Peace, by Leo Tolstoy (1869)')
         ).toBeNull();
         expect(screen.queryByText('Something went wrong')).toBeNull();
 
-        await waitFor(
-            () => {
-                expect(
-                    screen.queryByText('War and Peace, by Leo Tolstoy (1869)')
-                ).not.toBeNull();
+        resolveGetOne({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                author: 'Leo Tolstoy',
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
             },
-            { timeout: 2500 }
-        );
-        expect(screen.queryByText('Book Edition')).not.toBeNull();
+        });
+
+        await screen.findByText('War and Peace, by Leo Tolstoy (1869)');
         expect(screen.queryByText('Something went wrong')).toBeNull();
     });
 
@@ -908,10 +920,7 @@ describe('<Edit />', () => {
                 >
                     <ResourceDefinitionContextProvider
                         definitions={{
-                            foo: {
-                                recordRepresentation: 'title',
-                                name: '',
-                            },
+                            foo: { recordRepresentation: 'title' },
                         }}
                     >
                         <Edit {...defaultEditProps}>

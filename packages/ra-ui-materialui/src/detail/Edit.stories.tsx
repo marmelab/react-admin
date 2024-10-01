@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin } from 'react-admin';
+import { Admin, type CoreAdminContextProps } from 'react-admin';
 import {
     Resource,
     Form,
@@ -301,7 +301,11 @@ export const Default = () => (
     </TestMemoryRouter>
 );
 
-export const EmptyWhileLoading = () => {
+export const EmptyWhileLoading = ({
+    myDataProvider,
+}: {
+    myDataProvider?: CoreAdminContextProps['dataProvider'];
+}) => {
     const customDataProvider = {
         getOne: () =>
             new Promise(resolve =>
@@ -323,7 +327,7 @@ export const EmptyWhileLoading = () => {
     } as any;
     return (
         <TestMemoryRouter initialEntries={['/books/1/Edit']}>
-            <Admin dataProvider={customDataProvider}>
+            <Admin dataProvider={myDataProvider ?? customDataProvider}>
                 <Resource
                     name="books"
                     edit={() => (
