@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { Basic, FullApp } from './EditButton.stories';
+import { Basic, AccessControl } from './EditButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -24,7 +24,7 @@ describe('<EditButton />', () => {
     });
 
     it('should only render when users have the right to edit', async () => {
-        render(<FullApp />);
+        render(<AccessControl />);
         await screen.findByText('War and Peace');
         expect(screen.queryAllByLabelText('Edit')).toHaveLength(0);
         fireEvent.click(screen.getByLabelText('Allow editing books'));
@@ -35,7 +35,7 @@ describe('<EditButton />', () => {
     });
 
     it('should only render when users have the right to edit the specific record', async () => {
-        render(<FullApp />);
+        render(<AccessControl />);
         await screen.findByText('War and Peace');
         expect(screen.queryByLabelText('Edit')).toBeNull();
         fireEvent.click(screen.getByLabelText('Allow editing War and Peace'));
