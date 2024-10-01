@@ -640,7 +640,6 @@ React-admin provides 2 possible UIs for filters, and lets your own if they're no
 The first filter UI is called "the Filer/Form Combo". 
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/list_filter.webm" type="video/webm"/>
   <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
