@@ -54,7 +54,7 @@ You can customize the `<CreateBase>` component using the following props, docume
 
 ## Access Control
 
-If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<CreateBase>`  will only render if the user has the "create" access to the related resource.
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<CreateBase>`  will only render if the user has the "create" access to the related resource.
 
 For instance, for the `<PostCreate>`page below:
 

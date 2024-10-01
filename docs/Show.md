@@ -703,7 +703,7 @@ export const BookShow = () => {
 
 ## Access Control
 
-If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<Show>`  will only render if the user has the "show" access to the related resource.
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Show>`  will only render if the user has the "show" access to the related resource.
 
 For instance, for the `<PostShow>`page below:
 

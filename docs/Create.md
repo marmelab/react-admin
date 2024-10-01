@@ -692,7 +692,7 @@ export const BookCreate = () => {
 
 ## Access Control
 
-If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<Create>`  will only render if the user has the "create" access to the related resource.
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Create>`  will only render if the user has the "create" access to the related resource.
 
 For instance, for the `<PostCreate>`page below:
 

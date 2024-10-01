@@ -71,7 +71,7 @@ In addition, `<ListBase>` renders its children components inside a `ListContext`
 
 ## Access Control
 
-If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<ListBase>`  will only render if the user has the "list" access to the related resource.
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<ListBase>`  will only render if the user has the "list" access to the related resource.
 
 For instance, for the `<PostList>` page below:
 

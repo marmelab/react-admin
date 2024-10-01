@@ -57,7 +57,7 @@ You can customize the `<EditBase>` component using the following props, document
 
 ## Access Control
 
-If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<EditBase>`  will only render if the user has the "edit" access to the related resource.
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<EditBase>`  will only render if the user has the "edit" access to the related resource.
 
 For instance, for the `<PostEdit>`page below:
 

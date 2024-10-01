@@ -304,3 +304,36 @@ const OfficeList = () => {
     );
 };
 ```
+
+## Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useListController`  will only render if the user has the "list" access to the related resource.
+
+For instance, for the `<PostList>` page below:
+
+```tsx
+import { useListController, SimpleList } from 'react-admin';
+
+const PostList = () => {
+  const { isPending, error, data, total } = useListController({ resource: 'posts'})
+  if (error) return <div>Error!</div>;
+  return (
+      <SimpleList
+        data={data}
+        total={total}
+        isPending={isPending}
+        primaryText="%{title}"
+      />
+  );
+}
+```
+
+`useListController` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "list", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).

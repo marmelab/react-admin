@@ -905,7 +905,7 @@ export const BookEdit = () => {
 
 ## Access Control
 
-If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<Edit>`  will only render if the user has the "edit" access to the related resource.
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Edit>`  will only render if the user has the "edit" access to the related resource.
 
 For instance, for the `<PostEdit>`page below:
 

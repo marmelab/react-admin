@@ -81,3 +81,35 @@ const {
 } = useEditController();
 ```
 
+## Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useEditController` will only render if the user has the "edit" access to the related resource.
+
+For instance, for the `<PostEdit>` page below:
+
+```tsx
+import { useShowController, SimpleForm, TextInput } from 'react-admin';
+
+const PostEdit = ({ id }) => {
+  const { isPending, error, data, save } = useEditController({ resource: 'posts', id })
+  if (error) return <div>Error!</div>;
+  if (isPending) return <div>Loading...</div>;
+  return (
+      <SimpleForm record={data} onSubmit={save}>
+        <TextInput source="title" />
+        <TextInput source="author" />
+        <TextInput source="published_at" />
+      </SimpleShowLayout>
+  );
+}
+```
+
+`useEditController` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "edit", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).
