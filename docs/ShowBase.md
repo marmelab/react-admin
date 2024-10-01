@@ -203,3 +203,34 @@ export const UsersShow = () => (
 ```
 
 **Tip**: Pass both a custom `id` and a custom `resource` prop to use `<ShowBase>` independently of the current URL. This even allows you to use more than one `<ShowBase>` component in the same page.
+
+## Access Control
+
+If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<ShowBase>`  will only render if the user has the "show" access to the related resource.
+
+For instance, for the `<PostShow>`page below:
+
+```tsx
+import { ShowBase, SimpleShowLayout, TextField } from 'react-admin';
+
+// Resource name is "posts"
+const PostShow = () => (
+    <ShowBase>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="published_at" />
+        </SimpleShowLayout>
+    </ShowBase>
+);
+```
+
+`<ShowBase>` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "show", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Show.md#disableauthentication).

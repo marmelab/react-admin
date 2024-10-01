@@ -68,3 +68,34 @@ The `<ListBase>` component accepts the same props as [`useListController`](./use
 These are a subset of the props accepted by `<List>` - only the props that change data fetching, and not the props related to the user interface.
 
 In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children) for usage examples.
+
+## Access Control
+
+If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<ListBase>`  will only render if the user has the "list" access to the related resource.
+
+For instance, for the `<PostList>` page below:
+
+```tsx
+import { ListBase, Datagrid, TextField } from 'react-admin';
+
+// Resource name is "posts"
+const PostList = () => (
+    <ListBase>
+        <Datagrid>
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="published_at" />
+        </Datagrid>
+    </ListBase>
+);
+```
+
+`<ListBase>` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "list", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).

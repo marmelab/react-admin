@@ -52,3 +52,33 @@ You can customize the `<CreateBase>` component using the following props, docume
 * [`resource`](./Create.md#resource): override the name of the resource to create
 * [`transform`](./Create.md#transform): transform the form data before calling `dataProvider.create()`
 
+## Access Control
+
+If your `authProvider` implement [Access Control](./Permissions.md#access-control), `<CreateBase>`  will only render if the user has the "create" access to the related resource.
+
+For instance, for the `<PostCreate>`page below:
+
+```tsx
+import { CreateBase, SimpleForm, TextInput } from 'react-admin';
+
+// Resource name is "posts"
+const PostCreate = () => (
+    <CreateBase>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="published_at" />
+        </SimpleForm>
+    </CreateBase>
+);
+```
+
+`<CreateBase>` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "create", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Create.md#disableauthentication).
