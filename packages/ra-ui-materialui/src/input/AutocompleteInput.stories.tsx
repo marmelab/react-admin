@@ -261,56 +261,65 @@ const choicesForCreationSupport = [
     { id: 5, name: 'Marcel Proust' },
 ];
 
-const data = {
-    authors: [
-        { id: 1, name: 'Leo Tolstoy' },
-        { id: 2, name: 'Victor Hugo' },
-        { id: 3, name: 'William Shakespeare' },
-        { id: 4, name: 'Charles Baudelaire' },
-        { id: 5, name: 'Marcel Proust' },
-    ],
-    books: [
-        { id: 1, title: 'War and Peace', author: 1 },
-        { id: 2, title: 'Les Misérables', author: 2 },
-        { id: 3, title: 'Romeo and Juliet', author: 3 },
-        { id: 4, title: 'Les Fleurs du Mal', author: 4 },
-        { id: 5, title: 'In Search of Lost Time', author: 5 },
-    ],
-};
+export const OnCreate = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                if (!filter) return;
 
-const AutocompleteWithCreateInReferenceInput = props => {
+                const newOption = {
+                    id: choicesForCreationSupport.length + 1,
+                    name: filter,
+                };
+                choicesForCreationSupport.push(newOption);
+                return newOption;
+            }}
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    </Wrapper>
+);
+
+const AutocompleteWithCreateInReferenceInput = () => {
     const [create] = useCreate();
     const handleCreateAuthor = async (authorName?: string) => {
         if (!authorName) return;
-        let data;
-        if (props.onCreate) {
-            data = props.onCreate(authorName);
-            if (!data) return;
-        } else data = { name: authorName };
         const newAuthor = await create(
             'authors',
-            { data },
+            { data: { name: authorName } },
             { returnPromise: true }
         );
         return newAuthor;
     };
-    return <AutocompleteInput onCreate={handleCreateAuthor} {...props} />;
+    return <AutocompleteInput onCreate={handleCreateAuthor} />;
 };
 
-export const OnCreate = () => (
-    <Wrapper dataProvider={fakeRestProvider(data)}>
-        <ReferenceInput reference="authors" source="author">
-            <AutocompleteWithCreateInReferenceInput
-                TextFieldProps={{
-                    placeholder: 'Start typing to create a new item',
-                }}
-            />
-        </ReferenceInput>
-    </Wrapper>
-);
-
 export const OnCreateSlow = () => (
-    <Wrapper dataProvider={fakeRestProvider(data, false, 1500)}>
+    <Wrapper
+        dataProvider={fakeRestProvider(
+            {
+                authors: [
+                    { id: 1, name: 'Leo Tolstoy' },
+                    { id: 2, name: 'Victor Hugo' },
+                    { id: 3, name: 'William Shakespeare' },
+                    { id: 4, name: 'Charles Baudelaire' },
+                    { id: 5, name: 'Marcel Proust' },
+                ],
+                books: [
+                    { id: 1, title: 'War and Peace', author: 1 },
+                    { id: 2, title: 'Les Misérables', author: 2 },
+                    { id: 3, title: 'Romeo and Juliet', author: 3 },
+                    { id: 4, title: 'Les Fleurs du Mal', author: 4 },
+                    { id: 5, title: 'In Search of Lost Time', author: 5 },
+                ],
+            },
+            false,
+            1500
+        )}
+    >
         <ReferenceInput reference="authors" source="author">
             <AutocompleteWithCreateInReferenceInput />
         </ReferenceInput>
@@ -345,18 +354,42 @@ export const OnCreatePrompt = () => (
 );
 
 export const CreateLabel = () => (
-    <Wrapper dataProvider={fakeRestProvider(data)}>
-        <ReferenceInput reference="authors" source="author">
-            <AutocompleteWithCreateInReferenceInput createLabel="Start typing to create a new item" />
-        </ReferenceInput>
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: choicesForCreationSupport.length + 1,
+                    name: filter,
+                };
+                choicesForCreationSupport.push(newOption);
+                return newOption;
+            }}
+            createLabel="Start typing to create a new item"
+        />
     </Wrapper>
 );
 
 export const CreateItemLabel = () => (
-    <Wrapper dataProvider={fakeRestProvider(data)}>
-        <ReferenceInput reference="authors" source="author">
-            <AutocompleteWithCreateInReferenceInput createItemLabel="Add a new author: %{item}" />
-        </ReferenceInput>
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: choicesForCreationSupport.length + 1,
+                    name: filter,
+                };
+                choicesForCreationSupport.push(newOption);
+                return newOption;
+            }}
+            createItemLabel="Add a new author: %{item}"
+        />
     </Wrapper>
 );
 
