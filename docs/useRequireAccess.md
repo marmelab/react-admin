@@ -5,7 +5,7 @@ title: "useRequireAccess"
 
 # `useRequireAccess`
 
-This hook calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). If users don't have access, it will redirect them to the [`/unauthorized`](./Admin.md#unauthorized) page. If `authProvider.canAccess()` throws an error, it will redirect them to the [`/authentication-error`](./Admin.md#authenticationerror) page.
+This hook calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). If users don't have access, it will redirect them to the [`/accessDenied`](./Admin.md#accessdenied) page. If `authProvider.canAccess()` throws an error, it will redirect them to the [`/authentication-error`](./Admin.md#authenticationerror) page.
 
 ## Usage
 

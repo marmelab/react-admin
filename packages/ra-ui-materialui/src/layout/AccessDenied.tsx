@@ -5,18 +5,18 @@ import { Typography, SxProps } from '@mui/material';
 import clsx from 'clsx';
 import { useTranslate } from 'ra-core';
 
-export const Unauthorized = (props: UnauthorizedProps) => {
+export const AccessDenied = (props: AccessDeniedProps) => {
     const {
         className,
         icon = DEFAULT_ICON,
-        textPrimary = 'ra.page.unauthorized',
-        textSecondary = 'ra.message.unauthorized',
+        textPrimary = 'ra.page.accessDenied',
+        textSecondary = 'ra.message.accessDenied',
         ...rest
     } = props;
     const translate = useTranslate();
     return (
-        <Root className={clsx(UnauthorizedClasses.root, className)} {...rest}>
-            <div className={UnauthorizedClasses.message}>
+        <Root className={clsx(AccessDeniedClasses.root, className)} {...rest}>
+            <div className={AccessDeniedClasses.message}>
                 {icon}
                 <Typography variant="h5" mt={3} color="text.secondary">
                     {translate(textPrimary, { _: textPrimary })}
@@ -31,7 +31,7 @@ export const Unauthorized = (props: UnauthorizedProps) => {
     );
 };
 
-export interface UnauthorizedProps {
+export interface AccessDeniedProps {
     className?: string;
     textPrimary?: string;
     textSecondary?: string;
@@ -39,9 +39,9 @@ export interface UnauthorizedProps {
     sx?: SxProps;
 }
 
-const PREFIX = 'RaUnauthorized';
+const PREFIX = 'RaAccessDenied';
 
-export const UnauthorizedClasses = {
+export const AccessDeniedClasses = {
     root: `${PREFIX}-root`,
     icon: `${PREFIX}-icon`,
     message: `${PREFIX}-message`,
@@ -56,16 +56,16 @@ const Root = styled('div', {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    [`& .${UnauthorizedClasses.message}`]: {
+    [`& .${AccessDeniedClasses.message}`]: {
         textAlign: 'center',
         paddingTop: '1em',
         paddingBottom: '1em',
         opacity: 0.5,
     },
-    [`& .${UnauthorizedClasses.icon}`]: {
+    [`& .${AccessDeniedClasses.icon}`]: {
         width: '9em',
         height: '9em',
     },
 });
 
-const DEFAULT_ICON = <LockIcon className={UnauthorizedClasses.icon} />;
+const DEFAULT_ICON = <LockIcon className={AccessDeniedClasses.icon} />;

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router';
 
 /**
  * A hook that calls the authProvider.canAccess() method for a provided resource and action (and optionally a record).
- * It redirects to the /unauthorized page if the user doesn't have the required permissions.
+ * It redirects to the /access-denied page if the user doesn't have the required permissions.
  * It redirects to the /authentication-error page if the authProvider.canAccess throws an error.
  *
  * The return value updates according to the request state:
@@ -55,7 +55,7 @@ export const useRequireAccess = <
         if (rest.isPending) return;
 
         if (canAccess === false) {
-            navigate('/unauthorized');
+            navigate('/access-denied');
         }
     }, [canAccess, navigate, rest.isPending]);
 

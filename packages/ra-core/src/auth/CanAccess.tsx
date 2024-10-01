@@ -10,7 +10,7 @@ import { Navigate } from 'react-router';
  * @param options.resource The resource to check. e.g. 'posts', 'comments', 'users'
  * @param options.children The component to render if users are authorized.
  * @param options.loading An optional element to render while the authorization is being checked. Defaults to null.
- * @param options.unauthorized An optional element to render if users are not authorized. Defaults to null.
+ * @param options.accessDenied An optional element to render if users are denied access. Defaults to null.
  * @param options.error An optional element to render if an error occur while checking users access rights. Redirect users to `/authentication-error` by default.
  */
 export const CanAccess = <
@@ -19,7 +19,7 @@ export const CanAccess = <
 >({
     children,
     loading = null,
-    unauthorized = null,
+    accessDenied = null,
     error: errorElement = DEFAULT_ERROR,
     ...props
 }: CanAccessProps<RecordType, ErrorType>) => {
@@ -34,7 +34,7 @@ export const CanAccess = <
     }
 
     if (canAccess === false) {
-        return unauthorized;
+        return accessDenied;
     }
 
     return children;
@@ -46,7 +46,7 @@ export interface CanAccessProps<
 > extends UseCanAccessOptions<RecordType, ErrorType> {
     children: React.ReactNode;
     loading?: React.ReactNode;
-    unauthorized?: React.ReactNode;
+    accessDenied?: React.ReactNode;
     error?: React.ReactNode;
 }
 

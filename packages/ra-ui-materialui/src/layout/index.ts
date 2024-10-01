@@ -1,3 +1,4 @@
+export * from './AccessDenied';
 export * from './AppBar';
 export * from './ApplicationUpdatedNotification';
 export * from './AuthenticationError';
@@ -25,7 +26,6 @@ export * from './SidebarToggleButton';
 export * from './Title';
 export * from './TitlePortal';
 export * from './TopToolbar';
-export * from './Unauthorized';
 export * from './UserMenu';
 export * from './UserMenuContext';
 export * from './useSidebarState';

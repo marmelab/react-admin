@@ -10,7 +10,7 @@ import {
     NotFound,
     Notification,
     Error,
-    Unauthorized,
+    AccessDenied,
 } from './layout';
 import { Login, AuthCallback } from './auth';
 
@@ -23,7 +23,7 @@ export const AdminUI = ({
     authCallbackPage = AuthCallback,
     notification = Notification,
     error = Error,
-    unauthorized = Unauthorized,
+    accessDenied = AccessDenied,
     ...props
 }: AdminUIProps) => (
     <CssBaseline enableColorScheme>
@@ -35,7 +35,7 @@ export const AdminUI = ({
             authCallbackPage={authCallbackPage}
             error={error}
             authenticationError={authenticationError}
-            unauthorized={unauthorized}
+            accessDenied={accessDenied}
             {...props}
         />
         {createElement(notification)}

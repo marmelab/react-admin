@@ -29,7 +29,7 @@ export const Basic = ({
     </CoreAdminContext>
 );
 
-export const Unauthorized = ({
+export const AccessDenied = ({
     authProvider = defaultAuthProvider,
 }: {
     authProvider?: AuthProvider;
@@ -57,7 +57,7 @@ export const CustomLoading = ({
     </CoreAdminContext>
 );
 
-export const CustomUnauthorized = ({
+export const CustomAccessDenied = ({
     authProvider = defaultAuthProvider,
 }: {
     authProvider?: AuthProvider;
@@ -66,7 +66,7 @@ export const CustomUnauthorized = ({
         <CanAccess
             action="show"
             resource="test"
-            unauthorized={<div>Not allowed</div>}
+            accessDenied={<div>Not allowed</div>}
         >
             protected content
         </CanAccess>

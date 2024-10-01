@@ -48,7 +48,7 @@ describe('useRequireAccess', () => {
         await screen.findByText('Protected Content');
     });
 
-    it('should redirect to /unauthorized when users do not have access', async () => {
+    it('should redirect to /access-denied when users do not have access', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -60,7 +60,7 @@ describe('useRequireAccess', () => {
         render(<Basic authProvider={authProvider} />);
 
         await screen.findByText('Loading');
-        await screen.findByText('Unauthorized');
+        await screen.findByText('Access denied');
     });
 
     it('should redirect to /authentication-error when auth.canAccess call fails', async () => {

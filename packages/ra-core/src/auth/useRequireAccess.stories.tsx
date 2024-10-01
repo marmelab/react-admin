@@ -69,7 +69,10 @@ export const Basic = ({
                         </UseRequireAccess>
                     }
                 />
-                <Route path="/unauthorized" element={<div>Unauthorized</div>} />
+                <Route
+                    path="/access-denied"
+                    element={<div>Access denied</div>}
+                />
                 <Route
                     path="/authentication-error"
                     element={<div>Authentication Error</div>}
@@ -95,7 +98,10 @@ export const NoAuthProvider = ({
                         </UseRequireAccess>
                     }
                 />
-                <Route path="/unauthorized" element={<div>Unauthorized</div>} />
+                <Route
+                    path="/access-denied"
+                    element={<div>Access denied</div>}
+                />
                 <Route
                     path="/authentication-error"
                     element={<div>Authentication Error</div>}

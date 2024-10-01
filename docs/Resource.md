@@ -438,7 +438,7 @@ When users navigate to the `/posts` route, react-admin will display a loading in
 
 ## Access Control
 
-When using an authProvider that supports [the `canAccess` method](./AuthProviderWriting.md#canaccess), react-admin will check whether users can access a resource page and display [the `unauthorized` component](./Admin.md#unauthorized) when they can't.
+When using an authProvider that supports [the `canAccess` method](./AuthProviderWriting.md#canaccess), react-admin will check whether users can access a resource page and display [the `accessDenied` component](./Admin.md#accessdenied) when they can't.
 
 For instance, given the following resource:
 

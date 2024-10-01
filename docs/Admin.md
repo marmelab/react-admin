@@ -160,8 +160,7 @@ Here are all the props accepted by the component:
 | `store`               | Optional | `Store`         | -                    | The Store for managing user preferences                             |
 | `theme`               | Optional | `object`        | `default LightTheme` | The main (light) theme configuration                                |
 | `title`               | Optional | `string`        | -                    | The error page title                                                |
-| `unauthorized`        | Optional | `Component`     | -                    | The component displayed when users are not authorized to see a page |
-
+| `accessDenied`        | Optional | `Component`     | -                    | The component displayed when users are denied access to a page      |
 
 ## `dataProvider`
 
@@ -1034,19 +1033,19 @@ const MyTitle = () => {
 };
 ```
 
-## `unauthorized`
+## `accessDenied`
 
-When using an authProvider that supports [the `canAccess` method](./AuthProviderWriting.md#canaccess), react-admin will check whether users can access a resource page and display the `unauthorized` component when they can't.
+When using an authProvider that supports [the `canAccess` method](./AuthProviderWriting.md#canaccess), react-admin will check whether users can access a resource page and display the `accessDenied` component when they can't.
 
-![Default unauthorized component](./img/unauthorized.png)
+![Default accessDenied component](./img/accessDenied.png)
 
-You can replace the default "unauthorized" screen by passing a custom component as the `unauthorized` prop:
+You can replace the default "accessDenied" screen by passing a custom component as the `accessDenied` prop:
 
 ```tsx
 import * as React from 'react';
 import { Admin } from 'react-admin';
 
-const Unauthorized = () => (
+const AccessDenied = () => (
     <div>
         <h1>Authorization error</h1>
         <p>You don't have access to this page.</p>
@@ -1054,7 +1053,7 @@ const Unauthorized = () => (
 )
 
 const App = () => (
-    <Admin unauthorized={Unauthorized}>
+    <Admin accessDenied={AccessDenied}>
         ...
     </Admin>
 );

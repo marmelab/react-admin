@@ -164,7 +164,7 @@ const AccessControlAdmin = ({
                 authProvider={authProvider}
                 dataProvider={defaultDataProvider}
                 queryClient={queryClient}
-                unauthorized={Unauthorized}
+                accessDenied={AccessDenied}
                 loading={Loading}
                 authenticationError={AuthenticationError}
             >
@@ -215,10 +215,10 @@ const AccessControlUI = ({
     );
 };
 
-const Unauthorized = () => {
+const AccessDenied = () => {
     return (
         <div>
-            <div>Unauthorized</div>
+            <div>Access denied</div>
             <Link to="/posts">List</Link>
         </div>
     );

@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react';
 import {
     Basic,
     CustomLoading,
-    CustomUnauthorized,
+    CustomAccessDenied,
     NoAuthProvider,
-    Unauthorized,
+    AccessDenied,
 } from './CanAccess.stories';
 import { AuthProvider } from '..';
 
@@ -47,7 +47,7 @@ describe('<CanAccess>', () => {
         resolveCheckAuth(true);
         await screen.findByText('protected content');
     });
-    it('shows nothing by default when users are unauthorized', async () => {
+    it('shows nothing by default when users are denied access', async () => {
         let resolveCheckAuth;
         const authProvider: AuthProvider = {
             login: () => Promise.reject('bad method'),
@@ -61,7 +61,7 @@ describe('<CanAccess>', () => {
                 }),
         };
         const { container } = render(
-            <Unauthorized authProvider={authProvider} />
+            <AccessDenied authProvider={authProvider} />
         );
         expect(container.textContent).toEqual('');
         expect(screen.queryByText('protected content')).toBeNull();
@@ -69,7 +69,7 @@ describe('<CanAccess>', () => {
         expect(container.textContent).toEqual('');
         expect(screen.queryByText('protected content')).toBeNull();
     });
-    it('shows the custom unauthorized element when users are unauthorized', async () => {
+    it('shows the custom accessDenied element when users are denied access', async () => {
         let resolveCheckAuth;
         const authProvider: AuthProvider = {
             login: () => Promise.reject('bad method'),
@@ -83,7 +83,7 @@ describe('<CanAccess>', () => {
                 }),
         };
         const { container } = render(
-            <CustomUnauthorized authProvider={authProvider} />
+            <CustomAccessDenied authProvider={authProvider} />
         );
         expect(container.textContent).toEqual('');
         resolveCheckAuth(false);

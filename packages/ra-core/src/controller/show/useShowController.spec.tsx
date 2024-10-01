@@ -220,13 +220,13 @@ describe('useShowController', () => {
             await screen.findByText('A post - 0 votes');
         });
 
-        it('should redirect to the /unauthorized page when users do not have access', async () => {
+        it('should redirect to the /access-denied page when users do not have access', async () => {
             render(<CanAccess />);
             await screen.findByText('List');
             fireEvent.click(await screen.findByText('posts.show access'));
             fireEvent.click(await screen.findByText('Show'));
             await screen.findByText('Loading...');
-            await screen.findByText('Unauthorized');
+            await screen.findByText('Access denied');
         });
 
         it('should display the show view when users have access', async () => {
