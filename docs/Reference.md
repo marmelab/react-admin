@@ -30,6 +30,7 @@ title: "Index"
 
 **- C -**
 * [`<Calendar>`](./Calendar.md)<img class="icon" src="./img/premium.svg" />
+* [`<CanAccess>`](./CanAccess.md)
 * [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
 * [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md)
 * [`<ChipField>`](./ChipField.md)
@@ -227,7 +228,9 @@ title: "Index"
 * [`useAuthState`](./useAuthState.md)
 
 **- C -**
-* [`useCanAccess`](./useCanAccess.md)<img class="icon" src="./img/premium.svg" />
+* [`useCanAccess`](./useCanAccess.md)
+* [`useCanAccessCallback`](./useCanAccessCallback.md)
+* [`useCanAccessResources`](./useCanAccessResources.md)
 * [`useChoicesContext`](./useChoicesContext.md)
 * [`useCreate`](./useCreate.md)
 * [`useCreateContext`](./useCreateContext.md)
