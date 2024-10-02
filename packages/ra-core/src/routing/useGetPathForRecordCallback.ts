@@ -26,21 +26,52 @@ export const useGetPathForRecordCallback = <
                 );
             }
             const resourceDefinition = resourceDefinitions[finalResource] ?? {};
-            const linkFunc = typeof link === 'function' ? link : () => link;
 
-            const defaultLink = resourceDefinition.hasShow
-                ? 'show'
-                : resourceDefinition.hasEdit
-                  ? 'edit'
-                  : false;
-
-            const isLinkFalse =
-                link === false || (link == null && defaultLink === false);
-
-            if (record == null || isLinkFalse) {
+            if (record == null || link === false) {
                 return false;
             }
-            const linkResult = linkFunc(record, finalResource) ?? defaultLink;
+
+            // When the link prop is not provided, we infer a default value and check whether users
+            // can access it
+            if (link == null) {
+                if (
+                    resourceDefinition.hasShow &&
+                    (await canAccess({
+                        action: 'show',
+                        resource: finalResource,
+                        record,
+                    }))
+                ) {
+                    return createPath({
+                        resource: finalResource,
+                        id: record.id,
+                        type: 'show',
+                    });
+                }
+                if (
+                    resourceDefinition.hasEdit &&
+                    (await canAccess({
+                        action: 'edit',
+                        resource: finalResource,
+                        record,
+                    }))
+                ) {
+                    return createPath({
+                        resource: finalResource,
+                        id: record.id,
+                        type: 'edit',
+                    });
+                }
+
+                return false;
+            }
+
+            const linkFunc = typeof link === 'function' ? link : () => link;
+            const linkResult = linkFunc(record, finalResource);
+            if (linkResult === false) {
+                return false;
+            }
+
             const linkResultIsPromise = isPromise(linkResult);
 
             if (linkResultIsPromise) {
@@ -49,17 +80,6 @@ export const useGetPathForRecordCallback = <
                     // already set to false by default
                     return;
                 }
-                if (['edit', 'show'].includes(resolvedLink)) {
-                    if (
-                        !(await canAccess({
-                            action: resolvedLink,
-                            resource: finalResource,
-                            record,
-                        }))
-                    ) {
-                        return false;
-                    }
-                }
                 return createPath({
                     resource: finalResource,
                     id: record.id,
@@ -67,25 +87,11 @@ export const useGetPathForRecordCallback = <
                 });
             }
 
-            if (linkResult !== false && ['edit', 'show'].includes(linkResult)) {
-                if (
-                    !(await canAccess({
-                        action: linkResult,
-                        resource: finalResource,
-                        record,
-                    }))
-                ) {
-                    return false;
-                }
-            }
-
-            return linkResult === false || linkResultIsPromise
-                ? false
-                : createPath({
-                      resource: finalResource,
-                      id: record.id,
-                      type: linkResult,
-                  });
+            return createPath({
+                resource: finalResource,
+                id: record.id,
+                type: linkResult,
+            });
         },
         [canAccess, createPath, resourceDefinitions, resource]
     );

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useGetPathForRecord } from './useGetPathForRecord';
 import { Link } from 'react-router-dom';
 import {
+    AuthProvider,
     CoreAdminContext,
     RecordContextProvider,
     ResourceContextProvider,
@@ -84,21 +85,23 @@ export const InferredShowLink = () => (
     </TestMemoryRouter>
 );
 
-export const AccessControl = () => (
+export const AccessControlWithLinkTypeProvided = ({
+    authProvider = {
+        login: () => Promise.resolve(),
+        logout: () => Promise.resolve(),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.resolve(),
+        getPermissions: () => Promise.resolve(),
+        canAccess: ({ action }) =>
+            new Promise(resolve => setTimeout(resolve, 300, action === 'edit')),
+    },
+}: {
+    authProvider?: AuthProvider;
+}) => (
     <TestMemoryRouter>
         <CoreAdminContext
             queryClient={new QueryClient()}
-            authProvider={{
-                login: () => Promise.resolve(),
-                logout: () => Promise.resolve(),
-                checkAuth: () => Promise.resolve(),
-                checkError: () => Promise.resolve(),
-                getPermissions: () => Promise.resolve(),
-                canAccess: ({ action }) =>
-                    new Promise(resolve =>
-                        setTimeout(resolve, 300, action === 'edit')
-                    ),
-            }}
+            authProvider={authProvider}
         >
             <ResourceContextProvider value="posts">
                 <RecordContextProvider value={{ id: 123 }}>

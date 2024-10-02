@@ -561,8 +561,10 @@ describe('<ReferenceField />', () => {
             await waitFor(() =>
                 expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
             );
-            expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
-                '#/posts/123'
+            await waitFor(() =>
+                expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+                    '#/posts/123'
+                )
             );
 
             expect(link).toHaveBeenCalledWith(

@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import {
-    AccessControl,
+    AccessControlWithLinkTypeProvided,
     InferredEditLink,
     InferredEditLinkWithAccessControl,
     InferredShowLink,
     InferredShowLinkWithAccessControl,
     NoAuthProvider,
 } from './useGetPathForRecord.stories';
+import { AuthProvider } from '..';
 
 describe('useGetPathForRecord', () => {
     it('should return an edit path for a record when there is no authProvider', async () => {
@@ -42,14 +43,29 @@ describe('useGetPathForRecord', () => {
             )
         ).toEqual('/posts/123/show');
     });
-    it('should return a path only when users have access to the requested action for the resource', async () => {
-        render(<AccessControl />);
+    it('should not check for access right when the link type is provided', async () => {
+        const authProvider: AuthProvider = {
+            login: () => Promise.resolve(),
+            logout: () => Promise.resolve(),
+            checkAuth: () => Promise.resolve(),
+            checkError: () => Promise.resolve(),
+            getPermissions: () => Promise.resolve(),
+            canAccess: jest.fn(),
+        };
+        render(
+            <AccessControlWithLinkTypeProvided authProvider={authProvider} />
+        );
         expect(
             (await screen.findByText('Edit', { selector: 'a' })).getAttribute(
                 'href'
             )
         ).toEqual('/posts/123');
-        await screen.findByText('Show no link');
+        expect(
+            (await screen.findByText('Show', { selector: 'a' })).getAttribute(
+                'href'
+            )
+        ).toEqual('/posts/123/show');
+        expect(authProvider.canAccess).not.toHaveBeenCalled();
     });
     it('should infer an edit path for a record when users have access to the edit action and no show view for the resource', async () => {
         render(<InferredEditLinkWithAccessControl />);
