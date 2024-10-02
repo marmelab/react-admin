@@ -244,7 +244,6 @@ The number of previous user searches to keep in the popover. For example, if a u
 
 Use the `keyboardShortcutIcon` prop to disable or customize the keyboard shortcut icon.
 
-<!-- TODO: backport images -->
 ![Keyboard Shortcut Icon](./img/ra-search-keyboard-shortcut-icon.png)
 
 ```tsx
