@@ -11,6 +11,7 @@ import {
     I18nContextProvider,
     Resource,
     TestMemoryRouter,
+    AuthProvider,
 } from 'ra-core';
 
 import fakeRestDataProvider from 'ra-data-fakerest';
@@ -27,7 +28,8 @@ import { SimpleShowLayout } from '../detail/SimpleShowLayout';
 import { Datagrid } from '../list/datagrid/Datagrid';
 import { AdminUI, AdminContext } from '../';
 import { List } from '../list';
-import { EditGuesser } from '../detail';
+import { EditGuesser, ShowGuesser } from '../detail';
+import { QueryClient } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceField' };
 
@@ -598,7 +600,7 @@ const relationalDataProvider = fakeRestDataProvider(
             { id: 11, firstName: 'James', lastName: 'Joyce' },
         ],
     },
-    true
+    process.env.NODE_ENV === 'development'
 );
 
 const bookListFilters = [
@@ -650,3 +652,131 @@ export const FullApp = () => (
         </AdminUI>
     </AdminContext>
 );
+
+export const AccessControl = () => (
+    <TestMemoryRouter>
+        <AccessControlAdmin queryClient={new QueryClient()} />
+    </TestMemoryRouter>
+);
+
+const AccessControlAdmin = ({
+    authProviderDelay = 300,
+    queryClient,
+}: {
+    authProviderDelay?: number;
+    queryClient: QueryClient;
+}) => {
+    const [authorizedResources, setAuthorizedResources] = React.useState({
+        'authors.list': true,
+        'authors.edit': true,
+        'authors.show': true,
+        'books.list': true,
+        'books.edit': true,
+        'books.show': true,
+        'books.delete': true,
+    });
+
+    const authProvider: AuthProvider = {
+        login: () => Promise.reject(new Error('Not implemented')),
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        getPermissions: () => Promise.resolve(undefined),
+        canAccess: ({ action, resource }) =>
+            new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(authorizedResources[`${resource}.${action}`]);
+                }, authProviderDelay);
+            }),
+    };
+    return (
+        <AdminContext
+            authProvider={authProvider}
+            dataProvider={relationalDataProvider}
+            queryClient={queryClient}
+        >
+            <AdminUI
+                layout={({ children }) => (
+                    <AccessControlUI
+                        queryClient={queryClient}
+                        authorizedResources={authorizedResources}
+                        setAuthorizedResources={setAuthorizedResources}
+                    >
+                        {children}
+                    </AccessControlUI>
+                )}
+            >
+                <Resource name="books" list={BookList} />
+                <Resource
+                    name="authors"
+                    recordRepresentation={record =>
+                        `${record.firstName} ${record.lastName}`
+                    }
+                    list={AuthorList}
+                    edit={EditGuesser}
+                    show={ShowGuesser}
+                />
+            </AdminUI>
+        </AdminContext>
+    );
+};
+
+const AccessControlUI = ({
+    children,
+    setAuthorizedResources,
+    authorizedResources,
+    queryClient,
+}: {
+    children: React.ReactNode;
+    setAuthorizedResources: Function;
+    authorizedResources: {
+        'authors.list': boolean;
+        'authors.edit': boolean;
+        'authors.show': boolean;
+        'books.edit': boolean;
+        'books.show': boolean;
+        'books.list': boolean;
+        'books.delete': boolean;
+    };
+    queryClient: QueryClient;
+}) => {
+    return (
+        <div>
+            {children}
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['authors.edit']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'authors.edit':
+                                    !authorizedResources['authors.edit'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    authors.edit access
+                </label>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={authorizedResources['authors.show']}
+                        onChange={() => {
+                            setAuthorizedResources(state => ({
+                                ...state,
+                                'authors.show':
+                                    !authorizedResources['authors.show'],
+                            }));
+
+                            queryClient.clear();
+                        }}
+                    />
+                    authors.show access
+                </label>
+            </div>
+        </div>
+    );
+};

@@ -6,6 +6,7 @@ import {
     RecordContextProvider,
     ResourceContextProvider,
     ResourceDefinitionContextProvider,
+    TestMemoryRouter,
 } from '..';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -29,138 +30,150 @@ const InferredLink = () => {
 };
 
 export const NoAuthProvider = () => (
-    <CoreAdminContext>
-        <ResourceContextProvider value="posts">
-            <RecordContextProvider value={{ id: 123 }}>
-                <div style={{ display: 'flex', gap: 2 }}>
-                    <EditLink />
-                    <ShowLink />
-                </div>
-            </RecordContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext>
+            <ResourceContextProvider value="posts">
+                <RecordContextProvider value={{ id: 123 }}>
+                    <div style={{ display: 'flex', gap: 2 }}>
+                        <EditLink />
+                        <ShowLink />
+                    </div>
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const InferredEditLink = () => (
-    <CoreAdminContext>
-        <ResourceContextProvider value="posts">
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    posts: { name: 'posts', hasEdit: true, hasShow: false },
-                }}
-            >
-                <RecordContextProvider value={{ id: 123 }}>
-                    <div style={{ display: 'flex', gap: 2 }}>
-                        <InferredLink />
-                    </div>
-                </RecordContextProvider>
-            </ResourceDefinitionContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext>
+            <ResourceContextProvider value="posts">
+                <ResourceDefinitionContextProvider
+                    definitions={{
+                        posts: { name: 'posts', hasEdit: true, hasShow: false },
+                    }}
+                >
+                    <RecordContextProvider value={{ id: 123 }}>
+                        <div style={{ display: 'flex', gap: 2 }}>
+                            <InferredLink />
+                        </div>
+                    </RecordContextProvider>
+                </ResourceDefinitionContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const InferredShowLink = () => (
-    <CoreAdminContext>
-        <ResourceContextProvider value="posts">
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    posts: { name: 'posts', hasEdit: false, hasShow: true },
-                }}
-            >
-                <RecordContextProvider value={{ id: 123 }}>
-                    <div style={{ display: 'flex', gap: 2 }}>
-                        <InferredLink />
-                    </div>
-                </RecordContextProvider>
-            </ResourceDefinitionContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext>
+            <ResourceContextProvider value="posts">
+                <ResourceDefinitionContextProvider
+                    definitions={{
+                        posts: { name: 'posts', hasEdit: false, hasShow: true },
+                    }}
+                >
+                    <RecordContextProvider value={{ id: 123 }}>
+                        <div style={{ display: 'flex', gap: 2 }}>
+                            <InferredLink />
+                        </div>
+                    </RecordContextProvider>
+                </ResourceDefinitionContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const AccessControl = () => (
-    <CoreAdminContext
-        queryClient={new QueryClient()}
-        authProvider={{
-            login: () => Promise.resolve(),
-            logout: () => Promise.resolve(),
-            checkAuth: () => Promise.resolve(),
-            checkError: () => Promise.resolve(),
-            getPermissions: () => Promise.resolve(),
-            canAccess: ({ action }) =>
-                new Promise(resolve =>
-                    setTimeout(resolve, 300, action === 'edit')
-                ),
-        }}
-    >
-        <ResourceContextProvider value="posts">
-            <RecordContextProvider value={{ id: 123 }}>
-                <div style={{ display: 'flex', gap: 2 }}>
-                    <EditLink />
-                    <ShowLink />
-                </div>
-            </RecordContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext
+            queryClient={new QueryClient()}
+            authProvider={{
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: ({ action }) =>
+                    new Promise(resolve =>
+                        setTimeout(resolve, 300, action === 'edit')
+                    ),
+            }}
+        >
+            <ResourceContextProvider value="posts">
+                <RecordContextProvider value={{ id: 123 }}>
+                    <div style={{ display: 'flex', gap: 2 }}>
+                        <EditLink />
+                        <ShowLink />
+                    </div>
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const InferredEditLinkWithAccessControl = () => (
-    <CoreAdminContext
-        queryClient={new QueryClient()}
-        authProvider={{
-            login: () => Promise.resolve(),
-            logout: () => Promise.resolve(),
-            checkAuth: () => Promise.resolve(),
-            checkError: () => Promise.resolve(),
-            getPermissions: () => Promise.resolve(),
-            canAccess: ({ action }) =>
-                new Promise(resolve =>
-                    setTimeout(resolve, 300, action === 'edit')
-                ),
-        }}
-    >
-        <ResourceContextProvider value="posts">
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    posts: { name: 'posts', hasEdit: true, hasShow: false },
-                }}
-            >
-                <RecordContextProvider value={{ id: 123 }}>
-                    <div style={{ display: 'flex', gap: 2 }}>
-                        <InferredLink />
-                    </div>
-                </RecordContextProvider>
-            </ResourceDefinitionContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext
+            queryClient={new QueryClient()}
+            authProvider={{
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: ({ action }) =>
+                    new Promise(resolve =>
+                        setTimeout(resolve, 300, action === 'edit')
+                    ),
+            }}
+        >
+            <ResourceContextProvider value="posts">
+                <ResourceDefinitionContextProvider
+                    definitions={{
+                        posts: { name: 'posts', hasEdit: true, hasShow: false },
+                    }}
+                >
+                    <RecordContextProvider value={{ id: 123 }}>
+                        <div style={{ display: 'flex', gap: 2 }}>
+                            <InferredLink />
+                        </div>
+                    </RecordContextProvider>
+                </ResourceDefinitionContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const InferredShowLinkWithAccessControl = () => (
-    <CoreAdminContext
-        queryClient={new QueryClient()}
-        authProvider={{
-            login: () => Promise.resolve(),
-            logout: () => Promise.resolve(),
-            checkAuth: () => Promise.resolve(),
-            checkError: () => Promise.resolve(),
-            getPermissions: () => Promise.resolve(),
-            canAccess: ({ action }) =>
-                new Promise(resolve =>
-                    setTimeout(resolve, 300, action === 'show')
-                ),
-        }}
-    >
-        <ResourceContextProvider value="posts">
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    posts: { name: 'posts', hasEdit: false, hasShow: true },
-                }}
-            >
-                <RecordContextProvider value={{ id: 123 }}>
-                    <div style={{ display: 'flex', gap: 2 }}>
-                        <InferredLink />
-                    </div>
-                </RecordContextProvider>
-            </ResourceDefinitionContextProvider>
-        </ResourceContextProvider>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext
+            queryClient={new QueryClient()}
+            authProvider={{
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: ({ action }) =>
+                    new Promise(resolve =>
+                        setTimeout(resolve, 300, action === 'show')
+                    ),
+            }}
+        >
+            <ResourceContextProvider value="posts">
+                <ResourceDefinitionContextProvider
+                    definitions={{
+                        posts: { name: 'posts', hasEdit: false, hasShow: true },
+                    }}
+                >
+                    <RecordContextProvider value={{ id: 123 }}>
+                        <div style={{ display: 'flex', gap: 2 }}>
+                            <InferredLink />
+                        </div>
+                    </RecordContextProvider>
+                </ResourceDefinitionContextProvider>
+            </ResourceContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );

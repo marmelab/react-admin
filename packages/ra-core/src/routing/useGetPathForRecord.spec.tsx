@@ -16,7 +16,7 @@ describe('useGetPathForRecord', () => {
             (await screen.findByText('Edit', { selector: 'a' })).getAttribute(
                 'href'
             )
-        ).toEqual('#/posts/123');
+        ).toEqual('/posts/123');
     });
     it('should return a show path for a record when there is no authProvider', async () => {
         render(<NoAuthProvider />);
@@ -24,7 +24,7 @@ describe('useGetPathForRecord', () => {
             (await screen.findByText('Show', { selector: 'a' })).getAttribute(
                 'href'
             )
-        ).toEqual('#/posts/123/show');
+        ).toEqual('/posts/123/show');
     });
     it('should infer an edit path for a record when there is no authProvider and no show view for the resource', async () => {
         render(<InferredEditLink />);
@@ -32,7 +32,7 @@ describe('useGetPathForRecord', () => {
             (await screen.findByText('Link', { selector: 'a' })).getAttribute(
                 'href'
             )
-        ).toEqual('#/posts/123');
+        ).toEqual('/posts/123');
     });
     it('should infer a show path for a record when there is no authProvider and a show view for the resource', async () => {
         render(<InferredShowLink />);
@@ -40,7 +40,7 @@ describe('useGetPathForRecord', () => {
             (await screen.findByText('Link', { selector: 'a' })).getAttribute(
                 'href'
             )
-        ).toEqual('#/posts/123/show');
+        ).toEqual('/posts/123/show');
     });
     it('should return a path only when users have access to the requested action for the resource', async () => {
         render(<AccessControl />);
@@ -48,7 +48,7 @@ describe('useGetPathForRecord', () => {
             (await screen.findByText('Edit', { selector: 'a' })).getAttribute(
                 'href'
             )
-        ).toEqual('#/posts/123');
+        ).toEqual('/posts/123');
         await screen.findByText('Show no link');
     });
     it('should infer an edit path for a record when users have access to the edit action and no show view for the resource', async () => {
@@ -57,7 +57,7 @@ describe('useGetPathForRecord', () => {
             (await screen.findByText('Link', { selector: 'a' })).getAttribute(
                 'href'
             )
-        ).toEqual('#/posts/123');
+        ).toEqual('/posts/123');
     });
     it('should infer a show path for a record when users have access to the edit action and a show view for the resource', async () => {
         render(<InferredShowLinkWithAccessControl />);
@@ -65,6 +65,6 @@ describe('useGetPathForRecord', () => {
             (await screen.findByText('Link', { selector: 'a' })).getAttribute(
                 'href'
             )
-        ).toEqual('#/posts/123/show');
+        ).toEqual('/posts/123/show');
     });
 });

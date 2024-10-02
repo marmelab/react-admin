@@ -23,6 +23,7 @@ import {
     MissingReferenceEmptyText,
     SXLink,
     SXNoLink,
+    AccessControl,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -573,14 +574,14 @@ describe('<ReferenceField />', () => {
 
     it('should accept multiple children', async () => {
         render(<Children />);
-        expect(screen.findByText('9780393966473')).not.toBeNull();
-        expect(screen.findByText('novel')).not.toBeNull();
+        expect(await screen.findByText('9780393966473')).not.toBeNull();
+        expect(await screen.findByText('novel')).not.toBeNull();
     });
 
-    it('should translate emptyText', () => {
+    it('should translate emptyText', async () => {
         render(<MissingReferenceIdEmptyTextTranslation />);
 
-        expect(screen.findByText('Not found')).not.toBeNull();
+        expect(await screen.findByText('Not found')).not.toBeNull();
     });
 
     it('should accept a queryOptions prop', async () => {
@@ -611,6 +612,23 @@ describe('<ReferenceField />', () => {
                 signal: undefined,
             });
         });
+    });
+    describe('Security', () => {
+        it('should render a link only when users have access to the requested action for the referenced resource', async () => {
+            render(<AccessControl />);
+            await waitFor(
+                () => {
+                    expect(
+                        screen
+                            .getByText('Lewis Carroll', {
+                                selector: 'a > span',
+                            })
+                            .parentElement?.getAttribute('href')
+                    ).toEqual('/authors/5/show');
+                },
+                { timeout: 8000 }
+            );
+        }, 10000);
     });
     describe('sx', () => {
         it('should override the default styles', async () => {
