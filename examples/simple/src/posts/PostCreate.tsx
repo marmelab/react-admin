@@ -44,7 +44,7 @@ const PostCreateToolbar = () => {
                 variant="text"
                 mutationOptions={{
                     onSuccess: data => {
-                        notify('ra.notification.created', {
+                        notify('resources.posts.notifications.created', {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
                         });
@@ -61,7 +61,7 @@ const PostCreateToolbar = () => {
                     onSuccess: () => {
                         reset();
                         window.scrollTo(0, 0);
-                        notify('ra.notification.created', {
+                        notify('resources.posts.notifications.created', {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
                         });
@@ -74,7 +74,7 @@ const PostCreateToolbar = () => {
                 variant="text"
                 mutationOptions={{
                     onSuccess: data => {
-                        notify('ra.notification.created', {
+                        notify('resources.posts.notifications.created', {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
                         });

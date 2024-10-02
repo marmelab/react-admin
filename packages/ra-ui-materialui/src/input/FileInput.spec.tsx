@@ -6,7 +6,7 @@ import {
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { required, testDataProvider } from 'ra-core';
+import { required, ResourceContextProvider, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm, Toolbar } from '../form';
@@ -18,7 +18,6 @@ import { SaveButton } from '../button';
 describe('<FileInput />', () => {
     const defaultProps = {
         source: 'image',
-        resource: 'posts',
     };
 
     const defaultPropsMultiple = {
@@ -30,11 +29,13 @@ describe('<FileInput />', () => {
     it('should display a dropzone for single file dropping', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <FileInput {...defaultProps}>
-                        <div />
-                    </FileInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <FileInput {...defaultProps}>
+                            <div />
+                        </FileInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -46,11 +47,13 @@ describe('<FileInput />', () => {
     it('should display a dropzone for multiple files dropping', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <FileInput {...defaultProps} multiple>
-                        <div />
-                    </FileInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <FileInput {...defaultProps} multiple>
+                            <div />
+                        </FileInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -65,11 +68,13 @@ describe('<FileInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={onSubmit}>
-                    <FileInput {...defaultProps}>
-                        <div />
-                    </FileInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={onSubmit}>
+                        <FileInput {...defaultProps}>
+                            <div />
+                        </FileInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -98,11 +103,13 @@ describe('<FileInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={onSubmit}>
-                    <FileInput {...defaultPropsMultiple}>
-                        <div />
-                    </FileInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={onSubmit}>
+                        <FileInput {...defaultPropsMultiple}>
+                            <div />
+                        </FileInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -134,19 +141,21 @@ describe('<FileInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={onSubmit}
-                    defaultValues={{
-                        image: {
-                            src: 'test.png',
-                            title: 'cats',
-                        },
-                    }}
-                >
-                    <FileInput {...defaultProps}>
-                        <FileField source="src" title="title" />
-                    </FileInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                    >
+                        <FileInput {...defaultProps}>
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -169,25 +178,27 @@ describe('<FileInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={onSubmit}
-                    defaultValues={{
-                        images: [
-                            {
-                                src: 'test.png',
-                                title: 'cats',
-                            },
-                            {
-                                src: 'test2.png',
-                                title: 'cats2',
-                            },
-                        ],
-                    }}
-                >
-                    <FileInput {...defaultPropsMultiple}>
-                        <FileField source="src" title="title" />
-                    </FileInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        defaultValues={{
+                            images: [
+                                {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                                {
+                                    src: 'test2.png',
+                                    title: 'cats2',
+                                },
+                            ],
+                        }}
+                    >
+                        <FileInput {...defaultPropsMultiple}>
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -215,25 +226,27 @@ describe('<FileInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={onSubmit}
-                    defaultValues={{
-                        images: [
-                            {
-                                src: 'test.png',
-                                title: 'cats',
-                            },
-                            {
-                                src: 'test2.png',
-                                title: 'cats 2',
-                            },
-                        ],
-                    }}
-                >
-                    <FileInput {...defaultPropsMultiple}>
-                        <FileField source="src" title="title" />
-                    </FileInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        defaultValues={{
+                            images: [
+                                {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                                {
+                                    src: 'test2.png',
+                                    title: 'cats 2',
+                                },
+                            ],
+                        }}
+                    >
+                        <FileInput {...defaultPropsMultiple}>
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -267,29 +280,31 @@ describe('<FileInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{
-                            image: {
-                                src: 'test.png',
-                                title: 'cats',
-                            },
-                        }}
-                        onSubmit={onSubmit}
-                        toolbar={
-                            <Toolbar>
-                                <SaveButton alwaysEnable />
-                            </Toolbar>
-                        }
-                    >
-                        <FileInput
-                            {...defaultProps}
-                            validateFileRemoval={() => {
-                                throw Error('Cancel Removal Action');
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{
+                                image: {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
                             }}
+                            onSubmit={onSubmit}
+                            toolbar={
+                                <Toolbar>
+                                    <SaveButton alwaysEnable />
+                                </Toolbar>
+                            }
                         >
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                            <FileInput
+                                {...defaultProps}
+                                validateFileRemoval={() => {
+                                    throw Error('Cancel Removal Action');
+                                }}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -319,29 +334,31 @@ describe('<FileInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{
-                            image: {
-                                src: 'test.png',
-                                title: 'cats',
-                            },
-                        }}
-                        onSubmit={onSubmit}
-                        toolbar={
-                            <Toolbar>
-                                <SaveButton alwaysEnable />
-                            </Toolbar>
-                        }
-                    >
-                        <FileInput
-                            {...defaultProps}
-                            validateFileRemoval={async () => {
-                                throw Error('Cancel Removal Action');
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{
+                                image: {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
                             }}
+                            onSubmit={onSubmit}
+                            toolbar={
+                                <Toolbar>
+                                    <SaveButton alwaysEnable />
+                                </Toolbar>
+                            }
                         >
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                            <FileInput
+                                {...defaultProps}
+                                validateFileRemoval={async () => {
+                                    throw Error('Cancel Removal Action');
+                                }}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const fileDom = screen.getByTitle('cats');
@@ -371,22 +388,24 @@ describe('<FileInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{
-                            image: {
-                                src: 'test.png',
-                                title: 'cats',
-                            },
-                        }}
-                        onSubmit={onSubmit}
-                    >
-                        <FileInput
-                            {...defaultProps}
-                            validateFileRemoval={() => true}
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{
+                                image: {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                            }}
+                            onSubmit={onSubmit}
                         >
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                            <FileInput
+                                {...defaultProps}
+                                validateFileRemoval={() => true}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -410,22 +429,24 @@ describe('<FileInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{
-                            image: {
-                                src: 'test.png',
-                                title: 'cats',
-                            },
-                        }}
-                        onSubmit={onSubmit}
-                    >
-                        <FileInput
-                            {...defaultProps}
-                            validateFileRemoval={async () => true}
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{
+                                image: {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                            }}
+                            onSubmit={onSubmit}
                         >
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                            <FileInput
+                                {...defaultProps}
+                                validateFileRemoval={async () => true}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -450,14 +471,16 @@ describe('<FileInput />', () => {
         const test = (expectedLabel, expectedLabelText = expectedLabel) => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <FileInput
-                            {...defaultProps}
-                            placeholder={expectedLabel}
-                        >
-                            <div />
-                        </FileInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <FileInput
+                                {...defaultProps}
+                                placeholder={expectedLabel}
+                            >
+                                <div />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -476,15 +499,17 @@ describe('<FileInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={onSubmit}>
-                        <FileInput
-                            {...defaultPropsMultiple}
-                            validate={required()}
-                        >
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                        <TextInput source="title" resource="posts" />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={onSubmit}>
+                            <FileInput
+                                {...defaultPropsMultiple}
+                                validate={required()}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <TextInput source="title" resource="posts" />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -505,24 +530,26 @@ describe('<FileInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={onSubmit}
-                        defaultValues={{
-                            images: [
-                                {
-                                    src: 'test.png',
-                                    title: 'cats',
-                                },
-                            ],
-                        }}
-                    >
-                        <FileInput
-                            {...defaultPropsMultiple}
-                            validate={required()}
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={onSubmit}
+                            defaultValues={{
+                                images: [
+                                    {
+                                        src: 'test.png',
+                                        title: 'cats',
+                                    },
+                                ],
+                            }}
                         >
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                            <FileInput
+                                {...defaultPropsMultiple}
+                                validate={required()}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -539,25 +566,27 @@ describe('<FileInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={onSubmit}
-                        defaultValues={{
-                            images: [
-                                {
-                                    src: 'test.png',
-                                    title: 'cats',
-                                },
-                            ],
-                        }}
-                        mode="onChange"
-                    >
-                        <FileInput
-                            {...defaultPropsMultiple}
-                            validate={required()}
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={onSubmit}
+                            defaultValues={{
+                                images: [
+                                    {
+                                        src: 'test.png',
+                                        title: 'cats',
+                                    },
+                                ],
+                            }}
+                            mode="onChange"
                         >
-                            <FileField source="src" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                            <FileInput
+                                {...defaultPropsMultiple}
+                                validate={required()}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -573,19 +602,21 @@ describe('<FileInput />', () => {
         it('should display file preview using child as preview component', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{
-                            image: {
-                                url: 'http://foo.com/bar.jpg',
-                                title: 'Hello world!',
-                            },
-                        }}
-                    >
-                        <FileInput {...defaultProps} source="image">
-                            <ImageField source="url" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{
+                                image: {
+                                    url: 'http://foo.com/bar.jpg',
+                                    title: 'Hello world!',
+                                },
+                            }}
+                        >
+                            <FileInput {...defaultProps} source="image">
+                                <ImageField source="url" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -599,25 +630,27 @@ describe('<FileInput />', () => {
         it('should display all files (when several) previews using child as preview component', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{
-                            images: [
-                                {
-                                    url: 'http://foo.com/bar.jpg',
-                                    title: 'Hello world!',
-                                },
-                                {
-                                    url: 'http://foo.com/qux.bmp',
-                                    title: 'A good old Bitmap!',
-                                },
-                            ],
-                        }}
-                    >
-                        <FileInput {...defaultPropsMultiple}>
-                            <ImageField source="url" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{
+                                images: [
+                                    {
+                                        url: 'http://foo.com/bar.jpg',
+                                        title: 'Hello world!',
+                                    },
+                                    {
+                                        url: 'http://foo.com/qux.bmp',
+                                        title: 'A good old Bitmap!',
+                                    },
+                                ],
+                            }}
+                        >
+                            <FileInput {...defaultPropsMultiple}>
+                                <ImageField source="url" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -637,19 +670,21 @@ describe('<FileInput />', () => {
         it('should update previews when updating input value', async () => {
             const { rerender } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        record={{
-                            image: {
-                                title: 'Hello world!',
-                                url: 'http://static.acme.com/foo.jpg',
-                            },
-                        }}
-                    >
-                        <FileInput {...defaultProps} source="image">
-                            <ImageField source="url" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            record={{
+                                image: {
+                                    title: 'Hello world!',
+                                    url: 'http://static.acme.com/foo.jpg',
+                                },
+                            }}
+                        >
+                            <FileInput {...defaultProps} source="image">
+                                <ImageField source="url" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -661,19 +696,21 @@ describe('<FileInput />', () => {
 
             rerender(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        record={{
-                            image: {
-                                title: 'Hello world!',
-                                url: 'http://static.acme.com/bar.jpg',
-                            },
-                        }}
-                    >
-                        <FileInput {...defaultProps} source="image">
-                            <ImageField source="url" title="title" />
-                        </FileInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            record={{
+                                image: {
+                                    title: 'Hello world!',
+                                    url: 'http://static.acme.com/bar.jpg',
+                                },
+                            }}
+                        >
+                            <FileInput {...defaultProps} source="image">
+                                <ImageField source="url" title="title" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -690,16 +727,18 @@ describe('<FileInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{
-                            images: [],
-                        }}
-                        onSubmit={onSubmit}
-                    >
-                        <FileInput {...defaultPropsMultiple}>
-                            <ImageField source="url" />
-                        </FileInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{
+                                images: [],
+                            }}
+                            onSubmit={onSubmit}
+                        >
+                            <FileInput {...defaultPropsMultiple}>
+                                <ImageField source="url" />
+                            </FileInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 

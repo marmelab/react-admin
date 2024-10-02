@@ -8,12 +8,11 @@ import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
-import { required } from 'ra-core';
+import { required, ResourceContextProvider } from 'ra-core';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
         source: 'views',
-        resource: 'posts',
     };
 
     const MyToolbar = () => (
@@ -30,9 +29,14 @@ describe('<NumberInput />', () => {
     it('should use a mui TextField', () => {
         render(
             <AdminContext>
-                <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
-                    <NumberInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
+                        <NumberInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -45,9 +49,11 @@ describe('<NumberInput />', () => {
     it('should accept `step` prop and pass it to native input', () => {
         render(
             <AdminContext>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <NumberInput {...defaultProps} step="0.1" />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <NumberInput {...defaultProps} step="0.1" />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -59,10 +65,15 @@ describe('<NumberInput />', () => {
     it('should change when the user types a number and blurs', () => {
         render(
             <AdminContext>
-                <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
-                    <NumberInput {...defaultProps} />
-                    <RecordWatcher />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
+                        <NumberInput {...defaultProps} />
+                        <RecordWatcher />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         screen.getByText('views:12');
@@ -77,10 +88,15 @@ describe('<NumberInput />', () => {
     it('should change when the user types a number and presses enter', () => {
         render(
             <AdminContext>
-                <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
-                    <NumberInput {...defaultProps} />
-                    <RecordWatcher />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
+                        <NumberInput {...defaultProps} />
+                        <RecordWatcher />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         screen.getByText('views:12');
@@ -103,11 +119,16 @@ describe('<NumberInput />', () => {
         };
         render(
             <AdminContext>
-                <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
-                    <NumberInput {...defaultProps} />
-                    <UpdateViewsButton />
-                    <RecordWatcher />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
+                        <NumberInput {...defaultProps} />
+                        <UpdateViewsButton />
+                        <RecordWatcher />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         screen.getByText('views:12');
@@ -118,10 +139,12 @@ describe('<NumberInput />', () => {
     it('should support entering a decimal number with transitory invalid value (using dot)', async () => {
         render(
             <AdminContext>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <NumberInput {...defaultProps} />
-                    <RecordWatcher />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <NumberInput {...defaultProps} />
+                        <RecordWatcher />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -153,10 +176,12 @@ describe('<NumberInput />', () => {
         it('should return correct state when the field is pristine', () => {
             render(
                 <AdminContext>
-                    <SimpleForm>
-                        <NumberInput {...defaultProps} />
-                        <FieldState />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm>
+                            <NumberInput {...defaultProps} />
+                            <FieldState />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             screen.getByText(
@@ -166,10 +191,12 @@ describe('<NumberInput />', () => {
         it('should return correct state when the field is dirty', () => {
             render(
                 <AdminContext>
-                    <SimpleForm>
-                        <NumberInput {...defaultProps} />
-                        <FieldState />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm>
+                            <NumberInput {...defaultProps} />
+                            <FieldState />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText(
@@ -183,10 +210,12 @@ describe('<NumberInput />', () => {
         it('should return correct state when the field is touched', () => {
             render(
                 <AdminContext>
-                    <SimpleForm>
-                        <NumberInput {...defaultProps} />
-                        <FieldState />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm>
+                            <NumberInput {...defaultProps} />
+                            <FieldState />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText(
@@ -201,13 +230,15 @@ describe('<NumberInput />', () => {
         it('should return correct state when the field is invalid', async () => {
             render(
                 <AdminContext>
-                    <SimpleForm>
-                        <NumberInput
-                            {...defaultProps}
-                            validate={() => 'error'}
-                        />
-                        <FieldState />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm>
+                            <NumberInput
+                                {...defaultProps}
+                                validate={() => 'error'}
+                            />
+                            <FieldState />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText(
@@ -228,13 +259,15 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm
-                        toolbar={<MyToolbar />}
-                        defaultValues={{ views: 12 }}
-                        onSubmit={onSubmit}
-                    >
-                        <NumberInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            toolbar={<MyToolbar />}
+                            defaultValues={{ views: 12 }}
+                            onSubmit={onSubmit}
+                        >
+                            <NumberInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.click(screen.getByText('ra.action.save'));
@@ -251,9 +284,11 @@ describe('<NumberInput />', () => {
             const onSubmit = jest.fn();
             render(
                 <AdminContext>
-                    <SimpleForm toolbar={<MyToolbar />} onSubmit={onSubmit}>
-                        <NumberInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm toolbar={<MyToolbar />} onSubmit={onSubmit}>
+                            <NumberInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.click(screen.getByText('ra.action.save'));
@@ -271,12 +306,14 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ views: 12 }}
-                        onSubmit={onSubmit}
-                    >
-                        <NumberInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ views: 12 }}
+                            onSubmit={onSubmit}
+                        >
+                            <NumberInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -296,12 +333,14 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ views: 12 }}
-                        onSubmit={onSubmit}
-                    >
-                        <NumberInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ views: 12 }}
+                            onSubmit={onSubmit}
+                        >
+                            <NumberInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -321,9 +360,14 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm toolbar={<MyToolbar />} onSubmit={onSubmit}>
-                        <NumberInput {...defaultProps} parse={value => value} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm toolbar={<MyToolbar />} onSubmit={onSubmit}>
+                            <NumberInput
+                                {...defaultProps}
+                                parse={value => value}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -343,9 +387,14 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm toolbar={<MyToolbar />} onSubmit={onSubmit}>
-                        <NumberInput {...defaultProps} parse={value => value} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm toolbar={<MyToolbar />} onSubmit={onSubmit}>
+                            <NumberInput
+                                {...defaultProps}
+                                parse={value => value}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -377,13 +426,18 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ unit: 'radian', value: Math.PI / 2 }}
-                        onSubmit={onSubmit}
-                    >
-                        <AngleInput resource="posts" source="value" />
-                        <TextInput resource="posts" source="unit" />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{
+                                unit: 'radian',
+                                value: Math.PI / 2,
+                            }}
+                            onSubmit={onSubmit}
+                        >
+                            <AngleInput resource="posts" source="value" />
+                            <TextInput resource="posts" source="unit" />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const valueInput = screen.getByLabelText(
@@ -409,12 +463,17 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
-                    >
-                        <NumberInput {...defaultProps} onChange={onChange} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ views: 12 }}
+                            onSubmit={jest.fn()}
+                        >
+                            <NumberInput
+                                {...defaultProps}
+                                onChange={onChange}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -432,12 +491,17 @@ describe('<NumberInput />', () => {
             });
             render(
                 <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ views: 12 }}
-                        onSubmit={onSubmit}
-                    >
-                        <NumberInput {...defaultProps} onChange={onChange} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ views: 12 }}
+                            onSubmit={onSubmit}
+                        >
+                            <NumberInput
+                                {...defaultProps}
+                                onChange={onChange}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -459,12 +523,14 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
-                    >
-                        <NumberInput {...defaultProps} onFocus={onFocus} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ views: 12 }}
+                            onSubmit={jest.fn()}
+                        >
+                            <NumberInput {...defaultProps} onFocus={onFocus} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -479,12 +545,14 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
-                    >
-                        <NumberInput {...defaultProps} onBlur={onBlur} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ views: 12 }}
+                            onSubmit={jest.fn()}
+                        >
+                            <NumberInput {...defaultProps} onBlur={onBlur} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -497,17 +565,19 @@ describe('<NumberInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm
-                        defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
-                        mode="onBlur"
-                    >
-                        <NumberInput
-                            {...defaultProps}
-                            onBlur={onBlur}
-                            validate={required()}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ views: 12 }}
+                            onSubmit={jest.fn()}
+                            mode="onBlur"
+                        >
+                            <NumberInput
+                                {...defaultProps}
+                                onBlur={onBlur}
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText(
@@ -528,16 +598,18 @@ describe('<NumberInput />', () => {
         it('should not be displayed if field is pristine', () => {
             render(
                 <AdminContext>
-                    <SimpleForm
-                        toolbar={<MyToolbar />}
-                        defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
-                    >
-                        <NumberInput
-                            {...defaultProps}
-                            validate={() => 'error'}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            toolbar={<MyToolbar />}
+                            defaultValues={{ views: 12 }}
+                            onSubmit={jest.fn()}
+                        >
+                            <NumberInput
+                                {...defaultProps}
+                                validate={() => 'error'}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.click(screen.getByText('ra.action.save'));
@@ -548,16 +620,18 @@ describe('<NumberInput />', () => {
         it('should not be displayed if field has been touched but is valid', () => {
             render(
                 <AdminContext>
-                    <SimpleForm
-                        toolbar={<MyToolbar />}
-                        defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
-                    >
-                        <NumberInput
-                            {...defaultProps}
-                            validate={() => undefined}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            toolbar={<MyToolbar />}
+                            defaultValues={{ views: 12 }}
+                            onSubmit={jest.fn()}
+                        >
+                            <NumberInput
+                                {...defaultProps}
+                                validate={() => undefined}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
@@ -572,16 +646,18 @@ describe('<NumberInput />', () => {
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
                 <AdminContext>
-                    <SimpleForm
-                        toolbar={<MyToolbar />}
-                        defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
-                    >
-                        <NumberInput
-                            {...defaultProps}
-                            validate={() => 'error'}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            toolbar={<MyToolbar />}
+                            defaultValues={{ views: 12 }}
+                            onSubmit={jest.fn()}
+                        >
+                            <NumberInput
+                                {...defaultProps}
+                                validate={() => 'error'}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText('resources.posts.fields.views');

@@ -7,6 +7,7 @@ import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { RaRecord, DeleteParams } from '../../types';
 import { useResourceContext } from '../../core';
+import { useTranslate } from '../../i18n';
 
 /**
  * Prepare callback for a Delete button with undo support
@@ -51,23 +52,33 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
         redirect: redirectTo = 'list',
         onClick,
         mutationOptions = {},
-        successMessage = 'ra.notification.deleted',
+        successMessage,
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const resource = useResourceContext(props);
     const notify = useNotify();
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
+    const translate = useTranslate();
     const [deleteOne, { isPending }] = useDelete<RecordType>(
         resource,
         undefined,
         {
             onSuccess: () => {
-                notify(successMessage, {
-                    type: 'info',
-                    messageArgs: { smart_count: 1 },
-                    undoable: true,
-                });
+                notify(
+                    successMessage ??
+                        `resources.${resource}.notifications.deleted`,
+                    {
+                        type: 'info',
+                        messageArgs: {
+                            smart_count: 1,
+                            _: translate('ra.notification.deleted', {
+                                smart_count: 1,
+                            }),
+                        },
+                        undoable: true,
+                    }
+                );
                 record && unselect([record.id]);
                 redirect(redirectTo, resource);
             },

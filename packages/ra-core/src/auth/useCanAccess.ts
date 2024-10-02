@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import {
+    QueryObserverLoadingErrorResult,
+    QueryObserverLoadingResult,
+    QueryObserverRefetchErrorResult,
+    QueryObserverSuccessResult,
     useQuery,
     UseQueryOptions,
-    UseQueryResult,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import { useResourceContext } from '../core';
@@ -127,9 +130,25 @@ export interface UseCanAccessOptions<
     record?: RecordType;
 }
 
-export type UseCanAccessResult<ErrorType = Error> = UseQueryResult<
-    boolean,
-    ErrorType
-> & {
-    canAccess: UseQueryResult<boolean, ErrorType>['data'];
-};
+export type UseCanAccessResult<ErrorType = Error> =
+    | UseCanAccessLoadingResult<ErrorType>
+    | UseCanAccessLoadingErrorResult<ErrorType>
+    | UseCanAccessRefetchErrorResult<ErrorType>
+    | UseCanAccessSuccessResult<ErrorType>;
+
+export interface UseCanAccessLoadingResult<ErrorType = Error>
+    extends QueryObserverLoadingResult<boolean, ErrorType> {
+    canAccess: undefined;
+}
+export interface UseCanAccessLoadingErrorResult<ErrorType = Error>
+    extends QueryObserverLoadingErrorResult<boolean, ErrorType> {
+    canAccess: undefined;
+}
+export interface UseCanAccessRefetchErrorResult<ErrorType = Error>
+    extends QueryObserverRefetchErrorResult<boolean, ErrorType> {
+    canAccess: boolean;
+}
+export interface UseCanAccessSuccessResult<ErrorType = Error>
+    extends QueryObserverSuccessResult<boolean, ErrorType> {
+    canAccess: boolean;
+}

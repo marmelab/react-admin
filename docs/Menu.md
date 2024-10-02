@@ -163,6 +163,12 @@ To override the style of `<Menu>` using the [application-wide style overrides](.
 
 ## `<Menu.Item>`
 
+<video controls autoplay playsinline muted loop>
+  <source src="./img/custom-menu.webm" type="video/webm"/>
+  <source src="./img/custom-menu.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 The `<Menu.Item>` component displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized. It also handles the automatic closing of the menu on tap on mobile.
 
 ```jsx
@@ -176,6 +182,15 @@ export const MyMenu = () => (
     </Menu>
 );
 ```
+
+| Prop          | Required | Type                 | Default | Description                              |
+| ------------- | -------- | -------------------- | ------- | ---------------------------------------- |
+| `to`          | Required | `string | location`  | -       | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. |
+| `primaryText` | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
+| `leftIcon`    | Optional | `ReactNode`          | -       | The menu icon |
+
+Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
+
 
 The `primaryText` prop accepts a string, that react-admin passes through the [translation utility](./Translation.md). Alternately, you can set the menu item content using the `children`, e.g. to display a badge on top of the menu item:
 
@@ -244,6 +259,15 @@ export const theme = {
     },
 };
 ```
+
+You can use the `sx` prop to customize the style of the component.
+
+| Rule name                   | Description                                                         |
+|-----------------------------|---------------------------------------------------------------------|
+| `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
+| `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
+
+To override the style of all instances of `<MenuItemLink>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuItemLink` key.
 
 ## `<Menu.DashboardItem>`
 

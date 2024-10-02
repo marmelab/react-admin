@@ -52,6 +52,7 @@ export const AccessControl = () => {
 const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
     const [resourcesAccesses, setResourcesAccesses] = React.useState({
         'books.list': true,
+        'books.delete': false,
         'books.edit': false,
         'books.edit.1': false,
     });
@@ -109,6 +110,7 @@ const AccessControlLayout = ({
     children: React.ReactNode;
     resourcesAccesses: {
         'books.list': boolean;
+        'books.delete': boolean;
         'books.edit': boolean;
         'books.edit.1': boolean;
     };

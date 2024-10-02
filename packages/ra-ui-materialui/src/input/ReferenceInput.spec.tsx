@@ -7,6 +7,7 @@ import {
     useChoicesContext,
     CoreAdminContext,
     Form,
+    ResourceContextProvider,
 } from 'ra-core';
 
 import { ReferenceInput } from './ReferenceInput';
@@ -24,7 +25,6 @@ import {
 describe('<ReferenceInput />', () => {
     const defaultProps = {
         reference: 'posts',
-        resource: 'comments',
         source: 'post_id',
     };
 
@@ -48,9 +48,11 @@ describe('<ReferenceInput />', () => {
                     getList: () => Promise.reject(new Error('fetch error')),
                 })}
             >
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="comments">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ReferenceInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -75,11 +77,13 @@ describe('<ReferenceInput />', () => {
         });
         render(
             <AdminContext dataProvider={dataProvider}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceInput {...defaultProps}>
-                        <MyComponent />
-                    </ReferenceInput>
-                </SimpleForm>
+                <ResourceContextProvider value="comments">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ReferenceInput {...defaultProps}>
+                            <MyComponent />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -99,11 +103,13 @@ describe('<ReferenceInput />', () => {
         });
         render(
             <AdminContext dataProvider={dataProvider}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ReferenceInput {...defaultProps}>
-                        <Children />
-                    </ReferenceInput>
-                </SimpleForm>
+                <ResourceContextProvider value="comments">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ReferenceInput {...defaultProps}>
+                            <Children />
+                        </ReferenceInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {

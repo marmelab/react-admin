@@ -13,16 +13,17 @@ import { SaveButton } from '../button';
 
 describe('<TimeInput />', () => {
     const defaultProps = {
-        resource: 'posts',
         source: 'publishedAt',
     };
 
     it('should render a time input', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <TimeInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <TimeInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -40,13 +41,18 @@ describe('<TimeInput />', () => {
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn()}
-                    record={{ id: 1, publishedAt: publishedAt.toISOString() }}
-                >
-                    <TimeInput {...defaultProps} />
-                    <FormState />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        record={{
+                            id: 1,
+                            publishedAt: publishedAt.toISOString(),
+                        }}
+                    >
+                        <TimeInput {...defaultProps} />
+                        <FormState />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.getByDisplayValue(format(publishedAt, 'HH:mm')));
@@ -85,17 +91,19 @@ describe('<TimeInput />', () => {
         const onSubmit = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={onSubmit}
-                    defaultValues={{ publishedAt }}
-                    toolbar={
-                        <Toolbar>
-                            <SaveButton alwaysEnable />
-                        </Toolbar>
-                    }
-                >
-                    <TimeInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        defaultValues={{ publishedAt }}
+                        toolbar={
+                            <Toolbar>
+                                <SaveButton alwaysEnable />
+                            </Toolbar>
+                        }
+                    >
+                        <TimeInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(
@@ -117,16 +125,21 @@ describe('<TimeInput />', () => {
         const onSubmit = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={onSubmit}
-                    toolbar={
-                        <Toolbar>
-                            <SaveButton alwaysEnable />
-                        </Toolbar>
-                    }
-                >
-                    <TimeInput {...defaultProps} defaultValue={publishedAt} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        toolbar={
+                            <Toolbar>
+                                <SaveButton alwaysEnable />
+                            </Toolbar>
+                        }
+                    >
+                        <TimeInput
+                            {...defaultProps}
+                            defaultValue={publishedAt}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(
@@ -148,16 +161,21 @@ describe('<TimeInput />', () => {
         const onSubmit = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={onSubmit}
-                    toolbar={
-                        <Toolbar>
-                            <SaveButton alwaysEnable />
-                        </Toolbar>
-                    }
-                >
-                    <TimeInput {...defaultProps} defaultValue={publishedAt} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={onSubmit}
+                        toolbar={
+                            <Toolbar>
+                                <SaveButton alwaysEnable />
+                            </Toolbar>
+                        }
+                    >
+                        <TimeInput
+                            {...defaultProps}
+                            defaultValue={publishedAt}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(
@@ -184,9 +202,14 @@ describe('<TimeInput />', () => {
         it('should not be displayed if field is pristine', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <TimeInput {...defaultProps} validate={required()} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <TimeInput
+                                {...defaultProps}
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByText('ra.validation.required')).toBeNull();
@@ -195,9 +218,14 @@ describe('<TimeInput />', () => {
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()} mode="onBlur">
-                        <TimeInput {...defaultProps} validate={required()} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()} mode="onBlur">
+                            <TimeInput
+                                {...defaultProps}
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText(
@@ -215,9 +243,14 @@ describe('<TimeInput />', () => {
             const onSubmit = jest.fn();
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm mode="onBlur" onSubmit={onSubmit}>
-                        <TimeInput {...defaultProps} validate={required()} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onBlur" onSubmit={onSubmit}>
+                            <TimeInput
+                                {...defaultProps}
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.getByLabelText(

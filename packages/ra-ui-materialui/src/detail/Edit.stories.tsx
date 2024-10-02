@@ -1,6 +1,14 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, Form, useRecordContext, TestMemoryRouter } from 'ra-core';
+import {
+    Resource,
+    Form,
+    useRecordContext,
+    TestMemoryRouter,
+    useEditContext,
+} from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 import { Box, Card, Stack } from '@mui/material';
 
 import { TextInput } from '../input';
@@ -11,18 +19,17 @@ import { Edit } from './Edit';
 
 export default { title: 'ra-ui-materialui/detail/Edit' };
 
+const book = {
+    id: 1,
+    title: 'War and Peace',
+    author: 'Leo Tolstoy',
+    summary:
+        "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+    year: 1869,
+};
+
 const dataProvider = {
-    getOne: () =>
-        Promise.resolve({
-            data: {
-                id: 1,
-                title: 'War and Peace',
-                author: 'Leo Tolstoy',
-                summary:
-                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
-                year: 1869,
-            },
-        }),
+    getOne: () => Promise.resolve({ data: book }),
 } as any;
 
 const BookTitle = () => {
@@ -219,8 +226,62 @@ export const Meta = () => (
     </TestMemoryRouter>
 );
 
+const EditContent = () => {
+    const { save } = useEditContext();
+    return <button onClick={save}>Save</button>;
+};
+
+const dataProviderWithUpdate = {
+    getOne: async () => ({ data: book }) as any,
+    update: async (_resource, params) =>
+        ({ data: { ...book, ...params.data } }) as any,
+} as any;
+
+export const NotificationDefault = () => (
+    <TestMemoryRouter initialEntries={['/books/1/edit']}>
+        <Admin dataProvider={dataProviderWithUpdate}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit>
+                        <EditContent />
+                    </Edit>
+                )}
+                list={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const NotificationTranslated = () => (
+    <TestMemoryRouter initialEntries={['/books/1/edit']}>
+        <Admin
+            dataProvider={dataProviderWithUpdate}
+            i18nProvider={polyglotI18nProvider(
+                () => ({
+                    ...englishMessages,
+                    resources: {
+                        books: { notifications: { updated: 'Book updated' } },
+                    },
+                }),
+                'en'
+            )}
+        >
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit>
+                        <EditContent />
+                    </Edit>
+                )}
+                list={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 export const Default = () => (
-    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
+    <TestMemoryRouter initialEntries={['/books/1/edit']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import { required, testDataProvider } from 'ra-core';
+import { required, ResourceContextProvider, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -10,18 +10,19 @@ import { ValueNull, Parse } from './TextInput.stories';
 describe('<TextInput />', () => {
     const defaultProps = {
         source: 'title',
-        resource: 'posts',
     };
 
     it('should render the input correctly', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{ title: 'hello' }}
-                    onSubmit={jest.fn}
-                >
-                    <TextInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const TextFieldElement = screen.getByLabelText(
@@ -34,12 +35,14 @@ describe('<TextInput />', () => {
     it('should use a ResettableTextField when type is password', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{ title: 'hello' }}
-                    onSubmit={jest.fn}
-                >
-                    <TextInput {...defaultProps} type="password" />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ title: 'hello' }}
+                        onSubmit={jest.fn}
+                    >
+                        <TextInput {...defaultProps} type="password" />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const TextFieldElement = screen.getByLabelText(
@@ -52,13 +55,15 @@ describe('<TextInput />', () => {
         it('should not be displayed if field is pristine', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <TextInput
-                            {...defaultProps}
-                            defaultValue=""
-                            validate={required()}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <TextInput
+                                {...defaultProps}
+                                defaultValue=""
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.click(screen.getByText('ra.action.save'));
@@ -69,13 +74,15 @@ describe('<TextInput />', () => {
         it('should not be displayed if field has been touched but is valid', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <TextInput
-                            {...defaultProps}
-                            defaultValue=""
-                            validate={required()}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <TextInput
+                                {...defaultProps}
+                                defaultValue=""
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -91,13 +98,15 @@ describe('<TextInput />', () => {
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm mode="onBlur" onSubmit={jest.fn}>
-                        <TextInput
-                            {...defaultProps}
-                            defaultValue="foo"
-                            validate={required()}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onBlur" onSubmit={jest.fn}>
+                            <TextInput
+                                {...defaultProps}
+                                defaultValue="foo"
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -171,12 +180,14 @@ describe('<TextInput />', () => {
         it('should render label when `label` prop not specified', () => {
             const { container } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
-                    >
-                        <TextInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ title: 'hello' }}
+                            onSubmit={jest.fn}
+                        >
+                            <TextInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -186,12 +197,14 @@ describe('<TextInput />', () => {
         it('should render label when `label` prop is non-empty string', () => {
             const { container } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
-                    >
-                        <TextInput {...defaultProps} label="label" />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ title: 'hello' }}
+                            onSubmit={jest.fn}
+                        >
+                            <TextInput {...defaultProps} label="label" />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -201,12 +214,14 @@ describe('<TextInput />', () => {
         it('should not render label when `label` prop is `false`', () => {
             const { container } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
-                    >
-                        <TextInput {...defaultProps} label={false} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ title: 'hello' }}
+                            onSubmit={jest.fn}
+                        >
+                            <TextInput {...defaultProps} label={false} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -216,12 +231,14 @@ describe('<TextInput />', () => {
         it('should not render label when `label` prop is empty string', () => {
             const { container } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
-                    >
-                        <TextInput {...defaultProps} label="" />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{ title: 'hello' }}
+                            onSubmit={jest.fn}
+                        >
+                            <TextInput {...defaultProps} label="" />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 

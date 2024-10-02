@@ -5,6 +5,7 @@ import {
     Form,
     MutationMode,
     required,
+    ResourceContextProvider,
     testDataProvider,
     useNotificationContext,
 } from 'ra-core';
@@ -22,7 +23,6 @@ import { AdminContext } from '../AdminContext';
 
 const invalidButtonDomProps = {
     disabled: true,
-    resource: 'posts',
 };
 
 describe('<SaveButton />', () => {
@@ -405,20 +405,22 @@ describe('<SaveButton />', () => {
     it('should not be enabled if no inputs have changed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    resource="myresource"
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        test: 'test',
-                    }}
-                >
-                    <TextInput source="test" />
-                    <ArrayInput resource="foo" source="arr">
-                        <SimpleFormIterator>
-                            <NumberInput source="id" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        resource="myresource"
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            test: 'test',
+                        }}
+                    >
+                        <TextInput source="test" />
+                        <ArrayInput resource="foo" source="arr">
+                            <SimpleFormIterator>
+                                <NumberInput source="id" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
