@@ -513,7 +513,11 @@ import { authProvider } from './authProvider';
 import { Dashboard } from './Dashboard';
 
 const App = () => (
-    <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin
+        dashboard={Dashboard}
+        authProvider={authProvider}
+        dataProvider={simpleRestProvider('http://path.to.my.api')}
+    >
         <Resource name="unprotected" list={<UnprotectedList disableAuthentication />} />
         <Resource name="protected" {/* ... */ } />
     </Admin>
