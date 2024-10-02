@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect, Children, ComponentType } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { WithPermissions, useCheckAuth, LogoutOnMount } from '../auth';
-import { useScrollToTop, useCreatePath } from '../routing';
+import { useScrollToTop } from '../routing';
 import {
     AdminChildren,
     CatchAllComponent,
@@ -12,11 +12,10 @@ import {
 } from '../types';
 import { useConfigureAdminRouterFromChildren } from './useConfigureAdminRouterFromChildren';
 import { HasDashboardContextProvider } from './HasDashboardContext';
-import { useFirstResourceWithListAccess } from './useFirstResourceWithListAccess';
+import { NavigateToFirstResource } from './NavigateToFirstResource';
 
 export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     useScrollToTop();
-    const createPath = useCreatePath();
 
     const {
         customRoutesWithLayout,
@@ -54,11 +53,6 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                 });
         }
     }, [checkAuth, requireAuth]);
-
-    const {
-        isPending: isPendingFirstResourceWithListAccess,
-        resource: firstResourceWithListAccess,
-    } = useFirstResourceWithListAccess(resources);
 
     if (status === 'empty') {
         if (!Ready) {
@@ -124,17 +118,11 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                                                 authParams={defaultAuthParams}
                                                 component={dashboard}
                                             />
-                                        ) : firstResourceWithListAccess ? (
-                                            <Navigate
-                                                to={createPath({
-                                                    resource:
-                                                        firstResourceWithListAccess,
-                                                    type: 'list',
-                                                })}
+                                        ) : (
+                                            <NavigateToFirstResource
+                                                loading={LoadingPage}
                                             />
-                                        ) : isPendingFirstResourceWithListAccess ? (
-                                            <LoadingPage />
-                                        ) : null
+                                        )
                                     }
                                 />
                                 <Route

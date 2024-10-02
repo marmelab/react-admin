@@ -638,7 +638,8 @@ describe('useInfiniteListController', () => {
             );
             await screen.findByText('A post - 0 votes');
             expect(dataProvider.getList).toHaveBeenCalled();
-            expect(authProvider.checkAuth).not.toHaveBeenCalled();
+            // Only called once by NavigationToFirstResource
+            expect(authProvider.checkAuth).toHaveBeenCalledTimes(1);
         });
     });
 });
