@@ -69,9 +69,14 @@ const WithPermissions = (props: WithPermissionsProps) => {
         'You should only use one of the `component`, `render` and `children` props in <WithPermissions>'
     );
 
-    useAuthenticated(authParams);
-    const { permissions } = usePermissions(authParams);
-    // render even though the usePermissions() call isn't finished (optimistic rendering)
+    const { isPending: isAuthenticationPending } = useAuthenticated(authParams);
+    const { permissions, isPending } = usePermissions(authParams, {
+        enabled: !isAuthenticationPending,
+    });
+    if (isPending) {
+        return null;
+    }
+
     if (component) {
         return createElement(component, { permissions, ...rest });
     }

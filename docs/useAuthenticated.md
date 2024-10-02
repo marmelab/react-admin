@@ -5,14 +5,21 @@ title: "useAuthenticated"
 
 # `useAuthenticated`
 
-If you add [custom pages](./Actions.md), you may need to secure access to pages manually. That's the purpose of the `useAuthenticated()` hook, which calls the `authProvider.checkAuth()` method on mount, and redirects to the login if it returns a rejected Promise.
+This hook calls the [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth)  method on mount, and redirects to login if the `authProvider` returns a rejected Promise.
 
-```jsx
+React-admin uses this hook in page components (e.g., the `<Edit>` component) to ensure that the user is authenticated before rendering the page.
+
+## Usage
+
+If you add [custom pages](./Admin.md#adding-custom-pages), and you want to restrict access to authenticated users, use `useAuthenticated()` as follows:
+
+```tsx
 // in src/MyPage.js
 import { useAuthenticated } from 'react-admin';
 
 const MyPage = () => {
-    useAuthenticated(); // redirects to login if not authenticated
+    const { isPending } = useAuthenticated(); // redirects to login if not authenticated
+    if (isPending) return <div>Checking auth...</div>;
     return (
         <div>
             ...
@@ -23,13 +30,22 @@ const MyPage = () => {
 export default MyPage;
 ```
 
+Since `authProvider.checkAuth()` is an asynchronous function, the `useAuthenticated` hook returns an object with a `isPending` property set to `true` while the check is in progress. You can use this property to display a loading indicator until the check is complete.
+
+If you want to render different content depending on the authenticated status, you can use [the `useAuthState` hook](./useAuthState.md) instead.
+
+## Parameters
+
 `useAuthenticated` accepts an options object as its only argument, with the following properties:
-- `enabled`: whether it should check for an authenticated user (`true` by default)
-- `params`: the parameters to pass to `checkAuth`
 
-If you call `useAuthenticated()` with a `params` option, those parameters are passed to the `authProvider.checkAuth` call. That allows you to add authentication logic depending on the context of the call:
+- `params`: the parameters to pass to `authProvider.checkAuth()`
+- `logoutOnFailure`: a boolean indicating whether to call `authProvider.logout` if the check fails. Defaults to `true`.
 
-```jsx
+Additional parameters are passed as options to the `useQuery` call. That allows you to add side effects, meta parameters, retryDelay, etc.
+
+The `params` option allows you to add authentication logic depending on the context of the call:
+
+```tsx
 const MyPage = () => {
     useAuthenticated({ params: { foo: 'bar' } }); // calls authProvider.checkAuth({ foo: 'bar' })
     return (
@@ -40,6 +56,18 @@ const MyPage = () => {
 };
 ```
 
-The `useAuthenticated` hook is optimistic: it doesn't block rendering during the `authProvider` call. In the above example, the `MyPage` component renders even before getting the response from the `authProvider`. If the call returns a rejected promise, the hook redirects to the login page, but the user may have seen the content of the `MyPage` component for a brief moment.
+## Component Version
 
-If you want to render different content depending on the authenticated status, you can use [the `useAuthState` hook](./useAuthState.md) instead.
+The [`<Authenticated>`](./Authenticated.md) component wraps the `useAuthenticated` hook, renders its child if the user is authenticated, or redirects to login otherwise.
+
+It is useful when you can't use hooks, for instance because of the rules of hooks.
+
+```jsx
+import { Authenticated } from 'react-admin';
+
+const MyAuthenticatedPage = () => (
+    <Authenticated>
+        <MyPage />
+    </Authenticated>
+);
+```
