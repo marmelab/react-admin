@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin } from 'react-admin';
+import { Admin, type CoreAdminContextProps } from 'react-admin';
 import {
     Resource,
     Form,
@@ -9,7 +9,7 @@ import {
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Box, Card, Stack } from '@mui/material';
+import { Box, Card, Stack, Typography } from '@mui/material';
 
 import { TextInput } from '../input';
 import { SimpleForm } from '../form/SimpleForm';
@@ -300,3 +300,65 @@ export const Default = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const EmptyWhileLoading = ({
+    myDataProvider,
+}: {
+    myDataProvider?: CoreAdminContextProps['dataProvider'];
+}) => {
+    const customDataProvider = {
+        getOne: () =>
+            new Promise(resolve =>
+                setTimeout(
+                    () =>
+                        resolve({
+                            data: {
+                                id: 1,
+                                title: 'War and Peace',
+                                author: 'Leo Tolstoy',
+                                summary:
+                                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                                year: 1869,
+                            },
+                        }),
+                    2000
+                )
+            ),
+    } as any;
+    return (
+        <TestMemoryRouter initialEntries={['/books/1/Edit']}>
+            <Admin dataProvider={myDataProvider ?? customDataProvider}>
+                <Resource
+                    name="books"
+                    edit={() => (
+                        <Box>
+                            <Typography variant="h6" sx={{ mt: 2, mb: -1 }}>
+                                Book Edition
+                            </Typography>
+                            <Edit
+                                emptyWhileLoading
+                                aside={<AsideComponentWithRecord />}
+                            >
+                                <SimpleForm>
+                                    <TextInput source="title" />
+                                    <TextInput source="author" />
+                                    <TextInput source="summary" />
+                                    <TextInput source="year" />
+                                </SimpleForm>
+                            </Edit>
+                        </Box>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+const AsideComponentWithRecord = () => {
+    const { record } = useEditContext();
+    return (
+        <Typography>
+            {record.title}, by {record.author} ({record.year})
+        </Typography>
+    );
+};

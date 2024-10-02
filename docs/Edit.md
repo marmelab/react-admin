@@ -66,6 +66,7 @@ You can customize the `<Edit>` component using the following props:
 * `className`: passed to the root component
 * [`component`](#component): override the root component
 * [`disableAuthentication`](#disableauthentication): disable the authentication check
+* [`emptyWhileLoading`](#emptywhileloading): Set to `true` to return `null` while the edit is loading.
 * [`id`](#id): the id of the record to edit
 * [`mutationMode`](#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
 * [`mutationOptions`](#mutationoptions): options for the `dataProvider.update()` call
@@ -218,6 +219,57 @@ By default, the `<Edit>` component will automatically redirect the user to the l
 const PostEdit = () => (
     <Edit disableAuthentication>
         ...
+    </Edit>
+);
+```
+
+## `emptyWhileLoading`
+
+By default, `<Edit>` doesn't render its child component even before the `dataProvider.getOne()` call returns, but it returns its [`aside`](#aside), [`actions`](#actions) and [`title`](#title) components.
+
+If a component you use in those props relies on the record, it will throw an error. For instance, the following will fail on load with a "ReferenceError: record is not defined" error:
+
+```jsx
+import { Edit, useEditContext } from 'react-admin';
+import { Typography } from '@mui/icons-material/Star';
+
+const AsideComponent = () => {
+    const { record } = useEditContext();
+    return (
+        <Typography>
+            <i>{record.title}</i>, by {record.author} ({record.year})
+        </Typography>
+    );
+}
+
+const BookEdit = () => (
+    <Edit aside={AsideComponent}>
+        {/* ... */}
+    </Edit>
+);
+```
+
+You can handle this case by getting the `isPending` variable from the [`useEditContext`](./useEditContext.md) hook:
+
+```jsx
+const AsideComponent = () => {
+    const { record, isPending } = useEditContext();
+    if (isPending) return null;
+    return (
+        <Typography>
+            <i>{record.title}</i>, by {record.author} ({record.year})
+        </Typography>
+    );
+}
+```
+
+The `<Edit emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<Edit>` won't render its `aside`, `actions` and `title` components until `record` is defined.
+
+```diff
+const BookEdit = () => (
+-   <Edit aside={AsideComponent}>
++   <Edit aside={AsideComponent} emptyWhileLoading>
+        {/* ... */}
     </Edit>
 );
 ```
