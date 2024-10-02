@@ -51,22 +51,18 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
     }
     const getPathForRecord = useGetPathForRecordCallback<RecordType>(options);
 
-    // we initialize the path with the link value
-    const [path, setPath] = useState<string | false | undefined>();
+    const [path, setPath] = useState<string | false | undefined>(false);
 
     // update the path if the record changes
     useEffect(() => {
-        const updatePath = async () => {
-            const resolvedLink = await getPathForRecord({
-                record,
-                resource,
-                link,
-            });
+        getPathForRecord({
+            record,
+            resource,
+            link,
+        }).then(resolvedLink => {
             // update the path when the promise resolves
             setPath(resolvedLink);
-        };
-
-        updatePath();
+        });
     }, [getPathForRecord, link, record, resource]);
 
     return path;
