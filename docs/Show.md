@@ -66,7 +66,7 @@ That's enough to display the post show view above.
 | `className`      | Optional | `string`          |         | passed to the root component
 | `component`      | Optional | `Component`       | `Card`  | The component to render as the root element
 | `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
-| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading
+| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the show is loading
 | `id`             | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the URL
 | `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
