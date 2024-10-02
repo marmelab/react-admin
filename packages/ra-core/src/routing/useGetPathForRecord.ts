@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useCanAccessCallback } from '../auth/useCanAccessCallback';
 import { useResourceContext } from '../core/useResourceContext';
 import { useRecordContext } from '../controller/record/useRecordContext';
 import type { RaRecord } from '../types';
@@ -40,7 +39,7 @@ import { useGetPathForRecordCallback } from './useGetPathForRecordCallback';
  * };
  */
 export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
-    options: UseGetPathForRecordOptions<RecordType>
+    options: UseGetPathForRecordOptions<RecordType> = {}
 ): string | false | undefined => {
     const { link } = options || {};
     const record = useRecordContext(options);
@@ -51,7 +50,6 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
         );
     }
     const getPathForRecord = useGetPathForRecordCallback<RecordType>(options);
-    const canAccess = useCanAccessCallback();
 
     // we initialize the path with the link value
     const [path, setPath] = useState<string | false | undefined>();
@@ -64,23 +62,12 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
                 resource,
                 link,
             });
-            if (resolvedLink && ['edit', 'show'].includes(resolvedLink)) {
-                if (
-                    !(await canAccess({
-                        action: resolvedLink,
-                        resource,
-                        record,
-                    }))
-                ) {
-                    setPath(false);
-                }
-            }
             // update the path when the promise resolves
             setPath(resolvedLink);
         };
 
         updatePath();
-    }, [canAccess, getPathForRecord, link, record, resource]);
+    }, [getPathForRecord, link, record, resource]);
 
     return path;
 };
