@@ -5,7 +5,7 @@ title: "useAuthenticated"
 
 # `useAuthenticated`
 
-This hook calls the `authProvider.checkAuth()` method on mount, and redirects to login if the `authProvider` returns a rejected Promise.
+This hook calls the [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth)  method on mount, and redirects to login if the `authProvider` returns a rejected Promise.
 
 React-admin uses this hook in page components (e.g., the `<Edit>` component) to ensure that the user is authenticated before rendering the page.
 

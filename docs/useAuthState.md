@@ -5,7 +5,7 @@ title: "useAuthState"
 
 # `useAuthState`
 
-To avoid rendering a component, and to force waiting for the `authProvider` response, use `useAuthState()` instead of `useAuthenticated()`. It calls `authProvider.checkAuth()` on mount and returns a state object:
+To avoid rendering a component, and to force waiting for the `authProvider` response, use `useAuthState()` instead of [`useAuthenticated()`](./useAuthenticated.md). It calls [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth)  on mount and returns a state object:
 
 - Loading: `{ isPending: true }`
 - Authenticated: `{ isPending: false, authenticated: true }`
