@@ -920,7 +920,7 @@ describe('<Edit />', () => {
                 >
                     <ResourceDefinitionContextProvider
                         definitions={{
-                            foo: { recordRepresentation: 'title' },
+                            foo: { name: 'foo', recordRepresentation: 'title' },
                         }}
                     >
                         <Edit {...defaultEditProps}>
