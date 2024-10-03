@@ -140,6 +140,7 @@ Here are all the props accepted by the component:
 |---------------------- |----------|---------------- |--------------------- |-------------------------------------------------------------------- |
 | `dataProvider`        | Required | `DataProvider`  | -                    | The data provider for fetching resources                            |
 | `children`            | Required | `ReactNode`     | -                    | The routes to render                                                |
+| `accessDenied`        | Optional | `Component`     | -                    | The component displayed when users are denied access to a page      |
 | `authCallbackPage`    | Optional | `Component`     | `AuthCallback`       | The content of the authentication callback page                     |
 | `authenticationError` | Optional | `Component`     | -                    | The component when an authentication error occurs                   |
 | `authProvider`        | Optional | `AuthProvider`  | -                    | The authentication provider for security and permissions            |
@@ -160,7 +161,6 @@ Here are all the props accepted by the component:
 | `store`               | Optional | `Store`         | -                    | The Store for managing user preferences                             |
 | `theme`               | Optional | `object`        | `default LightTheme` | The main (light) theme configuration                                |
 | `title`               | Optional | `string`        | -                    | The error page title                                                |
-| `accessDenied`        | Optional | `Component`     | -                    | The component displayed when users are denied access to a page      |
 
 ## `dataProvider`
 
@@ -245,6 +245,32 @@ With these children, the `<Admin>` component will generate the following routes:
 - `/reviews`: the review list
 - `/segments`: the segments page
 
+## `accessDenied`
+
+When using [Access Control](./Permissions.md#access-control), react-admin checks whether users can access a resource page and display the `accessDenied` component when they can't.
+
+![Default accessDenied component](./img/accessDenied.png)
+
+You can replace this default page by passing a custom component as the `accessDenied` prop:
+
+```tsx
+import * as React from 'react';
+import { Admin } from 'react-admin';
+
+const AccessDenied = () => (
+    <div>
+        <h1>Authorization error</h1>
+        <p>You don't have access to this page.</p>
+    </div>
+)
+
+const App = () => (
+    <Admin accessDenied={AccessDenied}>
+        ...
+    </Admin>
+);
+```
+
 ## `authCallbackPage`
 
 React-admin apps contain a special route called `/auth-callback` to let external authentication providers (like Auth0, Cognito, OIDC servers) redirect users after login. This route renders the `AuthCallback` component by default, which in turn calls `authProvider.handleCallback()`. 
@@ -276,12 +302,11 @@ See The [Authentication documentation](./Authentication.md#using-external-authen
 
 ## `authenticationError`
 
-When anonymous users access a page requiring them to be authenticated and are not redirected to the login page, they will be redirected to the `/authentication-error` page.
+When using [Access Control](./Permissions.md#access-control), if the `authProvider.canAccess()` method throws an error, react-admin redirects the user to the `/authentication-error` page.
 
 ![Default authenticationError component](./img/authenticationError.png)
 
-You can customize this page content by providing your own component to the `authenticationError` prop:
-
+You can customize this page by providing your own component as the `authenticationError` prop:
 
 ```tsx
 import * as React from 'react';
@@ -1067,32 +1092,6 @@ const MyTitle = () => {
     const defaultTitle = useDefaultTitle();
     return <span>{defaultTitle}</span>; // My Custom Admin
 };
-```
-
-## `accessDenied`
-
-When using an authProvider that supports [the `canAccess` method](./AuthProviderWriting.md#canaccess), react-admin will check whether users can access a resource page and display the `accessDenied` component when they can't.
-
-![Default accessDenied component](./img/accessDenied.png)
-
-You can replace the default "accessDenied" screen by passing a custom component as the `accessDenied` prop:
-
-```tsx
-import * as React from 'react';
-import { Admin } from 'react-admin';
-
-const AccessDenied = () => (
-    <div>
-        <h1>Authorization error</h1>
-        <p>You don't have access to this page.</p>
-    </div>
-)
-
-const App = () => (
-    <Admin accessDenied={AccessDenied}>
-        ...
-    </Admin>
-);
 ```
 
 ## Adding Custom Pages
