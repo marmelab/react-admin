@@ -635,22 +635,64 @@ const AuthorList = () => (
 );
 
 export const FullApp = () => (
-    <AdminContext
-        dataProvider={relationalDataProvider}
-        i18nProvider={i18nProvider}
-    >
-        <AdminUI>
-            <Resource name="books" list={BookList} edit={EditGuesser} />
-            <Resource
-                name="authors"
-                recordRepresentation={record =>
-                    `${record.firstName} ${record.lastName}`
-                }
-                list={AuthorList}
-                edit={EditGuesser}
-            />
-        </AdminUI>
-    </AdminContext>
+    <TestMemoryRouter>
+        <AdminContext
+            dataProvider={relationalDataProvider}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource name="books" list={BookList} edit={EditGuesser} />
+                <Resource
+                    name="authors"
+                    recordRepresentation={record =>
+                        `${record.firstName} ${record.lastName}`
+                    }
+                    list={AuthorList}
+                    edit={EditGuesser}
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const SlowAccessControl = ({
+    authProvider = {
+        login: () => Promise.reject(new Error('Not implemented')),
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        getPermissions: () => Promise.resolve(undefined),
+        canAccess: ({ action, resource }) =>
+            new Promise(resolve => {
+                setTimeout(
+                    resolve,
+                    1000,
+                    resource === 'books' || action === 'edit'
+                );
+            }),
+    },
+}: {
+    authProvider?: AuthProvider;
+}) => (
+    <TestMemoryRouter>
+        <AdminContext
+            authProvider={authProvider}
+            dataProvider={relationalDataProvider}
+        >
+            <AdminUI>
+                <Resource name="books" list={BookList} />
+                <Resource
+                    name="authors"
+                    recordRepresentation={record =>
+                        `${record.firstName} ${record.lastName}`
+                    }
+                    list={AuthorList}
+                    edit={EditGuesser}
+                    show={ShowGuesser}
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 export const AccessControl = () => (

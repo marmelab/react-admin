@@ -7,6 +7,7 @@ import {
     testDataProvider,
     useGetMany,
     ResourceDefinitionContextProvider,
+    AuthProvider,
 } from 'ra-core';
 import { QueryClient } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -23,7 +24,7 @@ import {
     MissingReferenceEmptyText,
     SXLink,
     SXNoLink,
-    AccessControl,
+    SlowAccessControl,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -617,20 +618,25 @@ describe('<ReferenceField />', () => {
     });
     describe('Security', () => {
         it('should render a link only when users have access to the requested action for the referenced resource', async () => {
-            render(<AccessControl />);
-            await waitFor(
-                () => {
-                    expect(
-                        screen
-                            .getByText('Lewis Carroll', {
-                                selector: 'a > span',
-                            })
-                            .parentElement?.getAttribute('href')
-                    ).toEqual('/authors/5/show');
-                },
-                { timeout: 8000 }
-            );
-        }, 10000);
+            const authProvider: AuthProvider = {
+                login: () => Promise.reject(new Error('Not implemented')),
+                logout: () => Promise.reject(new Error('Not implemented')),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.reject(new Error('Not implemented')),
+                getPermissions: () => Promise.resolve(undefined),
+                canAccess: () => Promise.resolve(true),
+            };
+            render(<SlowAccessControl authProvider={authProvider} />);
+            await waitFor(() => {
+                expect(
+                    screen
+                        .getByText('Lewis Carroll', {
+                            selector: 'a > span',
+                        })
+                        .parentElement?.getAttribute('href')
+                ).toEqual('/authors/5/show');
+            });
+        });
     });
     describe('sx', () => {
         it('should override the default styles', async () => {
