@@ -84,8 +84,9 @@ export const useCreatePath = () => {
     );
 };
 
+export type CreatePathType = HintedString<'list' | 'edit' | 'show' | 'create'>;
 export interface CreatePathParams {
-    type: HintedString<'list' | 'edit' | 'show' | 'create'>;
+    type: CreatePathType;
     resource?: string;
     id?: Identifier;
 }
