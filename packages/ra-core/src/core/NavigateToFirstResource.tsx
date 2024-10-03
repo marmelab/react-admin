@@ -28,10 +28,6 @@ export const NavigateToFirstResource = ({
             />
         );
     }
-
-    throw new Error(
-        'No resources found for which users have access to the list page'
-    );
 };
 
 export type NavigateToFirstResourceProps = {
