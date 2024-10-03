@@ -490,7 +490,7 @@ const authProvider = {
 
 **Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess) and you don't provide a dashboard, React-Admin will use the first resource for which users have access to the list page as the home page for your admin. Make sure you order them to suit your needs.
 
-**Tip**: The detection of the first resource implies checking users are authenticated. Should your first resource be accessible without authentication or access right checks, you must provide a dashboard that redirects to it:
+**Tip**: The detection of the first resource implies checking users are authenticated. Should your first resource be accessible without authentication, you must provide a `dashboard` component that redirects to it:
 
 ```tsx
 // in src/Dashboard.js
