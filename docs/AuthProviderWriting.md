@@ -5,27 +5,31 @@ title: "Writing An Auth Provider"
 
 # Writing An Auth Provider
 
-Here is the interface react-admin expect `authProvider` objects to implement.
+React-admin can use any authentication backend, but you have to write an adapter for it. This adapter is called an `authProvider`. The `authProvider` is a simple object with methods that react-admin calls to handle authentication and authorization.
 
-```jsx
+## AuthProvider Interface Overview
+
+React-admin expect an `authProvider` to implement the following methods:
+
+```tsx
 const authProvider = {
     // authentication
-    login: params => Promise.resolve(/* ... */),
-    checkError: error => Promise.resolve(/* ... */),
-    checkAuth: params => Promise.resolve(/* ... */),
-    logout: () => Promise.resolve(/* ... */),
-    getIdentity: () => Promise.resolve(/* ... */),
-    handleCallback: () => Promise.resolve(/* ... */), // for third-party authentication only
-    // authorization
-    canAccess: params => Promise.resolve(/* ... */)
-    getPermissions: () => Promise.resolve(/* ... */),
+    async login(params) {/* ... */},
+    async checkError(error) {/* ... */},
+    async checkAuth(params) {/* ... */},
+    async logout() {/* ... */},
+    async getIdentity() {/* ... */},
+    async handleCallback() {/* ... */}, // for third-party authentication only
+    // authorization (optional)
+    async canAccess(params) {/* ... */},
+    async getPermissions() {/* ... */},
 };
 ```
 
 **Tip**: If you're a TypeScript user, you can check that your `authProvider` is correct at compile-time using the `AuthProvider` type.
 
 ```tsx
-import { AuthProvider } from 'react-admin';
+import type { AuthProvider } from 'react-admin';
 
 const authProvider: AuthProvider = {
     // ...
@@ -36,40 +40,40 @@ const authProvider: AuthProvider = {
 
 Here is a complete but fictive implementation of an auth provider. It only accepts user "john" with password "123".
 
-```jsx
+```tsx
 const authProvider = {
-    login: ({ username, password }) => {
+    async login({ username, password }) {
         if (username !== 'john' || password !== '123') {
-            return Promise.reject();
+            throw new Error('Login failed');
         }
         localStorage.setItem('username', username);
-        return Promise.resolve();
     },
-    logout: () => {
-        localStorage.removeItem('username');
-        return Promise.resolve();
-    },
-        checkAuth: () =>
-        localStorage.getItem('username') ? Promise.resolve() : Promise.reject(),
-    checkError:  (error) => {
+    async checkError(error) {
         const status = error.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('username');
-            return Promise.reject();
+            throw new Error('Session expired');
         }
-        // other error code (404, 500, etc): no need to log out
-        return Promise.resolve();
+        // other error codes (404, 500, etc): no need to log out
     },
-    getIdentity: () =>
-        Promise.resolve({
-            id: 'user',
-            fullName: 'John Doe',
-        }),
-    getPermissions: () => Promise.resolve(''),
-    canAccess: ({ action, resource, record }) => Promise.resolve(true),
+    async checkAuth() {
+        if (!localStorage.getItem('username')) {
+            throw new Error('Not authenticated');
+        }
+    },
+    async logout() {
+        localStorage.removeItem('username');
+    },
+    async getIdentity() {
+        return { id: 'john', fullName: 'John Doe' };
+    },
+    async canAccess({ action, resource, record }) {
+        return true;
+    },
+    async getPermissions() {
+        return { role: 'admin' };
+    },
 };
-
-export default authProvider;
 ```
 
 ## Step-By-Step
@@ -78,162 +82,129 @@ If you have to implement your own auth provider, here is a step-by-step guide to
 
 ### `login`
 
-Once an admin has an `authProvider`, react-admin enables a new page on the `/login` route, which displays a login form asking for a username and password.
+Once an admin has an `authProvider`, react-admin enables a new page on the `/login` route, which displays a login form.
 
 ![Default Login Form](./img/login-form.png)
 
-Upon submission, this form calls the `authProvider.login({ username, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and a rejected Promise if they're not. 
+Upon submission, the login page calls the `authProvider.login()` method with the login data as parameter. React-admin expects this async method to return if the login data is correct, and to throw an error if it's not.
 
-For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure the `authProvider` as follows:
+For instance, to query an authentication route via HTTPS and store the user credentials (a token) in local storage, configure the `authProvider` as follows:
 
-```js
+```tsx
 // in src/authProvider.js
 const authProvider = {
-    login: ({ username, password }) =>  {
+    async login({ username, password })  {
         const request = new Request('https://mydomain.com/authenticate', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
         });
-        return fetch(request)
-            .then(response => {
-                if (response.status < 200 || response.status >= 300) {
-                    throw new Error(response.statusText);
-                }
-                return response.json();
-            })
-            .then(auth => {
-                localStorage.setItem('auth', JSON.stringify(auth));
-            })
-            .catch(() => {
-                throw new Error('Network error')
-            });
-    },
-    checkAuth: () => {
-        // Required for the authentication to work
-        return Promise.resolve();
-    },
-    getPermissions: () => {
-        // Required for the authentication to work
-        return Promise.resolve();
+        let response;
+        try {
+            response = await fetch(request);
+        } catch (_error) {
+            throw new Error('Network error');
+        }
+        if (response.status < 200 || response.status >= 300) {
+            throw new Error(response.statusText);
+        }
+        const auth = await response.json();
+        localStorage.setItem('auth', JSON.stringify(auth));
     },
     // ...
 };
-
-export default authProvider;
 ```
 
-Once the promise resolves, the login form redirects to the previous page, or to the admin index if the user just arrived.
+Once the `login()` method returns, the login form redirects to the previous page, or to the admin index if the user just arrived.
 
-**Tip**: It's a good idea to store credentials in `localStorage`, as in this example, to avoid reconnection when opening a new browser tab. But this makes your application [open to XSS attacks](https://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
+If the `login()` method throws an Error, react-admin displays the error message to the user in a notification.
 
-After login, react-admin redirects the user to the location returned by `authProvider.login()` - or to the previous page if the method returns nothing. You can customize the redirection url by returning an object with a `redirectTo` key containing a string or false to disable redirection after login.
+**Tip**: Storing credentials in `localStorage`, as in this example, avoids asking the user to log in again after a page refresh, or after a browser tab change. But this makes your application [open to XSS attacks](https://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
 
-```js
+If the `login()` method returns an object with a `redirectTo` path, react-admin will redirect the user to that path after login. You can use this feature to redirect the user to a specific page, or to disable redirection by returning `false`.
+
+```tsx
 // in src/authProvider.js
 const authProvider = {
-    login: ({ username, password }) =>  {
-        const request = new Request('https://mydomain.com/authenticate', {
-            method: 'POST',
-            body: JSON.stringify({ username, password }),
-            headers: new Headers({ 'Content-Type': 'application/json' }),
-        });
-        return fetch(request)
-            .then(response => {
-                // ...
-                return { redirectTo: false };
-            })
-            .catch(() => {
-                throw new Error('Network error')
-            });
+    async login({ username, password })  {
+        // ...
+        return { redirectTo: false };
     },
-    checkAuth: () => { /* ... */ },
-    getPermissions: () => { /* ... */ },
     // ...
 };
-
 ```
-If the login fails, `authProvider.login()` should return a rejected Promise with an Error object. React-admin displays the Error message to the user in a notification.
 
 ### `checkError`
 
-When the user credentials are missing or become invalid, a secure API usually answers to the `dataProvider` with an HTTP error code 401 or 403.
+When the user credentials are missing or become invalid, a secure API usually responds with an HTTP error code 401 or 403.
 
-Fortunately, each time the `dataProvider` or the `authProvider.getPermissions` returns an error, react-admin calls the `authProvider.checkError()` method. If it returns a rejected promise, react-admin calls the `authProvider.logout()` method immediately, and asks the user to log in again.
+Fortunately, each time the `dataProvider` returns an error, react-admin calls `authProvider.checkError()` to check if the error is an authentication error. If this method throws an error itself, react-admin calls the `authProvider.logout()` method immediately, and redirects the user to the login page.
 
 So it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
 
 For instance, to log the user out for both 401 and 403 codes:
 
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => {
+```tsx
+const authProvider = {
+    async checkError(error) {
         const status = error.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('auth');
-            return Promise.reject();
+            throw new Error();
         }
         // other error code (404, 500, etc): no need to log out
-        return Promise.resolve();
     },
     // ...
 };
 ```
 
-When `authProvider.checkError()` returns a rejected Promise, react-admin redirects to the `/login` page, or to the `error.redirectTo` url. That means you can override the default redirection as follows:
+When `checkError()` throws an error, react-admin redirects to the `/login` page, or to the `error.redirectTo` url. That means you can override the default redirection as follows:
 
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => {
+```tsx
+const authProvider = {
+    async checkError(error) {
         const status = error.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('auth');
-            return Promise.reject({ redirectTo: '/credentials-required' });
+            const error = new Error();
+            error.redirectTo = '/credentials-required';
+            throw error;
         }
-        // other error code (404, 500, etc): no need to log out
-        return Promise.resolve();
     },
     // ...
 };
 ```
 
-It's possible to not log the user out, and to instead redirect them. You can do this by passing `error.logoutUser = false` to the `Promise.reject` along with an `error.redirectTo` url.
+It's possible to not log the user out, and to instead redirect them. You can do this by passing `error.logoutUser = false` along with an `error.redirectTo` url.
 
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => {
+```tsx
+const authProvider = {
+    async checkError(error) {
         const status = error.status;
         if (status === 401 || status === 403) {
-            return Promise.reject({ redirectTo: '/unauthorized', logoutUser: false });
+            localStorage.removeItem('auth');
+            const error = new Error();
+            error.redirectTo = '/credentials-required';
+            error.logoutUser = false;
+            throw error;
         }
-        // other error code (404, 500, etc): no need to log out
-        return Promise.resolve();
     },
     // ...
 };
 ```
 
-When `authProvider.checkError()` returns a rejected Promise, react-admin displays a notification to the end user, unless the `error.message` is `false`. That means you can disable or customize the notification on error as follows:
+When `checkError()` throws an error, react-admin displays a notification to the end user, unless the `error.message` is `false`. That means you can disable or customize the notification on error as follows:
 
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => {
+```tsx
+const authProvider = {
+    async checkError(error) {
         const status = error.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('auth');
-            return Promise.reject({ message: false });
-            //return Promise.reject({ message: 'Unauthorized user!' });
+            const error = new Error();
+            error.message = false;
+            throw error;
         }
-        // other error code (404, 500, etc): no need to log out
-        return Promise.resolve();
     },
     // ...
 };
@@ -243,106 +214,95 @@ export default {
 
 Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough. React-admin keeps data on the client side, and could briefly display stale data while contacting the server - even after the credentials are no longer valid.
 
-Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method returns a rejected Promise, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure the credentials are still valid.
+Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method throws an error, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure the credentials are still valid.
 
 For instance, to check for the existence of the authentication data in local storage:
 
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => { /* ... */ },
-    checkAuth: () => localStorage.getItem('auth')
-        ? Promise.resolve()
-        : Promise.reject(),
+```tsx
+const authProvider = {
+    async checkAuth() {
+        if (!localStorage.getItem('auth')) {
+            throw new Error();
+        }
+    },
     // ...
 };
 ```
 
-If the promise is rejected, react-admin redirects by default to the `/login` page. You can override where to redirect the user in `checkAuth()`, by rejecting an object with a `redirectTo` property:
+When `checkAuth()` throws an error, react-admin redirects to the `/login` page by default. You can override this path by throwing an error with a `redirectTo` property:
 
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => { /* ... */ },
-    checkAuth: () => localStorage.getItem('auth')
-        ? Promise.resolve()
-        : Promise.reject({ redirectTo: '/no-access' }),
+```tsx
+const authProvider = {
+    async checkAuth() {
+        if (!localStorage.getItem('auth')) {
+            const error = new Error();
+            error.redirectTo = '/no-access';
+            throw error;
+        }
+    },
     // ...
 }
 ```
 
 **Tip**: If both `authProvider.checkAuth()` and `authProvider.logout()` return a redirect URL, the one from `authProvider.checkAuth()` takes precedence.
 
-If the promise is rejected, react-admin displays a notification to the end user. You can customize this message by rejecting an error with a `message` property:
+When `checkAuth()` throws an error, react-admin displays a notification to the end user. You can customize this message by throwing an error with a particular message:
 
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => { /* ... */ },
-    checkAuth: () => localStorage.getItem('auth')
-        ? Promise.resolve()
-        : Promise.reject({ message: 'login.required' }), // react-admin passes the error message to the translation layer
-    // ...
-}
-```
-
-You can also disable this notification completely by rejecting an error with a `message` with a `false` value:
-
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => { /* ... */ },
-    checkAuth: () => localStorage.getItem('auth')
-        ? Promise.resolve()
-        : Promise.reject({ message: false }),
-    // ...
-}
-```
-
-### `logout`
-
-If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data sored in [the react-admin Store](./Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
-
-It's the responsibility of the `authProvider.logout()` method to clean up the current authentication data. For instance, if the authentication was a token stored in local storage, here is the code to remove it:
-
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => { /* ... */ },
-    checkAuth: () => { /* ... */ },
-    logout: () => {
-        localStorage.removeItem('auth');
-        return Promise.resolve();
+```tsx
+const authProvider = {
+    async checkAuth() {
+        if (!localStorage.getItem('auth')) {
+            throw new Error('login.required'); // react-admin passes the error message to the translation layer
+        }
     },
     // ...
 };
 ```
 
+You can also disable this notification completely by rejecting an error with a `false` `message`.
+
+```tsx
+const authProvider = {
+    async checkAuth() {
+        if (!localStorage.getItem('auth')) {
+            const error = new Error();
+            error.message = false;
+            throw error;
+        }
+    },
+    // ...
+};
+```
+
+### `logout`
+
+If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data stored in [the react-admin Store](./Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire.
+
 <video controls autoplay playsinline muted loop>
-  <source src="./img/logout.webm" type="video/webm"/>
   <source src="./img/logout.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
+It's the responsibility of the `authProvider.logout()` method to clean up the current authentication data. For instance, if the authentication was a token stored in local storage, here is the code to remove it:
+
+```tsx
+const authProvider = {
+    async logout() {
+        localStorage.removeItem('auth');
+    },
+    // ...
+};
+```
 
 The `authProvider.logout()` method is also a good place to notify the authentication backend that the user credentials are no longer valid after logout.
 
-After logout, react-admin redirects the user to the string returned by `authProvider.logout()` - or to the `/login` url if the method returns nothing. You can customize the redirection url by returning a route string, or `false` to disable redirection after logout. 
+After logout, react-admin redirects the user to the string returned by `authProvider.logout()` - or to the `/login` url if the method returns nothing. You can customize the redirection url by returning a route string, or `false` to disable redirection after logout.
 
-```js
-// in src/authProvider.js
-export default {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => { /* ... */ },
-    checkAuth: () => { /* ... */ },
-    logout: () => {
+```tsx
+const authProvider = {
+    async logout() {
         localStorage.removeItem('auth');
-        return Promise.resolve('/my-custom-login');
+        return '/my-custom-login';
     },
     // ...
 };
@@ -350,27 +310,17 @@ export default {
 
 ### `getIdentity`
 
-React-admin can display the current user name and avatar on the top right side of the screen. To enable this feature, implement the `authProvider.getIdentity()` method:
+React-admin can display the current user name and avatar on the top right side of the screen. To enable this feature, implement the `authProvider.getIdentity()` method, and return an object with at least an `id` field. You can also return a `fullName` and an `avatar` field:
 
-```js
-// in src/authProvider.js
+```tsx
 const authProvider = {
-    login: ({ username, password }) => { /* ... */ },
-    checkError: (error) => { /* ... */ },
-    checkAuth: () => { /* ... */ },
-    logout: () => { /* ... */ },
-    getIdentity: () => {
-        try {
-            const { id, fullName, avatar } = JSON.parse(localStorage.getItem('auth'));
-            return Promise.resolve({ id, fullName, avatar });
-        } catch (error) {
-            return Promise.reject(error);
-        }
-    }
+    async getIdentity() {
+        const authCredentials = JSON.parse(localStorage.getItem('auth'));
+        const { id, fullName, avatar } = authCredentials;
+        return { id, fullName, avatar };
+    },
     // ...
 };
-
-export default authProvider;
 ```
 
 React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri) in the App Bar:
@@ -396,23 +346,6 @@ const PostDetail = ({ id }) => {
 }
 ```
 
-### `getPermissions`
-
-This method should return the user permissions. It can be any format you want - a simple string (e.g. `'editor'`), an array of strings (e.g. `['editor', 'admin']`), or a complex object (e.g. `{ posts: 'editor', comments: 'moderator', users: 'admin' }`).
-
-React-admin doesn't use permissions by default, but it provides [the `usePermissions` hook](./usePermissions.md) to retrieve the permissions of the current user. This lets you add the permissions logic that fits your need in your components. 
-
-[The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps, and specifies a custom return format for `authProvider.getPermissions()`. Check [the RBAC documentation](./AuthRBAC.md#authprovider-methods) for more information.
-
-### `canAccess`
-
-This method should return a `Promise` that resolves to a boolean indicating whether users can perform the provided action on the provided resource:
-
-- Returns `true` when users are authorized
-- Returns `false` when users are not authorized
-
-If any errors is thrown by the `canAccess` method, it will be passed to the [`authProvider.checkError`](#checkerror) method.
-
 ### `handleCallback`
 
 This method is used when integrating a third-party authentication provider such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
@@ -421,11 +354,11 @@ So `handleCallback` lets you process query parameters passed by the third-party 
 
 Here's an example using Auth0:
 
-```jsx
+```tsx
 import { PreviousLocationStorageKey } from 'react-admin';
 import { Auth0Client } from './Auth0Client';
 
-export const authProvider = {
+const authProvider = {
     async login() { /* Nothing to do here, this function will never be called */ },
     async checkAuth() {
         const isAuthenticated = await client.isAuthenticated();
@@ -457,21 +390,75 @@ export const authProvider = {
 }
 ```
 
-Once `handleCallback` returns a resolved Promise, react-admin redirects the user to the home page, or to the location found in `localStorage.getItem(PreviousLocationStorageKey)`. In the above example, `authProvider.checkAuth()` sets this location to the page the user was trying to access. 
+Once `handleCallback` returns, react-admin redirects the user to the home page, or to the location found in `localStorage.getItem(PreviousLocationStorageKey)`. In the above example, `authProvider.checkAuth()` sets this location to the page the user was trying to access. 
 
 You can override this behavior by returning an object with a `redirectTo` property, as follows:
 
-```jsx
-async handleCallback() {
-    if (!query.includes('code=') && !query.includes('state=')) {
-        throw new Error('Failed to handle login callback.');
-    }
-    // If we did receive the Auth0 parameters,
-    // get an access token based on the query paramaters
-    await Auth0Client.handleRedirectCallback();
-    return { redirectTo: '/posts' };
-},
+```tsx
+const authProvider = {
+    async handleCallback() {
+        if (!query.includes('code=') && !query.includes('state=')) {
+            throw new Error('Failed to handle login callback.');
+        }
+        // If we did receive the Auth0 parameters,
+        // get an access token based on the query paramaters
+        await Auth0Client.handleRedirectCallback();
+        return { redirectTo: '/posts' };
+    },
+    // ...
+};
 ```
+
+### `canAccess`
+
+React-admin has built-in [Access Control](./Permissions.md#access-control) features that you can enable by implementing the `authProvider.canAccess()` method. It receives a permissions object with the following properties:
+
+- `action`: The action to perform on the resource (e.g. `list`, `create`, `update`, `delete`, `show`)
+- `resource`: The resource name
+- `record` (optional): The record to perform the action on.
+
+`canAccess()` should return a boolean indicating whether users can perform the provided action on the provided resource:
+
+If any errors is thrown by the `canAccess` method, it will be passed to the [`authProvider.checkError`](#checkerror) method.
+
+```tsx
+const authProvider = {
+    canAccess: async({ action, resource }) => {
+        // authorizedResources is like ['posts', 'comments', 'users'];
+        const { authorizedResources } = JSON.parse(localStorage.getItem('auth'));
+        if (!authorizedResources.includes(resource)) {
+            return false;
+        }
+        return true;
+    },
+    // ...
+};
+```
+
+Check the [Access Control documentation](./Permissions.md#access-control) for more information on how to use the `canAccess` method.
+
+**Tip**: [The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps leveraging the `canAccess` method. Check [the RBAC documentation](./AuthRBAC.md#authprovider-methods) for more information.
+
+
+### `getPermissions`
+
+As an alternative to `canAccess()`, `getPermissions()` lets you return an arbitrary permissions object. This object can be used by React components to enable or disable UI elements based on the user's role.
+
+The permissions can be in any format: a simple string (e.g. `'editor'`), an array of strings (e.g. `['editor', 'admin']`), or a complex object (e.g. `{ posts: 'editor', comments: 'moderator', users: 'admin' }`).
+
+```tsx
+const authProvider = {
+    getPermissions: async({ action, resource }) => {
+        const { permissions } = JSON.parse(localStorage.getItem('auth'));
+        return permissions;
+    },
+    // ...
+};
+```
+
+React-admin doesn't use permissions by default, but it provides [the `usePermissions` hook](./usePermissions.md) to retrieve the permissions of the current user. This lets you add the permissions logic that fits your need in your components.
+
+Check the [Access Control documentation](./Permissions.md#permissions) for more information on how to use the `getPermissions` method.
 
 ## Request Format
 
@@ -485,8 +472,8 @@ React-admin calls the `authProvider` methods with the following params:
 | `logout`         | Log a user out                                  |                    |
 | `getIdentity`    | Get the current user identity                   |                    | 
 | `handleCallback` | Validate users after third party authentication service redirection                |  |
+| `canAccess`      | Check authorization for an action over a resource | `{ action: string, resource: string, record: object }` |
 | `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
-| `canAccess`      | Check authorization for an action over a resource | `{ action: string, resource: string, record: string }` |
 
 ## Response Format
 
@@ -500,8 +487,8 @@ React-admin calls the `authProvider` methods with the following params:
 | `logout`         | Auth backend acknowledged logout  | `string | false | void` route to redirect to after logout, defaults to `/login` |
 | `getIdentity`    | Auth backend returned identity    | `{ id: string | number, fullName?: string, avatar?: string }`  | 
 | `handleCallback` | User is authenticated   | `void | { redirectTo?: string | boolean  }` route to redirect to after login |
-| `getPermissions` | Auth backend returned permissions | `Object | Array` free format - the response will be returned when `usePermissions()` is called |
-| `canAccess`      | Auth backend returned authorization | `boolean |
+| `canAccess`      | Auth backend returned authorization | `boolean` |
+| `getPermissions` | Auth backend returned permissions | Free format. |
 
 ## Error Format
 
@@ -515,8 +502,8 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
 | `handleCallback` | Failed to authenticate users after redirection | `void | { redirectTo?: string, logoutOnFailure?: boolean, message?: string }` |
+| `canAccess`      | Auth backend failed to return authorization | `Object` free format - returned as `error` when `useCanAccess()` is called. |
 | `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called. The error will be passed to `checkError` |
-| `canAccess`      | Auth backend failed to return authorization | `Object` free format - returned as `error` when `useCanAccess()` is called. The error will be passed to `checkError` |
 
 ## Query Cancellation
 
@@ -533,7 +520,7 @@ Now, every call to the auth provider will receive an additional `signal` paramet
 
 ```tsx
 const authProvider = {
-    canAccess: async ({ resource, action, record, signal }) => {
+    async canAccess ({ resource, action, record, signal }) {
         const url = `${API_URL}/can_access?resource=${resource}&action=${action}`;
         const res = await fetch(url, { signal });
         if (!res.ok) {
