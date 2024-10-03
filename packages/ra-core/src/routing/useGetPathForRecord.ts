@@ -83,7 +83,9 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
 
         // Handle the inferred link type case
         if (link == null) {
-            if (canAccessShow) {
+            // We must check whether the resource has an edit view because if there is no
+            // authProvider, canAccessShow will always be true
+            if (resourceDefinition.hasShow && canAccessShow) {
                 setPath(
                     createPath({
                         resource,
@@ -93,7 +95,9 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
                 );
                 return;
             }
-            if (canAccessEdit) {
+            // We must check whether the resource has an edit view because if there is no
+            // authProvider, canAccessEdit will always be true
+            if (resourceDefinition.hasEdit && canAccessEdit) {
                 setPath(
                     createPath({
                         resource,
@@ -122,7 +126,16 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
                     : false
             );
         }
-    }, [createPath, canAccessShow, canAccessEdit, link, record, resource]);
+    }, [
+        createPath,
+        canAccessShow,
+        canAccessEdit,
+        link,
+        record,
+        resource,
+        resourceDefinition.hasEdit,
+        resourceDefinition.hasShow,
+    ]);
 
     return path;
 };
