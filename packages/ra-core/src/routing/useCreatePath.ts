@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Identifier } from '../types';
+import { HintedString, Identifier } from '../types';
 import { useBasename } from './useBasename';
 
 /**
@@ -84,11 +84,8 @@ export const useCreatePath = () => {
     );
 };
 
-type AnyString = string & {};
-export type CreatePathType = 'list' | 'edit' | 'show' | 'create' | AnyString;
-
 export interface CreatePathParams {
-    type: CreatePathType;
+    type: HintedString<'list' | 'edit' | 'show' | 'create'>;
     resource?: string;
     id?: Identifier;
 }
