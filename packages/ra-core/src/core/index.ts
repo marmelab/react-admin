@@ -5,6 +5,7 @@ export * from './CoreAdminUI';
 export * from './CustomRoutes';
 export * from './DefaultTitleContext';
 export * from './HasDashboardContext';
+export * from './NavigateToFirstResource';
 export * from './OptionalResourceContextProvider';
 export * from './Resource';
 export * from './ResourceContext';
