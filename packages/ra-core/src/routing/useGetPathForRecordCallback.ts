@@ -34,6 +34,7 @@ export const useGetPathForRecordCallback = <
             // When the link prop is not provided, we infer a default value and check whether users
             // can access it
             if (link == null) {
+                // check if the user can access the show and edit pages in parallel
                 const [canAccessShow, canAccessEdit] = await Promise.all([
                     resourceDefinition.hasShow
                         ? canAccess({
@@ -51,14 +52,14 @@ export const useGetPathForRecordCallback = <
                         : Promise.resolve(false),
                 ]);
 
-                if (resourceDefinition.hasShow && canAccessShow) {
+                if (canAccessShow) {
                     return createPath({
                         resource: finalResource,
                         id: record.id,
                         type: 'show',
                     });
                 }
-                if (resourceDefinition.hasEdit && canAccessEdit) {
+                if (canAccessEdit) {
                     return createPath({
                         resource: finalResource,
                         id: record.id,

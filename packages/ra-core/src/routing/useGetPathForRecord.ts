@@ -15,25 +15,25 @@ import { useCreatePath } from './useCreatePath';
  * @example
  * // basic usage (leverages RecordContext, ResourceContext and ResourceDefinitionContext)
  * const EditLink = () => {
- *   const path = useGetRouteForRecord();
+ *   const path = useGetPathForRecord();
  *   return path ? <Link to={path}>Edit</Link> : null;
  * };
  *
  * // controlled mode
  * const EditLink = ({ record, resource }) => {
- *    const path = useGetRouteForRecord({ record, resource, link: 'edit' });
+ *    const path = useGetPathForRecord({ record, resource, link: 'edit' });
  *    return path ? <Link to={path}>Edit</Link> : null;
  * };
  *
  * // the link option can be a function
  * const EditLink = ({ record, resource }) => {
- *   const path = useGetRouteForRecord({ record, resource, link: (record, resource) => record.canEdit ? 'edit' : false });
+ *   const path = useGetPathForRecord({ record, resource, link: (record, resource) => record.canEdit ? 'edit' : false });
  *   return path ? <Link to={path}>Edit</Link> : null;
  * };
  *
  * // the link option can be a function returning a promise
  * const EditLink = ({ record, resource }) => {
- *   const path = useGetRouteForRecord({ record, resource, link: async (record, resource) => {
+ *   const path = useGetPathForRecord({ record, resource, link: async (record, resource) => {
  *     const canEdit = await canEditRecord(record, resource);
  *     return canEdit ? 'edit' : false;
  *   }});
@@ -63,6 +63,8 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
             : false
     );
 
+    // in preparation for the default value, does the user have access to the show and edit pages?
+    // (we can't run hooks conditionally, so we need to run them even though the link is specified)
     const { canAccess: canAccessShow } = useCanAccess({
         action: 'show',
         resource,
@@ -81,7 +83,7 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
 
         // Handle the inferred link type case
         if (link == null) {
-            if (resourceDefinition.hasShow && canAccessShow) {
+            if (canAccessShow) {
                 setPath(
                     createPath({
                         resource,
@@ -91,7 +93,7 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
                 );
                 return;
             }
-            if (resourceDefinition.hasEdit && canAccessEdit) {
+            if (canAccessEdit) {
                 setPath(
                     createPath({
                         resource,
@@ -120,16 +122,7 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
                     : false
             );
         }
-    }, [
-        createPath,
-        canAccessShow,
-        canAccessEdit,
-        link,
-        record,
-        resource,
-        resourceDefinition.hasShow,
-        resourceDefinition.hasEdit,
-    ]);
+    }, [createPath, canAccessShow, canAccessEdit, link, record, resource]);
 
     return path;
 };
