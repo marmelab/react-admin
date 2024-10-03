@@ -928,3 +928,36 @@ export const BookEdit = () => {
     );
 };
 ```
+
+## Security
+
+The `<Edit>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Edit>`  will only render if the user has the "edit" access to the related resource.
+
+For instance, for the `<PostEdit>`page below:
+
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+
+// Resource name is "posts"
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="published_at" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+`<Edit>` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "edit", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](#disableauthentication).

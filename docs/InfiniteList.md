@@ -268,3 +268,36 @@ const ProductList = () => {
 ```
 
 `useInfiniteListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page.
+
+## Security
+
+The `<infiniteList>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<InfiniteList>` will only render if the user has the "list" access to the related resource.
+
+For instance, for the `<PostList>` page below:
+
+```tsx
+import { InfiniteList, Datagrid, TextField } from 'react-admin';
+
+// Resource name is "posts"
+const PostList = () => (
+    <InfiniteList>
+        <Datagrid>
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="published_at" />
+        </Datagrid>
+    </InfiniteList>
+);
+```
+
+`<InfiniteList>` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "list", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).
