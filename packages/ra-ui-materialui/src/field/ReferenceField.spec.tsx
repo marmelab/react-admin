@@ -1,12 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     RecordContextProvider,
     CoreAdminContext,
     testDataProvider,
     useGetMany,
     ResourceDefinitionContextProvider,
+    AuthProvider,
 } from 'ra-core';
 import { QueryClient } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -23,6 +24,7 @@ import {
     MissingReferenceEmptyText,
     SXLink,
     SXNoLink,
+    SlowAccessControl,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -219,7 +221,7 @@ describe('<ReferenceField />', () => {
                 expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
             );
             expect(screen.queryByRole('progressbar')).toBeNull();
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
         });
 
         it('should not display a loader if the dataProvider query completes without finding the reference', async () => {
@@ -485,8 +487,8 @@ describe('<ReferenceField />', () => {
     describe('link', () => {
         it('should render a link to specified link type', async () => {
             render(<LinkShow />);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
             const referenceField = await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
             expect(referenceField?.parentElement?.getAttribute('href')).toBe(
                 '/book_details/1/show'
             );
@@ -494,8 +496,8 @@ describe('<ReferenceField />', () => {
 
         it('should link to edit by default if there is an edit view', async () => {
             render(<LinkDefaultEditView />);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
             const referenceField = await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
             expect(referenceField?.parentElement?.getAttribute('href')).toBe(
                 '/book_details/1'
             );
@@ -503,8 +505,8 @@ describe('<ReferenceField />', () => {
 
         it('should link to edit by default if there is no edit view but a show view', async () => {
             render(<LinkDefaultShowView />);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
             const referenceField = await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
             expect(referenceField?.parentElement?.getAttribute('href')).toBe(
                 '/book_details/1/show'
             );
@@ -512,8 +514,8 @@ describe('<ReferenceField />', () => {
 
         it('should render a link even though link view does not exist', async () => {
             render(<LinkMissingView />);
+            expect(await screen.findAllByRole('link')).toHaveLength(1);
             const referenceField = await screen.findByText('9780393966473');
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
             expect(referenceField?.parentElement?.getAttribute('href')).toBe(
                 '/book_details/1/show'
             );
@@ -560,8 +562,10 @@ describe('<ReferenceField />', () => {
             await waitFor(() =>
                 expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
             );
-            expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
-                '#/posts/123'
+            await waitFor(() =>
+                expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+                    '#/posts/123'
+                )
             );
 
             expect(link).toHaveBeenCalledWith(
@@ -573,14 +577,14 @@ describe('<ReferenceField />', () => {
 
     it('should accept multiple children', async () => {
         render(<Children />);
-        expect(screen.findByText('9780393966473')).not.toBeNull();
-        expect(screen.findByText('novel')).not.toBeNull();
+        expect(await screen.findByText('9780393966473')).not.toBeNull();
+        expect(await screen.findByText('novel')).not.toBeNull();
     });
 
-    it('should translate emptyText', () => {
+    it('should translate emptyText', async () => {
         render(<MissingReferenceIdEmptyTextTranslation />);
 
-        expect(screen.findByText('Not found')).not.toBeNull();
+        expect(await screen.findByText('Not found')).not.toBeNull();
     });
 
     it('should accept a queryOptions prop', async () => {
@@ -612,6 +616,73 @@ describe('<ReferenceField />', () => {
             });
         });
     });
+
+    describe('Security', () => {
+        it('should render a link to the show view when users have access to it for the referenced resource', async () => {
+            const authProvider: AuthProvider = {
+                login: () => Promise.reject(new Error('Not implemented')),
+                logout: () => Promise.reject(new Error('Not implemented')),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.reject(new Error('Not implemented')),
+                getPermissions: () => Promise.resolve(undefined),
+                canAccess: ({ action }) =>
+                    Promise.resolve(action === 'list' || action === 'show'),
+            };
+            render(
+                <SlowAccessControl
+                    authProvider={authProvider}
+                    allowedAction="show"
+                />
+            );
+            fireEvent.click(
+                await screen.findByText('Lewis Carroll', {
+                    selector: 'a > span',
+                })
+            );
+            await screen.findByText('ra.page.show');
+            await screen.findByText('Carroll');
+        });
+        it('should render a link to the edit view when users have access to it for the referenced resource', async () => {
+            const authProvider: AuthProvider = {
+                login: () => Promise.reject(new Error('Not implemented')),
+                logout: () => Promise.reject(new Error('Not implemented')),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.reject(new Error('Not implemented')),
+                getPermissions: () => Promise.resolve(undefined),
+                canAccess: ({ action }) =>
+                    Promise.resolve(action === 'list' || action === 'edit'),
+            };
+            render(
+                <SlowAccessControl
+                    authProvider={authProvider}
+                    allowedAction="edit"
+                />
+            );
+            fireEvent.click(
+                await screen.findByText('Lewis Carroll', {
+                    selector: 'a > span',
+                })
+            );
+            await screen.findByText('ra.page.edit');
+            await screen.findByDisplayValue('Carroll');
+        });
+        it('should not render a link when users do not have access to show nor edit for the referenced resource', async () => {
+            const authProvider: AuthProvider = {
+                login: () => Promise.reject(new Error('Not implemented')),
+                logout: () => Promise.reject(new Error('Not implemented')),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.reject(new Error('Not implemented')),
+                getPermissions: () => Promise.resolve(undefined),
+                canAccess: ({ action }) => Promise.resolve(action === 'list'),
+            };
+            render(<SlowAccessControl authProvider={authProvider} />);
+            // Wait a tick for the canAccess calls to resolve
+            await new Promise(resolve => setTimeout(resolve, 10));
+            await screen.findByText('Lewis Carroll', {
+                selector: '.RaReferenceField-root span',
+            });
+        });
+    });
     describe('sx', () => {
         it('should override the default styles', async () => {
             render(<SXNoLink />);
@@ -623,6 +694,7 @@ describe('<ReferenceField />', () => {
         });
         it('should override the default styles when using link', async () => {
             render(<SXLink />);
+            await screen.findByRole('link');
             const elt = await screen.findByText('9780393966473');
             const root = elt.parentNode!.parentNode as HTMLElement;
             expect(

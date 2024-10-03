@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 
 import { RaRecord } from '../../types';
 import { useShowController, ShowControllerProps } from './useShowController';
@@ -38,7 +37,7 @@ import { ResourceContextProvider } from '../../core';
 export const ShowBase = <RecordType extends RaRecord = any>({
     children,
     ...props
-}: { children: ReactElement } & ShowControllerProps<RecordType>) => {
+}: { children: React.ReactNode } & ShowControllerProps<RecordType>) => {
     const controllerProps = useShowController<RecordType>(props);
     const body = (
         <ShowContextProvider value={controllerProps}>
