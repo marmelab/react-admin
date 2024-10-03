@@ -34,35 +34,37 @@ export const useGetPathForRecordCallback = <
             // When the link prop is not provided, we infer a default value and check whether users
             // can access it
             if (link == null) {
-                if (
-                    resourceDefinition.hasShow &&
-                    (await canAccess({
-                        action: 'show',
-                        resource: finalResource,
-                        record,
-                    }))
-                ) {
+                const [canAccessShow, canAccessEdit] = await Promise.all([
+                    resourceDefinition.hasShow
+                        ? canAccess({
+                              action: 'show',
+                              resource: finalResource,
+                              record,
+                          })
+                        : Promise.resolve(false),
+                    resourceDefinition.hasEdit
+                        ? canAccess({
+                              action: 'edit',
+                              resource: finalResource,
+                              record,
+                          })
+                        : Promise.resolve(false),
+                ]);
+
+                if (resourceDefinition.hasShow && canAccessShow) {
                     return createPath({
                         resource: finalResource,
                         id: record.id,
                         type: 'show',
                     });
                 }
-                if (
-                    resourceDefinition.hasEdit &&
-                    (await canAccess({
-                        action: 'edit',
-                        resource: finalResource,
-                        record,
-                    }))
-                ) {
+                if (resourceDefinition.hasEdit && canAccessEdit) {
                     return createPath({
                         resource: finalResource,
                         id: record.id,
                         type: 'edit',
                     });
                 }
-
                 return false;
             }
 
