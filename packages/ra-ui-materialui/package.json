@@ -65,7 +65,7 @@
         "react-router-dom": "^6.22.0"
     },
     "dependencies": {
-        "@tanstack/react-query": "^5.8.4",
+        "@tanstack/react-query": "^5.21.7",
         "autosuggest-highlight": "^3.1.1",
         "clsx": "^2.1.1",
         "css-mediaquery": "^0.1.2",
