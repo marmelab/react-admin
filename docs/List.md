@@ -1355,7 +1355,9 @@ const ProductList = () => {
 
 `useListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page. Check [the `useListController`hook documentation](./useListController.md) for details.
 
-## Access Control
+## Security
+
+The `<List>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<List>`  will only render if the user has the "list" access to the related resource.
 

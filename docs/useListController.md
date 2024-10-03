@@ -305,9 +305,11 @@ const OfficeList = () => {
 };
 ```
 
-## Access Control
+## Security
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useListController`  will only render if the user has the "list" access to the related resource.
+`useListController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useListController` will only render if the user has the "list" access to the related resource.
 
 For instance, for the `<PostList>` page below:
 

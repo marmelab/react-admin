@@ -52,7 +52,9 @@ You can customize the `<CreateBase>` component using the following props, docume
 * [`resource`](./Create.md#resource): override the name of the resource to create
 * [`transform`](./Create.md#transform): transform the form data before calling `dataProvider.create()`
 
-## Access Control
+## Security
+
+The `<CreateBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Create.md#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<CreateBase>`  will only render if the user has the "create" access to the related resource.
 

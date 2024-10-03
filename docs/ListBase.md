@@ -69,7 +69,9 @@ These are a subset of the props accepted by `<List>` - only the props that chang
 
 In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children) for usage examples.
 
-## Access Control
+## Security
+
+The `<ListBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<ListBase>`  will only render if the user has the "list" access to the related resource.
 

@@ -204,7 +204,9 @@ export const UsersShow = () => (
 
 **Tip**: Pass both a custom `id` and a custom `resource` prop to use `<ShowBase>` independently of the current URL. This even allows you to use more than one `<ShowBase>` component in the same page.
 
-## Access Control
+## Security
+
+The `<ShowBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Show.md#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<ShowBase>`  will only render if the user has the "show" access to the related resource.
 

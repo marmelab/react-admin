@@ -55,7 +55,9 @@ You can customize the `<EditBase>` component using the following props, document
 * [`resource`](./Edit.md#resource): override the name of the resource to create
 * [`transform`](./Edit.md#transform): transform the form data before calling `dataProvider.update()`
 
-## Access Control
+## Security
+
+The `<EditBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Edit.md#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<EditBase>`  will only render if the user has the "edit" access to the related resource.
 

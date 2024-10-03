@@ -198,7 +198,9 @@ const MyShow = () => {
 };
 ```
 
-## Access Control
+## Security
+
+`useShowController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Show.md#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useShowController` will only render if the user has the "show" access to the related resource.
 
@@ -229,4 +231,4 @@ const PostShow = ({ id }) => {
 
 Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Show.md#disableauthentication).

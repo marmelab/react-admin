@@ -81,14 +81,16 @@ const {
 } = useEditController();
 ```
 
-## Access Control
+## Security
+
+`useEditController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Edit.md#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useEditController` will only render if the user has the "edit" access to the related resource.
 
 For instance, for the `<PostEdit>` page below:
 
 ```tsx
-import { useShowController, SimpleForm, TextInput } from 'react-admin';
+import { useEditController, SimpleForm, TextInput } from 'react-admin';
 
 const PostEdit = ({ id }) => {
   const { isPending, error, data, save } = useEditController({ resource: 'posts', id })
@@ -112,4 +114,4 @@ const PostEdit = ({ id }) => {
 
 Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Edit.md#disableauthentication).

@@ -701,7 +701,9 @@ export const BookShow = () => {
 };
 ```
 
-## Access Control
+## Security
+
+The `<Show>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Show>`  will only render if the user has the "show" access to the related resource.
 
