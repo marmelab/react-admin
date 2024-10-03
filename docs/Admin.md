@@ -488,6 +488,42 @@ const authProvider = {
 }
 ```
 
+**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess) and you don't provide a dashboard, React-Admin will use the first resource for which users have access to the list page as the home page for your admin. Make sure you order them to suit your needs.
+
+**Tip**: The detection of the first resource implies checking users are authenticated. Should your first resource be accessible without authentication, you must provide a `dashboard` component that redirects to it:
+
+```tsx
+// in src/Dashboard.js
+import * as React from "react";
+import { Navigate } from 'react-router';
+import { Title } from 'react-admin';
+
+export const Dashboard = () => (
+    <Navigate to="/unprotected" />
+);
+```
+
+```tsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+import { authProvider } from './authProvider';
+
+import { Dashboard } from './Dashboard';
+
+const App = () => (
+    <Admin
+        dashboard={Dashboard}
+        authProvider={authProvider}
+        dataProvider={simpleRestProvider('http://path.to.my.api')}
+    >
+        <Resource name="unprotected" list={<UnprotectedList disableAuthentication />} />
+        <Resource name="protected" {/* ... */ } />
+    </Admin>
+);
+```
+
 ## `darkTheme`
 
 React-admin provides a [built-in dark theme](./AppTheme.md#default). The app will use the `darkTheme` by default for users who prefer the dark mode at the OS level, and users will be able to switch from light to dark mode using [the `<ToggleThemeButton>` component](./ToggleThemeButton.md).

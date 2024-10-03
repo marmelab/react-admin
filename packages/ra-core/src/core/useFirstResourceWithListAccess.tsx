@@ -1,15 +1,22 @@
-import { ReactElement } from 'react';
 import { useCanAccessResources } from '../auth/useCanAccessResources';
+import { useAuthenticated } from '../auth';
+import { useResourceDefinitions } from './useResourceDefinitions';
 
 /**
- * A hook that returns the first resource users have list access to.
+ * A hook that returns the first resource for which users have access to the list page.
  * It calls the `authProvider.canAccess` if available to check the permissions.
  */
-export const useFirstResourceWithListAccess = (resources: ReactElement[]) => {
-    const resourcesNames = resources.map(resource => resource.props.name);
+export const useFirstResourceWithListAccess = () => {
+    const { isPending: isPendingAuthenticated } = useAuthenticated();
+    const resources = useResourceDefinitions();
+    const resourcesNames = Object.keys(resources).filter(
+        resource => resources[resource].hasList
+    );
+
     const { canAccess, isPending } = useCanAccessResources({
         action: 'list',
         resources: resourcesNames,
+        enabled: !isPendingAuthenticated,
     });
 
     const firstResourceWithListAccess = resourcesNames.find(
