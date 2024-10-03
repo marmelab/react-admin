@@ -3,7 +3,9 @@ import { useResourceContext } from '../core/useResourceContext';
 import { useRecordContext } from '../controller/record/useRecordContext';
 import type { RaRecord } from '../types';
 import type { LinkToType } from './types';
-import { useGetPathForRecordCallback } from './useGetPathForRecordCallback';
+import { useCanAccess } from '../auth';
+import { useResourceDefinition } from '../core';
+import { useCreatePath } from './useCreatePath';
 
 /**
  * Get a path for a record, based on the current resource and the link type.
@@ -49,21 +51,85 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
             'Cannot generate a link for a record without a resource. You must use useGetPathForRecord within a ResourceContextProvider, or pass a resource prop.'
         );
     }
-    const getPathForRecord = useGetPathForRecordCallback<RecordType>(options);
+    const resourceDefinition = useResourceDefinition(options);
+    const createPath = useCreatePath();
+    const [path, setPath] = useState<string | false>(
+        link && typeof link !== 'function' && record != null
+            ? createPath({
+                  resource,
+                  id: record.id,
+                  type: link,
+              })
+            : false
+    );
 
-    const [path, setPath] = useState<string | false | undefined>(false);
+    const { canAccess: canAccessShow } = useCanAccess({
+        action: 'show',
+        resource,
+        record,
+        enabled: link == null && resourceDefinition.hasShow,
+    });
+    const { canAccess: canAccessEdit } = useCanAccess({
+        action: 'edit',
+        resource,
+        record,
+        enabled: link == null && resourceDefinition.hasEdit,
+    });
 
-    // update the path if the record changes
     useEffect(() => {
-        getPathForRecord({
-            record,
-            resource,
-            link,
-        }).then(resolvedLink => {
-            // update the path when the promise resolves
-            setPath(resolvedLink);
-        });
-    }, [getPathForRecord, link, record, resource]);
+        if (!record) return;
+
+        // Handle the inferred link type case
+        if (link == null) {
+            if (resourceDefinition.hasShow && canAccessShow) {
+                setPath(
+                    createPath({
+                        resource,
+                        id: record.id,
+                        type: 'show',
+                    })
+                );
+                return;
+            }
+            if (resourceDefinition.hasEdit && canAccessEdit) {
+                setPath(
+                    createPath({
+                        resource,
+                        id: record.id,
+                        type: 'edit',
+                    })
+                );
+                return;
+            }
+        }
+
+        // Handle the link function case
+        if (typeof link === 'function') {
+            const linkResult = link(record, resource);
+            if (linkResult instanceof Promise) {
+                linkResult.then(resolvedPath => setPath(resolvedPath));
+                return;
+            }
+            setPath(
+                linkResult
+                    ? createPath({
+                          resource,
+                          id: record.id,
+                          type: linkResult,
+                      })
+                    : false
+            );
+        }
+    }, [
+        createPath,
+        canAccessShow,
+        canAccessEdit,
+        link,
+        record,
+        resource,
+        resourceDefinition.hasShow,
+        resourceDefinition.hasEdit,
+    ]);
 
     return path;
 };
