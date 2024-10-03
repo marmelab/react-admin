@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     RecordContextProvider,
     CoreAdminContext,
@@ -616,25 +616,70 @@ describe('<ReferenceField />', () => {
             });
         });
     });
+
     describe('Security', () => {
-        it('should render a link only when users have access to the requested action for the referenced resource', async () => {
+        it('should render a link to the show view when users have access to it for the referenced resource', async () => {
             const authProvider: AuthProvider = {
                 login: () => Promise.reject(new Error('Not implemented')),
                 logout: () => Promise.reject(new Error('Not implemented')),
                 checkAuth: () => Promise.resolve(),
                 checkError: () => Promise.reject(new Error('Not implemented')),
                 getPermissions: () => Promise.resolve(undefined),
-                canAccess: () => Promise.resolve(true),
+                canAccess: ({ action }) =>
+                    Promise.resolve(action === 'list' || action === 'show'),
+            };
+            render(
+                <SlowAccessControl
+                    authProvider={authProvider}
+                    allowedAction="show"
+                />
+            );
+            fireEvent.click(
+                await screen.findByText('Lewis Carroll', {
+                    selector: 'a > span',
+                })
+            );
+            await screen.findByText('ra.page.show');
+            await screen.findByText('Carroll');
+        });
+        it('should render a link to the edit view when users have access to it for the referenced resource', async () => {
+            const authProvider: AuthProvider = {
+                login: () => Promise.reject(new Error('Not implemented')),
+                logout: () => Promise.reject(new Error('Not implemented')),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.reject(new Error('Not implemented')),
+                getPermissions: () => Promise.resolve(undefined),
+                canAccess: ({ action }) =>
+                    Promise.resolve(action === 'list' || action === 'edit'),
+            };
+            render(
+                <SlowAccessControl
+                    authProvider={authProvider}
+                    allowedAction="edit"
+                />
+            );
+            fireEvent.click(
+                await screen.findByText('Lewis Carroll', {
+                    selector: 'a > span',
+                })
+            );
+            await screen.findByText('ra.page.edit');
+            await screen.findByDisplayValue('Carroll');
+        });
+        it('should not render a link when users do not have access to show nor edit for the referenced resource', async () => {
+            const authProvider: AuthProvider = {
+                login: () => Promise.reject(new Error('Not implemented')),
+                logout: () => Promise.reject(new Error('Not implemented')),
+                checkAuth: () => Promise.resolve(),
+                checkError: () => Promise.reject(new Error('Not implemented')),
+                getPermissions: () => Promise.resolve(undefined),
+                canAccess: ({ action }) => Promise.resolve(action === 'list'),
             };
             render(<SlowAccessControl authProvider={authProvider} />);
-            await waitFor(() => {
-                expect(
-                    screen
-                        .getByText('Lewis Carroll', {
-                            selector: 'a > span',
-                        })
-                        .parentElement?.getAttribute('href')
-                ).toEqual('/authors/5/show');
+            // Wait a tick for the canAccess calls to resolve
+            await new Promise(resolve => setTimeout(resolve, 10));
+            await screen.findByText('Lewis Carroll', {
+                selector: '.RaReferenceField-root span',
             });
         });
     });

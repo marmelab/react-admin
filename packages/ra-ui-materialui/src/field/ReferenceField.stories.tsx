@@ -656,6 +656,7 @@ export const FullApp = () => (
 );
 
 export const SlowAccessControl = ({
+    allowedAction = 'show',
     authProvider = {
         login: () => Promise.reject(new Error('Not implemented')),
         logout: () => Promise.reject(new Error('Not implemented')),
@@ -667,14 +668,16 @@ export const SlowAccessControl = ({
                 setTimeout(
                     resolve,
                     1000,
-                    resource === 'books' || action === 'edit'
+                    resource === 'books' ||
+                        (allowedAction && action === allowedAction)
                 );
             }),
     },
 }: {
     authProvider?: AuthProvider;
+    allowedAction?: 'show' | 'edit';
 }) => (
-    <TestMemoryRouter>
+    <TestMemoryRouter key={allowedAction}>
         <AdminContext
             authProvider={authProvider}
             dataProvider={relationalDataProvider}
@@ -694,6 +697,18 @@ export const SlowAccessControl = ({
         </AdminContext>
     </TestMemoryRouter>
 );
+
+SlowAccessControl.argTypes = {
+    allowedAction: {
+        options: ['show', 'edit', 'none'],
+        mapping: {
+            show: 'show',
+            edit: 'edit',
+            none: 'invalid',
+        },
+        control: { type: 'select' },
+    },
+};
 
 export const AccessControl = () => (
     <TestMemoryRouter>
