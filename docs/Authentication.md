@@ -41,19 +41,19 @@ The simplest `authProvider` is:
 ```js
 const authProvider = {
     // send username and password to the auth server and get back credentials
-    login: params => Promise.resolve(),
+    async login(params) {},
     // when the dataProvider returns an error, check if this is an authentication error
-    checkError: error => Promise.resolve(),
+    async checkError(error) {},
     // when the user navigates, make sure that their credentials are still valid
-    checkAuth: params => Promise.resolve(),
+    async checkAuth(params) {},
     // remove local credentials and notify the auth server that the user logged out
-    logout: () => Promise.resolve(),
+    async logout() {},
     // get the user's profile
-    getIdentity: () => Promise.resolve(),
+    async getIdentity() {},
     // check whether users have the right to perform an action on a resource (optional)
-    canAccess: () => Promise.resolve(),
+    async canAccess() { return true; },
     // get the user permissions (optional)
-    getPermissions: () => Promise.resolve(),
+    async getPermissions() {},
 };
 ```
 

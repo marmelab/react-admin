@@ -88,23 +88,21 @@ const useAuthState = <ErrorType = Error>(
     const onErrorEvent = useEvent(
         onError ??
             ((error: any) => {
+                if (!logoutOnFailure) return;
                 const loginUrl = removeDoubleSlashes(
                     `${basename}/${defaultAuthParams.loginUrl}`
                 );
-                if (logoutOnFailure) {
-                    logout(
-                        {},
-                        error && error.redirectTo != null
-                            ? error.redirectTo
-                            : loginUrl
-                    );
-                    const shouldSkipNotify = error && error.message === false;
-                    !shouldSkipNotify &&
-                        notify(
-                            getErrorMessage(error, 'ra.auth.auth_check_error'),
-                            { type: 'error' }
-                        );
-                }
+                logout(
+                    {},
+                    error && error.redirectTo != null
+                        ? error.redirectTo
+                        : loginUrl
+                );
+                const shouldSkipNotify = error && error.message === false;
+                !shouldSkipNotify &&
+                    notify(getErrorMessage(error, 'ra.auth.auth_check_error'), {
+                        type: 'error',
+                    });
             })
     );
 

@@ -33,40 +33,69 @@ type CanAccessParams = {
     record?: any;
 };
 
-async function canAccess(params: CanAccessPArams): Promise<boolean>;
+async function canAccess(params: CanAccessParams): Promise<boolean>;
 ```
 
 React components will use this method to determine if the current user can perform an `action` (e.g., "read", "update", "delete") on a particular `resource` (e.g., "posts", "posts.title", etc.) and optionally on a specific `record` (to implement record-level permissions).
 
-For example, let's assume that on login, the application receives a list of permissions. The `authProvider` would look like this:
+For example, let's assume that on login, the application receives a list of authorized resources. The `authProvider` would look like this:
 
 ```tsx
 const authProvider = {
-    login: async ({ username, password }) => {
+    async login({ username, password }) {
         // ...
         const permissions = await fetchPermissions();
         // permissions look like 
-        // [
-        //   { action: 'read', resource: 'posts' },
-        //   { action: 'write', resource: 'posts' }
-        // ]
+        // ['posts', 'comments', 'users']
         localStorage.setItem('permissions', JSON.stringify(permissions));
     },
-    logout: async () => {
+    async logout() {
         // ...
         localStorage.removeItem('permissions');
     },
-    canAccess: async ({ resource, action }) => {
-        return permissions.some(perm => 
-            perm.resource === resource && perm.action === action
-        );
-    }
+    async canAccess({ resource }) {
+        const permissions = JSON.parse(localStorage.getItem('permissions'));
+        return permissions.some(p => p.resource === resource);
+    },
 };
 ```
 
 `canAccess` can be asynchronous, so if the `authProvider` needs to fetch the permissions from a server, or refresh a token, it can return a promise.
 
-**Tip**: React-admin calls `dataProvider.canAccess()` before rendering all page components, so if the call is slow, the user navigation may be delayed. If you can, it's better to fetch user permissions on login and store them locally to keep access control fast. 
+**Tip**: React-admin calls `dataProvider.canAccess()` before rendering all page components, so if the call is slow, the user navigation may be delayed. If you can, it's better to fetch user permissions on login and store them locally to keep access control fast.
+
+### Access Control Strategies
+
+It's your responsibility to implement the `canAccess` method in the `authProvider`. You can implement any access control strategy you want. Here is a basic example based on an array of permissions returned at login and stored in `localStorage`:
+
+```tsx
+const authProvider= {
+    // ...
+    async canAccess({ resource, action, record }) {
+        const permissions = JSON.parse(localStorage.getItem('permissions'));
+        // example permissions:
+        // [
+        //     { action: "list", resource: "companies" },
+        //     { action: "create", resource: "companies" },
+        //     { action: "edit", resource: "companies" },
+        //     { action: "show", resource: "companies" },
+        //     { action: "delete", resource: "companies" },
+        //     { action: "list", resource: "users" },
+        //     { action: "create", resource: "users" },
+        //     { action: "edit", resource: "users" },
+        //     { action: "show", resource: "users" },
+        //     { action: "delete", resource: "users" },
+        // ];
+        return permissions.some(p => 
+            p.resource === resource && p.action === action
+        );
+    },
+};
+
+const { canAccess } = useCanAccess({ action: 'list', resource: 'companies' }); // true
+```
+
+Check the [RBAC module](./AuthRBAC.md) for a more advanced example of access control with roles and groups.
 
 ### Built-In Access Control
 
@@ -156,10 +185,11 @@ const UserList = () => {
 As an alternative to the `useCanAccess()` hook, you can use the `<CanAccess>` component. It calls `dataProvider.canAccess()` on mount and renders its children only if the user has access to the resource and action.
 
 ```tsx
+import Stack from '@mui/material/Stack';
 import { CanAccess } from 'react-admin';
 
 const CommentsToolbar = ({ record }) => (
-    <>
+    <Stack direction="row" spacing={2}>
         <CanAccess action="approve" resource="comments" record={record}>
             <ApproveCommentButton record={record} />
         </CanAccess>
@@ -169,7 +199,7 @@ const CommentsToolbar = ({ record }) => (
         <CanAccess action="delete" resource="comments" record={record}>
             <DeleteCommentButton record={record} />
         </CanAccess>
-    </>
+    </Stack>
 );
 ```
 
@@ -201,39 +231,44 @@ Following is an example where the `authProvider` stores the user's permissions i
 // in src/authProvider.js
 import decodeJwt from 'jwt-decode';
 
-export default {
-    login: ({ username, password }) => {
+const authProvider = {
+    async login({ username, password }) {
         const request = new Request('https://mydomain.com/authenticate', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),
         });
-        return fetch(request)
-            .then(response => {
-                if (response.status < 200 || response.status >= 300) {
-                    throw new Error(response.statusText);
-                }
-                return response.json();
-            })
-            .then(({ token }) => {
-                const decodedToken = decodeJwt(token);
-                localStorage.setItem('token', token);
-                localStorage.setItem('permissions', decodedToken.permissions);
-            });
+        let response;
+        try {
+            response = await fetch(request);
+        } catch (_error) {
+            throw new Error('Network error');
+        }
+        if (response.status < 200 || response.status >= 300) {
+            throw new Error(response.statusText);
+        }
+        const { token } = await response.json();
+        const decodedToken = decodeJwt(token);
+        localStorage.setItem('token', token);
+        localStorage.setItem('permissions', decodedToken.permissions);
     },
-    checkError: (error) => { /* ... */ },
-    checkAuth: () => {
-        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject();
+    async checkError(error) { /* ... */ },
+    async checkAuth() {
+        if (!localStorage.getItem('token')) {
+            throw new Error();
+        }
     },
-    logout: () => {
+    async logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('permissions');
-        return Promise.resolve();
     },
-    getIdentity: () => { /* ... */ },
-    getPermissions: () => {
+    async getIdentity() { /* ... */ },
+    async getPermissions() {
         const role = localStorage.getItem('permissions');
-        return role ? Promise.resolve(role) : Promise.reject();
+        if (!role) {
+            throw new Error('Permissions not found');
+        }
+        return role;
     }
 };
 ```

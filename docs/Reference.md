@@ -229,8 +229,8 @@ title: "Index"
 
 **- C -**
 * [`useCanAccess`](./useCanAccess.md)
-* [`useCanAccessCallback`](./useCanAccessCallback.md)
-* [`useCanAccessResources`](./useCanAccessResources.md)
+* [`useCanAccessCallback`](./useCanAccess.md#callback-version)
+* [`useCanAccessResources`](./useCanAccess.md#multiple-resources)
 * [`useChoicesContext`](./useChoicesContext.md)
 * [`useCreate`](./useCreate.md)
 * [`useCreateContext`](./useCreateContext.md)
@@ -299,6 +299,7 @@ title: "Index"
 * [`useRefresh`](./useRefresh.md)
 * [`useRegisterMutationMiddleware`](./useRegisterMutationMiddleware.md)
 * [`useRemoveFromStore`](./useRemoveFromStore.md)
+* [`useRequireAccess`](./useCanAccess.md#logout-on-failure)
 * [`useResetStore`](./useResetStore.md)
 
 **- S -**
