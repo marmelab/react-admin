@@ -152,7 +152,7 @@ export type UseAuthStateResult<ErrorType = Error> = QueryObserverResult<
     boolean,
     ErrorType
 > & {
-    authenticated: QueryObserverResult<boolean, ErrorType>['data'];
+    authenticated?: QueryObserverResult<boolean, ErrorType>['data'];
 };
 
 export default useAuthState;
