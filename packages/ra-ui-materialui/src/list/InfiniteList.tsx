@@ -8,6 +8,7 @@ import {
 
 import { InfinitePagination } from './pagination';
 import { ListView, ListViewProps } from './ListView';
+import { Loading } from '../layout';
 
 /**
  * Infinite List page component
@@ -84,6 +85,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
         exporter={exporter}
         filter={filter}
         filterDefaultValues={filterDefaultValues}
+        loading={defaultLoading}
         perPage={perPage}
         queryOptions={queryOptions}
         resource={resource}
@@ -96,6 +98,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
 
 const defaultPagination = <InfinitePagination />;
 const defaultFilter = {};
+const defaultLoading = <Loading />;
 
 export interface InfiniteListProps<RecordType extends RaRecord = any>
     extends InfiniteListControllerProps<RecordType>,

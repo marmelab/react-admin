@@ -4,10 +4,11 @@ import {
     useInfiniteListController,
     InfiniteListControllerProps,
 } from './useInfiniteListController';
-import { ResourceContextProvider } from '../../core';
+import { OptionalResourceContextProvider } from '../../core';
 import { RaRecord } from '../../types';
 import { ListContextProvider } from './ListContextProvider';
 import { InfinitePaginationContext } from './InfinitePaginationContext';
+import { useIsAuthPending } from '../../auth';
 
 /**
  * Call useInfiniteListController and put the value in a ListContext
@@ -45,11 +46,21 @@ import { InfinitePaginationContext } from './InfinitePaginationContext';
  */
 export const InfiniteListBase = <RecordType extends RaRecord = any>({
     children,
+    loading = null,
     ...props
-}: InfiniteListControllerProps<RecordType> & { children: ReactNode }) => {
+}: InfiniteListBaseProps<RecordType>) => {
     const controllerProps = useInfiniteListController<RecordType>(props);
+    const isAuthPending = useIsAuthPending({
+        resource: controllerProps.resource,
+        action: 'list',
+    });
+
+    if (isAuthPending && !props.disableAuthentication) {
+        return loading;
+    }
+
     return (
-        <ResourceContextProvider value={props.resource}>
+        <OptionalResourceContextProvider value={controllerProps.resource}>
             <ListContextProvider value={controllerProps}>
                 <InfinitePaginationContext.Provider
                     value={{
@@ -65,6 +76,12 @@ export const InfiniteListBase = <RecordType extends RaRecord = any>({
                     {children}
                 </InfinitePaginationContext.Provider>
             </ListContextProvider>
-        </ResourceContextProvider>
+        </OptionalResourceContextProvider>
     );
 };
+
+export interface InfiniteListBaseProps<RecordType extends RaRecord = any>
+    extends InfiniteListControllerProps<RecordType> {
+    children: ReactNode;
+    loading?: ReactNode;
+}
