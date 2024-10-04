@@ -84,6 +84,8 @@ import { CoreAdminUI, CoreAdminUIProps } from './CoreAdminUI';
  */
 export const CoreAdmin = (props: CoreAdminProps) => {
     const {
+        accessDenied,
+        authenticationError,
         authProvider,
         basename,
         catchAll,
@@ -93,15 +95,14 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         disableTelemetry,
         error,
         i18nProvider,
-        queryClient,
         layout,
         loading,
         loginPage,
+        queryClient,
         ready,
         requireAuth,
         store,
         title = 'React Admin',
-        accessDenied,
     } = props;
     return (
         <CoreAdminContext
@@ -113,17 +114,18 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             store={store}
         >
             <CoreAdminUI
-                layout={layout}
+                accessDenied={accessDenied}
+                authenticationError={authenticationError}
+                catchAll={catchAll}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
-                catchAll={catchAll}
-                title={title}
-                loading={loading}
                 error={error}
+                layout={layout}
+                loading={loading}
                 loginPage={loginPage}
-                requireAuth={requireAuth}
                 ready={ready}
-                accessDenied={accessDenied}
+                requireAuth={requireAuth}
+                title={title}
             >
                 {children}
             </CoreAdminUI>
