@@ -1,7 +1,7 @@
 import * as React from 'react';
 import usePermissions, { UsePermissionsResult } from './usePermissions';
-import { AuthProvider, CoreAdminContext, TestMemoryRouter } from '..';
 import { QueryClient } from '@tanstack/react-query';
+import { AuthProvider, CoreAdminContext, TestMemoryRouter } from '..';
 
 export default {
     title: 'ra-core/auth/usePermissions',
