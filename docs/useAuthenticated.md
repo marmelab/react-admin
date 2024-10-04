@@ -5,7 +5,7 @@ title: "useAuthenticated"
 
 # `useAuthenticated`
 
-This hook checks if the current user is authenticated by calling the [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) method on mount, and redirects to login if method throws an error.
+This hook checks if the current user is authenticated by calling the [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) method on mount, and redirects to login if the method throws an error.
 
 React-admin uses this hook in page components (e.g., the `<Edit>` component) to forbid access to unauthenticated users.
 
