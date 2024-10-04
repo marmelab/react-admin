@@ -140,7 +140,7 @@ The RBAC system relies on *permissions* only. It's the `authProvider`'s responsi
 
 An _action_ is a string, usually a verb, that represents an operation. Examples of actions include "read", "create", "edit", "delete", or "export".
 
-Ra-rbac defines its own actions that you can use with ra-rbac components, but you can also define your own actions, and implement them in your own components using [`useCanAccess`](./useCanAccess.md), [`canAccess`](./canAccess.md) or [`<IfCanAccess>`](./IfCanAccess.md).
+Ra-rbac defines its own actions that you can use with ra-rbac components, but you can also define your own actions, and implement them in your own components using [`useCanAccess`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#usecanaccess), [`canAccess`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#canaccess) or [`<IfCanAccess>`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess).
 
 Ra-rbac's built-in actions operate at different levels:
 
@@ -305,7 +305,7 @@ const authProvider = {
 Ra-rbac provides hooks to enable or disable features based on roles and permissions.
 
 - [`usePermissions()`](./usePermissions.md) returns the current permissions.
-- [`useCanAccess()`](./useCanAccess.md) returns a boolean indicating whether the user has access to the given resource.
+- [`useCanAccess()`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#usecanaccess) returns a boolean indicating whether the user has access to the given resource.
 
 ## Components
 

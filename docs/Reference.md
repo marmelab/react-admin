@@ -89,7 +89,7 @@ title: "Index"
 * [`<HorizontalMenu>`](./ContainerLayout.md#horizontalmenu)<img class="icon" src="./img/premium.svg" />
 
 **- I -**
-* [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />
+* [`<IfCanAccess>`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess)<img class="icon" src="./img/premium.svg" />
 * [`<InfiniteList>`](./InfiniteList.md)
 * [`<InfinitePagination>`](./InfiniteList.md)
 * [`<ImageField>`](./ImageField.md)
