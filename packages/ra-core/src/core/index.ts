@@ -12,6 +12,7 @@ export * from './ResourceContext';
 export * from './ResourceContextProvider';
 export * from './ResourceDefinitionContext';
 export * from './SourceContext';
+export * from './useFirstResourceWithListAccess';
 export * from './useGetResourceLabel';
 export * from './useGetRecordRepresentation';
 export * from './useResourceDefinitionContext';
