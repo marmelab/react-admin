@@ -106,7 +106,7 @@ As illustrated above, there can be more than one `<CustomRoutes>` element inside
 
 ## Securing Custom Routes
 
-By default, custom routes can be accessed even by non connected users. If you want to restrict access to authenticated users, use the [`<Authenticated>`](./Authenticated.md) component when defining the route.
+By default, custom routes can be accessed even by anomymous users. If you want to restrict access to authenticated users, use the [`<Authenticated>`](./Authenticated.md) component when defining the route.
 
 ```jsx
 // in src/App.js
