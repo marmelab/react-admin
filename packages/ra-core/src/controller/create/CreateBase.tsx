@@ -6,7 +6,8 @@ import {
 } from './useCreateController';
 import { CreateContextProvider } from './CreateContextProvider';
 import { Identifier, RaRecord } from '../../types';
-import { ResourceContextProvider } from '../../core';
+import { OptionalResourceContextProvider } from '../../core';
+import { useIsAuthPending } from '../../auth';
 
 /**
  * Call useCreateController and put the value in a CreateContext
@@ -40,28 +41,45 @@ import { ResourceContextProvider } from '../../core';
 export const CreateBase = <
     RecordType extends Omit<RaRecord, 'id'> = any,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
+    MutationOptionsError = Error,
 >({
     children,
+    loading = null,
     ...props
-}: CreateControllerProps<RecordType, Error, ResultRecordType> & {
-    children: ReactNode;
-}) => {
+}: CreateBaseProps<RecordType, ResultRecordType, MutationOptionsError>) => {
     const controllerProps = useCreateController<
         RecordType,
-        Error,
+        MutationOptionsError,
         ResultRecordType
     >(props);
-    const body = (
-        <CreateContextProvider value={controllerProps}>
-            {children}
-        </CreateContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
+
+    const isAuthPending = useIsAuthPending({
+        resource: controllerProps.resource,
+        action: 'create',
+    });
+
+    if (isAuthPending && !props.disableAuthentication) {
+        return loading;
+    }
+
+    return (
+        <OptionalResourceContextProvider value={controllerProps.resource}>
+            <CreateContextProvider value={controllerProps}>
+                {children}
+            </CreateContextProvider>
+        </OptionalResourceContextProvider>
     );
 };
+
+export interface CreateBaseProps<
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
+    MutationOptionsError = Error,
+> extends CreateControllerProps<
+        RecordType,
+        MutationOptionsError,
+        ResultRecordType
+    > {
+    children: ReactNode;
+    loading?: ReactNode;
+}

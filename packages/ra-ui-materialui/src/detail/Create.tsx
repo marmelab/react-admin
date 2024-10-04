@@ -9,6 +9,7 @@ import {
 } from 'ra-core';
 
 import { CreateView, CreateViewProps } from './CreateView';
+import { Loading } from '../layout';
 
 /**
  * Page component for the Create view
@@ -81,6 +82,7 @@ export const Create = <
             disableAuthentication={disableAuthentication}
             hasEdit={hasEdit}
             hasShow={hasShow}
+            loading={defaultLoading}
         >
             <CreateView {...rest} />
         </CreateBase>
@@ -97,3 +99,5 @@ export interface CreateProps<
             ResultRecordType
         >,
         CreateViewProps {}
+
+const defaultLoading = <Loading />;
