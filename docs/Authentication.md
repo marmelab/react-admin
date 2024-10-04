@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "security"
+title: "Security"
 ---
 
 # Security
@@ -13,11 +13,11 @@ title: "security"
 
 Web applications often need to limit access to specific pages or resources to authenticated users ("Authentication") and ensure that users can only execute actions they are permitted to ("Authorization").
 
-React-admin supports both authentication and authorization, and provides a way to secure your admin app with the authentication strategy of your choice. Since there are many possible strategies (OAuth, MFA, passwordless, magic link, etc.), react-admin delegates this logic to an `authProvider`.
+React-admin supports both authentication and authorization, allowing you to secure your admin app with your preferred authentication strategy. Since there are many strategies (OAuth, MFA, passwordless, magic link, etc.), react-admin delegates this logic to an `authProvider`.
 
 ## Enabling Authentication
 
-By default, react-admin apps don't require authentication. To restrict access to the admin, pass an `authProvider` to the `<Admin>` component.
+By default, react-admin apps do not require authentication. To restrict access to the admin, pass an `authProvider` to the `<Admin>` component.
 
 ```jsx
 // in src/App.js
@@ -30,11 +30,11 @@ const App = () => (
 );
 ```
 
-Once an admin has an `authProvider`, react-admin will restrict CRUD pages (the `list`, `edit`, `create`and `show` components of your `Resources`) to authenticated users, and redirect anonymous users to a new page on the `/login` route, which displays a login form asking for a username and password.
+Once an admin has an `authProvider`, react-admin will restrict CRUD pages (the `list`, `edit`, `create`, and `show` components of your `Resources`) to authenticated users and redirect anonymous users to the `/login` page, displaying a login form for a username and password.
 
 ## Anatomy Of An `authProvider`
 
-What's an `authProvider`? Just like a `dataProvider`, an `authProvider` is an object that handles authentication and authorization logic. It exposes methods that react-admin calls when needed, and that you can call manually through specialized hooks. The `authProvider` methods must return a Promise.
+An `authProvider` is an object that handles authentication and authorization logic, similar to a `dataProvider`. It exposes methods that react-admin calls when needed, and you can also call these methods manually through specialized hooks. The `authProvider` methods must return a Promise.
 
 A typical `authProvider` has the following methods:
 
@@ -55,15 +55,15 @@ const authProvider = {
 };
 ```
 
-Find an existing Auth Provider in the [List of Available Auth Providers](./AuthProviderList.md), or write your own by following the [Building Your Own Auth Provider](./AuthProviderWriting.md) instructions.
+You can use an existing Auth Provider from the [List of Available Auth Providers](./AuthProviderList.md) or write your own by following the [Building Your Own Auth Provider](./AuthProviderWriting.md) instructions.
 
 ## Sending Credentials To The API
 
-The `authProvider` handles the authentication logic, but it's the `dataProvider`'s responsibility to include the user credentials in the requests to the API.
+The `authProvider` handles authentication logic, but the `dataProvider` must include the user credentials in requests to the API.
 
-As explained in the [Data providers documentation](./DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+As explained in the [Data providers documentation](./DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` accept an `httpClient` as a second parameter. Here, you can customize request headers, cookies, etc.
 
-For instance, if the `authProvider` stores an authentication token in localStorage, here is how you can tweak the `dataProvider` to pass this token as an `Authorization` header:
+For instance, if the `authProvider` stores an authentication token in `localStorage`, you can tweak the `dataProvider` to pass this token as an `Authorization` header:
 
 ```jsx
 import { fetchUtils, Admin, Resource } from 'react-admin';
@@ -92,7 +92,7 @@ If you have a custom REST client, don't forget to add credentials yourself.
 
 ## Restricting Access To Custom Pages
 
-When you add custom pages, they are accessible to anonymous users by default. To make them only accessible to authenticated users, call [the `useAuthenticated` hook](./useAuthenticated.md) in the custom page:
+When you add custom pages, they are accessible to anonymous users by default. To make them accessible only to authenticated users, use the [`useAuthenticated` hook](./useAuthenticated.md) in the custom page:
 
 ```jsx
 import { Admin, CustomRoutes, useAuthenticated } from 'react-admin';
@@ -124,7 +124,7 @@ const App = () => (
 );
 ```
 
-Alternatively, you can use [the `<Authenticated>` component](./Authenticated.md), which displays its children only if the user is authenticated:
+Alternatively, use the [`<Authenticated>` component](./Authenticated.md) to display its children only if the user is authenticated:
 
 ```jsx
 import { Admin, CustomRoutes, Authenticated } from 'react-admin';
@@ -156,7 +156,7 @@ const App = () => (
 
 ## Disabling Anonymous Access
 
-Securing custom pages one by one can be tedious. If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `<Admin requireAuth>` prop.
+Securing custom pages one by one can be tedious. If your app will never accept anonymous access, you can force the app to wait for `authProvider.checkAuth()` to resolve before rendering the page layout by setting the `<Admin requireAuth>` prop.
 
 ```jsx
 const App = () => (
@@ -170,13 +170,13 @@ const App = () => (
 );
 ```
 
-`requireAuth` also hides the UI until the authentication check is complete, so your app won't reveal any information (menu, resource names, etc) to anonymous users.
+`requireAuth` also hides the UI until the authentication check is complete, ensuring that no information (menu, resource names, etc.) is revealed to anonymous users.
 
 ## Allowing Anonymous Access
 
-As long as you add an `authProvider`, react-admin restricts access to all the pages declared in the `<Resource>` components. If you want to allow anonymous access to some of these pages, you can set the `disableAuthentication` prop in the page component.
+If you add an `authProvider`, react-admin restricts access to all pages declared in `<Resource>` components. To allow anonymous access to some of these pages, set the `disableAuthentication` prop in the page component.
 
-For instance, to let anonymous users access the post list view:
+For example, to let anonymous users access the post list view:
 
 ```jsx
 const PostList = () => (
@@ -201,11 +201,9 @@ const App = () => (
 
 ## Customizing The Login Component
 
-Using `authProvider` is enough to secure your app if the authentication relies on a username and password.
+Using an `authProvider` is enough to secure your app if authentication relies on a username and password. But for cases like using an email instead of a username, Single-Sign-On (SSO), or two-factor authentication, you can implement your own `LoginPage` component to be displayed under the `/login` route.
 
-But what if you want to use an email instead of a username? What if you want to use a Single-Sign-On (SSO) with a third-party authentication service? What if you want to use two-factor authentication?
-
-For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form. Pass this component to the [`<Admin loginPage>`](./Admin.md#loginpage) prop:
+Pass this component to the [`<Admin loginPage>`](./Admin.md#loginpage) prop:
 
 ```jsx
 // in src/App.js
@@ -220,21 +218,18 @@ const App = () => (
 );
 ```
 
-By default, the login page displays a gradient background. If you just want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
+By default, the login page displays a gradient background. To change it, use the default Login component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
 // in src/MyLoginPage.js
 import { Login } from 'react-admin';
 
 const MyLoginPage = () => (
-    <Login
-        // A random image that changes everyday
-        backgroundImage="https://source.unsplash.com/random/1600x900/daily"
-    />
+    <Login backgroundImage="https://acme.com/img/background.png" />
 );
 ```
 
-If you want to build a Login page from scratch, you'll need the [`useLogin` hook](./useLogin.md).
+To build a Login page from scratch, use the [`useLogin` hook](./useLogin.md).
 
 ```jsx
 // in src/MyLoginPage.js
@@ -277,7 +272,7 @@ export default MyLoginPage;
 
 ## Logging Out The User
 
-Users can log out by clicking on the user menu in the AppBar. If you want to allow the user to log out from a custom button, or if you want to log them out under specific conditions, you can use the [`useLogout`](./useLogout.md) hook.
+Users can log out by clicking on the user menu in the AppBar. To allow log out from a custom button or under specific conditions, use the [`useLogout`](./useLogout.md) hook.
 
 ```jsx
 import { useLogout } from 'react-admin';
@@ -290,7 +285,7 @@ const MyLogoutButton = () => {
 };
 ```
 
-**Tip**: By default, react-admin redirects the user to '/login' after they log out. This can be changed by passing the url to redirect to as parameter to the `logout()` function:
+**Tip**: By default, react-admin redirects to `/login` after logout. This can be changed by passing a custom URL to the `logout()` function:
 
 ```diff
 -const handleClick = () => logout();
@@ -299,17 +294,17 @@ const MyLogoutButton = () => {
 
 ## Using External Authentication Providers
 
-Instead of the built-in Login page, you can opt for an external authentication provider, such as Auth0, Cognito, or any other OAuth-based service. These services all require a callback URL in the app, to redirect users after login.
+Instead of the built-in Login page, you can use an external authentication provider, like Auth0, Cognito, or any other OAuth-based service. These services require a callback URL to redirect users after login.
 
-React-admin provides a default callback URL at `/auth-callback`. This route calls the `authProvider.handleCallback` method on mount. This means it's the `authProvider`'s job to use the params received from the callback URL to authenticate future API calls.
+React-admin provides a default callback URL at `/auth-callback`. This route calls the `authProvider.handleCallback` method on mount, which means it's up to the `authProvider` to use the received params for authenticating future API calls.
 
-For instance, here's what a simple authProvider for Auth0 might look like:
+For example, here's a simple authProvider for Auth0:
 
 ```js
 import { Auth0Client } from './Auth0Client';
 
 export const authProvider = {
-    async login() { /* Nothing to do here, this function will never be called */ },
+    async login() { /* This function will not be called */ },
     async checkAuth() {
         const isAuthenticated = await Auth0Client.isAuthenticated();
         if (isAuthenticated) {
@@ -343,25 +338,22 @@ export const authProvider = {
         const isAuthenticated = await client.isAuthenticated();
             // need to check for this as react-admin calls logout in case checkAuth failed
         if (isAuthenticated) {
-            return client.logout({
+            return Auth0Client.logout({
                 returnTo: window.location.origin,
             });
         }
     },
     ...
-}
+};
 ```
 
-It's up to you to decide when to redirect users to the third party authentication service, for instance:
-
-* Directly in the `AuthProvider.checkAuth()` method as above;
-* When users click a button on a [custom login page](#customizing-the-login-component)
+You can choose when to redirect users to the third-party authentication service, such as directly in the `AuthProvider.checkAuth()` method or when they click a button on a [custom login page](#customizing-the-login-component).
 
 ## Handling Refresh Tokens
 
-[Refresh tokens](https://oauth.net/2/refresh-tokens/) are an important security mechanism. In order to leverage them, you should decorate the `dataProvider` and the `authProvider` so that they can check whether the authentication must be refreshed and actually refresh it.
+[Refresh tokens](https://oauth.net/2/refresh-tokens/) are crucial for maintaining secure sessions. To leverage them, decorate the `dataProvider` and the `authProvider` to refresh authentication tokens as needed.
 
-You can use the [`addRefreshAuthToDataProvider`](./addRefreshAuthToDataProvider.md) and [`addRefreshAuthToAuthProvider`](./addRefreshAuthToAuthProvider.md) functions for this purpose. They accept a `dataProvider` or `authProvider` respectively and a function that should refresh the authentication token if necessary:
+You can use the [`addRefreshAuthToDataProvider`](./addRefreshAuthToDataProvider.md) and [`addRefreshAuthToAuthProvider`](./addRefreshAuthToAuthProvider.md) functions for this purpose:
 
 ```jsx
 // in src/refreshAuth.js
@@ -379,23 +371,23 @@ export const refreshAuth = () => {
 
 // in src/authProvider.js
 import { addRefreshAuthToAuthProvider } from 'react-admin';
-import { refreshAuth } from 'refreshAuth';
+import { refreshAuth } from './refreshAuth';
 const myAuthProvider = {
-    // ...Usual AuthProvider methods
+    // ...AuthProvider methods
 };
 export const authProvider = addRefreshAuthToAuthProvider(myAuthProvider, refreshAuth);
 
 // in src/dataProvider.js
 import { addRefreshAuthToDataProvider } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
-import { refreshAuth } from 'refreshAuth';
+import { refreshAuth } from './refreshAuth';
 const baseDataProvider = simpleRestProvider('http://path.to.my.api/');
 export const dataProvider = addRefreshAuthToDataProvider(baseDataProvider, refreshAuth);
 ```
 
 ## Authorization
 
-Access control and permissions let you restrict certain pages to certain users. React-admin provides powerful primitives to implement authorization logic, but they deserve their own documentation page. Read more about [Authorization](./Authorization.md) in the dedicated page.
+Access control and permissions allow you to restrict certain pages to specific users. React-admin provides powerful primitives for implementing authorization logic. For detailed guidance, check out the [Authorization](./Authorization.md) documentation.
 
 <video controls autoplay muted loop>
   <source src="./img/AccessControl.mp4" type="video/mp4"/>
