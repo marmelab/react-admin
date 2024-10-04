@@ -136,7 +136,10 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                 disabled: !hasNextPage,
             }}
             component="span"
-            labelRowsPerPage={labelRowsPerPage ?? translate('ra.navigation.page_rows_per_page')}
+            labelRowsPerPage={
+                labelRowsPerPage ??
+                translate('ra.navigation.page_rows_per_page')
+            }
             labelDisplayedRows={labelDisplayedRows}
             getItemAriaLabel={labelItem}
             rowsPerPageOptions={rowsPerPageOptions}
