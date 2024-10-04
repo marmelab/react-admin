@@ -2,8 +2,6 @@ import { useCallback } from 'react';
 
 import useAuthProvider from './useAuthProvider';
 
-const getPermissionsWithoutProvider = () => Promise.resolve([]);
-
 /**
  * Get a callback for calling the authProvider.getPermissions() method.
  *
@@ -38,13 +36,15 @@ const getPermissionsWithoutProvider = () => Promise.resolve([]);
 const useGetPermissions = (): GetPermissions => {
     const authProvider = useAuthProvider();
     const getPermissions = useCallback(
-        (params: any = {}) =>
+        (params: any = {}) => {
             // react-query requires the query to return something
-            authProvider
-                ? authProvider
-                      .getPermissions(params)
-                      .then(result => result ?? null)
-                : getPermissionsWithoutProvider(),
+            if (authProvider && authProvider.getPermissions) {
+                return authProvider
+                    .getPermissions(params)
+                    .then(result => result ?? null);
+            }
+            return Promise.resolve([]);
+        },
         [authProvider]
     );
 

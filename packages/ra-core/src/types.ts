@@ -65,7 +65,7 @@ export type AuthProvider = {
     checkAuth: (params: any & QueryFunctionContext) => Promise<void>;
     checkError: (error: any) => Promise<void>;
     getIdentity?: (params?: QueryFunctionContext) => Promise<UserIdentity>;
-    getPermissions: (params: any & QueryFunctionContext) => Promise<any>;
+    getPermissions?: (params: any & QueryFunctionContext) => Promise<any>;
     handleCallback?: (
         params?: QueryFunctionContext
     ) => Promise<AuthRedirectResult | void | any>;
