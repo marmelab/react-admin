@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { ShowBase, RaRecord, ShowControllerProps } from 'ra-core';
 import { ShowView, ShowViewProps } from './ShowView';
+import { Loading } from '../layout';
 
 /**
  * Page component for the Show view
@@ -67,6 +68,7 @@ export const Show = <RecordType extends RaRecord = any>({
         disableAuthentication={disableAuthentication}
         queryOptions={queryOptions}
         resource={resource}
+        loading={defaultLoading}
     >
         <ShowView {...rest} />
     </ShowBase>
@@ -75,3 +77,5 @@ export const Show = <RecordType extends RaRecord = any>({
 export interface ShowProps<RecordType extends RaRecord = any>
     extends ShowControllerProps<RecordType>,
         ShowViewProps {}
+
+const defaultLoading = <Loading />;
