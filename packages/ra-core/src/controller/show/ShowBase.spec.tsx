@@ -1,46 +1,24 @@
 import * as React from 'react';
+import expect from 'expect';
+import { render, screen, waitFor } from '@testing-library/react';
+
+import { testDataProvider } from '../../dataProvider';
 import {
     AccessControl,
-    Basic,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
-} from './InfiniteListBase.stories';
-import { render, screen, waitFor } from '@testing-library/react';
-import { testDataProvider } from '../../dataProvider';
+} from './ShowBase.stories';
 
-describe('InfiniteListBase', () => {
-    it('should fetch a list of records on mount, put it in a ListContext, and render its children', async () => {
-        render(<Basic />);
-        expect(screen.queryByText('Loading...')).not.toBeNull();
-        await waitFor(() => {
-            expect(screen.queryByText('Loading...')).toBeNull();
-        });
-        await screen.findByText('War and Peace');
-    });
-    it('should create an InfinitePaginationContext allowing to fetch following pages', async () => {
-        render(<Basic />);
-        await waitFor(() => {
-            expect(screen.queryByText('Loading...')).toBeNull();
-        });
-        // first page is visible
-        await screen.findByText('The Lord of the Rings'); // #5
-        // next page is not visible
-        expect(screen.queryByText('And Then There Were None')).toBeNull(); // #6
-        screen.getByText('Next').click();
-        // next page is now visible
-        await screen.findByText('And Then There Were None'); // #6
-        // first page is still visible
-        await screen.findByText('The Lord of the Rings'); // #5
-    });
+describe('ShowBase', () => {
     it('should load data immediately if authProvider is not provided', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
+            getOne: jest.fn(() =>
+                Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });
         render(<NoAuthProvider dataProvider={dataProvider} />);
-        expect(dataProvider.getList).toHaveBeenCalled();
+        expect(dataProvider.getOne).toHaveBeenCalled();
         await screen.findByText('Hello');
     });
     it('should wait for the authentication resolution before loading data', async () => {
@@ -56,8 +34,8 @@ describe('InfiniteListBase', () => {
         };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
+            getOne: jest.fn(() =>
+                Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });
         render(
@@ -66,7 +44,7 @@ describe('InfiniteListBase', () => {
                 dataProvider={dataProvider}
             />
         );
-        expect(dataProvider.getList).not.toHaveBeenCalled();
+        expect(dataProvider.getOne).not.toHaveBeenCalled();
         await screen.findByText('Authentication loading...');
         resolveAuth!();
         await screen.findByText('Hello');
@@ -91,8 +69,8 @@ describe('InfiniteListBase', () => {
         };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
+            getOne: jest.fn(() =>
+                Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });
         render(
@@ -101,10 +79,10 @@ describe('InfiniteListBase', () => {
                 dataProvider={dataProvider}
             />
         );
-        expect(dataProvider.getList).not.toHaveBeenCalled();
+        expect(dataProvider.getOne).not.toHaveBeenCalled();
         await screen.findByText('Authentication loading...');
         resolveAuth!();
-        expect(dataProvider.getList).not.toHaveBeenCalled();
+        expect(dataProvider.getOne).not.toHaveBeenCalled();
         await screen.findByText('Authentication loading...');
         await waitFor(() => {
             expect(authProvider.canAccess).toHaveBeenCalled();

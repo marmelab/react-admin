@@ -5,6 +5,7 @@ import { InfiniteListBase } from './InfiniteListBase';
 import { CoreAdminContext } from '../../core';
 import { useListContext } from './useListContext';
 import { useInfinitePaginationContext } from './useInfinitePaginationContext';
+import { AuthProvider, DataProvider } from '../..';
 
 export default {
     title: 'ra-core/controller/list/InfiniteListBase',
@@ -40,7 +41,7 @@ const data = {
     ],
 };
 
-const dataProvider = fakeRestProvider(data, undefined, 300);
+const defaultDataProvider = fakeRestProvider(data, undefined, 300);
 
 const BookListView = () => {
     const { data, isPending, sort, setSort, filterValues, setFilters } =
@@ -63,7 +64,7 @@ const BookListView = () => {
             <button onClick={toggleSort}>Toggle Sort</button>
             <button onClick={toggleFilter}>Toggle Filter</button>
             <ul>
-                {data.map((record: any) => (
+                {data?.map((record: any) => (
                     <li key={record.id}>{record.title}</li>
                 ))}
             </ul>
@@ -103,10 +104,69 @@ const InfinitePagination = () => {
 };
 
 export const Basic = () => (
-    <CoreAdminContext dataProvider={dataProvider}>
+    <CoreAdminContext dataProvider={defaultDataProvider}>
         <InfiniteListBase resource="books" perPage={5}>
             <BookListView />
             <InfinitePagination />
+        </InfiniteListBase>
+    </CoreAdminContext>
+);
+
+export const NoAuthProvider = ({
+    dataProvider = defaultDataProvider,
+}: {
+    dataProvider?: DataProvider;
+}) => (
+    <CoreAdminContext dataProvider={dataProvider}>
+        <InfiniteListBase resource="books" perPage={5}>
+            <BookListView />
+        </InfiniteListBase>
+    </CoreAdminContext>
+);
+
+export const WithAuthProviderNoAccessControl = ({
+    authProvider = {
+        login: () => Promise.resolve(),
+        logout: () => Promise.resolve(),
+        checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
+        checkError: () => Promise.resolve(),
+    },
+    dataProvider = defaultDataProvider,
+}: {
+    authProvider?: AuthProvider;
+    dataProvider?: DataProvider;
+}) => (
+    <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
+        <InfiniteListBase
+            resource="books"
+            perPage={5}
+            loading={<div>Authentication loading...</div>}
+        >
+            <BookListView />
+        </InfiniteListBase>
+    </CoreAdminContext>
+);
+
+export const AccessControl = ({
+    authProvider = {
+        login: () => Promise.resolve(),
+        logout: () => Promise.resolve(),
+        checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
+        checkError: () => Promise.resolve(),
+        canAccess: () => new Promise(resolve => setTimeout(resolve, 300, true)),
+    },
+    dataProvider = defaultDataProvider,
+}: {
+    authProvider?: AuthProvider;
+    dataProvider?: DataProvider;
+}) => (
+    <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
+        <InfiniteListBase
+            resource="books"
+            perPage={5}
+            loading={<div>Authentication loading...</div>}
+        >
+            <BookListView />
         </InfiniteListBase>
     </CoreAdminContext>
 );

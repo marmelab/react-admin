@@ -4,7 +4,8 @@ import { ReactNode } from 'react';
 import { RaRecord } from '../../types';
 import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
-import { ResourceContextProvider } from '../../core';
+import { OptionalResourceContextProvider } from '../../core';
+import { useIsAuthPending } from '../../auth';
 
 /**
  * Call useEditController and put the value in a EditContext
@@ -35,22 +36,36 @@ import { ResourceContextProvider } from '../../core';
  *     </EditBase>
  * );
  */
-export const EditBase = <RecordType extends RaRecord = any>({
+export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
     children,
+    loading = null,
     ...props
-}: { children: ReactNode } & EditControllerProps<RecordType>) => {
-    const controllerProps = useEditController<RecordType>(props);
-    const body = (
-        <EditContextProvider value={controllerProps}>
-            {children}
-        </EditContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
+}: EditBaseProps<RecordType, ErrorType>) => {
+    const controllerProps = useEditController<RecordType, ErrorType>(props);
+
+    const isAuthPending = useIsAuthPending({
+        resource: controllerProps.resource,
+        action: 'edit',
+    });
+
+    if (isAuthPending && !props.disableAuthentication) {
+        return loading;
+    }
+
+    return (
+        // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
+        <OptionalResourceContextProvider value={props.resource}>
+            <EditContextProvider value={controllerProps}>
+                {children}
+            </EditContextProvider>
+        </OptionalResourceContextProvider>
     );
 };
+
+export interface EditBaseProps<
+    RecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
+> extends EditControllerProps<RecordType, ErrorType> {
+    children: ReactNode;
+    loading?: ReactNode;
+}

@@ -117,6 +117,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                                             <WithPermissions
                                                 authParams={defaultAuthParams}
                                                 component={dashboard}
+                                                loading={LoadingPage}
                                             />
                                         ) : (
                                             <NavigateToFirstResource
