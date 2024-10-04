@@ -58,7 +58,7 @@ const englishMessages: TranslationMessages = {
             show: '%{name} %{recordRepresentation}',
             empty: 'No %{name} yet.',
             invite: 'Do you want to add one?',
-            accessDenied: 'Access denied',
+            access_denied: 'Access denied',
             authentication_error: 'Authentication error',
         },
         input: {
@@ -112,7 +112,7 @@ const englishMessages: TranslationMessages = {
             yes: 'Yes',
             unsaved_changes:
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
-            accessDenied:
+            access_denied:
                 "You don't have the right permissions to access this page",
             authentication_error:
                 'The authentication server returned an error and your credentials could not be checked.',

@@ -9,8 +9,8 @@ export const AccessDenied = (props: AccessDeniedProps) => {
     const {
         className,
         icon = DEFAULT_ICON,
-        textPrimary = 'ra.page.accessDenied',
-        textSecondary = 'ra.message.accessDenied',
+        textPrimary = 'ra.page.access_denied',
+        textSecondary = 'ra.message.access_denied',
         ...rest
     } = props;
     const translate = useTranslate();
