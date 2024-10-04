@@ -130,14 +130,9 @@ const useAuthState = <ErrorType = Error>(
     const result = useMemo(() => {
         return {
             ...queryResult,
-            // If the data is undefined and the query isn't loading anymore, it means the query failed.
-            // In that case, we set authenticated to false unless there's no authProvider.
-            authenticated:
-                queryResult.data ?? queryResult.isLoading
-                    ? true
-                    : authProvider == null, // Optimistic,
+            authenticated: queryResult.error ? false : queryResult.data,
         };
-    }, [authProvider, queryResult]);
+    }, [queryResult]);
 
     return authProvider != null
         ? result
