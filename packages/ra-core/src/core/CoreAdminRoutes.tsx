@@ -155,5 +155,6 @@ export interface CoreAdminRoutesProps {
     accessDenied?: React.ComponentType;
 }
 
+// FIXME in v6: make dashboard anonymous by default to remove this hack
 const defaultAuthParams = { params: { route: 'dashboard' } };
 const Noop = () => null;
