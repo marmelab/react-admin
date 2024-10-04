@@ -629,6 +629,16 @@ It also supports [all the other `<Button>` props](#button).
 
 To override the style of all instances of `<CreateButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaCreateButton` key.
 
+### Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<CreateButton>` will only render if the user has the "create" access to the related resource.
+
+`<CreateButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "create", resource: [current resource] }
+```
+
 ## `<DeleteButton>`
 
 Delete the current record.
@@ -783,6 +793,16 @@ Alternately, pass a `successMessage` prop:
 <DeleteButton successMessage="Comment deleted successfully" />
 ```
 
+### Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<DeleteButton>` will only render if the user has the "delete" access to the related resource.
+
+`<DeleteButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "delete", resource: [current resource], record: [current record] }
+```
+
 ## `<DeleteWithConfirmButton>`
 
 Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
@@ -873,6 +893,16 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
 **Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
+### Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<EditButton>` will only render if the user has the "edit" access to the related resource.
+
+`<EditButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "edit", resource: [current resource], record: [current record] }
+```
 
 ## `<ExportButton>`
 
@@ -976,6 +1006,16 @@ export const PostShow = () => (
 
 It also supports [all the other `<Button>` props](#button).
 
+### Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<ListButton>` will only render if the user has the "list" access to the related resource.
+
+`<ListButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "list", resource: [current resource] }
+```
+
 ## `<RefreshButton>`
 
 ## `<SkipNavigationButton>`
@@ -1024,6 +1064,16 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
+
+### Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<ShowButton>` will only render if the user has the "show" access to the related resource.
+
+`<ShowButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "show", resource: [current resource], record: [current record] }
+```
 
 ## `<UpdateButton>`
 

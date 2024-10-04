@@ -1,60 +1,27 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
-import { Resource, testDataProvider } from 'ra-core';
-import { Layout, LayoutProps, Menu } from '.';
-import { AdminContext } from '../AdminContext';
-import { AdminUI } from '../AdminUI';
-import { ListGuesser } from '../list';
+import { render, screen } from '@testing-library/react';
+import {
+    AccessControl,
+    AccessControlInsideAdminChildFunction,
+    Basic,
+    InsideAdminChildFunction,
+} from './ResourceMenuItem.stories';
 
 describe('ResourceMenuItem', () => {
     it('should not throw when used with only <Resource> as <Admin> child', async () => {
-        const dataProvider = testDataProvider({
-            getList: () => Promise.resolve({ data: [], total: 0 }),
-        });
-        const CustomMenu = () => (
-            <Menu>
-                <Menu.ResourceItem name="users" />
-            </Menu>
-        );
-        const CustomLayout = (props: LayoutProps) => (
-            <Layout {...props} menu={CustomMenu} />
-        );
-        const App = () => (
-            <AdminContext dataProvider={dataProvider}>
-                <AdminUI layout={CustomLayout}>
-                    <Resource name="users" list={ListGuesser} />
-                </AdminUI>
-            </AdminContext>
-        );
-        render(<App />);
+        render(<Basic />);
     });
     it('should not throw when used with a Function as <Admin> child', async () => {
-        const dataProvider = testDataProvider({
-            getList: () => Promise.resolve({ data: [], total: 0 }),
-        });
-        const authProvider: any = {
-            getPermissions: () => Promise.resolve([]),
-            checkAuth: () => Promise.resolve(),
-        };
-        const CustomMenu = () => (
-            <Menu>
-                <Menu.ResourceItem name="users" />
-            </Menu>
-        );
-        const CustomLayout = (props: LayoutProps) => (
-            <Layout {...props} menu={CustomMenu} />
-        );
-        const App = () => (
-            <AdminContext
-                dataProvider={dataProvider}
-                authProvider={authProvider}
-            >
-                <AdminUI layout={CustomLayout}>
-                    <Resource name="users" list={ListGuesser} />
-                    {() => <Resource name="posts" list={ListGuesser} />}
-                </AdminUI>
-            </AdminContext>
-        );
-        render(<App />);
+        render(<InsideAdminChildFunction />);
+    });
+    it('should not render when authProvider.canAccess returns false', async () => {
+        render(<AccessControl />);
+        await screen.findByText('resources.posts.name');
+        expect(screen.queryByText('resources.users.name')).toBeNull();
+    });
+    it('should not render when authProvider.canAccess returns false with a Function as <Admin> child', async () => {
+        render(<AccessControlInsideAdminChildFunction />);
+        await screen.findByText('resources.posts.name');
+        expect(screen.queryByText('resources.users.name')).toBeNull();
     });
 });

@@ -310,3 +310,17 @@ You can prevent `<ReferenceField>` from adding a link to its children by setting
 // No link
 <ReferenceField source="user_id" reference="users" link={false} />
 ```
+
+## Access Control
+
+If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess) and you don't provide the [`link`](#link) prop, React-Admin will verify whether users have access to the Show and Edit views.
+
+For instance, given the following `ReferenceField`:
+
+```jsx
+<ReferenceField source="user_id" reference="users" />
+```
+
+React-Admin will call `canAccess` with the following parameters:
+- If the `users` resource has a Show view: `{ action: "show", resource: 'posts', record: Object }`
+- If the `users` resource has an Edit view: `{ action: "edit", resource: 'posts', record: Object }`

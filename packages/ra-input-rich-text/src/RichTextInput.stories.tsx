@@ -5,6 +5,7 @@ import {
     useGetManyReference,
     useRecordContext,
     TestMemoryRouter,
+    ResourceContextProvider,
 } from 'ra-core';
 import {
     AdminContext,
@@ -60,135 +61,157 @@ const i18nProvider: I18nProvider = {
 
 export const Basic = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput source="body" />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput source="body" />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const Disabled = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput source="body" disabled />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput source="body" disabled />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const ReadOnly = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput source="body" readOnly />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput source="body" readOnly />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const Small = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput
-                toolbar={<RichTextInputToolbar size="small" />}
-                label="Body"
-                source="body"
-            />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput
+                    toolbar={<RichTextInputToolbar size="small" />}
+                    label="Body"
+                    source="body"
+                />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const Medium = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput
-                toolbar={<RichTextInputToolbar size="medium" />}
-                label="Body"
-                source="body"
-            />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput
+                    toolbar={<RichTextInputToolbar size="medium" />}
+                    label="Body"
+                    source="body"
+                />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const Large = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput
-                toolbar={<RichTextInputToolbar size="large" />}
-                label="Body"
-                source="body"
-            />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput
+                    toolbar={<RichTextInputToolbar size="large" />}
+                    label="Body"
+                    source="body"
+                />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const FullWidth = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput
-                toolbar={<RichTextInputToolbar />}
-                label="Body"
-                source="body"
-                fullWidth
-            />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput
+                    toolbar={<RichTextInputToolbar />}
+                    label="Body"
+                    source="body"
+                    fullWidth
+                />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const Sx = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput
-                label="Body"
-                source="body"
-                sx={{ border: '1px solid red' }}
-            />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput
+                    label="Body"
+                    source="body"
+                    sx={{ border: '1px solid red' }}
+                />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
 export const Validation = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm onSubmit={() => {}} {...props}>
-            <RichTextInput label="Body" source="body" validate={required()} />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm onSubmit={() => {}} {...props}>
+                <RichTextInput
+                    label="Body"
+                    source="body"
+                    validate={required()}
+                />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
@@ -202,14 +225,19 @@ const MyRichTextInputToolbar = ({ ...props }) => {
 
 export const Toolbar = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
-        <SimpleForm
-            defaultValues={{ body: 'Hello World' }}
-            onSubmit={() => {}}
-            {...props}
-        >
-            <RichTextInput source="body" toolbar={<MyRichTextInputToolbar />} />
-            <FormInspector />
-        </SimpleForm>
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{ body: 'Hello World' }}
+                onSubmit={() => {}}
+                {...props}
+            >
+                <RichTextInput
+                    source="body"
+                    toolbar={<MyRichTextInputToolbar />}
+                />
+                <FormInspector />
+            </SimpleForm>
+        </ResourceContextProvider>
     </AdminContext>
 );
 
@@ -234,23 +262,25 @@ export const EditorReference = (props: Partial<SimpleFormProps>) => {
 
     return (
         <AdminContext i18nProvider={i18nProvider}>
-            <SimpleForm
-                defaultValues={{ body: 'Hello World' }}
-                toolbar={<EditorToolbar />}
-                onSubmit={() => {}}
-                {...props}
-            >
-                <RichTextInput
-                    source="body"
-                    editorOptions={{
-                        ...DefaultEditorOptions,
-                        onCreate: ({ editor }: { editor: Editor }) => {
-                            editorRef.current = editor;
-                        },
-                    }}
-                />
-                <FormInspector />
-            </SimpleForm>
+            <ResourceContextProvider value="posts">
+                <SimpleForm
+                    defaultValues={{ body: 'Hello World' }}
+                    toolbar={<EditorToolbar />}
+                    onSubmit={() => {}}
+                    {...props}
+                >
+                    <RichTextInput
+                        source="body"
+                        editorOptions={{
+                            ...DefaultEditorOptions,
+                            onCreate: ({ editor }: { editor: Editor }) => {
+                                editorRef.current = editor;
+                            },
+                        }}
+                    />
+                    <FormInspector />
+                </SimpleForm>
+            </ResourceContextProvider>
         </AdminContext>
     );
 };

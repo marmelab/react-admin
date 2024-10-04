@@ -29,6 +29,7 @@ import { CreateController } from './CreateController';
 import { getRecordFromLocation } from './useCreateController';
 
 import { TestMemoryRouter } from '../../routing';
+import { CanAccess } from './useCreateController.security.stories';
 
 describe('useCreateController', () => {
     describe('getRecordFromLocation', () => {
@@ -108,6 +109,7 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            // @ts-ignore
             create: (_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
@@ -260,6 +262,7 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            // @ts-ignore
             create: (_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
@@ -297,6 +300,7 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            // @ts-ignore
             create: (_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
@@ -657,6 +661,7 @@ describe('useCreateController', () => {
             create: (_, { data }) =>
                 new Promise(resolve =>
                     setTimeout(
+                        // @ts-ignore
                         () => resolve({ data: { id: 123, ...data } }),
                         300
                     )
@@ -706,5 +711,24 @@ describe('useCreateController', () => {
         });
         fireEvent.click(screen.getByText('Submit'));
         expect(await screen.findByText('Show')).not.toBeNull();
+    });
+
+    describe('Security', () => {
+        it('should redirect to the /access-denied page when users do not have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('posts.create access'));
+            fireEvent.click(await screen.findByText('Create'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Access denied');
+        });
+
+        it('should display the create view when users have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('Create'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Create view');
+        });
     });
 });

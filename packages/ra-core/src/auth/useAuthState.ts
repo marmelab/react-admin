@@ -60,7 +60,7 @@ const useAuthState = <ErrorType = Error>(
     const notify = useNotify();
     const { onSuccess, onError, onSettled, ...options } = queryOptions;
 
-    const result = useQuery<boolean, any>({
+    const queryResult = useQuery<boolean, any>({
         queryKey: ['auth', 'checkAuth', params],
         queryFn: ({ signal }) => {
             // The authProvider is optional in react-admin
@@ -88,56 +88,55 @@ const useAuthState = <ErrorType = Error>(
     const onErrorEvent = useEvent(
         onError ??
             ((error: any) => {
+                if (!logoutOnFailure) return;
                 const loginUrl = removeDoubleSlashes(
                     `${basename}/${defaultAuthParams.loginUrl}`
                 );
-                if (logoutOnFailure) {
-                    logout(
-                        {},
-                        error && error.redirectTo != null
-                            ? error.redirectTo
-                            : loginUrl
-                    );
-                    const shouldSkipNotify = error && error.message === false;
-                    !shouldSkipNotify &&
-                        notify(
-                            getErrorMessage(error, 'ra.auth.auth_check_error'),
-                            { type: 'error' }
-                        );
-                }
+                logout(
+                    {},
+                    error && error.redirectTo != null
+                        ? error.redirectTo
+                        : loginUrl
+                );
+                const shouldSkipNotify = error && error.message === false;
+                !shouldSkipNotify &&
+                    notify(getErrorMessage(error, 'ra.auth.auth_check_error'), {
+                        type: 'error',
+                    });
             })
     );
 
     useEffect(() => {
-        if (result.data === undefined || result.isFetching) return;
-        onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data, result.isFetching]);
+        if (queryResult.data === undefined || queryResult.isFetching) return;
+        onSuccessEvent(queryResult.data);
+    }, [onSuccessEvent, queryResult.data, queryResult.isFetching]);
 
     useEffect(() => {
-        if (result.error == null || result.isFetching) return;
-        onErrorEvent(result.error);
-    }, [onErrorEvent, result.error, result.isFetching]);
+        if (queryResult.error == null || queryResult.isFetching) return;
+        onErrorEvent(queryResult.error);
+    }, [onErrorEvent, queryResult.error, queryResult.isFetching]);
 
     useEffect(() => {
-        if (result.status === 'pending' || result.isFetching) return;
-        onSettledEvent(result.data, result.error);
+        if (queryResult.status === 'pending' || queryResult.isFetching) return;
+        onSettledEvent(queryResult.data, queryResult.error);
     }, [
         onSettledEvent,
-        result.data,
-        result.error,
-        result.status,
-        result.isFetching,
+        queryResult.data,
+        queryResult.error,
+        queryResult.status,
+        queryResult.isFetching,
     ]);
 
-    return useMemo(() => {
+    const result = useMemo(() => {
         return {
-            ...result,
-            // If the data is undefined and the query isn't loading anymore, it means the query failed.
-            // In that case, we set authenticated to false unless there's no authProvider.
-            authenticated:
-                result.data ?? result.isLoading ? true : authProvider == null, // Optimistic,
+            ...queryResult,
+            authenticated: queryResult.error ? false : queryResult.data,
         };
-    }, [authProvider, result]);
+    }, [queryResult]);
+
+    return authProvider != null
+        ? result
+        : (noAuthProviderQueryResult as UseAuthStateResult<ErrorType>);
 };
 
 type UseAuthStateOptions<ErrorType = Error> = Omit<
@@ -153,7 +152,7 @@ export type UseAuthStateResult<ErrorType = Error> = QueryObserverResult<
     boolean,
     ErrorType
 > & {
-    authenticated: boolean;
+    authenticated?: QueryObserverResult<boolean, ErrorType>['data'];
 };
 
 export default useAuthState;
@@ -166,3 +165,31 @@ const getErrorMessage = (error, defaultMessage) =>
           : error.message;
 
 const noop = () => {};
+
+const noAuthProviderQueryResult = {
+    authenticated: true,
+    data: true,
+    dataUpdatedAt: 0,
+    error: null,
+    errorUpdatedAt: 0,
+    errorUpdateCount: 0,
+    failureCount: 0,
+    failureReason: null,
+    fetchStatus: 'idle',
+    isError: false,
+    isInitialLoading: false,
+    isLoading: false,
+    isLoadingError: false,
+    isFetched: true,
+    isFetchedAfterMount: true,
+    isFetching: false,
+    isPaused: false,
+    isPlaceholderData: false,
+    isPending: false,
+    isRefetchError: false,
+    isRefetching: false,
+    isStale: false,
+    isSuccess: true,
+    status: 'success',
+    refetch: () => Promise.resolve(noAuthProviderQueryResult),
+};

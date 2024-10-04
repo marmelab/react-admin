@@ -23,3 +23,6 @@ const { Response, Headers, Request } = require('whatwg-fetch');
 global.Response = Response;
 global.Headers = Headers;
 global.Request = Request;
+
+/** Mock scrollTo as it is not supported by JSDOM */
+global.scrollTo = jest.fn();

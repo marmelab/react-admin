@@ -1,47 +1,25 @@
 import * as React from 'react';
 import expect from 'expect';
-import { useEffect } from 'react';
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 
-import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
-import { useSaveContext } from '../saveContext';
-import { CreateBase } from './CreateBase';
+import {
+    AccessControl,
+    NoAuthProvider,
+    WithAuthProviderNoAccessControl,
+} from './CreateBase.stories';
 
 describe('CreateBase', () => {
-    const defaultProps = {
-        hasCreate: true,
-        hasEdit: true,
-        hasList: true,
-        hasShow: true,
-        id: 12,
-        resource: 'posts',
-        debounce: 200,
-    };
-
     it('should give access to the save function', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             create: jest.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
         });
 
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            useEffect(() => {
-                saveContext.save({ test: 'test' });
-            }, []); // eslint-disable-line
-
-            return null;
-        };
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <CreateBase {...defaultProps}>
-                    <Child />
-                </CreateBase>
-            </CoreAdminContext>
-        );
+        render(<NoAuthProvider dataProvider={dataProvider} />);
+        fireEvent.click(screen.getByText('save'));
 
         await waitFor(() => {
             expect(dataProvider.create).toHaveBeenCalledWith('posts', {
@@ -52,30 +30,21 @@ describe('CreateBase', () => {
 
     it('should allow to override the onSuccess function', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             create: jest.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
         });
         const onSuccess = jest.fn();
 
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            const handleClick = () => {
-                saveContext.save({ test: 'test' });
-            };
-
-            return <button aria-label="save" onClick={handleClick} />;
-        };
-        const { getByLabelText } = render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <CreateBase {...defaultProps} mutationOptions={{ onSuccess }}>
-                    <Child />
-                </CreateBase>
-            </CoreAdminContext>
+        render(
+            <NoAuthProvider
+                dataProvider={dataProvider}
+                mutationOptions={{ onSuccess }}
+            />
         );
 
-        getByLabelText('save').click();
+        fireEvent.click(screen.getByText('save'));
 
         await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith(
@@ -91,6 +60,7 @@ describe('CreateBase', () => {
 
     it('should allow to override the onSuccess function at call time', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             create: jest.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
@@ -98,27 +68,15 @@ describe('CreateBase', () => {
         const onSuccess = jest.fn();
         const onSuccessOverride = jest.fn();
 
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            const handleClick = () => {
-                saveContext.save(
-                    { test: 'test' },
-                    { onSuccess: onSuccessOverride }
-                );
-            };
-
-            return <button aria-label="save" onClick={handleClick} />;
-        };
-        const { getByLabelText } = render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <CreateBase {...defaultProps} mutationOptions={{ onSuccess }}>
-                    <Child />
-                </CreateBase>
-            </CoreAdminContext>
+        const { getByText } = render(
+            <NoAuthProvider
+                dataProvider={dataProvider}
+                mutationOptions={{ onSuccess }}
+                callTimeOptions={{ onSuccess: onSuccessOverride }}
+            />
         );
 
-        getByLabelText('save').click();
+        getByText('save').click();
 
         await waitFor(() => {
             expect(onSuccessOverride).toHaveBeenCalledWith(
@@ -136,28 +94,19 @@ describe('CreateBase', () => {
     it('should allow to override the onError function', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
+            // @ts-ignore
             create: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
 
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            const handleClick = () => {
-                saveContext.save({ test: 'test' });
-            };
-
-            return <button aria-label="save" onClick={handleClick} />;
-        };
         render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <CreateBase {...defaultProps} mutationOptions={{ onError }}>
-                    <Child />
-                </CreateBase>
-            </CoreAdminContext>
+            <NoAuthProvider
+                dataProvider={dataProvider}
+                mutationOptions={{ onError }}
+            />
         );
 
-        screen.getByLabelText('save').click();
+        fireEvent.click(screen.getByText('save'));
 
         await waitFor(() => {
             expect(onError).toHaveBeenCalledWith(
@@ -170,32 +119,21 @@ describe('CreateBase', () => {
 
     it('should allow to override the onError function at call time', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             create: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
         const onErrorOverride = jest.fn();
 
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            const handleClick = () => {
-                saveContext.save(
-                    { test: 'test' },
-                    { onError: onErrorOverride }
-                );
-            };
-
-            return <button aria-label="save" onClick={handleClick} />;
-        };
         render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <CreateBase {...defaultProps} mutationOptions={{ onError }}>
-                    <Child />
-                </CreateBase>
-            </CoreAdminContext>
+            <NoAuthProvider
+                dataProvider={dataProvider}
+                mutationOptions={{ onError }}
+                callTimeOptions={{ onError: onErrorOverride }}
+            />
         );
 
-        screen.getByLabelText('save').click();
+        screen.getByText('save').click();
 
         await waitFor(() => {
             expect(onErrorOverride).toHaveBeenCalledWith(
@@ -209,6 +147,7 @@ describe('CreateBase', () => {
 
     it('should allow to override the transform function', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             create: jest.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
@@ -217,24 +156,11 @@ describe('CreateBase', () => {
             .fn()
             .mockReturnValueOnce({ test: 'test transformed' });
 
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            const handleClick = () => {
-                saveContext.save({ test: 'test' });
-            };
-
-            return <button aria-label="save" onClick={handleClick} />;
-        };
         render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <CreateBase {...defaultProps} transform={transform}>
-                    <Child />
-                </CreateBase>
-            </CoreAdminContext>
+            <NoAuthProvider dataProvider={dataProvider} transform={transform} />
         );
 
-        screen.getByLabelText('save').click();
+        fireEvent.click(screen.getByText('save'));
 
         await waitFor(() => {
             expect(transform).toHaveBeenCalledWith({ test: 'test' });
@@ -248,6 +174,7 @@ describe('CreateBase', () => {
 
     it('should allow to override the transform function at call time', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             create: jest.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
@@ -257,27 +184,17 @@ describe('CreateBase', () => {
             .fn()
             .mockReturnValueOnce({ test: 'test transformed' });
 
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            const handleClick = () => {
-                saveContext.save(
-                    { test: 'test' },
-                    { transform: transformOverride }
-                );
-            };
-
-            return <button aria-label="save" onClick={handleClick} />;
-        };
         render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <CreateBase {...defaultProps} transform={transform}>
-                    <Child />
-                </CreateBase>
-            </CoreAdminContext>
+            <NoAuthProvider
+                dataProvider={dataProvider}
+                transform={transform}
+                callTimeOptions={{
+                    transform: transformOverride,
+                }}
+            />
         );
 
-        screen.getByLabelText('save').click();
+        screen.getByText('save').click();
 
         await waitFor(() => {
             expect(transformOverride).toHaveBeenCalledWith({ test: 'test' });
@@ -288,5 +205,67 @@ describe('CreateBase', () => {
             });
         });
         expect(transform).not.toHaveBeenCalled();
+    });
+
+    it('should show the view immediately if authProvider is not provided', () => {
+        const dataProvider = testDataProvider();
+        render(<NoAuthProvider dataProvider={dataProvider} />);
+        screen.getByText('save');
+    });
+    it('should wait for the authentication resolution before showing the view', async () => {
+        let resolveAuth: () => void;
+        const authProvider = {
+            login: () => Promise.resolve(),
+            logout: () => Promise.resolve(),
+            checkError: () => Promise.resolve(),
+            checkAuth: () =>
+                new Promise<void>(resolve => {
+                    resolveAuth = resolve;
+                }),
+        };
+        const dataProvider = testDataProvider();
+        render(
+            <WithAuthProviderNoAccessControl
+                authProvider={authProvider}
+                dataProvider={dataProvider}
+            />
+        );
+        await screen.findByText('Authentication loading...');
+        resolveAuth!();
+        await screen.findByText('save');
+    });
+    it('should wait for both the authentication and authorization resolution before showing the view', async () => {
+        let resolveAuth: () => void;
+        let resolveCanAccess: (value: boolean) => void;
+        const authProvider = {
+            login: () => Promise.resolve(),
+            logout: () => Promise.resolve(),
+            checkError: () => Promise.resolve(),
+            checkAuth: () =>
+                new Promise<void>(resolve => {
+                    resolveAuth = resolve;
+                }),
+            canAccess: jest.fn(
+                () =>
+                    new Promise<boolean>(resolve => {
+                        resolveCanAccess = resolve;
+                    })
+            ),
+        };
+        const dataProvider = testDataProvider();
+        render(
+            <AccessControl
+                authProvider={authProvider}
+                dataProvider={dataProvider}
+            />
+        );
+        await screen.findByText('Authentication loading...');
+        resolveAuth!();
+        await screen.findByText('Authentication loading...');
+        await waitFor(() => {
+            expect(authProvider.canAccess).toHaveBeenCalled();
+        });
+        resolveCanAccess!(true);
+        await screen.findByText('save');
     });
 });

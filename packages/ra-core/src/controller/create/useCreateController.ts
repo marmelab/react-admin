@@ -3,7 +3,7 @@ import { parse } from 'query-string';
 import { useLocation, Location } from 'react-router-dom';
 import { UseMutationOptions } from '@tanstack/react-query';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useRequireAccess } from '../../auth';
 import {
     HttpError,
     useCreate,
@@ -61,13 +61,21 @@ export const useCreateController = <
         mutationOptions = {},
     } = props;
 
-    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
             'useCreateController requires a non-empty resource prop or context'
         );
     }
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'create',
+        resource,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
+    });
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const finalRedirectTo =
         redirectTo ?? getDefaultRedirectRoute(hasShow, hasEdit);
@@ -188,7 +196,7 @@ export const useCreateController = <
     return {
         isFetching: false,
         isLoading: false,
-        isPending: saving,
+        isPending: disableAuthentication ? false : isPendingCanAccess,
         saving,
         defaultTitle,
         save,
@@ -229,6 +237,7 @@ export interface CreateControllerResult<
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;
+    saving: boolean;
 }
 
 /**

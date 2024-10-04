@@ -27,7 +27,7 @@ export const FakeBrowserDecorator = (Story, context) => {
     );
 };
 
-const Browser = ({ children }: { children: ReactNode }) => {
+export const Browser = ({ children }: { children: ReactNode }) => {
     return (
         <>
             <style

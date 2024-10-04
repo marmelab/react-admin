@@ -10,6 +10,7 @@ import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
 import { testDataProvider } from '../dataProvider';
 import { TestMemoryRouter } from '../routing';
+import { Basic } from './CoreAdminRoutes.stories';
 
 const Layout = ({ children }: CoreLayoutProps) => <div>Layout {children}</div>;
 const CatchAll = () => <div />;
@@ -24,51 +25,28 @@ describe('<CoreAdminRoutes>', () => {
         it('should render resources and custom routes with and without layout', async () => {
             let navigate: NavigateFunction | null = null;
             render(
-                <TestMemoryRouter
+                <Basic
                     navigateCallback={n => {
                         navigate = n;
                     }}
-                >
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <CoreAdminRoutes
-                            layout={Layout}
-                            catchAll={CatchAll}
-                            loading={Loading}
-                        >
-                            <CustomRoutes noLayout>
-                                <Route path="/foo" element={<div>Foo</div>} />
-                            </CustomRoutes>
-                            <CustomRoutes>
-                                <Route path="/bar" element={<div>Bar</div>} />
-                            </CustomRoutes>
-                            <Resource
-                                name="posts"
-                                list={() => <span>PostList</span>}
-                            />
-                            <Resource
-                                name="comments"
-                                list={() => <span>CommentList</span>}
-                            />
-                        </CoreAdminRoutes>
-                    </CoreAdminContext>
-                </TestMemoryRouter>
+                />
             );
             await screen.findByText('Layout');
-            navigate('/posts');
+            navigate!('/posts');
             await screen.findByText('PostList');
-            navigate('/comments');
+            navigate!('/comments');
             await screen.findByText('CommentList');
-            navigate('/foo');
+            navigate!('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            navigate('/bar');
+            navigate!('/bar');
             await screen.findByText('Layout');
             await screen.findByText('Bar');
         });
     });
 
     describe('With children returned from a function as children', () => {
-        it('should render resources and custom routes with and without layout', async () => {
+        it('should render resources and custom routes with and without layout when there is no authProvider', async () => {
             let navigate: NavigateFunction | null = null;
             render(
                 <TestMemoryRouter
@@ -107,67 +85,90 @@ describe('<CoreAdminRoutes>', () => {
                     </CoreAdminContext>
                 </TestMemoryRouter>
             );
-            navigate('/foo');
+            navigate!('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            navigate('/bar');
+            navigate!('/bar');
             await screen.findByText('Bar');
             await screen.findByText('Layout');
             await screen.findByText('Bar');
-            navigate('/posts');
+            navigate!('/posts');
             await screen.findByText('PostList');
-            navigate('/comments');
+            navigate!('/comments');
             await screen.findByText('CommentList');
         });
 
-        it('should render resources and custom routes with and without layout even without an authProvider', async () => {
+        it('should render resources and custom routes with and without layout when there is an authProvider', async () => {
             let navigate: NavigateFunction | null = null;
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
             render(
-                <TestMemoryRouter
+                <Basic
+                    authProvider={authProvider}
                     navigateCallback={n => {
                         navigate = n;
                     }}
-                >
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <CoreAdminRoutes
-                            layout={Layout}
-                            catchAll={CatchAll}
-                            loading={Loading}
-                        >
-                            <CustomRoutes noLayout>
-                                <Route path="/foo" element={<div>Foo</div>} />
-                            </CustomRoutes>
-                            {() => (
-                                <>
-                                    <CustomRoutes>
-                                        <Route
-                                            path="/bar"
-                                            element={<div>Bar</div>}
-                                        />
-                                    </CustomRoutes>
-                                    <Resource
-                                        name="posts"
-                                        list={() => <span>PostList</span>}
-                                    />
-                                    <Resource
-                                        name="comments"
-                                        list={() => <span>CommentList</span>}
-                                    />
-                                </>
-                            )}
-                        </CoreAdminRoutes>
-                    </CoreAdminContext>
-                </TestMemoryRouter>
+                />
             );
-            navigate('/foo');
+            navigate!('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            navigate('/bar');
+            navigate!('/bar');
             await screen.findByText('Bar');
             expect(screen.queryByText('Layout')).not.toBeNull();
-            navigate('/posts');
+            navigate!('/posts');
             await screen.findByText('PostList');
-            navigate('/comments');
+            navigate!('/comments');
+            await screen.findByText('CommentList');
+        });
+
+        it('should show the first resource by default when there is no authProvider', async () => {
+            render(<Basic />);
+            await screen.findByText('PostList');
+        });
+
+        it('should show the first resource by default when there is an authProvider', async () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+            render(<Basic authProvider={authProvider} />);
+            await screen.findByText('PostList');
+        });
+
+        it('should show the first resource by default when there is an authProvider that supports canAccess', async () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+                canAccess: jest.fn().mockResolvedValue(true),
+            };
+            render(<Basic authProvider={authProvider} />);
+            await screen.findByText('PostList');
+        });
+
+        it('should show the first allowed resource by default when there is an authProvider that supports canAccess', async () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: jest.fn().mockResolvedValue(''),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+                canAccess: jest.fn(({ resource }) =>
+                    Promise.resolve(resource === 'comments')
+                ),
+            };
+            render(<Basic authProvider={authProvider} />);
             await screen.findByText('CommentList');
         });
 
@@ -208,9 +209,9 @@ describe('<CoreAdminRoutes>', () => {
             );
             // Timeout needed because we wait for a second before displaying the loading screen
             jest.advanceTimersByTime(1010);
-            navigate('/posts');
+            navigate!('/posts');
             await screen.findByText('Loading');
-            navigate('/foo');
+            navigate!('/foo');
             await screen.findByText('Custom');
             expect(screen.queryByText('Loading')).toBeNull();
             jest.useRealTimers();

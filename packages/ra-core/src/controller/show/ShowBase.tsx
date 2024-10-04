@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 
 import { RaRecord } from '../../types';
 import { useShowController, ShowControllerProps } from './useShowController';
 import { ShowContextProvider } from './ShowContextProvider';
-import { ResourceContextProvider } from '../../core';
+import { OptionalResourceContextProvider } from '../../core';
+import { useIsAuthPending } from '../../auth';
 
 /**
  * Call useShowController and put the value in a ShowContext
@@ -37,20 +37,32 @@ import { ResourceContextProvider } from '../../core';
  */
 export const ShowBase = <RecordType extends RaRecord = any>({
     children,
+    loading = null,
     ...props
-}: { children: ReactElement } & ShowControllerProps<RecordType>) => {
+}: ShowBaseProps<RecordType>) => {
     const controllerProps = useShowController<RecordType>(props);
-    const body = (
-        <ShowContextProvider value={controllerProps}>
-            {children}
-        </ShowContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
+
+    const isAuthPending = useIsAuthPending({
+        resource: controllerProps.resource,
+        action: 'show',
+    });
+
+    if (isAuthPending && !props.disableAuthentication) {
+        return loading;
+    }
+
+    return (
+        // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
+        <OptionalResourceContextProvider value={props.resource}>
+            <ShowContextProvider value={controllerProps}>
+                {children}
+            </ShowContextProvider>
+        </OptionalResourceContextProvider>
     );
 };
+
+export interface ShowBaseProps<RecordType extends RaRecord = RaRecord>
+    extends ShowControllerProps<RecordType> {
+    children: React.ReactNode;
+    loading?: React.ReactNode;
+}

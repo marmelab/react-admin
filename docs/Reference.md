@@ -30,6 +30,7 @@ title: "Index"
 
 **- C -**
 * [`<Calendar>`](./Calendar.md)<img class="icon" src="./img/premium.svg" />
+* [`<CanAccess>`](./CanAccess.md)
 * [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
 * [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md)
 * [`<ChipField>`](./ChipField.md)
@@ -88,7 +89,7 @@ title: "Index"
 * [`<HorizontalMenu>`](./ContainerLayout.md#horizontalmenu)<img class="icon" src="./img/premium.svg" />
 
 **- I -**
-* [`<IfCanAccess>`](./IfCanAccess.md)<img class="icon" src="./img/premium.svg" />
+* [`<IfCanAccess>`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess)<img class="icon" src="./img/premium.svg" />
 * [`<InfiniteList>`](./InfiniteList.md)
 * [`<InfinitePagination>`](./InfiniteList.md)
 * [`<ImageField>`](./ImageField.md)
@@ -227,7 +228,9 @@ title: "Index"
 * [`useAuthState`](./useAuthState.md)
 
 **- C -**
-* [`useCanAccess`](./useCanAccess.md)<img class="icon" src="./img/premium.svg" />
+* [`useCanAccess`](./useCanAccess.md)
+* [`useCanAccessCallback`](./useCanAccess.md#callback-version)
+* [`useCanAccessResources`](./useCanAccess.md#multiple-resources)
 * [`useChoicesContext`](./useChoicesContext.md)
 * [`useCreate`](./useCreate.md)
 * [`useCreateContext`](./useCreateContext.md)
@@ -296,6 +299,7 @@ title: "Index"
 * [`useRefresh`](./useRefresh.md)
 * [`useRegisterMutationMiddleware`](./useRegisterMutationMiddleware.md)
 * [`useRemoveFromStore`](./useRemoveFromStore.md)
+* [`useRequireAccess`](./useCanAccess.md#logout-on-failure)
 * [`useResetStore`](./useResetStore.md)
 
 **- S -**

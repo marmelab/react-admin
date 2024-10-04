@@ -72,3 +72,40 @@ const {
     saving, // Boolean, true when the dataProvider is called to create the record
 } = useCreateController();
 ```
+
+## Security
+
+`<useCreateController>` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Create.md#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useCreateController` will only render if the user has the "create" access to the related resource.
+
+For instance, for the `<PostCreate>` page below:
+
+{% raw %}
+```tsx
+import { useCreateController, SimpleForm, TextInput } from 'react-admin';
+
+const PostCreate = ({ id }) => {
+  const { isPending, error, save } = useCreateController({ resource: 'posts' })
+  if (error) return <div>Error!</div>;
+  if (isPending) return <div>Loading...</div>;
+  return (
+      <SimpleForm record={{}} onSubmit={save}>
+        <TextInput source="title" />
+        <TextInput source="author" />
+        <TextInput source="published_at" />
+      </SimpleShowLayout>
+  );
+}
+```
+{% endraw %}
+
+`useEditController` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "create", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Create.md#disableauthentication).

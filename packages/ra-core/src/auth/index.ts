@@ -10,12 +10,18 @@ import convertLegacyAuthProvider from './convertLegacyAuthProvider';
 
 export * from './Authenticated';
 export * from './AuthContext';
+export * from './CanAccess';
 export * from './LogoutOnMount';
 export * from './types';
 export * from './useAuthenticated';
+export * from './useCanAccess';
+export * from './useCanAccessResources';
+export * from './useCanAccessCallback';
 export * from './useCheckAuth';
 export * from './useGetIdentity';
 export * from './useHandleAuthCallback';
+export * from './useIsAuthPending';
+export * from './useRequireAccess';
 export * from './addRefreshAuthToAuthProvider';
 export * from './addRefreshAuthToDataProvider';
 

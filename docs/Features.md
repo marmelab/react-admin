@@ -926,19 +926,17 @@ const roles = {
 To learn more about authentication, roles, and permissions, check out the following pages:
 
 - The [Security introduction](./Authentication.md)
-- [Role-Based Access Control (RBAC)](./AuthRBAC.md)
-- [`Authenticated`](./Authenticated.md)
-- [`IfCanAccess`](./IfCanAccess.md)
-- [`WithPermissions`](./WithPermissions.md)
-- [`useAuthProvider`](./useAuthProvider.md)
+- [Authorization and access control](./Permissions.md)
+- [`<Authenticated>`](./Authenticated.md)
+- [`<CanAccess>`](./CanAccess.md)
 - [`useAuthenticated`](./useAuthenticated.md)
-- [`useAuthstate`](./useAuthState.md)
-- [`useGetIdentity`](./useGetIdentity.md)
+- [`useAuthState`](./useAuthState.md)
 - [`useLogin`](./useLogin.md)
 - [`useLogout`](./useLogout.md)
-- [`usePermissions`](./usePermissions.md)
+- [`useGetIdentity`](./useGetIdentity.md)
 - [`useCanAccess`](./useCanAccess.md)
-- [`canAccess`](./canAccess.md)
+- [`usePermissions`](./usePermissions.md)
+- [`useAuthProvider`](./useAuthProvider.md)
 
 ## Revisions & Versioning
 

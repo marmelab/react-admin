@@ -12,7 +12,21 @@ import { TestMemoryRouter } from '../routing';
 describe('<Authenticated>', () => {
     const Foo = () => <div>Foo</div>;
 
-    it('should render its child by default', async () => {
+    it('should not render its child while loading', async () => {
+        const authProvider = {
+            checkAuth: new Promise(() => {}),
+        } as any;
+
+        render(
+            <CoreAdminContext authProvider={authProvider}>
+                <Authenticated loading={<div>Loading</div>}>
+                    <Foo />
+                </Authenticated>
+            </CoreAdminContext>
+        );
+        await screen.findByText('Loading');
+    });
+    it('should render its child when authenticated', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -30,11 +44,11 @@ describe('<Authenticated>', () => {
                 </Authenticated>
             </CoreAdminContext>
         );
-        expect(screen.queryByText('Foo')).not.toBeNull();
+        await screen.findByText('Foo');
         expect(reset).toHaveBeenCalledTimes(0);
     });
 
-    it('should logout, redirect to login and show a notification after a tick if the auth fails', async () => {
+    it('should logout, redirect to login and show a notification if the auth fails', async () => {
         const authProvider = {
             login: jest.fn().mockResolvedValue(''),
             logout: jest.fn().mockResolvedValue(''),

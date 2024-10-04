@@ -12,25 +12,30 @@ import useAuthState from './useAuthState';
  * requires it.
  *
  * @example
- *     import { Admin, CustomRoutes, useAuthenticated } from 'react-admin';
- *     const FooPage = () => {
- *         useAuthenticated();
- *         return <Foo />;
- *     }
- *     const customRoutes = [
- *         <Route path="/foo" element={<FooPage />} />
- *     ];
- *     const App = () => (
- *         <Admin>
- *             <CustomRoutes>{customRoutes}</CustomRoutes>
- *         </Admin>
- *     );
+ * import { Admin, CustomRoutes, useAuthenticated } from 'react-admin';
+ *
+ * const FooPage = () => {
+ *     const { isPending } = useAuthenticated();
+ *     if (isPending) return null;
+ *     return <Foo />;
+ * }
+ *
+ * const customRoutes = [
+ *     <Route path="/foo" element={<FooPage />} />
+ * ];
+ *
+ * const App = () => (
+ *     <Admin>
+ *         <CustomRoutes>{customRoutes}</CustomRoutes>
+ *     </Admin>
+ * );
  */
 export const useAuthenticated = <ParamsType = any>({
     params,
+    logoutOnFailure = true,
     ...options
 }: UseAuthenticatedOptions<ParamsType> = {}) => {
-    useAuthState(params ?? emptyParams, true, options);
+    return useAuthState(params ?? emptyParams, logoutOnFailure, options);
 };
 
 export type UseAuthenticatedOptions<ParamsType> = Omit<
@@ -38,6 +43,8 @@ export type UseAuthenticatedOptions<ParamsType> = Omit<
         params?: ParamsType;
     },
     'queryKey' | 'queryFn'
->;
+> & {
+    logoutOnFailure?: boolean;
+};
 
 const emptyParams = {};

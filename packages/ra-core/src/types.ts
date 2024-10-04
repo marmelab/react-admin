@@ -65,11 +65,19 @@ export type AuthProvider = {
     checkAuth: (params: any & QueryFunctionContext) => Promise<void>;
     checkError: (error: any) => Promise<void>;
     getIdentity?: (params?: QueryFunctionContext) => Promise<UserIdentity>;
-    getPermissions: (params: any & QueryFunctionContext) => Promise<any>;
+    getPermissions?: (params: any & QueryFunctionContext) => Promise<any>;
     handleCallback?: (
         params?: QueryFunctionContext
     ) => Promise<AuthRedirectResult | void | any>;
+    canAccess?: <RecordType extends Record<string, any> = Record<string, any>>(
+        params: QueryFunctionContext & {
+            action: string;
+            resource: string;
+            record?: RecordType;
+        }
+    ) => Promise<boolean>;
     [key: string]: any;
+    supportAbortSignal?: boolean;
 };
 
 export type AuthRedirectResult = {
@@ -388,3 +396,9 @@ export type SetOnSave = (
 export type FormFunctions = {
     setOnSave?: SetOnSave;
 };
+
+// Type for a string that accept one of the known values but also any other string
+// Useful for IDE autocompletion without preventing custom values
+export type HintedString<KnownValues extends string> =
+    | (string & {})
+    | KnownValues;
