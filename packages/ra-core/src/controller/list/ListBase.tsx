@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { useListController, ListControllerProps } from './useListController';
-import { ResourceContextProvider } from '../../core';
+import { OptionalResourceContextProvider } from '../../core';
 import { RaRecord } from '../../types';
 import { ListContextProvider } from './ListContextProvider';
+import { useIsAuthPending } from '../../auth';
 
 /**
  * Call useListController and put the value in a ListContext
@@ -41,11 +42,30 @@ import { ListContextProvider } from './ListContextProvider';
  */
 export const ListBase = <RecordType extends RaRecord = any>({
     children,
+    loading = null,
     ...props
-}: ListControllerProps<RecordType> & { children: ReactNode }) => (
-    <ResourceContextProvider value={props.resource}>
-        <ListContextProvider value={useListController<RecordType>(props)}>
-            {children}
-        </ListContextProvider>
-    </ResourceContextProvider>
-);
+}: ListBaseProps<RecordType>) => {
+    const controllerProps = useListController<RecordType>(props);
+    const isAuthPending = useIsAuthPending({
+        resource: controllerProps.resource,
+        action: 'list',
+    });
+
+    if (isAuthPending && !props.disableAuthentication) {
+        return loading;
+    }
+
+    return (
+        <OptionalResourceContextProvider value={controllerProps.resource}>
+            <ListContextProvider value={controllerProps}>
+                {children}
+            </ListContextProvider>
+        </OptionalResourceContextProvider>
+    );
+};
+
+export interface ListBaseProps<RecordType extends RaRecord = any>
+    extends ListControllerProps<RecordType> {
+    children: ReactNode;
+    loading?: ReactNode;
+}

@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import { ListBase, ListControllerProps, RaRecord } from 'ra-core';
 
 import { ListView, ListViewProps } from './ListView';
+import { Loading } from '../layout';
 
 /**
  * List page component
@@ -75,6 +76,7 @@ export const List = <RecordType extends RaRecord = any>({
         exporter={exporter}
         filter={filter}
         filterDefaultValues={filterDefaultValues}
+        loading={defaultLoading}
         perPage={perPage}
         queryOptions={queryOptions}
         resource={resource}
@@ -90,3 +92,4 @@ export interface ListProps<RecordType extends RaRecord = any>
         ListViewProps {}
 
 const defaultFilter = {};
+const defaultLoading = <Loading />;
