@@ -52,7 +52,8 @@ export const ShowBase = <RecordType extends RaRecord = any>({
     }
 
     return (
-        <OptionalResourceContextProvider value={controllerProps.resource}>
+        // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
+        <OptionalResourceContextProvider value={props.resource}>
             <ShowContextProvider value={controllerProps}>
                 {children}
             </ShowContextProvider>

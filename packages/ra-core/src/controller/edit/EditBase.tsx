@@ -53,7 +53,8 @@ export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
     }
 
     return (
-        <OptionalResourceContextProvider value={controllerProps.resource}>
+        // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
+        <OptionalResourceContextProvider value={props.resource}>
             <EditContextProvider value={controllerProps}>
                 {children}
             </EditContextProvider>
