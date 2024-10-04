@@ -12,6 +12,11 @@ Once a user is authenticated, your application may need to check if the user has
 
 You can implement one or the other, or both, depending on your needs. We recommend Access Control, because it lets you put the authorization logic in the `authProvider` rather than in the code. 
 
+<video controls autoplay muted loop>
+  <source src="./img/AccessControl.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 ## Access Control
 
 With Access Control, it's the `authProvider`'s responsibility to check if the user can access a specific resource or perform a specific action. This flexibility allows you to implement various authorization strategies, such as:
