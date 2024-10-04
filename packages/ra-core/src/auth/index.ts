@@ -20,6 +20,7 @@ export * from './useCanAccessCallback';
 export * from './useCheckAuth';
 export * from './useGetIdentity';
 export * from './useHandleAuthCallback';
+export * from './useIsAuthPending';
 export * from './useRequireAccess';
 export * from './addRefreshAuthToAuthProvider';
 export * from './addRefreshAuthToDataProvider';
