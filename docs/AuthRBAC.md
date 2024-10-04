@@ -166,14 +166,6 @@ Here are all the actions supported by ra-rbac:
 
 ## Concepts
 
-### Pessimistic Strategy
-
-React-admin treats permissions in an optimistic way: While it fetches permissions from the authProvider, react-admin renders all components. If the authProvider returns a limited set of permissions, users may briefly see content they don't have access to.
-
-Ra-rbac takes the opposite strategy: while permissions are loading, react-admin doesn't render the components that require permissions, assuming that these components are restricted by default.
-
-It's only when ra-rbac is sure that the user has the right permissions that it renders the content.
-
 ### Principle Of Least Privilege
 
 A user with no permissions has access to nothing. By default, any restricted action is accessible to nobody. This is also called an "implicit deny".
