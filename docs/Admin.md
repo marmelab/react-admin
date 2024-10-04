@@ -998,9 +998,9 @@ const App = () => (
 
 ## `requireAuth`
 
-Some pages in react-admin apps may allow anonymous access. For that reason, react-admin starts rendering the page layout before knowing if the user is logged in. If all the pages require authentication, this default behaviour creates an unwanted "flash of UI" for users who never logged in, before the `authProvider` redirects them to the login page.
+Some custom pages in react-admin apps may allow anonymous access. For this reason, react-admin starts rendering the page layout before knowing if the user is logged in. So anonymous users may see UI elements (menu, sidebar, etc.) before being redirected to the login page. This may reveal information about the app structure that you may want to keep private.
 
-If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `<Admin requireAuth>` prop.
+If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `requireAuth` prop.
 
 ```tsx
 import { Admin } from 'react-admin';

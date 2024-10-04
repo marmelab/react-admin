@@ -172,6 +172,8 @@ const App = () => (
 );
 ```
 
+`requireAuth` also hides the UI until the authentication check is complete, so your app won't reveal any information (menu, resource names, etc) to anonymous users.
+
 ## Allowing Anonymous Access
 
 As long as you add an `authProvider`, react-admin restricts access to all the pages declared in the `<Resource>` components. If you want to allow anonymous access to some of these pages, you can set the `disableAuthentication` prop in the page component.
