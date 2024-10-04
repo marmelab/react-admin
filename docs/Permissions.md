@@ -5,12 +5,12 @@ title: "Authorization"
 
 # Authorization
 
-Once a user is authenticated, your application may need to check if the user has the right to access a specific resource or perform a specific action. React-admin provides two ways to do so:
+Once a user is authenticated, your application may need to check if the user has the right to access a specific resource or perform a particular action. React-admin provides two ways to do so:
 
 1. **Access control** relies on `authProvider.canAccess({ resource, action })`, which returns whether the user can access the given resource and action.
 2. **Permissions** rely on `authProvider.getPermissions()`, which returns a list of permissions that your components can inspect.
 
-You can implement one or the other, or both, depending on your needs. We recommend Access Control, because it lets you put the authorization logic in the `authProvider` rather than in the code. 
+Depending on your needs, you can implement one or the other or both. We recommend Access Control because it allows you to put the authorization logic in the `authProvider` rather than in the code. 
 
 <video controls autoplay muted loop>
   <source src="./img/AccessControl.mp4" type="video/mp4"/>
@@ -19,7 +19,7 @@ You can implement one or the other, or both, depending on your needs. We recomme
 
 ## Access Control
 
-With Access Control, it's the `authProvider`'s responsibility to check if the user can access a specific resource or perform a specific action. This flexibility allows you to implement various authorization strategies, such as:
+With Access Control, the `authProvider`is responsible for checking if the user can access a specific resource or perform a particular action. This flexibility allows you to implement various authorization strategies, such as:
 
 - Role-Based Access Control (RBAC)
 - Attribute-Based Access Control (ABAC)
@@ -43,7 +43,7 @@ async function canAccess(params: CanAccessParams): Promise<boolean>;
 
 React components will use this method to determine if the current user can perform an `action` (e.g., "read", "update", "delete") on a particular `resource` (e.g., "posts", "posts.title", etc.) and optionally on a specific `record` (to implement record-level permissions).
 
-For example, let's assume that on login, the application receives a list of authorized resources. The `authProvider` would look like this:
+For example, let's assume that the application receives a list of authorized resources on login. The `authProvider` would look like this:
 
 ```tsx
 const authProvider = {
@@ -65,9 +65,9 @@ const authProvider = {
 };
 ```
 
-`canAccess` can be asynchronous, so if the `authProvider` needs to fetch the permissions from a server, or refresh a token, it can return a promise.
+`canAccess` can be asynchronous, so if the `authProvider` needs to fetch the permissions from a server or refresh a token, it can return a promise.
 
-**Tip**: React-admin calls `dataProvider.canAccess()` before rendering all page components, so if the call is slow, the user navigation may be delayed. If you can, it's better to fetch user permissions on login and store them locally to keep access control fast.
+**Tip**: React-admin calls `dataProvider.canAccess()` before rendering all page components, so if the call is slow, user navigation may be delayed. If you can, fetch user permissions on login and store them locally to keep access control fast.
 
 ### Access Control Strategies
 
@@ -126,7 +126,7 @@ If the current user tries to access a page they don't have access to, they are r
 
 If the `authProvider.canAccess()` method returns an error, the user is redirected to an "Access Control Error" page. You can customize this page by adding a custom route on the `/accessControlError` path.
 
-The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButtoon>`) also have built-in access control. They are only displayed if the user has access to the corresponding action on the resource.
+The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButtoon>`) also have built-in access control. They are only displayed if the user can access the corresponding action on the resource.
 
 ```tsx
 const MyToolbar = () => (
@@ -162,7 +162,7 @@ const DeleteCommentButton = ({ record }) => {
 };
 ```
 
-**Tip**: If you need to control access for several resources, use the `useCanAccessResources` hook, which performs several checks at once.
+**Tip**: If you need to control access for several resources, use the `useCanAccessResources` hook, which performs several checks simultaneously.
 
 ```jsx
 import { useCanAccessResources, SimpleList } from 'react-admin';
@@ -187,7 +187,7 @@ const UserList = () => {
 
 ### `<CanAccess>`
 
-As an alternative to the `useCanAccess()` hook, you can use the `<CanAccess>` component. It calls `dataProvider.canAccess()` on mount and renders its children only if the user has access to the resource and action.
+As an alternative to the `useCanAccess()` hook, you can use the `<CanAccess>` component. It calls `dataProvider.canAccess()` on mount and renders its children only if the user can access the resource and action.
 
 ```tsx
 import Stack from '@mui/material/Stack';
@@ -210,7 +210,7 @@ const CommentsToolbar = ({ record }) => (
 
 ## Permissions
 
-With permissions, the `authProvider` stores a list of roles (e.g. `admin`, `editor`, `user`). It's the responsibility of the React components to check the permissions and display or hide content accordingly.
+With permissions, the `authProvider` stores a list of roles (e.g., `admin`, `editor`, `user`). The React components are responsible for checking the permissions and displaying or hiding content accordingly.
 
 ### `authProvider.getPermissions()`
 
@@ -227,7 +227,7 @@ Permissions can be stored in various formats:
 - an object with fine-grained permissions (e.g. `{ postList: { read: true, write: false, delete: false } }`)
 - or even a function
 
-The format of permissions is free because react-admin never actually uses the permissions itself. It's up to you to use them in your code to hide or display content, redirect the user to another page, or display warnings. 
+The permissions format is free because react-admin never actually uses the permissions itself. You can use them in your code to hide or display content, redirect the user to another page, or display warnings. 
 
 Following is an example where the `authProvider` stores the user's permissions in `localStorage` upon authentication, and returns these permissions when called with `getPermissions`:
 
@@ -281,7 +281,7 @@ const authProvider = {
 
 ### `usePermissions`
 
-If you need to check the permissions in any of the default react-admin views or in custom page, you can use the [`usePermissions()`](./usePermissions.md) hook. It calls the `authProvider.getPermissions()` method on mount and returns the permissions.
+If you need to check the permissions in any of the default react-admin views or on a custom page, you can use the [`usePermissions()`](./usePermissions.md) hook. It calls the `authProvider.getPermissions()` method on mount and returns the permissions.
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
@@ -334,7 +334,7 @@ Note that you can only provide one of such function child.
 
 ## Restricting Access to Form Inputs
 
-You might want to display some inputs conditionally, only to users with specific permissions. You can use the `useCanAccess` ot the `usePermissions` hooks for that.
+You might want to display some inputs conditionally, only to users with specific permissions. For that, you can use the `useCanAccess` and `usePermissions` hooks.
 
 Here is an example of a comment edition form with access control on the comment moderation status:
 
@@ -387,7 +387,7 @@ export const CommentCreate = () => {
 }
 ```
 
-The solution is to delay the rendering of the input until the `authProvider` call is resolved:
+The solution is to delay the rendering of the input until the `authProvider` call resolves:
 
 ```jsx
 export const CommentCreate = () => {
@@ -416,4 +416,4 @@ export const CommentCreate = () => {
 
 ## Role-Based Access Control
 
-If you need a more complex permissions with roles and groups, principle of least privilege, record-level permissions, explicit deny and more, check the next section for the [Role-Based Access Control](./AuthRBAC.md).
+If you need more complex permissions with roles and groups, the principle of least privilege, record-level permissions, explicit deny, and more, check the next section for the [Role-Based Access Control](./AuthRBAC.md).

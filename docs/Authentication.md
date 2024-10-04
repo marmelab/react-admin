@@ -396,3 +396,8 @@ export const dataProvider = addRefreshAuthToDataProvider(baseDataProvider, refre
 ## Authorization
 
 Access control and permissions let you restrict certain pages to certain users. React-admin provides powerful primitives to implement authorization logic, but they deserve their own documentation page. Read more about [Authorization](./Authorization.md) in the dedicated page.
+
+<video controls autoplay muted loop>
+  <source src="./img/AccessControl.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
