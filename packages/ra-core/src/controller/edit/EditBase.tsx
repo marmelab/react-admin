@@ -4,7 +4,8 @@ import { ReactNode } from 'react';
 import { RaRecord } from '../../types';
 import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
-import { ResourceContextProvider } from '../../core';
+import { OptionalResourceContextProvider } from '../../core';
+import { useIsAuthPending } from '../../auth';
 
 /**
  * Call useEditController and put the value in a EditContext
@@ -37,20 +38,31 @@ import { ResourceContextProvider } from '../../core';
  */
 export const EditBase = <RecordType extends RaRecord = any>({
     children,
+    loading = null,
     ...props
-}: { children: ReactNode } & EditControllerProps<RecordType>) => {
+}: EditBaseProps<RecordType>) => {
     const controllerProps = useEditController<RecordType>(props);
-    const body = (
-        <EditContextProvider value={controllerProps}>
-            {children}
-        </EditContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
+
+    const isAuthPending = useIsAuthPending({
+        resource: controllerProps.resource,
+        action: 'edit',
+    });
+
+    if (isAuthPending && !props.disableAuthentication) {
+        return loading;
+    }
+
+    return (
+        <OptionalResourceContextProvider value={controllerProps.resource}>
+            <EditContextProvider value={controllerProps}>
+                {children}
+            </EditContextProvider>
+        </OptionalResourceContextProvider>
     );
 };
+
+export interface EditBaseProps<RecordType extends RaRecord = RaRecord>
+    extends EditControllerProps<RecordType> {
+    children: ReactNode;
+    loading?: ReactNode;
+}

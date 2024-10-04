@@ -6,6 +6,7 @@ import {
     EditControllerProps,
 } from 'ra-core';
 import { EditView, EditViewProps } from './EditView';
+import { Loading } from '../layout';
 
 /**
  * Page component for the Edit view
@@ -77,6 +78,7 @@ export const Edit = <RecordType extends RaRecord = any>(
             redirect={redirect}
             transform={transform}
             disableAuthentication={disableAuthentication}
+            loading={defaultLoading}
         >
             <EditView {...rest} />
         </EditBase>
@@ -86,3 +88,5 @@ export const Edit = <RecordType extends RaRecord = any>(
 export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
     extends EditControllerProps<RecordType, ErrorType>,
         EditViewProps {}
+
+const defaultLoading = <Loading />;
