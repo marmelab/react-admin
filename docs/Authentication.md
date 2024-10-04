@@ -36,24 +36,22 @@ Once an admin has an `authProvider`, react-admin will restrict CRUD pages (the `
 
 What's an `authProvider`? Just like a `dataProvider`, an `authProvider` is an object that handles authentication and authorization logic. It exposes methods that react-admin calls when needed, and that you can call manually through specialized hooks. The `authProvider` methods must return a Promise.
 
-The simplest `authProvider` is:
+A typical `authProvider` has the following methods:
 
 ```js
 const authProvider = {
     // send username and password to the auth server and get back credentials
-    async login(params) {},
+    async login(params) {/** ... **/},
     // when the dataProvider returns an error, check if this is an authentication error
-    async checkError(error) {},
+    async checkError(error) {/** ... **/},
     // when the user navigates, make sure that their credentials are still valid
-    async checkAuth(params) {},
+    async checkAuth(params) {/** ... **/},
     // remove local credentials and notify the auth server that the user logged out
-    async logout() {},
+    async logout() {/** ... **/},
     // get the user's profile
-    async getIdentity() {},
+    async getIdentity() {/** ... **/},
     // check whether users have the right to perform an action on a resource (optional)
-    async canAccess() { return true; },
-    // get the user permissions (optional)
-    async getPermissions() {},
+    async canAccess() {/** ... **/},
 };
 ```
 

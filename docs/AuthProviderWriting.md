@@ -13,16 +13,16 @@ React-admin expect an `authProvider` to implement the following methods:
 
 ```tsx
 const authProvider = {
-    // authentication
+    // required methods
     async login(params) {/* ... */},
     async checkError(error) {/* ... */},
     async checkAuth(params) {/* ... */},
     async logout() {/* ... */},
+    // optional methods
     async getIdentity() {/* ... */},
     async handleCallback() {/* ... */}, // for third-party authentication only
-    // authorization (optional)
-    async canAccess(params) {/* ... */},
-    async getPermissions() {/* ... */},
+    async canAccess(params) {/* ... */}, // for authorization only
+    async getPermissions() {/* ... */}, // for authorization only
 };
 ```
 
@@ -38,7 +38,7 @@ const authProvider: AuthProvider = {
 
 ## Example
 
-Here is a complete but fictive implementation of an auth provider. It only accepts user "john" with password "123".
+Here is a fictive but working implementation of an auth provider. It only accepts user "john" with password "123".
 
 ```tsx
 const authProvider = {
@@ -65,13 +65,8 @@ const authProvider = {
         localStorage.removeItem('username');
     },
     async getIdentity() {
-        return { id: 'john', fullName: 'John Doe' };
-    },
-    async canAccess({ action, resource, record }) {
-        return true;
-    },
-    async getPermissions() {
-        return { role: 'admin' };
+        const username = localStorage.getItem('username');
+        return { id: username, fullName: username };
     },
 };
 ```
@@ -310,7 +305,11 @@ const authProvider = {
 
 ### `getIdentity`
 
-React-admin can display the current user name and avatar on the top right side of the screen. To enable this feature, implement the `authProvider.getIdentity()` method, and return an object with at least an `id` field. You can also return a `fullName` and an `avatar` field:
+Admin components often adapt their behavior based on the current user identity. For instance, a lock system may allow edition only if the lock owner is the current user. Another example is the user menu: it has to display the current user name and avatar.
+
+React-admin delegates the storage of the connected user identity to the `authProvider`. If it exposes a `getIdentity()` method, react-admin will call it to read the user details. 
+
+`getIdentity`should return an object with at least an `id` field. You can also return a `fullName` and an `avatar` field, or any other field you need in your app:
 
 ```tsx
 const authProvider = {
@@ -421,9 +420,22 @@ React-admin has built-in [Access Control](./Permissions.md#access-control) featu
 
 If any errors is thrown by the `canAccess` method, it will be passed to the [`authProvider.checkError`](#checkerror) method.
 
+The simplest implementation is to return `true` for all resources and actions:
+
 ```tsx
 const authProvider = {
-    canAccess: async({ action, resource }) => {
+    async canAccess() {
+        return true;
+    },
+    // ...
+};
+```
+
+More realistically, you would store the user's permissions at login, and check the requested action and resource against these permissions:
+
+```tsx
+const authProvider = {
+    async canAccess({ action, resource }) {
         // authorizedResources is like ['posts', 'comments', 'users'];
         const { authorizedResources } = JSON.parse(localStorage.getItem('auth'));
         if (!authorizedResources.includes(resource)) {
@@ -448,7 +460,7 @@ The permissions can be in any format: a simple string (e.g. `'editor'`), an arra
 
 ```tsx
 const authProvider = {
-    getPermissions: async({ action, resource }) => {
+    async getPermissions({ action, resource }) {
         const { permissions } = JSON.parse(localStorage.getItem('auth'));
         return permissions;
     },
@@ -520,7 +532,7 @@ Now, every call to the auth provider will receive an additional `signal` paramet
 
 ```tsx
 const authProvider = {
-    async canAccess ({ resource, action, record, signal }) {
+    async canAccess({ resource, action, record, signal }) {
         const url = `${API_URL}/can_access?resource=${resource}&action=${action}`;
         const res = await fetch(url, { signal });
         if (!res.ok) {
