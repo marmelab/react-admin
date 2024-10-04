@@ -196,7 +196,7 @@ export const useCreateController = <
     return {
         isFetching: false,
         isLoading: false,
-        isPending: isPendingCanAccess,
+        isPending: disableAuthentication ? false : isPendingCanAccess,
         saving,
         defaultTitle,
         save,
