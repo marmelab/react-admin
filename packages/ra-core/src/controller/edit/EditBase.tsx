@@ -36,12 +36,12 @@ import { useIsAuthPending } from '../../auth';
  *     </EditBase>
  * );
  */
-export const EditBase = <RecordType extends RaRecord = any>({
+export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
     children,
     loading = null,
     ...props
-}: EditBaseProps<RecordType>) => {
-    const controllerProps = useEditController<RecordType>(props);
+}: EditBaseProps<RecordType, ErrorType>) => {
+    const controllerProps = useEditController<RecordType, ErrorType>(props);
 
     const isAuthPending = useIsAuthPending({
         resource: controllerProps.resource,
@@ -61,8 +61,10 @@ export const EditBase = <RecordType extends RaRecord = any>({
     );
 };
 
-export interface EditBaseProps<RecordType extends RaRecord = RaRecord>
-    extends EditControllerProps<RecordType> {
+export interface EditBaseProps<
+    RecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
+> extends EditControllerProps<RecordType, ErrorType> {
     children: ReactNode;
     loading?: ReactNode;
 }

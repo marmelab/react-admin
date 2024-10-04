@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import {
-    InfiniteListBase,
-    InfiniteListControllerProps,
-    RaRecord,
-} from 'ra-core';
+import { InfiniteListBase, InfiniteListBaseProps, RaRecord } from 'ra-core';
 
 import { InfinitePagination } from './pagination';
 import { ListView, ListViewProps } from './ListView';
@@ -70,6 +66,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
     exporter,
     filter = defaultFilter,
     filterDefaultValues,
+    loading = defaultLoading,
     pagination = defaultPagination,
     perPage = 10,
     queryOptions,
@@ -85,7 +82,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
         exporter={exporter}
         filter={filter}
         filterDefaultValues={filterDefaultValues}
-        loading={defaultLoading}
+        loading={loading}
         perPage={perPage}
         queryOptions={queryOptions}
         resource={resource}
@@ -101,5 +98,5 @@ const defaultFilter = {};
 const defaultLoading = <Loading />;
 
 export interface InfiniteListProps<RecordType extends RaRecord = any>
-    extends InfiniteListControllerProps<RecordType>,
+    extends InfiniteListBaseProps<RecordType>,
         ListViewProps {}

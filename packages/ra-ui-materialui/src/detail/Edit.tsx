@@ -3,7 +3,7 @@ import {
     EditBase,
     useCheckMinimumRequiredProps,
     RaRecord,
-    EditControllerProps,
+    EditBaseProps,
 } from 'ra-core';
 import { EditView, EditViewProps } from './EditView';
 import { Loading } from '../layout';
@@ -66,6 +66,7 @@ export const Edit = <RecordType extends RaRecord = any>(
         redirect,
         transform,
         disableAuthentication,
+        loading = defaultLoading,
         ...rest
     } = props;
     return (
@@ -78,7 +79,7 @@ export const Edit = <RecordType extends RaRecord = any>(
             redirect={redirect}
             transform={transform}
             disableAuthentication={disableAuthentication}
-            loading={defaultLoading}
+            loading={loading}
         >
             <EditView {...rest} />
         </EditBase>
@@ -86,7 +87,7 @@ export const Edit = <RecordType extends RaRecord = any>(
 };
 
 export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
-    extends EditControllerProps<RecordType, ErrorType>,
-        EditViewProps {}
+    extends EditBaseProps<RecordType, ErrorType>,
+        Omit<EditViewProps, 'children'> {}
 
 const defaultLoading = <Loading />;

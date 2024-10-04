@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import {
     CreateBase,
-    CreateControllerProps,
+    CreateBaseProps,
     Identifier,
     RaRecord,
     useCheckMinimumRequiredProps,
@@ -70,6 +70,7 @@ export const Create = <
         disableAuthentication,
         hasEdit,
         hasShow,
+        loading = defaultLoading,
         ...rest
     } = props;
     return (
@@ -82,7 +83,7 @@ export const Create = <
             disableAuthentication={disableAuthentication}
             hasEdit={hasEdit}
             hasShow={hasShow}
-            loading={defaultLoading}
+            loading={loading}
         >
             <CreateView {...rest} />
         </CreateBase>
@@ -93,11 +94,7 @@ export interface CreateProps<
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationOptionsError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
-> extends CreateControllerProps<
-            RecordType,
-            MutationOptionsError,
-            ResultRecordType
-        >,
-        CreateViewProps {}
+> extends CreateBaseProps<RecordType, ResultRecordType, MutationOptionsError>,
+        Omit<CreateViewProps, 'children'> {}
 
 const defaultLoading = <Loading />;
