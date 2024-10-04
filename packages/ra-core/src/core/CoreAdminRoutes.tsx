@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { useState, useEffect, Children, ComponentType } from 'react';
+import { Children, ComponentType } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { WithPermissions, useCheckAuth, LogoutOnMount } from '../auth';
+import { WithPermissions, LogoutOnMount, useAuthState } from '../auth';
 import { useScrollToTop } from '../routing';
 import {
     AdminChildren,
@@ -35,24 +35,12 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         accessDenied: AccessDenied = Noop,
     } = props;
 
-    const [onlyAnonymousRoutes, setOnlyAnonymousRoutes] = useState(requireAuth);
-    const [checkAuthLoading, setCheckAuthLoading] = useState(requireAuth);
-    const checkAuth = useCheckAuth();
-
-    useEffect(() => {
-        if (requireAuth) {
-            // do not log the user out on failure to allow access to custom routes with no layout
-            // for other routes, the LogoutOnMount component will log the user out
-            checkAuth(undefined, false)
-                .then(() => {
-                    setOnlyAnonymousRoutes(false);
-                })
-                .catch(() => {})
-                .finally(() => {
-                    setCheckAuthLoading(false);
-                });
-        }
-    }, [checkAuth, requireAuth]);
+    const { authenticated, isPending: isPendingAuthenticated } = useAuthState(
+        undefined,
+        // do not log the user out on failure to allow access to custom routes with no layout
+        false,
+        { enabled: requireAuth }
+    );
 
     if (status === 'empty') {
         if (!Ready) {
@@ -65,7 +53,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
 
     // Note: custom routes with no layout are always rendered, regardless of the auth status
 
-    if (status === 'loading' || checkAuthLoading) {
+    if (status === 'loading' || (requireAuth && isPendingAuthenticated)) {
         return (
             <Routes>
                 {customRoutesWithoutLayout}
@@ -81,7 +69,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         );
     }
 
-    if (onlyAnonymousRoutes) {
+    if (requireAuth && (isPendingAuthenticated || !authenticated)) {
         return (
             <Routes>
                 {customRoutesWithoutLayout}

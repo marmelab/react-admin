@@ -32,14 +32,14 @@ describe('<CoreAdminRoutes>', () => {
                 />
             );
             await screen.findByText('Layout');
-            navigate('/posts');
+            navigate!('/posts');
             await screen.findByText('PostList');
-            navigate('/comments');
+            navigate!('/comments');
             await screen.findByText('CommentList');
-            navigate('/foo');
+            navigate!('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            navigate('/bar');
+            navigate!('/bar');
             await screen.findByText('Layout');
             await screen.findByText('Bar');
         });
@@ -85,16 +85,16 @@ describe('<CoreAdminRoutes>', () => {
                     </CoreAdminContext>
                 </TestMemoryRouter>
             );
-            navigate('/foo');
+            navigate!('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            navigate('/bar');
+            navigate!('/bar');
             await screen.findByText('Bar');
             await screen.findByText('Layout');
             await screen.findByText('Bar');
-            navigate('/posts');
+            navigate!('/posts');
             await screen.findByText('PostList');
-            navigate('/comments');
+            navigate!('/comments');
             await screen.findByText('CommentList');
         });
 
@@ -115,15 +115,15 @@ describe('<CoreAdminRoutes>', () => {
                     }}
                 />
             );
-            navigate('/foo');
+            navigate!('/foo');
             await screen.findByText('Foo');
             expect(screen.queryByText('Layout')).toBeNull();
-            navigate('/bar');
+            navigate!('/bar');
             await screen.findByText('Bar');
             expect(screen.queryByText('Layout')).not.toBeNull();
-            navigate('/posts');
+            navigate!('/posts');
             await screen.findByText('PostList');
-            navigate('/comments');
+            navigate!('/comments');
             await screen.findByText('CommentList');
         });
 
@@ -209,9 +209,9 @@ describe('<CoreAdminRoutes>', () => {
             );
             // Timeout needed because we wait for a second before displaying the loading screen
             jest.advanceTimersByTime(1010);
-            navigate('/posts');
+            navigate!('/posts');
             await screen.findByText('Loading');
-            navigate('/foo');
+            navigate!('/foo');
             await screen.findByText('Custom');
             expect(screen.queryByText('Loading')).toBeNull();
             jest.useRealTimers();
