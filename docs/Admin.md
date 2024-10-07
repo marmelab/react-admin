@@ -1118,7 +1118,6 @@ export const App = () => {
                 ),
             },
         ],
-        { basename: "/admin" },
     );
     return <RouterProvider router={router} />;
 };
