@@ -17599,6 +17599,7 @@ __metadata:
   dependencies:
     "@mui/icons-material": "npm:^5.15.20"
     "@mui/material": "npm:^5.15.20"
+    "@mui/utils": "npm:^5.15.20"
     "@tanstack/react-query": "npm:^5.8.4"
     "@testing-library/react": "npm:^15.0.7"
     "@types/dompurify": "npm:^3.0.2"
@@ -17637,6 +17638,7 @@ __metadata:
   peerDependencies:
     "@mui/icons-material": ^5.15.20
     "@mui/material": ^5.15.20
+    "@mui/utils": ^5.15.20
     ra-core: ^5.0.0
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
