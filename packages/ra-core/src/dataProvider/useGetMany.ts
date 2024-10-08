@@ -4,7 +4,6 @@ import {
     UseQueryOptions,
     UseQueryResult,
     useQueryClient,
-    hashKey,
 } from '@tanstack/react-query';
 
 import { RaRecord, GetManyParams } from '../types';
@@ -59,7 +58,6 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     const { ids, meta } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const queryCache = queryClient.getQueryCache();
     const {
         onError = noop,
         onSuccess = noop,
@@ -100,15 +98,13 @@ export const useGetMany = <RecordType extends RaRecord = any>(
             const records =
                 !ids || ids.length === 0
                     ? []
-                    : ids.map(id => {
-                          const queryHash = hashKey([
+                    : ids.map(id =>
+                          queryClient.getQueryData<RecordType>([
                               resource,
                               'getOne',
                               { id: String(id), meta },
-                          ]);
-                          return queryCache.get<RecordType>(queryHash)?.state
-                              ?.data;
-                      });
+                          ])
+                      );
             if (records.some(record => record === undefined)) {
                 return undefined;
             } else {
