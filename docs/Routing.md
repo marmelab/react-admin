@@ -166,7 +166,7 @@ const App = () => {
             {
                 path: "*",
                 element: (
-                    <Admin basename="/admin" dataProvider={dataProvider}>
+                    <Admin dataProvider={dataProvider}>
                         <Resource name="posts" />
                     </Admin>
                 ),
