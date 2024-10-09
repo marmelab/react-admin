@@ -357,29 +357,38 @@ export const CreateLabel = () => (
     <Wrapper>
         <AutocompleteInput
             source="author"
-            choices={[
-                { id: 1, name: 'Leo Tolstoy' },
-                { id: 2, name: 'Victor Hugo' },
-                { id: 3, name: 'William Shakespeare' },
-                { id: 4, name: 'Charles Baudelaire' },
-                { id: 5, name: 'Marcel Proust' },
-            ]}
+            choices={choicesForCreationSupport}
             onCreate={filter => {
-                const newAuthorName = window.prompt(
-                    'Enter a new author',
-                    filter
-                );
+                if (!filter) return;
 
-                if (newAuthorName) {
-                    const newAuthor = {
-                        id: choicesForCreationSupport.length + 1,
-                        name: newAuthorName,
-                    };
-                    choicesForCreationSupport.push(newAuthor);
-                    return newAuthor;
-                }
+                const newOption = {
+                    id: choicesForCreationSupport.length + 1,
+                    name: filter,
+                };
+                choicesForCreationSupport.push(newOption);
+                return newOption;
             }}
             createLabel="Start typing to create a new item"
+        />
+    </Wrapper>
+);
+
+export const CreateItemLabel = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesForCreationSupport}
+            onCreate={filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: choicesForCreationSupport.length + 1,
+                    name: filter,
+                };
+                choicesForCreationSupport.push(newOption);
+                return newOption;
+            }}
+            createItemLabel="Add a new author: %{item}"
         />
     </Wrapper>
 );
