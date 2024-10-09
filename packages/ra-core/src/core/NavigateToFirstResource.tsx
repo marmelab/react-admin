@@ -25,6 +25,7 @@ export const NavigateToFirstResource = ({
                     resource,
                     type: 'list',
                 })}
+                replace={true}
             />
         );
     }
