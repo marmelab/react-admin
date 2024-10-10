@@ -314,8 +314,11 @@ This feature allow you to prefetch related records by passing a custom query par
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { embed: 'author' } }}>
-        <TextField source="title" />
-        <ReferenceField source="authorId" /> {/** renders without an additional request */}
+        <Datagrid>
+            <TextField source="title" />
+            {/** renders without an additional request */}
+            <ReferenceField source="authorId" />
+        </Datagrid>
     </List>
 );
 ```
