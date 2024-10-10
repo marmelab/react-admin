@@ -36,6 +36,7 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { useState } from 'react';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -261,25 +262,34 @@ const choicesForCreationSupport = [
     { id: 5, name: 'Marcel Proust' },
 ];
 
-export const OnCreate = () => (
-    <Wrapper>
+const OnCreateInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
         <AutocompleteInput
             source="author"
-            choices={choicesForCreationSupport}
-            onCreate={filter => {
+            choices={choices}
+            onCreate={async filter => {
                 if (!filter) return;
 
                 const newOption = {
-                    id: choicesForCreationSupport.length + 1,
+                    id: choices.length + 1,
                     name: filter,
                 };
-                choicesForCreationSupport.push(newOption);
+                setChoices(options => [...options, newOption]);
+                // Waiting for the nex tick to wait the useState to be updated
+                await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
         />
+    );
+};
+
+export const OnCreate = () => (
+    <Wrapper>
+        <OnCreateInput />
     </Wrapper>
 );
 
@@ -326,61 +336,93 @@ export const OnCreateSlow = () => (
     </Wrapper>
 );
 
-export const OnCreatePrompt = () => (
-    <Wrapper>
+const OnCreatePromptInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
         <AutocompleteInput
             source="author"
-            choices={choicesForCreationSupport}
-            onCreate={filter => {
+            choices={choices}
+            onCreate={async filter => {
                 const newAuthorName = window.prompt(
                     'Enter a new author',
                     filter
                 );
-
-                if (newAuthorName) {
-                    const newAuthor = {
-                        id: choicesForCreationSupport.length + 1,
-                        name: newAuthorName,
-                    };
-                    choicesForCreationSupport.push(newAuthor);
-                    return newAuthor;
-                }
+                if (!newAuthorName) return;
+                const newAuthor = {
+                    id: choices.length + 1,
+                    name: newAuthorName,
+                };
+                setChoices(authors => [...authors, newAuthor]);
+                return newAuthor;
             }}
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
         />
+    );
+};
+
+export const OnCreatePrompt = () => (
+    <Wrapper>
+        <OnCreatePromptInput />
     </Wrapper>
 );
 
-export const CreateLabel = () => (
-    <Wrapper>
+const CreateLabelInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
         <AutocompleteInput
             source="author"
-            choices={[
-                { id: 1, name: 'Leo Tolstoy' },
-                { id: 2, name: 'Victor Hugo' },
-                { id: 3, name: 'William Shakespeare' },
-                { id: 4, name: 'Charles Baudelaire' },
-                { id: 5, name: 'Marcel Proust' },
-            ]}
-            onCreate={filter => {
-                const newAuthorName = window.prompt(
-                    'Enter a new author',
-                    filter
-                );
+            choices={choices}
+            onCreate={async filter => {
+                if (!filter) return;
 
-                if (newAuthorName) {
-                    const newAuthor = {
-                        id: choicesForCreationSupport.length + 1,
-                        name: newAuthorName,
-                    };
-                    choicesForCreationSupport.push(newAuthor);
-                    return newAuthor;
-                }
+                const newOption = {
+                    id: choices.length + 1,
+                    name: filter,
+                };
+                setChoices(options => [...options, newOption]);
+                // Waiting for the nex tick to wait the useState to be updated
+                await new Promise(resolve => setTimeout(resolve));
+                return newOption;
             }}
             createLabel="Start typing to create a new item"
         />
+    );
+};
+
+export const CreateLabel = () => (
+    <Wrapper>
+        <CreateLabelInput />
+    </Wrapper>
+);
+
+const CreateItemLabelInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
+        <AutocompleteInput
+            source="author"
+            choices={choices}
+            onCreate={async filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: choices.length + 1,
+                    name: filter,
+                };
+                setChoices(options => [...options, newOption]);
+                // Waiting for the nex tick to wait the useState to be updated
+                await new Promise(resolve => setTimeout(resolve));
+                return newOption;
+            }}
+            createItemLabel="Add a new author: %{item}"
+        />
+    );
+};
+
+export const CreateItemLabel = () => (
+    <Wrapper>
+        <CreateItemLabelInput />
     </Wrapper>
 );
 
