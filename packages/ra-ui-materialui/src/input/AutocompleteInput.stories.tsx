@@ -276,7 +276,7 @@ const OnCreateInput = () => {
                     name: filter,
                 };
                 setChoices(options => [...options, newOption]);
-                // Waiting for the nex tick to simulate to wait the useState to be updated
+                // Waiting for the nex tick to wait the useState to be updated
                 await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
@@ -353,8 +353,6 @@ const OnCreatePromptInput = () => {
                     name: newAuthorName,
                 };
                 setChoices(authors => [...authors, newAuthor]);
-                // Waiting for the nex tick to simulate to wait the useState to be updated
-                await new Promise(resolve => setTimeout(resolve));
                 return newAuthor;
             }}
             TextFieldProps={{
@@ -384,7 +382,7 @@ const CreateLabelInput = () => {
                     name: filter,
                 };
                 setChoices(options => [...options, newOption]);
-                // Waiting for the nex tick to simulate to wait the useState to be updated
+                // Waiting for the nex tick to wait the useState to be updated
                 await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
@@ -413,7 +411,7 @@ const CreateItemLabelInput = () => {
                     name: filter,
                 };
                 setChoices(options => [...options, newOption]);
-                // Waiting for the nex tick to simulate to wait the useState to be updated
+                // Waiting for the nex tick to wait the useState to be updated
                 await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
