@@ -284,7 +284,7 @@ GET /posts/123?embed=author
 {
     "id": 123,
     "title": "Hello, world",
-    "authorId": 456,
+    "author_id": 456,
     "author": {
         "id": 456,
         "name": "John Doe"
@@ -296,7 +296,7 @@ In such cases, the data provider response should put the related record(s) in th
 
 ```jsx
 const { data, meta } = dataProvider.getOne('posts', { id: 123 })
-console.log(data); // { id: 123, title: "Hello, world", authorId: 456 }
+console.log(data); // { id: 123, title: "Hello, world", author_id: 456 }
 console.log(meta._embed); // { authors: [{ id: 456, name: "John Doe" }] }
 ```
 
@@ -307,8 +307,6 @@ const { data } = useGetOne('authors', { id: 456 });
 // will return immediately with the author data, without making a network request
 ```
 
-The way to *ask* for embedded resources isn't normalized and depends on the API. For example, `ra-data-fakerest` uses a `meta: { embed }` key in the query to indicate that the author must be embedded.
-
 This feature allow you to prefetch related records by passing a custom query parameter:
 
 ```jsx
@@ -317,11 +315,15 @@ const PostList = () => (
         <Datagrid>
             <TextField source="title" />
             {/** renders without an additional request */}
-            <ReferenceField source="authorId" />
+            <ReferenceField source="author_id" />
         </Datagrid>
     </List>
 );
 ```
+
+The way to *ask* for embedded resources isn't normalized and depends on the API. For example, `ra-data-fakerest` uses a `meta: { embed }` key in the query to indicate that the author must be embedded.
+
+ Refer to your data provider's documentation to verify if this feature is supported. If you're writing your own data provider, check the [Writing a Data Provider](./DataProviderWriting.md#embedded-data) documentation for more details.
 
 ## Adding Lifecycle Callbacks
 

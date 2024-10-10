@@ -237,6 +237,28 @@ React-admin accumulates and deduplicates the ids of the referenced records to ma
 
 Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`dataProvider.getMany('users', { ids: [789,735] }`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
 
+## Prefetching
+
+When you know that a page will contain a `<ReferenceField>`, you can configure the main page query to prefetch the referenced records to avoid a flicker when the data arrives. To do so, pass a `meta` parameter to the page query to enable relationship embedding.
+
+For example, the following code prefetches the authors referenced by the posts:
+
+```jsx
+const PostList = () => (
+    <List queryOptions={{ meta: { embed: 'author' } }}>
+        <Datagrid>
+            <TextField source="title" />
+            {/** renders without an additional request */}
+            <ReferenceField source="author_id" />
+        </Datagrid>
+    </List>
+);
+```
+
+**Note**: For prefetching to function correctly, your data provider must support [Relationships Embedding](./DataProviders.md#embedding-relationships). Refer to your data provider's documentation to verify if this feature is supported.
+
+**Note**: Prefetching is only useful the first time a record is fetched. After that, [react-admin's internal cache](./Features.md#fast) and the Stale-While-Revalidate policy makes it useless. For instance, if a user displays a post list, react-admin prefills the cache for the show view of each post. So when the user clicks on a post to display its show view, the page will display immediately, without waiting for the getOne call to complete.
+
 ## Rendering More Than One Field
 
 You often need to render more than one field of the reference table (e.g. if the `users` table has a `first_name` and a `last_name` field).
