@@ -270,6 +270,61 @@ Access-Control-Expose-Headers: X-Custom-Header
 
 This must be done on the server side.
 
+## Embedding Relationships
+
+Some API backends can embed related records in the response to avoid multiple requests.
+
+For instance, JSON Server can return a post and its author in a single response:
+
+```txt
+GET /posts/123?embed=author
+```
+
+```json
+{
+    "id": 123,
+    "title": "Hello, world",
+    "author_id": 456,
+    "author": {
+        "id": 456,
+        "name": "John Doe"
+    }
+}
+```
+
+In such cases, the data provider response should put the related record(s) in the `meta._embed` key of the response, using the resource name as key (here, `authors`):
+
+```jsx
+const { data, meta } = dataProvider.getOne('posts', { id: 123 })
+console.log(data); // { id: 123, title: "Hello, world", author_id: 456 }
+console.log(meta._embed); // { authors: [{ id: 456, name: "John Doe" }] }
+```
+
+When seeing a `meta._embed` in a data provider response, react-admin populates the react-query cache with the related records, so they don't need to be fetched separately.
+
+```jsx
+const { data } = useGetOne('authors', { id: 456 });
+// will return immediately with the author data, without making a network request
+```
+
+This feature allow you to prefetch related records by passing a custom query parameter:
+
+```jsx
+const PostList = () => (
+    <List queryOptions={{ meta: { embed: 'author' } }}>
+        <Datagrid>
+            <TextField source="title" />
+            {/** renders without an additional request */}
+            <ReferenceField source="author_id" />
+        </Datagrid>
+    </List>
+);
+```
+
+The way to *ask* for embedded resources isn't normalized and depends on the API. For example, `ra-data-fakerest` uses a `meta: { embed }` key in the query to indicate that the author must be embedded.
+
+ Refer to your data provider's documentation to verify if this feature is supported. If you're writing your own data provider, check the [Writing a Data Provider](./DataProviderWriting.md#embedded-data) documentation for more details.
+
 ## Adding Lifecycle Callbacks
 
 <iframe src="https://www.youtube-nocookie.com/embed/o8U-wjfUwGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>

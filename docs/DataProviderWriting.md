@@ -393,6 +393,111 @@ dataProvider.getList('posts', {
 
 React-admin's `<Pagination>` component will automatically handle the `pageInfo` object and display the appropriate pagination controls.
 
+## Embedded Data
+
+The response for `getList`, `getOne`, `getMany`, and `getManyReference` can include embedded data. This is useful when you want to avoid additional requests to fetch related records (e.g., when using [`<ReferenceField>`](./ReferenceField.md#prefetching)). The embedded data should be included in the `meta._embed` property of the response.
+
+```jsx
+const { data, meta } = dataProvider.getOne('posts', { id: 123 }, { meta: { _embed: ['author'] } });
+console.log(data); // { id: 123, title: "Hello, world", author_id: 456 }
+console.log(meta._embed); // { authors: [{ id: 456, name: "John Doe" }] }
+```
+
+By convention, the `meta._embed` response key must be an object where each key is the name of the embedded resource, and each value is an array of records.
+
+```jsx
+// example _embed value
+{
+  authors: [
+    { id: 1, name: 'John Doe' }
+  ],
+  comments: [
+    { id: 1, post_id: 1, body: 'Nice post!' },
+    { id: 2, post_id: 1, body: 'I agree!' }
+],
+}
+```
+
+It's the Data Provider's job to build the `meta._embed` object based on the API response.
+
+For example, the [JSON server](https://github.com/typicode/json-server?tab=readme-ov-file#embed) backend supports embedded data using the `_embed` query parameter:
+
+```txt
+GET /posts/123?_embed=author
+```
+
+```json
+{
+    "id": 123,
+    "title": "Hello, world",
+    "author_id": 456,
+    "author": {
+        "id": 456,
+        "name": "John Doe"
+    }
+}
+```
+
+To add support for embedded records in the response, the JSON Server Data Provider extracts the embedded data from the response, and puts them in the `meta._embed` property:
+
+```jsx
+const dataProvider = {
+    getOne: async (resource, params) => {
+        let query = `${apiUrl}/${resource}/${params.id}`;
+        if (params.embed) {
+            query += `?_embed=${params._embed.join(',')}`;
+        }
+        const { json: record } = await httpClient(query);
+        const embeds = {};
+        if (params._embed) {
+            params._embed.forEach(embed => {
+                if (record[embed]) {
+                    const embedKey = embed.endsWith('s') ? embed : `${embed}s`;
+                    if (!embeds[embedKey]) {
+                        embeds[embedKey] = [];
+                    }
+                    if (!embeds[embedKey].find(r => r.id === record[embed].id)) {
+                        embeds[embedKey].push(record[embed]);
+                    }
+                    delete record[embed];
+                }
+            });
+        }
+        return { data: record, meta: { _embed: embeds } };
+    },
+    getList: async (resource, params) => {
+        let query = `${apiUrl}/${resource}`;
+        if (params._embed) {
+            query += `?_embed=${params._embed}`;
+        }
+        const { json: records, headers } = await httpClient(query);
+        const embeds = {};
+        if (params._embed) {
+            records.forEach(record => {
+                params._embed.forEach(embed => {
+                    if (record[embed]) {
+                        const embedKey = embed.endsWith('s') ? embed : `${embed}s`;
+                        if (!embeds[embedKey]) {
+                            embeds[embedKey] = [];
+                        }
+                        if (!embeds[embedKey].find(r => r.id === record[embed].id)) {
+                            embeds[embedKey].push(record[embed]);
+                        }
+                        delete record[embed];
+                    }
+                });
+            });
+        }
+        return {
+            data: records,
+            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+            meta: { _embed: embeds }
+        };
+    },
+    // ...
+}
+```
+
 ## Error Format
 
 When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
