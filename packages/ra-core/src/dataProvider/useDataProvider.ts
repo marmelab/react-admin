@@ -1,4 +1,5 @@
 import { useContext, useMemo } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import DataProviderContext from './DataProviderContext';
 import { defaultDataProvider } from './defaultDataProvider';
@@ -6,6 +7,7 @@ import validateResponseFormat from './validateResponseFormat';
 import { DataProvider } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 import { reactAdminFetchActions } from './dataFetchActions';
+import { populateQueryCache } from './populateQueryCache';
 
 /**
  * Hook for getting a dataProvider
@@ -80,6 +82,7 @@ export const useDataProvider = <
 >(): TDataProvider => {
     const dataProvider = (useContext(DataProviderContext) ||
         defaultDataProvider) as unknown as TDataProvider;
+    const queryClient = useQueryClient();
 
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
@@ -110,6 +113,12 @@ export const useDataProvider = <
                                     reactAdminFetchActions.includes(type)
                                 ) {
                                     validateResponseFormat(response, type);
+                                }
+                                if (response?.meta?._embed) {
+                                    populateQueryCache({
+                                        data: response?.meta._embed,
+                                        queryClient,
+                                    });
                                 }
                                 return response;
                             })

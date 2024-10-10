@@ -179,6 +179,7 @@ export interface GetOneParams<RecordType extends RaRecord = any> {
 }
 export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
+    meta?: any;
 }
 
 export interface GetManyParams<RecordType extends RaRecord = any> {
@@ -188,6 +189,7 @@ export interface GetManyParams<RecordType extends RaRecord = any> {
 }
 export interface GetManyResult<RecordType extends RaRecord = any> {
     data: RecordType[];
+    meta?: any;
 }
 
 export interface GetManyReferenceParams {
@@ -217,6 +219,7 @@ export interface UpdateParams<RecordType extends RaRecord = any> {
 }
 export interface UpdateResult<RecordType extends RaRecord = any> {
     data: RecordType;
+    meta?: any;
 }
 
 export interface UpdateManyParams<T = any> {
@@ -226,6 +229,7 @@ export interface UpdateManyParams<T = any> {
 }
 export interface UpdateManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
+    meta?: any;
 }
 
 export interface CreateParams<T = any> {
@@ -234,6 +238,7 @@ export interface CreateParams<T = any> {
 }
 export interface CreateResult<RecordType extends RaRecord = any> {
     data: RecordType;
+    meta?: any;
 }
 
 export interface DeleteParams<RecordType extends RaRecord = any> {
@@ -243,6 +248,7 @@ export interface DeleteParams<RecordType extends RaRecord = any> {
 }
 export interface DeleteResult<RecordType extends RaRecord = any> {
     data: RecordType;
+    meta?: any;
 }
 
 export interface DeleteManyParams<RecordType extends RaRecord = any> {
@@ -251,6 +257,7 @@ export interface DeleteManyParams<RecordType extends RaRecord = any> {
 }
 export interface DeleteManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
+    meta?: any;
 }
 
 export type DataProviderResult<RecordType extends RaRecord = any> =

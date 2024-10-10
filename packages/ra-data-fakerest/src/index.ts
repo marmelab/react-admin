@@ -63,36 +63,63 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
                         number,
                     ],
                     filter: params.filter,
+                    embed: params.meta?.embed,
                 };
+                const data = database.getAll(resource, query);
+                const { data: dataWithoutEmbeds, embeds } = getEmbedsForList(
+                    data,
+                    params.meta?.embed
+                );
                 return delayed(
                     {
-                        data: database.getAll(resource, query),
+                        data: dataWithoutEmbeds,
                         total: database.getCount(resource, {
                             filter: params.filter,
                         }),
+                        meta: params.meta?.embed
+                            ? { _embed: embeds }
+                            : undefined,
                     },
                     delay
                 );
             }
-            case 'getOne':
+            case 'getOne': {
+                const data = database.getOne(resource, params.id, {
+                    ...params,
+                    embed: params.meta?.embed,
+                });
+                const { data: dataWithoutEmbeds, embeds } = getEmbeds(
+                    data,
+                    params.meta?.embed
+                );
                 return delayed(
                     {
-                        data: database.getOne(resource, params.id, {
-                            ...params,
-                        }),
+                        data: dataWithoutEmbeds,
+                        meta: params.meta?.embed
+                            ? { _embed: embeds }
+                            : undefined,
                     },
                     delay
                 );
-            case 'getMany':
+            }
+            case 'getMany': {
+                const data = params.ids.map(id =>
+                    database.getOne(resource, id, { ...params })
+                );
+                const { data: dataWithoutEmbeds, embeds } = getEmbedsForList(
+                    data,
+                    params.meta?.embed
+                );
                 return delayed(
                     {
-                        data: params.ids.map(
-                            id => database.getOne(resource, id),
-                            { ...params }
-                        ),
+                        data: dataWithoutEmbeds,
+                        meta: params.meta?.embed
+                            ? { _embed: embeds }
+                            : undefined,
                     },
                     delay
                 );
+            }
             case 'getManyReference': {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
@@ -103,13 +130,22 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
                         number,
                     ],
                     filter: { ...params.filter, [params.target]: params.id },
+                    embed: params.meta?.embed,
                 };
+                const data = database.getAll(resource, query);
+                const { data: dataWithoutEmbeds, embeds } = getEmbedsForList(
+                    data,
+                    params.meta?.embed
+                );
                 return delayed(
                     {
-                        data: database.getAll(resource, query),
+                        data: dataWithoutEmbeds,
                         total: database.getCount(resource, {
                             filter: query.filter,
                         }),
+                        meta: params.meta?.embed
+                            ? { _embed: embeds }
+                            : undefined,
                     },
                     delay
                 );
@@ -191,6 +227,93 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
         deleteMany: (resource, params) =>
             handle('deleteMany', resource, params),
     };
+};
+
+/**
+ * Extract embeds from FakeRest responses
+ *
+ * When calling FakeRest database.getOne('comments', 123, { embed: 'post' }),
+ * the FakeRest response adds a `post` key to the response, containing the
+ * related post. Something like:
+ *
+ *     { id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }
+ *
+ * We want to extract this post and put it in a data object, that will later
+ * be included into the response _embed meta key.
+ *
+ * @example getEmbeds({ id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }, 'post')
+ * // {
+ * //   data: { id: 123, body: 'Nice post!' },
+ * //   embeds: { posts: [{ id: 1, title: 'Hello, world' }] }
+ * // }
+ */
+const getEmbeds = (data, embedParam) => {
+    if (!embedParam) return { data, embeds: undefined };
+    const embeds = {};
+    const embedsParam = Array.isArray(embedParam) ? embedParam : [embedParam];
+    embedsParam.forEach(embed => {
+        if (Array.isArray(data[embed])) {
+            embeds[embed] = data[embed];
+        } else {
+            embeds[`${embed}s`] = [data[embed]];
+        }
+    });
+
+    // remove the embeds from the data
+    const dataCopy = {};
+    Object.keys(data).forEach(key => {
+        if (!embedsParam.includes(key)) {
+            dataCopy[key] = data[key];
+        }
+    });
+
+    return { data: dataCopy, embeds };
+};
+
+const getEmbedsForList = (data, embedParam) => {
+    if (!embedParam) return { data, embeds: undefined };
+    const embeds = {};
+    const embedsParam = Array.isArray(embedParam) ? embedParam : [embedParam];
+    embedsParam.forEach(embed => {
+        if (Array.isArray(data[0][embed])) {
+            embeds[embed] = [];
+            // add the embeds unless they are already there
+            data.forEach(record => {
+                if (
+                    !embeds[embed].find(
+                        embeddedRecord => embeddedRecord.id === record[embed].id
+                    )
+                ) {
+                    embeds[embed].push(record[embed]);
+                }
+            });
+        } else {
+            embeds[`${embed}s`] = [];
+            // add the embeds unless they are already there
+            data.forEach(record => {
+                if (
+                    !embeds[`${embed}s`].find(
+                        embeddedRecord => embeddedRecord.id === record[embed].id
+                    )
+                ) {
+                    embeds[`${embed}s`].push(record[embed]);
+                }
+            });
+        }
+    });
+
+    // remove the embeds from the data
+    const dataCopy = data.map(record => {
+        const recordCopy = {};
+        Object.keys(record).forEach(key => {
+            if (!embedsParam.includes(key)) {
+                recordCopy[key] = record[key];
+            }
+        });
+        return recordCopy;
+    });
+
+    return { data: dataCopy, embeds };
 };
 
 class UndefinedResourceError extends Error {
