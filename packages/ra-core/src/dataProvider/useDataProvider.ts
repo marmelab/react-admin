@@ -155,7 +155,7 @@ export const useDataProvider = <
                 };
             },
         });
-    }, [dataProvider, logoutIfAccessDenied]);
+    }, [dataProvider, logoutIfAccessDenied, queryClient]);
 
     return dataProviderProxy;
 };
