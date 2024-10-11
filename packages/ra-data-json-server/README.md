@@ -56,7 +56,7 @@ const App = () => (
 export default App;
 ```
 
-### Adding Custom Headers
+## Adding Custom Headers
 
 The provider function accepts an HTTP client function as second argument. By default, they use react-admin's `fetchUtils.fetchJson()` as HTTP client. It's similar to HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
 
@@ -99,6 +99,38 @@ const httpClient = (url, options = {}) => {
 ```
 
 Now all the requests to the REST API will contain the `Authorization: SRTRDFVESGNJYTUKTYTHRG` header.
+
+## Embedding
+
+`ra-data-json-server` supports [Embedded Relationships](https://marmelab.com/react-admin/DataProviders.html#embedding-relationships). Use the `meta.embed` query parameter to specify the relationships that you want to embed. 
+
+```jsx
+dataProvider.getOne('posts', { id: 1, meta: { embed: 'author' } });
+// { 
+//    data: { id: 1, title: 'FooBar', author: { id: 1, name: 'John Doe' } },
+// }
+```
+
+The name of the embedded resource must be singular for a many-to-one relationship, and plural for a one-to-many relationship.
+
+```
+{ meta: { embed: 'comments' } }
+```
+
+You can leverage this feature in page components to avoid multiple requests to the data provider:
+
+```jsx
+const PostList = () => (
+    <List queryOptions={{ meta: { embed: 'author' } }}>
+        <Datagrid>
+            <TextField source="title" />
+            <TextField source="author.name" />
+        </Datagrid>
+    </List>
+);
+```
+
+Embedding Relationships is supported in `getList`, `getOne`, `getMany`, and `getManyReference` queries.
 
 ## License
 
