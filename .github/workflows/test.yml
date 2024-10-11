@@ -225,9 +225,9 @@ jobs:
         - name: Use Node.js LTS
           uses: actions/setup-node@v3
           with:
-              node-version: '16.x'
+              node-version: '18.x'
         - name: Update Sandbox Repository
           env:
-              SSH_DEPLOY_KEY: ${{ secrets.SSH_SANDBOX_DEPLOY_KEY }}
+              SSH_SANDBOX_DEPLOY_KEY: ${{ secrets.SSH_SANDBOX_DEPLOY_KEY }}
               SANDBOX_REPOSITORY: ${{ secrets.SANDBOX_REPOSITORY }}
           run: make update-sandbox
