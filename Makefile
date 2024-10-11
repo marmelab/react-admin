@@ -174,4 +174,4 @@ build-storybook: ## Build the storybook
 	@yarn build-storybook
 
 update-sandbox: ## Push the local version of the simple example to the sandbox repository
-	SANDBOX_REPOSITORY=$(SANDBOX_REPOSITORY) ./update-demo.sh
+	./update-demo.sh
