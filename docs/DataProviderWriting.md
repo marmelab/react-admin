@@ -672,7 +672,15 @@ const { data } = dataProvider.getOne('posts', { id: 123 })
 // }
 ```
 
-This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
+This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods.
+
+**Note**: If the `getList` and `getOne` methods user different `meta` parameters, they won't share the cache. You can use this as an escape hatch to avoid flickering in the Edit view.
+
+```jsx
+const { data } = dataProvider.getOne('posts', { id: 123, meta: { page: 'getOne' } })
+```
+
+This also explains why using [Embedded relationships](./DataProviders.md#emb$) may make the navigation slower, as the `getList` and `getOne` methods will return different shapes.
 
 ## `fetchJson`: Built-In HTTP Client
 

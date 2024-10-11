@@ -295,7 +295,7 @@ GET /posts/123?embed=author
 Data providers implementing this feature often use the `meta` key in the query parameters to pass the embed parameter to the API.
 
 ```jsx
-const { data } = useGetOne('posts', { id: 123, meta: { embed: 'author' } });
+const { data } = useGetOne('posts', { id: 123, meta: { embed: ['author'] } });
 ```
 
 Leveraging embeds can reduce the number of requests made by react-admin to the API, and thus improve the app's performance.
@@ -306,7 +306,7 @@ For example, this allows you to display data from a related resource without mak
 ```diff
 const PostList = () => (
 -   <List>
-+   <List queryOptions={{ meta: { embed: "author" } }}>
++   <List queryOptions={{ meta: { embed: ["author"] } }}>
         <Datagrid>
             <TextField source="title" />
 -           <ReferenceField source="author_id" reference="authors>
@@ -327,6 +327,11 @@ Refer to your data provider's documentation to verify if it supports this featur
 
 Some API backends can return related records in the same response as the main record. For instance, an API may return a post and its author in a single response:
 
+
+```jsx
+const { data, meta } = useGetOne('posts', { id: 123, meta: { prefetch: ['author']} });
+```
+
 ```json
 {
     "data": {
@@ -344,19 +349,14 @@ Some API backends can return related records in the same response as the main re
 
 This is called *prefetching* or *preloading*.
 
-React-admin can use this feature to populate its cache with related records, and avoid subsequent requests to the API. The prefetched records must be returned un the `meta.prefetched` key of the data provider response.
-
-```jsx
-const { data, meta } = useGetOne('posts', { id: 123 });
-console.log(meta.prefetched.authors); // [{ id: 456, name: "John Doe" }]
-```
+React-admin can use this feature to populate its cache with related records, and avoid subsequent requests to the API. The prefetched records must be returned in the `meta.prefetched` key of the data provider response.
 
 For example, you can use prefetching to display the author's name in a post list without making an additional request:
 
 {% raw %}
 ```jsx
 const PostList = () => (
-    <List queryOptions={{ meta: { prefetch: 'author' }}}>
+    <List queryOptions={{ meta: { prefetch: ['author'] }}}>
         <Datagrid>
             <TextField source="title" />
             {/** renders without an additional request */}
@@ -367,7 +367,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-The way to *ask* for embedded resources isn't normalized and depends on the API. The above example uses the `meta.prefetch` quert parameter. Some APIs may use [the `embed` query parameter](#embedding-relationships) to indicate that the author must be added to the response.
+The way to *ask* for embedded resources isn't normalized and depends on the API. The above example uses the `meta.prefetch` query parameter. Some APIs may use [the `embed` query parameter](#embedding-relationships) to indicate prefetching.
 
  Refer to your data provider's documentation to verify if it supports prefetching. If you're writing your own data provider, check the [Writing a Data Provider](./DataProviderWriting.md#embedded-data) documentation for more details.
 
