@@ -259,7 +259,7 @@ const PostList = () => (
 
 **Note**: For prefetching to function correctly, your data provider must support [Relationships Embedding](./DataProviders.md#embedding-relationships). Refer to your data provider's documentation to verify if this feature is supported.
 
-**Note**: Prefetching is only useful the first time a record is fetched. After that, [react-admin's internal cache](./Features.md#fast) and the Stale-While-Revalidate policy makes it useless. For instance, if a user displays a post list, react-admin prefills the cache for the show view of each post. So when the user clicks on a post to display its show view, the page will display immediately, without waiting for the getOne call to complete.
+**Note**: Prefetching is a frontend performance feature, designed to avoid flickers and repaints. It doesn't always prevent `<ReferenceField>` to fetch the data. For instance, when coming to a show view from a list view, the main record is already in the cache, so the page renders immediately, and both the page controller and the `<ReferenceField>` controller fetch the data in parallel. The embedded data from the page controller arrives after the first render of the `<ReferenceField>`, so the data provider fetches the related data anyway. But from a user perspective, the page displays immediately, including the `<ReferenceField>`.
 
 ## Rendering More Than One Field
 
