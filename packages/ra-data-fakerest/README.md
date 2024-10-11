@@ -146,7 +146,7 @@ You can embed more than one related record, so the `embed` value must be an arra
 { meta: { embed: ['author', 'comments'] } }
 ```
 
-You can leverage this feature in the page components to avoid multiple requests to the data provider:
+You can leverage this feature in page components to avoid multiple requests to the data provider:
 
 ```jsx
 const PostList = () => (

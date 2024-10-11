@@ -514,7 +514,7 @@ const dataProvider = {
         if (params.meta?.embed) {
             query += `?_embed=${params.meta.embed.join(',')}`;
         }
-        const data = await httpClient(query);
+        const { json: data } = await httpClient(query);
         return { data };
     },
     // ...
@@ -579,7 +579,7 @@ const dataProvider = {
         if (params.meta?.prefetch) {
             query += `?_embed=${params.meta.prefetch.join(',')}`;
         }
-        const data = await httpClient(query);
+        const { json: data } = await httpClient(query);
         const prefetched = {};
         if (params.meta?.prefetch) {
             params.meta.prefetch.forEach(name => {
