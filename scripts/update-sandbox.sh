@@ -26,9 +26,8 @@ echo $TEMPD
 
 # Copy the demo files into the temporary directory
 (cp -r ./examples/simple/. $TEMPD)
+# Install dependencies to that the sandbox has a lock file
+yarn install --cwd $TEMPD
 
 # Update the demo repository
-# Allow empty commits because even though we may have published new version of the enterprise packages,
-# the demo code may not have changed. However we still want it to be redeployed and, as we don't keep its
-# yarn.lock, it should use the new packages
 (cd $TEMPD && git add -A && git commit --allow-empty -m "Update sandbox" && git push)
