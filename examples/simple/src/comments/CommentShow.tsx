@@ -8,7 +8,7 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const CommentShow = () => (
-    <Show queryOptions={{ meta: { embed: 'post' } }}>
+    <Show queryOptions={{ meta: { prefetch: ['post'] } }}>
         <SimpleShowLayout>
             <TextField source="id" />
             <ReferenceField source="post_id" reference="posts">

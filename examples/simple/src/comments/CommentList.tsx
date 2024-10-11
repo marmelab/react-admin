@@ -151,7 +151,7 @@ const CommentList = () => (
     <ListBase
         perPage={6}
         exporter={exporter}
-        queryOptions={{ meta: { embed: 'post' } }}
+        queryOptions={{ meta: { prefetch: ['post'] } }}
     >
         <ListView />
     </ListBase>

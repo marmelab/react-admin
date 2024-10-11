@@ -63,21 +63,24 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
                         number,
                     ],
                     filter: params.filter,
-                    embed: params.meta?.embed,
+                    embed: getEmbedParam(
+                        params.meta?.embed,
+                        params.meta?.prefetch
+                    ),
                 };
                 const data = database.getAll(resource, query);
-                const { data: dataWithoutEmbeds, embeds } = getEmbedsForList(
+                const prefetched = getPrefetchedData(
                     data,
-                    params.meta?.embed
+                    params.meta?.prefetch
                 );
                 return delayed(
                     {
-                        data: dataWithoutEmbeds,
+                        data: removePrefetchedData(data, params.meta?.prefetch),
                         total: database.getCount(resource, {
                             filter: params.filter,
                         }),
-                        meta: params.meta?.embed
-                            ? { _embed: embeds }
+                        meta: params.meta?.prefetch
+                            ? { prefetched }
                             : undefined,
                     },
                     delay
@@ -86,17 +89,20 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
             case 'getOne': {
                 const data = database.getOne(resource, params.id, {
                     ...params,
-                    embed: params.meta?.embed,
+                    embed: getEmbedParam(
+                        params.meta?.embed,
+                        params.meta?.prefetch
+                    ),
                 });
-                const { data: dataWithoutEmbeds, embeds } = getEmbeds(
+                const prefetched = getPrefetchedData(
                     data,
-                    params.meta?.embed
+                    params.meta?.prefetch
                 );
                 return delayed(
                     {
-                        data: dataWithoutEmbeds,
-                        meta: params.meta?.embed
-                            ? { _embed: embeds }
+                        data: removePrefetchedData(data, params.meta?.prefetch),
+                        meta: params.meta?.prefetch
+                            ? { prefetched }
                             : undefined,
                     },
                     delay
@@ -104,17 +110,23 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
             }
             case 'getMany': {
                 const data = params.ids.map(id =>
-                    database.getOne(resource, id, { ...params })
+                    database.getOne(resource, id, {
+                        ...params,
+                        embed: getEmbedParam(
+                            params.meta?.embed,
+                            params.meta?.prefetch
+                        ),
+                    })
                 );
-                const { data: dataWithoutEmbeds, embeds } = getEmbedsForList(
+                const prefetched = getPrefetchedData(
                     data,
-                    params.meta?.embed
+                    params.meta?.prefetch
                 );
                 return delayed(
                     {
-                        data: dataWithoutEmbeds,
-                        meta: params.meta?.embed
-                            ? { _embed: embeds }
+                        data: removePrefetchedData(data, params.meta?.prefetch),
+                        meta: params.meta?.prefetch
+                            ? { prefetched }
                             : undefined,
                     },
                     delay
@@ -130,21 +142,24 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
                         number,
                     ],
                     filter: { ...params.filter, [params.target]: params.id },
-                    embed: params.meta?.embed,
+                    embed: getEmbedParam(
+                        params.meta?.embed,
+                        params.meta?.prefetch
+                    ),
                 };
                 const data = database.getAll(resource, query);
-                const { data: dataWithoutEmbeds, embeds } = getEmbedsForList(
+                const prefetched = getPrefetchedData(
                     data,
-                    params.meta?.embed
+                    params.meta?.prefetch
                 );
                 return delayed(
                     {
-                        data: dataWithoutEmbeds,
+                        data: removePrefetchedData(data, params.meta?.prefetch),
                         total: database.getCount(resource, {
                             filter: query.filter,
                         }),
-                        meta: params.meta?.embed
-                            ? { _embed: embeds }
+                        meta: params.meta?.prefetch
+                            ? { prefetched }
                             : undefined,
                     },
                     delay
@@ -229,6 +244,14 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
     };
 };
 
+function getEmbedParam(embed: string[], prefetch: string[]) {
+    if (!embed && !prefetch) return;
+    const param = new Set<string>();
+    if (embed) embed.forEach(e => param.add(e));
+    if (prefetch) prefetch.forEach(e => param.add(e));
+    return Array.from(param);
+}
+
 /**
  * Extract embeds from FakeRest responses
  *
@@ -238,82 +261,62 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
  *
  *     { id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }
  *
- * We want to extract this post and put it in a data object, that will later
- * be included into the response _embed meta key.
+ * We want to copy all the embeds in a data object, that will later
+ * be included into the response meta.prefetched key.
  *
- * @example getEmbeds({ id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }, 'post')
+ * @example getPrefetchedData({ id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }, ['post'])
  * // {
- * //   data: { id: 123, body: 'Nice post!' },
- * //   embeds: { posts: [{ id: 1, title: 'Hello, world' }] }
+ * //   posts: [{ id: 1, title: 'Hello, world' }] }
  * // }
  */
-const getEmbeds = (data, embedParam) => {
-    if (!embedParam) return { data, embeds: undefined };
-    const embeds = {};
-    const embedsParam = Array.isArray(embedParam) ? embedParam : [embedParam];
-    embedsParam.forEach(embed => {
-        if (Array.isArray(data[embed])) {
-            embeds[embed] = data[embed];
-        } else {
-            embeds[`${embed}s`] = [data[embed]];
-        }
+const getPrefetchedData = (data, prefetchParam?: string[]) => {
+    if (!prefetchParam) return undefined;
+    const prefetched = {};
+    const dataArray = Array.isArray(data) ? data : [data];
+    prefetchParam.forEach(name => {
+        const resource = name.endsWith('s') ? name : `${name}s`;
+        dataArray.forEach(record => {
+            if (!prefetched[resource]) {
+                prefetched[resource] = [];
+            }
+            if (prefetched[resource].some(r => r.id === record[name].id)) {
+                // do not add the record if it's already there
+                return;
+            }
+            prefetched[resource].push(record[name]);
+        });
     });
 
-    // remove the embeds from the data
-    const dataCopy = {};
-    Object.keys(data).forEach(key => {
-        if (!embedsParam.includes(key)) {
-            dataCopy[key] = data[key];
-        }
-    });
-
-    return { data: dataCopy, embeds };
+    return prefetched;
 };
 
-const getEmbedsForList = (data, embedParam) => {
-    if (!embedParam) return { data, embeds: undefined };
-    const embeds = {};
-    const embedsParam = Array.isArray(embedParam) ? embedParam : [embedParam];
-    embedsParam.forEach(embed => {
-        if (Array.isArray(data[0][embed])) {
-            embeds[embed] = [];
-            // add the embeds unless they are already there
-            data.forEach(record => {
-                if (
-                    !embeds[embed].find(
-                        embeddedRecord => embeddedRecord.id === record[embed].id
-                    )
-                ) {
-                    embeds[embed].push(record[embed]);
-                }
-            });
-        } else {
-            embeds[`${embed}s`] = [];
-            // add the embeds unless they are already there
-            data.forEach(record => {
-                if (
-                    !embeds[`${embed}s`].find(
-                        embeddedRecord => embeddedRecord.id === record[embed].id
-                    )
-                ) {
-                    embeds[`${embed}s`].push(record[embed]);
-                }
-            });
-        }
-    });
-
-    // remove the embeds from the data
-    const dataCopy = data.map(record => {
-        const recordCopy = {};
-        Object.keys(record).forEach(key => {
-            if (!embedsParam.includes(key)) {
-                recordCopy[key] = record[key];
+/**
+ * Remove embeds from FakeRest responses
+ *
+ * When calling FakeRest database.getOne('comments', 123, { embed: 'post' }),
+ * the FakeRest response adds a `post` key to the response, containing the
+ * related post. Something like:
+ *
+ *     { id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }
+ *
+ * We want to remove all the embeds from the response.
+ *
+ * @example removePrefetchedData({ id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }, 'post')
+ * // { id: 123, body: 'Nice post!' }
+ */
+const removePrefetchedData = (data, prefetchParam?: string[]) => {
+    if (!prefetchParam) return data;
+    const dataArray = Array.isArray(data) ? data : [data];
+    const newDataArray = dataArray.map(record => {
+        const newRecord = {};
+        for (const key in record) {
+            if (!prefetchParam.includes(key)) {
+                newRecord[key] = record[key];
             }
-        });
-        return recordCopy;
+        }
+        return newRecord;
     });
-
-    return { data: dataCopy, embeds };
+    return Array.isArray(data) ? newDataArray : newDataArray[0];
 };
 
 class UndefinedResourceError extends Error {

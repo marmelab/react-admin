@@ -7,7 +7,8 @@ export type PopulateQueryCacheOptions = {
 };
 
 /**
- * Populate react-query's query cache with a data dictionnary
+ * Populate react-query's query cache with a data dictionary
+ *
  * @example
  * const data = {
  *    posts: [{ id: 1, title: 'Hello, world' }, { id: 2, title: 'FooBar' }],

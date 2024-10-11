@@ -114,9 +114,9 @@ export const useDataProvider = <
                                 ) {
                                     validateResponseFormat(response, type);
                                 }
-                                if (response?.meta?._embed) {
+                                if (response?.meta?.prefetched) {
                                     populateQueryCache({
-                                        data: response?.meta._embed,
+                                        data: response?.meta.prefetched,
                                         queryClient,
                                     });
                                 }
