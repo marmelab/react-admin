@@ -5,6 +5,8 @@ on:
     branches:
       - master
       - next
+    tags:
+      - '*'
   pull_request:
 
 jobs:
@@ -57,6 +59,7 @@ jobs:
 
   doc-check:
     runs-on: ubuntu-latest
+    if: github.ref_type != 'tag'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -99,6 +102,7 @@ jobs:
 
   e-commerce:
     runs-on: ubuntu-latest
+    if: github.ref_type != 'tag'
     needs: [typecheck]
     steps:
       - name: Checkout
@@ -133,6 +137,7 @@ jobs:
 
   crm:
     runs-on: ubuntu-latest
+    if: github.ref_type != 'tag'
     needs: [typecheck]
     steps:
       - name: Checkout
@@ -157,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     name: GreenFrame
     needs: [e-commerce]
-    if: success() && github.ref == 'refs/heads/master'
+    if: success() && github.ref == 'refs/heads/master' && github.ref_type != 'tag'
     steps:
       # To use this repository's private action,
       # you must check out the repository
@@ -208,3 +213,21 @@ jobs:
       - name: Run the tests
         working-directory: ./myadmin
         run: npm run test
+
+  update-sandbox-repository:
+    runs-on: ubuntu-latest
+    # Only run on new tags that target a release (not latest nor next) and avoid alpha and beta tags
+    if: github.event_name == 'push' && github.ref_type == 'tag' && github.ref_name == 'refs/tags/v*' && !contains('beta', github.ref_name) && !contains('alpha', github.ref_name)
+    needs: [typecheck, simple-example-typecheck, unit-test, e2e-test]
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Use Node.js LTS
+          uses: actions/setup-node@v3
+          with:
+              node-version: '16.x'
+        - name: Update Sandbox Repository
+          env:
+              SSH_DEPLOY_KEY: ${{ secrets.SSH_SANDBOX_DEPLOY_KEY }}
+              SANDBOX_REPOSITORY: ${{ secrets.SANDBOX_REPOSITORY }}
+          run: make update-sandbox
