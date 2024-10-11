@@ -276,7 +276,7 @@ const OnCreateInput = () => {
                     name: filter,
                 };
                 setChoices(options => [...options, newOption]);
-                // Waiting for the nex tick to wait the useState to be updated
+                // Wait until next tick to give some time for React to update the state
                 await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
@@ -353,11 +353,16 @@ const OnCreatePromptInput = () => {
                     name: newAuthorName,
                 };
                 setChoices(authors => [...authors, newAuthor]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
                 return newAuthor;
             }}
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
+            // Disable clearOnBlur because opening the prompt blurs the input
+            // and creates a flicker
+            clearOnBlur={false}
         />
     );
 };
@@ -365,6 +370,79 @@ const OnCreatePromptInput = () => {
 export const OnCreatePrompt = () => (
     <Wrapper>
         <OnCreatePromptInput />
+    </Wrapper>
+);
+
+const CreateAuthorLocal = ({ choices, setChoices }) => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const [name, setName] = React.useState(filter || '');
+    const [language, setLanguage] = React.useState('');
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        const newAuthor = {
+            id: choices.length + 1,
+            name,
+            language,
+        };
+        setChoices(authors => [...authors, newAuthor]);
+        setName('');
+        setLanguage('');
+        // Wait until next tick to give some time for React to update the state
+        setTimeout(() => {
+            onCreate(newAuthor);
+        });
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <Stack gap={4}>
+                        <TextField
+                            name="name"
+                            label="The author name"
+                            value={name}
+                            onChange={event => setName(event.target.value)}
+                            autoFocus
+                        />
+                        <TextField
+                            name="language"
+                            label="The author language"
+                            value={language}
+                            onChange={event => setLanguage(event.target.value)}
+                            autoFocus
+                        />
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+
+const CreateDialogInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
+        <AutocompleteInput
+            source="author"
+            choices={choices}
+            create={
+                <CreateAuthorLocal choices={choices} setChoices={setChoices} />
+            }
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    );
+};
+
+export const CreateDialog = () => (
+    <Wrapper>
+        <CreateDialogInput />
     </Wrapper>
 );
 
@@ -382,7 +460,7 @@ const CreateLabelInput = () => {
                     name: filter,
                 };
                 setChoices(options => [...options, newOption]);
-                // Waiting for the nex tick to wait the useState to be updated
+                // Wait until next tick to give some time for React to update the state
                 await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
@@ -411,7 +489,7 @@ const CreateItemLabelInput = () => {
                     name: filter,
                 };
                 setChoices(options => [...options, newOption]);
-                // Waiting for the nex tick to wait the useState to be updated
+                // Wait until next tick to give some time for React to update the state
                 await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
