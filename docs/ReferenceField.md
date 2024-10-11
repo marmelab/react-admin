@@ -239,14 +239,14 @@ Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField
 
 ## Prefetching
 
-When you know that a page will contain a `<ReferenceField>`, you can configure the main page query to prefetch the referenced records to avoid a flicker when the data arrives. To do so, pass a `meta` parameter to the page query to enable relationship embedding.
+When you know that a page will contain a `<ReferenceField>`, you can configure the main page query to prefetch the referenced records to avoid a flicker when the data arrives. To do so, pass a `meta.prefetch` parameter to the page query.
 
 For example, the following code prefetches the authors referenced by the posts:
 
 {% raw %}
 ```jsx
 const PostList = () => (
-    <List queryOptions={{ meta: { embed: 'author' } }}>
+    <List queryOptions={{ meta: { prefetch: ['author'] } }}>
         <Datagrid>
             <TextField source="title" />
             {/** renders without an additional request */}
@@ -257,9 +257,9 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Note**: For prefetching to function correctly, your data provider must support [Relationships Embedding](./DataProviders.md#embedding-relationships). Refer to your data provider's documentation to verify if this feature is supported.
+**Note**: For prefetching to function correctly, your data provider must support [Prefetching Relationships](./DataProviders.md#prefetching-relationships). Refer to your data provider's documentation to verify if this feature is supported.
 
-**Note**: Prefetching is a frontend performance feature, designed to avoid flickers and repaints. It doesn't always prevent `<ReferenceField>` to fetch the data. For instance, when coming to a show view from a list view, the main record is already in the cache, so the page renders immediately, and both the page controller and the `<ReferenceField>` controller fetch the data in parallel. The embedded data from the page controller arrives after the first render of the `<ReferenceField>`, so the data provider fetches the related data anyway. But from a user perspective, the page displays immediately, including the `<ReferenceField>`.
+**Note**: Prefetching is a frontend performance feature, designed to avoid flickers and repaints. It doesn't always prevent `<ReferenceField>` to fetch the data. For instance, when coming to a show view from a list view, the main record is already in the cache, so the page renders immediately, and both the page controller and the `<ReferenceField>` controller fetch the data in parallel. The prefetched data from the page controller arrives after the first render of the `<ReferenceField>`, so the data provider fetches the related data anyway. But from a user perspective, the page displays immediately, including the `<ReferenceField>`. If you want to avoid the `<ReferenceField>` to fetch the data, you can use the React Query Client's `staleTime` option.
 
 ## Rendering More Than One Field
 
