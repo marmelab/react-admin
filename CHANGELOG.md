@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.2.3
+
+* Fix `<AutoCompleteInput>` should not display a "Create" option when the filter is empty ([#10266](https://github.com/marmelab/react-admin/pull/10266)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix pnpm error Module not found: Can't resolve '@mui/utils' ([#10264](https://github.com/marmelab/react-admin/pull/10264)) ([slax57](https://github.com/slax57))
+* [Doc] Update `<StackedFilters>` doc for `ra-form-layout` v5.2.0 ([#10268](https://github.com/marmelab/react-admin/pull/10268)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Remix tutorial to fix port and yarn documentation link ([#10263](https://github.com/marmelab/react-admin/pull/10263)) ([smeng9](https://github.com/smeng9))
+* [Doc] Update `<Search>` doc for `keyboardShortcutIcon`, `withKeyboardShortcut` and `isInAppBar` ([#10254](https://github.com/marmelab/react-admin/pull/10254)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Admin and Routing docs to encourage using a Data Router ([#10220](https://github.com/marmelab/react-admin/pull/10220)) ([smeng9](https://github.com/smeng9))
+
 ## 5.2.2
 
 - Fix disabled inputs temporarily erase values ([#10249](https://github.com/marmelab/react-admin/pull/10249)) ([fzaninotto](https://github.com/fzaninotto))
@@ -225,6 +234,13 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* [Doc] Update `<StackedFilters>` doc for `ra-form-layout` v5.2.0 ([#10268](https://github.com/marmelab/react-admin/pull/10268)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `<AutoCompleteInput>` should not display a "Create" option when the filter is empty ([#10266](https://github.com/marmelab/react-admin/pull/10266)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix pnpm error Module not found: Can't resolve '@mui/utils' ([#10264](https://github.com/marmelab/react-admin/pull/10264)) ([slax57](https://github.com/slax57))
+* [Doc] Update Remix tutorial to fix port and yarn documentation link ([#10263](https://github.com/marmelab/react-admin/pull/10263)) ([smeng9](https://github.com/smeng9))
+* [Doc] Update `<Search>` doc for `keyboardShortcutIcon`, `withKeyboardShortcut` and `isInAppBar` ([#10254](https://github.com/marmelab/react-admin/pull/10254)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Admin and Routing docs to encourage using a Data Router ([#10220](https://github.com/marmelab/react-admin/pull/10220)) ([smeng9](https://github.com/smeng9))
 
 * Fix `<SelectArrayInput>` options panel width and placement ([#10232](https://github.com/marmelab/react-admin/pull/10232)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc] Fix `mutationMode` reference in `create` documentation ([#10231](https://github.com/marmelab/react-admin/pull/10231)) ([erwanMarmelab](https://github.com/erwanMarmelab))
