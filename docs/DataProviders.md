@@ -309,6 +309,7 @@ const { data } = useGetOne('authors', { id: 456 });
 
 This feature allow you to prefetch related records by passing a custom query parameter:
 
+{% raw %}
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { embed: 'author' } }}>
@@ -320,6 +321,7 @@ const PostList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 The way to *ask* for embedded resources isn't normalized and depends on the API. For example, `ra-data-fakerest` uses a `meta: { embed }` key in the query to indicate that the author must be embedded.
 

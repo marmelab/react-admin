@@ -243,6 +243,7 @@ When you know that a page will contain a `<ReferenceField>`, you can configure t
 
 For example, the following code prefetches the authors referenced by the posts:
 
+{% raw %}
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { embed: 'author' } }}>
@@ -254,6 +255,7 @@ const PostList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 **Note**: For prefetching to function correctly, your data provider must support [Relationships Embedding](./DataProviders.md#embedding-relationships). Refer to your data provider's documentation to verify if this feature is supported.
 
