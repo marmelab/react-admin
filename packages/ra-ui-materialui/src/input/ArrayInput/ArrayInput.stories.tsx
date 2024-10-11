@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Admin } from 'react-admin';
+import { Admin, SelectInput } from 'react-admin';
 import {
+    FormDataConsumer,
     required,
     Resource,
     testI18nProvider,
@@ -821,6 +822,58 @@ export const WithReferenceField = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin dataProvider={dataProviderWithCountries}>
             <Resource name="books" edit={EditWithReferenceField} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const WithShouldUnregisterBookEdit = () => {
+    return (
+        <React.StrictMode>
+            <Edit
+                mutationMode="pessimistic"
+                mutationOptions={{
+                    onSuccess: data => {
+                        console.log(data);
+                    },
+                }}
+            >
+                <SimpleForm>
+                    <TextInput source="title" />
+                    <ArrayInput source="authors">
+                        <SimpleFormIterator>
+                            <FormDataConsumer>
+                                {({ scopedFormData }) => (
+                                    <>
+                                        <SelectInput
+                                            source="role"
+                                            choices={[
+                                                'co_writer',
+                                                'head_writer',
+                                            ]}
+                                        />
+
+                                        {scopedFormData?.role ===
+                                        'co_writer' ? (
+                                            <TextInput
+                                                source="name"
+                                                shouldUnregister
+                                            />
+                                        ) : null}
+                                    </>
+                                )}
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Edit>
+        </React.StrictMode>
+    );
+};
+
+export const WithShouldUnregister = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={WithShouldUnregisterBookEdit} />
         </Admin>
     </TestMemoryRouter>
 );
