@@ -226,8 +226,7 @@ If you just need to ask users for a single string to create the new option, you 
 ## `createLabel`
 
 When you set the `create` or `onCreate` prop, `<AutocompleteInput>` lets users create new options.
-To renders a "Create" menu item at the bottom of the list, you can use the `createLabel` prop.
-This new item will only render when the input is empty to suggest user to write a new storable option.
+You can use the `createLabel` prop to render an additional menu item at the bottom of the list, that will only appear when the input is empty, inviting users to start typing to create a new option.
 
 ![Create Label](./img/AutocompleteInput-createLabel.png)
 
