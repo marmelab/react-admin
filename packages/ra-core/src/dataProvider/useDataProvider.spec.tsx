@@ -6,6 +6,8 @@ import expect from 'expect';
 import { useDataProvider } from './useDataProvider';
 import { CoreAdminContext } from '../core';
 import { GetListResult } from '..';
+import { ReferenceFieldBase } from '../controller/field/ReferenceFieldBase';
+import { RecordContextProvider, useRecordContext } from '../controller/record';
 
 const UseGetOne = () => {
     const [data, setData] = useState();
@@ -334,5 +336,63 @@ describe('useDataProvider', () => {
             { data: {} },
             { data: [] },
         ]);
+    });
+
+    it('should allow prefetching', async () => {
+        const getMany = jest.fn();
+        const dataProvider = {
+            getOne: async () => ({
+                data: { id: 1, title: 'My post title', author_id: 1 },
+                meta: {
+                    prefetched: {
+                        authors: [{ id: 1, name: 'John Doe' }],
+                        comments: [
+                            { id: 1, body: 'Comment 1', post_id: 1 },
+                            { id: 2, body: 'Comment 2', post_id: 2 },
+                        ],
+                    },
+                },
+            }),
+            getMany,
+        } as any;
+
+        const Author = () => {
+            const author = useRecordContext();
+            if (!author) return null;
+            return <>{author.name}</>;
+        };
+
+        const FetchPost = () => {
+            const dataProvider = useDataProvider();
+            const [post, setPost] = useState<any>();
+            useEffect(() => {
+                async function fetch() {
+                    const { data } = await dataProvider.getOne('posts', {
+                        id: 1,
+                    });
+                    setPost(data);
+                }
+                fetch();
+            }, [dataProvider]);
+            if (!post) return null;
+            return (
+                <RecordContextProvider value={post}>
+                    <div>{post.title}</div>
+                    <ReferenceFieldBase reference="authors" source="author_id">
+                        <Author />
+                    </ReferenceFieldBase>
+                </RecordContextProvider>
+            );
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <FetchPost />
+            </CoreAdminContext>
+        );
+
+        await screen.findByText('My post title');
+        await screen.findByText('John Doe');
+        expect(getMany).not.toHaveBeenCalled();
     });
 });
