@@ -27,7 +27,7 @@ export const populateQueryCache = ({
     staleTime = 500, // ms
 }: PopulateQueryCacheOptions) => {
     // setQueryData doesn't accept a stale time option
-    // So we set an updatedAt in the future to make sure the data is considered stale
+    // So we set an updatedAt in the future to make sure the data isn't considered stale
     const updatedAt = Date.now() + staleTime;
     Object.keys(data).forEach(resource => {
         data[resource].forEach(record => {
