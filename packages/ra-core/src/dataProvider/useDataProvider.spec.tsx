@@ -339,17 +339,15 @@ describe('useDataProvider', () => {
     });
 
     it('should allow prefetching', async () => {
-        const getMany = jest.fn();
+        const getMany = jest
+            .fn()
+            .mockResolvedValue({ data: [{ id: 1, name: 'John Doe' }] });
         const dataProvider = {
             getOne: async () => ({
                 data: { id: 1, title: 'My post title', author_id: 1 },
                 meta: {
                     prefetched: {
                         authors: [{ id: 1, name: 'John Doe' }],
-                        comments: [
-                            { id: 1, body: 'Comment 1', post_id: 1 },
-                            { id: 2, body: 'Comment 2', post_id: 2 },
-                        ],
                     },
                 },
             }),
