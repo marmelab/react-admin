@@ -6,8 +6,8 @@ import expect from 'expect';
 import { useDataProvider } from './useDataProvider';
 import { CoreAdminContext } from '../core';
 import { GetListResult } from '..';
-import { ReferenceFieldBase } from '../controller/field/ReferenceFieldBase';
-import { RecordContextProvider, useRecordContext } from '../controller/record';
+
+import { Prefetching } from './useDataProvider.stories';
 
 const UseGetOne = () => {
     const [data, setData] = useState();
@@ -353,41 +353,7 @@ describe('useDataProvider', () => {
             }),
             getMany,
         } as any;
-
-        const Author = () => {
-            const author = useRecordContext();
-            if (!author) return null;
-            return <>{author.name}</>;
-        };
-
-        const FetchPost = () => {
-            const dataProvider = useDataProvider();
-            const [post, setPost] = useState<any>();
-            useEffect(() => {
-                async function fetch() {
-                    const { data } = await dataProvider.getOne('posts', {
-                        id: 1,
-                    });
-                    setPost(data);
-                }
-                fetch();
-            }, [dataProvider]);
-            if (!post) return null;
-            return (
-                <RecordContextProvider value={post}>
-                    <div>{post.title}</div>
-                    <ReferenceFieldBase reference="authors" source="author_id">
-                        <Author />
-                    </ReferenceFieldBase>
-                </RecordContextProvider>
-            );
-        };
-
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <FetchPost />
-            </CoreAdminContext>
-        );
+        render(<Prefetching dataProvider={dataProvider} />);
 
         await screen.findByText('My post title');
         await screen.findByText('John Doe');
