@@ -10,7 +10,7 @@ export default {
     title: 'ra-core/dataProvider/useDataProvider',
 };
 
-const FetchPost = () => {
+const PostWithAuthor = () => {
     const dataProvider = useDataProvider();
     const [post, setPost] = useState<any>();
     useEffect(() => {
@@ -53,6 +53,6 @@ export const Prefetching = ({
     } as any,
 }) => (
     <CoreAdminContext dataProvider={dataProvider}>
-        <FetchPost />
+        <PostWithAuthor />
     </CoreAdminContext>
 );
