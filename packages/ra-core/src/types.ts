@@ -1,4 +1,5 @@
 import { ComponentType, ReactElement, ReactNode } from 'react';
+import { FieldPath } from 'react-hook-form';
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
 
@@ -13,9 +14,11 @@ export interface RaRecord<IdentifierType extends Identifier = Identifier>
     id: IdentifierType;
 }
 
+export type SortOrder = 'ASC' | 'DESC';
+
 export interface SortPayload {
     field: string;
-    order: 'ASC' | 'DESC';
+    order: SortOrder;
 }
 export interface FilterPayload {
     [k: string]: any;
@@ -402,3 +405,20 @@ export type FormFunctions = {
 export type HintedString<KnownValues extends string> =
     | (string & {})
     | KnownValues;
+
+// Re-export react-hook-form implementation of FieldPath that returns all possible paths of an object
+// This will allow us to either include the FieldPath implementation from react-hook-form or replace it with our own
+// should we move away from react-hook-form
+// type Post = { title: string; author: { name: string; }; tags: { id: string; name: string} };
+// => Valid paths are "title" | "author" | "author.name" | "tags.id" | "tags.name"
+export type RecordValues = Record<string, any>;
+export type RecordPath<TRecordValues extends RecordValues> =
+    FieldPath<TRecordValues>;
+
+// Returns the union of all possible paths of a type if it is provided, otherwise returns a string
+// Useful for props such as "source" in react-admin components
+export type ExtractRecordPaths<T extends RecordValues> =
+    // Trick that allows to check whether T was provided
+    [T] extends [never] ? string : RecordPath<T>;
+
+export type AnyString = string & {};
