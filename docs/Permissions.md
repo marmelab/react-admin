@@ -208,6 +208,31 @@ const CommentsToolbar = ({ record }) => (
 );
 ```
 
+### Custom Routes
+
+By default, there is no authentication or authorization control on the custom routes. If you need to restrict access to a custom route, you can use the `<CanAccess>` component. Remember to check the authentication status before with `<Authenticated>`:
+
+```tsx
+import { Admin, CustomRoutes, Authenticated, CanAccess } from 'react-admin';
+import { Route } from 'react-router-dom';
+
+const App = () => (
+    <Admin authProvider={authProvider}>
+        <CustomRoutes>
+            <Route path="/restricted" element={
+                <Authenticated>
+                    <CanAccess action="read" resource="restricted">
+                        <RestrictedPage />
+                    </CanAccess>
+                </Authenticated>
+            } />
+        </CustomRoutes>
+    </Admin>
+);
+```
+
+**Note**: You don't need to use `<CanAccess>` on the core react-admin page components (`<List>`, `<Create>`, `<Edit>`, `<Show>`) because they already have built-in access control.
+
 ## Permissions
 
 With permissions, the `authProvider` stores a list of roles (e.g., `admin`, `editor`, `user`). The React components are responsible for checking the permissions and displaying or hiding content accordingly.
