@@ -162,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     name: GreenFrame
     needs: [e-commerce]
-    if: success() && github.ref == 'refs/heads/master' && github.ref_type != 'tag'
+    if: github.event_name == 'push' && github.ref_type == 'tag' && github.ref_name == 'refs/tags/v*' && !contains('beta', github.ref_name) && !contains('alpha', github.ref_name)
     steps:
       # To use this repository's private action,
       # you must check out the repository
