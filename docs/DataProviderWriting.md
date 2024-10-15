@@ -502,7 +502,7 @@ For example, the [JSON server](https://github.com/typicode/json-server?tab=readm
 GET /posts/123?_embed=author
 ```
 
-The JSON Server Data Provider therefore passes the `meta.embed` query parameter to the API:
+The [JSON Server Data Provider](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server) therefore passes the `meta.embed` query parameter to the API:
 
 ```tsx
 const apiUrl = 'https://my.api.com/';
@@ -570,7 +570,7 @@ GET /posts/123?_embed=author
 }
 ```
 
-To add support for prefetching, the JSON Server Data Provider extracts the embedded data from the response, and puts them in the `meta.prefetched` property:
+To add support for prefetching, the [JSON Server Data Provider](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server) extracts the embedded data from the response, and puts them in the `meta.prefetched` property:
 
 ```jsx
 const dataProvider = {
@@ -680,7 +680,7 @@ This will cause the Edit view to blink on load. If you have this problem, modify
 const { data } = dataProvider.getOne('posts', { id: 123, meta: { page: 'getOne' } })
 ```
 
-This also explains why using [Embedded relationships](./DataProviders.md#emb$) may make the navigation slower, as the `getList` and `getOne` methods will return different shapes.
+This also explains why using [Embedding relationships](./DataProviders.md#embedding-relationships) may make the navigation slower, as the `getList` and `getOne` methods will return different shapes.
 
 ## `fetchJson`: Built-In HTTP Client
 

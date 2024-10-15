@@ -168,7 +168,7 @@ Embedding Relationships is supported in `getList`, `getOne`, `getMany`, and `get
 ```jsx
 dataProvider.getOne('posts', { id: 1, meta: { prefetch: ['author'] } });
 // { 
-//    data: { id: 1, title: 'FooBar' },
+//    data: { id: 1, title: 'FooBar', author_id: 1 },
 //    meta: {
 //      prefetched: {
 //        authors: [{ id: 1, name: 'John Doe' }]
