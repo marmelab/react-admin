@@ -119,7 +119,7 @@ const PostList = () => {
 };
 ```
 
-React-admin is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Azure Active Directory, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
+React-admin is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Microsoft Entra ID, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
 
 You can then use specialized hooks on your components to restrict access. For instance, to forbid anonymous access, use `useAuthenticated`:
 
