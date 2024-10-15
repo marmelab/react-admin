@@ -24,7 +24,7 @@ export type PopulateQueryCacheOptions = {
 export const populateQueryCache = ({
     data,
     queryClient,
-    staleTime = 500, // ms
+    staleTime = 1000, // ms
 }: PopulateQueryCacheOptions) => {
     // setQueryData doesn't accept a stale time option
     // So we set an updatedAt in the future to make sure the data isn't considered stale
