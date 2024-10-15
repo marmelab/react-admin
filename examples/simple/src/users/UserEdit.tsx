@@ -1,6 +1,7 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
 import {
+    CanAccess,
     CloneButton,
     DeleteWithConfirmButton,
     Edit,
@@ -12,7 +13,7 @@ import {
     TextInput,
     Toolbar,
     TopToolbar,
-    usePermissions,
+    useCanAccess,
     useSaveContext,
 } from 'react-admin';
 
@@ -43,8 +44,14 @@ const EditActions = () => (
 );
 
 const UserEditForm = () => {
-    const { permissions } = usePermissions();
+    const { isPending, canAccess: canEditRole } = useCanAccess({
+        action: 'edit',
+        resource: 'users.role',
+    });
     const { save } = useSaveContext();
+    if (isPending) {
+        return null;
+    }
     if (!save) return null;
 
     const newSave = values =>
@@ -67,16 +74,16 @@ const UserEditForm = () => {
             onSubmit={newSave}
         >
             <TabbedForm.Tab label="user.form.summary" path="">
-                {permissions === 'admin' && (
+                <CanAccess action="show" resource="users.id">
                     <TextInput source="id" InputProps={{ disabled: true }} />
-                )}
+                </CanAccess>
                 <TextInput
                     source="name"
                     defaultValue="slim shady"
                     validate={required()}
                 />
             </TabbedForm.Tab>
-            {permissions === 'admin' && (
+            {canEditRole ? (
                 <TabbedForm.Tab label="user.form.security" path="security">
                     <SelectInput
                         source="role"
@@ -89,7 +96,7 @@ const UserEditForm = () => {
                         defaultValue={'user'}
                     />
                 </TabbedForm.Tab>
-            )}
+            ) : null}
         </TabbedForm>
     );
 };

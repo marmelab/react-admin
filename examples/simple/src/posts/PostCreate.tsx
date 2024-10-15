@@ -22,10 +22,10 @@ import {
     TextInput,
     Toolbar,
     useNotify,
-    usePermissions,
     useRedirect,
     useCreate,
     useCreateSuggestionContext,
+    CanAccess,
 } from 'react-admin';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
@@ -101,7 +101,6 @@ const PostCreate = () => {
         }),
         []
     );
-    const { permissions } = usePermissions();
     const dateDefaultValue = useMemo(() => new Date(), []);
     return (
         <Create redirect="edit">
@@ -153,7 +152,7 @@ const PostCreate = () => {
                         <TextInput source="url" defaultValue="" />
                     </SimpleFormIterator>
                 </ArrayInput>
-                {permissions === 'admin' && (
+                <CanAccess action="edit" resource="posts.authors">
                     <ArrayInput source="authors">
                         <SimpleFormIterator>
                             <ReferenceInput source="user_id" reference="users">
@@ -188,7 +187,7 @@ const PostCreate = () => {
                             </FormDataConsumer>
                         </SimpleFormIterator>
                     </ArrayInput>
-                )}
+                </CanAccess>
             </SimpleFormConfigurable>
         </Create>
     );
