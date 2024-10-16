@@ -166,15 +166,17 @@ export const App = () => (
 
 The `<Search>` component accepts the following props:
 
-| Prop           | Required | Type                                                                              | Default                | Description                                                                                        |
-| -------------- | -------- | --------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
-| `children`     | Optional | `Element`                                                                         | `<SearchResultsPanel>` | A component that will display the results.                                                         |
-| `disableHighlight`    | Optional | `boolean`                                                                         | `false`                | Disable the highlight of the search term of each result.           |
-| `historySize`  | Optional | `number`                                                                          | 5                      | The number of past queries to keep in history.                                                     |
-| `isInAppBar`          | Optional | `boolean`                                                                         | `true`                 | Apply a dedicated style to the `<AppBar>` if true                  |
-| `options`      | Optional | `Object`                                                                          | -                      | An object containing options to apply to the search.                                               |
-| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | -                      | `react-query` options for the search query                                                         |
-| `wait`         | Optional | `number`                                                                          | 500                    | The delay of debounce for the search to launch after typing in ms.                                 |
+| Prop                   | Required | Type                                                                              | Default                                     | Description                                                                           |
+| ---------------------- | -------- | --------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `children`             | Optional | `Element`                                                                         | `<SearchResultsPanel>`                      | A component that will display the results.                                            |
+| `disableHighlight`     | Optional | `boolean`                                                                         | `false`                                     | Disable the highlight of the search term of each result.                              |
+| `historySize`          | Optional | `number`                                                                          | 5                                           | The number of past queries to keep in history.                                        |
+| `keyboard ShortcutIcon`| Optional | `boolean` or `ReactElement`                                                       | `<span>Ctrl+k</span>` or `<span>⌘+k</span>` | Disable or configure the keyboard shortcut icon.                                      |
+| `isInAppBar`           | Optional | `boolean`                                                                         | `true`                                      | Apply a dedicated style to the `<AppBar>` if true                                     |
+| `options`              | Optional | `Object`                                                                          | -                                           | An object containing options to apply to the search.                                  |
+| `queryOptions`         | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | -                                           | `react-query` options for the search query                                            |
+| `wait`                 | Optional | `number`                                                                          | 500                                         | The delay of debounce for the search to launch after typing in ms.                    |
+| `withKeyboard Shortcut`| Optional | `boolean` or [`Keys`](https://react-hotkeys-hook.vercel.app/)                     | `false`                                     | Enable or configure a shortcut to open and access the search input and their results. |
 
 Additional props are passed down to the Material UI [`<TextField>`](https://mui.com/material-ui/react-text-field/) component.
 
@@ -238,6 +240,30 @@ The number of previous user searches to keep in the popover. For example, if a u
 <Search historySize={5} />
 ```
 
+## `keyboardShortcutIcon`
+
+Use the `keyboardShortcutIcon` prop to disable or customize the keyboard shortcut icon.
+
+![Keyboard Shortcut Icon](./img/ra-search-keyboard-shortcut-icon.png)
+
+```tsx
+<Search keyboardShortcutIcon={<span>Shift+s</span>} />
+```
+
+If you don't want to display this icon, you can pass `false` to the `keyboardShortcutIcon` prop:
+
+```tsx
+<Search keyboardShortcutIcon={false} />
+```
+
+## `isInAppBar`
+
+The `<Search>` component has a specific style to fit the admin appBar. If you need to render the `<Search>` component elsewhere, you can set `isInAppBar` to `false` and hence apply the default MUI style.
+
+```tsx
+<Search isInAppBar={false} />
+```
+
 ## `options`
 
 An object containing options to apply to the search:
@@ -270,6 +296,53 @@ The number of milliseconds to wait before processing the search request, immedia
 ```tsx
 <Search wait={200} />
 ```
+
+## `withKeyboardShortcut`
+
+Enable opening and accessing the search input and their results with a keyboard shortcut.
+
+![Keyboard Shortcut Icon](./img/ra-search-keyboard-shortcut-icon.png)
+
+```tsx
+<Search withKeyboardShortcut />
+```
+
+The default shortcut is `Ctrl+K` on Windows and Linux, and `Cmd+K` on MacOS. You can override this shortcut by passing the key combination as a string to the `withKeyboardShortcut` prop:
+
+```tsx
+<Search withKeyboardShortcut="ctrl+f" />
+```
+
+You can also set multiple shortcuts:
+
+```tsx
+<Search
+    withKeyboardShortcut={['mod+k', 'shift+s']}
+    helperText="Open search with 'ctrl+k', 'cmd+k' or 'shift+s'"
+/>
+```
+
+You can use the following modifiers and special keys:
+
+- `shift`
+- `alt`
+- `ctrl`
+- `meta`
+- `mod` (which listens for `ctrl` on Windows/Linux and `cmd` on macOS)
+- `backspace`
+- `tab`
+- `clear`
+- `enter` or `return`
+- `esc` or `escape`
+- `space`
+- `up`, `down`, `left`, `right`
+- `pageup`, `pagedown`
+- `del` or `delete`
+- `f1`, `f2` ... `f19`
+
+**Tip:** Upper case letters are considered lower case letters. To handle users pressing the letter `S` in capital letters, you must set `withKeyboardShortcut` to `shift+s`.
+
+**Tip:** If you override the default shortcut with an array of multiple shortcuts, the default shortcut icon will be your first shortcut. To edit it, you can update the [shortcut icon](#keyboardshortcuticon) as well.
 
 ## Customizing The Result Items
 

@@ -627,12 +627,12 @@ import { useDataProvider, Loading, Error } from 'react-admin';
 
 const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
-    const { data, isLoading, error } = useQuery({
+    const { data, isPending, error } = useQuery({
         queryKey: ['users', 'getOne', { id: userId }], 
         queryFn: ({ signal }) => dataProvider.getOne('users', { id: userId, signal })
     });
 
-    if (isLoading) return <Loading />;
+    if (isPending) return <Loading />;
     if (error) return <Error />;
     if (!data) return null;
 

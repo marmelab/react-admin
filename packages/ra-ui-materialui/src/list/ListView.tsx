@@ -67,13 +67,16 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
 
     const shouldRenderEmptyPage =
+        !error &&
         // the list is not loading data for the first time
         !isPending &&
         // the API returned no data (using either normal or partial pagination)
         (total === 0 ||
             (total == null &&
                 hasPreviousPage === false &&
-                hasNextPage === false)) &&
+                hasNextPage === false &&
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
+                data.length === 0)) &&
         // the user didn't set any filters
         !Object.keys(filterValues).length &&
         // there is an empty page component

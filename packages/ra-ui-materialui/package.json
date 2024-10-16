@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "5.2.0",
+    "version": "5.2.3",
     "description": "UI Components for react-admin with Material UI",
     "files": [
         "*.md",
@@ -28,6 +28,7 @@
     "devDependencies": {
         "@mui/icons-material": "^5.15.20",
         "@mui/material": "^5.15.20",
+        "@mui/utils": "^5.15.20",
         "@testing-library/react": "^15.0.7",
         "@types/dompurify": "^3.0.2",
         "@types/react": "^18.3.3",
@@ -38,9 +39,9 @@
         "expect": "^27.4.6",
         "file-api": "~0.10.4",
         "ignore-styles": "~5.0.1",
-        "ra-core": "^5.2.0",
-        "ra-i18n-polyglot": "^5.2.0",
-        "ra-language-english": "^5.2.0",
+        "ra-core": "^5.2.3",
+        "ra-i18n-polyglot": "^5.2.3",
+        "ra-language-english": "^5.2.3",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.53.0",
@@ -54,6 +55,7 @@
     "peerDependencies": {
         "@mui/icons-material": "^5.15.20",
         "@mui/material": "^5.15.20",
+        "@mui/utils": "^5.15.20",
         "ra-core": "^5.0.0",
         "react": "^18.0.0 || ^19.0.0",
         "react-dom": "^18.0.0 || ^19.0.0",

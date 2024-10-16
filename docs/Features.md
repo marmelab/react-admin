@@ -119,7 +119,7 @@ const PostList = () => {
 };
 ```
 
-React-admin is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Azure Active Directory, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
+React-admin is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Microsoft Entra ID, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
 
 You can then use specialized hooks on your components to restrict access. For instance, to forbid anonymous access, use `useAuthenticated`:
 
@@ -421,9 +421,8 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 <table><tbody>
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
+        <a title="Filter Button/Form Combo" href="./img/list_filter.mp4">
             <video controls autoplay playsinline muted loop>
-                <source src="./img/list_filter.webm" type="video/webm"/>
                 <source src="./img/list_filter.mp4" type="video/mp4"/>
                 Your browser does not support the video tag.
             </video>

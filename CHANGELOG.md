@@ -1,5 +1,41 @@
 # Changelog
 
+## 5.2.3
+
+* Fix `<AutoCompleteInput>` should not display a "Create" option when the filter is empty ([#10266](https://github.com/marmelab/react-admin/pull/10266)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix pnpm error Module not found: Can't resolve '@mui/utils' ([#10264](https://github.com/marmelab/react-admin/pull/10264)) ([slax57](https://github.com/slax57))
+* [Doc] Update `<StackedFilters>` doc for `ra-form-layout` v5.2.0 ([#10268](https://github.com/marmelab/react-admin/pull/10268)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Remix tutorial to fix port and yarn documentation link ([#10263](https://github.com/marmelab/react-admin/pull/10263)) ([smeng9](https://github.com/smeng9))
+* [Doc] Update `<Search>` doc for `keyboardShortcutIcon`, `withKeyboardShortcut` and `isInAppBar` ([#10254](https://github.com/marmelab/react-admin/pull/10254)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Admin and Routing docs to encourage using a Data Router ([#10220](https://github.com/marmelab/react-admin/pull/10220)) ([smeng9](https://github.com/smeng9))
+
+## 5.2.2
+
+- Fix disabled inputs temporarily erase values ([#10249](https://github.com/marmelab/react-admin/pull/10249)) ([fzaninotto](https://github.com/fzaninotto))
+- Fix List empty component wrongly appears when using partial pagination ([#10248](https://github.com/marmelab/react-admin/pull/10248)) ([fzaninotto ](https://github.com/fzaninotto))
+- [Doc] Remove extra TOC in upgrade guide ([#10246](https://github.com/marmelab/react-admin/pull/10246)) ([smeng9](https://github.com/smeng9))
+- [Doc] Fix `<DateRangeInput>`'s reference EE icon ([#10245](https://github.com/marmelab/react-admin/pull/10245)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update migration guide with useRecordSelection changes ([#10244](https://github.com/marmelab/react-admin/pull/10244)) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Add "standalaone usage" doc section in dialog views ([#10241](https://github.com/marmelab/react-admin/pull/10241)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update outdated ecommerce demo video ([#10236](https://github.com/marmelab/react-admin/pull/10236)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update <Filterbutton>'s screencast ([#10213](https://github.com/marmelab/react-admin/pull/10213)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- Build(deps): Bump rollup from 4.21.3 to 4.22.4 ([#10234](https://github.com/marmelab/react-admin/pull/10234)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## 5.2.1
+
+* Fix `<SelectArrayInput>` options panel width and placement ([#10232](https://github.com/marmelab/react-admin/pull/10232)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicated dependencies in dev packages ([#10212](https://github.com/marmelab/react-admin/pull/10212)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix for ids not being escaped in paths in the Simple Rest Data Provider ([#10206](https://github.com/marmelab/react-admin/pull/10206)) ([ckhsponge](https://github.com/ckhsponge))
+* [Doc] Fix `mutationMode` reference in `create` documentation ([#10231](https://github.com/marmelab/react-admin/pull/10231)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix remaining `isLoading` should be renamed to `isPending` ([#10218](https://github.com/marmelab/react-admin/pull/10218)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add `ra-data-graphql-supabase` to data provider list ([#10216](https://github.com/marmelab/react-admin/pull/10216)) ([maxschridde1494](https://github.com/maxschridde1494))
+* [Doc] Update `<Calendar>` doc to explain custom event format ([#10214](https://github.com/marmelab/react-admin/pull/10214)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix outdated `isLoading` in Data Provider chapter ([#10209](https://github.com/marmelab/react-admin/pull/10209)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add doc for `<DatagridAgClient>`, make `<DatagridAg>` stable ([#10205](https://github.com/marmelab/react-admin/pull/10205)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Build(deps): Bump dompurify from 2.4.3 to 2.5.4 ([#10208](https://github.com/marmelab/react-admin/pull/10208)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10211](https://github.com/marmelab/react-admin/pull/10211)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Build(deps-dev): Bump vite from 5.3.1 to 5.3.6 ([#10217](https://github.com/marmelab/react-admin/pull/10217)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.2.0
 
 * Add support for response metadata in `dataProvider.getList()` ([#10179](https://github.com/marmelab/react-admin/pull/10179)) ([fzaninotto](https://github.com/fzaninotto))
@@ -198,6 +234,26 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* [Doc] Update `<StackedFilters>` doc for `ra-form-layout` v5.2.0 ([#10268](https://github.com/marmelab/react-admin/pull/10268)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `<AutoCompleteInput>` should not display a "Create" option when the filter is empty ([#10266](https://github.com/marmelab/react-admin/pull/10266)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix pnpm error Module not found: Can't resolve '@mui/utils' ([#10264](https://github.com/marmelab/react-admin/pull/10264)) ([slax57](https://github.com/slax57))
+* [Doc] Update Remix tutorial to fix port and yarn documentation link ([#10263](https://github.com/marmelab/react-admin/pull/10263)) ([smeng9](https://github.com/smeng9))
+* [Doc] Update `<Search>` doc for `keyboardShortcutIcon`, `withKeyboardShortcut` and `isInAppBar` ([#10254](https://github.com/marmelab/react-admin/pull/10254)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Admin and Routing docs to encourage using a Data Router ([#10220](https://github.com/marmelab/react-admin/pull/10220)) ([smeng9](https://github.com/smeng9))
+
+* Fix `<SelectArrayInput>` options panel width and placement ([#10232](https://github.com/marmelab/react-admin/pull/10232)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `mutationMode` reference in `create` documentation ([#10231](https://github.com/marmelab/react-admin/pull/10231)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix remaining `isLoading` should be renamed to `isPending` ([#10218](https://github.com/marmelab/react-admin/pull/10218)) ([smeng9](https://github.com/smeng9))
+* Build(deps-dev): Bump vite from 5.3.1 to 5.3.6 ([#10217](https://github.com/marmelab/react-admin/pull/10217)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc] Add `ra-data-graphql-supabase` to data provider list ([#10216](https://github.com/marmelab/react-admin/pull/10216)) ([maxschridde1494](https://github.com/maxschridde1494))
+* [Doc] Update `<Calendar>` doc to explain custom event format ([#10214](https://github.com/marmelab/react-admin/pull/10214)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix duplicated dependencies in dev packages ([#10212](https://github.com/marmelab/react-admin/pull/10212)) ([fzaninotto](https://github.com/fzaninotto))
+* Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10211](https://github.com/marmelab/react-admin/pull/10211)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc] Fix outdated `isLoading` in Data Provider chapter ([#10209](https://github.com/marmelab/react-admin/pull/10209)) ([smeng9](https://github.com/smeng9))
+* Build(deps): Bump dompurify from 2.4.3 to 2.5.4 ([#10208](https://github.com/marmelab/react-admin/pull/10208)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Fix for ids not being escaped in paths in the Simple Rest Data Provider ([#10206](https://github.com/marmelab/react-admin/pull/10206)) ([ckhsponge](https://github.com/ckhsponge))
+* [Doc] Add doc for `<DatagridAgClient>`, make `<DatagridAg>` stable ([#10205](https://github.com/marmelab/react-admin/pull/10205)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 
 * Fix filter button accessibility ([#10204](https://github.com/marmelab/react-admin/pull/10204)) ([djhi](https://github.com/djhi))
 * [Doc] Create a doc page for `<DateRangeInput>` ([#10202](https://github.com/marmelab/react-admin/pull/10202)) ([erwanMarmelab](https://github.com/erwanMarmelab))

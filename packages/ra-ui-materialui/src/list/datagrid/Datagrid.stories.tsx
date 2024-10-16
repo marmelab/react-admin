@@ -335,7 +335,7 @@ export const ColumnStyles = () => (
 const sort = { field: 'id', order: 'DESC' } as SortPayload;
 
 const MyCustomList = () => {
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
         sort: sort,
     });
@@ -344,7 +344,7 @@ const MyCustomList = () => {
         <Datagrid
             data={data}
             total={total}
-            isLoading={isLoading}
+            isPending={isPending}
             sort={sort}
             bulkActionButtons={false}
         >
@@ -355,11 +355,11 @@ const MyCustomList = () => {
 };
 
 const MyCustomListInteractive = () => {
-    const { data, isLoading } = useGetList('books', {
+    const { data, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
         sort,
     });
-    const listContext = useList({ data, isLoading });
+    const listContext = useList({ data, isPending });
 
     return (
         <ListContextProvider value={listContext}>

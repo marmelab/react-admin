@@ -136,7 +136,7 @@ const SelectInput = (
         Partial<Pick<InputProps, 'source'>> &
         ChoicesProps & { source?: string }
 ) => {
-    const { allChoices, error, isLoading, source } = useChoicesContext(props);
+    const { allChoices, error, isPending, source } = useChoicesContext(props);
     const { getChoiceValue, getChoiceText } = useChoices(props);
     const { field } = useInput({ ...props, source });
 
@@ -147,7 +147,7 @@ const SelectInput = (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
             <label htmlFor={field.name}>{props.label || field.name}</label>
             <select id={field.name} {...field}>
-                {isLoading && <option value="">Loading...</option>}
+                {isPending && <option value="">Loading...</option>}
                 {allChoices?.map(choice => (
                     <option
                         key={getChoiceValue(choice)}

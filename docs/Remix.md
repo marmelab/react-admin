@@ -60,7 +60,7 @@ export default defineConfig({
 });
 ```
 
-**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force React Admin to use the same version of `react-router` as Remix. So add the following to the `package.json` file:
+**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://yarnpkg.com/configuration/manifest#resolutions) to force React Admin to use the same version of `react-router` as Remix. So add the following to the `package.json` file:
 
 ```js
 {
@@ -101,9 +101,9 @@ export default function App() {
 }
 ```
 
-**Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin" subpath:
+**Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin/" subpath:
 
-You can now start the app in `development` mode with `npm run dev`. The admin should render at `http://localhost:3000/admin`, and you can use the Remix routing system to add more pages.
+You can now start the app in `development` mode with `npm run dev`. The admin should render at `http://localhost:5173/admin/`, and you can use the Remix routing system to add more pages.
 
 ## Adding an API
 
@@ -242,6 +242,6 @@ export default function App() {
 }
 ```
 
-That's it! Now Remix both renders the admin app and serves as a proxy to the Supabase API. You can test the app by visiting `http://localhost:3000/admin`, and the API Proxy by visiting `http://localhost:3000/admin/api/posts`.
+That's it! Now Remix both renders the admin app and serves as a proxy to the Supabase API. You can test the app by visiting `http://localhost:5173/admin/`, and the API Proxy by visiting `http://localhost:5173/admin/api/posts`.
 
 Note that the Supabase credentials never leave the server. It's up to you to add your own authentication to the API proxy.

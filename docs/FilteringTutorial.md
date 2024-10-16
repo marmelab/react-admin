@@ -12,9 +12,8 @@ One of the most important features of the List page is the ability to filter the
 <table><tbody>
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Filter Button/Form Combo" href="./img/list_filter.webm">
+        <a title="Filter Button/Form Combo" href="./img/list_filter.mp4">
             <video controls autoplay playsinline muted loop>
-                <source src="./img/list_filter.webm" type="video/webm"/>
                 <source src="./img/list_filter.mp4" type="video/mp4"/>
                 Your browser does not support the video tag.
             </video>
@@ -57,7 +56,6 @@ React-admin offers 4 different ways to filter the list. Depending on the type of
 ## The Filter Button/Form Combo
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/list_filter.webm" type="video/webm"/>
   <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>

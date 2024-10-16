@@ -168,22 +168,27 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
             case 'update':
                 return delayed(
                     {
-                        data: database.updateOne(resource, params.id, {
-                            ...params.data,
-                        }),
+                        data: database.updateOne(
+                            resource,
+                            params.id,
+                            cleanupData(params.data)
+                        ),
                     },
                     delay
                 );
             case 'updateMany':
                 params.ids.forEach(id =>
-                    database.updateOne(resource, id, {
-                        ...params.data,
-                    })
+                    database.updateOne(resource, id, cleanupData(params.data))
                 );
                 return delayed({ data: params.ids }, delay);
             case 'create':
                 return delayed(
-                    { data: database.addOne(resource, { ...params.data }) },
+                    {
+                        data: database.addOne(
+                            resource,
+                            cleanupData(params.data)
+                        ),
+                    },
                     delay
                 );
             case 'delete':
@@ -318,6 +323,17 @@ const removePrefetchedData = (data, prefetchParam?: string[]) => {
     });
     return Array.isArray(data) ? newDataArray : newDataArray[0];
 };
+
+/**
+ * Clone the data and ignore undefined values.
+ *
+ * If we don't do this, an update with { id: undefined } as payload
+ * would remove the id from the record, which no real data provider does.
+ *
+ * Also, this is a way to ensure we don't keep a reference to the data
+ * and that the data is not mutated.
+ */
+const cleanupData = <T>(data: T): T => JSON.parse(JSON.stringify(data));
 
 class UndefinedResourceError extends Error {
     code: number;

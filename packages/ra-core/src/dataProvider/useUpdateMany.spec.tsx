@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
 import expect from 'expect';
 
 import { testDataProvider } from './testDataProvider';
 import { CoreAdminContext } from '../core';
 import { useUpdateMany } from './useUpdateMany';
-import { QueryClient } from '@tanstack/react-query';
+import { UndefinedValues } from './useUpdateMany.stories';
 
 describe('useUpdateMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
@@ -423,6 +424,16 @@ describe('useUpdateMany', () => {
                     pageParams: [],
                 });
             });
+        });
+        it('when optimistic, does not erase values if the payload contains undefined values', async () => {
+            render(<UndefinedValues />);
+            await screen.findByText(
+                '[{"id":1,"title":"foo"},{"id":2,"title":"bar"}]'
+            );
+            screen.getByText('Update title').click();
+            await screen.findByText(
+                '[{"id":1,"title":"world"},{"id":2,"title":"world"}]'
+            ); // and not [{"title":"world"},{"title":"world"}]
         });
     });
 });
