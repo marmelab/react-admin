@@ -110,16 +110,19 @@ const useAuthState = <ErrorType = Error>(
 
     useEffect(() => {
         if (result.data === undefined || result.isFetching) return;
+        if (queryOptions.enabled === false) return;
         onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data, result.isFetching]);
+    }, [onSuccessEvent, result.data, result.isFetching, queryOptions.enabled]);
 
     useEffect(() => {
         if (result.error == null || result.isFetching) return;
+        if (queryOptions.enabled === false) return;
         onErrorEvent(result.error);
-    }, [onErrorEvent, result.error, result.isFetching]);
+    }, [onErrorEvent, result.error, result.isFetching, queryOptions.enabled]);
 
     useEffect(() => {
         if (result.status === 'pending' || result.isFetching) return;
+        if (queryOptions.enabled === false) return;
         onSettledEvent(result.data, result.error);
     }, [
         onSettledEvent,
@@ -127,6 +130,7 @@ const useAuthState = <ErrorType = Error>(
         result.error,
         result.status,
         result.isFetching,
+        queryOptions.enabled,
     ]);
 
     return useMemo(() => {
