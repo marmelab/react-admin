@@ -1228,19 +1228,20 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            onCreate={handleCreate}
-                            createLabel="Start typing to create a new item"
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                choices={choices}
+                                onCreate={handleCreate}
+                                createLabel="Start typing to create a new item"
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
