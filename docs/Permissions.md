@@ -276,6 +276,8 @@ const App = () => (
 
 **Note**: You don't need to use `<CanAccess>` on the core react-admin page components (`<List>`, `<Create>`, `<Edit>`, `<Show>`) because they already have built-in access control.
 
+**Note**: You don't need to use `<CanAccess>` on custom pages if your admin uses [`requireAuth`](./Admin.md#requireauth).
+
 ## Permissions
 
 With permissions, the `authProvider` stores a list of roles (e.g., `admin`, `editor`, `user`). The React components are responsible for checking the permissions and displaying or hiding content accordingly.
