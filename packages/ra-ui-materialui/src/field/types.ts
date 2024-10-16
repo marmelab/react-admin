@@ -1,10 +1,9 @@
 import { ReactElement } from 'react';
 import { TableCellProps } from '@mui/material/TableCell';
-import { Call, Objects } from 'hotscript';
+import { ExtractRecordPaths, HintedString } from 'ra-core';
 
 type TextAlign = TableCellProps['align'];
 type SortOrder = 'ASC' | 'DESC';
-type AnyString = string & {};
 
 export interface FieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
@@ -25,7 +24,7 @@ export interface FieldProps<
      *     </List>
      * );
      */
-    sortBy?: Call<Objects.AllPaths, RecordType> | AnyString;
+    sortBy?: HintedString<ExtractRecordPaths<RecordType>>;
 
     /**
      * The order used for sorting when users click this column head, if sortable.
@@ -57,9 +56,7 @@ export interface FieldProps<
      *     </List>
      * );
      */
-    source: Call<Objects.AllPaths, RecordType> extends never
-        ? AnyString
-        : Call<Objects.AllPaths, RecordType>;
+    source: ExtractRecordPaths<RecordType>;
 
     /**
      * Label to use as column header when using <Datagrid> or <SimpleShowLayout>.
