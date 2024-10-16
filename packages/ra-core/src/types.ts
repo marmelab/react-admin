@@ -14,11 +14,9 @@ export interface RaRecord<IdentifierType extends Identifier = Identifier>
     id: IdentifierType;
 }
 
-export type SortOrder = 'ASC' | 'DESC';
-
 export interface SortPayload {
     field: string;
-    order: SortOrder;
+    order: 'ASC' | 'DESC';
 }
 export interface FilterPayload {
     [k: string]: any;
@@ -402,9 +400,7 @@ export type FormFunctions = {
 
 // Type for a string that accept one of the known values but also any other string
 // Useful for IDE autocompletion without preventing custom values
-export type HintedString<KnownValues extends string> =
-    | (string & {})
-    | KnownValues;
+export type HintedString<KnownValues extends string> = AnyString | KnownValues;
 
 // Re-export react-hook-form implementation of FieldPath that returns all possible paths of an object
 // This will allow us to either include the FieldPath implementation from react-hook-form or replace it with our own
