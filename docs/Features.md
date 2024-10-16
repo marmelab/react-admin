@@ -851,6 +851,7 @@ React-admin takes advantage of the Single-Page-Application architecture, impleme
 - **Query Deduplication**: React-admin identifies instances where multiple components on a page call the same data provider query for identical data. In such cases, it ensures only a single call to the data provider is made.
 - **Query Aggregation**: React-admin intercepts all calls to `dataProvider.getOne()` for related data when a `<ReferenceField>` is used in a list. It aggregates and deduplicates the requested ids, and issues a single `dataProvider.getMany()` request. This technique effectively addresses the n+1 query problem, reduces server queries, and accelerates list view rendering.
 - **Opt-In Query Cache**: React-admin provides an option to prevent refetching an API endpoint for a specified duration, which can be used when you're confident that the API response will remain consistent over time.
+- **Embedded Data** and **Prefetching**: Data providers can return data from related resources in the same response as the requested resource. React-admin uses this feature to avoid additional network requests and to display related data immediately.
 
 ## Undo
 
