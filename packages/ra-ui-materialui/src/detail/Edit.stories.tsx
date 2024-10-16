@@ -228,7 +228,7 @@ export const Meta = () => (
 
 const EditContent = () => {
     const { save } = useEditContext();
-    return <button onClick={save}>Save</button>;
+    return <button onClick={() => save!({ ...book, year: 1870 })}>Save</button>;
 };
 
 const dataProviderWithUpdate = {
