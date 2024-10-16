@@ -1,8 +1,9 @@
 import { ReactElement } from 'react';
 import { TableCellProps } from '@mui/material/TableCell';
-import { ExtractRecordPaths, HintedString, SortOrder } from 'ra-core';
+import { ExtractRecordPaths, HintedString } from 'ra-core';
 
 type TextAlign = TableCellProps['align'];
+type SortOrder = 'ASC' | 'DESC';
 
 export interface FieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
