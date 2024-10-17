@@ -63,6 +63,8 @@ export const useCanAccess = <
     }
     const record = useRecordContext<RecordType>(params);
 
+    const authProviderHasCanAccess = !!authProvider?.canAccess;
+
     const queryResult = useQuery({
         queryKey: ['auth', 'canAccess', { ...params, record, resource }],
         queryFn: async ({ signal }) => {
@@ -76,6 +78,7 @@ export const useCanAccess = <
                 signal: authProvider.supportAbortSignal ? signal : undefined,
             });
         },
+        enabled: authProviderHasCanAccess,
         ...params,
     });
 
@@ -88,9 +91,9 @@ export const useCanAccess = <
         } as UseCanAccessResult<ErrorType>;
     }, [queryResult]);
 
-    return !authProvider || !authProvider.canAccess
-        ? (emptyQueryObserverResult as UseCanAccessResult<ErrorType>)
-        : result;
+    return authProviderHasCanAccess
+        ? result
+        : (emptyQueryObserverResult as UseCanAccessResult<ErrorType>);
 };
 
 const emptyQueryObserverResult = {

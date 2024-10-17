@@ -31,15 +31,24 @@ const UseCanAccess = ({
     return children(res);
 };
 
-const StateInspector = ({ state }: { state: UseCanAccessResult }) => (
-    <div>
-        <span>{state.isPending && 'LOADING'}</span>
-        {state.canAccess !== undefined && (
-            <span>canAccess: {state.canAccess ? 'YES' : 'NO'}</span>
-        )}
-        {state.error ? <span>{state.error.message}</span> : null}
-    </div>
-);
+const StateInspector = ({ state }: { state: UseCanAccessResult }) => {
+    const renderCounter = React.useRef(0);
+    renderCounter.current++;
+    return (
+        <>
+            <div>
+                <span>{state.isPending && 'LOADING'}</span>
+                {state.canAccess !== undefined && (
+                    <span>canAccess: {state.canAccess ? 'YES' : 'NO'}</span>
+                )}
+                {state.error ? <span>{state.error.message}</span> : null}
+            </div>
+            <div>
+                <span>Renders: {renderCounter.current}</span>
+            </div>
+        </>
+    );
+};
 
 const defaultAuthProvider: AuthProvider = {
     login: () => Promise.reject('bad method'),
