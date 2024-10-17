@@ -22,7 +22,7 @@ export const useGetPathForRecordCallback = <
                     'Cannot generate a link for a record without a resource. You must use useGetPathForRecordCallback within a ResourceContextProvider, or pass a resource parameter.'
                 );
             }
-            const resourceDefinition = resourceDefinitions[finalResource] ?? {} as ResourceDefinition;
+            const resourceDefinition = resourceDefinitions[finalResource] ?? ({}·as·ResourceDefinition);
             const linkFunc = typeof link === 'function' ? link : () => link;
 
             const defaultLink = resourceDefinition.hasShow
