@@ -152,7 +152,7 @@ const PostCreate = () => {
                         <TextInput source="url" defaultValue="" />
                     </SimpleFormIterator>
                 </ArrayInput>
-                <CanAccess action="edit" resource="post.authors">
+                <CanAccess action="edit" resource="posts.authors">
                     <ArrayInput source="authors">
                         <SimpleFormIterator>
                             <ReferenceInput source="user_id" reference="users">
