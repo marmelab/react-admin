@@ -87,9 +87,6 @@ const authProvider: AuthProvider = {
             ? Promise.reject()
             : Promise.resolve();
     },
-    getPermissions: () => {
-        return Promise.resolve();
-    },
     getIdentity: () => {
         const id = localStorage.getItem('login');
         if (!id) {
