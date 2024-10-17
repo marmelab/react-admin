@@ -7,12 +7,7 @@ title: "The ReferenceInput Component"
 
 Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `company_id` of a `contact` resource. 
 
-<video controls autoplay playsinline muted loop>
-  <source src="./img/reference-input.webm" type="video/webm"/>
-  <source src="./img/reference-input.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
+<iframe src="https://www.youtube-nocookie.com/embed/LcycR3gB0qs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 ## Usage
 
@@ -39,11 +34,18 @@ const ContactEdit = () => (
         <SimpleForm>
             <TextInput source="first_name" />
             <TextInput source="last_name" />
+            <TextInput source="title" />
             <ReferenceInput source="company_id" reference="companies" />
         </SimpleForm>
     </Edit>
 );
 ```
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/reference-input.webm" type="video/webm"/>
+  <source src="./img/reference-input.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 `<ReferenceInput>` requires a `source` and a `reference` prop.
 

@@ -63,36 +63,75 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
                         number,
                     ],
                     filter: params.filter,
+                    embed: getEmbedParam(
+                        params.meta?.embed,
+                        params.meta?.prefetch
+                    ),
                 };
+                const data = database.getAll(resource, query);
+                const prefetched = getPrefetchedData(
+                    data,
+                    params.meta?.prefetch
+                );
                 return delayed(
                     {
-                        data: database.getAll(resource, query),
+                        data: removePrefetchedData(data, params.meta?.prefetch),
                         total: database.getCount(resource, {
                             filter: params.filter,
                         }),
+                        meta: params.meta?.prefetch
+                            ? { prefetched }
+                            : undefined,
                     },
                     delay
                 );
             }
-            case 'getOne':
+            case 'getOne': {
+                const data = database.getOne(resource, params.id, {
+                    ...params,
+                    embed: getEmbedParam(
+                        params.meta?.embed,
+                        params.meta?.prefetch
+                    ),
+                });
+                const prefetched = getPrefetchedData(
+                    data,
+                    params.meta?.prefetch
+                );
                 return delayed(
                     {
-                        data: database.getOne(resource, params.id, {
-                            ...params,
-                        }),
+                        data: removePrefetchedData(data, params.meta?.prefetch),
+                        meta: params.meta?.prefetch
+                            ? { prefetched }
+                            : undefined,
                     },
                     delay
                 );
-            case 'getMany':
-                return delayed(
-                    {
-                        data: params.ids.map(
-                            id => database.getOne(resource, id),
-                            { ...params }
+            }
+            case 'getMany': {
+                const data = params.ids.map(id =>
+                    database.getOne(resource, id, {
+                        ...params,
+                        embed: getEmbedParam(
+                            params.meta?.embed,
+                            params.meta?.prefetch
                         ),
+                    })
+                );
+                const prefetched = getPrefetchedData(
+                    data,
+                    params.meta?.prefetch
+                );
+                return delayed(
+                    {
+                        data: removePrefetchedData(data, params.meta?.prefetch),
+                        meta: params.meta?.prefetch
+                            ? { prefetched }
+                            : undefined,
                     },
                     delay
                 );
+            }
             case 'getManyReference': {
                 const { page, perPage } = params.pagination;
                 const { field, order } = params.sort;
@@ -103,13 +142,25 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
                         number,
                     ],
                     filter: { ...params.filter, [params.target]: params.id },
+                    embed: getEmbedParam(
+                        params.meta?.embed,
+                        params.meta?.prefetch
+                    ),
                 };
+                const data = database.getAll(resource, query);
+                const prefetched = getPrefetchedData(
+                    data,
+                    params.meta?.prefetch
+                );
                 return delayed(
                     {
-                        data: database.getAll(resource, query),
+                        data: removePrefetchedData(data, params.meta?.prefetch),
                         total: database.getCount(resource, {
                             filter: query.filter,
                         }),
+                        meta: params.meta?.prefetch
+                            ? { prefetched }
+                            : undefined,
                     },
                     delay
                 );
@@ -117,22 +168,27 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
             case 'update':
                 return delayed(
                     {
-                        data: database.updateOne(resource, params.id, {
-                            ...params.data,
-                        }),
+                        data: database.updateOne(
+                            resource,
+                            params.id,
+                            cleanupData(params.data)
+                        ),
                     },
                     delay
                 );
             case 'updateMany':
                 params.ids.forEach(id =>
-                    database.updateOne(resource, id, {
-                        ...params.data,
-                    })
+                    database.updateOne(resource, id, cleanupData(params.data))
                 );
                 return delayed({ data: params.ids }, delay);
             case 'create':
                 return delayed(
-                    { data: database.addOne(resource, { ...params.data }) },
+                    {
+                        data: database.addOne(
+                            resource,
+                            cleanupData(params.data)
+                        ),
+                    },
                     delay
                 );
             case 'delete':
@@ -192,6 +248,92 @@ export default (data, loggingEnabled = false, delay?: number): DataProvider => {
             handle('deleteMany', resource, params),
     };
 };
+
+function getEmbedParam(embed: string[], prefetch: string[]) {
+    if (!embed && !prefetch) return;
+    const param = new Set<string>();
+    if (embed) embed.forEach(e => param.add(e));
+    if (prefetch) prefetch.forEach(e => param.add(e));
+    return Array.from(param);
+}
+
+/**
+ * Extract embeds from FakeRest responses
+ *
+ * When calling FakeRest database.getOne('comments', 123, { embed: 'post' }),
+ * the FakeRest response adds a `post` key to the response, containing the
+ * related post. Something like:
+ *
+ *     { id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }
+ *
+ * We want to copy all the embeds in a data object, that will later
+ * be included into the response meta.prefetched key.
+ *
+ * @example getPrefetchedData({ id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }, ['post'])
+ * // {
+ * //   posts: [{ id: 1, title: 'Hello, world' }] }
+ * // }
+ */
+const getPrefetchedData = (data, prefetchParam?: string[]) => {
+    if (!prefetchParam) return undefined;
+    const prefetched = {};
+    const dataArray = Array.isArray(data) ? data : [data];
+    prefetchParam.forEach(name => {
+        const resource = name.endsWith('s') ? name : `${name}s`;
+        dataArray.forEach(record => {
+            if (!prefetched[resource]) {
+                prefetched[resource] = [];
+            }
+            if (prefetched[resource].some(r => r.id === record[name].id)) {
+                // do not add the record if it's already there
+                return;
+            }
+            prefetched[resource].push(record[name]);
+        });
+    });
+
+    return prefetched;
+};
+
+/**
+ * Remove embeds from FakeRest responses
+ *
+ * When calling FakeRest database.getOne('comments', 123, { embed: 'post' }),
+ * the FakeRest response adds a `post` key to the response, containing the
+ * related post. Something like:
+ *
+ *     { id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }
+ *
+ * We want to remove all the embeds from the response.
+ *
+ * @example removePrefetchedData({ id: 123, body: 'Nice post!', post: { id: 1, title: 'Hello, world' } }, 'post')
+ * // { id: 123, body: 'Nice post!' }
+ */
+const removePrefetchedData = (data, prefetchParam?: string[]) => {
+    if (!prefetchParam) return data;
+    const dataArray = Array.isArray(data) ? data : [data];
+    const newDataArray = dataArray.map(record => {
+        const newRecord = {};
+        for (const key in record) {
+            if (!prefetchParam.includes(key)) {
+                newRecord[key] = record[key];
+            }
+        }
+        return newRecord;
+    });
+    return Array.isArray(data) ? newDataArray : newDataArray[0];
+};
+
+/**
+ * Clone the data and ignore undefined values.
+ *
+ * If we don't do this, an update with { id: undefined } as payload
+ * would remove the id from the record, which no real data provider does.
+ *
+ * Also, this is a way to ensure we don't keep a reference to the data
+ * and that the data is not mutated.
+ */
+const cleanupData = <T>(data: T): T => JSON.parse(JSON.stringify(data));
 
 class UndefinedResourceError extends Error {
     code: number;

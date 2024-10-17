@@ -6,7 +6,7 @@ This package takes a JSON object as input, then creates a client-side data provi
 
 All operations carried out in react-admin are local to the browser, and last only for the current browser session. A browser refresh erases all modifications.
 
-[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://www.youtube.com/watch?v=bJEo1O1oT6o)
 
 ## Installation
 
@@ -128,6 +128,70 @@ This data provider uses [FakeRest](https://github.com/marmelab/FakeRest) under t
 - filtering by the `q` full-text search
 - filtering numbers and dates greater or less than a value
 - embedding related resources
+
+## Embedding
+
+`ra-data-fakerest` supports [Embedded Relationships](https://marmelab.com/react-admin/DataProviders.html#embedding-relationships). Use the `meta.embed` query parameter to specify the relationships that you want to embed. 
+
+```jsx
+dataProvider.getOne('posts', { id: 1, meta: { embed: ['author'] } });
+// { 
+//    data: { id: 1, title: 'FooBar', author: { id: 1, name: 'John Doe' } },
+// }
+```
+
+You can embed more than one related record, so the `embed` value must be an array. The name of the embedded resource must be singular for a many-to-one relationship, and plural for a one-to-many relationship.
+
+```
+{ meta: { embed: ['author', 'comments'] } }
+```
+
+You can leverage this feature in page components to avoid multiple requests to the data provider:
+
+```jsx
+const PostList = () => (
+    <List queryOptions={{ meta: { embed: ['author'] } }}>
+        <Datagrid>
+            <TextField source="title" />
+            <TextField source="author.name" />
+        </Datagrid>
+    </List>
+);
+```
+
+Embedding Relationships is supported in `getList`, `getOne`, `getMany`, and `getManyReference` queries.
+
+## Prefetching
+
+`ra-data-fakerest` also supports [Prefetching Relationships](https://marmelab.com/react-admin/DataProviders.html#prefetching-relationships) to pre-populate the query cache with related resources. Use the `meta.prefetch` query parameter to specify the relationships that you want to prefetch.
+
+```jsx
+dataProvider.getOne('posts', { id: 1, meta: { prefetch: ['author'] } });
+// { 
+//    data: { id: 1, title: 'FooBar', author_id: 1 },
+//    meta: {
+//      prefetched: {
+//        authors: [{ id: 1, name: 'John Doe' }]
+//      }
+//    }
+// }
+```
+
+Prefetching is useful to avoid additional requests when rendering a list of resources with related resources using a `<ReferenceField>` component:
+
+```jsx
+const PostList = () => (
+    <List queryOptions={{ meta: { prefetch: ['author'] } }}>
+        <Datagrid>
+            <TextField source="title" />
+            {/** renders without an additional request */}
+            <ReferenceField source="author_id" />
+        </Datagrid>
+    </List>
+);
+```
+
+Prefetching Relationships is supported in `getList`, `getOne`, `getMany`, and `getManyReference` queries.
 
 ## License
 

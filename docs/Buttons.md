@@ -540,6 +540,8 @@ However since we are in the context of a list, there is no `<RecordContext>` ava
 
 Base component for most react-admin buttons. Responsive (displays only the icon with a tooltip on mobile) and accessible.
 
+### Props
+
 | Prop         | Required | Type                           | Default | Description                              |
 | ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
 | `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
@@ -563,14 +565,6 @@ Other props are passed down to [the underlying Material UI `<Button>`](https://m
 | `& .RaButton-largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
 
 To override the style of all instances of `<Button>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaButton` key.
-
-### `sx`: CSS API
-
-| Rule name                                     | Description                                     |
-|-----------------------------------------------|-------------------------------------------------|
-| `&.RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
-
-To override the style of all instances of `<SkipNavigationButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSkipNavigationButton` key.
 
 ## `<CloneButton>`
 
@@ -953,11 +947,9 @@ export const PostList = () => (
 This button is an internal component used by react-admin in [the Filter button/form combo](./FilteringTutorial.md#the-filter-buttonform-combo).
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/list_filter.webm" type="video/webm"/>
   <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 ### `sx`: CSS API
 
@@ -1019,6 +1011,14 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 ## `<RefreshButton>`
 
 ## `<SkipNavigationButton>`
+
+### `sx`: CSS API
+
+| Rule name                                     | Description                                     |
+|-----------------------------------------------|-------------------------------------------------|
+| `&.RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
+
+To override the style of all instances of `<SkipNavigationButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSkipNavigationButton` key.
 
 ## `<ShowButton>`
 

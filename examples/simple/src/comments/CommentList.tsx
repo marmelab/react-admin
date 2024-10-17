@@ -148,7 +148,11 @@ const CommentMobileList = () => (
 );
 
 const CommentList = () => (
-    <ListBase perPage={6} exporter={exporter}>
+    <ListBase
+        perPage={6}
+        exporter={exporter}
+        queryOptions={{ meta: { prefetch: ['post'] } }}
+    >
         <ListView />
     </ListBase>
 );

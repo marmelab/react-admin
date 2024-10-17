@@ -83,7 +83,7 @@ export default (
     },
 
     getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        httpClient(`${apiUrl}/${resource}/${encodeURIComponent(params.id)}`, {
             signal: params?.signal,
         }).then(({ json }) => ({
             data: json,
@@ -147,7 +147,7 @@ export default (
     },
 
     update: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        httpClient(`${apiUrl}/${resource}/${encodeURIComponent(params.id)}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json })),
@@ -156,7 +156,7 @@ export default (
     updateMany: (resource, params) =>
         Promise.all(
             params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${id}`, {
+                httpClient(`${apiUrl}/${resource}/${encodeURIComponent(id)}`, {
                     method: 'PUT',
                     body: JSON.stringify(params.data),
                 })
@@ -172,7 +172,7 @@ export default (
         }).then(({ json }) => ({ data: json })),
 
     delete: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        httpClient(`${apiUrl}/${resource}/${encodeURIComponent(params.id)}`, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'text/plain',
@@ -183,7 +183,7 @@ export default (
     deleteMany: (resource, params) =>
         Promise.all(
             params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${id}`, {
+                httpClient(`${apiUrl}/${resource}/${encodeURIComponent(id)}`, {
                     method: 'DELETE',
                     headers: new Headers({
                         'Content-Type': 'text/plain',

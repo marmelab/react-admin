@@ -14,7 +14,13 @@ import { List } from './List';
 import { Filter } from './filter';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
-import { Basic, Title, TitleFalse, TitleElement } from './List.stories';
+import {
+    Basic,
+    Title,
+    TitleFalse,
+    TitleElement,
+    PartialPagination,
+} from './List.stories';
 
 const theme = createTheme(defaultTheme);
 
@@ -104,99 +110,115 @@ describe('<List />', () => {
         expect(screen.queryAllByText('Hello')).toHaveLength(1);
     });
 
-    it('should render an invite when the list is empty', async () => {
-        const Dummy = () => {
-            const { isLoading } = useListContext();
-            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
-        };
-        const dataProvider = {
-            getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
-        } as any;
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <ThemeProvider theme={theme}>
-                    <List resource="posts">
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            screen.getByText('resources.posts.empty');
-            expect(screen.queryByText('dummy')).toBeNull();
+    describe('empty', () => {
+        it('should render an invite when the list is empty', async () => {
+            const Dummy = () => {
+                const { isPending } = useListContext();
+                return <div>{isPending ? 'loading' : 'dummy'}</div>;
+            };
+            const dataProvider = {
+                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+            } as any;
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List resource="posts">
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                screen.getByText('resources.posts.empty');
+                expect(screen.queryByText('dummy')).toBeNull();
+            });
         });
-    });
 
-    it('should not render an invite when the list is empty with an empty prop set to false', async () => {
-        const Dummy = () => {
-            const { isLoading } = useListContext();
-            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
-        };
-        const dataProvider = {
-            getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
-        } as any;
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <ThemeProvider theme={theme}>
-                    <List resource="posts" empty={false}>
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(screen.queryByText('resources.posts.empty')).toBeNull();
-            screen.getByText('dummy');
+        it('should not render an invite when the list is empty with an empty prop set to false', async () => {
+            const Dummy = () => {
+                const { isPending } = useListContext();
+                return <div>{isPending ? 'loading' : 'dummy'}</div>;
+            };
+            const dataProvider = {
+                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+            } as any;
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List resource="posts" empty={false}>
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(screen.queryByText('resources.posts.empty')).toBeNull();
+                screen.getByText('dummy');
+            });
         });
-    });
 
-    it('should render custom empty component when data is empty', async () => {
-        const Dummy = () => null;
-        const CustomEmpty = () => <div>Custom Empty</div>;
-
-        const dataProvider = {
-            getList: jest.fn(() =>
-                Promise.resolve({
-                    data: [],
-                    pageInfo: { hasNextPage: false, hasPreviousPage: false },
-                })
-            ),
-        } as any;
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <ThemeProvider theme={theme}>
-                    <List resource="posts" empty={<CustomEmpty />}>
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(screen.queryByText('resources.posts.empty')).toBeNull();
-            screen.getByText('Custom Empty');
+        it('should not render an empty component when using partial pagination and the list is not empty', async () => {
+            render(<PartialPagination />);
+            await waitFor(() => {
+                expect(screen.queryByText('resources.posts.empty')).toBeNull();
+                screen.getByText('John Doe');
+            });
         });
-    });
 
-    it('should not render an invite when a filter is active', async () => {
-        const Dummy = () => {
-            const { isLoading } = useListContext();
-            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
-        };
-        const dataProvider = {
-            getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
-        } as any;
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <ThemeProvider theme={theme}>
-                    <List resource="posts" filterDefaultValues={{ foo: 'bar' }}>
-                        <Dummy />
-                    </List>
-                </ThemeProvider>
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(screen.queryByText('resources.posts.empty')).toBeNull();
-            screen.getByText('dummy');
+        it('should render custom empty component when data is empty', async () => {
+            const Dummy = () => null;
+            const CustomEmpty = () => <div>Custom Empty</div>;
+
+            const dataProvider = {
+                getList: jest.fn(() =>
+                    Promise.resolve({
+                        data: [],
+                        pageInfo: {
+                            hasNextPage: false,
+                            hasPreviousPage: false,
+                        },
+                    })
+                ),
+            } as any;
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List resource="posts" empty={<CustomEmpty />}>
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(screen.queryByText('resources.posts.empty')).toBeNull();
+                screen.getByText('Custom Empty');
+            });
+        });
+
+        it('should not render an invite when a filter is active', async () => {
+            const Dummy = () => {
+                const { isPending } = useListContext();
+                return <div>{isPending ? 'loading' : 'dummy'}</div>;
+            };
+            const dataProvider = {
+                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+            } as any;
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List
+                            resource="posts"
+                            filterDefaultValues={{ foo: 'bar' }}
+                        >
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(screen.queryByText('resources.posts.empty')).toBeNull();
+                screen.getByText('dummy');
+            });
         });
     });
 

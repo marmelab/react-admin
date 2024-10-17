@@ -32,7 +32,7 @@ const addTagsSearchSupport = (dataProvider: DataProvider) => ({
             // partial pagination
             return dataProvider
                 .getList(resource, params)
-                .then(({ data, total }) => ({
+                .then(({ data, total, meta }) => ({
                     data,
                     pageInfo: {
                         hasNextPage:
@@ -40,6 +40,7 @@ const addTagsSearchSupport = (dataProvider: DataProvider) => ({
                             (total || 0),
                         hasPreviousPage: params.pagination.page > 1,
                     },
+                    meta,
                 }));
         }
         if (resource === 'tags') {

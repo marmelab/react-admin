@@ -2,8 +2,12 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
-import { useFieldValue, useTranslate } from 'ra-core';
-import { Call, Objects } from 'hotscript';
+import {
+    ExtractRecordPaths,
+    HintedString,
+    useFieldValue,
+    useTranslate,
+} from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
@@ -114,16 +118,13 @@ export interface FileFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType> {
     src?: string;
-    title?: Call<Objects.AllPaths, RecordType> extends never
-        ? AnyString
-        : Call<Objects.AllPaths, RecordType> | AnyString;
+    title?: HintedString<ExtractRecordPaths<RecordType>>;
     target?: string;
     download?: boolean | string;
     ping?: string;
     rel?: string;
     sx?: SxProps;
 }
-type AnyString = string & {};
 
 const PREFIX = 'RaFileField';
 

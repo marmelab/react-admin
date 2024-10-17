@@ -120,6 +120,10 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         // because setQueryData doesn't accept a stale time option
         const now = Date.now();
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
+        // Stringify and parse the data to remove undefined values.
+        // If we don't do this, an update with { id: undefined } as payload
+        // would remove the id from the record, which no real data provider does.
+        const clonedData = JSON.parse(JSON.stringify(data));
 
         const updateColl = (old: RecordType[]) => {
             if (!old) return old;
@@ -132,7 +136,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             }
             return [
                 ...old.slice(0, index),
-                { ...old[index], ...data } as RecordType,
+                { ...old[index], ...clonedData } as RecordType,
                 ...old.slice(index + 1),
             ];
         };
@@ -143,7 +147,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
 
         queryClient.setQueryData(
             [resource, 'getOne', { id: String(id), meta }],
-            (record: RecordType) => ({ ...record, ...data }),
+            (record: RecordType) => ({ ...record, ...clonedData }),
             { updatedAt }
         );
         queryClient.setQueriesData(

@@ -466,18 +466,142 @@ A simple react-admin app with one `<Resource>` using [guessers](./Features.md#gu
 
 ## The `meta` Parameter
 
-All data provider methods accept a `meta` parameter. React-admin core components never set this `meta` when calling the data provider. It's designed to let you pass additional parameters to your data provider.
+All data provider methods accept a `meta` query parameter and can return a `meta` response key. React-admin core components never set the query `meta`. It's designed to let you pass additional parameters to your data provider.
 
-For instance, you could pass an option to embed related records in the response:
+For instance, you could pass an option to embed related records in the response (see [Embedded data](#embedded-data) below):
 
 ```jsx
-const { data, isPending, error } = useGetOne(
+const { data } = await dataProvider.getOne(
     'books',
-    { id, meta: { _embed: 'authors' } },
+    { id, meta: { embed: ['authors'] } },
 );
 ```
 
 It's up to you to use this `meta` parameter in your data provider.
+
+## Embedded Data
+
+Some API backends with knowledge of the relationships between resources can [embed related records](./DataProviders.md#embedding-relationships) in the response. If you want your data provider to support this feature, use the `meta.embed` query parameter to specify the relationships that you want to embed.
+
+```jsx
+const { data } = await dataProvider.getOne(
+    'posts',
+    { id: 123, meta: { embed: ['author'] } }
+);
+// {
+//    id: 123,
+//    title: "Hello, world",
+//    author_id: 456,
+//    author: { id: 456, name: "John Doe" },
+// }
+```
+
+For example, the [JSON server](https://github.com/typicode/json-server?tab=readme-ov-file#embed) backend supports embedded data using the `_embed` query parameter:
+
+```txt
+GET /posts/123?_embed=author
+```
+
+The [JSON Server Data Provider](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server) therefore passes the `meta.embed` query parameter to the API:
+
+```tsx
+const apiUrl = 'https://my.api.com/';
+const httpClient = fetchUtils.fetchJson;
+
+const dataProvider = {
+    getOne: async (resource, params) => {
+        let query = `${apiUrl}/${resource}/${params.id}`;
+        if (params.meta?.embed) {
+            query += `?_embed=${params.meta.embed.join(',')}`;
+        }
+        const { json: data } = await httpClient(query);
+        return { data };
+    },
+    // ...
+}
+```
+
+As embedding is an optional feature, react-admin doesn't use it by default. It's up to you to implement it in your data provider to reduce the number of requests to the API.
+
+## Prefetching
+
+Similar to embedding, [prefetching](./DataProviders.md#prefetching-relationships) is an optional data provider feature that saves additional requests by returning related records in the response.
+
+Use the `meta.prefetch` query parameter to specify the relationships that you want to prefetch.
+
+```jsx
+const { data } = await dataProvider.getOne(
+    'posts',
+    { id: 123, meta: { prefetch: ['author'] } }
+);
+// {
+//     data: {
+//         id: 123,
+//         title: "Hello, world",
+//         author_id: 456,
+//     },
+//     meta: {
+//         prefetched: {
+//             authors: [{ "id": 456, "name": "John Doe" }]
+//         }
+//     }
+// }
+```
+
+By convention, the `meta.prefetched` response key must be an object where each key is the name of the embedded resource, and each value is an array of records.
+
+It's the Data Provider's job to build the `meta.prefetched` object based on the API response.
+
+For example, the [JSON server](https://github.com/typicode/json-server?tab=readme-ov-file#embed) backend supports embedded data using the `_embed` query parameter:
+
+```txt
+GET /posts/123?_embed=author
+```
+
+```json
+{
+    "id": 123,
+    "title": "Hello, world",
+    "author_id": 456,
+    "author": {
+        "id": 456,
+        "name": "John Doe"
+    }
+}
+```
+
+To add support for prefetching, the [JSON Server Data Provider](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server) extracts the embedded data from the response, and puts them in the `meta.prefetched` property:
+
+```jsx
+const dataProvider = {
+    getOne: async (resource, params) => {
+        let query = `${apiUrl}/${resource}/${params.id}`;
+        if (params.meta?.prefetch) {
+            query += `?_embed=${params.meta.prefetch.join(',')}`;
+        }
+        const { json: data } = await httpClient(query);
+        const prefetched = {};
+        if (params.meta?.prefetch) {
+            params.meta.prefetch.forEach(name => {
+                if (data[name]) {
+                    const prefetchKey = name.endsWith('s') ? name : `${name}s`;
+                    if (!prefetched[prefetchKey]) {
+                        prefetched[prefetchKey] = [];
+                    }
+                    if (!prefetched[prefetchKey].find(r => r.id === data[name].id)) {
+                        prefetched[prefetchKey].push(data[name]);
+                    }
+                    delete data[name];
+                }
+            });
+        }
+        return { data };
+    },
+    // ...
+}
+```
+
+Use the same logic to implement prefetching in your data provider.
 
 ## The `signal` Parameter
 
@@ -503,12 +627,12 @@ import { useDataProvider, Loading, Error } from 'react-admin';
 
 const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
-    const { data, isLoading, error } = useQuery({
+    const { data, isPending, error } = useQuery({
         queryKey: ['users', 'getOne', { id: userId }], 
         queryFn: ({ signal }) => dataProvider.getOne('users', { id: userId, signal })
     });
 
-    if (isLoading) return <Loading />;
+    if (isPending) return <Loading />;
     if (error) return <Error />;
     if (!data) return null;
 
@@ -548,7 +672,15 @@ const { data } = dataProvider.getOne('posts', { id: 123 })
 // }
 ```
 
-This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods. 
+This will cause the Edit view to blink on load. If you have this problem, modify your Data Provider to return the same shape for all methods.
+
+**Note**: If the `getList` and `getOne` methods use different `meta` parameters, they won't share the cache. You can use this as an escape hatch to avoid flickering in the Edit view.
+
+```jsx
+const { data } = dataProvider.getOne('posts', { id: 123, meta: { page: 'getOne' } })
+```
+
+This also explains why using [Embedding relationships](./DataProviders.md#embedding-relationships) may make the navigation slower, as the `getList` and `getOne` methods will return different shapes.
 
 ## `fetchJson`: Built-In HTTP Client
 

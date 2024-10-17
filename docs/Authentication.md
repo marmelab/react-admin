@@ -158,6 +158,8 @@ const App = () => (
 
 Securing custom pages one by one can be tedious. If your app will never accept anonymous access, you can force the app to wait for `authProvider.checkAuth()` to resolve before rendering the page layout by setting the `<Admin requireAuth>` prop.
 
+For example, the following app will require authentication to access all pages, including the `/settings` and `/profile` pages:
+
 ```jsx
 const App = () => (
     <Admin
@@ -165,12 +167,39 @@ const App = () => (
         authProvider={authProvider}
         requireAuth
     >
-        <Resource name="posts" list={PostList} />
+        <Resource name="posts" {...posts} />
+        <Resource name="comments" {...comments} />
+        <CustomRoutes>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
     </Admin>
 );
 ```
 
 `requireAuth` also hides the UI until the authentication check is complete, ensuring that no information (menu, resource names, etc.) is revealed to anonymous users.
+
+`requireAuth` doesn't prevent users from accessing `<CustomRoutes noLayout>`, as these routes are often used for public pages like the registration page or the password reset page.
+
+```jsx
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        requireAuth
+    >
+        <CustomRoutes noLayout>
+            {/* These routes are public */}
+            <Route path="/register" element={<Register />} />
+        </CustomRoutes>
+        <CustomRoutes>
+            {/* These routes are private */}
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
+    </Admin>
+);
+```
 
 ## Allowing Anonymous Access
 

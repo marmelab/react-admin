@@ -270,6 +270,107 @@ Access-Control-Expose-Headers: X-Custom-Header
 
 This must be done on the server side.
 
+## Embedding Relationships
+
+Some API backends with knowledge of the relationships between resources can embed related records in the response.
+
+For instance, JSON Server can return a post and its author in a single response:
+
+```txt
+GET /posts/123?embed=author
+```
+
+```json
+{
+    "id": 123,
+    "title": "Hello, world",
+    "author_id": 456,
+    "author": {
+        "id": 456,
+        "name": "John Doe"
+    }
+}
+```
+
+Data providers implementing this feature often use the `meta` key in the query parameters to pass the embed parameter to the API.
+
+```jsx
+const { data } = useGetOne('posts', { id: 123, meta: { embed: ['author'] } });
+```
+
+Leveraging embeds can reduce the number of requests made by react-admin to the API, and thus improve the app's performance.
+
+For example, this allows you to display data from a related resource without making an additional request (and without using a `<ReferenceField>`).
+
+{% raw %}
+```diff
+const PostList = () => (
+-   <List>
++   <List queryOptions={{ meta: { embed: ["author"] } }}>
+        <Datagrid>
+            <TextField source="title" />
+-           <ReferenceField source="author_id" reference="authors>
+-               <TextField source="name" />
+-           </ReferenceField>
++           <TextField source="author.name" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+Refer to your data provider's documentation to verify if it supports this feature. If you're writing your own data provider, check the [Writing a Data Provider](./DataProviderWriting.md#embedded-data) documentation for more details.
+
+**Note**: Embeds are a double-edged sword. They can make the response larger and break the sharing of data between pages. Measure the performance of your app before and after using embeds to ensure they are beneficial.
+
+## Prefetching Relationships
+
+Some API backends can return related records in the same response as the main record. For instance, an API may return a post and its author in a single response:
+
+
+```jsx
+const { data, meta } = useGetOne('posts', { id: 123, meta: { prefetch: ['author']} });
+```
+
+```json
+{
+    "data": {
+        "id": 123,
+        "title": "Hello, world",
+        "author_id": 456,
+    },
+    "meta": {
+        "prefetched": {
+            "authors": [{ "id": 456, "name": "John Doe" }]
+        }
+    }
+}
+```
+
+This is called *prefetching* or *preloading*.
+
+React-admin can use this feature to populate its cache with related records, and avoid subsequent requests to the API. The prefetched records must be returned in the `meta.prefetched` key of the data provider response.
+
+For example, you can use prefetching to display the author's name in a post list without making an additional request:
+
+{% raw %}
+```jsx
+const PostList = () => (
+    <List queryOptions={{ meta: { prefetch: ['author'] }}}>
+        <Datagrid>
+            <TextField source="title" />
+            {/** renders without an additional request */}
+            <ReferenceField source="author_id" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+The way to *ask* for embedded resources isn't normalized and depends on the API. The above example uses the `meta.prefetch` query parameter. Some APIs may use [the `embed` query parameter](#embedding-relationships) to indicate prefetching.
+
+ Refer to your data provider's documentation to verify if it supports prefetching. If you're writing your own data provider, check the [Writing a Data Provider](./DataProviderWriting.md#embedded-data) documentation for more details.
+
 ## Adding Lifecycle Callbacks
 
 <iframe src="https://www.youtube-nocookie.com/embed/o8U-wjfUwGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>

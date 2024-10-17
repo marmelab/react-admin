@@ -6,7 +6,18 @@ import {
     SearchInput,
     SelectInput,
 } from 'react-admin';
+import green from '@mui/material/colors/green';
+import orange from '@mui/material/colors/orange';
+import red from '@mui/material/colors/red';
+import { Box } from '@mui/material';
+
 import { Customer } from '../types';
+
+const colorMap: { [key: string]: string } = {
+    accepted: green[500],
+    pending: orange[500],
+    rejected: red[500],
+};
 
 const reviewFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -17,6 +28,20 @@ const reviewFilters = [
             { id: 'pending', name: 'Pending' },
             { id: 'rejected', name: 'Rejected' },
         ]}
+        optionText={choice => (
+            <>
+                <Box
+                    bgcolor={colorMap[choice.id]}
+                    width={8}
+                    height={8}
+                    borderRadius={4}
+                    component="span"
+                    mr={1}
+                    display="inline-block"
+                />
+                {choice.name}
+            </>
+        )}
     />,
     <ReferenceInput source="customer_id" reference="customers">
         <AutocompleteInput

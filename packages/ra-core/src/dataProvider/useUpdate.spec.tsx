@@ -16,6 +16,7 @@ import {
     SuccessCase as SuccessCaseOptimistic,
     WithMiddlewaresSuccess as WithMiddlewaresSuccessOptimistic,
     WithMiddlewaresError as WithMiddlewaresErrorOptimistic,
+    UndefinedValues as UndefinedValuesOptimistic,
 } from './useUpdate.optimistic.stories';
 import {
     ErrorCase as ErrorCaseUndoable,
@@ -290,6 +291,12 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('mutating')).toBeNull();
             });
             await screen.findByText('Hello');
+        });
+        it('when optimistic, does not erase values if the payload contains undefined values', async () => {
+            render(<UndefinedValuesOptimistic />);
+            await screen.findByText('{"id":1,"title":"Hello"}');
+            screen.getByText('Update title').click();
+            await screen.findByText('{"id":1,"title":"world"}'); // and not just {"title":"world"}
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             render(<SuccessCaseUndoable timeout={10} />);

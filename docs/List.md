@@ -678,7 +678,6 @@ const CommentList = () => (
 ## `filters`: Filter Inputs
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/list_filter.webm" type="video/webm"/>
   <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -1167,8 +1166,8 @@ This is often used by APIs to return facets, aggregations, statistics, or other 
 //     },
 // }
 const Facets = () => {
-    const { isLoading, error, meta } = useListContext();
-    if (isLoading || error) return null;
+    const { isPending, error, meta } = useListContext();
+    if (isPending || error) return null;
     return (
         <Box>
             <Typography variant="subtitle2">

@@ -77,6 +77,44 @@ const SuccessCore = () => {
     );
 };
 
+export const UndefinedValues = () => {
+    const data = { id: 1, title: 'Hello' };
+    const dataProvider = {
+        getOne: async () => ({ data }),
+        update: () => new Promise(() => {}), // never resolve to see only optimistic update
+    } as any;
+    return (
+        <CoreAdminContext
+            queryClient={new QueryClient()}
+            dataProvider={dataProvider}
+        >
+            <UndefinedValuesCore />
+        </CoreAdminContext>
+    );
+};
+
+const UndefinedValuesCore = () => {
+    const { data } = useGetOne('posts', { id: 1 });
+    const [update, { isPending }] = useUpdate();
+    const handleClick = () => {
+        update(
+            'posts',
+            { id: 1, data: { id: undefined, title: 'world' } },
+            { mutationMode: 'optimistic' }
+        );
+    };
+    return (
+        <>
+            <pre>{JSON.stringify(data)}</pre>
+            <div>
+                <button onClick={handleClick} disabled={isPending}>
+                    Update title
+                </button>
+            </div>
+        </>
+    );
+};
+
 export const ErrorCase = ({ timeout = 1000 }) => {
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = {

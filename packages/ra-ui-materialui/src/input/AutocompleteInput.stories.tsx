@@ -36,6 +36,7 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { useState } from 'react';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -261,25 +262,34 @@ const choicesForCreationSupport = [
     { id: 5, name: 'Marcel Proust' },
 ];
 
-export const OnCreate = () => (
-    <Wrapper>
+const OnCreateInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
         <AutocompleteInput
             source="author"
-            choices={choicesForCreationSupport}
-            onCreate={filter => {
+            choices={choices}
+            onCreate={async filter => {
                 if (!filter) return;
 
                 const newOption = {
-                    id: choicesForCreationSupport.length + 1,
+                    id: choices.length + 1,
                     name: filter,
                 };
-                choicesForCreationSupport.push(newOption);
+                setChoices(options => [...options, newOption]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
         />
+    );
+};
+
+export const OnCreate = () => (
+    <Wrapper>
+        <OnCreateInput />
     </Wrapper>
 );
 
@@ -326,61 +336,171 @@ export const OnCreateSlow = () => (
     </Wrapper>
 );
 
-export const OnCreatePrompt = () => (
-    <Wrapper>
+const OnCreatePromptInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
         <AutocompleteInput
             source="author"
-            choices={choicesForCreationSupport}
-            onCreate={filter => {
+            choices={choices}
+            onCreate={async filter => {
                 const newAuthorName = window.prompt(
                     'Enter a new author',
                     filter
                 );
-
-                if (newAuthorName) {
-                    const newAuthor = {
-                        id: choicesForCreationSupport.length + 1,
-                        name: newAuthorName,
-                    };
-                    choicesForCreationSupport.push(newAuthor);
-                    return newAuthor;
-                }
+                if (!newAuthorName) return;
+                const newAuthor = {
+                    id: choices.length + 1,
+                    name: newAuthorName,
+                };
+                setChoices(authors => [...authors, newAuthor]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
+                return newAuthor;
             }}
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
+            // Disable clearOnBlur because opening the prompt blurs the input
+            // and creates a flicker
+            clearOnBlur={false}
         />
+    );
+};
+
+export const OnCreatePrompt = () => (
+    <Wrapper>
+        <OnCreatePromptInput />
     </Wrapper>
 );
 
-export const CreateLabel = () => (
-    <Wrapper>
+const CreateAuthorLocal = ({ choices, setChoices }) => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const [name, setName] = React.useState(filter || '');
+    const [language, setLanguage] = React.useState('');
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        const newAuthor = {
+            id: choices.length + 1,
+            name,
+            language,
+        };
+        setChoices(authors => [...authors, newAuthor]);
+        setName('');
+        setLanguage('');
+        // Wait until next tick to give some time for React to update the state
+        setTimeout(() => {
+            onCreate(newAuthor);
+        });
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <Stack gap={4}>
+                        <TextField
+                            name="name"
+                            label="The author name"
+                            value={name}
+                            onChange={event => setName(event.target.value)}
+                            autoFocus
+                        />
+                        <TextField
+                            name="language"
+                            label="The author language"
+                            value={language}
+                            onChange={event => setLanguage(event.target.value)}
+                            autoFocus
+                        />
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+
+const CreateDialogInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
         <AutocompleteInput
             source="author"
-            choices={[
-                { id: 1, name: 'Leo Tolstoy' },
-                { id: 2, name: 'Victor Hugo' },
-                { id: 3, name: 'William Shakespeare' },
-                { id: 4, name: 'Charles Baudelaire' },
-                { id: 5, name: 'Marcel Proust' },
-            ]}
-            onCreate={filter => {
-                const newAuthorName = window.prompt(
-                    'Enter a new author',
-                    filter
-                );
+            choices={choices}
+            create={
+                <CreateAuthorLocal choices={choices} setChoices={setChoices} />
+            }
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    );
+};
 
-                if (newAuthorName) {
-                    const newAuthor = {
-                        id: choicesForCreationSupport.length + 1,
-                        name: newAuthorName,
-                    };
-                    choicesForCreationSupport.push(newAuthor);
-                    return newAuthor;
-                }
+export const CreateDialog = () => (
+    <Wrapper>
+        <CreateDialogInput />
+    </Wrapper>
+);
+
+const CreateLabelInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
+        <AutocompleteInput
+            source="author"
+            choices={choices}
+            onCreate={async filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: choices.length + 1,
+                    name: filter,
+                };
+                setChoices(options => [...options, newOption]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
+                return newOption;
             }}
             createLabel="Start typing to create a new item"
         />
+    );
+};
+
+export const CreateLabel = () => (
+    <Wrapper>
+        <CreateLabelInput />
+    </Wrapper>
+);
+
+const CreateItemLabelInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
+        <AutocompleteInput
+            source="author"
+            choices={choices}
+            onCreate={async filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: choices.length + 1,
+                    name: filter,
+                };
+                setChoices(options => [...options, newOption]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
+                return newOption;
+            }}
+            createItemLabel="Add a new author: %{item}"
+        />
+    );
+};
+
+export const CreateItemLabel = () => (
+    <Wrapper>
+        <CreateItemLabelInput />
     </Wrapper>
 );
 

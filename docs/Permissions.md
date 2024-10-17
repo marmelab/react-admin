@@ -71,14 +71,49 @@ const authProvider = {
 
 ### Access Control Strategies
 
-It's your responsibility to implement the `canAccess` method in the `authProvider`. You can implement any access control strategy you want. Here is a basic example based on an array of permissions returned at login and stored in `localStorage`:
+It's your responsibility to implement the `canAccess` method in the `authProvider`. You can implement any access control strategy you want. 
+
+For example, if the auth backend returns a role at login ('admin', 'user', reader'), you can implement a simple access control strategy as follows:
+
+```tsx
+const accessControlStrategies = {
+    admin: ({ resource, action }) => {
+        return true;
+    },
+    user: ({ resource, action }) => {
+        return resource !== 'users';
+    },
+    reader: ({ resource, action }) => {
+        return resource !== 'users' && action === 'read';
+    },
+}
+
+const authProvider = {
+    async login({ username, password }) {
+        // ...
+        const user = await authBackend.login({ username, password });
+        // role looks like 'admin', 'user', or reader'
+        localStorage.setItem('role', user.role);
+    },
+    async logout() {
+        // ...
+        localStorage.removeItem('role');
+    },
+    async canAccess({ resource, action }) {
+        const role = JSON.parse(localStorage.getItem('role'));
+        return accessControlStrategies[role]({ resource, action });
+    },
+};
+```
+
+If the auth backend returns a list of permissions at login, you can implement a more granular access control strategy.
 
 ```tsx
 const authProvider= {
-    // ...
-    async canAccess({ resource, action, record }) {
-        const permissions = JSON.parse(localStorage.getItem('permissions'));
-        // example permissions:
+    async login({ username, password }) {
+        // ...
+        const user = await authBackend.login({ username, password });
+        // permissions look like 
         // [
         //     { action: "list", resource: "companies" },
         //     { action: "create", resource: "companies" },
@@ -91,6 +126,14 @@ const authProvider= {
         //     { action: "show", resource: "users" },
         //     { action: "delete", resource: "users" },
         // ];
+        localStorage.setItem('permissions', JSON.stringify(user.permissions));
+    },
+    async logout() {
+        // ...
+        localStorage.removeItem('permissions');
+    },
+    async canAccess({ resource, action, record }) {
+        const permissions = JSON.parse(localStorage.getItem('permissions'));
         return permissions.some(p => 
             p.resource === resource && p.action === action
         );
@@ -100,7 +143,7 @@ const authProvider= {
 const { canAccess } = useCanAccess({ action: 'list', resource: 'companies' }); // true
 ```
 
-Check the [RBAC module](./AuthRBAC.md) for a more advanced example of access control with roles and groups.
+**Tip**: Building granular access control manually can be tedious. The [RBAC module](./AuthRBAC.md) provides built-in primitives for advanced access control with roles, groups, wildcard permissions, and explicit deny.
 
 ### Built-In Access Control
 
@@ -207,6 +250,33 @@ const CommentsToolbar = ({ record }) => (
     </Stack>
 );
 ```
+
+### Custom Routes
+
+By default, there is no authentication or authorization control on the custom routes. If you need to restrict access to a custom route, you can use the `<CanAccess>` component. Remember to check the authentication status before with `<Authenticated>`:
+
+```tsx
+import { Admin, CustomRoutes, Authenticated, CanAccess } from 'react-admin';
+import { Route } from 'react-router-dom';
+
+const App = () => (
+    <Admin authProvider={authProvider}>
+        <CustomRoutes>
+            <Route path="/restricted" element={
+                <Authenticated>
+                    <CanAccess action="read" resource="restricted">
+                        <RestrictedPage />
+                    </CanAccess>
+                </Authenticated>
+            } />
+        </CustomRoutes>
+    </Admin>
+);
+```
+
+**Note**: You don't need to use `<CanAccess>` on the core react-admin page components (`<List>`, `<Create>`, `<Edit>`, `<Show>`) because they already have built-in access control.
+
+**Note**: You don't need to use `<CanAccess>` on custom pages if your admin uses [`requireAuth`](./Admin.md#requireauth).
 
 ## Permissions
 
