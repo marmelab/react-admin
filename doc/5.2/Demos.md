@@ -131,7 +131,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         <a href="#crm" class="no-decoration"><img src="./img/demo-CRM.png" alt="CRM"></a>
         <div class="content-card">
             <a href="#crm" class="no-decoration">
-                <p class="title-card"><b>Atomic CRM</b></p>
+                <p class="title-card"><b>CRM</b></p>
                 <p  class="description-card">A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Uses Supabase as backend. Built by the core team.</p>
             </a>
         </div>
@@ -173,10 +173,10 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <a href="#blog" class="no-decoration"><img src="./img/blog_demo.png" alt="Blog"></a>
+        <a href="#blog-admin" class="no-decoration"><img src="./img/blog_demo.png" alt="Blog"></a>
         <div class="content-card">
-            <a href="#blog" class="no-decoration">
-                <p class="title-card"><b>Blog</b></p>
+            <a href="#blog-admin" class="no-decoration">
+                <p class="title-card"><b>Blog admin</b></p>
                 <p  class="description-card">A simple application with posts, comments and users that we use for our e2e tests. Designed to use most of the react-admin features. Built by the core team.</p>
             </a>
         </div>
@@ -322,7 +322,7 @@ The source shows how to implement the following features:
 * [useCreate](https://github.com/marmelab/writers-delight/blob/main/src/compositions/CreateCompositionButton.tsx#L6)
 * [useStore](https://github.com/marmelab/writers-delight/blob/main/src/compositions/AISwitch.tsx#L23)
 
-## Blog
+## Blog Admin
 
 A simple application with posts, comments and users that we use for our e2e tests. Not designed to have a good UX, but to use most of the react-admin features. Built by the core team.
 

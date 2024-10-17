@@ -140,7 +140,7 @@ The RBAC system relies on *permissions* only. It's the `authProvider`'s responsi
 
 An _action_ is a string, usually a verb, that represents an operation. Examples of actions include "read", "create", "edit", "delete", or "export".
 
-Ra-rbac defines its own actions that you can use with ra-rbac components, but you can also define your own actions, and implement them in your own components using [`useCanAccess`](./useCanAccess.md), [`canAccess`](./canAccess.md) or [`<IfCanAccess>`](./IfCanAccess.md).
+Ra-rbac defines its own actions that you can use with ra-rbac components, but you can also define your own actions, and implement them in your own components using [`useCanAccess`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#usecanaccess), [`canAccess`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#canaccess) or [`<IfCanAccess>`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess).
 
 Ra-rbac's built-in actions operate at different levels:
 
@@ -165,14 +165,6 @@ Here are all the actions supported by ra-rbac:
 **Tip:** Be sure not to confuse "show" and "read", or "edit" and "write", as they are not the same. The first operate at the page level, the second at the field level. A good mnemonic is to realize "show" and "edit" are named the same as the react-admin page they allow to control: the Show and Edit pages.
 
 ## Concepts
-
-### Pessimistic Strategy
-
-React-admin treats permissions in an optimistic way: While it fetches permissions from the authProvider, react-admin renders all components. If the authProvider returns a limited set of permissions, users may briefly see content they don't have access to.
-
-Ra-rbac takes the opposite strategy: while permissions are loading, react-admin doesn't render the components that require permissions, assuming that these components are restricted by default.
-
-It's only when ra-rbac is sure that the user has the right permissions that it renders the content.
 
 ### Principle Of Least Privilege
 
@@ -305,7 +297,7 @@ const authProvider = {
 Ra-rbac provides hooks to enable or disable features based on roles and permissions.
 
 - [`usePermissions()`](./usePermissions.md) returns the current permissions.
-- [`useCanAccess()`](./useCanAccess.md) returns a boolean indicating whether the user has access to the given resource.
+- [`useCanAccess()`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#usecanaccess) returns a boolean indicating whether the user has access to the given resource.
 
 ## Components
 

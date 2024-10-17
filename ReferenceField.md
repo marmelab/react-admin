@@ -237,6 +237,30 @@ React-admin accumulates and deduplicates the ids of the referenced records to ma
 
 Then react-admin renders the `<PostList>` with a loader for the `<ReferenceField>`, fetches the API for the related users in one call (`dataProvider.getMany('users', { ids: [789,735] }`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
 
+## Prefetching
+
+When you know that a page will contain a `<ReferenceField>`, you can configure the main page query to prefetch the referenced records to avoid a flicker when the data arrives. To do so, pass a `meta.prefetch` parameter to the page query.
+
+For example, the following code prefetches the authors referenced by the posts:
+
+{% raw %}
+```jsx
+const PostList = () => (
+    <List queryOptions={{ meta: { prefetch: ['author'] } }}>
+        <Datagrid>
+            <TextField source="title" />
+            {/** renders without an additional request */}
+            <ReferenceField source="author_id" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+**Note**: For prefetching to function correctly, your data provider must support [Prefetching Relationships](./DataProviders.md#prefetching-relationships). Refer to your data provider's documentation to verify if this feature is supported.
+
+**Note**: Prefetching is a frontend performance feature, designed to avoid flickers and repaints. It doesn't always prevent `<ReferenceField>` to fetch the data. For instance, when coming to a show view from a list view, the main record is already in the cache, so the page renders immediately, and both the page controller and the `<ReferenceField>` controller fetch the data in parallel. The prefetched data from the page controller arrives after the first render of the `<ReferenceField>`, so the data provider fetches the related data anyway. But from a user perspective, the page displays immediately, including the `<ReferenceField>`. If you want to avoid the `<ReferenceField>` to fetch the data, you can use the React Query Client's `staleTime` option.
+
 ## Rendering More Than One Field
 
 You often need to render more than one field of the reference table (e.g. if the `users` table has a `first_name` and a `last_name` field).
@@ -310,3 +334,17 @@ You can prevent `<ReferenceField>` from adding a link to its children by setting
 // No link
 <ReferenceField source="user_id" reference="users" link={false} />
 ```
+
+## Access Control
+
+If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess) and you don't provide the [`link`](#link) prop, React-Admin will verify whether users have access to the Show and Edit views.
+
+For instance, given the following `ReferenceField`:
+
+```jsx
+<ReferenceField source="user_id" reference="users" />
+```
+
+React-Admin will call `canAccess` with the following parameters:
+- If the `users` resource has a Show view: `{ action: "show", resource: 'posts', record: Object }`
+- If the `users` resource has an Edit view: `{ action: "edit", resource: 'posts', record: Object }`

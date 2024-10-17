@@ -325,6 +325,12 @@ Then you can render the author name like this:
 <TextField source="author.name" />
 ```
 
+This is particularly handy if your data provider supports [Relationship Embedding](./DataProviders.md#embedding-relationships).
+
+```jsx
+const { data } = useGetOne('posts', { id: 123, meta: { embed: ['author'] } });
+```
+
 ## Setting A Field Label
 
 <iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>

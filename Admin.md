@@ -136,30 +136,31 @@ Three main props lets you configure the core features of the `<Admin>` component
 
 Here are all the props accepted by the component:
 
-| Prop               | Required | Type            | Default              | Description                                                     |
-|------------------- |----------|---------------- |--------------------- |---------------------------------------------------------------- |
-| `dataProvider`     | Required | `DataProvider`  | -                    | The data provider for fetching resources                        |
-| `children`         | Required | `ReactNode`     | -                    | The routes to render                                            |
-| `authCallbackPage` | Optional | `Component`     | `AuthCallback`       | The content of the authentication callback page                 |
-| `authProvider`     | Optional | `AuthProvider`  | -                    | The authentication provider for security and permissions        |
-| `basename`         | Optional | `string`        | -                    | The base path for all URLs                                      |
-| `catchAll`         | Optional | `Component`     | `NotFound`           | The fallback component for unknown routes                       |
-| `dashboard`        | Optional | `Component`     | -                    | The content of the dashboard page                               |
-| `darkTheme`        | Optional | `object`        | `default DarkTheme`  | The dark theme configuration                                    |
-| `defaultTheme`     | Optional | `boolean`       | `false`              | Flag to default to the light theme                              |
-| `disableTelemetry` | Optional | `boolean`       | `false`              | Set to `true` to disable telemetry collection                   |
-| `error`            | Optional | `Component`     | -                    | A React component rendered in the content area in case of error |
-| `i18nProvider`     | Optional | `I18NProvider`  | -                    | The internationalization provider for translations              |
-| `layout`           | Optional | `Component`     | `Layout`             | The content of the layout                                       |
-| `loginPage`        | Optional | `Component`     | `LoginPage`          | The content of the login page                                   |
-| `notification`     | Optional | `Component`     | `Notification`       | The notification component                                      |
-| `queryClient`      | Optional | `QueryClient`   | -                    | The react-query client                                          |
-| `ready`            | Optional | `Component`     | `Ready`              | The content of the ready page                                   |
-| `requireAuth`      | Optional | `boolean`       | `false`              | Flag to require authentication for all routes                   |
-| `store`            | Optional | `Store`         | -                    | The Store for managing user preferences                         |
-| `theme`            | Optional | `object`        | `default LightTheme` | The main (light) theme configuration                            |
-| `title`            | Optional | `string`        | -                    | The error page title                                            |
-
+| Prop                  | Required | Type            | Default              | Description                                                         |
+|---------------------- |----------|---------------- |--------------------- |-------------------------------------------------------------------- |
+| `dataProvider`        | Required | `DataProvider`  | -                    | The data provider for fetching resources                            |
+| `children`            | Required | `ReactNode`     | -                    | The routes to render                                                |
+| `accessDenied`        | Optional | `Component`     | -                    | The component displayed when users are denied access to a page      |
+| `authCallbackPage`    | Optional | `Component`     | `AuthCallback`       | The content of the authentication callback page                     |
+| `authenticationError` | Optional | `Component`     | -                    | The component when an authentication error occurs                   |
+| `authProvider`        | Optional | `AuthProvider`  | -                    | The authentication provider for security and permissions            |
+| `basename`            | Optional | `string`        | -                    | The base path for all URLs                                          |
+| `catchAll`            | Optional | `Component`     | `NotFound`           | The fallback component for unknown routes                           |
+| `dashboard`           | Optional | `Component`     | -                    | The content of the dashboard page                                   |
+| `darkTheme`           | Optional | `object`        | `default DarkTheme`  | The dark theme configuration                                        |
+| `defaultTheme`        | Optional | `boolean`       | `false`              | Flag to default to the light theme                                  |
+| `disableTelemetry`    | Optional | `boolean`       | `false`              | Set to `true` to disable telemetry collection                       |
+| `error`               | Optional | `Component`     | -                    | A React component rendered in the content area in case of error     |
+| `i18nProvider`        | Optional | `I18NProvider`  | -                    | The internationalization provider for translations                  |
+| `layout`              | Optional | `Component`     | `Layout`             | The content of the layout                                           |
+| `loginPage`           | Optional | `Component`     | `LoginPage`          | The content of the login page                                       |
+| `notification`        | Optional | `Component`     | `Notification`       | The notification component                                          |
+| `queryClient`         | Optional | `QueryClient`   | -                    | The react-query client                                              |
+| `ready`               | Optional | `Component`     | `Ready`              | The content of the ready page                                       |
+| `requireAuth`         | Optional | `boolean`       | `false`              | Flag to require authentication for all routes                       |
+| `store`               | Optional | `Store`         | -                    | The Store for managing user preferences                             |
+| `theme`               | Optional | `object`        | `default LightTheme` | The main (light) theme configuration                                |
+| `title`               | Optional | `string`        | -                    | The error page title                                                |
 
 ## `dataProvider`
 
@@ -244,6 +245,32 @@ With these children, the `<Admin>` component will generate the following routes:
 - `/reviews`: the review list
 - `/segments`: the segments page
 
+## `accessDenied`
+
+When using [Access Control](./Permissions.md#access-control), react-admin checks whether users can access a resource page and display the `accessDenied` component when they can't.
+
+![Default accessDenied component](./img/accessDenied.png)
+
+You can replace this default page by passing a custom component as the `accessDenied` prop:
+
+```tsx
+import * as React from 'react';
+import { Admin } from 'react-admin';
+
+const AccessDenied = () => (
+    <div>
+        <h1>Authorization error</h1>
+        <p>You don't have access to this page.</p>
+    </div>
+)
+
+const App = () => (
+    <Admin accessDenied={AccessDenied}>
+        ...
+    </Admin>
+);
+```
+
 ## `authCallbackPage`
 
 React-admin apps contain a special route called `/auth-callback` to let external authentication providers (like Auth0, Cognito, OIDC servers) redirect users after login. This route renders the `AuthCallback` component by default, which in turn calls `authProvider.handleCallback()`. 
@@ -272,6 +299,32 @@ const App = () => (
 You can also disable the `/auth-callback` route altogether by passing `authCallbackPage={false}`.
 
 See The [Authentication documentation](./Authentication.md#using-external-authentication-providers) for more details.
+
+## `authenticationError`
+
+When using [Access Control](./Permissions.md#access-control), if the `authProvider.canAccess()` method throws an error, react-admin redirects the user to the `/authentication-error` page.
+
+![Default authenticationError component](./img/authenticationError.png)
+
+You can customize this page by providing your own component as the `authenticationError` prop:
+
+```tsx
+import * as React from 'react';
+import { Admin } from 'react-admin';
+
+const AuthenticationError = () => (
+    <div>
+        <h1>Authentication error</h1>
+        <p>You don't have access to this page.</p>
+    </div>
+)
+
+const App = () => (
+    <Admin authenticationError={AuthenticationError}>
+        ...
+    </Admin>
+);
+```
 
 ## `authProvider`
 
@@ -458,6 +511,42 @@ const authProvider = {
         // ...
     },
 }
+```
+
+**Tip**: If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess) and you don't provide a dashboard, React-Admin will use the first resource for which users have access to the list page as the home page for your admin. Make sure you order them to suit your needs.
+
+**Tip**: The detection of the first resource implies checking users are authenticated. Should your first resource be accessible without authentication, you must provide a `dashboard` component that redirects to it:
+
+```tsx
+// in src/Dashboard.js
+import * as React from "react";
+import { Navigate } from 'react-router';
+import { Title } from 'react-admin';
+
+export const Dashboard = () => (
+    <Navigate to="/unprotected" />
+);
+```
+
+```tsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource } from 'react-admin';
+import simpleRestProvider from 'ra-data-simple-rest';
+import { authProvider } from './authProvider';
+
+import { Dashboard } from './Dashboard';
+
+const App = () => (
+    <Admin
+        dashboard={Dashboard}
+        authProvider={authProvider}
+        dataProvider={simpleRestProvider('http://path.to.my.api')}
+    >
+        <Resource name="unprotected" list={<UnprotectedList disableAuthentication />} />
+        <Resource name="protected" {/* ... */ } />
+    </Admin>
+);
 ```
 
 ## `darkTheme`
@@ -909,9 +998,11 @@ const App = () => (
 
 ## `requireAuth`
 
-Some pages in react-admin apps may allow anonymous access. For that reason, react-admin starts rendering the page layout before knowing if the user is logged in. If all the pages require authentication, this default behaviour creates an unwanted "flash of UI" for users who never logged in, before the `authProvider` redirects them to the login page.
+Some custom pages in react-admin apps may allow anonymous access. For this reason, react-admin starts rendering the page layout before knowing if the user is logged in. So anonymous users may see UI elements (menu, sidebar, etc.) before being redirected to the login page. This may reveal information about the app structure that you may want to keep private.
 
-If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `<Admin requireAuth>` prop.
+If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `requireAuth` prop.
+
+For example, the following app will require authentication to access all pages, including the `/settings` and `/profile` pages:
 
 ```tsx
 import { Admin } from 'react-admin';
@@ -924,7 +1015,36 @@ const App = () => (
         authProvider={authProvider}
         dataProvider={dataProvider}
     >
-        ...
+        <Resource name="posts" {...posts} />
+        <Resource name="comments" {...comments} />
+        <CustomRoutes>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
+    </Admin>
+);
+```
+
+`requireAuth` also hides the UI until the authentication check is complete, ensuring that no information (menu, resource names, etc.) is revealed to anonymous users.
+
+`requireAuth` doesn't prevent users from accessing `<CustomRoutes noLayout>`, as these routes are often used for public pages like the registration page or the password reset page.
+
+```jsx
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        authProvider={authProvider}
+        requireAuth
+    >
+        <CustomRoutes noLayout>
+            {/* These routes are public */}
+            <Route path="/register" element={<Register />} />
+        </CustomRoutes>
+        <CustomRoutes>
+            {/* These routes are private */}
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
     </Admin>
 );
 ```

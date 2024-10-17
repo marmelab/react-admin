@@ -290,10 +290,6 @@ ul.sidenav code {
     margin-bottom: 0.85em;
 }
 
-.markdown-section h3 + table {
-    font-size: 0.8em;
-}
-
 .markdown-section ul > li {
     list-style-type: disc;
 }

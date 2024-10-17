@@ -119,7 +119,7 @@ const PostList = () => {
 };
 ```
 
-React-admin is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Azure Active Directory, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
+React-admin is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Microsoft Entra ID, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
 
 You can then use specialized hooks on your components to restrict access. For instance, to forbid anonymous access, use `useAuthenticated`:
 
@@ -850,6 +850,7 @@ React-admin takes advantage of the Single-Page-Application architecture, impleme
 - **Query Deduplication**: React-admin identifies instances where multiple components on a page call the same data provider query for identical data. In such cases, it ensures only a single call to the data provider is made.
 - **Query Aggregation**: React-admin intercepts all calls to `dataProvider.getOne()` for related data when a `<ReferenceField>` is used in a list. It aggregates and deduplicates the requested ids, and issues a single `dataProvider.getMany()` request. This technique effectively addresses the n+1 query problem, reduces server queries, and accelerates list view rendering.
 - **Opt-In Query Cache**: React-admin provides an option to prevent refetching an API endpoint for a specified duration, which can be used when you're confident that the API response will remain consistent over time.
+- **Embedded Data** and **Prefetching**: Data providers can return data from related resources in the same response as the requested resource. React-admin uses this feature to avoid additional network requests and to display related data immediately.
 
 ## Undo
 
@@ -925,19 +926,17 @@ const roles = {
 To learn more about authentication, roles, and permissions, check out the following pages:
 
 - The [Security introduction](./Authentication.md)
-- [Role-Based Access Control (RBAC)](./AuthRBAC.md)
-- [`Authenticated`](./Authenticated.md)
-- [`IfCanAccess`](./IfCanAccess.md)
-- [`WithPermissions`](./WithPermissions.md)
-- [`useAuthProvider`](./useAuthProvider.md)
+- [Authorization and access control](./Permissions.md)
+- [`<Authenticated>`](./Authenticated.md)
+- [`<CanAccess>`](./CanAccess.md)
 - [`useAuthenticated`](./useAuthenticated.md)
-- [`useAuthstate`](./useAuthState.md)
-- [`useGetIdentity`](./useGetIdentity.md)
+- [`useAuthState`](./useAuthState.md)
 - [`useLogin`](./useLogin.md)
 - [`useLogout`](./useLogout.md)
-- [`usePermissions`](./usePermissions.md)
+- [`useGetIdentity`](./useGetIdentity.md)
 - [`useCanAccess`](./useCanAccess.md)
-- [`canAccess`](./canAccess.md)
+- [`usePermissions`](./usePermissions.md)
+- [`useAuthProvider`](./useAuthProvider.md)
 
 ## Revisions & Versioning
 

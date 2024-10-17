@@ -439,4 +439,3 @@ Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a singl
 Because when there may be many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...]`.
 
 This speeds up the UI and avoids hitting the API too much.
-
