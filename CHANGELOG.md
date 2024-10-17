@@ -3,7 +3,7 @@
 ## 5.3.0
 
 * Make authentication check pessimistic
-  * Disable data provider calls in CRUD views while the auth check is pending ([#10238](https://github.com/marmelab/react-admin/pull/10238)) ([djhi](https://github.com/djhi))
+  * Disable data provider calls in CRUD controllers while the auth check is pending ([#10238](https://github.com/marmelab/react-admin/pull/10238)) ([djhi](https://github.com/djhi))
   * Disable rendering of CRUD views while the auth check is pending ([#10258](https://github.com/marmelab/react-admin/pull/10258)) ([djhi](https://github.com/djhi))
   * Make `<Authenticated>` component blocking ([#10251](https://github.com/marmelab/react-admin/pull/10251)) ([fzaninotto](https://github.com/fzaninotto))
 * Add Access Control
