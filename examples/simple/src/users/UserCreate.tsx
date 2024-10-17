@@ -24,7 +24,7 @@ const UserCreateToolbar = () => {
     return (
         <Toolbar>
             <SaveButton label="user.action.save_and_show" />
-            <CanAccess action="manage_users">
+            <CanAccess action="batch_create">
                 <SaveButton
                     label="user.action.save_and_add"
                     mutationOptions={{
@@ -55,8 +55,9 @@ const isValidName = async value =>
 
 const UserCreate = () => {
     const unique = useUnique();
-    const { isPending, canAccess: canManageUsers } = useCanAccess({
-        action: 'manage_users',
+    const { isPending, canAccess: canEditRole } = useCanAccess({
+        action: 'edit',
+        resource: 'users.role',
     });
     if (isPending) {
         return null;
@@ -76,7 +77,7 @@ const UserCreate = () => {
                         validate={[required(), isValidName, unique()]}
                     />
                 </TabbedForm.Tab>
-                {canManageUsers ? (
+                {canEditRole ? (
                     <TabbedForm.Tab label="user.form.security" path="security">
                         <AutocompleteInput
                             source="role"

@@ -44,8 +44,9 @@ const EditActions = () => (
 );
 
 const UserEditForm = () => {
-    const { isPending, canAccess: canManageUsers } = useCanAccess({
-        action: 'manage_users',
+    const { isPending, canAccess: canEditRole } = useCanAccess({
+        action: 'edit',
+        resource: 'users.role',
     });
     const { save } = useSaveContext();
     if (isPending) {
@@ -73,7 +74,7 @@ const UserEditForm = () => {
             onSubmit={newSave}
         >
             <TabbedForm.Tab label="user.form.summary" path="">
-                <CanAccess action="manage_users">
+                <CanAccess action="edit" resource="users.id">
                     <TextInput source="id" InputProps={{ disabled: true }} />
                 </CanAccess>
                 <TextInput
@@ -82,7 +83,7 @@ const UserEditForm = () => {
                     validate={required()}
                 />
             </TabbedForm.Tab>
-            {canManageUsers ? (
+            {canEditRole ? (
                 <TabbedForm.Tab label="user.form.security" path="security">
                     <SelectInput
                         source="role"

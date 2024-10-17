@@ -17,12 +17,12 @@ import Aside from './Aside';
 import UserEditEmbedded from './UserEditEmbedded';
 export const UserIcon = PeopleIcon;
 
-const getUserFilters = (canManageUsers: boolean): React.ReactElement[] => {
+const getUserFilters = (canSeeRole: boolean): React.ReactElement[] => {
     const filters = [
         <SearchInput source="q" alwaysOn />,
         <TextInput source="name" />,
     ];
-    if (canManageUsers) {
+    if (canSeeRole) {
         filters.push(<TextInput source="role" />);
     }
     return filters;
@@ -36,15 +36,16 @@ const UserList = () => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const { isPending, canAccess: canManageUsers } = useCanAccess({
-        action: 'manage_users',
+    const { isPending, canAccess: canSeeRole } = useCanAccess({
+        action: 'show',
+        resource: 'users.role',
     });
     if (isPending) {
         return null;
     }
     return (
         <List
-            filters={getUserFilters(canManageUsers ?? false)}
+            filters={getUserFilters(canSeeRole ?? false)}
             filterDefaultValues={{ role: 'user' }}
             sort={{ field: 'name', order: 'ASC' }}
             aside={<Aside />}
@@ -52,20 +53,17 @@ const UserList = () => {
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.name}
-                    secondaryText={record =>
-                        canManageUsers ? record.role : null
-                    }
+                    secondaryText={record => (canSeeRole ? record.role : null)}
                 />
             ) : (
                 <Datagrid
-                    rowClick={canManageUsers ? 'edit' : 'show'}
                     expand={<UserEditEmbedded />}
                     bulkActionButtons={<UserBulkActionButtons />}
                     optimized
                 >
                     <TextField source="id" />
                     <TextField source="name" />
-                    {canManageUsers && <TextField source="role" />}
+                    {canSeeRole && <TextField source="role" />}
                 </Datagrid>
             )}
         </List>

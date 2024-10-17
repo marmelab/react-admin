@@ -10,13 +10,22 @@ const accessControlStrategies = {
     admin: () => {
         return true;
     },
-    user: ({ action }) => {
-        const deniedActions = ['manage_post_authors', 'manage_users'];
-        return !deniedActions.includes(action);
+    user: ({ resource, action }) => {
+        const deniedResources = ['posts.authors', 'users.role', 'users.id'];
+        const deniedActions = ['batch_create'];
+        return (
+            !deniedResources.includes(resource) &&
+            !deniedActions.includes(action)
+        );
     },
     default: ({ resource, action }) => {
-        const deniedResources = ['users'];
-        const deniedActions = ['manage_post_authors'];
+        const deniedResources = [
+            'users',
+            'posts.authors',
+            'users.role',
+            'users.id',
+        ];
+        const deniedActions = ['batch_create'];
         return (
             !deniedResources.includes(resource) &&
             !deniedActions.includes(action)
