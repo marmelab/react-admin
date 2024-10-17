@@ -121,7 +121,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             enabled: currentValue != null && currentValue !== '',
             meta,
             ...otherQueryOptions,
-        },
+        } as UseQueryOptions<RecordType[], Error>,
     });
 
     const isPending =
