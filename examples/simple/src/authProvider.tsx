@@ -29,7 +29,7 @@ const authProvider: AuthProvider = {
     login: ({ username, password }) => {
         if (username === 'login' && password === 'password') {
             localStorage.removeItem('not_authenticated');
-            localStorage.setItem('role', 'default');
+            localStorage.removeItem('role');
             localStorage.setItem('login', DEFAULT_IDENTITY.id);
             localStorage.setItem('user', DEFAULT_IDENTITY.fullName);
             localStorage.setItem('avatar', DEFAULT_IDENTITY.avatar);
@@ -93,10 +93,7 @@ const authProvider: AuthProvider = {
         });
     },
     canAccess: async ({ resource, action }) => {
-        const role = localStorage.getItem('role');
-        if (!role) {
-            return false;
-        }
+        const role = localStorage.getItem('role') || 'default';
         return accessControlStrategies[role]({ resource, action });
     },
 };
