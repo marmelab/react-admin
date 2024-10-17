@@ -19,6 +19,7 @@
 * Add support for embedding and prefetching data to reduce API queries ([#10270](https://github.com/marmelab/react-admin/pull/10270)) ([fzaninotto](https://github.com/fzaninotto))
 * Add per-resource success notifications ("3 posts deleted" instead of "3 elements deleted") ([#10203](https://github.com/marmelab/react-admin/pull/10203)) ([fzaninotto](https://github.com/fzaninotto))
 * Add support for `<Edit emptyWhileLoading>` ([#10230](https://github.com/marmelab/react-admin/pull/10230)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix redirection to first route prevents going back in history ([#10267](https://github.com/marmelab/react-admin/pull/10267)) ([aqeebpathan](https://github.com/aqeebpathan))
 * Fix `useAuthState` may logout even though `logoutOfFailure` is false ([#10280](https://github.com/marmelab/react-admin/pull/10280)) ([fzaninotto](https://github.com/fzaninotto))
 * [TypeScript] Make records paths inferred from type compatible with `react-hook-form` ([#10279](https://github.com/marmelab/react-admin/pull/10279)) ([djhi](https://github.com/djhi))
 * [Doc] Warn about `<AutoSave>` incompatibility with `warnWhenUnsavedChanges` ([#10277](https://github.com/marmelab/react-admin/pull/10277)) ([djhi](https://github.com/djhi))
