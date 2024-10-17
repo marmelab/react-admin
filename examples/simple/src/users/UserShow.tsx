@@ -5,9 +5,8 @@ import { Show, TabbedShowLayout, TextField, useCanAccess } from 'react-admin';
 import Aside from './Aside';
 
 const UserShow = () => {
-    const { isPending, canAccess: canSeeRole } = useCanAccess({
-        action: 'show',
-        resource: 'users.role',
+    const { isPending, canAccess: canManageUsers } = useCanAccess({
+        action: 'manage_users',
     });
     if (isPending) {
         return null;
@@ -19,7 +18,7 @@ const UserShow = () => {
                     <TextField source="id" />
                     <TextField source="name" />
                 </TabbedShowLayout.Tab>
-                {canSeeRole ? (
+                {canManageUsers ? (
                     <TabbedShowLayout.Tab
                         label="user.form.security"
                         path="security"

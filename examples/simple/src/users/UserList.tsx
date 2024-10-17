@@ -17,12 +17,12 @@ import Aside from './Aside';
 import UserEditEmbedded from './UserEditEmbedded';
 export const UserIcon = PeopleIcon;
 
-const getUserFilters = (canSeeRole: boolean): React.ReactElement[] => {
+const getUserFilters = (canManageUsers: boolean): React.ReactElement[] => {
     const filters = [
         <SearchInput source="q" alwaysOn />,
         <TextInput source="name" />,
     ];
-    if (canSeeRole) {
+    if (canManageUsers) {
         filters.push(<TextInput source="role" />);
     }
     return filters;
@@ -36,21 +36,15 @@ const UserList = () => {
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const { isPending: isPendingCanSeeRole, canAccess: canSeeRole } =
-        useCanAccess({
-            action: 'show',
-            resource: 'users.role',
-        });
-    const { isPending: isPendingEditByDefault, canAccess: editByDefault } =
-        useCanAccess({
-            action: 'edit_by_default',
-        });
-    if (isPendingCanSeeRole || isPendingEditByDefault) {
+    const { isPending, canAccess: canManageUsers } = useCanAccess({
+        action: 'manage_users',
+    });
+    if (isPending) {
         return null;
     }
     return (
         <List
-            filters={getUserFilters(canSeeRole ?? false)}
+            filters={getUserFilters(canManageUsers ?? false)}
             filterDefaultValues={{ role: 'user' }}
             sort={{ field: 'name', order: 'ASC' }}
             aside={<Aside />}
@@ -58,18 +52,20 @@ const UserList = () => {
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.name}
-                    secondaryText={record => (canSeeRole ? record.role : null)}
+                    secondaryText={record =>
+                        canManageUsers ? record.role : null
+                    }
                 />
             ) : (
                 <Datagrid
-                    rowClick={editByDefault ? 'edit' : 'show'}
+                    rowClick={canManageUsers ? 'edit' : 'show'}
                     expand={<UserEditEmbedded />}
                     bulkActionButtons={<UserBulkActionButtons />}
                     optimized
                 >
                     <TextField source="id" />
                     <TextField source="name" />
-                    {canSeeRole && <TextField source="role" />}
+                    {canManageUsers && <TextField source="role" />}
                 </Datagrid>
             )}
         </List>

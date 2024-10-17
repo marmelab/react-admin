@@ -147,7 +147,7 @@ const PostEdit = () => {
                     >
                         <ImageField source="src" title="title" />
                     </ImageInput>
-                    <CanAccess action="edit" resource="posts.authors">
+                    <CanAccess action="manage_post_authors">
                         <ArrayInput source="authors">
                             <SimpleFormIterator inline>
                                 <ReferenceInput
