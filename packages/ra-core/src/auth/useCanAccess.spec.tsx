@@ -19,10 +19,12 @@ describe('useCanAccess', () => {
         });
     });
 
-    it('should allow access on mount when there is no authProvider', () => {
+    it('should allow access on mount when there is no authProvider', async () => {
         render(<Basic authProvider={null} />);
         expect(screen.queryByText('LOADING')).toBeNull();
         screen.getByText('canAccess: YES');
+        await new Promise(resolve => setTimeout(resolve, 100));
+        screen.getByText('Renders: 1');
     });
 
     it('should return that the resource is accessible when canAccess return true', async () => {
@@ -56,6 +58,9 @@ describe('useCanAccess', () => {
             expect(screen.queryByText('LOADING')).toBeNull();
             expect(screen.queryByText('canAccess: YES')).not.toBeNull();
         });
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+        screen.getByText('Renders: 1');
     });
 
     it('should return that the resource is not accessible when canAccess return false', async () => {
