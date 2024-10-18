@@ -17,7 +17,6 @@
   * Avoid unnecessary rerenders with `canAccess` hooks when there is no authProvider ([#10200](https://github.com/marmelab/react-admin/pull/10200)) ([djhi](https://github.com/djhi))
   * Make `authProvider.getPermissions` optional ([#10257](https://github.com/marmelab/react-admin/pull/10257)) ([djhi](https://github.com/djhi))
   * Update Simple example to leverage access control ([#10278](https://github.com/marmelab/react-admin/pull/10278)) ([slax57](https://github.com/slax57))
-  * Fix `useCanAccess` causes extra rerender, use `useCanAccess` in the simple demo ([#10278](https://github.com/marmelab/react-admin/pull/10278)) ([slax57](https://github.com/slax57))
 * Add support for embedding and prefetching data to reduce API queries ([#10270](https://github.com/marmelab/react-admin/pull/10270)) ([fzaninotto](https://github.com/fzaninotto))
 * Add per-resource success notifications ("3 posts deleted" instead of "3 elements deleted") ([#10203](https://github.com/marmelab/react-admin/pull/10203)) ([fzaninotto](https://github.com/fzaninotto))
 * Add support for `<Edit emptyWhileLoading>` ([#10230](https://github.com/marmelab/react-admin/pull/10230)) ([erwanMarmelab](https://github.com/erwanMarmelab))
