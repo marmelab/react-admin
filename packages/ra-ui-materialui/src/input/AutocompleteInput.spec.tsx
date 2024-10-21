@@ -1168,7 +1168,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     describe('onCreate', () => {
-        it("shouldn't include an option with the createLabel when the input is empty", async () => {
+        it("shouldn't include an option with the create label when the input is empty", async () => {
             const choices = [
                 { id: 'ang', name: 'Angular' },
                 { id: 'rea', name: 'React' },
@@ -1258,6 +1258,67 @@ describe('<AutocompleteInput />', () => {
             ).not.toBeNull();
             expect(screen.queryByText('ra.action.create')).toBeNull();
             expect(screen.queryByText('ra.action.create_item')).toBeNull();
+        });
+        it('should not show the create option when a choice is selected when using a custom createLabel', async () => {
+            const choices = [
+                { id: 'ang', name: 'Angular' },
+                { id: 'rea', name: 'React' },
+            ];
+            const handleCreate = filter => {
+                const newChoice = {
+                    id: 'js_fatigue',
+                    name: filter,
+                };
+                choices.push(newChoice);
+                return newChoice;
+            };
+
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                choices={choices}
+                                onCreate={handleCreate}
+                                createLabel="Start typing to create a new item"
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language'
+            ) as HTMLInputElement;
+            input.focus();
+
+            // First, clear the input
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            // We expect only the 'Start typing to create a new item' option
+            await screen.findByText('React');
+            expect(
+                screen.queryByText('Start typing to create a new item')
+            ).not.toBeNull();
+            expect(screen.queryByText('ra.action.create_item')).toBeNull();
+            expect(screen.queryByText('ra.action.create')).toBeNull();
+
+            // Then, change the input to an existing value
+            fireEvent.click(screen.getByText('Angular'));
+            fireEvent.focus(input);
+            // We expect all create labels not to render
+            await screen.findByText('React');
+            expect(
+                screen.queryByText('Start typing to create a new item')
+            ).toBeNull();
+            expect(screen.queryByText('ra.action.create_item')).toBeNull();
+            expect(screen.queryByText('ra.action.create')).toBeNull();
         });
         it('should include an option with the createItemLabel when the input not empty', async () => {
             const choices = [
