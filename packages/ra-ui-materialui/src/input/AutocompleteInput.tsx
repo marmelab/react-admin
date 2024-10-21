@@ -519,7 +519,7 @@ If you provided a React element for the optionText prop, you must also provide t
         // add create option if necessary
         const { inputValue } = params;
         if (onCreate || create) {
-            if (inputValue === '' && createLabel) {
+            if (inputValue === '' && filterValue === '' && createLabel) {
                 // create option with createLabel
                 filteredOptions = filteredOptions.concat(getCreateItem(''));
             } else if (!doesQueryMatchSuggestion(filterValue)) {
