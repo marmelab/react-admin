@@ -383,3 +383,36 @@ export const WithSimpleList = () => (
         />
     </Admin>
 );
+
+export const PartialPagination = () => (
+    <Admin
+        dataProvider={{
+            ...dataProvider,
+            getList: (resource, params) =>
+                dataProvider
+                    .getList(resource, params)
+                    .then(({ data, total }) => ({
+                        data,
+                        pageInfo: {
+                            hasNextPage:
+                                total! >
+                                params.pagination.page *
+                                    params.pagination.perPage,
+                            hasPreviousPage: params.pagination.page > 1,
+                        },
+                    })),
+        }}
+    >
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList>
+                    <SimpleList
+                        primaryText="%{title}"
+                        secondaryText="%{author}"
+                    />
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
