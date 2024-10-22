@@ -220,7 +220,7 @@ const CustomPagination = () => {
     return (
         <>
             <InfinitePagination />
-            {total > 0 && (
+            {total && total > 0 && (
                 <Box position="sticky" bottom={0} textAlign="center">
                     <Card
                         elevation={2}
