@@ -8,7 +8,7 @@ import {
 } from '../..';
 
 export default {
-    title: 'ra-core/controller/useEditController',
+    title: 'ra-core/controller/useShowController',
 };
 
 export const EncodedId = ({
