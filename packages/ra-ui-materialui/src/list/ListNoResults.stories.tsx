@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useList, ListContextProvider } from 'ra-core';
+import { useList, ListContextProvider, ResourceContextProvider } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { ListNoResults } from './ListNoResults';
 
@@ -10,27 +10,33 @@ export default {
 export const NoFilter = () => {
     const context = useList<any>({ data: [] });
     return (
-        <ListContextProvider value={context}>
-            {context.data?.length === 0 && <ListNoResults />}
-        </ListContextProvider>
+        <ResourceContextProvider value="posts">
+            <ListContextProvider value={context}>
+                {context.data?.length === 0 && <ListNoResults />}
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 
 export const WithFilter = () => {
     const context = useList<any>({ data: [{ id: 1 }], filter: { id: 2 } });
     return (
-        <ThemeProvider theme={createTheme()}>
-            <ListContextProvider value={context}>
-                {context.data?.length === 0 ? (
-                    <ListNoResults />
-                ) : (
-                    <ul>
-                        {context.data?.map(record => (
-                            <li key={record.id}>{JSON.stringify(record)}</li>
-                        ))}
-                    </ul>
-                )}
-            </ListContextProvider>
-        </ThemeProvider>
+        <ResourceContextProvider value="posts">
+            <ThemeProvider theme={createTheme()}>
+                <ListContextProvider value={context}>
+                    {context.data?.length === 0 ? (
+                        <ListNoResults />
+                    ) : (
+                        <ul>
+                            {context.data?.map(record => (
+                                <li key={record.id}>
+                                    {JSON.stringify(record)}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </ListContextProvider>
+            </ThemeProvider>
+        </ResourceContextProvider>
     );
 };
