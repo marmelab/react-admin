@@ -119,9 +119,8 @@ const englishMessages: TranslationMessages = {
         },
         navigation: {
             clear_filters: 'Clear filters',
-            no_filtered_results:
-                'No %{resource} found using the current filters.',
-            no_results: 'No %{resource} found',
+            no_filtered_results: 'No %{name} found using the current filters.',
+            no_results: 'No %{name} found',
             no_more_results:
                 'The page number %{page} is out of boundaries. Try the previous page.',
             page_out_of_boundaries: 'Page number %{page} out of boundaries',
