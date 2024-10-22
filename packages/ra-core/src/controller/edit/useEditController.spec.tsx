@@ -28,6 +28,7 @@ import {
     CanAccess,
     DisableAuthentication,
 } from './useEditController.security.stories';
+import { EncodedId } from './useEditController.stories';
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -55,42 +56,31 @@ describe('useEditController', () => {
         });
     });
 
-    it('should decode the id from the route params', async () => {
-        const getOne = jest
-            .fn()
-            .mockImplementationOnce(() =>
-                Promise.resolve({ data: { id: 'test?', title: 'hello' } })
-            );
-        const dataProvider = { getOne } as unknown as DataProvider;
+    it.each([
+        { id: 'test?', url: '/posts/test%3F' },
+        { id: 'test%', url: '/posts/test%25' },
+    ])(
+        'should decode the id $id from the route params',
+        async ({ id, url }) => {
+            const getOne = jest
+                .fn()
+                .mockImplementationOnce(() =>
+                    Promise.resolve({ data: { id, title: 'hello' } })
+                );
+            const dataProvider = { getOne } as unknown as DataProvider;
 
-        render(
-            <TestMemoryRouter initialEntries={['/posts/test%3F']}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Routes>
-                        <Route
-                            path="/posts/:id"
-                            element={
-                                <EditController resource="posts">
-                                    {({ record }) => (
-                                        <div>{record && record.title}</div>
-                                    )}
-                                </EditController>
-                            }
-                        />
-                    </Routes>
-                </CoreAdminContext>
-            </TestMemoryRouter>
-        );
-        await waitFor(() => {
-            expect(getOne).toHaveBeenCalledWith('posts', {
-                id: 'test?',
-                signal: undefined,
+            render(<EncodedId id={id} url={url} dataProvider={dataProvider} />);
+            await waitFor(() => {
+                expect(getOne).toHaveBeenCalledWith('posts', {
+                    id,
+                    signal: undefined,
+                });
             });
-        });
-        await waitFor(() => {
-            expect(screen.queryAllByText('hello')).toHaveLength(1);
-        });
-    });
+            await waitFor(() => {
+                expect(screen.queryAllByText('Title: hello')).toHaveLength(1);
+            });
+        }
+    );
 
     it('should use the id provided through props if any', async () => {
         const getOne = jest

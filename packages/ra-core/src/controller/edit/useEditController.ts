@@ -91,7 +91,7 @@ export const useEditController = <
             'useEditController requires an id prop or a route with an /:id? parameter.'
         );
     }
-    const id = propsId ?? decodeURIComponent(routeId!);
+    const id = propsId ?? routeId;
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
         meta: mutationMeta,
