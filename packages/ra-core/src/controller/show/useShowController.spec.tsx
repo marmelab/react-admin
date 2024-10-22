@@ -1,12 +1,18 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { ShowController } from './ShowController';
 
 import { CoreAdminContext } from '../../core';
-import { DataProvider } from '../../types';
+import { AuthProvider, DataProvider } from '../../types';
 import { TestMemoryRouter } from '../../routing';
+import { testDataProvider } from '../../dataProvider';
+import {
+    Authenticated,
+    CanAccess,
+    DisableAuthentication,
+} from './useShowController.security.stories';
 
 describe('useShowController', () => {
     const defaultProps = {
@@ -173,6 +179,90 @@ describe('useShowController', () => {
                 meta: { foo: 'bar' },
                 signal: undefined,
             });
+        });
+    });
+
+    describe('security', () => {
+        it('should not call the dataProvider until the authentication check passes', async () => {
+            let resolveAuthCheck: () => void;
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(
+                    () =>
+                        new Promise(resolve => {
+                            resolveAuthCheck = resolve;
+                        })
+                ),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getOne: jest.fn(() =>
+                    Promise.resolve({
+                        data: { id: 1, title: 'A post', votes: 0 },
+                    })
+                ),
+            });
+
+            render(
+                <Authenticated
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await waitFor(() => {
+                expect(authProvider.checkAuth).toHaveBeenCalled();
+            });
+            expect(dataProvider.getOne).not.toHaveBeenCalled();
+            resolveAuthCheck!();
+            await screen.findByText('A post - 0 votes');
+        });
+
+        it('should redirect to the /access-denied page when users do not have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('posts.show access'));
+            fireEvent.click(await screen.findByText('Show'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Access denied');
+        });
+
+        it('should display the show view when users have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('Show'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Post #1 - 90 votes');
+        });
+
+        it('should call the dataProvider if disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getOne: jest.fn(() =>
+                    Promise.resolve({
+                        data: { id: 1, title: 'A post', votes: 0 },
+                    })
+                ),
+            });
+
+            render(
+                <DisableAuthentication
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await screen.findByText('A post - 0 votes');
+            expect(dataProvider.getOne).toHaveBeenCalled();
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
         });
     });
 });

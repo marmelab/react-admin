@@ -40,16 +40,18 @@ describe('FormDataConsumerView', () => {
         let globalFormData;
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <BooleanInput source="hi" defaultValue />
-                    <FormDataConsumer>
-                        {({ formData }) => {
-                            globalFormData = formData;
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <BooleanInput source="hi" defaultValue />
+                        <FormDataConsumer>
+                            {({ formData }) => {
+                                globalFormData = formData;
 
-                            return <TextInput source="bye" />;
-                        }}
-                    </FormDataConsumer>
-                </SimpleForm>
+                                return <TextInput source="bye" />;
+                            }}
+                        </FormDataConsumer>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -61,28 +63,30 @@ describe('FormDataConsumerView', () => {
     it('should be reactive', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <BooleanInput source="hi" defaultValue />
-                    <FormDataConsumer>
-                        {({ formData }) =>
-                            !formData.hi ? <TextInput source="bye" /> : null
-                        }
-                    </FormDataConsumer>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <BooleanInput source="hi" defaultValue />
+                        <FormDataConsumer>
+                            {({ formData }) =>
+                                !formData.hi ? <TextInput source="bye" /> : null
+                            }
+                        </FormDataConsumer>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
         await waitFor(() => {
             expect(
-                screen.queryByLabelText('resources.undefined.fields.bye')
+                screen.queryByLabelText('resources.posts.fields.bye')
             ).toBeNull();
         });
 
-        fireEvent.click(screen.getByLabelText('resources.undefined.fields.hi'));
+        fireEvent.click(screen.getByLabelText('resources.posts.fields.hi'));
 
         await waitFor(() => {
             expect(
-                screen.getByLabelText('resources.undefined.fields.bye')
+                screen.getByLabelText('resources.posts.fields.bye')
             ).not.toBeNull();
         });
     });

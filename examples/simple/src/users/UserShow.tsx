@@ -1,11 +1,17 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import { Show, TabbedShowLayout, TextField, usePermissions } from 'react-admin';
+import { Show, TabbedShowLayout, TextField, useCanAccess } from 'react-admin';
 
 import Aside from './Aside';
 
 const UserShow = () => {
-    const { permissions } = usePermissions();
+    const { isPending, canAccess: canSeeRole } = useCanAccess({
+        action: 'show',
+        resource: 'users.role',
+    });
+    if (isPending) {
+        return null;
+    }
     return (
         <Show>
             <TabbedShowLayout>
@@ -13,14 +19,14 @@ const UserShow = () => {
                     <TextField source="id" />
                     <TextField source="name" />
                 </TabbedShowLayout.Tab>
-                {permissions === 'admin' && (
+                {canSeeRole ? (
                     <TabbedShowLayout.Tab
                         label="user.form.security"
                         path="security"
                     >
                         <TextField source="role" />
                     </TabbedShowLayout.Tab>
-                )}
+                ) : null}
             </TabbedShowLayout>
             <Aside />
         </Show>

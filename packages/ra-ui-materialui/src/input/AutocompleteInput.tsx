@@ -133,7 +133,7 @@ export const AutocompleteInput = <
         closeText = 'ra.action.close',
         create,
         createLabel,
-        createItemLabel,
+        createItemLabel = 'ra.action.create_item',
         createValue,
         debounce: debounceDelay = 250,
         defaultValue,
@@ -465,7 +465,13 @@ If you provided a React element for the optionText prop, you must also provide t
             event?.type === 'change' ||
             !doesQueryMatchSelection(newInputValue)
         ) {
-            setFilterValue(newInputValue);
+            const createOptionLabel = translate(createItemLabel, {
+                item: filterValue,
+                _: createItemLabel,
+            });
+            const isCreate = newInputValue === createOptionLabel;
+            const valueToSet = isCreate ? filterValue : newInputValue;
+            setFilterValue(valueToSet);
             debouncedSetFilter(newInputValue);
         }
         if (reason === 'clear') {
@@ -513,7 +519,7 @@ If you provided a React element for the optionText prop, you must also provide t
         // add create option if necessary
         const { inputValue } = params;
         if (onCreate || create) {
-            if (inputValue === '') {
+            if (inputValue === '' && filterValue === '' && createLabel) {
                 // create option with createLabel
                 filteredOptions = filteredOptions.concat(getCreateItem(''));
             } else if (!doesQueryMatchSuggestion(filterValue)) {

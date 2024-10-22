@@ -13,6 +13,7 @@ import {
     useFieldValue,
 } from 'ra-core';
 import { UseQueryOptions } from '@tanstack/react-query';
+import clsx from 'clsx';
 
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
@@ -143,7 +144,10 @@ export const ReferenceFieldView = <
 
     if (link) {
         return (
-            <Root className={className} sx={sx}>
+            <Root
+                className={clsx(ReferenceFieldClasses.root, className)}
+                sx={sx}
+            >
                 <Link
                     to={link}
                     className={ReferenceFieldClasses.link}
@@ -157,7 +161,7 @@ export const ReferenceFieldView = <
     }
 
     return (
-        <Root className={className} sx={sx}>
+        <Root className={clsx(ReferenceFieldClasses.root, className)} sx={sx}>
             {child}
         </Root>
     );
@@ -180,6 +184,7 @@ const PureReferenceFieldView = genericMemo(ReferenceFieldView);
 const PREFIX = 'RaReferenceField';
 
 export const ReferenceFieldClasses = {
+    root: `${PREFIX}-root`,
     link: `${PREFIX}-link`,
 };
 

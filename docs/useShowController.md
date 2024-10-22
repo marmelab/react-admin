@@ -197,3 +197,38 @@ const MyShow = () => {
     return <ShowView {...controllerProps} />;
 };
 ```
+
+## Security
+
+`useShowController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Show.md#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useShowController` will only render if the user has the "show" access to the related resource.
+
+For instance, for the `<PostShow>` page below:
+
+```tsx
+import { useShowController, SimpleShowLayout, TextField } from 'react-admin';
+
+const PostShow = ({ id }) => {
+  const { isPending, error, data } = useShowController({ resource: 'posts', id })
+  if (error) return <div>Error!</div>;
+  if (isPending) return <div>Loading...</div>;
+  return (
+      <SimpleShowLayout record={data}>
+        <TextField source="title" />
+        <TextField source="author" />
+        <TextField source="published_at" />
+      </SimpleShowLayout>
+  );
+}
+```
+
+`useShowController` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "show", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Show.md#disableauthentication).

@@ -1,4 +1,5 @@
 import { ComponentType, ReactElement, ReactNode } from 'react';
+import { FieldPath } from 'react-hook-form';
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
 
@@ -65,11 +66,19 @@ export type AuthProvider = {
     checkAuth: (params: any & QueryFunctionContext) => Promise<void>;
     checkError: (error: any) => Promise<void>;
     getIdentity?: (params?: QueryFunctionContext) => Promise<UserIdentity>;
-    getPermissions: (params: any & QueryFunctionContext) => Promise<any>;
+    getPermissions?: (params: any & QueryFunctionContext) => Promise<any>;
     handleCallback?: (
         params?: QueryFunctionContext
     ) => Promise<AuthRedirectResult | void | any>;
+    canAccess?: <RecordType extends Record<string, any> = Record<string, any>>(
+        params: QueryFunctionContext & {
+            action: string;
+            resource: string;
+            record?: RecordType;
+        }
+    ) => Promise<boolean>;
     [key: string]: any;
+    supportAbortSignal?: boolean;
 };
 
 export type AuthRedirectResult = {
@@ -171,6 +180,7 @@ export interface GetOneParams<RecordType extends RaRecord = any> {
 }
 export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
+    meta?: any;
 }
 
 export interface GetManyParams<RecordType extends RaRecord = any> {
@@ -180,6 +190,7 @@ export interface GetManyParams<RecordType extends RaRecord = any> {
 }
 export interface GetManyResult<RecordType extends RaRecord = any> {
     data: RecordType[];
+    meta?: any;
 }
 
 export interface GetManyReferenceParams {
@@ -209,6 +220,7 @@ export interface UpdateParams<RecordType extends RaRecord = any> {
 }
 export interface UpdateResult<RecordType extends RaRecord = any> {
     data: RecordType;
+    meta?: any;
 }
 
 export interface UpdateManyParams<T = any> {
@@ -218,6 +230,7 @@ export interface UpdateManyParams<T = any> {
 }
 export interface UpdateManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
+    meta?: any;
 }
 
 export interface CreateParams<T = any> {
@@ -226,6 +239,7 @@ export interface CreateParams<T = any> {
 }
 export interface CreateResult<RecordType extends RaRecord = any> {
     data: RecordType;
+    meta?: any;
 }
 
 export interface DeleteParams<RecordType extends RaRecord = any> {
@@ -235,6 +249,7 @@ export interface DeleteParams<RecordType extends RaRecord = any> {
 }
 export interface DeleteResult<RecordType extends RaRecord = any> {
     data: RecordType;
+    meta?: any;
 }
 
 export interface DeleteManyParams<RecordType extends RaRecord = any> {
@@ -243,6 +258,7 @@ export interface DeleteManyParams<RecordType extends RaRecord = any> {
 }
 export interface DeleteManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
+    meta?: any;
 }
 
 export type DataProviderResult<RecordType extends RaRecord = any> =
@@ -388,3 +404,24 @@ export type SetOnSave = (
 export type FormFunctions = {
     setOnSave?: SetOnSave;
 };
+
+// Type for a string that accept one of the known values but also any other string
+// Useful for IDE autocompletion without preventing custom values
+export type HintedString<KnownValues extends string> = AnyString | KnownValues;
+
+// Re-export react-hook-form implementation of FieldPath that returns all possible paths of an object
+// This will allow us to either include the FieldPath implementation from react-hook-form or replace it with our own
+// should we move away from react-hook-form
+// type Post = { title: string; author: { name: string; }; tags: { id: string; name: string} };
+// => Valid paths are "title" | "author" | "author.name" | "tags.id" | "tags.name"
+export type RecordValues = Record<string, any>;
+export type RecordPath<TRecordValues extends RecordValues> =
+    FieldPath<TRecordValues>;
+
+// Returns the union of all possible paths of a type if it is provided, otherwise returns a string
+// Useful for props such as "source" in react-admin components
+export type ExtractRecordPaths<T extends RecordValues> =
+    // Trick that allows to check whether T was provided
+    [T] extends [never] ? string : RecordPath<T>;
+
+export type AnyString = string & {};

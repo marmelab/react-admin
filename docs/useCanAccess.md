@@ -5,60 +5,29 @@ title: "useCanAccess"
 
 # `useCanAccess`
 
-This hook, part of [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac)<img class="icon" src="./img/premium.svg" />, calls the `authProvider.getPermissions()` to get the role definitions, then checks whether the requested action and resource are allowed for the current user. 
+This hook controls access to a resource and action (and, optionally, a record). It calls the `authProvider.canAccess()` method on mount and returns an object containing a `canAccess` boolean set to `true` if users can access the resource and action.
+
+It is part of the [Access Control](./Permissions.md#access-control) mechanism in react-admin.
 
 ## Usage
 
-`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the RBAC request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
+`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
 
 ```jsx
-import { useCanAccess } from '@react-admin/ra-rbac';
-import { useRecordContext, DeleteButton } from 'react-admin';
+import { useCanAccess, useRecordContext, DeleteButton } from 'react-admin';
 
 const DeleteUserButton = () => {
     const record = useRecordContext();
-    const { isPending, canAccess } = useCanAccess({ action: 'delete', resource: 'users', record });
+    const { isPending, canAccess, error } = useCanAccess({
+        action: 'delete',
+        resource: 'users',
+        record
+    });
     if (isPending || !canAccess) return null;
+    if (error) return <div>{error.message}</div>
     return <DeleteButton record={record} resource="users" />;
 };
 ```
-
-When checking if a user can access a resource, ra-rbac grabs the permissions corresponding to his roles. If at least one of these permissions allows him to access the resource, the user is granted access. Otherwise, the user is denied.
-
-```jsx
-const authProvider= {
-    // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ["read", "create", "edit", "export"], resource: "companies" },
-            { action: ["read", "create", "edit"], resource: "people" },
-            { action: ["read", "create", "edit", "export"], resource: "deals" },
-            { action: ["read", "create"], resource: "comments" },
-            { action: ["read", "create", "edit", "delete"], resource: "tasks" },
-            { action: ["read", "write"], resource: "sales", record: { "id": "123" } },
-        ],
-    }),
-};
-
-const { canAccess: canUseCompanyResource } = useCanAccess({
-    resource: 'companies',
-}); // canUseCompanyResource is true
-const { canAccess: canUseCompanyResourceFromWildcard } = useCanAccess({
-    resource: 'companies',
-    action: '*',
-}); // canUseCompanyResourceFromWildcard is true
-const { canAccess: canReadCompanies } = useCanAccess({ action: "read", resource: "companies" }); // canReadCompanies is true
-const { canAccess: canCreatePeople } = useCanAccess({ action: "create", resource: "people" }); // canCreatePeople is true
-const { canAccess: canExportPeople } = useCanAccess({ action: "export", resource: "people" }); // canExportPeople is false
-const { canAccess: canEditDeals } = useCanAccess({ action: "edit", resource: "deals" }); // canEditDeals is true
-const { canAccess: canDeleteComments } = useCanAccess({ action: "delete", resource: "tasks" }); // canDeleteComments is true
-const { canAccess: canReadSales } = useCanAccess({ action: "read", resource: "sales" }); // canReadSales is false
-const { canAccess: canReadSelfSales } = useCanAccess({ action: "read", resource: "sales" }, { id: "123" }); // canReadSelfSales is true
-```
-
-**Tip**: The *order* of permissions as returned by the `authProvider` isn't significant. As soon as at least one permission grants access to an action on a resource, the user will be able to perform it.
-
-**Tip**: `useCanAccess` is asynchronous, because it calls `usePermissions` internally. If you have to use `useCanAccess` several times in a component, the rendered result will "blink" as the multiple calls to `authProvider.getPermissions()` resolve. To avoid that behavior, you can use the `usePermissions` hook once, then call [the `canAccess` helper](./canAccess.md). 
 
 ## Parameters
 
@@ -66,7 +35,83 @@ const { canAccess: canReadSelfSales } = useCanAccess({ action: "read", resource:
 
 | Name | Required | Type | Default | Description |
 | --- | --- | --- | --- | --- |
-| `resource` | Required | `string` | - | The resource to check, e.g. 'users', 'comments', 'posts', etc. |
 | `action` | Required | `string` | - | The action to check, e.g. 'read', 'list', 'export', 'delete', etc. |
-| `record` | Optional | `object` | - | The record to check. If passed, the child only renders if the user has permissions for that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
+| `resource` | Options | `string` | ResourceContext value | The resource to check, e.g. 'users', 'comments', 'posts', etc. |
+| `record` | Optional | `object` | RecordContext value | The record to check. If passed, the child only renders if the user has permissions for that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }` |
 
+## Callback Version
+
+`useCanAccessCallback` allows to check access to a resource and action on an event instead of on mount. It returns a `checkAccess` async function that you can call in an event handler. 
+
+The `checkAccess` function expects an argument with the shape `{ action, resource, record }`. This function resolves to a boolean indicating whether users can access the provided resource and action.
+
+```jsx
+import { Datagrid, List, TextField, useCanAccessCallback } from 'react-admin';
+
+export const UserList = () => {
+    const checkAccess = useCanAccessCallback();
+    const handleRowClick = async (id: Identifier, resource: string, record: Record) => {
+        try {
+            const canAccess = await checkAccess({ resource: 'users', action: 'edit', record });
+            return canAccess ? "edit" : "show";
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    return (
+        <List>
+            <Datagrid onClick={handleRowClick}>
+                <TextField source="id" />
+                <TextField source="name" />
+                <TextField source="email" />
+            </Datagrid>
+        </List>
+    );
+};
+```
+
+## Multiple Resources
+
+`useCanAccessResources` can check the access to several resources in parallel (e.g. all the columns of a `<Datagrid>`) instead of just one for `useCanAccess`.
+
+It takes an object `{ action, resources, record }` as argument. The `resources` parameter is an array of resource names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object with a property for each provided resource, determining whether the user can access it.
+
+```jsx
+import { useCanAccessResources, SimpleList } from 'react-admin';
+
+const UserList = () => {
+    const { isPending, canAccess } = useCanAccessResources({
+        action: 'delete',
+        resources: ['users.id', 'users.name', 'users.email'],
+    });
+    if (isPending) {
+        return null;
+    }
+    return (
+        <SimpleList
+             primaryText={record => canAccess['users.name'] ? record.name : ''}
+             secondaryText={record => canAccess['users.email'] ? record.email : ''}
+             tertiaryText={record => canAccess['users.id'] ? record.id : ''}
+         />
+    );
+};
+```
+
+## Logout on Failure
+
+`useRequireAccess` is an alternative to `useCanAccess` that logs out the user if the access check fails. It takes the same parameters as `useCanAccess`.
+
+For instance, here's how you can protect a [custom route](./CustomRoutes.md) for editing users settings:
+
+```tsx
+import { useRequireAccess } from 'react-admin';
+
+export export const SettingsPage = () => {
+    const { isPending } = useRequireAccess({
+        action: 'edit',
+        resource: 'settings',
+    });
+    if (isPending) return null;
+    return <p>Protected content</p>;
+};
+```

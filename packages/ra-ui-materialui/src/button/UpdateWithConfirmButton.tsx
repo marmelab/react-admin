@@ -42,9 +42,12 @@ export const UpdateWithConfirmButton = (
     const {
         meta: mutationMeta,
         onSuccess = () => {
-            notify('ra.notification.updated', {
+            notify(`resources.${resource}.notifications.updated`, {
                 type: 'info',
-                messageArgs: { smart_count: 1 },
+                messageArgs: {
+                    smart_count: 1,
+                    _: translate('ra.notification.updated', { smart_count: 1 }),
+                },
                 undoable: mutationMode === 'undoable',
             });
         },

@@ -7,7 +7,7 @@ import {
     BulkDeleteWithUndoButton,
     BulkDeleteWithUndoButtonProps,
 } from './BulkDeleteWithUndoButton';
-import { MutationMode } from 'ra-core';
+import { MutationMode, useCanAccess, useResourceContext } from 'ra-core';
 
 /**
  * Deletes the selected rows.
@@ -35,12 +35,26 @@ import { MutationMode } from 'ra-core';
 export const BulkDeleteButton = ({
     mutationMode = 'undoable',
     ...props
-}: BulkDeleteButtonProps) =>
-    mutationMode === 'undoable' ? (
+}: BulkDeleteButtonProps) => {
+    const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<BulkDeleteButton> components should be used inside a <Resource> component or provided with a resource prop.'
+        );
+    }
+    const { canAccess, isPending } = useCanAccess({
+        action: 'delete',
+        resource,
+    });
+    if (!canAccess || isPending) {
+        return null;
+    }
+    return mutationMode === 'undoable' ? (
         <BulkDeleteWithUndoButton {...props} />
     ) : (
         <BulkDeleteWithConfirmButton mutationMode={mutationMode} {...props} />
     );
+};
 
 interface Props {
     mutationMode?: MutationMode;

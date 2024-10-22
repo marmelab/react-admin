@@ -7,6 +7,8 @@ import { useDataProvider } from './useDataProvider';
 import { CoreAdminContext } from '../core';
 import { GetListResult } from '..';
 
+import { Prefetching } from './useDataProvider.stories';
+
 const UseGetOne = () => {
     const [data, setData] = useState();
     const [error, setError] = useState();
@@ -334,5 +336,27 @@ describe('useDataProvider', () => {
             { data: {} },
             { data: [] },
         ]);
+    });
+
+    it('should allow prefetching', async () => {
+        const getMany = jest
+            .fn()
+            .mockResolvedValue({ data: [{ id: 1, name: 'John Doe' }] });
+        const dataProvider = {
+            getOne: async () => ({
+                data: { id: 1, title: 'My post title', author_id: 1 },
+                meta: {
+                    prefetched: {
+                        authors: [{ id: 1, name: 'John Doe' }],
+                    },
+                },
+            }),
+            getMany,
+        } as any;
+        render(<Prefetching dataProvider={dataProvider} />);
+
+        await screen.findByText('My post title');
+        await screen.findByText('John Doe');
+        expect(getMany).not.toHaveBeenCalled();
     });
 });

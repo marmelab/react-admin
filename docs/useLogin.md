@@ -5,9 +5,11 @@ title: "useLogin"
 
 # `useLogin`
 
-This hook returns a callback allowing to call `authProvider.login()`, so it's used in Login forms.
+This hook returns a callback allowing to call `authProvider.login()`. It's used in Login forms.
 
-For instance, here is how to build a custom Login page based on email rather than login for authentication:
+## Usage
+
+Here is how to build a custom Login page based on email rather than username:
 
 ```jsx
 // in src/MyLoginPage.js

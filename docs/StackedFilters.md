@@ -82,12 +82,13 @@ const postListFilters: FiltersConfig = {
     title: textFilter(),
     views: {
         operators: [
-            { value: 'eq', label: 'Equals' },
-            { value: 'neq', label: 'Not Equals' },
+            { value: 'eq', label: 'Equals', type: 'single' },
+            { value: 'neq', label: 'Not Equals', type: 'single' },
             {
                 value: 'between',
                 label: 'Between',
                 input: ({ source }) => <MyNumberRangeInput source={source} />,
+                type: 'multiple'
             },
         ],
         input: ({ source }) => <NumberInput source={source} />,
@@ -104,10 +105,11 @@ export const PostListToolbar = () => (
 
 For a given field, the filter configuration should be an object containing an array of `operators` and a default `input`, used for operators that don't define their own. You can use the [filter configuration builders](#filter-configuration-builders) (like `textFilter`) to build filter configuration objects.
 
-An operator is an object that has a `label` and a `value`. 
+An operator is an object that has a `label`, a `value` and a `type`.
 
 - The `label` is a string, and can be a translation key.
 - The `value` is used as a suffix to the `source` and passed to the list filters.
+- The `type` ensures that when selecting an operator with a different type than the previous one, React-admin resets the filter value. Its value should be either `single` for filters that accepts a single value (for instance a `string`) or `multiple` for filters that accepts multiple values (for instance an `Array` of `string`). Should you need to differentiate a custom input from those two types, you may provide any type you want to the `type` option (for instance, `map`).
 
 For instance, if the user adds the `views` filter with the `eq` operator and a value of `0`, the `dataProvider.getList()` will receive the following `filter` parameter:
 
@@ -265,12 +267,13 @@ import { MyNumberRangeInput } from './MyNumberRangeInput';
 const postListFilters: FiltersConfig = {
     views: {
         operators: [
-            { value: 'eq', label: 'Equals' },
-            { value: 'neq', label: 'Not Equals' },
+            { value: 'eq', label: 'Equals', type: 'single' },
+            { value: 'neq', label: 'Not Equals', type: 'single' },
             {
                 value: 'between',
                 label: 'Between',
                 input: ({ source }) => <MyNumberRangeInput source={source} />,
+                type: 'multiple',
             },
         ],
         input: ({ source }) => <NumberInput source={source} />,
@@ -354,10 +357,12 @@ const MyFilterConfig: FiltersConfig = {
             {
                 value: 'between',
                 label: 'resources.posts.filters.operators.between',
+                type: 'mutliple',
             },
             {
                 value: 'nbetween',
                 label: 'resources.posts.filters.operators.nbetween',
+                type: 'mutliple',
             },
         ],
         input: ({ source }) => <DateRangeInput source={source} />,
@@ -471,12 +476,13 @@ import { MyNumberRangeInput } from './MyNumberRangeInput';
 const postListFilters: FiltersConfig = {
     views: {
         operators: [
-            { value: 'eq', label: 'Equals' },
-            { value: 'neq', label: 'Not Equals' },
+            { value: 'eq', label: 'Equals', type: 'single' },
+            { value: 'neq', label: 'Not Equals', type: 'single' },
             {
                 value: 'between',
                 label: 'Between',
                 input: ({ source }) => <MyNumberRangeInput source={source} />,
+                type: 'mutliple',
             },
         ],
         input: ({ source }) => <NumberInput source={source} />,

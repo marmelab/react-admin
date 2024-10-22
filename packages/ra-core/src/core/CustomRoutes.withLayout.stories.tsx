@@ -7,7 +7,7 @@ import { Resource } from './Resource';
 import { FakeBrowserDecorator } from '../storybook/FakeBrowser';
 
 export default {
-    title: 'ra-core/Admin/CustomRoutes/WithLayout',
+    title: 'ra-core/core/CustomRoutes',
     decorators: [FakeBrowserDecorator],
     parameters: {
         initialEntries: ['/custom'],

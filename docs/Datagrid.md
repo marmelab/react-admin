@@ -662,6 +662,24 @@ const PostList = () => (
 
 By default, `<Datagrid>` will look at the current [resource definition](https://marmelab.com/react-admin/Resource.html) to determine what to do when the user clicks on a row. If the resource has a `show` page, it will redirect to the Show view. If the resource has an `edit` page, it will redirect to the Edit view. Otherwise, the row will not be clickable.
 
+Note that if your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess) and you don't provide the `rowClick` prop, React-Admin will also verify whether users have access to the Show and Edit views. For instance, given the following `Datagrid`:
+
+```tsx
+import { List, Datagrid } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+React-Admin will call `canAccess` with the following parameters for each record:
+- If the `posts` resource has a Show view: `{ action: "show", resource: 'posts', record: Object }`
+- If the `posts` resource has an Edit view: `{ action: "edit", resource: 'posts', record: Object }`
+
 You can choose what happens when the user clicks on a row by setting the `rowClick` prop. For instance, set the `rowClick` prop to `"edit"` to redirect to the Edit view:
 
 ```tsx

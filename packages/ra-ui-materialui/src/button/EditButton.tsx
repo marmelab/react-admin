@@ -9,6 +9,7 @@ import {
     useResourceContext,
     useRecordContext,
     useCreatePath,
+    useCanAccess,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -36,9 +37,19 @@ export const EditButton = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<EditButton> components should be used inside a <Resource> component or provided with a resource prop. (The <Resource> component set the resource prop for all its children).'
+        );
+    }
     const record = useRecordContext(props);
     const createPath = useCreatePath();
-    if (!record) return null;
+    const { canAccess, isPending } = useCanAccess({
+        action: 'edit',
+        resource,
+        record,
+    });
+    if (!record || !canAccess || isPending) return null;
     return (
         <StyledButton
             component={Link}

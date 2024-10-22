@@ -95,28 +95,30 @@ import { useEffect, useState } from 'react';
  */
 export const Admin = (props: AdminProps) => {
     const {
+        accessDenied,
+        authCallbackPage,
+        authenticationError,
         authProvider,
         basename,
         catchAll,
         children,
+        darkTheme,
         dashboard,
         dataProvider,
+        defaultTheme,
         disableTelemetry,
         error,
         i18nProvider = defaultI18nProvider,
         layout,
+        lightTheme,
         loading,
         loginPage,
-        authCallbackPage,
         notification,
         queryClient,
+        ready,
         requireAuth,
         store = defaultStore,
-        ready,
         theme,
-        lightTheme,
-        darkTheme,
-        defaultTheme,
         title = 'React Admin',
     } = props;
 
@@ -130,28 +132,30 @@ export const Admin = (props: AdminProps) => {
         <AdminContext
             authProvider={authProvider}
             basename={basename}
-            dataProvider={dataProvider}
-            i18nProvider={i18nProvider}
-            store={store}
-            queryClient={queryClient}
-            theme={theme}
-            lightTheme={lightTheme}
             darkTheme={darkTheme}
+            dataProvider={dataProvider}
             defaultTheme={defaultTheme}
+            i18nProvider={i18nProvider}
+            lightTheme={lightTheme}
+            queryClient={queryClient}
+            store={store}
+            theme={theme}
         >
             <AdminUI
-                layout={layout}
+                accessDenied={accessDenied}
+                authCallbackPage={authCallbackPage}
+                authenticationError={authenticationError}
+                catchAll={catchAll}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
-                catchAll={catchAll}
                 error={error}
-                title={title}
+                layout={layout}
                 loading={loading}
                 loginPage={loginPage}
-                authCallbackPage={authCallbackPage}
                 notification={notification}
-                requireAuth={requireAuth}
                 ready={ready}
+                requireAuth={requireAuth}
+                title={title}
             >
                 {children}
             </AdminUI>

@@ -1,5 +1,41 @@
 # Changelog
 
+## 5.3.0
+
+* Make authentication check pessimistic
+  * Disable data provider calls in CRUD controllers while the auth check is pending ([#10238](https://github.com/marmelab/react-admin/pull/10238)) ([djhi](https://github.com/djhi))
+  * Disable rendering of CRUD views while the auth check is pending ([#10258](https://github.com/marmelab/react-admin/pull/10258)) ([djhi](https://github.com/djhi))
+  * Make `<Authenticated>` component blocking ([#10251](https://github.com/marmelab/react-admin/pull/10251)) ([fzaninotto](https://github.com/fzaninotto))
+* Add Access Control
+  * Introduce `useCanAccess`, `useCanAccessResources`, and `useCanAccessCallback` hooks ([#10222](https://github.com/marmelab/react-admin/pull/10222)) ([djhi](https://github.com/djhi))
+  * Introduce `<CanAccess>` and `<AccessDenied>` components ([#10222](https://github.com/marmelab/react-admin/pull/10222)) ([djhi](https://github.com/djhi))
+  * Add access control check in page controllers (`list`, `show`, `edit`, `create`) ([#10247](https://github.com/marmelab/react-admin/pull/10247)) ([djhi](https://github.com/djhi))
+  * Add access control to views and action buttons ([#10225](https://github.com/marmelab/react-admin/pull/10225)) ([djhi](https://github.com/djhi))
+  * Add access control to `<Datagrid rowClick>` ([#10227](https://github.com/marmelab/react-admin/pull/10227)) ([djhi](https://github.com/djhi))
+  * Add access control to `<DeleteButton>` ([#10226](https://github.com/marmelab/react-admin/pull/10226)) ([djhi](https://github.com/djhi))
+  * Add access control to the `/` route and introduce `<NavigateToFirstResource>` ([#10255](https://github.com/marmelab/react-admin/pull/10255)) ([djhi](https://github.com/djhi))
+  * Avoid unnecessary rerenders with `canAccess` hooks when there is no authProvider ([#10200](https://github.com/marmelab/react-admin/pull/10200)) ([djhi](https://github.com/djhi))
+  * Make `authProvider.getPermissions` optional ([#10257](https://github.com/marmelab/react-admin/pull/10257)) ([djhi](https://github.com/djhi))
+  * Update Simple example to leverage access control ([#10278](https://github.com/marmelab/react-admin/pull/10278)) ([slax57](https://github.com/slax57))
+* Add support for embedding and prefetching data to reduce API queries ([#10270](https://github.com/marmelab/react-admin/pull/10270)) ([fzaninotto](https://github.com/fzaninotto))
+* Add per-resource success notifications ("3 posts deleted" instead of "3 elements deleted") ([#10203](https://github.com/marmelab/react-admin/pull/10203)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `<Edit emptyWhileLoading>` ([#10230](https://github.com/marmelab/react-admin/pull/10230)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix redirection to first route prevents going back in history ([#10267](https://github.com/marmelab/react-admin/pull/10267)) ([aqeebpathan](https://github.com/aqeebpathan))
+* Fix `useAuthState` may logout even though `logoutOfFailure` is false ([#10280](https://github.com/marmelab/react-admin/pull/10280)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Make records paths inferred from type compatible with `react-hook-form` ([#10279](https://github.com/marmelab/react-admin/pull/10279)) ([djhi](https://github.com/djhi))
+* [Doc] Warn about `<AutoSave>` incompatibility with `warnWhenUnsavedChanges` ([#10277](https://github.com/marmelab/react-admin/pull/10277)) ([djhi](https://github.com/djhi))
+* [Doc] Update mentions of Azure Active Directory to Microsoft Entra ID ([#10276](https://github.com/marmelab/react-admin/pull/10276)) ([djhi](https://github.com/djhi))
+* [Doc] Rewrite access control documentation ([#10250](https://github.com/marmelab/react-admin/pull/10250)) ([fzaninotto](https://github.com/fzaninotto))
+
+## 5.2.3
+
+* Fix `<AutoCompleteInput>` should not display a "Create" option when the filter is empty ([#10266](https://github.com/marmelab/react-admin/pull/10266)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix pnpm error Module not found: Can't resolve '@mui/utils' ([#10264](https://github.com/marmelab/react-admin/pull/10264)) ([slax57](https://github.com/slax57))
+* [Doc] Update `<StackedFilters>` doc for `ra-form-layout` v5.2.0 ([#10268](https://github.com/marmelab/react-admin/pull/10268)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Remix tutorial to fix port and yarn documentation link ([#10263](https://github.com/marmelab/react-admin/pull/10263)) ([smeng9](https://github.com/smeng9))
+* [Doc] Update `<Search>` doc for `keyboardShortcutIcon`, `withKeyboardShortcut` and `isInAppBar` ([#10254](https://github.com/marmelab/react-admin/pull/10254)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Admin and Routing docs to encourage using a Data Router ([#10220](https://github.com/marmelab/react-admin/pull/10220)) ([smeng9](https://github.com/smeng9))
+
 ## 5.2.2
 
 - Fix disabled inputs temporarily erase values ([#10249](https://github.com/marmelab/react-admin/pull/10249)) ([fzaninotto](https://github.com/fzaninotto))
@@ -225,6 +261,13 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* [Doc] Update `<StackedFilters>` doc for `ra-form-layout` v5.2.0 ([#10268](https://github.com/marmelab/react-admin/pull/10268)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `<AutoCompleteInput>` should not display a "Create" option when the filter is empty ([#10266](https://github.com/marmelab/react-admin/pull/10266)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix pnpm error Module not found: Can't resolve '@mui/utils' ([#10264](https://github.com/marmelab/react-admin/pull/10264)) ([slax57](https://github.com/slax57))
+* [Doc] Update Remix tutorial to fix port and yarn documentation link ([#10263](https://github.com/marmelab/react-admin/pull/10263)) ([smeng9](https://github.com/smeng9))
+* [Doc] Update `<Search>` doc for `keyboardShortcutIcon`, `withKeyboardShortcut` and `isInAppBar` ([#10254](https://github.com/marmelab/react-admin/pull/10254)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Admin and Routing docs to encourage using a Data Router ([#10220](https://github.com/marmelab/react-admin/pull/10220)) ([smeng9](https://github.com/smeng9))
 
 * Fix `<SelectArrayInput>` options panel width and placement ([#10232](https://github.com/marmelab/react-admin/pull/10232)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc] Fix `mutationMode` reference in `create` documentation ([#10231](https://github.com/marmelab/react-admin/pull/10231)) ([erwanMarmelab](https://github.com/erwanMarmelab))

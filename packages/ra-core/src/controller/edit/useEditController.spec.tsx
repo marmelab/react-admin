@@ -19,10 +19,15 @@ import { testDataProvider } from '../../dataProvider';
 import undoableEventEmitter from '../../dataProvider/undoableEventEmitter';
 import { Form, InputProps, useInput } from '../../form';
 import { useNotificationContext } from '../../notification';
-import { DataProvider } from '../../types';
+import { AuthProvider, DataProvider } from '../../types';
 import { Middleware, useRegisterMutationMiddleware } from '../saveContext';
 import { EditController } from './EditController';
 import { RedirectionSideEffect, TestMemoryRouter } from '../../routing';
+import {
+    Authenticated,
+    CanAccess,
+    DisableAuthentication,
+} from './useEditController.security.stories';
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -369,11 +374,12 @@ describe('useEditController', () => {
         await waitFor(() =>
             expect(notificationsSpy).toEqual([
                 {
-                    message: 'ra.notification.updated',
+                    message: 'resources.posts.notifications.updated',
                     type: 'info',
                     notificationOptions: {
                         messageArgs: {
                             smart_count: 1,
+                            _: 'ra.notification.updated',
                         },
                         undoable: false,
                     },
@@ -575,11 +581,12 @@ describe('useEditController', () => {
             // we get the (optimistic) success notification but not the error notification
             expect(notificationsSpy).toEqual([
                 {
-                    message: 'ra.notification.updated',
+                    message: 'resources.posts.notifications.updated',
                     type: 'info',
                     notificationOptions: {
                         messageArgs: {
                             smart_count: 1,
+                            _: 'ra.notification.updated',
                         },
                         undoable: false,
                     },
@@ -1199,5 +1206,89 @@ describe('useEditController', () => {
         });
         fireEvent.click(screen.getByText('Submit'));
         expect(await screen.findByText('Show')).not.toBeNull();
+    });
+
+    describe('security', () => {
+        it('should not call the dataProvider until the authentication check passes', async () => {
+            let resolveAuthCheck: () => void;
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(
+                    () =>
+                        new Promise(resolve => {
+                            resolveAuthCheck = resolve;
+                        })
+                ),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getOne: jest.fn(() =>
+                    Promise.resolve({
+                        data: { id: 1, title: 'A post', votes: 0 },
+                    })
+                ),
+            });
+
+            render(
+                <Authenticated
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await waitFor(() => {
+                expect(authProvider.checkAuth).toHaveBeenCalled();
+            });
+            expect(dataProvider.getOne).not.toHaveBeenCalled();
+            resolveAuthCheck!();
+            await screen.findByText('A post - 0 votes');
+        });
+
+        it('should redirect to the /access-denied page when users do not have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('posts.edit access'));
+            fireEvent.click(await screen.findByText('Edit'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Access denied');
+        });
+
+        it('should display the edit view when users have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('List');
+            fireEvent.click(await screen.findByText('Edit'));
+            await screen.findByText('Loading...');
+            await screen.findByText('Post #1 - 90 votes');
+        });
+
+        it('should call the dataProvider if disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getOne: jest.fn(() =>
+                    Promise.resolve({
+                        data: { id: 1, title: 'A post', votes: 0 },
+                    })
+                ),
+            });
+
+            render(
+                <DisableAuthentication
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await screen.findByText('A post - 0 votes');
+            expect(dataProvider.getOne).toHaveBeenCalled();
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
+        });
     });
 });

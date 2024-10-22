@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { testDataProvider } from 'ra-core';
+import { ResourceContextProvider, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -8,19 +8,20 @@ import { BooleanInput } from './BooleanInput';
 
 describe('<BooleanInput />', () => {
     const defaultProps = {
-        resource: 'posts',
         source: 'isPublished',
     };
 
     it('should render as a checkbox', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{ isPublished: true }}
-                    onSubmit={jest.fn}
-                >
-                    <BooleanInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ isPublished: true }}
+                        onSubmit={jest.fn}
+                    >
+                        <BooleanInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -34,12 +35,14 @@ describe('<BooleanInput />', () => {
     it('should be checked if the value is true', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{ isPublished: true }}
-                >
-                    <BooleanInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{ isPublished: true }}
+                    >
+                        <BooleanInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -53,12 +56,14 @@ describe('<BooleanInput />', () => {
     it('should not be checked if the value is false', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{ isPublished: false }}
-                >
-                    <BooleanInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{ isPublished: false }}
+                    >
+                        <BooleanInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -72,9 +77,11 @@ describe('<BooleanInput />', () => {
     it('should not be checked if the value is undefined', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <BooleanInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <BooleanInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -88,9 +95,11 @@ describe('<BooleanInput />', () => {
     it('should be checked if the value is undefined and defaultValue is true', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <BooleanInput {...defaultProps} defaultValue={true} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <BooleanInput {...defaultProps} defaultValue={true} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -104,9 +113,14 @@ describe('<BooleanInput />', () => {
     it('should be checked if the value is true and defaultValue is false', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn} record={{ isPublished: true }}>
-                    <BooleanInput {...defaultProps} defaultValue={false} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        record={{ isPublished: true }}
+                    >
+                        <BooleanInput {...defaultProps} defaultValue={false} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -120,12 +134,14 @@ describe('<BooleanInput />', () => {
     it('should update on click', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{ isPublished: false }}
-                    onSubmit={jest.fn}
-                >
-                    <BooleanInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{ isPublished: false }}
+                        onSubmit={jest.fn}
+                    >
+                        <BooleanInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -145,13 +161,15 @@ describe('<BooleanInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{ isPublished: true }}
-                    mode="onChange"
-                >
-                    <BooleanInput {...defaultProps} validate={validate} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{ isPublished: true }}
+                        mode="onChange"
+                    >
+                        <BooleanInput {...defaultProps} validate={validate} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(

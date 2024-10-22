@@ -8,15 +8,20 @@ import {
     act,
 } from '@testing-library/react';
 import { testDataProvider } from '../../dataProvider';
-
 import { memoryStore } from '../../store';
+import { CoreAdminContext } from '../../core';
+import { TestMemoryRouter } from '../../routing';
+import { AuthProvider } from '../../types';
 import { ListController } from './ListController';
 import {
     getListControllerProps,
     sanitizeListRestProps,
 } from './useListController';
-import { CoreAdminContext } from '../../core';
-import { TestMemoryRouter } from '../../routing';
+import {
+    Authenticated,
+    CanAccess,
+    DisableAuthentication,
+} from './useListController.security.stories';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -202,7 +207,7 @@ describe('useListController', () => {
             });
         });
 
-        it('should update data if permanent filters change', () => {
+        it('should update data if permanent filters change', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
@@ -225,14 +230,16 @@ describe('useListController', () => {
             );
 
             // Check that the permanent filter was used in the query
-            expect(getList).toHaveBeenCalledTimes(1);
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledTimes(1);
+            });
             expect(getList).toHaveBeenCalledWith(
                 'posts',
                 expect.objectContaining({ filter: { foo: 1 } })
             );
 
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
-            expect(children).toHaveBeenCalledTimes(1);
+            expect(children).toHaveBeenCalledTimes(2);
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     displayedFilters: {},
@@ -249,12 +256,14 @@ describe('useListController', () => {
             );
 
             // Check that the permanent filter was used in the query
-            expect(getList).toHaveBeenCalledTimes(2);
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledTimes(2);
+            });
             expect(getList).toHaveBeenCalledWith(
                 'posts',
                 expect.objectContaining({ filter: { foo: 2 } })
             );
-            expect(children).toHaveBeenCalledTimes(2);
+            expect(children).toHaveBeenCalledTimes(4);
         });
     });
 
@@ -491,6 +500,89 @@ describe('useListController', () => {
                 foo: 1,
                 bar: 'hello',
             });
+        });
+    });
+
+    describe('security', () => {
+        it('should not call the dataProvider until the authentication check passes', async () => {
+            let resolveAuthCheck: () => void;
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(
+                    () =>
+                        new Promise(resolve => {
+                            resolveAuthCheck = resolve;
+                        })
+                ),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getList: jest.fn(() =>
+                    Promise.resolve({
+                        data: [{ id: 1, title: 'A post', votes: 0 }],
+                        total: 0,
+                    })
+                ),
+            });
+
+            render(
+                <Authenticated
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await waitFor(() => {
+                expect(authProvider.checkAuth).toHaveBeenCalled();
+            });
+            expect(dataProvider.getList).not.toHaveBeenCalled();
+            resolveAuthCheck!();
+            await screen.findByText('A post - 0 votes');
+        });
+
+        it('should redirect to the /access-denied page when users do not have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('Loading...');
+            await screen.findByText('Post #1 - 90 votes');
+            fireEvent.click(await screen.findByText('posts.list access'));
+            await screen.findByText('Access denied');
+        });
+
+        it('should display the show view when users have access', async () => {
+            render(<CanAccess />);
+            await screen.findByText('Loading...');
+            await screen.findByText('Post #1 - 90 votes');
+        });
+
+        it('should call the dataProvider if disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getList: jest.fn(() =>
+                    Promise.resolve({
+                        data: [{ id: 1, title: 'A post', votes: 0 }],
+                        total: 0,
+                    })
+                ),
+            });
+
+            render(
+                <DisableAuthentication
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                />
+            );
+            await screen.findByText('A post - 0 votes');
+            expect(dataProvider.getList).toHaveBeenCalled();
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
         });
     });
 });

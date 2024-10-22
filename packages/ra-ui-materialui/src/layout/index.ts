@@ -1,5 +1,7 @@
+export * from './AccessDenied';
 export * from './AppBar';
 export * from './ApplicationUpdatedNotification';
+export * from './AuthenticationError';
 export * from './CardContentInner';
 export * from './CheckForApplicationUpdate';
 export * from './Confirm';

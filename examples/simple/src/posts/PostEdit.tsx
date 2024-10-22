@@ -31,7 +31,7 @@ import {
     FormDataConsumer,
     useCreateSuggestionContext,
     EditActionsProps,
-    usePermissions,
+    CanAccess,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import {
     Box,
@@ -101,7 +101,6 @@ const categories = [
 ];
 
 const PostEdit = () => {
-    const { permissions } = usePermissions();
     return (
         <Edit title={<PostTitle />} actions={<EditActions />}>
             <TabbedForm
@@ -148,7 +147,7 @@ const PostEdit = () => {
                     >
                         <ImageField source="src" title="title" />
                     </ImageInput>
-                    {permissions === 'admin' && (
+                    <CanAccess action="edit" resource="posts.authors">
                         <ArrayInput source="authors">
                             <SimpleFormIterator inline>
                                 <ReferenceInput
@@ -184,7 +183,7 @@ const PostEdit = () => {
                                 </FormDataConsumer>
                             </SimpleFormIterator>
                         </ArrayInput>
-                    )}
+                    </CanAccess>
                 </TabbedForm.Tab>
                 <TabbedForm.Tab label="post.form.body">
                     <RichTextInput

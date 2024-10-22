@@ -395,7 +395,18 @@ const PostCreate = () => (
 
 ## Changing The Notification Message
 
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created"). You can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
+![Create notification](./img/CreateSuccess.png)
+
+Once the `dataProvider.create()` request returns successfully, users see a generic notification ("Element created"). 
+
+`<Create>` uses two successive translation keys to build the success message:
+
+- `resources.{resource}.notifications.create` as a first choice
+- `ra.notification.create` as a fallback
+
+To customize the notification message, you can set custom translation for these keys in your i18nProvider.
+
+Alternately, you can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
 
 {% raw %}
 ```jsx
@@ -407,7 +418,7 @@ const PostCreate = () => {
     const redirect = useRedirect();
 
     const onSuccess = (data) => {
-        notify(`Post created successfully`); // default message is 'ra.notification.created'
+        notify(`Post created successfully`);
         redirect('edit', 'posts', data.id, data);
     };
 
@@ -689,3 +700,36 @@ export const BookCreate = () => {
     );
 };
 ```
+
+## Security
+
+The `<Create>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Create>`  will only render if the user has the "create" access to the related resource.
+
+For instance, for the `<PostCreate>`page below:
+
+```tsx
+import { Create, SimpleForm, TextInput } from 'react-admin';
+
+// Resource name is "posts"
+const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="published_at" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+`<Create>` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "create", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](#disableauthentication).

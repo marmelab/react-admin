@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { testDataProvider } from 'ra-core';
+import { ResourceContextProvider, testDataProvider } from 'ra-core';
 import { render, screen, waitFor } from '@testing-library/react';
 import { TabbedForm } from './TabbedForm';
 import { TextInput } from '../input';
@@ -10,12 +10,14 @@ describe('<TabbedForm.Tab label="foo" />', () => {
     it('should display <Toolbar />', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <TabbedForm>
-                    <TabbedForm.Tab label="foo">
-                        <TextInput source="name" />
-                        <TextInput source="city" />
-                    </TabbedForm.Tab>
-                </TabbedForm>
+                <ResourceContextProvider value="posts">
+                    <TabbedForm>
+                        <TabbedForm.Tab label="foo">
+                            <TextInput source="name" />
+                            <TextInput source="city" />
+                        </TabbedForm.Tab>
+                    </TabbedForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -37,29 +39,31 @@ describe('<TabbedForm.Tab label="foo" />', () => {
 
         const { container } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <TabbedForm record={record}>
-                    <TabbedForm.Tab
-                        label="First"
-                        resource="posts"
-                        margin="none"
-                    >
-                        <TextInput source="name" />
-                    </TabbedForm.Tab>
-                    <TabbedForm.Tab
-                        label="Second"
-                        resource="posts"
-                        margin="dense"
-                    >
-                        <TextInput source="name" />
-                    </TabbedForm.Tab>
-                    <TabbedForm.Tab
-                        label="Third"
-                        resource="posts"
-                        margin="normal"
-                    >
-                        <TextInput source="name" />
-                    </TabbedForm.Tab>
-                </TabbedForm>
+                <ResourceContextProvider value="posts">
+                    <TabbedForm record={record}>
+                        <TabbedForm.Tab
+                            label="First"
+                            resource="posts"
+                            margin="none"
+                        >
+                            <TextInput source="name" />
+                        </TabbedForm.Tab>
+                        <TabbedForm.Tab
+                            label="Second"
+                            resource="posts"
+                            margin="dense"
+                        >
+                            <TextInput source="name" />
+                        </TabbedForm.Tab>
+                        <TabbedForm.Tab
+                            label="Third"
+                            resource="posts"
+                            margin="normal"
+                        >
+                            <TextInput source="name" />
+                        </TabbedForm.Tab>
+                    </TabbedForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {

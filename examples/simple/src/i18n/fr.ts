@@ -37,6 +37,13 @@ export default {
                 title: 'Titre',
                 views: 'Vues',
             },
+            notifications: {
+                created: 'Article créé |||| %{smart_count} articles créés',
+                updated:
+                    'Article mis à jour |||| %{smart_count} articles mis à jour',
+                deleted:
+                    'Article supprimé |||| %{smart_count} articles supprimés',
+            },
         },
         comments: {
             name: 'Commentaire |||| Commentaires',
@@ -48,12 +55,28 @@ export default {
                     name: 'Auteur',
                 },
             },
+            notifications: {
+                created:
+                    'Commentaire créé |||| %{smart_count} commentaires créés',
+                updated:
+                    'Commentaire mis à jour |||| %{smart_count} commentaires mis à jour',
+                deleted:
+                    'Commentaire supprimé |||| %{smart_count} commentaires supprimés',
+            },
         },
         users: {
             name: 'Utilisateur |||| Utilisateurs',
             fields: {
                 name: 'Nom',
                 role: 'Rôle',
+            },
+            notifications: {
+                created:
+                    'Utilisateur créé |||| %{smart_count} utilisateurs créés',
+                updated:
+                    'Utilisateur mis à jour |||| %{smart_count} utilisateurs mis à jour',
+                deleted:
+                    'Utilisateur supprimé |||| %{smart_count} utilisateurs supprimés',
             },
         },
     },

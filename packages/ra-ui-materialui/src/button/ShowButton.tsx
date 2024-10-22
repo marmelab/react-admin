@@ -7,6 +7,7 @@ import {
     useResourceContext,
     useRecordContext,
     useCreatePath,
+    useCanAccess,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -36,9 +37,19 @@ const ShowButton = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<ShowButton> components should be used inside a <Resource> component or provided the resource prop.'
+        );
+    }
     const record = useRecordContext(props);
     const createPath = useCreatePath();
-    if (!record) return null;
+    const { canAccess, isPending } = useCanAccess({
+        action: 'show',
+        resource,
+        record,
+    });
+    if (!record || !canAccess || isPending) return null;
     return (
         <Button
             component={Link}

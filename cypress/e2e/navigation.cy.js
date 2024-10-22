@@ -8,6 +8,10 @@ describe('Navigation', () => {
             ListPage.navigate();
 
             ListPage.waitUntilVisible();
+            // We need to wait for 'John Doe' and 'Posts' to be visible, because enabling canAccess triggers
+            // additional rerenders, and otherwise it's the 'Skip to content' button that gets focused
+            cy.contains('John Doe');
+            cy.contains('Posts');
             cy.get(ListPage.elements.profile).focus().tab();
 
             cy.get(`${ListPage.elements.menuItems}:first-child`).should(

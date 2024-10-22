@@ -220,7 +220,7 @@ const CustomPagination = () => {
     return (
         <>
             <InfinitePagination />
-            {total > 0 && (
+            {total && total > 0 && (
                 <Box position="sticky" bottom={0} textAlign="center">
                     <Card
                         elevation={2}
@@ -374,6 +374,39 @@ export const WithSimpleList = () => (
             name="books"
             list={() => (
                 <InfiniteList filters={bookFilters} actions={<BookActions />}>
+                    <SimpleList
+                        primaryText="%{title}"
+                        secondaryText="%{author}"
+                    />
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
+export const PartialPagination = () => (
+    <Admin
+        dataProvider={{
+            ...dataProvider,
+            getList: (resource, params) =>
+                dataProvider
+                    .getList(resource, params)
+                    .then(({ data, total }) => ({
+                        data,
+                        pageInfo: {
+                            hasNextPage:
+                                total! >
+                                params.pagination.page *
+                                    params.pagination.perPage,
+                            hasPreviousPage: params.pagination.page > 1,
+                        },
+                    })),
+        }}
+    >
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList>
                     <SimpleList
                         primaryText="%{title}"
                         secondaryText="%{author}"

@@ -59,6 +59,8 @@ const frenchMessages: TranslationMessages = {
             show: '%{name} %{recordRepresentation}',
             empty: 'Pas encore de %{name}.',
             invite: 'Voulez-vous en créer un ?',
+            access_denied: 'Non autorisé',
+            authentication_error: "Erreur d'authentification",
         },
         input: {
             file: {
@@ -115,6 +117,9 @@ const frenchMessages: TranslationMessages = {
             yes: 'Oui',
             unsaved_changes:
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
+            access_denied: "Vous n'avez pas les droits d'accès à cette page",
+            authentication_error:
+                "Le serveur d'authentification a retourné une erreur et vos autorisations n'ont pas pu être vérifiées.",
         },
         navigation: {
             clear_filters: 'Effacer les filtres',

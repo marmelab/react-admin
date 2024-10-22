@@ -20,7 +20,15 @@ import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
-import { Basic, Title, TitleFalse, TitleElement } from './Edit.stories';
+import {
+    Basic,
+    Title,
+    TitleFalse,
+    TitleElement,
+    NotificationDefault,
+    NotificationTranslated,
+    EmptyWhileLoading,
+} from './Edit.stories';
 
 describe('<Edit />', () => {
     const defaultEditProps = {
@@ -35,7 +43,7 @@ describe('<Edit />', () => {
         } as any;
         const FakeForm = () => {
             const record = useRecordContext();
-            return <>{record.title}</>;
+            return <>{record?.title}</>;
         };
         render(
             <AdminContext dataProvider={dataProvider}>
@@ -63,7 +71,7 @@ describe('<Edit />', () => {
             const { save } = useSaveContext();
             return (
                 <>
-                    <span>{record.title}</span>
+                    <span>{record?.title}</span>
                     <button
                         onClick={() =>
                             save && save({ ...record, title: 'ipsum' })
@@ -99,6 +107,39 @@ describe('<Edit />', () => {
         });
     });
 
+    it("shoudln't display the Edit aside while loading with the emptyWhileLoading prop", async () => {
+        let resolveGetOne;
+        const RenderedComponent = () => {
+            const myDataProvider = {
+                getOne: jest.fn(
+                    () => new Promise(resolve => (resolveGetOne = resolve))
+                ),
+            } as any;
+            return <EmptyWhileLoading myDataProvider={myDataProvider} />;
+        };
+        render(<RenderedComponent />);
+
+        await screen.findByText('Book Edition');
+        expect(
+            screen.queryByText('War and Peace, by Leo Tolstoy (1869)')
+        ).toBeNull();
+        expect(screen.queryByText('Something went wrong')).toBeNull();
+
+        resolveGetOne({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                author: 'Leo Tolstoy',
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        });
+
+        await screen.findByText('War and Peace, by Leo Tolstoy (1869)');
+        expect(screen.queryByText('Something went wrong')).toBeNull();
+    });
+
     describe('mutationMode prop', () => {
         it('should be undoable by default', async () => {
             let post = { id: 1234, title: 'lorem' };
@@ -117,7 +158,7 @@ describe('<Edit />', () => {
 
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -175,7 +216,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -231,7 +272,7 @@ describe('<Edit />', () => {
 
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -292,7 +333,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -349,7 +390,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save &&
@@ -415,7 +456,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -470,7 +511,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save &&
@@ -542,7 +583,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -608,7 +649,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save &&
@@ -678,7 +719,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save && save({ ...record, title: 'ipsum' })
@@ -743,7 +784,7 @@ describe('<Edit />', () => {
                 const { save } = useSaveContext();
                 return (
                     <>
-                        <span>{record.title}</span>
+                        <span>{record?.title}</span>
                         <button
                             onClick={() =>
                                 save &&
@@ -878,7 +919,9 @@ describe('<Edit />', () => {
                     i18nProvider={i18nProvider}
                 >
                     <ResourceDefinitionContextProvider
-                        definitions={{ foo: { recordRepresentation: 'title' } }}
+                        definitions={{
+                            foo: { name: 'foo', recordRepresentation: 'title' },
+                        }}
                     >
                         <Edit {...defaultEditProps}>
                             <Title />
@@ -887,6 +930,20 @@ describe('<Edit />', () => {
                 </AdminContext>
             );
             await screen.findByText('Foo lorem');
+        });
+    });
+
+    describe('success notification', () => {
+        it('should use a generic success message by default', async () => {
+            render(<NotificationDefault />);
+            (await screen.findByText('Save')).click();
+            await screen.findByText('Element updated');
+        });
+
+        it('should allow to use a custom translation per resource', async () => {
+            render(<NotificationTranslated />);
+            (await screen.findByText('Save')).click();
+            await screen.findByText('Book updated');
         });
     });
 });

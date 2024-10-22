@@ -51,20 +51,18 @@
     <li {% if page.path == 'Authentication.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Authentication.html">Introduction</a></li>
     <li {% if page.path == 'AuthProviderList.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./AuthProviderList.html">Supported backends</a></li>
     <li {% if page.path == 'AuthProviderWriting.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./AuthProviderWriting.html">Writing An Auth Provider</a></li>
-    <li {% if page.path == 'Permissions.md' %} class="active" {% endif %}><a class="nav-link" href="./Permissions.html">Permissions</a></li>
+    <li {% if page.path == 'Permissions.md' %} class="active" {% endif %}><a class="nav-link" href="./Permissions.html">Authorization</a></li>
     <li {% if page.path == 'AuthRBAC.md' %} class="active" {% endif %}><a class="nav-link" href="./AuthRBAC.html">RBAC<img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'Authenticated.md' %} class="active" {% endif %}><a class="nav-link" href="./Authenticated.html"><code>&lt;Authenticated&gt;</code></a></li>
-    <li {% if page.path == 'IfCanAccess.md' %} class="active" {% endif %}><a class="nav-link" href="./IfCanAccess.html"><code>&lt;IfCanAccess&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
-    <li {% if page.path == 'WithPermissions.md' %} class="active" {% endif %}><a class="nav-link" href="./WithPermissions.html"><code>&lt;WithPermissions&gt;</code></a></li>
-    <li {% if page.path == 'useAuthProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthProvider.html"><code>useAuthProvider</code></a></li>
+    <li {% if page.path == 'CanAccess.md' %} class="active" {% endif %}><a class="nav-link" href="./CanAccess.html"><code>&lt;CanAccess&gt;</code></a></li>
     <li {% if page.path == 'useAuthenticated.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthenticated.html"><code>useAuthenticated</code></a></li>
     <li {% if page.path == 'useAuthState.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthState.html"><code>useAuthState</code></a></li>
-    <li {% if page.path == 'useGetIdentity.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetIdentity.html"><code>useGetIdentity</code></a></li>
     <li {% if page.path == 'useLogin.md' %} class="active" {% endif %}><a class="nav-link" href="./useLogin.html"><code>useLogin</code></a></li>
     <li {% if page.path == 'useLogout.md' %} class="active" {% endif %}><a class="nav-link" href="./useLogout.html"><code>useLogout</code></a></li>
+    <li {% if page.path == 'useGetIdentity.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetIdentity.html"><code>useGetIdentity</code></a></li>
+    <li {% if page.path == 'useCanAccess.md' %} class="active" {% endif %}><a class="nav-link" href="./useCanAccess.html"><code>useCanAccess</code></a></li>
     <li {% if page.path == 'usePermissions.md' %} class="active" {% endif %}><a class="nav-link" href="./usePermissions.html"><code>usePermissions</code></a></li>
-    <li {% if page.path == 'useCanAccess.md' %} class="active" {% endif %}><a class="nav-link" href="./useCanAccess.html"><code>useCanAccess</code><img class="premium" src="./img/premium.svg" /></a></li>
-    <li {% if page.path == 'canAccess.md' %} class="active" {% endif %}><a class="nav-link" href="./canAccess.html"><code>canAccess</code><img class="premium" src="./img/premium.svg" /></a></li>
+    <li {% if page.path == 'useAuthProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthProvider.html"><code>useAuthProvider</code></a></li>
     <li {% if page.path == 'addRefreshAuthToAuthProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./addRefreshAuthToAuthProvider.html"><code>addRefreshAuthToAuthProvider</code></a></li>
     <li {% if page.path == 'addRefreshAuthToDataProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./addRefreshAuthToDataProvider.html"><code>addRefreshAuthToDataProvider</code></a></li>
   </ul>
@@ -256,7 +254,6 @@
     <li {% if page.path == 'Buttons.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Buttons.html">Buttons</a></li>
     <li {% if page.path == 'RevisionsButton.md' %} class="active" {% endif %}><a class="nav-link" href="./RevisionsButton.html"><code>&lt;RevisionsButton&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'CheckForApplicationUpdate.md' %} class="active" {% endif %}><a class="nav-link" href="./CheckForApplicationUpdate.html"><code>&lt;CheckForApplicationUpdate&gt;</code></a></li>
-    <li {% if page.path == 'UpdateButton.md' %} class="active" {% endif %}><a class="nav-link" href="./UpdateButton.html"><code>&lt;UpdateButton&gt;</code></a></li>
     <li {% if page.path == 'RecordRepresentation.md' %} class="active" {% endif %}><a class="nav-link" href="./RecordRepresentation.html"><code>&lt;RecordRepresentation&gt;</code></a></li>
     <li {% if page.path == 'PrevNextButtons.md' %} class="active" {% endif %}><a class="nav-link" href="./PrevNextButtons.html"><code>&lt;PrevNextButtons&gt;</code></a></li>
     <li {% if page.path == 'useDefineAppLocation.md' %} class="active" {% endif %}><a class="nav-link" href="./useDefineAppLocation.html"><code>useDefineAppLocation</code><img class="premium" src="./img/premium.svg" /></a></li>

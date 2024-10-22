@@ -11,7 +11,7 @@ const UseAuth = (authParams: any) => {
     return (
         <div>
             <span>{state.isPending && 'LOADING'}</span>
-            <span>AUTHENTICATED: {state.authenticated.toString()}</span>
+            <span>AUTHENTICATED: {state.authenticated?.toString()}</span>
         </div>
     );
 };

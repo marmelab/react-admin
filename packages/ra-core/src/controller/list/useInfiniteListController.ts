@@ -4,7 +4,7 @@ import {
     InfiniteData,
 } from '@tanstack/react-query';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
@@ -47,8 +47,8 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
 ): InfiniteListControllerResult<RecordType> => {
     const {
         debounce = 500,
-        disableAuthentication,
-        disableSyncWithLocation,
+        disableAuthentication = false,
+        disableSyncWithLocation = false,
         exporter = defaultExporter,
         filter,
         filterDefaultValues,
@@ -57,7 +57,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         sort,
         storeKey,
     } = props;
-    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions ?? {};
 
@@ -71,6 +70,17 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             '<InfiniteList> received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
+
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
+
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'list',
+        resource,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
+    });
 
     const translate = useTranslate();
     const notify = useNotify();
@@ -113,6 +123,9 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
+            enabled:
+                (!isPendingAuthenticated && !isPendingCanAccess) ||
+                disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
