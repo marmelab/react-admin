@@ -168,7 +168,7 @@ describe('<SimpleList />', () => {
         });
 
         expect(
-            await screen.findByText('No Post found using the current filters.')
+            await screen.findByText('No Posts found using the current filters.')
         ).not.toBeNull();
         expect(screen.getByText('Clear filters')).not.toBeNull();
 
@@ -179,7 +179,7 @@ describe('<SimpleList />', () => {
         );
 
         expect(
-            screen.queryByText('No Post found using the current filters.')
+            screen.queryByText('No Posts found using the current filters.')
         ).toBeNull();
         expect(screen.queryByText('Clear filters')).toBeNull();
         expect(

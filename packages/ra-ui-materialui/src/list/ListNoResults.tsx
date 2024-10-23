@@ -26,7 +26,7 @@ export const ListNoResults = () => {
                     <>
                         {translate('ra.navigation.no_filtered_results', {
                             resource,
-                            name: getResourceLabel(resource, 1),
+                            name: getResourceLabel(resource, 0),
                             _: 'No results found with the current filters.',
                         })}{' '}
                         <Button
@@ -39,7 +39,7 @@ export const ListNoResults = () => {
                 ) : (
                     translate('ra.navigation.no_results', {
                         resource,
-                        name: getResourceLabel(resource, 1),
+                        name: getResourceLabel(resource, 0),
                         _: 'No results found.',
                     })
                 )}
