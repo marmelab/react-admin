@@ -1,7 +1,7 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { useInput, FieldTitle, mergeRefs } from 'ra-core';
+import { useInput, FieldTitle, mergeRefs, useEvent } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -38,7 +38,6 @@ export const DateInput = ({
     resource,
     helperText,
     margin,
-    onBlur,
     onChange,
     onFocus,
     parse,
@@ -50,7 +49,6 @@ export const DateInput = ({
 }: DateInputProps) => {
     const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
-        onBlur,
         resource,
         source,
         validate,
@@ -86,43 +84,47 @@ export const DateInput = ({
     const hasFocus = React.useRef(false);
 
     // update the input text when the user types in the input
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (onChange) {
-            onChange(event);
-        }
-        if (
-            typeof event.target === 'undefined' ||
-            typeof event.target.value === 'undefined'
-        ) {
-            return;
-        }
-        const target = event.target;
+    const handleChange = useEvent(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            if (onChange) {
+                onChange(event);
+            }
+            if (
+                typeof event.target === 'undefined' ||
+                typeof event.target.value === 'undefined'
+            ) {
+                return;
+            }
+            const target = event.target;
 
-        const newValue =
-            target.valueAsDate !== undefined &&
-            target.valueAsDate !== null &&
-            !isNaN(new Date(target.valueAsDate).getTime())
-                ? parse
-                    ? parse(target.valueAsDate)
-                    : getStringFromDate(target.valueAsDate)
-                : parse
-                  ? parse(target.value)
-                  : getStringFromDate(target.value);
+            const newValue =
+                target.valueAsDate !== undefined &&
+                target.valueAsDate !== null &&
+                !isNaN(new Date(target.valueAsDate).getTime())
+                    ? parse
+                        ? parse(target.valueAsDate)
+                        : getStringFromDate(target.valueAsDate)
+                    : parse
+                      ? parse(target.value)
+                      : getStringFromDate(target.value);
 
-        // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
-        // The input reset is handled in the onBlur event handler
-        if (newValue !== '' && newValue != null) {
-            field.onChange(newValue);
-            valueChangedFromInput.current = true;
+            // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
+            // The input reset is handled in the onBlur event handler
+            if (newValue !== '' && newValue != null) {
+                field.onChange(newValue);
+                valueChangedFromInput.current = true;
+            }
         }
-    };
+    );
 
-    const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-        if (onFocus) {
-            onFocus(event);
+    const handleFocus = useEvent(
+        (event: React.FocusEvent<HTMLInputElement>) => {
+            if (onFocus) {
+                onFocus(event);
+            }
+            hasFocus.current = true;
         }
-        hasFocus.current = true;
-    };
+    );
 
     const handleBlur = () => {
         hasFocus.current = false;
@@ -131,21 +133,16 @@ export const DateInput = ({
             return;
         }
 
+        const newValue = localInputRef.current.value;
         // To ensure users can clear the input, we check its value on blur
         // and submit it to react-hook-form
-        const newValue =
-            localInputRef.current.valueAsDate !== undefined &&
-            localInputRef.current.valueAsDate !== null &&
-            !isNaN(new Date(localInputRef.current.valueAsDate).getTime())
-                ? parse
-                    ? parse(localInputRef.current.valueAsDate)
-                    : getStringFromDate(localInputRef.current.valueAsDate)
-                : parse
-                  ? parse(localInputRef.current.value)
-                  : getStringFromDate(localInputRef.current.value);
+        const isNewValueValid =
+            newValue === '' ||
+            (localInputRef.current.valueAsDate != null &&
+                !isNaN(new Date(localInputRef.current.valueAsDate).getTime()));
 
-        if (newValue !== field.value) {
-            field.onChange(newValue ?? '');
+        if (isNewValueValid) {
+            field.onChange(newValue ?? null);
         }
 
         if (onBlurFromField) {
@@ -213,10 +210,11 @@ const convertDateToString = (value: Date) => {
     const yyyy = value.getFullYear().toString();
     const MM = (value.getMonth() + 1).toString();
     const dd = value.getDate().toString();
-    return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
+    const result = `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
+    return result;
 };
 
-const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+const dateRegex = /^(\d{4}-\d{2}-\d{2}).*$/;
 const defaultInputLabelProps = { shrink: true };
 
 const getStringFromDate = (value: string | Date) => {
@@ -231,8 +229,10 @@ const getStringFromDate = (value: string | Date) => {
     }
 
     // valid dates should not be converted
-    if (dateRegex.test(value)) {
-        return value;
+    // This regex only returns the date part of the provided string
+    const matches = dateRegex.exec(value);
+    if (matches) {
+        return matches[1];
     }
 
     return convertDateToString(new Date(value));
