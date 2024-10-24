@@ -5,15 +5,21 @@ import { minValue } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
-import { SimpleForm } from '../form';
-import { DateInput } from './DateInput';
+import { SimpleForm, SimpleFormProps } from '../form';
+import { DateInput, DateInputProps } from './DateInput';
 import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/DateInput' };
 
-export const Basic = () => (
-    <Wrapper>
-        <DateInput source="published" />
+export const Basic = ({
+    dateInputProps,
+    simpleFormProps,
+}: {
+    dateInputProps?: Partial<DateInputProps>;
+    simpleFormProps?: Partial<SimpleFormProps>;
+}) => (
+    <Wrapper simpleFormProps={simpleFormProps}>
+        <DateInput source="publishedAt" {...dateInputProps} />
     </Wrapper>
 );
 
@@ -45,10 +51,16 @@ export const Validate = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({
+    children,
+    simpleFormProps,
+}: {
+    children: React.ReactNode;
+    simpleFormProps?: Partial<SimpleFormProps>;
+}) => (
     <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
         <Create resource="posts">
-            <SimpleForm>
+            <SimpleForm {...simpleFormProps}>
                 {children}
                 <FormInspector name="published" />
             </SimpleForm>
