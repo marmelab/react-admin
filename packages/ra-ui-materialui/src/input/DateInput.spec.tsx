@@ -8,6 +8,7 @@ import { useFormState } from 'react-hook-form';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { DateInput } from './DateInput';
+import { Basic } from './DateInput.stories';
 
 describe('<DateInput />', () => {
     const defaultProps = {
@@ -15,43 +16,27 @@ describe('<DateInput />', () => {
     };
 
     it('should render a date input', () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <DateInput {...defaultProps} />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
-        );
-        const input = screen.getByLabelText(
-            'resources.posts.fields.publishedAt'
-        ) as HTMLInputElement;
+        render(<Basic />);
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
         expect(input.type).toBe('date');
     });
 
     it('should accept a date string as value', async () => {
         let onSubmit = jest.fn();
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={onSubmit}
-                        defaultValues={{ publishedAt: '2021-09-11' }}
-                    >
-                        <DateInput {...defaultProps} />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <Basic
+                simpleFormProps={{
+                    onSubmit,
+                    defaultValues: { publishedAt: '2021-09-11' },
+                }}
+            />
         );
-        const input = screen.getByLabelText(
-            'resources.posts.fields.publishedAt'
-        ) as HTMLInputElement;
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
         expect(input.value).toBe('2021-09-11');
         fireEvent.change(input, {
             target: { value: '2021-10-22' },
         });
-        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        fireEvent.click(screen.getByLabelText('Save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
@@ -65,27 +50,19 @@ describe('<DateInput />', () => {
     it('should accept a date time string as value', async () => {
         let onSubmit = jest.fn();
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={onSubmit}
-                        defaultValues={{
-                            publishedAt: '2021-09-11T06:51:17.772Z',
-                        }}
-                    >
-                        <DateInput {...defaultProps} />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <Basic
+                simpleFormProps={{
+                    onSubmit,
+                    defaultValues: { publishedAt: '2021-09-11T06:51:17.772Z' },
+                }}
+            />
         );
-        const input = screen.getByLabelText(
-            'resources.posts.fields.publishedAt'
-        ) as HTMLInputElement;
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
         expect(input.value).toBe('2021-09-11');
         fireEvent.change(input, {
             target: { value: '2021-10-22' },
         });
-        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        fireEvent.click(screen.getByLabelText('Save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
@@ -99,25 +76,19 @@ describe('<DateInput />', () => {
     it('should accept a date object as value', async () => {
         let onSubmit = jest.fn();
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={onSubmit}
-                        defaultValues={{ publishedAt: '2021-09-11' }}
-                    >
-                        <DateInput {...defaultProps} />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <Basic
+                simpleFormProps={{
+                    onSubmit,
+                    defaultValues: { publishedAt: '2021-09-11' },
+                }}
+            />
         );
-        const input = screen.getByLabelText(
-            'resources.posts.fields.publishedAt'
-        ) as HTMLInputElement;
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
         expect(input.value).toBe('2021-09-11');
         fireEvent.change(input, {
             target: { value: '2021-10-22' },
         });
-        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        fireEvent.click(screen.getByLabelText('Save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
@@ -139,27 +110,21 @@ describe('<DateInput />', () => {
         ])('should accept a value with timezone %s', async publishedAt => {
             let onSubmit = jest.fn();
             render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <ResourceContextProvider value="posts">
-                        <SimpleForm
-                            onSubmit={onSubmit}
-                            defaultValues={{
-                                publishedAt,
-                            }}
-                        >
-                            <DateInput {...defaultProps} />
-                        </SimpleForm>
-                    </ResourceContextProvider>
-                </AdminContext>
+                <Basic
+                    simpleFormProps={{
+                        onSubmit,
+                        defaultValues: { publishedAt },
+                    }}
+                />
             );
             const input = screen.getByLabelText(
-                'resources.posts.fields.publishedAt'
+                'Published at'
             ) as HTMLInputElement;
             expect(input.value).toBe('2021-09-11');
             fireEvent.change(input, {
                 target: { value: '2021-10-22' },
             });
-            fireEvent.click(screen.getByLabelText('ra.action.save'));
+            fireEvent.click(screen.getByLabelText('Save'));
             await waitFor(() => {
                 expect(onSubmit).toHaveBeenCalledWith(
                     {
@@ -174,30 +139,22 @@ describe('<DateInput />', () => {
     it('should accept a parse function', async () => {
         const onSubmit = jest.fn();
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={onSubmit}
-                        defaultValues={{
-                            publishedAt: new Date('2021-09-11'),
-                        }}
-                    >
-                        <DateInput
-                            {...defaultProps}
-                            parse={val => new Date(val)}
-                        />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <Basic
+                simpleFormProps={{
+                    onSubmit,
+                    defaultValues: { publishedAt: new Date('2021-09-11') },
+                }}
+                dateInputProps={{
+                    parse: val => new Date(val),
+                }}
+            />
         );
-        const input = screen.getByLabelText(
-            'resources.posts.fields.publishedAt'
-        ) as HTMLInputElement;
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
         expect(input.value).toBe('2021-09-11');
         fireEvent.change(input, {
             target: { value: '2021-10-22' },
         });
-        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        fireEvent.click(screen.getByLabelText('Save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
@@ -211,26 +168,23 @@ describe('<DateInput />', () => {
     it('should accept a parse function returning null', async () => {
         const onSubmit = jest.fn();
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={onSubmit}
-                        defaultValues={{ publishedAt: new Date('2021-09-11') }}
-                    >
-                        <DateInput {...defaultProps} parse={() => null} />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <Basic
+                simpleFormProps={{
+                    onSubmit,
+                    defaultValues: { publishedAt: new Date('2021-09-11') },
+                }}
+                dateInputProps={{
+                    parse: () => null,
+                }}
+            />
         );
-        const input = screen.getByLabelText(
-            'resources.posts.fields.publishedAt'
-        ) as HTMLInputElement;
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
         expect(input.value).toBe('2021-09-11');
         fireEvent.change(input, {
             target: { value: '' },
         });
         fireEvent.blur(input);
-        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        fireEvent.click(screen.getByLabelText('Save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
@@ -271,26 +225,20 @@ describe('<DateInput />', () => {
     it('should return null when date is empty', async () => {
         const onSubmit = jest.fn();
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={onSubmit}
-                        defaultValues={{ publishedAt: new Date('2021-09-11') }}
-                    >
-                        <DateInput {...defaultProps} />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <Basic
+                simpleFormProps={{
+                    onSubmit,
+                    defaultValues: { publishedAt: new Date('2021-09-11') },
+                }}
+            />
         );
-        const input = screen.getByLabelText(
-            'resources.posts.fields.publishedAt'
-        ) as HTMLInputElement;
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
         expect(input.value).toBe('2021-09-11');
         fireEvent.change(input, {
             target: { value: '' },
         });
         fireEvent.blur(input);
-        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        fireEvent.click(screen.getByLabelText('Save'));
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
@@ -303,39 +251,21 @@ describe('<DateInput />', () => {
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
-                            <DateInput
-                                {...defaultProps}
-                                validate={required()}
-                            />
-                        </SimpleForm>
-                    </ResourceContextProvider>
-                </AdminContext>
-            );
-            expect(screen.queryByText('ra.validation.required')).toBeNull();
+            render(<Basic dateInputProps={{ validate: required() }} />);
+            expect(screen.queryByText('Required')).toBeNull();
         });
 
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()} mode="onBlur">
-                            <DateInput
-                                {...defaultProps}
-                                validate={required()}
-                            />
-                        </SimpleForm>
-                    </ResourceContextProvider>
-                </AdminContext>
+                <Basic
+                    simpleFormProps={{ mode: 'onBlur' }}
+                    dateInputProps={{ validate: required() }}
+                />
             );
-            const input = screen.getByLabelText(
-                'resources.posts.fields.publishedAt *'
-            );
+
+            const input = screen.getByLabelText('Published at *');
             fireEvent.blur(input);
-            await screen.findByText('ra.validation.required');
+            await screen.findByText('Required');
         });
     });
 });
