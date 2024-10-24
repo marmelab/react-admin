@@ -103,7 +103,7 @@ describe('<DateInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         onSubmit={onSubmit}
-                        defaultValues={{ publishedAt: new Date('2021-09-11') }}
+                        defaultValues={{ publishedAt: '2021-09-11' }}
                     >
                         <DateInput {...defaultProps} />
                     </SimpleForm>
@@ -128,6 +128,49 @@ describe('<DateInput />', () => {
         });
     });
 
+    describe('TimeZones', () => {
+        it.each([
+            '2021-09-11T20:46:20.000+02:00',
+            '2021-09-11 20:46:20.000+02:00',
+            '2021-09-11T20:46:20.000-04:00',
+            '2021-09-11 20:46:20.000-04:00',
+            '2021-09-11T20:46:20.000Z',
+            '2021-09-11 20:46:20.000Z',
+        ])('should accept a value with timezone %s', async publishedAt => {
+            let onSubmit = jest.fn();
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={onSubmit}
+                            defaultValues={{
+                                publishedAt,
+                            }}
+                        >
+                            <DateInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.publishedAt'
+            ) as HTMLInputElement;
+            expect(input.value).toBe('2021-09-11');
+            fireEvent.change(input, {
+                target: { value: '2021-10-22' },
+            });
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith(
+                    {
+                        publishedAt: '2021-10-22',
+                    },
+                    expect.anything()
+                );
+            });
+        });
+    });
+
     it('should accept a parse function', async () => {
         const onSubmit = jest.fn();
         render(
@@ -135,7 +178,9 @@ describe('<DateInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         onSubmit={onSubmit}
-                        defaultValues={{ publishedAt: new Date('2021-09-11') }}
+                        defaultValues={{
+                            publishedAt: new Date('2021-09-11'),
+                        }}
                     >
                         <DateInput
                             {...defaultProps}
