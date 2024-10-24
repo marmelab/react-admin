@@ -70,7 +70,13 @@ export const useAugmentedForm = <RecordType = any>(
 
     const form = useForm({
         criteriaMode,
+        // We need to provide both `values` and `defaultValues`, because
+        // - we need `values` to be able to reactively reset the form when the record changes
+        // - we need `defaultValues` because `useController` requires them to function properly
+        //   (omitting them can cause issues with reset or with shouldUnregister)
+        //   See https://react-hook-form.com/docs/usecontroller#props
         values: defaultValuesIncludingRecord,
+        defaultValues: defaultValuesIncludingRecord,
         reValidateMode,
         resolver: finalResolver,
         ...rest,
