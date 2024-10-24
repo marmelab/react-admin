@@ -16,7 +16,7 @@ import {
 } from '..';
 import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
-import undoableEventEmitter from '../../dataProvider/undoableEventEmitter';
+import { useTakeUndoableMutation } from '../../dataProvider/undo/useTakeUndoableMutation';
 import { Form, InputProps, useInput } from '../../form';
 import { useNotificationContext } from '../../notification';
 import { AuthProvider, DataProvider } from '../../types';
@@ -28,6 +28,20 @@ import {
     CanAccess,
     DisableAuthentication,
 } from './useEditController.security.stories';
+
+const Confirm = () => {
+    const takeMutation = useTakeUndoableMutation();
+    return (
+        <button
+            aria-label="confirm"
+            onClick={() => {
+                const mutation = takeMutation();
+                if (!mutation) return;
+                mutation({ isUndo: false });
+            }}
+        />
+    );
+};
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -279,6 +293,7 @@ describe('useEditController', () => {
                                     aria-label="save"
                                     onClick={() => save!({ test: 'updated' })}
                                 />
+                                <Confirm />
                             </>
                         );
                     }}
@@ -297,7 +312,7 @@ describe('useEditController', () => {
             data: { test: 'updated' },
             previousData: { id: 12, test: 'previous' },
         });
-        undoableEventEmitter.emit('end', { isUndo: false });
+        screen.getByLabelText('confirm').click();
         await waitFor(() => {
             screen.getByText('updated');
         });
@@ -888,14 +903,14 @@ describe('useEditController', () => {
                 <EditController {...defaultProps} mutationMode="undoable">
                     {({ save }) => {
                         saveCallback = save;
-                        return <div />;
+                        return <Confirm />;
                     }}
                 </EditController>
             </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         await new Promise(resolve => setTimeout(resolve, 10));
-        undoableEventEmitter.emit('end', { isUndo: false });
+        screen.getByLabelText('confirm').click();
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(notificationsSpy).toContainEqual({
             message: 'ra.notification.http_error',

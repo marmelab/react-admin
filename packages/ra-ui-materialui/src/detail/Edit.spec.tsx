@@ -9,11 +9,11 @@ import {
 } from '@testing-library/react';
 import {
     CoreAdminContext,
-    undoableEventEmitter,
     useRecordContext,
     useSaveContext,
     useEditContext,
     ResourceDefinitionContextProvider,
+    useTakeUndoableMutation,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -169,6 +169,19 @@ describe('<Edit />', () => {
                     </>
                 );
             };
+            const Confirm = () => {
+                const takeMutation = useTakeUndoableMutation();
+                return (
+                    <button
+                        aria-label="confirm"
+                        onClick={() => {
+                            const mutation = takeMutation();
+                            if (!mutation) return;
+                            mutation({ isUndo: false });
+                        }}
+                    />
+                );
+            };
 
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -178,6 +191,7 @@ describe('<Edit />', () => {
                         mutationOptions={{ onSuccess }}
                     >
                         <FakeForm />
+                        <Confirm />
                     </Edit>
                 </CoreAdminContext>
             );
@@ -192,7 +206,7 @@ describe('<Edit />', () => {
                 expect(update).toHaveBeenCalledTimes(0);
             });
             act(() => {
-                undoableEventEmitter.emit('end', {});
+                screen.getByLabelText('confirm').click();
             });
             await waitFor(() =>
                 // dataProvider called
