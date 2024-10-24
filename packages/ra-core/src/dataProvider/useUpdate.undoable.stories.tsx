@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { QueryClient, useIsMutating } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
-import undoableEventEmitter from './undoableEventEmitter';
+import { useTakeUndoableMutation } from './undo';
 import { useUpdate } from './useUpdate';
 import { useGetOne } from './useGetOne';
 
@@ -43,6 +43,7 @@ const SuccessCore = () => {
     const isMutating = useIsMutating();
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
+    const takeMutation = useTakeUndoableMutation();
     const { data, refetch } = useGetOne('posts', { id: 1 });
     const [update, { isPending }] = useUpdate();
     const handleClick = () => {
@@ -73,10 +74,10 @@ const SuccessCore = () => {
                     <>
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: false,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: false });
                             }}
                         >
                             Confirm
@@ -84,10 +85,10 @@ const SuccessCore = () => {
                         &nbsp;
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: true,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: true });
                             }}
                         >
                             Cancel
@@ -138,6 +139,7 @@ const ErrorCore = () => {
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
+    const takeMutation = useTakeUndoableMutation();
     const { data, refetch } = useGetOne('posts', { id: 1 });
     const [update, { isPending }] = useUpdate();
     const handleClick = () => {
@@ -171,10 +173,10 @@ const ErrorCore = () => {
                     <>
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: false,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: false });
                             }}
                         >
                             Confirm
@@ -182,10 +184,10 @@ const ErrorCore = () => {
                         &nbsp;
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: true,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: true });
                             }}
                         >
                             Cancel
@@ -240,6 +242,7 @@ const WithMiddlewaresCore = () => {
     const isMutating = useIsMutating();
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
+    const takeMutation = useTakeUndoableMutation();
     const { data, refetch } = useGetOne('posts', { id: 1 });
     const [update, { isPending }] = useUpdate(
         'posts',
@@ -284,10 +287,10 @@ const WithMiddlewaresCore = () => {
                     <>
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: false,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: false });
                             }}
                         >
                             Confirm
@@ -295,10 +298,10 @@ const WithMiddlewaresCore = () => {
                         &nbsp;
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: true,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: true });
                             }}
                         >
                             Cancel
@@ -349,6 +352,7 @@ const WithMiddlewaresErrorCore = () => {
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
+    const takeMutation = useTakeUndoableMutation();
     const { data, refetch } = useGetOne('posts', { id: 1 });
     const [update, { isPending }] = useUpdate(
         'posts',
@@ -397,10 +401,10 @@ const WithMiddlewaresErrorCore = () => {
                     <>
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: false,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: false });
                             }}
                         >
                             Confirm
@@ -408,10 +412,10 @@ const WithMiddlewaresErrorCore = () => {
                         &nbsp;
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: true,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: true });
                             }}
                         >
                             Cancel

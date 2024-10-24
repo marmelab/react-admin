@@ -9,6 +9,7 @@ import {
     undoableEventEmitter,
     useTranslate,
     NotificationPayload,
+    useTakeUndoableMutation,
 } from 'ra-core';
 
 const defaultAnchorOrigin: SnackbarOrigin = {
@@ -38,6 +39,7 @@ export const Notification = (props: NotificationProps) => {
         ...rest
     } = props;
     const { notifications, takeNotification } = useNotificationContext();
+    const takeMutation = useTakeUndoableMutation();
     const [open, setOpen] = useState(false);
     const [currentNotification, setCurrentNotification] = React.useState<
         NotificationPayload | undefined
@@ -45,17 +47,6 @@ export const Notification = (props: NotificationProps) => {
     const translate = useTranslate();
 
     useEffect(() => {
-        const beforeunload = (e: BeforeUnloadEvent) => {
-            e.preventDefault();
-            const confirmationMessage = '';
-            e.returnValue = confirmationMessage;
-            return confirmationMessage;
-        };
-
-        if (currentNotification?.notificationOptions?.undoable) {
-            window.addEventListener('beforeunload', beforeunload);
-        }
-
         if (notifications.length && !currentNotification) {
             // Set a new snack when we don't have an active one
             const notification = takeNotification();
@@ -68,11 +59,19 @@ export const Notification = (props: NotificationProps) => {
             setOpen(false);
         }
 
-        return () => {
-            if (currentNotification?.notificationOptions?.undoable) {
-                window.removeEventListener('beforeunload', beforeunload);
-            }
+        const beforeunload = (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+            const confirmationMessage = '';
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;
         };
+
+        if (currentNotification?.notificationOptions?.undoable) {
+            window.addEventListener('beforeunload', beforeunload);
+            return () => {
+                window.removeEventListener('beforeunload', beforeunload);
+            };
+        }
     }, [notifications, currentNotification, open, takeNotification]);
 
     const handleRequestClose = useCallback(() => {
@@ -84,15 +83,27 @@ export const Notification = (props: NotificationProps) => {
             currentNotification &&
             currentNotification.notificationOptions?.undoable
         ) {
-            undoableEventEmitter.emit('end', { isUndo: false });
+            const mutation = takeMutation();
+            if (mutation) {
+                mutation({ isUndo: false });
+            } else {
+                // FIXME kept for BC: remove in v6
+                undoableEventEmitter.emit('end', { isUndo: false });
+            }
         }
         setCurrentNotification(undefined);
-    }, [currentNotification]);
+    }, [currentNotification, takeMutation]);
 
     const handleUndo = useCallback(() => {
-        undoableEventEmitter.emit('end', { isUndo: true });
+        const mutation = takeMutation();
+        if (mutation) {
+            mutation({ isUndo: true });
+        } else {
+            // FIXME kept for BC: remove in v6
+            undoableEventEmitter.emit('end', { isUndo: true });
+        }
         setOpen(false);
-    }, []);
+    }, [takeMutation]);
 
     if (!currentNotification) return null;
     const {

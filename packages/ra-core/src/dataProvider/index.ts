@@ -25,6 +25,7 @@ export * from './useUpdateMany';
 export * from './useDelete';
 export * from './useDeleteMany';
 export * from './useInfiniteGetList';
+export * from './undo/';
 
 export type { Options } from './fetch';
 
@@ -33,5 +34,8 @@ export {
     DataProviderContext,
     fetchUtils,
     HttpError,
+    /**
+     * @deprecated use the useTakeUndoableMutation hook instead
+     */
     undoableEventEmitter,
 };

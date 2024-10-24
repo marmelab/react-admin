@@ -6,6 +6,7 @@ import { AdminRouter } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
+    UndoableMutationsContextProvider,
     convertLegacyDataProvider,
     defaultDataProvider,
 } from '../dataProvider';
@@ -211,9 +212,11 @@ React-admin requires a valid dataProvider function to work.`);
                             <AdminRouter basename={basename}>
                                 <I18nContextProvider value={i18nProvider}>
                                     <NotificationContextProvider>
-                                        <ResourceDefinitionContextProvider>
-                                            {children}
-                                        </ResourceDefinitionContextProvider>
+                                        <UndoableMutationsContextProvider>
+                                            <ResourceDefinitionContextProvider>
+                                                {children}
+                                            </ResourceDefinitionContextProvider>
+                                        </UndoableMutationsContextProvider>
                                     </NotificationContextProvider>
                                 </I18nContextProvider>
                             </AdminRouter>
