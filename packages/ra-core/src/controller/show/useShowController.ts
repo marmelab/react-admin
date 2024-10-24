@@ -86,7 +86,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
             'useShowController requires an id prop or a route with an /:id? parameter.'
         );
     }
-    const id = propsId != null ? propsId : decodeURIComponent(routeId!);
+    const id = propsId != null ? propsId : routeId;
     const { meta, ...otherQueryOptions } = queryOptions;
 
     const {
