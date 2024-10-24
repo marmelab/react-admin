@@ -707,6 +707,8 @@ import { FormDataConsumer } from 'react-admin';
 
 **Note**: By default, `react-hook-form` submits values of unmounted input components. In the above example, the `shouldUnregister` prop of the `<SimpleForm>` component prevents that from happening. That way, when end users hide an input, its value isn't included in the submitted data.
 
+**Note**: `shouldUnregister` should be avoided when using `<ArrayInput>` (which internally uses `useFieldArray`) as the unregister function gets called after input unmount/remount and reorder. This limitation is mentioned in the react-hook-form [documentation](https://react-hook-form.com/docs/usecontroller#props).
+
 ## Overriding The Input Variant
 
 Material UI offers [3 variants for text fields](https://mui.com/material-ui/react-text-field/#basic-textfield): `outlined`, `filled`, and `standard`. The default react-admin theme uses the `filled` variant.
