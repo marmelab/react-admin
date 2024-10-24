@@ -101,7 +101,7 @@ const isRaTranslationObj = (obj: object) =>
     Object.keys(obj).includes('message') && Object.keys(obj).includes('args');
 
 const isEmptyObject = (obj: object) =>
-    Object.getOwnPropertyNames(obj).length === 0;
+    obj == null || Object.getOwnPropertyNames(obj).length === 0;
 
 export type ValidateForm = (
     data: FieldValues
