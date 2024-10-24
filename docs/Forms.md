@@ -363,6 +363,8 @@ import { FormDataConsumer } from 'react-admin';
 
 **Note**: By default, `react-hook-form` submits values of unmounted input components. In the above example, the `shouldUnregister` prop of the `<SimpleForm>` component prevents that from happening. That way, when end users hide an input, its value isn't included in the submitted data.
 
+**Note**: `shouldUnregister` should be avoided when using `<ArrayInput>` (which internally uses `useFieldArray`) as the unregister function gets called after input unmount/remount and reorder. This limitation is mentioned in the react-hook-form [documentation](https://react-hook-form.com/docs/usecontroller#props).
+
 ## Transforming Form Values Before Submitting
 
 Sometimes, you may want to alter the form values before sending them to the `dataProvider`. For those cases, use the `transform` prop either on the view component (`<Create>` or `<Edit>`) or on the `<SaveButton>` component. 

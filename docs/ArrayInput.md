@@ -79,6 +79,8 @@ Check [the `<SimpleFormIterator>` documentation](./SimpleFormIterator.md) for de
 
 **Tip**: If you need to edit an array of *related* records, i.e. if the `items` above actually come from another resource, you should use a [`<ReferenceManyInput>`](./ReferenceManyInput.md) instead.
 
+**Note**: Using [`shouldUnregister`](https://react-hook-form.com/docs/useform#shouldUnregister) should be avoided when using `<ArrayInput>` (which internally uses `useFieldArray`) as the unregister function gets called after input unmount/remount and reorder. This limitation is mentioned in the react-hook-form [documentation](https://react-hook-form.com/docs/usecontroller#props).
+
 ## Props
 
 `<ArrayInput>` accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
