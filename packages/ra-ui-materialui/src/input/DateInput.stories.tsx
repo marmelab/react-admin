@@ -23,6 +23,23 @@ export const Basic = ({
     </Wrapper>
 );
 
+export const OnChangeValidation = ({
+    dateInputProps = {
+        validate: value => {
+            console.log({ value });
+            return undefined;
+        },
+    },
+    simpleFormProps = { mode: 'onChange' },
+}: {
+    dateInputProps?: Partial<DateInputProps>;
+    simpleFormProps?: Partial<SimpleFormProps>;
+}) => (
+    <Wrapper simpleFormProps={simpleFormProps}>
+        <DateInput source="publishedAt" {...dateInputProps} />
+    </Wrapper>
+);
+
 export const NonFullWidth = () => (
     <Wrapper>
         <DateInput source="published" fullWidth={false} />
