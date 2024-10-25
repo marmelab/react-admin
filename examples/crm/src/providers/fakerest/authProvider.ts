@@ -57,14 +57,8 @@ export const authProvider: AuthProvider = {
         const localUser = userItem ? (JSON.parse(userItem) as Sale) : null;
         if (!localUser) return false;
 
-        // Get the matching sale
-        const { data } = await dataProvider.getOne<Sale>('sales', {
-            id: localUser.id,
-        });
-        if (!data) return false;
-
         // Compute access rights from the sale role
-        const role = data.administrator ? 'admin' : 'user';
+        const role = localUser.administrator ? 'admin' : 'user';
         return canAccess(role, params);
     },
     getIdentity: () => {
