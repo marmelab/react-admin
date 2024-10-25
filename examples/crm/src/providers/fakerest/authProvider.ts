@@ -1,5 +1,6 @@
 import { AuthProvider } from 'react-admin';
 import { Sale } from '../../types';
+import { canAccess } from '../commons/canAccess';
 import { dataProvider } from './dataProvider';
 
 export const DEFAULT_USER = {
@@ -50,19 +51,21 @@ export const authProvider: AuthProvider = {
         localStorage.getItem(USER_STORAGE_KEY)
             ? Promise.resolve()
             : Promise.reject(),
-    getPermissions: async () => {
+    canAccess: async ({ signal, ...params }) => {
+        // Get the current user
         const userItem = localStorage.getItem(USER_STORAGE_KEY);
         const localUser = userItem ? (JSON.parse(userItem) as Sale) : null;
-        if (!localUser) {
-            return Promise.reject('user is not logged in');
-        }
+        if (!localUser) return false;
 
-        // We fetch permissions from server to avoid local storage tampering
-        const user = await dataProvider.getOne<Sale>('sales', {
+        // Get the matching sale
+        const { data } = await dataProvider.getOne<Sale>('sales', {
             id: localUser.id,
         });
+        if (!data) return false;
 
-        return user.data?.administrator ? 'admin' : 'user';
+        // Compute access rights from the sale role
+        const role = data.administrator ? 'admin' : 'user';
+        return canAccess(role, params);
     },
     getIdentity: () => {
         const userItem = localStorage.getItem(USER_STORAGE_KEY);

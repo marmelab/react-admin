@@ -6,13 +6,8 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import {
-    useDataProvider,
-    useLogin,
-    useNotify,
-    usePermissions,
-} from 'react-admin';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useDataProvider, useLogin, useNotify } from 'react-admin';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Navigate } from 'react-router';
 import { CrmDataProvider } from '../providers/types';
@@ -21,7 +16,7 @@ import { SignUpData } from '../types';
 import { LoginSkeleton } from './LoginSkeleton';
 
 export const SignupPage = () => {
-    const { refetch } = usePermissions();
+    const queryClient = useQueryClient();
     const dataProvider = useDataProvider<CrmDataProvider>();
     const { logo, title } = useConfigurationContext();
     const { data: isInitialized, isPending } = useQuery({
@@ -43,7 +38,10 @@ export const SignupPage = () => {
                 redirectTo: '/contacts',
             }).then(() => {
                 notify('Initial user successfully created');
-                refetch();
+                // FIXME: We should probably provide a hook for that in the ra-core package
+                queryClient.invalidateQueries({
+                    queryKey: ['auth', 'canAccess'],
+                });
             });
         },
         onError: () => {

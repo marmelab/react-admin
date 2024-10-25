@@ -7,10 +7,8 @@ import {
     SearchInput,
     TextField,
     TopToolbar,
-    usePermissions,
     useRecordContext,
 } from 'react-admin';
-import { Navigate } from 'react-router';
 
 const SalesListActions = () => (
     <TopToolbar>
@@ -47,15 +45,6 @@ const OptionsField = (_props: { label?: string | boolean }) => {
 };
 
 export function SalesList() {
-    const { isPending, permissions } = usePermissions();
-    if (isPending) {
-        return null;
-    }
-
-    if (permissions !== 'admin') {
-        return <Navigate to="/" />;
-    }
-
     return (
         <Stack gap={4}>
             <List

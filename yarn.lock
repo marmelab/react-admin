@@ -17360,7 +17360,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@npm:^5.0.0, ra-data-fakerest@npm:^5.3.0, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@npm:^5.3.0, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
@@ -17716,9 +17716,9 @@ __metadata:
     faker: "npm:~5.4.0"
     lodash: "npm:~4.17.5"
     papaparse: "npm:^5.4.1"
-    ra-data-fakerest: "npm:^5.0.0"
+    ra-data-fakerest: "npm:^5.3.0"
     react: "npm:^18.3.1"
-    react-admin: "npm:^5.0.0"
+    react-admin: "npm:^5.3.0"
     react-cropper: "npm:^2.3.3"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.3"
