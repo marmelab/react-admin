@@ -12,9 +12,9 @@ import {
     Typography,
 } from '@mui/material';
 import {
+    CanAccess,
     LoadingIndicator,
     Logout,
-    usePermissions,
     UserMenu,
     useUserMenu,
 } from 'react-admin';
@@ -24,7 +24,6 @@ import { useConfigurationContext } from '../root/ConfigurationContext';
 const Header = () => {
     const { logo, title } = useConfigurationContext();
     const location = useLocation();
-    const { permissions } = usePermissions();
 
     let currentPath: string | boolean = '/';
     if (!!matchPath('/', location.pathname)) {
@@ -102,7 +101,9 @@ const Header = () => {
                             <LoadingIndicator />
                             <UserMenu>
                                 <ConfigurationMenu />
-                                {permissions === 'admin' && <UsersMenu />}
+                                <CanAccess resource="sales" action="list">
+                                    <UsersMenu />
+                                </CanAccess>
                                 <Logout />
                             </UserMenu>
                         </Box>

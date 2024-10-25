@@ -7,12 +7,10 @@ import {
     useDataProvider,
     useEditController,
     useNotify,
-    usePermissions,
     useRecordContext,
     useRedirect,
 } from 'react-admin';
 import { SubmitHandler } from 'react-hook-form';
-import { Navigate } from 'react-router';
 import { CrmDataProvider } from '../providers/types';
 import { Sale, SalesFormData } from '../types';
 import { SalesInputs } from './SalesInputs';
@@ -26,8 +24,6 @@ function EditToolbar() {
 }
 
 export function SalesEdit() {
-    const { isPending, permissions } = usePermissions();
-
     const { record } = useEditController();
 
     const dataProvider = useDataProvider<CrmDataProvider>();
@@ -53,14 +49,6 @@ export function SalesEdit() {
     const onSubmit: SubmitHandler<SalesFormData> = async data => {
         mutate(data);
     };
-
-    if (isPending) {
-        return null;
-    }
-
-    if (permissions !== 'admin') {
-        return <Navigate to="/" />;
-    }
 
     return (
         <Container maxWidth="sm" sx={{ mt: 4 }}>
