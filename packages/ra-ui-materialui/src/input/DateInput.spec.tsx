@@ -79,7 +79,7 @@ describe('<DateInput />', () => {
             <Basic
                 simpleFormProps={{
                     onSubmit,
-                    defaultValues: { publishedAt: '2021-09-11' },
+                    defaultValues: { publishedAt: new Date('2021-09-11') },
                 }}
             />
         );
