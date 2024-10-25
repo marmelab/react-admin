@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { useNotify, NotificationContextProvider } from 'ra-core';
+import {
+    useNotify,
+    NotificationContextProvider,
+    useDelete,
+    CoreAdminContext,
+} from 'ra-core';
 import { Alert } from '@mui/material';
 
 import { Notification } from './Notification';
@@ -148,4 +153,38 @@ export const CustomNode = () => (
     <Wrapper>
         <CustomNodeNotification />
     </Wrapper>
+);
+
+const DeletePosts = () => {
+    const [deleteOne] = useDelete();
+    const notify = useNotify();
+    const deletePost = id => {
+        deleteOne(
+            'posts',
+            { id },
+            {
+                mutationMode: 'undoable',
+                onSuccess: () => notify('Post deleted', { undoable: true }),
+            }
+        );
+    };
+    React.useEffect(() => {
+        deletePost(1);
+        setTimeout(deletePost, 100, 2);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    return null;
+};
+
+export const ConsecutiveUndoable = ({
+    dataProvider = {
+        delete: async (_resource, { id }) => {
+            console.log('delete post', id);
+            return { data: { id } };
+        },
+    } as any,
+}) => (
+    <CoreAdminContext dataProvider={dataProvider}>
+        <DeletePosts />
+        <Notification />
+    </CoreAdminContext>
 );
