@@ -1,28 +1,24 @@
-import * as React from 'react';
-import { Admin } from 'react-admin';
+import { InputAdornment } from '@mui/material';
 import {
-    FormDataConsumer,
     required,
     Resource,
     testI18nProvider,
     TestMemoryRouter,
 } from 'ra-core';
-import { InputAdornment } from '@mui/material';
-import fakeRestProvider from 'ra-data-fakerest';
+import * as React from 'react';
+import { Admin } from 'react-admin';
 
-import { Edit, Create } from '../../detail';
+import { Create, Edit } from '../../detail';
+import { ReferenceField, TextField, TranslatableFields } from '../../field';
 import { SimpleForm, TabbedForm } from '../../form';
-import { ArrayInput } from './ArrayInput';
-import { SimpleFormIterator } from './SimpleFormIterator';
-import { TextInput } from '../TextInput';
-import { SelectInput } from '../SelectInput';
+import { Labeled } from '../../Labeled';
+import { AutocompleteInput } from '../AutocompleteInput';
 import { DateInput } from '../DateInput';
 import { NumberInput } from '../NumberInput';
-import { AutocompleteInput } from '../AutocompleteInput';
+import { TextInput } from '../TextInput';
 import { TranslatableInputs } from '../TranslatableInputs';
-import { ReferenceField, TextField, TranslatableFields } from '../../field';
-import { Labeled } from '../../Labeled';
-import { List, Datagrid } from '../../list';
+import { ArrayInput } from './ArrayInput';
+import { SimpleFormIterator } from './SimpleFormIterator';
 
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
 
@@ -827,110 +823,4 @@ export const WithReferenceField = () => (
             <Resource name="books" edit={EditWithReferenceField} />
         </Admin>
     </TestMemoryRouter>
-);
-
-const shouldUnregisterData = {
-    books: [
-        {
-            id: 1,
-            title: 'War and Peace',
-            authors: [
-                {
-                    name: 'Alexander Pushkin',
-                    role: 'co_writer',
-                },
-                {
-                    // name: 'Leo Tolstoy',
-                    role: 'head_writer',
-                },
-            ],
-        },
-        {
-            id: 2,
-            title: 'Anna Karenina',
-            authors: [
-                {
-                    // name: 'Leo Tolstoy',
-                    role: 'head_writer',
-                },
-                {
-                    name: 'Alexander Pushkin',
-                    role: 'co_writer',
-                },
-            ],
-        },
-    ],
-};
-
-const WithShouldUnregisterBookList = () => {
-    return (
-        <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-            </Datagrid>
-        </List>
-    );
-};
-const WithShouldUnregisterBookEdit = () => {
-    return (
-        <Edit
-            mutationMode="pessimistic"
-            mutationOptions={{
-                onSuccess: data => {
-                    console.log(data);
-                },
-            }}
-        >
-            <SimpleForm>
-                <TextInput source="title" />
-                <ArrayInput source="authors">
-                    <SimpleFormIterator>
-                        <FormDataConsumer>
-                            {({ scopedFormData }) => {
-                                return (
-                                    <>
-                                        <SelectInput
-                                            source="role"
-                                            choices={[
-                                                'co_writer',
-                                                'head_writer',
-                                            ]}
-                                        />
-                                        {scopedFormData?.role ===
-                                        'co_writer' ? (
-                                            <TextInput
-                                                source="name"
-                                                shouldUnregister
-                                            />
-                                        ) : null}
-                                    </>
-                                );
-                            }}
-                        </FormDataConsumer>
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
-        </Edit>
-    );
-};
-
-export const WithShouldUnregister = () => (
-    <React.StrictMode>
-        <TestMemoryRouter initialEntries={['/books/1']}>
-            <Admin
-                dataProvider={fakeRestProvider(
-                    JSON.parse(JSON.stringify(shouldUnregisterData)),
-                    true,
-                    300
-                )}
-            >
-                <Resource
-                    name="books"
-                    list={WithShouldUnregisterBookList}
-                    edit={WithShouldUnregisterBookEdit}
-                />
-            </Admin>
-        </TestMemoryRouter>
-    </React.StrictMode>
 );
