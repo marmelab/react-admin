@@ -40,7 +40,6 @@ export const DateInput = ({
     margin,
     onChange,
     onFocus,
-    parse,
     validate,
     variant,
     disabled,
@@ -54,6 +53,7 @@ export const DateInput = ({
         validate,
         disabled,
         readOnly,
+        format,
         ...rest,
     });
     const [renderCount, setRenderCount] = React.useState(1);
@@ -72,13 +72,11 @@ export const DateInput = ({
             !valueChangedFromInput.current
         ) {
             setRenderCount(r => r + 1);
-            parse
-                ? field.onChange(parse(field.value))
-                : field.onChange(field.value);
+            field.onChange(field.value);
             initialDefaultValueRef.current = field.value;
             valueChangedFromInput.current = false;
         }
-    }, [setRenderCount, parse, field]);
+    }, [setRenderCount, field]);
 
     const { onBlur: onBlurFromField } = field;
     const hasFocus = React.useRef(false);
@@ -96,21 +94,15 @@ export const DateInput = ({
                 return;
             }
             const target = event.target;
-
-            const newValue =
-                target.valueAsDate !== undefined &&
-                target.valueAsDate !== null &&
-                !isNaN(new Date(target.valueAsDate).getTime())
-                    ? parse
-                        ? parse(target.valueAsDate)
-                        : getStringFromDate(target.valueAsDate)
-                    : parse
-                      ? parse(target.value)
-                      : getStringFromDate(target.value);
+            const newValue = target.value;
+            const isNewValueValid =
+                newValue === '' ||
+                (target.valueAsDate != null &&
+                    !isNaN(new Date(target.valueAsDate).getTime()));
 
             // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
             // The input reset is handled in the onBlur event handler
-            if (newValue !== '' && newValue != null) {
+            if (newValue !== '' && newValue != null && isNewValueValid) {
                 field.onChange(newValue);
                 valueChangedFromInput.current = true;
             }
