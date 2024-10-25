@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.3.1
+
+* Fix smart count for no results message ([#10295](https://github.com/marmelab/react-admin/pull/10295)) ([thibault-barrat](https://github.com/thibault-barrat))
+* Fix double decoding of ids in URLs ([#10293](https://github.com/marmelab/react-admin/pull/10293)) ([djhi](https://github.com/djhi))
+* Fix no results message has untranslated resource name ([#10291](https://github.com/marmelab/react-admin/pull/10291)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` displays 'Create' option for choices that already exist when `createLabel` is provided ([#10288](https://github.com/marmelab/react-admin/pull/10288)) ([slax57](https://github.com/slax57))
+* [Doc] Fix Authorization link in Authentication page ([#10303](https://github.com/marmelab/react-admin/pull/10303)) ([djhi](https://github.com/djhi))
+* [Doc] Remove outdated warning about `<SimpleFormIterator>` cloning its children ([#10302](https://github.com/marmelab/react-admin/pull/10302)) ([slax57](https://github.com/slax57))
+* [Doc] fix example in README ([#10298](https://github.com/marmelab/react-admin/pull/10298)) ([antoinefricker](https://github.com/antoinefricker))
+* [Doc] Document react-hook-form limitation preventing using dynamically added inputs in `<ArrayInput>` with `shouldUnregister` ([#10271](https://github.com/marmelab/react-admin/pull/10271)) ([djhi](https://github.com/djhi))
+
 ## 5.3.0
 
 * Make authentication check pessimistic
@@ -261,6 +272,15 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
+
+* [Doc] Fix Authorization link in Authentication page ([#10303](https://github.com/marmelab/react-admin/pull/10303)) ([djhi](https://github.com/djhi))
+* [Doc] Remove outdated warning about `<SimpleFormIterator>` cloning its children ([#10302](https://github.com/marmelab/react-admin/pull/10302)) ([slax57](https://github.com/slax57))
+* [Doc] fix example in README ([#10298](https://github.com/marmelab/react-admin/pull/10298)) ([antoinefricker](https://github.com/antoinefricker))
+* Fix smart count for no results message ([#10295](https://github.com/marmelab/react-admin/pull/10295)) ([thibault-barrat](https://github.com/thibault-barrat))
+* Fix double decoding of ids in URLs ([#10293](https://github.com/marmelab/react-admin/pull/10293)) ([djhi](https://github.com/djhi))
+* Fix no results message has untranslated resource name ([#10291](https://github.com/marmelab/react-admin/pull/10291)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` displays 'Create' option for choices that already exist when `createLabel` is provided ([#10288](https://github.com/marmelab/react-admin/pull/10288)) ([slax57](https://github.com/slax57))
+* [Doc] Document react-hook-form limitation preventing using dynamically added inputs in `<ArrayInput>` with `shouldUnregister` ([#10271](https://github.com/marmelab/react-admin/pull/10271)) ([djhi](https://github.com/djhi))
 
 * [Doc] Update `<StackedFilters>` doc for `ra-form-layout` v5.2.0 ([#10268](https://github.com/marmelab/react-admin/pull/10268)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 * Fix `<AutoCompleteInput>` should not display a "Create" option when the filter is empty ([#10266](https://github.com/marmelab/react-admin/pull/10266)) ([erwanMarmelab](https://github.com/erwanMarmelab))
