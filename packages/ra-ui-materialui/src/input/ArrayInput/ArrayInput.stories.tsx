@@ -1,24 +1,24 @@
-import { InputAdornment } from '@mui/material';
+import * as React from 'react';
+import { Admin } from 'react-admin';
 import {
     required,
     Resource,
     testI18nProvider,
     TestMemoryRouter,
 } from 'ra-core';
-import * as React from 'react';
-import { Admin } from 'react-admin';
+import { InputAdornment } from '@mui/material';
 
-import { Create, Edit } from '../../detail';
-import { ReferenceField, TextField, TranslatableFields } from '../../field';
+import { Edit, Create } from '../../detail';
 import { SimpleForm, TabbedForm } from '../../form';
-import { Labeled } from '../../Labeled';
-import { AutocompleteInput } from '../AutocompleteInput';
-import { DateInput } from '../DateInput';
-import { NumberInput } from '../NumberInput';
-import { TextInput } from '../TextInput';
-import { TranslatableInputs } from '../TranslatableInputs';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
+import { TextInput } from '../TextInput';
+import { DateInput } from '../DateInput';
+import { NumberInput } from '../NumberInput';
+import { AutocompleteInput } from '../AutocompleteInput';
+import { TranslatableInputs } from '../TranslatableInputs';
+import { ReferenceField, TextField, TranslatableFields } from '../../field';
+import { Labeled } from '../../Labeled';
 
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
 
