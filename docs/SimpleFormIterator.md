@@ -185,8 +185,6 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextField, FormDataConsumer,
 </ArrayInput>
 ```
 
-**Caution**: `<SimpleFormIterator>` **clones** its children several times, as it needs to override their actual source for each record. If you use a custom Input element, make sure they accept a custom `source` prop. 
-
 ## `className`
 
 CSS classes passed to the root component. 
