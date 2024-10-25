@@ -133,7 +133,7 @@ export const DateInput = ({
             (localInputRef.current.valueAsDate != null &&
                 !isNaN(new Date(localInputRef.current.valueAsDate).getTime()));
 
-        if (isNewValueValid) {
+        if (isNewValueValid && field.value !== newValue) {
             field.onChange(newValue ?? '');
         }
 
