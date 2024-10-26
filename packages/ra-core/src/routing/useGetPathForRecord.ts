@@ -107,10 +107,7 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
                 );
                 return;
             }
-        }
-
-        // Handle the link function case
-        if (typeof link === 'function') {
+        } else if (typeof link === 'function') {
             const linkResult = link(record, resource);
             if (linkResult instanceof Promise) {
                 linkResult.then(resolvedPath => setPath(resolvedPath));
@@ -124,6 +121,14 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
                           type: linkResult,
                       })
                     : false
+            );
+        } else if (link) {
+            setPath(
+                createPath({
+                    resource,
+                    id: record.id,
+                    type: link,
+                })
             );
         }
     }, [
