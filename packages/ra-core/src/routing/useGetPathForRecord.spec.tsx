@@ -7,6 +7,7 @@ import {
     InferredShowLink,
     InferredShowLinkWithAccessControl,
     NoAuthProvider,
+    SlowLoading,
 } from './useGetPathForRecord.stories';
 import { AuthProvider } from '..';
 
@@ -82,5 +83,12 @@ describe('useGetPathForRecord', () => {
                 'href'
             )
         ).toEqual('/posts/123/show');
+    });
+    it('should recompute the path when the record changes', async () => {
+        render(<SlowLoading />);
+        await screen.findByText('Show no link');
+        screen.getByText('Load record').click();
+        const link = await screen.findByText('Show', { selector: 'a' });
+        expect(link.getAttribute('href')).toEqual('/posts/123/show');
     });
 });
