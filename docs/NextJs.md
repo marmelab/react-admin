@@ -212,6 +212,7 @@ async function handler(request: Request) {
                 request.headers.get('content-type') ?? 'application/json',
             // supabase authentication
             apiKey: process.env.SUPABASE_SERVICE_ROLE ?? '',
+            Authorization: "Bearer " + process.env.SUPABASE_SERVICE_ROLE ?? '',
         },
     };
 
@@ -260,6 +261,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ["content-type"]: req.headers["content-type"] ?? "application/json",
       // supabase authentication
       apiKey: process.env.SUPABASE_SERVICE_ROLE ?? '',
+      Authorization: "Bearer " + process.env.SUPABASE_SERVICE_ROLE ?? '',
     },
   };
   if (req.body) {
