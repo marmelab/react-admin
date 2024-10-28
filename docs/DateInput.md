@@ -26,7 +26,18 @@ import { DateInput } from 'react-admin';
 <DateInput source="published_at" />
 ```
 
-The field value must be a string with the pattern `YYYY-MM-DD` (ISO 8601), e.g. `'2022-04-30'`.
+The field value must be a string using the pattern `YYYY-MM-DD` (ISO 8601), e.g. `'2022-04-30'`. The returned input value will also be in this format, regardless of the browser locale.
+
+`<DateInput>` also accepts values that can be converted to a `Date` object, such as:
+
+- a localized date string (e.g. `'30/04/2022'`),
+- an ISO date string (e.g. `'2022-04-30T00:00:00.000Z'`),
+- a `Date` object, or
+- a Linux timestamp (e.g. `1648694400000`).
+
+In these cases, `<DateInput>` will automatically convert the value to the `YYYY-MM-DD` format. 
+
+**Note**: This conversion may change the date because of timezones. For example, the date string `'2022-04-30T00:00:00.000Z'` in Europe may be displayed as `'2022-04-29'` in Honolulu. If this is not what you want, pass your own [`parse`](./Inputs.md#parse) function to `<DateInput>`.
 
 ## Props
 
