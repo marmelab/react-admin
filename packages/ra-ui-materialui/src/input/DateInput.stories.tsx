@@ -46,6 +46,34 @@ export const NonFullWidth = () => (
     </Wrapper>
 );
 
+export const DefaultValue = () => (
+    <Wrapper>
+        All the displayed values should be the same: 2021-09-21 displayed in the
+        browser locale
+        {[
+            '2021-09-11',
+            '09/11/2011', // US date format
+            '2021-09-11T20:46:20.000+02:00',
+            '2021-09-11 20:46:20.000+02:00',
+            '2021-09-11T20:46:20.000-04:00',
+            '2021-09-11 20:46:20.000-04:00',
+            '2021-09-11T20:46:20.000Z',
+            '2021-09-11 20:46:20.000Z',
+            new Date('2021-09-11T20:46:20.000+02:00'),
+            // although this one is 2021-09-10, its local timezone makes it 2021-09-11 in the test timezone
+            new Date('2021-09-10T20:46:20.000-04:00'),
+            new Date('2021-09-11T20:46:20.000Z'),
+            1631385980000,
+        ].map((defaultValue, index) => (
+            <DateInput
+                key={index}
+                source={`publishedAt-${index}`}
+                defaultValue={defaultValue}
+                helperText={false}
+            />
+        ))}
+    </Wrapper>
+);
 export const Disabled = () => (
     <Wrapper>
         <DateInput source="publishedAt" disabled />
@@ -63,6 +91,12 @@ export const ReadOnly = () => (
 export const Validate = () => (
     <Wrapper>
         <DateInput source="publishedAt" validate={minValue('2022-10-26')} />
+    </Wrapper>
+);
+
+export const Parse = () => (
+    <Wrapper>
+        <DateInput source="publishedAt" parse={value => new Date(value)} />
     </Wrapper>
 );
 
