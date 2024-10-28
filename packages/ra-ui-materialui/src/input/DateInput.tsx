@@ -24,15 +24,26 @@ import { InputHelperText } from './InputHelperText';
  * );
  *
  * @example
+ * // If the initial value string contains more than a date (e.g. an hour, a timezone),
+ * // these details are ignored.
+ * <DateInput source="published_at" defaultValue="2021-09-11T20:46:20.000-04:00" />
+ * // The input will display '2021-09-11' whatever the browser timezone.
+ *
+ * @example
  * // If the initial value is a Date object, DateInput converts it to a string
- * // but you must pass a custom parse method to convert the form value
- * // (which is always a date string) back to a Date object.
+ * // and ignores the timezone.
+ * <DateInput source="published_at" defaultValue={new Date("2021-09-11T20:46:20.000-04:00")} />
+ * // The input will display '2021-09-11' whatever the browser timezone.
+ *
+ * @example
+ * // If you want the returned value to be a Date, you must pass a custom parse method
+ * to convert the form value (which is always a date string) back to a Date object.
  * <DateInput source="published_at" parse={val => new Date(val)} />
  */
 export const DateInput = ({
     className,
     defaultValue,
-    format = getStringFromDate,
+    format = defaultFormat,
     label,
     source,
     resource,
@@ -61,6 +72,7 @@ export const DateInput = ({
     const localInputRef = React.useRef<HTMLInputElement>();
     const initialDefaultValueRef = React.useRef(field.value);
 
+    // update the react-hook-form value if the field value changes
     React.useEffect(() => {
         const initialDateValue =
             new Date(initialDefaultValueRef.current).getTime() || null;
@@ -82,8 +94,7 @@ export const DateInput = ({
     const hasFocus = React.useRef(false);
 
     // Update the input text when the user types in the input.
-    // This does not directly update the react-hook-form value,
-    // which is updated on blur and by the useEffect above.
+    // Also, update the react-hook-form value if the input value is a valid date string.
     const handleChange = useEvent(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             if (onChange) {
@@ -102,7 +113,8 @@ export const DateInput = ({
                 (target.valueAsDate != null &&
                     !isNaN(new Date(target.valueAsDate).getTime()));
 
-            // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
+            // Some browsers will return null for an invalid date
+            // so we only change react-hook-form value if it's not null.
             // The input reset is handled in the onBlur event handler
             if (newValue !== '' && newValue != null && isNewValueValid) {
                 field.onChange(newValue);
@@ -193,7 +205,7 @@ export type DateInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
 /**
- * Convert Date object to String
+ * Convert Date object to String, ignoring the timezone.
  *
  * @param {Date} value value to convert
  * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
@@ -211,23 +223,45 @@ const convertDateToString = (value: Date) => {
 const dateRegex = /^(\d{4}-\d{2}-\d{2}).*$/;
 const defaultInputLabelProps = { shrink: true };
 
-const getStringFromDate = (value: string | Date) => {
+/**
+ * Convert a form state value to a date string for the `<input type="date">` value.
+ *
+ * Form state values can be anything from:
+ * - a string in the "YYYY-MM-DD" format
+ * - A valid date string
+ * - an ISO date string
+ * - a Date object
+ * - a Linux timestamp
+ * - an empty string
+ *
+ * The output is always a string in the "YYYY-MM-DD" format.
+ *
+ * @example
+ * defaultFormat('2021-09-11'); // '2021-09-11'
+ * defaultFormat('09/11/2021'); // '2021-09-11'
+ * defaultFormat('2021-09-11T20:46:20.000Z'); // '2021-09-11'
+ * defaultFormat(new Date('2021-09-11T20:46:20.000Z')); // '2021-09-11'
+ * defaultFormat(1631385980000); // '2021-09-11'
+ * defaultFormat(''); // null
+ */
+const defaultFormat = (value: string | Date | number) => {
     // null, undefined and empty string values should not go through dateFormatter
     // otherwise, it returns undefined and will make the input an uncontrolled one.
     if (value == null || value === '') {
         return null;
     }
 
+    // Date objects should be converted to strings
     if (value instanceof Date) {
         return convertDateToString(value);
     }
 
-    // valid dates should not be converted
-    // This regex only returns the date part of the provided string
+    // Valid date strings should be stripped of their time  and timezone parts.
     const matches = dateRegex.exec(value);
     if (matches) {
         return matches[1];
     }
 
+    // other values (e.g., localized date strings, timestamps) need to be converted to Dates first
     return convertDateToString(new Date(value));
 };
