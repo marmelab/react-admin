@@ -85,6 +85,37 @@ export const InferredShowLink = () => (
     </TestMemoryRouter>
 );
 
+export const SlowLoading = () => {
+    const [record, setRecord] = React.useState<any>(undefined);
+    const handleClick = () => {
+        setRecord({ id: 123 });
+    };
+    return (
+        <TestMemoryRouter>
+            <CoreAdminContext>
+                <ResourceContextProvider value="posts">
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                hasEdit: true,
+                                hasShow: false,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <div style={{ display: 'flex', gap: 2 }}>
+                                <ShowLink />
+                            </div>
+                            <button onClick={handleClick}>Load record</button>
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </ResourceContextProvider>
+            </CoreAdminContext>
+        </TestMemoryRouter>
+    );
+};
+
 export const AccessControlWithLinkTypeProvided = ({
     authProvider = {
         login: () => Promise.resolve(),
