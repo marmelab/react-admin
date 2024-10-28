@@ -8,7 +8,7 @@ import { useFormState } from 'react-hook-form';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { DateInput } from './DateInput';
-import { Basic } from './DateInput.stories';
+import { Basic, Parse } from './DateInput.stories';
 
 describe('<DateInput />', () => {
     const defaultProps = {
@@ -139,13 +139,10 @@ describe('<DateInput />', () => {
     it('should accept a parse function', async () => {
         const onSubmit = jest.fn();
         render(
-            <Basic
+            <Parse
                 simpleFormProps={{
                     onSubmit,
                     defaultValues: { publishedAt: new Date('2021-09-11') },
-                }}
-                dateInputProps={{
-                    parse: val => new Date(val),
                 }}
             />
         );

@@ -94,8 +94,8 @@ export const Validate = () => (
     </Wrapper>
 );
 
-export const Parse = () => (
-    <Wrapper>
+export const Parse = ({ simpleFormProps }) => (
+    <Wrapper simpleFormProps={simpleFormProps}>
         <DateInput source="publishedAt" parse={value => new Date(value)} />
     </Wrapper>
 );
