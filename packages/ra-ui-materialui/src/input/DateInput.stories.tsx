@@ -61,7 +61,7 @@ export const DefaultValue = () => (
             '2021-09-11 20:46:20.000Z',
             new Date('2021-09-11T20:46:20.000+02:00'),
             // although this one is 2021-09-10, its local timezone makes it 2021-09-11 in the test timezone
-            new Date('2021-09-10T20:46:20.000-04:00'),
+            new Date('2021-09-10T23:46:20.000-09:00'),
             new Date('2021-09-11T20:46:20.000Z'),
             1631385980000,
         ].map((defaultValue, index) => (
