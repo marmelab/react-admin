@@ -42,27 +42,27 @@ export const OnChangeValidation = ({
 
 export const NonFullWidth = () => (
     <Wrapper>
-        <DateInput source="published" fullWidth={false} />
+        <DateInput source="publishedAt" fullWidth={false} />
     </Wrapper>
 );
 
 export const Disabled = () => (
     <Wrapper>
-        <DateInput source="published" disabled />
+        <DateInput source="publishedAt" disabled />
         <DateInput source="announcement" defaultValue="01/01/2000" disabled />
     </Wrapper>
 );
 
 export const ReadOnly = () => (
     <Wrapper>
-        <DateInput source="published" readOnly />
+        <DateInput source="publishedAt" readOnly />
         <DateInput source="announcement" defaultValue="01/01/2000" readOnly />
     </Wrapper>
 );
 
 export const Validate = () => (
     <Wrapper>
-        <DateInput source="published" validate={minValue('2022-10-26')} />
+        <DateInput source="publishedAt" validate={minValue('2022-10-26')} />
     </Wrapper>
 );
 
@@ -79,7 +79,7 @@ const Wrapper = ({
         <Create resource="posts">
             <SimpleForm {...simpleFormProps}>
                 {children}
-                <FormInspector name="published" />
+                <FormInspector name="publishedAt" />
             </SimpleForm>
         </Create>
     </AdminContext>

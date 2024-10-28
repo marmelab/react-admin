@@ -81,7 +81,9 @@ export const DateInput = ({
     const { onBlur: onBlurFromField } = field;
     const hasFocus = React.useRef(false);
 
-    // update the input text when the user types in the input
+    // Update the input text when the user types in the input.
+    // This does not directly update the react-hook-form value,
+    // which is updated on blur and by the useEffect above.
     const handleChange = useEvent(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             if (onChange) {
@@ -198,12 +200,12 @@ export type DateInputProps = CommonInputProps &
  */
 const convertDateToString = (value: Date) => {
     if (!(value instanceof Date) || isNaN(value.getDate())) return '';
+    let UTCDate = new Date(value.getTime() + value.getTimezoneOffset() * 60000);
     const pad = '00';
-    const yyyy = value.getFullYear().toString();
-    const MM = (value.getMonth() + 1).toString();
-    const dd = value.getDate().toString();
-    const result = `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
-    return result;
+    const yyyy = UTCDate.getFullYear().toString();
+    const MM = (UTCDate.getMonth() + 1).toString();
+    const dd = UTCDate.getDate().toString();
+    return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
 const dateRegex = /^(\d{4}-\d{2}-\d{2}).*$/;
