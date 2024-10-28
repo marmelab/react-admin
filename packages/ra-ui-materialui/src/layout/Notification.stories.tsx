@@ -5,7 +5,7 @@ import {
     useDelete,
     CoreAdminContext,
 } from 'ra-core';
-import { Alert } from '@mui/material';
+import { Alert, Button, Stack } from '@mui/material';
 
 import { Notification } from './Notification';
 
@@ -155,24 +155,26 @@ export const CustomNode = () => (
     </Wrapper>
 );
 
-const DeletePosts = () => {
+const DeletePost = ({ id }) => {
     const [deleteOne] = useDelete();
     const notify = useNotify();
-    const deletePost = id => {
+    const deletePost = () => {
         deleteOne(
             'posts',
             { id },
             {
                 mutationMode: 'undoable',
-                onSuccess: () => notify('Post deleted', { undoable: true }),
+                onSuccess: () =>
+                    notify(`Post ${id} deleted`, { undoable: true }),
             }
         );
     };
-    React.useEffect(() => {
-        deletePost(1);
-        setTimeout(deletePost, 100, 2);
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-    return null;
+
+    return (
+        <Button variant="outlined" onClick={deletePost}>
+            Delete post {id}
+        </Button>
+    );
 };
 
 export const ConsecutiveUndoable = ({
@@ -184,7 +186,10 @@ export const ConsecutiveUndoable = ({
     } as any,
 }) => (
     <CoreAdminContext dataProvider={dataProvider}>
-        <DeletePosts />
+        <Stack spacing={2} direction="row" m={2}>
+            <DeletePost id={1} />
+            <DeletePost id={2} />
+        </Stack>
         <Notification />
     </CoreAdminContext>
 );

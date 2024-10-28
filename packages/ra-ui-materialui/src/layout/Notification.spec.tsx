@@ -12,12 +12,22 @@ describe('<Notification />', () => {
             );
         const dataProvider = { delete: deleteOne } as any;
         render(<ConsecutiveUndoable dataProvider={dataProvider} />);
-        await screen.findByText('Post deleted');
+        (await screen.findByText('Delete post 1')).click();
+
+        // the notification shows up
+        await screen.findByText('Post 1 deleted');
+        // but the delete hasn't been called yet
         expect(deleteOne).toHaveBeenCalledTimes(0);
-        await waitFor(() => {
-            expect(deleteOne).toHaveBeenCalledTimes(1);
-        });
+
+        screen.getByText('Delete post 2').click();
+
+        // the second notification shows up
+        await screen.findByText('Post 2 deleted');
+        // the first delete has been called
+        expect(deleteOne).toHaveBeenCalledTimes(1);
+
         screen.getByText('ra.action.undo').click();
+        // the second delete hasn't been called
         expect(deleteOne).toHaveBeenCalledTimes(1);
     });
 });
