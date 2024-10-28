@@ -48,7 +48,7 @@ export const NonFullWidth = () => (
 
 export const DefaultValue = () => (
     <Wrapper>
-        All the displayed values should be the same: 2021-09-21 displayed in the
+        All the displayed values should be the same: 2021-09-11 displayed in the
         browser locale
         {[
             '2021-09-11',
