@@ -205,22 +205,22 @@ export type DateInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
 /**
- * Convert Date object to String, ignoring the timezone.
+ * Convert Date object to String, using the local timezone
  *
  * @param {Date} value value to convert
  * @returns {String} A standardized date (yyyy-MM-dd), to be passed to an <input type="date" />
  */
 const convertDateToString = (value: Date) => {
     if (!(value instanceof Date) || isNaN(value.getDate())) return '';
-    let UTCDate = new Date(value.getTime() + value.getTimezoneOffset() * 60000);
+    let localDate = new Date(value.getTime());
     const pad = '00';
-    const yyyy = UTCDate.getFullYear().toString();
-    const MM = (UTCDate.getMonth() + 1).toString();
-    const dd = UTCDate.getDate().toString();
+    const yyyy = localDate.getFullYear().toString();
+    const MM = (localDate.getMonth() + 1).toString();
+    const dd = localDate.getDate().toString();
     return `${yyyy}-${(pad + MM).slice(-2)}-${(pad + dd).slice(-2)}`;
 };
 
-const dateRegex = /^(\d{4}-\d{2}-\d{2}).*$/;
+const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 const defaultInputLabelProps = { shrink: true };
 
 /**
@@ -234,14 +234,21 @@ const defaultInputLabelProps = { shrink: true };
  * - a Linux timestamp
  * - an empty string
  *
+ * When it's not a bare date string (YYYY-MM-DD), the value is converted to
+ * this format using the JS Date object.
+ * THIS MAY CHANGE THE DATE VALUE depending on the browser locale.
+ * For example, the string "09/11/2021" may be converted to "2021-09-10"
+ * in Honolulu. This is expected behavior.
+ * If this is not what you want, you should provide your own parse method.
+ *
  * The output is always a string in the "YYYY-MM-DD" format.
  *
  * @example
  * defaultFormat('2021-09-11'); // '2021-09-11'
- * defaultFormat('09/11/2021'); // '2021-09-11'
- * defaultFormat('2021-09-11T20:46:20.000Z'); // '2021-09-11'
- * defaultFormat(new Date('2021-09-11T20:46:20.000Z')); // '2021-09-11'
- * defaultFormat(1631385980000); // '2021-09-11'
+ * defaultFormat('09/11/2021'); // '2021-09-11' (may change depending on the browser locale)
+ * defaultFormat('2021-09-11T20:46:20.000Z'); // '2021-09-11' (may change depending on the browser locale)
+ * defaultFormat(new Date('2021-09-11T20:46:20.000Z')); // '2021-09-11' (may change depending on the browser locale)
+ * defaultFormat(1631385980000); // '2021-09-11' (may change depending on the browser locale)
  * defaultFormat(''); // null
  */
 const defaultFormat = (value: string | Date | number) => {
@@ -256,11 +263,10 @@ const defaultFormat = (value: string | Date | number) => {
         return convertDateToString(value);
     }
 
-    // Valid date strings should be stripped of their time and timezone parts.
+    // Valid date strings (YYYY-MM-DD) should be considered as is
     if (typeof value === 'string') {
-        const matches = dateRegex.exec(value);
-        if (matches) {
-            return matches[1];
+        if (dateRegex.test(value)) {
+            return value;
         }
     }
 
