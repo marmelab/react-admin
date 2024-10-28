@@ -256,10 +256,12 @@ const defaultFormat = (value: string | Date | number) => {
         return convertDateToString(value);
     }
 
-    // Valid date strings should be stripped of their time  and timezone parts.
-    const matches = dateRegex.exec(value);
-    if (matches) {
-        return matches[1];
+    // Valid date strings should be stripped of their time and timezone parts.
+    if (typeof value === 'string') {
+        const matches = dateRegex.exec(value);
+        if (matches) {
+            return matches[1];
+        }
     }
 
     // other values (e.g., localized date strings, timestamps) need to be converted to Dates first
