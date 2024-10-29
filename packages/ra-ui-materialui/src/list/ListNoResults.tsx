@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CardContent, Typography } from '@mui/material';
 import {
     useGetResourceLabel,
-    useListContext,
+    useListContextWithProps,
     useResourceContext,
     useTranslate,
 } from 'ra-core';
@@ -12,7 +12,7 @@ import { Button } from '../button';
 export const ListNoResults = () => {
     const translate = useTranslate();
     const resource = useResourceContext();
-    const { filterValues, setFilters } = useListContext();
+    const { filterValues, setFilters } = useListContextWithProps();
     const getResourceLabel = useGetResourceLabel();
     if (!resource) {
         throw new Error(
@@ -22,7 +22,9 @@ export const ListNoResults = () => {
     return (
         <CardContent>
             <Typography variant="body2">
-                {filterValues && Object.keys(filterValues).length > 0 ? (
+                {filterValues &&
+                setFilters &&
+                Object.keys(filterValues).length > 0 ? (
                     <>
                         {translate('ra.navigation.no_filtered_results', {
                             resource,
