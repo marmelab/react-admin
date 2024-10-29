@@ -201,3 +201,29 @@ export const FullAppInError = () => (
         </AdminUI>
     </AdminContext>
 );
+
+export const Standalone = () => (
+    <TestMemoryRouter>
+        <SimpleList
+            data={data.books}
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+            tertiaryText={record => record.year}
+            linkType={false}
+        />
+    </TestMemoryRouter>
+);
+
+export const StandaloneEmpty = () => (
+    <TestMemoryRouter>
+        <ResourceContextProvider value="books">
+            <SimpleList<any>
+                data={[]}
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                tertiaryText={record => record.year}
+                linkType={false}
+            />
+        </ResourceContextProvider>
+    </TestMemoryRouter>
+);
