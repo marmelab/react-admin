@@ -151,7 +151,7 @@ export const useEditController = <
                 : '',
     });
 
-    const recordCached = { id, previousData: record, meta: mutationMeta };
+    const recordCached = { id, previousData: record };
 
     const [update, { isPending: saving }] = useUpdate<RecordType, ErrorType>(
         resource,
