@@ -11,7 +11,7 @@ import {
 } from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
-import undoableEventEmitter from './undoableEventEmitter';
+import { useAddUndoableMutation } from './undo/useAddUndoableMutation';
 import {
     RaRecord,
     UpdateParams,
@@ -91,6 +91,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
 ): UseUpdateResult<RecordType, boolean, ErrorType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const addUndoableMutation = useAddUndoableMutation();
     const { id, data, meta } = params;
     const {
         mutationMode = 'pessimistic',
@@ -470,8 +471,9 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 ...callTimeParams,
             });
         } else {
-            // undoable mutation: register the mutation for later
-            undoableEventEmitter.once('end', ({ isUndo }) => {
+            // Undoable mutation: add the mutation to the undoable queue.
+            // The Notification component will dequeue it when the user confirms or cancels the message.
+            addUndoableMutation(({ isUndo }) => {
                 if (isUndo) {
                     // rollback
                     snapshot.current.forEach(([key, value]) => {
