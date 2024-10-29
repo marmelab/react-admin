@@ -115,7 +115,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
     // otherwise the other side effects may not applied.
     const hasCallTimeOnSuccess = useRef(false);
 
-    const updateCache = ({ resource, id, data }) => {
+    const updateCache = ({ resource, id, data, meta }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
         // because setQueryData doesn't accept a stale time option
         const now = Date.now();
@@ -273,6 +273,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     resource: callTimeResource,
                     id: callTimeId,
                     data,
+                    meta: mutationOptions.meta ?? paramsRef.current.meta,
                 });
 
                 if (
@@ -440,6 +441,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             resource: callTimeResource,
             id: callTimeId,
             data: callTimeData,
+            meta: callTimeMeta,
         });
 
         // run the success callbacks during the next tick
