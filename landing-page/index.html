@@ -723,7 +723,7 @@
           class="mt-8 mb-8 text-[18px] font-light leading-[26px] lg:text-[21px] lg:leading-[28px]"
         >
           Have an API? Instantly turn it into an admin panel! With just
-          <b class="font-bold">13 lines of code</b>, React-admin creates a fully
+          <b class="font-bold">11 lines of code</b>, React-admin creates a fully
           functional admin interface for any API, leveraging modern React and
           Material Design.
         </p>
@@ -733,31 +733,37 @@
               class="w-full flex flex-col md:flex-row flex-shrink flex-grow md:w-1/2"
             >
               <pre
-                class="w-full overflow-x-auto rounded-lg bg-[#00023b] p-4 text-[11px] font-normal leading-[14px] lg:text-[14px] lg:leading-[20px]"
+                class="w-full overflow-x-auto rounded-lg bg-[#00023b] p-4 text-[11px] font-normal leading-[14px] lg:text-[13.5px] lg:leading-[20px]"
               ><code
 							><span class="text-[#00b3da]">import</span> React <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'react'</span>;
-<span class="text-[#00b3da]">import</span> { Admin, Resource, ListGuesser } <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'react-admin'</span>;
-<span class="text-[#00b3da]">import</span> simpleRestProvider <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'ra-data-simple-rest'</span>;
+<span class="text-[#00b3da]">import</span> { Admin, Resource, ListGuesser, EditGuesser } <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'react-admin'</span>;
+<span class="text-[#00b3da]">import</span> apiClient <span class="text-[#00b3da]">from</span> <span class="text-[#1bceb9]">'ra-data-json-server'</span>;
 
-<span class="text-[#ffa939]">const</span> dataProvider = simpleRestProvider(<span class="text-[#1bceb9]">'https://domain.tld/api'</span>);
+<span class="text-[#ffa939]">const</span> dataProvider = apiClient(<span class="text-[#1bceb9]">'https://jsonplaceholder.typicode.com'</span>);
 
-<span class="text-[#ffa939]">const</span> App <span class="text-[#1bceb9]">=</span> <span class="text-white">()</span> <span class="text-[#1bceb9]">=&gt;</span> (
+<span class="text-[#00b3da]">export</span> <span class="text-[#ffa939]">const</span> App <span class="text-[#1bceb9]">=</span> <span class="text-white">()</span> <span class="text-[#1bceb9]">=&gt;</span> (
   <span class="text-[#1bceb9]">&lt;</span>Admin dataProvider={<span class="text-[#9870b7]">dataProvider</span>}<span class="text-[#1bceb9]">&gt;</span>
-	<span class="text-[#1bceb9]">&lt;</span>Resource name="users" list={<span class="text-[#9870b7]">ListGuesser</span>} <span class="text-[#1bceb9]">/&gt;</span>
+    <span class="text-[#1bceb9]">&lt;</span>Resource name=<span class="text-[#1bceb9]">"users"</span> list={<span class="text-[#9870b7]">ListGuesser</span>} edit={<span class="text-[#9870b7]">EditGuesser</span>}<span class="text-[#1bceb9]">/&gt;</span>
+    <span class="text-[#1bceb9]">&lt;</span>Resource name=<span class="text-[#1bceb9]">"posts"</span> list={<span class="text-[#9870b7]">ListGuesser</span>} edit={<span class="text-[#9870b7]">EditGuesser</span>}<span class="text-[#1bceb9]">/&gt;</span>
+    <span class="text-[#1bceb9]">&lt;</span>Resource name=<span class="text-[#1bceb9]">"comments"</span> list={<span class="text-[#9870b7]">ListGuesser</span>} edit={<span class="text-[#9870b7]">EditGuesser</span>}<span class="text-[#1bceb9]">/&gt;</span>
   <span class="text-[#1bceb9]">&lt;/</span>Admin<span class="text-[#1bceb9]">&gt;</span>
 );
-
-<span class="text-[#00b3da]">export default</span> App;</code
+</code
 				></pre>
             </div>
             <div class="w-full flex-shrink flex-grow self-end md:w-1/2">
-              <img
-                src="./img/screen_get_started.webp"
+              <video
+                controls
+                autoplay
+                playsinline
+                muted
+                loop
                 class="rounded-lg drop-shadow-xl"
-                width="881"
-                height="457"
                 alt="screen get started"
-              />
+              >
+                <source src="./img/demo.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
           <div
