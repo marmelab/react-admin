@@ -135,6 +135,7 @@ export const AutocompleteInput = <
         createLabel,
         createItemLabel = 'ra.action.create_item',
         createValue,
+        createHintValue,
         debounce: debounceDelay = 250,
         defaultValue,
         emptyText,
@@ -177,6 +178,7 @@ export const AutocompleteInput = <
         onInputChange,
         disabled,
         readOnly,
+        getOptionDisabled: getOptionDisabledProp,
         ...rest
     } = props;
 
@@ -370,16 +372,28 @@ If you provided a React element for the optionText prop, you must also provide t
         handleChange: handleChangeWithCreateSupport,
         createElement,
         createId,
+        getOptionDisabled: getOptionDisabledWithCreateSupport,
     } = useSupportCreateSuggestion({
         create,
         createLabel,
         createItemLabel,
         createValue,
+        createHintValue,
         handleChange,
         filter: filterValue,
         onCreate,
         optionText,
     });
+
+    const getOptionDisabled = useCallback(
+        option => {
+            return (
+                getOptionDisabledWithCreateSupport(option) ||
+                (getOptionDisabledProp && getOptionDisabledProp(option))
+            );
+        },
+        [getOptionDisabledProp, getOptionDisabledWithCreateSupport]
+    );
 
     const getOptionLabel = useCallback(
         (option: any, isListItem: boolean = false) => {
@@ -522,7 +536,11 @@ If you provided a React element for the optionText prop, you must also provide t
             if (inputValue === '' && filterValue === '' && createLabel) {
                 // create option with createLabel
                 filteredOptions = filteredOptions.concat(getCreateItem(''));
-            } else if (!doesQueryMatchSuggestion(filterValue)) {
+            } else if (
+                inputValue &&
+                filterValue &&
+                !doesQueryMatchSuggestion(filterValue)
+            ) {
                 filteredOptions = filteredOptions.concat(
                     // create option with createItemLabel
                     getCreateItem(inputValue)
@@ -678,6 +696,7 @@ If you provided a React element for the optionText prop, you must also provide t
                         </li>
                     );
                 }}
+                getOptionDisabled={getOptionDisabled}
             />
             {createElement}
         </>
