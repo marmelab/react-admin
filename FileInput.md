@@ -143,7 +143,7 @@ If `multiple` is set to `false` and additional files are dropped, all files besi
 
 ## `options`
 
-`<FileInput>` accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes).
+`<FileInput>` accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.js.org/#src).
 
 ## `placeholder`
 
