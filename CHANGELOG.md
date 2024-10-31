@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.3.2
+
+* Fix undo logic not working when doing multiple deletions one by one ([#10296](https://github.com/marmelab/react-admin/pull/10296)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix DateInput ignores the timezone when given ([#10311](https://github.com/marmelab/react-admin/pull/10311)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix DateInput messes up dates in some timezones ([#10299](https://github.com/marmelab/react-admin/pull/10299)) ([djhi](https://github.com/djhi))
+* Fix `<Edit>` ignores mutation meta when updating the `getOne` cache ([#10314](https://github.com/marmelab/react-admin/pull/10314)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix ReferenceField link is wrong when the record is not yet loaded ([#10309](https://github.com/marmelab/react-admin/pull/10309)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleList>` throws an error when no data in standalone mode ([#10313](https://github.com/marmelab/react-admin/pull/10313)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix: Remove deprecated 'initialValue' from sanitizeInputRestProps ([#10221](https://github.com/marmelab/react-admin/pull/10221)) ([afilp](https://github.com/afilp))
+* [Doc] Add Eicrud dataprovider to the docs ([#10316](https://github.com/marmelab/react-admin/pull/10316)) ([danyalutsevich](https://github.com/danyalutsevich))
+* [Doc] Update `<StackedFilters>` documentation for `defaultValue` ([#10319](https://github.com/marmelab/react-admin/pull/10319)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix Supabase API handler example in NextJS tutorial ([#10310](https://github.com/marmelab/react-admin/pull/10310)) ([Ariyn](https://github.com/Ariyn))
+* [Doc] Fix links to react-dropzone doc pages ([#10312](https://github.com/marmelab/react-admin/pull/10312)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in TabbedForm and TabbedShowLayout ([#10308](https://github.com/marmelab/react-admin/pull/10308)) ([highwide](https://github.com/highwide))
+* [Demo] Leverage canAccess in CRM demo ([#10300](https://github.com/marmelab/react-admin/pull/10300)) ([djhi](https://github.com/djhi))
+
 ## 5.3.1
 
 * Fix smart count for no results message ([#10295](https://github.com/marmelab/react-admin/pull/10295)) ([thibault-barrat](https://github.com/thibault-barrat))
