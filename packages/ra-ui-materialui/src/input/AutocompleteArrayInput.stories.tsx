@@ -193,6 +193,30 @@ export const CreateProp = () => (
     </Wrapper>
 );
 
+export const CreateLabel = () => (
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={choices}
+            sx={{ width: 400 }}
+            create={<CreateRole />}
+            createLabel="Start typing to create a new item"
+        />
+    </Wrapper>
+);
+
+export const CreateItemLabel = () => (
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={choices}
+            sx={{ width: 400 }}
+            create={<CreateRole />}
+            createItemLabel="Add a new role: %{item}"
+        />
+    </Wrapper>
+);
+
 const dataProvider = {
     getOne: () =>
         Promise.resolve({
