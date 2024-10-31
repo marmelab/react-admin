@@ -4,7 +4,6 @@ import {
     useQueryClient,
     useQuery,
     UseQueryOptions,
-    hashKey,
 } from '@tanstack/react-query';
 import union from 'lodash/union';
 
@@ -73,7 +72,6 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
 ): UseGetManyHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const queryCache = queryClient.getQueryCache();
     const {
         onError = noop,
         onSuccess = noop,
@@ -87,20 +85,19 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
 
     const { ids, meta } = params;
     const placeholderData = useMemo(() => {
-        const records = (Array.isArray(ids) ? ids : [ids]).map(id => {
-            const queryHash = hashKey([
+        const records = (Array.isArray(ids) ? ids : [ids]).map(id =>
+            queryClient.getQueryData<RecordType>([
                 resource,
                 'getOne',
                 { id: String(id), meta },
-            ]);
-            return queryCache.get<RecordType>(queryHash)?.state?.data;
-        });
+            ])
+        );
         if (records.some(record => record === undefined)) {
             return undefined;
         } else {
             return records as RecordType[];
         }
-    }, [ids, queryCache, resource, meta]);
+    }, [ids, queryClient, resource, meta]);
 
     const result = useQuery<RecordType[], Error, RecordType[]>({
         queryKey: [
