@@ -504,6 +504,36 @@ export const CreateItemLabel = () => (
     </Wrapper>
 );
 
+const NoCreateItemLabelInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
+        <AutocompleteInput
+            source="author"
+            choices={choices}
+            onCreate={async filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: choices.length + 1,
+                    name: filter,
+                };
+                setChoices(options => [...options, newOption]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
+                return newOption;
+            }}
+            createItemLabel="" // TODO - FIX THIS
+            createLabel="Click to create a new item"
+        />
+    );
+};
+
+export const NoCreateItemLabel = () => (
+    <Wrapper>
+        <NoCreateItemLabelInput />
+    </Wrapper>
+);
+
 const authorsWithFirstAndLastName = [
     { id: 1, first_name: 'Leo', last_name: 'Tolstoy', language: 'Russian' },
     { id: 2, first_name: 'Victor', last_name: 'Hugo', language: 'French' },
