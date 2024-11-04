@@ -511,11 +511,14 @@ const NoCreateItemLabelInput = () => {
             source="author"
             choices={choices}
             onCreate={async filter => {
-                if (!filter) return;
-
+                const newAuthorName = window.prompt(
+                    'Enter a new author',
+                    filter
+                );
+                if (!newAuthorName) return;
                 const newOption = {
                     id: choices.length + 1,
-                    name: filter,
+                    name: newAuthorName,
                 };
                 setChoices(options => [...options, newOption]);
                 // Wait until next tick to give some time for React to update the state
