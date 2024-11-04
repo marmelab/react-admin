@@ -129,7 +129,7 @@ For instance, if the user adds the `views` filter with the `eq` operator and a v
 In your filter declaration, you can provide an `operator`, an `input` and a `defaultValue`.
 The **input** is a react object taking `source` as prop and rendering the input you will need to fill for your filter.
 
-**Tip:** The `defaultValue` of an `operator` takes priority over the **defaultValue** of a filter.
+**Tip:** The `defaultValue` of an `operator` takes priority over the `defaultValue` of a filter.
 
 ## Filter Configuration Builders
 
