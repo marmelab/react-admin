@@ -117,7 +117,7 @@ An **operator** is an object that has a `label`, a `value`, a `defaultValue` and
 
 - The `label` is a string, and can be a translation key.
 - The `value` is used as a suffix to the `source` and passed to the list filters.
-- The `defaultValue` is used as the default `value` of the `source`.
+- The `defaultValue` is used as the default filter value.
 - The `type` ensures that when selecting an operator with a different type than the previous one, React-admin resets the filter value. Its value should be either `single` for filters that accepts a single value (for instance a `string`) or `multiple` for filters that accepts multiple values (for instance an `Array` of `string`). Should you need to differentiate a custom input from those two types, you may provide any type you want to the `type` option (for instance, `map`).
 
 For instance, if the user adds the `views` filter with the `eq` operator and a value of `0`, the `dataProvider.getList()` will receive the following `filter` parameter:
