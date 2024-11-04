@@ -48,15 +48,15 @@ export const NonFullWidth = () => (
 
 export const DefaultValue = () => (
     <Wrapper>
-        All the displayed values should be the same: 2021-09-11 displayed in the
-        browser locale
+        All the displayed values should be the same: 2021-09-11 when displayed
+        in the fr-FR browser locale.
         {[
             '2021-09-11',
             '09/11/2021', // US date format
             '2021-09-11T20:46:20.000+02:00',
             '2021-09-11 20:46:20.000+02:00',
-            '2021-09-11T20:46:20.000-04:00',
-            '2021-09-11 20:46:20.000-04:00',
+            '2021-09-10T20:46:20.000-04:00',
+            '2021-09-10 20:46:20.000-04:00',
             '2021-09-11T20:46:20.000Z',
             '2021-09-11 20:46:20.000Z',
             new Date('2021-09-11T20:46:20.000+02:00'),
