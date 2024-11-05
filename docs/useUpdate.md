@@ -27,7 +27,7 @@ const handleClick = () => {
 };
 ```
 
-It's up to you to pick the syntax that best suits your component. If you have the choice, we recommend passing the first syntax.
+It's up to you to pick the syntax that best suits your component. If you have the choice, we recommend using the first syntax.
 
 The `params` argument is an object that lets you specify the `id` of the record to update and the new data for the record. It can optionally specify the `previousData` and a `meta` parameter.
 
