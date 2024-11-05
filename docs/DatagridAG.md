@@ -107,7 +107,38 @@ Here are the important things to note:
 
 -   You need to import the ag-grid stylesheets `ag-grid.css` and `ag-theme-alpine.css`.
 -   The columns are defined using the `columnDefs` prop. See [the dedicated doc section](#columndefs) for more information.
--   [`<InfiniteList>`](./InfiniteList.md) is not supported.
+
+### Usage Inside An `<InfiniteList>`
+
+`<DatagridAG>` also supports being used as a child of a react-admin [`<InfiniteList>`](./InfiniteList.md).
+
+It only requires setting the `pagination` prop to `false`, because `<DatagridAG>` will itself detect when it needs to fetch more data, and the `<InfiniteList>` default pagination component would conflict with this behavior.
+
+```tsx
+import '@ag-grid-community/styles/ag-grid.css';
+import '@ag-grid-community/styles/ag-theme-alpine.css';
+import React from 'react';
+import { InfiniteList } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+
+export const PostList = () => {
+    const columnDefs = [
+        { field: 'title' },
+        { field: 'published_at' },
+        { field: 'body' },
+    ];
+    return (
+        <InfiniteList pagination={false}>
+            <DatagridAG columnDefs={columnDefs} />
+        </InfiniteList>
+    );
+};
+```
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-infinite.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ### Filter Syntax
 
