@@ -41,11 +41,11 @@ describe('<DatagridHeaderCell />', () => {
         await screen.findByText('ID');
         await screen.findByLabelText('Sort by Id descending');
         await screen.findByText('TITLE');
-        await screen.findByLabelText('Sort by Title descending');
+        await screen.findByLabelText('Sort by Title ascending');
         await screen.findByText('AUTHOR');
-        await screen.findByLabelText('Sort by Author descending');
+        await screen.findByLabelText('Sort by Author ascending');
         await screen.findByText('YEAR');
-        await screen.findByLabelText('Sort by Year descending');
+        await screen.findByLabelText('Sort by Year ascending');
     });
 
     describe('sorting on a column', () => {
