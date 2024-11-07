@@ -8,7 +8,7 @@ import { useFormState } from 'react-hook-form';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { DateInput } from './DateInput';
-import { Basic, Parse } from './DateInput.stories';
+import { Basic, ExternalChanges, Parse } from './DateInput.stories';
 
 describe('<DateInput />', () => {
     const defaultProps = {
@@ -244,6 +244,25 @@ describe('<DateInput />', () => {
                 expect.anything()
             );
         });
+    });
+
+    it('should change its value when the form value has changed', async () => {
+        render(
+            <ExternalChanges
+                simpleFormProps={{
+                    defaultValues: { publishedAt: '2021-09-11' },
+                }}
+            />
+        );
+        await screen.findByText('"2021-09-11" (string)');
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
+        fireEvent.change(input, {
+            target: { value: '2021-10-30' },
+        });
+        fireEvent.blur(input);
+        await screen.findByText('"2021-10-30" (string)');
+        fireEvent.click(screen.getByText('Change value'));
+        await screen.findByText('"2021-10-20" (string)');
     });
 
     describe('error message', () => {
