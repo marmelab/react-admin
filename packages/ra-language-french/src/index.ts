@@ -144,7 +144,7 @@ const frenchMessages: TranslationMessages = {
             skip_nav: 'Aller au contenu',
         },
         sort: {
-            sort_by: 'Trier par %{field} %{order}',
+            sort_by: 'Trier par %{field_lower_first} %{order}',
             ASC: 'croissant',
             DESC: 'décroissant',
         },

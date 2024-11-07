@@ -139,7 +139,7 @@ const englishMessages: TranslationMessages = {
             skip_nav: 'Skip to content',
         },
         sort: {
-            sort_by: 'Sort by %{field} %{order}',
+            sort_by: 'Sort by %{field_lower_first} %{order}',
             ASC: 'ascending',
             DESC: 'descending',
         },
