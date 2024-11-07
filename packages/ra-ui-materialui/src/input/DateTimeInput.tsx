@@ -53,24 +53,18 @@ export const DateTimeInput = ({
     const valueChangedFromInput = React.useRef(false);
     const localInputRef = React.useRef<HTMLInputElement>();
     const initialDefaultValueRef = React.useRef(field.value);
+    const currentValueRef = React.useRef(field.value);
 
     React.useEffect(() => {
-        const initialDateValue =
-            new Date(initialDefaultValueRef.current).getTime() || null;
-
-        const fieldDateValue = new Date(field.value).getTime() || null;
-
         if (
-            initialDateValue !== fieldDateValue &&
+            currentValueRef.current !== field.value &&
             !valueChangedFromInput.current
         ) {
             setRenderCount(r => r + 1);
-            parse
-                ? field.onChange(parse(field.value))
-                : field.onChange(field.value);
             initialDefaultValueRef.current = field.value;
-            valueChangedFromInput.current = false;
+            currentValueRef.current = field.value;
         }
+        valueChangedFromInput.current = false;
     }, [setRenderCount, parse, field]);
 
     const { onBlur: onBlurFromField } = field;
@@ -88,23 +82,17 @@ export const DateTimeInput = ({
             return;
         }
         const target = event.target;
+        const newValue = target.value;
+        const isNewValueValid =
+            newValue === '' || !isNaN(new Date(target.value).getTime());
 
-        const newValue =
-            target.valueAsDate !== undefined &&
-            target.valueAsDate !== null &&
-            !isNaN(new Date(target.valueAsDate).getTime())
-                ? parse
-                    ? parse(target.valueAsDate)
-                    : target.valueAsDate
-                : parse
-                  ? parse(target.value)
-                  : formatDateTime(target.value);
-
-        // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
+        // Some browsers will return null for an invalid date
+        // so we only change react-hook-form value if it's not null.
         // The input reset is handled in the onBlur event handler
-        if (newValue !== '' && newValue != null) {
+        if (newValue !== '' && newValue != null && isNewValueValid) {
             field.onChange(newValue);
             valueChangedFromInput.current = true;
+            currentValueRef.current = newValue;
         }
     };
 
@@ -122,20 +110,14 @@ export const DateTimeInput = ({
             return;
         }
 
+        const newValue = localInputRef.current.value;
         // To ensure users can clear the input, we check its value on blur
         // and submit it to react-hook-form
-        const newValue =
-            localInputRef.current.valueAsDate !== undefined &&
-            localInputRef.current.valueAsDate !== null &&
-            !isNaN(new Date(localInputRef.current.valueAsDate).getTime())
-                ? parse
-                    ? parse(localInputRef.current.valueAsDate)
-                    : formatDateTime(localInputRef.current.valueAsDate)
-                : parse
-                  ? parse(localInputRef.current.value)
-                  : formatDateTime(localInputRef.current.value);
+        const isNewValueValid =
+            newValue === '' ||
+            !isNaN(new Date(localInputRef.current.value).getTime());
 
-        if (newValue !== field.value) {
+        if (isNewValueValid && field.value !== newValue) {
             field.onChange(newValue ?? '');
         }
 

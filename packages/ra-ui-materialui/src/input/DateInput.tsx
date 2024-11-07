@@ -71,25 +71,20 @@ export const DateInput = ({
     const valueChangedFromInput = React.useRef(false);
     const localInputRef = React.useRef<HTMLInputElement>();
     const initialDefaultValueRef = React.useRef(field.value);
+    const currentValueRef = React.useRef(field.value);
 
     // update the react-hook-form value if the field value changes
     React.useEffect(() => {
-        const initialDateValue =
-            new Date(initialDefaultValueRef.current).getTime() || null;
-
-        const fieldDateValue = new Date(field.value).getTime() || null;
-
         if (
-            initialDateValue !== fieldDateValue &&
+            currentValueRef.current !== field.value &&
             !valueChangedFromInput.current
         ) {
             setRenderCount(r => r + 1);
-            field.onChange(field.value);
             initialDefaultValueRef.current = field.value;
-            valueChangedFromInput.current = false;
+            currentValueRef.current = field.value;
         }
+        valueChangedFromInput.current = false;
     }, [setRenderCount, field]);
-
     const { onBlur: onBlurFromField } = field;
     const hasFocus = React.useRef(false);
 
@@ -119,6 +114,7 @@ export const DateInput = ({
             if (newValue !== '' && newValue != null && isNewValueValid) {
                 field.onChange(newValue);
                 valueChangedFromInput.current = true;
+                currentValueRef.current = newValue;
             }
         }
     );
