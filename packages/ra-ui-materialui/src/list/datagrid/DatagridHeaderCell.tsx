@@ -32,17 +32,22 @@ export const DatagridHeaderCell = (
             : // non active sort field, use default order
               field?.props.sortByOrder ?? 'ASC'
         : undefined;
+    const fieldLabel = field
+        ? translateLabel({
+              label:
+                  typeof field.props.label === 'string'
+                      ? field.props.label
+                      : undefined,
+              resource,
+              source: field.props.source,
+          })
+        : undefined;
     const sortLabel = translate('ra.sort.sort_by', {
-        field: field
-            ? translateLabel({
-                  label:
-                      typeof field.props.label === 'string'
-                          ? field.props.label
-                          : undefined,
-                  resource,
-                  source: field.props.source,
-              })
-            : undefined,
+        field: fieldLabel,
+        field_lower_first:
+            typeof fieldLabel === 'string'
+                ? fieldLabel.charAt(0).toLowerCase() + fieldLabel.slice(1)
+                : undefined,
         order: translate(`ra.sort.${nextSortOrder}`),
         _: translate('ra.action.sort'),
     });
