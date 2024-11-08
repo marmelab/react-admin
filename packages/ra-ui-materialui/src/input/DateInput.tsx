@@ -67,24 +67,33 @@ export const DateInput = ({
         format,
         ...rest,
     });
-    const [renderCount, setRenderCount] = React.useState(1);
-    const valueChangedFromInput = React.useRef(false);
     const localInputRef = React.useRef<HTMLInputElement>();
+    // DateInput is not a really controlled input to ensure users can start entering a date, go to another input and come back to complete it.
+    // This ref stores the value that is passed to the input defaultValue prop to solve this issue.
     const initialDefaultValueRef = React.useRef(field.value);
-    const currentValueRef = React.useRef(field.value);
+    // As the defaultValue prop won't trigger a remount of the HTML input, we will force it by changing the key.
+    const [inputKey, setInputKey] = React.useState(1);
+    // This ref let us track that the last change of the form state value was made by the input itself
+    const wasLastChangedByInput = React.useRef(false);
 
-    // update the react-hook-form value if the field value changes
+    // This effect ensures we stays in sync with the react-hook-form state when the value changes from outside the input
+    // for instance by using react-hook-form reset or setValue methods.
     React.useEffect(() => {
-        if (
-            currentValueRef.current !== field.value &&
-            !valueChangedFromInput.current
-        ) {
-            setRenderCount(r => r + 1);
-            initialDefaultValueRef.current = field.value;
-            currentValueRef.current = field.value;
+        // Ignore react-hook-form state changes if it came from the input itself
+        if (wasLastChangedByInput.current) {
+            // Resets the flag to ensure futures changes are handled
+            wasLastChangedByInput.current = false;
+            return;
         }
-        valueChangedFromInput.current = false;
-    }, [setRenderCount, field]);
+
+        // The value has changed from outside the input, we update the input value
+        initialDefaultValueRef.current = field.value;
+        // Trigger a remount of the HTML input
+        setInputKey(r => r + 1);
+        // Resets the flag to ensure futures changes are handled
+        wasLastChangedByInput.current = false;
+    }, [setInputKey, field.value]);
+
     const { onBlur: onBlurFromField } = field;
     const hasFocus = React.useRef(false);
 
@@ -113,8 +122,8 @@ export const DateInput = ({
             // The input reset is handled in the onBlur event handler
             if (newValue !== '' && newValue != null && isNewValueValid) {
                 field.onChange(newValue);
-                valueChangedFromInput.current = true;
-                currentValueRef.current = newValue;
+                // Track the fact that the next react-hook-form state change was triggered by the input itself
+                wasLastChangedByInput.current = true;
             }
         }
     );
@@ -163,7 +172,7 @@ export const DateInput = ({
             name={name}
             inputRef={inputRef}
             defaultValue={format(initialDefaultValueRef.current)}
-            key={renderCount}
+            key={inputKey}
             type="date"
             onChange={handleChange}
             onFocus={handleFocus}
