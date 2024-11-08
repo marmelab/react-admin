@@ -51,7 +51,7 @@ const AuthorField = () => <TextField label="Author" source="author" />;
 
 const theme = createTheme();
 
-const Wrapper = ({
+export const Wrapper = ({
     children,
     queryClient = new QueryClient(),
     store = memoryStore(),
