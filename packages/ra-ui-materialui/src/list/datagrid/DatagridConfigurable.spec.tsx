@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
+import cloneDeep from 'lodash/cloneDeep';
 
 import {
     Basic,
@@ -143,8 +144,78 @@ describe('<DatagridConfigurable>', () => {
             },
         };
 
+        it('should preserve hidden columns from the store and show new non omitted columns last', async () => {
+            const store = memoryStore(cloneDeep(storeDefaultValue));
+            store.setItem('preferences.books1.datagrid.columns', [
+                '1',
+                '0',
+                '3',
+            ]);
+            const { rerender } = render(
+                <Wrapper store={store}>
+                    <DatagridConfigurable
+                        resource="books1"
+                        data={data}
+                        sort={{ field: 'title', order: 'ASC' }}
+                        bulkActionButtons={false}
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" label="Original title" />
+                        <TextField source="author" />
+                        <EditButton />
+                    </DatagridConfigurable>
+                </Wrapper>
+            );
+
+            await screen.findByText('War and Peace');
+            // author column is hidden
+            expect(screen.queryByText('Leo Tolstoy')).toBeNull();
+
+            // Render something else (to be able to tell when the next rerender is finished)
+            rerender(<Wrapper store={store}>Something Else</Wrapper>);
+            await screen.findByText('Something Else');
+
+            // Add 'year' column
+            rerender(
+                <Wrapper store={store}>
+                    <DatagridConfigurable
+                        resource="books1"
+                        data={data}
+                        sort={{ field: 'title', order: 'ASC' }}
+                        bulkActionButtons={false}
+                    >
+                        <TextField source="id" />
+                        <TextField source="year" />
+                        <TextField source="title" label="Original title" />
+                        <TextField source="author" />
+                        <EditButton />
+                    </DatagridConfigurable>
+                </Wrapper>
+            );
+            await screen.findByText('War and Peace');
+            // Year column should be displayed
+            await screen.findByText('1869');
+            // author column is still hidden
+            expect(screen.queryByText('Leo Tolstoy')).toBeNull();
+            // Store value should be updated
+            expect(
+                store.getItem('preferences.books1.datagrid.columns')
+            ).toEqual(['2', '0', '1', '4']);
+            // Check the order is preserved
+            const columnsTexts = Array.from(
+                screen.getByText('War and Peace')?.closest('tr')
+                    ?.children as HTMLCollection
+            ).map(child => child.textContent);
+            expect(columnsTexts).toEqual([
+                'War and Peace',
+                '1',
+                '1869',
+                'ra.action.edit',
+            ]);
+        });
+
         it('should preserve hidden columns from the store when column order is changed in the code', async () => {
-            const store = memoryStore(storeDefaultValue);
+            const store = memoryStore(cloneDeep(storeDefaultValue));
             // hide the 'year' column
             store.setItem('preferences.books1.datagrid.columns', [
                 '0',
@@ -208,7 +279,7 @@ describe('<DatagridConfigurable>', () => {
         });
 
         it('should preserve hidden columns from the store when a column is renamed in the code', async () => {
-            const store = memoryStore(storeDefaultValue);
+            const store = memoryStore(cloneDeep(storeDefaultValue));
             // invert the 'year' and 'author' columns
             store.setItem('preferences.books1.datagrid.columns', [
                 '0',
