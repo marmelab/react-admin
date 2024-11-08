@@ -223,6 +223,21 @@ If you just need to ask users for a single string to create the new option, you 
 
 If you're in a `<ReferenceArrayInput>` or `<ReferenceManyToManyInput>`, the `handleSubmit` will need to create a new record in the related resource. Check the [Creating New Choices](#creating-new-choices) for an example. 
 
+## `createLabel`
+
+When you set the `create` or `onCreate` prop to let users create new options, `<SelectArrayInput>` renders a "Create" menu item at the bottom of the list. You can customize the label of that menu item by setting a custom translation for the `ra.action.create` key in the translation files.
+
+Or, if you want to customize it just for this `<SelectArrayInput>`, use the `createLabel` prop:
+
+```jsx
+<SelectArrayInput
+    source="roles"
+    choices={choices}
+    create={<CreateRole />}
+    createLabel="Add a new role"
+/>
+```
+
 ## `disableValue`
 
 By default, `<SelectArrayInput>` renders the choices with the field `disabled: true` as disabled.
