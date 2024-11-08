@@ -60,8 +60,8 @@ The form value for the source must be an array of the selected values, e.g.
 |----------------------------|----------|-----------------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `choices`                  | Required | `Object[]`            | -                        | List of choices                                                   |
 | `create`                   | Optional | `Element`             | `-`                      | A React Element to render when users want to create a new choice                                                                       |
-| `createLabel`              | Optional | `string`              | `ra.action. create`       | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
-| `createItemLabel`          | Optional | `string`              | `ra.action .create_item` | The label for the menu item allowing users to create a new choice. Used when the filter is not empty                                                    |
+| `createLabel`              | Optional | `string`              | -                        | The label used as hint to let users know they can create a new choice. Displayed when the filter is empty.                                       |
+| `createItemLabel`          | Optional | `string`              | `ra.action .create_item` | The label for the menu item allowing users to create a new choice. Used when the filter is not empty.                                                    |
 | `debounce`                 | Optional | `number`              | `250`                    | The delay to wait before calling the setFilter function injected when used in a ReferenceArray Input.                                                         |
 | `emptyValue`               | Optional | `any`                 | `''`                     | The value to use for the empty element                                                                                                                  |
 | `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`           | How to transform the searchText into a parameter for the data provider                                                                                  |
@@ -159,7 +159,7 @@ const choices = [
 const UserCreate = () => (
     <Create>
         <SimpleForm>
-            <SelectArrayInput
+            <AutocompleteArrayInput
                 source="roles"
                 choices={choices}
                 create={<CreateRole />}
@@ -215,6 +215,37 @@ const CreateRole = () => {
 If you just need to ask users for a single string to create the new option, you can use [the `onCreate` prop](#oncreate) instead.
 
 If you're in a `<ReferenceArrayInput>` or `<ReferenceManyToManyInput>`, the `handleSubmit` will need to create a new record in the related resource. Check the [Creating New Choices](#creating-new-choices) for an example. 
+
+## `createLabel`
+
+When you set the `create` or `onCreate` prop, `<AutocompleteArrayInput>` lets users create new options.
+You can use the `createLabel` prop to render an additional (disabled) menu item at the bottom of the list, that will only appear when the input is empty, inviting users to start typing to create a new option.
+
+```jsx
+<AutocompleteArrayInput
+    source="roles"
+    choices={choices}
+    create={<CreateRole />}
+    createLabel="Start typing to create a new item"
+/>
+```
+
+## `createItemLabel`
+
+If you set the `create` or `onCreate` prop, `<AutocompleteArrayInput>` lets users create new options. When the text entered by the user doesn't match any option, the input renders a "Create XXX" menu item at the bottom of the list.
+
+You can customize the label of that menu item by setting a custom translation for the `ra.action.create_item` key in the translation files.
+
+Or, if you want to customize it just for this `<AutocompleteArrayInput>`, use the `createItemLabel` prop:
+
+```jsx
+<AutocompleteArrayInput
+    source="roles"
+    choices={choices}
+    create={<CreateRole />}
+    createItemLabel="Add a new role: %{item}"
+/>
+```
 
 ## `debounce`
 
