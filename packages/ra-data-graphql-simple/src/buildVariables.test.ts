@@ -19,6 +19,7 @@ describe('buildVariables', () => {
             },
         ],
     };
+
     describe('GET_LIST', () => {
         it('returns correct variables', () => {
             const params = {
@@ -55,8 +56,8 @@ describe('buildVariables', () => {
 
         it('should return correct meta', () => {
             const params = {
-                filter: {},
-                meta: { sparseFields: [] },
+                filter: { views: 100 },
+                meta: { sparseFields: ['field'] },
             };
 
             expect(
@@ -67,8 +68,8 @@ describe('buildVariables', () => {
                     {}
                 )
             ).toEqual({
-                filter: {},
-                meta: { sparseFields: [] },
+                filter: { views: 100 },
+                meta: { sparseFields: ['field'] },
             });
         });
     });
@@ -99,11 +100,11 @@ describe('buildVariables', () => {
                 title: 'Foo',
             });
         });
+
         it('should return correct meta', () => {
             const params = {
-                data: {
-                    meta: { sparseFields: [] },
-                },
+                data: { title: 'Foo' },
+                meta: { sparseFields: ['field'] },
             };
             const queryType = {
                 args: [],
@@ -117,7 +118,8 @@ describe('buildVariables', () => {
                     queryType
                 )
             ).toEqual({
-                meta: { sparseFields: [] },
+                title: 'Foo',
+                meta: { sparseFields: ['field'] },
             });
         });
     });
@@ -153,9 +155,9 @@ describe('buildVariables', () => {
 
         it('should return correct meta', () => {
             const params = {
-                data: {
-                    meta: { sparseFields: [] },
-                },
+                id: 'post1',
+                data: { title: 'Foo' },
+                meta: { sparseFields: ['field'] },
             };
             const queryType = {
                 args: [],
@@ -169,7 +171,9 @@ describe('buildVariables', () => {
                     queryType
                 )
             ).toEqual({
-                meta: { sparseFields: [] },
+                id: 'post1',
+                title: 'Foo',
+                meta: { sparseFields: ['field'] },
             });
         });
     });
@@ -194,7 +198,8 @@ describe('buildVariables', () => {
 
         it('should return correct meta', () => {
             const params = {
-                meta: { sparseFields: [] },
+                ids: ['tag1'],
+                meta: { sparseFields: ['field'] },
             };
 
             expect(
@@ -205,8 +210,10 @@ describe('buildVariables', () => {
                     {}
                 )
             ).toEqual({
-                filter: {},
-                meta: { sparseFields: [] },
+                filter: {
+                    ids: ['tag1'],
+                },
+                meta: { sparseFields: ['field'] },
             });
         });
     });
@@ -238,7 +245,9 @@ describe('buildVariables', () => {
 
         it('should return correct meta', () => {
             const params = {
-                meta: { sparseFields: [] },
+                target: 'author_id',
+                id: 'author1',
+                meta: { sparseFields: ['field'] },
             };
 
             expect(
@@ -249,8 +258,8 @@ describe('buildVariables', () => {
                     {}
                 )
             ).toEqual({
-                filter: {},
-                meta: { sparseFields: [] },
+                filter: { author_id: 'author1' },
+                meta: { sparseFields: ['field'] },
             });
         });
     });
@@ -260,6 +269,7 @@ describe('buildVariables', () => {
             const params = {
                 id: 'post1',
             };
+
             expect(
                 buildVariables(introspectionResult)(
                     { type: { name: 'Post', inputFields: [] } },
@@ -274,8 +284,10 @@ describe('buildVariables', () => {
 
         it('should return correct meta', () => {
             const params = {
-                meta: { sparseFields: [] },
+                id: 'post1',
+                meta: { sparseFields: ['field'] },
             };
+
             expect(
                 buildVariables(introspectionResult)(
                     { type: { name: 'Post', inputFields: [] } },
@@ -284,7 +296,8 @@ describe('buildVariables', () => {
                     {}
                 )
             ).toEqual({
-                meta: { sparseFields: [] },
+                id: 'post1',
+                meta: { sparseFields: ['field'] },
             });
         });
     });
@@ -294,6 +307,7 @@ describe('buildVariables', () => {
             const params = {
                 ids: ['post1'],
             };
+
             expect(
                 buildVariables(introspectionResult)(
                     { type: { name: 'Post', inputFields: [] } },
@@ -315,6 +329,7 @@ describe('buildVariables', () => {
                     title: 'New Title',
                 },
             };
+
             expect(
                 buildVariables(introspectionResult)(
                     { type: { name: 'Post', inputFields: [] } },
