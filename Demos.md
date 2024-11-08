@@ -265,7 +265,7 @@ Atomic CRM is a complete CRM app allowing to manage contacts, companies, deals, 
 
 The source shows how to implement the following features:
 
-- [Horizontal navigation](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/Layout.tsx)
+- [Horizontal navigation](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/layout/Layout.tsx)
 - [Custom exporter](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/contacts/ContactList.tsx)
 - [Trello-like Kanban board for the deals pipeline](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/deals/DealListContent.tsx)
 - [Custom d3.js / Nivo Chart in the dashboard](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/dashboard/DealsChart.tsx)
