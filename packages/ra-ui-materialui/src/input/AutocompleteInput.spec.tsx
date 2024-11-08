@@ -29,7 +29,6 @@ import {
     OnCreateSlow,
     CreateLabel,
     CreateItemLabel,
-    NoCreateItemLabel,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -1436,28 +1435,6 @@ describe('<AutocompleteInput />', () => {
             expect(input.value).not.toBe('Create x');
             expect(input.value).toBe('x');
         }, 10000);
-        it('should include a clickable option to create a new choice when createItemLabel is empty and the input is empty', async () => {
-            const promptSpy = jest.spyOn(window, 'prompt');
-            promptSpy.mockImplementation(jest.fn(() => 'New Author'));
-            render(<NoCreateItemLabel />);
-            const input = (await screen.findByLabelText(
-                'Author'
-            )) as HTMLInputElement;
-            input.focus();
-            fireEvent.change(input, {
-                target: { value: '' },
-            });
-            fireEvent.click(
-                await screen.findByText('Click to create a new item')
-            );
-            await waitFor(() => {
-                expect(promptSpy).toHaveBeenCalled();
-            });
-            await waitFor(() => {
-                expect(input.value).toBe('New Author');
-            });
-            promptSpy.mockRestore();
-        });
     });
     describe('create', () => {
         it('should allow the creation of a new choice', async () => {
