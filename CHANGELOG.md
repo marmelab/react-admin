@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.3.3
+
+* Fix `<Datagrid>` header tooltip shows column names with a capital letter ([#10337](https://github.com/marmelab/react-admin/pull/10337)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DateInput>` and `<DateTimeInput>` do not react to form changes ([#10335](https://github.com/marmelab/react-admin/pull/10335)) ([djhi](https://github.com/djhi))
+* Fix `<Datagrid>` header tooltip sometimes indicates the wrong sort order ([#10334](https://github.com/marmelab/react-admin/pull/10334)) ([fzaninotto](https://github.com/fzaninotto))
+* Fic Unify `meta` location in `buildVariables` in `ra-data-graphql-simple` ([#10322](https://github.com/marmelab/react-admin/pull/10322)) ([dricholm](https://github.com/dricholm))
+* Fix `createLabel` option should not be clickable for `<AutocompleteInput>` and `<AutocompleteArrayInput>` ([#10321](https://github.com/marmelab/react-admin/pull/10321)) ([slax57](https://github.com/slax57))
+* [Doc] Update horizontal navigation reference ([#10329](https://github.com/marmelab/react-admin/pull/10329)) ([emmanuel-ferdman](https://github.com/emmanuel-ferdman))
+* [Doc] Document usage of `<DatagridAG>` inside an `<InfiniteList>` ([#10328](https://github.com/marmelab/react-admin/pull/10328)) ([djhi](https://github.com/djhi))
+* [Doc] Improve `useUpdate` usage instructions ([#10326](https://github.com/marmelab/react-admin/pull/10326)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `StackedFilters`'s `defaultValue` doc ([#10325](https://github.com/marmelab/react-admin/pull/10325)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.3.2
 
 * Fix undo logic not working when doing multiple deletions one by one ([#10296](https://github.com/marmelab/react-admin/pull/10296)) ([fzaninotto](https://github.com/fzaninotto))
