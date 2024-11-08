@@ -4,7 +4,7 @@ Generates a large JSON object full of fake data for simulating the backend of a 
 
 Used to simulate a REST / GraphQL backend in [react-admin](https://github.com/marmelab/react-admin). To get a glimpse of the test data, browse the [react-admin demo](https://marmelab.com/react-admin-demo/#/).
 
-[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://vimeo.com/268958716)
+[![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://www.youtube.com/watch?v=bJEo1O1oT6o)
 
 ## Usage
 

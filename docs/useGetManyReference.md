@@ -10,7 +10,7 @@ This hook calls `dataProvider.getManyReference()` when the component mounts. It 
 ## Syntax
 
 ```jsx
-const { data, total, isPending, error, refetch } = useGetManyReference(
+const { data, total, isPending, error, refetch, meta } = useGetManyReference(
     resource,
     { target, id, pagination, sort, filter, meta },
     options

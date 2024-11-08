@@ -60,14 +60,14 @@ export default defineConfig({
 });
 ```
 
-**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://classic.yarnpkg.com/en/docs/selective-version-resolutions/) to force React Admin to use the same version of `react-router` as Remix. So add the following to the `package.json` file:
+**Tip**: If you're using yarn, Remix and react-admin both install `react-router`, and due to the way each library handles its dependencies, this results in duplicate packages. To avoid this, use [yarn resolutions](https://yarnpkg.com/configuration/manifest#resolutions) to force React Admin to use the same version of `react-router` as Remix. So add the following to the `package.json` file:
 
 ```js
 {
   // ...
   "resolutions": {
-    "react-router": "6.24.1",
-    "react-router-dom": "6.24.1"
+    "react-router": "6.26.1",
+    "react-router-dom": "6.26.1"
   }
 }
 ```
@@ -88,11 +88,6 @@ To do so, add a [splat route](https://remix.run/docs/en/main/file-conventions/ro
 // in app/routes/admin.$.tsx
 import { Admin, Resource, ListGuesser } from "react-admin";
 import jsonServerProvider from "ra-data-json-server";
-import styles from "~/styles/admin.css";
-
-export function links() {
-  return [{ rel: "stylesheet", href: styles }];
-}
 
 const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
 
@@ -106,15 +101,9 @@ export default function App() {
 }
 ```
 
-The stylesheet link is necessary to reset the default styles of the admin app. Create it in `app/styles/admin.css`:
+**Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin/" subpath:
 
-```css
-body { margin: 0; }
-```
-
-**Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin" subpath:
-
-You can now start the app in `development` mode with `npm run dev`. The admin should render at `http://localhost:3000/admin`, and you can use the Remix routing system to add more pages.
+You can now start the app in `development` mode with `npm run dev`. The admin should render at `http://localhost:5173/admin/`, and you can use the Remix routing system to add more pages.
 
 ## Adding an API
 
@@ -253,6 +242,6 @@ export default function App() {
 }
 ```
 
-That's it! Now Remix both renders the admin app and serves as a proxy to the Supabase API. You can test the app by visiting `http://localhost:3000/admin`, and the API Proxy by visiting `http://localhost:3000/admin/api/posts`.
+That's it! Now Remix both renders the admin app and serves as a proxy to the Supabase API. You can test the app by visiting `http://localhost:5173/admin/`, and the API Proxy by visiting `http://localhost:5173/admin/api/posts`.
 
 Note that the Supabase credentials never leave the server. It's up to you to add your own authentication to the API proxy.

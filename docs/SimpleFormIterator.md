@@ -93,11 +93,30 @@ const OrderEdit = () => (
 This prop lets you pass a custom element to replace the default Add button. 
 
 ```jsx
-<SimpleFormIterator addButton={<Button>Add</Button>}>
+<SimpleFormIterator addButton={<MyAddButton label={"Add a line"} />}>
     <TextInput source="name" />
     <NumberInput source="price" />
     <NumberInput source="quantity" />
 </SimpleFormIterator>
+```
+
+You need to provide an element that triggers the `add` function from `useSimpleFormIterator` when clicked. Here is an example:
+
+```jsx
+import { ButtonProps, useSimpleFormIterator, useTranslate } from "react-admin";
+import React from "react";
+import Button from "@mui/material/Button";
+
+export const MyAddButton = (props: ButtonProps) => {
+    const { add } = useSimpleFormIterator();
+    const translate = useTranslate();
+
+    return (
+        <Button onClick={() => add()} {...props}>
+            {translate(props.label ?? 'ra.action.add')}
+        </Button>
+    );
+};
 ```
 
 ## `children`
@@ -165,8 +184,6 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextField, FormDataConsumer,
     </SimpleFormIterator>
 </ArrayInput>
 ```
-
-**Caution**: `<SimpleFormIterator>` **clones** its children several times, as it needs to override their actual source for each record. If you use a custom Input element, make sure they accept a custom `source` prop. 
 
 ## `className`
 
@@ -294,11 +311,35 @@ Without this prop, `<SimpleFormIterator>` will render one input per line.
 This prop lets you pass a custom element to replace the default Remove button. 
 
 ```jsx
-<SimpleFormIterator removeButton={<Button>Remove</Button>}>
+<SimpleFormIterator removeButton={<MyRemoveButton label="Remove this line" />}>
     <TextInput source="name" />
     <NumberInput source="price" />
     <NumberInput source="quantity" />
 </SimpleFormIterator>
+```
+
+You need to provide an element that triggers the `remove` function from `useSimpleFormIteratorItem` when clicked. Here is an example:
+
+```jsx
+import * as React from 'react';
+import clsx from 'clsx';
+import { ButtonProps, useSimpleFormIteratorItem, useTranslate } from "react-admin";
+import Button from "@mui/material/Button";
+
+export const MyRemoveButton = (props: Omit<ButtonProps, 'onClick'>) => {
+    const { remove } = useSimpleFormIteratorItem();
+    const translate = useTranslate();
+
+    return (
+        <Button
+            onClick={() => remove()}
+            color="warning"
+            {...props}
+        >
+            {translate(props.label ?? 'ra.action.remove')}
+        </Button>
+    );
+};
 ```
 
 ## `reOrderButtons`

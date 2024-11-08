@@ -11,7 +11,7 @@ import {
 } from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
-import undoableEventEmitter from './undoableEventEmitter';
+import { useAddUndoableMutation } from './undo/useAddUndoableMutation';
 import {
     RaRecord,
     UpdateManyParams,
@@ -87,6 +87,7 @@ export const useUpdateMany = <
 ): UseUpdateManyResult<RecordType, boolean, MutationError> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const addUndoableMutation = useAddUndoableMutation();
     const { ids, data, meta } = params;
     const { mutationMode = 'pessimistic', ...mutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
@@ -112,6 +113,10 @@ export const useUpdateMany = <
         // because setQueryData doesn't accept a stale time option
         const updatedAt =
             mode.current === 'undoable' ? Date.now() + 1000 * 5 : Date.now();
+        // Stringify and parse the data to remove undefined values.
+        // If we don't do this, an update with { id: undefined } as payload
+        // would remove the id from the record, which no real data provider does.
+        const clonedData = JSON.parse(JSON.stringify(data));
 
         const updateColl = (old: RecordType[]) => {
             if (!old) return old;
@@ -124,7 +129,7 @@ export const useUpdateMany = <
                 }
                 newCollection = [
                     ...newCollection.slice(0, index),
-                    { ...newCollection[index], ...data },
+                    { ...newCollection[index], ...clonedData },
                     ...newCollection.slice(index + 1),
                 ];
             });
@@ -138,7 +143,7 @@ export const useUpdateMany = <
         ids.forEach(id => {
             queryClient.setQueryData(
                 [resource, 'getOne', { id: String(id), meta }],
-                (record: RecordType) => ({ ...record, ...data }),
+                (record: RecordType) => ({ ...record, ...clonedData }),
                 { updatedAt }
             );
         });
@@ -452,8 +457,9 @@ export const useUpdateMany = <
                 }
             );
         } else {
-            // undoable mutation: register the mutation for later
-            undoableEventEmitter.once('end', ({ isUndo }) => {
+            // Undoable mutation: add the mutation to the undoable queue.
+            // The Notification component will dequeue it when the user confirms or cancels the message.
+            addUndoableMutation(({ isUndo }) => {
                 if (isUndo) {
                     // rollback
                     snapshot.current.forEach(([key, value]) => {

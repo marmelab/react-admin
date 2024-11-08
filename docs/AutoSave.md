@@ -23,6 +23,8 @@ Note that you **must** set the `<Form resetOptions>` prop to `{ keepDirtyValues:
 
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
+Note that `<AutoSave>` does not currently work with [`warnWhenUnsavedChanges`](http://react-admin.garcia.cloud/Forms.html#warning-about-unsaved-changes).
+
 {% raw %}
 ```tsx
 import { AutoSave } from '@react-admin/ra-form-layout';

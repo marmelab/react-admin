@@ -12,17 +12,18 @@ export const Welcome = () => (
                 Your CRM Starter Kit
             </Typography>
             <Typography variant="body2" gutterBottom>
-                This demo is a template you can use to kickstart your own CRM.
+                <Link href="https://marmelab.com/atomic-crm">Atomic CRM</Link>{' '}
+                is a template designed to help you quickly build your own CRM.
             </Typography>
             <Typography variant="body2" gutterBottom>
-                Feel free to explore and modify the data—it’s stored locally and
-                resets on reload. While this demo uses a mock API, the full
-                version uses Supabase for the backend.
+                This demo runs on a mock API, so you can explore and modify the
+                data. It resets on reload. The full version uses Supabase for
+                the backend.
             </Typography>
             <Typography variant="body2">
-                Built with{' '}
+                Powered by{' '}
                 <Link href="https://marmelab.com/react-admin">react-admin</Link>
-                , Atomic CRM is fully open-source. Checkout the code at{' '}
+                , Atomic CRM is fully open-source. You can find the code at{' '}
                 <Link href="https://github.com/marmelab/atomic-crm">
                     marmelab/atomic-crm
                 </Link>

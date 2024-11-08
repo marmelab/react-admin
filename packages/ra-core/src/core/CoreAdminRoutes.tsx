@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { useState, useEffect, Children, ComponentType } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-
-import { WithPermissions, useCheckAuth, LogoutOnMount } from '../auth';
-import { useScrollToTop, useCreatePath } from '../routing';
+import { Children, ComponentType } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { WithPermissions, LogoutOnMount, useAuthState } from '../auth';
+import { useScrollToTop } from '../routing';
 import {
     AdminChildren,
     CatchAllComponent,
@@ -13,10 +12,10 @@ import {
 } from '../types';
 import { useConfigureAdminRouterFromChildren } from './useConfigureAdminRouterFromChildren';
 import { HasDashboardContextProvider } from './HasDashboardContext';
+import { NavigateToFirstResource } from './NavigateToFirstResource';
 
 export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     useScrollToTop();
-    const createPath = useCreatePath();
 
     const {
         customRoutesWithLayout,
@@ -32,26 +31,16 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         loading: LoadingPage,
         requireAuth,
         ready: Ready,
+        authenticationError: AuthenticationError = Noop,
+        accessDenied: AccessDenied = Noop,
     } = props;
 
-    const [onlyAnonymousRoutes, setOnlyAnonymousRoutes] = useState(requireAuth);
-    const [checkAuthLoading, setCheckAuthLoading] = useState(requireAuth);
-    const checkAuth = useCheckAuth();
-
-    useEffect(() => {
-        if (requireAuth) {
-            // do not log the user out on failure to allow access to custom routes with no layout
-            // for other routes, the LogoutOnMount component will log the user out
-            checkAuth(undefined, false)
-                .then(() => {
-                    setOnlyAnonymousRoutes(false);
-                })
-                .catch(() => {})
-                .finally(() => {
-                    setCheckAuthLoading(false);
-                });
-        }
-    }, [checkAuth, requireAuth]);
+    const { authenticated, isPending: isPendingAuthenticated } = useAuthState(
+        undefined,
+        // do not log the user out on failure to allow access to custom routes with no layout
+        false,
+        { enabled: requireAuth }
+    );
 
     if (status === 'empty') {
         if (!Ready) {
@@ -64,7 +53,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
 
     // Note: custom routes with no layout are always rendered, regardless of the auth status
 
-    if (status === 'loading' || checkAuthLoading) {
+    if (status === 'loading' || (requireAuth && isPendingAuthenticated)) {
         return (
             <Routes>
                 {customRoutesWithoutLayout}
@@ -80,7 +69,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         );
     }
 
-    if (onlyAnonymousRoutes) {
+    if (requireAuth && (isPendingAuthenticated || !authenticated)) {
         return (
             <Routes>
                 {customRoutesWithoutLayout}
@@ -116,17 +105,22 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                                             <WithPermissions
                                                 authParams={defaultAuthParams}
                                                 component={dashboard}
+                                                loading={LoadingPage}
                                             />
-                                        ) : resources.length > 0 ? (
-                                            <Navigate
-                                                to={createPath({
-                                                    resource:
-                                                        resources[0].props.name,
-                                                    type: 'list',
-                                                })}
+                                        ) : (
+                                            <NavigateToFirstResource
+                                                loading={LoadingPage}
                                             />
-                                        ) : null
+                                        )
                                     }
+                                />
+                                <Route
+                                    path="/authentication-error"
+                                    element={<AuthenticationError />}
+                                />
+                                <Route
+                                    path="/access-denied"
+                                    element={<AccessDenied />}
                                 />
                                 <Route path="*" element={<CatchAll />} />
                             </Routes>
@@ -146,6 +140,10 @@ export interface CoreAdminRoutesProps {
     loading: LoadingComponent;
     requireAuth?: boolean;
     ready?: ComponentType;
+    authenticationError?: ComponentType;
+    accessDenied?: React.ComponentType;
 }
 
+// FIXME in v6: make dashboard anonymous by default to remove this hack
 const defaultAuthParams = { params: { route: 'dashboard' } };
+const Noop = () => null;

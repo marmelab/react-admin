@@ -5,12 +5,18 @@ title: "useAuthState"
 
 # `useAuthState`
 
-To avoid rendering a component, and to force waiting for the `authProvider` response, use `useAuthState()` instead of `useAuthenticated()`. It calls `authProvider.checkAuth()` on mount and returns an object with 2 properties:
+If you want to check if the user is authenticated and decide what to render based on the result, use the `useAuthState` hook. It calls the `authProvider.checkAuth()` method on mount and returns a state object.
 
-- `isPending`: `true` just after mount, while the `authProvider` is being called. `false` once the `authProvider` has answered.
-- `authenticated`: `true` while loading. then `true` or `false` depending on the `authProvider` response.
+- Loading: `{ isPending: true }`
+- Authenticated: `{ isPending: false, authenticated: true }`
+- Not authenticated: `{ isPending: false, authenticated: false }`
+- Error: `{ isPending: false, error: Error }`
 
-You can render different content depending on the authenticated status. 
+Contrary to [`useAuthenticated()`](./useAuthenticated.md), `useAuthState` does not redirect to the login page if the user is not authenticated.
+
+## Usage
+
+Use `useAuthState()` to render different content depending on the authenticated state.
 
 ```jsx
 import { useAuthState, Loading } from 'react-admin';

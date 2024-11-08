@@ -8,6 +8,7 @@ import {
     Title,
     ListToolbar,
     useListContext,
+    SortButton,
 } from 'react-admin';
 
 import { ImageList } from './GridList';
@@ -48,6 +49,7 @@ const CompanyListLayout = () => {
 const CompanyListActions = () => {
     return (
         <TopToolbar>
+            <SortButton fields={['name', 'created_at', 'nb_contacts']} />
             <ExportButton />
             <CreateButton
                 variant="contained"

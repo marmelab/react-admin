@@ -66,6 +66,7 @@ You can customize the `<Edit>` component using the following props:
 * `className`: passed to the root component
 * [`component`](#component): override the root component
 * [`disableAuthentication`](#disableauthentication): disable the authentication check
+* [`emptyWhileLoading`](#emptywhileloading): Set to `true` to return `null` while the edit is loading.
 * [`id`](#id): the id of the record to edit
 * [`mutationMode`](#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
 * [`mutationOptions`](#mutationoptions): options for the `dataProvider.update()` call
@@ -218,6 +219,57 @@ By default, the `<Edit>` component will automatically redirect the user to the l
 const PostEdit = () => (
     <Edit disableAuthentication>
         ...
+    </Edit>
+);
+```
+
+## `emptyWhileLoading`
+
+By default, `<Edit>` doesn't render its child component even before the `dataProvider.getOne()` call returns, but it returns its [`aside`](#aside), [`actions`](#actions) and [`title`](#title) components.
+
+If a component you use in those props relies on the record, it will throw an error. For instance, the following will fail on load with a "ReferenceError: record is not defined" error:
+
+```jsx
+import { Edit, useEditContext } from 'react-admin';
+import { Typography } from '@mui/icons-material/Star';
+
+const AsideComponent = () => {
+    const { record } = useEditContext();
+    return (
+        <Typography>
+            <i>{record.title}</i>, by {record.author} ({record.year})
+        </Typography>
+    );
+}
+
+const BookEdit = () => (
+    <Edit aside={AsideComponent}>
+        {/* ... */}
+    </Edit>
+);
+```
+
+You can handle this case by getting the `isPending` variable from the [`useEditContext`](./useEditContext.md) hook:
+
+```jsx
+const AsideComponent = () => {
+    const { record, isPending } = useEditContext();
+    if (isPending) return null;
+    return (
+        <Typography>
+            <i>{record.title}</i>, by {record.author} ({record.year})
+        </Typography>
+    );
+}
+```
+
+The `<Edit emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<Edit>` won't render its `aside`, `actions` and `title` components until `record` is defined.
+
+```diff
+const BookEdit = () => (
+-   <Edit aside={AsideComponent}>
++   <Edit aside={AsideComponent} emptyWhileLoading>
+        {/* ... */}
     </Edit>
 );
 ```
@@ -676,7 +728,33 @@ const PostEdit = () => (
 
 ## Changing The Notification Message
 
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element updated"). You can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
+![Edit notification](./img/EditSuccess.png)
+
+Once the `dataProvider.update()` request returns successfully, users see a generic notification ("Element updated"). 
+
+`<Edit>` uses two successive translation keys to build the success message:
+
+- `resources.{resource}.notifications.updated` as a first choice
+- `ra.notification.updated` as a fallback
+
+To customize the notification message, you can set custom translation for these keys in your i18nProvider.
+
+**Tip**: If you choose to use a custom translation, be aware that react-admin uses the same translation message for the `<BulkUpdateButton>`, so the message must support [pluralization](./TranslationTranslating.md#interpolation-pluralization-and-default-translation):
+
+```jsx
+const englishMessages = {
+    resources: {
+        comments: {
+            notifications: {
+                updated: 'Comment updated |||| %{smart_count} comments updated',
+                // ...
+            },
+        },
+    },
+};
+```
+
+Alternately, you can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
 
 {% raw %}
 ```jsx
@@ -688,7 +766,7 @@ const PostEdit = () => {
     const redirect = useRedirect();
 
     const onSuccess = () => {
-        notify(`Post updated successfully`); // default message is 'ra.notification.updated'
+        notify(`Post updated successfully`);
         redirect('list', 'posts');
     };
 
@@ -902,3 +980,36 @@ export const BookEdit = () => {
     );
 };
 ```
+
+## Security
+
+The `<Edit>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Edit>`  will only render if the user has the "edit" access to the related resource.
+
+For instance, for the `<PostEdit>`page below:
+
+```tsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+
+// Resource name is "posts"
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="published_at" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+`<Edit>` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "edit", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](#disableauthentication).

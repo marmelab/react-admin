@@ -326,7 +326,7 @@ const buildGetListVariables =
 const buildCreateUpdateVariables = (
     resource: IntrospectedResource,
     raFetchMethod,
-    { id, data }: any,
+    { id, data, meta }: any,
     queryType: IntrospectionField
 ) =>
     Object.keys(data).reduce(
@@ -358,5 +358,5 @@ const buildCreateUpdateVariables = (
                 [key]: data[key],
             };
         },
-        { id }
+        { id, meta }
     );

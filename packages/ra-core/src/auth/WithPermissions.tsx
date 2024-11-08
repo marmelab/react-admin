@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Children, ReactElement, ComponentType, createElement } from 'react';
 import { Location } from 'react-router-dom';
 
@@ -17,6 +18,7 @@ export interface WithPermissionsProps {
     authParams?: object;
     children?: WithPermissionsChildren;
     component?: ComponentType<any>;
+    loading?: ComponentType<any>;
     location?: Location;
     render?: WithPermissionsChildren;
     staticContext?: object;
@@ -60,8 +62,15 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *     );
  */
 const WithPermissions = (props: WithPermissionsProps) => {
-    const { authParams, children, render, component, staticContext, ...rest } =
-        props;
+    const {
+        authParams,
+        children,
+        render,
+        component,
+        loading: Loading = null,
+        staticContext,
+        ...rest
+    } = props;
     warning(
         (render && children && !isEmptyChildren(children)) ||
             (render && component) ||
@@ -69,9 +78,18 @@ const WithPermissions = (props: WithPermissionsProps) => {
         'You should only use one of the `component`, `render` and `children` props in <WithPermissions>'
     );
 
-    useAuthenticated(authParams);
-    const { permissions } = usePermissions(authParams);
-    // render even though the usePermissions() call isn't finished (optimistic rendering)
+    const { isPending: isAuthenticationPending } = useAuthenticated(authParams);
+    const { permissions, isPending: isPendingPermissions } = usePermissions(
+        authParams,
+        {
+            enabled: !isAuthenticationPending,
+        }
+    );
+    // We must check both pending states here as if the authProvider does not implement getPermissions, isPendingPermissions will always be false
+    if (isAuthenticationPending || isPendingPermissions) {
+        return Loading ? <Loading /> : null;
+    }
+
     if (component) {
         return createElement(component, { permissions, ...rest });
     }

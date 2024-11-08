@@ -48,13 +48,9 @@ export const useInput = <ValueType = any>(
     const parse = useEvent(parseProp);
     const defaultId = useId();
 
-    if (
-        !source &&
-        props.label == null &&
-        process.env.NODE_ENV === 'development'
-    ) {
+    if (!finalName && process.env.NODE_ENV === 'development') {
         console.warn(
-            'Input components require either a source or a label prop.'
+            'Input components require either a source or a name prop.'
         );
     }
 
@@ -104,10 +100,6 @@ export const useInput = <ValueType = any>(
             },
         },
         ...options,
-        // Workaround for https://github.com/react-hook-form/react-hook-form/issues/10907
-        // FIXME - remove when fixed
-        // @ts-ignore - only exists since react-hook-form 7.46.0
-        disabled: options.disabled || undefined,
     });
 
     // Because our forms may receive an asynchronously loaded record for instance,

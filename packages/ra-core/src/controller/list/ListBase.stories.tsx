@@ -4,6 +4,7 @@ import fakeRestProvider from 'ra-data-fakerest';
 import { ListBase } from './ListBase';
 import { CoreAdminContext } from '../../core';
 import { useListContext } from './useListContext';
+import { AuthProvider, DataProvider } from '../..';
 
 export default {
     title: 'ra-core/controller/list/ListBase',
@@ -39,12 +40,13 @@ const data = {
     ],
 };
 
-const dataProvider = fakeRestProvider(data, true, 300);
+const defaultDataProvider = fakeRestProvider(data, true, 300);
 
 const BookListView = () => {
     const {
         data,
-        isLoading,
+        error,
+        isPending,
         sort,
         filterValues,
         page,
@@ -61,8 +63,11 @@ const BookListView = () => {
         sort,
         filterValues,
     });
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error...</div>;
     }
 
     const handleClick = () => {
@@ -107,10 +112,107 @@ const BookListView = () => {
     );
 };
 
-export const SetParams = () => (
+export const NoAuthProvider = ({
+    dataProvider = defaultDataProvider,
+}: {
+    dataProvider?: DataProvider;
+}) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ListBase resource="books" perPage={5}>
             <BookListView />
+        </ListBase>
+    </CoreAdminContext>
+);
+
+export const WithAuthProviderNoAccessControl = ({
+    authProvider = {
+        login: () => Promise.resolve(),
+        logout: () => Promise.resolve(),
+        checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
+        checkError: () => Promise.resolve(),
+    },
+    dataProvider = defaultDataProvider,
+}: {
+    authProvider?: AuthProvider;
+    dataProvider?: DataProvider;
+}) => (
+    <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
+        <ListBase
+            resource="books"
+            perPage={5}
+            loading={<div>Authentication loading...</div>}
+        >
+            <BookListView />
+        </ListBase>
+    </CoreAdminContext>
+);
+
+export const AccessControl = ({
+    authProvider = {
+        login: () => Promise.resolve(),
+        logout: () => Promise.resolve(),
+        checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
+        checkError: () => Promise.resolve(),
+        canAccess: () => new Promise(resolve => setTimeout(resolve, 300, true)),
+    },
+    dataProvider = defaultDataProvider,
+}: {
+    authProvider?: AuthProvider;
+    dataProvider?: DataProvider;
+}) => (
+    <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
+        <ListBase
+            resource="books"
+            perPage={5}
+            loading={<div>Authentication loading...</div>}
+        >
+            <BookListView />
+        </ListBase>
+    </CoreAdminContext>
+);
+
+export const SetParams = () => (
+    <CoreAdminContext dataProvider={defaultDataProvider}>
+        <ListBase resource="books" perPage={5}>
+            <BookListView />
+        </ListBase>
+    </CoreAdminContext>
+);
+
+const ListMetadataInspector = () => {
+    const listContext = useListContext();
+    return (
+        <>
+            Response metadata:{' '}
+            <pre>{JSON.stringify(listContext.meta, null, 2)}</pre>
+        </>
+    );
+};
+
+export const WithResponseMetadata = () => (
+    <CoreAdminContext
+        dataProvider={{
+            ...defaultDataProvider,
+            getList: async (resource, params) => {
+                const result = await defaultDataProvider.getList(
+                    resource,
+                    params
+                );
+                return {
+                    ...result,
+                    meta: {
+                        facets: [
+                            { value: 'bar', count: 2 },
+                            { value: 'baz', count: 1 },
+                        ],
+                    },
+                };
+            },
+        }}
+    >
+        <ListBase resource="books" perPage={5}>
+            <BookListView />
+            <ListMetadataInspector />
         </ListBase>
     </CoreAdminContext>
 );

@@ -71,17 +71,22 @@ export const ContactListContent = () => {
                                 <Avatar />
                             </ListItemAvatar>
                             <ListItemText
-                                primary={`${contact.first_name} ${contact.last_name}`}
+                                primary={`${contact.first_name} ${contact.last_name ?? ''}`}
                                 secondary={
                                     <>
-                                        {contact.title} at{' '}
-                                        <ReferenceField
-                                            source="company_id"
-                                            reference="companies"
-                                            link={false}
-                                        >
-                                            <TextField source="name" />
-                                        </ReferenceField>
+                                        {contact.title}
+                                        {contact.title &&
+                                            contact.company_id != null &&
+                                            ' at '}
+                                        {contact.company_id != null && (
+                                            <ReferenceField
+                                                source="company_id"
+                                                reference="companies"
+                                                link={false}
+                                            >
+                                                <TextField source="name" />
+                                            </ReferenceField>
+                                        )}
                                         {contact.nb_tasks
                                             ? ` - ${contact.nb_tasks} task${
                                                   contact.nb_tasks > 1
@@ -94,25 +99,27 @@ export const ContactListContent = () => {
                                     </>
                                 }
                             />
-                            <ListItemSecondaryAction
-                                sx={{
-                                    top: '10px',
-                                    transform: 'none',
-                                }}
-                            >
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    title={contact.last_seen}
+                            {contact.last_seen && (
+                                <ListItemSecondaryAction
+                                    sx={{
+                                        top: '10px',
+                                        transform: 'none',
+                                    }}
                                 >
-                                    {!isSmall && 'last activity '}
-                                    {formatRelative(
-                                        contact.last_seen,
-                                        now
-                                    )}{' '}
-                                    <Status status={contact.status} />
-                                </Typography>
-                            </ListItemSecondaryAction>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                        title={contact.last_seen}
+                                    >
+                                        {!isSmall && 'last activity '}
+                                        {formatRelative(
+                                            contact.last_seen,
+                                            now
+                                        )}{' '}
+                                        <Status status={contact.status} />
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            )}
                         </ListItem>
                     </RecordContextProvider>
                 ))}

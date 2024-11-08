@@ -1,4 +1,5 @@
 import { DOMAINS_NOT_SUPPORTING_FAVICON } from '../../misc/unsupportedDomains.const';
+import { fetchWithTimeout } from '../../misc/fetchWithTimeout';
 import { Contact } from '../../types';
 
 export async function hash(string: string) {
@@ -25,7 +26,7 @@ async function getFaviconUrl(domain: string): Promise<string | null> {
 
     try {
         const faviconUrl = `https://${domain}/favicon.ico`;
-        const response = await fetch(faviconUrl);
+        const response = await fetchWithTimeout(faviconUrl);
         if (response.ok) {
             return faviconUrl;
         }

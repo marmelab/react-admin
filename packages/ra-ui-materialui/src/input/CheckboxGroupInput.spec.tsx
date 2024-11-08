@@ -6,6 +6,7 @@ import {
     TestTranslationProvider,
     useRecordContext,
     Form,
+    ResourceContextProvider,
 } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
@@ -16,7 +17,6 @@ import { InsideReferenceArrayInput } from './CheckboxGroupInput.stories';
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
         source: 'tags',
-        resource: 'posts',
         choices: [
             { id: 'ang', name: 'Angular' },
             { id: 'rct', name: 'React' },
@@ -26,9 +26,11 @@ describe('<CheckboxGroupInput />', () => {
     it('should render choices as checkbox components', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <CheckboxGroupInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <CheckboxGroupInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input1 = screen.getByLabelText('Angular') as HTMLInputElement;
@@ -44,20 +46,22 @@ describe('<CheckboxGroupInput />', () => {
     it('should use the input parameter value as the initial input value', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        tags: ['ang'],
-                    }}
-                >
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 'ang', name: 'Angular' },
-                            { id: 'rct', name: 'React' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            tags: ['ang'],
+                        }}
+                    >
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 'ang', name: 'Angular' },
+                                { id: 'rct', name: 'React' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input1 = screen.getByLabelText('Angular') as HTMLInputElement;
@@ -69,13 +73,15 @@ describe('<CheckboxGroupInput />', () => {
     it('should use optionValue as value identifier', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        optionValue="foobar"
-                        choices={[{ foobar: 'foo', name: 'Bar' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            optionValue="foobar"
+                            choices={[{ foobar: 'foo', name: 'Bar' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('Bar') as HTMLInputElement;
@@ -85,13 +91,15 @@ describe('<CheckboxGroupInput />', () => {
     it('should use optionValue including "." as value identifier', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        optionValue="foobar.id"
-                        choices={[{ foobar: { id: 'foo' }, name: 'Bar' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            optionValue="foobar.id"
+                            choices={[{ foobar: { id: 'foo' }, name: 'Bar' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('Bar') as HTMLInputElement;
@@ -101,13 +109,15 @@ describe('<CheckboxGroupInput />', () => {
     it('should use optionText with a string value as text identifier', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        optionText="foobar"
-                        choices={[{ id: 'foo', foobar: 'Bar' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            optionText="foobar"
+                            choices={[{ id: 'foo', foobar: 'Bar' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByLabelText('Bar')).not.toBeNull();
@@ -116,13 +126,15 @@ describe('<CheckboxGroupInput />', () => {
     it('should use optionText with a string value including "." as text identifier', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        optionText="foobar.name"
-                        choices={[{ id: 'foo', foobar: { name: 'Bar' } }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            optionText="foobar.name"
+                            choices={[{ id: 'foo', foobar: { name: 'Bar' } }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByLabelText('Bar')).not.toBeNull();
@@ -131,13 +143,15 @@ describe('<CheckboxGroupInput />', () => {
     it('should use optionText with a function value as text identifier', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        optionText={choice => choice.foobar}
-                        choices={[{ id: 'foo', foobar: 'Bar' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            optionText={choice => choice.foobar}
+                            choices={[{ id: 'foo', foobar: 'Bar' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByLabelText('Bar')).not.toBeNull();
@@ -150,13 +164,15 @@ describe('<CheckboxGroupInput />', () => {
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        optionText={<Foobar />}
-                        choices={[{ id: 'foo', foobar: 'Bar' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            optionText={<Foobar />}
+                            choices={[{ id: 'foo', foobar: 'Bar' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByLabelText('Bar')).not.toBeNull();
@@ -172,9 +188,11 @@ describe('<CheckboxGroupInput />', () => {
                         React: 'React **',
                     }}
                 >
-                    <SimpleForm onSubmit={jest.fn}>
-                        <CheckboxGroupInput {...defaultProps} />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <CheckboxGroupInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </TestTranslationProvider>
             </AdminContext>
         );
@@ -191,12 +209,14 @@ describe('<CheckboxGroupInput />', () => {
                         React: 'React **',
                     }}
                 >
-                    <SimpleForm onSubmit={jest.fn}>
-                        <CheckboxGroupInput
-                            {...defaultProps}
-                            translateChoice={false}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <CheckboxGroupInput
+                                {...defaultProps}
+                                translateChoice={false}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </TestTranslationProvider>
             </AdminContext>
         );
@@ -209,12 +229,14 @@ describe('<CheckboxGroupInput />', () => {
     it('should display helperText', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        helperText="Can I help you?"
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            helperText="Can I help you?"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByText('Can I help you?')).not.toBeNull();
@@ -292,12 +314,14 @@ describe('<CheckboxGroupInput />', () => {
         it('should not be displayed if field is pristine', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <CheckboxGroupInput
-                            {...defaultProps}
-                            validate={() => 'error'}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <CheckboxGroupInput
+                                {...defaultProps}
+                                validate={() => 'error'}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByText('error')).toBeNull();
@@ -306,12 +330,14 @@ describe('<CheckboxGroupInput />', () => {
         it('should be empty if field has been touched but is valid', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <CheckboxGroupInput
-                            {...defaultProps}
-                            validate={() => 'error'}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <CheckboxGroupInput
+                                {...defaultProps}
+                                validate={() => 'error'}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByText('error')).toBeNull();
@@ -320,12 +346,14 @@ describe('<CheckboxGroupInput />', () => {
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn} mode="onBlur">
-                        <CheckboxGroupInput
-                            {...defaultProps}
-                            validate={() => 'error'}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn} mode="onBlur">
+                            <CheckboxGroupInput
+                                {...defaultProps}
+                                validate={() => 'error'}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             const input = screen.queryByLabelText(
@@ -342,13 +370,15 @@ describe('<CheckboxGroupInput />', () => {
     it('should not render a LinearProgress if isPending is true and a second has not passed yet', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        isFetching
-                        isPending
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            isFetching
+                            isPending
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -358,13 +388,15 @@ describe('<CheckboxGroupInput />', () => {
     it('should render a LinearProgress if isPending is true, choices are empty and a second has passed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
-                    <CheckboxGroupInput
-                        {...defaultProps}
-                        choices={[]}
-                        isPending
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            choices={[]}
+                            isPending
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -376,9 +408,11 @@ describe('<CheckboxGroupInput />', () => {
     it('should not render a LinearProgress if isPending is false', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <CheckboxGroupInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <CheckboxGroupInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 

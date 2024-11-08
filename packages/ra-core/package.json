@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "5.1.2",
+    "version": "5.3.2",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -40,7 +40,7 @@
         "jscodeshift": "^0.15.2",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "react-hook-form": "^7.52.0",
+        "react-hook-form": "^7.53.0",
         "react-router": "^6.25.1",
         "react-router-dom": "^6.25.1",
         "react-test-renderer": "^18.2.0",
@@ -53,7 +53,7 @@
     "peerDependencies": {
         "react": "^18.0.0 || ^19.0.0",
         "react-dom": "^18.0.0 || ^19.0.0",
-        "react-hook-form": "^7.52.0",
+        "react-hook-form": "^7.53.0",
         "react-router": "^6.22.0",
         "react-router-dom": "^6.22.0"
     },
@@ -62,7 +62,6 @@
         "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
         "eventemitter3": "^5.0.1",
-        "hotscript": "^1.0.12",
         "inflection": "^3.0.0",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",

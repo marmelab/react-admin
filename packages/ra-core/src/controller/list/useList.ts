@@ -170,7 +170,7 @@ export const useList = <RecordType extends RaRecord = any>(
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(
         () => {
-            if (isLoading || !data) return;
+            if (isPending || !data) return;
             let tempData = data;
 
             // 1. filter
@@ -236,7 +236,7 @@ export const useList = <RecordType extends RaRecord = any>(
             // eslint-disable-next-line react-hooks/exhaustive-deps
             JSON.stringify(data),
             filterValues,
-            isLoading,
+            isPending,
             page,
             perPage,
             setFinalItems,

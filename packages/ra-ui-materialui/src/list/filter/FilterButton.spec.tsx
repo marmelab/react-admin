@@ -36,6 +36,7 @@ describe('<FilterButton />', () => {
 
     beforeAll(() => {
         window.scrollTo = jest.fn();
+        jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterAll(() => {
@@ -43,28 +44,84 @@ describe('<FilterButton />', () => {
     });
 
     describe('filter selection menu', () => {
-        it('should display only hidden filters', () => {
-            const hiddenFilter = (
-                <TextInput source="Returned" label="Returned" />
-            );
-            const { getByLabelText, queryByText } = render(
-                <AdminContext theme={theme}>
-                    <ResourceContextProvider value="posts">
-                        <ListContextProvider value={defaultListContext}>
-                            <FilterButton
-                                filters={defaultProps.filters.concat(
-                                    hiddenFilter
-                                )}
-                            />
-                        </ListContextProvider>
-                    </ResourceContextProvider>
-                </AdminContext>
+        it('should control filters display by checking/unchecking them in the menu', async () => {
+            render(<Basic />);
+
+            fireEvent.click(await screen.findByLabelText('Add filter'));
+
+            let checkboxes: HTMLInputElement[] =
+                screen.getAllByRole('menuitemcheckbox');
+            expect(checkboxes).toHaveLength(3);
+            expect(checkboxes[0].getAttribute('aria-checked')).toBe('false');
+            expect(checkboxes[1].getAttribute('aria-checked')).toBe('false');
+            expect(checkboxes[2].getAttribute('aria-checked')).toBe('false');
+
+            fireEvent.click(checkboxes[0]);
+
+            await screen.findByRole('textbox', {
+                name: 'Title',
+            });
+            fireEvent.click(screen.getByLabelText('Add filter'));
+
+            checkboxes = screen.getAllByRole('menuitemcheckbox');
+            expect(checkboxes).toHaveLength(3);
+            expect(checkboxes[0].getAttribute('aria-checked')).toBe('true');
+            expect(checkboxes[1].getAttribute('aria-checked')).toBe('false');
+            expect(checkboxes[2].getAttribute('aria-checked')).toBe('false');
+
+            fireEvent.click(checkboxes[0]);
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByRole('textbox', {
+                            name: 'Title',
+                        })
+                    ).toBeNull();
+                },
+                { timeout: 2000 }
             );
 
-            fireEvent.click(getByLabelText('ra.action.add_filter'));
+            fireEvent.click(screen.getByLabelText('Add filter'));
+            checkboxes = screen.getAllByRole('menuitemcheckbox');
+            expect(checkboxes).toHaveLength(3);
+            expect(checkboxes[0].getAttribute('aria-checked')).toBe('false');
+            expect(checkboxes[1].getAttribute('aria-checked')).toBe('false');
+            expect(checkboxes[2].getAttribute('aria-checked')).toBe('false');
+        }, 7000);
 
-            expect(queryByText('Returned')).not.toBeNull();
-            expect(queryByText('Name')).toBeNull();
+        it('should remove the checked state of the menu item when removing its matching filter', async () => {
+            render(<Basic />);
+
+            fireEvent.click(await screen.findByLabelText('Add filter'));
+
+            let checkboxes: HTMLInputElement[] =
+                screen.getAllByRole('menuitemcheckbox');
+            fireEvent.click(checkboxes[0]);
+
+            await screen.findByRole('textbox', {
+                name: 'Title',
+            });
+
+            fireEvent.click(screen.getByTitle('Remove this filter'));
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByRole('textbox', {
+                            name: 'Title',
+                        })
+                    ).toBeNull();
+                },
+                { timeout: 2000 }
+            );
+
+            fireEvent.click(screen.getByLabelText('Add filter'));
+            checkboxes = screen.getAllByRole('menuitemcheckbox');
+            expect(checkboxes).toHaveLength(3);
+            expect(checkboxes[0].getAttribute('aria-checked')).toBe('false');
+            expect(checkboxes[1].getAttribute('aria-checked')).toBe('false');
+            expect(checkboxes[2].getAttribute('aria-checked')).toBe('false');
         });
 
         it('should display the filter button if all filters are shown and there is a filter value', () => {
@@ -136,13 +193,11 @@ describe('<FilterButton />', () => {
             await screen.findByText('Add filter');
             fireEvent.click(screen.getByText('Add filter'));
 
-            await screen.findByText('Title', { selector: 'li > span' });
+            await screen.findByText('Title', { selector: 'li span' });
             expect(screen.queryByDisplayValue('Remove all filters')).toBeNull();
 
             // Then we apply a filter
-            fireEvent.click(
-                screen.getByText('Title', { selector: 'li > span' })
-            );
+            fireEvent.click(screen.getByText('Title', { selector: 'li span' }));
             await screen.findByDisplayValue(
                 'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
             );
@@ -169,7 +224,7 @@ describe('<FilterButton />', () => {
             await screen.findByText('Add filter');
             fireEvent.click(screen.getByText('Add filter'));
 
-            await screen.findByText('Title', { selector: 'li > span' });
+            await screen.findByText('Title', { selector: 'li span' });
             expect(screen.queryByDisplayValue('Remove all filters')).toBeNull();
 
             // Then we apply a filter to an alwaysOn filter

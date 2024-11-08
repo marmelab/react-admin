@@ -5,7 +5,11 @@ title: "useLogout"
 
 # `useLogout`
 
-Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()`. Use it to build a custom Logout button and use it in a custom UserMenu, like the following: 
+`useLogout()` returns a callback that logs the user out by calling `authProvider.logout()`.
+
+## Usage
+
+Use it to build a custom Logout button and use it in a custom UserMenu, like the following: 
 
 ```jsx
 // in src/MyLayout.js

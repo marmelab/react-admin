@@ -1,6 +1,5 @@
-import Stack from '@mui/material/Stack';
+import { Chip, Stack } from '@mui/material';
 import {
-    BooleanField,
     CreateButton,
     DatagridConfigurable,
     ExportButton,
@@ -8,31 +7,44 @@ import {
     SearchInput,
     TextField,
     TopToolbar,
-    usePermissions,
+    useRecordContext,
 } from 'react-admin';
-import { Navigate } from 'react-router';
 
-function SalesListActions() {
-    return (
-        <TopToolbar>
-            <ExportButton />
-            <CreateButton variant="contained" label="New user" />
-        </TopToolbar>
-    );
-}
+const SalesListActions = () => (
+    <TopToolbar>
+        <ExportButton />
+        <CreateButton variant="contained" label="New user" />
+    </TopToolbar>
+);
 
 const filters = [<SearchInput source="q" alwaysOn />];
 
+const OptionsField = (_props: { label?: string | boolean }) => {
+    const record = useRecordContext();
+    if (!record) return null;
+    return (
+        <Stack direction="row" gap={1}>
+            {record.administrator && (
+                <Chip
+                    label="Admin"
+                    size="small"
+                    variant="outlined"
+                    color="primary"
+                />
+            )}
+            {record.disabled && (
+                <Chip
+                    label="Disabled"
+                    size="small"
+                    variant="outlined"
+                    color="warning"
+                />
+            )}
+        </Stack>
+    );
+};
+
 export function SalesList() {
-    const { isPending, permissions } = usePermissions();
-    if (isPending) {
-        return null;
-    }
-
-    if (permissions !== 'admin') {
-        return <Navigate to="/" />;
-    }
-
     return (
         <Stack gap={4}>
             <List
@@ -44,8 +56,7 @@ export function SalesList() {
                     <TextField source="first_name" />
                     <TextField source="last_name" />
                     <TextField source="email" />
-                    <BooleanField source="administrator" FalseIcon={null} />
-                    <BooleanField source="disabled" FalseIcon={null} />
+                    <OptionsField label={false} />
                 </DatagridConfigurable>
             </List>
         </Stack>

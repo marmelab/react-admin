@@ -7,6 +7,8 @@ title: "useAuthProvider"
 
 React-admin stores the `authProvider` object in a React context, so it's available from anywhere in your application code. The `useAuthProvider` hook reads this context to let you call the `authProvider` directly.
 
+## Usage 
+
 For instance, here is how to call the Auth Provider to get the identity of the current logged-in user:
 
 ```jsx

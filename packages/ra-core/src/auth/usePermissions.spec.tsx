@@ -1,47 +1,47 @@
 import * as React from 'react';
 import expect from 'expect';
 import { waitFor, render, screen } from '@testing-library/react';
-import { CoreAdminContext } from '../core/CoreAdminContext';
-
-import usePermissions from './usePermissions';
 import { QueryClient } from '@tanstack/react-query';
-
-const UsePermissions = ({ children }: any) => {
-    const permissionQueryParams = {
-        retry: false,
-    };
-    const res = usePermissions({}, permissionQueryParams);
-    return children(res);
-};
-
-const stateInpector = state => (
-    <div>
-        <span>{state.isPending && 'LOADING'}</span>
-        {state.permissions && <span>PERMISSIONS: {state.permissions}</span>}
-        <span>{state.error && 'ERROR'}</span>
-    </div>
-);
+import {
+    NoAuthProvider,
+    NoAuthProviderGetPermissions,
+    WithAuthProviderAndGetPermissions,
+} from './usePermissions.stories';
+import { AuthProvider } from '..';
 
 describe('usePermissions', () => {
-    it('should return a loading state on mount', () => {
+    it('should return a loading state on mount with an authProvider that supports permissions', async () => {
+        let resolveGetPermissions;
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => {
+                return new Promise(resolve => {
+                    resolveGetPermissions = resolve;
+                });
+            },
+        };
         render(
-            <CoreAdminContext>
-                <UsePermissions>{stateInpector}</UsePermissions>
-            </CoreAdminContext>
+            <WithAuthProviderAndGetPermissions authProvider={authProvider} />
         );
         expect(screen.queryByText('LOADING')).not.toBeNull();
-        expect(screen.queryByText('AUTHENTICATED')).toBeNull();
+        expect(screen.queryByText('PERMISSIONS: ')).toBeNull();
+        resolveGetPermissions('admin');
+        await screen.findByText('PERMISSIONS: admin');
     });
 
-    it('should return nothing by default after a tick', async () => {
-        render(
-            <CoreAdminContext>
-                <UsePermissions>{stateInpector}</UsePermissions>
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(screen.queryByText('LOADING')).toBeNull();
-        });
+    it('should return immediately without an authProvider', async () => {
+        render(<NoAuthProvider />);
+        expect(screen.queryByText('LOADING')).toBeNull();
+        expect(screen.queryByText('PERMISSIONS: ')).toBeNull();
+    });
+
+    it('should return immediately without an authProvider that supports permissions', async () => {
+        render(<NoAuthProviderGetPermissions />);
+        expect(screen.queryByText('LOADING')).toBeNull();
+        expect(screen.queryByText('PERMISSIONS: ')).toBeNull();
     });
 
     it('should return the permissions after a tick', async () => {
@@ -53,14 +53,10 @@ describe('usePermissions', () => {
             getPermissions: () => Promise.resolve('admin'),
         };
         render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UsePermissions>{stateInpector}</UsePermissions>
-            </CoreAdminContext>
+            <WithAuthProviderAndGetPermissions authProvider={authProvider} />
         );
-        await waitFor(() => {
-            expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('PERMISSIONS: admin')).not.toBeNull();
-        });
+        await screen.findByText('PERMISSIONS: admin');
+        expect(screen.queryByText('LOADING')).toBeNull();
     });
 
     it('should return an error after a tick if the auth.getPermissions call fails and checkError resolves', async () => {
@@ -72,14 +68,10 @@ describe('usePermissions', () => {
             getPermissions: () => Promise.reject('not good'),
         };
         render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UsePermissions>{stateInpector}</UsePermissions>
-            </CoreAdminContext>
+            <WithAuthProviderAndGetPermissions authProvider={authProvider} />
         );
-        await waitFor(() => {
-            expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('ERROR')).not.toBeNull();
-        });
+        await screen.findByText('ERROR');
+        expect(screen.queryByText('LOADING')).toBeNull();
     });
 
     it('should call logout when the auth.getPermissions call fails and checkError rejects', async () => {
@@ -91,9 +83,7 @@ describe('usePermissions', () => {
             getPermissions: () => Promise.reject('not good'),
         };
         render(
-            <CoreAdminContext authProvider={authProvider}>
-                <UsePermissions>{stateInpector}</UsePermissions>
-            </CoreAdminContext>
+            <WithAuthProviderAndGetPermissions authProvider={authProvider} />
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
@@ -103,7 +93,11 @@ describe('usePermissions', () => {
 
     it('should abort the request if the query is canceled', async () => {
         const abort = jest.fn();
-        const authProvider = {
+        const authProvider: AuthProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: jest.fn(() => Promise.resolve()),
+            checkAuth: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject(),
             getPermissions: jest.fn(
                 ({ signal }) =>
                     new Promise(() => {
@@ -111,16 +105,14 @@ describe('usePermissions', () => {
                             abort(signal.reason);
                         });
                     })
-            ) as any,
-        } as any;
+            ),
+        };
         const queryClient = new QueryClient();
         render(
-            <CoreAdminContext
+            <WithAuthProviderAndGetPermissions
                 authProvider={authProvider}
                 queryClient={queryClient}
-            >
-                <UsePermissions>{stateInpector}</UsePermissions>
-            </CoreAdminContext>
+            />
         );
         await waitFor(() => {
             expect(authProvider.getPermissions).toHaveBeenCalled();

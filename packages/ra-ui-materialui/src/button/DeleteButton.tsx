@@ -9,6 +9,8 @@ import {
     useSaveContext,
     SaveContextValue,
     RedirectionSideEffect,
+    useResourceContext,
+    useCanAccess,
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
@@ -54,8 +56,19 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
 ) => {
     const { mutationMode, ...rest } = props;
     const record = useRecordContext(props);
+    const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<DeleteButton> components should be used inside a <Resource> component or provided the resource prop.'
+        );
+    }
+    const { canAccess, isPending } = useCanAccess({
+        action: 'delete',
+        resource,
+        record,
+    });
     const saveContext = useSaveContext(props);
-    if (!record || record.id == null) {
+    if (!record || record.id == null || !canAccess || isPending) {
         return null;
     }
 

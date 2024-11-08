@@ -36,10 +36,19 @@ export const CustomIcon = () => (
     </Wrapper>
 );
 
+export const Dark = () => (
+    <Wrapper defaultTheme="dark">
+        <BooleanInput source="published" />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
+const Wrapper = ({ children, defaultTheme = 'light' }) => (
+    <AdminContext
+        i18nProvider={i18nProvider}
+        defaultTheme={defaultTheme as any}
+    >
         <Create resource="posts">
             <SimpleForm>{children}</SimpleForm>
         </Create>

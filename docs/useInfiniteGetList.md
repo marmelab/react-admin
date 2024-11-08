@@ -24,6 +24,7 @@ It is based on react-query's [`useInfiniteQuery`](https://tanstack.com/query/v5/
 const {
     data: { pages, pageParams },
     total,
+    meta,
     pageInfo,
     isPending, 
     error,

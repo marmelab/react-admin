@@ -225,13 +225,10 @@ If you just need to ask users for a single string to create the new option, you 
 
 ## `createLabel`
 
-When you set the `create` or `onCreate` prop, `<AutocompleteInput>` lets users create new options. By default, it renders a "Create" menu item at the bottom of the list. You can customize the label of that menu item by setting a custom translation for the `ra.action.create` key in the translation files.
+When you set the `create` or `onCreate` prop, `<AutocompleteInput>` lets users create new options.
+You can use the `createLabel` prop to render an additional menu item at the bottom of the list, that will only appear when the input is empty, inviting users to start typing to create a new option.
 
 ![Create Label](./img/AutocompleteInput-createLabel.png)
-
-Or, if you want to customize it just for this `<AutocompleteInput>`, use the `createLabel` prop:
-
-You can customize the label of that menu item by setting a custom translation for the `ra.action.create` key in the translation files.
 
 ```jsx
 <AutocompleteInput

@@ -95,7 +95,7 @@ const TabbedDatagrid = () => {
             <Tabs
                 variant="fullWidth"
                 centered
-                value={filterValues.status}
+                value={filterValues.status ?? 'ordered'}
                 indicatorColor="primary"
                 onChange={handleChange}
             >
@@ -124,7 +124,8 @@ const TabbedDatagrid = () => {
                 <MobileGrid />
             ) : (
                 <>
-                    {filterValues.status === 'ordered' && (
+                    {(filterValues.status == null ||
+                        filterValues.status === 'ordered') && (
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}

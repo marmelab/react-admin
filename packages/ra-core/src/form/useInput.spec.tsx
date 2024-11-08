@@ -5,7 +5,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { CoreAdminContext, SourceContextProvider } from '../core';
 import { testDataProvider } from '../dataProvider';
 import { Form } from './Form';
-import { useInput, InputProps } from './useInput';
+import { useInput, InputProps, UseInputValue } from './useInput';
 import { required } from './validate';
 
 const Input: FunctionComponent<
@@ -564,6 +564,94 @@ describe('useInput', () => {
                         resource: 'posts',
                     })
                 );
+            });
+        });
+
+        it('should validate and be dirty for inputs that were disabled and re-enabled', async () => {
+            let inputProps: UseInputValue | undefined;
+
+            const DisabledEnableInput = () => {
+                const [disabled, setDisabled] = React.useState(false);
+
+                return (
+                    <>
+                        <button
+                            type="button"
+                            onClick={() => setDisabled(disabled => !disabled)}
+                        >
+                            Toggle
+                        </button>
+                        <Input
+                            source="title"
+                            resource="posts"
+                            validate={required()}
+                            disabled={disabled}
+                        >
+                            {props => {
+                                inputProps = props; // Capture the latest props
+                                return (
+                                    <input
+                                        type="text"
+                                        id={props.id}
+                                        aria-label="Title"
+                                        {...props.field}
+                                    />
+                                );
+                            }}
+                        </Input>
+                    </>
+                );
+            };
+
+            render(
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Form onSubmit={jest.fn()} mode="onChange">
+                        <DisabledEnableInput />
+                    </Form>
+                </CoreAdminContext>
+            );
+
+            // Initial state assertions
+            expect(inputProps?.fieldState.isDirty).toBe(false);
+            expect(inputProps?.field.disabled).toBe(false);
+
+            // Disable the input
+            fireEvent.click(screen.getByText('Toggle'));
+
+            await waitFor(() => {
+                expect(inputProps?.fieldState.isDirty).toBe(false);
+                expect(inputProps?.field.disabled).toBe(true);
+            });
+
+            // Re-enable the input
+            fireEvent.click(screen.getByText('Toggle'));
+
+            await waitFor(() => {
+                expect(inputProps?.fieldState.isDirty).toBe(false);
+                expect(inputProps?.field.disabled).toBe(false);
+            });
+
+            // Type in the input
+            fireEvent.change(screen.getByLabelText('Title'), {
+                target: { value: 'A title' },
+            });
+
+            // Assert that the field is now dirty
+            await waitFor(() => {
+                expect(inputProps?.fieldState.isDirty).toBe(true); // Now the input should be dirty
+                expect(inputProps?.field.value).toBe('A title');
+            });
+
+            // Clear the input
+            fireEvent.change(screen.getByLabelText('Title'), {
+                target: { value: '' },
+            });
+
+            // Assert that the field is now dirty and invalid because it is required
+            await waitFor(() => {
+                expect(inputProps?.fieldState.isDirty).toBe(true); // Now the input should be dirty
+                expect(inputProps?.field.value).toBe('');
+                expect(inputProps?.fieldState.invalid).toBe(true);
             });
         });
     });

@@ -26,6 +26,8 @@ import {
     InsideReferenceInputOnChange,
     WithInputProps,
     OnCreate,
+    OnCreateSlow,
+    CreateLabel,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -39,12 +41,17 @@ describe('<AutocompleteInput />', () => {
     it('should set AutocompleteInput value to an empty string when the selected item is null', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 2, name: 'foo' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: null }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 2, name: 'foo' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -56,12 +63,17 @@ describe('<AutocompleteInput />', () => {
     it('should use the input value as the initial state and input searchText', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 2, name: 'foo' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 2 }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 2, name: 'foo' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByDisplayValue('foo')).not.toBeNull();
@@ -70,15 +82,17 @@ describe('<AutocompleteInput />', () => {
     it('should allow filter to match the selected choice while removing characters in the input', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 1, name: 'foo' },
-                            { id: 2, name: 'bar' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 1, name: 'foo' },
+                                { id: 2, name: 'bar' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -110,13 +124,15 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <AutocompleteInput
-                            emptyText={emptyText}
-                            {...defaultProps}
-                            choices={[{ id: 2, name: 'foo' }]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <AutocompleteInput
+                                emptyText={emptyText}
+                                {...defaultProps}
+                                choices={[{ id: 2, name: 'foo' }]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.mouseDown(
@@ -134,16 +150,18 @@ describe('<AutocompleteInput />', () => {
             const emptyText = 'Default';
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 1 }}
-                    >
-                        <AutocompleteInput
-                            emptyText={emptyText}
-                            {...defaultProps}
-                            choices={[]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 1 }}
+                        >
+                            <AutocompleteInput
+                                emptyText={emptyText}
+                                {...defaultProps}
+                                choices={[]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.click(
@@ -159,17 +177,19 @@ describe('<AutocompleteInput />', () => {
             const emptyText = 'Default';
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 1 }}
-                    >
-                        <AutocompleteInput
-                            emptyText={emptyText}
-                            {...defaultProps}
-                            choices={[]}
-                            validate={required()}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 1 }}
+                        >
+                            <AutocompleteInput
+                                emptyText={emptyText}
+                                {...defaultProps}
+                                choices={[]}
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.click(
@@ -186,17 +206,19 @@ describe('<AutocompleteInput />', () => {
             const emptyText = 'Default';
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 1 }}
-                    >
-                        <AutocompleteInput
-                            emptyText={emptyText}
-                            {...defaultProps}
-                            choices={[]}
-                            isRequired
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 1 }}
+                        >
+                            <AutocompleteInput
+                                emptyText={emptyText}
+                                {...defaultProps}
+                                choices={[]}
+                                isRequired
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.click(
@@ -214,19 +236,21 @@ describe('<AutocompleteInput />', () => {
         it('should use optionValue as value identifier', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            optionValue="foobar"
-                            choices={[
-                                { foobar: 2, name: 'foo' },
-                                { foobar: 3, name: 'bar' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 2 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                optionValue="foobar"
+                                choices={[
+                                    { foobar: 2, name: 'foo' },
+                                    { foobar: 3, name: 'bar' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByDisplayValue('foo')).not.toBeNull();
@@ -241,19 +265,21 @@ describe('<AutocompleteInput />', () => {
         it('should use optionValue including "." as value identifier', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            optionValue="foobar.id"
-                            choices={[
-                                { foobar: { id: 2 }, name: 'foo' },
-                                { foobar: { id: 3 }, name: 'bar' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 2 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                optionValue="foobar.id"
+                                choices={[
+                                    { foobar: { id: 2 }, name: 'foo' },
+                                    { foobar: { id: 3 }, name: 'bar' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByDisplayValue('foo')).not.toBeNull();
@@ -270,19 +296,21 @@ describe('<AutocompleteInput />', () => {
         it('should use optionText with a string value as text identifier', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            optionText="foobar"
-                            choices={[
-                                { id: 2, foobar: 'foo' },
-                                { id: 3, foobar: 'bar' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 2 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                optionText="foobar"
+                                choices={[
+                                    { id: 2, foobar: 'foo' },
+                                    { id: 3, foobar: 'bar' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByDisplayValue('foo')).not.toBeNull();
@@ -298,19 +326,21 @@ describe('<AutocompleteInput />', () => {
         it('should use optionText with a string value including "." as text identifier', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            optionText="foobar.name"
-                            choices={[
-                                { id: 2, foobar: { name: 'foo' } },
-                                { id: 3, foobar: { name: 'bar' } },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 2 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                optionText="foobar.name"
+                                choices={[
+                                    { id: 2, foobar: { name: 'foo' } },
+                                    { id: 3, foobar: { name: 'bar' } },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByDisplayValue('foo')).not.toBeNull();
@@ -325,19 +355,21 @@ describe('<AutocompleteInput />', () => {
         it('should use optionText with a function value as text identifier', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            optionText={choice => choice.foobar}
-                            choices={[
-                                { id: 2, foobar: 'foo' },
-                                { id: 3, foobar: 'bar' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 2 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                optionText={choice => choice.foobar}
+                                choices={[
+                                    { id: 2, foobar: 'foo' },
+                                    { id: 3, foobar: 'bar' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByDisplayValue('foo')).not.toBeNull();
@@ -364,15 +396,17 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            optionText={optionText}
-                            onCreate={handleCreate}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                optionText={optionText}
+                                onCreate={handleCreate}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -393,21 +427,23 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            optionText={<OptionItem />}
-                            matchSuggestion={() => true}
-                            inputText={record => record?.name}
-                            choices={[
-                                { id: 1, name: 'bar' },
-                                { id: 2, name: 'foo' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 2 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                optionText={<OptionItem />}
+                                matchSuggestion={() => true}
+                                inputText={record => record?.name}
+                                choices={[
+                                    { id: 1, name: 'bar' },
+                                    { id: 2, name: 'foo' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -428,20 +464,22 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            optionText={() => <SuggestionItem />}
-                            matchSuggestion={() => true}
-                            choices={[
-                                { id: 1, name: 'bar' },
-                                { id: 2, name: 'foo' },
-                            ]}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 2 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                optionText={() => <SuggestionItem />}
+                                matchSuggestion={() => true}
+                                choices={[
+                                    { id: 1, name: 'bar' },
+                                    { id: 2, name: 'foo' },
+                                ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             await screen.findByText(
@@ -460,29 +498,31 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext>
-                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            matchSuggestion={(filter, choice) => {
-                                if (!filter) return true;
-                                if (
-                                    filter === 'gugu' &&
-                                    choice.name === 'Angular'
-                                ) {
-                                    return true;
-                                }
-                                if (
-                                    filter === 'rere' &&
-                                    choice.name === 'React'
-                                ) {
-                                    return true;
-                                }
-                                return false;
-                            }}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                matchSuggestion={(filter, choice) => {
+                                    if (!filter) return true;
+                                    if (
+                                        filter === 'gugu' &&
+                                        choice.name === 'Angular'
+                                    ) {
+                                        return true;
+                                    }
+                                    if (
+                                        filter === 'rere' &&
+                                        choice.name === 'React'
+                                    ) {
+                                        return true;
+                                    }
+                                    return false;
+                                }}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -515,35 +555,37 @@ describe('<AutocompleteInput />', () => {
             ];
             const OptionText = () => {
                 const record = useRecordContext();
-                return <span>option:{record.name}</span>;
+                return <span>option:{record?.name}</span>;
             };
             render(
                 <AdminContext>
-                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            matchSuggestion={(filter, choice) => {
-                                if (!filter) return true;
-                                if (
-                                    filter === 'gugu' &&
-                                    choice.name === 'Angular'
-                                ) {
-                                    return true;
-                                }
-                                if (
-                                    filter === 'rere' &&
-                                    choice.name === 'React'
-                                ) {
-                                    return true;
-                                }
-                                return false;
-                            }}
-                            optionText={<OptionText />}
-                            inputText={option => option.name}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                matchSuggestion={(filter, choice) => {
+                                    if (!filter) return true;
+                                    if (
+                                        filter === 'gugu' &&
+                                        choice.name === 'Angular'
+                                    ) {
+                                        return true;
+                                    }
+                                    if (
+                                        filter === 'rere' &&
+                                        choice.name === 'React'
+                                    ) {
+                                        return true;
+                                    }
+                                    return false;
+                                }}
+                                optionText={<OptionText />}
+                                inputText={option => option.name}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -573,15 +615,17 @@ describe('<AutocompleteInput />', () => {
     it('should not match selection when selected choice id equals the emptyValue while changing the input', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 2, name: 'foo' },
-                            { id: 3, name: 'bar' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 2, name: 'foo' },
+                                { id: 3, name: 'bar' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -639,15 +683,20 @@ describe('<AutocompleteInput />', () => {
     it('should show the suggestions on focus', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 2, name: 'foo' },
-                            { id: 3, name: 'bar' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 2 }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 2, name: 'foo' },
+                                { id: 3, name: 'bar' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -660,17 +709,22 @@ describe('<AutocompleteInput />', () => {
     it('should respect shouldRenderSuggestions over default if passed in', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        shouldRenderSuggestions={() => false}
-                        noOptionsText="No options"
-                        choices={[
-                            { id: 1, name: 'bar' },
-                            { id: 2, name: 'foo' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 2 }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            shouldRenderSuggestions={() => false}
+                            noOptionsText="No options"
+                            choices={[
+                                { id: 1, name: 'bar' },
+                                { id: 2, name: 'foo' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -684,12 +738,17 @@ describe('<AutocompleteInput />', () => {
     it('should not fail when value is null and new choices are applied', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 2, name: 'foo' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: null }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 2, name: 'foo' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -701,12 +760,17 @@ describe('<AutocompleteInput />', () => {
 
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 1, name: 'bar' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: null }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 1, name: 'bar' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -716,12 +780,17 @@ describe('<AutocompleteInput />', () => {
     it('should repopulate the suggestions after the suggestions are dismissed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 2, name: 'foo' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: null }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 2, name: 'foo' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
@@ -743,12 +812,17 @@ describe('<AutocompleteInput />', () => {
     it('should not rerender searchText while having focus and new choices arrive', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 2, name: 'foo' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: null }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 2, name: 'foo' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -760,12 +834,17 @@ describe('<AutocompleteInput />', () => {
 
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 1, name: 'bar' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: null }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 1, name: 'bar' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -775,9 +854,14 @@ describe('<AutocompleteInput />', () => {
     it('should show the suggestions when the input value is null and the input is focussed and choices arrived late', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
-                    <AutocompleteInput {...defaultProps} />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 2 }}
+                    >
+                        <AutocompleteInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -786,15 +870,20 @@ describe('<AutocompleteInput />', () => {
 
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 1, name: 'bar' },
-                            { id: 2, name: 'foo' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 2 }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 1, name: 'bar' },
+                                { id: 2, name: 'foo' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(
@@ -808,16 +897,18 @@ describe('<AutocompleteInput />', () => {
         const setFilter = jest.fn();
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} record={{ role: 2 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        setFilter={setFilter}
-                        choices={[
-                            { id: 1, name: 'bar' },
-                            { id: 2, name: 'foo' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()} record={{ role: 2 }}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            setFilter={setFilter}
+                            choices={[
+                                { id: 1, name: 'bar' },
+                                { id: 2, name: 'foo' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
@@ -829,16 +920,18 @@ describe('<AutocompleteInput />', () => {
 
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} record={{ role: 1 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        setFilter={setFilter}
-                        choices={[
-                            { id: 1, name: 'bar' },
-                            { id: 2, name: 'foo' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()} record={{ role: 1 }}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            setFilter={setFilter}
+                            choices={[
+                                { id: 1, name: 'bar' },
+                                { id: 2, name: 'foo' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         await waitFor(() => {
@@ -851,16 +944,18 @@ describe('<AutocompleteInput />', () => {
         const setFilter = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        setFilter={setFilter}
-                        choices={[
-                            { id: 1, name: 'bar' },
-                            { id: 2, name: 'foo' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            setFilter={setFilter}
+                            choices={[
+                                { id: 1, name: 'bar' },
+                                { id: 2, name: 'foo' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
@@ -888,18 +983,23 @@ describe('<AutocompleteInput />', () => {
         );
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        getOptionLabel={option => option.name}
-                        choices={[
-                            { id: 1, name: 'identical' },
-                            { id: 2, name: 'identical' },
-                            { id: 3, name: 'identical' },
-                            { id: 4, name: 'different' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 2 }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            getOptionLabel={option => option.name}
+                            choices={[
+                                { id: 1, name: 'identical' },
+                                { id: 2, name: 'identical' },
+                                { id: 3, name: 'identical' },
+                                { id: 4, name: 'different' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
@@ -912,13 +1012,18 @@ describe('<AutocompleteInput />', () => {
     it('should display helperText if specified', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 1 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        helperText="Can I help you?"
-                        choices={[{ id: 1, name: 'hello' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{ role: 1 }}
+                    >
+                        <AutocompleteInput
+                            {...defaultProps}
+                            helperText="Can I help you?"
+                            choices={[{ id: 1, name: 'hello' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByText('Can I help you?')).not.toBeNull();
@@ -930,16 +1035,18 @@ describe('<AutocompleteInput />', () => {
         it('should not be displayed if field is pristine', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 1 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            choices={[{ id: 1, name: 'hello' }]}
-                            validate={failingValidator}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{ role: 1 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                choices={[{ id: 1, name: 'hello' }]}
+                                validate={failingValidator}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(screen.queryByText('ra.validation.error')).toBeNull();
@@ -948,17 +1055,19 @@ describe('<AutocompleteInput />', () => {
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        mode="onBlur"
-                        defaultValues={{ role: 1 }}
-                    >
-                        <AutocompleteInput
-                            {...defaultProps}
-                            choices={[{ id: 1, name: 'hello' }]}
-                            validate={failingValidator}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            mode="onBlur"
+                            defaultValues={{ role: 1 }}
+                        >
+                            <AutocompleteInput
+                                {...defaultProps}
+                                choices={[{ id: 1, name: 'hello' }]}
+                                validate={failingValidator}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             fireEvent.click(
@@ -979,16 +1088,18 @@ describe('<AutocompleteInput />', () => {
     it('updates suggestions when input is blurred and refocused', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 1, name: 'ab' },
-                            { id: 2, name: 'abc' },
-                            { id: 3, name: '123' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 1, name: 'ab' },
+                                { id: 2, name: 'abc' },
+                                { id: 3, name: '123' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
@@ -1006,16 +1117,18 @@ describe('<AutocompleteInput />', () => {
     it('does not automatically select a matched choice if there is only one', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 1, name: 'ab' },
-                            { id: 2, name: 'abc' },
-                            { id: 3, name: '123' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 1, name: 'ab' },
+                                { id: 2, name: 'abc' },
+                                { id: 3, name: '123' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText('resources.users.fields.role');
@@ -1028,12 +1141,14 @@ describe('<AutocompleteInput />', () => {
     it('should accept 0 as an input value', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 0, name: 'foo' }]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 0, name: 'foo' }]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -1054,7 +1169,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     describe('onCreate', () => {
-        it('should include an option with the createLabel when the input is empty', async () => {
+        it("shouldn't include an option with the create label when the input is empty", async () => {
             const choices = [
                 { id: 'ang', name: 'Angular' },
                 { id: 'rea', name: 'React' },
@@ -1070,18 +1185,20 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            onCreate={handleCreate}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                onCreate={handleCreate}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -1093,8 +1210,53 @@ describe('<AutocompleteInput />', () => {
                 target: { value: '' },
             });
 
-            expect(screen.queryByText('ra.action.create')).not.toBeNull();
+            expect(screen.queryByText('ra.action.create')).toBeNull();
             expect(screen.queryByText('ra.action.create_item')).toBeNull();
+        });
+        it('should include an option with the custom createLabel when the input is empty', async () => {
+            render(<CreateLabel />);
+
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+
+            expect(
+                screen.queryByText('Start typing to create a new item')
+            ).not.toBeNull();
+            expect(screen.queryByText(/Create/)).toBeNull();
+        });
+        it('should not show the create option when a choice is selected when using a custom createLabel', async () => {
+            render(<CreateLabel />);
+
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+
+            // First, clear the input
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            // We expect only the 'Start typing to create a new item' option
+            await screen.findByText('Victor Hugo');
+            expect(
+                screen.queryByText('Start typing to create a new item')
+            ).not.toBeNull();
+            expect(screen.queryByText(/Create/)).toBeNull();
+
+            // Then, change the input to an existing value
+            fireEvent.click(screen.getByText('Leo Tolstoy'));
+            fireEvent.focus(input);
+            // We expect all create labels not to render
+            await screen.findByText('Victor Hugo');
+            expect(
+                screen.queryByText('Start typing to create a new item')
+            ).toBeNull();
+            expect(screen.queryByText(/Create/)).toBeNull();
         });
         it('should include an option with the createItemLabel when the input not empty', async () => {
             const choices = [
@@ -1112,18 +1274,20 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            onCreate={handleCreate}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                onCreate={handleCreate}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -1154,18 +1318,20 @@ describe('<AutocompleteInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            onCreate={handleCreate}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                onCreate={handleCreate}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -1195,18 +1361,20 @@ describe('<AutocompleteInput />', () => {
 
             const { rerender } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            onCreate={handleCreate}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                onCreate={handleCreate}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -1221,18 +1389,20 @@ describe('<AutocompleteInput />', () => {
             await new Promise(resolve => setTimeout(resolve));
             rerender(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            onCreate={handleCreate}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                onCreate={handleCreate}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(
@@ -1245,7 +1415,6 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
             expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
         });
-
         it('should allow the creation of a new choice with a promise', async () => {
             const choices = [
                 { id: 'ang', name: 'Angular' },
@@ -1264,18 +1433,20 @@ describe('<AutocompleteInput />', () => {
 
             const { rerender } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            onCreate={handleCreate}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                onCreate={handleCreate}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -1290,18 +1461,20 @@ describe('<AutocompleteInput />', () => {
             await new Promise(resolve => setTimeout(resolve, 100));
             rerender(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            onCreate={handleCreate}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                onCreate={handleCreate}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(
@@ -1314,6 +1487,31 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
             expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
         });
+        it('should not use the createItemLabel as the value of the input', async () => {
+            render(<OnCreateSlow />);
+            await screen.findByText('Book War and Peace', undefined, {
+                timeout: 2000,
+            });
+            const input = screen.getByLabelText('Author') as HTMLInputElement;
+            await waitFor(
+                () => {
+                    expect(input.value).toBe('Leo Tolstoy');
+                },
+                { timeout: 2000 }
+            );
+            fireEvent.focus(input);
+            expect(screen.getAllByRole('option')).toHaveLength(4);
+            fireEvent.change(input, { target: { value: 'x' } });
+            await waitFor(
+                () => {
+                    expect(screen.getAllByRole('option')).toHaveLength(1);
+                },
+                { timeout: 2000 }
+            );
+            fireEvent.click(screen.getByText('Create x'));
+            expect(input.value).not.toBe('Create x');
+            expect(input.value).toBe('x');
+        }, 10000);
     });
     describe('create', () => {
         it('should allow the creation of a new choice', async () => {
@@ -1338,18 +1536,20 @@ describe('<AutocompleteInput />', () => {
 
             const { rerender } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            create={<Create />}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                create={<Create />}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -1364,18 +1564,20 @@ describe('<AutocompleteInput />', () => {
             await new Promise(resolve => setTimeout(resolve));
             rerender(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        mode="onBlur"
-                        onSubmit={jest.fn()}
-                        defaultValues={{ language: 'ang' }}
-                    >
-                        <AutocompleteInput
-                            source="language"
-                            resource="posts"
-                            choices={choices}
-                            create={<Create />}
-                        />
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            mode="onBlur"
+                            onSubmit={jest.fn()}
+                            defaultValues={{ language: 'ang' }}
+                        >
+                            <AutocompleteInput
+                                source="language"
+                                resource="posts"
+                                choices={choices}
+                                create={<Create />}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
             expect(
@@ -1629,23 +1831,25 @@ describe('<AutocompleteInput />', () => {
     it('should display "No options" and not throw any error inside a ReferenceArrayInput field when referenced list is empty', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm>
-                    <ReferenceArrayInput
-                        label="Tags"
-                        reference="tags"
-                        source="tags"
-                    >
-                        <AutocompleteArrayInput />
-                    </ReferenceArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <ReferenceArrayInput
+                            label="Tags"
+                            reference="tags"
+                            source="tags"
+                        >
+                            <AutocompleteArrayInput />
+                        </ReferenceArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         // Give time for the (previously thrown) error to happen
         await new Promise(resolve => setTimeout(resolve, 1000));
         await waitFor(() => {
-            screen.getByText('resources.undefined.fields.tags');
+            screen.getByText('resources.posts.fields.tags');
         });
-        fireEvent.click(screen.getByText('resources.undefined.fields.tags'));
+        fireEvent.click(screen.getByText('resources.posts.fields.tags'));
         await waitFor(() => {
             screen.getByText('No options');
         });
@@ -1665,17 +1869,19 @@ describe('<AutocompleteInput />', () => {
     it('should clear the input when its blurred, having an unmatching selection and clearOnBlur prop is true', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        clearOnBlur
-                        choices={[
-                            { id: 1, name: 'ab' },
-                            { id: 2, name: 'abc' },
-                            { id: 3, name: '123' },
-                        ]}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            clearOnBlur
+                            choices={[
+                                { id: 1, name: 'ab' },
+                                { id: 2, name: 'abc' },
+                                { id: 3, name: '123' },
+                            ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(
@@ -1728,12 +1934,14 @@ describe('<AutocompleteInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        onInputChange={onInputChange}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            onInputChange={onInputChange}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(

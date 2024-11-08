@@ -11,7 +11,7 @@ import {
 } from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
-import undoableEventEmitter from './undoableEventEmitter';
+import { useAddUndoableMutation } from './undo/useAddUndoableMutation';
 import {
     RaRecord,
     UpdateParams,
@@ -91,6 +91,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
 ): UseUpdateResult<RecordType, boolean, ErrorType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const addUndoableMutation = useAddUndoableMutation();
     const { id, data, meta } = params;
     const {
         mutationMode = 'pessimistic',
@@ -115,11 +116,15 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
     // otherwise the other side effects may not applied.
     const hasCallTimeOnSuccess = useRef(false);
 
-    const updateCache = ({ resource, id, data }) => {
+    const updateCache = ({ resource, id, data, meta }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
         // because setQueryData doesn't accept a stale time option
         const now = Date.now();
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
+        // Stringify and parse the data to remove undefined values.
+        // If we don't do this, an update with { id: undefined } as payload
+        // would remove the id from the record, which no real data provider does.
+        const clonedData = JSON.parse(JSON.stringify(data));
 
         const updateColl = (old: RecordType[]) => {
             if (!old) return old;
@@ -132,7 +137,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             }
             return [
                 ...old.slice(0, index),
-                { ...old[index], ...data } as RecordType,
+                { ...old[index], ...clonedData } as RecordType,
                 ...old.slice(index + 1),
             ];
         };
@@ -143,7 +148,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
 
         queryClient.setQueryData(
             [resource, 'getOne', { id: String(id), meta }],
-            (record: RecordType) => ({ ...record, ...data }),
+            (record: RecordType) => ({ ...record, ...clonedData }),
             { updatedAt }
         );
         queryClient.setQueriesData(
@@ -269,6 +274,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     resource: callTimeResource,
                     id: callTimeId,
                     data,
+                    meta: mutationOptions.meta ?? paramsRef.current.meta,
                 });
 
                 if (
@@ -436,6 +442,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             resource: callTimeResource,
             id: callTimeId,
             data: callTimeData,
+            meta: callTimeMeta,
         });
 
         // run the success callbacks during the next tick
@@ -466,8 +473,9 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 ...callTimeParams,
             });
         } else {
-            // undoable mutation: register the mutation for later
-            undoableEventEmitter.once('end', ({ isUndo }) => {
+            // Undoable mutation: add the mutation to the undoable queue.
+            // The Notification component will dequeue it when the user confirms or cancels the message.
+            addUndoableMutation(({ isUndo }) => {
                 if (isUndo) {
                     // rollback
                     snapshot.current.forEach(([key, value]) => {

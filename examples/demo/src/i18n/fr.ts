@@ -98,6 +98,13 @@ const customFrenchMessages: TranslationMessages = {
                 password_mismatch:
                     'La confirmation du mot de passe est différent du mot de passe.',
             },
+            notifications: {
+                created: 'Client créé |||| %{smart_count} clients créés',
+                updated:
+                    'Client mis à jour |||| %{smart_count} clients mis à jour',
+                deleted:
+                    'Client supprimé |||| %{smart_count} clients supprimés',
+            },
         },
         orders: {
             name: 'Commande |||| Commandes',
@@ -131,6 +138,13 @@ const customFrenchMessages: TranslationMessages = {
                 items: 'Articles',
                 total: 'Total',
             },
+            notifications: {
+                created: 'Commande créée |||| %{smart_count} commandes créées',
+                updated:
+                    'Commande mise à jour |||| %{smart_count} commandes mises à jour',
+                deleted:
+                    'Commande supprimée |||| %{smart_count} commandes supprimées',
+            },
         },
         invoices: {
             name: 'Facture |||| Factures',
@@ -145,6 +159,13 @@ const customFrenchMessages: TranslationMessages = {
                 total_ex_taxes: 'Montant HT',
                 delivery_fees: 'Frais de livraison',
                 taxes: 'TVA',
+            },
+            notifications: {
+                created: 'Facture créée |||| %{smart_count} factures créées',
+                updated:
+                    'Facture mise à jour |||| %{smart_count} factures mises à jour',
+                deleted:
+                    'Facture supprimée |||| %{smart_count} factures supprimées',
             },
         },
         products: {
@@ -184,12 +205,27 @@ const customFrenchMessages: TranslationMessages = {
                 low_sellers: 'Peu vendu',
                 never_sold: 'Jamais vendu',
             },
+            notifications: {
+                created: 'Poster créé |||| %{smart_count} posters créés',
+                updated:
+                    'Poster mis à jour |||| %{smart_count} posters mis à jour',
+                deleted:
+                    'Poster supprimé |||| %{smart_count} posters supprimés',
+            },
         },
         categories: {
             name: 'Catégorie |||| Catégories',
             fields: {
                 name: 'Nom',
                 products: 'Produits',
+            },
+            notifications: {
+                created:
+                    'Catégorie créée |||| %{smart_count} catégories créées',
+                updated:
+                    'Catégorie mise à jour |||| %{smart_count} catégories mises à jour',
+                deleted:
+                    'Catégorie supprimée |||| %{smart_count} catégories supprimées',
             },
         },
         reviews: {
@@ -212,7 +248,13 @@ const customFrenchMessages: TranslationMessages = {
                 accept: 'Accepter',
                 reject: 'Rejeter',
             },
-            notification: {
+            notifications: {
+                created:
+                    'Commentaire créé |||| %{smart_count} commentaires créés',
+                updated:
+                    'Commentaire mis à jour |||| %{smart_count} commentaires mis à jour',
+                deleted:
+                    'Commentaire supprimé |||| %{smart_count} commentaires supprimés',
                 approved_success: 'Commentaire approuvé',
                 approved_error: 'Erreur: Commentaire non approuvé',
                 rejected_success: 'Commentaire rejeté',

@@ -113,10 +113,12 @@ describe('<ReferenceInputBase />', () => {
     it('should accept meta in queryOptions', async () => {
         const getList = jest
             .fn()
-            .mockImplementationOnce(() =>
-                Promise.resolve({ data: [], total: 25 })
-            );
-        const dataProvider = testDataProvider({ getList });
+            .mockImplementation(() => Promise.resolve({ data: [], total: 25 }));
+        const dataProvider = testDataProvider({
+            getList,
+            // @ts-ignore
+            getOne: () => Promise.resolve({ data: { id: 1 } }),
+        });
         render(<Meta dataProvider={dataProvider} />);
         await waitFor(() => {
             expect(getList).toHaveBeenCalledWith('authors', {

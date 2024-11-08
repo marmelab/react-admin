@@ -64,6 +64,8 @@ export interface TranslationMessages extends StringMap {
             show: string;
             empty: string;
             invite: string;
+            access_denied: string;
+            authentication_error: string;
         };
         input: {
             [key: string]: StringMap | string;
@@ -109,10 +111,14 @@ export interface TranslationMessages extends StringMap {
             not_found: string;
             yes: string;
             unsaved_changes: string;
+            access_denied: string;
+            authentication_error: string;
         };
         navigation: {
             [key: string]: StringMap | string;
             no_results: string;
+            no_filtered_results: string;
+            clear_filters: string;
             no_more_results: string;
             page_out_of_boundaries: string;
             page_out_from_end: string;

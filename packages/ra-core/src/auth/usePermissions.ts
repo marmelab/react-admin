@@ -51,10 +51,12 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
     const { onSuccess, onError, onSettled, ...queryOptions } =
         queryParams ?? {};
 
-    const result = useQuery<PermissionsType, ErrorType>({
+    const queryResult = useQuery<PermissionsType, ErrorType>({
         queryKey: ['auth', 'getPermissions', params],
         queryFn: async ({ signal }) => {
-            if (!authProvider) return Promise.resolve([]);
+            if (!authProvider || !authProvider.getPermissions) {
+                return [];
+            }
             const permissions = await authProvider.getPermissions({
                 ...params,
                 signal,
@@ -77,33 +79,37 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
     );
 
     useEffect(() => {
-        if (result.data === undefined || result.isFetching) return;
-        onSuccessEvent(result.data);
-    }, [onSuccessEvent, result.data, result.isFetching]);
+        if (queryResult.data === undefined || queryResult.isFetching) return;
+        onSuccessEvent(queryResult.data);
+    }, [onSuccessEvent, queryResult.data, queryResult.isFetching]);
 
     useEffect(() => {
-        if (result.error == null || result.isFetching) return;
-        onErrorEvent(result.error);
-    }, [onErrorEvent, result.error, result.isFetching]);
+        if (queryResult.error == null || queryResult.isFetching) return;
+        onErrorEvent(queryResult.error);
+    }, [onErrorEvent, queryResult.error, queryResult.isFetching]);
 
     useEffect(() => {
-        if (result.status === 'pending' || result.isFetching) return;
-        onSettledEvent(result.data, result.error);
+        if (queryResult.status === 'pending' || queryResult.isFetching) return;
+        onSettledEvent(queryResult.data, queryResult.error);
     }, [
         onSettledEvent,
-        result.data,
-        result.error,
-        result.status,
-        result.isFetching,
+        queryResult.data,
+        queryResult.error,
+        queryResult.status,
+        queryResult.isFetching,
     ]);
 
-    return useMemo(
+    const result = useMemo(
         () => ({
-            ...result,
-            permissions: result.data,
+            ...queryResult,
+            permissions: queryResult.data,
         }),
-        [result]
+        [queryResult]
     );
+
+    return !authProvider || !authProvider.getPermissions
+        ? (fakeQueryResult as UsePermissionsResult<PermissionsType, ErrorType>)
+        : result;
 };
 
 export default usePermissions;
@@ -126,3 +132,31 @@ export type UsePermissionsResult<
 };
 
 const noop = () => {};
+
+const fakeQueryResult = {
+    permissions: undefined,
+    data: undefined,
+    dataUpdatedAt: 0,
+    error: null,
+    errorUpdatedAt: 0,
+    errorUpdateCount: 0,
+    failureCount: 0,
+    failureReason: null,
+    fetchStatus: 'idle',
+    isError: false,
+    isInitialLoading: false,
+    isLoading: false,
+    isLoadingError: false,
+    isFetched: true,
+    isFetchedAfterMount: true,
+    isFetching: false,
+    isPaused: false,
+    isPlaceholderData: false,
+    isPending: false,
+    isRefetchError: false,
+    isRefetching: false,
+    isStale: false,
+    isSuccess: true,
+    status: 'success',
+    refetch: () => Promise.resolve(fakeQueryResult),
+};

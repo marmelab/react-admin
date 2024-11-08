@@ -1,5 +1,134 @@
 # Changelog
 
+## 5.3.2
+
+* Fix undo logic not working when doing multiple deletions one by one ([#10296](https://github.com/marmelab/react-admin/pull/10296)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix DateInput ignores the timezone when given ([#10311](https://github.com/marmelab/react-admin/pull/10311)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix DateInput messes up dates in some timezones ([#10299](https://github.com/marmelab/react-admin/pull/10299)) ([djhi](https://github.com/djhi))
+* Fix `<Edit>` ignores mutation meta when updating the `getOne` cache ([#10314](https://github.com/marmelab/react-admin/pull/10314)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix ReferenceField link is wrong when the record is not yet loaded ([#10309](https://github.com/marmelab/react-admin/pull/10309)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleList>` throws an error when no data in standalone mode ([#10313](https://github.com/marmelab/react-admin/pull/10313)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix: Remove deprecated 'initialValue' from sanitizeInputRestProps ([#10221](https://github.com/marmelab/react-admin/pull/10221)) ([afilp](https://github.com/afilp))
+* [Doc] Add Eicrud dataprovider to the docs ([#10316](https://github.com/marmelab/react-admin/pull/10316)) ([danyalutsevich](https://github.com/danyalutsevich))
+* [Doc] Update `<StackedFilters>` documentation for `defaultValue` ([#10319](https://github.com/marmelab/react-admin/pull/10319)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix Supabase API handler example in NextJS tutorial ([#10310](https://github.com/marmelab/react-admin/pull/10310)) ([Ariyn](https://github.com/Ariyn))
+* [Doc] Fix links to react-dropzone doc pages ([#10312](https://github.com/marmelab/react-admin/pull/10312)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in TabbedForm and TabbedShowLayout ([#10308](https://github.com/marmelab/react-admin/pull/10308)) ([highwide](https://github.com/highwide))
+* [Demo] Leverage canAccess in CRM demo ([#10300](https://github.com/marmelab/react-admin/pull/10300)) ([djhi](https://github.com/djhi))
+
+## 5.3.1
+
+* Fix smart count for no results message ([#10295](https://github.com/marmelab/react-admin/pull/10295)) ([thibault-barrat](https://github.com/thibault-barrat))
+* Fix double decoding of ids in URLs ([#10293](https://github.com/marmelab/react-admin/pull/10293)) ([djhi](https://github.com/djhi))
+* Fix no results message has untranslated resource name ([#10291](https://github.com/marmelab/react-admin/pull/10291)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<AutocompleteInput>` displays 'Create' option for choices that already exist when `createLabel` is provided ([#10288](https://github.com/marmelab/react-admin/pull/10288)) ([slax57](https://github.com/slax57))
+* [Doc] Fix Authorization link in Authentication page ([#10303](https://github.com/marmelab/react-admin/pull/10303)) ([djhi](https://github.com/djhi))
+* [Doc] Remove outdated warning about `<SimpleFormIterator>` cloning its children ([#10302](https://github.com/marmelab/react-admin/pull/10302)) ([slax57](https://github.com/slax57))
+* [Doc] fix example in README ([#10298](https://github.com/marmelab/react-admin/pull/10298)) ([antoinefricker](https://github.com/antoinefricker))
+* [Doc] Document react-hook-form limitation preventing using dynamically added inputs in `<ArrayInput>` with `shouldUnregister` ([#10271](https://github.com/marmelab/react-admin/pull/10271)) ([djhi](https://github.com/djhi))
+
+## 5.3.0
+
+* Make authentication check pessimistic
+  * Disable data provider calls in CRUD controllers while the auth check is pending ([#10238](https://github.com/marmelab/react-admin/pull/10238)) ([djhi](https://github.com/djhi))
+  * Disable rendering of CRUD views while the auth check is pending ([#10258](https://github.com/marmelab/react-admin/pull/10258)) ([djhi](https://github.com/djhi))
+  * Make `<Authenticated>` component blocking ([#10251](https://github.com/marmelab/react-admin/pull/10251)) ([fzaninotto](https://github.com/fzaninotto))
+* Add Access Control
+  * Introduce `useCanAccess`, `useCanAccessResources`, and `useCanAccessCallback` hooks ([#10222](https://github.com/marmelab/react-admin/pull/10222)) ([djhi](https://github.com/djhi))
+  * Introduce `<CanAccess>` and `<AccessDenied>` components ([#10222](https://github.com/marmelab/react-admin/pull/10222)) ([djhi](https://github.com/djhi))
+  * Add access control check in page controllers (`list`, `show`, `edit`, `create`) ([#10247](https://github.com/marmelab/react-admin/pull/10247)) ([djhi](https://github.com/djhi))
+  * Add access control to views and action buttons ([#10225](https://github.com/marmelab/react-admin/pull/10225)) ([djhi](https://github.com/djhi))
+  * Add access control to `<Datagrid rowClick>` ([#10227](https://github.com/marmelab/react-admin/pull/10227)) ([djhi](https://github.com/djhi))
+  * Add access control to `<DeleteButton>` ([#10226](https://github.com/marmelab/react-admin/pull/10226)) ([djhi](https://github.com/djhi))
+  * Add access control to the `/` route and introduce `<NavigateToFirstResource>` ([#10255](https://github.com/marmelab/react-admin/pull/10255)) ([djhi](https://github.com/djhi))
+  * Avoid unnecessary rerenders with `canAccess` hooks when there is no authProvider ([#10200](https://github.com/marmelab/react-admin/pull/10200)) ([djhi](https://github.com/djhi))
+  * Make `authProvider.getPermissions` optional ([#10257](https://github.com/marmelab/react-admin/pull/10257)) ([djhi](https://github.com/djhi))
+  * Update Simple example to leverage access control ([#10278](https://github.com/marmelab/react-admin/pull/10278)) ([slax57](https://github.com/slax57))
+* Add support for embedding and prefetching data to reduce API queries ([#10270](https://github.com/marmelab/react-admin/pull/10270)) ([fzaninotto](https://github.com/fzaninotto))
+* Add per-resource success notifications ("3 posts deleted" instead of "3 elements deleted") ([#10203](https://github.com/marmelab/react-admin/pull/10203)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for `<Edit emptyWhileLoading>` ([#10230](https://github.com/marmelab/react-admin/pull/10230)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix redirection to first route prevents going back in history ([#10267](https://github.com/marmelab/react-admin/pull/10267)) ([aqeebpathan](https://github.com/aqeebpathan))
+* Fix `useAuthState` may logout even though `logoutOfFailure` is false ([#10280](https://github.com/marmelab/react-admin/pull/10280)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Make records paths inferred from type compatible with `react-hook-form` ([#10279](https://github.com/marmelab/react-admin/pull/10279)) ([djhi](https://github.com/djhi))
+* [Doc] Warn about `<AutoSave>` incompatibility with `warnWhenUnsavedChanges` ([#10277](https://github.com/marmelab/react-admin/pull/10277)) ([djhi](https://github.com/djhi))
+* [Doc] Update mentions of Azure Active Directory to Microsoft Entra ID ([#10276](https://github.com/marmelab/react-admin/pull/10276)) ([djhi](https://github.com/djhi))
+* [Doc] Rewrite access control documentation ([#10250](https://github.com/marmelab/react-admin/pull/10250)) ([fzaninotto](https://github.com/fzaninotto))
+
+## 5.2.3
+
+* Fix `<AutoCompleteInput>` should not display a "Create" option when the filter is empty ([#10266](https://github.com/marmelab/react-admin/pull/10266)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix pnpm error Module not found: Can't resolve '@mui/utils' ([#10264](https://github.com/marmelab/react-admin/pull/10264)) ([slax57](https://github.com/slax57))
+* [Doc] Update `<StackedFilters>` doc for `ra-form-layout` v5.2.0 ([#10268](https://github.com/marmelab/react-admin/pull/10268)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Remix tutorial to fix port and yarn documentation link ([#10263](https://github.com/marmelab/react-admin/pull/10263)) ([smeng9](https://github.com/smeng9))
+* [Doc] Update `<Search>` doc for `keyboardShortcutIcon`, `withKeyboardShortcut` and `isInAppBar` ([#10254](https://github.com/marmelab/react-admin/pull/10254)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update Admin and Routing docs to encourage using a Data Router ([#10220](https://github.com/marmelab/react-admin/pull/10220)) ([smeng9](https://github.com/smeng9))
+
+## 5.2.2
+
+- Fix disabled inputs temporarily erase values ([#10249](https://github.com/marmelab/react-admin/pull/10249)) ([fzaninotto](https://github.com/fzaninotto))
+- Fix List empty component wrongly appears when using partial pagination ([#10248](https://github.com/marmelab/react-admin/pull/10248)) ([fzaninotto ](https://github.com/fzaninotto))
+- [Doc] Remove extra TOC in upgrade guide ([#10246](https://github.com/marmelab/react-admin/pull/10246)) ([smeng9](https://github.com/smeng9))
+- [Doc] Fix `<DateRangeInput>`'s reference EE icon ([#10245](https://github.com/marmelab/react-admin/pull/10245)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update migration guide with useRecordSelection changes ([#10244](https://github.com/marmelab/react-admin/pull/10244)) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Add "standalaone usage" doc section in dialog views ([#10241](https://github.com/marmelab/react-admin/pull/10241)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update outdated ecommerce demo video ([#10236](https://github.com/marmelab/react-admin/pull/10236)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- [Doc] Update <Filterbutton>'s screencast ([#10213](https://github.com/marmelab/react-admin/pull/10213)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+- Build(deps): Bump rollup from 4.21.3 to 4.22.4 ([#10234](https://github.com/marmelab/react-admin/pull/10234)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## 5.2.1
+
+* Fix `<SelectArrayInput>` options panel width and placement ([#10232](https://github.com/marmelab/react-admin/pull/10232)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix duplicated dependencies in dev packages ([#10212](https://github.com/marmelab/react-admin/pull/10212)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix for ids not being escaped in paths in the Simple Rest Data Provider ([#10206](https://github.com/marmelab/react-admin/pull/10206)) ([ckhsponge](https://github.com/ckhsponge))
+* [Doc] Fix `mutationMode` reference in `create` documentation ([#10231](https://github.com/marmelab/react-admin/pull/10231)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix remaining `isLoading` should be renamed to `isPending` ([#10218](https://github.com/marmelab/react-admin/pull/10218)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add `ra-data-graphql-supabase` to data provider list ([#10216](https://github.com/marmelab/react-admin/pull/10216)) ([maxschridde1494](https://github.com/maxschridde1494))
+* [Doc] Update `<Calendar>` doc to explain custom event format ([#10214](https://github.com/marmelab/react-admin/pull/10214)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix outdated `isLoading` in Data Provider chapter ([#10209](https://github.com/marmelab/react-admin/pull/10209)) ([smeng9](https://github.com/smeng9))
+* [Doc] Add doc for `<DatagridAgClient>`, make `<DatagridAg>` stable ([#10205](https://github.com/marmelab/react-admin/pull/10205)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Build(deps): Bump dompurify from 2.4.3 to 2.5.4 ([#10208](https://github.com/marmelab/react-admin/pull/10208)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10211](https://github.com/marmelab/react-admin/pull/10211)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Build(deps-dev): Bump vite from 5.3.1 to 5.3.6 ([#10217](https://github.com/marmelab/react-admin/pull/10217)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## 5.2.0
+
+* Add support for response metadata in `dataProvider.getList()` ([#10179](https://github.com/marmelab/react-admin/pull/10179)) ([fzaninotto](https://github.com/fzaninotto))
+* Add icons to `<FilterButton>` dropdown ([#10186](https://github.com/marmelab/react-admin/pull/10186)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add reset button to `<Datagrid>` and `<SimpleList>` when the current filter brings to no result ([#10184](https://github.com/marmelab/react-admin/pull/10184)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add global Reset CSS ([#10164](https://github.com/marmelab/react-admin/pull/10164)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<ReferenceManyField storeKey>` to allow more than one reference for the same resource ([#10132](https://github.com/marmelab/react-admin/pull/10132)) ([djhi](https://github.com/djhi))
+* Add support for computed fields in `ra-data-json-server`'s `dataProvider.create()` ([#10162](https://github.com/marmelab/react-admin/pull/10162)) ([fzaninotto](https://github.com/fzaninotto))
+* Enable Store sync when `disableSyncWithLocation` is true ([#10187](https://github.com/marmelab/react-admin/pull/10187)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<FilterButton>` accessibility ([#10204](https://github.com/marmelab/react-admin/pull/10204)) ([djhi](https://github.com/djhi))
+* Fix `<FilterButton>` checked status ([#10191](https://github.com/marmelab/react-admin/pull/10191)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix input validation and dirty state after re-enabling disabled fields ([#10163](https://github.com/marmelab/react-admin/pull/10163)) ([michel-paiva](https://github.com/michel-paiva))
+* [Doc] Create a doc page for `<DateRangeInput>` ([#10202](https://github.com/marmelab/react-admin/pull/10202)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Document `<ReferenceManyField storeKey>` prop ([#10142](https://github.com/marmelab/react-admin/pull/10142)) ([slax57](https://github.com/slax57))
+
+## 5.1.5
+
+* Fix List shows empty page too often ([#10190](https://github.com/marmelab/react-admin/pull/10190)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix clear filters option in tabbed datagrid ([#10193](https://github.com/marmelab/react-admin/pull/10193)) ([fzaninotto](https://github.com/fzaninotto))
+* Build(deps): Bump dset from 3.1.3 to 3.1.4 ([#10196](https://github.com/marmelab/react-admin/pull/10196)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc] Fix codemod filename extensions in upgrade guide ([#10199](https://github.com/marmelab/react-admin/pull/10199)) ([afilp](https://github.com/afilp))
+
+## 5.1.4
+
+* Fix `useFormGroup` doesn't return validation errors with react-hook-form 7.53.0 ([#10168](https://github.com/marmelab/react-admin/pull/10168)) ([slax57](https://github.com/slax57))
+* Avoid "no source" warning when theres a finalSource in `useInput` ([#10153](https://github.com/marmelab/react-admin/pull/10153)) ([GuilhermeCarra](https://github.com/GuilhermeCarra))
+* [chore] Bump webpack from 5.83.1 to 5.94.0 ([#10175](https://github.com/marmelab/react-admin/pull/10175)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [Doc]: Fix `<SimpleFormIterator>` add and remove buttons snippets ([#10173](https://github.com/marmelab/react-admin/pull/10173)) ([julienV](https://github.com/julienV))
+
+## v5.1.3
+
+* Fix `create-react-admin` fails with Yarn PnP ([#10161](https://github.com/marmelab/react-admin/pull/10161)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Datagrid row does not appear clickable although it is ([#10160](https://github.com/marmelab/react-admin/pull/10160)) ([fzaninotto](https://github.com/fzaninotto))
+* [chore] Bump micromatch from 4.0.5 to 4.0.8 ([#10165](https://github.com/marmelab/react-admin/pull/10165)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [chore] Bump axios from 1.6.1 to 1.7.4 ([#10151](https://github.com/marmelab/react-admin/pull/10151)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [chore] Unit tests: Expand `expect` with testing-library helpers ([#10169](https://github.com/marmelab/react-admin/pull/10169)) ([ThieryMichel](https://github.com/ThieryMichel))
+* [Doc] Add screencast for EditInDialogButton in ReferenceManyField documentation ([#10137](https://github.com/marmelab/react-admin/pull/10137)) ([djhi](https://github.com/djhi))
+* [Doc] Fix video playback on Firefox ([#10152](https://github.com/marmelab/react-admin/pull/10152)) ([ThieryMichel](https://github.com/ThieryMichel))
+
 ## v5.1.2
 
 * Fix `<PrevNextButtons>` index when using paginated results ([#10144](https://github.com/marmelab/react-admin/pull/10144)) ([slax57](https://github.com/slax57))
@@ -159,29 +288,6 @@ We've written a [migration guide](https://marmelab.com/react-admin/doc/5.0/Upgra
 We estimate that a react-admin app with 50,000 lines of code will require about 2 days of work to upgrade to v5.
 
 ### Changelog
-* [Doc] Improve types in QuickFilter doc ([#10150](https://github.com/marmelab/react-admin/pull/10150)) ([slax57](https://github.com/slax57))
-* [Doc] Add `ra-data-nestjs-query` to the list of Data Providers ([#10145](https://github.com/marmelab/react-admin/pull/10145)) ([mrnkr](https://github.com/mrnkr))
-* Fix `<PrevNextButtons>` index when using paginated results ([#10144](https://github.com/marmelab/react-admin/pull/10144)) ([slax57](https://github.com/slax57))
-* [Doc] Fix broken links to webm videos ([#10143](https://github.com/marmelab/react-admin/pull/10143)) ([slax57](https://github.com/slax57))
-* Fix `ra-data-graphql` incorrectly warns about deprecated `override` option being set ([#10138](https://github.com/marmelab/react-admin/pull/10138)) ([JonasDoe](https://github.com/JonasDoe))
-* [Doc] Update ra-search documentation to mention disableHighlight ([#10135](https://github.com/marmelab/react-admin/pull/10135)) ([djhi](https://github.com/djhi))
-* [Doc] Fix `<ReferenceInput>` usage incorrectly mentions the `validate` prop ([#10134](https://github.com/marmelab/react-admin/pull/10134)) ([fzaninotto](https://github.com/fzaninotto))
-* Fix `create-react-admin` CLI to generate valid react-admin v5 apps ([#10131](https://github.com/marmelab/react-admin/pull/10131)) ([djhi](https://github.com/djhi))
-
-
-* Update `<SelectInput>` to support an array of strings as choices ([#10038](https://github.com/marmelab/react-admin/pull/10038)) ([fzaninotto](https://github.com/fzaninotto))
-* Add ability to disable title in page components ([#9969](https://github.com/marmelab/react-admin/pull/9969)) ([fzaninotto](https://github.com/fzaninotto))
-* Update `<ReferenceField>` to render a link to the show view when relevant ([#9951](https://github.com/marmelab/react-admin/pull/9951)) ([fzaninotto](https://github.com/fzaninotto))
-* Preserve extra query parameters in List view ([#9933](https://github.com/marmelab/react-admin/pull/9933)) ([Nilegfx](https://github.com/Nilegfx))
-* Allow to customize Login page icon with `<Login avatarIcon>` ([#9917](https://github.com/marmelab/react-admin/pull/9917)) ([mjarosch](https://github.com/mjarosch))
-* Add ability to customize the success notification message in delete buttons ([#9868](https://github.com/marmelab/react-admin/pull/9868)) ([ethembynkr](https://github.com/ethembynkr))
-* Allow `<Title>` to be non configurable ([#9836](https://github.com/marmelab/react-admin/pull/9836)) ([markyao6275](https://github.com/markyao6275))
-
-* fix `<AutocompleteInput>` clear button does not clear new choice  ([#10023](https://github.com/marmelab/react-admin/pull/10023)) ([adguernier](https://github.com/adguernier))
-* [Doc] Update ra-relationships documentation ([#10018](https://github.com/marmelab/react-admin/pull/10018)) ([djhi](https://github.com/djhi))
-* [Doc] Verify if Beginning mode exist before add event ([#10016](https://github.com/marmelab/react-admin/pull/10016)) ([arimet](https://github.com/arimet))
-* separate test and default data providers ([#10001](https://github.com/marmelab/react-admin/pull/10001)) ([Nilegfx](https://github.com/Nilegfx))
-* Fix `<FilterLiveSearch>` should react to filter values change ([#9996](https://github.com/marmelab/react-admin/pull/9996)) ([slax57](https://github.com/slax57))
 
 For a detailed changelog, see the release notes for the following pre-releases:
 

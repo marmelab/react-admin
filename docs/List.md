@@ -415,7 +415,7 @@ const BoolkList = () => (
 
 By default, react-admin synchronizes the `<List>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location) and the [Store](./Store.md).
 
-When you use a `<List>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters. To do so, pass the `disableSyncWithLocation` prop.
+When you use a `<List>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. To do so, pass the `disableSyncWithLocation` prop. The drawback is that a hit on the "back" button doesn't restore the previous list parameters.
 
 {% raw %}
 ```jsx
@@ -445,7 +445,35 @@ const Dashboard = () => (
 ```
 {% endraw %}
 
-**Tip**: As `disableSyncWithLocation` also disables the persistence of the list parameters in the Store, any custom string specified in the `storeKey` prop is ignored when `disableSyncWithLocation` is set to `true`.
+**Tip**: `disableSyncWithLocation` also disables the persistence of the list parameters in the Store by default. To enable the persistence of the list parameters in the Store, you can pass a custom `storeKey` prop.
+
+```diff
+const Dashboard = () => (
+    <div>
+        // ...
+        <ResourceContextProvider value="posts">
+-           <List disableSyncWithLocation>
++           <List disableSyncWithLocation storeKey="postsListParams">
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            </List>
+        </ResourceContextProvider>
+        <ResourceContextProvider value="comments">
+-           <List disableSyncWithLocation>
++           <List disableSyncWithLocation storeKey="commentsListParams">
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            </List>
+        </ResourceContextProvider>
+    </div>
+)
+```
 
 Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same synced selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records. You can still opt out of all store interactions including selection if you set it to `false`.
 
@@ -650,7 +678,6 @@ const CommentList = () => (
 ## `filters`: Filter Inputs
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/list_filter.webm" type="video/webm"/>
   <source src="./img/list_filter.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -1112,6 +1139,66 @@ const ProductList = () => (
 )
 ```
 
+## Accessing Extra Response Data
+
+If `dataProvider.getList()` returns additional metadata in the response under the `meta` key, you can access it in the list view using the `meta` property of the `ListContext`.
+
+![List metadata](./img/List-facets.png)
+
+This is often used by APIs to return facets, aggregations, statistics, or other metadata about the list of records.
+
+```tsx
+// dataProvider.getLists('books') returns response like
+// {
+//     data: [ ... ],
+//     total: 293,
+//     meta: {
+//         genres: [
+//             { value: 'Fictions', count: 134 },
+//             { value: 'Essays', count: 24 },
+//         ],
+//         centuries: [
+//             { value: '18th', count: 23 },
+//             { value: '19th', count: 78 },
+//             { value: '20th', count: 57 },
+//             { value: '21st', count: 34 },
+//         ],
+//     },
+// }
+const Facets = () => {
+    const { isPending, error, meta } = useListContext();
+    if (isPending || error) return null;
+    return (
+        <Box>
+            <Typography variant="subtitle2">
+                Genres
+            </Typography>
+            <Typography component="ul">
+                {meta.genres.map(facet => (
+                    <li key={facet.value}>
+                        <Link href="#">
+                            {facet.value} ({facet.count})
+                        </Link>
+                    </li>
+                ))}
+            </Typography>
+            <Typography variant="subtitle2">
+                Century
+            </Typography>
+            <Typography component="ul">
+                {meta.centuries.map(facet => (
+                    <li key={facet.value}>
+                        <Link href="#">
+                            {facet.value} ({facet.count})
+                        </Link>
+                    </li>
+                ))}
+            </Typography>
+        </Box>
+    );
+};
+```
+
 ## Controlled Mode
 
 `<List>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself. 
@@ -1266,3 +1353,36 @@ const ProductList = () => {
 ```
 
 `useListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page. Check [the `useListController`hook documentation](./useListController.md) for details.
+
+## Security
+
+The `<List>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<List>`  will only render if the user has the "list" access to the related resource.
+
+For instance, for the `<PostList>` page below:
+
+```tsx
+import { List, Datagrid, TextField } from 'react-admin';
+
+// Resource name is "posts"
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="published_at" />
+        </Datagrid>
+    </List>
+);
+```
+
+`<List>` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "list", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](#disableauthentication).

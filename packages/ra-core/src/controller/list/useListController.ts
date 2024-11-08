@@ -1,6 +1,6 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 
-import { useAuthenticated } from '../../auth';
+import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
@@ -8,12 +8,12 @@ import {
     UseGetListHookValue,
     UseGetListOptions,
 } from '../../dataProvider';
-import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import { SORT_ASC } from './queryReducer';
 
 /**
  * Prepare data for the List view
@@ -37,8 +37,8 @@ export const useListController = <RecordType extends RaRecord = any>(
 ): ListControllerResult<RecordType> => {
     const {
         debounce = 500,
-        disableAuthentication,
-        disableSyncWithLocation,
+        disableAuthentication = false,
+        disableSyncWithLocation = false,
         exporter = defaultExporter,
         filter,
         filterDefaultValues,
@@ -47,7 +47,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         sort = defaultSort,
         storeKey,
     } = props;
-    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions;
 
@@ -65,6 +64,17 @@ export const useListController = <RecordType extends RaRecord = any>(
             'useListController received a React element as `filter` props. If you intended to set the list filter elements, use the `filters` (with an s) prop instead. The `filter` prop is internal and should not be set by the developer.'
         );
     }
+
+    const { isPending: isPendingAuthenticated } = useAuthenticated({
+        enabled: !disableAuthentication,
+    });
+
+    const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
+        action: 'list',
+        resource,
+        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
+        enabled: !isPendingAuthenticated,
+    });
 
     const translate = useTranslate();
     const notify = useNotify();
@@ -88,6 +98,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         data,
         pageInfo,
         total,
+        meta: responseMeta,
         error,
         isLoading,
         isFetching,
@@ -105,6 +116,9 @@ export const useListController = <RecordType extends RaRecord = any>(
             meta,
         },
         {
+            enabled:
+                (!isPendingAuthenticated && !isPendingCanAccess) ||
+                disableAuthentication,
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
@@ -157,6 +171,7 @@ export const useListController = <RecordType extends RaRecord = any>(
     return {
         sort: currentSort,
         data,
+        meta: responseMeta,
         defaultTitle,
         displayedFilters: query.displayedFilters,
         error,
@@ -486,6 +501,7 @@ export interface ListControllerLoadingResult<RecordType extends RaRecord = any>
     extends ListControllerBaseResult<RecordType> {
     data: undefined;
     total: undefined;
+    meta: undefined;
     error: null;
     isPending: true;
 }
@@ -495,6 +511,7 @@ export interface ListControllerErrorResult<
 > extends ListControllerBaseResult<RecordType> {
     data: undefined;
     total: undefined;
+    meta: undefined;
     error: TError;
     isPending: false;
 }
@@ -504,6 +521,7 @@ export interface ListControllerRefetchErrorResult<
 > extends ListControllerBaseResult<RecordType> {
     data: RecordType[];
     total: number;
+    meta?: any;
     error: TError;
     isPending: false;
 }
@@ -511,6 +529,7 @@ export interface ListControllerSuccessResult<RecordType extends RaRecord = any>
     extends ListControllerBaseResult<RecordType> {
     data: RecordType[];
     total: number;
+    meta?: any;
     error: null;
     isPending: false;
 }

@@ -10,25 +10,26 @@ import {
     Toolbar,
     required,
     useNotify,
-    usePermissions,
     useUnique,
+    CanAccess,
+    useCanAccess,
 } from 'react-admin';
 
 import Aside from './Aside';
 
-const UserEditToolbar = ({ permissions, ...props }) => {
+const UserCreateToolbar = () => {
     const notify = useNotify();
     const { reset } = useFormContext();
 
     return (
-        <Toolbar {...props}>
+        <Toolbar>
             <SaveButton label="user.action.save_and_show" />
-            {permissions === 'admin' && (
+            <CanAccess action="batch_create">
                 <SaveButton
                     label="user.action.save_and_add"
                     mutationOptions={{
                         onSuccess: () => {
-                            notify('ra.notification.created', {
+                            notify('resources.users.notifications.created', {
                                 type: 'info',
                                 messageArgs: {
                                     smart_count: 1,
@@ -40,7 +41,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
                     type="button"
                     variant="text"
                 />
-            )}
+            </CanAccess>
         </Toolbar>
     );
 };
@@ -53,14 +54,20 @@ const isValidName = async value =>
     );
 
 const UserCreate = () => {
-    const { permissions } = usePermissions();
     const unique = useUnique();
+    const { isPending, canAccess: canEditRole } = useCanAccess({
+        action: 'edit',
+        resource: 'users.role',
+    });
+    if (isPending) {
+        return null;
+    }
     return (
         <Create aside={<Aside />} redirect="show">
             <TabbedForm
                 mode="onBlur"
                 warnWhenUnsavedChanges
-                toolbar={<UserEditToolbar permissions={permissions} />}
+                toolbar={<UserCreateToolbar />}
             >
                 <TabbedForm.Tab label="user.form.summary" path="">
                     <TextInput
@@ -70,7 +77,7 @@ const UserCreate = () => {
                         validate={[required(), isValidName, unique()]}
                     />
                 </TabbedForm.Tab>
-                {permissions === 'admin' && (
+                {canEditRole ? (
                     <TabbedForm.Tab label="user.form.security" path="security">
                         <AutocompleteInput
                             source="role"
@@ -83,7 +90,7 @@ const UserCreate = () => {
                             validate={[required()]}
                         />
                     </TabbedForm.Tab>
-                )}
+                ) : null}
             </TabbedForm>
         </Create>
     );

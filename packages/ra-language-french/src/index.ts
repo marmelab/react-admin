@@ -59,6 +59,8 @@ const frenchMessages: TranslationMessages = {
             show: '%{name} %{recordRepresentation}',
             empty: 'Pas encore de %{name}.',
             invite: 'Voulez-vous en créer un ?',
+            access_denied: 'Non autorisé',
+            authentication_error: "Erreur d'authentification",
         },
         input: {
             file: {
@@ -115,8 +117,14 @@ const frenchMessages: TranslationMessages = {
             yes: 'Oui',
             unsaved_changes:
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
+            access_denied: "Vous n'avez pas les droits d'accès à cette page",
+            authentication_error:
+                "Le serveur d'authentification a retourné une erreur et vos autorisations n'ont pas pu être vérifiées.",
         },
         navigation: {
+            clear_filters: 'Effacer les filtres',
+            no_filtered_results:
+                'Aucun résultat trouvé avec les filtres actuels.',
             no_results: 'Aucun résultat',
             no_more_results:
                 'La page numéro %{page} est en dehors des limites. Essayez la page précédente.',
@@ -136,7 +144,7 @@ const frenchMessages: TranslationMessages = {
             skip_nav: 'Aller au contenu',
         },
         sort: {
-            sort_by: 'Trier par %{field} %{order}',
+            sort_by: 'Trier par %{field_lower_first} %{order}',
             ASC: 'croissant',
             DESC: 'décroissant',
         },

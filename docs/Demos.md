@@ -132,13 +132,13 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         <div class="content-card">
             <a href="#crm" class="no-decoration">
                 <p class="title-card"><b>CRM</b></p>
-                <p  class="description-card">A complete CRM app with an address book and a Kanban board for deals. Built by the core team.</p>
+                <p  class="description-card">A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Uses Supabase as backend. Built by the core team.</p>
             </a>
         </div>
         <div class="card-footer">
             <div class="links-container">
                 <p><b><a href="https://marmelab.com/react-admin-crm/" class="demo link">Demo</a></b></p>
-                <p><b><a href="https://github.com/marmelab/react-admin/tree/master/examples/crm" class="source-code link">Source code</a></b></p>
+                <p><b><a href="https://github.com/marmelab/atomic-crm" class="source-code link">Source code</a></b></p>
             </div>
         </div>
     </div>
@@ -173,10 +173,10 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <a href="#blog" class="no-decoration"><img src="./img/blog_demo.png" alt="Blog"></a>
+        <a href="#blog-admin" class="no-decoration"><img src="./img/blog_demo.png" alt="Blog"></a>
         <div class="content-card">
-            <a href="#blog" class="no-decoration">
-                <p class="title-card"><b>Blog</b></p>
+            <a href="#blog-admin" class="no-decoration">
+                <p class="title-card"><b>Blog admin</b></p>
                 <p  class="description-card">A simple application with posts, comments and users that we use for our e2e tests. Designed to use most of the react-admin features. Built by the core team.</p>
             </a>
         </div>
@@ -208,7 +208,9 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 
 The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.
 
-<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/474999017?h=4557e43b02&title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+<div style="padding:56.25% 0 0 0;position:relative;">
+<iframe src="https://www.youtube-nocookie.com/embed/bJEo1O1oT6o" title="react admin e commerce demo" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
 <br>
 
 * Demo: [https://marmelab.com/react-admin-demo/](https://marmelab.com/react-admin-demo/)
@@ -254,16 +256,16 @@ The source shows example implementation of the following features:
 
 ## CRM
 
-A complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Built by the core team.
+Atomic CRM is a complete CRM app allowing to manage contacts, companies, deals, notes, tasks, and tags. Built by the core team. You can use it as a template to build your own CRM.
 
 <video src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" controls="controls"></video>
 
 * Demo: [https://marmelab.com/react-admin-crm/](https://marmelab.com/react-admin-crm/)
-* Source code: [https://github.com/marmelab/react-admin/tree/master/examples/crm](https://github.com/marmelab/react-admin/tree/master/examples/crm)
+* Source code: [https://github.com/marmelab/atomic-crm](https://github.com/marmelab/atomic-crm)
 
 The source shows how to implement the following features:
 
-- [Horizontal navigation](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/Layout.tsx)
+- [Horizontal navigation](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/layout/Layout.tsx)
 - [Custom exporter](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/contacts/ContactList.tsx)
 - [Trello-like Kanban board for the deals pipeline](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/deals/DealListContent.tsx)
 - [Custom d3.js / Nivo Chart in the dashboard](https://github.com/marmelab/react-admin/blob/master/examples/crm/src/dashboard/DealsChart.tsx)
@@ -320,7 +322,7 @@ The source shows how to implement the following features:
 * [useCreate](https://github.com/marmelab/writers-delight/blob/main/src/compositions/CreateCompositionButton.tsx#L6)
 * [useStore](https://github.com/marmelab/writers-delight/blob/main/src/compositions/AISwitch.tsx#L23)
 
-## Blog
+## Blog Admin
 
 A simple application with posts, comments and users that we use for our e2e tests. Not designed to have a good UX, but to use most of the react-admin features. Built by the core team.
 

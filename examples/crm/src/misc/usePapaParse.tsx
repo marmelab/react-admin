@@ -125,6 +125,7 @@ export function usePapaParse<T>({
                     );
                 },
                 error(error) {
+                    console.error(error);
                     setImporter({
                         state: 'error',
                         error,

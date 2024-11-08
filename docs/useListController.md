@@ -270,7 +270,7 @@ import { useState } from 'react';
 import { useListController } from 'react-admin';
 
 const OfficeList = () => {
-    const { filterValues, setFilters, data, isLoading } = useListController({ resource: 'offices' });
+    const { filterValues, setFilters, data, isPending } = useListController({ resource: 'offices' });
     const [formValues, setFormValues] = useState(filterValues);
 
     const handleChange = (event) => {
@@ -285,7 +285,7 @@ const OfficeList = () => {
         setFilters(filterFormValues);
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isPending) return <div>Loading...</div>;
 
     return (
         <>
@@ -304,3 +304,38 @@ const OfficeList = () => {
     );
 };
 ```
+
+## Security
+
+`useListController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop.
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useListController` will only render if the user has the "list" access to the related resource.
+
+For instance, for the `<PostList>` page below:
+
+```tsx
+import { useListController, SimpleList } from 'react-admin';
+
+const PostList = () => {
+  const { isPending, error, data, total } = useListController({ resource: 'posts'})
+  if (error) return <div>Error!</div>;
+  return (
+      <SimpleList
+        data={data}
+        total={total}
+        isPending={isPending}
+        primaryText="%{title}"
+      />
+  );
+}
+```
+
+`useListController` will call `authProvider.canAccess()` using the following parameters:
+
+```jsx
+{ action: "list", resource: "posts" }
+```
+
+Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).

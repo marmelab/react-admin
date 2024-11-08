@@ -1,6 +1,6 @@
 import get from 'lodash/get';
-import { Call, Objects } from 'hotscript';
 import { useRecordContext } from '../controller';
+import { ExtractRecordPaths } from '../types';
 
 /**
  * A hook that gets the value of a field of the current record.
@@ -38,10 +38,6 @@ export interface UseFieldValueOptions<
 > {
     // FIXME: Find a way to throw a type error when defaultValue is not of RecordType[Source] type
     defaultValue?: any;
-    source: Call<Objects.AllPaths, RecordType> extends never
-        ? AnyString
-        : Call<Objects.AllPaths, RecordType>;
+    source: ExtractRecordPaths<RecordType>;
     record?: RecordType;
 }
-
-type AnyString = string & {};

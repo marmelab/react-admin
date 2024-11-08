@@ -7,10 +7,15 @@ import { TableCellProps } from '@mui/material/TableCell';
 import {
     FieldTitle,
     useTranslate,
-    SortPayload,
     useResourceContext,
     useTranslateLabel,
 } from 'ra-core';
+import type { SortPayload } from 'ra-core';
+
+const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
+    ASC: 'DESC',
+    DESC: 'ASC',
+};
 
 export const DatagridHeaderCell = (
     props: DatagridHeaderCellProps
@@ -20,18 +25,30 @@ export const DatagridHeaderCell = (
 
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
+    const nextSortOrder = field
+        ? sort && sort.field === (field.props.sortBy || field.props.source)
+            ? // active sort field, use opposite order
+              oppositeOrder[sort.order]
+            : // non active sort field, use default order
+              field?.props.sortByOrder ?? 'ASC'
+        : undefined;
+    const fieldLabel = field
+        ? translateLabel({
+              label:
+                  typeof field.props.label === 'string'
+                      ? field.props.label
+                      : undefined,
+              resource,
+              source: field.props.source,
+          })
+        : undefined;
     const sortLabel = translate('ra.sort.sort_by', {
-        field: field
-            ? translateLabel({
-                  label:
-                      typeof field.props.label === 'string'
-                          ? field.props.label
-                          : undefined,
-                  resource,
-                  source: field.props.source,
-              })
-            : undefined,
-        order: translate(`ra.sort.${sort?.order === 'ASC' ? 'DESC' : 'ASC'}`),
+        field: fieldLabel,
+        field_lower_first:
+            typeof fieldLabel === 'string'
+                ? fieldLabel.charAt(0).toLowerCase() + fieldLabel.slice(1)
+                : undefined,
+        order: translate(`ra.sort.${nextSortOrder}`),
         _: translate('ra.action.sort'),
     });
 

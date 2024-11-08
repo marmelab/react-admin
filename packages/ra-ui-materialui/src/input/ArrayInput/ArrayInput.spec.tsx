@@ -35,16 +35,18 @@ describe('<ArrayInput />', () => {
         };
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        foo: [{ id: 1 }, { id: 2 }],
-                    }}
-                >
-                    <ArrayInput source="foo">
-                        <MockChild />
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            foo: [{ id: 1 }, { id: 2 }],
+                        }}
+                    >
+                        <ArrayInput source="foo">
+                            <MockChild />
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -56,11 +58,13 @@ describe('<ArrayInput />', () => {
     it('should not create any section subform when the value is undefined', () => {
         const { baseElement } = render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <ArrayInput source="foo">
-                        <SimpleFormIterator />
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <ArrayInput source="foo">
+                            <SimpleFormIterator />
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(baseElement.querySelectorAll('section')).toHaveLength(0);
@@ -206,7 +210,7 @@ describe('<ArrayInput />', () => {
             setArrayInputVisible = setVisible;
 
             return visible ? (
-                <ArrayInput resource="bar" source="arr">
+                <ArrayInput source="arr">
                     <SimpleFormIterator>
                         <TextInput source="id" />
                         <TextInput source="foo" />
@@ -217,17 +221,19 @@ describe('<ArrayInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn}
-                    defaultValues={{
-                        arr: [
-                            { id: 1, foo: 'bar' },
-                            { id: 2, foo: 'baz' },
-                        ],
-                    }}
-                >
-                    <MyArrayInput />
-                </SimpleForm>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm
+                        onSubmit={jest.fn}
+                        defaultValues={{
+                            arr: [
+                                { id: 1, foo: 'bar' },
+                                { id: 2, foo: 'baz' },
+                            ],
+                        }}
+                    >
+                        <MyArrayInput />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -311,11 +317,13 @@ describe('<ArrayInput />', () => {
     it('should allow to have a helperText', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn}>
-                    <ArrayInput source="foo" helperText="test helper text">
-                        <SimpleFormIterator />
-                    </ArrayInput>
-                </SimpleForm>
+                <ResourceContextProvider value="bar">
+                    <SimpleForm onSubmit={jest.fn}>
+                        <ArrayInput source="foo" helperText="test helper text">
+                            <SimpleFormIterator />
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         expect(screen.queryByText('test helper text')).not.toBeNull();

@@ -11,6 +11,7 @@ import {
     useList,
     TestMemoryRouter,
     SortPayload,
+    AuthProvider,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import defaultMessages from 'ra-language-english';
@@ -22,7 +23,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FieldProps, TextField } from '../../field';
 import { BulkDeleteButton, BulkExportButton } from '../../button';
 import { Datagrid, DatagridProps } from './Datagrid';
-import { SimpleShowLayout } from '../../detail';
+import { ShowGuesser, SimpleShowLayout } from '../../detail';
 import { AdminUI } from '../../AdminUI';
 import { AdminContext } from '../../AdminContext';
 import { List } from '../List';
@@ -334,7 +335,7 @@ export const ColumnStyles = () => (
 const sort = { field: 'id', order: 'DESC' } as SortPayload;
 
 const MyCustomList = () => {
-    const { data, total, isLoading } = useGetList('books', {
+    const { data, total, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
         sort: sort,
     });
@@ -343,7 +344,7 @@ const MyCustomList = () => {
         <Datagrid
             data={data}
             total={total}
-            isLoading={isLoading}
+            isPending={isPending}
             sort={sort}
             bulkActionButtons={false}
         >
@@ -354,11 +355,11 @@ const MyCustomList = () => {
 };
 
 const MyCustomListInteractive = () => {
-    const { data, isLoading } = useGetList('books', {
+    const { data, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
         sort,
     });
-    const listContext = useList({ data, isLoading });
+    const listContext = useList({ data, isPending });
 
     return (
         <ListContextProvider value={listContext}>
@@ -585,3 +586,62 @@ export const LabelElements = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const AccessControl = ({
+    allowedAction = 'show',
+    authProvider = {
+        login: () => Promise.reject(new Error('Not implemented')),
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        getPermissions: () => Promise.resolve(undefined),
+        canAccess: ({ action }) =>
+            new Promise(resolve => {
+                setTimeout(
+                    resolve,
+                    300,
+                    action === 'list' ||
+                        (allowedAction && action === allowedAction)
+                );
+            }),
+    },
+}: {
+    allowedAction?: 'show' | 'edit' | 'invalid';
+    authProvider?: AuthProvider;
+}) => (
+    <AdminContext
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <Datagrid key={allowedAction}>
+                            <TextField source="id" />
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </Datagrid>
+                    </List>
+                )}
+                show={ShowGuesser}
+                edit={EditGuesser}
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+AccessControl.argTypes = {
+    allowedAction: {
+        options: ['show', 'edit', 'none'],
+        mapping: {
+            show: 'show',
+            edit: 'edit',
+            none: 'invalid',
+        },
+        control: { type: 'select' },
+    },
+};

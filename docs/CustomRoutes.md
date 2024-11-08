@@ -104,6 +104,27 @@ const App = () => (
 
 As illustrated above, there can be more than one `<CustomRoutes>` element inside an `<Admin>` component.
 
+## Securing Custom Routes
+
+By default, custom routes can be accessed even by anomymous users. If you want to restrict access to authenticated users, use the [`<Authenticated>`](./Authenticated.md) component when defining the route.
+
+```jsx
+// in src/App.js
+import { Admin, CustomRoutes, Authenticated } from 'react-admin';
+import { Route } from "react-router-dom";
+
+import { dataProvider } from './dataProvider';
+import { Settings } from './Settings';
+
+const App = () => (
+    <Admin dataProvider={dataProvider}>
+        <CustomRoutes>
+            <Route path="/settings" element={<Authenticated><Settings /></Authenticated>} />
+        </CustomRoutes>
+    </Admin>
+);
+```
+
 ## Customizing The Page Title
 
 To define the page title (displayed in the app bar), custom pages should use [the `<Title>` component](./Title.md).

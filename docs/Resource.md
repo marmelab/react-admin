@@ -53,6 +53,22 @@ The routes call the following `dataProvider` methods:
 
 **Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
 
+## Props
+
+`<Resource>` accepts the following props:
+
+| Prop   | Required | Type | Default  | Description |
+|--------|----------|------|----------|-------------|
+| `name` | Required | `string` | - | The name of the resource, used to determine the API endpoint and the URL for the resource |
+| `list` |  | `React.ComponentType` | - | The component to render for the list view |
+| `create` |  | `React.ComponentType` | - | The component to render for the create view |
+| `edit` |  | `React.ComponentType` | - | The component to render for the edit view |
+| `show` |  | `React.ComponentType` | - | The component to render for the show view |
+| `record Representation` |  | `string` or `function` or `React.ComponentType` | - | The representation of a record to use in the UI |
+| `icon` |  | `React.ComponentType` | - | The component to render in the menu |
+| `options` |  | `object` | - | Additional options for the resource |
+| `children` |  | `Route` | - | Sub-routes for the resource |
+
 ## `name`
 
 `name` is the only required prop for a `<Resource>`. React-admin uses the `name` prop both to determine the API endpoint (passed to the `dataProvider`), and to form the URL for the resource.
@@ -74,26 +90,19 @@ The routing will map the component as follows:
 
 ## `list`, `create`, `edit`, `show`
 
-`<Resource>` allows you to define a component for each CRUD operation, using the following prop names:
+`<Resource>` allows you to define a component for each CRUD route, using the following prop names:
 
 * `list` (usually using [the `<List>` component](./List.md)) (if defined, the resource is displayed on the Menu)
 * `create` (usually using [the `<Create>` component](./Create.md))
 * `edit` (usually using [the `<Edit>` component](./Edit.md))
 * `show` (usually using [the `<Show>` component](./Show.md))
 
-**Tip**: Under the hood, the `<Resource>` component uses [react-router](https://reactrouter.com/web/guides/quick-start) to create several routes:
+**Tip**: Under the hood, `<Resource>` uses [react-router](https://reactrouter.com/web/guides/quick-start) to create several routes:
 
 * `/` maps to the `list` component
 * `/create` maps to the `create` component
 * `/:id` maps to the `edit` component
 * `/:id/show` maps to the `show` component
-
-`<Resource>` also accepts additional props:
-
-* [`name`](#name)
-* [`icon`](#icon)
-* [`options`](#options)
-* [`recordRepresentation`](#recordrepresentation)
 
 ## `children`
 
@@ -312,6 +321,25 @@ const MyComponent = () => (
 );
 ```
 
+## Security
+
+The usual components for the `<Resource>` routes ( `<List>`, `<Create>`, `<Edit>`, `<Show>`) require authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop on the component.
+
+In addition, if your `authProvider` implements [Access Control](./Permissions.md#access-control), these components will only render if the user has the right permission (e.g., `{ action: 'list', resource: 'posts' }` for the `list` page of the `posts` resource).
+
+For instance, given the following resource:
+
+```tsx
+<Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
+```
+
+React-admin will call the `authProvider.canAccess` method when users try to access the pages with the following parameters:
+
+- For the list page: `{ action: "list", resource: "posts" }`
+- For the create page: `{ action: "create", resource: "posts" }`
+- For the edit page: `{ action: "edit", resource: "posts" }`
+- For the show page: `{ action: "show", resource: "posts" }`
+
 ## Nested Resources
 
 React-admin doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of songs for a given artist:
@@ -435,3 +463,4 @@ const App = () => (
 When users navigate to the `/posts` route, react-admin will display a loading indicator while the `PostList` component is being loaded.
 
 ![Loading indicator](./img/lazy-resource.png)
+

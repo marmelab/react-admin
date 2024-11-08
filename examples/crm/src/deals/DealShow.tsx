@@ -92,6 +92,7 @@ const DealShowContent = ({ handleClose }: { handleClose: () => void }) => {
                                     source="company_id"
                                     reference="companies"
                                     link="show"
+                                    sx={{ '& a': { textDecoration: 'none' } }}
                                 >
                                     <CompanyAvatar />
                                 </ReferenceField>

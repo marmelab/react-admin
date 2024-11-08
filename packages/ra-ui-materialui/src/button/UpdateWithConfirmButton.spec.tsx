@@ -137,7 +137,7 @@ describe('<UpdateWithConfirmButton />', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText('ra.notification.updated')
+                screen.queryByText('resources.posts.notifications.updated')
             ).not.toBeNull();
         });
         expect(screen.queryByText('ra.action.undo')).not.toBeNull();

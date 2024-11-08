@@ -495,4 +495,4 @@ export const BookEdit = () => (
 
 React-admin components are not magic, they are React components designed to let you focus on the business logic and avoid repetitive tasks. 
 
-Tip: Actually, `<Edit>` does more than the code it replaces in the previous example: it handles notification and redirection upon submission, it sets the page title, and handles the error logic.
+**Tip:** Actually, `<Edit>` does more than the code it replaces in the previous example: it handles notification and redirection upon submission, it sets the page title, and handles the error logic.

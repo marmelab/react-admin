@@ -21,11 +21,21 @@ export const messages = {
                 password: 'Password (if protected post)',
                 pictures: 'Related Pictures',
             },
+            notifications: {
+                created: 'Post created |||| %{smart_count} posts created',
+                updated: 'Post updated |||| %{smart_count} posts updated',
+                deleted: 'Post deleted |||| %{smart_count} posts deleted',
+            },
         },
         comments: {
             name: 'Comment |||| Comments',
             fields: {
                 post_id: 'Post',
+            },
+            notifications: {
+                created: 'Comment created |||| %{smart_count} comments created',
+                updated: 'Comment updated |||| %{smart_count} comments updated',
+                deleted: 'Comment deleted |||| %{smart_count} comments deleted',
             },
         },
         users: {
@@ -33,6 +43,11 @@ export const messages = {
             fields: {
                 name: 'Name',
                 role: 'Role',
+            },
+            notifications: {
+                created: 'User created |||| %{smart_count} users created',
+                updated: 'User updated |||| %{smart_count} users updated',
+                deleted: 'User deleted |||| %{smart_count} users deleted',
             },
         },
     },

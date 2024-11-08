@@ -376,7 +376,7 @@ describe('<FilterForm />', () => {
         // Set nested filter value to 'bar'
         fireEvent.click(await screen.findByLabelText('Add filter'));
         fireEvent.click(
-            await screen.findByRole('menuitem', { name: 'Nested' })
+            await screen.findByRole('menuitemcheckbox', { name: 'Nested' })
         );
         fireEvent.click(await screen.findByText('bar'));
         fireEvent.blur(await screen.findByLabelText('Nested'));

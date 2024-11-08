@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { testDataProvider } from 'ra-core';
+import { ResourceContextProvider, testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -10,7 +10,6 @@ import { ImageField } from '../field';
 describe('<ImageInput />', () => {
     const defaultProps = {
         source: 'image',
-        resource: 'posts',
     };
 
     const defaultPropsMultiple = {
@@ -22,11 +21,13 @@ describe('<ImageInput />', () => {
     it('should display a dropzone for single file dropping', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ImageInput {...defaultProps}>
-                        <div />
-                    </ImageInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ImageInput {...defaultProps}>
+                            <div />
+                        </ImageInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -38,11 +39,13 @@ describe('<ImageInput />', () => {
     it('should display a dropzone for multiple files dropping', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <ImageInput {...defaultProps} multiple>
-                        <div />
-                    </ImageInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <ImageInput {...defaultProps} multiple>
+                            <div />
+                        </ImageInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -57,16 +60,18 @@ describe('<ImageInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    onSubmit={jest.fn()}
-                    defaultValues={{
-                        image: undefined,
-                    }}
-                >
-                    <ImageInput {...defaultProps}>
-                        <div />
-                    </ImageInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        onSubmit={jest.fn()}
+                        defaultValues={{
+                            image: undefined,
+                        }}
+                    >
+                        <ImageInput {...defaultProps}>
+                            <div />
+                        </ImageInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -95,16 +100,18 @@ describe('<ImageInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{
-                        images: [],
-                    }}
-                    onSubmit={onSubmit}
-                >
-                    <ImageInput {...defaultPropsMultiple}>
-                        <div />
-                    </ImageInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{
+                            images: [],
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <ImageInput {...defaultPropsMultiple}>
+                            <div />
+                        </ImageInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -136,19 +143,21 @@ describe('<ImageInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{
-                        image: {
-                            src: 'test.png',
-                            title: 'cats',
-                        },
-                    }}
-                    onSubmit={onSubmit}
-                >
-                    <ImageInput {...defaultProps}>
-                        <ImageField source="src" title="title" />
-                    </ImageInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <ImageInput {...defaultProps}>
+                            <ImageField source="src" title="title" />
+                        </ImageInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -171,25 +180,27 @@ describe('<ImageInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{
-                        images: [
-                            {
-                                src: 'test.png',
-                                title: 'cats',
-                            },
-                            {
-                                src: 'test2.png',
-                                title: 'cats2',
-                            },
-                        ],
-                    }}
-                    onSubmit={onSubmit}
-                >
-                    <ImageInput {...defaultPropsMultiple}>
-                        <ImageField source="src" title="title" />
-                    </ImageInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{
+                            images: [
+                                {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                                {
+                                    src: 'test2.png',
+                                    title: 'cats2',
+                                },
+                            ],
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <ImageInput {...defaultPropsMultiple}>
+                            <ImageField source="src" title="title" />
+                        </ImageInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -217,25 +228,27 @@ describe('<ImageInput />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm
-                    defaultValues={{
-                        images: [
-                            {
-                                src: 'test.png',
-                                title: 'cats',
-                            },
-                            {
-                                src: 'test2.png',
-                                title: 'cats 2',
-                            },
-                        ],
-                    }}
-                    onSubmit={onSubmit}
-                >
-                    <ImageInput {...defaultPropsMultiple}>
-                        <ImageField source="src" title="title" />
-                    </ImageInput>
-                </SimpleForm>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{
+                            images: [
+                                {
+                                    src: 'test.png',
+                                    title: 'cats',
+                                },
+                                {
+                                    src: 'test2.png',
+                                    title: 'cats 2',
+                                },
+                            ],
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <ImageInput {...defaultPropsMultiple}>
+                            <ImageField source="src" title="title" />
+                        </ImageInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -263,14 +276,16 @@ describe('<ImageInput />', () => {
         const test = (expectedLabel, expectedLabelText = expectedLabel) => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <ImageInput
-                            {...defaultProps}
-                            placeholder={expectedLabel}
-                        >
-                            <div />
-                        </ImageInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <ImageInput
+                                {...defaultProps}
+                                placeholder={expectedLabel}
+                            >
+                                <div />
+                            </ImageInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -287,19 +302,21 @@ describe('<ImageInput />', () => {
         it('should display file preview using child as preview component', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{
-                            image: {
-                                url: 'http://foo.com/bar.jpg',
-                                title: 'Hello world!',
-                            },
-                        }}
-                    >
-                        <ImageInput {...defaultProps} source="image">
-                            <ImageField source="url" title="title" />
-                        </ImageInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{
+                                image: {
+                                    url: 'http://foo.com/bar.jpg',
+                                    title: 'Hello world!',
+                                },
+                            }}
+                        >
+                            <ImageInput {...defaultProps} source="image">
+                                <ImageField source="url" title="title" />
+                            </ImageInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -313,25 +330,27 @@ describe('<ImageInput />', () => {
         it('should display all files (when several) previews using child as preview component', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{
-                            images: [
-                                {
-                                    url: 'http://foo.com/bar.jpg',
-                                    title: 'Hello world!',
-                                },
-                                {
-                                    url: 'http://foo.com/qux.bmp',
-                                    title: 'A good old Bitmap!',
-                                },
-                            ],
-                        }}
-                    >
-                        <ImageInput {...defaultPropsMultiple}>
-                            <ImageField source="url" title="title" />
-                        </ImageInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{
+                                images: [
+                                    {
+                                        url: 'http://foo.com/bar.jpg',
+                                        title: 'Hello world!',
+                                    },
+                                    {
+                                        url: 'http://foo.com/qux.bmp',
+                                        title: 'A good old Bitmap!',
+                                    },
+                                ],
+                            }}
+                        >
+                            <ImageInput {...defaultPropsMultiple}>
+                                <ImageField source="url" title="title" />
+                            </ImageInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -351,19 +370,21 @@ describe('<ImageInput />', () => {
         it('should update previews when updating input value', () => {
             const { rerender } = render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        record={{
-                            image: {
-                                title: 'Hello world!',
-                                url: 'http://static.acme.com/foo.jpg',
-                            },
-                        }}
-                    >
-                        <ImageInput {...defaultProps} source="image">
-                            <ImageField source="url" title="title" />
-                        </ImageInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            record={{
+                                image: {
+                                    title: 'Hello world!',
+                                    url: 'http://static.acme.com/foo.jpg',
+                                },
+                            }}
+                        >
+                            <ImageInput {...defaultProps} source="image">
+                                <ImageField source="url" title="title" />
+                            </ImageInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -375,19 +396,21 @@ describe('<ImageInput />', () => {
 
             rerender(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        record={{
-                            image: {
-                                title: 'Hello world!',
-                                url: 'http://static.acme.com/bar.jpg',
-                            },
-                        }}
-                    >
-                        <ImageInput {...defaultProps} source="image">
-                            <ImageField source="url" title="title" />
-                        </ImageInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            record={{
+                                image: {
+                                    title: 'Hello world!',
+                                    url: 'http://static.acme.com/bar.jpg',
+                                },
+                            }}
+                        >
+                            <ImageInput {...defaultProps} source="image">
+                                <ImageField source="url" title="title" />
+                            </ImageInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 
@@ -404,16 +427,18 @@ describe('<ImageInput />', () => {
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{
-                            images: [],
-                        }}
-                        onSubmit={onSubmit}
-                    >
-                        <ImageInput {...defaultPropsMultiple}>
-                            <ImageField source="url" />
-                        </ImageInput>
-                    </SimpleForm>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            defaultValues={{
+                                images: [],
+                            }}
+                            onSubmit={onSubmit}
+                        >
+                            <ImageInput {...defaultPropsMultiple}>
+                                <ImageField source="url" />
+                            </ImageInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
                 </AdminContext>
             );
 

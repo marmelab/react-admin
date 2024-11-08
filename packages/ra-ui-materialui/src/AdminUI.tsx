@@ -1,39 +1,45 @@
 import * as React from 'react';
 import { createElement, ComponentType } from 'react';
 import { CoreAdminUI, CoreAdminUIProps } from 'ra-core';
-import { ScopedCssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 
 import {
     Layout as DefaultLayout,
+    AuthenticationError,
     LoadingPage,
     NotFound,
     Notification,
     Error,
+    AccessDenied,
 } from './layout';
 import { Login, AuthCallback } from './auth';
 
 export const AdminUI = ({
-    layout = DefaultLayout,
+    accessDenied = AccessDenied,
+    authCallbackPage = AuthCallback,
+    authenticationError = AuthenticationError,
     catchAll = NotFound,
+    error = Error,
+    layout = DefaultLayout,
     loading = LoadingPage,
     loginPage = Login,
-    authCallbackPage = AuthCallback,
     notification = Notification,
-    error = Error,
     ...props
 }: AdminUIProps) => (
-    <ScopedCssBaseline enableColorScheme>
+    <CssBaseline enableColorScheme>
         <CoreAdminUI
-            layout={layout}
+            accessDenied={accessDenied}
+            authCallbackPage={authCallbackPage}
+            authenticationError={authenticationError}
             catchAll={catchAll}
+            error={error}
+            layout={layout}
             loading={loading}
             loginPage={loginPage}
-            authCallbackPage={authCallbackPage}
-            error={error}
             {...props}
         />
         {createElement(notification)}
-    </ScopedCssBaseline>
+    </CssBaseline>
 );
 
 export interface AdminUIProps extends CoreAdminUIProps {

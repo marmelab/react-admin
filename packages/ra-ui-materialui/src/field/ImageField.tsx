@@ -2,8 +2,12 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import get from 'lodash/get';
-import { useFieldValue, useTranslate } from 'ra-core';
-import { Call, Objects } from 'hotscript';
+import {
+    ExtractRecordPaths,
+    HintedString,
+    useFieldValue,
+    useTranslate,
+} from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
@@ -111,10 +115,6 @@ export interface ImageFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType> {
     src?: string;
-    title?: Call<Objects.AllPaths, RecordType> extends never
-        ? AnyString
-        : Call<Objects.AllPaths, RecordType> | AnyString;
+    title?: HintedString<ExtractRecordPaths<RecordType>>;
     sx?: SxProps;
 }
-
-type AnyString = string & {};
