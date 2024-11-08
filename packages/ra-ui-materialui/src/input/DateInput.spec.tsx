@@ -8,7 +8,12 @@ import { useFormState } from 'react-hook-form';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { DateInput } from './DateInput';
-import { Basic, ExternalChanges, Parse } from './DateInput.stories';
+import {
+    Basic,
+    ExternalChanges,
+    ExternalChangesWithParse,
+    Parse,
+} from './DateInput.stories';
 
 describe('<DateInput />', () => {
     const defaultProps = {
@@ -247,13 +252,7 @@ describe('<DateInput />', () => {
     });
 
     it('should change its value when the form value has changed', async () => {
-        render(
-            <ExternalChanges
-                simpleFormProps={{
-                    defaultValues: { publishedAt: '2021-09-11' },
-                }}
-            />
-        );
+        render(<ExternalChanges />);
         await screen.findByText('"2021-09-11" (string)');
         const input = screen.getByLabelText('Published at') as HTMLInputElement;
         fireEvent.change(input, {
@@ -265,14 +264,27 @@ describe('<DateInput />', () => {
         await screen.findByText('"2021-10-20" (string)');
     });
 
-    it('should change its value when the form value is reset', async () => {
-        render(
-            <ExternalChanges
-                simpleFormProps={{
-                    defaultValues: { publishedAt: '2021-09-11' },
-                }}
-            />
+    it('should change its value when the form value has changed with a custom parse', async () => {
+        render(<ExternalChangesWithParse />);
+        await screen.findByText(
+            'Sat Sep 11 2021 02:00:00 GMT+0200 (Central European Summer Time)'
         );
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
+        fireEvent.change(input, {
+            target: { value: '2021-10-30' },
+        });
+        fireEvent.blur(input);
+        await screen.findByText(
+            'Sat Oct 30 2021 02:00:00 GMT+0200 (Central European Summer Time)'
+        );
+        fireEvent.click(screen.getByText('Change value'));
+        await screen.findByText(
+            'Wed Oct 20 2021 02:00:00 GMT+0200 (Central European Summer Time)'
+        );
+    });
+
+    it('should change its value when the form value is reset', async () => {
+        render(<ExternalChanges />);
         await screen.findByText('"2021-09-11" (string)');
         const input = screen.getByLabelText('Published at') as HTMLInputElement;
         fireEvent.change(input, {
