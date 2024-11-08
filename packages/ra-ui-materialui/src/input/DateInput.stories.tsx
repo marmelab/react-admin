@@ -104,14 +104,16 @@ export const Parse = ({ simpleFormProps }) => (
 );
 
 export const ExternalChanges = ({
+    dateInputProps = {},
     simpleFormProps = {
         defaultValues: { publishedAt: '2021-09-11' },
     },
 }: {
+    dateInputProps?: Partial<DateInputProps>;
     simpleFormProps?: Omit<SimpleFormProps, 'children'>;
 }) => (
     <Wrapper simpleFormProps={simpleFormProps}>
-        <DateInput source="publishedAt" />
+        <DateInput source="publishedAt" {...dateInputProps} />
         <DateHelper source="publishedAt" value="2021-10-20" />
     </Wrapper>
 );

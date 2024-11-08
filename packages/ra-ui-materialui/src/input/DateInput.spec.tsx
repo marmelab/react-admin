@@ -265,6 +265,25 @@ describe('<DateInput />', () => {
         await screen.findByText('"2021-10-20" (string)');
     });
 
+    it('should change its value when the form value is reset', async () => {
+        render(
+            <ExternalChanges
+                simpleFormProps={{
+                    defaultValues: { publishedAt: '2021-09-11' },
+                }}
+            />
+        );
+        await screen.findByText('"2021-09-11" (string)');
+        const input = screen.getByLabelText('Published at') as HTMLInputElement;
+        fireEvent.change(input, {
+            target: { value: '2021-10-30' },
+        });
+        fireEvent.blur(input);
+        await screen.findByText('"2021-10-30" (string)');
+        fireEvent.click(screen.getByText('Reset'));
+        await screen.findByText('"2021-09-11" (string)');
+    });
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             render(<Basic dateInputProps={{ validate: required() }} />);
