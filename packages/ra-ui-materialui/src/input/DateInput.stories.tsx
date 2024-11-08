@@ -118,6 +118,23 @@ export const ExternalChanges = ({
     </Wrapper>
 );
 
+export const ExternalChangesWithParse = ({
+    dateInputProps = {
+        parse: value => new Date(value),
+    },
+    simpleFormProps = {
+        defaultValues: { publishedAt: new Date('2021-09-11') },
+    },
+}: {
+    dateInputProps?: Partial<DateInputProps>;
+    simpleFormProps?: Omit<SimpleFormProps, 'children'>;
+}) => (
+    <Wrapper simpleFormProps={simpleFormProps}>
+        <DateInput source="publishedAt" {...dateInputProps} />
+        <DateHelper source="publishedAt" value={new Date('2021-10-20')} />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({
@@ -137,7 +154,13 @@ const Wrapper = ({
     </AdminContext>
 );
 
-const DateHelper = ({ source, value }: { source: string; value: string }) => {
+const DateHelper = ({
+    source,
+    value,
+}: {
+    source: string;
+    value: string | Date;
+}) => {
     const record = useRecordContext();
     const { resetField, setValue } = useFormContext();
     const currentValue = useWatch({ name: source });
@@ -148,7 +171,7 @@ const DateHelper = ({ source, value }: { source: string; value: string }) => {
                 Record value: {get(record, source)?.toString() ?? '-'}
             </Typography>
             <Typography>
-                Current value: {currentValue?.toString() ?? '-'}
+                Current value: <span>{currentValue?.toString() ?? '-'}</span>
             </Typography>
             <Button
                 onClick={() => {

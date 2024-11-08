@@ -9,7 +9,7 @@ import get from 'lodash/get';
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm, SimpleFormProps } from '../form';
-import { DateTimeInput } from './DateTimeInput';
+import { DateTimeInput, DateTimeInputProps } from './DateTimeInput';
 import { FormInspector } from './common';
 
 export default { title: 'ra-ui-materialui/input/DateTimeInput' };
@@ -61,6 +61,26 @@ export const ExternalChanges = ({
     </Wrapper>
 );
 
+export const ExternalChangesWithParse = ({
+    dateTimeInputProps = {
+        parse: (value: string) => new Date(value),
+    },
+    simpleFormProps = {
+        defaultValues: { published: new Date('2021-09-11 20:00:00') },
+    },
+}: {
+    dateTimeInputProps?: Partial<DateTimeInputProps>;
+    simpleFormProps?: Omit<SimpleFormProps, 'children'>;
+}) => (
+    <Wrapper simpleFormProps={simpleFormProps}>
+        <DateTimeInput source="published" {...dateTimeInputProps} />
+        <DateHelper
+            source="published"
+            value={new Date('2021-10-20 10:00:00')}
+        />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({
@@ -80,7 +100,13 @@ const Wrapper = ({
     </AdminContext>
 );
 
-const DateHelper = ({ source, value }: { source: string; value: string }) => {
+const DateHelper = ({
+    source,
+    value,
+}: {
+    source: string;
+    value: string | Date;
+}) => {
     const record = useRecordContext();
     const { resetField, setValue } = useFormContext();
     const currentValue = useWatch({ name: source });
@@ -91,7 +117,7 @@ const DateHelper = ({ source, value }: { source: string; value: string }) => {
                 Record value: {get(record, source)?.toString() ?? '-'}
             </Typography>
             <Typography>
-                Current value: {currentValue?.toString() ?? '-'}
+                Current value: <span>{currentValue?.toString() ?? '-'}</span>
             </Typography>
             <Button
                 onClick={() => {
