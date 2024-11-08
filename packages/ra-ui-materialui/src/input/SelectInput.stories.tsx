@@ -288,7 +288,7 @@ export const CreateLabel = () => {
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Wrapper>
+        <Wrapper name="category">
             <SelectInput
                 onCreate={() => {
                     const newCategoryName = prompt('Enter a new category');
@@ -310,7 +310,7 @@ export const CreateLabel = () => {
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children, onSuccess = console.log }) => (
+const Wrapper = ({ children, onSuccess = console.log, name = 'gender' }) => (
     <AdminContext
         i18nProvider={i18nProvider}
         dataProvider={
@@ -330,7 +330,7 @@ const Wrapper = ({ children, onSuccess = console.log }) => (
                 }
             >
                 {children}
-                <FormInspector name="gender" />
+                <FormInspector name={name} />
             </SimpleForm>
         </RaCreate>
     </AdminContext>

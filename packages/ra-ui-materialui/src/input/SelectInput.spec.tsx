@@ -19,6 +19,7 @@ import {
     Sort,
     TranslateChoice,
     FetchChoices,
+    CreateLabel,
 } from './SelectInput.stories';
 
 describe('<SelectInput />', () => {
@@ -678,6 +679,23 @@ describe('<SelectInput />', () => {
             await waitFor(() => {
                 expect(screen.queryByText(newChoice.name.en)).not.toBeNull();
             });
+        });
+
+        it('should support using a custom createLabel', async () => {
+            const promptSpy = jest.spyOn(window, 'prompt');
+            promptSpy.mockImplementation(jest.fn(() => 'New Category'));
+            render(<CreateLabel />);
+            const input = (await screen.findByLabelText(
+                'Category'
+            )) as HTMLInputElement;
+            fireEvent.mouseDown(input);
+            // Expect the custom create label to be displayed
+            fireEvent.click(await screen.findByText('Create a new category'));
+            // Expect a prompt to have opened
+            await waitFor(() => {
+                expect(promptSpy).toHaveBeenCalled();
+            });
+            promptSpy.mockRestore();
         });
     });
 
