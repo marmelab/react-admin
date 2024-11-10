@@ -110,7 +110,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
 const getDecodedPathname = (pathname: string) =>
     pathname
         .split('/')
-        .map(segment => decodeURIComponent(segment).replace(/\s+/g, ''))
+        .map(segment => decodeURIComponent(segment).replace(/\s+/g, ' '))
         .join('/');
 
 const DefaultTabs = <TabbedFormTabs />;
