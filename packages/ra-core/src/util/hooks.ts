@@ -1,32 +1,7 @@
-import * as React from 'react';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import isEqual from 'lodash/isEqual';
 
 // thanks Kent C Dodds for the following helpers
-
-export function useSafeSetState<T>(
-    initialState?: T | (() => T)
-): [T | undefined, React.Dispatch<React.SetStateAction<T>>] {
-    const [state, setState] = useState(initialState);
-
-    const mountedRef = useRef(false);
-    useEffect(() => {
-        mountedRef.current = true;
-        return () => {
-            mountedRef.current = false;
-        };
-    }, []);
-    const safeSetState = useCallback(
-        args => {
-            if (mountedRef.current) {
-                return setState(args);
-            }
-        },
-        [mountedRef, setState]
-    );
-
-    return [state, safeSetState];
-}
 
 export function usePrevious(value) {
     const ref = useRef();
@@ -54,7 +29,7 @@ export function useDeepCompareEffect(callback, inputs) {
  * @returns true if the delay has expired, false otherwise
  */
 export function useTimeout(ms = 0, key = '') {
-    const [ready, setReady] = useSafeSetState(false);
+    const [ready, setReady] = useState(false);
 
     useEffect(() => {
         setReady(false);

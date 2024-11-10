@@ -11,7 +11,6 @@ import {
     useRefresh,
     useResourceContext,
     useTranslate,
-    useSafeSetState,
     RaRecord,
     DeleteManyParams,
 } from 'ra-core';
@@ -38,7 +37,7 @@ export const BulkDeleteWithConfirmButton = (
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const { selectedIds, onUnselectItems } = useListContext();
-    const [isOpen, setOpen] = useSafeSetState(false);
+    const [isOpen, setOpen] = React.useState(false);
     const notify = useNotify();
     const resource = useResourceContext(props);
     const refresh = useRefresh();

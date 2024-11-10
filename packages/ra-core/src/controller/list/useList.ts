@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { removeEmpty, useSafeSetState } from '../../util';
+import { removeEmpty } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
@@ -68,19 +68,22 @@ export const useList = <RecordType extends RaRecord = any>(
     } = props;
     const resource = useResourceContext(props);
 
-    const [fetchingState, setFetchingState] = useSafeSetState<boolean>(
-        isFetching
-    ) as [boolean, (isFetching: boolean) => void];
+    const [fetchingState, setFetchingState] = useState<boolean>(isFetching) as [
+        boolean,
+        (isFetching: boolean) => void,
+    ];
 
-    const [loadingState, setLoadingState] = useSafeSetState<boolean>(
-        isLoading
-    ) as [boolean, (isLoading: boolean) => void];
+    const [loadingState, setLoadingState] = useState<boolean>(isLoading) as [
+        boolean,
+        (isLoading: boolean) => void,
+    ];
 
-    const [pendingState, setPendingState] = useSafeSetState<boolean>(
-        isPending
-    ) as [boolean, (isPending: boolean) => void];
+    const [pendingState, setPendingState] = useState<boolean>(isPending) as [
+        boolean,
+        (isPending: boolean) => void,
+    ];
 
-    const [finalItems, setFinalItems] = useSafeSetState<{
+    const [finalItems, setFinalItems] = useState<{
         data?: RecordType[];
         total?: number;
     }>(() => ({
@@ -115,10 +118,10 @@ export const useList = <RecordType extends RaRecord = any>(
 
     // filter logic
     const filterRef = useRef(filter);
-    const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
+    const [displayedFilters, setDisplayedFilters] = useState<{
         [key: string]: boolean;
     }>({});
-    const [filterValues, setFilterValues] = useSafeSetState<{
+    const [filterValues, setFilterValues] = useState<{
         [key: string]: any;
     }>(filter);
     const hideFilter = useCallback(

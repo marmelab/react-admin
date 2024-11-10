@@ -9,7 +9,6 @@ import { AuthContext } from './AuthContext';
 import useLogout from './useLogout';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
-import { useSafeSetState } from '../util';
 
 import { TestMemoryRouter } from '../routing';
 
@@ -40,7 +39,7 @@ const authProvider: AuthProvider = {
 };
 
 const TestComponent = ({ error }: { error?: any }) => {
-    const [loggedOut, setLoggedOut] = useSafeSetState(false);
+    const [loggedOut, setLoggedOut] = React.useState(false);
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
     useEffect(() => {
         logoutIfAccessDenied(error).then(setLoggedOut);

@@ -7,7 +7,7 @@ import {
     CircularProgress,
     Typography,
 } from '@mui/material';
-import { Form, useLogin, useNotify, useSafeSetState } from 'ra-core';
+import { Form, useLogin, useNotify } from 'ra-core';
 import { Login, TextInput } from 'react-admin';
 import { SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -36,7 +36,7 @@ const StyledForm = styled(Form, {
 }));
 
 export const LoginForm = () => {
-    const [loading, setLoading] = useSafeSetState(false);
+    const [loading, setLoading] = React.useState(false);
     const login = useLogin();
     const notify = useNotify();
 
