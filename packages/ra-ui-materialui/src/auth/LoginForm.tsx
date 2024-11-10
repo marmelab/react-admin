@@ -1,19 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Button, CardContent, CircularProgress } from '@mui/material';
-import {
-    Form,
-    required,
-    useTranslate,
-    useLogin,
-    useNotify,
-    useSafeSetState,
-} from 'ra-core';
+import { Form, required, useTranslate, useLogin, useNotify } from 'ra-core';
 import { TextInput } from '../input';
 
 export const LoginForm = (props: LoginFormProps) => {
     const { redirectTo, className } = props;
-    const [loading, setLoading] = useSafeSetState(false);
+    const [loading, setLoading] = React.useState(false);
     const login = useLogin();
     const translate = useTranslate();
     const notify = useNotify();
