@@ -8,20 +8,27 @@ import {
     useList,
     useListContext,
 } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import * as React from 'react';
 
 import { AutoSubmitFilterForm, AutoSubmitFilterFormProps } from '.';
 import { AdminContext } from '../../AdminContext';
 import { AdminUI } from '../../AdminUI';
-import { TextField } from '../../field';
-import { TextInput } from '../../input';
+import { ReferenceField, TextField } from '../../field';
+import { ReferenceInput, TextInput } from '../../input';
 import { List } from '../List';
 import { Datagrid } from '../datagrid/Datagrid';
 import { FilterList } from './FilterList';
 import { FilterListItem } from './FilterListItem';
 
 export default { title: 'ra-ui-materialui/list/filter/AutoSubmitFilterForm' };
+
+const i18nProvider = polyglotI18nProvider(
+    () => englishMessages,
+    'en' // Default locale
+);
 
 export const Basic = (props: Partial<AutoSubmitFilterFormProps>) => {
     const listContext = useList({
@@ -268,71 +275,96 @@ const dataProvider = fakeRestDataProvider({
         {
             id: 1,
             title: 'War and Peace',
-            author: 'Leo Tolstoy',
+            authorId: 1,
             year: 1869,
         },
         {
             id: 2,
-            title: 'Pride and Predjudice',
-            author: 'Jane Austen',
-            year: 1813,
+            title: 'Anna Karenina',
+            authorId: 1,
+            year: 1877,
         },
         {
             id: 3,
-            title: 'The Picture of Dorian Gray',
-            author: 'Oscar Wilde',
-            year: 1890,
+            title: 'Pride and Predjudice',
+            authorId: 2,
+            year: 1813,
         },
         {
             id: 4,
-            title: 'Le Petit Prince',
-            author: 'Antoine de Saint-Exupéry',
-            year: 1943,
+            authorId: 2,
+            title: 'Sense and Sensibility',
+            year: 1811,
         },
         {
             id: 5,
-            title: "Alice's Adventures in Wonderland",
-            author: 'Lewis Carroll',
-            year: 1865,
+            title: 'The Picture of Dorian Gray',
+            authorId: 3,
+            year: 1890,
         },
         {
             id: 6,
-            title: 'Madame Bovary',
-            author: 'Gustave Flaubert',
-            year: 1856,
+            title: 'Le Petit Prince',
+            authorId: 4,
+            year: 1943,
         },
         {
             id: 7,
-            title: 'The Lord of the Rings',
-            author: 'J. R. R. Tolkien',
-            year: 1954,
+            title: "Alice's Adventures in Wonderland",
+            authorId: 5,
+            year: 1865,
         },
         {
             id: 8,
-            title: "Harry Potter and the Philosopher's Stone",
-            author: 'J. K. Rowling',
-            year: 1997,
+            title: 'Madame Bovary',
+            authorId: 6,
+            year: 1856,
         },
-        {
-            id: 9,
-            title: 'The Alchemist',
-            author: 'Paulo Coelho',
-            year: 1988,
-        },
+        { id: 9, title: 'The Hobbit', authorId: 7, year: 1937 },
         {
             id: 10,
-            title: 'A Catcher in the Rye',
-            author: 'J. D. Salinger',
-            year: 1951,
+            title: 'The Lord of the Rings',
+            authorId: 7,
+            year: 1954,
         },
         {
             id: 11,
+            title: "Harry Potter and the Philosopher's Stone",
+            authorId: 8,
+            year: 1997,
+        },
+        {
+            id: 12,
+            title: 'The Alchemist',
+            authorId: 9,
+            year: 1988,
+        },
+        {
+            id: 13,
+            title: 'A Catcher in the Rye',
+            authorId: 10,
+            year: 1951,
+        },
+        {
+            id: 14,
             title: 'Ulysses',
-            author: 'James Joyce',
+            authorId: 11,
             year: 1922,
         },
     ],
-    authors: [],
+    authors: [
+        { id: 1, firstName: 'Leo', lastName: 'Tolstoy' },
+        { id: 2, firstName: 'Jane', lastName: 'Austen' },
+        { id: 3, firstName: 'Oscar', lastName: 'Wilde' },
+        { id: 4, firstName: 'Antoine', lastName: 'de Saint-Exupéry' },
+        { id: 5, firstName: 'Lewis', lastName: 'Carroll' },
+        { id: 6, firstName: 'Gustave', lastName: 'Flaubert' },
+        { id: 7, firstName: 'J. R. R.', lastName: 'Tolkien' },
+        { id: 8, firstName: 'J. K.', lastName: 'Rowling' },
+        { id: 9, firstName: 'Paulo', lastName: 'Coelho' },
+        { id: 10, firstName: 'J. D.', lastName: 'Salinger' },
+        { id: 11, firstName: 'James', lastName: 'Joyce' },
+    ],
 });
 
 const BookListAside = () => (
@@ -354,7 +386,7 @@ const BookListAside = () => (
             </FilterList>
             <AutoSubmitFilterForm>
                 <TextInput source="title" />
-                <TextInput source="author" />
+                <ReferenceInput source="authorId" reference="authors" />
             </AutoSubmitFilterForm>
         </CardContent>
     </Card>
@@ -364,16 +396,22 @@ const BookList = () => (
     <List aside={<BookListAside />}>
         <Datagrid>
             <TextField source="title" />
-            <TextField source="author" />
+            <ReferenceField source="authorId" reference="authors" />
             <TextField source="year" />
         </Datagrid>
     </List>
 );
 
 export const FullApp = () => (
-    <AdminContext dataProvider={dataProvider}>
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
             <Resource name="books" list={BookList} />
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.firstName} ${record.lastName}`
+                }
+            />
         </AdminUI>
     </AdminContext>
 );
