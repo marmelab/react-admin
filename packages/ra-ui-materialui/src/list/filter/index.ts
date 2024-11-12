@@ -14,4 +14,3 @@ export * from './RemoveSavedQueryIconButton';
 export * from './SavedQueriesList';
 export * from './SavedQueryFilterListItem';
 export * from './useSavedQueries';
-export * from './AutoSubmitFilterForm';

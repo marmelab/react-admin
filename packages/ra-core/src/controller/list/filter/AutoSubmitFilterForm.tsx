@@ -1,19 +1,15 @@
-import {
-    getSimpleValidationResolver,
-    SourceContextProvider,
-    SourceContextValue,
-    useEvent,
-    useListFilterContext,
-    useResourceContext,
-    ValidateForm,
-    useDebouncedEvent,
-} from 'ra-core';
+import isEqual from 'lodash/isEqual';
 import * as React from 'react';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
-import isEqual from 'lodash/isEqual';
-
-// TODO - check if this can be moved to ra-core
+import {
+    SourceContextProvider,
+    SourceContextValue,
+    useResourceContext,
+} from '../../../core';
+import { getSimpleValidationResolver, ValidateForm } from '../../../form';
+import { useDebouncedEvent, useEvent } from '../../../util';
+import { useListFilterContext } from '../useListFilterContext';
 
 /**
  * TODO

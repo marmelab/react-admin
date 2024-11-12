@@ -1,35 +1,32 @@
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import MailIcon from '@mui/icons-material/MailOutline';
-import TitleIcon from '@mui/icons-material/Title';
 import Person2Icon from '@mui/icons-material/Person2';
+import TitleIcon from '@mui/icons-material/Title';
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import {
+    AutoSubmitFilterForm,
     ListContextProvider,
     required,
     Resource,
     useList,
     useListContext,
 } from 'ra-core';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import fakeRestDataProvider from 'ra-data-fakerest';
 import * as React from 'react';
 
-import {
-    AutoSubmitFilterForm,
-    AutoSubmitFilterFormProps,
-    FilterListWrapper,
-} from '.';
+import { FilterListWrapper } from '.';
 import { AdminContext } from '../../AdminContext';
 import { AdminUI } from '../../AdminUI';
+import { ExportButton } from '../../button';
 import { ReferenceField, TextField } from '../../field';
 import { AutocompleteInput, ReferenceInput, TextInput } from '../../input';
+import { TopToolbar } from '../../layout';
 import { List } from '../List';
 import { Datagrid } from '../datagrid/Datagrid';
 import { FilterList } from './FilterList';
 import { FilterListItem } from './FilterListItem';
-import { TopToolbar } from '../../layout';
-import { ExportButton } from '../../button';
 
 export default { title: 'ra-ui-materialui/list/filter/AutoSubmitFilterForm' };
 
@@ -37,50 +34,6 @@ const i18nProvider = polyglotI18nProvider(
     () => englishMessages,
     'en' // Default locale
 );
-
-export const Basic = (props: Partial<AutoSubmitFilterFormProps>) => {
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'Hello', has_newsletter: true },
-            { id: 2, title: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-        },
-    });
-    return (
-        <ListContextProvider value={listContext}>
-            <Card
-                sx={{
-                    width: '17em',
-                    margin: '1em',
-                }}
-            >
-                <CardContent>
-                    <FilterList
-                        label="Subscribed to newsletter"
-                        icon={<MailIcon />}
-                    >
-                        <FilterListItem
-                            label="Yes"
-                            value={{ has_newsletter: true }}
-                        />
-                        <FilterListItem
-                            label="No"
-                            value={{ has_newsletter: false }}
-                        />
-                    </FilterList>
-                    <AutoSubmitFilterForm {...props}>
-                        <TextInput source="title" resettable />
-                    </AutoSubmitFilterForm>
-                </CardContent>
-            </Card>
-            <FilterValue />
-        </ListContextProvider>
-    );
-};
-
-export const NoDebounce = () => <Basic debounce={false} />;
 
 export const WithFilterListWrapper = () => {
     const listContext = useList({
