@@ -30,9 +30,8 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
           ? getSimpleValidationResolver(validate)
           : undefined;
 
-    console.log('filterValues', filterValues);
     const form = useForm({
-        mode: 'onChange', // TODO - check if we need this
+        mode: 'onChange',
         // TODO - figure out a way to react to external changes in filter values
         defaultValues: filterValues,
         resolver: finalResolver,
@@ -42,8 +41,13 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
     const { isValid } = formState;
 
     const onSubmit = useEvent((values: any): void => {
-        // Avoid calling setFilters with the same values (can happen if the form
+        // Do not call setFilters if the form is invalid
+        if (!isValid) {
+            return;
+        }
+        // Avoid calling setFilters with the same values (happens when the form
         // is reset with the updated filterValues)
+        // TODO - check if still needed since I use defaultValues
         if (
             isEqual(filterValues, {
                 ...filterValues,
@@ -53,12 +57,14 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
             return;
         }
         console.log('calling setFilters with', {
-            filterValues,
-            values,
-            result: {
-                ...filterValues,
-                ...values,
-            },
+            // filterValues,
+            // values,
+            // result: {
+            //     ...filterValues,
+            //     ...values,
+            // },
+            ...filterValues,
+            ...values,
         });
         setFilters({
             ...filterValues,
@@ -70,14 +76,10 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
     // Submit the form on values change
     useEffect(() => {
         const { unsubscribe } = watch(values => {
-            // Do not submit the form if it is invalid
-            if (!isValid) {
-                return;
-            }
             debouncedOnSubmit(values);
         });
         return () => unsubscribe();
-    }, [handleSubmit, watch, debouncedOnSubmit, isValid]);
+    }, [watch, debouncedOnSubmit]);
 
     const sourceContext = React.useMemo<SourceContextValue>(
         () => ({
@@ -100,7 +102,7 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
 export interface AutoSubmitFilterFormProps
     extends Omit<UseFormProps, 'onSubmit'> {
     children: ReactNode;
-    validate?: ValidateForm; // TODO test
-    debounce?: number | false; // TODO test
+    validate?: ValidateForm;
+    debounce?: number | false;
     resource?: string;
 }

@@ -3,6 +3,7 @@ import MailIcon from '@mui/icons-material/MailOutline';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import {
     ListContextProvider,
+    required,
     Resource,
     useList,
     useListContext,
@@ -10,7 +11,7 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import * as React from 'react';
 
-import { AutoSubmitFilterForm } from '.';
+import { AutoSubmitFilterForm, AutoSubmitFilterFormProps } from '.';
 import { AdminContext } from '../../AdminContext';
 import { AdminUI } from '../../AdminUI';
 import { TextField } from '../../field';
@@ -22,7 +23,49 @@ import { FilterListItem } from './FilterListItem';
 
 export default { title: 'ra-ui-materialui/list/filter/AutoSubmitFilterForm' };
 
-export const Basic = () => {
+export const Basic = (props: Partial<AutoSubmitFilterFormProps>) => {
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'Hello', has_newsletter: true },
+            { id: 2, title: 'World', has_newsletter: false },
+        ],
+        filter: {
+            category: 'deals',
+        },
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <Card
+                sx={{
+                    width: '17em',
+                    margin: '1em',
+                }}
+            >
+                <CardContent>
+                    <FilterList
+                        label="Subscribed to newsletter"
+                        icon={<MailIcon />}
+                    >
+                        <FilterListItem
+                            label="Yes"
+                            value={{ has_newsletter: true }}
+                        />
+                        <FilterListItem
+                            label="No"
+                            value={{ has_newsletter: false }}
+                        />
+                    </FilterList>
+                    <AutoSubmitFilterForm {...props}>
+                        <TextInput source="title" />
+                    </AutoSubmitFilterForm>
+                </CardContent>
+            </Card>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};
+
+export const MultipleInput = () => {
     const listContext = useList({
         data: [
             { id: 1, title: 'Hello', has_newsletter: true },
@@ -56,6 +99,149 @@ export const Basic = () => {
                     </FilterList>
                     <AutoSubmitFilterForm>
                         <TextInput source="title" />
+                        <TextInput source="author" />
+                    </AutoSubmitFilterForm>
+                </CardContent>
+            </Card>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};
+
+export const MultipleAutoSubmitFilterForm = () => {
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'Hello', has_newsletter: true },
+            { id: 2, title: 'World', has_newsletter: false },
+        ],
+        filter: {
+            category: 'deals',
+        },
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <Card
+                sx={{
+                    width: '17em',
+                    margin: '1em',
+                }}
+            >
+                <CardContent>
+                    <FilterList
+                        label="Subscribed to newsletter"
+                        icon={<MailIcon />}
+                    >
+                        <FilterListItem
+                            label="Yes"
+                            value={{ has_newsletter: true }}
+                        />
+                        <FilterListItem
+                            label="No"
+                            value={{ has_newsletter: false }}
+                        />
+                    </FilterList>
+                    <AutoSubmitFilterForm>
+                        <TextInput source="title" />
+                    </AutoSubmitFilterForm>
+                    <AutoSubmitFilterForm>
+                        <TextInput source="author" />
+                    </AutoSubmitFilterForm>
+                </CardContent>
+            </Card>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};
+
+export const NoDebounce = () => <Basic debounce={false} />;
+
+export const PerInputValidation = () => {
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'Hello', has_newsletter: true },
+            { id: 2, title: 'World', has_newsletter: false },
+        ],
+        filter: {
+            category: 'deals',
+            author: 'Leo Tolstoy',
+        },
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <Card
+                sx={{
+                    width: '17em',
+                    margin: '1em',
+                }}
+            >
+                <CardContent>
+                    <FilterList
+                        label="Subscribed to newsletter"
+                        icon={<MailIcon />}
+                    >
+                        <FilterListItem
+                            label="Yes"
+                            value={{ has_newsletter: true }}
+                        />
+                        <FilterListItem
+                            label="No"
+                            value={{ has_newsletter: false }}
+                        />
+                    </FilterList>
+                    <AutoSubmitFilterForm>
+                        <TextInput source="title" />
+                        <TextInput source="author" validate={required()} />
+                    </AutoSubmitFilterForm>
+                </CardContent>
+            </Card>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};
+
+const validateFilters = values => {
+    const errors: any = {};
+    if (!values.author) {
+        errors.author = 'The author is required';
+    }
+    return errors;
+};
+export const GlobalValidation = () => {
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'Hello', has_newsletter: true },
+            { id: 2, title: 'World', has_newsletter: false },
+        ],
+        filter: {
+            category: 'deals',
+            author: 'Leo Tolstoy',
+        },
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <Card
+                sx={{
+                    width: '17em',
+                    margin: '1em',
+                }}
+            >
+                <CardContent>
+                    <FilterList
+                        label="Subscribed to newsletter"
+                        icon={<MailIcon />}
+                    >
+                        <FilterListItem
+                            label="Yes"
+                            value={{ has_newsletter: true }}
+                        />
+                        <FilterListItem
+                            label="No"
+                            value={{ has_newsletter: false }}
+                        />
+                    </FilterList>
+                    <AutoSubmitFilterForm validate={validateFilters}>
+                        <TextInput source="title" />
+                        <TextInput source="author" isRequired />
                     </AutoSubmitFilterForm>
                 </CardContent>
             </Card>
