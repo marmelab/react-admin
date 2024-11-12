@@ -1,5 +1,7 @@
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import MailIcon from '@mui/icons-material/MailOutline';
+import TitleIcon from '@mui/icons-material/Title';
+import Person2Icon from '@mui/icons-material/Person2';
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import {
     ListContextProvider,
@@ -13,7 +15,11 @@ import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import * as React from 'react';
 
-import { AutoSubmitFilterForm, AutoSubmitFilterFormProps } from '.';
+import {
+    AutoSubmitFilterForm,
+    AutoSubmitFilterFormProps,
+    FilterListWrapper,
+} from '.';
 import { AdminContext } from '../../AdminContext';
 import { AdminUI } from '../../AdminUI';
 import { ReferenceField, TextField } from '../../field';
@@ -74,6 +80,56 @@ export const Basic = (props: Partial<AutoSubmitFilterFormProps>) => {
     );
 };
 
+export const NoDebounce = () => <Basic debounce={false} />;
+
+export const WithFilterListWrapper = () => {
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'Hello', has_newsletter: true },
+            { id: 2, title: 'World', has_newsletter: false },
+        ],
+        filter: {
+            category: 'deals',
+        },
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <Card
+                sx={{
+                    width: '17em',
+                    margin: '1em',
+                }}
+            >
+                <CardContent>
+                    <FilterList
+                        label="Subscribed to newsletter"
+                        icon={<MailIcon />}
+                    >
+                        <FilterListItem
+                            label="Yes"
+                            value={{ has_newsletter: true }}
+                        />
+                        <FilterListItem
+                            label="No"
+                            value={{ has_newsletter: false }}
+                        />
+                    </FilterList>
+                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                        <AutoSubmitFilterForm>
+                            <TextInput
+                                source="title"
+                                resettable
+                                helperText={false}
+                            />
+                        </AutoSubmitFilterForm>
+                    </FilterListWrapper>
+                </CardContent>
+            </Card>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};
+
 export const MultipleInput = () => {
     const listContext = useList({
         data: [
@@ -106,10 +162,21 @@ export const MultipleInput = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <AutoSubmitFilterForm>
-                        <TextInput source="title" resettable />
-                        <TextInput source="author" resettable />
-                    </AutoSubmitFilterForm>
+                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                        <AutoSubmitFilterForm>
+                            <TextInput
+                                source="title"
+                                resettable
+                                helperText={false}
+                                sx={{ mb: 2 }}
+                            />
+                            <TextInput
+                                source="author"
+                                resettable
+                                helperText={false}
+                            />
+                        </AutoSubmitFilterForm>
+                    </FilterListWrapper>
                 </CardContent>
             </Card>
             <FilterValue />
@@ -149,20 +216,30 @@ export const MultipleAutoSubmitFilterForm = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <AutoSubmitFilterForm>
-                        <TextInput source="title" resettable />
-                    </AutoSubmitFilterForm>
-                    <AutoSubmitFilterForm>
-                        <TextInput source="author" resettable />
-                    </AutoSubmitFilterForm>
+                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                        <AutoSubmitFilterForm>
+                            <TextInput
+                                source="title"
+                                resettable
+                                helperText={false}
+                            />
+                        </AutoSubmitFilterForm>
+                    </FilterListWrapper>
+                    <FilterListWrapper label="Author" icon={<Person2Icon />}>
+                        <AutoSubmitFilterForm>
+                            <TextInput
+                                source="author"
+                                resettable
+                                helperText={false}
+                            />
+                        </AutoSubmitFilterForm>
+                    </FilterListWrapper>
                 </CardContent>
             </Card>
             <FilterValue />
         </ListContextProvider>
     );
 };
-
-export const NoDebounce = () => <Basic debounce={false} />;
 
 export const PerInputValidation = () => {
     const listContext = useList({
@@ -197,14 +274,16 @@ export const PerInputValidation = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <AutoSubmitFilterForm>
-                        <TextInput source="title" resettable />
-                        <TextInput
-                            source="author"
-                            validate={required()}
-                            resettable
-                        />
-                    </AutoSubmitFilterForm>
+                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                        <AutoSubmitFilterForm>
+                            <TextInput source="title" resettable />
+                            <TextInput
+                                source="author"
+                                validate={required()}
+                                resettable
+                            />
+                        </AutoSubmitFilterForm>
+                    </FilterListWrapper>
                 </CardContent>
             </Card>
             <FilterValue />
@@ -252,10 +331,12 @@ export const GlobalValidation = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <AutoSubmitFilterForm validate={validateFilters}>
-                        <TextInput source="title" resettable />
-                        <TextInput source="author" isRequired resettable />
-                    </AutoSubmitFilterForm>
+                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                        <AutoSubmitFilterForm validate={validateFilters}>
+                            <TextInput source="title" resettable />
+                            <TextInput source="author" isRequired resettable />
+                        </AutoSubmitFilterForm>
+                    </FilterListWrapper>
                 </CardContent>
             </Card>
             <FilterValue />
@@ -269,7 +350,7 @@ const FilterValue = () => {
         <Box sx={{ margin: '1em' }}>
             <Typography>Filter values:</Typography>
             <pre>{JSON.stringify(filterValues, null, 2)}</pre>
-            <pre style={{ display: 'none' }}>
+            <pre style={{ display: 'none' }} data-testid="filter-values">
                 {JSON.stringify(filterValues)}
             </pre>
         </Box>
@@ -374,7 +455,7 @@ const dataProvider = fakeRestDataProvider({
 });
 
 const BookListAside = () => (
-    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+    <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
         <CardContent>
             <FilterList label="Century" icon={<CategoryIcon />}>
                 <FilterListItem
@@ -390,10 +471,18 @@ const BookListAside = () => (
                     value={{ year_gte: 1800, year_lte: 1899 }}
                 />
             </FilterList>
-            <AutoSubmitFilterForm>
-                <TextInput source="title" resettable />
-                <ReferenceInput source="authorId" reference="authors" />
-            </AutoSubmitFilterForm>
+            <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                <AutoSubmitFilterForm>
+                    <TextInput source="title" resettable helperText={false} />
+                </AutoSubmitFilterForm>
+            </FilterListWrapper>
+            <FilterListWrapper label="Author" icon={<Person2Icon />}>
+                <AutoSubmitFilterForm>
+                    <ReferenceInput source="authorId" reference="authors">
+                        <AutocompleteInput helperText={false} />
+                    </ReferenceInput>
+                </AutoSubmitFilterForm>
+            </FilterListWrapper>
         </CardContent>
     </Card>
 );
@@ -424,17 +513,25 @@ export const FullApp = () => (
 
 const ListActions = () => (
     <Box width="100%">
-        <TopToolbar>
+        <TopToolbar sx={{ justifyContent: 'space-between' }}>
+            <AutoSubmitFilterForm>
+                <Stack direction="row" spacing={2} useFlexGap>
+                    <TextInput
+                        source="title"
+                        resettable
+                        fullWidth={false}
+                        helperText={false}
+                    />
+                    <ReferenceInput source="authorId" reference="authors">
+                        <AutocompleteInput
+                            sx={{ width: 260 }}
+                            helperText={false}
+                        />
+                    </ReferenceInput>
+                </Stack>
+            </AutoSubmitFilterForm>
             <ExportButton />
         </TopToolbar>
-        <AutoSubmitFilterForm>
-            <Stack direction="row" spacing={2} useFlexGap>
-                <TextInput source="title" resettable fullWidth={false} />
-                <ReferenceInput source="authorId" reference="authors">
-                    <AutocompleteInput sx={{ width: 260 }} />
-                </ReferenceInput>
-            </Stack>
-        </AutoSubmitFilterForm>
     </Box>
 );
 
