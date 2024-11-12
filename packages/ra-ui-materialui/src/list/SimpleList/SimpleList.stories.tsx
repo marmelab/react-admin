@@ -137,6 +137,28 @@ export const FullApp = () => (
     </AdminContext>
 );
 
+export const AnyLink = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <SimpleList
+                            primaryText={record => record.title}
+                            secondaryText={record => record.author}
+                            linkType={false}
+                        />
+                    </List>
+                )}
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
 export const NoPrimaryText = () => (
     <AdminContext
         dataProvider={dataProvider}
