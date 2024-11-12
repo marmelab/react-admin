@@ -5,15 +5,16 @@ import {
     ListContextProvider,
     TestMemoryRouter,
     ResourceContextProvider,
+    ResourceProps,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { SimpleList } from './SimpleList';
 import { AdminUI } from '../../AdminUI';
-import { AdminContext } from '../../AdminContext';
+import { AdminContext, AdminContextProps } from '../../AdminContext';
 import { EditGuesser } from '../../detail';
-import { List } from '../List';
+import { List, ListProps } from '../List';
 
 export default { title: 'ra-ui-materialui/list/SimpleList' };
 
@@ -113,9 +114,17 @@ export const Basic = () => (
     </TestMemoryRouter>
 );
 
-const dataProvider = fakeRestDataProvider(data);
+const myDataProvider = fakeRestDataProvider(data);
 
-export const FullApp = () => (
+const Wrapper = ({
+    children,
+    dataProvider = myDataProvider,
+    recordRepresentation,
+}: {
+    children: ListProps['children'];
+    dataProvider?: AdminContextProps['dataProvider'];
+    recordRepresentation?: ResourceProps['recordRepresentation'];
+}) => (
     <AdminContext
         dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
@@ -123,60 +132,37 @@ export const FullApp = () => (
         <AdminUI>
             <Resource
                 name="books"
-                list={() => (
-                    <List>
-                        <SimpleList
-                            primaryText={record => record.title}
-                            secondaryText={record => record.author}
-                        />
-                    </List>
-                )}
+                recordRepresentation={recordRepresentation}
+                list={() => <List>{children}</List>}
                 edit={EditGuesser}
             />
         </AdminUI>
     </AdminContext>
+);
+
+export const FullApp = () => (
+    <Wrapper>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+        />
+    </Wrapper>
 );
 
 export const AnyLink = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
-    >
-        <AdminUI>
-            <Resource
-                name="books"
-                list={() => (
-                    <List>
-                        <SimpleList
-                            primaryText={record => record.title}
-                            secondaryText={record => record.author}
-                            linkType={false}
-                        />
-                    </List>
-                )}
-            />
-        </AdminUI>
-    </AdminContext>
+    <Wrapper>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+            linkType={false}
+        />
+    </Wrapper>
 );
 
 export const NoPrimaryText = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
-    >
-        <AdminUI>
-            <Resource
-                name="books"
-                recordRepresentation="title"
-                list={() => (
-                    <List>
-                        <SimpleList />
-                    </List>
-                )}
-                edit={EditGuesser}
-            />
-        </AdminUI>
-    </AdminContext>
+    <Wrapper recordRepresentation="title">
+        <SimpleList />
+    </Wrapper>
 );
 
 export const ErrorInFetch = () => (
@@ -198,30 +184,19 @@ export const ErrorInFetch = () => (
 );
 
 export const FullAppInError = () => (
-    <AdminContext
+    <Wrapper
         dataProvider={
             {
                 getList: () =>
                     Promise.reject(new Error('Error in dataProvider')),
             } as any
         }
-        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
     >
-        <AdminUI>
-            <Resource
-                name="books"
-                list={() => (
-                    <List>
-                        <SimpleList
-                            primaryText={record => record.title}
-                            secondaryText={record => record.author}
-                        />
-                    </List>
-                )}
-                edit={EditGuesser}
-            />
-        </AdminUI>
-    </AdminContext>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+        />
+    </Wrapper>
 );
 
 export const Standalone = () => (
