@@ -275,6 +275,7 @@ const LinkOrNot = (
         id,
         children,
         record,
+        sx,
         ...rest
     } = props;
     const createPath = useCreatePath();
@@ -286,6 +287,12 @@ const LinkOrNot = (
             <ListItemText
                 // @ts-ignore
                 component="div"
+                sx={{
+                    paddingX: 2,
+                    paddingY: 1,
+                    margin: 0,
+                    ...sx,
+                }}
                 {...rest}
             >
                 {children}
@@ -297,6 +304,7 @@ const LinkOrNot = (
         <ListItemButton
             component={Link}
             to={createPath({ resource, id, type })}
+            sx={{ ...sx }}
             {...rest}
         >
             {children}
