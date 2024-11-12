@@ -1,6 +1,6 @@
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import MailIcon from '@mui/icons-material/MailOutline';
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import {
     ListContextProvider,
     required,
@@ -17,11 +17,13 @@ import { AutoSubmitFilterForm, AutoSubmitFilterFormProps } from '.';
 import { AdminContext } from '../../AdminContext';
 import { AdminUI } from '../../AdminUI';
 import { ReferenceField, TextField } from '../../field';
-import { ReferenceInput, TextInput } from '../../input';
+import { AutocompleteInput, ReferenceInput, TextInput } from '../../input';
 import { List } from '../List';
 import { Datagrid } from '../datagrid/Datagrid';
 import { FilterList } from './FilterList';
 import { FilterListItem } from './FilterListItem';
+import { TopToolbar } from '../../layout';
+import { ExportButton } from '../../button';
 
 export default { title: 'ra-ui-materialui/list/filter/AutoSubmitFilterForm' };
 
@@ -410,6 +412,46 @@ export const FullApp = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
             <Resource name="books" list={BookList} />
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.firstName} ${record.lastName}`
+                }
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+const ListActions = () => (
+    <Box width="100%">
+        <TopToolbar>
+            <ExportButton />
+        </TopToolbar>
+        <AutoSubmitFilterForm>
+            <Stack direction="row" spacing={2} useFlexGap>
+                <TextInput source="title" resettable fullWidth={false} />
+                <ReferenceInput source="authorId" reference="authors">
+                    <AutocompleteInput sx={{ width: 260 }} />
+                </ReferenceInput>
+            </Stack>
+        </AutoSubmitFilterForm>
+    </Box>
+);
+
+const BookListWithActions = () => (
+    <List actions={<ListActions />}>
+        <Datagrid>
+            <TextField source="title" />
+            <ReferenceField source="authorId" reference="authors" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+export const AsListActions = () => (
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <AdminUI>
+            <Resource name="books" list={BookListWithActions} />
             <Resource
                 name="authors"
                 recordRepresentation={record =>
