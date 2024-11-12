@@ -21,9 +21,6 @@ import { AdminUI } from '../../AdminUI';
 import { List } from '../List';
 import { Datagrid } from '../datagrid/Datagrid';
 import { TextField } from '../../field';
-import { TextInput } from '../../input';
-import { AutoSubmitFilterForm } from '.';
-import { SaveButton } from '../../button';
 
 export default { title: 'ra-ui-materialui/list/filter/FilterList' };
 
@@ -206,48 +203,6 @@ export const Cumulative = () => {
                             toggleFilter={toggleFilter}
                         />
                     </FilterList>
-                </CardContent>
-            </Card>
-            <FilterValue />
-        </ListContextProvider>
-    );
-};
-
-export const WithInputs = () => {
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'Hello', has_newsletter: true },
-            { id: 2, title: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-        },
-    });
-    return (
-        <ListContextProvider value={listContext}>
-            <Card
-                sx={{
-                    width: '17em',
-                    margin: '1em',
-                }}
-            >
-                <CardContent>
-                    <FilterList
-                        label="Subscribed to newsletter"
-                        icon={<MailIcon />}
-                    >
-                        <FilterListItem
-                            label="Yes"
-                            value={{ has_newsletter: true }}
-                        />
-                        <FilterListItem
-                            label="No"
-                            value={{ has_newsletter: false }}
-                        />
-                    </FilterList>
-                    <AutoSubmitFilterForm>
-                        <TextInput source="title" />
-                    </AutoSubmitFilterForm>
                 </CardContent>
             </Card>
             <FilterValue />

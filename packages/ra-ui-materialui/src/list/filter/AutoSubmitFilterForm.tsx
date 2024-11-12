@@ -30,10 +30,11 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
           ? getSimpleValidationResolver(validate)
           : undefined;
 
+    console.log('filterValues', filterValues);
     const form = useForm({
         mode: 'onChange', // TODO - check if we need this
-        // TODO - check reactiveness to external changes
-        values: filterValues,
+        // TODO - figure out a way to react to external changes in filter values
+        defaultValues: filterValues,
         resolver: finalResolver,
         ...rest,
     });
@@ -52,10 +53,13 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
             return;
         }
         console.log('calling setFilters with', {
-            ...filterValues,
-            ...values,
+            filterValues,
+            values,
+            result: {
+                ...filterValues,
+                ...values,
+            },
         });
-        // TODO - check how to remove a filter
         setFilters({
             ...filterValues,
             ...values,
@@ -63,13 +67,13 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
     });
     const debouncedOnSubmit = useDebouncedEvent(onSubmit, debounce || 0);
 
+    // Submit the form on values change
     useEffect(() => {
         const { unsubscribe } = watch(values => {
             // Do not submit the form if it is invalid
             if (!isValid) {
                 return;
             }
-            // Submit the form on values change
             debouncedOnSubmit(values);
         });
         return () => unsubscribe();
