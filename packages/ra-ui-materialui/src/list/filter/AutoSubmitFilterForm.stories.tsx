@@ -63,7 +63,7 @@ export const Basic = (props: Partial<AutoSubmitFilterFormProps>) => {
                         />
                     </FilterList>
                     <AutoSubmitFilterForm {...props}>
-                        <TextInput source="title" />
+                        <TextInput source="title" resettable />
                     </AutoSubmitFilterForm>
                 </CardContent>
             </Card>
@@ -105,8 +105,8 @@ export const MultipleInput = () => {
                         />
                     </FilterList>
                     <AutoSubmitFilterForm>
-                        <TextInput source="title" />
-                        <TextInput source="author" />
+                        <TextInput source="title" resettable />
+                        <TextInput source="author" resettable />
                     </AutoSubmitFilterForm>
                 </CardContent>
             </Card>
@@ -148,10 +148,10 @@ export const MultipleAutoSubmitFilterForm = () => {
                         />
                     </FilterList>
                     <AutoSubmitFilterForm>
-                        <TextInput source="title" />
+                        <TextInput source="title" resettable />
                     </AutoSubmitFilterForm>
                     <AutoSubmitFilterForm>
-                        <TextInput source="author" />
+                        <TextInput source="author" resettable />
                     </AutoSubmitFilterForm>
                 </CardContent>
             </Card>
@@ -196,8 +196,12 @@ export const PerInputValidation = () => {
                         />
                     </FilterList>
                     <AutoSubmitFilterForm>
-                        <TextInput source="title" />
-                        <TextInput source="author" validate={required()} />
+                        <TextInput source="title" resettable />
+                        <TextInput
+                            source="author"
+                            validate={required()}
+                            resettable
+                        />
                     </AutoSubmitFilterForm>
                 </CardContent>
             </Card>
@@ -247,8 +251,8 @@ export const GlobalValidation = () => {
                         />
                     </FilterList>
                     <AutoSubmitFilterForm validate={validateFilters}>
-                        <TextInput source="title" />
-                        <TextInput source="author" isRequired />
+                        <TextInput source="title" resettable />
+                        <TextInput source="author" isRequired resettable />
                     </AutoSubmitFilterForm>
                 </CardContent>
             </Card>
@@ -385,7 +389,7 @@ const BookListAside = () => (
                 />
             </FilterList>
             <AutoSubmitFilterForm>
-                <TextInput source="title" />
+                <TextInput source="title" resettable />
                 <ReferenceInput source="authorId" reference="authors" />
             </AutoSubmitFilterForm>
         </CardContent>
