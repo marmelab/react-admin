@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route } from 'react-router-dom';
@@ -39,7 +39,7 @@ const authProvider: AuthProvider = {
 };
 
 const TestComponent = ({ error }: { error?: any }) => {
-    const [loggedOut, setLoggedOut] = React.useState(false);
+    const [loggedOut, setLoggedOut] = useState(false);
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
     useEffect(() => {
         logoutIfAccessDenied(error).then(setLoggedOut);
