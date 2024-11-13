@@ -1,11 +1,7 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import type { SxProps } from '@mui/material';
-import { isValidElement, ReactNode, ReactElement } from 'react';
 import {
     Avatar,
     List,
-    ListProps,
     ListItem,
     ListItemAvatar,
     ListItemButton,
@@ -13,22 +9,31 @@ import {
     ListItemProps,
     ListItemSecondaryAction,
     ListItemText,
+    ListProps,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 import {
     Identifier,
     RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
+    useGetRecordRepresentation,
     useListContextWithProps,
     useResourceContext,
-    useGetRecordRepresentation,
-    useCreatePath,
     useTranslate,
 } from 'ra-core';
+import * as React from 'react';
+import { isValidElement, ReactElement, ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
-import { SimpleListLoading } from './SimpleListLoading';
 import { ListNoResults } from '../ListNoResults';
+import { SimpleListLoading } from './SimpleListLoading';
+
+import { useGetPathForRecordCallback } from 'ra-core';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { RowClickFunction } from 'react-admin';
 
 /**
  * The <SimpleList> component renders a list of records as a Material UI <List>.
@@ -44,7 +49,8 @@ import { ListNoResults } from '../ListNoResults';
  * - leftIcon: same
  * - rightAvatar: same
  * - rightIcon: same
- * - linkType: 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
+ * - linkType: deprecated 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
+ * - rowClick: The action to trigger when the user clicks on a row. @see https://marmelab.com/react-admin/Datagrid.html#rowclick
  * - rowStyle: function returning a style object based on (record, index)
  * - rowSx: function returning a sx object based on (record, index)
  *
@@ -65,7 +71,7 @@ import { ListNoResults } from '../ListNoResults';
  *     </List>
  * );
  */
-export const SimpleList = <RecordType extends RaRecord = any>(
+export const SimpleListJarvi = <RecordType extends RaRecord = any>(
     props: SimpleListProps<RecordType>
 ) => {
     const {
@@ -74,7 +80,8 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         hasBulkActions,
         leftAvatar,
         leftIcon,
-        linkType = 'edit',
+        linkType,
+        rowClick = 'edit',
         primaryText,
         rightAvatar,
         rightIcon,
@@ -84,8 +91,9 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         rowStyle,
         ...rest
     } = props;
-    const { data, isPending, total } =
-        useListContextWithProps<RecordType>(props);
+    const { data, isPending, total } = useListContextWithProps<RecordType>(
+        props
+    );
     const resource = useResourceContext(props);
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
@@ -131,7 +139,9 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                 <RecordContextProvider key={record.id} value={record}>
                     <ListItem disablePadding>
                         <LinkOrNot
+                            //@deprecated: use rowClick instead
                             linkType={linkType}
+                            rowClick={rowClick}
                             resource={resource}
                             id={record.id}
                             record={record}
@@ -162,12 +172,9 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                       _: primaryText,
                                                   })
                                                 : isValidElement(primaryText)
-                                                  ? primaryText
-                                                  : // @ts-ignore
-                                                    primaryText(
-                                                        record,
-                                                        record.id
-                                                    )
+                                                ? primaryText
+                                                : // @ts-ignore
+                                                  primaryText(record, record.id)
                                             : getRecordRepresentation(record)}
 
                                         {!!tertiaryText &&
@@ -189,14 +196,14 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                               }
                                                           )
                                                         : isValidElement(
-                                                                tertiaryText
-                                                            )
-                                                          ? tertiaryText
-                                                          : // @ts-ignore
-                                                            tertiaryText(
-                                                                record,
-                                                                record.id
-                                                            )}
+                                                              tertiaryText
+                                                          )
+                                                        ? tertiaryText
+                                                        : // @ts-ignore
+                                                          tertiaryText(
+                                                              record,
+                                                              record.id
+                                                          )}
                                                 </span>
                                             ))}
                                     </div>
@@ -209,9 +216,9 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                               _: secondaryText,
                                           })
                                         : isValidElement(secondaryText)
-                                          ? secondaryText
-                                          : // @ts-ignore
-                                            secondaryText(record, record.id))
+                                        ? secondaryText
+                                        : // @ts-ignore
+                                          secondaryText(record, record.id))
                                 }
                             />
                             {(rightAvatar || rightIcon) && (
@@ -249,7 +256,27 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;
     primaryText?: FunctionToElement<RecordType> | ReactElement | string;
+    /**
+     * @deprecated use rowClick instead
+     */
     linkType?: string | FunctionLinkType | false;
+
+    /**
+     * The action to trigger when the user clicks on a row.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#rowclick
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid rowClick="edit">
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
+    rowClick?: string | RowClickFunction | false;
     rightAvatar?: FunctionToElement<RecordType>;
     rightIcon?: FunctionToElement<RecordType>;
     secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
@@ -270,35 +297,61 @@ const LinkOrNot = (
 ) => {
     const {
         classes: classesOverride,
+        //@deprecated: use rowClick instead
         linkType,
+        rowClick,
         resource,
         id,
         children,
         record,
         ...rest
     } = props;
-    const createPath = useCreatePath();
-    const type =
-        typeof linkType === 'function' ? linkType(record, id) : linkType;
 
-    if (type === false) {
-        return (
-            <ListItemText
-                // @ts-ignore
-                component="div"
-                {...rest}
-            >
-                {children}
-            </ListItemText>
-        );
-    }
+    const navigate = useNavigate();
+    const getPathForRecord = useGetPathForRecordCallback();
+    const handleClick = useCallback(
+        async event => {
+            event.persist();
+            const link =
+                // v this is to maintain compatibility with deprecated linkType
+                typeof linkType === 'function'
+                    ? linkType(record, id)
+                    : typeof linkType !== 'undefined'
+                    ? linkType
+                    : // v this is the new way to handle links
+                    typeof rowClick === 'function'
+                    ? (record, resource) =>
+                          rowClick(record.id, resource, record)
+                    : typeof rowClick !== 'undefined'
+                    ? rowClick
+                    : 'edit';
+            const path = await getPathForRecord({
+                record,
+                resource,
+                link,
+            });
+            console.debug('LinkOrNot handleClick', {
+                event,
+                path,
+                record,
+                resource,
+                link,
+                rowClick,
+                linkType,
+            });
+            if (path === false || path == null) {
+                return;
+            }
+            navigate(path, {
+                state: { _scrollToTop: true },
+            });
+        },
+        [record, resource, rowClick, navigate, getPathForRecord]
+    );
+
     return (
         // @ts-ignore
-        <ListItemButton
-            component={Link}
-            to={createPath({ resource, id, type })}
-            {...rest}
-        >
+        <ListItemButton component={Link} onClick={handleClick} {...rest}>
             {children}
         </ListItemButton>
     );
@@ -307,7 +360,9 @@ const LinkOrNot = (
 export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
-    linkType: string | FunctionLinkType | false;
+    // @deprecated: use rowClick instead
+    linkType?: string | FunctionLinkType | false;
+    rowClick?: string | RowClickFunction | false;
     resource?: string;
     id: Identifier;
     record: RaRecord;
