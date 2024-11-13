@@ -288,9 +288,9 @@ const LinkOrNot = (
                 // @ts-ignore
                 component="div"
                 sx={{
-                    paddingX: 2,
-                    paddingY: 1,
-                    margin: 0,
+                    px: 2,
+                    py: 1,
+                    m: 0,
                     ...sx,
                 }}
                 {...rest}
@@ -304,7 +304,7 @@ const LinkOrNot = (
         <ListItemButton
             component={Link}
             to={createPath({ resource, id, type })}
-            sx={{ ...sx }}
+            sx={sx}
             {...rest}
         >
             {children}
