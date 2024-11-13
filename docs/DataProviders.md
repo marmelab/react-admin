@@ -115,11 +115,11 @@ React-admin uses `react-query` to call the Data Provider. You can view all `reac
 
 ![React-Query DevTools](./img/react-query-devtools.png)
 
-To enable these devtools, add the `<ReactQueryDevtools>` component to a custom layout:
+To enable these devtools, install `@tanstack/react-query-devtools` and add the `<ReactQueryDevtools>` component to a custom layout:
 
 ```jsx
 import { Layout } from 'react-admin';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export const MyLayout = ({ children }) => (
     <Layout>
