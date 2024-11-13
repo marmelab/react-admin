@@ -137,7 +137,7 @@ export const FullApp = () => (
     </AdminContext>
 );
 
-export const AnyLink = () => (
+export const LinkTypeFalse = () => (
     <AdminContext
         dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
