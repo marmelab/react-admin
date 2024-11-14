@@ -58,18 +58,18 @@ export const FilterForm = (props: FilterFormProps) => {
     useEffect(() => {
         const newValues = getFilterFormValues(getValues(), filterValues);
         const previousValues = getValues();
+        console.log('FilterForm useEffect', {
+            formChangesPending: formChangesPending.current,
+            newValues,
+            previousValues,
+            filterValues,
+        });
+        if (formChangesPending.current) {
+            // The effect was triggered by a form change, so we don't need to reset the form
+            formChangesPending.current = false;
+            return;
+        }
         if (!isEqual(newValues, previousValues)) {
-            console.log('FilterForm useEffect', {
-                formChangesPending: formChangesPending.current,
-                newValues,
-                previousValues,
-                filterValues,
-            });
-            if (formChangesPending.current) {
-                // The effect was triggered by a form change, so we don't need to reset the form
-                formChangesPending.current = false;
-                return;
-            }
             console.log('FilterForm called reset !', {
                 newValues,
             });
@@ -293,7 +293,7 @@ const getInputValue = (
     filterValues: Record<string, any>
 ) => {
     if (formValues[key] === undefined || formValues[key] === null) {
-        return '';
+        return get(filterValues, key, '');
     }
     if (Array.isArray(formValues[key])) {
         return get(filterValues, key, '');
