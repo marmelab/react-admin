@@ -20,11 +20,7 @@ import {
     WithAutoCompleteArrayInput,
     WithComplexValueFilter,
 } from './FilterButton.stories';
-import {
-    FilterForm,
-    getFilterFormValues,
-    mergeInitialValuesWithDefaultValues,
-} from './FilterForm';
+import { FilterForm, getFilterFormValues } from './FilterForm';
 
 describe('<FilterForm />', () => {
     const defaultListContext = {
@@ -295,47 +291,6 @@ describe('<FilterForm />', () => {
         });
 
         await screen.findByText('1-2 of 2');
-    });
-
-    describe('mergeInitialValuesWithDefaultValues', () => {
-        it('should correctly merge initial values with the default values of the alwaysOn filters', () => {
-            const initialValues = {
-                title: 'initial title',
-            };
-            const filters = [
-                {
-                    props: {
-                        source: 'title',
-                        alwaysOn: true,
-                        defaultValue: 'default title',
-                    },
-                },
-                {
-                    props: {
-                        source: 'url',
-                        alwaysOn: true,
-                        defaultValue: 'default url',
-                    },
-                },
-                {
-                    props: {
-                        source: 'author.name',
-                        alwaysOn: true,
-                        defaultValue: 'default author',
-                    },
-                },
-                { props: { source: 'notMe', defaultValue: 'default url' } },
-                { props: { source: 'notMeEither' } },
-            ];
-
-            expect(
-                mergeInitialValuesWithDefaultValues(initialValues, filters)
-            ).toEqual({
-                title: 'initial title',
-                url: 'default url',
-                author: { name: 'default author' },
-            });
-        });
     });
 
     describe('getFilterFormValues', () => {

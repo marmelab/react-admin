@@ -1,4 +1,6 @@
 import isEqual from 'lodash/isEqual';
+import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
 import * as React from 'react';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
@@ -28,40 +30,54 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
 
     const form = useForm({
         mode: 'onChange',
-        // TODO - figure out a way to react to external changes in filter values
         defaultValues: filterValues,
         resolver: finalResolver,
         ...rest,
     });
-    const { handleSubmit, watch, formState } = form;
+    const { handleSubmit, getValues, reset, watch, formState } = form;
     const { isValid } = formState;
+
+    // Ref tracking if there are internal changes pending, i.e. changes that
+    // should not trigger a reset
+    const formChangesPending = React.useRef(false);
+
+    // Reapply filterValues when they change externally
+    useEffect(() => {
+        const newValues = getFilterFormValues(getValues(), filterValues);
+        const previousValues = getValues();
+        console.log('FilterForm useEffect', {
+            formChangesPending: formChangesPending.current,
+            newValues,
+            previousValues,
+            filterValues,
+        });
+        if (formChangesPending.current) {
+            // The effect was triggered by a form change (i.e. internal change),
+            // so we don't need to reset the form
+            formChangesPending.current = false;
+            return;
+        }
+        if (!isEqual(newValues, previousValues)) {
+            console.log('FilterForm called reset !', {
+                newValues,
+            });
+            reset(newValues);
+        }
+        // The reference to the filterValues object is not updated when it changes,
+        // so we must stringify it to compare it by value.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(filterValues), getValues, reset]);
 
     const onSubmit = useEvent((values: any): void => {
         // Do not call setFilters if the form is invalid
         if (!isValid) {
             return;
         }
-        // Avoid calling setFilters with the same values (happens when the form
-        // is reset with the updated filterValues)
-        // TODO - check if still needed since I use defaultValues
-        if (
-            isEqual(filterValues, {
-                ...filterValues,
-                ...values,
-            })
-        ) {
-            return;
-        }
         console.log('calling setFilters with', {
-            // filterValues,
-            // values,
-            // result: {
-            //     ...filterValues,
-            //     ...values,
-            // },
             ...filterValues,
             ...values,
         });
+        formChangesPending.current = true;
         setFilters({
             ...filterValues,
             ...values,
@@ -96,9 +112,62 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
 };
 
 export interface AutoSubmitFilterFormProps
-    extends Omit<UseFormProps, 'onSubmit'> {
+    extends Omit<UseFormProps, 'onSubmit' | 'defaultValues'> {
     children: ReactNode;
     validate?: ValidateForm;
     debounce?: number | false;
     resource?: string;
 }
+
+/**
+ * Because we are using controlled inputs with react-hook-form, we must provide a default value
+ * for each input when resetting the form. (see https://react-hook-form.com/docs/useform/reset).
+ * To ensure we don't provide undefined which will result to the current input value being reapplied
+ * and due to the dynamic nature of the filter form, we rebuild the filter form values from its current
+ * values and make sure to pass at least an empty string for each input.
+ */
+const getFilterFormValues = (
+    formValues: Record<string, any>,
+    filterValues: Record<string, any>
+) => {
+    return Object.keys(formValues).reduce(
+        (acc, key) => {
+            acc[key] = getInputValue(formValues, key, filterValues);
+            return acc;
+        },
+        cloneDeep(filterValues) ?? {}
+    );
+};
+
+const getInputValue = (
+    formValues: Record<string, any>,
+    key: string,
+    filterValues: Record<string, any>
+) => {
+    if (formValues[key] === undefined || formValues[key] === null) {
+        return get(filterValues, key, '');
+    }
+    if (Array.isArray(formValues[key])) {
+        return get(filterValues, key, '');
+    }
+    if (formValues[key] instanceof Date) {
+        return get(filterValues, key, '');
+    }
+    if (typeof formValues[key] === 'object') {
+        const inputValues = Object.keys(formValues[key]).reduce(
+            (acc, innerKey) => {
+                const nestedInputValue = getInputValue(
+                    formValues[key],
+                    innerKey,
+                    (filterValues || {})[key] ?? {}
+                );
+                acc[innerKey] = nestedInputValue;
+                return acc;
+            },
+            {}
+        );
+        if (!Object.keys(inputValues).length) return '';
+        return inputValues;
+    }
+    return get(filterValues, key, '');
+};

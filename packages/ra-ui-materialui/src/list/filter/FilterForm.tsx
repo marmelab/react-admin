@@ -15,13 +15,7 @@ import {
     useResourceContext,
     useWhyDidYouUpdate,
 } from 'ra-core';
-import {
-    FieldValues,
-    FormProvider,
-    useForm,
-    useFormContext,
-} from 'react-hook-form';
-import set from 'lodash/set';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import unset from 'lodash/unset';
 import get from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
@@ -31,19 +25,13 @@ import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
 
 export const FilterForm = (props: FilterFormProps) => {
-    const { defaultValues, filters: filtersProps, ...rest } = props;
+    const { filters: filtersProps, ...rest } = props;
 
     const { setFilters, displayedFilters, filterValues } = useListContext();
     const filters = useContext(FilterContext) || filtersProps;
 
-    const mergedInitialValuesWithDefaultValues =
-        mergeInitialValuesWithDefaultValues(
-            defaultValues || filterValues,
-            filters
-        );
-
     const form = useForm({
-        defaultValues: mergedInitialValuesWithDefaultValues,
+        defaultValues: filterValues,
     });
     const { getValues, reset, trigger, watch } = form;
 
@@ -117,9 +105,7 @@ export const FilterForm = (props: FilterFormProps) => {
     );
 };
 
-export type FilterFormProps = FilterFormBaseProps & {
-    defaultValues?: FieldValues;
-};
+export type FilterFormProps = FilterFormBaseProps;
 
 export const FilterFormBase = (props: FilterFormBaseProps) => {
     const { className, filters, ...rest } = props;
@@ -206,27 +192,6 @@ export type FilterFormBaseProps = Omit<
     resource?: string;
     filters?: ReactNode[];
 };
-
-export const mergeInitialValuesWithDefaultValues = (
-    initialValues,
-    filters
-) => ({
-    ...filters
-        .filter(
-            (filterElement: JSX.Element) =>
-                filterElement.props.alwaysOn && filterElement.props.defaultValue
-        )
-        .reduce(
-            (acc, filterElement: JSX.Element) =>
-                set(
-                    { ...acc },
-                    filterElement.props.source,
-                    filterElement.props.defaultValue
-                ),
-            {} as any
-        ),
-    ...initialValues,
-});
 
 const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
