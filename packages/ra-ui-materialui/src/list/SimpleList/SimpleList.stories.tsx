@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     Resource,
@@ -9,6 +10,7 @@ import {
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
 import { SimpleList } from './SimpleList';
 import { AdminUI } from '../../AdminUI';
@@ -149,15 +151,99 @@ export const FullApp = () => (
     </Wrapper>
 );
 
-export const LinkTypeFalse = () => (
-    <Wrapper>
-        <SimpleList
-            primaryText={record => record.title}
-            secondaryText={record => record.author}
-            linkType={false}
-        />
-    </Wrapper>
-);
+export const LinkTypeFalse = () => {
+    const [linkType, setLinkType] = useState<false | undefined>(false);
+    const [leftIcon, setLeftIcon] = useState(true);
+    const [leftAvatar, setLeftAvatar] = useState(true);
+    const [rightIcon, setRightIcon] = useState(true);
+    const [rightAvatar, setRightAvatar] = useState(true);
+    return (
+        <Wrapper>
+            <FormGroup
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Box>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={leftIcon}
+                                onChange={() => setLeftIcon(!leftIcon)}
+                            />
+                        }
+                        label="Left Icon"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={leftAvatar}
+                                onChange={() => setLeftAvatar(!leftAvatar)}
+                            />
+                        }
+                        label="Left Avatar"
+                    />
+                </Box>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={linkType === false}
+                            onChange={() =>
+                                setLinkType(
+                                    linkType === false ? undefined : false
+                                )
+                            }
+                        />
+                    }
+                    label="LinkType False"
+                />
+                <Box>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={rightAvatar}
+                                onChange={() => setRightAvatar(!rightAvatar)}
+                            />
+                        }
+                        label="Right Avatar"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={rightIcon}
+                                onChange={() => setRightIcon(!rightIcon)}
+                            />
+                        }
+                        label="Right Icon"
+                    />
+                </Box>
+            </FormGroup>
+            <SimpleList
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                linkType={linkType}
+                leftIcon={
+                    leftIcon ? record => <span>{record.id}</span> : undefined
+                }
+                rightIcon={
+                    rightIcon ? record => <span>{record.year}</span> : undefined
+                }
+                leftAvatar={
+                    leftAvatar
+                        ? record => <span>{record.title[0]}</span>
+                        : undefined
+                }
+                rightAvatar={
+                    rightAvatar
+                        ? record => <span>{record.author[0]}</span>
+                        : undefined
+                }
+            />
+        </Wrapper>
+    );
+};
 
 export const NoPrimaryText = () => (
     <Wrapper recordRepresentation="title">

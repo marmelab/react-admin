@@ -129,7 +129,14 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         <Root className={className} {...sanitizeListRestProps(rest)}>
             {data.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>
-                    <ListItem disablePadding>
+                    <ListItem
+                        disablePadding
+                        sx={{
+                            '.MuiListItem-container': {
+                                width: '100%',
+                            },
+                        }}
+                    >
                         <LinkOrNot
                             linkType={linkType}
                             resource={resource}
@@ -275,7 +282,6 @@ const LinkOrNot = (
         id,
         children,
         record,
-        sx,
         ...rest
     } = props;
     const createPath = useCreatePath();
@@ -283,28 +289,13 @@ const LinkOrNot = (
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
     if (type === false) {
-        return (
-            <ListItemText
-                // @ts-ignore
-                component="div"
-                sx={{
-                    px: 2,
-                    py: 1,
-                    m: 0,
-                    ...sx,
-                }}
-                {...rest}
-            >
-                {children}
-            </ListItemText>
-        );
+        return <ListItem {...rest}>{children}</ListItem>;
     }
     return (
         // @ts-ignore
         <ListItemButton
             component={Link}
             to={createPath({ resource, id, type })}
-            sx={sx}
             {...rest}
         >
             {children}
