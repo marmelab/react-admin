@@ -197,7 +197,7 @@ export const IconsAvatarsAndLinkType = () => {
                             }
                         />
                     }
-                    label="LinkType False"
+                    label="LinkType"
                 />
                 <Box>
                     <FormControlLabel
