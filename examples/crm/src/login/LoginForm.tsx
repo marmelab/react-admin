@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import {
     Button,
@@ -7,7 +7,7 @@ import {
     CircularProgress,
     Typography,
 } from '@mui/material';
-import { Form, useLogin, useNotify, useState } from 'ra-core';
+import { Form, useLogin, useNotify } from 'ra-core';
 import { Login, TextInput } from 'react-admin';
 import { SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
