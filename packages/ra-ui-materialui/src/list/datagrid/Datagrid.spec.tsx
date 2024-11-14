@@ -292,7 +292,7 @@ describe('<Datagrid />', () => {
                 0
             );
         });
-        it('should  show row selection when user has delete permissions', async () => {
+        it('should show row selection when user has delete permissions', async () => {
             render(<AccessControl allowedAction="delete" />);
             await screen.findByText('War and Peace');
             await waitFor(() =>
