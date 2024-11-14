@@ -151,8 +151,8 @@ export const FullApp = () => (
     </Wrapper>
 );
 
-export const LinkTypeFalse = () => {
-    const [linkType, setLinkType] = useState<false | undefined>(false);
+export const IconsAvatarsAndLinkType = () => {
+    const [linkType, setLinkType] = useState<false | undefined>(undefined);
     const [leftIcon, setLeftIcon] = useState(true);
     const [leftAvatar, setLeftAvatar] = useState(true);
     const [rightIcon, setRightIcon] = useState(true);
@@ -189,7 +189,7 @@ export const LinkTypeFalse = () => {
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={linkType === false}
+                            checked={linkType !== false}
                             onChange={() =>
                                 setLinkType(
                                     linkType === false ? undefined : false
