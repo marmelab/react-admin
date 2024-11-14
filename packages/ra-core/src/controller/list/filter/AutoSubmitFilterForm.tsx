@@ -9,7 +9,11 @@ import {
     SourceContextValue,
     useResourceContext,
 } from '../../../core';
-import { getSimpleValidationResolver, ValidateForm } from '../../../form';
+import {
+    FormGroupsProvider,
+    getSimpleValidationResolver,
+    ValidateForm,
+} from '../../../form';
 import { useDebouncedEvent, useEvent } from '../../../util';
 import { useListFilterContext } from '../useListFilterContext';
 
@@ -104,9 +108,11 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
 
     return (
         <FormProvider {...form}>
-            <SourceContextProvider value={sourceContext}>
-                <form onSubmit={handleSubmit(onSubmit)}>{children}</form>
-            </SourceContextProvider>
+            <FormGroupsProvider>
+                <SourceContextProvider value={sourceContext}>
+                    <form onSubmit={handleSubmit(onSubmit)}>{children}</form>
+                </SourceContextProvider>
+            </FormGroupsProvider>
         </FormProvider>
     );
 };
