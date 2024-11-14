@@ -149,7 +149,7 @@ export const FullApp = () => (
     </Wrapper>
 );
 
-export const AnyLink = () => (
+export const LinkTypeFalse = () => (
     <Wrapper>
         <SimpleList
             primaryText={record => record.title}
