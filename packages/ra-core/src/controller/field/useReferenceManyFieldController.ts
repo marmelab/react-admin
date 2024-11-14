@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
 
-import { useSafeSetState, removeEmpty } from '../../util';
+import { removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
@@ -93,10 +93,10 @@ export const useReferenceManyFieldController = <
 
     // filter logic
     const filterRef = useRef(filter);
-    const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
+    const [displayedFilters, setDisplayedFilters] = useState<{
         [key: string]: boolean;
     }>({});
-    const [filterValues, setFilterValues] = useSafeSetState<{
+    const [filterValues, setFilterValues] = useState<{
         [key: string]: any;
     }>(filter);
     const hideFilter = useCallback(
