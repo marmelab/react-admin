@@ -1,7 +1,35 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 
 // thanks Kent C Dodds for the following helpers
+
+/**
+ * @deprecated use `useState` instead, since React no longer
+ * issues warnings when calling setState on unmounted components.
+ */
+export function useSafeSetState<T>(
+    initialState?: T | (() => T)
+): [T | undefined, React.Dispatch<React.SetStateAction<T>>] {
+    const [state, setState] = useState(initialState);
+
+    const mountedRef = useRef(false);
+    useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+        };
+    }, []);
+    const safeSetState = useCallback(
+        args => {
+            if (mountedRef.current) {
+                return setState(args);
+            }
+        },
+        [mountedRef, setState]
+    );
+
+    return [state, safeSetState];
+}
 
 export function usePrevious(value) {
     const ref = useRef();
