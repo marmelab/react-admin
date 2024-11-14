@@ -13,6 +13,7 @@ import {
     SourceContextValue,
     useListContext,
     useResourceContext,
+    useWhyDidYouUpdate,
 } from 'ra-core';
 import {
     FieldValues,
@@ -46,19 +47,40 @@ export const FilterForm = (props: FilterFormProps) => {
     });
     const { getValues, reset, trigger, watch } = form;
 
+    const formChangesPending = React.useRef(false);
+
+    useWhyDidYouUpdate('FilterForm useEffect', [
+        JSON.stringify(filterValues),
+        getValues,
+        reset,
+    ]);
     // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
         const newValues = getFilterFormValues(getValues(), filterValues);
         const previousValues = getValues();
         if (!isEqual(newValues, previousValues)) {
+            console.log('FilterForm useEffect', {
+                formChangesPending: formChangesPending.current,
+                newValues,
+                previousValues,
+                filterValues,
+            });
+            if (formChangesPending.current) {
+                // The effect was triggered by a form change, so we don't need to reset the form
+                formChangesPending.current = false;
+                return;
+            }
+            console.log('FilterForm called reset !', {
+                newValues,
+            });
             reset(newValues);
         }
         // The reference to the filterValues object is not updated when it changes,
-        // so we must stringify it to compare it by value and also compare the reference.
+        // so we must stringify it to compare it by value.
         // This makes it work for both input values and filters applied directly through
         // the ListContext.setFilter (e.g. QuickFilter in the simple example)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [JSON.stringify(filterValues), filterValues, getValues, reset]);
+    }, [JSON.stringify(filterValues), getValues, reset]);
 
     useEffect(() => {
         const subscription = watch(async (values, { name }) => {
@@ -69,6 +91,7 @@ export const FilterForm = (props: FilterFormProps) => {
             // Check that the name is present to avoid setting filters when watch was
             // triggered by a change on the ListContext values.
             if (name && isFormValid) {
+                formChangesPending.current = true;
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     unset(newValues, name);
