@@ -13,7 +13,6 @@ import {
     SourceContextValue,
     useListContext,
     useResourceContext,
-    useWhyDidYouUpdate,
 } from 'ra-core';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import unset from 'lodash/unset';
@@ -37,11 +36,6 @@ export const FilterForm = (props: FilterFormProps) => {
 
     const formChangesPending = React.useRef(false);
 
-    useWhyDidYouUpdate('FilterForm useEffect', [
-        JSON.stringify(filterValues),
-        getValues,
-        reset,
-    ]);
     // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
         const newValues = getFilterFormValues(getValues(), filterValues);

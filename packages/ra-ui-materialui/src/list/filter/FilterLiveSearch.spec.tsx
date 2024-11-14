@@ -17,22 +17,28 @@ describe('FilterLiveSearch', () => {
             screen.getByLabelText('ra.action.search').getAttribute('value')
         ).toBe('');
     });
-    it('filters the list when typing', () => {
+    it('filters the list when typing', async () => {
         render(<Basic />);
         expect(screen.queryAllByRole('listitem')).toHaveLength(27);
         fireEvent.change(screen.getByLabelText('ra.action.search'), {
             target: { value: 'st' },
         });
-        expect(screen.queryAllByRole('listitem')).toHaveLength(2); // Austria and Estonia
+        await waitFor(() => {
+            expect(screen.queryAllByRole('listitem')).toHaveLength(2); // Austria and Estonia
+        });
     });
-    it('clears the filter when user click on the reset button', () => {
+    it('clears the filter when user click on the reset button', async () => {
         render(<Basic />);
         fireEvent.change(screen.getByLabelText('ra.action.search'), {
             target: { value: 'st' },
         });
-        expect(screen.queryAllByRole('listitem')).toHaveLength(2);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('listitem')).toHaveLength(2);
+        });
         fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
-        expect(screen.queryAllByRole('listitem')).toHaveLength(27);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('listitem')).toHaveLength(27);
+        });
     });
     it('clears the filter when user click on the Remove all filters button', async () => {
         render(<WithFilterButton />);
@@ -41,10 +47,14 @@ describe('FilterLiveSearch', () => {
             target: { value: 'st' },
         });
         expect(filterLiveSearchInput.getAttribute('value')).toBe('st');
-        expect(screen.queryAllByRole('listitem')).toHaveLength(2);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('listitem')).toHaveLength(2);
+        });
         fireEvent.click(screen.getByLabelText('ra.action.add_filter'));
         fireEvent.click(await screen.findByText('Remove all filters'));
-        expect(screen.queryAllByRole('listitem')).toHaveLength(27);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('listitem')).toHaveLength(27);
+        });
         expect(filterLiveSearchInput.getAttribute('value')).toBe('');
     });
     it('updates its value when filter values change', async () => {

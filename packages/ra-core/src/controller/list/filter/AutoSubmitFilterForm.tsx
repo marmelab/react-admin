@@ -49,7 +49,7 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
     useEffect(() => {
         const newValues = getFilterFormValues(getValues(), filterValues);
         const previousValues = getValues();
-        console.log('FilterForm useEffect', {
+        console.log('AutoSubmitFilterForm useEffect', {
             formChangesPending: formChangesPending.current,
             newValues,
             previousValues,
@@ -62,7 +62,7 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
             return;
         }
         if (!isEqual(newValues, previousValues)) {
-            console.log('FilterForm called reset !', {
+            console.log('AutoSubmitFilterForm called reset !', {
                 newValues,
             });
             reset(newValues);
@@ -91,8 +91,12 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
 
     // Submit the form on values change
     useEffect(() => {
-        const { unsubscribe } = watch(values => {
-            debouncedOnSubmit(values);
+        const { unsubscribe } = watch((values, { name }) => {
+            // Check that the name is present to avoid setting filters when
+            // watch was triggered by a reset
+            if (name) {
+                debouncedOnSubmit(values);
+            }
         });
         return () => unsubscribe();
     }, [watch, debouncedOnSubmit]);
