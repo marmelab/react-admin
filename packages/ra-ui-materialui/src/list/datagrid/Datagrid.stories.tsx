@@ -606,7 +606,7 @@ export const AccessControl = ({
             }),
     },
 }: {
-    allowedAction?: 'show' | 'edit' | 'invalid';
+    allowedAction?: 'show' | 'edit' | 'delete' | 'invalid';
     authProvider?: AuthProvider;
 }) => (
     <AdminContext
@@ -636,10 +636,11 @@ export const AccessControl = ({
 
 AccessControl.argTypes = {
     allowedAction: {
-        options: ['show', 'edit', 'none'],
+        options: ['show', 'edit', 'delete', 'none'],
         mapping: {
             show: 'show',
             edit: 'edit',
+            delete: 'delete',
             none: 'invalid',
         },
         control: { type: 'select' },

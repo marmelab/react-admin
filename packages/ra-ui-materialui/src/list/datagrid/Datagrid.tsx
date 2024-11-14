@@ -18,6 +18,8 @@ import {
     OptionalResourceContextProvider,
     RaRecord,
     SortPayload,
+    useCanAccess,
+    useResourceContext,
 } from 'ra-core';
 import { Table, TableProps, SxProps } from '@mui/material';
 import clsx from 'clsx';
@@ -117,6 +119,11 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
 export const Datagrid: React.ForwardRefExoticComponent<
     Omit<DatagridProps, 'ref'> & React.RefAttributes<HTMLTableElement>
 > = React.forwardRef<HTMLTableElement, DatagridProps>((props, ref) => {
+    const resourceFromContext = useResourceContext(props);
+    const { canAccess: canDelete } = useCanAccess({
+        resource: resourceFromContext,
+        action: 'delete',
+    });
     const {
         optimized = false,
         body = optimized ? PureDatagridBody : DatagridBody,
@@ -125,7 +132,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         className,
         empty = DefaultEmpty,
         expand,
-        bulkActionButtons = defaultBulkActionButtons,
+        bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
         hover,
         isRowSelectable,
         isRowExpandable,
