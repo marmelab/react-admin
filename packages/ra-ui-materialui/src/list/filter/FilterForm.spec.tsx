@@ -267,11 +267,13 @@ describe('<FilterForm />', () => {
         });
         fireEvent.click(await screen.findByTitle('Remove this filter'));
         await screen.findByText('1-10 of 13');
-        expect(
-            screen.queryByText('Complex', {
-                selector: `.${chipClasses.root} *`,
-            })
-        ).toBeNull();
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Complex', {
+                    selector: `.${chipClasses.root} *`,
+                })
+            ).toBeNull();
+        });
     });
 
     it('should provide a FormGroupContext', async () => {
