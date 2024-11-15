@@ -164,7 +164,8 @@ const RaceConditionTrigger = () => {
         simulateKeyboardEntry(input, 'h');
         await new Promise(resolve => setTimeout(resolve, 100));
         simulateKeyboardEntry(input, 'e');
-        await new Promise(resolve => setTimeout(resolve, 550)); // 500-600
+        // a delay of 500 to 600 ms seems to trigger the bug
+        await new Promise(resolve => setTimeout(resolve, 550));
         simulateKeyboardEntry(input, 'l');
         await new Promise(resolve => setTimeout(resolve, 100));
         simulateKeyboardEntry(input, 'l');
