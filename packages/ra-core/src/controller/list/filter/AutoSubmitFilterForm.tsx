@@ -15,16 +15,23 @@ import {
     ValidateForm,
 } from '../../../form';
 import { useDebouncedEvent, useEvent } from '../../../util';
-import { useListFilterContext } from '../useListFilterContext';
+import { useListContext } from '../useListContext';
 
 /**
  * TODO
  */
 export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
-    const { filterValues, setFilters } = useListFilterContext();
+    const { filterValues, setFilters } = useListContext();
     const resource = useResourceContext(props);
 
-    const { debounce = 500, resolver, validate, children, ...rest } = props;
+    const {
+        debounce = 500,
+        resolver,
+        validate,
+        children,
+        component: Component,
+        ...rest
+    } = props;
 
     const finalResolver = resolver
         ? resolver
@@ -32,13 +39,13 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
           ? getSimpleValidationResolver(validate)
           : undefined;
 
-    const form = useForm({
+    const formContext = useForm({
         mode: 'onChange',
         defaultValues: filterValues,
         resolver: finalResolver,
         ...rest,
     });
-    const { handleSubmit, getValues, reset, watch, formState } = form;
+    const { handleSubmit, getValues, reset, watch, formState } = formContext;
     const { isValid } = formState;
 
     // Ref tracking if there are internal changes pending, i.e. changes that
@@ -111,10 +118,18 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
     );
 
     return (
-        <FormProvider {...form}>
+        <FormProvider {...formContext}>
             <FormGroupsProvider>
                 <SourceContextProvider value={sourceContext}>
-                    <form onSubmit={handleSubmit(onSubmit)}>{children}</form>
+                    {Component ? (
+                        <Component onSubmit={handleSubmit(onSubmit)}>
+                            {children}
+                        </Component>
+                    ) : (
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            {children}
+                        </form>
+                    )}
                 </SourceContextProvider>
             </FormGroupsProvider>
         </FormProvider>
@@ -127,6 +142,7 @@ export interface AutoSubmitFilterFormProps
     validate?: ValidateForm;
     debounce?: number | false;
     resource?: string;
+    component?: React.ComponentType<any>;
 }
 
 /**
@@ -136,7 +152,7 @@ export interface AutoSubmitFilterFormProps
  * and due to the dynamic nature of the filter form, we rebuild the filter form values from its current
  * values and make sure to pass at least an empty string for each input.
  */
-const getFilterFormValues = (
+export const getFilterFormValues = (
     formValues: Record<string, any>,
     filterValues: Record<string, any>
 ) => {
