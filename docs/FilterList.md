@@ -283,6 +283,7 @@ The children of `<FilterList>` must be a list of `<FilterListItem>` components. 
 
 If you want to use your own inputs alongside `<FilterList>` in the `<List>` sidebar, you can use the `<AutoSubmitFilterForm>` component to create a form that automatically updates the filters when the user changes the input value.
 
+{% raw %}
 ```tsx
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import Person2Icon from '@mui/icons-material/Person2';
@@ -346,6 +347,7 @@ export const BookList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 ![AutoSubmitFilterForm](./img/AutoSubmitFilterForm.png)
 

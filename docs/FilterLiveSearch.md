@@ -61,6 +61,7 @@ Additional props are passed down to [the Material UI `<TextField>` component](ht
 
 If the text input provided by `<FilterLiveSearch>` is not enough, and you'd like to use your own input component, you can use the `<AutoSubmitFilterForm>` component to create a form that automatically updates the filters when the user changes the input value.
 
+{% raw %}
 ```tsx
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import Person2Icon from '@mui/icons-material/Person2';
@@ -124,6 +125,7 @@ export const BookList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 ![AutoSubmitFilterForm](./img/AutoSubmitFilterForm.png)
 

@@ -20,6 +20,7 @@ Use `<AutoSubmitFilterForm>` inside a component that provides a [`ListContext`](
 
 Here is an example showing how you can use `<AutoSubmitFilterForm>` in a sidebar for the `<List>` view, alongside a [`<FilterList>`](./FilterList.md):
 
+{% raw %}
 ```tsx
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import Person2Icon from '@mui/icons-material/Person2';
@@ -83,6 +84,7 @@ export const BookList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 **Tip:** This example leverages `<FilterListWrapper>`, the wrapper used internally by `<FilterList>`, in order to obtain a consistent look and feel for the filters.
 
