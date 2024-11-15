@@ -21,8 +21,10 @@ const TextInput = props => {
                 gap: '5px',
             }}
         >
-            <label htmlFor={field.name}>{props.label || field.name}</label>
-            <input {...field} />
+            <label htmlFor={field.name} id={`id-${field.name}`}>
+                {props.label || field.name}
+            </label>
+            <input {...field} aria-labelledby={`id-${field.name}`} />
             {error && (
                 <div style={{ color: 'red' }}>
                     {/* @ts-ignore */}
