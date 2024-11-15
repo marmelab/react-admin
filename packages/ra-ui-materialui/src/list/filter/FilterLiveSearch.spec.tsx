@@ -5,6 +5,7 @@ import {
     Basic,
     HiddenLabel,
     WithFilterButton,
+    FullApp,
 } from './FilterLiveSearch.stories';
 
 describe('FilterLiveSearch', () => {
@@ -69,6 +70,28 @@ describe('FilterLiveSearch', () => {
             expect(filterLiveSearchInput.getAttribute('value')).toBe('st');
         });
         expect(screen.queryAllByRole('listitem')).toHaveLength(2);
+    });
+    it('should not reapply old value after changing the route and clearing the input', async () => {
+        render(<FullApp />);
+        let input = (await screen.findByLabelText(
+            'Search'
+        )) as HTMLInputElement;
+        expect(input.value).toBe('');
+        await screen.findByText('1-10 of 11');
+        fireEvent.change(input, { target: { value: 'st' } });
+        await screen.findByText('1-5 of 5');
+        fireEvent.click(await screen.findByText('Countries'));
+        await screen.findByText('Austria');
+        fireEvent.click(await screen.findByText('Books'));
+        input = (await screen.findByLabelText('Search')) as HTMLInputElement;
+        expect(input.value).toBe('st');
+        await screen.findByText('1-5 of 5');
+        fireEvent.click(await screen.findByLabelText('Clear value'));
+        await screen.findByText('1-10 of 11');
+        // Give some time for the residual value to be reapplied (if the bug is present)
+        await new Promise(resolve => setTimeout(resolve, 500));
+        // Check that the old value is not reapplied
+        expect(input.value).toBe('');
     });
     describe('hiddenLabel', () => {
         it('turns the label into a placeholder', () => {
