@@ -29,7 +29,7 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
         resolver,
         validate,
         children,
-        component: Component,
+        component: Component = HTMLForm,
         ...rest
     } = props;
 
@@ -121,20 +121,18 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
         <FormProvider {...formContext}>
             <FormGroupsProvider>
                 <SourceContextProvider value={sourceContext}>
-                    {Component ? (
-                        <Component onSubmit={handleSubmit(onSubmit)}>
-                            {children}
-                        </Component>
-                    ) : (
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            {children}
-                        </form>
-                    )}
+                    <Component onSubmit={handleSubmit(onSubmit)}>
+                        {children}
+                    </Component>
                 </SourceContextProvider>
             </FormGroupsProvider>
         </FormProvider>
     );
 };
+
+const HTMLForm = (props: React.HTMLAttributes<HTMLFormElement>) => (
+    <form {...props} />
+);
 
 export interface AutoSubmitFilterFormProps
     extends Omit<UseFormProps, 'onSubmit' | 'defaultValues'> {
