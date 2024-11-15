@@ -56,12 +56,6 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
     useEffect(() => {
         const newValues = getFilterFormValues(getValues(), filterValues);
         const previousValues = getValues();
-        console.log('AutoSubmitFilterForm useEffect', {
-            formChangesPending: formChangesPending.current,
-            newValues,
-            previousValues,
-            filterValues,
-        });
         if (formChangesPending.current) {
             // The effect was triggered by a form change (i.e. internal change),
             // so we don't need to reset the form
@@ -69,9 +63,6 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
             return;
         }
         if (!isEqual(newValues, previousValues)) {
-            console.log('AutoSubmitFilterForm called reset !', {
-                newValues,
-            });
             reset(newValues);
         }
         // The reference to the filterValues object is not updated when it changes,
@@ -84,10 +75,6 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
         if (!isValid) {
             return;
         }
-        console.log('calling setFilters with', {
-            ...filterValues,
-            ...values,
-        });
         formChangesPending.current = true;
         setFilters({
             ...filterValues,

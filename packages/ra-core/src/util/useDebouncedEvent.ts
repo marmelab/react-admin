@@ -1,8 +1,6 @@
 import { useCallback, useRef, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 
-// TODO: create BL cards to deprecate the one in EE and use this one instead
-
 // Hook somewhat equivalent to useEvent, but with a debounce
 // Returns a debounced callback which will not change across re-renders unless the
 // callback or delay changes
