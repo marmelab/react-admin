@@ -296,7 +296,7 @@ const dataProvider = fakeRestDataProvider({
 });
 
 const BookListAside = () => (
-    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+    <Card sx={{ order: -1, mr: 2, mt: 6, width: 200, height: 'fit-content' }}>
         <CardContent>
             <FilterList label="Century" icon={<CategoryIcon />}>
                 <FilterListItem

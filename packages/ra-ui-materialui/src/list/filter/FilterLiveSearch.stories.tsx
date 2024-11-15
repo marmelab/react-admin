@@ -1,25 +1,42 @@
 import {
     Box,
+    Card,
+    CardContent,
     createTheme,
     List,
     ListItem,
     ListItemText,
     ThemeProvider,
 } from '@mui/material';
+import CategoryIcon from '@mui/icons-material/LocalOffer';
 import {
     ListContextProvider,
     ResourceContextProvider,
     TestMemoryRouter,
     useList,
     useListContext,
+    Resource,
 } from 'ra-core';
 import * as React from 'react';
+import fakeRestDataProvider from 'ra-data-fakerest';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { TextInput } from '../../input';
 import { defaultTheme } from '../../theme/defaultTheme';
 import { FilterButton } from './FilterButton';
 import { FilterForm } from './FilterForm';
 import { FilterLiveSearch } from './FilterLiveSearch';
+import {
+    Datagrid,
+    ListGuesser,
+    TextField,
+    List as RaList,
+    FilterList,
+    FilterListItem,
+    AdminContext,
+    AdminUI,
+} from '../..';
 
 export default {
     title: 'ra-ui-materialui/list/filter/FilterLiveSearch',
@@ -130,4 +147,124 @@ export const WithFilterButton = () => (
             </Wrapper>
         </ResourceContextProvider>
     </TestMemoryRouter>
+);
+
+const dataProvider = fakeRestDataProvider(
+    {
+        books: [
+            {
+                id: 1,
+                title: 'War and Peace',
+                author: 'Leo Tolstoy',
+                year: 1869,
+            },
+            {
+                id: 2,
+                title: 'Pride and Predjudice',
+                author: 'Jane Austen',
+                year: 1813,
+            },
+            {
+                id: 3,
+                title: 'The Picture of Dorian Gray',
+                author: 'Oscar Wilde',
+                year: 1890,
+            },
+            {
+                id: 4,
+                title: 'Le Petit Prince',
+                author: 'Antoine de Saint-Exupéry',
+                year: 1943,
+            },
+            {
+                id: 5,
+                title: "Alice's Adventures in Wonderland",
+                author: 'Lewis Carroll',
+                year: 1865,
+            },
+            {
+                id: 6,
+                title: 'Madame Bovary',
+                author: 'Gustave Flaubert',
+                year: 1856,
+            },
+            {
+                id: 7,
+                title: 'The Lord of the Rings',
+                author: 'J. R. R. Tolkien',
+                year: 1954,
+            },
+            {
+                id: 8,
+                title: "Harry Potter and the Philosopher's Stone",
+                author: 'J. K. Rowling',
+                year: 1997,
+            },
+            {
+                id: 9,
+                title: 'The Alchemist',
+                author: 'Paulo Coelho',
+                year: 1988,
+            },
+            {
+                id: 10,
+                title: 'A Catcher in the Rye',
+                author: 'J. D. Salinger',
+                year: 1951,
+            },
+            {
+                id: 11,
+                title: 'Ulysses',
+                author: 'James Joyce',
+                year: 1922,
+            },
+        ],
+        countries,
+    },
+    process.env.NODE_ENV === 'development'
+);
+
+const BookListAside = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
+        <CardContent>
+            <FilterLiveSearch />
+            <FilterList label="Century" icon={<CategoryIcon />}>
+                <FilterListItem
+                    label="21st"
+                    value={{ year_gte: 2000, year_lte: null }}
+                />
+                <FilterListItem
+                    label="20th"
+                    value={{ year_gte: 1900, year_lte: 1999 }}
+                />
+                <FilterListItem
+                    label="19th"
+                    value={{ year_gte: 1800, year_lte: 1899 }}
+                />
+            </FilterList>
+        </CardContent>
+    </Card>
+);
+
+const BookList = () => (
+    <RaList aside={<BookListAside />}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </RaList>
+);
+
+export const FullApp = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource name="books" list={BookList} />
+            <Resource name="countries" list={ListGuesser} />
+        </AdminUI>
+    </AdminContext>
 );
