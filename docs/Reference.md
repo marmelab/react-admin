@@ -19,6 +19,7 @@ title: "Index"
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
 * [`<AutoSave>`](./AutoSave.md)<img class="icon" src="./img/premium.svg" />
+* [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md)
 
 **- B -**
 * [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
@@ -79,6 +80,7 @@ title: "Index"
 * [`<FilterForm>`](./FilterForm.md)
 * [`<FilterList>`](./FilterList.md)
 * [`<FilterListItem>`](./FilterList.md#children)
+* [`<FilterListWrapper>`](./AutoSubmitFilterForm.md#usage)
 * [`<FilterLiveSearch>`](./FilterLiveSearch.md)
 * [`<Form>`](./Form.md)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)

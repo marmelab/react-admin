@@ -18,7 +18,74 @@ import { useDebouncedEvent, useEvent } from '../../../util';
 import { useListContext } from '../useListContext';
 
 /**
- * TODO
+ * This component offers a convenient way to create a form that automatically
+ * updates the filters when the user changes its child input values.
+ *
+ * It fits nicely alongside a `<FilterList>` component, but you can also use it
+ * at other places to create your own filter UI.
+ *
+ * @example
+ * import CategoryIcon from '@mui/icons-material/LocalOffer';
+ * import Person2Icon from '@mui/icons-material/Person2';
+ * import TitleIcon from '@mui/icons-material/Title';
+ * import { Card, CardContent } from '@mui/material';
+ * import * as React from 'react';
+ * import {
+ *     AutocompleteInput,
+ *     AutoSubmitFilterForm,
+ *     Datagrid,
+ *     FilterList,
+ *     FilterListItem,
+ *     FilterListWrapper,
+ *     List,
+ *     ReferenceField,
+ *     ReferenceInput,
+ *     TextField,
+ *     TextInput,
+ * } from 'react-admin';
+ *
+ * const BookListAside = () => (
+ *     <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
+ *         <CardContent>
+ *             <FilterList label="Century" icon={<CategoryIcon />}>
+ *                 <FilterListItem
+ *                     label="21st"
+ *                     value={{ year_gte: 2000, year_lte: null }}
+ *                 />
+ *                 <FilterListItem
+ *                     label="20th"
+ *                     value={{ year_gte: 1900, year_lte: 1999 }}
+ *                 />
+ *                 <FilterListItem
+ *                     label="19th"
+ *                     value={{ year_gte: 1800, year_lte: 1899 }}
+ *                 />
+ *             </FilterList>
+ *             <FilterListWrapper label="Title" icon={<TitleIcon />}>
+ *                 <AutoSubmitFilterForm>
+ *                     <TextInput source="title" resettable helperText={false} />
+ *                 </AutoSubmitFilterForm>
+ *             </FilterListWrapper>
+ *             <FilterListWrapper label="Author" icon={<Person2Icon />}>
+ *                 <AutoSubmitFilterForm>
+ *                     <ReferenceInput source="authorId" reference="authors">
+ *                         <AutocompleteInput helperText={false} />
+ *                     </ReferenceInput>
+ *                 </AutoSubmitFilterForm>
+ *             </FilterListWrapper>
+ *         </CardContent>
+ *     </Card>
+ * );
+ *
+ * export const BookList = () => (
+ *     <List aside={<BookListAside />}>
+ *         <Datagrid>
+ *             <TextField source="title" />
+ *             <ReferenceField source="authorId" reference="authors" />
+ *             <TextField source="year" />
+ *         </Datagrid>
+ *     </List>
+ * );
  */
 export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
     const { filterValues, setFilters } = useListContext();
