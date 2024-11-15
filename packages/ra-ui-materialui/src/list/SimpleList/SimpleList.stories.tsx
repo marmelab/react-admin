@@ -253,19 +253,21 @@ export const NoPrimaryText = () => (
 
 export const ErrorInFetch = () => (
     <TestMemoryRouter>
-        <ListContextProvider
-            value={
-                {
-                    error: new Error('Error in dataProvider'),
-                } as any
-            }
-        >
-            <SimpleList
-                primaryText={record => record.title}
-                secondaryText={record => record.author}
-                tertiaryText={record => record.year}
-            />
-        </ListContextProvider>
+        <ResourceContextProvider value="books">
+            <ListContextProvider
+                value={
+                    {
+                        error: new Error('Error in dataProvider'),
+                    } as any
+                }
+            >
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                />
+            </ListContextProvider>
+        </ResourceContextProvider>
     </TestMemoryRouter>
 );
 
