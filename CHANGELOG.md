@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.3.4
+
+* Fix `<SimpleList>` `ErrorInFetch` story ([#10353](https://github.com/marmelab/react-admin/pull/10353)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `<Datagrid>` `bulkActionButtons` shows empty toolbar when user cannot access the delete action ([#10347](https://github.com/marmelab/react-admin/pull/10347)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SimpleList linkType={false}>` UI ([#10343](https://github.com/marmelab/react-admin/pull/10343)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix react-query devtools documentation ([#10346](https://github.com/marmelab/react-admin/pull/10346)) ([dricholm](https://github.com/dricholm))
+
 ## 5.3.3
 
 * Fix `<Datagrid>` header tooltip shows column names with a capital letter ([#10337](https://github.com/marmelab/react-admin/pull/10337)) ([fzaninotto](https://github.com/fzaninotto))
