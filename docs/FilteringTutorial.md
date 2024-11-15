@@ -522,7 +522,48 @@ Normally, `showFilter()` adds one input to the `displayedFilters` list. As the f
 
 ### Custom Filter Form
 
-Next is the filter form component, displayed only when the "main" filter is displayed (i.e. when a user has clicked the filter button). The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter. We'll use `react-hook-form` to handle the form state:
+If you need to build a custom filter form, you can use the [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md) component to create a form that automatically updates the filters when the user changes the input value.
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { Box, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { AutoSubmitFilterForm, TextInput, NullableBooleanInput } from 'react-admin';
+
+const PostFilterForm = () => (
+    <AutoSubmitFilterForm>
+        <Box display="flex" alignItems="flex-end" mb={1}>
+            <Box component="span" mr={2}>
+                {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
+                <TextInput
+                    resettable
+                    helperText={false}
+                    source="q"
+                    label="Search"
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment>
+                                <SearchIcon color="disabled" />
+                            </InputAdornment>
+                        )
+                    }}
+                />
+            </Box>
+            <Box component="span" mr={2}>
+                {/* Commentable filter */}
+                <NullableBooleanInput
+                    helperText={false}
+                    source="commentable"
+                />
+            </Box>
+        </Box>
+    </AutoSubmitFilterForm>
+);
+```
+{% endraw %}
+
+If, instead, you want to control the form submission yourself, you can use the `useForm` hook from `react-hook-form`, and leverage the [filter callbacks](#filter-callbacks) from the `ListContext`:
 
 {% raw %}
 ```jsx

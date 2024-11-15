@@ -12,7 +12,7 @@ title: "The FilterLiveSearch Component"
 </video>
 
 
-The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form using react-hook-form (see the [Building a custom filter](./FilteringTutorial.md#building-a-custom-filter) for an example). However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component convenient.
+The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form. This can easily be done thanks to the [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md) component. However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component even more convenient.
 
 It outputs a form containing a single `<TextInput>`, which modifies the page filter on change. That's usually what users expect for a full-text filter.
 
@@ -56,3 +56,75 @@ export const CustomerList = () => (
 | `variant` | Optional | `string` | 'standard' | The variant of the search input. Can be one of 'standard', 'outlined', or 'filled'. |
 
 Additional props are passed down to [the Material UI `<TextField>` component](https://mui.com/material-ui/api/text-field/).
+
+## Using Your Own Input
+
+If the text input provided by `<FilterLiveSearch>` is not enough, and you'd like to use your own input component, you can use the `<AutoSubmitFilterForm>` component to create a form that automatically updates the filters when the user changes the input value.
+
+```tsx
+import CategoryIcon from '@mui/icons-material/LocalOffer';
+import Person2Icon from '@mui/icons-material/Person2';
+import TitleIcon from '@mui/icons-material/Title';
+import { Card, CardContent } from '@mui/material';
+import * as React from 'react';
+import {
+    AutocompleteInput,
+    AutoSubmitFilterForm,
+    Datagrid,
+    FilterList,
+    FilterListItem,
+    FilterListWrapper,
+    List,
+    ReferenceField,
+    ReferenceInput,
+    TextField,
+    TextInput,
+} from 'react-admin';
+
+const BookListAside = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
+        <CardContent>
+            <FilterList label="Century" icon={<CategoryIcon />}>
+                <FilterListItem
+                    label="21st"
+                    value={{ year_gte: 2000, year_lte: null }}
+                />
+                <FilterListItem
+                    label="20th"
+                    value={{ year_gte: 1900, year_lte: 1999 }}
+                />
+                <FilterListItem
+                    label="19th"
+                    value={{ year_gte: 1800, year_lte: 1899 }}
+                />
+            </FilterList>
+            <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                <AutoSubmitFilterForm>
+                    <TextInput source="title" resettable helperText={false} />
+                </AutoSubmitFilterForm>
+            </FilterListWrapper>
+            <FilterListWrapper label="Author" icon={<Person2Icon />}>
+                <AutoSubmitFilterForm>
+                    <ReferenceInput source="authorId" reference="authors">
+                        <AutocompleteInput helperText={false} />
+                    </ReferenceInput>
+                </AutoSubmitFilterForm>
+            </FilterListWrapper>
+        </CardContent>
+    </Card>
+);
+
+export const BookList = () => (
+    <List aside={<BookListAside />}>
+        <Datagrid>
+            <TextField source="title" />
+            <ReferenceField source="authorId" reference="authors" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+```
+
+![AutoSubmitFilterForm](./img/AutoSubmitFilterForm.png)
+
+Check out the [`<AutoSubmitFilterForm>` documentation](./AutoSubmitFilterForm.md) for more information.
