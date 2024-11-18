@@ -282,7 +282,7 @@ const SettingsMenuItem = React.forwardRef<HTMLAnchorElement>((props, ref) => {
 export const MyAppBar = () => (
     <AppBar
         userMenu={
-              <UserMenu>
+            <UserMenu>
                 <SettingsMenuItem />
                 <Logout />
             </UserMenu>
