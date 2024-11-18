@@ -19,36 +19,54 @@ export const HIDE_FILTER = 'HIDE_FILTER';
 const oppositeOrder = direction =>
     direction === SORT_DESC ? SORT_ASC : SORT_DESC;
 
+type SetSortPayload = {
+    field: string;
+    order?: typeof SORT_ASC | typeof SORT_DESC;
+};
+
+type SetPagePayload = number;
+
+type SetPerPagePayload = number;
+
+type SetFilterPayload = {
+    filter: any;
+    displayedFilters?: { [key: string]: boolean };
+};
+
+type SetShowFilterPayload = { filterName: string; defaultValue?: any };
+
+type SetHideFilterPayload = string;
+
+type SetDefaultPayload = ListParams;
+
 type ActionTypes =
     | {
           type: typeof SET_SORT;
-          payload: {
-              field: string;
-              order?: typeof SORT_ASC | typeof SORT_DESC;
-          };
+          payload: SetSortPayload;
       }
     | {
           type: typeof SET_PAGE;
-          payload: number;
+          payload: SetPagePayload;
       }
     | {
           type: typeof SET_PER_PAGE;
-          payload: number;
+          payload: SetPerPagePayload;
       }
     | {
           type: typeof SET_FILTER;
-          payload: {
-              filter: any;
-              displayedFilters?: { [key: string]: boolean };
-          };
+          payload: SetFilterPayload;
       }
     | {
           type: typeof SHOW_FILTER;
-          payload: { filterName: string; defaultValue?: any };
+          payload: SetShowFilterPayload;
       }
     | {
           type: typeof HIDE_FILTER;
-          payload: string;
+          payload: SetHideFilterPayload;
+      }
+    | {
+          type: undefined;
+          payload: SetDefaultPayload;
       };
 
 /**
@@ -57,10 +75,11 @@ type ActionTypes =
 export const queryReducer: Reducer<ListParams, ActionTypes> = (
     previousState,
     action
-) => {
+): ListParams => {
     switch (action.type) {
         case SET_SORT:
-            if (action.payload.field === previousState.sort) {
+            const { field } = action.payload as SetSortPayload;
+            if (field === previousState.sort) {
                 return {
                     ...previousState,
                     order: oppositeOrder(previousState.order),
@@ -70,16 +89,20 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
 
             return {
                 ...previousState,
-                sort: action.payload.field,
+                sort: field,
                 order: action.payload.order || SORT_ASC,
                 page: 1,
             };
 
         case SET_PAGE:
-            return { ...previousState, page: action.payload };
+            return { ...previousState, page: action.payload as SetPagePayload };
 
         case SET_PER_PAGE:
-            return { ...previousState, page: 1, perPage: action.payload };
+            return {
+                ...previousState,
+                page: 1,
+                perPage: action.payload as SetPerPagePayload,
+            };
 
         case SET_FILTER: {
             return {
@@ -93,9 +116,13 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
         }
 
         case SHOW_FILTER: {
+            const {
+                filterName,
+                defaultValue,
+            } = action.payload as SetShowFilterPayload;
             if (
                 previousState.displayedFilters &&
-                previousState.displayedFilters[action.payload.filterName]
+                previousState.displayedFilters[filterName]
             ) {
                 // the filter is already shown
                 return previousState;
@@ -103,18 +130,14 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
             return {
                 ...previousState,
                 filter:
-                    typeof action.payload.defaultValue !== 'undefined'
-                        ? set(
-                              previousState.filter,
-                              action.payload.filterName,
-                              action.payload.defaultValue
-                          )
+                    typeof defaultValue !== 'undefined'
+                        ? set(previousState.filter, filterName, defaultValue)
                         : previousState.filter,
                 // we don't use lodash.set() for displayed filters
                 // to avoid problems with compound filter names (e.g. 'author.name')
                 displayedFilters: {
                     ...previousState.displayedFilters,
-                    [action.payload.filterName]: true,
+                    [filterName]: true,
                 },
             };
         }
@@ -141,7 +164,10 @@ export const queryReducer: Reducer<ListParams, ActionTypes> = (
         }
 
         default:
-            return previousState;
+            return (
+                ((action as ActionTypes).payload as SetDefaultPayload) ??
+                previousState
+            );
     }
 };
 
