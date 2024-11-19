@@ -20,7 +20,7 @@
         "run-graphql-demo": "cd examples/demo && cross-env REACT_APP_DATA_PROVIDER=graphql yarn dev",
         "run-crm": "cd examples/crm && yarn dev",
         "build-crm": "cd examples/crm && yarn build",
-        "storybook": "storybook dev -p 9010",
+        "storybook": "storybook dev -p 9010 --debug --debug-webpack --loglevel verbose",
         "build-storybook": "storybook build -c .storybook -o public --quiet"
     },
     "devDependencies": {
