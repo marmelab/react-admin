@@ -8,14 +8,14 @@ import {
     SourceContextProvider,
     SourceContextValue,
     useResourceContext,
-} from '../../../core';
+} from '../core';
 import {
     FormGroupsProvider,
     getSimpleValidationResolver,
     ValidateForm,
-} from '../../../form';
-import { useDebouncedEvent } from '../../../util';
-import { useListContext } from '../useListContext';
+} from '.';
+import { useDebouncedEvent } from '../util';
+import { useListContext } from '../controller/list/useListContext';
 
 /**
  * This component offers a convenient way to create a form that automatically

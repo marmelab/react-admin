@@ -23,4 +23,3 @@ export * from './useRecordSelection';
 export * from './useUnselect';
 export * from './useUnselectAll';
 export * from './WithListContext';
-export * from './filter';

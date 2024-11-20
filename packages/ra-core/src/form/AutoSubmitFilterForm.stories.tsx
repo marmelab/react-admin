@@ -1,12 +1,16 @@
 import * as React from 'react';
 
-import { AutoSubmitFilterForm, AutoSubmitFilterFormProps } from '.';
-import { useInput, required } from '../../../form';
-import { ListContextProvider } from '../ListContextProvider';
-import { useList } from '../useList';
-import { useListContext } from '../useListContext';
+import {
+    AutoSubmitFilterForm,
+    AutoSubmitFilterFormProps,
+    useInput,
+    required,
+} from '.';
+import { ListContextProvider } from '../controller/list/ListContextProvider';
+import { useList } from '../controller/list/useList';
+import { useListContext } from '../controller/list/useListContext';
 
-export default { title: 'ra-core/controller/list/filter/AutoSubmitFilterForm' };
+export default { title: 'ra-core/form/AutoSubmitFilterForm' };
 
 const TextInput = props => {
     const { field, fieldState } = useInput(props);
