@@ -13,9 +13,9 @@ import getFormInitialValues from './getFormInitialValues';
 import {
     getSimpleValidationResolver,
     ValidateForm,
-} from './getSimpleValidationResolver';
-import { setSubmissionErrors } from './setSubmissionErrors';
-import { useNotifyIsFormInvalid } from './useNotifyIsFormInvalid';
+} from './validation/getSimpleValidationResolver';
+import { setSubmissionErrors } from './validation/setSubmissionErrors';
+import { useNotifyIsFormInvalid } from './validation/useNotifyIsFormInvalid';
 import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
 
 /**

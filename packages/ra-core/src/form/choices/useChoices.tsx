@@ -2,9 +2,9 @@ import * as React from 'react';
 import { ReactElement, isValidElement, useCallback } from 'react';
 import get from 'lodash/get';
 
-import { useTranslate } from '../i18n';
-import { RaRecord } from '../types';
-import { RecordContextProvider } from '../controller';
+import { useTranslate } from '../../i18n';
+import { RaRecord } from '../../types';
+import { RecordContextProvider } from '../../controller';
 
 export type OptionTextElement = ReactElement<{
     record: RaRecord;

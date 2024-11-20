@@ -2,8 +2,8 @@ import * as React from 'react';
 import fakerestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Form } from './Form';
-import { useInput } from './useInput';
+import { Form } from '../Form';
+import { useInput } from '../useInput';
 import {
     CoreAdminContext,
     CreateBase,
@@ -13,9 +13,9 @@ import {
     ValidationError,
     mergeTranslations,
     useUnique,
-} from '..';
+} from '../..';
 import { QueryClient } from '@tanstack/react-query';
-import { TestMemoryRouter } from '../routing';
+import { TestMemoryRouter } from '../../routing';
 
 export default {
     title: 'ra-core/form/useUnique',

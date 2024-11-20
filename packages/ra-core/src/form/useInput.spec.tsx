@@ -6,7 +6,7 @@ import { CoreAdminContext, SourceContextProvider } from '../core';
 import { testDataProvider } from '../dataProvider';
 import { Form } from './Form';
 import { useInput, InputProps, UseInputValue } from './useInput';
-import { required } from './validate';
+import { required } from './validation/validate';
 
 const Input: FunctionComponent<
     {

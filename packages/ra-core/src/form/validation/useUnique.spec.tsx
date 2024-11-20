@@ -8,8 +8,8 @@ import {
     WithAdditionalFilters,
     WithMessage,
 } from './useUnique.stories';
-import { testDataProvider } from '../dataProvider';
-import { DataProvider } from '../types';
+import { testDataProvider } from '../../dataProvider';
+import { DataProvider } from '../../types';
 
 describe('useUnique', () => {
     const baseDataProvider = (overrides?: Partial<DataProvider>) =>

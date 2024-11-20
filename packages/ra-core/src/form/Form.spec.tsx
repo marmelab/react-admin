@@ -11,7 +11,7 @@ import { CoreAdminContext } from '../core';
 import { Form } from './Form';
 import { useNotificationContext } from '../notification';
 import { useInput } from './useInput';
-import { required } from './validate';
+import { required } from './validation/validate';
 import {
     FormLevelValidation,
     InputLevelValidation,
