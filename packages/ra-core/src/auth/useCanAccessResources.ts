@@ -74,12 +74,18 @@ export const useCanAccessResources = <
                 })
             );
 
+            const canAccessMap = queries.reduce(
+                (acc, { resource, canAccess }) => {
+                    acc[resource] = canAccess;
+                    return acc;
+                },
+                {} as Record<string, boolean>
+            );
+
             const result = resources.reduce(
                 (acc, resource) => ({
                     ...acc,
-                    [resource]:
-                        queries.find(query => query.resource === resource)
-                            ?.canAccess ?? false,
+                    [resource]: canAccessMap[resource],
                 }),
                 {} as Record<string, boolean>
             );
