@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
     testDataProvider,
     useList,
@@ -10,6 +10,7 @@ import {
 import { AdminContext } from '../AdminContext';
 import { SearchInput } from '.';
 import { FilterForm } from '../list';
+import { RaceCondition } from './SearchInput.stories';
 
 describe('<SearchInput />', () => {
     const source = 'test';
@@ -36,5 +37,16 @@ describe('<SearchInput />', () => {
         );
 
         expect(container.querySelector(`input[name=test]`)).not.toBeNull();
+    });
+
+    it('should not ignore keystrokes while I type', async () => {
+        const { container } = render(<RaceCondition />);
+        fireEvent.click(await screen.findByText('Trigger bug'));
+        // Wait for enough time for the bug to happen (min. 1350 ms)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        expect(container.querySelector(`input[name=q]`)).not.toBeNull();
+        expect(
+            (container.querySelector(`input[name=q]`) as HTMLInputElement).value
+        ).toBe('hello');
     });
 });

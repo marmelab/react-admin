@@ -79,6 +79,8 @@ title: "Index"
 * [`<FilterForm>`](./FilterForm.md)
 * [`<FilterList>`](./FilterList.md)
 * [`<FilterListItem>`](./FilterList.md#children)
+* [`<FilterListSection>`](./FilterLiveForm.md#usage)
+* [`<FilterLiveForm>`](./FilterLiveForm.md)
 * [`<FilterLiveSearch>`](./FilterLiveSearch.md)
 * [`<Form>`](./Form.md)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)

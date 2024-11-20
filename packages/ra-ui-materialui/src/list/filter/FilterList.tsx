@@ -1,7 +1,7 @@
+import { BoxProps, List } from '@mui/material';
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { Box, BoxProps, List, Typography } from '@mui/material';
-import { useTranslate } from 'ra-core';
+import { FilterListSection } from './FilterListSection';
 
 /**
  * Header and container for a list of filter list items
@@ -41,22 +41,13 @@ import { useTranslate } from 'ra-core';
  * );
  */
 export const FilterList = (props: FilterListProps) => {
-    const { label, icon, children, ...rest } = props;
-    const translate = useTranslate();
+    const { children, ...rest } = props;
     return (
-        <Box {...rest}>
-            <Box mt={2} display="flex" alignItems="center">
-                <Box mr={1} lineHeight="initial">
-                    {icon}
-                </Box>
-                <Typography variant="overline">
-                    {translate(label, { _: label })}
-                </Typography>
-            </Box>
+        <FilterListSection {...rest}>
             <List dense disablePadding>
                 {children}
             </List>
-        </Box>
+        </FilterListSection>
     );
 };
 

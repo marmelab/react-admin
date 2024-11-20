@@ -296,12 +296,12 @@ const dataProvider = fakeRestDataProvider({
 });
 
 const BookListAside = () => (
-    <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
+    <Card sx={{ order: -1, mr: 2, mt: 6, width: 200, height: 'fit-content' }}>
         <CardContent>
             <FilterList label="Century" icon={<CategoryIcon />}>
                 <FilterListItem
                     label="21st"
-                    value={{ year_gte: 2000, year_lte: null }}
+                    value={{ year_gte: 2000, year_lte: undefined }}
                 />
                 <FilterListItem
                     label="20th"
