@@ -16,7 +16,7 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
-import { FilterListWrapper } from '.';
+import { FilterListSection } from '.';
 import { AdminContext } from '../../AdminContext';
 import { AdminUI } from '../../AdminUI';
 import { ExportButton } from '../../button';
@@ -35,7 +35,7 @@ const i18nProvider = polyglotI18nProvider(
     'en' // Default locale
 );
 
-export const WithFilterListWrapper = () => {
+export const WithFilterListSection = () => {
     const listContext = useList({
         data: [
             { id: 1, title: 'Hello', has_newsletter: true },
@@ -67,7 +67,7 @@ export const WithFilterListWrapper = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                    <FilterListSection label="Title" icon={<TitleIcon />}>
                         <AutoSubmitFilterForm>
                             <TextInput
                                 source="title"
@@ -75,7 +75,7 @@ export const WithFilterListWrapper = () => {
                                 helperText={false}
                             />
                         </AutoSubmitFilterForm>
-                    </FilterListWrapper>
+                    </FilterListSection>
                 </CardContent>
             </Card>
             <FilterValue />
@@ -115,7 +115,7 @@ export const MultipleInput = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                    <FilterListSection label="Title" icon={<TitleIcon />}>
                         <AutoSubmitFilterForm>
                             <TextInput
                                 source="title"
@@ -129,7 +129,7 @@ export const MultipleInput = () => {
                                 helperText={false}
                             />
                         </AutoSubmitFilterForm>
-                    </FilterListWrapper>
+                    </FilterListSection>
                 </CardContent>
             </Card>
             <FilterValue />
@@ -169,7 +169,7 @@ export const MultipleAutoSubmitFilterForm = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                    <FilterListSection label="Title" icon={<TitleIcon />}>
                         <AutoSubmitFilterForm>
                             <TextInput
                                 source="title"
@@ -177,8 +177,8 @@ export const MultipleAutoSubmitFilterForm = () => {
                                 helperText={false}
                             />
                         </AutoSubmitFilterForm>
-                    </FilterListWrapper>
-                    <FilterListWrapper label="Author" icon={<Person2Icon />}>
+                    </FilterListSection>
+                    <FilterListSection label="Author" icon={<Person2Icon />}>
                         <AutoSubmitFilterForm>
                             <TextInput
                                 source="author"
@@ -186,7 +186,7 @@ export const MultipleAutoSubmitFilterForm = () => {
                                 helperText={false}
                             />
                         </AutoSubmitFilterForm>
-                    </FilterListWrapper>
+                    </FilterListSection>
                 </CardContent>
             </Card>
             <FilterValue />
@@ -227,7 +227,7 @@ export const PerInputValidation = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                    <FilterListSection label="Title" icon={<TitleIcon />}>
                         <AutoSubmitFilterForm>
                             <TextInput source="title" resettable />
                             <TextInput
@@ -236,7 +236,7 @@ export const PerInputValidation = () => {
                                 resettable
                             />
                         </AutoSubmitFilterForm>
-                    </FilterListWrapper>
+                    </FilterListSection>
                 </CardContent>
             </Card>
             <FilterValue />
@@ -284,12 +284,12 @@ export const GlobalValidation = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <FilterListWrapper label="Title" icon={<TitleIcon />}>
+                    <FilterListSection label="Title" icon={<TitleIcon />}>
                         <AutoSubmitFilterForm validate={validateFilters}>
                             <TextInput source="title" resettable />
                             <TextInput source="author" isRequired resettable />
                         </AutoSubmitFilterForm>
-                    </FilterListWrapper>
+                    </FilterListSection>
                 </CardContent>
             </Card>
             <FilterValue />
@@ -424,18 +424,18 @@ const BookListAside = () => (
                     value={{ year_gte: 1800, year_lte: 1899 }}
                 />
             </FilterList>
-            <FilterListWrapper label="Title" icon={<TitleIcon />}>
+            <FilterListSection label="Title" icon={<TitleIcon />}>
                 <AutoSubmitFilterForm>
                     <TextInput source="title" resettable helperText={false} />
                 </AutoSubmitFilterForm>
-            </FilterListWrapper>
-            <FilterListWrapper label="Author" icon={<Person2Icon />}>
+            </FilterListSection>
+            <FilterListSection label="Author" icon={<Person2Icon />}>
                 <AutoSubmitFilterForm>
                     <ReferenceInput source="authorId" reference="authors">
                         <AutocompleteInput helperText={false} />
                     </ReferenceInput>
                 </AutoSubmitFilterForm>
-            </FilterListWrapper>
+            </FilterListSection>
         </CardContent>
     </Card>
 );

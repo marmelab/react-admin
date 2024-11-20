@@ -3,9 +3,9 @@ import MailIcon from '@mui/icons-material/MailOutline';
 import { Card, CardContent, List, ListItem, Typography } from '@mui/material';
 import * as React from 'react';
 
-import { FilterListWrapper } from './FilterListWrapper';
+import { FilterListSection } from './FilterListSection';
 
-export default { title: 'ra-ui-materialui/list/filter/FilterListWrapper' };
+export default { title: 'ra-ui-materialui/list/filter/FilterListSection' };
 
 export const Basic = () => {
     return (
@@ -16,7 +16,7 @@ export const Basic = () => {
             }}
         >
             <CardContent>
-                <FilterListWrapper
+                <FilterListSection
                     label="Subscribed to newsletter"
                     icon={<MailIcon />}
                 >
@@ -25,8 +25,8 @@ export const Basic = () => {
                             <Typography>Yes</Typography>
                         </ListItem>
                     </List>
-                </FilterListWrapper>
-                <FilterListWrapper label="Category" icon={<CategoryIcon />}>
+                </FilterListSection>
+                <FilterListSection label="Category" icon={<CategoryIcon />}>
                     <List>
                         <ListItem>
                             <Typography>Tests</Typography>
@@ -41,7 +41,7 @@ export const Basic = () => {
                             <Typography>Tutorials</Typography>
                         </ListItem>
                     </List>
-                </FilterListWrapper>
+                </FilterListSection>
             </CardContent>
         </Card>
     );

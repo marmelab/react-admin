@@ -33,7 +33,7 @@ import {
     Datagrid,
     FilterList,
     FilterListItem,
-    FilterListWrapper,
+    FilterListSection,
     List,
     ReferenceField,
     ReferenceInput,
@@ -58,18 +58,18 @@ const BookListAside = () => (
                     value={{ year_gte: 1800, year_lte: 1899 }}
                 />
             </FilterList>
-            <FilterListWrapper label="Title" icon={<TitleIcon />}>
+            <FilterListSection label="Title" icon={<TitleIcon />}>
                 <AutoSubmitFilterForm>
                     <TextInput source="title" resettable helperText={false} />
                 </AutoSubmitFilterForm>
-            </FilterListWrapper>
-            <FilterListWrapper label="Author" icon={<Person2Icon />}>
+            </FilterListSection>
+            <FilterListSection label="Author" icon={<Person2Icon />}>
                 <AutoSubmitFilterForm>
                     <ReferenceInput source="authorId" reference="authors">
                         <AutocompleteInput helperText={false} />
                     </ReferenceInput>
                 </AutoSubmitFilterForm>
-            </FilterListWrapper>
+            </FilterListSection>
         </CardContent>
     </Card>
 );
@@ -86,7 +86,7 @@ export const BookList = () => (
 ```
 {% endraw %}
 
-**Tip:** This example leverages `<FilterListWrapper>`, the wrapper used internally by `<FilterList>`, in order to obtain a consistent look and feel for the filters.
+**Tip:** This example leverages `<FilterListSection>`, the wrapper used internally by `<FilterList>`, in order to obtain a consistent look and feel for the filters.
 
 ![AutoSubmitFilterForm](./img/AutoSubmitFilterForm.png)
 

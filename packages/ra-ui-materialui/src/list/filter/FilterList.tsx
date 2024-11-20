@@ -1,7 +1,7 @@
 import { BoxProps, List } from '@mui/material';
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { FilterListWrapper } from './FilterListWrapper';
+import { FilterListSection } from './FilterListSection';
 
 /**
  * Header and container for a list of filter list items
@@ -43,11 +43,11 @@ import { FilterListWrapper } from './FilterListWrapper';
 export const FilterList = (props: FilterListProps) => {
     const { children, ...rest } = props;
     return (
-        <FilterListWrapper {...rest}>
+        <FilterListSection {...rest}>
             <List dense disablePadding>
                 {children}
             </List>
-        </FilterListWrapper>
+        </FilterListSection>
     );
 };
 

@@ -34,7 +34,7 @@ import { useListContext } from '../controller/list/useListContext';
  *     AutoSubmitFilterForm,
  *     FilterList,
  *     FilterListItem,
- *     FilterListWrapper,
+ *     FilterListSection,
  *     TextInput,
  * } from 'react-admin';
  *
@@ -45,11 +45,11 @@ import { useListContext } from '../controller/list/useListContext';
  *                 <FilterListItem label="Yes" value={{ has_newsletter: true }} />
  *                 <FilterListItem label="No" value={{ has_newsletter: false }} />
  *             </FilterList>
- *             <FilterListWrapper label="Title" icon={<TitleIcon />}>
+ *             <FilterListSection label="Title" icon={<TitleIcon />}>
  *                 <AutoSubmitFilterForm>
  *                     <TextInput source="title" resettable helperText={false} />
  *                 </AutoSubmitFilterForm>
- *             </FilterListWrapper>
+ *             </FilterListSection>
  *         </CardContent>
  *     </Card>
  * );

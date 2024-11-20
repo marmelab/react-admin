@@ -22,7 +22,7 @@ import { useTranslate } from 'ra-core';
  *     AutoSubmitFilterForm,
  *     FilterList,
  *     FilterListItem,
- *     FilterListWrapper,
+ *     FilterListSection,
  *     TextInput,
  * } from 'react-admin';
  *
@@ -33,16 +33,16 @@ import { useTranslate } from 'ra-core';
  *                 <FilterListItem label="Yes" value={{ has_newsletter: true }} />
  *                 <FilterListItem label="No" value={{ has_newsletter: false }} />
  *             </FilterList>
- *             <FilterListWrapper label="Title" icon={<TitleIcon />}>
+ *             <FilterListSection label="Title" icon={<TitleIcon />}>
  *                 <AutoSubmitFilterForm>
  *                     <TextInput source="title" resettable helperText={false} />
  *                 </AutoSubmitFilterForm>
- *             </FilterListWrapper>
+ *             </FilterListSection>
  *         </CardContent>
  *     </Card>
  * );
  */
-export const FilterListWrapper = (props: FilterListWrapperProps) => {
+export const FilterListSection = (props: FilterListSectionProps) => {
     const { label, icon, children, ...rest } = props;
     const translate = useTranslate();
     return (
@@ -60,7 +60,7 @@ export const FilterListWrapper = (props: FilterListWrapperProps) => {
     );
 };
 
-export interface FilterListWrapperProps extends BoxProps {
+export interface FilterListSectionProps extends BoxProps {
     label: string;
     icon: ReactNode;
 }

@@ -80,7 +80,7 @@ title: "Index"
 * [`<FilterForm>`](./FilterForm.md)
 * [`<FilterList>`](./FilterList.md)
 * [`<FilterListItem>`](./FilterList.md#children)
-* [`<FilterListWrapper>`](./AutoSubmitFilterForm.md#usage)
+* [`<FilterListSection>`](./AutoSubmitFilterForm.md#usage)
 * [`<FilterLiveSearch>`](./FilterLiveSearch.md)
 * [`<Form>`](./Form.md)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
