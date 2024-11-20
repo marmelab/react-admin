@@ -1,4 +1,4 @@
-import { isValidElement, useEffect, useMemo } from 'react';
+import { isValidElement, useCallback, useEffect, useMemo } from 'react';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
@@ -189,8 +189,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         }
     );
 
-    const onSelectAll = () => {
-        console.log('onSelectAll', allData);
+    const onSelectAll = useCallback(() => {
         const allIds = allData?.map(({ id }) => id) || [];
         selectionModifiers.select(allIds);
         if (allIds.length === selectAllLimit) {
@@ -199,7 +198,7 @@ export const useListController = <RecordType extends RaRecord = any>(
                 type: 'warning',
             });
         }
-    };
+    }, [allData, notify, selectAllLimit, selectionModifiers]);
 
     return {
         sort: currentSort,
