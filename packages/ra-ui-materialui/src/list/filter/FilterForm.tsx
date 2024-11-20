@@ -24,7 +24,7 @@ export const FilterForm = (props: FilterFormProps) => {
 
     return (
         <AutoSubmitFilterForm
-            component={StyledForm}
+            formComponent={StyledForm}
             {...sanitizeRestProps(rest)}
         >
             <FilterFormBase filters={filters} />

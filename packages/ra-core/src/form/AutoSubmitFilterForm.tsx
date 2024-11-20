@@ -63,7 +63,7 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
         resolver,
         validate,
         children,
-        component: Component = HTMLForm,
+        formComponent: Component = HTMLForm,
         ...rest
     } = props;
 
@@ -167,7 +167,9 @@ export interface AutoSubmitFilterFormProps
     validate?: ValidateForm;
     debounce?: number | false;
     resource?: string;
-    component?: React.ComponentType<any>;
+    formComponent?: React.ComponentType<
+        Pick<React.HTMLAttributes<HTMLFormElement>, 'onSubmit'>
+    >;
 }
 
 /**

@@ -98,12 +98,12 @@ export const BookList = () => (
 
 Here are all the props you can set on the `<AutoSubmitFilterForm>` component:
 
-| Prop        | Required | Type                | Default              | Description                                                              |
-| ----------- | -------- | ------------------- | -------------------- | ------------------------------------------------------------------------ |
-| `children`  | Required | `ReactNode`         | -                    | The children of the filter form (usually inputs)                         |
-| `component` | Optional | React Component     | Native HTML `<form>` | A React Component used to render the form                                |
-| `debounce`  | Optional | `number` or `false` | 500                  | The debounce delay to set the filters (pass `false` to disable debounce) |
-| `validate`  | Optional | `function`          | -                    | A function to validate the form values                                   |
+| Prop            | Required | Type                | Default              | Description                                                              |
+| --------------- | -------- | ------------------- | -------------------- | ------------------------------------------------------------------------ |
+| `children`      | Required | `ReactNode`         | -                    | The children of the filter form (usually inputs)                         |
+| `formComponent` | Optional | React Component     | Native HTML `<form>` | A React Component used to render the form                                |
+| `debounce`      | Optional | `number` or `false` | 500                  | The debounce delay to set the filters (pass `false` to disable debounce) |
+| `validate`      | Optional | `function`          | -                    | A function to validate the form values                                   |
 
 Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/docs/useform).
 
