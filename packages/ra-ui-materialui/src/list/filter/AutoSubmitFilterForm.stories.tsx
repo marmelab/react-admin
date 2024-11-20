@@ -1,3 +1,4 @@
+import * as React from 'react';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import MailIcon from '@mui/icons-material/MailOutline';
 import Person2Icon from '@mui/icons-material/Person2';
@@ -14,7 +15,6 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import * as React from 'react';
 
 import { FilterListWrapper } from '.';
 import { AdminContext } from '../../AdminContext';
@@ -413,7 +413,7 @@ const BookListAside = () => (
             <FilterList label="Century" icon={<CategoryIcon />}>
                 <FilterListItem
                     label="21st"
-                    value={{ year_gte: 2000, year_lte: null }}
+                    value={{ year_gte: 2000, year_lte: undefined }}
                 />
                 <FilterListItem
                     label="20th"

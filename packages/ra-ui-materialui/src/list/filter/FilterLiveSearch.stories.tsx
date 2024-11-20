@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
     Box,
     Card,
@@ -17,7 +18,6 @@ import {
     useListContext,
     Resource,
 } from 'ra-core';
-import * as React from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -231,7 +231,7 @@ const BookListAside = () => (
             <FilterList label="Century" icon={<CategoryIcon />}>
                 <FilterListItem
                     label="21st"
-                    value={{ year_gte: 2000, year_lte: null }}
+                    value={{ year_gte: 2000, year_lte: undefined }}
                 />
                 <FilterListItem
                     label="20th"

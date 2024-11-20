@@ -279,17 +279,39 @@ The children of `<FilterList>` must be a list of `<FilterListItem>` components. 
 | `isSelected` | Optional | function | | A function that receives the item value and the currently applied filters. It must return a boolean. |
 | `toggleFilter` | Optional | function | | A function that receives the item value and the currently applied filters. It is called when user toggles a filter and must return the new filters to apply. |
 
-## Using Your Own Inputs
+## Using Inputs
 
-If you want to use your own inputs alongside `<FilterList>` in the `<List>` sidebar, you can use the `<AutoSubmitFilterForm>` component to create a form that automatically updates the filters when the user changes the input value.
+If you want to add a simple text input to the sidebar, you can use the [`<FilterLiveSearch>`](./FilterLiveSearch.md) component alongside `<FilterList>` in the `<List>` sidebar. It will render a simple text input, which will filter the list based on the value entered by the user.
+
+{% raw %}
+```jsx
+import { FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
+import { Card, CardContent } from '@mui/material';
+import MailIcon from '@mui/icons-material/MailOutline';
+
+export const PostFilterSidebar = () => (
+    <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
+        <CardContent>
+            <FilterLiveSearch source="q" label="Search" />
+            <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+                <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+                <FilterListItem label="No" value={{ has_newsletter: false }} />
+            </FilterList>
+        </CardContent>
+    </Card>
+);
+```
+{% endraw %}
+
+If you want to use other type of inputs, such as a `<ReferenceInput>`, you can use the [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md) component to create a form that automatically updates the filters when the user changes the value of an input.
 
 {% raw %}
 ```tsx
+import * as React from 'react';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import Person2Icon from '@mui/icons-material/Person2';
 import TitleIcon from '@mui/icons-material/Title';
 import { Card, CardContent } from '@mui/material';
-import * as React from 'react';
 import {
     AutocompleteInput,
     AutoSubmitFilterForm,
@@ -310,7 +332,7 @@ const BookListAside = () => (
             <FilterList label="Century" icon={<CategoryIcon />}>
                 <FilterListItem
                     label="21st"
-                    value={{ year_gte: 2000, year_lte: null }}
+                    value={{ year_gte: 2000, year_lte: undefined }}
                 />
                 <FilterListItem
                     label="20th"
@@ -340,9 +362,7 @@ const BookListAside = () => (
 export const BookList = () => (
     <List aside={<BookListAside />}>
         <Datagrid>
-            <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
-            <TextField source="year" />
+            {/* ... */}
         </Datagrid>
     </List>
 );

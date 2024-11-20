@@ -1,7 +1,7 @@
+import * as React from 'react';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
-import * as React from 'react';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import {
@@ -14,7 +14,7 @@ import {
     getSimpleValidationResolver,
     ValidateForm,
 } from '../../../form';
-import { useDebouncedEvent, useEvent } from '../../../util';
+import { useDebouncedEvent } from '../../../util';
 import { useListContext } from '../useListContext';
 
 /**
@@ -25,66 +25,32 @@ import { useListContext } from '../useListContext';
  * at other places to create your own filter UI.
  *
  * @example
- * import CategoryIcon from '@mui/icons-material/LocalOffer';
- * import Person2Icon from '@mui/icons-material/Person2';
+ * import MailIcon from '@mui/icons-material/MailOutline';
  * import TitleIcon from '@mui/icons-material/Title';
  * import { Card, CardContent } from '@mui/material';
  * import * as React from 'react';
  * import {
- *     AutocompleteInput,
  *     AutoSubmitFilterForm,
- *     Datagrid,
  *     FilterList,
  *     FilterListItem,
  *     FilterListWrapper,
- *     List,
- *     ReferenceField,
- *     ReferenceInput,
- *     TextField,
  *     TextInput,
  * } from 'react-admin';
  *
- * const BookListAside = () => (
+ * export const BookListAside = () => (
  *     <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
  *         <CardContent>
- *             <FilterList label="Century" icon={<CategoryIcon />}>
- *                 <FilterListItem
- *                     label="21st"
- *                     value={{ year_gte: 2000, year_lte: null }}
- *                 />
- *                 <FilterListItem
- *                     label="20th"
- *                     value={{ year_gte: 1900, year_lte: 1999 }}
- *                 />
- *                 <FilterListItem
- *                     label="19th"
- *                     value={{ year_gte: 1800, year_lte: 1899 }}
- *                 />
+ *             <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+ *                 <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+ *                 <FilterListItem label="No" value={{ has_newsletter: false }} />
  *             </FilterList>
  *             <FilterListWrapper label="Title" icon={<TitleIcon />}>
  *                 <AutoSubmitFilterForm>
  *                     <TextInput source="title" resettable helperText={false} />
  *                 </AutoSubmitFilterForm>
  *             </FilterListWrapper>
- *             <FilterListWrapper label="Author" icon={<Person2Icon />}>
- *                 <AutoSubmitFilterForm>
- *                     <ReferenceInput source="authorId" reference="authors">
- *                         <AutocompleteInput helperText={false} />
- *                     </ReferenceInput>
- *                 </AutoSubmitFilterForm>
- *             </FilterListWrapper>
  *         </CardContent>
  *     </Card>
- * );
- *
- * export const BookList = () => (
- *     <List aside={<BookListAside />}>
- *         <Datagrid>
- *             <TextField source="title" />
- *             <ReferenceField source="authorId" reference="authors" />
- *             <TextField source="year" />
- *         </Datagrid>
- *     </List>
  * );
  */
 export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
@@ -137,7 +103,7 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(filterValues), getValues, reset]);
 
-    const onSubmit = useEvent((values: any): void => {
+    const onSubmit = (values: any): void => {
         // Do not call setFilters if the form is invalid
         if (!isValid) {
             return;
@@ -147,7 +113,7 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
             ...filterValues,
             ...values,
         });
-    });
+    };
     const debouncedOnSubmit = useDebouncedEvent(onSubmit, debounce || 0);
 
     // Submit the form on values change

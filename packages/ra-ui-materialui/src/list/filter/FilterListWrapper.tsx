@@ -3,6 +3,45 @@ import { ReactNode } from 'react';
 import { Box, BoxProps, Typography } from '@mui/material';
 import { useTranslate } from 'ra-core';
 
+/**
+ * This component offers a wrapper to render children inside a FilterList
+ * section.
+ *
+ * It basically adds a header with an icon and a label, before rendering the
+ * children.
+ *
+ * It is used by `<FilterList>`, but can also be used standalone to make your
+ * own components look nicer alongside a filter list.
+ *
+ * @example
+ * import MailIcon from '@mui/icons-material/MailOutline';
+ * import TitleIcon from '@mui/icons-material/Title';
+ * import { Card, CardContent } from '@mui/material';
+ * import * as React from 'react';
+ * import {
+ *     AutoSubmitFilterForm,
+ *     FilterList,
+ *     FilterListItem,
+ *     FilterListWrapper,
+ *     TextInput,
+ * } from 'react-admin';
+ *
+ * export const BookListAside = () => (
+ *     <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
+ *         <CardContent>
+ *             <FilterList label="Subscribed to newsletter" icon={<MailIcon />}>
+ *                 <FilterListItem label="Yes" value={{ has_newsletter: true }} />
+ *                 <FilterListItem label="No" value={{ has_newsletter: false }} />
+ *             </FilterList>
+ *             <FilterListWrapper label="Title" icon={<TitleIcon />}>
+ *                 <AutoSubmitFilterForm>
+ *                     <TextInput source="title" resettable helperText={false} />
+ *                 </AutoSubmitFilterForm>
+ *             </FilterListWrapper>
+ *         </CardContent>
+ *     </Card>
+ * );
+ */
 export const FilterListWrapper = (props: FilterListWrapperProps) => {
     const { label, icon, children, ...rest } = props;
     const translate = useTranslate();

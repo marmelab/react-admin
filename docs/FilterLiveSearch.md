@@ -12,7 +12,7 @@ title: "The FilterLiveSearch Component"
 </video>
 
 
-The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form. This can easily be done thanks to the [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md) component. However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component even more convenient.
+The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form. This can be done thanks to the [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md) component. However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component even more convenient.
 
 It outputs a form containing a single `<TextInput>`, which modifies the page filter on change. That's usually what users expect for a full-text filter.
 
@@ -63,11 +63,11 @@ If the text input provided by `<FilterLiveSearch>` is not enough, and you'd like
 
 {% raw %}
 ```tsx
+import * as React from 'react';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import Person2Icon from '@mui/icons-material/Person2';
 import TitleIcon from '@mui/icons-material/Title';
 import { Card, CardContent } from '@mui/material';
-import * as React from 'react';
 import {
     AutocompleteInput,
     AutoSubmitFilterForm,
@@ -88,7 +88,7 @@ const BookListAside = () => (
             <FilterList label="Century" icon={<CategoryIcon />}>
                 <FilterListItem
                     label="21st"
-                    value={{ year_gte: 2000, year_lte: null }}
+                    value={{ year_gte: 2000, year_lte: undefined }}
                 />
                 <FilterListItem
                     label="20th"
@@ -118,9 +118,7 @@ const BookListAside = () => (
 export const BookList = () => (
     <List aside={<BookListAside />}>
         <Datagrid>
-            <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
-            <TextField source="year" />
+            {/* ... */}
         </Datagrid>
     </List>
 );

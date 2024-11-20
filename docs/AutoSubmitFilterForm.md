@@ -22,11 +22,11 @@ Here is an example showing how you can use `<AutoSubmitFilterForm>` in a sidebar
 
 {% raw %}
 ```tsx
+import * as React from 'react';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 import Person2Icon from '@mui/icons-material/Person2';
 import TitleIcon from '@mui/icons-material/Title';
 import { Card, CardContent } from '@mui/material';
-import * as React from 'react';
 import {
     AutocompleteInput,
     AutoSubmitFilterForm,
@@ -47,7 +47,7 @@ const BookListAside = () => (
             <FilterList label="Century" icon={<CategoryIcon />}>
                 <FilterListItem
                     label="21st"
-                    value={{ year_gte: 2000, year_lte: null }}
+                    value={{ year_gte: 2000, year_lte: undefined }}
                 />
                 <FilterListItem
                     label="20th"
@@ -91,6 +91,8 @@ export const BookList = () => (
 ![AutoSubmitFilterForm](./img/AutoSubmitFilterForm.png)
 
 **Tip:** `<AutoSubmitFilterForm>` accepts multiple children, but you can also use several `<AutoSubmitFilterForm>` components in the same filter UI, just like we did above.
+
+**Tip:** For simple cases where you only need a text input, you can use the [`<FilterLiveSearch>`](./FilterLiveSearch.md) component, which combines that logic in a single component.
 
 ## Props
 
