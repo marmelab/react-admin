@@ -43,7 +43,7 @@ import simpleRestProvider from "ra-data-simple-rest";
 const root = createRoot(document.getElementById("root"));
 root.render(
   <Admin dataProvider={simpleRestProvider("http://localhost:3000")}>
-    <Resource name="posts" list={ListGuesser} edit={EditHuesser} />
+    <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
   </Admin>
 );
 ```

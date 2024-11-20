@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { QueryClient, useIsMutating } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
-import undoableEventEmitter from './undoableEventEmitter';
+import { useTakeUndoableMutation } from './undo';
 import { useDelete } from './useDelete';
 import { useGetList } from './useGetList';
 
@@ -49,6 +49,7 @@ const SuccessCore = () => {
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetList('posts');
     const [deleteOne, { isPending }] = useDelete();
+    const takeMutation = useTakeUndoableMutation();
     const handleClick = () => {
         deleteOne(
             'posts',
@@ -71,10 +72,10 @@ const SuccessCore = () => {
                     <>
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: false,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: false });
                             }}
                         >
                             Confirm
@@ -82,10 +83,10 @@ const SuccessCore = () => {
                         &nbsp;
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: true,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: true });
                             }}
                         >
                             Cancel
@@ -143,6 +144,7 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetList('posts');
+    const takeMutation = useTakeUndoableMutation();
     const [deleteOne, { isPending }] = useDelete();
     const handleClick = () => {
         setError(undefined);
@@ -171,10 +173,10 @@ const ErrorCore = () => {
                     <>
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: false,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: false });
                             }}
                         >
                             Confirm
@@ -182,10 +184,10 @@ const ErrorCore = () => {
                         &nbsp;
                         <button
                             onClick={() => {
-                                undoableEventEmitter.emit('end', {
-                                    isUndo: true,
-                                });
                                 setNotification(false);
+                                const mutation = takeMutation();
+                                if (!mutation) return;
+                                mutation({ isUndo: true });
                             }}
                         >
                             Cancel

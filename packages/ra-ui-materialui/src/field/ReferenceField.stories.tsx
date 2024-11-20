@@ -837,3 +837,60 @@ const AccessControlUI = ({
         </div>
     );
 };
+
+export const Nested = () => (
+    <TestMemoryRouter initialEntries={['/comments/1/show']}>
+        <CoreAdminContext
+            dataProvider={
+                {
+                    getMany: async resource => {
+                        if (resource === 'posts') {
+                            await new Promise(resolve =>
+                                setTimeout(resolve, 1000)
+                            );
+                            return { data: [{ id: 2, author_id: 3 }] };
+                        }
+                        if (resource === 'authors') {
+                            await new Promise(resolve =>
+                                setTimeout(resolve, 1000)
+                            );
+                            return { data: [{ id: 3, name: 'John Doe' }] };
+                        }
+                        throw new Error(`Unknown resource ${resource}`);
+                    },
+                } as any
+            }
+        >
+            <ResourceDefinitionContextProvider
+                definitions={{
+                    books: {
+                        name: 'books',
+                        hasShow: true,
+                        hasEdit: true,
+                    },
+                    posts: {
+                        name: 'posts',
+                        hasShow: true,
+                        hasEdit: true,
+                    },
+                    authors: {
+                        name: 'books',
+                        hasShow: true,
+                        hasEdit: true,
+                    },
+                }}
+            >
+                <ResourceContextProvider value="comments">
+                    <RecordContextProvider value={{ id: 1, post_id: 2 }}>
+                        <ReferenceField source="post_id" reference="posts">
+                            <ReferenceField
+                                source="author_id"
+                                reference="authors"
+                            />
+                        </ReferenceField>
+                    </RecordContextProvider>
+                </ResourceContextProvider>
+            </ResourceDefinitionContextProvider>
+        </CoreAdminContext>
+    </TestMemoryRouter>
+);

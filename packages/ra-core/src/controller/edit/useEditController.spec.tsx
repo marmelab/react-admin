@@ -16,7 +16,7 @@ import {
 } from '..';
 import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
-import undoableEventEmitter from '../../dataProvider/undoableEventEmitter';
+import { useTakeUndoableMutation } from '../../dataProvider/undo/useTakeUndoableMutation';
 import { Form, InputProps, useInput } from '../../form';
 import { useNotificationContext } from '../../notification';
 import { AuthProvider, DataProvider } from '../../types';
@@ -28,6 +28,21 @@ import {
     CanAccess,
     DisableAuthentication,
 } from './useEditController.security.stories';
+import { EncodedId } from './useEditController.stories';
+
+const Confirm = () => {
+    const takeMutation = useTakeUndoableMutation();
+    return (
+        <button
+            aria-label="confirm"
+            onClick={() => {
+                const mutation = takeMutation();
+                if (!mutation) return;
+                mutation({ isUndo: false });
+            }}
+        />
+    );
+};
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -55,42 +70,31 @@ describe('useEditController', () => {
         });
     });
 
-    it('should decode the id from the route params', async () => {
-        const getOne = jest
-            .fn()
-            .mockImplementationOnce(() =>
-                Promise.resolve({ data: { id: 'test?', title: 'hello' } })
-            );
-        const dataProvider = { getOne } as unknown as DataProvider;
+    it.each([
+        { id: 'test?', url: '/posts/test%3F' },
+        { id: 'test%', url: '/posts/test%25' },
+    ])(
+        'should decode the id $id from the route params',
+        async ({ id, url }) => {
+            const getOne = jest
+                .fn()
+                .mockImplementationOnce(() =>
+                    Promise.resolve({ data: { id, title: 'hello' } })
+                );
+            const dataProvider = { getOne } as unknown as DataProvider;
 
-        render(
-            <TestMemoryRouter initialEntries={['/posts/test%3F']}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Routes>
-                        <Route
-                            path="/posts/:id"
-                            element={
-                                <EditController resource="posts">
-                                    {({ record }) => (
-                                        <div>{record && record.title}</div>
-                                    )}
-                                </EditController>
-                            }
-                        />
-                    </Routes>
-                </CoreAdminContext>
-            </TestMemoryRouter>
-        );
-        await waitFor(() => {
-            expect(getOne).toHaveBeenCalledWith('posts', {
-                id: 'test?',
-                signal: undefined,
+            render(<EncodedId id={id} url={url} dataProvider={dataProvider} />);
+            await waitFor(() => {
+                expect(getOne).toHaveBeenCalledWith('posts', {
+                    id,
+                    signal: undefined,
+                });
             });
-        });
-        await waitFor(() => {
-            expect(screen.queryAllByText('hello')).toHaveLength(1);
-        });
-    });
+            await waitFor(() => {
+                expect(screen.queryAllByText('Title: hello')).toHaveLength(1);
+            });
+        }
+    );
 
     it('should use the id provided through props if any', async () => {
         const getOne = jest
@@ -279,6 +283,7 @@ describe('useEditController', () => {
                                     aria-label="save"
                                     onClick={() => save!({ test: 'updated' })}
                                 />
+                                <Confirm />
                             </>
                         );
                     }}
@@ -297,7 +302,7 @@ describe('useEditController', () => {
             data: { test: 'updated' },
             previousData: { id: 12, test: 'previous' },
         });
-        undoableEventEmitter.emit('end', { isUndo: false });
+        screen.getByLabelText('confirm').click();
         await waitFor(() => {
             screen.getByText('updated');
         });
@@ -888,14 +893,14 @@ describe('useEditController', () => {
                 <EditController {...defaultProps} mutationMode="undoable">
                     {({ save }) => {
                         saveCallback = save;
-                        return <div />;
+                        return <Confirm />;
                     }}
                 </EditController>
             </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         await new Promise(resolve => setTimeout(resolve, 10));
-        undoableEventEmitter.emit('end', { isUndo: false });
+        screen.getByLabelText('confirm').click();
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(notificationsSpy).toContainEqual({
             message: 'ra.notification.http_error',

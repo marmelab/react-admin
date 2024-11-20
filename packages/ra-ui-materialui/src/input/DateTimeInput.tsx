@@ -8,16 +8,6 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
 /**
- * Converts a datetime string without timezone to a date object
- * with timezone, using the browser timezone.
- *
- * @param {string} value Date string, formatted as yyyy-MM-ddThh:mm
- * @return {Date}
- */
-const parseDateTime = (value: string) =>
-    value ? new Date(value) : value === '' ? null : value;
-
-/**
  * Input component for entering a date and a time with timezone, using the browser locale
  */
 export const DateTimeInput = ({
@@ -32,7 +22,6 @@ export const DateTimeInput = ({
     onFocus,
     source,
     resource,
-    parse = parseDateTime,
     validate,
     variant,
     disabled,
@@ -47,31 +36,35 @@ export const DateTimeInput = ({
         validate,
         disabled,
         readOnly,
+        format,
         ...rest,
     });
-    const [renderCount, setRenderCount] = React.useState(1);
-    const valueChangedFromInput = React.useRef(false);
     const localInputRef = React.useRef<HTMLInputElement>();
+    // DateInput is not a really controlled input to ensure users can start entering a date, go to another input and come back to complete it.
+    // This ref stores the value that is passed to the input defaultValue prop to solve this issue.
     const initialDefaultValueRef = React.useRef(field.value);
+    // As the defaultValue prop won't trigger a remount of the HTML input, we will force it by changing the key.
+    const [inputKey, setInputKey] = React.useState(1);
+    // This ref let us track that the last change of the form state value was made by the input itself
+    const wasLastChangedByInput = React.useRef(false);
 
+    // This effect ensures we stays in sync with the react-hook-form state when the value changes from outside the input
+    // for instance by using react-hook-form reset or setValue methods.
     React.useEffect(() => {
-        const initialDateValue =
-            new Date(initialDefaultValueRef.current).getTime() || null;
-
-        const fieldDateValue = new Date(field.value).getTime() || null;
-
-        if (
-            initialDateValue !== fieldDateValue &&
-            !valueChangedFromInput.current
-        ) {
-            setRenderCount(r => r + 1);
-            parse
-                ? field.onChange(parse(field.value))
-                : field.onChange(field.value);
-            initialDefaultValueRef.current = field.value;
-            valueChangedFromInput.current = false;
+        // Ignore react-hook-form state changes if it came from the input itself
+        if (wasLastChangedByInput.current) {
+            // Resets the flag to ensure futures changes are handled
+            wasLastChangedByInput.current = false;
+            return;
         }
-    }, [setRenderCount, parse, field]);
+
+        // The value has changed from outside the input, we update the input value
+        initialDefaultValueRef.current = field.value;
+        // Trigger a remount of the HTML input
+        setInputKey(r => r + 1);
+        // Resets the flag to ensure futures changes are handled
+        wasLastChangedByInput.current = false;
+    }, [setInputKey, field.value]);
 
     const { onBlur: onBlurFromField } = field;
     const hasFocus = React.useRef(false);
@@ -88,23 +81,17 @@ export const DateTimeInput = ({
             return;
         }
         const target = event.target;
+        const newValue = target.value;
+        const isNewValueValid =
+            newValue === '' || !isNaN(new Date(target.value).getTime());
 
-        const newValue =
-            target.valueAsDate !== undefined &&
-            target.valueAsDate !== null &&
-            !isNaN(new Date(target.valueAsDate).getTime())
-                ? parse
-                    ? parse(target.valueAsDate)
-                    : target.valueAsDate
-                : parse
-                  ? parse(target.value)
-                  : formatDateTime(target.value);
-
-        // Some browsers will return null for an invalid date so we only change react-hook-form value if it's not null
+        // Some browsers will return null for an invalid date
+        // so we only change react-hook-form value if it's not null.
         // The input reset is handled in the onBlur event handler
-        if (newValue !== '' && newValue != null) {
+        if (newValue !== '' && newValue != null && isNewValueValid) {
             field.onChange(newValue);
-            valueChangedFromInput.current = true;
+            // Track the fact that the next react-hook-form state change was triggered by the input itself
+            wasLastChangedByInput.current = true;
         }
     };
 
@@ -122,20 +109,14 @@ export const DateTimeInput = ({
             return;
         }
 
+        const newValue = localInputRef.current.value;
         // To ensure users can clear the input, we check its value on blur
         // and submit it to react-hook-form
-        const newValue =
-            localInputRef.current.valueAsDate !== undefined &&
-            localInputRef.current.valueAsDate !== null &&
-            !isNaN(new Date(localInputRef.current.valueAsDate).getTime())
-                ? parse
-                    ? parse(localInputRef.current.valueAsDate)
-                    : formatDateTime(localInputRef.current.valueAsDate)
-                : parse
-                  ? parse(localInputRef.current.value)
-                  : formatDateTime(localInputRef.current.value);
+        const isNewValueValid =
+            newValue === '' ||
+            !isNaN(new Date(localInputRef.current.value).getTime());
 
-        if (newValue !== field.value) {
+        if (isNewValueValid && field.value !== newValue) {
             field.onChange(newValue ?? '');
         }
 
@@ -155,7 +136,7 @@ export const DateTimeInput = ({
             inputRef={inputRef}
             name={name}
             defaultValue={format(initialDefaultValueRef.current)}
-            key={renderCount}
+            key={inputKey}
             type="datetime-local"
             onChange={handleChange}
             onFocus={handleFocus}

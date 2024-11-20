@@ -19,15 +19,18 @@ import set from 'lodash/set';
  * @param options The hook option
  * @param {ReactElement} options.create A react element which will be rendered when users choose to create a new choice. This component must call the `useCreateSuggestionContext` hook which provides `onCancel`, `onCreate` and `filter`. See the examples.
  * @param {String} options.createLabel Optional. The label for the choice item allowing users to create a new choice. Can be a translation key. Defaults to `ra.action.create`.
- * @param {String} options.createItemLabel Optional. The label for the choice item allowing users to create a new choice when they already entered a filter. Can be a translation key. The translation will receive an `item` parameter. Defaults to `ra.action.create_item`.
+ * @param {String} options.createItemLabel Optional. The label for the choice item allowing users to create a new choice when they already entered a filter. Can be a translation key. The translation will receive an `item` parameter. Providing this option will turn the create label when there is no filter to be a hint (i.e. a disabled item).
  * @param {any} options.createValue Optional. The value for the choice item allowing users to create a new choice. Defaults to `@@ra-create`.
+ * @param {any} options.createHintValue Optional. The value for the (disabled) item hinting users on how to create a new choice. Defaults to `@@ra-create-hint`.
  * @param {String} options.filter Optional. The filter users may have already entered. Useful for autocomplete inputs for example.
  * @param {OnCreateHandler} options.onCreate Optional. A function which will be called when users choose to create a new choice, if the `create` option wasn't provided.
  * @param {Function} options.handleChange A function to pass to the input. Receives the same parameter as the original event handler and an additional newItem parameter if a new item was create.
  *
  * @returns {UseSupportCreateValue} An object with the following properties:
  * - getCreateItem: a function which will return the label of the choice for create a new choice.
+ * - handleChange: a function which should be called when the input value changes. It will call the `onCreate` function if the value is the createValue.
  * - createElement: a React element to render after the input. It will be rendered when users choose to create a new choice. It renders null otherwise.
+ * - getOptionDisabled: a function which should be passed to the input to disable the create choice when the filter is empty (to make it a hint).
  */
 export const useSupportCreateSuggestion = (
     options: SupportCreateSuggestionOptions
@@ -35,8 +38,9 @@ export const useSupportCreateSuggestion = (
     const {
         create,
         createLabel = 'ra.action.create',
-        createItemLabel = 'ra.action.create_item',
+        createItemLabel,
         createValue = '@@ra-create',
+        createHintValue = '@@ra-create-hint',
         optionText = 'name',
         filter,
         handleChange,
@@ -67,22 +71,16 @@ export const useSupportCreateSuggestion = (
 
     return {
         createId: createValue,
+        createHintId: createHintValue,
         getCreateItem: () => {
-            if (typeof optionText !== 'string') {
-                return {
-                    id: createValue,
-                    name:
-                        filter && createItemLabel
-                            ? translate(createItemLabel, {
-                                  item: filter,
-                                  _: createItemLabel,
-                              })
-                            : translate(createLabel, { _: createLabel }),
-                };
-            }
             return set(
-                { id: createValue },
-                optionText,
+                {
+                    id:
+                        createItemLabel && !filter
+                            ? createHintValue
+                            : createValue,
+                },
+                typeof optionText === 'string' ? optionText : 'name',
                 filter && createItemLabel
                     ? translate(createItemLabel, {
                           item: filter,
@@ -122,12 +120,15 @@ export const useSupportCreateSuggestion = (
                     {create}
                 </CreateSuggestionContext.Provider>
             ) : null,
+        getOptionDisabled: option =>
+            option?.id === createHintValue || option === createHintValue,
     };
 };
 
 export interface SupportCreateSuggestionOptions {
     create?: ReactElement;
     createValue?: string;
+    createHintValue?: string;
     createLabel?: string;
     createItemLabel?: string;
     filter?: string;
@@ -138,12 +139,14 @@ export interface SupportCreateSuggestionOptions {
 
 export interface UseSupportCreateValue {
     createId: string;
+    createHintId: string;
     getCreateItem: (filterValue?: string) => {
         id: Identifier;
         [key: string]: any;
     };
     handleChange: (eventOrValue: ChangeEvent | any) => Promise<void>;
     createElement: ReactElement | null;
+    getOptionDisabled: (option: any) => boolean;
 }
 
 const CreateSuggestionContext = createContext<

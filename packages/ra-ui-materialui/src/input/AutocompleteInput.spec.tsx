@@ -27,6 +27,8 @@ import {
     WithInputProps,
     OnCreate,
     OnCreateSlow,
+    CreateLabel,
+    CreateItemLabel,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -1168,183 +1170,103 @@ describe('<AutocompleteInput />', () => {
     });
 
     describe('onCreate', () => {
-        it("shouldn't include an option with the createLabel when the input is empty", async () => {
-            const choices = [
-                { id: 'ang', name: 'Angular' },
-                { id: 'rea', name: 'React' },
-            ];
-            const handleCreate = filter => {
-                const newChoice = {
-                    id: 'js_fatigue',
-                    name: filter,
-                };
-                choices.push(newChoice);
-                return newChoice;
-            };
-
-            render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <ResourceContextProvider value="posts">
-                        <SimpleForm
-                            mode="onBlur"
-                            onSubmit={jest.fn()}
-                            defaultValues={{ language: 'ang' }}
-                        >
-                            <AutocompleteInput
-                                source="language"
-                                resource="posts"
-                                choices={choices}
-                                onCreate={handleCreate}
-                            />
-                        </SimpleForm>
-                    </ResourceContextProvider>
-                </AdminContext>
-            );
-
-            const input = screen.getByLabelText(
-                'resources.posts.fields.language'
-            ) as HTMLInputElement;
+        it("shouldn't include an option with the create label when the input is empty", async () => {
+            render(<OnCreate />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
             input.focus();
             fireEvent.change(input, {
                 target: { value: '' },
             });
-
-            expect(screen.queryByText('ra.action.create')).toBeNull();
-            expect(screen.queryByText('ra.action.create_item')).toBeNull();
+            expect(screen.queryByText(/Create/)).toBeNull();
         });
         it('should include an option with the custom createLabel when the input is empty', async () => {
-            const choices = [
-                { id: 'ang', name: 'Angular' },
-                { id: 'rea', name: 'React' },
-            ];
-            const handleCreate = filter => {
-                const newChoice = {
-                    id: 'js_fatigue',
-                    name: filter,
-                };
-                choices.push(newChoice);
-                return newChoice;
-            };
-
-            render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <ResourceContextProvider value="posts">
-                        <SimpleForm
-                            mode="onBlur"
-                            onSubmit={jest.fn()}
-                            defaultValues={{ language: 'ang' }}
-                        >
-                            <AutocompleteInput
-                                source="language"
-                                choices={choices}
-                                onCreate={handleCreate}
-                                createLabel="Start typing to create a new item"
-                            />
-                        </SimpleForm>
-                    </ResourceContextProvider>
-                </AdminContext>
-            );
-
-            const input = screen.getByLabelText(
-                'resources.posts.fields.language'
-            ) as HTMLInputElement;
+            render(<CreateLabel />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
             input.focus();
             fireEvent.change(input, {
                 target: { value: '' },
             });
+            const customCreateLabel = screen.queryByText(
+                'Start typing to create a new item'
+            );
+            expect(customCreateLabel).not.toBeNull();
+            expect(
+                (customCreateLabel as HTMLElement).getAttribute('aria-disabled')
+            ).toEqual('true');
+            expect(screen.queryByText(/Create/)).toBeNull();
+        });
+        it('should include an option with the custom createItemLabel when the input is not empty', async () => {
+            render(<CreateItemLabel />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: 'foo' },
+            });
+            await screen.findByText('Add a new author: foo');
+            expect(screen.queryByText(/Create/)).toBeNull();
+        });
+        it('should not show the create option when a choice is selected when using a custom createLabel', async () => {
+            render(<CreateLabel />);
 
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+
+            // First, clear the input
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            // We expect only the 'Start typing to create a new item' option
+            await screen.findByText('Victor Hugo');
+            const customCreateLabel = screen.queryByText(
+                'Start typing to create a new item'
+            );
+            expect(customCreateLabel).not.toBeNull();
+            expect(
+                (customCreateLabel as HTMLElement).getAttribute('aria-disabled')
+            ).toEqual('true');
+            expect(screen.queryByText(/Create/)).toBeNull();
+
+            // Then, change the input to an existing value
+            fireEvent.click(screen.getByText('Leo Tolstoy'));
+            fireEvent.focus(input);
+            // We expect all create labels not to render
+            await screen.findByText('Victor Hugo');
             expect(
                 screen.queryByText('Start typing to create a new item')
-            ).not.toBeNull();
-            expect(screen.queryByText('ra.action.create')).toBeNull();
-            expect(screen.queryByText('ra.action.create_item')).toBeNull();
+            ).toBeNull();
+            expect(screen.queryByText(/Create/)).toBeNull();
         });
         it('should include an option with the createItemLabel when the input not empty', async () => {
-            const choices = [
-                { id: 'ang', name: 'Angular' },
-                { id: 'rea', name: 'React' },
-            ];
-            const handleCreate = filter => {
-                const newChoice = {
-                    id: 'js_fatigue',
-                    name: filter,
-                };
-                choices.push(newChoice);
-                return newChoice;
-            };
-
-            render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <ResourceContextProvider value="posts">
-                        <SimpleForm
-                            mode="onBlur"
-                            onSubmit={jest.fn()}
-                            defaultValues={{ language: 'ang' }}
-                        >
-                            <AutocompleteInput
-                                source="language"
-                                resource="posts"
-                                choices={choices}
-                                onCreate={handleCreate}
-                            />
-                        </SimpleForm>
-                    </ResourceContextProvider>
-                </AdminContext>
-            );
-
-            const input = screen.getByLabelText(
-                'resources.posts.fields.language'
-            ) as HTMLInputElement;
+            render(<OnCreate />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
             input.focus();
             fireEvent.change(input, {
                 target: { value: 'foo' },
             });
 
-            expect(screen.queryByText('ra.action.create')).toBeNull();
-            expect(screen.queryByText('ra.action.create_item')).not.toBeNull();
+            expect(screen.queryByText('Create')).toBeNull();
+            expect(screen.queryByText('Create foo')).not.toBeNull();
         });
         it('should not include a create option when the input matches an option', async () => {
-            const choices = [
-                { id: 'ang', name: 'Angular' },
-                { id: 'rea', name: 'React' },
-            ];
-            const handleCreate = filter => {
-                const newChoice = {
-                    id: 'js_fatigue',
-                    name: filter,
-                };
-                choices.push(newChoice);
-                return newChoice;
-            };
-
-            render(
-                <AdminContext dataProvider={testDataProvider()}>
-                    <ResourceContextProvider value="posts">
-                        <SimpleForm
-                            mode="onBlur"
-                            onSubmit={jest.fn()}
-                            defaultValues={{ language: 'ang' }}
-                        >
-                            <AutocompleteInput
-                                source="language"
-                                resource="posts"
-                                choices={choices}
-                                onCreate={handleCreate}
-                            />
-                        </SimpleForm>
-                    </ResourceContextProvider>
-                </AdminContext>
-            );
-
-            const input = screen.getByLabelText(
-                'resources.posts.fields.language'
-            ) as HTMLInputElement;
+            render(<OnCreate />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
             input.focus();
             fireEvent.change(input, {
-                target: { value: 'React' },
+                target: { value: 'Leo Tolstoy' },
             });
-            expect(screen.queryByText('ra.action.create')).toBeNull();
-            expect(screen.queryByText('ra.action.create_item')).toBeNull();
+            expect(screen.queryByText(/Create/)).toBeNull();
         });
         it('should allow the creation of a new choice', async () => {
             const choices = [

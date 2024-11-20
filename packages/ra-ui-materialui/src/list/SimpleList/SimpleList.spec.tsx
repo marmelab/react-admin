@@ -11,7 +11,11 @@ import { ListContext, ResourceContextProvider } from 'ra-core';
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../../field/TextField';
-import { NoPrimaryText } from './SimpleList.stories';
+import {
+    NoPrimaryText,
+    Standalone,
+    StandaloneEmpty,
+} from './SimpleList.stories';
 import { Basic } from '../filter/FilterButton.stories';
 
 const Wrapper = ({ children }: any) => (
@@ -168,7 +172,7 @@ describe('<SimpleList />', () => {
         });
 
         expect(
-            await screen.findByText('No posts found using the current filters.')
+            await screen.findByText('No Posts found using the current filters.')
         ).not.toBeNull();
         expect(screen.getByText('Clear filters')).not.toBeNull();
 
@@ -179,7 +183,7 @@ describe('<SimpleList />', () => {
         );
 
         expect(
-            screen.queryByText('No posts found using the current filters.')
+            screen.queryByText('No Posts found using the current filters.')
         ).toBeNull();
         expect(screen.queryByText('Clear filters')).toBeNull();
         expect(
@@ -192,5 +196,16 @@ describe('<SimpleList />', () => {
     it('should fall back to record representation when no primaryText is provided', async () => {
         render(<NoPrimaryText />);
         await screen.findByText('War and Peace');
+    });
+
+    describe('standalone', () => {
+        it('should work without a ListContext', async () => {
+            render(<Standalone />);
+            await screen.findByText('War and Peace');
+        });
+        it('should display a message when there is no result', async () => {
+            render(<StandaloneEmpty />);
+            await screen.findByText('No results found.');
+        });
     });
 });

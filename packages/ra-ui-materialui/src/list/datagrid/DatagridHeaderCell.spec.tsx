@@ -39,13 +39,13 @@ describe('<DatagridHeaderCell />', () => {
     it('should use the default inferred field label in its tooltip when using a React element as the field label', async () => {
         render(<LabelElements />);
         await screen.findByText('ID');
-        await screen.findByLabelText('Sort by Id descending');
+        await screen.findByLabelText('Sort by id descending');
         await screen.findByText('TITLE');
-        await screen.findByLabelText('Sort by Title descending');
+        await screen.findByLabelText('Sort by title ascending');
         await screen.findByText('AUTHOR');
-        await screen.findByLabelText('Sort by Author descending');
+        await screen.findByLabelText('Sort by author ascending');
         await screen.findByText('YEAR');
-        await screen.findByLabelText('Sort by Year descending');
+        await screen.findByLabelText('Sort by year ascending');
     });
 
     describe('sorting on a column', () => {

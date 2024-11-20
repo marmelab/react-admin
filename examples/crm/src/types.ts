@@ -1,4 +1,6 @@
-import { SvgIconComponent } from '@mui/icons-material';
+// We only import a type from @mui/icons-material, so we safely disable the rule
+// eslint-disable-next-line no-restricted-imports
+import type { SvgIconComponent } from '@mui/icons-material';
 import { Identifier, RaRecord } from 'react-admin';
 import {
     COMPANY_CREATED,

@@ -23,7 +23,6 @@ import {
     useResourceDefinition,
     useGetResourceLabel,
 } from '../../core';
-import _ from 'lodash';
 
 /**
  * Prepare data for the Create view

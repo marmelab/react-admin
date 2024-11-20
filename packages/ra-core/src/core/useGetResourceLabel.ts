@@ -1,6 +1,6 @@
 import { useResourceDefinitions } from './useResourceDefinitions';
 import { useTranslate } from '../i18n';
-import { humanize, pluralize, singularize } from 'inflection';
+import { humanize, inflect } from 'inflection';
 
 /**
  * A hook which returns function to get a translated resource name. It will use the label option of the `Resource` component if it was provided.
@@ -39,11 +39,7 @@ export const useGetResourceLabel = (): GetResourceLabel => {
                           smart_count: count,
                           _: resourceDefinition.options.label,
                       })
-                    : humanize(
-                          count > 1
-                              ? pluralize(resource)
-                              : singularize(resource)
-                      ),
+                    : humanize(inflect(resource, count)),
         });
 
         return label;

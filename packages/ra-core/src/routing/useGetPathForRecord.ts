@@ -125,6 +125,18 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
                       })
                     : false
             );
+            return;
+        }
+
+        // handle string case
+        if (link) {
+            setPath(
+                createPath({
+                    resource,
+                    id: record.id,
+                    type: link,
+                })
+            );
         }
     }, [
         createPath,

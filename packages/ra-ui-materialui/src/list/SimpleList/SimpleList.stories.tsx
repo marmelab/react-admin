@@ -1,19 +1,22 @@
 import * as React from 'react';
+import { useState } from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     Resource,
     ListContextProvider,
     TestMemoryRouter,
     ResourceContextProvider,
+    ResourceProps,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
 import { SimpleList } from './SimpleList';
 import { AdminUI } from '../../AdminUI';
-import { AdminContext } from '../../AdminContext';
+import { AdminContext, AdminContextProps } from '../../AdminContext';
 import { EditGuesser } from '../../detail';
-import { List } from '../List';
+import { List, ListProps } from '../List';
 
 export default { title: 'ra-ui-materialui/list/SimpleList' };
 
@@ -113,9 +116,17 @@ export const Basic = () => (
     </TestMemoryRouter>
 );
 
-const dataProvider = fakeRestDataProvider(data);
+const myDataProvider = fakeRestDataProvider(data);
 
-export const FullApp = () => (
+const Wrapper = ({
+    children,
+    dataProvider = myDataProvider,
+    recordRepresentation,
+}: {
+    children: ListProps['children'];
+    dataProvider?: AdminContextProps['dataProvider'];
+    recordRepresentation?: ResourceProps['recordRepresentation'];
+}) => (
     <AdminContext
         dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
@@ -123,81 +134,181 @@ export const FullApp = () => (
         <AdminUI>
             <Resource
                 name="books"
-                list={() => (
-                    <List>
-                        <SimpleList
-                            primaryText={record => record.title}
-                            secondaryText={record => record.author}
-                        />
-                    </List>
-                )}
+                recordRepresentation={recordRepresentation}
+                list={() => <List>{children}</List>}
                 edit={EditGuesser}
             />
         </AdminUI>
     </AdminContext>
 );
 
-export const NoPrimaryText = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
-    >
-        <AdminUI>
-            <Resource
-                name="books"
-                recordRepresentation="title"
-                list={() => (
-                    <List>
-                        <SimpleList />
-                    </List>
-                )}
-                edit={EditGuesser}
+export const FullApp = () => (
+    <Wrapper>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+        />
+    </Wrapper>
+);
+
+export const IconsAvatarsAndLinkType = () => {
+    const [linkType, setLinkType] = useState<false | undefined>(undefined);
+    const [leftIcon, setLeftIcon] = useState(true);
+    const [leftAvatar, setLeftAvatar] = useState(true);
+    const [rightIcon, setRightIcon] = useState(true);
+    const [rightAvatar, setRightAvatar] = useState(true);
+    return (
+        <Wrapper>
+            <FormGroup
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Box>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={leftIcon}
+                                onChange={() => setLeftIcon(!leftIcon)}
+                            />
+                        }
+                        label="Left Icon"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={leftAvatar}
+                                onChange={() => setLeftAvatar(!leftAvatar)}
+                            />
+                        }
+                        label="Left Avatar"
+                    />
+                </Box>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={linkType !== false}
+                            onChange={() =>
+                                setLinkType(
+                                    linkType === false ? undefined : false
+                                )
+                            }
+                        />
+                    }
+                    label="LinkType"
+                />
+                <Box>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={rightAvatar}
+                                onChange={() => setRightAvatar(!rightAvatar)}
+                            />
+                        }
+                        label="Right Avatar"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={rightIcon}
+                                onChange={() => setRightIcon(!rightIcon)}
+                            />
+                        }
+                        label="Right Icon"
+                    />
+                </Box>
+            </FormGroup>
+            <SimpleList
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                linkType={linkType}
+                leftIcon={
+                    leftIcon ? record => <span>{record.id}</span> : undefined
+                }
+                rightIcon={
+                    rightIcon ? record => <span>{record.year}</span> : undefined
+                }
+                leftAvatar={
+                    leftAvatar
+                        ? record => <span>{record.title[0]}</span>
+                        : undefined
+                }
+                rightAvatar={
+                    rightAvatar
+                        ? record => <span>{record.author[0]}</span>
+                        : undefined
+                }
             />
-        </AdminUI>
-    </AdminContext>
+        </Wrapper>
+    );
+};
+
+export const NoPrimaryText = () => (
+    <Wrapper recordRepresentation="title">
+        <SimpleList />
+    </Wrapper>
 );
 
 export const ErrorInFetch = () => (
     <TestMemoryRouter>
-        <ListContextProvider
-            value={
-                {
-                    error: new Error('Error in dataProvider'),
-                } as any
-            }
-        >
-            <SimpleList
-                primaryText={record => record.title}
-                secondaryText={record => record.author}
-                tertiaryText={record => record.year}
-            />
-        </ListContextProvider>
+        <ResourceContextProvider value="books">
+            <ListContextProvider
+                value={
+                    {
+                        error: new Error('Error in dataProvider'),
+                    } as any
+                }
+            >
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                />
+            </ListContextProvider>
+        </ResourceContextProvider>
     </TestMemoryRouter>
 );
 
 export const FullAppInError = () => (
-    <AdminContext
+    <Wrapper
         dataProvider={
             {
                 getList: () =>
                     Promise.reject(new Error('Error in dataProvider')),
             } as any
         }
-        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
     >
-        <AdminUI>
-            <Resource
-                name="books"
-                list={() => (
-                    <List>
-                        <SimpleList
-                            primaryText={record => record.title}
-                            secondaryText={record => record.author}
-                        />
-                    </List>
-                )}
-                edit={EditGuesser}
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+        />
+    </Wrapper>
+);
+
+export const Standalone = () => (
+    <TestMemoryRouter>
+        <SimpleList
+            data={data.books}
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+            tertiaryText={record => record.year}
+            linkType={false}
+        />
+    </TestMemoryRouter>
+);
+
+export const StandaloneEmpty = () => (
+    <TestMemoryRouter>
+        <ResourceContextProvider value="books">
+            <SimpleList<any>
+                data={[]}
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                tertiaryText={record => record.year}
+                linkType={false}
             />
-        </AdminUI>
-    </AdminContext>
+        </ResourceContextProvider>
+    </TestMemoryRouter>
 );
