@@ -5,7 +5,7 @@ import Person2Icon from '@mui/icons-material/Person2';
 import TitleIcon from '@mui/icons-material/Title';
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import {
-    AutoSubmitFilterForm,
+    FilterLiveForm,
     ListContextProvider,
     required,
     Resource,
@@ -28,7 +28,7 @@ import { Datagrid } from '../datagrid/Datagrid';
 import { FilterList } from './FilterList';
 import { FilterListItem } from './FilterListItem';
 
-export default { title: 'ra-ui-materialui/list/filter/AutoSubmitFilterForm' };
+export default { title: 'ra-ui-materialui/list/filter/FilterLiveForm' };
 
 const i18nProvider = polyglotI18nProvider(
     () => englishMessages,
@@ -68,13 +68,13 @@ export const WithFilterListSection = () => {
                         />
                     </FilterList>
                     <FilterListSection label="Title" icon={<TitleIcon />}>
-                        <AutoSubmitFilterForm>
+                        <FilterLiveForm>
                             <TextInput
                                 source="title"
                                 resettable
                                 helperText={false}
                             />
-                        </AutoSubmitFilterForm>
+                        </FilterLiveForm>
                     </FilterListSection>
                 </CardContent>
             </Card>
@@ -116,7 +116,7 @@ export const MultipleInput = () => {
                         />
                     </FilterList>
                     <FilterListSection label="Title" icon={<TitleIcon />}>
-                        <AutoSubmitFilterForm>
+                        <FilterLiveForm>
                             <TextInput
                                 source="title"
                                 resettable
@@ -128,7 +128,7 @@ export const MultipleInput = () => {
                                 resettable
                                 helperText={false}
                             />
-                        </AutoSubmitFilterForm>
+                        </FilterLiveForm>
                     </FilterListSection>
                 </CardContent>
             </Card>
@@ -137,7 +137,7 @@ export const MultipleInput = () => {
     );
 };
 
-export const MultipleAutoSubmitFilterForm = () => {
+export const MultipleFilterLiveForm = () => {
     const listContext = useList({
         data: [
             { id: 1, title: 'Hello', has_newsletter: true },
@@ -170,22 +170,22 @@ export const MultipleAutoSubmitFilterForm = () => {
                         />
                     </FilterList>
                     <FilterListSection label="Title" icon={<TitleIcon />}>
-                        <AutoSubmitFilterForm>
+                        <FilterLiveForm>
                             <TextInput
                                 source="title"
                                 resettable
                                 helperText={false}
                             />
-                        </AutoSubmitFilterForm>
+                        </FilterLiveForm>
                     </FilterListSection>
                     <FilterListSection label="Author" icon={<Person2Icon />}>
-                        <AutoSubmitFilterForm>
+                        <FilterLiveForm>
                             <TextInput
                                 source="author"
                                 resettable
                                 helperText={false}
                             />
-                        </AutoSubmitFilterForm>
+                        </FilterLiveForm>
                     </FilterListSection>
                 </CardContent>
             </Card>
@@ -228,14 +228,14 @@ export const PerInputValidation = () => {
                         />
                     </FilterList>
                     <FilterListSection label="Title" icon={<TitleIcon />}>
-                        <AutoSubmitFilterForm>
+                        <FilterLiveForm>
                             <TextInput source="title" resettable />
                             <TextInput
                                 source="author"
                                 validate={required()}
                                 resettable
                             />
-                        </AutoSubmitFilterForm>
+                        </FilterLiveForm>
                     </FilterListSection>
                 </CardContent>
             </Card>
@@ -285,10 +285,10 @@ export const GlobalValidation = () => {
                         />
                     </FilterList>
                     <FilterListSection label="Title" icon={<TitleIcon />}>
-                        <AutoSubmitFilterForm validate={validateFilters}>
+                        <FilterLiveForm validate={validateFilters}>
                             <TextInput source="title" resettable />
                             <TextInput source="author" isRequired resettable />
-                        </AutoSubmitFilterForm>
+                        </FilterLiveForm>
                     </FilterListSection>
                 </CardContent>
             </Card>
@@ -425,16 +425,16 @@ const BookListAside = () => (
                 />
             </FilterList>
             <FilterListSection label="Title" icon={<TitleIcon />}>
-                <AutoSubmitFilterForm>
+                <FilterLiveForm>
                     <TextInput source="title" resettable helperText={false} />
-                </AutoSubmitFilterForm>
+                </FilterLiveForm>
             </FilterListSection>
             <FilterListSection label="Author" icon={<Person2Icon />}>
-                <AutoSubmitFilterForm>
+                <FilterLiveForm>
                     <ReferenceInput source="authorId" reference="authors">
                         <AutocompleteInput helperText={false} />
                     </ReferenceInput>
-                </AutoSubmitFilterForm>
+                </FilterLiveForm>
             </FilterListSection>
         </CardContent>
     </Card>
@@ -467,7 +467,7 @@ export const FullApp = () => (
 const ListActions = () => (
     <Box width="100%">
         <TopToolbar sx={{ justifyContent: 'space-between' }}>
-            <AutoSubmitFilterForm>
+            <FilterLiveForm>
                 <Stack direction="row" spacing={2} useFlexGap>
                     <TextInput
                         source="title"
@@ -482,7 +482,7 @@ const ListActions = () => (
                         />
                     </ReferenceInput>
                 </Stack>
-            </AutoSubmitFilterForm>
+            </FilterLiveForm>
             <ExportButton />
         </TopToolbar>
     </Box>

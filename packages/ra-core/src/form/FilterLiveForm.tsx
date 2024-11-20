@@ -31,7 +31,7 @@ import { useListContext } from '../controller/list/useListContext';
  * import { Card, CardContent } from '@mui/material';
  * import * as React from 'react';
  * import {
- *     AutoSubmitFilterForm,
+ *     FilterLiveForm,
  *     FilterList,
  *     FilterListItem,
  *     FilterListSection,
@@ -46,15 +46,15 @@ import { useListContext } from '../controller/list/useListContext';
  *                 <FilterListItem label="No" value={{ has_newsletter: false }} />
  *             </FilterList>
  *             <FilterListSection label="Title" icon={<TitleIcon />}>
- *                 <AutoSubmitFilterForm>
+ *                 <FilterLiveForm>
  *                     <TextInput source="title" resettable helperText={false} />
- *                 </AutoSubmitFilterForm>
+ *                 </FilterLiveForm>
  *             </FilterListSection>
  *         </CardContent>
  *     </Card>
  * );
  */
-export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
+export const FilterLiveForm = (props: FilterLiveFormProps) => {
     const { filterValues, setFilters } = useListContext();
     const resource = useResourceContext(props);
 
@@ -161,7 +161,7 @@ const HTMLForm = (props: React.HTMLAttributes<HTMLFormElement>) => (
     <form {...props} />
 );
 
-export interface AutoSubmitFilterFormProps
+export interface FilterLiveFormProps
     extends Omit<UseFormProps, 'onSubmit' | 'defaultValues'> {
     children: ReactNode;
     validate?: ValidateForm;

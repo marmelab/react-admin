@@ -48,4 +48,4 @@ export * from './useSuggestions';
 export * from './useUnique';
 export * from './useWarnWhenUnsavedChanges';
 export * from './WarnWhenUnsavedChanges';
-export * from './AutoSubmitFilterForm';
+export * from './FilterLiveForm';

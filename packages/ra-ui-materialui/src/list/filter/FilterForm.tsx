@@ -1,10 +1,6 @@
 import { styled } from '@mui/material/styles';
 import get from 'lodash/get';
-import {
-    AutoSubmitFilterForm,
-    useListContext,
-    useResourceContext,
-} from 'ra-core';
+import { FilterLiveForm, useListContext, useResourceContext } from 'ra-core';
 import * as React from 'react';
 import {
     HtmlHTMLAttributes,
@@ -23,12 +19,9 @@ export const FilterForm = (props: FilterFormProps) => {
     const filters = useContext(FilterContext) || filtersProps;
 
     return (
-        <AutoSubmitFilterForm
-            formComponent={StyledForm}
-            {...sanitizeRestProps(rest)}
-        >
+        <FilterLiveForm formComponent={StyledForm} {...sanitizeRestProps(rest)}>
             <FilterFormBase filters={filters} />
-        </AutoSubmitFilterForm>
+        </FilterLiveForm>
     );
 };
 

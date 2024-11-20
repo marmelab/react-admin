@@ -3,7 +3,7 @@ import { memo } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { SxProps } from '@mui/system';
-import { AutoSubmitFilterForm, useTranslate } from 'ra-core';
+import { FilterLiveForm, useTranslate } from 'ra-core';
 
 import { TextInput, TextInputProps } from '../../input';
 
@@ -33,7 +33,7 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
     } = props;
 
     return (
-        <AutoSubmitFilterForm>
+        <FilterLiveForm>
             <TextInput
                 resettable
                 helperText={false}
@@ -52,7 +52,7 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
                 }
                 {...rest}
             />
-        </AutoSubmitFilterForm>
+        </FilterLiveForm>
     );
 });
 

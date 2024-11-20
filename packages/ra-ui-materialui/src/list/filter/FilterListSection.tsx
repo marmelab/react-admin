@@ -19,7 +19,7 @@ import { useTranslate } from 'ra-core';
  * import { Card, CardContent } from '@mui/material';
  * import * as React from 'react';
  * import {
- *     AutoSubmitFilterForm,
+ *     FilterLiveForm,
  *     FilterList,
  *     FilterListItem,
  *     FilterListSection,
@@ -34,9 +34,9 @@ import { useTranslate } from 'ra-core';
  *                 <FilterListItem label="No" value={{ has_newsletter: false }} />
  *             </FilterList>
  *             <FilterListSection label="Title" icon={<TitleIcon />}>
- *                 <AutoSubmitFilterForm>
+ *                 <FilterLiveForm>
  *                     <TextInput source="title" resettable helperText={false} />
- *                 </AutoSubmitFilterForm>
+ *                 </FilterLiveForm>
  *             </FilterListSection>
  *         </CardContent>
  *     </Card>

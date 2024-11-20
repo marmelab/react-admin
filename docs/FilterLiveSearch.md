@@ -12,7 +12,7 @@ title: "The FilterLiveSearch Component"
 </video>
 
 
-The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form. This can be done thanks to the [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md) component. However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component even more convenient.
+The filter sidebar is not a form. Therefore, if your users need to enter complex filters, you'll have to recreate a filter form. This can be done thanks to the [`<FilterLiveForm>`](./FilterLiveForm.md) component. However, if you only need one text input with a filter-as-you-type behavior, you'll find the `<FilterLiveSearch>` component even more convenient.
 
 It outputs a form containing a single `<TextInput>`, which modifies the page filter on change. That's usually what users expect for a full-text filter.
 
@@ -59,7 +59,7 @@ Additional props are passed down to [the Material UI `<TextField>` component](ht
 
 ## Using Your Own Input
 
-If the text input provided by `<FilterLiveSearch>` is not enough, and you'd like to use your own input component, you can use the `<AutoSubmitFilterForm>` component to create a form that automatically updates the filters when the user changes the input value.
+If the text input provided by `<FilterLiveSearch>` is not enough, and you'd like to use your own input component, you can use the `<FilterLiveForm>` component to create a form that automatically updates the filters when the user changes the input value.
 
 {% raw %}
 ```tsx
@@ -70,7 +70,7 @@ import TitleIcon from '@mui/icons-material/Title';
 import { Card, CardContent } from '@mui/material';
 import {
     AutocompleteInput,
-    AutoSubmitFilterForm,
+    FilterLiveForm,
     Datagrid,
     FilterList,
     FilterListItem,
@@ -100,16 +100,16 @@ const BookListAside = () => (
                 />
             </FilterList>
             <FilterListSection label="Title" icon={<TitleIcon />}>
-                <AutoSubmitFilterForm>
+                <FilterLiveForm>
                     <TextInput source="title" resettable helperText={false} />
-                </AutoSubmitFilterForm>
+                </FilterLiveForm>
             </FilterListSection>
             <FilterListSection label="Author" icon={<Person2Icon />}>
-                <AutoSubmitFilterForm>
+                <FilterLiveForm>
                     <ReferenceInput source="authorId" reference="authors">
                         <AutocompleteInput helperText={false} />
                     </ReferenceInput>
-                </AutoSubmitFilterForm>
+                </FilterLiveForm>
             </FilterListSection>
         </CardContent>
     </Card>
@@ -125,6 +125,6 @@ export const BookList = () => (
 ```
 {% endraw %}
 
-![AutoSubmitFilterForm](./img/AutoSubmitFilterForm.png)
+![FilterLiveForm](./img/FilterLiveForm.png)
 
-Check out the [`<AutoSubmitFilterForm>` documentation](./AutoSubmitFilterForm.md) for more information.
+Check out the [`<FilterLiveForm>` documentation](./FilterLiveForm.md) for more information.

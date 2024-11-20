@@ -1,16 +1,11 @@
 import * as React from 'react';
 
-import {
-    AutoSubmitFilterForm,
-    AutoSubmitFilterFormProps,
-    useInput,
-    required,
-} from '.';
+import { FilterLiveForm, FilterLiveFormProps, useInput, required } from '.';
 import { ListContextProvider } from '../controller/list/ListContextProvider';
 import { useList } from '../controller/list/useList';
 import { useListContext } from '../controller/list/useListContext';
 
-export default { title: 'ra-core/form/AutoSubmitFilterForm' };
+export default { title: 'ra-core/form/FilterLiveForm' };
 
 const TextInput = props => {
     const { field, fieldState } = useInput(props);
@@ -39,7 +34,7 @@ const TextInput = props => {
     );
 };
 
-export const Basic = (props: Partial<AutoSubmitFilterFormProps>) => {
+export const Basic = (props: Partial<FilterLiveFormProps>) => {
     const listContext = useList({
         data: [
             { id: 1, title: 'Hello', has_newsletter: true },
@@ -51,9 +46,9 @@ export const Basic = (props: Partial<AutoSubmitFilterFormProps>) => {
     });
     return (
         <ListContextProvider value={listContext}>
-            <AutoSubmitFilterForm {...props}>
+            <FilterLiveForm {...props}>
                 <TextInput source="title" />
-            </AutoSubmitFilterForm>
+            </FilterLiveForm>
             <FilterValue />
         </ListContextProvider>
     );
@@ -73,16 +68,16 @@ export const MultipleInput = () => {
     });
     return (
         <ListContextProvider value={listContext}>
-            <AutoSubmitFilterForm>
+            <FilterLiveForm>
                 <TextInput source="title" />
                 <TextInput source="author" />
-            </AutoSubmitFilterForm>
+            </FilterLiveForm>
             <FilterValue />
         </ListContextProvider>
     );
 };
 
-export const MultipleAutoSubmitFilterForm = () => {
+export const MultipleFilterLiveForm = () => {
     const listContext = useList({
         data: [
             { id: 1, title: 'Hello', has_newsletter: true },
@@ -94,12 +89,12 @@ export const MultipleAutoSubmitFilterForm = () => {
     });
     return (
         <ListContextProvider value={listContext}>
-            <AutoSubmitFilterForm>
+            <FilterLiveForm>
                 <TextInput source="title" />
-            </AutoSubmitFilterForm>
-            <AutoSubmitFilterForm>
+            </FilterLiveForm>
+            <FilterLiveForm>
                 <TextInput source="author" />
-            </AutoSubmitFilterForm>
+            </FilterLiveForm>
             <FilterValue />
         </ListContextProvider>
     );
@@ -118,10 +113,10 @@ export const PerInputValidation = () => {
     });
     return (
         <ListContextProvider value={listContext}>
-            <AutoSubmitFilterForm>
+            <FilterLiveForm>
                 <TextInput source="title" />
                 <TextInput source="author" validate={required()} />
-            </AutoSubmitFilterForm>
+            </FilterLiveForm>
             <FilterValue />
         </ListContextProvider>
     );
@@ -147,10 +142,10 @@ export const GlobalValidation = () => {
     });
     return (
         <ListContextProvider value={listContext}>
-            <AutoSubmitFilterForm validate={validateFilters}>
+            <FilterLiveForm validate={validateFilters}>
                 <TextInput source="title" />
                 <TextInput source="author" isRequired />
-            </AutoSubmitFilterForm>
+            </FilterLiveForm>
             <FilterValue />
         </ListContextProvider>
     );

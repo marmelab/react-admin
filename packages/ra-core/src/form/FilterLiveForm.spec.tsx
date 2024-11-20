@@ -1,15 +1,15 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { getFilterFormValues } from './AutoSubmitFilterForm';
+import { getFilterFormValues } from './FilterLiveForm';
 import {
     Basic,
     GlobalValidation,
-    MultipleAutoSubmitFilterForm,
+    MultipleFilterLiveForm,
     MultipleInput,
     PerInputValidation,
-} from './AutoSubmitFilterForm.stories';
+} from './FilterLiveForm.stories';
 import React from 'react';
 
-describe('<AutoSubmitFilterForm />', () => {
+describe('<FilterLiveForm />', () => {
     it('should allow to set a filter value', async () => {
         render(<Basic />);
         await screen.findByText('{"category":"deals"}');
@@ -42,8 +42,8 @@ describe('<AutoSubmitFilterForm />', () => {
         await screen.findByText('{"category":"deals","author":"bar"}');
     });
 
-    it('should support having multiple AutoSubmitFilterForm', async () => {
-        render(<MultipleAutoSubmitFilterForm />);
+    it('should support having multiple FilterLiveForm', async () => {
+        render(<MultipleFilterLiveForm />);
         await screen.findByText('{"category":"deals"}');
         const titleInput = await screen.findByLabelText('title');
         fireEvent.change(titleInput, { target: { value: 'foo' } });

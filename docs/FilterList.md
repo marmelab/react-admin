@@ -303,7 +303,7 @@ export const PostFilterSidebar = () => (
 ```
 {% endraw %}
 
-If you want to use other type of inputs, such as a `<ReferenceInput>`, you can use the [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md) component to create a form that automatically updates the filters when the user changes the value of an input.
+If you want to use other type of inputs, such as a `<ReferenceInput>`, you can use the [`<FilterLiveForm>`](./FilterLiveForm.md) component to create a form that automatically updates the filters when the user changes the value of an input.
 
 {% raw %}
 ```tsx
@@ -314,7 +314,7 @@ import TitleIcon from '@mui/icons-material/Title';
 import { Card, CardContent } from '@mui/material';
 import {
     AutocompleteInput,
-    AutoSubmitFilterForm,
+    FilterLiveForm,
     Datagrid,
     FilterList,
     FilterListItem,
@@ -344,16 +344,16 @@ const BookListAside = () => (
                 />
             </FilterList>
             <FilterListSection label="Title" icon={<TitleIcon />}>
-                <AutoSubmitFilterForm>
+                <FilterLiveForm>
                     <TextInput source="title" resettable helperText={false} />
-                </AutoSubmitFilterForm>
+                </FilterLiveForm>
             </FilterListSection>
             <FilterListSection label="Author" icon={<Person2Icon />}>
-                <AutoSubmitFilterForm>
+                <FilterLiveForm>
                     <ReferenceInput source="authorId" reference="authors">
                         <AutocompleteInput helperText={false} />
                     </ReferenceInput>
-                </AutoSubmitFilterForm>
+                </FilterLiveForm>
             </FilterListSection>
         </CardContent>
     </Card>
@@ -369,6 +369,6 @@ export const BookList = () => (
 ```
 {% endraw %}
 
-![AutoSubmitFilterForm](./img/AutoSubmitFilterForm.png)
+![FilterLiveForm](./img/FilterLiveForm.png)
 
-Check out the [`<AutoSubmitFilterForm>` documentation](./AutoSubmitFilterForm.md) for more information.
+Check out the [`<FilterLiveForm>` documentation](./FilterLiveForm.md) for more information.

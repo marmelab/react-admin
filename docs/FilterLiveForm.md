@@ -1,24 +1,24 @@
 ---
 layout: default
-title: "AutoSubmitFilterForm"
+title: "FilterLiveForm"
 ---
 
-# `<AutoSubmitFilterForm>`
+# `<FilterLiveForm>`
 
 This component offers a convenient way to create a form that automatically updates the filters when the user changes its child input values.
 
 It fits nicely alongside a [`<FilterList>`](./FilterList.md) component, but you can also use it at other places to create your own filter UI.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/AutoSubmitFilterForm.mp4" type="video/mp4"/>
+  <source src="./img/FilterLiveForm.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
 ## Usage
 
-Use `<AutoSubmitFilterForm>` inside a component that provides a [`ListContext`](./useListContext.md), such as [`<List>`](./List.md). Use any React Admin [input component](./Inputs.md) as its children.
+Use `<FilterLiveForm>` inside a component that provides a [`ListContext`](./useListContext.md), such as [`<List>`](./List.md). Use any React Admin [input component](./Inputs.md) as its children.
 
-Here is an example showing how you can use `<AutoSubmitFilterForm>` in a sidebar for the `<List>` view, alongside a [`<FilterList>`](./FilterList.md):
+Here is an example showing how you can use `<FilterLiveForm>` in a sidebar for the `<List>` view, alongside a [`<FilterList>`](./FilterList.md):
 
 {% raw %}
 ```tsx
@@ -29,7 +29,7 @@ import TitleIcon from '@mui/icons-material/Title';
 import { Card, CardContent } from '@mui/material';
 import {
     AutocompleteInput,
-    AutoSubmitFilterForm,
+    FilterLiveForm,
     Datagrid,
     FilterList,
     FilterListItem,
@@ -59,16 +59,16 @@ const BookListAside = () => (
                 />
             </FilterList>
             <FilterListSection label="Title" icon={<TitleIcon />}>
-                <AutoSubmitFilterForm>
+                <FilterLiveForm>
                     <TextInput source="title" resettable helperText={false} />
-                </AutoSubmitFilterForm>
+                </FilterLiveForm>
             </FilterListSection>
             <FilterListSection label="Author" icon={<Person2Icon />}>
-                <AutoSubmitFilterForm>
+                <FilterLiveForm>
                     <ReferenceInput source="authorId" reference="authors">
                         <AutocompleteInput helperText={false} />
                     </ReferenceInput>
-                </AutoSubmitFilterForm>
+                </FilterLiveForm>
             </FilterListSection>
         </CardContent>
     </Card>
@@ -88,15 +88,15 @@ export const BookList = () => (
 
 **Tip:** This example leverages `<FilterListSection>`, the wrapper used internally by `<FilterList>`, in order to obtain a consistent look and feel for the filters.
 
-![AutoSubmitFilterForm](./img/AutoSubmitFilterForm.png)
+![FilterLiveForm](./img/FilterLiveForm.png)
 
-**Tip:** `<AutoSubmitFilterForm>` accepts multiple children, but you can also use several `<AutoSubmitFilterForm>` components in the same filter UI, just like we did above.
+**Tip:** `<FilterLiveForm>` accepts multiple children, but you can also use several `<FilterLiveForm>` components in the same filter UI, just like we did above.
 
 **Tip:** For simple cases where you only need a text input, you can use the [`<FilterLiveSearch>`](./FilterLiveSearch.md) component, which combines that logic in a single component.
 
 ## Props
 
-Here are all the props you can set on the `<AutoSubmitFilterForm>` component:
+Here are all the props you can set on the `<FilterLiveForm>` component:
 
 | Prop            | Required | Type                | Default              | Description                                                              |
 | --------------- | -------- | ------------------- | -------------------- | ------------------------------------------------------------------------ |
@@ -109,13 +109,13 @@ Additional props are passed to `react-hook-form`'s [`useForm` hook](https://reac
 
 ## `children`
 
-`<AutoSubmitFilterForm>` accepts any children. It simply provides the required contexts for the inputs to work as filters.
+`<FilterLiveForm>` accepts any children. It simply provides the required contexts for the inputs to work as filters.
 
 ```tsx
-<AutoSubmitFilterForm>
+<FilterLiveForm>
     <TextInput source="title" resettable helperText={false} />
     <TextInput source="author" resettable helperText={false} />
-</AutoSubmitFilterForm>
+</FilterLiveForm>
 ```
 
 ## `debounce`
@@ -123,19 +123,19 @@ Additional props are passed to `react-hook-form`'s [`useForm` hook](https://reac
 You can use the `debounce` prop to customize the delay before the filters are applied. The default value is `500` milliseconds.
 
 ```tsx
-<AutoSubmitFilterForm debounce={1000}>
+<FilterLiveForm debounce={1000}>
     <TextInput source="title" resettable helperText={false} />
     <TextInput source="author" resettable helperText={false} />
-</AutoSubmitFilterForm>
+</FilterLiveForm>
 ```
 
 You can also disable the debounce by setting the `debounce` prop to `false`.
 
 ```tsx
-<AutoSubmitFilterForm debounce={false}>
+<FilterLiveForm debounce={false}>
     <TextInput source="title" resettable helperText={false} />
     <TextInput source="author" resettable helperText={false} />
-</AutoSubmitFilterForm>
+</FilterLiveForm>
 ```
 
 ## `validate`
@@ -152,9 +152,9 @@ const validateFilters = values => {
 };
 
 const GlobalValidation = () => (
-    <AutoSubmitFilterForm validate={validateFilters}>
+    <FilterLiveForm validate={validateFilters}>
         <TextInput source="title" resettable helperText={false} />
         <TextInput source="author" resettable helperText={false} />
-    </AutoSubmitFilterForm>
+    </FilterLiveForm>
 );
 ```

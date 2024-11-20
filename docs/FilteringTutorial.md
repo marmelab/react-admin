@@ -522,17 +522,17 @@ Normally, `showFilter()` adds one input to the `displayedFilters` list. As the f
 
 ### Custom Filter Form
 
-If you need to build a custom filter form, you can use the [`<AutoSubmitFilterForm>`](./AutoSubmitFilterForm.md) component to create a form that automatically updates the filters when the user changes the input value.
+If you need to build a custom filter form, you can use the [`<FilterLiveForm>`](./FilterLiveForm.md) component to create a form that automatically updates the filters when the user changes the input value.
 
 {% raw %}
 ```jsx
 import * as React from 'react';
 import { Box, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { AutoSubmitFilterForm, TextInput, NullableBooleanInput } from 'react-admin';
+import { FilterLiveForm, TextInput, NullableBooleanInput } from 'react-admin';
 
 const PostFilterForm = () => (
-    <AutoSubmitFilterForm>
+    <FilterLiveForm>
         <Box display="flex" alignItems="flex-end" mb={1}>
             <Box component="span" mr={2}>
                 {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
@@ -558,7 +558,7 @@ const PostFilterForm = () => (
                 />
             </Box>
         </Box>
-    </AutoSubmitFilterForm>
+    </FilterLiveForm>
 );
 ```
 {% endraw %}
