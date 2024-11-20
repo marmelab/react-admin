@@ -2,6 +2,7 @@ import * as React from 'react';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
+import unset from 'lodash/unset';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import {
@@ -122,7 +123,13 @@ export const AutoSubmitFilterForm = (props: AutoSubmitFilterFormProps) => {
             // Check that the name is present to avoid setting filters when
             // watch was triggered by a reset
             if (name) {
-                debouncedOnSubmit(values);
+                if (get(values, name) === '') {
+                    const newValues = cloneDeep(values);
+                    unset(newValues, name);
+                    debouncedOnSubmit(newValues);
+                } else {
+                    debouncedOnSubmit(values);
+                }
             }
         });
         return () => unsubscribe();
