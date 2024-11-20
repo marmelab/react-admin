@@ -76,7 +76,7 @@ const config: StorybookConfig = {
                             `../packages/${pkg}/src`
                         ),
                     }),
-                    { ...config.resolve?.alias }
+                    {}
                 ),
             },
         };
