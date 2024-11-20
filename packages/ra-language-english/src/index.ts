@@ -87,7 +87,11 @@ const englishMessages: TranslationMessages = {
         },
         message: {
             about: 'About',
+            access_denied:
+                "You don't have the right permissions to access this page",
             are_you_sure: 'Are you sure?',
+            authentication_error:
+                'The authentication server returned an error and your credentials could not be checked.',
             auth_error:
                 'An error occurred while validating the authentication token.',
             bulk_delete_content:
@@ -103,19 +107,16 @@ const englishMessages: TranslationMessages = {
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',
             error: "A client error occurred and your request couldn't be completed.",
-
             invalid_form: 'The form is not valid. Please check for errors',
             loading: 'Please wait',
             no: 'No',
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
-            yes: 'Yes',
+            too_many_elements:
+                'Warning: There are too many elements to select them all. Only the first %{max} elements were selected.',
             unsaved_changes:
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
-            access_denied:
-                "You don't have the right permissions to access this page",
-            authentication_error:
-                'The authentication server returned an error and your credentials could not be checked.',
+            yes: 'Yes',
         },
         navigation: {
             clear_filters: 'Clear filters',
