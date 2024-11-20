@@ -13,18 +13,7 @@ const config: StorybookConfig = {
     ],
     addons: [
         '@storybook/addon-webpack5-compiler-babel',
-        // '@storybook/addon-storysource',
-        {
-            name: '@storybook/addon-storysource',
-            options: {
-                loaderOptions: {
-                    parser: 'typescript',
-                    // foo: 'bar',
-                    // injectDecorator: true,
-                    // injectStoryParameters: false,
-                },
-            },
-        },
+        '@storybook/addon-storysource',
         '@storybook/addon-actions',
         '@storybook/addon-controls',
     ],
@@ -43,54 +32,38 @@ const config: StorybookConfig = {
             ],
             plugins: [
                 ...plugins,
-                // [
-                //     '@babel/plugin-proposal-private-property-in-object',
-                //     {
-                //         loose: true,
-                //     },
-                // ],
-                // [
-                //     '@babel/plugin-proposal-private-methods',
-                //     {
-                //         loose: true,
-                //     },
-                // ],
-                // [
-                //     '@babel/plugin-proposal-class-properties',
-                //     {
-                //         loose: true,
-                //     },
-                // ],
+                [
+                    '@babel/plugin-proposal-private-property-in-object',
+                    {
+                        loose: true,
+                    },
+                ],
+                [
+                    '@babel/plugin-proposal-private-methods',
+                    {
+                        loose: true,
+                    },
+                ],
+                [
+                    '@babel/plugin-proposal-class-properties',
+                    {
+                        loose: true,
+                    },
+                ],
             ],
         };
     },
-    webpackFinal: async (config, { configType }) => {
-        config.module.rules = [
-            ...config.module.rules.filter(rule => {
-                try {
-                    return (
-                        rule.use[0].loader !==
-                        require.resolve('@storybook/source-loader')
-                    );
-                } catch {
-                    return true;
-                }
-            }),
-            {
-                test: /\.stories\.tsx?$/,
-                use: [
-                    {
-                        loader: require.resolve('@storybook/source-loader'),
-                        options: {
-                            parser: 'typescript',
-                            injectDecorator: true,
-                            injectStoryParameters: false,
-                        },
-                    },
-                ],
-                enforce: 'pre',
-            },
-        ];
+    webpackFinal: async config => {
+        config.module?.rules?.push({
+            test: /\.stories\.tsx?$/,
+            use: [
+                {
+                    loader: require.resolve('@storybook/source-loader'),
+                    options: { parser: 'typescript' },
+                },
+            ],
+            enforce: 'pre',
+        });
         return {
             ...config,
             resolve: {

@@ -28,7 +28,6 @@ export const Basic = ({
         </CanAccess>
     </CoreAdminContext>
 );
-// Basic.parameters = { storySource: { source: 'TEST JB' } };
 
 export const AccessDenied = ({
     authProvider = defaultAuthProvider,
