@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
+
+import { useNotify } from '../../notification';
 import { removeEmpty } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
@@ -50,6 +52,7 @@ const refetch = () => {
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
  * @param {filterCallback} prop.filterCallback Optional. A function that allows you to make a custom filter
+ * @param {Number} props.selectAllLimit: Optional. The number of items selected by the "SELECT ALL" button of the bulk actions toolbar
  */
 export const useList = <RecordType extends RaRecord = any>(
     props: UseListOptions<RecordType>
@@ -65,8 +68,10 @@ export const useList = <RecordType extends RaRecord = any>(
         perPage: initialPerPage = 1000,
         sort: initialSort,
         filterCallback = (record: RecordType) => Boolean(record),
+        selectAllLimit = 250,
     } = props;
     const resource = useResourceContext(props);
+    const notify = useNotify();
 
     const [fetchingState, setFetchingState] = useState<boolean>(isFetching) as [
         boolean,
@@ -162,6 +167,17 @@ export const useList = <RecordType extends RaRecord = any>(
         },
         [setDisplayedFilters, setFilterValues, setPage]
     );
+    const onSelectAll = useCallback(() => {
+        const allIds = data?.map(({ id }) => id) || [];
+        selectionModifiers.select(allIds);
+        if (allIds.length === selectAllLimit) {
+            notify('ra.message.too_many_elements', {
+                messageArgs: { max: selectAllLimit },
+                type: 'warning',
+            });
+        }
+    }, [data, notify, selectAllLimit, selectionModifiers]);
+
     // handle filter prop change
     useEffect(() => {
         if (!isEqual(filter, filterRef.current)) {
@@ -283,6 +299,7 @@ export const useList = <RecordType extends RaRecord = any>(
         isLoading: loadingState,
         isPending: pendingState,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page,
@@ -290,6 +307,7 @@ export const useList = <RecordType extends RaRecord = any>(
         resource: '',
         refetch,
         selectedIds,
+        areAllSelected: data?.length !== selectedIds.length,
         setFilters,
         setPage,
         setPerPage,
@@ -311,6 +329,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     sort?: SortPayload;
     resource?: string;
     filterCallback?: (record: RecordType) => boolean;
+    selectAllLimit?: number;
 }
 
 export type UseListValue<RecordType extends RaRecord = any> =
