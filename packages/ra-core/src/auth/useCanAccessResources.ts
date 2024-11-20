@@ -126,7 +126,6 @@ export interface UseCanAccessResourcesOptions<
     resources: string[];
     action: HintedString<'list' | 'create' | 'edit' | 'show' | 'delete'>;
     record?: RecordType;
-    enabled?: boolean;
 }
 
 export type UseCanAccessResourcesResult<ErrorType = Error> =
