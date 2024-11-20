@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
+import { Button } from '../button';
 
 export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
@@ -18,13 +19,22 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
         className,
         ...rest
     } = props;
-    const { selectedIds = [], onUnselectItems } = useListContext();
+    const {
+        selectedIds = [],
+        onUnselectItems,
+        onSelectAll,
+        areAllSelected,
+    } = useListContext();
 
     const translate = useTranslate();
 
     const handleUnselectAllClick = useCallback(() => {
         onUnselectItems();
     }, [onUnselectItems]);
+
+    const handleSelectAll = useCallback(() => {
+        onSelectAll();
+    }, [onSelectAll]);
 
     return (
         <Root className={className}>
@@ -52,6 +62,13 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                             smart_count: selectedIds.length,
                         })}
                     </Typography>
+                    {areAllSelected && (
+                        <Button
+                            label={translate('ra.action.select_all')}
+                            onClick={handleSelectAll}
+                            sx={{ ml: 1 }}
+                        />
+                    )}
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
                     {children}
@@ -65,6 +82,7 @@ export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
     className?: string;
+    selectAllLimit?: number;
 }
 
 const PREFIX = 'RaBulkActionsToolbar';

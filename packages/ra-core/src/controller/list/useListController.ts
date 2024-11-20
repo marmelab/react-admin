@@ -46,6 +46,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         queryOptions = {},
         sort = defaultSort,
         storeKey,
+        selectAllLimit = 250,
     } = props;
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions;
@@ -168,6 +169,38 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
+    const { data: allData } = useGetList<RecordType>(
+        resource,
+        {
+            pagination: {
+                page: 1,
+                perPage: selectAllLimit,
+            },
+            sort: { field: query.sort, order: query.order },
+            filter: { ...query.filter, ...filter },
+            meta,
+        },
+        {
+            enabled:
+                (!isPendingAuthenticated && !isPendingCanAccess) ||
+                disableAuthentication,
+            retry: false,
+            ...otherQueryOptions,
+        }
+    );
+
+    const onSelectAll = () => {
+        console.log('onSelectAll', allData);
+        const allIds = allData?.map(({ id }) => id) || [];
+        selectionModifiers.select(allIds);
+        if (allIds.length === selectAllLimit) {
+            notify('ra.message.too_many_elements', {
+                messageArgs: { max: selectAllLimit },
+                type: 'warning',
+            });
+        }
+    };
+
     return {
         sort: currentSort,
         data,
@@ -183,6 +216,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
@@ -190,6 +224,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
+        areAllSelected: allData?.length !== selectedIds.length,
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
@@ -409,6 +444,19 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      * );
      */
     storeKey?: string | false;
+
+    /**
+     * The number of items selected by the "SELECT ALL" button of the bulk actions toolbar.
+     *
+     * @see https://marmelab.com/react-admin/List.html#selectalllimit
+     * @example
+     * export const PostList = () => (
+     *     <List selectAllLimit={500}>
+     *         ...
+     *     </List>
+     * );
+     */
+    selectAllLimit?: number;
 }
 
 const defaultSort = {
@@ -475,6 +523,7 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     filterValues: any;
     hideFilter: (filterName: string) => void;
     onSelect: (ids: RecordType['id'][]) => void;
+    onSelectAll: () => void;
     onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
@@ -482,6 +531,7 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
     resource: string;
     selectedIds: RecordType['id'][];
+    areAllSelected: boolean;
     setFilters: (
         filters: any,
         displayedFilters?: any,
