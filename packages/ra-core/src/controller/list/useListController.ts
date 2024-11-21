@@ -1,9 +1,11 @@
-import { isValidElement, useCallback, useEffect, useMemo } from 'react';
+import { isValidElement, useEffect, useMemo } from 'react';
+import { useMutation } from '@tanstack/react-query';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
+    useDataProvider,
     useGetList,
     UseGetListHookValue,
     UseGetListOptions,
@@ -79,6 +81,7 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     const translate = useTranslate();
     const notify = useNotify();
+    const dataProvider = useDataProvider();
 
     const [query, queryModifiers] = useListParams({
         debounce,
@@ -169,36 +172,31 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    const { data: allData, total: allDataTotal } = useGetList<RecordType>(
-        resource,
-        {
-            pagination: {
-                page: 1,
-                perPage: selectAllLimit,
-            },
-            sort: { field: query.sort, order: query.order },
-            filter: { ...query.filter, ...filter },
-            meta,
+    const { mutate: onSelectAll } = useMutation({
+        mutationFn: () =>
+            dataProvider.getList(resource, {
+                pagination: {
+                    page: 1,
+                    perPage: selectAllLimit,
+                },
+                sort: { field: query.sort, order: query.order },
+                filter: { ...query.filter, ...filter },
+                meta,
+            }),
+        onSuccess: ({ data }) => {
+            const allIds = data?.map(({ id }) => id) || [];
+            selectionModifiers.select(allIds);
+            if (allIds.length === selectAllLimit) {
+                notify('ra.message.too_many_elements', {
+                    messageArgs: { max: selectAllLimit },
+                    type: 'warning',
+                });
+            }
         },
-        {
-            enabled:
-                (!isPendingAuthenticated && !isPendingCanAccess) ||
-                disableAuthentication,
-            retry: false,
-            ...otherQueryOptions,
-        }
-    );
-
-    const onSelectAll = useCallback(() => {
-        const allIds = allData?.map(({ id }) => id) || [];
-        selectionModifiers.select(allIds);
-        if (allIds.length === selectAllLimit) {
-            notify('ra.message.too_many_elements', {
-                messageArgs: { max: selectAllLimit },
-                type: 'warning',
-            });
-        }
-    }, [allData, notify, selectAllLimit, selectionModifiers]);
+        onError: () => {
+            notify('An error occurred. Please try again.');
+        },
+    });
 
     return {
         sort: currentSort,
@@ -223,13 +221,16 @@ export const useListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
-        areAllSelected: allDataTotal !== selectedIds.length,
+        areAllSelected: !(
+            total === selectedIds.length ||
+            selectedIds.length === selectAllLimit
+        ),
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
-        total: total,
+        total,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null

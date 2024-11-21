@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { UseQueryOptions } from '@tanstack/react-query';
+import { UseQueryOptions, useMutation } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
 
 import { removeEmpty } from '../../util';
-import { useGetManyReference } from '../../dataProvider';
+import { useDataProvider, useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
@@ -68,6 +68,7 @@ export const useReferenceManyFieldController = <
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const dataProvider = useDataProvider();
     const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
 
@@ -201,10 +202,9 @@ export const useReferenceManyFieldController = <
         }
     );
 
-    const { data: allData, total: allDataTotal } =
-        useGetManyReference<ReferenceRecordType>(
-            reference,
-            {
+    const { mutate: onSelectAll } = useMutation({
+        mutationFn: () =>
+            dataProvider.useGetManyReference(reference, {
                 target,
                 id: get(record, source) as Identifier,
                 pagination: {
@@ -214,23 +214,21 @@ export const useReferenceManyFieldController = <
                 sort,
                 filter: filterValues,
                 meta,
-            },
-            {
-                enabled: get(record, source) != null,
-                ...otherQueryOptions,
+            }),
+        onSuccess: ({ data }) => {
+            const allIds = data?.map(({ id }) => id) || [];
+            selectionModifiers.select(allIds);
+            if (allIds.length === selectAllLimit) {
+                notify('ra.message.too_many_elements', {
+                    messageArgs: { max: selectAllLimit },
+                    type: 'warning',
+                });
             }
-        );
-
-    const onSelectAll = useCallback(() => {
-        const allIds = allData?.map(({ id }) => id) || [];
-        selectionModifiers.select(allIds);
-        if (allIds.length === selectAllLimit) {
-            notify('ra.message.too_many_elements', {
-                messageArgs: { max: selectAllLimit },
-                type: 'warning',
-            });
-        }
-    }, [allData, notify, selectAllLimit, selectionModifiers]);
+        },
+        onError: () => {
+            notify('An error occurred. Please try again.');
+        },
+    });
 
     return {
         sort,
@@ -253,7 +251,10 @@ export const useReferenceManyFieldController = <
         refetch,
         resource: reference,
         selectedIds,
-        areAllSelected: allDataTotal !== selectedIds.length,
+        areAllSelected: !(
+            total === selectedIds.length ||
+            selectedIds.length === selectAllLimit
+        ),
         setFilters,
         setPage,
         setPerPage,
