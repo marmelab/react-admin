@@ -296,6 +296,26 @@ export const HasCreate = () => (
     </TestMemoryRouter>
 );
 
+export const SelectAllLimit = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List selectAllLimit={11}>
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </Datagrid>
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
 
 export const Aside = () => (
