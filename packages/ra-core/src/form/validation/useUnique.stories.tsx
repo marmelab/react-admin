@@ -18,7 +18,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { TestMemoryRouter } from '../../routing';
 
 export default {
-    title: 'ra-core/form/useUnique',
+    title: 'ra-core/form/validation/useUnique',
 };
 
 const Input = props => {
