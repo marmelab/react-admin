@@ -11,7 +11,7 @@ import {
     UNSAFE_DataRouterStateContext,
 } from 'react-router';
 
-import { FormGroupsProvider } from './FormGroupsProvider';
+import { FormGroupsProvider } from './groups/FormGroupsProvider';
 import { RaRecord } from '../types';
 import {
     useRecordContext,
@@ -23,7 +23,7 @@ import {
     SourceContextValue,
     useResourceContext,
 } from '../core';
-import { ValidateForm } from './getSimpleValidationResolver';
+import { ValidateForm } from './validation/getSimpleValidationResolver';
 import { WarnWhenUnsavedChanges } from './WarnWhenUnsavedChanges';
 import { useAugmentedForm } from './useAugmentedForm';
 

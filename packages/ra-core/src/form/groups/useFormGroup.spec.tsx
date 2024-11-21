@@ -10,8 +10,8 @@ import {
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { FormGroupContextProvider } from './FormGroupContextProvider';
-import { testDataProvider } from '../dataProvider';
-import { ResourceContextProvider } from '..';
+import { testDataProvider } from '../../dataProvider';
+import { ResourceContextProvider } from '../..';
 
 describe('useFormGroup', () => {
     test.each([
