@@ -17,6 +17,7 @@ export interface UseReferenceArrayFieldControllerParams<
     resource?: string;
     sort?: SortPayload;
     source: string;
+    selectAllLimit?: number;
     queryOptions?: Omit<
         UseQueryOptions<ReferenceRecordType[]>,
         'queryFn' | 'queryKey'
