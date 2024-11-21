@@ -85,11 +85,15 @@ const defaultDataProvider = {
 
 const Wrapper = ({
     children,
+    i18nProvider,
     dataProvider = defaultDataProvider,
     record = author,
 }: any) => (
     <ThemeProvider theme={createTheme()}>
-        <CoreAdminContext dataProvider={dataProvider}>
+        <CoreAdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+        >
             <ResourceContextProvider value="authors">
                 <RecordContextProvider value={record}>
                     <Box mx={2} mt={7}>
@@ -179,6 +183,30 @@ export const StoreKey = () => (
             </ReferenceManyField>
         </Stack>
     </Wrapper>
+);
+
+export const WithPagination = props => (
+    <Wrapper
+        i18nProvider={polyglotI18nProvider(() => englishMessages)}
+        dataProvider={fullDataProvider}
+        record={authors[3]}
+    >
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            pagination={<Pagination />}
+            perPage={5}
+            {...props}
+        >
+            <Datagrid>
+                <TextField source="title" />
+            </Datagrid>
+        </ReferenceManyField>
+    </Wrapper>
+);
+
+export const WithPaginationAndSelectAllLimit = () => (
+    <WithPagination selectAllLimit={6} />
 );
 
 const AuthorEdit = () => (
