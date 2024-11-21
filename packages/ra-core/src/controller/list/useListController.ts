@@ -169,7 +169,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    const { data: allData } = useGetList<RecordType>(
+    const { data: allData, total: allDataTotal } = useGetList<RecordType>(
         resource,
         {
             pagination: {
@@ -223,7 +223,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
-        areAllSelected: allData?.length !== selectedIds.length,
+        areAllSelected: allDataTotal !== selectedIds.length,
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
