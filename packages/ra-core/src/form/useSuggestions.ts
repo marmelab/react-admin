@@ -1,6 +1,10 @@
 import { useCallback, isValidElement, ReactElement } from 'react';
 import set from 'lodash/set';
-import { useChoices, OptionText, UseChoicesOptions } from './useChoices';
+import {
+    useChoices,
+    OptionText,
+    UseChoicesOptions,
+} from './choices/useChoices';
 import { useTranslate } from '../i18n';
 
 /*

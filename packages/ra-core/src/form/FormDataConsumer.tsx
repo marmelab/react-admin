@@ -42,7 +42,9 @@ import { useWrappedSource } from '../core';
  *     </Edit>
  * );
  */
-const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
+export const FormDataConsumer = <
+    TFieldValues extends FieldValues = FieldValues,
+>(
     props: ConnectedProps<TFieldValues>
 ) => {
     const form = useFormContext<TFieldValues>();
@@ -82,8 +84,6 @@ export const FormDataConsumerView = <
 
     return ret === undefined ? null : ret;
 };
-
-export default FormDataConsumer;
 
 const ArraySourceRegex = new RegExp(/.+\.\d+$/);
 

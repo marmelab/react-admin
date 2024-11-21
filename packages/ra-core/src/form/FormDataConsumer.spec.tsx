@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 
-import FormDataConsumer, { FormDataConsumerView } from './FormDataConsumer';
+import { FormDataConsumer, FormDataConsumerView } from './FormDataConsumer';
 import { testDataProvider } from '../dataProvider';
 import {
     AdminContext,

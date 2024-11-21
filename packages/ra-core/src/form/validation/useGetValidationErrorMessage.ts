@@ -2,7 +2,7 @@ import {
     ValidationErrorMessage,
     ValidationErrorMessageWithArgs,
 } from './validate';
-import { useTranslate } from '../i18n';
+import { useTranslate } from '../../i18n';
 
 /**
  * @deprecated

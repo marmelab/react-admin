@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { useFormState } from 'react-hook-form';
 import { useFormGroups } from './useFormGroups';
-import { useEvent } from '../util';
+import { useEvent } from '../../util';
 
 type FieldState = {
     name: string;

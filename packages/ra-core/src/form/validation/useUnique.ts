@@ -1,12 +1,12 @@
-import merge from 'lodash/merge';
-import { useResourceContext } from '../core';
-import { useDataProvider } from '../dataProvider';
-import { useTranslate, useTranslateLabel } from '../i18n';
-import { InputProps } from './useInput';
 import { useCallback, useRef } from 'react';
+import merge from 'lodash/merge';
 import set from 'lodash/set';
-import { asyncDebounce } from '../util';
-import { useRecordContext } from '../controller';
+import { useResourceContext } from '../../core';
+import { useDataProvider } from '../../dataProvider';
+import { useTranslate, useTranslateLabel } from '../../i18n';
+import { asyncDebounce } from '../../util';
+import { useRecordContext } from '../../controller';
+import { InputProps } from '../useInput';
 import { isEmpty } from './validate';
 
 /**

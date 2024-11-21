@@ -56,7 +56,7 @@ export const EventEdit = () => (
 | `sx`          | -        | `SxProps`        | -       | The style to apply to the component.                                                                                                                                                         |
 | `validate`    | -        | `function|Array` | -       | Validation rules for the input. See the [Validation Documentation](./Validation.md#per-input-validation-built-in-field-validators) for details.             |
 
-`<DateRangeInput>` also accept the same props as [MUI X's `<DateRangePicker>`](https://mui.com/x/api/date-pickers/date-range-picker/), except for the `format` prop (renamed `mask`), 
+`<DateRangeInput>` also accept the same props as [MUI X's `<DateRangePicker>`](https://mui.com/x/api/date-pickers/date-range-picker/), except for the `format` prop (renamed `mask`),
 
 **Tip:** Since `<DateRangeInput>` stores its value as a date array, [react-admin's validators](./Validation.md#per-input-validation-built-in-field-validators) like `minValue` or `maxValue` won't work out of the box.
 
@@ -140,6 +140,44 @@ const EventEdit = () => {
         </Edit>
     );
 };
+```
+
+## Using `<DateRangeInput>` as a Filter
+
+`<DateRangeInput>` can also be used to filter a `<List>`.
+
+However, by default, `<DateRangeInput>` returns `Date` objects with their time set to 00:00:00, which makes the upper bound *exclusive*. Usually, users will expect the upper bound to be *inclusive*.
+
+This can be achieved by providing a `parse` function that sets the time of the upper bound to 23:59:59.
+
+Here is an example:
+
+```tsx
+import { DateRangeInput } from '@react-admin/ra-form-layout/DateRangeInput';
+import { List, Datagrid, NumberField, TextField, DateField } from 'react-admin';
+import { endOfDay } from 'date-fns';
+
+const dateRangeFilterParse = (dates: (Date | null)[]) => {
+    return [dates[0], dates[1] ? endOfDay(dates[1]) : dates[1]];
+};
+
+const eventsFilters = [
+    <DateRangeInput
+        source="date_between"
+        key="date_filter"
+        parse={dateRangeFilterParse}
+    />,
+];
+
+export const EventsList = () => (
+    <List filters={eventsFilters}>
+        <Datagrid>
+            <NumberField source="id" />
+            <TextField source="name" />
+            <DateField source="date" />
+        </Datagrid>
+    </List>
+);
 ```
 
 ## Providing your own `LocalizationProvider`
