@@ -193,7 +193,8 @@ export const useListController = <RecordType extends RaRecord = any>(
                 });
             }
         },
-        onError: () => {
+        onError: e => {
+            console.error('Mutation Error: ', e);
             notify('An error occurred. Please try again.');
         },
     });

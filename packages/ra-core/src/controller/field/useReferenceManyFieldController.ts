@@ -204,7 +204,7 @@ export const useReferenceManyFieldController = <
 
     const { mutate: onSelectAll } = useMutation({
         mutationFn: () =>
-            dataProvider.useGetManyReference(reference, {
+            dataProvider.getManyReference(reference, {
                 target,
                 id: get(record, source) as Identifier,
                 pagination: {
@@ -225,7 +225,8 @@ export const useReferenceManyFieldController = <
                 });
             }
         },
-        onError: () => {
+        onError: e => {
+            console.error('Mutation Error: ', e);
             notify('An error occurred. Please try again.');
         },
     });
