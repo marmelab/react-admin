@@ -2,6 +2,7 @@ import { isValidElement, useEffect, useMemo } from 'react';
 import {
     InfiniteQueryObserverBaseResult,
     InfiniteData,
+    useMutation,
 } from '@tanstack/react-query';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
@@ -9,6 +10,7 @@ import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
     UseInfiniteGetListOptions,
+    useDataProvider,
     useInfiniteGetList,
 } from '../../dataProvider';
 import { defaultExporter } from '../../export';
@@ -56,6 +58,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         queryOptions,
         sort,
         storeKey,
+        selectAllLimit = 250,
     } = props;
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions ?? {};
@@ -84,6 +87,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
 
     const translate = useTranslate();
     const notify = useNotify();
+    const dataProvider = useDataProvider();
 
     const [query, queryModifiers] = useListParams({
         debounce,
@@ -138,6 +142,32 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             ...otherQueryOptions,
         }
     );
+
+    const { mutate: onSelectAll } = useMutation({
+        mutationFn: () =>
+            dataProvider.getList(resource, {
+                pagination: {
+                    page: 1,
+                    perPage: selectAllLimit,
+                },
+                sort: { field: query.sort, order: query.order },
+                filter: { ...query.filter, ...filter },
+                meta,
+            }),
+        onSuccess: ({ data }) => {
+            const allIds = data?.map(({ id }) => id) || [];
+            selectionModifiers.select(allIds);
+            if (allIds.length === selectAllLimit) {
+                notify('ra.message.too_many_elements', {
+                    messageArgs: { max: selectAllLimit },
+                    type: 'warning',
+                });
+            }
+        },
+        onError: () => {
+            notify('An error occurred. Please try again.');
+        },
+    });
 
     // change page if there is no data
     useEffect(() => {
@@ -194,6 +224,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
@@ -201,6 +232,10 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
+        areAllSelected: !(
+            total === selectedIds.length ||
+            selectedIds.length === selectAllLimit
+        ),
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
@@ -233,6 +268,7 @@ export interface InfiniteListControllerProps<
     resource?: string;
     sort?: SortPayload;
     storeKey?: string | false;
+    selectAllLimit?: number;
 }
 
 export type InfiniteListControllerResult<RecordType extends RaRecord = any> =

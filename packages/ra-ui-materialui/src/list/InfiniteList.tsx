@@ -36,6 +36,7 @@ import { Loading } from '../layout';
  * - perPage: Pagination Size
  * - queryOptions
  * - sort: Default Sort Field & Order
+ * - selectAllLimit: The number of items selected by the "SELECT ALL" button of the bulk actions toolbar of the Datagrid
  * - title
  * - sx: CSS API
  *
@@ -73,6 +74,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
     resource,
     sort,
     storeKey,
+    selectAllLimit = 250,
     ...rest
 }: InfiniteListProps<RecordType>): ReactElement => (
     <InfiniteListBase<RecordType>
@@ -88,6 +90,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>({
         resource={resource}
         sort={sort}
         storeKey={storeKey}
+        selectAllLimit={selectAllLimit}
     >
         <ListView<RecordType> {...rest} pagination={pagination} />
     </InfiniteListBase>

@@ -362,6 +362,23 @@ export const WithDatagrid = () => (
     </Admin>
 );
 
+export const WithDatagridAndSelectAllLimit = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList selectAllLimit={22}>
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                    </Datagrid>
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
 const BookActions = () => (
     <TopToolbar>
         <SortButton fields={['id', 'title']} />
