@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 
-import { useNotify } from '../../notification';
 import { removeEmpty } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
@@ -68,10 +67,8 @@ export const useList = <RecordType extends RaRecord = any>(
         perPage: initialPerPage = 1000,
         sort: initialSort,
         filterCallback = (record: RecordType) => Boolean(record),
-        selectAllLimit = 250,
     } = props;
     const resource = useResourceContext(props);
-    const notify = useNotify();
 
     const [fetchingState, setFetchingState] = useState<boolean>(isFetching) as [
         boolean,
@@ -170,13 +167,7 @@ export const useList = <RecordType extends RaRecord = any>(
     const onSelectAll = useCallback(() => {
         const allIds = data?.map(({ id }) => id) || [];
         selectionModifiers.select(allIds);
-        if (allIds.length === selectAllLimit) {
-            notify('ra.message.too_many_elements', {
-                messageArgs: { max: selectAllLimit },
-                type: 'warning',
-            });
-        }
-    }, [data, notify, selectAllLimit, selectionModifiers]);
+    }, [data, selectionModifiers]);
 
     // handle filter prop change
     useEffect(() => {
@@ -329,7 +320,6 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     sort?: SortPayload;
     resource?: string;
     filterCallback?: (record: RecordType) => boolean;
-    selectAllLimit?: number;
 }
 
 export type UseListValue<RecordType extends RaRecord = any> =
