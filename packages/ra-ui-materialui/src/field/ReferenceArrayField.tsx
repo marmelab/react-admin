@@ -89,6 +89,7 @@ export const ReferenceArrayField = <
         resource,
         sort,
         source,
+        selectAllLimit = 250,
         queryOptions,
     } = props;
     const record = useRecordContext(props);
@@ -104,6 +105,7 @@ export const ReferenceArrayField = <
         resource,
         sort,
         source,
+        selectAllLimit,
         queryOptions,
     });
     return (
@@ -125,6 +127,7 @@ export interface ReferenceArrayFieldProps<
     perPage?: number;
     reference: string;
     sort?: SortPayload;
+    selectAllLimit?: number;
     sx?: SxProps;
     queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
 }
