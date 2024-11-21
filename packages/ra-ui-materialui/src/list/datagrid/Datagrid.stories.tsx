@@ -58,12 +58,6 @@ const data = [
         author: 'Antoine de Saint-Exupéry',
         year: 1943,
     },
-    {
-        id: 5,
-        title: 'Les Misérables',
-        author: 'Victor Hugo',
-        year: 1862,
-    },
 ];
 
 const theme = createTheme();
