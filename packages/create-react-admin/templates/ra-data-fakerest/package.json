@@ -3,7 +3,7 @@
         "test": "vitest"
     },
     "dependencies": {
-        "ra-data-fakerest": "^5.3.0"
+        "ra-data-fakerest": "^5.4.0"
     },
     "devDependencies": {
         "@testing-library/dom": "^10.4.0",
