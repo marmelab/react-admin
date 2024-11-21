@@ -64,48 +64,6 @@ const data = [
         author: 'Victor Hugo',
         year: 1862,
     },
-    {
-        id: 6,
-        title: 'Brave New World',
-        author: 'Aldous Huxley',
-        year: 1932,
-    },
-    {
-        id: 7,
-        title: 'The Great Gatsby',
-        author: 'F. Scott Fitzgerald',
-        year: 1925,
-    },
-    {
-        id: 8,
-        title: 'One Hundred Years of Solitude',
-        author: 'Gabriel García Márquez',
-        year: 1967,
-    },
-    {
-        id: 9,
-        title: "Harry Potter and the Philosopher's Stone",
-        author: 'J.K. Rowling',
-        year: 1997,
-    },
-    {
-        id: 10,
-        title: 'The Catcher in the Rye',
-        author: 'J.D. Salinger',
-        year: 1951,
-    },
-    {
-        id: 11,
-        title: 'The Lord of the Rings',
-        author: 'J.R.R. Tolkien',
-        year: 1954,
-    },
-    {
-        id: 12,
-        title: 'The Hobbit',
-        author: 'J.R.R. Tolkien',
-        year: 1937,
-    },
 ];
 
 const theme = createTheme();
