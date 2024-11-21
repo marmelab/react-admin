@@ -74,6 +74,7 @@ export const ReferenceManyField = <
         sort = defaultSort,
         source = 'id',
         storeKey,
+        selectAllLimit = 250,
         target,
         queryOptions,
     } = props;
@@ -93,6 +94,7 @@ export const ReferenceManyField = <
         sort,
         source,
         storeKey,
+        selectAllLimit,
         target,
         queryOptions,
     });

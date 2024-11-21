@@ -64,6 +64,7 @@ export const useReferenceManyFieldController = <
             { data: ReferenceRecordType[]; total: number },
             Error
         >,
+        selectAllLimit = 250,
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
@@ -200,6 +201,37 @@ export const useReferenceManyFieldController = <
         }
     );
 
+    const { data: allData, total: allDataTotal } =
+        useGetManyReference<ReferenceRecordType>(
+            reference,
+            {
+                target,
+                id: get(record, source) as Identifier,
+                pagination: {
+                    page: 1,
+                    perPage: selectAllLimit,
+                },
+                sort,
+                filter: filterValues,
+                meta,
+            },
+            {
+                enabled: get(record, source) != null,
+                ...otherQueryOptions,
+            }
+        );
+
+    const onSelectAll = useCallback(() => {
+        const allIds = allData?.map(({ id }) => id) || [];
+        selectionModifiers.select(allIds);
+        if (allIds.length === selectAllLimit) {
+            notify('ra.message.too_many_elements', {
+                messageArgs: { max: selectAllLimit },
+                type: 'warning',
+            });
+        }
+    }, [allData, notify, selectAllLimit, selectionModifiers]);
+
     return {
         sort,
         data,
@@ -213,6 +245,7 @@ export const useReferenceManyFieldController = <
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page,
@@ -220,6 +253,7 @@ export const useReferenceManyFieldController = <
         refetch,
         resource: reference,
         selectedIds,
+        areAllSelected: allDataTotal !== selectedIds.length,
         setFilters,
         setPage,
         setPerPage,
@@ -249,6 +283,7 @@ export interface UseReferenceManyFieldControllerParams<
     sort?: SortPayload;
     source?: string;
     storeKey?: string;
+    selectAllLimit?: number;
     target: string;
     queryOptions?: Omit<
         UseQueryOptions<{ data: ReferenceRecordType[]; total: number }, Error>,
