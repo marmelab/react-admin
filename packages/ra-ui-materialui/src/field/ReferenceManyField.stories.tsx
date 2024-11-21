@@ -4,28 +4,61 @@ import {
     CoreAdminContext,
     RecordContextProvider,
     ResourceContextProvider,
+    TestMemoryRouter,
 } from 'ra-core';
+import { Admin, ListGuesser, Resource } from 'react-admin';
 import { ThemeProvider, Box, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import fakeDataProvider from 'ra-data-fakerest';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { TextField } from '../field';
 import { ReferenceManyField } from './ReferenceManyField';
 import { Datagrid } from '../list/datagrid/Datagrid';
-import { SingleFieldList } from '../list';
+import { Pagination, SingleFieldList } from '../list';
 import { Notification } from '../layout/Notification';
 import { FilterForm } from '../list';
 import { TextInput } from '../input';
+import { Edit } from '../detail';
+import { SimpleForm } from '../form';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
 
 const author = { id: 1, name: 'Leo Tolstoi' };
+const authors = [
+    author,
+    { id: 2, name: 'Victor Hugo' },
+    { id: 3, name: 'Alexandre Dumas' },
+    { id: 4, name: 'J.K. Rowling' },
+];
 let books = [
     { id: 1, title: 'War and Peace', author_id: 1 },
     { id: 2, title: 'Les Misérables', author_id: 2 },
     { id: 3, title: 'Anna Karenina', author_id: 1 },
     { id: 4, title: 'The Count of Monte Cristo', author_id: 3 },
     { id: 5, title: 'Resurrection', author_id: 1 },
+    { id: 6, title: 'The Three Musketeers', author_id: 3 },
+    { id: 7, title: 'The Idiot', author_id: 1 },
+    { id: 8, title: 'The Last Day of a Condemned', author_id: 1 },
+    { id: 9, title: 'The Queen Margot', author_id: 3 },
+    { id: 10, title: "Harry Potter and the Philosopher's Stone", author_id: 4 },
+    { id: 11, title: 'Harry Potter and the Chamber of Secrets', author_id: 4 },
+    { id: 12, title: 'Harry Potter and the Prisoner of Azkaban', author_id: 4 },
+    { id: 13, title: 'Harry Potter and the Goblet of Fire', author_id: 4 },
+    {
+        id: 14,
+        title: 'Harry Potter and the Order of the Phoenix',
+        author_id: 4,
+    },
+    { id: 15, title: 'Harry Potter and the Half-Blood Prince', author_id: 4 },
+    { id: 16, title: 'Harry Potter and the Deathly Hallows', author_id: 4 },
 ];
+
+const fullDataProvider = fakeDataProvider(
+    { books, authors },
+    process.env.NODE_ENV === 'development'
+);
 
 const defaultDataProvider = {
     getManyReference: (resource, params) => {
@@ -146,4 +179,35 @@ export const StoreKey = () => (
             </ReferenceManyField>
         </Stack>
     </Wrapper>
+);
+
+const AuthorEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextField source="id" />
+            <TextInput source="name" />
+            <ReferenceManyField
+                reference="books"
+                target="author_id"
+                pagination={<Pagination />}
+                perPage={5}
+            >
+                <Datagrid>
+                    <TextField source="title" />
+                </Datagrid>
+            </ReferenceManyField>
+        </SimpleForm>
+    </Edit>
+);
+
+export const FullApp = () => (
+    <TestMemoryRouter initialEntries={['/authors/4']}>
+        <Admin
+            dataProvider={fullDataProvider}
+            i18nProvider={polyglotI18nProvider(() => englishMessages)}
+        >
+            <Resource name="authors" list={ListGuesser} edit={AuthorEdit} />
+            <Resource name="books" list={ListGuesser} />
+        </Admin>
+    </TestMemoryRouter>
 );
