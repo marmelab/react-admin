@@ -6,7 +6,7 @@ import {
     ResourceContextProvider,
     TestMemoryRouter,
 } from 'ra-core';
-import { Admin, ListGuesser, Resource } from 'react-admin';
+import { Admin, AdminProps, ListGuesser, Resource } from 'react-admin';
 import { ThemeProvider, Box, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import fakeDataProvider from 'ra-data-fakerest';
@@ -185,10 +185,16 @@ export const StoreKey = () => (
     </Wrapper>
 );
 
-export const WithPagination = props => (
+export const WithPagination = ({
+    dataProvider = fullDataProvider,
+    selectAllLimit,
+}: {
+    dataProvider?: AdminProps['dataProvider'];
+    selectAllLimit?: number;
+}) => (
     <Wrapper
         i18nProvider={polyglotI18nProvider(() => englishMessages)}
-        dataProvider={fullDataProvider}
+        dataProvider={dataProvider}
         record={authors[3]}
     >
         <ReferenceManyField
@@ -196,7 +202,7 @@ export const WithPagination = props => (
             target="author_id"
             pagination={<Pagination />}
             perPage={5}
-            {...props}
+            selectAllLimit={selectAllLimit}
         >
             <Datagrid>
                 <TextField source="title" />
@@ -205,8 +211,17 @@ export const WithPagination = props => (
     </Wrapper>
 );
 
-export const WithPaginationAndSelectAllLimit = () => (
-    <WithPagination selectAllLimit={6} />
+export const WithPaginationAndSelectAllLimit = ({
+    dataProvider,
+    selectAllLimit = 6,
+}: {
+    dataProvider?: AdminProps['dataProvider'];
+    selectAllLimit?: number;
+}) => (
+    <WithPagination
+        selectAllLimit={selectAllLimit}
+        dataProvider={dataProvider}
+    />
 );
 
 const AuthorEdit = () => (
