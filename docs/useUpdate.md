@@ -110,6 +110,7 @@ const IncreaseLikeButton = () => {
 - `onError`,
 - `onSettled`,
 - `onSuccess`,
+- `returnPromise`.
 
 ```jsx
 const notify = useNotify();
@@ -325,6 +326,32 @@ In `pessimistic` mutation mode, `onSuccess` executes *after* the `dataProvider.u
 In `optimistic` mutation mode, `onSuccess` executes *before* the `dataProvider.update()` is called, without waiting for the response. The callback receives no argument.
 
 In `undoable` mutation mode, `onSuccess` executes *before* the `dataProvider.update()` is called. The actual call to the dataProvider is delayed until the update notification hides. If the user clicks the undo button, the `dataProvider.update()` call is never made. The callback receives no argument.
+
+## `returnPromise`
+
+By default, the `update` callback that `useUpdate` returns is synchronous and returns nothing. To execute a side effect after the mutation has succeeded, you can use the `onSuccess` callback.
+
+If this is not enough, you can use the `returnPromise` option so that the `update` callback returns a promise that resolves when the mutation has succeeded and rejects when the mutation has failed.
+
+This can be useful if the server changes the record, and you need the updated data to update another record. 
+
+```jsx
+const [update] = useUpdate(
+    'posts',
+    { id: record.id, data: { isPublished: true } },
+    { returnPromise: true }
+);
+const [create] = useCreate('auditLogs');
+
+const publishPost = async () => {
+    try {
+        const post = await update();
+        create('auditLogs', { data: { action: 'publish', recordId: post.id, date: post.updatedAt } });
+    } catch (error) {
+        // handle error
+    }
+};
+```
 
 ## TypeScript
 
