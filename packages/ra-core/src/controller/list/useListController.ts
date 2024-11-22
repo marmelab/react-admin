@@ -222,7 +222,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
-        areAllSelected: !(
+        displaySelectAllButton: !(
             total === selectedIds.length ||
             selectedIds.length === selectAllLimit
         ),
@@ -532,7 +532,7 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
     resource: string;
     selectedIds: RecordType['id'][];
-    areAllSelected: boolean;
+    displaySelectAllButton: boolean;
     setFilters: (
         filters: any,
         displayedFilters?: any,

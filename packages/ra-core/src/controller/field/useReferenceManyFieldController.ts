@@ -252,7 +252,7 @@ export const useReferenceManyFieldController = <
         refetch,
         resource: reference,
         selectedIds,
-        areAllSelected: !(
+        displaySelectAllButton: !(
             total === selectedIds.length ||
             selectedIds.length === selectAllLimit
         ),

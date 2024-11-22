@@ -33,7 +33,7 @@ import { RaRecord } from '../../types';
  * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
  * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
  * @prop {Array}    selectedIds an array listing the ids of the selected rows, e.g. [123, 456]
- * @prop {boolean}  areAllSelected boolean to indicate if the list is already fully selected
+ * @prop {boolean}  displaySelectAllButton boolean to indicate if the list is already fully selected
  * @prop {Function} onSelect callback to change the list of selected rows, e.g. onSelect([456, 789])
  * @prop {Function} onSelectAll callback to select all the records, e.g. onSelectAll()
  * @prop {Function} onToggleItem callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
@@ -91,7 +91,7 @@ const extractListContextProps = <RecordType extends RaRecord = any>({
     refetch,
     resource,
     selectedIds,
-    areAllSelected,
+    displaySelectAllButton,
     setFilters,
     setPage,
     setPerPage,
@@ -119,7 +119,7 @@ const extractListContextProps = <RecordType extends RaRecord = any>({
     refetch,
     resource,
     selectedIds,
-    areAllSelected,
+    displaySelectAllButton,
     setFilters,
     setPage,
     setPerPage,

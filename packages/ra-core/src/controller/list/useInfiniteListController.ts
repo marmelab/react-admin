@@ -233,7 +233,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
-        areAllSelected: !(
+        displaySelectAllButton: !(
             total === selectedIds.length ||
             selectedIds.length === selectAllLimit
         ),

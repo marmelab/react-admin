@@ -298,7 +298,7 @@ export const useList = <RecordType extends RaRecord = any>(
         resource: '',
         refetch,
         selectedIds,
-        areAllSelected: data?.length !== selectedIds.length,
+        displaySelectAllButton: data?.length !== selectedIds.length,
         setFilters,
         setPage,
         setPerPage,
