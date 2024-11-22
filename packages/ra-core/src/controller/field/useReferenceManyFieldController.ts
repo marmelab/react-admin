@@ -253,8 +253,7 @@ export const useReferenceManyFieldController = <
         resource: reference,
         selectedIds,
         displaySelectAllButton: !(
-            total === selectedIds.length ||
-            selectedIds.length === selectAllLimit
+            total === selectedIds.length || selectedIds.length >= selectAllLimit
         ),
         setFilters,
         setPage,

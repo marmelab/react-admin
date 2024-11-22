@@ -223,8 +223,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         resource,
         selectedIds,
         displaySelectAllButton: !(
-            total === selectedIds.length ||
-            selectedIds.length === selectAllLimit
+            total === selectedIds.length || selectedIds.length >= selectAllLimit
         ),
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
