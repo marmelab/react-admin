@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
@@ -165,5 +165,380 @@ describe('<useReferenceArrayFieldController />', () => {
                 error: null,
             })
         );
+    });
+
+    describe('displaySelectAllButton', () => {
+        it('should return true if no items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceArrayFieldController
+                        resource="foo"
+                        reference="bar"
+                        record={{ id: 1, barIds: [1, 2] }}
+                        source="barIds"
+                    >
+                        {children}
+                    </ReferenceArrayFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                        total: 2,
+                    })
+                );
+            });
+        });
+        it('should return true if some items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceArrayFieldController
+                        resource="foo"
+                        reference="bar"
+                        record={{ id: 1, barIds: [1, 2] }}
+                        source="barIds"
+                    >
+                        {children}
+                    </ReferenceArrayFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([1]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                        total: 2,
+                        selectedIds: [1],
+                    })
+                );
+            });
+        });
+        it('should return false if all items are manually selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceArrayFieldController
+                        resource="foo"
+                        reference="bar"
+                        record={{ id: 1, barIds: [1, 2] }}
+                        source="barIds"
+                    >
+                        {children}
+                    </ReferenceArrayFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([1, 2]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                        total: 2,
+                        selectedIds: [1, 2],
+                    })
+                );
+            });
+        });
+        it('should return false if all items are selected with onSelectAll', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceArrayFieldController
+                        resource="foo"
+                        reference="bar"
+                        record={{ id: 1, barIds: [1, 2] }}
+                        source="barIds"
+                    >
+                        {children}
+                    </ReferenceArrayFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                        total: 2,
+                        selectedIds: [1, 2],
+                    })
+                );
+            });
+        });
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all items if no items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceArrayFieldController
+                        resource="foo"
+                        reference="bar"
+                        record={{ id: 1, barIds: [1, 2] }}
+                        source="barIds"
+                    >
+                        {children}
+                    </ReferenceArrayFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        selectedIds: [1, 2],
+                    })
+                );
+            });
+        });
+        it('should select all items if some items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceArrayFieldController
+                        resource="foo"
+                        reference="bar"
+                        record={{ id: 1, barIds: [1, 2] }}
+                        source="barIds"
+                    >
+                        {children}
+                    </ReferenceArrayFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([1]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        selectedIds: [1],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    5,
+                    expect.objectContaining({
+                        selectedIds: [1, 2],
+                    })
+                );
+            });
+        });
     });
 });
