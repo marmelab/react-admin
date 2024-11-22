@@ -560,8 +560,6 @@ In that case, set the `translateChoice` prop to `false`.
 ```
 {% endraw %}
 
-**Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
-
 **Tip**: To use the `disableCloseOnSelect` prop, you must also set `blurOnSelect={false}`, since this is enabled by default.
 
 ## Fetching Choices
