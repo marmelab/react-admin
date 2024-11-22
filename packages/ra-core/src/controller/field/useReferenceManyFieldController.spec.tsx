@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
 
 import { testDataProvider } from '../../dataProvider/testDataProvider';
@@ -410,6 +416,569 @@ describe('useReferenceManyFieldController', () => {
             await screen.findByText(
                 '{"facets":[{"foo":"bar","count":1},{"foo":"baz","count":2}]}'
             );
+        });
+    });
+
+    describe('displaySelectAllButton', () => {
+        it('should return true if no items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const dataProvider = testDataProvider({
+                getManyReference: jest.fn().mockResolvedValue({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                }),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                    })
+                );
+            });
+        });
+        it('should return true if some items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const dataProvider = testDataProvider({
+                getManyReference: jest.fn().mockResolvedValue({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                }),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([1]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [1],
+                    })
+                );
+            });
+        });
+        it('should return false if all items are manually selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const dataProvider = testDataProvider({
+                getManyReference: jest.fn().mockResolvedValue({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                }),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([0, 1]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should return false if all items are selected with onSelectAll', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const dataProvider = testDataProvider({
+                getManyReference: jest.fn().mockResolvedValue({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                }),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should return false if all we manually reached the selectAllLimit', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const dataProvider = testDataProvider({
+                getManyReference: jest.fn().mockResolvedValue({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                }),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                        selectAllLimit={1}
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([0]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0],
+                    })
+                );
+            });
+        });
+        it('should return false if all we reached the selectAllLimit with onSelectAll', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const dataProvider = testDataProvider({
+                getManyReference: jest
+                    .fn()
+                    .mockImplementation((_resource, params) =>
+                        Promise.resolve({
+                            data: [{ id: 0 }, { id: 1 }].slice(
+                                0,
+                                params.pagination.perPage
+                            ),
+                            total: 2,
+                        })
+                    ),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                        selectAllLimit={1}
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0],
+                    })
+                );
+            });
+        });
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all items if no items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const dataProvider = testDataProvider({
+                getManyReference: jest.fn().mockResolvedValue({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                }),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                        selectAllLimit={1}
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select all items if some items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const dataProvider = testDataProvider({
+                getManyReference: jest.fn().mockResolvedValue({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                }),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                        selectAllLimit={1}
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([1]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        selectedIds: [1],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        selectedIds: [1],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const getManyReference = jest
+                .fn()
+                .mockImplementation((_resource, params) =>
+                    Promise.resolve({
+                        data: [{ id: 0 }, { id: 1 }].slice(
+                            0,
+                            params.pagination.perPage
+                        ),
+                        total: 2,
+                    })
+                );
+            const dataProvider = testDataProvider({ getManyReference });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceManyFieldController
+                        resource="authors"
+                        source="id"
+                        record={{ id: 123, name: 'James Joyce' }}
+                        reference="books"
+                        target="author_id"
+                        selectAllLimit={1}
+                    >
+                        {children}
+                    </ReferenceManyFieldController>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(getManyReference).toHaveBeenNthCalledWith(
+                    1,
+                    'books',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 25 },
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        selectedIds: [0],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(getManyReference).toHaveBeenNthCalledWith(
+                    2,
+                    'books',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 1 },
+                    })
+                );
+            });
         });
     });
 });

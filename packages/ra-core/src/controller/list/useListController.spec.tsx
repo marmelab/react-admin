@@ -9,14 +9,13 @@ import {
 } from '@testing-library/react';
 import { testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
-import { CoreAdminContext, CoreAdminUI, Resource } from '../../core';
+import { CoreAdminContext } from '../../core';
 import { TestMemoryRouter } from '../../routing';
 import { AuthProvider } from '../../types';
 import { ListController } from './ListController';
 import {
     getListControllerProps,
     sanitizeListRestProps,
-    useListController,
 } from './useListController';
 import {
     Authenticated,
