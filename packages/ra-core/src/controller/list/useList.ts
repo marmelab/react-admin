@@ -168,7 +168,7 @@ export const useList = <RecordType extends RaRecord = any>(
             filterRef.current = filter;
             setFilterValues(filter);
         }
-    });
+    }, [filter]);
 
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(
