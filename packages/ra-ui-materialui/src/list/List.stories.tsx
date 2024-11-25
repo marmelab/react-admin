@@ -299,6 +299,7 @@ export const HasCreate = () => (
 export const SelectAllLimit = ({
     dataProvider = defaultDataProvider,
     selectAllLimit = 11,
+    children,
 }) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={dataProvider}>
@@ -312,6 +313,7 @@ export const SelectAllLimit = ({
                             <TextField source="author" />
                             <TextField source="year" />
                         </Datagrid>
+                        {children}
                     </List>
                 )}
             />
@@ -489,7 +491,7 @@ export const Meta = () => (
     </TestMemoryRouter>
 );
 
-export const Default = ({ dataProvider = defaultDataProvider }) => (
+export const Default = ({ dataProvider = defaultDataProvider, children }) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={dataProvider}>
             <Resource
@@ -502,6 +504,7 @@ export const Default = ({ dataProvider = defaultDataProvider }) => (
                             <TextField source="author" />
                             <TextField source="year" />
                         </Datagrid>
+                        {children}
                     </List>
                 )}
             />
