@@ -45,6 +45,553 @@ describe('useInfiniteListController', () => {
         debounce: 200,
     };
 
+    describe('displaySelectAllButton', () => {
+        it('should return true if no items are selected', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                    })
+                );
+            });
+        });
+        it('should return true if some items are selected', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([0]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0],
+                    })
+                );
+            });
+        });
+        it('should return false if all items are manually selected', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([0, 1]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should return false if all items are selected with onSelectAll', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should return false if all we manually reached the selectAllLimit', async () => {
+            const getList = jest.fn().mockImplementation(() =>
+                Promise.resolve({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                selectAllLimit: 1,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([0]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0],
+                    })
+                );
+            });
+        });
+        it('should return false if all we reached the selectAllLimit with onSelectAll', async () => {
+            const getList = jest.fn().mockImplementation((_resource, params) =>
+                Promise.resolve({
+                    data: [{ id: 0 }, { id: 1 }].slice(
+                        0,
+                        params.pagination.perPage
+                    ),
+                    total: 2,
+                })
+            );
+
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                selectAllLimit: 1,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: undefined,
+                        total: undefined,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        displaySelectAllButton: true,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        displaySelectAllButton: false,
+                        data: [{ id: 0 }, { id: 1 }],
+                        total: 2,
+                        selectedIds: [0],
+                    })
+                );
+            });
+        });
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all items if no items are selected', async () => {
+            const getList = jest.fn().mockImplementation(() =>
+                Promise.resolve({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select all items if some items are selected', async () => {
+            const getList = jest.fn().mockImplementation(() =>
+                Promise.resolve({
+                    data: [{ id: 0 }, { id: 1 }],
+                    total: 2,
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelect([0]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        selectedIds: [0],
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        selectedIds: [0],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    5,
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
+            const getList = jest.fn().mockImplementation((_resource, params) =>
+                Promise.resolve({
+                    data: [{ id: 0 }, { id: 1 }].slice(
+                        0,
+                        params.pagination.perPage
+                    ),
+                    total: 2,
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                selectAllLimit: 1,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    2,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(getList).toHaveBeenNthCalledWith(
+                    1,
+                    'posts',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 10 },
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    3,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    4,
+                    expect.objectContaining({
+                        selectedIds: [0],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(getList).toHaveBeenNthCalledWith(
+                    2,
+                    'posts',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 1 },
+                    })
+                );
+            });
+        });
+    });
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
@@ -640,554 +1187,6 @@ describe('useInfiniteListController', () => {
             expect(dataProvider.getList).toHaveBeenCalled();
             // Only called once by NavigationToFirstResource
             expect(authProvider.checkAuth).toHaveBeenCalledTimes(1);
-        });
-    });
-
-    describe('displaySelectAllButton', () => {
-        it('should return true if no items are selected', async () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
-                );
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                    })
-                );
-            });
-        });
-        it('should return true if some items are selected', async () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
-                );
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelect([0]);
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [0],
-                    })
-                );
-            });
-        });
-        it('should return false if all items are manually selected', async () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
-                );
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelect([0, 1]);
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: false,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [0, 1],
-                    })
-                );
-            });
-        });
-        it('should return false if all items are selected with onSelectAll', async () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
-                );
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
-                    expect.objectContaining({
-                        displaySelectAllButton: false,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [0, 1],
-                    })
-                );
-            });
-        });
-        it('should return false if all we manually reached the selectAllLimit', async () => {
-            const getList = jest.fn().mockImplementation(() =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                })
-            );
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                selectAllLimit: 1,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelect([0]);
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: false,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [0],
-                    })
-                );
-            });
-        });
-        it('should return false if all we reached the selectAllLimit with onSelectAll', async () => {
-            const getList = jest.fn().mockImplementation((_resource, params) =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }].slice(
-                        0,
-                        params.pagination.perPage
-                    ),
-                    total: 2,
-                })
-            );
-
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                selectAllLimit: 1,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
-                    expect.objectContaining({
-                        displaySelectAllButton: false,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [0],
-                    })
-                );
-            });
-        });
-    });
-
-    describe('onSelectAll', () => {
-        it('should select all items if no items are selected', async () => {
-            const getList = jest.fn().mockImplementation(() =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                })
-            );
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
-                    expect.objectContaining({
-                        selectedIds: [0, 1],
-                    })
-                );
-            });
-        });
-        it('should select all items if some items are selected', async () => {
-            const getList = jest.fn().mockImplementation(() =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                })
-            );
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelect([0]);
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        selectedIds: [0],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
-                    expect.objectContaining({
-                        selectedIds: [0],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    5,
-                    expect.objectContaining({
-                        selectedIds: [0, 1],
-                    })
-                );
-            });
-        });
-        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
-            const getList = jest.fn().mockImplementation((_resource, params) =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }].slice(
-                        0,
-                        params.pagination.perPage
-                    ),
-                    total: 2,
-                })
-            );
-            const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                selectAllLimit: 1,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(getList).toHaveBeenNthCalledWith(
-                    1,
-                    'posts',
-                    expect.objectContaining({
-                        pagination: { page: 1, perPage: 10 },
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
-                    expect.objectContaining({
-                        selectedIds: [0],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(getList).toHaveBeenNthCalledWith(
-                    2,
-                    'posts',
-                    expect.objectContaining({
-                        pagination: { page: 1, perPage: 1 },
-                    })
-                );
-            });
         });
     });
 });
