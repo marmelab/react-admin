@@ -71,6 +71,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
+| `selectAllLimit`          | Optional | `number`       | -              | The number of items selected by the "SELECT ALL" button of the bulk actions toolbar.         |
 | `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
 | `storeKey`                | Optional | `string | false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
 | `title`                   | Optional | `string | ReactElement | false` | -              | The title to display in the App Bar.                                                         |
@@ -870,6 +871,22 @@ By default, `<List>` operates on the current `ResourceContext` (defined at the r
 export const UsersList = () => (
     <List resource="users">
         ...
+    </List>
+);
+```
+
+## `selectAllLimit`
+
+The number of items selected by the "SELECT ALL" button of the bulk actions toolbar
+
+By default, the "SELECT ALL" button of the `<Datagrid>`'s bulk actions toolbar select all records up to 250 items. You can customize the limit by passing a `selectAllLimit` prop to the `<List>` component
+
+```jsx
+export const UsersList = () => (
+    <List selectAllLimit={2000}>
+        <Datagrid>
+            ...
+        </Datagrid>
     </List>
 );
 ```
