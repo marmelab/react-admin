@@ -877,8 +877,6 @@ export const UsersList = () => (
 
 ## `selectAllLimit`
 
-The number of items selected by the "SELECT ALL" button of the bulk actions toolbar
-
 By default, the "SELECT ALL" button of the `<Datagrid>`'s bulk actions toolbar select all records up to 250 items. You can customize the limit by passing a `selectAllLimit` prop to the `<List>` component
 
 ```jsx
