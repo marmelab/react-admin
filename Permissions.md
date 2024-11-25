@@ -5,17 +5,14 @@ title: "Authorization"
 
 # Authorization
 
+<iframe src="https://www.youtube-nocookie.com/embed/2loA65et3JU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;"></iframe>
+
 Once a user is authenticated, your application may need to check if the user has the right to access a specific resource or perform a particular action. React-admin provides two ways to do so:
 
 1. **Access control** relies on `authProvider.canAccess({ resource, action })`, which returns whether the user can access the given resource and action.
 2. **Permissions** rely on `authProvider.getPermissions()`, which returns a list of permissions that your components can inspect.
 
 Depending on your needs, you can implement one or the other or both. We recommend Access Control because it allows you to put the authorization logic in the `authProvider` rather than in the code. 
-
-<video controls autoplay muted loop>
-  <source src="./img/AccessControl.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
 
 ## Access Control
 
@@ -26,6 +23,11 @@ With Access Control, the `authProvider`is responsible for checking if the user c
 - Access Control List (ACL).
 
 Use the `authProvider` to integrate react-admin with popular authorization solutions like Okta, Casbin, Cerbos, and more.
+
+<video controls autoplay muted loop>
+  <source src="./img/AccessControl.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ### `authProvider.canAccess()`
 
@@ -516,3 +518,4 @@ export const CommentCreate = () => {
 ## Role-Based Access Control
 
 If you need more complex permissions with roles and groups, the principle of least privilege, record-level permissions, explicit deny, and more, check the next section for the [Role-Based Access Control](./AuthRBAC.md).
+
