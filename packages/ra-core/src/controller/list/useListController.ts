@@ -1,5 +1,6 @@
 import { isValidElement, useEffect, useMemo } from 'react';
 import { UseQueryOptions } from 'react-query';
+import { omit } from 'lodash';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
@@ -85,6 +86,11 @@ export const useListController = <RecordType extends RaRecord = any>(
     } = useGetList<RecordType>(
         resource,
         {
+            ...omit(query, [
+                'requestSignature',
+                'displayedFilters',
+                'filterValues',
+            ]),
             pagination: {
                 page: query.page,
                 perPage: query.perPage,

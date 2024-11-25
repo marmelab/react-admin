@@ -63,6 +63,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
         sort = { field: 'id', order: 'DESC' },
         filter = {},
         meta,
+        ...rest
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
@@ -71,10 +72,11 @@ export const useGetList = <RecordType extends RaRecord = any>(
         Error,
         GetListResult<RecordType>
     >(
-        [resource, 'getList', { pagination, sort, filter, meta }],
+        [resource, 'getList', { ...rest, pagination, sort, filter, meta }],
         () =>
             dataProvider
                 .getList<RecordType>(resource, {
+                    ...rest,
                     pagination,
                     sort,
                     filter,

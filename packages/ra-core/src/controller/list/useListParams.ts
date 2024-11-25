@@ -299,10 +299,7 @@ const parseObject = (query, field) => {
 };
 
 export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
-    const query = pickBy(
-        parse(search),
-        (v, k) => validQueryParams.indexOf(k) !== -1
-    );
+    const query = parse(search);
     parseObject(query, 'filter');
     parseObject(query, 'displayedFilters');
     return query;
