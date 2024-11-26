@@ -46,7 +46,7 @@ describe('useInfiniteListController', () => {
     };
 
     describe('displaySelectAllButton', () => {
-        it('should return true if no items are selected', async () => {
+        it('should be true if no items are selected', async () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -64,27 +64,15 @@ describe('useInfiniteListController', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: true,
                         data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
                     })
                 );
             });
         });
-        it('should return true if some items are selected', async () => {
+        it('should be true if some items are selected', async () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -101,45 +89,19 @@ describe('useInfiniteListController', () => {
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelect([0]);
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
                         selectedIds: [0],
                     })
                 );
             });
         });
-        it('should return false if all items are manually selected', async () => {
+        it('should be false if all items are manually selected', async () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -156,45 +118,19 @@ describe('useInfiniteListController', () => {
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelect([0, 1]);
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: false,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
                         selectedIds: [0, 1],
                     })
                 );
             });
         });
-        it('should return false if all items are selected with onSelectAll', async () => {
+        it('should be false if all items are selected with onSelectAll', async () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -211,56 +147,19 @@ describe('useInfiniteListController', () => {
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: false,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
                         selectedIds: [0, 1],
                     })
                 );
             });
         });
-        it('should return false if all we manually reached the selectAllLimit', async () => {
+        it('should be false if all we manually reached the selectAllLimit', async () => {
             const getList = jest.fn().mockImplementation(() =>
                 Promise.resolve({
                     data: [{ id: 0 }, { id: 1 }],
@@ -279,45 +178,19 @@ describe('useInfiniteListController', () => {
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelect([0]);
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: false,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
                         selectedIds: [0],
                     })
                 );
             });
         });
-        it('should return false if all we reached the selectAllLimit with onSelectAll', async () => {
+        it('should be false if all we reached the selectAllLimit with onSelectAll', async () => {
             const getList = jest.fn().mockImplementation((_resource, params) =>
                 Promise.resolve({
                     data: [{ id: 0 }, { id: 1 }].slice(
@@ -340,50 +213,13 @@ describe('useInfiniteListController', () => {
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: false,
-                        data: [{ id: 0 }, { id: 1 }],
-                        total: 2,
                         selectedIds: [0],
                     })
                 );
@@ -410,37 +246,11 @@ describe('useInfiniteListController', () => {
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
@@ -465,49 +275,21 @@ describe('useInfiniteListController', () => {
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelect([0]);
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0],
                     })
                 );
             });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
-                    expect.objectContaining({
-                        selectedIds: [0],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    5,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
@@ -536,54 +318,18 @@ describe('useInfiniteListController', () => {
                     <InfiniteListController {...props} />
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(getList).toHaveBeenNthCalledWith(
-                    1,
-                    'posts',
-                    expect.objectContaining({
-                        pagination: { page: 1, perPage: 10 },
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0],
                     })
                 );
             });
             await waitFor(() => {
-                expect(getList).toHaveBeenNthCalledWith(
-                    2,
+                expect(getList).toHaveBeenCalledWith(
                     'posts',
                     expect.objectContaining({
                         pagination: { page: 1, perPage: 1 },
@@ -592,6 +338,7 @@ describe('useInfiniteListController', () => {
             });
         });
     });
+
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});

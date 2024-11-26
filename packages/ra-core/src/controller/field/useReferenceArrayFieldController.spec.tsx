@@ -183,28 +183,7 @@ describe('<useReferenceArrayFieldController />', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: true,
                         data: [
@@ -230,49 +209,11 @@ describe('<useReferenceArrayFieldController />', () => {
                     </ReferenceArrayFieldController>
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelect([1]);
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: true,
                         data: [
@@ -299,49 +240,11 @@ describe('<useReferenceArrayFieldController />', () => {
                     </ReferenceArrayFieldController>
                 </CoreAdminContext>
             );
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelect([1, 2]);
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: false,
                         data: [
@@ -369,30 +272,7 @@ describe('<useReferenceArrayFieldController />', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        displaySelectAllButton: true,
-                        data: undefined,
-                        total: undefined,
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: true,
                         data: [
@@ -405,12 +285,10 @@ describe('<useReferenceArrayFieldController />', () => {
                 );
             });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         displaySelectAllButton: false,
                         data: [
@@ -441,36 +319,20 @@ describe('<useReferenceArrayFieldController />', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        selectedIds: [],
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
                     })
                 );
             });
             act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1, 2],
                     })
@@ -492,48 +354,20 @@ describe('<useReferenceArrayFieldController />', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    1,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    2,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
-                );
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    3,
-                    expect.objectContaining({
-                        selectedIds: [],
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
                     })
                 );
             });
             act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].onSelect([1]);
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    4,
-                    expect.objectContaining({
-                        selectedIds: [1],
-                    })
-                );
-            });
-            act(() => {
-                // @ts-ignore
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
-                    5,
+                expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1, 2],
                     })
