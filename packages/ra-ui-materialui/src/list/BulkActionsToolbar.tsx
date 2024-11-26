@@ -66,7 +66,6 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                         <Button
                             label={translate('ra.action.select_all')}
                             onClick={handleSelectAll}
-                            sx={{ ml: 1 }}
                         />
                     )}
                 </div>
@@ -147,10 +146,6 @@ const Root = styled('div', {
     [`& .${BulkActionsToolbarClasses.title}`]: {
         display: 'flex',
         flex: '0 0 auto',
-    },
-
-    [`& .${BulkActionsToolbarClasses.icon}`]: {
-        marginLeft: '-0.5em',
-        marginRight: '0.5em',
+        gap: theme.spacing(1),
     },
 }));
