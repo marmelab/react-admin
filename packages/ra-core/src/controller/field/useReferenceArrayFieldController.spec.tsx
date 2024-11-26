@@ -168,7 +168,7 @@ describe('<useReferenceArrayFieldController />', () => {
     });
 
     describe('displaySelectAllButton', () => {
-        it('should return true if no items are selected', async () => {
+        it('should be true if no items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -216,7 +216,7 @@ describe('<useReferenceArrayFieldController />', () => {
                 );
             });
         });
-        it('should return true if some items are selected', async () => {
+        it('should be true if some items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -285,7 +285,7 @@ describe('<useReferenceArrayFieldController />', () => {
                 );
             });
         });
-        it('should return false if all items are manually selected', async () => {
+        it('should be false if all items are manually selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -354,7 +354,7 @@ describe('<useReferenceArrayFieldController />', () => {
                 );
             });
         });
-        it('should return false if all items are selected with onSelectAll', async () => {
+        it('should be false if all items are selected with onSelectAll', async () => {
             const children = jest.fn().mockReturnValue('child');
             render(
                 <CoreAdminContext dataProvider={dataProvider}>

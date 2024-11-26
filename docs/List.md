@@ -71,7 +71,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
-| `selectAllLimit`          | Optional | `number`       | -              | The number of items selected by the "SELECT ALL" button of the bulk actions toolbar.         |
+| `selectAllLimit`          | Optional | `number`       | -              | The maximum number of items selected by the "SELECT ALL" button of the bulk actions toolbar.         |
 | `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
 | `storeKey`                | Optional | `string | false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
 | `title`                   | Optional | `string | ReactElement | false` | -              | The title to display in the App Bar.                                                         |
