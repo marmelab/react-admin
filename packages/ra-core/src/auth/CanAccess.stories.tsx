@@ -1,7 +1,10 @@
 import * as React from 'react';
+import { Location } from 'react-router';
+import { QueryClient } from '@tanstack/react-query';
 import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core';
 import { CanAccess } from './CanAccess';
+import { TestMemoryRouter } from '..';
 
 export default {
     title: 'ra-core/auth/CanAccess',
@@ -19,14 +22,32 @@ const defaultAuthProvider: AuthProvider = {
 
 export const Basic = ({
     authProvider = defaultAuthProvider,
+    basename,
+    locationCallback,
 }: {
     authProvider?: AuthProvider;
+    basename?: string;
+    locationCallback?: (location: Location) => void;
 }) => (
-    <CoreAdminContext authProvider={authProvider}>
-        <CanAccess action="read" resource="test">
-            protected content
-        </CanAccess>
-    </CoreAdminContext>
+    <TestMemoryRouter locationCallback={locationCallback}>
+        <CoreAdminContext
+            authProvider={authProvider}
+            basename={basename}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: {
+                            retry: false,
+                        },
+                    },
+                })
+            }
+        >
+            <CanAccess action="read" resource="test">
+                protected content
+            </CanAccess>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const AccessDenied = ({
@@ -34,11 +55,13 @@ export const AccessDenied = ({
 }: {
     authProvider?: AuthProvider;
 }) => (
-    <CoreAdminContext authProvider={authProvider}>
-        <CanAccess action="show" resource="test">
-            protected content
-        </CanAccess>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext authProvider={authProvider}>
+            <CanAccess action="show" resource="test">
+                protected content
+            </CanAccess>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const CustomLoading = ({
@@ -46,15 +69,17 @@ export const CustomLoading = ({
 }: {
     authProvider?: AuthProvider;
 }) => (
-    <CoreAdminContext authProvider={authProvider}>
-        <CanAccess
-            action="read"
-            resource="test"
-            loading={<div>Please wait...</div>}
-        >
-            protected content
-        </CanAccess>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext authProvider={authProvider}>
+            <CanAccess
+                action="read"
+                resource="test"
+                loading={<div>Please wait...</div>}
+            >
+                protected content
+            </CanAccess>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const CustomAccessDenied = ({
@@ -62,21 +87,25 @@ export const CustomAccessDenied = ({
 }: {
     authProvider?: AuthProvider;
 }) => (
-    <CoreAdminContext authProvider={authProvider}>
-        <CanAccess
-            action="show"
-            resource="test"
-            accessDenied={<div>Not allowed</div>}
-        >
-            protected content
-        </CanAccess>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext authProvider={authProvider}>
+            <CanAccess
+                action="show"
+                resource="test"
+                accessDenied={<div>Not allowed</div>}
+            >
+                protected content
+            </CanAccess>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 export const NoAuthProvider = () => (
-    <CoreAdminContext authProvider={undefined}>
-        <CanAccess action="read" resource="test">
-            protected content
-        </CanAccess>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext authProvider={undefined}>
+            <CanAccess action="read" resource="test">
+                protected content
+            </CanAccess>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );

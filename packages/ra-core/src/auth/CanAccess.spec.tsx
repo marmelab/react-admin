@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { Location } from 'react-router';
 import {
     Basic,
     CustomLoading,
@@ -88,6 +89,63 @@ describe('<CanAccess>', () => {
         expect(container.textContent).toEqual('');
         resolveCheckAuth(false);
         await screen.findByText('Not allowed');
+    });
+    it('redirects to the /authentication-error route by default in case of error', async () => {
+        let rejectCheckAuth;
+        let location: Location;
+        const authProvider: AuthProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('bad method'),
+            canAccess: () =>
+                new Promise((_, reject) => {
+                    rejectCheckAuth = reject;
+                }),
+        };
+        const { container } = render(
+            <Basic
+                authProvider={authProvider}
+                locationCallback={l => {
+                    location = l;
+                }}
+            />
+        );
+        expect(container.textContent).toEqual('');
+        rejectCheckAuth(new Error('failed'));
+        await waitFor(() =>
+            expect(location.pathname).toEqual('/authentication-error')
+        );
+    });
+    it('redirects to the /authentication-error route by default in case of error in an Admin with a basename', async () => {
+        let rejectCheckAuth;
+        let location: Location;
+        const authProvider: AuthProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('bad method'),
+            canAccess: () =>
+                new Promise((_, reject) => {
+                    rejectCheckAuth = reject;
+                }),
+        };
+        const { container } = render(
+            <Basic
+                authProvider={authProvider}
+                basename="/admin"
+                locationCallback={l => {
+                    location = l;
+                }}
+            />
+        );
+        expect(container.textContent).toEqual('');
+        rejectCheckAuth(new Error('failed'));
+        await waitFor(() =>
+            expect(location.pathname).toEqual('/admin/authentication-error')
+        );
     });
     it('shows the protected content when users are authorized', async () => {
         let resolveCheckAuth;

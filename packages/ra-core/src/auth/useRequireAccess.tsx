@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { RaRecord } from '../types';
 import {
     useCanAccess,
     UseCanAccessOptions,
     UseCanAccessResult,
 } from './useCanAccess';
-import { useNavigate } from 'react-router';
+import { useBasename } from '../routing';
 
 /**
  * A hook that calls the authProvider.canAccess() method for a provided resource and action (and optionally a record).
@@ -50,20 +51,21 @@ export const useRequireAccess = <
 ) => {
     const { canAccess, data, error, ...rest } = useCanAccess(params);
     const navigate = useNavigate();
+    const basename = useBasename();
 
     useEffect(() => {
         if (rest.isPending) return;
 
         if (canAccess === false) {
-            navigate('/access-denied');
+            navigate(`${basename}/access-denied`);
         }
-    }, [canAccess, navigate, rest.isPending]);
+    }, [basename, canAccess, navigate, rest.isPending]);
 
     useEffect(() => {
         if (error) {
-            navigate('/authentication-error');
+            navigate(`${basename}/authentication-error`);
         }
-    }, [navigate, error]);
+    }, [basename, navigate, error]);
 
     return rest;
 };

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
 import { waitFor, render, screen } from '@testing-library/react';
-
 import { QueryClient } from '@tanstack/react-query';
+import { Location } from 'react-router';
 import { Basic } from './useRequireAccess.stories';
 
 describe('useRequireAccess', () => {
@@ -75,6 +75,55 @@ describe('useRequireAccess', () => {
         render(<Basic authProvider={authProvider} />);
         await screen.findByText('Loading');
         await screen.findByText('Authentication Error');
+    });
+
+    it('should redirect to /access-denied when users do not have access in an Admin with basename', async () => {
+        let location: Location;
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('bad method'),
+            canAccess: () => Promise.resolve(false),
+        };
+        render(
+            <Basic
+                authProvider={authProvider}
+                basename="/admin"
+                locationCallback={l => {
+                    location = l;
+                }}
+            />
+        );
+
+        await waitFor(() => {
+            expect(location.pathname).toEqual('/admin/access-denied');
+        });
+    });
+
+    it('should redirect to /authentication-error when auth.canAccess call fails in an Admin with basename', async () => {
+        let location: Location;
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('bad method'),
+            checkError: () => Promise.reject('bad method'),
+            canAccess: () => Promise.reject('not good'),
+        };
+        render(
+            <Basic
+                authProvider={authProvider}
+                basename="/admin"
+                locationCallback={l => {
+                    location = l;
+                }}
+            />
+        );
+        await waitFor(() => {
+            expect(location.pathname).toEqual('/admin/authentication-error');
+        });
     });
 
     it('should abort the request if the query is canceled', async () => {
