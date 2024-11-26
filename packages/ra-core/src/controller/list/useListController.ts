@@ -222,9 +222,9 @@ export const useListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
-        displaySelectAllButton: !(
-            total === selectedIds.length || selectedIds.length >= selectAllLimit
-        ),
+        areAllItemsSelected:
+            total === selectedIds.length ||
+            selectedIds.length >= selectAllLimit,
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
@@ -531,7 +531,7 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
     resource: string;
     selectedIds: RecordType['id'][];
-    displaySelectAllButton: boolean;
+    areAllItemsSelected: boolean;
     setFilters: (
         filters: any,
         displayedFilters?: any,

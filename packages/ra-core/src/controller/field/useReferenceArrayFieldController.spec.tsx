@@ -167,8 +167,8 @@ describe('<useReferenceArrayFieldController />', () => {
         );
     });
 
-    describe('displaySelectAllButton', () => {
-        it('should be true if no items are selected', async () => {
+    describe('areAllItemsSelected', () => {
+        it('should be false if no items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -185,7 +185,7 @@ describe('<useReferenceArrayFieldController />', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                         data: [
                             { id: 1, title: 'bar1' },
                             { id: 2, title: 'bar2' },
@@ -195,7 +195,7 @@ describe('<useReferenceArrayFieldController />', () => {
                 );
             });
         });
-        it('should be true if some items are selected', async () => {
+        it('should be false if some items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -215,7 +215,7 @@ describe('<useReferenceArrayFieldController />', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                         data: [
                             { id: 1, title: 'bar1' },
                             { id: 2, title: 'bar2' },
@@ -226,7 +226,7 @@ describe('<useReferenceArrayFieldController />', () => {
                 );
             });
         });
-        it('should be false if all items are manually selected', async () => {
+        it('should be true if all items are manually selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -246,7 +246,7 @@ describe('<useReferenceArrayFieldController />', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         data: [
                             { id: 1, title: 'bar1' },
                             { id: 2, title: 'bar2' },
@@ -257,7 +257,7 @@ describe('<useReferenceArrayFieldController />', () => {
                 );
             });
         });
-        it('should be false if all items are selected with onSelectAll', async () => {
+        it('should be true if all items are selected with onSelectAll', async () => {
             const children = jest.fn().mockReturnValue('child');
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -274,7 +274,7 @@ describe('<useReferenceArrayFieldController />', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                         data: [
                             { id: 1, title: 'bar1' },
                             { id: 2, title: 'bar2' },
@@ -290,7 +290,7 @@ describe('<useReferenceArrayFieldController />', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         data: [
                             { id: 1, title: 'bar1' },
                             { id: 2, title: 'bar2' },

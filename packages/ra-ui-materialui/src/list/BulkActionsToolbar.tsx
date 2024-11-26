@@ -23,7 +23,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
         selectedIds = [],
         onUnselectItems,
         onSelectAll,
-        displaySelectAllButton,
+        areAllItemsSelected,
     } = useListContext();
 
     const translate = useTranslate();
@@ -62,7 +62,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                             smart_count: selectedIds.length,
                         })}
                     </Typography>
-                    {displaySelectAllButton && (
+                    {!areAllItemsSelected && (
                         <Button
                             label={translate('ra.action.select_all')}
                             onClick={handleSelectAll}

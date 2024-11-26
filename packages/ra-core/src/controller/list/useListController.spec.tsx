@@ -586,8 +586,8 @@ describe('useListController', () => {
         });
     });
 
-    describe('displaySelectAllButton', () => {
-        it('should be true if no items are selected', async () => {
+    describe('areAllItemsSelected', () => {
+        it('should be false if no items are selected', async () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -607,13 +607,13 @@ describe('useListController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                         data: [{ id: 0 }, { id: 1 }],
                     })
                 );
             });
         });
-        it('should be true if some items are selected', async () => {
+        it('should be false if some items are selected', async () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -636,13 +636,13 @@ describe('useListController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                         selectedIds: [0],
                     })
                 );
             });
         });
-        it('should be false if all items are manually selected', async () => {
+        it('should be true if all items are manually selected', async () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -665,13 +665,13 @@ describe('useListController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         selectedIds: [0, 1],
                     })
                 );
             });
         });
-        it('should be false if all items are selected with onSelectAll', async () => {
+        it('should be true if all items are selected with onSelectAll', async () => {
             const getList = jest
                 .fn()
                 .mockImplementation(() =>
@@ -694,7 +694,7 @@ describe('useListController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         data: [{ id: 0 }, { id: 1 }],
                         total: 2,
                         selectedIds: [0, 1],
@@ -702,7 +702,7 @@ describe('useListController', () => {
                 );
             });
         });
-        it('should be false if all we manually reached the selectAllLimit', async () => {
+        it('should be true if all we manually reached the selectAllLimit', async () => {
             const getList = jest.fn().mockImplementation(() =>
                 Promise.resolve({
                     data: [{ id: 0 }, { id: 1 }],
@@ -727,13 +727,13 @@ describe('useListController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         selectedIds: [0],
                     })
                 );
             });
         });
-        it('should be false if all we reached the selectAllLimit with onSelectAll', async () => {
+        it('should be true if all we reached the selectAllLimit with onSelectAll', async () => {
             const getList = jest.fn().mockImplementation((_resource, params) =>
                 Promise.resolve({
                     data: [{ id: 0 }, { id: 1 }].slice(
@@ -762,7 +762,7 @@ describe('useListController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         data: [{ id: 0 }, { id: 1 }],
                         total: 2,
                         selectedIds: [0],

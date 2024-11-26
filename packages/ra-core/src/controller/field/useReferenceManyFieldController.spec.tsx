@@ -419,8 +419,8 @@ describe('useReferenceManyFieldController', () => {
         });
     });
 
-    describe('displaySelectAllButton', () => {
-        it('should be true if no items are selected', async () => {
+    describe('areAllItemsSelected', () => {
+        it('should be false if no items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             const dataProvider = testDataProvider({
                 getManyReference: jest.fn().mockResolvedValue({
@@ -444,12 +444,12 @@ describe('useReferenceManyFieldController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                     })
                 );
             });
         });
-        it('should be true if some items are selected', async () => {
+        it('should be false if some items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             const dataProvider = testDataProvider({
                 getManyReference: jest.fn().mockResolvedValue({
@@ -476,13 +476,13 @@ describe('useReferenceManyFieldController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                         selectedIds: [1],
                     })
                 );
             });
         });
-        it('should be false if all items are manually selected', async () => {
+        it('should be true if all items are manually selected', async () => {
             const children = jest.fn().mockReturnValue('child');
             const dataProvider = testDataProvider({
                 getManyReference: jest.fn().mockResolvedValue({
@@ -509,13 +509,13 @@ describe('useReferenceManyFieldController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         selectedIds: [0, 1],
                     })
                 );
             });
         });
-        it('should be false if all items are selected with onSelectAll', async () => {
+        it('should be true if all items are selected with onSelectAll', async () => {
             const children = jest.fn().mockReturnValue('child');
             const dataProvider = testDataProvider({
                 getManyReference: jest.fn().mockResolvedValue({
@@ -542,13 +542,13 @@ describe('useReferenceManyFieldController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         selectedIds: [0, 1],
                     })
                 );
             });
         });
-        it('should be false if all we manually reached the selectAllLimit', async () => {
+        it('should be true if all we manually reached the selectAllLimit', async () => {
             const children = jest.fn().mockReturnValue('child');
             const dataProvider = testDataProvider({
                 getManyReference: jest.fn().mockResolvedValue({
@@ -576,13 +576,13 @@ describe('useReferenceManyFieldController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         selectedIds: [0],
                     })
                 );
             });
         });
-        it('should be false if all we reached the selectAllLimit with onSelectAll', async () => {
+        it('should be true if all we reached the selectAllLimit with onSelectAll', async () => {
             const children = jest.fn().mockReturnValue('child');
             const dataProvider = testDataProvider({
                 getManyReference: jest
@@ -617,7 +617,7 @@ describe('useReferenceManyFieldController', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         selectedIds: [0],
                     })
                 );

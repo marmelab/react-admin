@@ -316,21 +316,21 @@ describe('<useList />', () => {
         });
     });
 
-    describe('displaySelectAllButton', () => {
-        it('should be true if no items are selected', async () => {
+    describe('areAllItemsSelected', () => {
+        it('should be false if no items are selected', async () => {
             const children = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
             render(<UseList data={data} callback={children} />);
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                         data: [{ id: 0 }, { id: 1 }],
                     })
                 );
             });
         });
-        it('should be true if some items are selected', async () => {
+        it('should be false if some items are selected', async () => {
             const children = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
             render(<UseList data={data} callback={children} />);
@@ -340,13 +340,13 @@ describe('<useList />', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: true,
+                        areAllItemsSelected: false,
                         selectedIds: [1],
                     })
                 );
             });
         });
-        it('should be false if all items are manually selected', async () => {
+        it('should be true if all items are manually selected', async () => {
             const children = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
             render(<UseList data={data} callback={children} />);
@@ -356,13 +356,13 @@ describe('<useList />', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         selectedIds: [0, 1],
                     })
                 );
             });
         });
-        it('should be false if all items are selected with onSelectAll', async () => {
+        it('should be true if all items are selected with onSelectAll', async () => {
             const children = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
             render(<UseList data={data} callback={children} />);
@@ -372,7 +372,7 @@ describe('<useList />', () => {
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        displaySelectAllButton: false,
+                        areAllItemsSelected: true,
                         selectedIds: [0, 1],
                     })
                 );

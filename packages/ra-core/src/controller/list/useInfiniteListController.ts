@@ -233,9 +233,9 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
-        displaySelectAllButton: !(
-            total === selectedIds.length || selectedIds.length >= selectAllLimit
-        ),
+        areAllItemsSelected:
+            total === selectedIds.length ||
+            selectedIds.length >= selectAllLimit,
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
