@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { required } from 'ra-core';
+import { required, Resource, useNotify } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
 
 import { TextInput } from './TextInput';
@@ -9,6 +9,8 @@ import { Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
 import { FormInspector } from './common';
+import { Admin } from 'react-admin';
+import { MemoryRouter } from 'react-router';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 
@@ -174,6 +176,43 @@ export const Error = () => (
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+const ServerErrorCreate = () => {
+    const notify = useNotify();
+    const onSuccess = () => notify('Created with success', { type: 'success' });
+    const onError = () =>
+        notify('Error during item creation', { type: 'error' });
+    return (
+        <Create
+            resource="posts"
+            record={{ id: 123, title: 'Lorem ipsum' }}
+            sx={{ width: 600 }}
+            mutationOptions={{ onSuccess, onError }}
+        >
+            <SimpleForm toolbar={AlwaysOnToolbar}>
+                <TextInput source="title" />
+                <FormInspector />
+            </SimpleForm>
+        </Create>
+    );
+};
+
+export const ServerError = () => (
+    <MemoryRouter initialEntries={['/posts/create']}>
+        <Admin
+            dataProvider={
+                {
+                    create: (resource, { data }) => {
+                        console.log(`reject create on ${resource}: `, data);
+                        return Promise.reject({ data });
+                    },
+                } as any
+            }
+        >
+            <Resource name="posts" create={ServerErrorCreate} />
+        </Admin>
+    </MemoryRouter>
 );
 
 export const Sx = () => (
