@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNotify } from '../../notification';
 import { useDataProvider } from '../../dataProvider';
 import { useRecordSelection } from './useRecordSelection';
@@ -33,19 +33,35 @@ export const useSelectAll = ({
 }: useSelectAllProps): (() => void) => {
     const notify = useNotify();
     const dataProvider = useDataProvider();
+    const queryClient = useQueryClient();
     const [_, selectionModifiers] = useRecordSelection({ resource });
-    const { mutate: onSelectAll } = useMutation({
-        mutationFn: () =>
-            dataProvider.getList(resource, {
-                pagination: {
-                    page: 1,
-                    perPage: selectAllLimit,
-                },
-                sort: { field: query.sort, order: query.order },
-                filter: { ...query.filter, ...filter },
-                meta,
-            }),
-        onSuccess: ({ data }) => {
+
+    const onSelectAll = async () => {
+        try {
+            const { data } = await queryClient.fetchQuery({
+                queryKey: [
+                    resource,
+                    'getList',
+                    {
+                        resource,
+                        pagination: { page: 1, perPage: selectAllLimit },
+                        sort: { field: query.sort, order: query.order },
+                        filter: { ...query.filter, ...filter },
+                        meta,
+                    },
+                ],
+                queryFn: () =>
+                    dataProvider.getList(resource, {
+                        pagination: {
+                            page: 1,
+                            perPage: selectAllLimit,
+                        },
+                        sort: { field: query.sort, order: query.order },
+                        filter: { ...query.filter, ...filter },
+                        meta,
+                    }),
+            });
+
             const allIds = data?.map(({ id }) => id) || [];
             selectionModifiers.select(allIds);
             if (allIds.length === selectAllLimit) {
@@ -54,13 +70,13 @@ export const useSelectAll = ({
                     type: 'warning',
                 });
             }
-        },
-        onError: e => {
-            console.error('Mutation Error: ', e);
-            notify('An error occurred. Please try again.');
-        },
-    });
 
+            return data;
+        } catch (error) {
+            console.error('Mutation Error: ', error);
+            notify('An error occurred. Please try again.');
+        }
+    };
     return onSelectAll;
 };
 
