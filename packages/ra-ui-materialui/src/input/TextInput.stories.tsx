@@ -197,10 +197,7 @@ export const ServerError = () => (
             <Resource
                 name="posts"
                 create={() => (
-                    <Create
-                        resource="posts"
-                        record={{ title: 'Lorem ipsum' }}
-                    >
+                    <Create resource="posts" record={{ title: 'Lorem ipsum' }}>
                         <SimpleForm toolbar={AlwaysOnToolbar}>
                             <TextInput source="title" />
                             <FormInspector />
@@ -234,10 +231,7 @@ export const ServerValidationError = () => (
             <Resource
                 name="posts"
                 create={() => (
-                    <Create
-                        resource="posts"
-                        record={{ title: 'Lorem ipsum' }}
-                    >
+                    <Create resource="posts" record={{ title: 'Lorem ipsum' }}>
                         <SimpleForm toolbar={AlwaysOnToolbar}>
                             <TextInput source="title" />
                             <FormInspector />
