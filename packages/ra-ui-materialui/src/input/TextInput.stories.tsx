@@ -178,26 +178,6 @@ export const Error = () => (
     </AdminContext>
 );
 
-const ServerErrorCreate = () => {
-    const notify = useNotify();
-    const onSuccess = () => notify('Created with success', { type: 'success' });
-    const onError = () =>
-        notify('Error during item creation', { type: 'error' });
-    return (
-        <Create
-            resource="posts"
-            record={{ id: 123, title: 'Lorem ipsum' }}
-            sx={{ width: 600 }}
-            mutationOptions={{ onSuccess, onError }}
-        >
-            <SimpleForm toolbar={AlwaysOnToolbar}>
-                <TextInput source="title" />
-                <FormInspector />
-            </SimpleForm>
-        </Create>
-    );
-};
-
 export const ServerError = () => (
     <MemoryRouter initialEntries={['/posts/create']}>
         <Admin
@@ -205,12 +185,68 @@ export const ServerError = () => (
                 {
                     create: (resource, { data }) => {
                         console.log(`reject create on ${resource}: `, data);
-                        return Promise.reject({ data });
+                        return Promise.reject({
+                            data,
+                            message:
+                                'An article with this title already exists. The title must be unique.',
+                        });
                     },
                 } as any
             }
         >
-            <Resource name="posts" create={ServerErrorCreate} />
+            <Resource
+                name="posts"
+                create={() => (
+                    <Create
+                        resource="posts"
+                        record={{ id: 123, title: 'Lorem ipsum' }}
+                        sx={{ width: 600 }}
+                    >
+                        <SimpleForm toolbar={AlwaysOnToolbar}>
+                            <TextInput source="title" />
+                            <FormInspector />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </MemoryRouter>
+);
+
+export const ServerValidationError = () => (
+    <MemoryRouter initialEntries={['/posts/create']}>
+        <Admin
+            dataProvider={
+                {
+                    create: (resource, { data }) => {
+                        console.log(`reject create on ${resource}: `, data);
+                        return Promise.reject({
+                            data,
+                            body: {
+                                errors: {
+                                    title: 'An article with this title already exists. The title must be unique.',
+                                },
+                            },
+                        });
+                    },
+                } as any
+            }
+        >
+            <Resource
+                name="posts"
+                create={() => (
+                    <Create
+                        resource="posts"
+                        record={{ id: 123, title: 'Lorem ipsum' }}
+                        sx={{ width: 600 }}
+                    >
+                        <SimpleForm toolbar={AlwaysOnToolbar}>
+                            <TextInput source="title" />
+                            <FormInspector />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
         </Admin>
     </MemoryRouter>
 );
