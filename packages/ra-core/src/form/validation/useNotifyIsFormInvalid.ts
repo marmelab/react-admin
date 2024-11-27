@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useFormState, Control } from 'react-hook-form';
-import { useNotify } from '../notification';
+import { useNotify } from '../../notification';
 
 /**
  * This hook display an error message on submit in Form and SaveButton.

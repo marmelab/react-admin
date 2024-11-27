@@ -19,6 +19,25 @@ describe('ResourceMenuItem', () => {
         await screen.findByText('resources.posts.name');
         expect(screen.queryByText('resources.users.name')).toBeNull();
     });
+    it('should not render when authProvider.canAccess throws', async () => {
+        render(
+            <AccessControl
+                authProvider={
+                    {
+                        checkAuth: () => Promise.resolve(),
+                        canAccess: ({ resource }) =>
+                            resource === 'posts'
+                                ? Promise.resolve(true)
+                                : Promise.reject(
+                                      new Error('access control error')
+                                  ),
+                    } as any
+                }
+            />
+        );
+        await screen.findByText('resources.posts.name');
+        expect(screen.queryByText('resources.users.name')).toBeNull();
+    });
     it('should not render when authProvider.canAccess returns false with a Function as <Admin> child', async () => {
         render(<AccessControlInsideAdminChildFunction />);
         await screen.findByText('resources.posts.name');

@@ -40,9 +40,12 @@ const MyComponent = () => {
         // Do something before the mutation
 
         // Call the next middleware
-        await next(resource, params);
+        const result = await next(resource, params);
 
         // Do something after the mutation
+
+        // Always return the result
+        return result;
     }
     const memoizedMiddleWare = React.useCallback(createMiddleware, []);
     useRegisterMutationMiddleware(memoizedMiddleWare);
@@ -67,9 +70,12 @@ const middlware = async (resource, params, next) => {
     // Do something before the mutation
 
     // Call the next middleware
-    await next(resource, params);
+    const result = await next(resource, params);
 
     // Do something after the mutation
+
+    // Always return the result
+    return result;
 }
 ```
 
@@ -100,7 +106,7 @@ const ThumbnailInput = () => {
         const b64 = await convertFileToBase64(params.data.thumbnail);
         // Update the parameters that will be sent to the dataProvider call
         const newParams = { ...params, data: { ...data, thumbnail: b64 } };
-        await next(resource, newParams);
+        return next(resource, newParams);
     }, []);
     useRegisterMutationMiddleware(middleware);
 

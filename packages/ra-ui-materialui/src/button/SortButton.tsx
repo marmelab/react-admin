@@ -91,11 +91,16 @@ const SortButton = (props: SortButtonProps) => {
         setAnchorEl(null);
     };
 
+    const fieldLabel = translateLabel({
+        resource,
+        source: sort.field,
+    });
     const buttonLabel = translate(label, {
-        field: translateLabel({
-            resource,
-            source: sort.field,
-        }),
+        field: fieldLabel,
+        field_lower_first:
+            typeof fieldLabel === 'string'
+                ? fieldLabel.charAt(0).toLowerCase() + fieldLabel.slice(1)
+                : undefined,
         order: translate(`ra.sort.${sort.order}`),
         _: label,
     });

@@ -13,6 +13,7 @@ export const FormTab = (props: FormTabProps) => {
         count,
         hidden,
         icon,
+        iconPosition,
         intent,
         label,
         onChange,
@@ -32,6 +33,7 @@ export const FormTab = (props: FormTabProps) => {
             count={count}
             value={value}
             icon={icon}
+            iconPosition={iconPosition}
             className={className}
             syncWithLocation={syncWithLocation}
             onChange={onChange}

@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.4.0
+
+* Introduce `<FilterLiveForm>` ([#10344](https://github.com/marmelab/react-admin/pull/10344)) ([slax57](https://github.com/slax57))
+* Fix: Remove redundant optimization of cache lookup for `useGetMany`(Aggregate) placeholderData ([#10256](https://github.com/marmelab/react-admin/pull/10256)) ([wattroll](https://github.com/wattroll))
+* Fix `<SortButton>` default translation ([#10368](https://github.com/marmelab/react-admin/pull/10368)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useCanAccessResources` cannot have react-query options ([#10362](https://github.com/marmelab/react-admin/pull/10362)) ([djhi](https://github.com/djhi))
+* Fix `FilterListItem` story shows wrong way of resetting a filter ([#10358](https://github.com/marmelab/react-admin/pull/10358)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Add missing parameter to `add` function type of `<SimpleFormIteratorContextValue>` ([#10359](https://github.com/marmelab/react-admin/pull/10359)) ([Aikain](https://github.com/Aikain))
+* [Demo] Showcase tabs with icons ([#10369](https://github.com/marmelab/react-admin/pull/10369)) ([fzaninotto](https://github.com/fzaninotto))
+* [Chore] Reorganize ra-core/form directory ([#10364](https://github.com/marmelab/react-admin/pull/10364)) ([fzaninotto](https://github.com/fzaninotto))
+* [Chore] Remove `useSafeSetState` hook ([#10341](https://github.com/marmelab/react-admin/pull/10341)) ([geobde](https://github.com/geobde))
+* [Doc] Document `<DateRangeInput>` as a filter ([#10365](https://github.com/marmelab/react-admin/pull/10365)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `useRegisterMutationMiddleware` documentation ([#10360](https://github.com/marmelab/react-admin/pull/10360)) ([djhi](https://github.com/djhi))
+* [Doc] Improve Access Control for Custom Pages ([#10357](https://github.com/marmelab/react-admin/pull/10357)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<AppBar userMenu>` example usage ([#10356](https://github.com/marmelab/react-admin/pull/10356)) ([fzaninotto](https://github.com/fzaninotto))
+* Build(deps): Bump cross-spawn from 6.0.5 to 6.0.6 ([#10361](https://github.com/marmelab/react-admin/pull/10361)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.3.4
 
 * Fix `<SimpleList>` `ErrorInFetch` story ([#10353](https://github.com/marmelab/react-admin/pull/10353)) ([erwanMarmelab](https://github.com/erwanMarmelab))

@@ -20,11 +20,7 @@ import {
     WithAutoCompleteArrayInput,
     WithComplexValueFilter,
 } from './FilterButton.stories';
-import {
-    FilterForm,
-    getFilterFormValues,
-    mergeInitialValuesWithDefaultValues,
-} from './FilterForm';
+import { FilterForm } from './FilterForm';
 
 describe('<FilterForm />', () => {
     const defaultListContext = {
@@ -129,11 +125,7 @@ describe('<FilterForm />', () => {
             target: { value: 'foo' },
         });
         await waitFor(() => {
-            expect(setFilters).toHaveBeenCalledWith(
-                { title: 'foo' },
-                { title: true },
-                true
-            );
+            expect(setFilters).toHaveBeenCalledWith({ title: 'foo' });
         });
     });
 
@@ -271,11 +263,13 @@ describe('<FilterForm />', () => {
         });
         fireEvent.click(await screen.findByTitle('Remove this filter'));
         await screen.findByText('1-10 of 13');
-        expect(
-            screen.queryByText('Complex', {
-                selector: `.${chipClasses.root} *`,
-            })
-        ).toBeNull();
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Complex', {
+                    selector: `.${chipClasses.root} *`,
+                })
+            ).toBeNull();
+        });
     });
 
     it('should provide a FormGroupContext', async () => {
@@ -295,76 +289,6 @@ describe('<FilterForm />', () => {
         });
 
         await screen.findByText('1-2 of 2');
-    });
-
-    describe('mergeInitialValuesWithDefaultValues', () => {
-        it('should correctly merge initial values with the default values of the alwaysOn filters', () => {
-            const initialValues = {
-                title: 'initial title',
-            };
-            const filters = [
-                {
-                    props: {
-                        source: 'title',
-                        alwaysOn: true,
-                        defaultValue: 'default title',
-                    },
-                },
-                {
-                    props: {
-                        source: 'url',
-                        alwaysOn: true,
-                        defaultValue: 'default url',
-                    },
-                },
-                {
-                    props: {
-                        source: 'author.name',
-                        alwaysOn: true,
-                        defaultValue: 'default author',
-                    },
-                },
-                { props: { source: 'notMe', defaultValue: 'default url' } },
-                { props: { source: 'notMeEither' } },
-            ];
-
-            expect(
-                mergeInitialValuesWithDefaultValues(initialValues, filters)
-            ).toEqual({
-                title: 'initial title',
-                url: 'default url',
-                author: { name: 'default author' },
-            });
-        });
-    });
-
-    describe('getFilterFormValues', () => {
-        it('should correctly get the filter form values from the new filterValues', () => {
-            const currentFormValues = {
-                classicToClear: 'abc',
-                nestedToClear: { nestedValue: 'def' },
-                classicUpdated: 'ghi',
-                nestedUpdated: { nestedValue: 'jkl' },
-                published_at: new Date('2022-01-01T03:00:00.000Z'),
-                clearedDateValue: null,
-            };
-            const newFilterValues = {
-                classicUpdated: 'ghi2',
-                nestedUpdated: { nestedValue: 'jkl2' },
-                published_at: '2022-01-01T03:00:00.000Z',
-            };
-
-            expect(
-                getFilterFormValues(currentFormValues, newFilterValues)
-            ).toEqual({
-                classicToClear: '',
-                nestedToClear: { nestedValue: '' },
-                classicUpdated: 'ghi2',
-                nestedUpdated: { nestedValue: 'jkl2' },
-                published_at: '2022-01-01T03:00:00.000Z',
-                clearedDateValue: '',
-            });
-        });
     });
 
     it('should not reapply previous filter form values when clearing nested AutocompleteArrayInput', async () => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, ReactElement } from 'react';
+import { Fragment, ReactElement, useState } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 
 import { alpha, styled } from '@mui/material/styles';
@@ -11,7 +11,6 @@ import {
     useRefresh,
     useResourceContext,
     useTranslate,
-    useSafeSetState,
     RaRecord,
     DeleteManyParams,
 } from 'ra-core';
@@ -38,7 +37,7 @@ export const BulkDeleteWithConfirmButton = (
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const { selectedIds, onUnselectItems } = useListContext();
-    const [isOpen, setOpen] = useSafeSetState(false);
+    const [isOpen, setOpen] = useState(false);
     const notify = useNotify();
     const resource = useResourceContext(props);
     const refresh = useRefresh();

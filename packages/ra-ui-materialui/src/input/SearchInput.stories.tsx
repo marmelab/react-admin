@@ -131,6 +131,74 @@ export const Basic = () => (
     </TestMemoryRouter>
 );
 
+// taken from https://github.com/testing-library/dom-testing-library/blob/a86c54ccda5242ad8dfc1c70d31980bdbf96af7f/src/events.js#L106
+const setNativeValue = (element, value) => {
+    const { set: valueSetter } =
+        Object.getOwnPropertyDescriptor(element, 'value') || {};
+    const prototype = Object.getPrototypeOf(element);
+    const { set: prototypeValueSetter } =
+        Object.getOwnPropertyDescriptor(prototype, 'value') || {};
+    if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+        prototypeValueSetter.call(element, value);
+    } else {
+        if (valueSetter) {
+            valueSetter.call(element, value);
+        } else {
+            throw new Error('The given element does not have a value setter');
+        }
+    }
+};
+
+const simulateKeyboardEntry = (inputField: HTMLInputElement, char: string) => {
+    inputField.focus();
+    setNativeValue(inputField, inputField.value + char[0]);
+    const changeEvent = new Event('change', { bubbles: true });
+    inputField.dispatchEvent(changeEvent);
+};
+
+const RaceConditionTrigger = () => {
+    const triggerBug = async () => {
+        const input = document.querySelector(
+            'input[name="q"]'
+        ) as HTMLInputElement;
+        simulateKeyboardEntry(input, 'h');
+        await new Promise(resolve => setTimeout(resolve, 100));
+        simulateKeyboardEntry(input, 'e');
+        // a delay of 500 to 600 ms seems to trigger the bug
+        await new Promise(resolve => setTimeout(resolve, 550));
+        simulateKeyboardEntry(input, 'l');
+        await new Promise(resolve => setTimeout(resolve, 100));
+        simulateKeyboardEntry(input, 'l');
+        await new Promise(resolve => setTimeout(resolve, 100));
+        simulateKeyboardEntry(input, 'o');
+    };
+    return <button onClick={triggerBug}>Trigger bug</button>;
+};
+
+const RaceConditionBookList = () => {
+    return (
+        <List filters={postFilters}>
+            <RaceConditionTrigger />
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="year" />
+            </Datagrid>
+        </List>
+    );
+};
+
+export const RaceCondition = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource name="books" list={RaceConditionBookList} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
 const postFiltersReadOnly = [<SearchInput source="q" alwaysOn readOnly />];
 
 const BookListReadOnly = () => {
