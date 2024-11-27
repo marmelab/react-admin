@@ -1,26 +1,17 @@
-import type { SxProps } from '@mui/material';
 import {
     Avatar,
     List,
-    ListItem,
     ListItemAvatar,
-    ListItemButton,
     ListItemIcon,
-    ListItemProps,
     ListItemSecondaryAction,
     ListItemText,
     ListProps,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
-    Identifier,
-    LinkToType,
     RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
-    useEvent,
-    useGetPathForRecord,
-    useGetPathForRecordCallback,
     useGetRecordRepresentation,
     useListContextWithProps,
     useRecordContext,
@@ -28,12 +19,16 @@ import {
     useTranslate,
 } from 'ra-core';
 import * as React from 'react';
-import { isValidElement, ReactElement, ReactNode } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { isValidElement, ReactElement } from 'react';
 
 import { ListNoResults } from '../ListNoResults';
 import { SimpleListLoading } from './SimpleListLoading';
-import { RowClickFunction } from '../types';
+import {
+    FunctionToElement,
+    SimpleListBaseProps,
+    SimpleListItem,
+    SimpleListItemProps,
+} from './SimpleListItem';
 
 /**
  * The <SimpleList> component renders a list of records as a Material UI <List>.
@@ -122,62 +117,28 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                     <SimpleListItem
                         key={record.id}
                         rowIndex={rowIndex}
-                        leftAvatar={leftAvatar}
-                        leftIcon={leftIcon}
                         linkType={linkType}
                         rowClick={rowClick}
-                        primaryText={primaryText}
-                        rightAvatar={rightAvatar}
-                        rightIcon={rightIcon}
-                        secondaryText={secondaryText}
-                        tertiaryText={tertiaryText}
                         rowSx={rowSx}
                         rowStyle={rowStyle}
-                    />
+                    >
+                        <SimpleListItemContent
+                            leftAvatar={leftAvatar}
+                            leftIcon={leftIcon}
+                            primaryText={primaryText}
+                            rightAvatar={rightAvatar}
+                            rightIcon={rightIcon}
+                            secondaryText={secondaryText}
+                            tertiaryText={tertiaryText}
+                            rowIndex={rowIndex}
+                        />
+                    </SimpleListItem>
                 </RecordContextProvider>
             ))}
         </Root>
     );
 };
 
-export type FunctionToElement<RecordType extends RaRecord = any> = (
-    record: RecordType,
-    id: Identifier
-) => ReactNode;
-
-interface SimpleListBaseProps<RecordType extends RaRecord = any> {
-    leftAvatar?: FunctionToElement<RecordType>;
-    leftIcon?: FunctionToElement<RecordType>;
-    primaryText?: FunctionToElement<RecordType> | ReactElement | string;
-    /**
-     * @deprecated use rowClick instead
-     */
-    linkType?: string | FunctionLinkType | false;
-
-    /**
-     * The action to trigger when the user clicks on a row.
-     *
-     * @see https://marmelab.com/react-admin/Datagrid.html#rowclick
-     * @example
-     * import { List, Datagrid } from 'react-admin';
-     *
-     * export const PostList = () => (
-     *     <List>
-     *         <Datagrid rowClick="edit">
-     *             ...
-     *         </Datagrid>                    </ListItem>
-
-     *     </List>
-     * );
-     */
-    rowClick?: string | RowClickFunction | false;
-    rightAvatar?: FunctionToElement<RecordType>;
-    rightIcon?: FunctionToElement<RecordType>;
-    secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
-    tertiaryText?: FunctionToElement<RecordType> | ReactElement | string;
-    rowSx?: (record: RecordType, index: number) => SxProps;
-    rowStyle?: (record: RecordType, index: number) => any;
-}
 export interface SimpleListProps<RecordType extends RaRecord = any>
     extends SimpleListBaseProps<RecordType>,
         Omit<ListProps, 'classes'> {
@@ -192,107 +153,6 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     isLoaded?: boolean;
     total?: number;
 }
-
-const SimpleListItem = <RecordType extends RaRecord = any>(
-    props: SimpleListItemProps<RecordType>
-) => {
-    const { linkType, rowClick, rowIndex, rowSx, rowStyle } = props;
-    const resource = useResourceContext(props);
-    const record = useRecordContext<RecordType>(props);
-    const navigate = useNavigate();
-    // If we don't have a function to get the path, we can compute the path immediately and set the href
-    // on the Link correctly without onClick (better for accessibility)
-    const isFunctionLink =
-        typeof linkType === 'function' || typeof rowClick === 'function';
-    const pathForRecord = useGetPathForRecord({
-        link: isFunctionLink ? false : linkType ?? rowClick,
-    });
-    const getPathForRecord = useGetPathForRecordCallback();
-    const handleClick = useEvent(
-        async (event: React.MouseEvent<HTMLAnchorElement>) => {
-            // No need to handle non function linkType or rowClick
-            if (!isFunctionLink) return;
-            if (!record) return;
-            event.persist();
-
-            let link: LinkToType =
-                typeof linkType === 'function'
-                    ? linkType(record, record.id)
-                    : typeof rowClick === 'function'
-                      ? (record, resource) =>
-                            rowClick(record.id, resource, record)
-                      : false;
-
-            const path = await getPathForRecord({
-                record,
-                resource,
-                link,
-            });
-            if (path === false || path == null) {
-                return;
-            }
-            navigate(path);
-        }
-    );
-
-    if (!record) return null;
-
-    if (isFunctionLink) {
-        return (
-            <ListItem
-                disablePadding
-                sx={{
-                    '.MuiListItem-container': {
-                        width: '100%',
-                    },
-                }}
-            >
-                {/* @ts-ignore */}
-                <ListItemButton
-                    onClick={handleClick}
-                    style={rowStyle ? rowStyle(record, rowIndex) : undefined}
-                    sx={rowSx?.(record, rowIndex)}
-                >
-                    <SimpleListItemContent {...props} />
-                </ListItemButton>
-            </ListItem>
-        );
-    }
-
-    if (pathForRecord) {
-        return (
-            <ListItem
-                disablePadding
-                sx={{
-                    '.MuiListItem-container': {
-                        width: '100%',
-                    },
-                }}
-            >
-                <ListItemButton
-                    component={Link}
-                    to={pathForRecord}
-                    style={rowStyle ? rowStyle(record, rowIndex) : undefined}
-                    sx={rowSx?.(record, rowIndex)}
-                >
-                    <SimpleListItemContent {...props} />
-                </ListItemButton>
-            </ListItem>
-        );
-    }
-
-    return (
-        <ListItem
-            sx={{
-                '.MuiListItem-container': {
-                    width: '100%',
-                },
-            }}
-        >
-            <SimpleListItemContent {...props} />
-        </ListItem>
-    );
-};
 
 const SimpleListItemContent = <RecordType extends RaRecord = any>(
     props: SimpleListItemProps<RecordType>
@@ -399,24 +259,6 @@ const SimpleListItemContent = <RecordType extends RaRecord = any>(
         </>
     );
 };
-
-interface SimpleListItemProps<RecordType extends RaRecord = any>
-    extends SimpleListBaseProps<RecordType>,
-        Omit<ListItemProps, 'button' | 'component' | 'id'> {
-    rowIndex: number;
-}
-
-export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
-
-export interface LinkOrNotProps {
-    // @deprecated: use rowClick instead
-    linkType?: string | FunctionLinkType | false;
-    rowClick?: string | RowClickFunction | false;
-    resource?: string;
-    id: Identifier;
-    record: RaRecord;
-    children: ReactNode;
-}
 
 const PREFIX = 'RaSimpleList';
 
