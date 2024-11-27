@@ -52,10 +52,9 @@ export interface UseReferenceFieldControllerOptions<
     ReferenceRecordType extends RaRecord = RaRecord,
 > {
     source: string;
-    queryOptions?: Partial<
-        UseQueryOptions<ReferenceRecordType[], Error> & {
-            meta?: any;
-        }
+    queryOptions?: Omit<
+        UseQueryOptions<ReferenceRecordType[], Error>,
+        'queryFn' | 'queryKey'
     >;
     reference: string;
     link?: LinkToType<ReferenceRecordType>;
