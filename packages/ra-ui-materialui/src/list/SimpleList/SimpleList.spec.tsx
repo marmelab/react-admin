@@ -6,13 +6,20 @@ import {
     waitFor,
     within,
 } from '@testing-library/react';
-import { ListContext, ResourceContextProvider } from 'ra-core';
+import {
+    ListContext,
+    ResourceContextProvider,
+    ResourceDefinitionContextProvider,
+} from 'ra-core';
+import { Location } from 'react-router';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../../field/TextField';
 import {
+    LinkType,
     NoPrimaryText,
+    RowClick,
     Standalone,
     StandaloneEmpty,
 } from './SimpleList.stories';
@@ -20,9 +27,20 @@ import { Basic } from '../filter/FilterButton.stories';
 
 const Wrapper = ({ children }: any) => (
     <AdminContext>
-        <ResourceContextProvider value="posts">
-            {children}
-        </ResourceContextProvider>
+        <ResourceDefinitionContextProvider
+            definitions={{
+                posts: {
+                    name: 'posts',
+                    hasList: true,
+                    hasEdit: true,
+                    hasShow: true,
+                },
+            }}
+        >
+            <ResourceContextProvider value="posts">
+                {children}
+            </ResourceContextProvider>
+        </ResourceDefinitionContextProvider>
     </AdminContext>
 );
 
@@ -59,58 +77,24 @@ describe('<SimpleList />', () => {
     });
 
     it.each([
-        [
-            'edit',
-            'edit',
-            ['http://localhost/#/posts/1', 'http://localhost/#/posts/2'],
-        ],
-        [
-            'show',
-            'show',
-            [
-                'http://localhost/#/posts/1/show',
-                'http://localhost/#/posts/2/show',
-            ],
-        ],
-        [
-            'custom',
-            (record, id) => `/posts/${id}/custom`,
-            [
-                'http://localhost/#/posts/1/custom',
-                'http://localhost/#/posts/2/custom',
-            ],
-        ],
+        ['edit', 'edit', '/books/1'],
+        ['show', 'show', '/books/1/show'],
+        ['custom', (record, id) => `/books/${id}/custom`, '/books/1/custom'],
     ])(
-        'should render %s links for each item',
-        async (_, link, expectedUrls) => {
+        'should render %s links for each item with linkType',
+        async (_, linkType, expectedUrls) => {
+            let location: Location;
             render(
-                <ListContext.Provider
-                    value={{
-                        isLoading: false,
-                        data: [
-                            { id: 1, title: 'foo' },
-                            { id: 2, title: 'bar' },
-                        ],
-                        total: 2,
-                        resource: 'posts',
+                <LinkType
+                    linkType={linkType}
+                    locationCallback={l => {
+                        location = l;
                     }}
-                >
-                    <SimpleList
-                        linkType={link}
-                        primaryText={record => record.id.toString()}
-                        secondaryText={<TextField source="title" />}
-                    />
-                </ListContext.Provider>,
-                { wrapper: Wrapper }
+                />
             );
-
+            fireEvent.click(await screen.findByText('War and Peace'));
             await waitFor(() => {
-                expect(screen.getByText('1').closest('a').href).toEqual(
-                    expectedUrls[0]
-                );
-                expect(screen.getByText('2').closest('a').href).toEqual(
-                    expectedUrls[1]
-                );
+                expect(location?.pathname).toEqual(expectedUrls);
             });
         }
     );
@@ -130,6 +114,57 @@ describe('<SimpleList />', () => {
             >
                 <SimpleList
                     linkType={false}
+                    primaryText={record => record.id.toString()}
+                    secondaryText={<TextField source="title" />}
+                />
+            </ListContext.Provider>,
+            { wrapper: Wrapper }
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('1').closest('a')).toBeNull();
+            expect(screen.getByText('2').closest('a')).toBeNull();
+        });
+    });
+
+    it.each([
+        ['edit', 'edit', '/books/1'],
+        ['show', 'show', '/books/1/show'],
+        ['custom', id => `/books/${id}/custom`, '/books/1/custom'],
+    ])(
+        'should render %s links for each item with rowClick',
+        async (_, rowClick, expectedUrls) => {
+            let location: Location;
+            render(
+                <RowClick
+                    rowClick={rowClick}
+                    locationCallback={l => {
+                        location = l;
+                    }}
+                />
+            );
+            fireEvent.click(await screen.findByText('War and Peace'));
+            await waitFor(() => {
+                expect(location?.pathname).toEqual(expectedUrls);
+            });
+        }
+    );
+
+    it('should not render links if rowClick is false', async () => {
+        render(
+            <ListContext.Provider
+                value={{
+                    isLoading: false,
+                    data: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
+                    total: 2,
+                    resource: 'posts',
+                }}
+            >
+                <SimpleList
+                    rowClick={false}
                     primaryText={record => record.id.toString()}
                     secondaryText={<TextField source="title" />}
                 />
@@ -205,7 +240,7 @@ describe('<SimpleList />', () => {
         });
         it('should display a message when there is no result', async () => {
             render(<StandaloneEmpty />);
-            await screen.findByText('No results found.');
+            await screen.findByText('ra.navigation.no_results');
         });
     });
 });
