@@ -1,11 +1,9 @@
 import { isValidElement, useEffect, useMemo } from 'react';
-import { useMutation } from '@tanstack/react-query';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
-    useDataProvider,
     useGetList,
     UseGetListHookValue,
     UseGetListOptions,
@@ -16,6 +14,7 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 import { SORT_ASC } from './queryReducer';
+import { useSelectAll } from './useSelectAll';
 
 /**
  * Prepare data for the List view
@@ -81,7 +80,6 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     const translate = useTranslate();
     const notify = useNotify();
-    const dataProvider = useDataProvider();
 
     const [query, queryModifiers] = useListParams({
         debounce,
@@ -172,31 +170,12 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    const { mutate: onSelectAll } = useMutation({
-        mutationFn: () =>
-            dataProvider.getList(resource, {
-                pagination: {
-                    page: 1,
-                    perPage: selectAllLimit,
-                },
-                sort: { field: query.sort, order: query.order },
-                filter: { ...query.filter, ...filter },
-                meta,
-            }),
-        onSuccess: ({ data }) => {
-            const allIds = data?.map(({ id }) => id) || [];
-            selectionModifiers.select(allIds);
-            if (allIds.length === selectAllLimit) {
-                notify('ra.message.too_many_elements', {
-                    messageArgs: { max: selectAllLimit },
-                    type: 'warning',
-                });
-            }
-        },
-        onError: e => {
-            console.error('Mutation Error: ', e);
-            notify('An error occurred. Please try again.');
-        },
+    const onSelectAll = useSelectAll({
+        selectAllLimit,
+        query,
+        filter,
+        meta,
+        resource,
     });
 
     return {
