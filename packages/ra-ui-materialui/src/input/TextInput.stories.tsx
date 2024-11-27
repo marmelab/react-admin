@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { required, Resource, useNotify } from 'ra-core';
+import { required, Resource } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
 
 import { TextInput } from './TextInput';
