@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { createTheme, ThemeProvider, Stack } from '@mui/material';
+import { createTheme, ThemeProvider, Stack, Tooltip } from '@mui/material';
 import type { PaletteColor } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -77,6 +77,14 @@ export const WithUserDefinedPalette = () => (
                 <AddIcon />
             </Button>
         </UIWrapper>
+    </ThemeProvider>
+);
+
+export const WithTooltip = () => (
+    <ThemeProvider theme={theme}>
+        <Tooltip title="This is a button">
+            <Button label="button" />
+        </Tooltip>
     </ThemeProvider>
 );
 
