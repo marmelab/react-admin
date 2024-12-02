@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.4.1
+
+* Fix access control basename handling ([#10383](https://github.com/marmelab/react-admin/pull/10383)) ([djhi](https://github.com/djhi))
+* Fix ReferenceManyField executes filter reset filter too often ([#10371](https://github.com/marmelab/react-admin/pull/10371)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add video tutorial to Access Control documentation ([#10378](https://github.com/marmelab/react-admin/pull/10378)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix AutocompleteArrrayInput contains a useless tip ([#10373](https://github.com/marmelab/react-admin/pull/10373)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update `useUpdate` doc to explain `returnPromise` option ([#10372](https://github.com/marmelab/react-admin/pull/10372)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Supabase (GraphQL) DataProvider link label ([#10370](https://github.com/marmelab/react-admin/pull/10370)) ([zackha](https://github.com/zackha))
+* [TypeScript] Fix `<ReferenceArrayField queryOptions>` param type ([#10389](https://github.com/marmelab/react-admin/pull/10389)) ([dricholm](https://github.com/dricholm))
+* [Storybook] Re-enable storysource addon ([#10363](https://github.com/marmelab/react-admin/pull/10363)) ([slax57](https://github.com/slax57))
+* [Chore] Add a story when `TextInput` trigger a server error ([#10386](https://github.com/marmelab/react-admin/pull/10386)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.4.0
 
 * Introduce `<FilterLiveForm>` ([#10344](https://github.com/marmelab/react-admin/pull/10344)) ([slax57](https://github.com/slax57))
