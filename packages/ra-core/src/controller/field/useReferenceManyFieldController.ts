@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { UseQueryOptions, useMutation } from '@tanstack/react-query';
+import { UseQueryOptions, useQueryClient } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
@@ -71,6 +71,7 @@ export const useReferenceManyFieldController = <
     const dataProvider = useDataProvider();
     const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
+    const queryClient = useQueryClient();
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
@@ -202,20 +203,38 @@ export const useReferenceManyFieldController = <
         }
     );
 
-    const { mutate: onSelectAll } = useMutation({
-        mutationFn: () =>
-            dataProvider.getManyReference(reference, {
-                target,
-                id: get(record, source) as Identifier,
-                pagination: {
-                    page: 1,
-                    perPage: selectAllLimit,
-                },
-                sort,
-                filter: filterValues,
-                meta,
-            }),
-        onSuccess: ({ data }) => {
+    const onSelectAll = useCallback(async () => {
+        try {
+            const { data } = await queryClient.fetchQuery({
+                queryKey: [
+                    resource,
+                    'getManyReference',
+                    {
+                        target,
+                        id: get(record, source) as Identifier,
+                        pagination: {
+                            page: 1,
+                            perPage: selectAllLimit,
+                        },
+                        sort,
+                        filter: filterValues,
+                        meta,
+                    },
+                ],
+                queryFn: () =>
+                    dataProvider.getManyReference(reference, {
+                        target,
+                        id: get(record, source) as Identifier,
+                        pagination: {
+                            page: 1,
+                            perPage: selectAllLimit,
+                        },
+                        sort,
+                        filter: filterValues,
+                        meta,
+                    }),
+            });
+
             const allIds = data?.map(({ id }) => id) || [];
             selectionModifiers.select(allIds);
             if (allIds.length === selectAllLimit) {
@@ -224,12 +243,27 @@ export const useReferenceManyFieldController = <
                     type: 'warning',
                 });
             }
-        },
-        onError: e => {
-            console.error('Mutation Error: ', e);
+
+            return data;
+        } catch (error) {
+            console.error('Mutation Error: ', error);
             notify('An error occurred. Please try again.');
-        },
-    });
+        }
+    }, [
+        dataProvider,
+        filterValues,
+        meta,
+        notify,
+        queryClient,
+        record,
+        reference,
+        resource,
+        selectAllLimit,
+        selectionModifiers,
+        sort,
+        source,
+        target,
+    ]);
 
     return {
         sort,
