@@ -518,4 +518,3 @@ export const CommentCreate = () => {
 ## Role-Based Access Control
 
 If you need more complex permissions with roles and groups, the principle of least privilege, record-level permissions, explicit deny, and more, check the next section for the [Role-Based Access Control](./AuthRBAC.md).
-
