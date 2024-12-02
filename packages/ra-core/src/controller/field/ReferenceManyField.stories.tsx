@@ -4,22 +4,23 @@ import {
     type GetManyResult,
     type ListControllerResult,
     testDataProvider,
-    useReferenceArrayFieldController,
+    useReferenceManyFieldController,
 } from '../..';
 
-const dataProvider = testDataProvider({
-    getMany: (_resource, _params): Promise<GetManyResult> =>
+const defaultDataProvider = testDataProvider({
+    getManyReference: (_resource, params): Promise<GetManyResult> =>
         Promise.resolve({
             data: [
+                { id: 0, title: 'bar0' },
                 { id: 1, title: 'bar1' },
-                { id: 2, title: 'bar2' },
-            ],
+            ].slice(0, params.pagination.perPage),
+            total: params.pagination.perPage || 2,
         }),
 });
 
-const ReferenceArrayFieldController = props => {
+const ReferenceManyFieldController = props => {
     const { children, ...rest } = props;
-    const controllerProps = useReferenceArrayFieldController({
+    const controllerProps = useReferenceManyFieldController({
         sort: {
             field: 'id',
             order: 'ASC',
@@ -29,7 +30,9 @@ const ReferenceArrayFieldController = props => {
     return children(controllerProps);
 };
 
-const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
+const ReferenceManyField = (
+    props: ListControllerResult & { selectAllLimit?: number }
+) => (
     <div>
         <div
             style={{
@@ -51,6 +54,9 @@ const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
                 Unselect All
             </button>
             <p>Selected ids: {JSON.stringify(props.selectedIds)}</p>
+            {props.selectAllLimit && (
+                <p>selectAllLimit : {props.selectAllLimit}</p>
+            )}
         </div>
         <ul
             style={{
@@ -75,21 +81,38 @@ const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
     </div>
 );
 
-export const ReferenceArrayField = ({
-    children = ReferenceArrayFieldComponent,
-}) => (
-    <CoreAdminContext dataProvider={dataProvider}>
-        <ReferenceArrayFieldController
-            resource="foo"
-            reference="bar"
-            record={{ id: 1, barIds: [1, 2] }}
-            source="barIds"
+export const Basic = ({ children = ReferenceManyField }) => (
+    <CoreAdminContext dataProvider={defaultDataProvider}>
+        <ReferenceManyFieldController
+            resource="authors"
+            source="id"
+            record={{ id: 123, name: 'James Joyce' }}
+            reference="books"
+            target="author_id"
         >
             {children}
-        </ReferenceArrayFieldController>
+        </ReferenceManyFieldController>
+    </CoreAdminContext>
+);
+
+export const SelectAllLimit = ({
+    dataProvider = defaultDataProvider,
+    children = props => <ReferenceManyField selectAllLimit={1} {...props} />,
+}) => (
+    <CoreAdminContext dataProvider={dataProvider}>
+        <ReferenceManyFieldController
+            resource="authors"
+            source="id"
+            record={{ id: 123, name: 'James Joyce' }}
+            reference="books"
+            target="author_id"
+            selectAllLimit={1}
+        >
+            {children}
+        </ReferenceManyFieldController>
     </CoreAdminContext>
 );
 
 export default {
-    title: 'ra-core/fields/ReferenceArrayField',
+    title: 'ra-core/fields/ReferenceManyField',
 };

@@ -12,6 +12,7 @@ import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
 import { useReferenceManyFieldController } from './useReferenceManyFieldController';
 import { memoryStore } from '../../store';
+import { Basic, SelectAllLimit } from './ReferenceManyField.stories';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;
@@ -422,25 +423,7 @@ describe('useReferenceManyFieldController', () => {
     describe('areAllItemsSelected', () => {
         it('should be false if no items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            const dataProvider = testDataProvider({
-                getManyReference: jest.fn().mockResolvedValue({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                }),
-            });
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
-            );
+            render(<Basic>{children}</Basic>);
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -451,25 +434,7 @@ describe('useReferenceManyFieldController', () => {
         });
         it('should be false if some items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            const dataProvider = testDataProvider({
-                getManyReference: jest.fn().mockResolvedValue({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                }),
-            });
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
-            );
+            render(<Basic>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([1]);
             });
@@ -484,25 +449,7 @@ describe('useReferenceManyFieldController', () => {
         });
         it('should be true if all items are manually selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            const dataProvider = testDataProvider({
-                getManyReference: jest.fn().mockResolvedValue({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                }),
-            });
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
-            );
+            render(<Basic>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([0, 1]);
             });
@@ -517,25 +464,7 @@ describe('useReferenceManyFieldController', () => {
         });
         it('should be true if all items are selected with onSelectAll', async () => {
             const children = jest.fn().mockReturnValue('child');
-            const dataProvider = testDataProvider({
-                getManyReference: jest.fn().mockResolvedValue({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                }),
-            });
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
-            );
+            render(<Basic>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
@@ -550,26 +479,7 @@ describe('useReferenceManyFieldController', () => {
         });
         it('should be true if all we manually reached the selectAllLimit', async () => {
             const children = jest.fn().mockReturnValue('child');
-            const dataProvider = testDataProvider({
-                getManyReference: jest.fn().mockResolvedValue({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                }),
-            });
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                        selectAllLimit={1}
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
-            );
+            render(<SelectAllLimit>{children}</SelectAllLimit>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([0]);
             });
@@ -584,33 +494,7 @@ describe('useReferenceManyFieldController', () => {
         });
         it('should be true if all we reached the selectAllLimit with onSelectAll', async () => {
             const children = jest.fn().mockReturnValue('child');
-            const dataProvider = testDataProvider({
-                getManyReference: jest
-                    .fn()
-                    .mockImplementation((_resource, params) =>
-                        Promise.resolve({
-                            data: [{ id: 0 }, { id: 1 }].slice(
-                                0,
-                                params.pagination.perPage
-                            ),
-                            total: 2,
-                        })
-                    ),
-            });
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                        selectAllLimit={1}
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
-            );
+            render(<SelectAllLimit>{children}</SelectAllLimit>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
@@ -628,26 +512,7 @@ describe('useReferenceManyFieldController', () => {
     describe('onSelectAll', () => {
         it('should select all items if no items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            const dataProvider = testDataProvider({
-                getManyReference: jest.fn().mockResolvedValue({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                }),
-            });
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                        selectAllLimit={1}
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
-            );
+            render(<Basic>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
@@ -661,26 +526,7 @@ describe('useReferenceManyFieldController', () => {
         });
         it('should select all items if some items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            const dataProvider = testDataProvider({
-                getManyReference: jest.fn().mockResolvedValue({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                }),
-            });
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                        selectAllLimit={1}
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
-            );
+            render(<Basic>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([1]);
             });
@@ -715,20 +561,13 @@ describe('useReferenceManyFieldController', () => {
                         total: 2,
                     })
                 );
-            const dataProvider = testDataProvider({ getManyReference });
+            const dataProvider = testDataProvider({
+                getManyReference,
+            });
             render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceManyFieldController
-                        resource="authors"
-                        source="id"
-                        record={{ id: 123, name: 'James Joyce' }}
-                        reference="books"
-                        target="author_id"
-                        selectAllLimit={1}
-                    >
-                        {children}
-                    </ReferenceManyFieldController>
-                </CoreAdminContext>
+                <SelectAllLimit dataProvider={dataProvider}>
+                    {children}
+                </SelectAllLimit>
             );
             await waitFor(() => {
                 expect(children).toHaveBeenNthCalledWith(
