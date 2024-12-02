@@ -5,6 +5,7 @@ import { act, render, waitFor } from '@testing-library/react';
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
 import { CoreAdminContext } from '../../core';
+import { ReferenceArrayField } from './ReferenceArrayField.stories';
 
 const ReferenceArrayFieldController = props => {
     const { children, ...rest } = props;
@@ -170,18 +171,7 @@ describe('<useReferenceArrayFieldController />', () => {
     describe('areAllItemsSelected', () => {
         it('should be false if no items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceArrayFieldController
-                        resource="foo"
-                        reference="bar"
-                        record={{ id: 1, barIds: [1, 2] }}
-                        source="barIds"
-                    >
-                        {children}
-                    </ReferenceArrayFieldController>
-                </CoreAdminContext>
-            );
+            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -197,18 +187,7 @@ describe('<useReferenceArrayFieldController />', () => {
         });
         it('should be false if some items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceArrayFieldController
-                        resource="foo"
-                        reference="bar"
-                        record={{ id: 1, barIds: [1, 2] }}
-                        source="barIds"
-                    >
-                        {children}
-                    </ReferenceArrayFieldController>
-                </CoreAdminContext>
-            );
+            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([1]);
             });
@@ -228,18 +207,7 @@ describe('<useReferenceArrayFieldController />', () => {
         });
         it('should be true if all items are manually selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceArrayFieldController
-                        resource="foo"
-                        reference="bar"
-                        record={{ id: 1, barIds: [1, 2] }}
-                        source="barIds"
-                    >
-                        {children}
-                    </ReferenceArrayFieldController>
-                </CoreAdminContext>
-            );
+            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([1, 2]);
             });
@@ -259,18 +227,7 @@ describe('<useReferenceArrayFieldController />', () => {
         });
         it('should be true if all items are selected with onSelectAll', async () => {
             const children = jest.fn().mockReturnValue('child');
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceArrayFieldController
-                        resource="foo"
-                        reference="bar"
-                        record={{ id: 1, barIds: [1, 2] }}
-                        source="barIds"
-                    >
-                        {children}
-                    </ReferenceArrayFieldController>
-                </CoreAdminContext>
-            );
+            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -306,18 +263,7 @@ describe('<useReferenceArrayFieldController />', () => {
     describe('onSelectAll', () => {
         it('should select all items if no items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceArrayFieldController
-                        resource="foo"
-                        reference="bar"
-                        record={{ id: 1, barIds: [1, 2] }}
-                        source="barIds"
-                    >
-                        {children}
-                    </ReferenceArrayFieldController>
-                </CoreAdminContext>
-            );
+            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -341,18 +287,7 @@ describe('<useReferenceArrayFieldController />', () => {
         });
         it('should select all items if some items are selected', async () => {
             const children = jest.fn().mockReturnValue('child');
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceArrayFieldController
-                        resource="foo"
-                        reference="bar"
-                        record={{ id: 1, barIds: [1, 2] }}
-                        source="barIds"
-                    >
-                        {children}
-                    </ReferenceArrayFieldController>
-                </CoreAdminContext>
-            );
+            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
