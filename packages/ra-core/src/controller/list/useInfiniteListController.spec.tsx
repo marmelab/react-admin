@@ -22,11 +22,12 @@ import {
 import { CoreAdminContext } from '../../core';
 import { TestMemoryRouter } from '../../routing';
 import {
+    Basic,
     Authenticated,
     CanAccess,
     DisableAuthentication,
-} from './useInfiniteListController.security.stories';
-import { AuthProvider } from '../../types';
+} from './useInfiniteListController.stories';
+import type { AuthProvider } from '../../types';
 
 const InfiniteListController = ({
     children,
@@ -45,24 +46,22 @@ describe('useInfiniteListController', () => {
         debounce: 200,
     };
 
+    const dataProvider = testDataProvider({
+        getList: jest.fn().mockImplementation((_resource, params) =>
+            Promise.resolve({
+                data: [{ id: 0 }, { id: 1 }].slice(
+                    0,
+                    params.pagination.perPage
+                ),
+                total: 2,
+            })
+        ),
+    });
+
     describe('areAllItemsSelected', () => {
         it('should be false if no items are selected', async () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
-                );
-            const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
+            render(<Basic dataProvider={dataProvider} children={children} />);
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -73,22 +72,8 @@ describe('useInfiniteListController', () => {
             });
         });
         it('should be false if some items are selected', async () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
-                );
-            const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
+            render(<Basic dataProvider={dataProvider} children={children} />);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([0]);
             });
@@ -102,22 +87,8 @@ describe('useInfiniteListController', () => {
             });
         });
         it('should be true if all items are manually selected', async () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
-                );
-            const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
+            render(<Basic dataProvider={dataProvider} children={children} />);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([0, 1]);
             });
@@ -131,22 +102,8 @@ describe('useInfiniteListController', () => {
             });
         });
         it('should be true if all items are selected with onSelectAll', async () => {
-            const getList = jest
-                .fn()
-                .mockImplementation(() =>
-                    Promise.resolve({ data: [{ id: 0 }, { id: 1 }], total: 2 })
-                );
-            const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
+            render(<Basic dataProvider={dataProvider} children={children} />);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
@@ -160,23 +117,13 @@ describe('useInfiniteListController', () => {
             });
         });
         it('should be true if all we manually reached the selectAllLimit', async () => {
-            const getList = jest.fn().mockImplementation(() =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                })
-            );
-            const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                selectAllLimit: 1,
-                children,
-            };
             render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
+                <Basic
+                    dataProvider={dataProvider}
+                    children={children}
+                    selectAllLimit={1}
+                />
             );
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([0]);
@@ -191,27 +138,13 @@ describe('useInfiniteListController', () => {
             });
         });
         it('should be true if all we reached the selectAllLimit with onSelectAll', async () => {
-            const getList = jest.fn().mockImplementation((_resource, params) =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }].slice(
-                        0,
-                        params.pagination.perPage
-                    ),
-                    total: 2,
-                })
-            );
-
-            const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                selectAllLimit: 1,
-                children,
-            };
             render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
+                <Basic
+                    dataProvider={dataProvider}
+                    children={children}
+                    selectAllLimit={1}
+                />
             );
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
@@ -229,23 +162,8 @@ describe('useInfiniteListController', () => {
 
     describe('onSelectAll', () => {
         it('should select all items if no items are selected', async () => {
-            const getList = jest.fn().mockImplementation(() =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                })
-            );
-            const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
+            render(<Basic dataProvider={dataProvider} children={children} />);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
@@ -258,23 +176,8 @@ describe('useInfiniteListController', () => {
             });
         });
         it('should select all items if some items are selected', async () => {
-            const getList = jest.fn().mockImplementation(() =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }],
-                    total: 2,
-                })
-            );
-            const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                children,
-            };
-            render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
-            );
+            render(<Basic dataProvider={dataProvider} children={children} />);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([0]);
             });
@@ -306,17 +209,14 @@ describe('useInfiniteListController', () => {
                     total: 2,
                 })
             );
-            const dataProvider = testDataProvider({ getList });
+            const mockedDataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            const props = {
-                ...defaultProps,
-                selectAllLimit: 1,
-                children,
-            };
             render(
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <InfiniteListController {...props} />
-                </CoreAdminContext>
+                <Basic
+                    dataProvider={mockedDataProvider}
+                    selectAllLimit={1}
+                    children={children}
+                />
             );
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
