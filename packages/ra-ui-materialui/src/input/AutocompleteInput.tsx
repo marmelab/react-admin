@@ -554,7 +554,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const handleAutocompleteChange = useCallback(
         (event: any, newValue: any, reason: AutocompleteChangeReason) => {
-            event.stopPropagation();
+            // This prevents auto-submitting a form inside a dialog passed to the `create` prop
             event.preventDefault();
             if (reason === 'createOption') {
                 // When users press the enter key after typing a new value, we can handle it as if they clicked on the create option
