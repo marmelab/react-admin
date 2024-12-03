@@ -1,5 +1,5 @@
 import * as React from 'react';
-import usePermissions, { UsePermissionsResult } from './usePermissions';
+import usePermissions from './usePermissions';
 import { CoreAdminContext, TestMemoryRouter, useLogin, useLogout } from '..';
 
 export default {
@@ -36,34 +36,26 @@ const LogoutButton = () => {
     return <button onClick={logout}>Logout</button>;
 };
 
-const UsePermissions = ({
-    children,
-}: {
-    children: (state: UsePermissionsResult<any, Error>) => React.ReactNode;
-}) => {
+const UsePermissions = () => {
     const permissionQueryParams = {
         retry: false,
     };
-    const res = usePermissions({}, permissionQueryParams);
-    return children(res);
+    const state = usePermissions({}, permissionQueryParams);
+    return (
+        <div>
+            {state.isPending ? <span>LOADING</span> : null}
+            {state.permissions ? (
+                <span>PERMISSIONS: {state.permissions}</span>
+            ) : null}
+            {state.error ? <span>ERROR</span> : null}
+        </div>
+    );
 };
-
-const inspectPermissionsState = (state: UsePermissionsResult<any, Error>) => (
-    <div>
-        {state.isPending ? <span>LOADING</span> : null}
-        {state.permissions ? (
-            <span>PERMISSIONS: {state.permissions}</span>
-        ) : null}
-        {state.error ? <span>ERROR</span> : null}
-    </div>
-);
 
 export const PermissionsState = () => (
     <TestMemoryRouter>
         <CoreAdminContext authProvider={getAuthProviderWithLoginAndLogout()}>
-            <UsePermissions>
-                {state => inspectPermissionsState(state)}
-            </UsePermissions>
+            <UsePermissions />
             <LoginButton />
             <LogoutButton />
         </CoreAdminContext>
