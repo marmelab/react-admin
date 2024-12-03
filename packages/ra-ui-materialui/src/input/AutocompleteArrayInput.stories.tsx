@@ -254,6 +254,7 @@ const OnCreateInputStringChoices = () => {
 export const OnCreateStringChoices = () => (
     <AdminContext
         dataProvider={testDataProvider({
+            // @ts-expect-error
             create: async (resource, params) => {
                 console.log(resource, params);
                 return params;
