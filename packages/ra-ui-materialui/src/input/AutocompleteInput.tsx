@@ -14,6 +14,7 @@ import isEqual from 'lodash/isEqual';
 import clsx from 'clsx';
 import {
     Autocomplete,
+    AutocompleteChangeReason,
     AutocompleteProps,
     Chip,
     TextField,
@@ -552,12 +553,17 @@ If you provided a React element for the optionText prop, you must also provide t
     };
 
     const handleAutocompleteChange = useCallback(
-        (event: any, newValue: any, _reason: string) => {
+        (event: any, newValue: any, reason: AutocompleteChangeReason) => {
+            if (reason === 'createOption') {
+                // When users press the enter key after typing a new value, we can handle it as if they clicked on the create option
+                handleChangeWithCreateSupport(getCreateItem(newValue));
+                return;
+            }
             handleChangeWithCreateSupport(
                 newValue != null ? newValue : emptyValue
             );
         },
-        [emptyValue, handleChangeWithCreateSupport]
+        [emptyValue, getCreateItem, handleChangeWithCreateSupport]
     );
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);

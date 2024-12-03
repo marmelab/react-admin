@@ -18,6 +18,7 @@ import {
     InsideReferenceArrayInput,
     InsideReferenceArrayInputOnChange,
     OnChange,
+    OnCreate,
 } from './AutocompleteArrayInput.stories';
 
 describe('<AutocompleteArrayInput />', () => {
@@ -810,6 +811,23 @@ describe('<AutocompleteArrayInput />', () => {
         );
 
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
+    });
+
+    it('should allow the creation of a new choice by pressing enter', async () => {
+        render(<OnCreate />);
+        const input = (await screen.findByLabelText(
+            'Roles'
+        )) as HTMLInputElement;
+        // Enter an unknown value and submit it with Enter
+        await userEvent.type(input, 'New Value{Enter}');
+        // Clear the input, otherwise the new value won't be shown in the dropdown as it is selected
+        fireEvent.change(input, {
+            target: { value: '' },
+        });
+        // Open the dropdown
+        fireEvent.mouseDown(input);
+        // Check the new value is in the dropdown
+        await screen.findByText('New Value');
     });
 
     it('should support creation of a new choice through the create element', async () => {
