@@ -820,6 +820,9 @@ describe('<AutocompleteArrayInput />', () => {
         )) as HTMLInputElement;
         // Enter an unknown value and submit it with Enter
         await userEvent.type(input, 'New Value{Enter}');
+        // AutocompleteArrayInput does not have an input with all values.
+        // Instead it adds buttons for each values.
+        await screen.findByText('New Value', { selector: '[role=button] *' });
         // Clear the input, otherwise the new value won't be shown in the dropdown as it is selected
         fireEvent.change(input, {
             target: { value: '' },
