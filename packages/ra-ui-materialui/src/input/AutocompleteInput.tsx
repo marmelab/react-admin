@@ -116,7 +116,7 @@ const defaultFilterOptions = createFilterOptions();
 export const AutocompleteInput = <
     OptionType extends RaRecord = RaRecord,
     Multiple extends boolean | undefined = false,
-    DisableClearable extends boolean | undefined = false,
+    DisableClearable extends boolean | undefined = boolean | undefined,
     SupportCreate extends boolean | undefined = false,
 >(
     props: AutocompleteInputProps<
