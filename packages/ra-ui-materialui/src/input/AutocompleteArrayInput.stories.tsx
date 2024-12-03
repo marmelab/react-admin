@@ -6,6 +6,7 @@ import {
     useCreate,
     useRecordContext,
     TestMemoryRouter,
+    testDataProvider,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -181,6 +182,98 @@ const CreateRole = () => {
         </Dialog>
     );
 };
+
+const OnCreateInput = () => {
+    const [choices, setChoices] = React.useState<
+        { id: string; name: string }[]
+    >([
+        { id: 'admin', name: 'Admin' },
+        { id: 'u001', name: 'Editor' },
+        { id: 'u002', name: 'Moderator' },
+        { id: 'u003', name: 'Reviewer' },
+    ]);
+    return (
+        <AutocompleteArrayInput
+            source="roles"
+            choices={choices}
+            onCreate={async filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: filter,
+                    name: filter,
+                };
+                setChoices(options => [...options, newOption]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
+                return newOption;
+            }}
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    );
+};
+
+export const OnCreate = () => (
+    <Wrapper>
+        <OnCreateInput />
+    </Wrapper>
+);
+
+const OnCreateInputStringChoices = () => {
+    const [choices, setChoices] = React.useState<string[]>([
+        'Admin',
+        'Editor',
+        'Moderator',
+        'Reviewer',
+    ]);
+    return (
+        <AutocompleteArrayInput
+            source="roles"
+            choices={choices}
+            onCreate={async filter => {
+                if (!filter) return;
+
+                const newOption = {
+                    id: filter,
+                    name: filter,
+                };
+                setChoices(options => [...options, filter]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
+                return newOption;
+            }}
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+        />
+    );
+};
+
+export const OnCreateStringChoices = () => (
+    <AdminContext
+        dataProvider={testDataProvider({
+            // @ts-expect-error
+            create: async (resource, params) => {
+                console.log(resource, params);
+                return params;
+            },
+        })}
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+    >
+        <Create
+            resource="posts"
+            record={{ roles: ['Editor', 'Moderator'] }}
+            sx={{ width: 600 }}
+        >
+            <SimpleForm>
+                <OnCreateInputStringChoices />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
 
 export const CreateProp = () => (
     <Wrapper>
