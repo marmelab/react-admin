@@ -30,32 +30,28 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
         link: isFunctionLink ? false : linkType ?? rowClick,
     });
     const getPathForRecord = useGetPathForRecordCallback();
-    const handleClick = useEvent(
-        async (event: React.MouseEvent<HTMLAnchorElement>) => {
-            // No need to handle non function linkType or rowClick
-            if (!isFunctionLink) return;
-            if (!record) return;
-            event.persist();
+    const handleClick = useEvent(async () => {
+        // No need to handle non function linkType or rowClick
+        if (!isFunctionLink) return;
+        if (!record) return;
 
-            let link: LinkToType =
-                typeof linkType === 'function'
-                    ? linkType(record, record.id)
-                    : typeof rowClick === 'function'
-                      ? (record, resource) =>
-                            rowClick(record.id, resource, record)
-                      : false;
+        let link: LinkToType =
+            typeof linkType === 'function'
+                ? linkType(record, record.id)
+                : typeof rowClick === 'function'
+                  ? (record, resource) => rowClick(record.id, resource, record)
+                  : false;
 
-            const path = await getPathForRecord({
-                record,
-                resource,
-                link,
-            });
-            if (path === false || path == null) {
-                return;
-            }
-            navigate(path);
+        const path = await getPathForRecord({
+            record,
+            resource,
+            link,
+        });
+        if (path === false || path == null) {
+            return;
         }
-    );
+        navigate(path);
+    });
 
     if (!record) return null;
 
