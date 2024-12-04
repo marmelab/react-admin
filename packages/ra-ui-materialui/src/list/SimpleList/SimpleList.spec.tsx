@@ -79,10 +79,17 @@ describe('<SimpleList />', () => {
     it.each([
         ['edit', 'edit', '/books/1'],
         ['show', 'show', '/books/1/show'],
-        ['custom', (record, id) => `/books/${id}/custom`, '/books/1/custom'],
+        [
+            'a function that returns a custom path',
+            (record, id) =>
+                `/books/${id}/${record.title.toLowerCase().replaceAll(' ', '-')}`,
+            '/books/1/war-and-peace',
+        ],
+        ['a function that returns edit', () => 'edit', '/books/1'],
+        ['a function that returns show', () => 'show', '/books/1/show'],
     ])(
-        'should render %s links for each item with linkType',
-        async (_, linkType, expectedUrls) => {
+        'Providing %s as linkType should render a link for each item',
+        async (_, linkType, expectedUrl) => {
             let location: Location;
             render(
                 <LinkType
@@ -94,7 +101,7 @@ describe('<SimpleList />', () => {
             );
             fireEvent.click(await screen.findByText('War and Peace'));
             await waitFor(() => {
-                expect(location?.pathname).toEqual(expectedUrls);
+                expect(location?.pathname).toEqual(expectedUrl);
             });
         }
     );
@@ -130,9 +137,28 @@ describe('<SimpleList />', () => {
     it.each([
         ['edit', 'edit', '/books/1'],
         ['show', 'show', '/books/1/show'],
-        ['custom', id => `/books/${id}/custom`, '/books/1/custom'],
+        [
+            'a function that returns a custom path',
+            (id, resource, record) =>
+                `/${resource}/${id}/${record.title.toLowerCase().replaceAll(' ', '-')}`,
+            '/books/1/war-and-peace',
+        ],
+        ['a function that returns edit', () => 'edit', '/books/1'],
+        ['a function that returns show', () => 'show', '/books/1/show'],
+        ['a function that resolves to edit', async () => 'edit', '/books/1'],
+        [
+            'a function that resolves to show',
+            async () => 'show',
+            '/books/1/show',
+        ],
+        [
+            'a function that resolves to a custom path',
+            async (id, resource, record) =>
+                `/${resource}/${id}/${record.title.toLowerCase().replaceAll(' ', '-')}`,
+            '/books/1/war-and-peace',
+        ],
     ])(
-        'should render %s links for each item with rowClick',
+        'Providing %s as rowClick should render a link for each item',
         async (_, rowClick, expectedUrls) => {
             let location: Location;
             render(
