@@ -81,6 +81,11 @@ export const useGetPathForRecord = <RecordType extends RaRecord = RaRecord>(
     useEffect(() => {
         if (!record) return;
 
+        if (link === false) {
+            setPath(false);
+            return;
+        }
+
         // Handle the inferred link type case
         if (link == null) {
             // We must check whether the resource has an edit view because if there is no
