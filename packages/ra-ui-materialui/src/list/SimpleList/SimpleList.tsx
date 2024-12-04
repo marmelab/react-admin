@@ -44,7 +44,7 @@ import {
  * - leftIcon: same
  * - rightAvatar: same
  * - rightIcon: same
- * - linkType: deprecated 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
+ * - linkType: deprecated - 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
  * - rowClick: The action to trigger when the user clicks on a row.
  * - rowStyle: function returning a style object based on (record, index)
  * - rowSx: function returning a sx object based on (record, index)

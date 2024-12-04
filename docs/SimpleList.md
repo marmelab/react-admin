@@ -104,6 +104,7 @@ export const PostList = () => (
 * `rowClick="edit"`: links to the edit page. This is the default behavior.
 * `rowClick="show"`: links to the show page.
 * `rowClick={false}`: does not link to anything.
+* `rowClick="/custom"`: links to a custom path.
 * `rowClick={(id, resource, record) => path}`: path can be any of the above values
 
 ## `primaryText`
