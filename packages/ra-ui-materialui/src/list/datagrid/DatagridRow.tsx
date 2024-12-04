@@ -124,23 +124,25 @@ const DatagridRow: React.ForwardRefExoticComponent<
     const handleClick = useCallback(
         async event => {
             event.persist();
-            const path = await getPathForRecord({
-                record,
-                resource,
-                link:
-                    typeof rowClick === 'function'
-                        ? (record, resource) =>
-                              rowClick(record.id, resource, record)
-                        : rowClick,
-            });
-            if (rowClick === 'expand') {
+            const rowClickValue =
+                typeof rowClick === 'function'
+                    ? (record, resource) =>
+                          rowClick(record.id, resource, record)
+                    : rowClick;
+
+            if (rowClickValue === 'expand') {
                 handleToggleExpand(event);
                 return;
             }
-            if (rowClick === 'toggleSelection') {
+            if (rowClickValue === 'toggleSelection') {
                 handleToggleSelection(event);
                 return;
             }
+            const path = await getPathForRecord({
+                record,
+                resource,
+                link: rowClickValue,
+            });
             if (path === false || path == null) {
                 return;
             }
