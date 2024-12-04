@@ -14,12 +14,13 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { Alert, Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 import { Location } from 'react-router';
 
-import { FunctionLinkType, SimpleList } from './SimpleList';
 import { AdminUI } from '../../AdminUI';
 import { AdminContext, AdminContextProps } from '../../AdminContext';
 import { EditGuesser } from '../../detail';
 import { List, ListProps } from '../List';
 import { RowClickFunction } from '../types';
+import { SimpleList } from './SimpleList';
+import { FunctionLinkType } from './SimpleListItem';
 
 export default { title: 'ra-ui-materialui/list/SimpleList' };
 
@@ -166,7 +167,8 @@ LinkType.argTypes = {
             show: 'show',
             edit: 'edit',
             'no-link': false,
-            function: (record, id) => alert(`Clicked on ${id}`),
+            function: (record, id) =>
+                alert(`Clicked on record ${record.title} (#${id})`),
         },
         control: { type: 'select' },
     },
@@ -217,7 +219,10 @@ RowClick.argTypes = {
             show: 'show',
             edit: 'edit',
             'no-link': false,
-            function: id => alert(`Clicked on ${id}`),
+            function: (id, resource, record) =>
+                alert(
+                    `Clicked on record ${record.title} (#${id}) of type ${resource}`
+                ),
         },
         control: { type: 'select' },
     },
