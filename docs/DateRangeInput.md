@@ -9,7 +9,13 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 
 ![DateRangeInput](./img/DateRangeInput.png)
 
-**Note**: `<DateRangeInput>` is a wrapper around the [Material UI X Date Range Picker](https://mui.com/x/react-date-pickers/date-range-picker/), which is a MUI X Pro package. This means that you need to own a [MUI X Pro license](https://mui.com/x/introduction/licensing/#pro-plan) to use it.
+**Note**: `<DateRangeInput>` is a wrapper around the [Material UI X Date Range Picker](https://mui.com/x/react-date-pickers/date-range-picker/), which is a MUI X Pro package. This means that you need to own a [MUI X Pro license](https://mui.com/x/introduction/licensing/#pro-plan) to use it and install the package:
+
+```sh
+npm install --save @mui/x-date-pickers-pro
+# or
+yarn add @mui/x-date-pickers-pro
+```
 
 ## Usage
 
