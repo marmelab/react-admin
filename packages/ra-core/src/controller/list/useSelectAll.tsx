@@ -2,40 +2,44 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNotify } from '../../notification';
 import { useDataProvider } from '../../dataProvider';
 import { useRecordSelection } from './useRecordSelection';
-import type { ListParams } from './useListParams';
-import type { FilterPayload } from '../../types';
+import type { FilterPayload, SortPayload } from '../../types';
+import { useResourceContext } from '../../core';
 
 /**
  * Function hook to select all items of a list (until we reached the selectAllLimit)
  *
- * @param {string} resource Required. The resource name
- * @param {ListParams} query Required. The query object used to fetch the list of items
- * @param {number} selectAllLimit Optional. The number of items selected by the "SELECT ALL" button of the bulk actions toolbar
+ * @param {SortPayload} sort Optional. The sort parameter to apply to the getList query
  * @param {FilterPayload} filter Optional. Permanent filter applied to all getList queries, regardless of the user selected filters
  * @param {any} meta Optional. Additional meta data to pass to the dataProvider
+ * @param {number} limit Optional. The number of items selected by the "SELECT ALL" button of the bulk actions toolbar
  * @returns {Function} onSelectAll A function to select all items of a list
  *
  * @example
  *
  * const onSelectAll = useSelectAll({
- *     resource: 'posts',
- *     query: { sort: 'title', order: 'ASC' },
- *     selectAllLimit: 250,
+ *     sort: { sort: 'title', order: 'ASC' },
+ *     limit: 250,
  * });
  * return <Button onClick={onSelectAll}>Select All</Button>;
  */
 export const useSelectAll = ({
-    query,
-    resource,
-    selectAllLimit = 250,
+    sort = { field: 'id', order: 'ASC' },
     filter = {},
     meta = {},
+    limit = 250,
 }: useSelectAllProps): (() => void) => {
+    const resource = useResourceContext();
+    if (!resource) {
+        throw new Error(
+            'useSelectAll should be used inside a ResourceContextProvider'
+        );
+    }
     const notify = useNotify();
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const [_, selectionModifiers] = useRecordSelection({ resource });
 
+    // TODO: useCallback
     const onSelectAll = async () => {
         try {
             const { data } = await queryClient.fetchQuery({
@@ -44,9 +48,9 @@ export const useSelectAll = ({
                     'getList',
                     {
                         resource,
-                        pagination: { page: 1, perPage: selectAllLimit },
-                        sort: { field: query.sort, order: query.order },
-                        filter: { ...query.filter, ...filter },
+                        pagination: { page: 1, perPage: limit },
+                        sort,
+                        filter,
                         meta,
                     },
                 ],
@@ -54,19 +58,19 @@ export const useSelectAll = ({
                     dataProvider.getList(resource, {
                         pagination: {
                             page: 1,
-                            perPage: selectAllLimit,
+                            perPage: limit,
                         },
-                        sort: { field: query.sort, order: query.order },
-                        filter: { ...query.filter, ...filter },
+                        sort,
+                        filter,
                         meta,
                     }),
             });
 
             const allIds = data?.map(({ id }) => id) || [];
             selectionModifiers.select(allIds);
-            if (allIds.length === selectAllLimit) {
+            if (allIds.length === limit) {
                 notify('ra.message.too_many_elements', {
-                    messageArgs: { max: selectAllLimit },
+                    messageArgs: { max: limit },
                     type: 'warning',
                 });
             }
@@ -81,9 +85,8 @@ export const useSelectAll = ({
 };
 
 export interface useSelectAllProps {
-    resource: string;
-    query: ListParams;
-    selectAllLimit?: number;
+    sort?: SortPayload;
     filter?: FilterPayload;
     meta?: any;
+    limit?: number;
 }

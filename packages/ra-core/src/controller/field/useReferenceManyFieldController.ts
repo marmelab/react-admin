@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { UseQueryOptions, useQueryClient } from '@tanstack/react-query';
+import { UseQueryOptions } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
 
 import { removeEmpty } from '../../util';
-import { useDataProvider, useGetManyReference } from '../../dataProvider';
+import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
@@ -64,14 +64,11 @@ export const useReferenceManyFieldController = <
             { data: ReferenceRecordType[]; total: number },
             Error
         >,
-        selectAllLimit = 250,
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
-    const dataProvider = useDataProvider();
     const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
-    const queryClient = useQueryClient();
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
@@ -203,68 +200,6 @@ export const useReferenceManyFieldController = <
         }
     );
 
-    const onSelectAll = useCallback(async () => {
-        try {
-            const { data } = await queryClient.fetchQuery({
-                queryKey: [
-                    resource,
-                    'getManyReference',
-                    {
-                        target,
-                        id: get(record, source) as Identifier,
-                        pagination: {
-                            page: 1,
-                            perPage: selectAllLimit,
-                        },
-                        sort,
-                        filter: filterValues,
-                        meta,
-                    },
-                ],
-                queryFn: () =>
-                    dataProvider.getManyReference(reference, {
-                        target,
-                        id: get(record, source) as Identifier,
-                        pagination: {
-                            page: 1,
-                            perPage: selectAllLimit,
-                        },
-                        sort,
-                        filter: filterValues,
-                        meta,
-                    }),
-            });
-
-            const allIds = data?.map(({ id }) => id) || [];
-            selectionModifiers.select(allIds);
-            if (allIds.length === selectAllLimit) {
-                notify('ra.message.too_many_elements', {
-                    messageArgs: { max: selectAllLimit },
-                    type: 'warning',
-                });
-            }
-
-            return data;
-        } catch (error) {
-            console.error('Mutation Error: ', error);
-            notify('An error occurred. Please try again.');
-        }
-    }, [
-        dataProvider,
-        filterValues,
-        meta,
-        notify,
-        queryClient,
-        record,
-        reference,
-        resource,
-        selectAllLimit,
-        selectionModifiers,
-        sort,
-        source,
-        target,
-    ]);
-
     return {
         sort,
         data,
@@ -278,7 +213,6 @@ export const useReferenceManyFieldController = <
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
-        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page,
@@ -286,9 +220,6 @@ export const useReferenceManyFieldController = <
         refetch,
         resource: reference,
         selectedIds,
-        areAllItemsSelected:
-            total === selectedIds.length ||
-            selectedIds.length >= selectAllLimit,
         setFilters,
         setPage,
         setPerPage,
@@ -318,7 +249,6 @@ export interface UseReferenceManyFieldControllerParams<
     sort?: SortPayload;
     source?: string;
     storeKey?: string;
-    selectAllLimit?: number;
     target: string;
     queryOptions?: Omit<
         UseQueryOptions<{ data: ReferenceRecordType[]; total: number }, Error>,

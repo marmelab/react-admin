@@ -10,7 +10,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
-import { Button } from '../button';
 
 export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
@@ -19,22 +18,13 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
         className,
         ...rest
     } = props;
-    const {
-        selectedIds = [],
-        onUnselectItems,
-        onSelectAll,
-        areAllItemsSelected,
-    } = useListContext();
+    const { selectedIds = [], onUnselectItems } = useListContext();
 
     const translate = useTranslate();
 
     const handleUnselectAllClick = useCallback(() => {
         onUnselectItems();
     }, [onUnselectItems]);
-
-    const handleSelectAll = useCallback(() => {
-        onSelectAll();
-    }, [onSelectAll]);
 
     return (
         <Root className={className}>
@@ -62,12 +52,6 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                             smart_count: selectedIds.length,
                         })}
                     </Typography>
-                    {!areAllItemsSelected && (
-                        <Button
-                            label={translate('ra.action.select_all')}
-                            onClick={handleSelectAll}
-                        />
-                    )}
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
                     {children}

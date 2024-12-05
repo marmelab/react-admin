@@ -47,7 +47,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         queryOptions = {},
         sort = defaultSort,
         storeKey,
-        selectAllLimit = 250,
     } = props;
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions;
@@ -170,14 +169,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
-    const onSelectAll = useSelectAll({
-        selectAllLimit,
-        query,
-        filter,
-        meta,
-        resource,
-    });
-
     return {
         sort: currentSort,
         data,
@@ -193,7 +184,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
-        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
@@ -201,9 +191,6 @@ export const useListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
-        areAllItemsSelected:
-            total === selectedIds.length ||
-            selectedIds.length >= selectAllLimit,
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
@@ -423,19 +410,6 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      * );
      */
     storeKey?: string | false;
-
-    /**
-     * The number of items selected by the "SELECT ALL" button of the bulk actions toolbar.
-     *
-     * @see https://marmelab.com/react-admin/List.html#selectalllimit
-     * @example
-     * export const PostList = () => (
-     *     <List selectAllLimit={500}>
-     *         ...
-     *     </List>
-     * );
-     */
-    selectAllLimit?: number;
 }
 
 const defaultSort = {
@@ -502,7 +476,6 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     filterValues: any;
     hideFilter: (filterName: string) => void;
     onSelect: (ids: RecordType['id'][]) => void;
-    onSelectAll: () => void;
     onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
@@ -510,7 +483,6 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
     resource: string;
     selectedIds: RecordType['id'][];
-    areAllItemsSelected: boolean;
     setFilters: (
         filters: any,
         displayedFilters?: any,

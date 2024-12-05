@@ -35,8 +35,14 @@ import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
 import { BulkDeleteButton } from '../../button';
 import { ListNoResults } from '../ListNoResults';
+import { SelectAllButton } from '../../button/SelectAllButton';
 
-const defaultBulkActionButtons = <BulkDeleteButton />;
+const defaultBulkActionButtons = (
+    <>
+        <SelectAllButton />
+        <BulkDeleteButton />
+    </>
+);
 
 /**
  * The Datagrid component renders a list of records as a table.

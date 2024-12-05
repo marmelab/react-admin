@@ -32,7 +32,6 @@ import { Loading } from '../layout';
  * - perPage: Pagination Size
  * - queryOptions
  * - sort: Default Sort Field & Order
- * - selectAllLimit: The number of items selected by the "SELECT ALL" button of the bulk actions toolbar
  * - title
  * - sx: CSS API
  *
@@ -69,7 +68,6 @@ export const List = <RecordType extends RaRecord = any>({
     resource,
     sort,
     storeKey,
-    selectAllLimit = 250,
     ...rest
 }: ListProps<RecordType>): ReactElement => (
     <ListBase<RecordType>
@@ -85,7 +83,6 @@ export const List = <RecordType extends RaRecord = any>({
         resource={resource}
         sort={sort}
         storeKey={storeKey}
-        selectAllLimit={selectAllLimit}
     >
         <ListView<RecordType> {...rest} />
     </ListBase>

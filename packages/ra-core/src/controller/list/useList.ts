@@ -51,7 +51,6 @@ const refetch = () => {
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
  * @param {filterCallback} prop.filterCallback Optional. A function that allows you to make a custom filter
- * @param {Number} props.selectAllLimit: Optional. The number of items selected by the "SELECT ALL" button of the bulk actions toolbar
  */
 export const useList = <RecordType extends RaRecord = any>(
     props: UseListOptions<RecordType>
@@ -164,10 +163,6 @@ export const useList = <RecordType extends RaRecord = any>(
         },
         [setDisplayedFilters, setFilterValues, setPage]
     );
-    const onSelectAll = useCallback(() => {
-        const allIds = data?.map(({ id }) => id) || [];
-        selectionModifiers.select(allIds);
-    }, [data, selectionModifiers]);
 
     // handle filter prop change
     useEffect(() => {
@@ -290,7 +285,6 @@ export const useList = <RecordType extends RaRecord = any>(
         isLoading: loadingState,
         isPending: pendingState,
         onSelect: selectionModifiers.select,
-        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page,
@@ -298,7 +292,6 @@ export const useList = <RecordType extends RaRecord = any>(
         resource: '',
         refetch,
         selectedIds,
-        areAllItemsSelected: data?.length === selectedIds.length,
         setFilters,
         setPage,
         setPerPage,

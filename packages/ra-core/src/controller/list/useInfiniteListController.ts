@@ -24,7 +24,6 @@ import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 
 import { ListControllerResult } from './useListController';
-import { useSelectAll } from './useSelectAll';
 
 /**
  * Prepare data for the InfiniteList view
@@ -57,7 +56,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         queryOptions,
         sort,
         storeKey,
-        selectAllLimit = 250,
     } = props;
     const resource = useResourceContext(props);
     const { meta, ...otherQueryOptions } = queryOptions ?? {};
@@ -141,14 +139,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         }
     );
 
-    const onSelectAll = useSelectAll({
-        selectAllLimit,
-        query,
-        filter,
-        meta,
-        resource,
-    });
-
     // change page if there is no data
     useEffect(() => {
         if (
@@ -204,7 +194,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
-        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
@@ -212,9 +201,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         refetch,
         resource,
         selectedIds,
-        areAllItemsSelected:
-            total === selectedIds.length ||
-            selectedIds.length >= selectAllLimit,
         setFilters: queryModifiers.setFilters,
         setPage: queryModifiers.setPage,
         setPerPage: queryModifiers.setPerPage,
@@ -247,7 +233,6 @@ export interface InfiniteListControllerProps<
     resource?: string;
     sort?: SortPayload;
     storeKey?: string | false;
-    selectAllLimit?: number;
 }
 
 export type InfiniteListControllerResult<RecordType extends RaRecord = any> =
