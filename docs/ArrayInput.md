@@ -38,6 +38,7 @@ To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list o
 }
 ```
 
+**Tip**: If you need to edit an array of *strings*, like a list of email addresses or a list of tags, you should use a [`<TextArrayInput>`](./TextArrayInput.md) instead.
 
 `<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component rendering a field array (the object returned by react-hook-form's [`useFieldArray`](https://react-hook-form.com/docs/usefieldarray)). For instance, [the `<SimpleFormIterator>` component](./SimpleFormIterator.md) displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record.
 

@@ -188,6 +188,7 @@ title: "Index"
 * [`<TabbedForm>`](./TabbedForm.md)
 * [`<TabbedFormWithRevision>`](./TabbedForm.md#versioning)<img class="icon" src="./img/premium.svg" />
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
+* [`<TextArrayInput>`](./TextArrayInput.md)
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
 * [`<TimeInput>`](./TimeInput.md)
