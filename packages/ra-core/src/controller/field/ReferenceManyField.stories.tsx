@@ -30,7 +30,7 @@ const ReferenceManyFieldController = props => {
     return children(controllerProps);
 };
 
-const ReferenceManyField = (
+const ReferenceManyFieldComponent = (
     props: ListControllerResult & { selectAllLimit?: number }
 ) => (
     <div>
@@ -42,21 +42,12 @@ const ReferenceManyField = (
             }}
         >
             <button
-                onClick={props.onSelectAll}
-                disabled={props.areAllItemsSelected}
-            >
-                Select All
-            </button>
-            <button
                 onClick={props.onUnselectItems}
                 disabled={props.selectedIds.length === 0}
             >
                 Unselect All
             </button>
             <p>Selected ids: {JSON.stringify(props.selectedIds)}</p>
-            {props.selectAllLimit && (
-                <p>selectAllLimit : {props.selectAllLimit}</p>
-            )}
         </div>
         <ul
             style={{
@@ -81,7 +72,9 @@ const ReferenceManyField = (
     </div>
 );
 
-export const Basic = ({ children = ReferenceManyField }) => (
+export const ReferenceManyField = ({
+    children = ReferenceManyFieldComponent,
+}) => (
     <CoreAdminContext dataProvider={defaultDataProvider}>
         <ReferenceManyFieldController
             resource="authors"
@@ -89,24 +82,6 @@ export const Basic = ({ children = ReferenceManyField }) => (
             record={{ id: 123, name: 'James Joyce' }}
             reference="books"
             target="author_id"
-        >
-            {children}
-        </ReferenceManyFieldController>
-    </CoreAdminContext>
-);
-
-export const SelectAllLimit = ({
-    dataProvider = defaultDataProvider,
-    children = props => <ReferenceManyField selectAllLimit={1} {...props} />,
-}) => (
-    <CoreAdminContext dataProvider={dataProvider}>
-        <ReferenceManyFieldController
-            resource="authors"
-            source="id"
-            record={{ id: 123, name: 'James Joyce' }}
-            reference="books"
-            target="author_id"
-            selectAllLimit={1}
         >
             {children}
         </ReferenceManyFieldController>

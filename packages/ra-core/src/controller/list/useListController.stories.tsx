@@ -35,21 +35,12 @@ const List = params => (
             }}
         >
             <button
-                onClick={params.onSelectAll}
-                disabled={params.areAllItemsSelected}
-            >
-                Select All
-            </button>
-            <button
                 onClick={params.onUnselectItems}
                 disabled={params.selectedIds.length === 0}
             >
                 Unselect All
             </button>
             <p>Selected ids: {JSON.stringify(params.selectedIds)}</p>
-            {params.selectAllLimit && (
-                <p>selectAllLimit : {params.selectAllLimit}</p>
-            )}
         </div>
         <ul
             style={{
@@ -76,25 +67,12 @@ const List = params => (
 
 export const Basic = ({
     dataProvider = defaultDataProvider,
-    selectAllLimit,
     children = List,
 }: {
     dataProvider?: DataProvider;
-    selectAllLimit?: number;
     children?: (params: ListControllerResult) => JSX.Element;
 }) => (
     <CoreAdminContext dataProvider={dataProvider}>
-        <ListController
-            resource="posts"
-            selectAllLimit={selectAllLimit}
-            children={children}
-        />
+        <ListController resource="posts" children={children} />
     </CoreAdminContext>
-);
-
-export const SelectAllLimit = () => (
-    <Basic
-        selectAllLimit={5}
-        children={props => <List {...props} selectAllLimit={5} />}
-    />
 );

@@ -39,12 +39,6 @@ const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
             }}
         >
             <button
-                onClick={props.onSelectAll}
-                disabled={props.areAllItemsSelected}
-            >
-                Select All
-            </button>
-            <button
                 onClick={props.onUnselectItems}
                 disabled={props.selectedIds.length === 0}
             >

@@ -80,21 +80,12 @@ const ListWithCheckbox = params => (
                     }}
                 >
                     <button
-                        onClick={params.onSelectAll}
-                        disabled={params.areAllItemsSelected}
-                    >
-                        Select All
-                    </button>
-                    <button
                         onClick={params.onUnselectItems}
                         disabled={params.selectedIds.length === 0}
                     >
                         Unselect All
                     </button>
                     <p>Selected ids: {JSON.stringify(params.selectedIds)}</p>
-                    {params.selectAllLimit && (
-                        <p>selectAllLimit : {params.selectAllLimit}</p>
-                    )}
                 </div>
                 <ul
                     style={{
@@ -124,13 +115,9 @@ const ListWithCheckbox = params => (
 
 export const Basic = ({
     dataProvider = defaultDataProvider,
-    selectAllLimit,
-    children = props => (
-        <ListWithCheckbox {...props} selectAllLimit={selectAllLimit} />
-    ),
+    children = ListWithCheckbox,
 }: {
     dataProvider?: DataProvider;
-    selectAllLimit?: number;
     children?: (props) => React.JSX.Element;
 }) => {
     return (
@@ -139,20 +126,13 @@ export const Basic = ({
                 <CoreAdminUI>
                     <Resource
                         name="posts"
-                        list={
-                            <Posts
-                                selectAllLimit={selectAllLimit}
-                                children={children}
-                            />
-                        }
+                        list={<Posts children={children} />}
                     />
                 </CoreAdminUI>
             </CoreAdminContext>
         </TestMemoryRouter>
     );
 };
-
-export const SelectAllLimit = () => <Basic selectAllLimit={5} />;
 
 const defaultAuthProvider: AuthProvider = {
     checkAuth: () => new Promise(resolve => setTimeout(resolve, 500)),
