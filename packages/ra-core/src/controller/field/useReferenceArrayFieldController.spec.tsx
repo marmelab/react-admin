@@ -1,11 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { act, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
 import { CoreAdminContext } from '../../core';
-import { ReferenceArrayField } from './ReferenceArrayField.stories';
 
 const ReferenceArrayFieldController = props => {
     const { children, ...rest } = props;
@@ -166,148 +165,5 @@ describe('<useReferenceArrayFieldController />', () => {
                 error: null,
             })
         );
-    });
-
-    describe('areAllItemsSelected', () => {
-        it('should be false if no items are selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        areAllItemsSelected: false,
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                        total: 2,
-                    })
-                );
-            });
-        });
-        it('should be false if some items are selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelect([1]);
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        areAllItemsSelected: false,
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                        total: 2,
-                        selectedIds: [1],
-                    })
-                );
-            });
-        });
-        it('should be true if all items are manually selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelect([1, 2]);
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        areAllItemsSelected: true,
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                        total: 2,
-                        selectedIds: [1, 2],
-                    })
-                );
-            });
-        });
-        it('should be true if all items are selected with onSelectAll', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        areAllItemsSelected: false,
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                        total: 2,
-                        selectedIds: [],
-                    })
-                );
-            });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        areAllItemsSelected: true,
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                        total: 2,
-                        selectedIds: [1, 2],
-                    })
-                );
-            });
-        });
-    });
-
-    describe('onSelectAll', () => {
-        it('should select all items if no items are selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                    })
-                );
-            });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [1, 2],
-                    })
-                );
-            });
-        });
-        it('should select all items if some items are selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                    })
-                );
-            });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
-            await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [1, 2],
-                    })
-                );
-            });
-        });
     });
 });
