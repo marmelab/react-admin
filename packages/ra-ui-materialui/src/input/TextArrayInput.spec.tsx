@@ -57,6 +57,6 @@ describe('<TextArrayInput />', () => {
     });
     it('should show required fields as required', () => {
         render(<Required />);
-        screen.getAllByText('*');
+        expect(screen.getAllByText('*').length).toBe(2);
     });
 });

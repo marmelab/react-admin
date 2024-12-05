@@ -90,7 +90,7 @@ To customize the rendering of the chips, use the `renderTags` prop. This prop is
 - `value`: The input value (an array of strings)
 - `getTagProps`: A props getter for an individual tag.
 
-```jsx
+```tsx
 <TextArrayInput
     source="to"
     renderTags={(value: readonly string[], getTagProps) =>
