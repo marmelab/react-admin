@@ -61,6 +61,7 @@ export const TextArrayInput = ({
         <StyledAutocomplete
             multiple
             freeSolo
+            autoSelect
             options={[]}
             id={id}
             className={clsx('ra-input', `ra-input-${source}`, className)}

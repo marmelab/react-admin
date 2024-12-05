@@ -9,6 +9,7 @@ import {
     AdminUI,
     AdminContext,
     Create,
+    Edit,
     List,
     SimpleList,
     SimpleForm,
@@ -94,9 +95,15 @@ export const NonFullWidth = () => (
 
 export const Margin = () => (
     <Wrapper>
-        <TextArrayInput source="to" label="default (dense)" />
-        <TextArrayInput source="to" label="none" margin="none" />
-        <TextArrayInput source="to" label="normal" margin="normal" />
+        <div style={{ border: 'solid 1px red', marginBottom: '1em' }}>
+            <TextArrayInput source="to" label="default (dense)" />
+        </div>
+        <div style={{ border: 'solid 1px red', marginBottom: '1em' }}>
+            <TextArrayInput source="to" label="none" margin="none" />
+        </div>
+        <div style={{ border: 'solid 1px red', marginBottom: '1em' }}>
+            <TextArrayInput source="to" label="normal" margin="normal" />
+        </div>
     </Wrapper>
 );
 
@@ -208,7 +215,9 @@ export const Parse = () => (
     <Wrapper record={{}}>
         <TextArrayInput
             source="to"
-            parse={v => v.map(v1 => `${v1}@example.com`)}
+            parse={(v: string[]) =>
+                v.map(v1 => (v1.includes('@') ? v1 : `${v1}@example.com`))
+            }
         />
         <FormInspector name="to" />
     </Wrapper>
@@ -290,6 +299,31 @@ export const FullApp = () => (
                         </List>
                     )}
                     show={ShowGuesser}
+                    edit={() => (
+                        <Edit>
+                            <SimpleForm
+                                defaultValues={{
+                                    from: 'julie.green@example.com',
+                                    date: new Date().toISOString(),
+                                }}
+                            >
+                                <TextArrayInput
+                                    source="to"
+                                    helperText={false}
+                                />
+                                <TextInput
+                                    source="subject"
+                                    helperText={false}
+                                />
+                                <TextInput
+                                    source="body"
+                                    multiline
+                                    minRows={5}
+                                    helperText={false}
+                                />
+                            </SimpleForm>
+                        </Edit>
+                    )}
                     create={() => (
                         <Create title="New email">
                             <SimpleForm
