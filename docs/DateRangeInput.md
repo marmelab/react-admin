@@ -16,7 +16,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 Use `<DateRangeInput>` inside a form component (`<SimpleForm>`, `<TabbedForm>`, `<LongForm>`, etc.) to allow users to pick a start and an end date.
 
 ```tsx
-import { DateRangeInput } from '@react-admin/ra-form-layout';
+import { DateRangeInput } from '@react-admin/ra-form-layout/DateRangeInput';
 import { Edit, SimpleForm } from 'react-admin';
 
 export const EventEdit = () => (
@@ -106,7 +106,7 @@ import {
     SimpleForm,
     TextInput,
 } from "react-admin";
-import { DateRangeInput } from '@react-admin/ra-form-layout';
+import { DateRangeInput } from '@react-admin/ra-form-layout/DateRangeInput';
 
 const requiredValues = dates =>
     !dates || isEmpty(dates[0]) || isEmpty(dates[1])
