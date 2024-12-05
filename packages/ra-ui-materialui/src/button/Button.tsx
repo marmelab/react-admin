@@ -24,72 +24,79 @@ import { Path, To } from 'react-router';
  * </Button>
  *
  */
-export const Button = <RootComponent extends React.ElementType = 'button'>(
-    inProps: ButtonProps<RootComponent>
-) => {
-    const props = useThemeProps({ props: inProps, name: 'RaButton' });
-    const {
-        alignIcon = 'left',
-        children,
-        className,
-        disabled,
-        label,
-        color = 'primary',
-        size = 'small',
-        to: locationDescriptor,
-        ...rest
-    } = props;
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    (inProps, ref) => {
+        const props = useThemeProps({ props: inProps, name: 'RaButton' });
+        const {
+            alignIcon = 'left',
+            children,
+            className,
+            disabled,
+            label,
+            color = 'primary',
+            size = 'small',
+            to: locationDescriptor,
+            ...rest
+        } = props;
 
-    const translate = useTranslate();
-    const translatedLabel = label ? translate(label, { _: label }) : undefined;
-    const linkParams = getLinkParams(locationDescriptor);
+        const translate = useTranslate();
+        const translatedLabel = label
+            ? translate(label, { _: label })
+            : undefined;
+        const linkParams = getLinkParams(locationDescriptor);
 
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
-    );
+        const isXSmall = useMediaQuery((theme: Theme) =>
+            theme.breakpoints.down('sm')
+        );
 
-    return isXSmall ? (
-        label && !disabled ? (
-            <Tooltip title={translatedLabel}>
+        return isXSmall ? (
+            label && !disabled ? (
+                <Tooltip title={translatedLabel}>
+                    <IconButton
+                        aria-label={translatedLabel}
+                        className={className}
+                        color={color}
+                        size="large"
+                        {...linkParams}
+                        {...rest}
+                    >
+                        {children}
+                    </IconButton>
+                </Tooltip>
+            ) : (
                 <IconButton
-                    aria-label={translatedLabel}
                     className={className}
                     color={color}
+                    disabled={disabled}
                     size="large"
                     {...linkParams}
                     {...rest}
                 >
                     {children}
                 </IconButton>
-            </Tooltip>
+            )
         ) : (
-            <IconButton
+            <StyledButton
+                ref={ref}
                 className={className}
                 color={color}
+                size={size}
+                aria-label={translatedLabel}
                 disabled={disabled}
-                size="large"
+                startIcon={
+                    alignIcon === 'left' && children ? children : undefined
+                }
+                endIcon={
+                    alignIcon === 'right' && children ? children : undefined
+                }
                 {...linkParams}
                 {...rest}
             >
-                {children}
-            </IconButton>
-        )
-    ) : (
-        <StyledButton
-            className={className}
-            color={color}
-            size={size}
-            aria-label={translatedLabel}
-            disabled={disabled}
-            startIcon={alignIcon === 'left' && children ? children : undefined}
-            endIcon={alignIcon === 'right' && children ? children : undefined}
-            {...linkParams}
-            {...rest}
-        >
-            {translatedLabel}
-        </StyledButton>
-    );
-};
+                {translatedLabel}
+            </StyledButton>
+        );
+    }
+);
 
 interface Props<RootComponent extends React.ElementType> {
     alignIcon?: 'left' | 'right';
