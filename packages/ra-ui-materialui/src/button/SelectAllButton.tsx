@@ -17,14 +17,25 @@ import { Button, ButtonProps } from './Button';
  * const MySelectAllButton = () => <SelectAllButton limit={100} label="Select all books" />;
  */
 
+const PREFIX = 'RaSelectAllButton';
+
 export const SelectAllButton = (props: SelectAllButtonProps) => {
-    const { label = 'ra.action.select_all', limit = 250, ...rest } = props;
+    const {
+        label = 'ra.action.select_all',
+        limit = 250,
+        onClick,
+        ...rest
+    } = props;
 
     const { filter, sort, meta, total, selectedIds } = useListContext();
     const onSelectAll = useSelectAll({ limit, filter, sort, meta });
-    const handleSelectAll = useCallback(() => {
-        onSelectAll();
-    }, [onSelectAll]);
+    const handleSelectAll = useCallback(
+        event => {
+            onSelectAll();
+            if (onClick) onClick(event);
+        },
+        [onClick, onSelectAll]
+    );
 
     if (total === selectedIds.length || selectedIds.length >= limit)
         return null;
@@ -34,6 +45,7 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
             label={label}
             onClick={handleSelectAll}
             type="button"
+            name={PREFIX}
             {...rest}
         />
     );
