@@ -166,12 +166,13 @@ By default, all Datagrids have a single bulk action button, the bulk delete butt
 
 {% raw %}
 ```tsx
-import { List, Datagrid, BulkUpdateButton, BulkDeleteButton, BulkExportButton } from 'react-admin';
+import { List, Datagrid, SelectAllButton, BulkUpdateButton, BulkDeleteButton, BulkExportButton } from 'react-admin';
 import { VisibilityOff } from '@mui/icons-material';
 
 const PostBulkActionButtons = () => (
     <>
         <BulkUpdateButton label="Reset Views" data={{ views: 0 }} icon={<VisibilityOff/>} />
+        <SelectAllButton />
         <BulkDeleteButton />
         <BulkExportButton />
     </>

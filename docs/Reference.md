@@ -157,6 +157,7 @@ title: "Index"
 * [`<Search>`](./Search.md)<img class="icon" src="./img/premium.svg" />
 * [`<SearchInput>`](./SearchInput.md)
 * [`<SearchWithResult>`](./SearchWithResult.md)<img class="icon" src="./img/premium.svg" />
+* [`<SelectAllButton>`](./Buttons.md#selectallbutton)
 * [`<SelectArrayInput>`](./SelectArrayInput.md)
 * [`<SelectColumnsButton>`](./SelectColumnsButton.md)
 * [`<SelectField>`](./SelectField.md)
