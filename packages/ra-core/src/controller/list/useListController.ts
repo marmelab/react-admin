@@ -14,6 +14,7 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 import { SORT_ASC } from './queryReducer';
+import { useSelectAll } from './useSelectAll';
 
 /**
  * Prepare data for the List view
@@ -195,7 +196,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
-        total: total,
+        total,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null

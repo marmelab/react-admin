@@ -9,7 +9,11 @@ import { ReferenceManyField } from './ReferenceManyField';
 import { TextField } from './TextField';
 import { SingleFieldList } from '../list/SingleFieldList';
 import { Pagination } from '../list/pagination/Pagination';
-import { Basic } from './ReferenceManyField.stories';
+import {
+    Basic,
+    WithPagination,
+    WithPaginationAndSelectAllLimit,
+} from './ReferenceManyField.stories';
 
 const theme = createTheme();
 
@@ -35,7 +39,7 @@ describe('<ReferenceManyField />', () => {
                 <AdminContext
                     dataProvider={testDataProvider({
                         getManyReference: () =>
-                            Promise.resolve({ data, total: 2 }),
+                            Promise.resolve<any>({ data, total: 2 }),
                     })}
                 >
                     <ThemeProvider theme={theme}>
@@ -79,7 +83,8 @@ describe('<ReferenceManyField />', () => {
         render(
             <AdminContext
                 dataProvider={testDataProvider({
-                    getManyReference: () => Promise.resolve({ data, total: 2 }),
+                    getManyReference: () =>
+                        Promise.resolve<any>({ data, total: 2 }),
                 })}
             >
                 <ThemeProvider theme={theme}>
@@ -129,7 +134,7 @@ describe('<ReferenceManyField />', () => {
                 <AdminContext
                     dataProvider={testDataProvider({
                         getManyReference: () =>
-                            Promise.resolve({ data, total: 2 }),
+                            Promise.resolve<any>({ data, total: 2 }),
                     })}
                 >
                     <ReferenceManyField {...defaultProps}>
@@ -162,7 +167,7 @@ describe('<ReferenceManyField />', () => {
                 <AdminContext
                     dataProvider={testDataProvider({
                         getManyReference: () =>
-                            Promise.resolve({ data, total: 2 }),
+                            Promise.resolve<any>({ data, total: 2 }),
                     })}
                 >
                     <ReferenceManyField {...defaultProps}>
@@ -211,7 +216,7 @@ describe('<ReferenceManyField />', () => {
                     <AdminContext
                         dataProvider={testDataProvider({
                             getManyReference: () =>
-                                Promise.resolve({ data, total: 12 }),
+                                Promise.resolve<any>({ data, total: 12 }),
                         })}
                     >
                         <ReferenceManyField
@@ -241,7 +246,7 @@ describe('<ReferenceManyField />', () => {
                     <AdminContext
                         dataProvider={testDataProvider({
                             getManyReference: () =>
-                                Promise.resolve({
+                                Promise.resolve<any>({
                                     data,
                                     pageInfo: {
                                         hasPreviousPage: false,
@@ -266,6 +271,147 @@ describe('<ReferenceManyField />', () => {
             await screen.findByText('ra.navigation.partial_page_range_info');
             await screen.findByLabelText('ra.navigation.previous');
             await screen.findByLabelText('ra.navigation.next');
+        });
+    });
+
+    describe('"Select all" button', () => {
+        it('should be displayed if an item is selected', async () => {
+            render(<WithPagination />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            expect(
+                await screen.findByRole('button', { name: 'Select all' })
+            ).toBeDefined();
+        });
+        it('should not be displayed if all item are manyally selected', async () => {
+            render(
+                <WithPagination
+                    dataProvider={testDataProvider({
+                        getManyReference: () =>
+                            Promise.resolve<any>({
+                                data: [
+                                    {
+                                        id: 0,
+                                        title: 'War and Peace',
+                                        author: 'Leo Tolstoy',
+                                        year: 1869,
+                                    },
+                                    {
+                                        id: 1,
+                                        title: 'Pride and Prejudice',
+                                        author: 'Jane Austen',
+                                        year: 1813,
+                                    },
+                                ],
+                                total: 2,
+                            }),
+                    })}
+                />
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(3);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('2 items selected');
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should not be displayed if all item are selected with the "Select all" button', async () => {
+            render(<WithPagination />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('5 items selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('7 items selected');
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should not be displayed if we reached de selectAllLimit by a manyally selection', async () => {
+            render(
+                <WithPaginationAndSelectAllLimit
+                    selectAllLimit={2}
+                    dataProvider={testDataProvider({
+                        getManyReference: () =>
+                            Promise.resolve<any>({
+                                data: [
+                                    {
+                                        id: 0,
+                                        title: 'War and Peace',
+                                        author: 'Leo Tolstoy',
+                                        year: 1869,
+                                    },
+                                    {
+                                        id: 1,
+                                        title: 'Pride and Prejudice',
+                                        author: 'Jane Austen',
+                                        year: 1813,
+                                    },
+                                    {
+                                        id: 2,
+                                        title: 'The Picture of Dorian Gray',
+                                        author: 'Oscar Wilde',
+                                        year: 1890,
+                                    },
+                                ],
+                                total: 3,
+                            }),
+                    })}
+                />
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(4);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            fireEvent.click(screen.getAllByRole('checkbox')[2]);
+            await screen.findByText('2 items selected');
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should not be displayed if we reached de selectAllLimit by a  click on the "Select all" button', async () => {
+            render(<WithPaginationAndSelectAllLimit />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            await screen.findByText('1 item selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('6 items selected');
+            await screen.findByText(
+                'Warning: There are too many elements to select them all. Only the first 6 elements were selected.'
+            );
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should select all items', async () => {
+            render(<WithPagination />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('5 items selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('7 items selected');
+        });
+        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
+            render(<WithPaginationAndSelectAllLimit />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('5 items selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('6 items selected');
+            await screen.findByText(
+                'Warning: There are too many elements to select them all. Only the first 6 elements were selected.'
+            );
         });
     });
 });

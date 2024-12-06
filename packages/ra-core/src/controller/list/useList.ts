@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
+
 import { removeEmpty } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
@@ -162,6 +163,7 @@ export const useList = <RecordType extends RaRecord = any>(
         },
         [setDisplayedFilters, setFilterValues, setPage]
     );
+
     // handle filter prop change
     useEffect(() => {
         if (!isEqual(filter, filterRef.current)) {

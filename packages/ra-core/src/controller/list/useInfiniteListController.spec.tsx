@@ -25,8 +25,8 @@ import {
     Authenticated,
     CanAccess,
     DisableAuthentication,
-} from './useInfiniteListController.security.stories';
-import { AuthProvider } from '../../types';
+} from './useInfiniteListController.stories';
+import type { AuthProvider } from '../../types';
 
 const InfiniteListController = ({
     children,

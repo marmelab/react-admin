@@ -4,10 +4,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { CoreAdmin, CoreAdminContext, CoreAdminUI, Resource } from '../../core';
 import { AuthProvider, DataProvider } from '../../types';
-import {
-    InfiniteListControllerProps,
-    useInfiniteListController,
-} from './useInfiniteListController';
+import { useInfiniteListController } from './useInfiniteListController';
 import { Browser } from '../../storybook/FakeBrowser';
 import { TestMemoryRouter } from '../../routing';
 
@@ -41,11 +38,7 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const Posts = (props: Partial<InfiniteListControllerProps>) => {
-    const params = useInfiniteListController({
-        resource: 'posts',
-        ...props,
-    });
+const List = params => {
     return (
         <div style={styles.mainContainer}>
             {params.isPending ? (
@@ -62,6 +55,82 @@ const Posts = (props: Partial<InfiniteListControllerProps>) => {
                 </div>
             )}
         </div>
+    );
+};
+
+const Posts = ({ children = List, ...props }) => {
+    const params = useInfiniteListController({
+        resource: 'posts',
+        ...props,
+    });
+    return children(params);
+};
+
+const ListWithCheckbox = params => (
+    <div style={styles.mainContainer}>
+        {params.isPending ? (
+            <p>Loading...</p>
+        ) : (
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                    }}
+                >
+                    <button
+                        onClick={params.onUnselectItems}
+                        disabled={params.selectedIds.length === 0}
+                    >
+                        Unselect All
+                    </button>
+                    <p>Selected ids: {JSON.stringify(params.selectedIds)}</p>
+                </div>
+                <ul
+                    style={{
+                        listStyleType: 'none',
+                        ...styles.ul,
+                    }}
+                >
+                    {params.data?.map(record => (
+                        <li key={record.id}>
+                            <input
+                                type="checkbox"
+                                checked={params.selectedIds.includes(record.id)}
+                                onChange={() => params.onToggleItem(record.id)}
+                                style={{
+                                    cursor: 'pointer',
+                                    marginRight: '10px',
+                                }}
+                            />
+                            {record.id} - {record.title}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        )}
+    </div>
+);
+
+export const Basic = ({
+    dataProvider = defaultDataProvider,
+    children = ListWithCheckbox,
+}: {
+    dataProvider?: DataProvider;
+    children?: (props) => React.JSX.Element;
+}) => {
+    return (
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CoreAdminUI>
+                    <Resource
+                        name="posts"
+                        list={<Posts children={children} />}
+                    />
+                </CoreAdminUI>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
