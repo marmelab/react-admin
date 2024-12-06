@@ -5,6 +5,7 @@ import {
     StoreContextProvider,
     PreferencesEditorContextProvider,
     TestMemoryRouter,
+    localStorageStore,
 } from 'ra-core';
 
 import { DatagridConfigurable } from './DatagridConfigurable';
@@ -14,9 +15,12 @@ import { EditButton } from '../../button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export default { title: 'ra-ui-materialui/list/DatagridConfigurable' };
+export default {
+    title: 'ra-ui-materialui/list/DatagridConfigurable',
+    excludeStories: ['data', 'Wrapper'],
+};
 
-const data = [
+export const data = [
     {
         id: 1,
         title: 'War and Peace',
@@ -47,8 +51,12 @@ const AuthorField = () => <TextField label="Author" source="author" />;
 
 const theme = createTheme();
 
-const Wrapper = ({ children, queryClient = new QueryClient() }) => (
-    <StoreContextProvider value={memoryStore()}>
+export const Wrapper = ({
+    children,
+    queryClient = new QueryClient(),
+    store = memoryStore(),
+}) => (
+    <StoreContextProvider value={store}>
         <ThemeProvider theme={theme}>
             <PreferencesEditorContextProvider>
                 <QueryClientProvider client={queryClient}>
@@ -156,6 +164,23 @@ export const NullChildren = () => (
             bulkActionButtons={false}
         >
             {false && <TextField source="id" />}
+            <TextField source="title" label="Original title" />
+            <TextField source="author" />
+            <TextField source="year" />
+            <EditButton />
+        </DatagridConfigurable>
+    </Wrapper>
+);
+
+export const LocalStorage = () => (
+    <Wrapper store={localStorageStore()}>
+        <DatagridConfigurable
+            resource="books1"
+            data={data}
+            sort={{ field: 'title', order: 'ASC' }}
+            bulkActionButtons={false}
+        >
+            <TextField source="id" />
             <TextField source="title" label="Original title" />
             <TextField source="author" />
             <TextField source="year" />
