@@ -14,7 +14,6 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 import { SORT_ASC } from './queryReducer';
-import { useSelectAll } from './useSelectAll';
 
 /**
  * Prepare data for the List view

@@ -91,7 +91,6 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                       |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
-| `selectAllLimit` | Optional | `number`                                                                        | -                                | The maximum number of items selected by the "SELECT ALL" button of the bulk actions toolbar.         |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 | `source`       | Optional | `string`                                                                          | `id`                             | Target field carrying the relationship on the source record (usually 'id')          |
 | `storeKey`     | Optional | `string`                                                                          | -                                | The key to use to store the records selection state                                 |
@@ -269,18 +268,6 @@ For instance, if you want to display the `books` of a given `author`, the `refer
   <Datagrid>
     <TextField source="title" />
     <DateField source="published_at" />
-  </Datagrid>
-</ReferenceManyField>
-```
-
-## `selectAllLimit`
-
-By default, the "SELECT ALL" button of the `<Datagrid>`'s bulk actions toolbar select all records up to 250 items. You can customize the limit by passing a `selectAllLimit` prop to the `<ReferenceManyField>` component
-
-```jsx
-<ReferenceManyField selectAllLimit={2000} reference="comments" target="post_id">
-  <Datagrid>
-    ...
   </Datagrid>
 </ReferenceManyField>
 ```

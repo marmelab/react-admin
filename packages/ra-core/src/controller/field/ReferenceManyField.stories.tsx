@@ -30,9 +30,7 @@ const ReferenceManyFieldController = props => {
     return children(controllerProps);
 };
 
-const ReferenceManyFieldComponent = (
-    props: ListControllerResult & { selectAllLimit?: number }
-) => (
+const ReferenceManyFieldComponent = (props: ListControllerResult) => (
     <div>
         <div
             style={{

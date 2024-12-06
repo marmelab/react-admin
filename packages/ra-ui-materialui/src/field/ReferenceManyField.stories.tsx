@@ -187,10 +187,8 @@ export const StoreKey = () => (
 
 export const WithPagination = ({
     dataProvider = fullDataProvider,
-    selectAllLimit,
 }: {
     dataProvider?: AdminProps['dataProvider'];
-    selectAllLimit?: number;
 }) => (
     <Wrapper
         i18nProvider={polyglotI18nProvider(() => englishMessages)}
@@ -202,26 +200,12 @@ export const WithPagination = ({
             target="author_id"
             pagination={<Pagination />}
             perPage={5}
-            selectAllLimit={selectAllLimit}
         >
             <Datagrid>
                 <TextField source="title" />
             </Datagrid>
         </ReferenceManyField>
     </Wrapper>
-);
-
-export const WithPaginationAndSelectAllLimit = ({
-    dataProvider,
-    selectAllLimit = 6,
-}: {
-    dataProvider?: AdminProps['dataProvider'];
-    selectAllLimit?: number;
-}) => (
-    <WithPagination
-        selectAllLimit={selectAllLimit}
-        dataProvider={dataProvider}
-    />
 );
 
 const AuthorEdit = () => (

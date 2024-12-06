@@ -65,7 +65,6 @@ export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
     className?: string;
-    selectAllLimit?: number;
 }
 
 const PREFIX = 'RaBulkActionsToolbar';
