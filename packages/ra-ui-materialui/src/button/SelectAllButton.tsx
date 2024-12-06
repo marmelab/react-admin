@@ -1,43 +1,24 @@
-import * as React from 'react';
-import {
-    type GetListParams,
-    type GetManyReferenceParams,
-    type RaRecord,
-    useListContext,
-    useSelectAll,
-} from 'ra-core';
-import type { UseMutationOptions } from '@tanstack/react-query';
+import React, { useCallback } from 'react';
+import { useListContext, useSelectAll } from 'ra-core';
+
 import { Button, ButtonProps } from './Button';
-import { useCallback } from 'react';
 
 /**
- * Select All button for list forms
+ * Select all items from a Datagrid.
  *
  * @typedef {Object} Props the props you can use
  * @prop {string} label Button label. Defaults to 'ra.action.select_all', translated.
  * @prop {string} limit Maximum number of items to select. Defaults to 250.
- * @prop {function} mutationOptions Object of options passed to react-query.
  *
  * @param {Props} props
  *
- * @example // with custom success side effect
+ * @example
  *
- * const MySelectAllButton = () => {
- *     const notify = useNotify();
- *     const onSuccess = (response) => {
- *         notify('All items selected!', { type: 'info' });
- *     };
- *     return <SelectAllButton limit={100} mutationOptions={{ onSuccess }} />;
- * }
+ * const MySelectAllButton = () => <SelectAllButton limit={100} label="Select all books" />;
  */
 
 export const SelectAllButton = (props: SelectAllButtonProps) => {
-    const {
-        label = 'ra.action.select_all',
-        limit = 250,
-        mutationOptions,
-        ...rest
-    } = props;
+    const { label = 'ra.action.select_all', limit = 250, ...rest } = props;
 
     const { filter, sort, meta, total, selectedIds } = useListContext();
     const onSelectAll = useSelectAll({ limit, filter, sort, meta });
@@ -58,14 +39,6 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
     );
 };
 
-export type SelectAllButtonProps<
-    RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
-> = ButtonProps & {
+export type SelectAllButtonProps = ButtonProps & {
     limit?: number;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        GetManyReferenceParams | GetListParams
-    >;
 };
