@@ -6,7 +6,13 @@ import {
     ResourceContextProvider,
     TestMemoryRouter,
 } from 'ra-core';
-import { Admin, AdminProps, ListGuesser, Resource } from 'react-admin';
+import {
+    Admin,
+    AdminProps,
+    type DatagridProps,
+    ListGuesser,
+    Resource,
+} from 'react-admin';
 import { ThemeProvider, Box, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import fakeDataProvider from 'ra-data-fakerest';
@@ -22,6 +28,7 @@ import { FilterForm } from '../list';
 import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
+import { SelectAllButton, BulkDeleteButton } from '../button';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
 
@@ -187,8 +194,10 @@ export const StoreKey = () => (
 
 export const WithPagination = ({
     dataProvider = fullDataProvider,
+    bulkActionButtons,
 }: {
     dataProvider?: AdminProps['dataProvider'];
+    bulkActionButtons?: DatagridProps['bulkActionButtons'];
 }) => (
     <Wrapper
         i18nProvider={polyglotI18nProvider(() => englishMessages)}
@@ -201,11 +210,29 @@ export const WithPagination = ({
             pagination={<Pagination />}
             perPage={5}
         >
-            <Datagrid>
+            <Datagrid bulkActionButtons={bulkActionButtons}>
                 <TextField source="title" />
             </Datagrid>
         </ReferenceManyField>
     </Wrapper>
+);
+
+export const WithPaginationAndSelectAllLimit = ({
+    dataProvider,
+    limit = 6,
+}: {
+    dataProvider?: AdminProps['dataProvider'];
+    limit?: number;
+}) => (
+    <WithPagination
+        bulkActionButtons={
+            <>
+                <SelectAllButton limit={limit} />
+                <BulkDeleteButton />
+            </>
+        }
+        dataProvider={dataProvider}
+    />
 );
 
 const AuthorEdit = () => (

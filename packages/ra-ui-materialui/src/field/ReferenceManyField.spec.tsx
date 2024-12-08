@@ -332,10 +332,10 @@ describe('<ReferenceManyField />', () => {
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
         });
-        it('should not be displayed if we reached de selectAllLimit by a manyally selection', async () => {
+        it('should not be displayed if we reached de limit by a manyally selection', async () => {
             render(
                 <WithPaginationAndSelectAllLimit
-                    selectAllLimit={2}
+                    limit={2}
                     dataProvider={testDataProvider({
                         getManyReference: () =>
                             Promise.resolve<any>({
