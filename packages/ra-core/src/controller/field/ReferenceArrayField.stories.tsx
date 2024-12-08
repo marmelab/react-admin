@@ -39,6 +39,12 @@ const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
             }}
         >
             <button
+                onClick={() => props.onSelectAll()}
+                disabled={props.total === props.selectedIds.length}
+            >
+                Select All
+            </button>
+            <button
                 onClick={props.onUnselectItems}
                 disabled={props.selectedIds.length === 0}
             >

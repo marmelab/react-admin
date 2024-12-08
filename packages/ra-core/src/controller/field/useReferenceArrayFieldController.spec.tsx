@@ -1,10 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
 import { CoreAdminContext } from '../../core';
+import { ReferenceArrayField } from './ReferenceArrayField.stories';
 
 const ReferenceArrayFieldController = props => {
     const { children, ...rest } = props;
@@ -165,5 +166,56 @@ describe('<useReferenceArrayFieldController />', () => {
                 error: null,
             })
         );
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all items if no items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                    })
+                );
+            });
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [1, 2],
+                    })
+                );
+            });
+        });
+        it('should select all items if some items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        data: [
+                            { id: 1, title: 'bar1' },
+                            { id: 2, title: 'bar2' },
+                        ],
+                    })
+                );
+            });
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [1, 2],
+                    })
+                );
+            });
+        });
     });
 });
