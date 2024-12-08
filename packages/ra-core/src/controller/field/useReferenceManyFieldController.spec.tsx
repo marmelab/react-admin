@@ -1,11 +1,18 @@
 import * as React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
 
 import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
 import { useReferenceManyFieldController } from './useReferenceManyFieldController';
 import { memoryStore } from '../../store';
+import { ReferenceManyField } from './ReferenceManyField.stories';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;
@@ -410,6 +417,94 @@ describe('useReferenceManyFieldController', () => {
             await screen.findByText(
                 '{"facets":[{"foo":"bar","count":1},{"foo":"baz","count":2}]}'
             );
+        });
+    });
+    describe('onSelectAll', () => {
+        it('should select all items if no items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(<ReferenceManyField>{children}</ReferenceManyField>);
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select all items if some items are selected', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            render(<ReferenceManyField>{children}</ReferenceManyField>);
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelect([1]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [1],
+                    })
+                );
+            });
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select the maximum items possible until we reached the limit', async () => {
+            const children = jest.fn().mockReturnValue('child');
+            const getManyReference = jest
+                .fn()
+                .mockImplementation((_resource, params) =>
+                    Promise.resolve({
+                        data: [{ id: 0 }, { id: 1 }].slice(
+                            0,
+                            params.pagination.perPage
+                        ),
+                        total: 2,
+                    })
+                );
+            const dataProvider = testDataProvider({
+                getManyReference,
+            });
+            render(
+                <ReferenceManyField dataProvider={dataProvider}>
+                    {children}
+                </ReferenceManyField>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenNthCalledWith(
+                    1,
+                    expect.objectContaining({
+                        selectedIds: [],
+                    })
+                );
+            });
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll({ limit: 1 });
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(getManyReference).toHaveBeenCalledWith(
+                    'books',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 1 },
+                    })
+                );
+            });
         });
     });
 });

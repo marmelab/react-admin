@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
     CoreAdminContext,
+    type CoreAdminContextProps,
     type GetManyResult,
     type ListControllerResult,
     testDataProvider,
@@ -40,6 +41,12 @@ const ReferenceManyFieldComponent = (props: ListControllerResult) => (
             }}
         >
             <button
+                onClick={() => props.onSelectAll()}
+                disabled={props.total === props.selectedIds.length}
+            >
+                Select All
+            </button>
+            <button
                 onClick={props.onUnselectItems}
                 disabled={props.selectedIds.length === 0}
             >
@@ -72,8 +79,12 @@ const ReferenceManyFieldComponent = (props: ListControllerResult) => (
 
 export const ReferenceManyField = ({
     children = ReferenceManyFieldComponent,
+    dataProvider = defaultDataProvider,
+}: {
+    children?: (props: ListControllerResult) => React.ReactNode;
+    dataProvider?: CoreAdminContextProps['dataProvider'];
 }) => (
-    <CoreAdminContext dataProvider={defaultDataProvider}>
+    <CoreAdminContext dataProvider={dataProvider}>
         <ReferenceManyFieldController
             resource="authors"
             source="id"
