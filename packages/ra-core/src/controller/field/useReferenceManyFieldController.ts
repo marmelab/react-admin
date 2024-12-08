@@ -203,7 +203,7 @@ export const useReferenceManyFieldController = <
     );
 
     const onSelectAll = useCallback(
-        async ({ queryOptions = {}, limit = 250 }: onSelectAllProps) => {
+        async ({ limit = 250, queryOptions = {} }: onSelectAllProps = {}) => {
             const { meta, onSuccess, onError } = queryOptions;
             try {
                 const results = await queryClient.fetchQuery({

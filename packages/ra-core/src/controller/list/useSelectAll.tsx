@@ -44,7 +44,7 @@ export const useSelectAll = ({
     const notify = useNotify();
 
     const onSelectAll = useCallback(
-        async ({ queryOptions = {}, limit = 250 }: onSelectAllProps) => {
+        async ({ queryOptions = {}, limit = 250 }: onSelectAllProps = {}) => {
             const { meta, onSuccess, onError } = queryOptions;
             try {
                 const results = await queryClient.fetchQuery({
