@@ -1,5 +1,11 @@
 import React, { useCallback } from 'react';
-import { useListContext, useSelectAll } from 'ra-core';
+import {
+    useListContext,
+    type RaRecord,
+    type UseGetListOptions,
+    type UseReferenceArrayFieldControllerParams,
+    type UseReferenceManyFieldControllerParams,
+} from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -9,6 +15,7 @@ import { Button, ButtonProps } from './Button';
  * @typedef {Object} Props the props you can use
  * @prop {string} label Button label. Defaults to 'ra.action.select_all', translated.
  * @prop {string} limit Maximum number of items to select. Defaults to 250.
+ * @prop {function} queryOptions Object of options passed to react-query.
  *
  * @param {Props} props
  *
@@ -24,17 +31,18 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
         label = 'ra.action.select_all',
         limit = 250,
         onClick,
+        queryOptions,
         ...rest
     } = props;
 
-    const { filter, sort, meta, total, selectedIds } = useListContext();
-    const onSelectAll = useSelectAll({ limit, filter, sort, meta });
+    const { total, selectedIds, onSelectAll } = useListContext();
     const handleSelectAll = useCallback(
         event => {
-            onSelectAll();
+            // @ts-ignore
+            onSelectAll({ limit, queryOptions });
             if (onClick) onClick(event);
         },
-        [onClick, onSelectAll]
+        [onClick, onSelectAll, queryOptions, limit]
     );
 
     if (total === selectedIds.length || selectedIds.length >= limit)
@@ -51,6 +59,11 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
     );
 };
 
-export type SelectAllButtonProps = ButtonProps & {
-    limit?: number;
-};
+export type SelectAllButtonProps<RecordType extends RaRecord = any> =
+    ButtonProps & {
+        limit?: number;
+        queryOptions?:
+            | UseGetListOptions<RecordType>
+            | UseReferenceArrayFieldControllerParams<RecordType>['queryOptions']
+            | UseReferenceManyFieldControllerParams<RecordType>['queryOptions'];
+    };

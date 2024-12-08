@@ -981,6 +981,16 @@ By default, `<SelectAllButton>` select the 250 first items of your list. To cust
 const PostSelectAllButton = () => <SelectAllButton limit={100} />;
 ```
 
+### `queryOptions`
+
+`<SelectAllButton>` calls a `get` method of your `dataProvider` via a react-query's hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the call.
+
+{% raw %}
+```jsx
+const PostSelectAllButton = () => <SelectAllButton queryOptions={{ meta: { foo: 'bar' } }} />;
+```
+{% endraw %}
+
 ### `sx`: CSS API
 
 To override the style of all instances of `<SelectAllButton>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSelectAllButton` key.

@@ -1,5 +1,5 @@
 import { isValidElement, useEffect, useMemo } from 'react';
-import {
+import type {
     InfiniteQueryObserverBaseResult,
     InfiniteData,
 } from '@tanstack/react-query';
@@ -8,11 +8,11 @@ import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
-    UseInfiniteGetListOptions,
+    type UseInfiniteGetListOptions,
     useInfiniteGetList,
 } from '../../dataProvider';
 import { defaultExporter } from '../../export';
-import {
+import type {
     RaRecord,
     SortPayload,
     FilterPayload,
@@ -22,8 +22,8 @@ import {
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
-
-import { ListControllerResult } from './useListController';
+import { useSelectAll } from './useSelectAll';
+import type { ListControllerResult } from './useListController';
 
 /**
  * Prepare data for the InfiniteList view
@@ -139,6 +139,11 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         }
     );
 
+    const onSelectAll = useSelectAll({
+        sort: { field: query.sort, order: query.order },
+        filter: { ...query.filter, ...filter },
+    });
+
     // change page if there is no data
     useEffect(() => {
         if (
@@ -194,6 +199,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,

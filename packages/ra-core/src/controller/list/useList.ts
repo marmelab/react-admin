@@ -268,6 +268,11 @@ export const useList = <RecordType extends RaRecord = any>(
         }
     }, [isPending, pendingState, setPendingState]);
 
+    const onSelectAll = useCallback(() => {
+        const allIds = data?.map(({ id }) => id) || [];
+        selectionModifiers.select(allIds);
+    }, [data, selectionModifiers]);
+
     return {
         sort,
         data: pendingState ? undefined : finalItems?.data ?? [],
@@ -285,6 +290,7 @@ export const useList = <RecordType extends RaRecord = any>(
         isLoading: loadingState,
         isPending: pendingState,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page,
