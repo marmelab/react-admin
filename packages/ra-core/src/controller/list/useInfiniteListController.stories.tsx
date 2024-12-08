@@ -80,6 +80,12 @@ const ListWithCheckbox = params => (
                     }}
                 >
                     <button
+                        onClick={() => params.onSelectAll()}
+                        disabled={params.total === params.selectedIds.length}
+                    >
+                        Select All
+                    </button>
+                    <button
                         onClick={params.onUnselectItems}
                         disabled={params.selectedIds.length === 0}
                     >
