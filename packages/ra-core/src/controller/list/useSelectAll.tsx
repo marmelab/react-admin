@@ -3,13 +3,14 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { useNotify } from '../../notification';
 import { useDataProvider, UseGetListOptions } from '../../dataProvider';
-import { useRecordSelection } from './useRecordSelection';
-import { useResourceContext } from '../../core';
 import type { FilterPayload, RaRecord, SortPayload } from '../../types';
+import type { UseRecordSelectionResult } from './useRecordSelection';
 
 /**
  * Function hook to select all items of a list (until we reached the limit)
  *
+ * @param {string} resource Required. The resource name
+ * @param {RecordSelectionModifiers} selectionModifiers Required, The selection modifiers
  * @param {SortPayload} sort Optional. The sort object passed to the dataProvider
  * @param {FilterPayload} filter Optional. The filter object passed to the dataProvider
  * @returns {Function} onSelectAll A function to select all items of a list
@@ -17,7 +18,9 @@ import type { FilterPayload, RaRecord, SortPayload } from '../../types';
  * @example
  *
  * const MyButton = () => {
+ *   const [_, selectionModifiers] = useRecordSelection({ resource: 'posts' });
  *   const onSelectAll = useSelectAll({
+ *       selectionModifiers,
  *       sort: { field: 'title', order: 'ASC' },
  *       filter: { title: 'foo' },
  *   });
@@ -29,16 +32,11 @@ import type { FilterPayload, RaRecord, SortPayload } from '../../types';
  * };
  */
 export const useSelectAll = ({
+    resource,
+    selectionModifiers,
     sort,
     filter,
 }: useSelectAllProps): ((options?: onSelectAllProps) => void) => {
-    const resource = useResourceContext();
-    if (!resource) {
-        throw new Error(
-            'useSelectAll should be used inside a ResourceContextProvider'
-        );
-    }
-    const [_, selectionModifiers] = useRecordSelection({ resource });
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const notify = useNotify();
@@ -107,6 +105,8 @@ export const useSelectAll = ({
 };
 
 export interface useSelectAllProps {
+    resource: string;
+    selectionModifiers: UseRecordSelectionResult[1];
     sort?: SortPayload;
     filter?: FilterPayload;
 }
