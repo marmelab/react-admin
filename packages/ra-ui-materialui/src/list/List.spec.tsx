@@ -425,10 +425,10 @@ describe('<List />', () => {
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
         });
-        it('should not be displayed if we reached the selectAllLimit by a manual selection', async () => {
+        it('should not be displayed if we reached the limit by a manual selection', async () => {
             render(
                 <SelectAllLimit
-                    selectAllLimit={2}
+                    limit={2}
                     dataProvider={testDataProvider({
                         getList: () =>
                             Promise.resolve<any>({

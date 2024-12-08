@@ -13,12 +13,12 @@ import { Box, Card, Typography, Button, Link as MuiLink } from '@mui/material';
 import { List } from './List';
 import { SimpleList } from './SimpleList';
 import { ListActions } from './ListActions';
-import { Datagrid } from './datagrid';
+import { Datagrid, DatagridProps } from './datagrid';
 import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
-import { ListButton } from '../button';
+import { BulkDeleteButton, ListButton, SelectAllButton } from '../button';
 import { ShowGuesser } from '../detail';
 import TopToolbar from '../layout/TopToolbar';
 
@@ -466,14 +466,22 @@ export const Meta = () => (
     </TestMemoryRouter>
 );
 
-export const Default = ({ dataProvider = defaultDataProvider, children }) => (
+export const Default = ({
+    dataProvider = defaultDataProvider,
+    children,
+    bulkActionButtons,
+}: {
+    dataProvider?: DataProvider;
+    children?: React.ReactNode;
+    bulkActionButtons?: DatagridProps['bulkActionButtons'];
+}) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
                 list={() => (
                     <List filters={[<SearchInput source="q" alwaysOn />]}>
-                        <Datagrid>
+                        <Datagrid bulkActionButtons={bulkActionButtons}>
                             <TextField source="id" />
                             <TextField source="title" />
                             <TextField source="author" />
@@ -485,6 +493,28 @@ export const Default = ({ dataProvider = defaultDataProvider, children }) => (
             />
         </Admin>
     </TestMemoryRouter>
+);
+
+export const SelectAllLimit = ({
+    dataProvider,
+    children,
+    limit = 11,
+}: {
+    dataProvider?: DataProvider;
+    children?: React.ReactNode;
+    limit?: number;
+}) => (
+    <Default
+        bulkActionButtons={
+            <>
+                <SelectAllButton limit={limit} />
+                <BulkDeleteButton />
+            </>
+        }
+        dataProvider={dataProvider}
+    >
+        {children}
+    </Default>
 );
 
 const NewerBooks = () => (
