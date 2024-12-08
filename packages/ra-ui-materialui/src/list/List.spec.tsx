@@ -6,6 +6,7 @@ import {
     testDataProvider,
     useListContext,
     TestMemoryRouter,
+    useRecordSelection,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -20,6 +21,8 @@ import {
     TitleFalse,
     TitleElement,
     PartialPagination,
+    Default,
+    SelectAllLimit,
 } from './List.stories';
 
 const theme = createTheme(defaultTheme);
@@ -338,6 +341,184 @@ describe('<List />', () => {
             render(<TitleFalse />);
             await screen.findByText('War and Peace (1869)');
             screen.getByText('Books');
+        });
+    });
+
+    describe('"Select all" button', () => {
+        const Child = () => {
+            const [_, selectionModifiers] = useRecordSelection({
+                resource: 'books',
+            });
+            return (
+                <button onClick={() => selectionModifiers.clearSelection()}>
+                    reset
+                </button>
+            );
+        };
+        afterEach(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'reset' }));
+        });
+        it('should be displayed if an item is selected', async () => {
+            render(
+                <Default>
+                    <Child />
+                </Default>
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            expect(
+                await screen.findByRole('button', { name: 'Select all' })
+            ).toBeDefined();
+        });
+        it('should not be displayed if all item are manually selected', async () => {
+            render(
+                <Default
+                    dataProvider={testDataProvider({
+                        getList: () =>
+                            Promise.resolve<any>({
+                                data: [
+                                    {
+                                        id: 0,
+                                        title: 'War and Peace',
+                                        author: 'Leo Tolstoy',
+                                        year: 1869,
+                                    },
+                                    {
+                                        id: 1,
+                                        title: 'Pride and Prejudice',
+                                        author: 'Jane Austen',
+                                        year: 1813,
+                                    },
+                                ],
+                                total: 2,
+                            }),
+                    })}
+                >
+                    <Child />
+                </Default>
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(3);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('2 items selected');
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should not be displayed if all item are selected with the "Select all" button', async () => {
+            render(
+                <Default>
+                    <Child />
+                </Default>
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('10 items selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('13 items selected');
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should not be displayed if we reached the limit by a manual selection', async () => {
+            render(
+                <SelectAllLimit
+                    limit={2}
+                    dataProvider={testDataProvider({
+                        getList: () =>
+                            Promise.resolve<any>({
+                                data: [
+                                    {
+                                        id: 0,
+                                        title: 'War and Peace',
+                                        author: 'Leo Tolstoy',
+                                        year: 1869,
+                                    },
+                                    {
+                                        id: 1,
+                                        title: 'Pride and Prejudice',
+                                        author: 'Jane Austen',
+                                        year: 1813,
+                                    },
+                                    {
+                                        id: 2,
+                                        title: 'The Picture of Dorian Gray',
+                                        author: 'Oscar Wilde',
+                                        year: 1890,
+                                    },
+                                ],
+                                total: 3,
+                            }),
+                    })}
+                >
+                    <Child />
+                </SelectAllLimit>
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(4);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            fireEvent.click(screen.getAllByRole('checkbox')[2]);
+            await screen.findByText('2 items selected');
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should not be displayed if we reached the selectAllLimit by a  click on the "Select all" button', async () => {
+            render(
+                <SelectAllLimit>
+                    <Child />
+                </SelectAllLimit>
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            await screen.findByText('1 item selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('11 items selected');
+            await screen.findByText(
+                'Warning: There are too many elements to select them all. Only the first 11 elements were selected.'
+            );
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should select all items', async () => {
+            render(
+                <Default>
+                    <Child />
+                </Default>
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('10 items selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('13 items selected');
+        });
+        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
+            render(
+                <SelectAllLimit>
+                    <Child />
+                </SelectAllLimit>
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('10 items selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('11 items selected');
+            await screen.findByText(
+                'Warning: There are too many elements to select them all. Only the first 11 elements were selected.'
+            );
         });
     });
 });

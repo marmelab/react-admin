@@ -192,7 +192,7 @@ describe('<ReferenceArrayInput />', () => {
                 .getByLabelText('ra.action.select_row')
                 .querySelector('input');
         const getCheckboxAll = () =>
-            screen.getByLabelText('ra.action.select_all');
+            screen.getByRole('checkbox', { name: 'ra.action.select_all' });
         await waitFor(() => {
             expect(getCheckbox1()?.checked).toEqual(true);
             expect(getCheckbox2()?.checked).toEqual(false);

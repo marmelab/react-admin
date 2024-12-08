@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import expect from 'expect';
 
 import { useList, UseListOptions, UseListValue } from './useList';
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { ListContextProvider } from './ListContextProvider';
 import { useListContext } from './useListContext';
 
@@ -313,6 +313,49 @@ describe('<useList />', () => {
                     ],
                 })
             );
+        });
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all items if no items are selected', async () => {
+            const children = jest.fn();
+            const data = [{ id: 0 }, { id: 1 }];
+            render(<UseList data={data} callback={children} />);
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select all items if some items are selected', async () => {
+            const children = jest.fn();
+            const data = [{ id: 0 }, { id: 1 }];
+            render(<UseList data={data} callback={children} />);
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelect([1]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [1],
+                    })
+                );
+            });
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
         });
     });
 });

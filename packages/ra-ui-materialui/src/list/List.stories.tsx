@@ -13,12 +13,12 @@ import { Box, Card, Typography, Button, Link as MuiLink } from '@mui/material';
 import { List } from './List';
 import { SimpleList } from './SimpleList';
 import { ListActions } from './ListActions';
-import { Datagrid } from './datagrid';
+import { Datagrid, DatagridProps } from './datagrid';
 import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
-import { ListButton } from '../button';
+import { BulkDeleteButton, ListButton, SelectAllButton } from '../button';
 import { ShowGuesser } from '../detail';
 import TopToolbar from '../layout/TopToolbar';
 
@@ -134,7 +134,7 @@ const data = {
     authors: [],
 };
 
-const dataProvider = fakeRestDataProvider(data);
+const defaultDataProvider = fakeRestDataProvider(data);
 
 const BookList = () => {
     const { error, isPending } = useListContext();
@@ -155,7 +155,7 @@ const BookList = () => {
 
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -170,7 +170,7 @@ export const Basic = () => (
 
 export const Actions = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -191,7 +191,7 @@ export const Actions = () => (
 
 export const Filters = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -223,7 +223,7 @@ export const Filters = () => (
 
 export const Filter = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -238,7 +238,7 @@ export const Filter = () => (
 
 export const Title = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -253,7 +253,7 @@ export const Title = () => (
 
 export const TitleElement = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -268,7 +268,7 @@ export const TitleElement = () => (
 
 export const TitleFalse = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -283,7 +283,7 @@ export const TitleFalse = () => (
 
 export const HasCreate = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -300,7 +300,7 @@ const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
 
 export const Aside = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -324,7 +324,7 @@ const CustomWrapper = ({ children }) => (
 
 export const Component = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -372,7 +372,7 @@ export const PartialPagination = () => (
 
 export const Empty = () => (
     <TestMemoryRouter initialEntries={['/authors']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="authors"
                 list={() => (
@@ -416,7 +416,7 @@ export const EmptyPartialPagination = () => (
 
 export const SX = () => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <Admin dataProvider={dataProvider}>
+        <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
@@ -441,10 +441,10 @@ export const Meta = () => (
         <Admin
             dataProvider={
                 {
-                    ...dataProvider,
+                    ...defaultDataProvider,
                     getList: (resource, params) => {
                         console.log('getList', resource, params);
-                        return dataProvider.getList(resource, params);
+                        return defaultDataProvider.getList(resource, params);
                     },
                 } as any
             }
@@ -466,24 +466,55 @@ export const Meta = () => (
     </TestMemoryRouter>
 );
 
-export const Default = () => (
+export const Default = ({
+    dataProvider = defaultDataProvider,
+    children,
+    bulkActionButtons,
+}: {
+    dataProvider?: DataProvider;
+    children?: React.ReactNode;
+    bulkActionButtons?: DatagridProps['bulkActionButtons'];
+}) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={dataProvider}>
             <Resource
                 name="books"
                 list={() => (
                     <List filters={[<SearchInput source="q" alwaysOn />]}>
-                        <Datagrid>
+                        <Datagrid bulkActionButtons={bulkActionButtons}>
                             <TextField source="id" />
                             <TextField source="title" />
                             <TextField source="author" />
                             <TextField source="year" />
                         </Datagrid>
+                        {children}
                     </List>
                 )}
             />
         </Admin>
     </TestMemoryRouter>
+);
+
+export const SelectAllLimit = ({
+    dataProvider,
+    children,
+    limit = 11,
+}: {
+    dataProvider?: DataProvider;
+    children?: React.ReactNode;
+    limit?: number;
+}) => (
+    <Default
+        bulkActionButtons={
+            <>
+                <SelectAllButton limit={limit} />
+                <BulkDeleteButton />
+            </>
+        }
+        dataProvider={dataProvider}
+    >
+        {children}
+    </Default>
 );
 
 const NewerBooks = () => (
@@ -541,7 +572,7 @@ const StoreKeyDashboard = () => (
 
 export const StoreKey = () => (
     <TestMemoryRouter initialEntries={['/']}>
-        <Admin dataProvider={dataProvider} dashboard={StoreKeyDashboard}>
+        <Admin dataProvider={defaultDataProvider} dashboard={StoreKeyDashboard}>
             <CustomRoutes>
                 <Route path="/newerBooks" element={<NewerBooks />} />
                 <Route path="/olderBooks" element={<OlderBooks />} />
@@ -608,7 +639,7 @@ export const StoreDisabled = () => {
     return (
         <TestMemoryRouter initialEntries={['/']}>
             <Admin
-                dataProvider={dataProvider}
+                dataProvider={defaultDataProvider}
                 dashboard={DisabledStoreDashboard}
             >
                 <CustomRoutes>
@@ -649,7 +680,7 @@ export const LocationNotSyncWithStore = () => {
 
     return (
         <TestMemoryRouter initialEntries={['/']}>
-            <Admin dataProvider={dataProvider}>
+            <Admin dataProvider={defaultDataProvider}>
                 <Resource
                     name="books"
                     list={<BooksWithLocationDisabled />}
@@ -731,9 +762,12 @@ export const ResponseMetadata = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin
             dataProvider={{
-                ...dataProvider,
+                ...defaultDataProvider,
                 getList: async (resource, params) => {
-                    const result = await dataProvider.getList(resource, params);
+                    const result = await defaultDataProvider.getList(
+                        resource,
+                        params
+                    );
                     return {
                         ...result,
                         meta: {

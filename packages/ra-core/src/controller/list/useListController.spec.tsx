@@ -22,6 +22,7 @@ import {
     CanAccess,
     DisableAuthentication,
 } from './useListController.security.stories';
+import { Basic } from './useListController.stories';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -583,6 +584,90 @@ describe('useListController', () => {
             await screen.findByText('A post - 0 votes');
             expect(dataProvider.getList).toHaveBeenCalled();
             expect(authProvider.checkAuth).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('onSelectAll', () => {
+        const dataProvider = testDataProvider({
+            getList: jest.fn().mockImplementation((_resource, params) =>
+                Promise.resolve({
+                    data: [{ id: 0 }, { id: 1 }].slice(
+                        0,
+                        params.pagination.perPage
+                    ),
+                    total: 2,
+                })
+            ),
+        });
+        it('should select all items if no items are selected', async () => {
+            const children = jest.fn().mockReturnValue(<></>);
+            render(<Basic dataProvider={dataProvider} children={children} />);
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select all items if some items are selected', async () => {
+            const children = jest.fn().mockReturnValue(<></>);
+            render(<Basic dataProvider={dataProvider} children={children} />);
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelect([0]);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0],
+                    })
+                );
+            });
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll();
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0, 1],
+                    })
+                );
+            });
+        });
+        it('should select the maximum items possible until we reached the limit', async () => {
+            const getList = jest.fn().mockImplementation((_resource, params) =>
+                Promise.resolve({
+                    data: [{ id: 0 }, { id: 1 }].slice(
+                        0,
+                        params.pagination.perPage
+                    ),
+                    total: 2,
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<></>);
+            render(<Basic dataProvider={dataProvider} children={children} />);
+            act(() => {
+                children.mock.calls.at(-1)[0].onSelectAll({ limit: 1 });
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        selectedIds: [0],
+                    })
+                );
+            });
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledWith(
+                    'posts',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 1 },
+                    })
+                );
+            });
         });
     });
 });

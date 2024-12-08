@@ -129,10 +129,6 @@ const Root = styled('div', {
     [`& .${BulkActionsToolbarClasses.title}`]: {
         display: 'flex',
         flex: '0 0 auto',
-    },
-
-    [`& .${BulkActionsToolbarClasses.icon}`]: {
-        marginLeft: '-0.5em',
-        marginRight: '0.5em',
+        gap: theme.spacing(1),
     },
 }));

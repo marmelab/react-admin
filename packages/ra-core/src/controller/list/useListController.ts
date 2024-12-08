@@ -13,6 +13,7 @@ import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import { useSelectAll } from './useSelectAll';
 import { SORT_ASC } from './queryReducer';
 
 /**
@@ -168,6 +169,13 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
+    const onSelectAll = useSelectAll({
+        resource,
+        selectionModifiers,
+        sort: { field: query.sort, order: query.order },
+        filter: { ...query.filter, ...filter },
+    });
+
     return {
         sort: currentSort,
         data,
@@ -183,6 +191,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
@@ -195,7 +204,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
-        total: total,
+        total,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
@@ -431,6 +440,7 @@ export const injectedProps = [
     'isLoading',
     'isPending',
     'onSelect',
+    'onSelectAll',
     'onToggleItem',
     'onUnselectItems',
     'page',
@@ -475,6 +485,10 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     filterValues: any;
     hideFilter: (filterName: string) => void;
     onSelect: (ids: RecordType['id'][]) => void;
+    onSelectAll: (options?: {
+        limit?: number;
+        queryOptions?: UseGetListOptions<RecordType>;
+    }) => void;
     onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
