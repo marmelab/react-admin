@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.4.2
+
+* Fix: Improve AutocompleteInput creation support ([#10391](https://github.com/marmelab/react-admin/pull/10391)) ([djhi](https://github.com/djhi))
+* Fix `useLogin` should invalidate the `getPermissions` cache ([#10392](https://github.com/marmelab/react-admin/pull/10392)) ([slax57](https://github.com/slax57))
+* Fix `<Datagrid>` `rowClick` function cannot expand or select ([#10404](https://github.com/marmelab/react-admin/pull/10404)) ([djhi](https://github.com/djhi))
+* Fix `<FileInput>` triggers `onChange` twice with latest version of `react-dropzone` ([#10402](https://github.com/marmelab/react-admin/pull/10402)) ([slax57](https://github.com/slax57))
+* Fix type of disableClearable prop for AutocompleteInput ([#10393](https://github.com/marmelab/react-admin/pull/10393)) ([smeng9](https://github.com/smeng9))
+* [Doc] Backport `<ReferenceManyToManyField  queryOptions>` and `<ReferenceManyToManyInput  queryOptions  mutationOptions>` doc ([#10403](https://github.com/marmelab/react-admin/pull/10403)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `<DateRangeInput>` import syntax ([#10399](https://github.com/marmelab/react-admin/pull/10399)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Introduce `<TreeWithDetails filter>` prop to render a sub tree ([#10398](https://github.com/marmelab/react-admin/pull/10398)) ([djhi](https://github.com/djhi))
+
 ## 5.4.1
 
 * Fix access control basename handling ([#10383](https://github.com/marmelab/react-admin/pull/10383)) ([djhi](https://github.com/djhi))
