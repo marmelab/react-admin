@@ -5,7 +5,7 @@ title: "The ReferenceManyToManyField Component"
 
 # `<ReferenceManyToManyField>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component (e.g. `<SingleFieldList>`).
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="premium icon" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component (e.g. `<SingleFieldList>`).
 
 !["ReferenceManyToManyField example showing band's venues"](./img/reference-many-to-many-field.png)
 
@@ -15,7 +15,7 @@ Note: The `<ReferenceManyToManyField>` cannot currently display multiple records
 
 Let's imagine that you're writing an app managing concerts for artists. The data model features a many-to-many relationship between the `bands` and `venues` tables through a `performances` associative table.
 
-```
+```txt
 ┌─────────┐       ┌──────────────┐      ┌───────────────┐
 │ bands   │       │ performances │      │ venues        │
 │---------│       │--------------│      │---------------│
@@ -28,7 +28,7 @@ Let's imagine that you're writing an app managing concerts for artists. The data
 
 In this example, `bands.id` matches `performances.band_id`, and `performances.venue_id` matches `venues.id`.
 
-To allow users see the `venues` for a given `band` in `<SingleFieldList>`, wrap that component in `<ReferenceManyToManyField>` where you define the relationship via the `reference`, `through` and `using` props: 
+To allow users see the `venues` for a given `band` in `<SingleFieldList>`, wrap that component in `<ReferenceManyToManyField>` where you define the relationship via the `reference`, `through` and `using` props:
 
 ```tsx
 import React from 'react';
@@ -61,17 +61,18 @@ export const BandShow = () => (
 | ----------- | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `children`  | Required | `element`                                   | -                                | An iterator element (e.g. `<SingleFieldList>` or `<Datagrid>`). The iterator element usually has one or more child `<Field>` components.                                                                          |
 | `reference` | Required | `string`                                    | -                                | Name of the reference resource, e.g. 'venues'                                                                                                                                                                    |
-| `through`   | Required | `string`                                    | -                                | Name of the resource for the associative table, e.g. 'performances'                                                                                                                                               
+| `through`   | Required | `string`                                    | -                                | Name of the resource for the associative table, e.g. 'performances'                                                                                                                                               |
 | `filter`    | Optional | `object`                                    | `{}`                             | Filter for the associative table (passed to the `getManyReference()` call)                                                                                                                                        |
 | `joinLimit` | Optional | `number`                                    | 100                              | Limit for the number of results fetched from the associative table. Should be **greater than `perPage`**                                                                                                          |
 | `perPage`   | Optional | `number`                                    | 25                               | Limit the number of displayed result after  `getManyReference` is called. Useful when using a pagination component. Should be **smaller than `joinLimit`**                                                        |
+| `queryOptions` | Optional | `UseQueryOptions`                        | -                                | Query options for the `getMany` and `getManyReference` calls                                                                                                                            |
 | `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | Sort for the associative table (passed to the `getManyReference()` call)                                                                                                                                          |
 | `source`    | Optional | `string`                                    | `'id'`                           | Name of the field containing the identity of the main resource. Used determine the value to look for in the associative table.                                                                                    |
 | `using`     | Optional | `string`                                    | `'[resource]_id,[reference]_id'` | Tuple (comma separated) of the two field names used as foreign keys, e.g 'band_id,venue_id'. The tuple should start with the field pointing to the resource, and finish with the field pointing to the reference |
 
 ## `children`
 
-`<ReferenceManyToManyField>` expects an _iterator_ component as child, i.e. a component working inside a `ListContext`. 
+`<ReferenceManyToManyField>` expects an _iterator_ component as child, i.e. a component working inside a `ListContext`.
 
 This means you can use a `<Datagrid>` instead of a `<SingleFieldList>`, which is useful if you want to display more details about related records. For instance, to display the venue `name` and `location`:
 
@@ -105,6 +106,7 @@ export const BandShow = () => (
 You can filter the records of the associative table (e.g. `performances`) using the `filter` prop. This `filter` is passed to the `getManyReference()` call.
 
 {% raw %}
+
 ```tsx
 <ReferenceManyToManyField
     reference="venues"
@@ -115,6 +117,7 @@ You can filter the records of the associative table (e.g. `performances`) using 
     {/* ... */}
 </ReferenceManyToManyField>
 ```
+
 {% endraw %}
 
 ## `joinLimit`
@@ -165,6 +168,27 @@ import { Pagination } from 'react-admin';
 </ReferenceManyToManyField>
 ```
 
+## `queryOptions`
+
+Use the `queryOptions` prop to customize the queries for `getMany` and `getManyReference`.
+
+You can for instance use it to pass [a custom meta](./Actions.md#meta-parameter) to the dataProvider.
+
+{% raw %}
+
+```tsx
+<ReferenceManyToManyField
+    reference="venues"
+    through="performances"
+    using="band_id,venue_id"
+    queryOptions={{ meta: { myParameter: 'value' } }}
+>
+    {/* ... */}
+</ReferenceManyToManyField>
+```
+
+{% endraw %}
+
 ## `reference`
 
 The name of the target resource to fetch.
@@ -187,6 +211,7 @@ For instance, if you want to display the `venues` of a given `bands`, through `p
 By default, react-admin orders the possible values by `id` desc for the associative table (e.g. `performances`). You can change this order by setting the `sort` prop (an object with `field` and `order` properties) to be applied to the associative resource.
 
 {% raw %}
+
 ```tsx
 <ReferenceManyToManyField
     reference="venues"
@@ -197,6 +222,7 @@ By default, react-admin orders the possible values by `id` desc for the associat
     {/* ... */}
 </ReferenceManyToManyField>
 ```
+
 {% endraw %}
 
 ## `source`
@@ -242,8 +268,8 @@ You can specify the columns to use in the associative `using` the using prop.
 
 `<ReferenceManyToManyField>` fetches the `dataProvider` twice in a row:
 
--   once to get the records of the associative resource (`performances` in this case), using a `getManyReference()` call
--   once to get the records of the reference resource (`venues` in this case), using a `getMany()` call.
+- once to get the records of the associative resource (`performances` in this case), using a `getManyReference()` call
+- once to get the records of the reference resource (`venues` in this case), using a `getMany()` call.
 
 For instance, if the user displays the band of id `123`, `<ReferenceManyToManyField>` first issues the following query to the `dataProvider`:
 
