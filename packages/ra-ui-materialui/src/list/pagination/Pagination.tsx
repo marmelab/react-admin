@@ -20,6 +20,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         rowsPerPageOptions = DefaultRowsPerPageOptions,
         actions,
         limit = null,
+        labelRowsPerPage,
         ...rest
     } = props;
     const {
@@ -135,7 +136,10 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                 disabled: !hasNextPage,
             }}
             component="span"
-            labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
+            labelRowsPerPage={
+                labelRowsPerPage ??
+                translate('ra.navigation.page_rows_per_page')
+            }
             labelDisplayedRows={labelDisplayedRows}
             getItemAriaLabel={labelItem}
             rowsPerPageOptions={rowsPerPageOptions}
@@ -151,4 +155,5 @@ export interface PaginationProps extends TablePaginationBaseProps {
     rowsPerPageOptions?: Array<number | { label: string; value: number }>;
     actions?: FC<PaginationActionsProps>;
     limit?: ReactElement;
+    labelRowsPerPage?: string;
 }
