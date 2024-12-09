@@ -124,23 +124,28 @@ const DatagridRow: React.ForwardRefExoticComponent<
     const handleClick = useCallback(
         async event => {
             event.persist();
-            const path = await getPathForRecord({
-                record,
-                resource,
-                link:
-                    typeof rowClick === 'function'
-                        ? (record, resource) =>
-                              rowClick(record.id, resource, record)
-                        : rowClick,
-            });
-            if (rowClick === 'expand') {
+            let temporaryLink =
+                typeof rowClick === 'function'
+                    ? rowClick(record.id, resource, record)
+                    : rowClick;
+
+            const link = isPromise(temporaryLink)
+                ? await temporaryLink
+                : temporaryLink;
+
+            if (link === 'expand') {
                 handleToggleExpand(event);
                 return;
             }
-            if (rowClick === 'toggleSelection') {
+            if (link === 'toggleSelection') {
                 handleToggleSelection(event);
                 return;
             }
+            const path = await getPathForRecord({
+                record,
+                resource,
+                link,
+            });
             if (path === false || path == null) {
                 return;
             }
@@ -280,5 +285,8 @@ const areEqual = (prevProps, nextProps) => {
 export const PureDatagridRow = memo(DatagridRow, areEqual);
 
 PureDatagridRow.displayName = 'PureDatagridRow';
+
+const isPromise = (value: any): value is Promise<any> =>
+    value && typeof value.then === 'function';
 
 export default DatagridRow;
