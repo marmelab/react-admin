@@ -72,22 +72,23 @@ Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/document
 
 ## Props
 
-| Prop                 | Required | Type                   | Default | Description                                                                                 |
-| -------------------- | -------- | ---------------------- | ------- |---------------------------------------------------------------------------------------------|
-| `addRootButton`      | Optional | `ReactNode` or `false` | -       | The create button to add a root node                                                        |
-| `allowMultipleRoots` | Optional | `boolean`              | `false` | To allow trees with multiple roots                                                          |
-| `create`             | Required | `ReactNode`            | -       | The create form of your resource                                                            |
-| `draggable`          | Optional | `boolean`              | `false` | To allow user to reorder nodes                                                              |
-| `edit`               | Required | `ReactNode`            | -       | The edit form of your resource                                                              |
-| `hideRootNodes`      | Optional | `boolean`              | `false` | To hide all root nodes                                                                      |
-| `lazy`               | Optional | `boolean`              | `false` | To load children only when they are expanded                                                |
+| Prop                 | Required | Type                   | Default | Description                                                                                    |
+| -------------------- | -------- | ---------------------- | ------- |----------------------------------------------------------------------------------------------- |
+| `addRootButton`      | Optional | `ReactNode` or `false` | -       | The create button to add a root node                                                           |
+| `allowMultipleRoots` | Optional | `boolean`              | `false` | To allow trees with multiple roots                                                             |
+| `create`             | Required | `ReactNode`            | -       | The create form of your resource                                                               |
+| `draggable`          | Optional | `boolean`              | `false` | To allow user to reorder nodes                                                                 |
+| `edit`               | Required | `ReactNode`            | -       | The edit form of your resource                                                                 |
+| `filter`             | Optional | `object`               | -       | The permanent filter values                                                                    |
+| `hideRootNodes`      | Optional | `boolean`              | `false` | To hide all root nodes                                                                         |
+| `lazy`               | Optional | `boolean`              | `false` | To load children only when they are expanded                                                   |
 | `motion`             | Optional | `boolean`              | `false` | To enable [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) transitions |
-| `nodeActions`        | Optional | `ReactNode`            | -       | To customize the default dropdown action                                                    |
-| `show`               | Required | `ReactNode`            | -       | The show view of your resource                                                              |
-| `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                                                                     |
-| `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                             |
-| `title`              | Optional | `string`               | -       | The title to display in the `<AppBar>`                                                      |
-| `titleField`         | Optional | `string`               | `title` | Set the record field to display in the tree                                                 |
+| `nodeActions`        | Optional | `ReactNode`            | -       | To customize the default dropdown action                                                       |
+| `show`               | Required | `ReactNode`            | -       | The show view of your resource                                                                 |
+| `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                                                                        |
+| `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                                |
+| `title`              | Optional | `string`               | -       | The title to display in the `<AppBar>`                                                         |
+| `titleField`         | Optional | `string`               | `title` | Set the record field to display in the tree                                                    |
 
 `<TreeWithDetails>` also accepts the [rc-tree](https://tree-react-component.vercel.app/) props.
 
@@ -243,6 +244,21 @@ If you want to allow user to reorder nodes in the tree, simply add the `draggabl
 ```tsx
 export const CategoriesList = () => <TreeWithDetails draggable />;
 ```
+
+
+### `filter`
+
+You can choose to permanently filter the tree to display only a sub tree.
+
+For instance, imagine you have one `employees` resource with a `department` field, and you want to display a tree for the Finance department. Use the `filter` prop to filter the tree:
+
+{% raw %}
+```jsx
+const EmployeeList = () => <TreeWithDetails filter={{ department: 'finance' }} />;
+```
+{% endraw %}
+
+**Note**: This only works if the filter field allows to extract a subtree with its own root node. If you use the `filter` prop to display a sparse selection of nodes (e.g. only the `male` employees), dragging nodes in this tree will not work as expected.
 
 ## `hideRootNodes`
 
