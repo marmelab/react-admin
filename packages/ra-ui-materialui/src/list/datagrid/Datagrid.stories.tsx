@@ -471,7 +471,11 @@ export const RowClickFalse = () => (
 
 const dataProvider = fakeRestDataProvider({ books: data });
 
-export const FullApp = () => (
+export const FullApp = ({
+    rowClick,
+}: {
+    rowClick?: DatagridRowProps['rowClick'];
+}) => (
     <AdminContext
         dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
@@ -481,7 +485,10 @@ export const FullApp = () => (
                 name="books"
                 list={() => (
                     <List>
-                        <Datagrid>
+                        <Datagrid
+                            expand={<ExpandDetails />}
+                            rowClick={rowClick}
+                        >
                             <TextField source="id" />
                             <TextField source="title" />
                             <TextField source="author" />
@@ -490,10 +497,58 @@ export const FullApp = () => (
                     </List>
                 )}
                 edit={EditGuesser}
+                show={ShowGuesser}
             />
         </AdminUI>
     </AdminContext>
 );
+
+FullApp.argTypes = {
+    rowClick: {
+        options: [
+            'inferred',
+            'show',
+            'edit',
+            'no-link',
+            'expand',
+            'toggleSelection',
+            'function to expand',
+            'function to toggleSelection',
+        ],
+        mapping: {
+            inferred: undefined,
+            show: 'show',
+            edit: 'edit',
+            'no-link': false,
+            expand: 'expand',
+            toggleSelection: 'toggleSelection',
+            'function to expand': (id, resource, record) => {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('function to expand', id, resource, record);
+                }
+                return 'expand';
+            },
+            'function to toggleSelection': (id, resource, record) => {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log(
+                        'function to toggleSelection',
+                        id,
+                        resource,
+                        record
+                    );
+                }
+                return 'toggleSelection';
+            },
+        },
+        control: { type: 'select' },
+    },
+};
+
+const ExpandDetails = () => {
+    const record = useRecordContext();
+
+    return <div>Expand: {record?.title}</div>;
+};
 
 const MyDatagridRow = ({
     onToggleItem,
