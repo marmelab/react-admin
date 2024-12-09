@@ -5,7 +5,7 @@ title: "The ReferenceManyToManyInput Component"
 
 # `<ReferenceManyToManyInput>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to create, edit or remove relationships between two resources sharing an associative table. The changes in the associative table are sent to the dataProvider _when the user submits the form_, so that they can cancel the changes before submission.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows to create, edit or remove relationships between two resources sharing an associative table. The changes in the associative table are sent to the dataProvider _when the user submits the form_, so that they can cancel the changes before submission.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="https://react-admin-ee.marmelab.com/assets/reference-many-to-many-input.mp4" type="video/mp4" />
@@ -18,7 +18,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 
 Let's imagine that you're writing an app managing concerts for artists. The data model features a many-to-many relationship between the `bands` and `venues` tables through a `performances` associative table.
 
-```
+```txt
 ┌─────────┐       ┌──────────────┐      ┌───────────────┐
 │ bands   │       │ performances │      │ venues        │
 │---------│       │--------------│      │---------------│
@@ -29,7 +29,7 @@ Let's imagine that you're writing an app managing concerts for artists. The data
 └─────────┘       └──────────────┘      └───────────────┘
 ```
 
-In this example, `bands.id` matches `performances.band_id`, and `performances.venue_id` matches `venues.id`. 
+In this example, `bands.id` matches `performances.band_id`, and `performances.venue_id` matches `venues.id`.
 
 To let users edit the `venues` for given `band` in an `<AutocompleteArrayInput>`, wrap that input in a `<ReferenceManyToManyInput>` where you define the relationship via the `reference`, `through` and `using` props:
 
@@ -60,7 +60,7 @@ export const BandEdit = () => (
 
 Note that although all possible child components support a `defaultValue` prop, it will only be applied on create views.
 
-**Tip**: If you need to edit the fields of the associative table (e.g. the `date` in `performances`), you can use a [`<ReferenceManyInput>`](./ReferenceManyInput.md) instead of `<ReferenceManyToManyInput>`. 
+**Tip**: If you need to edit the fields of the associative table (e.g. the `date` in `performances`), you can use a [`<ReferenceManyInput>`](./ReferenceManyInput.md) instead of `<ReferenceManyToManyInput>`.
 
 ![Screenshot showing the use of ReferenceManyInput instead of ReferenceManyToManyInput](./img/reference-many-input-band-edit.png)
 
@@ -107,8 +107,10 @@ const BandEdit = () => (
 | `through`        | Required | `string`                                    | -                                  | Name of the resource for the associative table, e.g. 'book_authors'                                                                                                                                               |
 | `filter`         | Optional | `object`                                    | `{}`                               | Filter for the associative table (passed to the `getManyReference()` call)                                                                                                                                        |
 | `filter Choices`  | Optional | `object`                                    | `{}`                               | Filter for the possible choices fetched from the reference table (passed to the `getList()` call)                                                                                                                 |
+| `mutationOptions` | Optional | `{ meta, onError }`                         | -                                  | Mutation options for the `create` and `deleteMany` calls. Only `meta` and `onError` are supported.                                                                                                                |
 | `perPage`        | Optional | `number`                                    | 25                                 | Limit for the number of results fetched from the associative table                                                                                                                                                |
 | `perPage Choices` | Optional | `number`                                    | 25                                 | Limit for the number of possible choices fetched from the reference table                                                                                                                                         |
+| `queryOptions`   | Optional | `UseQueryOptions`                           | -                                  | Query options for the `getList`, `getMany` and `getManyReference` calls                                                                                                                                           |
 | `sort`           | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | Sort for the associative table (passed to the `getManyReference()` call)                                                                                                                                          |
 | `sort Choices`    | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | Sort for the possible choices fetched from the reference table (passed to the `getList()` call)                                                                                                                   |
 | `source`         | Optional | `string`                                    | `'id'`                             | Name of the field containing the identity of the main resource. Used determine the value to look for in the associative table.                                                                                    |
@@ -116,7 +118,7 @@ const BandEdit = () => (
 
 ## `children`
 
-`<ReferenceManyToManyInput>` expects a _select_ component as child, i.e. a component working inside a `ChoiceContext`. That means you can use a [`<SelectArrayInput>`](./SelectArrayInput.md), or a [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md). 
+`<ReferenceManyToManyInput>` expects a _select_ component as child, i.e. a component working inside a `ChoiceContext`. That means you can use a [`<SelectArrayInput>`](./SelectArrayInput.md), or a [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md).
 
 For instance, to allow user to choose `performances` using a `<SelectArrayInput>` instead of an `<AutocompleteArrayInput>`, you can write:
 
@@ -152,6 +154,7 @@ export const BandEdit = () => (
 You can filter the records of the associative table (e.g. `performances`) using the `filter` prop. This `filter` is passed to the `getManyReference()` call.
 
 {% raw %}
+
 ```tsx
 <ReferenceManyToManyInput
     reference="venues"
@@ -162,6 +165,7 @@ You can filter the records of the associative table (e.g. `performances`) using 
     {/* ... */}
 </ReferenceManyToManyInput>
 ```
+
 {% endraw %}
 
 ## `filterChoices`
@@ -171,6 +175,7 @@ You can filter the records of the associative table (e.g. `performances`) using 
 You can filter the possible values of the reference table using the `filterChoices` prop. This `filterChoices` is passed to the `getList()` call.
 
 {% raw %}
+
 ```tsx
 <ReferenceManyToManyInput
     reference="venues"
@@ -181,6 +186,28 @@ You can filter the possible values of the reference table using the `filterChoic
     {/* ... */}
 </ReferenceManyToManyInput>
 ```
+
+{% endraw %}
+
+## `mutationOptions`
+
+Use the `mutationOptions` prop to customize the `create` and `deleteMany` mutations.
+
+You can for instance use it to pass [a custom meta](./Actions.md#meta-parameter) to the dataProvider.
+
+{% raw %}
+
+```tsx
+<ReferenceManyToManyInput
+    reference="venues"
+    through="performances"
+    using="band_id,venue_id"
+    mutationOptions={{ meta: { myParameter: 'value' } }}
+>
+    {/* ... */}
+</ReferenceManyToManyInput>
+```
+
 {% endraw %}
 
 ## `perPage`
@@ -214,6 +241,28 @@ By default, react-admin displays at most 25 possible values from the reference t
     {/* ... */}
 </ReferenceManyToManyInput>
 ```
+
+## `queryOptions`
+
+Use the `queryOptions` prop to customize the queries for `getList`, `getMany` and `getManyReference`.
+
+You can for instance use it to pass [a custom meta](./Actions.md#meta-parameter) to the dataProvider.
+
+{% raw %}
+
+```tsx
+<ReferenceManyToManyInput
+    reference="venues"
+    through="performances"
+    using="band_id,venue_id"
+    queryOptions={{ meta: { myParameter: 'value' } }}
+>
+    {/* ... */}
+</ReferenceManyToManyInput>
+```
+
+{% endraw %}
+
 ## `reference`
 
 The name of the target resource to fetch.
@@ -230,11 +279,13 @@ For instance, if you want to display the venues of a given bands, through perfor
     {/* ... */}
 </ReferenceManyToManyInput>
 ```
+
 ## `sort`
 
 By default, react-admin orders the possible values by `id` desc for the associative table (e.g. `performances`). You can change this order by setting the `sort` prop (an object with `field` and `order` properties) to be applied to the associative resource.
 
 {% raw %}
+
 ```tsx
 <ReferenceManyToManyInput
     reference="venues"
@@ -245,6 +296,7 @@ By default, react-admin orders the possible values by `id` desc for the associat
     {/* ... */}
 </ReferenceManyToManyInput>
 ```
+
 {% endraw %}
 
 ## `sortChoices`
@@ -252,6 +304,7 @@ By default, react-admin orders the possible values by `id` desc for the associat
 By default, react-admin orders the possible values by `id` desc for the reference table (e.g. `venues`). You can change this order by setting the `sortChoices` prop (an object with `field` and `order` properties).
 
 {% raw %}
+
 ```tsx
 <ReferenceManyToManyInput
     reference="venues"
@@ -262,6 +315,7 @@ By default, react-admin orders the possible values by `id` desc for the referenc
     {/* ... */}
 </ReferenceManyToManyInput>
 ```
+
 {% endraw %}
 
 ## `source`
@@ -305,16 +359,16 @@ You can specify the columns to use in the associative using the `using` prop.
 
 ## Limitations
 
--   `<ReferenceManyToManyInput>` cannot be used inside an `<ArrayInput>`, a `<ReferenceOneInput>` or a `<ReferenceManyInput>`.
--   `<ReferenceManyToManyInput>` does not support server side validation.
+- `<ReferenceManyToManyInput>` cannot be used inside an `<ArrayInput>`, a `<ReferenceOneInput>` or a `<ReferenceManyInput>`.
+- `<ReferenceManyToManyInput>` does not support server side validation.
 
 ## DataProvider Calls
 
 When rendered, `<ReferenceManyToManyInput>` fetches the `dataProvider` three times in a row:
 
--   once to get the records of the associative resource (`performances` in this case), using a `getManyReference()` call
--   once to get the records of the reference resource (`venues` in this case), using a `getMany()` call.
--   once to get the possible values of the reference resource (`venues` in this case) to show as suggestions in the input, using a `getList()` call
+- once to get the records of the associative resource (`performances` in this case), using a `getManyReference()` call
+- once to get the records of the reference resource (`venues` in this case), using a `getMany()` call.
+- once to get the possible values of the reference resource (`venues` in this case) to show as suggestions in the input, using a `getList()` call
 
 For instance, if the user edits the band of id `123`, `<ReferenceManyToManyInput>` first issues the following query to the `dataProvider`:
 
