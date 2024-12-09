@@ -98,119 +98,171 @@ describe('<DatagridRow />', () => {
     };
 
     describe('rowClick', () => {
-        it("should redirect to edit page if the 'edit' option is selected", async () => {
-            let spy = jest.fn();
-            render(
-                <LocationSpy spy={spy}>
+        it.each([
+            { rowClick: 'edit', description: 'passed directly' },
+            {
+                rowClick: () => 'edit',
+                description: 'from a rowClick function',
+            },
+            {
+                rowClick: async () => 'edit',
+                description: 'from an async rowClick function',
+            },
+        ])(
+            "should redirect to edit page if the 'edit' option is $description",
+            async ({ rowClick }) => {
+                let spy = jest.fn();
+                render(
+                    <LocationSpy spy={spy}>
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps} rowClick={rowClick}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
+                    </LocationSpy>
+                );
+                const cell = screen.getByText('hello');
+                const row = cell.closest('tr');
+                if (!row) {
+                    throw new Error('row not found');
+                }
+                expect(
+                    row.classList.contains('RaDatagrid-clickableRow')
+                ).toBeTruthy();
+                fireEvent.click(row);
+
+                await waitFor(() => {
+                    expect(spy).toHaveBeenCalledWith(
+                        expect.objectContaining({ pathname: '/posts/15' })
+                    );
+                });
+            }
+        );
+
+        it.each([
+            { rowClick: 'show', description: 'passed directly' },
+            {
+                rowClick: () => 'show',
+                description: 'from a rowClick function',
+            },
+            {
+                rowClick: async () => 'show',
+                description: 'from an async rowClick function',
+            },
+        ])(
+            "should redirect to show page if the 'show' option is $description",
+            async ({ rowClick }) => {
+                let spy = jest.fn();
+                render(
+                    <LocationSpy spy={spy}>
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps} rowClick={rowClick}>
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
+                    </LocationSpy>
+                );
+                const cell = screen.getByText('hello');
+                const row = cell.closest('tr');
+                if (!row) {
+                    throw new Error('row not found');
+                }
+                expect(
+                    row.classList.contains('RaDatagrid-clickableRow')
+                ).toBeTruthy();
+                fireEvent.click(row);
+
+                await waitFor(() => {
+                    expect(spy).toHaveBeenCalledWith(
+                        expect.objectContaining({ pathname: '/posts/15/show' })
+                    );
+                });
+            }
+        );
+
+        it.each([
+            { rowClick: 'expand', description: 'passed directly' },
+            {
+                rowClick: () => 'expand',
+                description: 'from a rowClick function',
+            },
+            {
+                rowClick: async () => 'expand',
+                description: 'from an async rowClick function',
+            },
+        ])(
+            "should change the expand state if the 'expand' option is $description",
+            async ({ rowClick }) => {
+                render(
                     <RecordContextProvider value={defaultRecord}>
-                        <DatagridRow {...defaultProps} rowClick="edit">
+                        <DatagridRow
+                            {...defaultProps}
+                            rowClick={rowClick}
+                            expand={<ExpandPanel />}
+                        >
                             <TitleField />
                         </DatagridRow>
                     </RecordContextProvider>
-                </LocationSpy>
-            );
-            const cell = screen.getByText('hello');
-            const row = cell.closest('tr');
-            if (!row) {
-                throw new Error('row not found');
-            }
-            expect(
-                row.classList.contains('RaDatagrid-clickableRow')
-            ).toBeTruthy();
-            fireEvent.click(row);
-
-            await waitFor(() => {
-                expect(spy).toHaveBeenCalledWith(
-                    expect.objectContaining({ pathname: '/posts/15' })
                 );
-            });
-        });
-
-        it("should redirect to show page if the 'show' option is selected", async () => {
-            let spy = jest.fn();
-            render(
-                <LocationSpy spy={spy}>
-                    <RecordContextProvider value={defaultRecord}>
-                        <DatagridRow {...defaultProps} rowClick="show">
-                            <TitleField />
-                        </DatagridRow>
-                    </RecordContextProvider>
-                </LocationSpy>
-            );
-            const cell = screen.getByText('hello');
-            const row = cell.closest('tr');
-            if (!row) {
-                throw new Error('row not found');
-            }
-            expect(
-                row.classList.contains('RaDatagrid-clickableRow')
-            ).toBeTruthy();
-            fireEvent.click(row);
-
-            await waitFor(() => {
-                expect(spy).toHaveBeenCalledWith(
-                    expect.objectContaining({ pathname: '/posts/15/show' })
-                );
-            });
-        });
-
-        it("should change the expand state if the 'expand' option is selected", async () => {
-            render(
-                <RecordContextProvider value={defaultRecord}>
-                    <DatagridRow
-                        {...defaultProps}
-                        rowClick="expand"
-                        expand={<ExpandPanel />}
-                    >
-                        <TitleField />
-                    </DatagridRow>
-                </RecordContextProvider>
-            );
-            expect(screen.queryAllByText('expanded')).toHaveLength(0);
-            const cell = screen.getByText('hello');
-            const row = cell.closest('tr');
-            if (!row) {
-                throw new Error('row not found');
-            }
-            expect(
-                row.classList.contains('RaDatagrid-clickableRow')
-            ).toBeTruthy();
-            fireEvent.click(row);
-            await waitFor(() => {
-                expect(screen.queryAllByText('expanded')).toHaveLength(1);
-            });
-            fireEvent.click(row);
-            await waitFor(() => {
                 expect(screen.queryAllByText('expanded')).toHaveLength(0);
-            });
-        });
-
-        it("should execute the onToggleItem function if the 'toggleSelection' option is selected", async () => {
-            const onToggleItem = jest.fn();
-            render(
-                <RecordContextProvider value={defaultRecord}>
-                    <DatagridRow
-                        {...defaultProps}
-                        onToggleItem={onToggleItem}
-                        rowClick="toggleSelection"
-                    >
-                        <TitleField />
-                    </DatagridRow>
-                </RecordContextProvider>
-            );
-            const cell = screen.getByText('hello');
-            const row = cell.closest('tr');
-            if (!row) {
-                throw new Error('row not found');
+                const cell = screen.getByText('hello');
+                const row = cell.closest('tr');
+                if (!row) {
+                    throw new Error('row not found');
+                }
+                expect(
+                    row.classList.contains('RaDatagrid-clickableRow')
+                ).toBeTruthy();
+                fireEvent.click(row);
+                await waitFor(() => {
+                    expect(screen.queryAllByText('expanded')).toHaveLength(1);
+                });
+                fireEvent.click(row);
+                await waitFor(() => {
+                    expect(screen.queryAllByText('expanded')).toHaveLength(0);
+                });
             }
-            expect(
-                row.classList.contains('RaDatagrid-clickableRow')
-            ).toBeTruthy();
-            fireEvent.click(row);
-            await waitFor(() => {
-                expect(onToggleItem.mock.calls.length).toEqual(1);
-            });
-        });
+        );
+
+        it.each([
+            { rowClick: 'toggleSelection', description: 'passed directly' },
+            {
+                rowClick: () => 'toggleSelection',
+                description: 'from a rowClick function',
+            },
+            {
+                rowClick: async () => 'toggleSelection',
+                description: 'from an async rowClick function',
+            },
+        ])(
+            "should execute the onToggleItem function if the 'toggleSelection' option is $description",
+            async ({ rowClick }) => {
+                const onToggleItem = jest.fn();
+                render(
+                    <RecordContextProvider value={defaultRecord}>
+                        <DatagridRow
+                            {...defaultProps}
+                            onToggleItem={onToggleItem}
+                            rowClick={rowClick}
+                        >
+                            <TitleField />
+                        </DatagridRow>
+                    </RecordContextProvider>
+                );
+                const cell = screen.getByText('hello');
+                const row = cell.closest('tr');
+                if (!row) {
+                    throw new Error('row not found');
+                }
+                expect(
+                    row.classList.contains('RaDatagrid-clickableRow')
+                ).toBeTruthy();
+                fireEvent.click(row);
+                await waitFor(() => {
+                    expect(onToggleItem.mock.calls.length).toEqual(1);
+                });
+            }
+        );
 
         it('should not execute the onToggleItem function if the row is not selectable', () => {
             const onToggleItem = jest.fn();
