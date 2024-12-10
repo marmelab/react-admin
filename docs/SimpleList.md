@@ -80,33 +80,6 @@ This prop should be a function returning an `<Avatar>` component. When present, 
 
 This prop should be a function returning an `<Icon>` component. When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>`
 
-## `rowClick`
-
-The `<SimpleList>` items link to the edition page by default. You can also set the `rowClick` prop to `show` directly to link to the `<Show>` page instead. 
-
-```jsx
-import { List, SimpleList } from 'react-admin';
-
-export const PostList = () => (
-    <List>
-        <SimpleList
-            primaryText={record => record.title}
-            secondaryText={record => `${record.views} views`}
-            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
-            rowClick="show"
-        />
-    </List>
-);
-```
-
-`rowClick` accepts the following values:
-
-* `rowClick="edit"`: links to the edit page. This is the default behavior.
-* `rowClick="show"`: links to the show page.
-* `rowClick={false}`: does not link to anything.
-* `rowClick="/custom"`: links to a custom path.
-* `rowClick={(id, resource, record) => path}`: path can be any of the above values
-
 ## `primaryText`
 
 The `primaryText`, `secondaryText` and `tertiaryText` props can accept 4 types of values:
@@ -191,6 +164,33 @@ This prop should be a function returning an `<Avatar>` component. When present, 
 ## `rightIcon`
 
 This prop should be a function returning an `<Icon>` component. When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`.
+
+## `rowClick`
+
+The `<SimpleList>` items link to the edition page by default. You can also set the `rowClick` prop to `show` directly to link to the `<Show>` page instead. 
+
+```jsx
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            rowClick="show"
+        />
+    </List>
+);
+```
+
+`rowClick` accepts the following values:
+
+* `rowClick="edit"`: links to the edit page. This is the default behavior.
+* `rowClick="show"`: links to the show page.
+* `rowClick={false}`: does not link to anything.
+* `rowClick="/custom"`: links to a custom path.
+* `rowClick={(id, resource, record) => path}`: path can be any of the above values
 
 ## `rowStyle`
 
