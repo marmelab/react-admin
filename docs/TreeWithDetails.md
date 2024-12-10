@@ -245,17 +245,18 @@ If you want to allow user to reorder nodes in the tree, simply add the `draggabl
 export const CategoriesList = () => <TreeWithDetails draggable />;
 ```
 
-
-### `filter`
+## `filter`
 
 You can choose to permanently filter the tree to display only a sub tree.
 
 For instance, imagine you have one `employees` resource with a `department` field, and you want to display a tree for the Finance department. Use the `filter` prop to filter the tree:
 
 {% raw %}
+
 ```jsx
 const EmployeeList = () => <TreeWithDetails filter={{ department: 'finance' }} />;
 ```
+
 {% endraw %}
 
 **Note**: This only works if the filter field allows to extract a subtree with its own root node. If you use the `filter` prop to display a sparse selection of nodes (e.g. only the `male` employees), dragging nodes in this tree will not work as expected.
