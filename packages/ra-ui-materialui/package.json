@@ -10,6 +10,14 @@
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
     "types": "dist/cjs/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/cjs/index.js",
+            "import": "./dist/esm/index.js",
+            "types": "./dist/cjs/index.d.ts"
+        },
+        "./*": "./*"
+    },
     "sideEffects": false,
     "authors": [
         "François Zaninotto",
@@ -22,7 +30,7 @@
     "scripts": {
         "build": "yarn run build-cjs && yarn run build-esm",
         "build-cjs": "rimraf ./dist/cjs && tsc --outDir dist/cjs",
-        "build-esm": "rimraf ./dist/esm && tsc --outDir dist/esm --module es2015",
+        "build-esm": "rimraf ./dist/esm && tsc --outDir dist/esm --module es2015 && echo '{ \"type\": \"module\" }' > dist/esm/package.json",
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "devDependencies": {
