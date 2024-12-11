@@ -12,14 +12,14 @@ import type { FilterPayload, RaRecord, SortPayload } from '../../types';
  * @param {string} resource Required. The resource name
  * @param {SortPayload} sort Optional. The sort object passed to the dataProvider
  * @param {FilterPayload} filter Optional. The filter object passed to the dataProvider
- * @returns {Function} onSelectAll A function to select all items of a list
+ * @returns {Function} handleSelectAll A function to select all items of a list
  *
  * @example // TODO: Update this example after updating the button position in the toolbar
  *
  * const MySelectAllButton = () => {
  *   const { sort, filter } = useListContext();
- *   const onSelectAll = useSelectAll({ resource: 'posts', sort, filter });
- *   const handleClick = () => onSelectAll({
+ *   const handleSelectAll = useSelectAll({ resource: 'posts', sort, filter });
+ *   const handleClick = () => handleSelectAll({
  *       queryOptions: { meta: { foo: 'bar' } },
  *       limit: 250,
  *   });
@@ -38,14 +38,17 @@ export const useSelectAll = ({
     resource,
     sort,
     filter,
-}: useSelectAllProps): ((options?: onSelectAllParams) => void) => {
+}: useSelectAllProps): ((options?: handleSelectAllParams) => void) => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const [, { select }] = useRecordSelection({ resource });
     const notify = useNotify();
 
-    const onSelectAll = useCallback(
-        async ({ queryOptions = {}, limit = 250 }: onSelectAllParams = {}) => {
+    const handleSelectAll = useCallback(
+        async ({
+            queryOptions = {},
+            limit = 250,
+        }: handleSelectAllParams = {}) => {
             const { meta, onSuccess, onError } = queryOptions;
             try {
                 const results = await queryClient.fetchQuery({
@@ -94,7 +97,7 @@ export const useSelectAll = ({
         },
         [queryClient, resource, sort, filter, select, dataProvider, notify]
     );
-    return onSelectAll;
+    return handleSelectAll;
 };
 
 export interface useSelectAllProps {
@@ -103,7 +106,7 @@ export interface useSelectAllProps {
     filter?: FilterPayload;
 }
 
-export interface onSelectAllParams<RecordType extends RaRecord = any> {
+export interface handleSelectAllParams<RecordType extends RaRecord = any> {
     limit?: number;
     queryOptions?: UseGetListOptions<RecordType>;
 }
