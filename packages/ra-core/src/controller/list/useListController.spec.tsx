@@ -601,7 +601,7 @@ describe('useListController', () => {
         });
         it('should select all items if no items are selected', async () => {
             const children = jest.fn().mockReturnValue(<></>);
-            render(<Basic dataProvider={dataProvider} children={children} />);
+            render(<Basic dataProvider={dataProvider}>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
             });
@@ -615,7 +615,7 @@ describe('useListController', () => {
         });
         it('should select all items if some items are selected', async () => {
             const children = jest.fn().mockReturnValue(<></>);
-            render(<Basic dataProvider={dataProvider} children={children} />);
+            render(<Basic dataProvider={dataProvider}>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelect([0]);
             });
@@ -649,7 +649,7 @@ describe('useListController', () => {
             );
             const dataProvider = testDataProvider({ getList });
             const children = jest.fn().mockReturnValue(<></>);
-            render(<Basic dataProvider={dataProvider} children={children} />);
+            render(<Basic dataProvider={dataProvider}>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll({ limit: 1 });
             });

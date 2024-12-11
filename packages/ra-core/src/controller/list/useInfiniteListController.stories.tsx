@@ -130,10 +130,7 @@ export const Basic = ({
         <TestMemoryRouter>
             <CoreAdminContext dataProvider={dataProvider}>
                 <CoreAdminUI>
-                    <Resource
-                        name="posts"
-                        list={<Posts children={children} />}
-                    />
+                    <Resource name="posts" list={<Posts>{children}</Posts>} />
                 </CoreAdminUI>
             </CoreAdminContext>
         </TestMemoryRouter>

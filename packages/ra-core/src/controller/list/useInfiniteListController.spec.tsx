@@ -61,7 +61,7 @@ describe('useInfiniteListController', () => {
     describe('onSelectAll', () => {
         it('should select all items if no items are selected', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
-            render(<Basic dataProvider={dataProvider} children={children} />);
+            render(<Basic dataProvider={dataProvider}>{children}</Basic>);
             act(() => {
                 children.mock.calls.at(-1)[0].onSelectAll();
             });

@@ -79,6 +79,6 @@ export const Basic = ({
     children?: (params: ListControllerResult) => JSX.Element;
 }) => (
     <CoreAdminContext dataProvider={dataProvider}>
-        <ListController resource="posts" children={children} />
+        <ListController resource="posts">{children}</ListController>
     </CoreAdminContext>
 );
