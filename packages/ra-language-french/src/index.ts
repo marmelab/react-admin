@@ -117,7 +117,7 @@ const frenchMessages: TranslationMessages = {
             not_found:
                 "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
             select_all_limit_reached:
-                "Attention: Il y a trop d'éléments pour tous les sélectionner. Seuls les %{max} premiers éléments ont été sélectionnés.",
+                "Il y a trop d'éléments pour tous les sélectionner. Seuls les %{max} premiers éléments ont été sélectionnés.",
             unsaved_changes:
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
             yes: 'Oui',
