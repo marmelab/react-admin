@@ -875,32 +875,6 @@ export const UserEdit = () => {
 ```
 {% endraw %}
 
-You can leverage [the `usePermissions` hook](./usePermissions.md) to display a tab only if the user has the required permissions.
-
-{% raw %}
-```jsx
-import { usePermissions, Edit, TabbedForm } from 'react-admin';
-
-const UserEdit = () => {
-    const { permissions } = usePermissions();
-    return (
-        <Edit>
-            <TabbedForm>
-                <TabbedForm.Tab label="summary">
-                    ...
-                </TabbedForm.Tab>
-                {permissions === 'admin' &&
-                    <TabbedForm.Tab label="Security">
-                        ...
-                    </TabbedForm.Tab>
-                }
-            </TabbedForm>
-        </Edit>
-    );
-};
-```
-{% endraw %}
-
 ## Displaying Inputs Based On Permissions
 
 You can leverage [the `<CanAccess>` component](./CanAccess.md) to display inputs if the user has the required access rights.
@@ -918,34 +892,6 @@ export const UserEdit = () => {
                     <CanAccess resource="user.role" action="write">
                         <TextInput source="role" validate={[required()]} />
                     </CanAccess>
-                </TabbedForm.Tab>}
-                    <TabbedForm.Tab label="Security">
-                        ...
-                    </TabbedForm.Tab>
-            </TabbedForm>
-        </Edit>
-    );
-}
-```
-{% endraw %}
-
-You can leverage [the `usePermissions` hook](./usePermissions.md) to display inputs if the user has the required permissions.
-
-{% raw %}
-```jsx
-import { usePermissions, Edit, TabbedForm, TextInput } from 'react-admin';
-
-export const UserEdit = () => {
-    const { permissions } = useGetPermissions();
-    return (
-        <Edit>
-            <TabbedForm>
-                <TabbedForm.Tab label="Summary">
-                    <TextInput source="name" validate={[required()]} />
-                    {permissions === 'admin'
-                        ? <TextInput source="role" validate={[required()]} />
-                        : null
-                    }
                 </TabbedForm.Tab>}
                     <TabbedForm.Tab label="Security">
                         ...

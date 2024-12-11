@@ -535,29 +535,6 @@ export const UserCreate = () => {
 ```
 {% endraw %}
 
-You can leverage [the `usePermissions` hook](./usePermissions.md) to display inputs if the user has the required permissions.
-
-{% raw %}
-```jsx
-import { usePermissions, Create, SimpleForm, TextInput } from 'react-admin';
-
-export const UserCreate = () => {
-    const { permissions } = useGetPermissions();
-    return (
-        <Create redirect="show">
-            <SimpleForm>
-                <TextInput source="name" validate={[required()]} />
-                {permissions === 'admin'
-                    ? <TextInput source="role" validate={[required()]} />
-                    : null
-                }
-            </SimpleForm>
-        </Create>
-    );
-}
-```
-{% endraw %}
-
 ## Configurable
 
 You can let end users customize the fields displayed in the `<SimpleForm>` by using the `<SimpleFormConfigurable>` component instead.
