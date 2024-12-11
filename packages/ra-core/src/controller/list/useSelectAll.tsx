@@ -86,7 +86,6 @@ export const useSelectAll = ({
                 if (onError) {
                     onError(error);
                 }
-                console.error('Mutation Error: ', error);
                 notify('An error occurred. Please try again.');
             }
         },
