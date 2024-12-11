@@ -1424,6 +1424,7 @@ When rendering an `<AutocompleteInput>` as a cell editor, it can be useful to au
 
 This can be achieved using refs like so:
 
+{% raw %}
 ```tsx
 const AutocompleteInputWithAutoSelect = props => {
     const inputRef = React.useRef<HTMLInputElement>(null);
@@ -1442,6 +1443,8 @@ const AutocompleteInputWithAutoSelect = props => {
     );
 };
 ```
+{% endraw %}
+
 
 #### Automatically Open The Options List With `<SelectInput>`
 
@@ -1449,6 +1452,7 @@ When rendering a `<SelectInput>` as a cell editor, it can be useful to automatic
 
 This can be achieved using the `defaultOpen` prop like so:
 
+{% raw %}
 ```tsx
 const SelectInputWithDefaultOpen = props => {
     return (
@@ -1461,6 +1465,7 @@ const SelectInputWithDefaultOpen = props => {
     );
 };
 ```
+{% endraw %}
 
 #### Allow To Create New Options On The Fly With `<AutocompleteInput>` Or `<SelectInput>`
 
@@ -1474,6 +1479,7 @@ This can be solved by stopping the event propagation when the submit button is c
 
 Here is a complete example of how to create a custom `AutocompleteInputWithCreate` component that solves both issues:
 
+{% raw %}
 ```tsx
 import React from 'react';
 import {
@@ -1599,6 +1605,7 @@ export const CommentListWithAutocompleteWithCreate = () => {
     );
 };
 ```
+{% endraw %}
 
 ### Using AG Grid Enterprise
 `<DatagridAG>` is also compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/).
