@@ -141,7 +141,6 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
 
     const onSelectAll = useSelectAll({
         resource,
-        selectionModifiers,
         sort: { field: query.sort, order: query.order },
         filter: { ...query.filter, ...filter },
     });
