@@ -88,9 +88,12 @@ Here are all the props you can set on the `<LongForm>` component:
 
 | Prop                     | Required | Type              | Default | Description                                                |
 | ------------------------ | -------- | ----------------- | ------- | ---------------------------------------------------------- |
+| `authorizationError`     | Optional | `ReactNode`       | `null`  | The content to display when authorization checks fail                    |
 | `children`               | Required | `ReactNode`       | -       | A list of `<LongForm.Section>` elements.                   |
 | `defaultValues`          | Optional | `object|function` | -       | The default values of the record.                          |
+| `enableAccessControl`    | Optional | `boolean`         | `false` | Enable checking authorization rights for each section and input          |
 | `id`                     | Optional | `string`          | -       | The id of the underlying `<form>` tag.                     |
+| `loading`                | Optional | `ReactNode`       |         | The content to display when checking authorizations                      |
 | `noValidate`             | Optional | `boolean`         | -       | Set to `true` to disable the browser's default validation. |
 | `onSubmit`               | Optional | `function`        | `save`  | A callback to call when the form is submitted.             |
 | `sanitizeEmptyValues`    | Optional | `boolean`         | -       | Set to `true` to remove empty values from the form state.  |
@@ -101,6 +104,48 @@ Here are all the props you can set on the `<LongForm>` component:
 
 
 Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/docs/useform).
+
+## `authorizationError`
+
+Used when `enableAccessControl` is set to `true` and an error occurs while checking for users permissions. Defaults to `null`:
+
+{% raw %}
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { LongForm } from '@react-admin/ra-form-layout';
+import { Alert } from '@mui/material';
+
+const CustomerEdit = () => (
+    <Edit>
+        <LongForm
+            enableAccessControl
+            authorizationError={
+                <Alert
+                    severity="error"
+                    sx={{ px: 2.5, py: 1, mt: 1, width: '100%' }}
+                >
+                    An error occurred while loading your permissions
+                </Alert>
+            }
+        >
+            <LongForm.Section id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </LongForm.Section>
+            <LongForm.Section id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </LongForm.Section>
+        </LongForm>
+    </Edit>
+);
+```
+{% endraw %}
 
 ## `children`
 
@@ -149,6 +194,45 @@ export const PostCreate = () => (
 
 **Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
 
+## `enableAccessControl`
+
+When set to `true`, React-admin will call the `authProvider.canAccess` method for each section with the following parameters:
+- `action`: `write`
+- `resource`: `RESOURCE_NAME.section.SECTION_ID_OR_LABEL`. For instance: `customers.section.identity`
+- `record`: The current record
+
+For each section, react-admin will also call the `authProvider.canAccess` method for each input with the following parameters:
+- `action`: `write`
+- `resource`: `RESOURCE_NAME.INPUT_SOURCE`. For instance: `customers.first_name`
+- `record`: The current record
+
+**Tip**: `<LongForm.Section>` direct children that don't have a `source` will always be displayed.
+
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { LongForm } from '@react-admin/ra-form-layout';
+
+const CustomerEdit = () => (
+    <Edit>
+        <LongForm enableAccessControl>
+            <LongForm.Section id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </LongForm.Section>
+            <LongForm.Section id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </LongForm.Section>
+        </LongForm>
+    </Edit>
+);
+```
+
 ## `id`
 
 Normally, a submit button only works when placed inside a `<form>` tag. However, you can place a submit button outside the form if the submit button `form` matches the form `id`.
@@ -167,6 +251,43 @@ export const PostCreate = () => (
         </LongForm>
         <SaveButton form="post_create_form" />
     </Create>
+);
+```
+
+## `loading`
+
+Used when `enableAccessControl` is set to `true` while checking for users permissions. Defaults to `Loading` from `react-admin`:
+
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { LongForm } from '@react-admin/ra-form-layout';
+import { Typography } from '@mui/material';
+
+const CustomerEdit = () => (
+    <Edit>
+        <LongForm
+            enableAccessControl
+            loading={
+                <Typography>
+                    Loading your permissions...
+                </Typography>
+            }
+        >
+            <LongForm.Section id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </LongForm.Section>
+            <LongForm.Section id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </LongForm.Section>
+        </LongForm>
+    </Edit>
 );
 ```
 
@@ -363,10 +484,52 @@ It accepts the following props:
 
 | Prop              | Required | Type        | Default | Description                                                                          |
 | ----------------- | -------- | ----------- | ------- | ------------------------------------------------------------------------------------ |
-| `label`           | Required | `string`    | -       | The main label used as the section title. Appears in red when the section has errors |
-| `children`        | Required | `ReactNode` | -       | A list of `<Input>` elements                                                         |
-| `cardinality`     | Optional | `number`    | -       | A number to be displayed next to the label in TOC, to quantify it                    |
-| `sx`              | Optional | `object`    | -       | An object containing the Material UI style overrides to apply to the root component          |
+| `authorizationError`  | Optional | `ReactNode` | -       | The content to display when authorization checks fail                                |
+| `cardinality`         | Optional | `number`    | -       | A number to be displayed next to the label in TOC, to quantify it                    |
+| `children`            | Required | `ReactNode` | -       | A list of `<Input>` elements                                                         |
+| `enableAccessControl` | Optional | `ReactNode` | -       | Enable authorization checks                                                          |
+| `label`               | Required | `string`    | -       | The main label used as the section title. Appears in red when the section has errors |
+| `loading`             | Optional | `ReactNode` | -       | The content to display while checking authorizations                                 |
+| `sx`                  | Optional | `object`    | -       | An object containing the Material UI style overrides to apply to the root component          |
+
+#### `authorizationError`
+
+Used when `enableAccessControl` is set to `true` and an error occurs while checking for users permissions. Defaults to `null`:
+
+{% raw %}
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { LongForm } from '@react-admin/ra-form-layout';
+import { Alert } from '@mui/material';
+
+const CustomerEdit = () => (
+    <Edit>
+        <LongForm enableAccessControl>
+            <LongForm.Section id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </LongForm.Section>
+            <LongForm.Section id="occupations" authorizationError={
+                <Alert
+                    severity="error"
+                    sx={{ px: 2.5, py: 1, mt: 1, width: '100%' }}
+                >
+                    An error occurred while loading your permissions
+                </Alert>
+            }>
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </LongForm.Section>
+        </LongForm>
+    </Edit>
+);
+```
+{% endraw %}
 
 ### `cardinality`
 
@@ -428,6 +591,78 @@ const CustomerEditWithCardinality = () => {
 };
 ```
 
+### `enableAccessControl`
+
+When set to `true`, react-admin will also call the `authProvider.canAccess` method for each input with the following parameters:
+- `action`: `write`
+- `resource`: `RESOURCE_NAME.INPUT_SOURCE`. For instance: `customers.first_name`
+- `record`: The current record
+
+**Tip**: `<LongForm.Section>` direct children that don't have a `source` will always be displayed.
+
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { LongForm } from '@react-admin/ra-form-layout';
+
+const CustomerEdit = () => (
+    <Edit>
+        <LongForm>
+            <LongForm.Section id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </LongForm.Section>
+            <LongForm.Section id="occupations" enableAccessControl>
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </LongForm.Section>
+        </LongForm>
+    </Edit>
+);
+```
+
+### `loading`
+
+Used when `enableAccessControl` is set to `true` while checking for users permissions. Defaults to `Loading` from `react-admin`:
+
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { LongForm } from '@react-admin/ra-form-layout';
+import { Typography } from '@mui/material';
+
+const CustomerEdit = () => (
+    <Edit>
+        <LongForm enableAccessControl>
+            <LongForm.Section id="identity" loading={
+                <Typography>
+                    Loading your permissions...
+                </Typography>
+            }>
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </LongForm.Section>
+            <LongForm.Section id="occupations" loading={
+                <Typography>
+                    Loading your permissions...
+                </Typography>
+            }>
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </LongForm.Section>
+        </LongForm>
+    </Edit>
+);
+```
+
 ## AutoSave
 
 In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You turn on this feature by using [the `<AutoSave>` component](./AutoSave.md).
@@ -469,56 +704,3 @@ Note that you **must** set the `<LongForm resetOptions>` prop to `{ keepDirtyVal
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
-
-## Role-Based Access Control (RBAC)
-
-Fine-grained permissions control can be added by using the [`<LongForm>`](./AuthRBAC.md#longform) and [`<LongFormSection>`](./AuthRBAC.md#longform) components provided by the `@react-admin/ra-enterprise` package. 
-
-{% raw %}
-```tsx
-import { LongForm } from '@react-admin/ra-enterprise';
-
-const authProvider = {
-    checkAuth: () => Promise.resolve(),
-    login: () => Promise.resolve(),
-    logout: () => Promise.resolve(),
-    checkError: () => Promise.resolve(),
-    getPermissions: () =>Promise.resolve([
-        // 'delete' is missing
-        { action: ['list', 'edit'], resource: 'products' },
-        { action: 'write', resource: 'products.reference' },
-        { action: 'write', resource: 'products.width' },
-        { action: 'write', resource: 'products.height' },
-        // 'products.description' is missing
-        { action: 'write', resource: 'products.thumbnail' },
-        // 'products.image' is missing
-        { action: 'write', resource: 'products.Section.description' },
-        { action: 'write', resource: 'products.Section.images' },
-        // 'products.Section.stock' is missing
-    ]),
-};
-
-const ProductEdit = () => (
-    <Edit>
-        <LongForm>
-            <LongForm.Section name="description" label="Description">
-                <TextInput source="reference" />
-                <TextInput source="width" />
-                <TextInput source="height" />
-                <TextInput source="description" />
-            </LongForm.Section>
-            <LongForm.Section name="images" label="Images">
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </LongForm.Section>
-            <LongForm.Section name="stock" label="Stock">
-                <TextInput source="stock" />
-            </LongForm.Section>
-            // delete button not displayed
-        </LongForm>
-    </Edit>
-);
-```
-{% endraw %}
-
-Check [the RBAC `<LongForm>`](./AuthRBAC.md#longform) documentation for more details.
