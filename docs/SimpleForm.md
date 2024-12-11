@@ -521,7 +521,6 @@ You can leverage [the `<CanAccess>` component](./CanAccess.md) to display inputs
 import { CanAccess, Create, SimpleForm, TextInput } from 'react-admin';
 
 export const UserCreate = () => {
-    const { permissions } = useGetPermissions();
     return (
         <Create redirect="show">
             <SimpleForm>
@@ -548,8 +547,10 @@ export const UserCreate = () => {
         <Create redirect="show">
             <SimpleForm>
                 <TextInput source="name" validate={[required()]} />
-                {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required()]} />}
+                {permissions === 'admin'
+                    ? <TextInput source="role" validate={[required()]} />
+                    : null
+                }
             </SimpleForm>
         </Create>
     );

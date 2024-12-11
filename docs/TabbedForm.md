@@ -839,10 +839,10 @@ If you need to check access rights for multiple tabs, leverage [the `useCanAcces
 
 {% raw %}
 ```jsx
-import { Edit, FormTab, Loading, TabbedForm, TextInput, useCanAccessResources } from 'react-admin';
+import { Edit, Loading, TabbedForm, TextInput, useCanAccessResources } from 'react-admin';
 import { Alert } from '@mui/material';
 
-export const UserCreate = () => {
+export const UserEdit = () => {
     const { canAccess, isPending, error } = useCanAccessResources({
         resources: ['users.tabs.summary', 'users.tabs.security'],
         action: 'write',
@@ -879,7 +879,7 @@ You can leverage [the `usePermissions` hook](./usePermissions.md) to display a t
 
 {% raw %}
 ```jsx
-import { usePermissions, Edit, TabbedForm, FormTab } from 'react-admin';
+import { usePermissions, Edit, TabbedForm } from 'react-admin';
 
 const UserEdit = () => {
     const { permissions } = usePermissions();
@@ -898,6 +898,62 @@ const UserEdit = () => {
         </Edit>
     );
 };
+```
+{% endraw %}
+
+## Displaying Inputs Based On Permissions
+
+You can leverage [the `<CanAccess>` component](./CanAccess.md) to display inputs if the user has the required access rights.
+
+{% raw %}
+```jsx
+import { CanAccess, Edit, TabbedForm, TextInput } from 'react-admin';
+
+export const UserEdit = () => {
+    return (
+        <Edit>
+            <TabbedForm>
+                <TabbedForm.Tab label="Summary">
+                    <TextInput source="name" validate={[required()]} />
+                    <CanAccess resource="user.role" action="write">
+                        <TextInput source="role" validate={[required()]} />
+                    </CanAccess>
+                </TabbedForm.Tab>}
+                    <TabbedForm.Tab label="Security">
+                        ...
+                    </TabbedForm.Tab>
+            </TabbedForm>
+        </Edit>
+    );
+}
+```
+{% endraw %}
+
+You can leverage [the `usePermissions` hook](./usePermissions.md) to display inputs if the user has the required permissions.
+
+{% raw %}
+```jsx
+import { usePermissions, Edit, TabbedForm, TextInput } from 'react-admin';
+
+export const UserEdit = () => {
+    const { permissions } = useGetPermissions();
+    return (
+        <Edit>
+            <TabbedForm>
+                <TabbedForm.Tab label="Summary">
+                    <TextInput source="name" validate={[required()]} />
+                    {permissions === 'admin'
+                        ? <TextInput source="role" validate={[required()]} />
+                        : null
+                    }
+                </TabbedForm.Tab>}
+                    <TabbedForm.Tab label="Security">
+                        ...
+                    </TabbedForm.Tab>
+            </TabbedForm>
+        </Edit>
+    );
+}
 ```
 {% endraw %}
 
