@@ -261,6 +261,45 @@ const PostShow = () => (
 );
 ```
 
+## Role-Based Access Control (RBAC)
+
+You can show or hide tabs and inputs based on user permissions by using the [`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) component from the `@react-admin/ra-rbac` package instead of the `react-admin` package.
+
+[`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) shows only the tabs for which users have read permissions, using the `[resource].tab.[tabName]` string as resource identifier. `<TabbedShowLayout.Tab>` shows only the child fields for which users have the read permissions, using the `[resource].[source]` string as resource identifier.
+
+{% raw %}
+```tsx
+import { Show, TextField } from 'react-admin';
+import { SimpleShowLayout } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    getPermissions: () => Promise.resolve([
+        // crud
+        { action: ['list', 'show'], resource: 'products' },
+        // fields ('products.description' is missing)
+        { action: 'read', resource: 'products.reference' },
+        { action: 'read', resource: 'products.width' },
+        { action: 'read', resource: 'products.height' },
+    ]),
+};
+
+const ProductShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="reference" />
+            <TextField source="width" />
+            <TextField source="height" />
+            {/* the description field is not displayed */}
+            <TextField source="description" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+{% endraw %}
+
+Check [the RBAC `<SimpleShowLayout>` component](./AuthRBAC.md#simpleshowlayout) documentation for more details.
+
 ## See Also
 
 * [Field components](./Fields.md)
