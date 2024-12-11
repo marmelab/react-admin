@@ -7,11 +7,14 @@ import type {
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import {
-    type UseInfiniteGetListOptions,
-    useInfiniteGetList,
-} from '../../dataProvider';
+import { useInfiniteGetList } from '../../dataProvider';
 import { defaultExporter } from '../../export';
+import { useResourceContext, useGetResourceLabel } from '../../core';
+import { useRecordSelection } from './useRecordSelection';
+import { useListParams } from './useListParams';
+import { useSelectAll } from './useSelectAll';
+import type { UseInfiniteGetListOptions } from '../../dataProvider';
+import type { ListControllerResult } from './useListController';
 import type {
     RaRecord,
     SortPayload,
@@ -19,11 +22,6 @@ import type {
     Exporter,
     GetInfiniteListResult,
 } from '../../types';
-import { useResourceContext, useGetResourceLabel } from '../../core';
-import { useRecordSelection } from './useRecordSelection';
-import { useListParams } from './useListParams';
-import { useSelectAll } from './useSelectAll';
-import type { ListControllerResult } from './useListController';
 
 /**
  * Prepare data for the InfiniteList view
