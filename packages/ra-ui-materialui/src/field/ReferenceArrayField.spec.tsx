@@ -1,6 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import {
+    render,
+    screen,
+    act,
+    waitFor,
+    fireEvent,
+} from '@testing-library/react';
 import {
     ListContextProvider,
     CoreAdminContext,
@@ -8,6 +14,7 @@ import {
     useRecordContext,
     useListContext,
     TestMemoryRouter,
+    testDataProvider,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -18,7 +25,10 @@ import {
 import { TextField } from './TextField';
 import { SingleFieldList } from '../list';
 import { AdminContext } from '../AdminContext';
-import { DifferentIdTypes } from './ReferenceArrayField.stories';
+import {
+    DifferentIdTypes,
+    WithPagination,
+} from './ReferenceArrayField.stories';
 
 const theme = createTheme({});
 
@@ -27,11 +37,13 @@ describe('<ReferenceArrayField />', () => {
         render(
             <ThemeProvider theme={theme}>
                 <ListContextProvider
-                    value={{
-                        resource: 'foo',
-                        data: null,
-                        isPending: true,
-                    }}
+                    value={
+                        {
+                            resource: 'foo',
+                            data: null,
+                            isPending: true,
+                        } as any
+                    }
                 >
                     <ReferenceArrayFieldView
                         source="barIds"
@@ -59,11 +71,13 @@ describe('<ReferenceArrayField />', () => {
             <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
-                        value={{
-                            resource: 'foo',
-                            data,
-                            isLoading: false,
-                        }}
+                        value={
+                            {
+                                resource: 'foo',
+                                data,
+                                isLoading: false,
+                            } as any
+                        }
                     >
                         <ReferenceArrayFieldView
                             source="barIds"
@@ -88,11 +102,13 @@ describe('<ReferenceArrayField />', () => {
         const { queryAllByRole, container } = render(
             <ThemeProvider theme={theme}>
                 <ListContextProvider
-                    value={{
-                        resource: 'foo',
-                        data: [],
-                        isLoading: false,
-                    }}
+                    value={
+                        {
+                            resource: 'foo',
+                            data: [],
+                            isLoading: false,
+                        } as any
+                    }
                 >
                     <ReferenceArrayFieldView
                         source="barIds"
@@ -119,11 +135,13 @@ describe('<ReferenceArrayField />', () => {
             <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
-                        value={{
-                            resource: 'foo',
-                            data,
-                            isLoading: false,
-                        }}
+                        value={
+                            {
+                                resource: 'foo',
+                                data,
+                                isLoading: false,
+                            } as any
+                        }
                     >
                         <ReferenceArrayFieldView
                             record={{ id: 123, barIds: ['abc-1', 'abc-2'] }}
@@ -153,11 +171,13 @@ describe('<ReferenceArrayField />', () => {
             <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
-                        value={{
-                            resource: 'foo',
-                            data,
-                            isLoading: false,
-                        }}
+                        value={
+                            {
+                                resource: 'foo',
+                                data,
+                                isLoading: false,
+                            } as any
+                        }
                     >
                         <ReferenceArrayFieldView
                             record={{ id: 123, barIds: [1, 2] }}
@@ -174,7 +194,7 @@ describe('<ReferenceArrayField />', () => {
             </TestMemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
-        expect(container.firstChild.textContent).not.toBeUndefined();
+        expect(container.firstChild?.textContent).not.toBeUndefined();
         expect(getByText('hello')).not.toBeNull();
         expect(getByText('world')).not.toBeNull();
     });
@@ -188,11 +208,13 @@ describe('<ReferenceArrayField />', () => {
             <TestMemoryRouter>
                 <ThemeProvider theme={theme}>
                     <ListContextProvider
-                        value={{
-                            resource: 'foo',
-                            data,
-                            isLoading: false,
-                        }}
+                        value={
+                            {
+                                resource: 'foo',
+                                data,
+                                isLoading: false,
+                            } as any
+                        }
                     >
                         <ReferenceArrayFieldView
                             record={{ id: 123, barIds: [1, 2] }}
@@ -255,16 +277,16 @@ describe('<ReferenceArrayField />', () => {
     });
 
     it('should accept more than one child', async () => {
-        const dataProvider = {
+        const dataProvider = testDataProvider({
             getMany: () =>
-                Promise.resolve({
+                Promise.resolve<any>({
                     data: [
                         { id: 4, title: 'programming' },
                         { id: 8, title: 'management' },
                         { id: 12, title: 'design' },
                     ],
                 }),
-        };
+        });
         const ListContextWatcher = () => {
             const { data } = useListContext();
             if (!data) return null;
@@ -309,5 +331,60 @@ describe('<ReferenceArrayField />', () => {
         expect(await screen.findByText('artist_1')).not.toBeNull();
         expect(await screen.findByText('artist_2')).not.toBeNull();
         expect(await screen.findByText('artist_3')).not.toBeNull();
+    });
+
+    describe('"Select all" button', () => {
+        it('should be displayed if an item is selected', async () => {
+            render(<WithPagination />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            expect(
+                await screen.findByRole('button', { name: 'Select all' })
+            ).toBeDefined();
+        });
+        it('should not be displayed if all item are manyally selected', async () => {
+            render(<WithPagination />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('5 items selected');
+            fireEvent.click(
+                screen.getByRole('button', { name: 'Go to next page' })
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(4);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('8 items selected');
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should not be displayed if all item are selected with the "Select all" button', async () => {
+            render(<WithPagination />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('5 items selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('8 items selected');
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
+        it('should select all items', async () => {
+            render(<WithPagination />);
+            await waitFor(() => {
+                expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
+            });
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('5 items selected');
+            fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+            await screen.findByText('8 items selected');
+        });
     });
 });

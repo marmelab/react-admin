@@ -2,9 +2,11 @@ import * as React from 'react';
 import fakeRestProvider from 'ra-data-fakerest';
 import { CardContent } from '@mui/material';
 import { ResourceDefinitionContextProvider } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
-import { Datagrid } from '../list';
+import { Datagrid, Pagination } from '../list';
 import { ReferenceArrayField } from './ReferenceArrayField';
 import { TextField } from './TextField';
 import { Show, SimpleShowLayout } from '../detail';
@@ -12,13 +14,16 @@ import { Show, SimpleShowLayout } from '../detail';
 export default { title: 'ra-ui-materialui/fields/ReferenceArrayField' };
 
 const fakeData = {
-    bands: [{ id: 1, name: 'The Beatles', members: [1, 2, 3, 4] }],
+    bands: [{ id: 1, name: 'The Beatles', members: [1, 2, 3, 4, 5, 6, 7, 8] }],
     artists: [
         { id: 1, name: 'John Lennon' },
         { id: 2, name: 'Paul McCartney' },
         { id: 3, name: 'Ringo Star' },
         { id: 4, name: 'George Harrison' },
         { id: 5, name: 'Mick Jagger' },
+        { id: 6, name: 'Keith Richards' },
+        { id: 7, name: 'Ronnie Wood' },
+        { id: 8, name: 'Charlie Watts' },
     ],
 };
 const dataProvider = fakeRestProvider(fakeData, false);
@@ -132,3 +137,30 @@ export const WithMeta = () => {
         </AdminContext>
     );
 };
+
+export const WithPagination = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => englishMessages)}
+        defaultTheme="light"
+    >
+        <ResourceDefinitionContextProvider definitions={resouceDefs}>
+            <Show resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleShowLayout>
+                    <TextField source="name" />
+                    <ReferenceArrayField
+                        source="members"
+                        reference="artists"
+                        pagination={<Pagination />}
+                        perPage={5}
+                    >
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="name" />
+                        </Datagrid>
+                    </ReferenceArrayField>
+                </SimpleShowLayout>
+            </Show>
+        </ResourceDefinitionContextProvider>
+    </AdminContext>
+);

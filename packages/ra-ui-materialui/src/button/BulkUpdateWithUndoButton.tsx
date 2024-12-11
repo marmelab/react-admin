@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
-import { alpha } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import {
     useUpdateMany,
     useRefresh,
