@@ -71,7 +71,7 @@ export const useSelectAll = ({
                 const allIds = results.data?.map(({ id }) => id) || [];
                 selectionModifiers.select(allIds);
                 if (allIds.length === limit) {
-                    notify('ra.message.too_many_elements', {
+                    notify('ra.message.select_all_limit_reached', {
                         messageArgs: { max: limit },
                         type: 'warning',
                     });

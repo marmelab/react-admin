@@ -112,7 +112,7 @@ const englishMessages: TranslationMessages = {
             no: 'No',
             not_found:
                 'Either you typed a wrong URL, or you followed a bad link.',
-            too_many_elements:
+            select_all_limit_reached:
                 'Warning: There are too many elements to select them all. Only the first %{max} elements were selected.',
             unsaved_changes:
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
