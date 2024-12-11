@@ -6,6 +6,7 @@ import {
     type UseReferenceArrayFieldControllerParams,
     type UseReferenceManyFieldControllerParams,
 } from 'ra-core';
+import { alpha, styled } from '@mui/material/styles';
 
 import { Button, ButtonProps } from './Button';
 
@@ -25,8 +26,6 @@ import { Button, ButtonProps } from './Button';
  *
  * const MySelectAllButton = () => <SelectAllButton limit={100} label="Select all books" />;
  */
-
-const PREFIX = 'RaSelectAllButton';
 
 export const SelectAllButton = (props: SelectAllButtonProps) => {
     const {
@@ -51,11 +50,10 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
         return null;
 
     return (
-        <Button
+        <StyledButton
             label={label}
             onClick={handleSelectAll}
             type="button"
-            name={PREFIX}
             {...rest}
         />
     );
@@ -69,3 +67,18 @@ export type SelectAllButtonProps<RecordType extends RaRecord = any> =
             | UseReferenceArrayFieldControllerParams<RecordType>['queryOptions']
             | UseReferenceManyFieldControllerParams<RecordType>['queryOptions'];
     };
+
+const PREFIX = 'RaSelectAllButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.primary.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
+        },
+    },
+}));
