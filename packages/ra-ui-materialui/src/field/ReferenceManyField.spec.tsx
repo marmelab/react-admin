@@ -384,7 +384,7 @@ describe('<ReferenceManyField />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('6 items selected');
             await screen.findByText(
-                'Warning: There are too many elements to select them all. Only the first 6 elements were selected.'
+                'There are too many elements to select them all. Only the first 6 elements were selected.'
             );
             expect(
                 screen.queryByRole('button', { name: 'Select all' })
@@ -410,7 +410,7 @@ describe('<ReferenceManyField />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('6 items selected');
             await screen.findByText(
-                'Warning: There are too many elements to select them all. Only the first 6 elements were selected.'
+                'There are too many elements to select them all. Only the first 6 elements were selected.'
             );
         });
     });

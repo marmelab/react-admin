@@ -33,7 +33,7 @@ describe('<SelectAllButton />', () => {
             screen.getByRole('button', { name: 'Select 5 first books' })
         );
         await screen.findByText(
-            'Warning: There are too many elements to select them all. Only the first 5 elements were selected.'
+            'There are too many elements to select them all. Only the first 5 elements were selected.'
         );
         await screen.findByText('5 items selected');
     });

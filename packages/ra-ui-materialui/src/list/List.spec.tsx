@@ -483,7 +483,7 @@ describe('<List />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('11 items selected');
             await screen.findByText(
-                'Warning: There are too many elements to select them all. Only the first 11 elements were selected.'
+                'There are too many elements to select them all. Only the first 11 elements were selected.'
             );
             expect(
                 screen.queryByRole('button', { name: 'Select all' })
@@ -517,7 +517,7 @@ describe('<List />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('11 items selected');
             await screen.findByText(
-                'Warning: There are too many elements to select them all. Only the first 11 elements were selected.'
+                'There are too many elements to select them all. Only the first 11 elements were selected.'
             );
         });
     });
