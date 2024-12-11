@@ -211,7 +211,6 @@ export const useReferenceManyFieldController = <
                         resource,
                         'getManyReference',
                         {
-                            resource,
                             pagination: { page: 1, perPage: limit },
                             sort,
                             filter,
@@ -250,8 +249,7 @@ export const useReferenceManyFieldController = <
                 if (onError) {
                     onError(error);
                 }
-                console.error('Mutation Error: ', error);
-                notify('An error occurred. Please try again.');
+                notify('ra.notification.simple_error', { type: 'warning' });
             }
         },
         [

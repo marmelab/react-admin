@@ -86,7 +86,7 @@ export const useSelectAll = ({
                 if (onError) {
                     onError(error);
                 }
-                notify('An error occurred. Please try again.');
+                notify('ra.notification.simple_error', { type: 'warning' });
             }
         },
         [
