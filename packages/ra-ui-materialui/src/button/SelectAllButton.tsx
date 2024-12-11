@@ -10,7 +10,9 @@ import {
 import { Button, ButtonProps } from './Button';
 
 /**
- * Select all items from a Datagrid.
+ * Select all items in the current List context.
+ *
+ * Used un Datagrid's bulk action toolbar.
  *
  * @typedef {Object} Props the props you can use
  * @prop {string} label Button label. Defaults to 'ra.action.select_all', translated.

@@ -959,13 +959,13 @@ To override the style of all instances of `<FilterButton>` using the [applicatio
 ## `<SelectAllButton>`
 
 This button is an internal component used by react-admin in [the Datagrid default `bulkActionButtons`](./Datagrid.md#bulkactionbuttons).
-The `<SelectAllButton>` component is a button that is used to select all items from a resource, no matters the pagination.
+The `<SelectAllButton>` component is a button that is used to select all items from a resource, no matter the pagination.
 
 ![SelectAllButton](./img/SelectAllButton.png)
 
 ### `label`
 
-By default, `<SelectAllButton>` renders with the "Select all" (translated if the user locale isn't English), whether used on a creation or edition form. You can pass another label:
+By default, the `<SelectAllButton>` label is "Select all" (or the `ra.action.select_all` message translation). You can also pass a custom `label`:
 
 ```jsx
 const PostSelectAllButton = () => <SelectAllButton label="Select all posts" />;
@@ -975,7 +975,7 @@ const PostSelectAllButton = () => <SelectAllButton label="Select all posts" />;
 
 ### `limit`
 
-By default, `<SelectAllButton>` select the 250 first items of your list. To customize this limit you can use the prop `limit` as follows:
+By default, `<SelectAllButton>` selects the 250 first items of your list. To customize this limit, you can use the `limit` prop:
 
 ```jsx
 const PostSelectAllButton = () => <SelectAllButton limit={100} />;
@@ -983,7 +983,7 @@ const PostSelectAllButton = () => <SelectAllButton limit={100} />;
 
 ### `queryOptions`
 
-`<SelectAllButton>` calls a `get` method of your `dataProvider` via a react-query's hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the call.
+`<SelectAllButton>` calls a `get` method of your `dataProvider` via a react-query's `useQuery` hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the call.
 
 {% raw %}
 ```jsx

@@ -7,7 +7,7 @@ import type { FilterPayload, RaRecord, SortPayload } from '../../types';
 import type { UseRecordSelectionResult } from './useRecordSelection';
 
 /**
- * Function hook to select all items of a list (until we reached the limit)
+ * Select all records of a resource (capped by the limit prop)
  *
  * @param {string} resource Required. The resource name
  * @param {RecordSelectionModifiers} selectionModifiers Required, The selection modifiers
