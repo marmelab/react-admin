@@ -66,7 +66,7 @@ const Posts = ({ children = List, ...props }) => {
     return children(params);
 };
 
-const ListWithCheckbox = params => (
+const ListWithCheckboxes = params => (
     <div style={styles.mainContainer}>
         {params.isPending ? (
             <p>Loading...</p>
@@ -121,7 +121,7 @@ const ListWithCheckbox = params => (
 
 export const Basic = ({
     dataProvider = defaultDataProvider,
-    children = ListWithCheckbox,
+    children = ListWithCheckboxes,
 }: {
     dataProvider?: DataProvider;
     children?: (props) => React.JSX.Element;
@@ -298,6 +298,7 @@ const AccessDenied = () => {
         </div>
     );
 };
+
 const AuthenticationError = () => {
     return (
         <div>
