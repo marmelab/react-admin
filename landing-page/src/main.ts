@@ -110,6 +110,7 @@ function hideBanner() {
   const banner = document.getElementById("banner");
   if (banner) {
     banner.style.display = "none";
+    window.localStorage.setItem("hideBannerDate", Date.now().toString());
   }
 }
 const closeBanner = document.getElementById("closeBanner");
@@ -120,8 +121,20 @@ if (closeBanner) {
   });
 }
 
-const emojis = ["🎄", "🎅", "🎁", "🎉", "🦌", "🤶", "🌟", "🔔", "🧦"];
-const emojiContainer = document.getElementById("randomEmoji");
-if (emojiContainer !== null) {
-  emojiContainer.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+const hideBannerDateStr = window.localStorage.getItem("hideBannerDate");
+const hideBannerDate = hideBannerDateStr ? parseInt(hideBannerDateStr, 10) : 0;
+
+const banner = document.getElementById("banner");
+
+if (
+  banner &&
+  (!hideBannerDate || Date.now() - hideBannerDate > 14 * 24 * 60 * 60 * 1000)
+) {
+  banner.style.display = "flex";
+  const emojis = ["🎄", "🎅", "🎁", "🎉", "🦌", "🤶", "🌟", "🔔", "🧦"];
+  const emojiContainer = document.getElementById("randomEmoji");
+  if (emojiContainer !== null) {
+    emojiContainer.innerHTML =
+      emojis[Math.floor(Math.random() * emojis.length)];
+  }
 }
