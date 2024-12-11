@@ -3,42 +3,45 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { useNotify } from '../../notification';
 import { useDataProvider, UseGetListOptions } from '../../dataProvider';
+import { useRecordSelection } from './useRecordSelection';
 import type { FilterPayload, RaRecord, SortPayload } from '../../types';
-import type { UseRecordSelectionResult } from './useRecordSelection';
 
 /**
  * Select all records of a resource (capped by the limit prop)
  *
  * @param {string} resource Required. The resource name
- * @param {RecordSelectionModifiers} selectionModifiers Required. Set of functions to modify the selection (select, unselect, toggle, clearSelection)
  * @param {SortPayload} sort Optional. The sort object passed to the dataProvider
  * @param {FilterPayload} filter Optional. The filter object passed to the dataProvider
  * @returns {Function} onSelectAll A function to select all items of a list
  *
- * @example
+ * @example // TODO: Update this example after updating the button position in the toolbar
  *
- * const MyButton = () => {
- *   const [_, selectionModifiers] = useRecordSelection({ resource: 'posts' });
- *   const onSelectAll = useSelectAll({
- *       selectionModifiers,
- *       sort: { field: 'title', order: 'ASC' },
- *       filter: { title: 'foo' },
- *   });
+ * const MySelectAllButton = () => {
+ *   const { sort, filter } = useListContext();
+ *   const onSelectAll = useSelectAll({ resource: 'posts', sort, filter });
  *   const handleClick = () => onSelectAll({
  *       queryOptions: { meta: { foo: 'bar' } },
  *       limit: 250,
  *   });
  *   return <Button onClick={handleClick}>Select All</Button>;
  * };
+ *
+ * const PostList = () => (
+ *   <List>
+ *     <Datagrid bulkActionButtons={<MySelectAllButton />}>
+ *       // ...
+ *     </Datagrid>
+ *   </List>
+ * );
  */
 export const useSelectAll = ({
     resource,
-    selectionModifiers,
     sort,
     filter,
 }: useSelectAllProps): ((options?: onSelectAllParams) => void) => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const [, { select }] = useRecordSelection({ resource });
     const notify = useNotify();
 
     const onSelectAll = useCallback(
@@ -69,7 +72,7 @@ export const useSelectAll = ({
                 });
 
                 const allIds = results.data?.map(({ id }) => id) || [];
-                selectionModifiers.select(allIds);
+                select(allIds);
                 if (allIds.length === limit) {
                     notify('ra.message.select_all_limit_reached', {
                         messageArgs: { max: limit },
@@ -89,22 +92,13 @@ export const useSelectAll = ({
                 notify('ra.notification.simple_error', { type: 'warning' });
             }
         },
-        [
-            dataProvider,
-            queryClient,
-            notify,
-            resource,
-            sort,
-            filter,
-            selectionModifiers,
-        ]
+        [queryClient, resource, sort, filter, select, dataProvider, notify]
     );
     return onSelectAll;
 };
 
 export interface useSelectAllProps {
     resource: string;
-    selectionModifiers: UseRecordSelectionResult[1];
     sort?: SortPayload;
     filter?: FilterPayload;
 }
