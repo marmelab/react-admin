@@ -10,7 +10,7 @@ import type { UseRecordSelectionResult } from './useRecordSelection';
  * Select all records of a resource (capped by the limit prop)
  *
  * @param {string} resource Required. The resource name
- * @param {RecordSelectionModifiers} selectionModifiers Required, The selection modifiers
+ * @param {RecordSelectionModifiers} selectionModifiers Required. Set of functions to modify the selection (select, unselect, toggle, clearSelection)
  * @param {SortPayload} sort Optional. The sort object passed to the dataProvider
  * @param {FilterPayload} filter Optional. The filter object passed to the dataProvider
  * @returns {Function} onSelectAll A function to select all items of a list
