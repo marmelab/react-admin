@@ -106,12 +106,11 @@ for (let i = 0; i < buildingBlocksULs.length; i++) {
     "slide" + (i % 2 === 0 ? "Left" : "Right") + " 90s linear infinite";
 }
 
-
 function hideBanner() {
-const banner = document.getElementById("banner");
-if (banner) {
-  banner.style.display = "none";
-}
+  const banner = document.getElementById("banner");
+  if (banner) {
+    banner.style.display = "none";
+  }
 }
 const closeBanner = document.getElementById("closeBanner");
 if (closeBanner) {
@@ -119,4 +118,10 @@ if (closeBanner) {
     e.preventDefault();
     hideBanner();
   });
+}
+
+const emojis = ["🎄", "🎅", "🎁", "🎉", "🦌", "🤶", "🌟", "🔔", "🧦"];
+const emojiContainer = document.getElementById("randomEmoji");
+if (emojiContainer !== null) {
+  emojiContainer.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
 }
