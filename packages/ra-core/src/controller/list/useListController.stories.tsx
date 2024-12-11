@@ -13,13 +13,13 @@ export default {
 const defaultDataProvider = fakeDataProvider(
     {
         posts: [
-            { id: 1, title: 'Post #1', votes: 90 },
-            { id: 2, title: 'Post #2', votes: 20 },
-            { id: 3, title: 'Post #3', votes: 30 },
-            { id: 4, title: 'Post #4', votes: 40 },
-            { id: 5, title: 'Post #5', votes: 50 },
-            { id: 6, title: 'Post #6', votes: 60 },
-            { id: 7, title: 'Post #7', votes: 70 },
+            { id: 1, title: 'Morbi suscipit malesuada' },
+            { id: 2, title: 'Quisque sodales ipsum' },
+            { id: 3, title: 'Maecenas at tortor' },
+            { id: 4, title: 'Integer commodo est' },
+            { id: 5, title: 'In eget accumsan' },
+            { id: 6, title: 'Curabitur fringilla tellus' },
+            { id: 7, title: 'Nunc ut purus' },
         ],
     },
     process.env.NODE_ENV === 'development'
