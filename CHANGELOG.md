@@ -1,5 +1,28 @@
 # Changelog
 
+## 5.4.2
+
+* Fix: Improve AutocompleteInput creation support ([#10391](https://github.com/marmelab/react-admin/pull/10391)) ([djhi](https://github.com/djhi))
+* Fix `useLogin` should invalidate the `getPermissions` cache ([#10392](https://github.com/marmelab/react-admin/pull/10392)) ([slax57](https://github.com/slax57))
+* Fix `<Datagrid>` `rowClick` function cannot expand or select ([#10404](https://github.com/marmelab/react-admin/pull/10404)) ([djhi](https://github.com/djhi))
+* Fix `<FileInput>` triggers `onChange` twice with latest version of `react-dropzone` ([#10402](https://github.com/marmelab/react-admin/pull/10402)) ([slax57](https://github.com/slax57))
+* Fix type of disableClearable prop for AutocompleteInput ([#10393](https://github.com/marmelab/react-admin/pull/10393)) ([smeng9](https://github.com/smeng9))
+* [Doc] Backport `<ReferenceManyToManyField  queryOptions>` and `<ReferenceManyToManyInput  queryOptions  mutationOptions>` doc ([#10403](https://github.com/marmelab/react-admin/pull/10403)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `<DateRangeInput>` import syntax ([#10399](https://github.com/marmelab/react-admin/pull/10399)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Introduce `<TreeWithDetails filter>` prop to render a sub tree ([#10398](https://github.com/marmelab/react-admin/pull/10398)) ([djhi](https://github.com/djhi))
+
+## 5.4.1
+
+* Fix access control basename handling ([#10383](https://github.com/marmelab/react-admin/pull/10383)) ([djhi](https://github.com/djhi))
+* Fix ReferenceManyField executes filter reset filter too often ([#10371](https://github.com/marmelab/react-admin/pull/10371)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add video tutorial to Access Control documentation ([#10378](https://github.com/marmelab/react-admin/pull/10378)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix AutocompleteArrrayInput contains a useless tip ([#10373](https://github.com/marmelab/react-admin/pull/10373)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update `useUpdate` doc to explain `returnPromise` option ([#10372](https://github.com/marmelab/react-admin/pull/10372)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Supabase (GraphQL) DataProvider link label ([#10370](https://github.com/marmelab/react-admin/pull/10370)) ([zackha](https://github.com/zackha))
+* [TypeScript] Fix `<ReferenceArrayField queryOptions>` param type ([#10389](https://github.com/marmelab/react-admin/pull/10389)) ([dricholm](https://github.com/dricholm))
+* [Storybook] Re-enable storysource addon ([#10363](https://github.com/marmelab/react-admin/pull/10363)) ([slax57](https://github.com/slax57))
+* [Chore] Add a story when `TextInput` trigger a server error ([#10386](https://github.com/marmelab/react-admin/pull/10386)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.4.0
 
 * Introduce `<FilterLiveForm>` ([#10344](https://github.com/marmelab/react-admin/pull/10344)) ([slax57](https://github.com/slax57))
