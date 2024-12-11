@@ -8,13 +8,22 @@ import {
     UseGetListHookValue,
     UseGetListOptions,
 } from '../../dataProvider';
-import { defaultExporter } from '../../export';
-import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 import { useSelectAll } from './useSelectAll';
+import { defaultExporter } from '../../export';
 import { SORT_ASC } from './queryReducer';
+import type {
+    FilterPayload,
+    SortPayload,
+    RaRecord,
+    Exporter,
+} from '../../types';
+import type {
+    UseReferenceArrayFieldControllerParams,
+    UseReferenceManyFieldControllerParams,
+} from '../field';
 
 /**
  * Prepare data for the List view
@@ -486,7 +495,10 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     onSelect: (ids: RecordType['id'][]) => void;
     onSelectAll: (options?: {
         limit?: number;
-        queryOptions?: UseGetListOptions<RecordType>;
+        queryOptions?:
+            | UseGetListOptions<RecordType>
+            | UseReferenceArrayFieldControllerParams<RecordType>['queryOptions']
+            | UseReferenceManyFieldControllerParams<RecordType>['queryOptions'];
     }) => void;
     onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;

@@ -39,7 +39,6 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
     const { total, selectedIds, onSelectAll } = useListContext();
     const handleSelectAll = useCallback(
         event => {
-            // @ts-ignore
             onSelectAll({ limit, queryOptions });
             if (onClick) onClick(event);
         },
