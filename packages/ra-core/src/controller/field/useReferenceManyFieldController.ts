@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
 
-import { removeEmpty } from '../../util';
+import { removeEmpty, useEvent } from '../../util';
 import { useDataProvider, useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
@@ -202,7 +202,7 @@ export const useReferenceManyFieldController = <
         }
     );
 
-    const onSelectAll = useCallback(
+    const onSelectAll = useEvent(
         async ({
             limit = 250,
             queryOptions = {},
@@ -254,20 +254,7 @@ export const useReferenceManyFieldController = <
                 }
                 notify('ra.notification.simple_error', { type: 'warning' });
             }
-        },
-        [
-            queryClient,
-            resource,
-            sort,
-            filter,
-            selectionModifiers,
-            dataProvider,
-            reference,
-            target,
-            record,
-            source,
-            notify,
-        ]
+        }
     );
 
     return {

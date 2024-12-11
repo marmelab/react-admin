@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useNotify } from '../../notification';
 import { useDataProvider, UseGetListOptions } from '../../dataProvider';
 import { useRecordSelection } from './useRecordSelection';
+import { useEvent } from '../../util';
 import type { FilterPayload, RaRecord, SortPayload } from '../../types';
 
 /**
@@ -44,7 +44,7 @@ export const useSelectAll = ({
     const [, { select }] = useRecordSelection({ resource });
     const notify = useNotify();
 
-    const handleSelectAll = useCallback(
+    const handleSelectAll = useEvent(
         async ({
             queryOptions = {},
             limit = 250,
@@ -94,8 +94,7 @@ export const useSelectAll = ({
                 }
                 notify('ra.notification.simple_error', { type: 'warning' });
             }
-        },
-        [queryClient, resource, sort, filter, select, dataProvider, notify]
+        }
     );
     return handleSelectAll;
 };
