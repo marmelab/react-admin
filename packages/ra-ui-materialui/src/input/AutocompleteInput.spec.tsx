@@ -1338,6 +1338,23 @@ describe('<AutocompleteInput />', () => {
             fireEvent.focus(input);
             expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
         });
+        it('should allow the creation of a new choice by pressing enter', async () => {
+            render(<OnCreate />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            // Enter an unknown value and submit it with Enter
+            await userEvent.type(input, 'New Value{Enter}');
+            await screen.getByDisplayValue('New Value');
+            // Clear the input, otherwise the new value won't be shown in the dropdown as it is selected
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            // Open the dropdown
+            fireEvent.mouseDown(input);
+            // Check the new value is in the dropdown
+            await screen.findByText('New Value');
+        });
         it('should allow the creation of a new choice with a promise', async () => {
             const choices = [
                 { id: 'ang', name: 'Angular' },

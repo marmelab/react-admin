@@ -10,9 +10,9 @@ import {
 } from 'ra-ui-materialui';
 import { Box, Typography, Button } from '@mui/material';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient, QueryClient } from '@tanstack/react-query';
 
-import { Admin } from './Admin';
+import { Admin, AdminProps } from './Admin';
 
 export default {
     title: 'react-admin/Admin',
@@ -122,7 +122,32 @@ const dataProvider = fakeRestDataProvider({
     ],
 });
 
-export const AccessControl = () => {
+export const AccessControl = () => <AccessControlAdmin />;
+export const AccessControlInSubPath = () => (
+    <TestMemoryRouter>
+        <Routes>
+            <Route
+                path="/"
+                element={
+                    <>
+                        <h1>Main</h1>
+                        <div>
+                            <Link to="/admin">Go to admin</Link>
+                        </div>
+                    </>
+                }
+            />
+            <Route
+                path="/admin/*"
+                element={
+                    <AccessControlAdmin AdminProps={{ basename: '/admin' }} />
+                }
+            />
+        </Routes>
+    </TestMemoryRouter>
+);
+
+const AccessControlAdmin = ({ AdminProps }: { AdminProps?: AdminProps }) => {
     const readerPermissions = [
         { action: 'list', resource: 'books' },
         { action: 'show', resource: 'books' },
@@ -148,6 +173,8 @@ export const AccessControl = () => {
         { action: 'delete', resource: 'users' },
     ];
     const [permissions, setPermissions] = React.useState(readerPermissions);
+    const [triggerAccessControlError, setTriggerAccessControlError] =
+        React.useState(false);
     const authProvider: AuthProvider = {
         // authentication
         async login() {},
@@ -160,6 +187,9 @@ export const AccessControl = () => {
         async handleCallback() {}, // for third-party authentication only
         // authorization (optional)
         async canAccess({ resource, action }) {
+            if (triggerAccessControlError) {
+                throw new Error('Access control error');
+            }
             return permissions.some(
                 p => p.resource === resource && p.action === action
             );
@@ -225,6 +255,18 @@ export const AccessControl = () => {
                     >
                         View as admin
                     </Button>
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => {
+                            setTriggerAccessControlError(prev => !prev);
+                            queryClient.invalidateQueries({
+                                queryKey: ['auth', 'canAccess'],
+                            });
+                        }}
+                    >
+                        Toggle Access Control Error
+                    </Button>
                 </Box>
                 <Layout>{children}</Layout>
             </div>
@@ -235,6 +277,14 @@ export const AccessControl = () => {
             dataProvider={dataProvider}
             authProvider={authProvider}
             layout={CustomLayout}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: { retry: false },
+                    },
+                })
+            }
+            {...AdminProps}
         >
             <Resource
                 name="books"

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { QueryClient } from '@tanstack/react-query';
-import { Route, Routes } from 'react-router';
+import { Location, Route, Routes } from 'react-router';
 import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core';
 import { useRequireAccess, UseRequireAccessResult } from './useRequireAccess';
@@ -50,15 +50,20 @@ const defaultAuthProvider: AuthProvider = {
 
 export const Basic = ({
     authProvider = defaultAuthProvider,
+    basename,
+    locationCallback,
     queryClient,
 }: {
     authProvider?: AuthProvider | null;
+    basename?: string;
+    locationCallback?: (l: Location) => void;
     queryClient?: QueryClient;
 }) => (
-    <TestMemoryRouter>
+    <TestMemoryRouter locationCallback={locationCallback}>
         <CoreAdminContext
             authProvider={authProvider != null ? authProvider : undefined}
             queryClient={queryClient}
+            basename={basename}
         >
             <Routes>
                 <Route

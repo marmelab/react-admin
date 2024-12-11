@@ -114,6 +114,24 @@ export const CustomRemoveIcon = () => (
     </Wrapper>
 );
 
+export const OnChange = ({ onChange = console.log }) => (
+    <Wrapper>
+        <FileInput source="attachment" onChange={onChange}>
+            <FileField source="src" title="title" />
+        </FileInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
+export const OnChangeMultiple = ({ onChange = console.log }) => (
+    <Wrapper>
+        <FileInput source="attachment" onChange={onChange} multiple>
+            <FileField source="src" title="title" />
+        </FileInput>
+        <FormInspector name="attachment" />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
