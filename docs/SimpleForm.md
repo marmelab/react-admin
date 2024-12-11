@@ -514,6 +514,28 @@ const formState = useFormState(); // ❌ should deconstruct the formState
 
 ## Displaying Inputs Based On Permissions
 
+You can leverage [the `<CanAccess>` component](./CanAccess.md) to display inputs if the user has the required access rights.
+
+{% raw %}
+```jsx
+import { CanAccess, Create, SimpleForm, TextInput } from 'react-admin';
+
+export const UserCreate = () => {
+    const { permissions } = useGetPermissions();
+    return (
+        <Create redirect="show">
+            <SimpleForm>
+                <TextInput source="name" validate={[required()]} />
+                <CanAccess resource="user.role" action="write">
+                    <TextInput source="role" validate={[required()]} />
+                </CanAccess>
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+{% endraw %}
+
 You can leverage [the `usePermissions` hook](./usePermissions.md) to display inputs if the user has the required permissions.
 
 {% raw %}
@@ -646,51 +668,6 @@ Note that you **must** set the `<SimpleForm resetOptions>` prop to `{ keepDirtyV
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
-
-## Role-Based Access Control (RBAC)
-
-Fine-grained permissions control can be added by using the [`<SimpleForm>`](./AuthRBAC.md#simpleform) component provided by the `@react-admin/ra-rbac` package. 
-
-{% raw %}
-```jsx
-import { Edit, TextInput } from 'react-admin';
-import { SimpleForm } from '@react-admin/ra-rbac';
-
-const authProvider= {
-    // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            // 'delete' is missing
-            { action: ['list', 'edit'], resource: 'products' },
-            { action: 'write', resource: 'products.reference' },
-            { action: 'write', resource: 'products.width' },
-            { action: 'write', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'write', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-        ]
-    }),
-};
-
-const ProductEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="reference" />
-            <TextInput source="width" />
-            <TextInput source="height" />
-            {/* not displayed */}
-            <TextInput source="description" />
-            {/* not displayed */}
-            <TextInput source="image" />
-            <TextInput source="thumbnail" />
-            {/* no delete button */}
-        </SimpleForm>
-    </Edit>
-);
-```
-{% endraw %}
-
-Check [the RBAC `<SimpleForm>` component](./AuthRBAC.md#simpleform) documentation for more details.
 
 ## Versioning
 
