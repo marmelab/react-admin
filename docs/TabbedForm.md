@@ -796,21 +796,34 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Displaying a Tab Based On Permissions
 
-You can leverage [the `usePermissions` hook](./usePermissions.md) to display a tab only if the user has the required permissions.
+You can leverage [the `useCanAccess` hook](./useCanAccess.md) to display tabs if the user has the required access rights.
 
 {% raw %}
 ```jsx
-import { usePermissions, Edit, TabbedForm, FormTab } from 'react-admin';
+import { Edit, FormTab, Loading, TabbedForm, TextInput, useCanAccess } from 'react-admin';
+import { Alert } from '@mui/material';
 
-const UserEdit = () => {
-    const { permissions } = usePermissions();
+export const UserCreate = () => {
+    const { canAccess, isPending, error } = useCanAccess({
+        resource: 'users.tabs.security',
+        action: 'write',
+    });
+    if (isPending) return <Loading />;
+    if (error) {
+        return (
+            <Alert severity="error" sx={{ px: 2.5, py: 1, mt: 1, width: '100%' }}>
+                An error occurred while checking your permissions
+            </Alert>
+        );
+    }
+
     return (
         <Edit>
             <TabbedForm>
-                <TabbedForm.Tab label="summary">
+                <TabbedForm.Tab label="Summary">
                     ...
                 </TabbedForm.Tab>
-                {permissions === 'admin' &&
+                {canAccess &&
                     <TabbedForm.Tab label="Security">
                         ...
                     </TabbedForm.Tab>
@@ -818,64 +831,77 @@ const UserEdit = () => {
             </TabbedForm>
         </Edit>
     );
-};
+}
 ```
 {% endraw %}
 
-## Role-Based Access Control (RBAC)
-
-You can show or hide tabs and inputs based on user permissions by using the [`<TabbedForm>`](./AuthRBAC.md#tabbedform) component from the `@react-admin/ra-rbac` package instead of the `react-admin` package.
-
-[`<TabbedForm>`](./AuthRBAC.md#tabbedform) shows only the tabs for which users have write permissions, using the `[resource].tab.[tabName]` string as resource identifier. It also renders the delete button only if the user has a permission for the `delete` action in the current resource. `<TabbedForm.Tab>` shows only the child inputs for which users have the write permissions, using the `[resource].[source]` string as resource identifier.
+If you need to check access rights for multiple tabs, leverage [the `useCanAccessResources` hook](./useCanAccess.md#multiple-resources).
 
 {% raw %}
-```tsx
-import { Edit, TextInput } from 'react-admin';
-import { TabbedForm } from '@react-admin/ra-rbac';
+```jsx
+import { Edit, Loading, TabbedForm, TextInput, useCanAccessResources } from 'react-admin';
+import { Alert } from '@mui/material';
 
-const authProvider = {
-    // ...
-    getPermissions: () => Promise.resolve([
-        // crud (the delete action is missing)
-        { action: ['list', 'edit'], resource: 'products' },
-        // tabs ('products.tab.stock' is missing)
-        { action: 'write', resource: 'products.tab.description' },
-        { action: 'write', resource: 'products.tab.images' },
-        // fields ('products.description' and 'products.image' are missing)
-        { action: 'write', resource: 'products.reference' },
-        { action: 'write', resource: 'products.width' },
-        { action: 'write', resource: 'products.height' },
-        { action: 'write', resource: 'products.thumbnail' },
-    ]),
-};
+export const UserEdit = () => {
+    const { canAccess, isPending, error } = useCanAccessResources({
+        resources: ['users.tabs.summary', 'users.tabs.security'],
+        action: 'write',
+    });
+    if (isPending) return <Loading />;
+    if (error) {
+        return (
+            <Alert severity="error" sx={{ px: 2.5, py: 1, mt: 1, width: '100%' }}>
+                An error occurred while checking your permissions
+            </Alert>
+        );
+    }
 
-const ProductEdit = () => (
-    <Edit>
-        <TabbedForm>
-            <TabbedForm.Tab label="Description" name="description">
-                <TextInput source="reference" />
-                <TextInput source="width" />
-                <TextInput source="height" />
-                {/* the description input is not displayed */}
-                <TextInput source="description" />
-            </TabbedForm.Tab>
-            {/* the stock tab is not displayed */}
-            <TabbedForm.Tab label="Stock" name="stock">
-                <TextInput source="stock" />
-            </TabbedForm.Tab>
-            <TabbedForm.Tab label="Images" name="images">
-                {/* the images input is not displayed */}
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </TabbedForm.Tab>
-            {/* the delete button is not displayed */}
-        </TabbedForm>
-    </Edit>
-);
+    return (
+        <Edit>
+            <TabbedForm>
+                {canAccess['users.tabs.summary'] &&
+                <TabbedForm.Tab label="Summary">
+                    ...
+                </TabbedForm.Tab>}
+                {canAccess['users.tabs.security'] &&
+                    <TabbedForm.Tab label="Security">
+                        ...
+                    </TabbedForm.Tab>
+                }
+            </TabbedForm>
+        </Edit>
+    );
+}
 ```
 {% endraw %}
 
-Check [the RBAC `<TabbedForm>` component](./AuthRBAC.md#tabbedform) documentation for more details.
+## Displaying Inputs Based On Permissions
+
+You can leverage [the `<CanAccess>` component](./CanAccess.md) to display inputs if the user has the required access rights.
+
+{% raw %}
+```jsx
+import { CanAccess, Edit, TabbedForm, TextInput } from 'react-admin';
+
+export const UserEdit = () => {
+    return (
+        <Edit>
+            <TabbedForm>
+                <TabbedForm.Tab label="Summary">
+                    <TextInput source="name" validate={[required()]} />
+                    <CanAccess resource="user.role" action="write">
+                        <TextInput source="role" validate={[required()]} />
+                    </CanAccess>
+                </TabbedForm.Tab>}
+                    <TabbedForm.Tab label="Security">
+                        ...
+                    </TabbedForm.Tab>
+            </TabbedForm>
+        </Edit>
+    );
+}
+```
+{% endraw %}
 
 ## Versioning
 

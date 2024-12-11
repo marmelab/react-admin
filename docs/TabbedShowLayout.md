@@ -399,7 +399,6 @@ const ProductShow = () => (
 
 Check [the RBAC `<TabbedShowLayout>` component](./AuthRBAC.md#tabbedshowlayout) documentation for more details.
 
-
 ## See Also
 
 * [Field components](./Fields.md)

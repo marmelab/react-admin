@@ -1076,32 +1076,35 @@ Check [the `<DatagridAG>` documentation](./DatagridAG.md) for more details.
 
 ## Fields And Permissions
 
-You might want to display some fields only to users with specific permissions. Use the `usePermissions` hook to get the user permissions and hide Fields accordingly:
+You might want to display some fields only to users with specific permissions. Use [the `useCanAccess` hook](./useCanAccess.md) to check whether users have access to a field:
 
 {% raw %}
 ```tsx
-import { List, Datagrid, TextField, TextInput, ShowButton, usePermissions } from 'react-admin';
+import { List, Datagrid, TextField, TextInput, ShowButton, useCanAccess } from 'react-admin';
 
-const getUserFilters = (permissions) => ([
+const getUserFilters = (canAccessRole) => ([
     <TextInput label="user.list.search" source="q" alwaysOn />,
     <TextInput source="name" />,
-    permissions === 'admin' ? <TextInput source="role" /> : null,
+    canAccessRole ? <TextInput source="role" /> : null,
     ].filter(filter => filter !== null)
 );
 
 export const UserList = ({ permissions, ...props }) => {
-    const { permissions } = usePermissions();
+    const { canAccess, error, isPending } = useCanAccess({
+        resource: 'users.role',
+        action: 'read'
+    });
     return (
         <List
             {...props}
-            filters={getUserFilters(permissions)}
+            filters={getUserFilters(canAccess)}
             sort={{ field: 'name', order: 'ASC' }}
         >
             <Datagrid>
                 <TextField source="id" />
                 <TextField source="name" />
-                {permissions === 'admin' && <TextField source="role" />}
-                {permissions === 'admin' && <EditButton />}
+                {canAccess ? <TextField source="role" /> : null}
+                <EditButton />
                 <ShowButton />
             </Datagrid>
         </List>
@@ -1110,9 +1113,44 @@ export const UserList = ({ permissions, ...props }) => {
 ```
 {% endraw %}
 
-Note how the `permissions` prop is passed down to the custom `filters` component to allow Filter customization, too.
+Note how the `canAccess` value is passed down to the custom `filters` component to allow Filter customization, too.
 
-It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component. Check [the authProvider documentation](./Authentication.md) for more information.
+Should you need to check multiple fields, you can leverage [the `useCanAccessResources` hook](./useCanAccess.md#multiple-resources):
+
+{% raw %}
+```tsx
+import { List, Datagrid, TextField, TextInput, ShowButton, useCanAccessResources } from 'react-admin';
+
+const getUserFilters = (canAccessRole) => ([
+    <TextInput label="user.list.search" source="q" alwaysOn />,
+    <TextInput source="name" />,
+    canAccessRole ? <TextInput source="role" /> : null,
+    ].filter(filter => filter !== null)
+);
+
+export const UserList = ({ permissions, ...props }) => {
+    const { canAccess, error, isPending } = useCanAccessResources({
+        resources: ['users.id', 'users.name', 'users.role'],
+        action: 'read'
+    });
+    return (
+        <List
+            {...props}
+            filters={getUserFilters(canAccess)}
+            sort={{ field: 'name', order: 'ASC' }}
+        >
+            <Datagrid>
+                {canAccess['users.id'] ? <TextField source="id" /> : null}
+                {canAccess['users.name'] ? <TextField source="name" /> : null}
+                {canAccess['users.role'] ? <TextField source="role" /> : null}
+                <EditButton />
+                <ShowButton />
+            </Datagrid>
+        </List>
+    )
+};
+```
+{% endraw %}
 
 **Tip**: The [ra-rbac module](./AuthRBAC.md#datagrid) provides a wrapper for the `<Datagrid>` with built-in permission check for columns.
 

@@ -568,6 +568,58 @@ To override the style of all instances of `<Button>` using the [application-wide
 
 ## `<CloneButton>`
 
+The `<CloneButton>` can be added anywhere there is a `RecordContext` to redirect users to the record's resource create page. The create page form will be prefilled with the record values (except the `id`).
+
+### Usage
+
+`<CloneButton>` reads the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { CloneButton, TopToolbar, List } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <TextField source="title" />
+        <CloneButton />
+    </List>
+);
+```
+
+`<CloneButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Props
+
+| Prop          | Required | Type            | Default            | Description                                  |
+| ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
+| `resource`    | Optional | `string`        | -                  | Target resource, e.g. 'posts'                |
+| `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
+| `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
+| `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
+
+It also supports [all the other `<Button>` props](#button).
+
+### Access Control
+
+If you want to control whether this button should be displayed based on users permissions, you can leverage the `<CloneButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
+
+This `<CloneButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "clone", resource: [current resource] }
+```
+
+```jsx
+import { TopToolbar, List } from 'react-admin';
+import { CloneButton } from '@react-admin/ra-rbac';
+
+const PostList = () => (
+    <List>
+        <TextField source="title" />
+        <CloneButton />
+    </List>
+);
+```
+
 ## `<CreateButton>`
 
 Opens the Create view of the current resource:
@@ -941,6 +993,35 @@ export const PostList = () => (
 | `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
 **Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
+
+### Access Control
+
+If you want to control whether this button should be displayed based on users permissions, you can leverage the `<ExportButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
+
+This `<ExportButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "export", resource: [current resource] }
+```
+
+```jsx
+import { CreateButton, TopToolbar } from 'react-admin';
+import { ExportButton } from '@react-admin/ra-rbac';
+
+const PostListActions = () => (
+    <TopToolbar>
+        <PostFilter context="button" />
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
+export const PostList = () => (
+    <List actions={<PostListActions />}>
+        ...
+    </List>
+);
+```
 
 ## `<FilterButton>`
 

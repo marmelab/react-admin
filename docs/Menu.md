@@ -465,3 +465,33 @@ const MyReactAdmin = () => (
 ```
 
 ![MenuLive](./img/MenuLive.png)
+
+## Displaying Menu Items Based On Permissions
+
+If you `authProvider` implements [the `canAccess` method](./Permissions.md#authprovidercanaccess), the `<Menu>` component will call it for each resource with the follwing parameters:
+- `resource`: the resource name
+- `action`: `list`
+
+However, if you have a custom menu and want to show items based on the user permissions, you can leverage [the `<CanAccess>` component](./CanAccess.md):
+
+{% raw %}
+```tsx
+// in src/MyMenu.js
+import { CanAccess, Menu } from 'react-admin';
+import LabelIcon from '@mui/icons-material/Label';
+
+export const MyMenu = () => (
+    <Menu>
+        <Menu.DashboardItem />
+        <Menu.ResourceItem name="posts" />
+        <Menu.ResourceItem name="comments" />
+        <Menu.ResourceItem name="users" />
+        <CanAccess resource="miscellaneous" action="custom-action">
+            <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
+        </CanAccess>
+    </Menu>
+);
+```
+{% endraw %}
+
+**Tip**: the `resource` and `action` parameter accept any string value.
