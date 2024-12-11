@@ -36,13 +36,13 @@ export const useSelectAll = ({
     selectionModifiers,
     sort,
     filter,
-}: useSelectAllProps): ((options?: onSelectAllProps) => void) => {
+}: useSelectAllProps): ((options?: onSelectAllParams) => void) => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const notify = useNotify();
 
     const onSelectAll = useCallback(
-        async ({ queryOptions = {}, limit = 250 }: onSelectAllProps = {}) => {
+        async ({ queryOptions = {}, limit = 250 }: onSelectAllParams = {}) => {
             const { meta, onSuccess, onError } = queryOptions;
             try {
                 const results = await queryClient.fetchQuery({
@@ -109,7 +109,7 @@ export interface useSelectAllProps {
     filter?: FilterPayload;
 }
 
-export interface onSelectAllProps<RecordType extends RaRecord = any> {
+export interface onSelectAllParams<RecordType extends RaRecord = any> {
     limit?: number;
     queryOptions?: UseGetListOptions<RecordType>;
 }
