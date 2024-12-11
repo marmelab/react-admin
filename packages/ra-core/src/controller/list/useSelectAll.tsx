@@ -50,7 +50,6 @@ export const useSelectAll = ({
                         resource,
                         'getList',
                         {
-                            resource,
                             pagination: { page: 1, perPage: limit },
                             sort,
                             filter,
