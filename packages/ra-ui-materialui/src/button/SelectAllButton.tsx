@@ -16,7 +16,7 @@ import { Button, ButtonProps } from './Button';
  * Used un Datagrid's bulk action toolbar.
  *
  * @typedef {Object} Props the props you can use
- * @prop {string} label Button label. Defaults to 'ra.action.select_all', translated.
+ * @prop {string} label Button label. Defaults to 'ra.action.select_all_button', translated.
  * @prop {string} limit Maximum number of items to select. Defaults to 250.
  * @prop {function} queryOptions Object of options passed to react-query.
  *
@@ -29,7 +29,7 @@ import { Button, ButtonProps } from './Button';
 
 export const SelectAllButton = (props: SelectAllButtonProps) => {
     const {
-        label = 'ra.action.select_all',
+        label = 'ra.action.select_all_button',
         limit = 250,
         onClick,
         queryOptions,

@@ -25,6 +25,7 @@ const frenchMessages: TranslationMessages = {
             remove: 'Supprimer',
             save: 'Enregistrer',
             select_all: 'Tout sélectionner',
+            select_all_button: 'Tout sélectionner',
             select_row: 'Sélectionner cette ligne',
             search: 'Rechercher',
             show: 'Afficher',
