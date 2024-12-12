@@ -225,7 +225,7 @@ const allProductsButStock = [
 
 ## Setup
 
-Define role definitions in your application code, or fetch them from the API.
+Define role definitions in your application code, or fetch them from an API.
 
 ```jsx
 export const roleDefinitions = {
@@ -365,7 +365,7 @@ Ra-rbac provides alternative components to react-admin base components. These al
 - List
     - [`<List>`](#list)
     - [`<ListActions>`](#listactions)
-    - [`<Datagrid>`](#datagrid)
+    - [`<Datagrid>`](./Datagrid.md#access-control)
 - Detail
     - [`<SimpleShowLayout>`](#simpleshowlayout)
     - [`<Tab>`](#tab)
@@ -375,80 +375,6 @@ Ra-rbac provides alternative components to react-admin base components. These al
     - [`<TabbedForm>`](#tabbedform)
     - [`<FormTab>`](#formtab)
 
-## `<Datagrid>`
-
-Alternative to react-admin's `<Datagrid>` that adds RBAC control to columns.
-
--   Users must have the `'delete'` permission on the resource to see the `<BulkExportButton>`.
--   Users must have the `'read'` permission on a resource column to see it in the export:
-
-```jsx
-{ action: "read", resource: `${resource}.${source}` }.
-// or
-{ action: "read", resource: `${resource}.*` }.
-```
-
-Also, the `rowClick` prop is automatically set depending on the user props:
-
--   `"edit"` if the user has the permission to edit the resource
--   `"show"` if the user doesn't have the permission to edit the resource but has the permission to show it
--   empty otherwise
-
-```tsx
-import { canAccessWithPermissions, List, Datagrid } from '@react-admin/ra-rbac';
-import {
-    ImageField,
-    TextField,
-    ReferenceField,
-    NumberField,
-} from 'react-admin';
-
-const authProvider = {
-    // ...
-    canAccess: async ({ action, record, resource }) =>
-        canAccessWithPermissions({
-            permissions: [
-                { action: 'list', resource: 'products' },
-                { action: 'read', resource: 'products.thumbnail' },
-                { action: 'read', resource: 'products.reference' },
-                { action: 'read', resource: 'products.category_id' },
-                { action: 'read', resource: 'products.width' },
-                { action: 'read', resource: 'products.height' },
-                { action: 'read', resource: 'products.price' },
-                { action: 'read', resource: 'products.description' },
-            ],
-            action,
-            record,
-            resource
-        }),
-};
-
-const ProductList = () => (
-    <List>
-        {/* ra-rbac Datagrid */}
-        <Datagrid>
-            <ImageField source="thumbnail" />
-            <TextField source="reference" />
-            <ReferenceField source="category_id" reference="categories">
-                <TextField source="name" />
-            </ReferenceField>
-            <NumberField source="width" />
-            <NumberField source="height" />
-            <NumberField source="price" />
-            <TextField source="description" />
-            {/** these two columns are not visible to the user **/}
-            <NumberField source="stock" />
-            <NumberField source="sales" />
-        </Datagrid>
-    </List>
-);
-```
-
-**Tip**: Adding the 'read' permission on the resource itself doesn't grant the 'read' permission on the columns. If you want a user to see all possible columns, add the 'read' permission on columns using a wildcard:
-
-```jsx
-{ action: "read", resource: "products.*" }.
-```
 
 ## `<List>`
 
