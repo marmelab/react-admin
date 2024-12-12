@@ -370,7 +370,7 @@ Ra-rbac provides alternative components to react-admin base components. These al
     - [`<Tab>`](#tab)
     - [`<TabbedShowLayout>`](#tab)
 - Form
-    - [`<SimpleForm>`](#simpleform)
+    - [`<SimpleForm>`](./SimpleForm.md#access-control)
     - [`<TabbedForm>`](#tabbedform)
     - [`<FormTab>`](#formtab)
 
@@ -433,59 +433,6 @@ export const MyMenu = () => (
         {/* this menu item will render for all users */}
         <Menu.Item to="/preferences" primaryText="Preferences" />
     </Menu>
-);
-```
-
-## `<SimpleForm>`
-
-Alternative to react-admin's `<SimpleForm>` that shows/hides inputs based on roles and permissions.
-
-To see an input, the user must have the permission to write the resource field:
-
-```jsx
-{ action: "write", resource: `${resource}.${source}` }
-```
-
-`<SimpleForm>` also renders the delete button only if the user has the 'delete' permission.
-
-```tsx
-import { Edit, TextInput } from 'react-admin';
-import { SimpleForm } from '@react-admin/ra-rbac';
-
-const authProvider = {
-    // ...
-    canAccess: async ({ action, record, resource }) =>
-        canAccessWithPermissions({
-            permissions: [
-                // 'delete' is missing
-                { action: ['list', 'edit'], resource: 'products' },
-                { action: 'write', resource: 'products.reference' },
-                { action: 'write', resource: 'products.width' },
-                { action: 'write', resource: 'products.height' },
-                // 'products.description' is missing
-                { action: 'write', resource: 'products.thumbnail' },
-                // 'products.image' is missing
-            ]
-            action,
-            record,
-            resource,
-        }),
-};
-
-const ProductEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="reference" />
-            <TextInput source="width" />
-            <TextInput source="height" />
-            {/* not displayed */}
-            <TextInput source="description" />
-            {/* not displayed */}
-            <TextInput source="image" />
-            <TextInput source="thumbnail" />
-            {/* no delete button */}
-        </SimpleForm>
-    </Edit>
 );
 ```
 

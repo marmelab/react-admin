@@ -512,28 +512,67 @@ const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
-## Displaying Inputs Based On Permissions
+## Access Control
 
-You can leverage [the `<CanAccess>` component](./CanAccess.md) to display inputs if the user has the required access rights.
+If you need to hide some inputs based on a set of permissions, use the `<SimpleForm>` component from the `@react-admin/ra-rbac` package.
 
-{% raw %}
-```jsx
-import { CanAccess, Create, SimpleForm, TextInput } from 'react-admin';
-
-export const UserCreate = () => {
-    return (
-        <Create redirect="show">
-            <SimpleForm>
-                <TextInput source="name" validate={[required()]} />
-                <CanAccess resource="user.role" action="write">
-                    <TextInput source="role" validate={[required()]} />
-                </CanAccess>
-            </SimpleForm>
-        </Create>
-    );
-}
+```diff
+-import { SimpleForm } from 'react-admin';
++import { SimpleForm } from '@react-admin/ra-rbac';
 ```
-{% endraw %}
+
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+- To see an input, the user must have the 'write' permission on the resource field:
+
+```jsx
+{ action: "write", resource: `${resource}.${source}` }
+```
+
+- The delete button only renders if the user has the 'delete' permission.
+
+Here is an example of how to use the `<SimpleForm>` component with RBAC:
+
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { SimpleForm } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                // 'delete' is missing
+                { action: ['list', 'edit'], resource: 'products' },
+                { action: 'write', resource: 'products.reference' },
+                { action: 'write', resource: 'products.width' },
+                { action: 'write', resource: 'products.height' },
+                // 'products.description' is missing
+                { action: 'write', resource: 'products.thumbnail' },
+                // 'products.image' is missing
+            ]
+            action,
+            record,
+            resource,
+        }),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="reference" />
+            <TextInput source="width" />
+            <TextInput source="height" />
+            {/* not displayed */}
+            <TextInput source="description" />
+            {/* not displayed */}
+            <TextInput source="image" />
+            <TextInput source="thumbnail" />
+            {/* no delete button */}
+        </SimpleForm>
+    </Edit>
+);
+```
 
 ## Configurable
 
