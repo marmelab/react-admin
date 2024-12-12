@@ -486,7 +486,7 @@ export const PostList = () => (
 // Users will only see the authorized columns when clicking on the export button.
 ```
 
-**Tip**: If you need a custom [`exporter`](https://marmelab.com/react-admin/List.html#exporter), you can use `useExporterWithAccessControl` to apply access control to the exported records:
+**Tip**: If you need a custom [`exporter`](./List.md#exporter), you can use `useExporterWithAccessControl` to apply access control to the exported records:
 
 ```tsx
 import { List, useExporterWithAccessControl } from '@ra-enterprise/ra-rbac';
@@ -521,7 +521,7 @@ export const PostList = () => <List actions={<ListActions />}>...</List>;
 
 ## `<ExportButton>`
 
-Replacement for react-admin's [`<ExportButton>`](https://marmelab.com/react-admin/Buttons.html#exportbutton) that checks users have the `'export'` permission before rendering. Use it if you want to provide your own `actions` to the `<List>`:
+Replacement for react-admin's [`<ExportButton>`](./Buttons.md#exportbutton) that checks users have the `'export'` permission before rendering. Use it if you want to provide your own `actions` to the `<List>`:
 
 ```tsx
 import { CreateButton, List, TopToolbar } from 'react-admin';
@@ -542,7 +542,7 @@ export const PostList = () => (
 );
 ```
 
-It accepts the following props in addition to the default [`<ExportButton>` props](https://marmelab.com/react-admin/Buttons.html#props-8):
+It accepts the following props in addition to the default [`<ExportButton>` props](./Buttons.md#props-8):
 
 | Prop                 | Required | Type              | Default    | Description                                                            |
 | -------------------- | -------- | ----------------- | ---------- | ---------------------------------------------------------------------- |
@@ -916,7 +916,7 @@ const ProductEdit = () => (
 
 ## `<CloneButton>`
 
-Replacement for react-admin's [`<CloneButton>`](https://marmelab.com/react-admin/Buttons.html#clonebutton) that checks users have the `'clone'` permission before rendering. Use it if you want to provide your own `actions` to the `<Edit>`:
+Replacement for react-admin's [`<CloneButton>`](./Buttons.md#clonebutton) that checks users have the `'clone'` permission before rendering. Use it if you want to provide your own `actions` to the `<Edit>`:
 
 ```tsx
 import { Edit, TopToolbar } from 'react-admin';
