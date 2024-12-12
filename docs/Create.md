@@ -701,9 +701,19 @@ export const BookCreate = () => {
 };
 ```
 
-## Security
+## Anonymous Access
 
 The `<Create>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
+
+```jsx
+const PostCreate = () => (
+    <Create disableAuthentication>
+        ...
+    </Create>
+);
+```
+
+## Access Control
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Create>`  will only render if the user has the "create" access to the related resource.
 

@@ -794,6 +794,87 @@ If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `op
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
 
+
+## Versioning
+
+By default, `<TabbedForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep track of the previous versions of the record, you can use the [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#tabbedformwithrevision) component instead.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/TabbedFormWithRevision.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+`<TabbedFormWithRevision>` adds a new "Revisions" tab listing the past revisions. There, users can browse past revisions, compare two revisions, and restore a past revision. 
+
+And when users submit the form, they see a dialog asking them for the reason of the change. After submitting this dialog, react-admin updates the main record and **creates a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change.
+
+`<TabbedFormWithRevision>` is a drop-in replacement for `<TabbedForm>`. It accepts the same props, and renders tabs the same way.
+
+```tsx
+import { Edit } from "react-admin";
+import { TabbedFormWithRevision } from "@react-admin/ra-history";
+
+const ProductEdit = () => (
+  <Edit>
+    <TabbedFormWithRevision>
+        <TabbedFormWithRevision.Tab label="Summary">
+            {/* ... */}
+        </TabbedFormWithRevision.Tab>
+        <TabbedFormWithRevision.Tab label="Preview">
+            {/* ... */}
+        </TabbedFormWithRevision.Tab>
+    </TabbedFormWithRevision>
+  </Edit>
+);
+```
+
+Check the [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#tabbedformwithrevision) documentation for more details.
+
+## Linking Two Inputs
+
+<iframe src="https://www.youtube-nocookie.com/embed/YkqjydtmfcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
+
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+
+```jsx
+import * as React from 'react';
+import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { useWatch } from 'react-hook-form';
+
+const countries = ['USA', 'UK', 'France'];
+const cities = {
+    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
+    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
+    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
+};
+const toChoices = items => items.map(item => ({ id: item, name: item }));
+
+const CityInput = () => {
+    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+            choices={country ? toChoices(cities[country]) : []}
+            source="cities"
+        />
+    );
+};
+
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <SelectInput source="country" choices={toChoices(countries)} />
+            <CityInput />
+        </SimpleForm>
+    </Edit>
+);
+
+export default OrderEdit;
+```
+
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
+
 ## Access Control
 
 If you need to hide some tabs based on a set of permissions, use the `<TabbedForm>` component from the `@react-admin/ra-rbac` package.
@@ -904,83 +985,3 @@ const ProductEdit = () => (
     </Edit>
 );
 ```
-
-## Versioning
-
-By default, `<TabbedForm>` updates the current record (via `dataProvider.update()`), so the previous version of the record is lost. If you want to keep track of the previous versions of the record, you can use the [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#tabbedformwithrevision) component instead.
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/TabbedFormWithRevision.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-`<TabbedFormWithRevision>` adds a new "Revisions" tab listing the past revisions. There, users can browse past revisions, compare two revisions, and restore a past revision. 
-
-And when users submit the form, they see a dialog asking them for the reason of the change. After submitting this dialog, react-admin updates the main record and **creates a new revision**. A revision represents the state of the record at a given point in time. It is immutable. A revision also records the date, author, and reason of the change.
-
-`<TabbedFormWithRevision>` is a drop-in replacement for `<TabbedForm>`. It accepts the same props, and renders tabs the same way.
-
-```tsx
-import { Edit } from "react-admin";
-import { TabbedFormWithRevision } from "@react-admin/ra-history";
-
-const ProductEdit = () => (
-  <Edit>
-    <TabbedFormWithRevision>
-        <TabbedFormWithRevision.Tab label="Summary">
-            {/* ... */}
-        </TabbedFormWithRevision.Tab>
-        <TabbedFormWithRevision.Tab label="Preview">
-            {/* ... */}
-        </TabbedFormWithRevision.Tab>
-    </TabbedFormWithRevision>
-  </Edit>
-);
-```
-
-Check the [`<TabbedFormWithRevision>`](https://react-admin-ee.marmelab.com/documentation/ra-history#tabbedformwithrevision) documentation for more details.
-
-## Linking Two Inputs
-
-<iframe src="https://www.youtube-nocookie.com/embed/YkqjydtmfcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
-
-Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
-
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
-
-```jsx
-import * as React from 'react';
-import { Edit, SimpleForm, SelectInput } from 'react-admin';
-import { useWatch } from 'react-hook-form';
-
-const countries = ['USA', 'UK', 'France'];
-const cities = {
-    USA: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'],
-    UK: ['London', 'Birmingham', 'Glasgow', 'Liverpool', 'Bristol'],
-    France: ['Paris', 'Marseille', 'Lyon', 'Toulouse', 'Nice'],
-};
-const toChoices = items => items.map(item => ({ id: item, name: item }));
-
-const CityInput = () => {
-    const country = useWatch({ name: 'country' });
-    return (
-        <SelectInput
-            choices={country ? toChoices(cities[country]) : []}
-            source="cities"
-        />
-    );
-};
-
-const OrderEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput />
-        </SimpleForm>
-    </Edit>
-);
-
-export default OrderEdit;
-```
-
-**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
