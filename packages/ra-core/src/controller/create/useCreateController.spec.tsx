@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react';
 import expect from 'expect';
 import React from 'react';
-import { Location, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import {
     CreateContextProvider,
@@ -26,50 +26,11 @@ import {
     useRegisterMutationMiddleware,
 } from '../saveContext';
 import { CreateController } from './CreateController';
-import { getRecordFromLocation } from './useCreateController';
 
 import { TestMemoryRouter } from '../../routing';
 import { CanAccess } from './useCreateController.security.stories';
 
 describe('useCreateController', () => {
-    describe('getRecordFromLocation', () => {
-        const location: Location = {
-            key: 'a_key',
-            pathname: '/foo',
-            search: '',
-            state: undefined,
-            hash: '',
-        };
-
-        it('should return location state record when set', () => {
-            expect(
-                getRecordFromLocation({
-                    ...location,
-                    state: { record: { foo: 'bar' } },
-                })
-            ).toEqual({ foo: 'bar' });
-        });
-
-        it('should return location search when set', () => {
-            expect(
-                getRecordFromLocation({
-                    ...location,
-                    search: '?source={"foo":"baz","array":["1","2"]}',
-                })
-            ).toEqual({ foo: 'baz', array: ['1', '2'] });
-        });
-
-        it('should return location state record when both state and search are set', () => {
-            expect(
-                getRecordFromLocation({
-                    ...location,
-                    state: { record: { foo: 'bar' } },
-                    search: '?foo=baz',
-                })
-            ).toEqual({ foo: 'bar' });
-        });
-    });
-
     const defaultProps = {
         hasCreate: true,
         hasEdit: true,
