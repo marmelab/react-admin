@@ -466,32 +466,34 @@ const MyReactAdmin = () => (
 
 ![MenuLive](./img/MenuLive.png)
 
-## Displaying Menu Items Based On Permissions
+## Access Control
 
-If you `authProvider` implements [the `canAccess` method](./Permissions.md#authprovidercanaccess), the `<Menu>` component will call it for each resource with the follwing parameters:
-- `resource`: the resource name
-- `action`: `list`
+If you `authProvider` supports [Access Control](./Permissions.md#access-control), the `<Menu>` component will use it to only render the `<Menu.ResourceItem>` for which the user has the `list` permission.
 
-However, if you have a custom menu and want to show items based on the user permissions, you can leverage [the `<CanAccess>` component](./CanAccess.md):
+If you want to add access control to custom menu items, use the `<Menu>` component from the `@react-admin/ra-rbac` package.
 
-{% raw %}
+```diff
+-import { Menu } from 'react-admin';
++import { Menu } from '@react-admin/ra-rbac';
+```
+
+This Menu component only display a `<Menu.Item>` if the user has access to the specified `action` and `resource`.
+
 ```tsx
-// in src/MyMenu.js
-import { CanAccess, Menu } from 'react-admin';
-import LabelIcon from '@mui/icons-material/Label';
+import { Menu } from '@react-admin/ra-rbac';
 
 export const MyMenu = () => (
     <Menu>
-        <Menu.DashboardItem />
-        <Menu.ResourceItem name="posts" />
-        <Menu.ResourceItem name="comments" />
-        <Menu.ResourceItem name="users" />
-        <CanAccess resource="miscellaneous" action="custom-action">
-            <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />} />
-        </CanAccess>
+        <Menu.ResourceItems />
+        {/* This menu item will render only if the user has 'list' access to the 'products' resource */}
+        <Menu.Item
+            to="/products"
+            primaryText="Products"
+            resource="products"
+            action="list"
+        />
+        {/* This menu item will render for all users */}
+        <Menu.Item to="/preferences" primaryText="Preferences" />
     </Menu>
 );
 ```
-{% endraw %}
-
-**Tip**: the `resource` and `action` parameter accept any string value.

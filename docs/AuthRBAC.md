@@ -361,7 +361,7 @@ const authProvider = {
 Ra-rbac provides alternative components to react-admin base components. These alternative components include role-based access control and are as follows:
 
 - Main
-    - [`<Menu>`](#menu)
+    - [`<Menu>`](./Menu.md#access-control)
 - List
     - [`<List>`](./List.md#access-control)
     - [`<Datagrid>`](./Datagrid.md#access-control)
@@ -410,30 +410,6 @@ It accepts the following props in addition to the default [`<ExportButton>` prop
 { action: "read", resource: `${resource}.${source}` }.
 // or
 { action: "read", resource: `${resource}.*` }.
-```
-
-## `<Menu>`
-
-If you want to add custom pages to the menu, you can use `ra-rbac`'s `<Menu>` component. It will only display the menu item if the user has access to the specified action and resource.
-
-```tsx
-import { Menu } from '@react-admin/ra-rbac';
-
-export const MyMenu = () => (
-    <Menu>
-        {/* Resource menu items already have access control built-in */}
-        <Menu.ResourceItems />
-        {/* For custom menu items, you can specify a resource and action */}
-        <Menu.Item
-            to="/products"
-            primaryText="Products"
-            resource="products"
-            action="list"
-        />
-        {/* this menu item will render for all users */}
-        <Menu.Item to="/preferences" primaryText="Preferences" />
-    </Menu>
-);
 ```
 
 ## `<TabbedShowLayout>`
