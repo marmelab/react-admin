@@ -52,6 +52,7 @@ export const useCreateController = <
 ): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
+        record,
         redirect: redirectTo,
         transform,
         mutationOptions = {},
@@ -194,6 +195,7 @@ export const useCreateController = <
         saving,
         defaultTitle,
         save,
+        record,
         resource,
         redirect: finalRedirectTo,
         registerMutationMiddleware,
