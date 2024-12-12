@@ -104,15 +104,15 @@ React-admin already does page-level access control with actions like "list", "sh
 
 | Action   | Description                      | Used In                                                                                                         |
 | -------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `list`   | Allow to access the List page    | [`<List>`](#list), [`<ListButton>`](./Buttons.md#listbutton), [`<Menu.ResourceItem>`](#menu) |
-| `show`   | Allow to access the Show page    | [`<Show>`](./Show.md), [`<ShowButton>`](./Buttons.md#showbutton), [`<Datagrid>`](#datagrid), [`<Edit>`](./Edit.md) |
-| `create` | Allow to access the Create page  | [`<Create>`](./Create.md), [`<CreateButton>`](./Buttons.md#createbutton), [`<List>`](#list) |
-| `edit`   | Allow to access the Edit page    | [`<Edit>`](./Edit.md), [`<EditButton>`](./Buttons.md#editbutton), [`<Datagrid>`](#datagrid), [`<Show>`](./Show.md) |
-| `delete` | Allow to delete data             | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<Datagrid>`](#datagrid), [`<SimpleForm>`](#simpleform), [`<TabbedForm>`](#tabform) |
-| `export` | Allow to export data             | [`<ExportButton>`](#exportbutton), [`<List>`](#list)                                       |
+| `list`   | Allow to access the List page    | [`<List>`](./List.md#access-control), [`<ListButton>`](./Buttons.md#listbutton), [`<Menu.ResourceItem>`](./Menu.md#access-control) |
+| `show`   | Allow to access the Show page    | [`<Show>`](./Show.md), [`<ShowButton>`](./Buttons.md#showbutton), [`<Datagrid>`](./Datagrid.md#access-control), [`<Edit>`](./Edit.md) |
+| `create` | Allow to access the Create page  | [`<Create>`](./Create.md), [`<CreateButton>`](./Buttons.md#createbutton), [`<List>`](./List.md#access-control) |
+| `edit`   | Allow to access the Edit page    | [`<Edit>`](./Edit.md), [`<EditButton>`](./Buttons.md#editbutton), [`<Datagrid>`](./Datagrid.md#access-control), [`<Show>`](./Show.md) |
+| `delete` | Allow to delete data             | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](#tabform) |
+| `export` | Allow to export data             | [`<ExportButton>`](#exportbutton), [`<List>`](./List.md#access-control)                                       |
 | `clone`  | Allow to clone a record          | [`<CloneButton>`](#clonebutton), [`<Edit>`](./Edit.md)                                   |
-| `read`   | Allow to view a field (or a tab) | [`<Datagrid>`](#datagrid), [`<SimpleShowLayout>`](#simpleshowlayout), [`<TabbedShowLayout>`](#tabbedshowlayout) |
-| `write`  | Allow to edit a field (or a tab) | [`<SimpleForm>`](#simpleform), [`<TabbedForm>`](#tabbedform), [`<WizardForm>`](./WizardForm.md#enableaccesscontrol), [`<LongForm>`](./LongForm.md#enableaccesscontrol), [`<AccordionForm>`](./AccordionForm.md#enableaccesscontrol) |
+| `read`   | Allow to view a field (or a tab) | [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control), [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control) |
+| `write`  | Allow to edit a field (or a tab) | [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](./TabbedForm.md#access-control), [`<WizardForm>`](./WizardForm.md#enableaccesscontrol), [`<LongForm>`](./LongForm.md#enableaccesscontrol), [`<AccordionForm>`](./AccordionForm.md#enableaccesscontrol) |
 
 **Tip:** Be sure not to confuse "show" and "read", or "edit" and "write", as they are not the same. The first operate at the page level, the second at the field level. A good mnemonic is to realize "show" and "edit" are named the same as the react-admin page they allow to control: the Show and Edit pages.
 
@@ -192,10 +192,10 @@ const perm4 = { action: 'write', resource: 'users.username', record: { id: '123'
 
 Only record-level components can perform record-level permissions checks. Below is the list of components that support them:
 
-- [`<SimpleShowLayout>`](#simpleshowlayout)
-- [`<TabbedShowLayout>`](#tabbedshowlayout)
-- [`<SimpleForm>`](#simpleform)
-- [`<TabbedForm>`](#tabbedform)
+- [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control)
+- [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control)
+- [`<SimpleForm>`](./SimpleForm.md#access-control)
+- [`<TabbedForm>`](./TabbedForm.md#access-control)
 
 When you restrict permissions to a specific set of records, components that do not support record-level permissions (such as List Components) will ignore the record criteria and perform their checks at the resource-level only.
 
@@ -370,8 +370,7 @@ Ra-rbac provides alternative components to react-admin base components. These al
     - [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control)
 - Form
     - [`<SimpleForm>`](./SimpleForm.md#access-control)
-    - [`<TabbedForm>`](#tabbedform)
-    - [`<FormTab>`](#formtab)
+    - [`<TabbedForm>`](./TabbedForm.md#access-control)
 
 ## `<ExportButton>`
 
@@ -409,121 +408,6 @@ It accepts the following props in addition to the default [`<ExportButton>` prop
 { action: "read", resource: `${resource}.${source}` }.
 // or
 { action: "read", resource: `${resource}.*` }.
-```
-
-
-## `<TabbedForm>`
-
-Replacement for react-admin's `<TabbedForm>` that adds RBAC control to the delete button (conditioned by the `'delete'` action) and only renders a tab if the user has the right permissions.
-
-Use in conjunction with [`<TabbedForm.Tab>`](#tabbedformtab) and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
-
-**Tip:** [`<TabbedForm.Tab>`](#tabbedformtab) also allows to only render the child inputs for which the user has the 'write' permissions.
-
-```jsx
-import { Edit, TextInput } from 'react-admin';
-import { TabbedForm } from '@react-admin/ra-rbac';
-
-const authProvider = {
-    // ...
-    canAccess: async ({ action, record, resource }) =>
-        canAccessWithPermissions({
-            permissions: [
-                // action 'delete' is missing
-                { action: ['list', 'edit'], resource: 'products' },
-                { action: 'write', resource: 'products.reference' },
-                { action: 'write', resource: 'products.width' },
-                { action: 'write', resource: 'products.height' },
-                { action: 'write', resource: 'products.thumbnail' },
-                { action: 'write', resource: 'products.tab.description' },
-                // tab 'stock' is missing
-                { action: 'write', resource: 'products.tab.images' },
-            ],
-            action,
-            record,
-            resource,
-        }),
-};
-
-const ProductEdit = () => (
-    <Edit>
-        <TabbedForm>
-            <TabbedForm.Tab label="Description" name="description">
-                <TextInput source="reference" />
-                <TextInput source="width" />
-                <TextInput source="height" />
-                <TextInput source="description" />
-            </TabbedForm.Tab>
-            {/* the "Stock" tab is not displayed */}
-            <TabbedForm.Tab label="Stock" name="stock">
-                <TextInput source="stock" />
-            </TabbedForm.Tab>
-            <TabbedForm.Tab label="Images" name="images">
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </TabbedForm.Tab>
-            {/* the "Delete" button is not displayed */}
-        </TabbedForm>
-    </Edit>
-);
-```
-
-## `<TabbedForm.Tab>`
-
-Replacement for react-admin's `<TabbedForm.Tab>` that only renders a tab and its content if the user has the right permissions.
-
-Add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
-
-`<TabbedForm.Tab>` also only renders the child inputs for which the user has the 'write' permissions.
-
-```tsx
-import { Edit, TextInput } from 'react-admin';
-import { TabbedForm } from '@react-admin/ra-rbac';
-
-const authProvider = {
-    // ...
-    canAccess: async ({ action, record, resource }) =>
-        canAccessWithPermissions({
-            permissions: [
-                { action: ['list', 'edit'], resource: 'products' },
-                { action: 'write', resource: 'products.reference' },
-                { action: 'write', resource: 'products.width' },
-                { action: 'write', resource: 'products.height' },
-                // 'products.description' is missing
-                { action: 'write', resource: 'products.thumbnail' },
-                // 'products.image' is missing
-                { action: 'write', resource: 'products.tab.description' },
-                // 'products.tab.stock' is missing
-                { action: 'write', resource: 'products.tab.images' },
-            ],
-            action,
-            record,
-            resource,
-        })
-};
-
-const ProductEdit = () => (
-    <Edit>
-        <TabbedForm>
-            <TabbedForm.Tab label="Description" name="description">
-                <TextInput source="reference" />
-                <TextInput source="width" />
-                <TextInput source="height" />
-                {/* Input Description is not displayed */}
-                <TextInput source="description" />
-            </TabbedForm.Tab>
-            {/* Input Stock is not displayed */}
-            <TabbedForm.Tab label="Stock" name="stock">
-                <TextInput source="stock" />
-            </TabbedForm.Tab>
-            <TabbedForm.Tab label="Images" name="images">
-                {/* Input Image is not displayed */}
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </TabbedForm.Tab>
-        </TabbedForm>
-    </Edit>
-);
 ```
 
 ## `<CloneButton>`

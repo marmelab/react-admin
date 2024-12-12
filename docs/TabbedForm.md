@@ -794,114 +794,116 @@ If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `op
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
 
-## Displaying a Tab Based On Permissions
+## Access Control
 
-You can leverage [the `useCanAccess` hook](./useCanAccess.md) to display tabs if the user has the required access rights.
+If you need to hide some tabs based on a set of permissions, use the `<TabbedForm>` component from the `@react-admin/ra-rbac` package.
 
-{% raw %}
-```jsx
-import { Edit, FormTab, Loading, TabbedForm, TextInput, useCanAccess } from 'react-admin';
-import { Alert } from '@mui/material';
-
-export const UserCreate = () => {
-    const { canAccess, isPending, error } = useCanAccess({
-        resource: 'users.tabs.security',
-        action: 'write',
-    });
-    if (isPending) return <Loading />;
-    if (error) {
-        return (
-            <Alert severity="error" sx={{ px: 2.5, py: 1, mt: 1, width: '100%' }}>
-                An error occurred while checking your permissions
-            </Alert>
-        );
-    }
-
-    return (
-        <Edit>
-            <TabbedForm>
-                <TabbedForm.Tab label="Summary">
-                    ...
-                </TabbedForm.Tab>
-                {canAccess &&
-                    <TabbedForm.Tab label="Security">
-                        ...
-                    </TabbedForm.Tab>
-                }
-            </TabbedForm>
-        </Edit>
-    );
-}
+```diff
+-import { TabbedForm } from 'react-admin';
++import { TabbedForm } from '@react-admin/ra-rbac';
 ```
-{% endraw %}
 
-If you need to check access rights for multiple tabs, leverage [the `useCanAccessResources` hook](./useCanAccess.md#multiple-resources).
+Use in conjunction with [`<TabbedForm.Tab>`](#tabbedformtab) and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'write' permissions for.
 
-{% raw %}
 ```jsx
-import { Edit, Loading, TabbedForm, TextInput, useCanAccessResources } from 'react-admin';
-import { Alert } from '@mui/material';
+import { Edit, TextInput } from 'react-admin';
+import { TabbedForm } from '@react-admin/ra-rbac';
 
-export const UserEdit = () => {
-    const { canAccess, isPending, error } = useCanAccessResources({
-        resources: ['users.tabs.summary', 'users.tabs.security'],
-        action: 'write',
-    });
-    if (isPending) return <Loading />;
-    if (error) {
-        return (
-            <Alert severity="error" sx={{ px: 2.5, py: 1, mt: 1, width: '100%' }}>
-                An error occurred while checking your permissions
-            </Alert>
-        );
-    }
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                // action 'delete' is missing
+                { action: ['list', 'edit'], resource: 'products' },
+                { action: 'write', resource: 'products.reference' },
+                { action: 'write', resource: 'products.width' },
+                { action: 'write', resource: 'products.height' },
+                { action: 'write', resource: 'products.thumbnail' },
+                { action: 'write', resource: 'products.tab.description' },
+                // tab 'stock' is missing
+                { action: 'write', resource: 'products.tab.images' },
+            ],
+            action,
+            record,
+            resource,
+        }),
+};
 
-    return (
-        <Edit>
-            <TabbedForm>
-                {canAccess['users.tabs.summary'] &&
-                <TabbedForm.Tab label="Summary">
-                    ...
-                </TabbedForm.Tab>}
-                {canAccess['users.tabs.security'] &&
-                    <TabbedForm.Tab label="Security">
-                        ...
-                    </TabbedForm.Tab>
-                }
-            </TabbedForm>
-        </Edit>
-    );
-}
+const ProductEdit = () => (
+    <Edit>
+        <TabbedForm>
+            <TabbedForm.Tab label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                <TextInput source="description" />
+            </TabbedForm.Tab>
+            {/* the "Stock" tab is not displayed */}
+            <TabbedForm.Tab label="Stock" name="stock">
+                <TextInput source="stock" />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Images" name="images">
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </TabbedForm.Tab>
+            {/* the "Delete" button is not displayed */}
+        </TabbedForm>
+    </Edit>
+);
 ```
-{% endraw %}
 
-## Displaying Inputs Based On Permissions
+[`<TabbedForm.Tab>`](#tabbedformtab) also renders only the child inputs for which the user has the 'write' permissions.
 
-You can leverage [the `<CanAccess>` component](./CanAccess.md) to display inputs if the user has the required access rights.
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { TabbedForm } from '@react-admin/ra-rbac';
 
-{% raw %}
-```jsx
-import { CanAccess, Edit, TabbedForm, TextInput } from 'react-admin';
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: ['list', 'edit'], resource: 'products' },
+                { action: 'write', resource: 'products.reference' },
+                { action: 'write', resource: 'products.width' },
+                { action: 'write', resource: 'products.height' },
+                // 'products.description' is missing
+                { action: 'write', resource: 'products.thumbnail' },
+                // 'products.image' is missing
+                { action: 'write', resource: 'products.tab.description' },
+                // 'products.tab.stock' is missing
+                { action: 'write', resource: 'products.tab.images' },
+            ],
+            action,
+            record,
+            resource,
+        })
+};
 
-export const UserEdit = () => {
-    return (
-        <Edit>
-            <TabbedForm>
-                <TabbedForm.Tab label="Summary">
-                    <TextInput source="name" validate={[required()]} />
-                    <CanAccess resource="user.role" action="write">
-                        <TextInput source="role" validate={[required()]} />
-                    </CanAccess>
-                </TabbedForm.Tab>}
-                    <TabbedForm.Tab label="Security">
-                        ...
-                    </TabbedForm.Tab>
-            </TabbedForm>
-        </Edit>
-    );
-}
+const ProductEdit = () => (
+    <Edit>
+        <TabbedForm>
+            <TabbedForm.Tab label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                {/* Input Description is not displayed */}
+                <TextInput source="description" />
+            </TabbedForm.Tab>
+            {/* Input Stock is not displayed */}
+            <TabbedForm.Tab label="Stock" name="stock">
+                <TextInput source="stock" />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Images" name="images">
+                {/* Input Image is not displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Edit>
+);
 ```
-{% endraw %}
 
 ## Versioning
 
