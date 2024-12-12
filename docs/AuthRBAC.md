@@ -5,15 +5,21 @@ title: "RBAC"
 
 # Role-Based Access Control (RBAC)
 
-React-admin Enterprise Edition contains [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac)<img class="icon" src="./img/premium.svg" />, which adds fine-grained permissions to your admin. This module extends the `authProvider` and adds replacement for many react-admin components that use these permissions.
+Building up on react-admin's [Access Control features](./Permissions.md#access-control), react-admin RBAC provides an implementation for `authProvider.canAccess()` to manage roles and fine-grained permissions, and exports alternative react-admin components that use these permissions.
 
 <video controls="controls" style="max-width: 96%">
     <source src="./img/ra-rbac.mp4" type="video/mp4" />
 </video>
 
-Test it live in the [Enterprise Edition Storybook](https://storybook.ra-enterprise.marmelab.com/?path=/story/ra-rbac-full-app--full-app).
+Test it live in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-rbac-full-app--full-app).
 
-You can define permissions for pages, fields, buttons, etc. Roles and permissions are managed by the `authProvider`, which means you can use any data source you want (including an ActiveDirectory server).
+The RBAC features are part of [ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> package.
+
+## At a Glance
+
+RBAC relies on an array of roles and permissions to determine what a user can do in a React-admin application. You can define permissions for pages, fields, buttons, etc. These permissions use a serialization format that is easy to understand and to maintain. You can store them in a database, in a JSON file, or in your code.
+
+Roles and permissions are used by `authProvider.canAccess()` to provide fine-grained access control to the entire app.
 
 The above demo uses the following set of permissions:
 
@@ -62,17 +68,19 @@ const roles = {
 
 ## Installation
 
+First, install the `@react-admin/ra-rbac` package:
+
 ```
 npm install --save @react-admin/ra-rbac
 # or
 yarn add @react-admin/ra-rbac
 ```
 
-Make sure you [enable auth features](https://marmelab.com/react-admin/Authentication.html#enabling-auth-features) by setting an `<Admin authProvider>`, and [disable anonymous access](https://marmelab.com/react-admin/Authentication.html#disabling-anonymous-access) by adding the `<Admin requireAuth>` prop. This will ensure that react-admin waits for the `authProvider` response before rendering anything.
-
 **Tip**: ra-rbac is part of the [React-Admin Enterprise Edition](https://react-admin-ee.marmelab.com/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
 
-## Vocabulary
+Make sure you [enable auth features](https://marmelab.com/react-admin/Authentication.html#enabling-auth-features) by setting an `<Admin authProvider>`, and [disable anonymous access](https://marmelab.com/react-admin/Authentication.html#disabling-anonymous-access) by adding the `<Admin requireAuth>` prop. This will ensure that react-admin waits for the `authProvider` response before rendering anything.
+
+## Concepts
 
 ### Permission
 
@@ -87,6 +95,28 @@ Here are a few examples of permissions:
 - `{ action: ["write"], resource: "game.score", record: { "id": "123" } }`: allow write action on the score of the game with id 123
 
 **Tip**: When the `record` field is omitted, the permission is valid for all records.
+
+### Action
+
+An _action_ is a string, usually a verb, that represents an operation. Examples of actions include "read", "create", "edit", "delete", or "export".
+
+React-admin already does page-level access control with actions like "list", "show", "edit", "create", and "delete". RBAC checks additional actions in its components:
+
+| Action   | Description                      | Used In                                                                                                         |
+| -------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `list`   | Allow to access the List page    | [`<List>`](#list), [`<ListButton>`](./Buttons.md#listbutton), [`<Menu.ResourceItem>`](#menu) |
+| `show`   | Allow to access the Show page    | [`<Show>`](./Show.md), [`<ShowButton>`](./Buttons.md#showbutton), [`<Datagrid>`](#datagrid), [`<Edit>`](./Edit.md) |
+| `create` | Allow to access the Create page  | [`<Create>`](./Create.md), [`<CreateButton>`](./Buttons.md#createbutton), [`<List>`](#list) |
+| `edit`   | Allow to access the Edit page    | [`<Edit>`](./Edit.md), [`<EditButton>`](./Buttons.md#editbutton), [`<Datagrid>`](#datagrid), [`<Show>`](./Show.md) |
+| `delete` | Allow to delete data             | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<Datagrid>`](#datagrid), [`<SimpleForm>`](#simpleform), [`<TabbedForm>`](#tabform) |
+| `export` | Allow to export data             | [`<ExportButton>`](#exportbutton), [`<List>`](#list)                                       |
+| `clone`  | Allow to clone a record          | [`<CloneButton>`](#clonebutton), [`<Edit>`](./Edit.md)                                   |
+| `read`   | Allow to view a field (or a tab) | [`<Datagrid>`](#datagrid), [`<SimpleShowLayout>`](#simpleshowlayout), [`<TabbedShowLayout>`](#tabbedshowlayout) |
+| `write`  | Allow to edit a field (or a tab) | [`<SimpleForm>`](#simpleform), [`<TabbedForm>`](#tabbedform), [`<WizardForm>`](./WizardForm.md#enableaccesscontrol), [`<LongForm>`](./LongForm.md#enableaccesscontrol), [`<AccordionForm>`](./AccordionForm.md#enableaccesscontrol) |
+
+**Tip:** Be sure not to confuse "show" and "read", or "edit" and "write", as they are not the same. The first operate at the page level, the second at the field level. A good mnemonic is to realize "show" and "edit" are named the same as the react-admin page they allow to control: the Show and Edit pages.
+
+You can also add your own actions, and use them in your own components using [`useCanAccess`](./useCanAccess.md) or [`<CanAccess>`](./CanAccess.md).
 
 ### Role
 
@@ -134,37 +164,9 @@ const corrector123Role = [
 
 **Tip**: The _order_ of permissions isn't significant. As soon as at least one permission grants access to an action on a resource, ra-rbac grant access to it - unless there is an [explicit deny](#explicit-deny).
 
-The RBAC system relies on *permissions* only. It's the `authProvider`'s responsibility to map roles to permissions. See the [`authProvider` Methods](#authprovider-methods) section for details.
+### Pessimistic Strategy
 
-### Action
-
-An _action_ is a string, usually a verb, that represents an operation. Examples of actions include "read", "create", "edit", "delete", or "export".
-
-Ra-rbac defines its own actions that you can use with ra-rbac components, but you can also define your own actions, and implement them in your own components using [`useCanAccess`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#usecanaccess), [`canAccess`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#canaccess) or [`<IfCanAccess>`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess).
-
-Ra-rbac's built-in actions operate at different levels:
-
-- **Page:** controls visibility of a page like the Edit page
-- **Field:** controls visibility of a specific field, for example in a form
-- **Action:** controls permission to perform global actions, like exporting data 
-
-Here are all the actions supported by ra-rbac:
-
-| Action   | Level  | Description                      | Used In                                                                                                         |
-| -------- | ------ | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `list`   | Page   | Allow to access the List page    | [`<Resource>`](#resource), [`<Menu>`](#menu)                                                                    |
-| `show`   | Page   | Allow to access the Show page    | [`<Resource>`](#resource), [`<Datagrid>`](#datagrid), [`<Edit>`](#edit), [`<Show>`](#show)                      |
-| `create` | Page   | Allow to access the Create page  | [`<Resource>`](#resource), [`<List>`](#list)                                                                    |
-| `edit`   | Page   | Allow to access the Edit page    | [`<Resource>`](#resource), [`<Datagrid>`](#datagrid), [`<Edit>`](#edit), [`<Show>`](#show)                      |
-| `export` | Action | Allow to export data             | [`<List>`](#list)                                                                                               |
-| `delete` | Action | Allow to delete data             | [`<Datagrid>`](#datagrid), [`<SimpleForm>`](#simpleform), [`<TabbedForm>`](#tabform)                            |
-| `clone`  | Action | Allow to clone a record          | [`<Edit>`](#edit)                                                                                               |
-| `read`   | Field  | Allow to view a field (or a tab) | [`<Datagrid>`](#datagrid), [`<SimpleShowLayout>`](#simpleshowlayout), [`<TabbedShowLayout>`](#tabbedshowlayout) |
-| `write`  | Field  | Allow to edit a field (or a tab) | [`<SimpleForm>`](#simpleform), [`<TabbedForm>`](#tabbedform)                                                    |
-
-**Tip:** Be sure not to confuse "show" and "read", or "edit" and "write", as they are not the same. The first operate at the page level, the second at the field level. A good mnemonic is to realize "show" and "edit" are named the same as the react-admin page they allow to control: the Show and Edit pages.
-
-## Concepts
+RBAC components treat permissions in a pessimistic way: while permissions are loading, react-admin doesn't render the components that require permissions, assuming that these components are restricted by default. It's only when the `authProvider.canAccess()` has resolved that RBAC components render.
 
 ### Principle Of Least Privilege
 
@@ -181,13 +183,21 @@ By default, a permission applies to all records of a resource.
 A permission can be restricted to a specific record or a specific set of records. Setting the `record` field in a permission restricts the application of that permissions to records matching that criteria (using [lodash `isMatch`](https://lodash.com/docs/4.17.15#isMatch)).
 
 ```jsx
-// can read all users, without record restriction
-const perm1 = { action: "read", resource: "users" };
-// can write only user of id 123
-const perm2 = { action: "write", resource: "users", record: { "id": "123" } };
-// can access only comments by user of id 123
-const perm3 = { action: "*", resource: "comments", record: { "user_id": "123" } };
+// can view all users, without record restriction
+const perm1 = { action: ['list', 'show'], resource: 'users' };
+const perm2 = { action: 'read', resource: 'users.*' };
+// can only edit field 'username' for user of id 123
+const perm4 = { action: 'write', resource: 'users.username', record: { id: '123' } };
 ```
+
+Only record-level components can perform record-level permissions checks. Below is the list of components that support them:
+
+- [`<SimpleShowLayout>`](#simpleshowlayout)
+- [`<TabbedShowLayout>`](#tabbedshowlayout)
+- [`<SimpleForm>`](#simpleform)
+- [`<TabbedForm>`](#tabbedform)
+
+When you restrict permissions to a specific set of records, components that do not support record-level permissions (such as List Components) will ignore the record criteria and perform their checks at the resource-level only.
 
 ### Explicit Deny
 
