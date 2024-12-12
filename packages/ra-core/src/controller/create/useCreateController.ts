@@ -21,7 +21,6 @@ import {
     useResourceDefinition,
     useGetResourceLabel,
 } from '../../core';
-import { useRecordFromLocation } from '../../form';
 
 /**
  * Prepare data for the Create view
@@ -53,7 +52,6 @@ export const useCreateController = <
 ): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
-        record,
         redirect: redirectTo,
         transform,
         mutationOptions = {},
@@ -80,7 +78,6 @@ export const useCreateController = <
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
-    const recordToUse = useRecordFromLocation({ record });
     const { onSuccess, onError, meta, ...otherMutationOptions } =
         mutationOptions;
     const {
@@ -198,7 +195,6 @@ export const useCreateController = <
         defaultTitle,
         save,
         resource,
-        record: recordToUse,
         redirect: finalRedirectTo,
         registerMutationMiddleware,
         unregisterMutationMiddleware,

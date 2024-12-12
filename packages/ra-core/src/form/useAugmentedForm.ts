@@ -8,7 +8,6 @@ import {
 
 import { RaRecord } from '../types';
 import { SaveHandler, useSaveContext } from '../controller';
-import { useRecordContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
 import {
     getSimpleValidationResolver,
@@ -17,6 +16,7 @@ import {
 import { setSubmissionErrors } from './validation/setSubmissionErrors';
 import { useNotifyIsFormInvalid } from './validation/useNotifyIsFormInvalid';
 import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
+import { useRecordFromLocation } from './useRecordFromLocation';
 
 /**
  * Wrapper around react-hook-form's useForm
@@ -44,8 +44,8 @@ export const useAugmentedForm = <RecordType = any>(
         disableInvalidFormNotification,
         ...rest
     } = props;
-    const record = useRecordContext(props);
     const saveContext = useSaveContext();
+    const record = useRecordFromLocation(props);
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
