@@ -673,6 +673,22 @@ const CommentList = () => (
 
 **Tip**: You may also remove the `<ExportButton>` by passing `false` to the `exporter` prop: `exporter={false}`
 
+**Tip**: If you need to use [RBAC](./AuthRBAC.md) to hide some columns based on user permissions, you can use `useExporterWithAccessControl` to apply access control to the exported records:
+
+```tsx
+import { List, useExporterWithAccessControl } from '@ra-enterprise/ra-rbac';
+import { myExporter } from './myExporter';
+
+export const PostList = () => {
+    const exporter = useExporterWithAccessControl({ exporter: myExporter })
+    return (
+        <List exporter={exporter}>
+            {/*...*/}
+        </List>
+    );
+}
+```
+
 **Tip**: Looking for an `<ImportButton>`? React-admin doesn't provide this feature, but the community has an excellent third-party module for CSV import: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
 
 ## `filters`: Filter Inputs
@@ -1354,13 +1370,25 @@ const ProductList = () => {
 
 `useListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page. Check [the `useListController`hook documentation](./useListController.md) for details.
 
-## Security
+## Anonymous Access
 
 The `<List>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<List>`  will only render if the user has the "list" access to the related resource.
+```jsx
+import { List } from 'react-admin';
 
-For instance, for the `<PostList>` page below:
+const BoolkList = () => (
+    <List disableAuthentication>
+        ...
+    </List>
+);
+```
+
+## Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<List>`  will only render if the user can access the resource with the "list" action.
+
+For instance, to render the `<PostList>` page below:
 
 ```tsx
 import { List, Datagrid, TextField } from 'react-admin';
@@ -1386,3 +1414,72 @@ const PostList = () => (
 Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
 
 **Note**: Access control is disabled when you use [the `disableAuthentication` prop](#disableauthentication).
+
+For finer access control of the list action buttons, use the `<List>` component from the `@react-admin/ra-rbac` package.
+
+```diff
+-import { List } from 'react-admin';
++import { List } from '@react-admin/ra-rbac';
+```
+
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+-   Users must have the `'create'` permission on the resource to see the `<CreateButton>`.
+-   Users must have the `'export'` permission on the resource to see the `<ExportButton>`.
+-   Users must have the `'read'` permission on a resource column to see it in the export:
+
+```jsx
+{ action: "read", resource: `${resource}.${source}` }.
+// 
+{ action: "read", resource: `${resource}.*` }.
+```
+
+Here is an example of `<List>` with RBAC:
+
+```tsx
+import { List } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    canAccess: async () =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: 'list', resource: 'products' },
+                { action: 'export', resource: 'products' },
+                // actions 'create' and 'delete' are missing
+                { action: 'read', resource: 'products.name' },
+                { action: 'read', resource: 'products.description' },
+                { action: 'read', resource: 'products.price' },
+                { action: 'read', resource: 'products.category' },
+                // resource 'products.stock' is missing
+            ],
+            action,
+            resource,
+            record
+        }),
+};
+
+export const PostList = () => (
+    <List exporter={exporter}>
+        {/*...*/}
+    </List>
+);
+// Users will see the Export action on top of the list, but not the Create action.
+// Users will only see the authorized columns when clicking on the export button.
+```
+
+**Tip**: If you need a custom [`exporter`](#exporter), you can use `useExporterWithAccessControl` to apply access control to the exported records:
+
+```tsx
+import { List, useExporterWithAccessControl } from '@ra-enterprise/ra-rbac';
+import { myExporter } from './myExporter';
+
+export const PostList = () => {
+    const exporter = useExporterWithAccessControl({ exporter: myExporter })
+    return (
+        <List exporter={exporter}>
+            {/*...*/}
+        </List>
+    );
+}
+```
