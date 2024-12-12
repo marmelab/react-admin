@@ -364,17 +364,15 @@ Ra-rbac provides alternative components to react-admin base components. These al
     - [`<Menu>`](#menu)
 - List
     - [`<List>`](./List.md#access-control)
-    - [`<ListActions>`](#listactions)
     - [`<Datagrid>`](./Datagrid.md#access-control)
 - Detail
-    - [`<SimpleShowLayout>`](#simpleshowlayout)
+    - [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control)
     - [`<Tab>`](#tab)
     - [`<TabbedShowLayout>`](#tab)
 - Form
     - [`<SimpleForm>`](#simpleform)
     - [`<TabbedForm>`](#tabbedform)
     - [`<FormTab>`](#formtab)
-
 
 ## `<ExportButton>`
 
@@ -488,60 +486,6 @@ const ProductEdit = () => (
             {/* no delete button */}
         </SimpleForm>
     </Edit>
-);
-```
-
-## `<SimpleShowLayout>`
-
-Alternative to react-admin's `<SimpleShowLayout>` that adds RBAC control to fields
-
-To see a column, the user must have the permission to read the resource column:
-
-```jsx
-{ action: "read", resource: `${resource}.${source}` }
-// Or
-{ action: "read", resource: `${resource}.*` }
-```
-
-```tsx
-import { SimpleShowLayout } from '@react-admin/ra-rbac';
-
-const authProvider = {
-    // ...
-    canAccess: async ({ action, record, resource }) =>
-        canAccessWithPermissions({
-            permissions: [
-                { action: ['list', 'show'], resource: 'products' },
-                { action: 'read', resource: 'products.reference' },
-                { action: 'read', resource: 'products.width' },
-                { action: 'read', resource: 'products.height' },
-                // 'products.description' is missing
-                // 'products.image' is missing
-                { action: 'read', resource: 'products.thumbnail' },
-                // 'products.stock' is missing
-            ],
-            action,
-            record,
-            resource,
-        }),
-};
-
-const ProductShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            {/* <-- RBAC SimpleShowLayout */}
-            <TextField source="reference" />
-            <TextField source="width" />
-            <TextField source="height" />
-            {/* not displayed */}
-            <TextField source="description" />
-            {/* not displayed */}
-            <TextField source="image" />
-            <TextField source="thumbnail" />
-            {/* not displayed */}
-            <TextField source="stock" />
-        </SimpleShowLayout>
-    </Show>
 );
 ```
 

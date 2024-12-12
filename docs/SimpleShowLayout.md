@@ -261,44 +261,68 @@ const PostShow = () => (
 );
 ```
 
-## Role-Based Access Control (RBAC)
+## Access Control
 
-You can show or hide tabs and inputs based on user permissions by using the [`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) component from the `@react-admin/ra-rbac` package instead of the `react-admin` package.
+If you need to hide some fields based on a set of permissions, use the `<SimpleShowLayout>` component from the `@react-admin/ra-rbac` package.
 
-[`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) shows only the tabs for which users have read permissions, using the `[resource].tab.[tabName]` string as resource identifier. `<TabbedShowLayout.Tab>` shows only the child fields for which users have the read permissions, using the `[resource].[source]` string as resource identifier.
+```diff
+-import { SimpleShowLayout } from 'react-admin';
++import { SimpleShowLayout } from '@react-admin/ra-rbac';
+```
 
-{% raw %}
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+- To see a column, the user must have the "read" permission on the resource column:
+
+```jsx
+{ action: "read", resource: `${resource}.${source}` }
+// Or
+{ action: "read", resource: `${resource}.*` }
+```
+
+Here is an example of how to use the `<SimpleShowLayout>` component with RBAC:
+
 ```tsx
-import { Show, TextField } from 'react-admin';
 import { SimpleShowLayout } from '@react-admin/ra-rbac';
 
 const authProvider = {
     // ...
-    getPermissions: () => Promise.resolve([
-        // crud
-        { action: ['list', 'show'], resource: 'products' },
-        // fields ('products.description' is missing)
-        { action: 'read', resource: 'products.reference' },
-        { action: 'read', resource: 'products.width' },
-        { action: 'read', resource: 'products.height' },
-    ]),
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: ['list', 'show'], resource: 'products' },
+                { action: 'read', resource: 'products.reference' },
+                { action: 'read', resource: 'products.width' },
+                { action: 'read', resource: 'products.height' },
+                // 'products.description' is missing
+                // 'products.image' is missing
+                { action: 'read', resource: 'products.thumbnail' },
+                // 'products.stock' is missing
+            ],
+            action,
+            record,
+            resource,
+        }),
 };
 
 const ProductShow = () => (
     <Show>
         <SimpleShowLayout>
+            {/* └── RBAC SimpleShowLayout */}
             <TextField source="reference" />
             <TextField source="width" />
             <TextField source="height" />
-            {/* the description field is not displayed */}
+            {/* not displayed */}
             <TextField source="description" />
+            {/* not displayed */}
+            <TextField source="image" />
+            <TextField source="thumbnail" />
+            {/* not displayed */}
+            <TextField source="stock" />
         </SimpleShowLayout>
     </Show>
 );
 ```
-{% endraw %}
-
-Check [the RBAC `<SimpleShowLayout>` component](./AuthRBAC.md#simpleshowlayout) documentation for more details.
 
 ## See Also
 
