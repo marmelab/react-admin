@@ -52,14 +52,15 @@ export const getRecordFromLocation = ({
     if (search) {
         try {
             const searchParams = parse(search);
-            if (searchParams[searchSource]) {
-                if (Array.isArray(searchParams[searchSource])) {
+            const source = searchParams[searchSource];
+            if (source) {
+                if (Array.isArray(source)) {
                     console.error(
                         `Failed to parse location ${searchSource} parameter '${search}'. To pre-fill some fields in the Create form, pass a stringified ${searchSource} parameter (e.g. '?${searchSource}={"title":"foo"}')`
                     );
                     return;
                 }
-                return JSON.parse(searchParams[searchSource]);
+                return JSON.parse(source);
             }
         } catch (e) {
             console.error(
