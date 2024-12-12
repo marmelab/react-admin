@@ -315,7 +315,7 @@ export const PostList = () => {
 
 In a column definition, you can use the `cellEditor` field to specify a custom cell editor. You can use any [Edit Component](https://www.ag-grid.com/react-data-grid/cell-editors/) supported by `ag-grid`, including [Custom Components](https://www.ag-grid.com/react-data-grid/cell-editors/#custom-components).
 
-In addition to that, `<DatagridAG>` supports using [React Admin inputs](https://marmelab.com/react-admin/Inputs.html) as `cellEditor`, such as [`<TextInput>`](https://marmelab.com/react-admin/TextInput.html) or even [`<ReferenceInput>`](https://marmelab.com/react-admin/ReferenceInput.html).
+In addition to that, `<DatagridAG>` supports using [React Admin inputs](./Inputs.md) as `cellEditor`, such as [`<TextInput>`](./TextInput.md) or even [`<ReferenceInput>`](./ReferenceInput.md).
 
 This allows to leverage all the power of react-admin inputs in your grid, for example to edit a reference.
 
@@ -344,7 +344,7 @@ export const CommentList = () => {
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./assets/DatagridAG-ReferenceInput-AutocompleteInputAG.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-ReferenceInput-AutocompleteInputAG.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1870,7 +1870,7 @@ export const PostList = () => {
 
 In a column definition, you can use the `cellEditor` field to specify a custom cell editor. You can use any [Edit Component](https://www.ag-grid.com/react-data-grid/cell-editors/) supported by `ag-grid`, including [Custom Components](https://www.ag-grid.com/react-data-grid/cell-editors/#custom-components).
 
-In addition to that, `<DatagridAGClient>` supports using [React Admin inputs](https://marmelab.com/react-admin/Inputs.html) as `cellEditor`, such as [`<TextInput>`](https://marmelab.com/react-admin/TextInput.html) or even [`<ReferenceInput>`](https://marmelab.com/react-admin/ReferenceInput.html).
+In addition to that, `<DatagridAGClient>` supports using [React Admin inputs](./Inputs.md) as `cellEditor`, such as [`<TextInput>`](./TextInput.md) or even [`<ReferenceInput>`](./ReferenceInput.md).
 
 This allows to leverage all the power of react-admin inputs in your grid, for example to edit a reference.
 
@@ -1899,7 +1899,7 @@ export const CommentList = () => {
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./assets/DatagridAG-ReferenceInput-AutocompleteInputAG.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com /assets/DatagridAG-ReferenceInput-AutocompleteInputAG.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
