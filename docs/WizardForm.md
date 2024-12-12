@@ -49,9 +49,12 @@ The `<WizardForm>` component accepts the following props:
 
 | Prop                     | Required | Type              | Default | Description                                                |
 | ------------------------ | -------- | ----------------- | ------- | ---------------------------------------------------------- |
+| `authorizationError`     | Optional | `ReactNode`       | `null`  | The content to display when authorization checks fail                    |
 | `children`               | Required | `ReactNode`       | -       | A list of `<WizardForm.Step>` elements.                   |
 | `defaultValues`          | Optional | `object|function` | -       | The default values of the record.                          |
+| `enableAccessControl`    | Optional | `boolean`         | `false` | Enable checking authorization rights for each panel and input            |
 | `id`                     | Optional | `string`          | -       | The id of the underlying `<form>` tag.                     |
+| `loading`                | Optional | `ReactNode`       |         | The content to display when checking authorizations                      |
 | `noValidate`             | Optional | `boolean`         | -       | Set to `true` to disable the browser's default validation. |
 | `onSubmit`               | Optional | `function`        | `save`  | A callback to call when the form is submitted.             |
 | `progress`               | Optional | `ReactElement`    | -       | A custom progress stepper element.                         |
@@ -62,6 +65,49 @@ The `<WizardForm>` component accepts the following props:
 
 
 Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/docs/useform).
+
+## `authorizationError`
+
+Used when `enableAccessControl` is set to `true` and an error occurs while checking for users permissions. Defaults to `null`:
+
+
+{% raw %}
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
+import { Alert } from '@mui/material';
+
+const CustomerEdit = () => (
+    <Edit>
+        <WizardForm
+            enableAccessControl
+            authorizationError={
+                <Alert
+                    severity="error"
+                    sx={{ px: 2.5, py: 1, mt: 1, width: '100%' }}
+                >
+                    An error occurred while loading your permissions
+                </Alert>
+            }
+        >
+            <WizardForm.Step id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </WizardForm.Step>
+            <WizardForm.Step id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </WizardForm.Step>
+        </WizardForm>
+    </Edit>
+);
+```
+{% endraw %}
 
 ## `children`
 
@@ -110,6 +156,51 @@ export const PostCreate = () => (
 
 **Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./forms.md#default-values) section.
 
+## `enableAccessControl`
+
+When set to `true`, React-admin will call the `authProvider.canAccess` method for each panel with the following parameters:
+- `action`: `write`
+- `resource`: `RESOURCE_NAME.section.PANEL_ID_OR_LABEL`. For instance: `customers.section.identity`
+- `record`: The current record
+
+For each panel, react-admin will also call the `authProvider.canAccess` method for each input with the following parameters:
+- `action`: `write`
+- `resource`: `RESOURCE_NAME.INPUT_SOURCE`. For instance: `customers.first_name`
+- `record`: The current record
+
+**Tip**: `<WizardForm.Step>` direct children that don't have a `source` will always be displayed.
+
+```tsx
+import { 
+    ArrayInput,
+    Edit,
+    DateInput,
+    SimpleFormIterator,
+    TextInput
+} from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
+
+const CustomerEdit = () => (
+    <Edit>
+        <WizardForm enableAccessControl>
+            <WizardForm.Step id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </WizardForm.Step>
+            <WizardForm.Step id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </WizardForm.Step>
+        </WizardForm>
+    </Edit>
+);
+```
+
 ## `id`
 
 Normally, a submit button only works when placed inside a `<form>` tag. However, you can place a submit button outside the form if the submit button `form` matches the form `id`.
@@ -128,6 +219,43 @@ export const PostCreate = () => (
         </WizardForm>
         <SaveButton form="post_create_form" />
     </Create>
+);
+```
+
+## `loading`
+
+Used when `enableAccessControl` is set to `true` while checking for users permissions. Defaults to `Loading` from `react-admin`:
+
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
+import { Typography } from '@mui/material';
+
+const CustomerEdit = () => (
+    <Edit>
+        <WizardForm
+            enableAccessControl
+            loading={
+                <Typography>
+                    Loading your permissions...
+                </Typography>
+            }
+        >
+            <WizardForm.Step id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </WizardForm.Step>
+            <WizardForm.Step id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </WizardForm.Step>
+        </WizardForm>
+    </Edit>
 );
 ```
 
@@ -433,6 +561,132 @@ const PostCreate = () => (
 );
 ```
 
+The children of `<WizardForm>` must be `<WizardForm.Step>` elements.
+
+### Props
+
+
+| Prop                  | Required | Type        | Default | Description                                                                          |
+| --------------------- | -------- | ----------- | ------- | ------------------------------------------------------------------------------------ |
+| `authorizationError`  | Optional | `ReactNode` | -       | The content to display when authorization checks fail                                |
+| `enableAccessControl` | Optional | `ReactNode` | -       | Enable authorization checks                                                          |
+| `label`               | Required | `string`    | -       | The main label used as the step title. Appears in red when the section has errors    |
+| `loading`             | Optional | `ReactNode` | -       | The content to display while checking authorizations                                 |
+| `children`            | Required | `ReactNode` | -       | A list of `<Input>` elements                                                         |
+| `sx`                  | Optional | `object`    | -       | An object containing the MUI style overrides to apply to the root component          |
+
+### `authorizationError`
+
+Used when `enableAccessControl` is set to `true` and an error occurs while checking for users permissions. Defaults to `null`:
+
+{% raw %}
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
+import { Alert } from '@mui/material';
+
+const CustomerEdit = () => (
+    <Edit>
+        <WizardForm enableAccessControl>
+            <WizardForm.Step id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </WizardForm.Step>
+            <WizardForm.Step id="occupations" authorizationError={
+                <Alert
+                    severity="error"
+                    sx={{ px: 2.5, py: 1, mt: 1, width: '100%' }}
+                >
+                    An error occurred while loading your permissions
+                </Alert>
+            }>
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </WizardForm.Step>
+        </WizardForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+
+### `enableAccessControl`
+
+When set to `true`, react-admin will also call the `authProvider.canAccess` method for each input with the following parameters:
+- `action`: `write`
+- `resource`: `RESOURCE_NAME.INPUT_SOURCE`. For instance: `customers.first_name`
+- `record`: The current record
+
+**Tip**: `<WizardForm.Step>` direct children that don't have a `source` will always be displayed.
+
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
+
+const CustomerEdit = () => (
+    <Edit>
+        <WizardForm>
+            <WizardForm.Step id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </WizardForm.Step>
+            <WizardForm.Step id="occupations" enableAccessControl>
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </WizardForm.Step>
+        </WizardForm>
+    </Edit>
+);
+```
+
+### `loading`
+
+Used when `enableAccessControl` is set to `true` while checking for users permissions. Defaults to `Loading` from `react-admin`:
+
+```tsx
+import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
+import { Typography } from '@mui/material';
+
+const CustomerEdit = () => (
+    <Edit>
+        <WizardForm enableAccessControl>
+            <WizardForm.Step id="identity" loading={
+                <Typography>
+                    Loading your permissions...
+                </Typography>
+            }>
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </WizardForm.Step>
+            <WizardForm.Step id="occupations" loading={
+                <Typography>
+                    Loading your permissions...
+                </Typography>
+            }>
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </WizardForm.Step>
+        </WizardForm>
+    </Edit>
+);
+```
+
 ## Adding a Summary Final Step
 
 In order to add a final step with a summary of the form values before submit, you can leverage `react-hook-form` [`useWatch`](https://react-hook-form.com/docs/usewatch) hook:
@@ -472,57 +726,39 @@ const PostCreate = () => (
 );
 ```
 
-## Role-Based Access Control (RBAC)
+## Access Control
 
-Fine-grained permissions control can be added by using the [`<WizardForm>`](./AuthRBAC.md#wizardform) and [`<WizardFormStep>`](./AuthRBAC.md#wizardform) components provided by the `@react-admin/ra-enterprise` package. 
+`<WizardForm>` can use [Access Control](./AccessControl.md) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
 
-{% raw %}
+Check the [`enableAccessControl` prop](#enableaccesscontrol) section for more details.
+
 ```tsx
-import { WizardForm } from '@react-admin/ra-enterprise';
+import { 
+    ArrayInput,
+    Edit,
+    DateInput,
+    SimpleFormIterator,
+    TextInput
+} from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
 
-const authProvider = {
-    checkAuth: () => Promise.resolve(),
-    login: () => Promise.resolve(),
-    logout: () => Promise.resolve(),
-    checkError: () => Promise.resolve(),
-    getPermissions: () =>Promise.resolve([
-        // 'delete' is missing
-        { action: ['list', 'edit'], resource: 'products' },
-        { action: 'write', resource: 'products.reference' },
-        { action: 'write', resource: 'products.width' },
-        { action: 'write', resource: 'products.height' },
-        // 'products.description' is missing
-        { action: 'write', resource: 'products.thumbnail' },
-        // 'products.image' is missing
-        { action: 'write', resource: 'products.step.description' },
-        { action: 'write', resource: 'products.step.images' },
-        // 'products.step.stock' is missing
-    ]),
-};
-
-const ProductCreate = () => (
-    <Create>
-        <WizardForm>
-            <WizardForm.Step name="description" label="Description">
-                <TextInput source="reference" />
-                <TextInput source="width" />
-                <TextInput source="height" />
-                {/* Won't be displayed */}
-                <TextInput source="description" />
+const CustomerEdit = () => (
+    <Edit>
+        <WizardForm enableAccessControl>
+            <WizardForm.Step id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
             </WizardForm.Step>
-            <WizardForm.Step name="images" label="Images">
-                {/* Won't be displayed */}
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </WizardForm.Step>
-            {/* Won't be displayed */}
-            <WizardForm.Step name="stock" label="Stock">
-                <TextInput source="stock" />
+            <WizardForm.Step id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
             </WizardForm.Step>
         </WizardForm>
-    </Create>
+    </Edit>
 );
 ```
-{% endraw %}
-
-Check [the RBAC `<WizardForm>`](./AuthRBAC.md#wizardform) documentation for more details.
