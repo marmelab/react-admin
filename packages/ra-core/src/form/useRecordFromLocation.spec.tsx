@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
+import { Location } from 'react-router-dom';
 import {
     getRecordFromLocation,
     useRecordFromLocation,
@@ -131,57 +132,53 @@ describe('getRecordFromLocation', () => {
     it('should return location state record when set', () => {
         expect(
             getRecordFromLocation({
-                location: {
-                    ...location,
-                    state: { record: { foo: 'bar' } },
-                },
+                ...location,
+                state: { record: { foo: 'bar' } },
             })
         ).toEqual({ foo: 'bar' });
     });
 
     it('should return location state record when set with a custom key', () => {
         expect(
-            getRecordFromLocation({
-                location: {
+            getRecordFromLocation(
+                {
                     ...location,
                     state: { myRecord: { foo: 'bar' } },
                 },
-                stateSource: 'myRecord',
-            })
+                { stateSource: 'myRecord' }
+            )
         ).toEqual({ foo: 'bar' });
     });
 
     it('should return location search when set', () => {
         expect(
             getRecordFromLocation({
-                location: {
-                    ...location,
-                    search: '?source={"foo":"baz","array":["1","2"]}',
-                },
+                ...location,
+                search: '?source={"foo":"baz","array":["1","2"]}',
             })
         ).toEqual({ foo: 'baz', array: ['1', '2'] });
     });
 
     it('should return location search when set with a custom key', () => {
         expect(
-            getRecordFromLocation({
-                location: {
+            getRecordFromLocation(
+                {
                     ...location,
                     search: '?mySource={"foo":"baz","array":["1","2"]}',
                 },
-                searchSource: 'mySource',
-            })
+                {
+                    searchSource: 'mySource',
+                }
+            )
         ).toEqual({ foo: 'baz', array: ['1', '2'] });
     });
 
     it('should return location state record when both state and search are set', () => {
         expect(
             getRecordFromLocation({
-                location: {
-                    ...location,
-                    state: { record: { foo: 'bar' } },
-                    search: '?foo=baz',
-                },
+                ...location,
+                state: { record: { foo: 'bar' } },
+                search: '?foo=baz',
             })
         ).toEqual({ foo: 'bar' });
     });

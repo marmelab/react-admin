@@ -18,8 +18,7 @@ export const useRecordFromLocation = (
     const { searchSource, stateSource } = props;
     const location = useLocation();
     const record = useRecordContext(props);
-    const recordFromLocation = getRecordFromLocation({
-        location,
+    const recordFromLocation = getRecordFromLocation(location, {
         stateSource,
         searchSource,
     });
@@ -37,15 +36,16 @@ export type UseRecordFromLocationOptions = {
  * Get the initial record from the location, whether it comes from the location
  * state or is serialized in the url search part.
  */
-export const getRecordFromLocation = ({
-    location: { state, search },
-    searchSource = 'source',
-    stateSource = 'record',
-}: {
-    location: Location;
-    searchSource?: string;
-    stateSource?: string;
-}) => {
+export const getRecordFromLocation = (
+    { state, search }: Location,
+    {
+        searchSource = 'source',
+        stateSource = 'record',
+    }: {
+        searchSource?: string;
+        stateSource?: string;
+    } = {}
+) => {
     if (state && state[stateSource]) {
         return state[stateSource];
     }
