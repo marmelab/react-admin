@@ -1899,7 +1899,7 @@ export const CommentList = () => {
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com /assets/DatagridAG-ReferenceInput-AutocompleteInputAG.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-ReferenceInput-AutocompleteInputAG.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
