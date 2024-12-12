@@ -171,7 +171,13 @@ For each panel, react-admin will also call the `authProvider.canAccess` method f
 **Tip**: `<WizardForm.Step>` direct children that don't have a `source` will always be displayed.
 
 ```tsx
-import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import { 
+    ArrayInput,
+    Edit,
+    DateInput,
+    SimpleFormIterator,
+    TextInput
+} from 'react-admin';
 import { WizardForm } from '@react-admin/ra-form-layout';
 
 const CustomerEdit = () => (
@@ -717,5 +723,42 @@ const PostCreate = () => (
             </WizardForm.Step>
         </WizardForm>
     </Create>
+);
+```
+
+## Access Control
+
+`<WizardForm>` can use [Access Control](./AccessControl.md) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
+
+Check the [`enableAccessControl` prop](#enableaccesscontrol) section for more details.
+
+```tsx
+import { 
+    ArrayInput,
+    Edit,
+    DateInput,
+    SimpleFormIterator,
+    TextInput
+} from 'react-admin';
+import { WizardForm } from '@react-admin/ra-form-layout';
+
+const CustomerEdit = () => (
+    <Edit>
+        <WizardForm enableAccessControl>
+            <WizardForm.Step id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </WizardForm.Step>
+            <WizardForm.Step id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </WizardForm.Step>
+        </WizardForm>
+    </Edit>
 );
 ```

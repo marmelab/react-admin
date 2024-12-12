@@ -5,15 +5,13 @@ title: "RBAC"
 
 # Role-Based Access Control (RBAC)
 
-Building up on react-admin's [Access Control features](./Permissions.md#access-control), react-admin RBAC provides an implementation for `authProvider.canAccess()` to manage roles and fine-grained permissions, and exports alternative react-admin components that use these permissions.
+Building up on react-admin's [Access Control features](./Permissions.md#access-control), react-admin RBAC provides an implementation for `authProvider.canAccess()` to manage roles and fine-grained permissions, and exports alternative react-admin [components](#components) that use these permissions.
 
 <video controls="controls" style="max-width: 96%">
     <source src="./img/ra-rbac.mp4" type="video/mp4" />
 </video>
 
-Test it live in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-rbac-full-app--full-app).
-
-The RBAC features are part of [ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> package.
+The RBAC features are part of [ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> package. Test them live in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-rbac-full-app--full-app).
 
 ## At a Glance
 
@@ -358,7 +356,7 @@ const authProvider = {
 
 ## Components
 
-Ra-rbac provides alternative components to react-admin base components. These alternative components include role-based access control and are as follows:
+Ra-rbac provides alternative components to react-admin base components with RBAC support:
 
 - Main
     - [`<Menu>`](./Menu.md#access-control)
@@ -374,10 +372,20 @@ Ra-rbac provides alternative components to react-admin base components. These al
     - [`<SimpleForm>`](./SimpleForm.md#access-control)
     - [`<TabbedForm>`](./TabbedForm.md#access-control)
 
+In addition, the following components from te Enterprise edition have built-in RBAC support:
+
+- [`<AccordionForm>`](./AccordionForm.md#access-control)
+- [`<LongForm>`](./LongForm.md#access-control)
+- [`<WizardForm>`](./WizardForm.md#access-control)
+
 Here is an example of `<Datagrid>` with RBAC:
 
 ```tsx
-import { canAccessWithPermissions, List, Datagrid } from '@react-admin/ra-rbac';
+import { 
+    canAccessWithPermissions,
+    List,
+    Datagrid
+} from '@react-admin/ra-rbac';
 import {
     ImageField,
     TextField,

@@ -209,7 +209,13 @@ For each section, react-admin will also call the `authProvider.canAccess` method
 **Tip**: `<LongForm.Section>` direct children that don't have a `source` will always be displayed.
 
 ```tsx
-import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import {
+    ArrayInput,
+    Edit,
+    DateInput,
+    SimpleFormIterator,
+    TextInput
+} from 'react-admin';
 import { LongForm } from '@react-admin/ra-form-layout';
 
 const CustomerEdit = () => (
@@ -704,3 +710,40 @@ Note that you **must** set the `<LongForm resetOptions>` prop to `{ keepDirtyVal
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](./Edit.md#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Access Control
+
+`<LongForm>` can use [Access Control](./AccessControl.md) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
+
+Check the [`enableAccessControl` prop](#enableaccesscontrol) section for more details.
+
+```tsx
+import { 
+    ArrayInput,
+    Edit,
+    DateInput,
+    SimpleFormIterator,
+    TextInput
+} from 'react-admin';
+import { LongForm } from '@react-admin/ra-form-layout';
+
+const CustomerEdit = () => (
+    <Edit>
+        <LongForm enableAccessControl>
+            <LongForm.Section id="identity">
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </LongForm.Section>
+            <LongForm.Section id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </LongForm.Section>
+        </LongForm>
+    </Edit>
+);
+```

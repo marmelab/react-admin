@@ -225,7 +225,13 @@ For each panel, react-admin will also call the `authProvider.canAccess` method f
 **Tip**: `<AccordionForm.Panel>` direct children that don't have a `source` will always be displayed.
 
 ```tsx
-import { ArrayInput, Edit, DateInput, SimpleFormIterator, TextInput } from 'react-admin';
+import {
+    ArrayInput,
+    Edit,
+    DateInput,
+    SimpleFormIterator,
+    TextInput
+} from 'react-admin';
 import { AccordionForm } from '@react-admin/ra-form-layout';
 
 const CustomerEdit = () => (
@@ -829,3 +835,40 @@ Note that you **must** set the `<AccordionForm resetOptions>` prop to `{ keepDir
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](./Edit.md#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+## Access Control
+
+`<AccordionForm>` can use [Access Control](./AccessControl.md) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
+
+Check the [`enableAccessControl` prop](#enableaccesscontrol) section for more details.
+
+```tsx
+import {
+    ArrayInput,
+    Edit,
+    DateInput,
+    SimpleFormIterator,
+    TextInput
+} from 'react-admin';
+import { AccordionForm } from '@react-admin/ra-form-layout';
+
+const CustomerEdit = () => (
+    <Edit>
+        <AccordionForm enableAccessControl>
+            <AccordionForm.Panel id="identity" defaultExpanded>
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel id="occupations">
+                <ArrayInput source="occupations" label="">
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <DateInput source="from" validate={required()} />
+                        <DateInput source="to" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </AccordionForm.Panel>
+        </AccordionForm>
+    </Edit>
+);
+```
