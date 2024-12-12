@@ -109,8 +109,8 @@ React-admin already does page-level access control with actions like "list", "sh
 | `create` | Allow to access the Create page  | [`<Create>`](./Create.md), [`<CreateButton>`](./Buttons.md#createbutton), [`<List>`](./List.md#access-control) |
 | `edit`   | Allow to access the Edit page    | [`<Edit>`](./Edit.md), [`<EditButton>`](./Buttons.md#editbutton), [`<Datagrid>`](./Datagrid.md#access-control), [`<Show>`](./Show.md) |
 | `delete` | Allow to delete data             | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](#tabform) |
-| `export` | Allow to export data             | [`<ExportButton>`](#exportbutton), [`<List>`](./List.md#access-control)                                       |
-| `clone`  | Allow to clone a record          | [`<CloneButton>`](#clonebutton), [`<Edit>`](./Edit.md)                                   |
+| `export` | Allow to export data             | [`<ExportButton>`](./Buttons.md#exportbutton), [`<List>`](./List.md#access-control)                                       |
+| `clone`  | Allow to clone a record          | [`<CloneButton>`](./Buttons.md#clonebutton), [`<Edit>`](./Edit.md)                                   |
 | `read`   | Allow to view a field (or a tab) | [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control), [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control) |
 | `write`  | Allow to edit a field (or a tab) | [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](./TabbedForm.md#access-control), [`<WizardForm>`](./WizardForm.md#enableaccesscontrol), [`<LongForm>`](./LongForm.md#enableaccesscontrol), [`<AccordionForm>`](./AccordionForm.md#enableaccesscontrol) |
 
@@ -365,79 +365,70 @@ Ra-rbac provides alternative components to react-admin base components. These al
 - List
     - [`<List>`](./List.md#access-control)
     - [`<Datagrid>`](./Datagrid.md#access-control)
+    - [`<ExportButton>`](./Buttons.md#exportbutton)
 - Detail
     - [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control)
     - [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control)
+    - [`<CloneButton>`](./Buttons.md#clonebutton)
 - Form
     - [`<SimpleForm>`](./SimpleForm.md#access-control)
     - [`<TabbedForm>`](./TabbedForm.md#access-control)
 
-## `<ExportButton>`
-
-Replacement for react-admin's [`<ExportButton>`](./Buttons.md#exportbutton) that checks users have the `'export'` permission before rendering. Use it if you want to provide your own `actions` to the `<List>`:
+Here is an example of `<Datagrid>` with RBAC:
 
 ```tsx
-import { CreateButton, List, TopToolbar } from 'react-admin';
-import { ExportButton } from '@react-admin/ra-rbac';
+import { canAccessWithPermissions, List, Datagrid } from '@react-admin/ra-rbac';
+import {
+    ImageField,
+    TextField,
+    ReferenceField,
+    NumberField,
+} from 'react-admin';
 
-const PostListActions = () => (
-    <TopToolbar>
-        <PostFilter context="button" />
-        <CreateButton />
-        <ExportButton />
-    </TopToolbar>
-);
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: 'list', resource: 'products' },
+                { action: 'read', resource: 'products.thumbnail' },
+                { action: 'read', resource: 'products.reference' },
+                { action: 'read', resource: 'products.category_id' },
+                { action: 'read', resource: 'products.width' },
+                { action: 'read', resource: 'products.height' },
+                { action: 'read', resource: 'products.price' },
+                { action: 'read', resource: 'products.description' },
+                // { action: 'read', resource: 'products.stock' },
+                // { action: 'read', resource: 'products.sales' },
+                // { action: 'delete', resource: 'products' },
+                { action: 'show', resource: 'products' },
+            ],
+            action,
+            record,
+            resource
+        }),
+};
 
-export const PostList = () => (
-    <List actions={<PostListActions />}>
-        {/* ... */}
+const ProductList = () => (
+    <List>
+        {/* The datagrid has no bulk actions as the user doesn't have the 'delete' permission */}
+        <Datagrid>
+            <ImageField source="thumbnail" />
+            <TextField source="reference" />
+            <ReferenceField source="category_id" reference="categories">
+                <TextField source="name" />
+            </ReferenceField>
+            <NumberField source="width" />
+            <NumberField source="height" />
+            <NumberField source="price" />
+            <TextField source="description" />
+            {/** These two columns are not visible to the user **/}
+            <NumberField source="stock" />
+            <NumberField source="sales" />
+        </Datagrid>
     </List>
 );
 ```
-
-It accepts the following props in addition to the default [`<ExportButton>` props](./Buttons.md#props-8):
-
-| Prop                 | Required | Type              | Default    | Description                                                            |
-| -------------------- | -------- | ----------------- | ---------- | ---------------------------------------------------------------------- |
-| `accessDenied`       | Optional | ReactNode         | null       | The content to display when users don't have the `'export'` permission |
-| `action`             | Optional | String            | `"export"` | The action to call `authProvider.canAccess` with                       |
-| `authorizationError` | Optional | ReactNode         | null       | The content to display when an error occurs while checking permission |
-
-**Tip**: Don't forget to give read permissions on all the fields you want to allow in exports
-```jsx
-{ action: "read", resource: `${resource}.${source}` }.
-// or
-{ action: "read", resource: `${resource}.*` }.
-```
-
-## `<CloneButton>`
-
-Replacement for react-admin's [`<CloneButton>`](./Buttons.md#clonebutton) that checks users have the `'clone'` permission before rendering. Use it if you want to provide your own `actions` to the `<Edit>`:
-
-```tsx
-import { Edit, TopToolbar } from 'react-admin';
-import { CloneButton } from '@react-admin/ra-rbac';
-
-const PostEditActions = () => (
-    <TopToolbar>
-        <CloneButton />
-    </TopToolbar>
-);
-
-export const PostEdit = () => (
-    <Edit actions={<PostEditActions />}>
-        {/* ... */}
-    </Edit>
-);
-```
-
-It accepts the following props in addition to the default `<CloneButton>` props:
-
-| Prop                 | Required | Type              | Default    | Description                                                            |
-| -------------------- | -------- | ----------------- | ---------- | ---------------------------------------------------------------------- |
-| `accessDenied`       | Optional | ReactNode         | null       | The content to display when users don't have the `'clone'` permission  |
-| `action`             | Optional | String            | `"clone"`  | The action to call `authProvider.canAccess` with                       |
-| `authorizationError` | Optional | ReactNode         | null       | The content to display when an error occurs while checking permission |
 
 ## Performance
 

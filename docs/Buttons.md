@@ -600,25 +600,47 @@ It also supports [all the other `<Button>` props](#button).
 
 ### Access Control
 
-If you want to control whether this button should be displayed based on users permissions, you can leverage the `<CloneButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
+If you want to control whether this button should be displayed based on users permissions, use the `<CloneButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
 
-This `<CloneButton>` will call `authProvider.canAccess()` using the following parameters:
+```diff
+-import { CloneButton } from 'react-admin';
++import { CloneButton } from '@react-admin/ra-rbac';
+```
 
-```txt
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+- It will only render if the user has the `'clone'` permission on the current resource.
+
+```js
 { action: "clone", resource: [current resource] }
 ```
 
-```jsx
-import { TopToolbar, List } from 'react-admin';
+Here is an example of how to use the `<CloneButton>` with RBAC:
+
+```tsx
+import { Edit, TopToolbar } from 'react-admin';
 import { CloneButton } from '@react-admin/ra-rbac';
 
-const PostList = () => (
-    <List>
-        <TextField source="title" />
+const PostEditActions = () => (
+    <TopToolbar>
         <CloneButton />
-    </List>
+    </TopToolbar>
+);
+
+export const PostEdit = () => (
+    <Edit actions={<PostEditActions />}>
+        {/* ... */}
+    </Edit>
 );
 ```
+
+This component accepts additional props:
+
+| Prop                 | Required | Type              | Default    | Description                                                            |
+| -------------------- | -------- | ----------------- | ---------- | ---------------------------------------------------------------------- |
+| `accessDenied`       | Optional | ReactNode         | null       | The content to display when users don't have the `'clone'` permission  |
+| `action`             | Optional | String            | `"clone"`  | The action to call `authProvider.canAccess` with                       |
+| `authorizationError` | Optional | ReactNode         | null       | The content to display when an error occurs while checking permission |
 
 ## `<CreateButton>`
 
@@ -996,13 +1018,28 @@ export const PostList = () => (
 
 ### Access Control
 
-If you want to control whether this button should be displayed based on users permissions, you can leverage the `<ExportButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
+If you want to control whether this button should be displayed based on users permissions, use the `<ExportButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
 
-This `<ExportButton>` will call `authProvider.canAccess()` using the following parameters:
+```diff
+-import { ExportButton } from 'react-admin';
++import { ExportButton } from '@react-admin/ra-rbac';
+```
 
-```txt
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+- It will only render if the user has the `'export'` permission on the current resource.
+
+```js
 { action: "export", resource: [current resource] }
 ```
+
+- It will only export the fields the user has the `'read'` permission on.
+
+```js
+{ action: "read", resource: `${resource}.${source}` }
+```
+
+Here is an example usage:
 
 ```jsx
 import { CreateButton, TopToolbar } from 'react-admin';
@@ -1022,6 +1059,14 @@ export const PostList = () => (
     </List>
 );
 ```
+
+This component accepts additional props:
+
+| Prop                 | Required | Type              | Default    | Description                                                            |
+| -------------------- | -------- | ----------------- | ---------- | ---------------------------------------------------------------------- |
+| `accessDenied`       | Optional | ReactNode         | null       | The content to display when users don't have the `'export'` permission |
+| `action`             | Optional | String            | `"export"` | The action to call `authProvider.canAccess` with                       |
+| `authorizationError` | Optional | ReactNode         | null       | The content to display when an error occurs while checking permission |
 
 ## `<FilterButton>`
 
