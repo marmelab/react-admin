@@ -642,16 +642,7 @@ describe('useListController', () => {
             });
         });
         it('should select the maximum items possible until we reached the limit', async () => {
-            const getList = jest.fn().mockImplementation((_resource, params) =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }].slice(
-                        0,
-                        params.pagination.perPage
-                    ),
-                    total: 2,
-                })
-            );
-            const dataProvider = testDataProvider({ getList });
+            const getList = jest.spyOn(dataProvider, 'getList');
             const callback = jest.fn(Children);
             render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
             fireEvent.click(await screen.findByText('Limited Select All'));
