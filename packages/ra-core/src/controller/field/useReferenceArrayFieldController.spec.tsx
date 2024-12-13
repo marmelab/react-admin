@@ -177,10 +177,10 @@ describe('<useReferenceArrayFieldController />', () => {
         );
 
         it('should select all items if no items are selected', async () => {
-            const spiedChildren = jest.fn(Children);
-            render(<ReferenceArrayField>{spiedChildren}</ReferenceArrayField>);
+            const callback = jest.fn(Children);
+            render(<ReferenceArrayField>{callback}</ReferenceArrayField>);
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         data: [
                             { id: 1, title: 'bar1' },
@@ -191,7 +191,7 @@ describe('<useReferenceArrayFieldController />', () => {
             });
             fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1, 2],
                     })
@@ -200,10 +200,10 @@ describe('<useReferenceArrayFieldController />', () => {
         });
 
         it('should select all items if some items are selected', async () => {
-            const spiedChildren = jest.fn(Children);
-            render(<ReferenceArrayField>{spiedChildren}</ReferenceArrayField>);
+            const callback = jest.fn(Children);
+            render(<ReferenceArrayField>{callback}</ReferenceArrayField>);
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         data: [
                             { id: 1, title: 'bar1' },
@@ -214,7 +214,7 @@ describe('<useReferenceArrayFieldController />', () => {
             });
             fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1, 2],
                     })

@@ -328,14 +328,14 @@ describe('<useList />', () => {
 
     describe('onSelectAll', () => {
         it('should select all items if no items are selected', async () => {
-            const children = jest.fn();
+            const callback = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
-            render(<UseList data={data} callback={children} />);
+            render(<UseList data={data} callback={callback} />);
             fireEvent.click(
                 await screen.findByRole('button', { name: 'Select All' })
             );
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
@@ -343,14 +343,14 @@ describe('<useList />', () => {
             });
         });
         it('should select all items if some items are selected', async () => {
-            const children = jest.fn();
+            const callback = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
-            render(<UseList data={data} callback={children} />);
+            render(<UseList data={data} callback={callback} />);
             fireEvent.click(
                 await screen.findByRole('button', { name: 'Select item 1' })
             );
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1],
                     })
@@ -358,7 +358,7 @@ describe('<useList />', () => {
             });
             fireEvent.click(screen.getByRole('button', { name: 'Select All' }));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })

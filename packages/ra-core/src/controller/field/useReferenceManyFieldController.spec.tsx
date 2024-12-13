@@ -427,11 +427,11 @@ describe('useReferenceManyFieldController', () => {
         );
 
         it('should select all items if no items are selected', async () => {
-            const spiedChildren = jest.fn(Children);
-            render(<ReferenceManyField>{spiedChildren}</ReferenceManyField>);
+            const callback = jest.fn(Children);
+            render(<ReferenceManyField>{callback}</ReferenceManyField>);
             fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
@@ -440,11 +440,11 @@ describe('useReferenceManyFieldController', () => {
         });
 
         it('should select all items if some items are selected', async () => {
-            const spiedChildren = jest.fn(Children);
-            render(<ReferenceManyField>{spiedChildren}</ReferenceManyField>);
+            const callback = jest.fn(Children);
+            render(<ReferenceManyField>{callback}</ReferenceManyField>);
             fireEvent.click(await screen.findByText('Select 1'));
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1],
                     })
@@ -452,7 +452,7 @@ describe('useReferenceManyFieldController', () => {
             });
             fireEvent.click(screen.getByText('Select All'));
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
@@ -475,14 +475,14 @@ describe('useReferenceManyFieldController', () => {
             const dataProvider = testDataProvider({
                 getManyReference,
             });
-            const spiedChildren = jest.fn(Children);
+            const callback = jest.fn(Children);
             render(
                 <ReferenceManyField dataProvider={dataProvider}>
-                    {spiedChildren}
+                    {callback}
                 </ReferenceManyField>
             );
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenNthCalledWith(
+                expect(callback).toHaveBeenNthCalledWith(
                     1,
                     expect.objectContaining({
                         selectedIds: [],
@@ -491,7 +491,7 @@ describe('useReferenceManyFieldController', () => {
             });
             fireEvent.click(await screen.findByText('Limited Select All'));
             await waitFor(() => {
-                expect(spiedChildren).toHaveBeenCalledWith(
+                expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0],
                     })
