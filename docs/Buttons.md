@@ -958,14 +958,14 @@ To override the style of all instances of `<FilterButton>` using the [applicatio
 
 ## `<SelectAllButton>`
 
-This button is an internal component used by react-admin in [the Datagrid default `bulkActionButtons`](./Datagrid.md#bulkactionbuttons).
+This button is an internal component used by react-admin in [the Datagrid default `bulkActionsToolbar`](./Datagrid.md#bulkactionstoolbar).
 The `<SelectAllButton>` component is a button that is used to select all items from a resource, no matter the pagination.
 
 ![SelectAllButton](./img/SelectAllButton.png)
 
 ### `label`
 
-By default, the `<SelectAllButton>` label is "Select all" (or the `ra.action.select_all` message translation). You can also pass a custom `label`:
+By default, the `<SelectAllButton>` label is "Select all" (or the `ra.action.select_all_button` message translation). You can also pass a custom `label`:
 
 ```jsx
 const PostSelectAllButton = () => <SelectAllButton label="Select all posts" />;
