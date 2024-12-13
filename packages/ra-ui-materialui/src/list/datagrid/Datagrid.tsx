@@ -322,7 +322,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     className?: string;
 
     /**
-     * The component used to render the bulk actions toolbar. Defaults to <BulkActionsToolbar>.
+     * The component used to render the bulk actions toolbar.
      *
      * @see https://marmelab.com/react-admin/Datagrid.html#bulkactionstoolbar (TODO: write doc)
      * @example

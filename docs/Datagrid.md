@@ -45,24 +45,25 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 
 ## Props
 
-| Prop                | Required | Type                    | Default               | Description                                                   |
-| ------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------- |
-| `children`          | Required | Element                 | n/a                   | The list of `<Field>` components to render as columns.        |
-| `body`              | Optional | Element                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
-| `bulkActionButtons` | Optional | Element                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
-| `empty`             | Optional | Element                 | `<Empty>`             | The component used to render the empty table.                 |
-| `expand`            | Optional | Element                 |                       | The component used to render the expand panel for each row.   |
-| `expandSingle`      | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
-| `header`            | Optional | Element                 | `<Datagrid Header>`   | The component used to render the table header.                |
-| `hover`             | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
-| `isRowExpandable`   | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
-| `isRowSelectable`   | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
-| `optimized`         | Optional | Boolean                 | `false`               | Whether to optimize the rendering of the table.               |
-| `rowClick`          | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
-| `rowStyle`          | Optional | Function                |                       | A function that returns the style to apply to a row.          |
-| `rowSx`             | Optional | Function                |                       | A function that returns the sx prop to apply to a row.        |
-| `size`              | Optional | `'small'` or `'medium'` | `'small'`             | The size of the table.                                        |
-| `sx`                | Optional | Object                  |                       | The sx prop passed down to the Material UI `<Table>` element. |
+| Prop                 | Required | Type                    | Default               | Description                                                   |
+| -------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------- |
+| `children`           | Required | Element                 | n/a                   | The list of `<Field>` components to render as columns.        |
+| `body`               | Optional | Element                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
+| `bulkActionButtons`  | Optional | Element                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
+| `bulkActionsToolbar` | Optional | Element                 |                       | The component used to render the bulk actions toolbar.        |
+| `empty`              | Optional | Element                 | `<Empty>`             | The component used to render the empty table.                 |
+| `expand`             | Optional | Element                 |                       | The component used to render the expand panel for each row.   |
+| `expandSingle`       | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
+| `header`             | Optional | Element                 | `<Datagrid Header>`   | The component used to render the table header.                |
+| `hover`              | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
+| `isRowExpandable`    | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
+| `isRowSelectable`    | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
+| `optimized`          | Optional | Boolean                 | `false`               | Whether to optimize the rendering of the table.               |
+| `rowClick`           | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
+| `rowStyle`           | Optional | Function                |                       | A function that returns the style to apply to a row.          |
+| `rowSx`              | Optional | Function                |                       | A function that returns the sx prop to apply to a row.        |
+| `size`               | Optional | `'small'` or `'medium'` | `'small'`             | The size of the table.                                        |
+| `sx`                 | Optional | Object                  |                       | The sx prop passed down to the Material UI `<Table>` element. |
 
 Additional props are passed down to [the Material UI `<Table>` element](https://mui.com/material-ui/api/table/).
 
@@ -166,13 +167,12 @@ By default, all Datagrids have a single bulk action button, the bulk delete butt
 
 {% raw %}
 ```tsx
-import { List, Datagrid, SelectAllButton, BulkUpdateButton, BulkDeleteButton, BulkExportButton } from 'react-admin';
+import { List, Datagrid, BulkUpdateButton, BulkDeleteButton, BulkExportButton } from 'react-admin';
 import { VisibilityOff } from '@mui/icons-material';
 
 const PostBulkActionButtons = () => (
     <>
         <BulkUpdateButton label="Reset Views" data={{ views: 0 }} icon={<VisibilityOff/>} />
-        <SelectAllButton />
         <BulkDeleteButton />
         <BulkExportButton />
     </>
@@ -373,6 +373,61 @@ const CustomResetViewsButton = () => {
     );
 };
 ```
+
+## `bulkActionsToolbar`
+
+You can use the `bulkActionsToolbar` prop to customize the bulk action toolbar, displayed when at least one row is selected.
+
+You disable this feature by setting the `bulkActionsToolbar` prop to `false`:
+
+```tsx
+import { Datagrid, List } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid bulkActionsToolbar={false}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+By default, all Datagrids have a single `action`, [the select all button](./Buttons.md#selectallbutton).
+You can customize this button or add others by passing a custom element as the `bulkActionsToolbar` prop of the `<Datagrid>` component:
+
+{% raw %}
+
+```tsx
+import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButtonn useUnselectAll, Button } from 'react-admin';
+
+const UnselectButton = () => {
+    const unselect = useUnselectAll('posts');
+    return <Button onClick={unselect} label="Unselect all records" />;
+};
+
+const PostBulkActionsToolbar = () => (
+    <BulkActionsToolbar actions={
+        <>
+            <SelectAllButton label="Select all records" />
+            <UnselectButton />
+        </>
+    }>
+        <BulkDeleteButton />
+    </BulkActionsToolbar>
+);
+
+export const PostList = () => (
+    <List>
+        <Datagrid bulkActionsToolbar={<PostBulkActionsToolbar />}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+{% endraw %}
+
+**Tip**: This customization will bring up your new `UnselectAll` button on the left-hand side of the toolbar. To work on the right-hand side, you can use the [`bulkActionButtons`](#bulkactionbuttons) prop.
 
 ## `children`
 
