@@ -398,7 +398,7 @@ You can customize this button or add others by passing a custom element as the `
 {% raw %}
 
 ```tsx
-import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButtonn useUnselectAll, Button } from 'react-admin';
+import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton, useUnselectAll, Button } from 'react-admin';
 
 const UnselectButton = () => {
     const unselect = useUnselectAll('posts');
