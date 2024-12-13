@@ -171,7 +171,7 @@ If the current user tries to access a page they don't have access to, they are r
 
 If the `authProvider.canAccess()` method returns an error, the user is redirected to an "Access Control Error" page. You can customize this page by adding a custom route on the `/accessControlError` path.
 
-The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButtoon>`) also have built-in access control. They are only displayed if the user can access the corresponding action on the resource.
+The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButton>`) also have built-in access control. They are only displayed if the user can access the corresponding action on the resource.
 
 ```tsx
 const MyToolbar = () => (
@@ -189,6 +189,8 @@ const MyToolbar = () => (
     </Toolbar>
 );
 ```
+
+The **list components** (`<Datagrid>`), **show components** (`<SimpleShowLayout>`, `<TabbedShowLayout>`), and **edit components** (`<SimpleForm>`, `<Tabbedform>`) also support access control provided you use the version from the `@react-admin/ra-rbac` Enterprise package. Check the [RBAC documentation](./AuthRBAC.md#components) for more information.
 
 ### `useCanAccess`
 

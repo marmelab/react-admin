@@ -981,9 +981,19 @@ export const BookEdit = () => {
 };
 ```
 
-## Security
+## Anonymous Access
 
 The `<Edit>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
+
+```jsx
+const PostEdit = () => (
+    <Edit disableAuthentication>
+        ...
+    </Edit>
+);
+```
+
+## Access Control
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<Edit>`  will only render if the user has the "edit" access to the related resource.
 

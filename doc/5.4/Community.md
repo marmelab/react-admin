@@ -45,9 +45,15 @@ On our [Youtube channel](https://www.youtube.com/@react-admin), you can find som
 
 <div class="iframe-wrapper">
     <iframe
-        src="https://www.youtube.com/embed/videoseries?si=-m56_m4W9dEcJjw5&amp;list=PLBCskKfEEuGvgjdpfvH4ZAIGx4UJAUNwP">
+        src="https://www.youtube.com/embed?listType=playlist&list=UUx-g3k3eDFyy-3E7vxWVN-Q">
     </iframe>
 </div>
+
+## Bluesky
+
+Follow us on [Bluesky](https://bsky.app/profile/react-admin.bsky.social) to get the latest news about react-admin.
+
+<blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:o674lugddxaovsgqijmz4ktu/app.bsky.feed.post/3lbjr4odolc23" data-bluesky-cid="bafyreiefzmsxztuy3btf2vabbhfnuirsf4ck625ldrner4lzwhwvm5oena"><p lang="en">Hi Bluesky community👋React-admin is an open-source framework for building B2B apps.🚀Backed by the team at @marmelab.bsky.social, we’re committed to empowering developers to build faster &amp; smarter.📲 Follow this account to stay in the loop on all things react-admin.marmelab.com/react-admin/<br><br><a href="https://bsky.app/profile/did:plc:o674lugddxaovsgqijmz4ktu/post/3lbjr4odolc23?ref_src=embed">[image or embed]</a></p>&mdash; react-admin (<a href="https://bsky.app/profile/did:plc:o674lugddxaovsgqijmz4ktu?ref_src=embed">@react-admin.bsky.social</a>) <a href="https://bsky.app/profile/did:plc:o674lugddxaovsgqijmz4ktu/post/3lbjr4odolc23?ref_src=embed">November 22, 2024 at 11:23 AM</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
 
 ## Support
 
