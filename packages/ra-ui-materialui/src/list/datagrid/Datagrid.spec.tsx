@@ -8,8 +8,11 @@ import {
     ResourceContextProvider,
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
+
 import { Datagrid } from './Datagrid';
+import { SelectAllButton } from '../../button';
 import { AccessControl } from './Datagrid.stories';
+import { BulkActionsToolbar } from '../BulkActionsToolbar';
 
 const TitleField = (): JSX.Element => {
     const record = useRecordContext();
@@ -111,6 +114,38 @@ describe('<Datagrid />', () => {
         expect(screen.queryAllByTestId('ExpandMoreIcon')).toHaveLength(
             defaultData.length
         );
+    });
+
+    it('should accept a custom bulkActionsToolbar', () => {
+        render(
+            <Wrapper listContext={contextValue}>
+                <Datagrid
+                    bulkActionsToolbar={
+                        <BulkActionsToolbar
+                            actions={
+                                <SelectAllButton label="Select All Records" />
+                            }
+                        />
+                    }
+                >
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+        expect(screen.queryByText('Delete')).toBeNull();
+        expect(screen.queryByText('Select All Records')).not.toBeNull();
+    });
+
+    it('should not display the bulk actions toolbar when when `bulkActionsToolbar` prop is true', () => {
+        render(
+            <Wrapper listContext={contextValue}>
+                <Datagrid bulkActionsToolbar={false}>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+        expect(screen.queryByText('Delete')).toBeNull();
+        expect(screen.queryByText('Select All')).toBeNull();
     });
 
     describe('selecting items with the shift key', () => {
