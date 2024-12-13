@@ -30,7 +30,7 @@ describe('<SelectAllButton />', () => {
         fireEvent.click(screen.getAllByRole('checkbox')[1]);
         await screen.findByText('1 item selected');
         fireEvent.click(
-            screen.getByRole('button', { name: 'Select 5 first books' })
+            screen.getByRole('button', { name: 'Select all books (max 5)' })
         );
         await screen.findByText(
             'There are too many elements to select them all. Only the first 5 elements were selected.'
