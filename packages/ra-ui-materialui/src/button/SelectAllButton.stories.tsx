@@ -120,7 +120,7 @@ export const Label = () => (
 export const Limit = () => (
     <Wrapper
         bulkActionButtons={
-            <SelectAllButton label="Select 5 first books" limit={5} />
+            <SelectAllButton label="Select all books (max 5)" limit={5} />
         }
     />
 );
