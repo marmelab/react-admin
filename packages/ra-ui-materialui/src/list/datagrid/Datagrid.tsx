@@ -324,9 +324,33 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     /**
      * The component used to render the bulk actions toolbar.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#bulkactionstoolbar (TODO: write doc)
+     * @see https://marmelab.com/react-admin/Datagrid.html#bulkactionstoolbar
      * @example
-     * TODO: write example
+     * import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton, useUnselectAll, Button } from 'react-admin';
+     *
+     * const UnselectButton = () => {
+     *     const unselect = useUnselectAll('posts');
+     *     return <Button onClick={unselect} label="Unselect all records" />;
+     * };
+     *
+     * const PostBulkActionsToolbar = () => (
+     *     <BulkActionsToolbar actions={
+     *         <>
+     *             <SelectAllButton label="Select all records" />
+     *             <UnselectButton />
+     *         </>
+     *     }>
+     *         <BulkDeleteButton />
+     *     </BulkActionsToolbar>
+     * );
+     *
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid bulkActionsToolbar={<PostBulkActionsToolbar />}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
      */
     bulkActionsToolbar?: ReactElement | false;
 
