@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
+import { useListContext } from 'ra-core';
 import {
-    useListContext,
     type RaRecord,
     type UseGetListOptions,
     type UseReferenceArrayFieldControllerParams,
@@ -23,7 +23,6 @@ import { Button, ButtonProps } from './Button';
  * @param {Props} props
  *
  * @example
- *
  * const MySelectAllButton = () => <SelectAllButton limit={100} label="Select all books" />;
  */
 
