@@ -14,7 +14,8 @@ import type { FilterPayload, RaRecord, SortPayload } from '../../types';
  * @param {FilterPayload} filter Optional. The filter object passed to the dataProvider
  * @returns {Function} handleSelectAll A function to select all items of a list
  *
- * @example // TODO: Update this example after updating the button position in the toolbar
+ * @example
+ * import { List, Datagrid, BulkActionsToolbar, BulkDeleteButton, useListContext, useSelectAll } from 'react-admin';
  *
  * const MySelectAllButton = () => {
  *   const { sort, filter } = useListContext();
@@ -23,15 +24,21 @@ import type { FilterPayload, RaRecord, SortPayload } from '../../types';
  *       queryOptions: { meta: { foo: 'bar' } },
  *       limit: 250,
  *   });
- *   return <Button onClick={handleClick}>Select All</Button>;
+ *   return <button onClick={handleClick}>Select All</button>;
  * };
  *
- * const PostList = () => (
- *   <List>
- *     <Datagrid bulkActionButtons={<MySelectAllButton />}>
- *       // ...
- *     </Datagrid>
- *   </List>
+ * const PostBulkActionsToolbar = () => (
+ *     <BulkActionsToolbar actions={<MySelectAllButton/>}>
+ *         <BulkDeleteButton />
+ *     </BulkActionsToolbar>
+ * );
+ *
+ * export const PostList = () => (
+ *     <List>
+ *         <Datagrid bulkActionsToolbar={<PostBulkActionsToolbar />}>
+ *             ...
+ *         </Datagrid>
+ *     </List>
  * );
  */
 export const useSelectAll = ({
