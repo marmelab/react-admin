@@ -176,7 +176,7 @@ describe('<useReferenceArrayFieldController />', () => {
             </div>
         );
 
-        it('should select all items if no items are selected', async () => {
+        it('should select all records', async () => {
             const callback = jest.fn(Children);
             render(<ReferenceArrayField>{callback}</ReferenceArrayField>);
             await waitFor(() => {
@@ -199,7 +199,7 @@ describe('<useReferenceArrayFieldController />', () => {
             });
         });
 
-        it('should select all items if some items are selected', async () => {
+        it('should select all records even though some records are already selected', async () => {
             const callback = jest.fn(Children);
             render(<ReferenceArrayField>{callback}</ReferenceArrayField>);
             await waitFor(() => {

@@ -327,7 +327,7 @@ describe('<useList />', () => {
     });
 
     describe('onSelectAll', () => {
-        it('should select all items if no items are selected', async () => {
+        it('should select all records', async () => {
             const callback = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
             render(<UseList data={data} callback={callback} />);
@@ -342,7 +342,7 @@ describe('<useList />', () => {
                 );
             });
         });
-        it('should select all items if some items are selected', async () => {
+        it('should select all records even though some records are already selected', async () => {
             const callback = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
             render(<UseList data={data} callback={callback} />);

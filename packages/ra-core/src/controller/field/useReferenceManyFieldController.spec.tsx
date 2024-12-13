@@ -426,7 +426,7 @@ describe('useReferenceManyFieldController', () => {
             </div>
         );
 
-        it('should select all items if no items are selected', async () => {
+        it('should select all records', async () => {
             const callback = jest.fn(Children);
             render(<ReferenceManyField>{callback}</ReferenceManyField>);
             fireEvent.click(await screen.findByText('Select All'));
@@ -439,7 +439,7 @@ describe('useReferenceManyFieldController', () => {
             });
         });
 
-        it('should select all items if some items are selected', async () => {
+        it('should select all records even though some records are already selected', async () => {
             const callback = jest.fn(Children);
             render(<ReferenceManyField>{callback}</ReferenceManyField>);
             fireEvent.click(await screen.findByText('Select 1'));
@@ -460,7 +460,7 @@ describe('useReferenceManyFieldController', () => {
             });
         });
 
-        it('should select the maximum items possible until we reached the limit', async () => {
+        it('should not select more records than the provided limit', async () => {
             const getManyReference = jest
                 .fn()
                 .mockImplementation((_resource, params) =>

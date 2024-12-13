@@ -69,7 +69,7 @@ describe('useInfiniteListController', () => {
                 <span>children</span>
             </div>
         );
-        it('should select all items if no items are selected', async () => {
+        it('should select all records', async () => {
             const callback = jest.fn(Children);
             render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
             fireEvent.click(await screen.findByText('Select All'));
@@ -81,7 +81,7 @@ describe('useInfiniteListController', () => {
                 );
             });
         });
-        it('should select all items if some items are selected', async () => {
+        it('should select all records even though some records are already selected', async () => {
             const callback = jest.fn(Children);
             render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
             fireEvent.click(await screen.findByText('Select 0'));
@@ -101,7 +101,7 @@ describe('useInfiniteListController', () => {
                 );
             });
         });
-        it('should select the maximum items possible until we reached the limit', async () => {
+        it('should not select more records than the provided limit', async () => {
             const getList = jest.spyOn(dataProvider, 'getList');
             const callback = jest.fn(Children);
             render(<Basic dataProvider={dataProvider}>{callback}</Basic>);

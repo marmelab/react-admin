@@ -24,7 +24,7 @@ describe('<SelectAllButton />', () => {
         await screen.findByText('1 item selected');
         await screen.findByRole('button', { name: 'Select all books' });
     });
-    it('should select all items until the limit is reached', async () => {
+    it('should not select more records than the limit', async () => {
         render(<Limit />);
         await screen.findByText('War and Peace');
         fireEvent.click(screen.getAllByRole('checkbox')[1]);
