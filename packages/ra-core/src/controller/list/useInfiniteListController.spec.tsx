@@ -83,7 +83,7 @@ describe('useInfiniteListController', () => {
         });
         it('should select all items if some items are selected', async () => {
             const callback = jest.fn(Children);
-            render(<Basic dataProvider={dataProvider} children={callback} />);
+            render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
             fireEvent.click(await screen.findByText('Select 0'));
             await waitFor(() => {
                 expect(callback).toHaveBeenCalledWith(
@@ -104,7 +104,7 @@ describe('useInfiniteListController', () => {
         it('should select the maximum items possible until we reached the limit', async () => {
             const getList = jest.spyOn(dataProvider, 'getList');
             const callback = jest.fn(Children);
-            render(<Basic dataProvider={dataProvider} children={callback} />);
+            render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
             fireEvent.click(await screen.findByText('Limited Select All'));
             await waitFor(() => {
                 expect(callback).toHaveBeenCalledWith(
