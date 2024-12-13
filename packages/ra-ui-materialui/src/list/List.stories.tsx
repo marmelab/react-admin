@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import { BulkDeleteButton, ListButton, SelectAllButton } from '../button';
 import { ShowGuesser } from '../detail';
 import TopToolbar from '../layout/TopToolbar';
+import { BulkActionsToolbar } from './BulkActionsToolbar';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -469,11 +470,11 @@ export const Meta = () => (
 export const Default = ({
     dataProvider = defaultDataProvider,
     children,
-    bulkActionButtons,
+    bulkActionsToolbar,
 }: {
     dataProvider?: DataProvider;
     children?: React.ReactNode;
-    bulkActionButtons?: DatagridProps['bulkActionButtons'];
+    bulkActionsToolbar?: DatagridProps['bulkActionsToolbar'];
 }) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={dataProvider}>
@@ -481,7 +482,7 @@ export const Default = ({
                 name="books"
                 list={() => (
                     <List filters={[<SearchInput source="q" alwaysOn />]}>
-                        <Datagrid bulkActionButtons={bulkActionButtons}>
+                        <Datagrid bulkActionsToolbar={bulkActionsToolbar}>
                             <TextField source="id" />
                             <TextField source="title" />
                             <TextField source="author" />
@@ -505,11 +506,10 @@ export const SelectAllLimit = ({
     limit?: number;
 }) => (
     <Default
-        bulkActionButtons={
-            <>
-                <SelectAllButton limit={limit} />
+        bulkActionsToolbar={
+            <BulkActionsToolbar actions={<SelectAllButton limit={limit} />}>
                 <BulkDeleteButton />
-            </>
+            </BulkActionsToolbar>
         }
         dataProvider={dataProvider}
     >

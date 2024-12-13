@@ -23,6 +23,7 @@ import { TextField } from '../field';
 import { SearchInput } from '../input';
 import { BulkDeleteButton, SelectAllButton, SortButton } from '../button';
 import { TopToolbar, Layout } from '../layout';
+import { BulkActionsToolbar } from './BulkActionsToolbar';
 
 export default {
     title: 'ra-ui-materialui/list/InfiniteList',
@@ -346,16 +347,16 @@ export const WithFooter = () => (
 );
 
 export const WithDatagrid = ({
-    bulkActionButtons,
+    bulkActionsToolbar,
 }: {
-    bulkActionButtons?: DatagridProps['bulkActionButtons'];
+    bulkActionsToolbar?: DatagridProps['bulkActionsToolbar'];
 }) => (
     <Admin dataProvider={dataProvider}>
         <Resource
             name="books"
             list={() => (
                 <InfiniteList>
-                    <Datagrid bulkActionButtons={bulkActionButtons}>
+                    <Datagrid bulkActionsToolbar={bulkActionsToolbar}>
                         <TextField source="id" />
                         <TextField source="title" />
                         <TextField source="author" />
@@ -367,16 +368,15 @@ export const WithDatagrid = ({
 );
 
 export const WithDatagridAndSelectAllLimit = ({
-    limit = 6,
+    limit = 23,
 }: {
     limit?: number;
 }) => (
     <WithDatagrid
-        bulkActionButtons={
-            <>
-                <SelectAllButton limit={limit} />
+        bulkActionsToolbar={
+            <BulkActionsToolbar actions={<SelectAllButton limit={limit} />}>
                 <BulkDeleteButton />
-            </>
+            </BulkActionsToolbar>
         }
     />
 );

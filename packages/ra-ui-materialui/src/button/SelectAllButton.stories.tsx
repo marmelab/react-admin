@@ -7,8 +7,9 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { SelectAllButton } from './SelectAllButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { List, Datagrid } from '../list';
+import { List, Datagrid, BulkActionsToolbar } from '../list';
 import { TextField, NumberField } from '../field';
+import { BulkDeleteButton } from './BulkDeleteButton';
 
 export default { title: 'ra-ui-materialui/button/SelectAllButton' };
 
@@ -89,7 +90,7 @@ const dataProvider = fakeRestDataProvider({
     authors: [],
 });
 
-const Wrapper = ({ bulkActionButtons }) => (
+const Wrapper = ({ actions }) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <AdminUI>
@@ -97,7 +98,13 @@ const Wrapper = ({ bulkActionButtons }) => (
                     name="books"
                     list={() => (
                         <List>
-                            <Datagrid bulkActionButtons={bulkActionButtons}>
+                            <Datagrid
+                                bulkActionsToolbar={
+                                    <BulkActionsToolbar actions={actions}>
+                                        <BulkDeleteButton />
+                                    </BulkActionsToolbar>
+                                }
+                            >
                                 <TextField source="id" />
                                 <TextField source="title" />
                                 <TextField source="author" />
@@ -111,16 +118,14 @@ const Wrapper = ({ bulkActionButtons }) => (
     </TestMemoryRouter>
 );
 
-export const Basic = () => <Wrapper bulkActionButtons={<SelectAllButton />} />;
+export const Basic = () => <Wrapper actions={<SelectAllButton />} />;
 
 export const Label = () => (
-    <Wrapper bulkActionButtons={<SelectAllButton label="Select all books" />} />
+    <Wrapper actions={<SelectAllButton label="Select all books" />} />
 );
 
 export const Limit = () => (
     <Wrapper
-        bulkActionButtons={
-            <SelectAllButton label="Select all books (max 5)" limit={5} />
-        }
+        actions={<SelectAllButton label="Select all books (max 5)" limit={5} />}
     />
 );

@@ -6,13 +6,8 @@ import {
     ResourceContextProvider,
     TestMemoryRouter,
 } from 'ra-core';
-import {
-    Admin,
-    AdminProps,
-    type DatagridProps,
-    ListGuesser,
-    Resource,
-} from 'react-admin';
+import { Admin, ListGuesser, Resource } from 'react-admin';
+import type { AdminProps } from 'react-admin';
 import { ThemeProvider, Box, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import fakeDataProvider from 'ra-data-fakerest';
@@ -22,13 +17,14 @@ import englishMessages from 'ra-language-english';
 import { TextField } from '../field';
 import { ReferenceManyField } from './ReferenceManyField';
 import { Datagrid } from '../list/datagrid/Datagrid';
-import { Pagination, SingleFieldList } from '../list';
+import { BulkActionsToolbar, Pagination, SingleFieldList } from '../list';
 import { Notification } from '../layout/Notification';
 import { FilterForm } from '../list';
 import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectAllButton, BulkDeleteButton } from '../button';
+import type { DatagridProps } from '../list/datagrid/Datagrid';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
 
@@ -194,10 +190,10 @@ export const StoreKey = () => (
 
 export const WithPagination = ({
     dataProvider = fullDataProvider,
-    bulkActionButtons,
+    bulkActionsToolbar,
 }: {
     dataProvider?: AdminProps['dataProvider'];
-    bulkActionButtons?: DatagridProps['bulkActionButtons'];
+    bulkActionsToolbar?: DatagridProps['bulkActionsToolbar'];
 }) => (
     <Wrapper
         i18nProvider={polyglotI18nProvider(() => englishMessages)}
@@ -210,7 +206,7 @@ export const WithPagination = ({
             pagination={<Pagination />}
             perPage={5}
         >
-            <Datagrid bulkActionButtons={bulkActionButtons}>
+            <Datagrid bulkActionsToolbar={bulkActionsToolbar}>
                 <TextField source="title" />
             </Datagrid>
         </ReferenceManyField>
@@ -225,11 +221,10 @@ export const WithPaginationAndSelectAllLimit = ({
     limit?: number;
 }) => (
     <WithPagination
-        bulkActionButtons={
-            <>
-                <SelectAllButton limit={limit} />
+        bulkActionsToolbar={
+            <BulkActionsToolbar actions={<SelectAllButton limit={limit} />}>
                 <BulkDeleteButton />
-            </>
+            </BulkActionsToolbar>
         }
         dataProvider={dataProvider}
     />

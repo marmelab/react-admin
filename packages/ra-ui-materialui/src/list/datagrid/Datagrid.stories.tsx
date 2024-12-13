@@ -21,7 +21,11 @@ import { Box, Checkbox, TableCell, TableRow, styled } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { FieldProps, TextField } from '../../field';
-import { BulkDeleteButton, BulkExportButton } from '../../button';
+import {
+    BulkDeleteButton,
+    BulkExportButton,
+    SelectAllButton,
+} from '../../button';
 import { Datagrid, DatagridProps } from './Datagrid';
 import { ShowGuesser, SimpleShowLayout } from '../../detail';
 import { AdminUI } from '../../AdminUI';
@@ -30,6 +34,7 @@ import { List } from '../List';
 import { EditGuesser } from '../../detail';
 import { DatagridRowProps } from './DatagridRow';
 import DatagridBody, { DatagridBodyProps } from './DatagridBody';
+import { BulkActionsToolbar } from '../BulkActionsToolbar';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -179,6 +184,42 @@ export const RowSx = () => (
             <TextField source="author" />
             <TextField source="year" />
         </Datagrid>
+    </Wrapper>
+);
+
+const CutomBulkActionToolbar = () => (
+    <BulkActionsToolbar
+        actions={<SelectAllButton label="Select all records" />}
+    >
+        <BulkDeleteButton />
+    </BulkActionsToolbar>
+);
+
+export const BulkActionToolbar = () => (
+    <Wrapper>
+        <Box sx={{ mt: -7 }}>
+            <h1>Default</h1>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="year" />
+            </Datagrid>
+            <h1>Disabled</h1>
+            <Datagrid bulkActionsToolbar={false}>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="year" />
+            </Datagrid>
+            <h1>Custom</h1>
+            <Datagrid bulkActionsToolbar={<CutomBulkActionToolbar />}>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="year" />
+            </Datagrid>
+        </Box>
     </Wrapper>
 );
 
