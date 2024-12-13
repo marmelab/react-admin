@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import expect from 'expect';
+import { fireEvent, render, waitFor, screen } from '@testing-library/react';
 
 import { useList, UseListOptions, UseListValue } from './useList';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { ListContextProvider } from './ListContextProvider';
 import { useListContext } from './useListContext';
 
@@ -17,7 +17,17 @@ const UseList = ({
 }) => {
     const value = useList(props);
     callback(value);
-    return <ListContextProvider value={value}>{children}</ListContextProvider>;
+    return (
+        <ListContextProvider value={value}>
+            <button onClick={() => value.onSelectAll()} name="Select All">
+                Select All
+            </button>
+            <button onClick={() => value.onSelect([1])} name="Select item 1">
+                Select item 1
+            </button>
+            {children}
+        </ListContextProvider>
+    );
 };
 
 describe('<useList />', () => {
@@ -321,9 +331,9 @@ describe('<useList />', () => {
             const children = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
             render(<UseList data={data} callback={children} />);
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
+            fireEvent.click(
+                await screen.findByRole('button', { name: 'Select All' })
+            );
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -336,9 +346,9 @@ describe('<useList />', () => {
             const children = jest.fn();
             const data = [{ id: 0 }, { id: 1 }];
             render(<UseList data={data} callback={children} />);
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelect([1]);
-            });
+            fireEvent.click(
+                await screen.findByRole('button', { name: 'Select item 1' })
+            );
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -346,9 +356,7 @@ describe('<useList />', () => {
                     })
                 );
             });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
+            fireEvent.click(screen.getByRole('button', { name: 'Select All' }));
             await waitFor(() => {
                 expect(children).toHaveBeenCalledWith(
                     expect.objectContaining({

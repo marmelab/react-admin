@@ -59,14 +59,22 @@ describe('useInfiniteListController', () => {
     });
 
     describe('onSelectAll', () => {
+        const Children = params => (
+            <div>
+                <button onClick={() => params.onSelectAll()}>Select All</button>
+                <button onClick={() => params.onSelectAll({ limit: 1 })}>
+                    Limited Select All
+                </button>
+                <button onClick={() => params.onSelect([0])}>Select 0</button>
+                <span>children</span>
+            </div>
+        );
         it('should select all items if no items are selected', async () => {
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            render(<Basic dataProvider={dataProvider}>{children}</Basic>);
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
+            const spiedChildren = jest.fn(Children);
+            render(<Basic dataProvider={dataProvider}>{spiedChildren}</Basic>);
+            fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
@@ -74,23 +82,21 @@ describe('useInfiniteListController', () => {
             });
         });
         it('should select all items if some items are selected', async () => {
-            const children = jest.fn().mockReturnValue(<span>children</span>);
-            render(<Basic dataProvider={dataProvider} children={children} />);
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelect([0]);
-            });
+            const spiedChildren = jest.fn(Children);
+            render(
+                <Basic dataProvider={dataProvider} children={spiedChildren} />
+            );
+            fireEvent.click(await screen.findByText('Select 0'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0],
                     })
                 );
             });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
+            fireEvent.click(screen.getByText('Select All'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
@@ -108,15 +114,16 @@ describe('useInfiniteListController', () => {
                 })
             );
             const mockedDataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const spiedChildren = jest.fn(Children);
             render(
-                <Basic dataProvider={mockedDataProvider} children={children} />
+                <Basic
+                    dataProvider={mockedDataProvider}
+                    children={spiedChildren}
+                />
             );
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll({ limit: 1 });
-            });
+            fireEvent.click(await screen.findByText('Limited Select All'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0],
                     })

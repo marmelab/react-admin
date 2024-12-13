@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { act, render, waitFor } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
@@ -169,11 +169,18 @@ describe('<useReferenceArrayFieldController />', () => {
     });
 
     describe('onSelectAll', () => {
+        const Children = params => (
+            <div>
+                <button onClick={() => params.onSelectAll()}>Select All</button>
+                <span>children</span>
+            </div>
+        );
+
         it('should select all items if no items are selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
+            const spiedChildren = jest.fn(Children);
+            render(<ReferenceArrayField>{spiedChildren}</ReferenceArrayField>);
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         data: [
                             { id: 1, title: 'bar1' },
@@ -182,22 +189,21 @@ describe('<useReferenceArrayFieldController />', () => {
                     })
                 );
             });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
+            fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1, 2],
                     })
                 );
             });
         });
+
         it('should select all items if some items are selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceArrayField>{children}</ReferenceArrayField>);
+            const spiedChildren = jest.fn(Children);
+            render(<ReferenceArrayField>{spiedChildren}</ReferenceArrayField>);
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         data: [
                             { id: 1, title: 'bar1' },
@@ -206,11 +212,9 @@ describe('<useReferenceArrayFieldController />', () => {
                     })
                 );
             });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
+            fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1, 2],
                     })

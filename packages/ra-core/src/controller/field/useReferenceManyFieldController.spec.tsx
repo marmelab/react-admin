@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    act,
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { testDataProvider } from '../../dataProvider/testDataProvider';
@@ -419,47 +413,54 @@ describe('useReferenceManyFieldController', () => {
             );
         });
     });
+
     describe('onSelectAll', () => {
+        const Children = params => (
+            <div>
+                <button onClick={() => params.onSelectAll()}>Select All</button>
+                <button onClick={() => params.onSelectAll({ limit: 1 })}>
+                    Limited Select All
+                </button>
+                <button onClick={() => params.onSelect([1])}>Select 1</button>
+                <span>children</span>
+            </div>
+        );
+
         it('should select all items if no items are selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceManyField>{children}</ReferenceManyField>);
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
+            const spiedChildren = jest.fn(Children);
+            render(<ReferenceManyField>{spiedChildren}</ReferenceManyField>);
+            fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
                 );
             });
         });
+
         it('should select all items if some items are selected', async () => {
-            const children = jest.fn().mockReturnValue('child');
-            render(<ReferenceManyField>{children}</ReferenceManyField>);
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelect([1]);
-            });
+            const spiedChildren = jest.fn(Children);
+            render(<ReferenceManyField>{spiedChildren}</ReferenceManyField>);
+            fireEvent.click(await screen.findByText('Select 1'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [1],
                     })
                 );
             });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll();
-            });
+            fireEvent.click(screen.getByText('Select All'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0, 1],
                     })
                 );
             });
         });
+
         it('should select the maximum items possible until we reached the limit', async () => {
-            const children = jest.fn().mockReturnValue('child');
             const getManyReference = jest
                 .fn()
                 .mockImplementation((_resource, params) =>
@@ -474,24 +475,23 @@ describe('useReferenceManyFieldController', () => {
             const dataProvider = testDataProvider({
                 getManyReference,
             });
+            const spiedChildren = jest.fn(Children);
             render(
                 <ReferenceManyField dataProvider={dataProvider}>
-                    {children}
+                    {spiedChildren}
                 </ReferenceManyField>
             );
             await waitFor(() => {
-                expect(children).toHaveBeenNthCalledWith(
+                expect(spiedChildren).toHaveBeenNthCalledWith(
                     1,
                     expect.objectContaining({
                         selectedIds: [],
                     })
                 );
             });
-            act(() => {
-                children.mock.calls.at(-1)[0].onSelectAll({ limit: 1 });
-            });
+            fireEvent.click(await screen.findByText('Limited Select All'));
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                expect(spiedChildren).toHaveBeenCalledWith(
                     expect.objectContaining({
                         selectedIds: [0],
                     })
