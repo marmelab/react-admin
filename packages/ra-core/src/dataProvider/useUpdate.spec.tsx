@@ -510,6 +510,619 @@ describe('useUpdate', () => {
                 });
             });
         });
+
+        describe('pessimistic mutation mode', () => {
+            it('updates getOne query cache when dataProvider promise resolves', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    ['foo', 'getOne', { id: '1', meta: undefined }],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate();
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                });
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                    });
+                });
+                await waitFor(() => {
+                    expect(
+                        queryClient.getQueryData([
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: undefined },
+                        ])
+                    ).toEqual({
+                        id: 1,
+                        bar: 'baz',
+                    });
+                });
+            });
+
+            it('updates getOne query cache when dataProvider promise resolves with meta', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    ['foo', 'getOne', { id: '1', meta: { key: 'value' } }],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate();
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                    meta: { key: 'value' },
+                });
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { key: 'value' },
+                    });
+                });
+                await waitFor(() => {
+                    expect(
+                        queryClient.getQueryData([
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: { key: 'value' } },
+                        ])
+                    ).toEqual({
+                        id: 1,
+                        bar: 'baz',
+                    });
+                });
+            });
+
+            it('updates getOne query cache when dataProvider promise resolves with meta at hook time', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    ['foo', 'getOne', { id: '1', meta: { key: 'value' } }],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { key: 'value' },
+                    });
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate();
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { key: 'value' },
+                    });
+                });
+                await waitFor(() => {
+                    expect(
+                        queryClient.getQueryData([
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: { key: 'value' } },
+                        ])
+                    ).toEqual({
+                        id: 1,
+                        bar: 'baz',
+                    });
+                });
+            });
+
+            it('does not update getOne query cache if disableCacheUpdate is true', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    [
+                        'foo',
+                        'getOne',
+                        { id: '1', meta: { disableCacheUpdate: true } },
+                    ],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate();
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                    meta: { disableCacheUpdate: true },
+                });
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { disableCacheUpdate: true },
+                    });
+                });
+                // Wait some time after the update
+                await new Promise(resolve => setTimeout(resolve, 50));
+                expect(
+                    queryClient.getQueryData([
+                        'foo',
+                        'getOne',
+                        { id: '1', meta: { disableCacheUpdate: true } },
+                    ])
+                ).toEqual({
+                    id: 1,
+                    bar: 'bar',
+                });
+            });
+
+            it('does not update getOne query cache if disableCacheUpdate is true at hook time', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    [
+                        'foo',
+                        'getOne',
+                        { id: '1', meta: { disableCacheUpdate: true } },
+                    ],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { disableCacheUpdate: true },
+                    });
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate();
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { disableCacheUpdate: true },
+                    });
+                });
+                // Wait some time after the update
+                await new Promise(resolve => setTimeout(resolve, 50));
+                expect(
+                    queryClient.getQueryData([
+                        'foo',
+                        'getOne',
+                        { id: '1', meta: { disableCacheUpdate: true } },
+                    ])
+                ).toEqual({
+                    id: 1,
+                    bar: 'bar',
+                });
+            });
+        });
+
+        describe('optimistic mutation mode', () => {
+            it('updates getOne query cache immediately and invalidates query when dataProvider promise resolves', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    ['foo', 'getOne', { id: '1', meta: undefined }],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                const queryClientSpy = jest.spyOn(
+                    queryClient,
+                    'invalidateQueries'
+                );
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate(undefined, undefined, {
+                        mutationMode: 'optimistic',
+                    });
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                });
+                await waitFor(() => {
+                    expect(
+                        queryClient.getQueryData([
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: undefined },
+                        ])
+                    ).toEqual({
+                        id: 1,
+                        bar: 'baz',
+                    });
+                });
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                    });
+                });
+                await waitFor(() => {
+                    expect(queryClientSpy).toHaveBeenCalledWith({
+                        queryKey: [
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: undefined },
+                        ],
+                    });
+                });
+            });
+
+            it('updates getOne query cache immediately and invalidates query when dataProvider promise resolves with meta', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    ['foo', 'getOne', { id: '1', meta: { key: 'value' } }],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                const queryClientSpy = jest.spyOn(
+                    queryClient,
+                    'invalidateQueries'
+                );
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate(undefined, undefined, {
+                        mutationMode: 'optimistic',
+                    });
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                    meta: { key: 'value' },
+                });
+                await waitFor(() => {
+                    expect(
+                        queryClient.getQueryData([
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: { key: 'value' } },
+                        ])
+                    ).toEqual({
+                        id: 1,
+                        bar: 'baz',
+                    });
+                });
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { key: 'value' },
+                    });
+                });
+                await waitFor(() => {
+                    expect(queryClientSpy).toHaveBeenCalledWith({
+                        queryKey: [
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: { key: 'value' } },
+                        ],
+                    });
+                });
+            });
+
+            it('updates getOne query cache immediately and invalidates query when dataProvider promise resolves with meta at hook time', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    ['foo', 'getOne', { id: '1', meta: { key: 'value' } }],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                const queryClientSpy = jest.spyOn(
+                    queryClient,
+                    'invalidateQueries'
+                );
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate(
+                        'foo',
+                        {
+                            id: 1,
+                            data: { bar: 'baz' },
+                            previousData: { id: 1, bar: 'bar' },
+                            meta: { key: 'value' },
+                        },
+                        {
+                            mutationMode: 'optimistic',
+                        }
+                    );
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate();
+                await waitFor(() => {
+                    expect(
+                        queryClient.getQueryData([
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: { key: 'value' } },
+                        ])
+                    ).toEqual({
+                        id: 1,
+                        bar: 'baz',
+                    });
+                });
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { key: 'value' },
+                    });
+                });
+                await waitFor(() => {
+                    expect(queryClientSpy).toHaveBeenCalledWith({
+                        queryKey: [
+                            'foo',
+                            'getOne',
+                            { id: '1', meta: { key: 'value' } },
+                        ],
+                    });
+                });
+            });
+
+            it('does not update getOne query cache nor invalidates query if disableCacheUpdate is true', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    [
+                        'foo',
+                        'getOne',
+                        { id: '1', meta: { disableCacheUpdate: true } },
+                    ],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                const queryClientSpy = jest.spyOn(
+                    queryClient,
+                    'invalidateQueries'
+                );
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate(undefined, undefined, {
+                        mutationMode: 'optimistic',
+                    });
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                    meta: { disableCacheUpdate: true },
+                });
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { disableCacheUpdate: true },
+                    });
+                });
+                // Wait some time after the update
+                await new Promise(resolve => setTimeout(resolve, 50));
+                expect(
+                    queryClient.getQueryData([
+                        'foo',
+                        'getOne',
+                        { id: '1', meta: { disableCacheUpdate: true } },
+                    ])
+                ).toEqual({
+                    id: 1,
+                    bar: 'bar',
+                });
+                expect(queryClientSpy).not.toHaveBeenCalled();
+            });
+
+            it('does not update getOne query cache nor invalidates query if disableCacheUpdate is true at hook time', async () => {
+                const queryClient = new QueryClient();
+                queryClient.setQueryData(
+                    [
+                        'foo',
+                        'getOne',
+                        { id: '1', meta: { disableCacheUpdate: true } },
+                    ],
+                    { id: 1, bar: 'bar' }
+                );
+                const dataProvider = {
+                    update: jest.fn(() =>
+                        Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                    ),
+                } as any;
+                const queryClientSpy = jest.spyOn(
+                    queryClient,
+                    'invalidateQueries'
+                );
+                let localUpdate;
+                const Dummy = () => {
+                    const [update] = useUpdate(
+                        'foo',
+                        {
+                            id: 1,
+                            data: { bar: 'baz' },
+                            previousData: { id: 1, bar: 'bar' },
+                            meta: { disableCacheUpdate: true },
+                        },
+                        {
+                            mutationMode: 'optimistic',
+                        }
+                    );
+                    localUpdate = update;
+                    return <span />;
+                };
+                render(
+                    <CoreAdminContext
+                        dataProvider={dataProvider}
+                        queryClient={queryClient}
+                    >
+                        <Dummy />
+                    </CoreAdminContext>
+                );
+                localUpdate();
+                await waitFor(() => {
+                    expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                        meta: { disableCacheUpdate: true },
+                    });
+                });
+                // Wait some time after the update
+                await new Promise(resolve => setTimeout(resolve, 50));
+                expect(
+                    queryClient.getQueryData([
+                        'foo',
+                        'getOne',
+                        { id: '1', meta: { disableCacheUpdate: true } },
+                    ])
+                ).toEqual({
+                    id: 1,
+                    bar: 'bar',
+                });
+                expect(queryClientSpy).not.toHaveBeenCalled();
+            });
+        });
     });
     describe('middlewares', () => {
         it('when pessimistic, it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {

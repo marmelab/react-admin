@@ -269,13 +269,16 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 const {
                     resource: callTimeResource = resource,
                     id: callTimeId = id,
+                    meta: callTimeMeta = meta,
                 } = variables;
-                updateCache({
-                    resource: callTimeResource,
-                    id: callTimeId,
-                    data,
-                    meta: mutationOptions.meta ?? paramsRef.current.meta,
-                });
+                if (!callTimeMeta?.disableCacheUpdate) {
+                    updateCache({
+                        resource: callTimeResource,
+                        id: callTimeId,
+                        data,
+                        meta: callTimeMeta,
+                    });
+                }
 
                 if (
                     mutationOptions.onSuccess &&
@@ -292,10 +295,13 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             context: { snapshot: Snapshot }
         ) => {
             if (mode.current === 'optimistic' || mode.current === 'undoable') {
-                // Always refetch after error or success:
-                context.snapshot.forEach(([queryKey]) => {
-                    queryClient.invalidateQueries({ queryKey });
-                });
+                const { meta: callTimeMeta = meta } = variables;
+                // Refetch after error or success unless cache update is disabled
+                if (!callTimeMeta?.disableCacheUpdate || error) {
+                    context.snapshot.forEach(([queryKey]) => {
+                        queryClient.invalidateQueries({ queryKey });
+                    });
+                }
             }
 
             if (callTimeOnSettled.current) {
@@ -438,12 +444,14 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         );
 
         // Optimistically update to the new value
-        updateCache({
-            resource: callTimeResource,
-            id: callTimeId,
-            data: callTimeData,
-            meta: callTimeMeta,
-        });
+        if (!callTimeMeta?.disableCacheUpdate) {
+            updateCache({
+                resource: callTimeResource,
+                id: callTimeId,
+                data: callTimeData,
+                meta: callTimeMeta,
+            });
+        }
 
         // run the success callbacks during the next tick
         setTimeout(() => {
