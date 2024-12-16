@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "The useGetRecordRepresentation Component"
+title: "The useGetRecordRepresentation Hook"
 ---
 
 # `useGetRecordRepresentation`

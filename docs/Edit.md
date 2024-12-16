@@ -787,6 +787,61 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 **Tip**: The notification message will be translated.
 
+## Prefilling the Form
+
+You sometimes need to pre-populate the form changes to a record based on a *related* record. For instance, to revert a record to a previous version, or to make some changes while letting users modify others as well.
+
+By default, the `<Edit>` view starts with the current `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Edit>` view uses that `record` to prefill the form.
+
+That means that if you want to create a link to edition view, modifying immediately *some* values, all you have to do is to set the `state` prop of the `<EditButton>`:
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { EditButton, Datagrid, List, useRecordContext } from 'react-admin';
+
+const ApproveButton = () => {
+    const record = useRecordContext();
+    return (
+        <EditButton
+            state={{ record: { status: 'approved' } }}
+        />
+    );
+};
+
+export default PostList = () => (
+    <List>
+        <Datagrid>
+            ...
+            <ApproveButton />
+        </Datagrid>
+    </List>
+)
+```
+{% endraw %}
+
+**Tip**: The `<Edit>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `ApproveButton` could also be written as:
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { CreateButton, useRecordContext } from 'react-admin';
+
+const ApproveButton = () => {
+    const record = useRecordContext();
+    return (
+        <EditButton
+            to={{
+                search: `?source=${JSON.stringify({ status: 'approved' })}`,
+            }}
+        />
+    );
+};
+```
+{% endraw %}
+
+Should you use the location `state` or the location `search`? The latter modifies the URL, so it's only necessary if you want to build cross-application links (e.g. from one admin to the other). In general, using the location `state` is a safe bet.
+
 ## Editing A Record In A Modal
 
 `<Edit>` is designed to be a page component, passed to the `edit` prop of the `<Resource>` component. But you may want to let users edit a record from another page. 
