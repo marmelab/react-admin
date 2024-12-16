@@ -22,8 +22,9 @@ import { Form } from './Form';
 import { useInput } from './useInput';
 import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
-import { I18nProvider } from '../types';
+import { I18nProvider, RaRecord } from '../types';
 import {
+    RecordContextProvider,
     SaveContextProvider,
     TestMemoryRouter,
     useNotificationContext,
@@ -415,11 +416,24 @@ export const ServerSideValidation = () => {
     );
 };
 
-export const MultiRoutesForm = ({ url }: { url?: any }) => (
+export const MultiRoutesForm = ({
+    url,
+    initialRecord,
+}: {
+    url?: any;
+    initialRecord?: Partial<RaRecord>;
+}) => (
     <TestMemoryRouter key={url} initialEntries={[url]}>
         <CoreAdminContext i18nProvider={defaultI18nProvider}>
             <Routes>
-                <Route path="/form/*" element={<FormWithSubRoutes />} />
+                <Route
+                    path="/form/*"
+                    element={
+                        <RecordContextProvider value={initialRecord}>
+                            <FormWithSubRoutes />
+                        </RecordContextProvider>
+                    }
+                />
             </Routes>
         </CoreAdminContext>
     </TestMemoryRouter>
@@ -427,6 +441,7 @@ export const MultiRoutesForm = ({ url }: { url?: any }) => (
 
 MultiRoutesForm.args = {
     url: 'unmodified',
+    initialRecord: 'none',
 };
 
 MultiRoutesForm.argTypes = {
@@ -446,17 +461,22 @@ MultiRoutesForm.argTypes = {
         },
         control: { type: 'select' },
     },
+    initialRecord: {
+        options: ['none', 'provided'],
+        mapping: {
+            none: undefined,
+            provided: { title: 'lorem', body: 'unmodified' },
+        },
+        control: { type: 'select' },
+    },
 };
 
-const record = { title: 'lorem', body: 'unmodified' };
 const FormWithSubRoutes = () => {
     return (
-        <>
-            <Form record={record}>
-                <TabbedForm />
-                <SubmitButton />
-            </Form>
-        </>
+        <Form>
+            <TabbedForm />
+            <SubmitButton />
+        </Form>
     );
 };
 

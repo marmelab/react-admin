@@ -809,9 +809,45 @@ describe('Form', () => {
             expectedValue: 'from-search',
         },
     ])(
-        'should support overriding the record values from the location $from',
+        'should support prefilling the from values from the location $from',
         async ({ url, expectedValue }) => {
             render(<MultiRoutesForm url={url} />);
+            expect(
+                (await screen.findByLabelText<HTMLInputElement>('title')).value
+            ).toEqual('');
+            expect(
+                (screen.getByText('Submit') as HTMLInputElement).disabled
+            ).toEqual(false);
+            fireEvent.click(screen.getByText('Settings'));
+            await screen.findByDisplayValue(expectedValue);
+            expect(
+                screen.getByText<HTMLInputElement>('Submit').disabled
+            ).toEqual(false);
+        }
+    );
+    it.each([
+        {
+            from: 'state',
+            url: {
+                pathname: '/form/general',
+                state: { record: { body: 'from-state' } },
+            },
+            expectedValue: 'from-state',
+        },
+        {
+            from: 'search query',
+            url: `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}` as To,
+            expectedValue: 'from-search',
+        },
+    ])(
+        'should support overriding the record values from the location $from',
+        async ({ url, expectedValue }) => {
+            render(
+                <MultiRoutesForm
+                    url={url}
+                    initialRecord={{ title: 'lorem', body: 'unmodified' }}
+                />
+            );
             await screen.findByDisplayValue('lorem');
             expect(
                 (screen.getByText('Submit') as HTMLInputElement).disabled
@@ -819,7 +855,7 @@ describe('Form', () => {
             fireEvent.click(screen.getByText('Settings'));
             await screen.findByDisplayValue(expectedValue);
             expect(
-                (screen.getByText('Submit') as HTMLInputElement).disabled
+                screen.getByText<HTMLInputElement>('Submit').disabled
             ).toEqual(false);
         }
     );
