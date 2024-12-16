@@ -1,0 +1,25 @@
+<script>
+  function hideBanner() {
+    document.getElementById("banner").style.display = "none";
+    window.localStorage.setItem("hideBannerDate", Date.now().toString());
+  }
+  const hideBannerDate = parseInt(
+    window.localStorage.getItem("hideBannerDate"),
+    10
+  );
+
+  const banner = document.getElementById("banner");
+  const emojiContainer = document.getElementById("randomEmoji");
+
+  if (
+    banner &&
+    (!hideBannerDate || Date.now() - hideBannerDate > 14 * 24 * 60 * 60 * 1000)
+  ) {
+    if (emojiContainer !== null) {
+      const emojis = ["🎄", "🎅", "🎁", "🎉", "🦌", "🤶", "🌟", "🔔", "🧦"];
+      document.getElementById("randomEmoji").innerHTML =
+        emojis[Math.floor(Math.random() * emojis.length)];
+    }
+    banner.style.display = "flex";
+  }
+</script>
