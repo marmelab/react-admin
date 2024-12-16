@@ -5,11 +5,7 @@ import {
     getRecordFromLocation,
     useRecordFromLocation,
 } from './useRecordFromLocation';
-import {
-    RecordContextProvider,
-    TestMemoryRouter,
-    UseRecordFromLocationOptions,
-} from '..';
+import { TestMemoryRouter, UseRecordFromLocationOptions } from '..';
 
 describe('useRecordFromLocation', () => {
     const UseGetRecordFromLocation = (props: UseRecordFromLocationOptions) => {
@@ -31,18 +27,16 @@ describe('useRecordFromLocation', () => {
 
         await screen.findByText(JSON.stringify(record));
     });
-    it('return the record from the RecordContext as is if there is no location search nor state that contains a record', async () => {
+    it('return null if there is no location search nor state that contains a record', async () => {
         render(
             <TestMemoryRouter initialEntries={[`/posts/create?value=test`]}>
-                <RecordContextProvider value={{ initial: 'initial value' }}>
-                    <UseGetRecordFromLocation />
-                </RecordContextProvider>
+                <UseGetRecordFromLocation />
             </TestMemoryRouter>
         );
 
-        await screen.findByText(JSON.stringify({ initial: 'initial value' }));
+        await screen.findByText('null');
     });
-    it('return merge the record from the RecordContext with the one from the location search', async () => {
+    it('return the record from the location search', async () => {
         const record = { test: 'value' };
         render(
             <TestMemoryRouter
@@ -50,17 +44,13 @@ describe('useRecordFromLocation', () => {
                     `/posts/create?source=${JSON.stringify(record)}`,
                 ]}
             >
-                <RecordContextProvider value={{ initial: 'initial value' }}>
-                    <UseGetRecordFromLocation />
-                </RecordContextProvider>
+                <UseGetRecordFromLocation />
             </TestMemoryRouter>
         );
 
-        await screen.findByText(
-            JSON.stringify({ initial: 'initial value', test: 'value' })
-        );
+        await screen.findByText(JSON.stringify({ test: 'value' }));
     });
-    it('return merge the record from the RecordContext with the one from the location state', async () => {
+    it('return the record from the location state', async () => {
         const record = { test: 'value' };
         render(
             <TestMemoryRouter
@@ -68,55 +58,11 @@ describe('useRecordFromLocation', () => {
                     { pathname: `/posts/create`, state: { record } },
                 ]}
             >
-                <RecordContextProvider value={{ initial: 'initial value' }}>
-                    <UseGetRecordFromLocation />
-                </RecordContextProvider>
+                <UseGetRecordFromLocation />
             </TestMemoryRouter>
         );
 
-        await screen.findByText(
-            JSON.stringify({ initial: 'initial value', test: 'value' })
-        );
-    });
-    it('return merge the record passed as option with the one from the location search', async () => {
-        const record = { test: 'value' };
-        render(
-            <TestMemoryRouter
-                initialEntries={[
-                    `/posts/create?source=${JSON.stringify(record)}`,
-                ]}
-            >
-                <RecordContextProvider value={{ initial: 'initial value' }}>
-                    <UseGetRecordFromLocation
-                        record={{ anotherRecord: 'another value' }}
-                    />
-                </RecordContextProvider>
-            </TestMemoryRouter>
-        );
-
-        await screen.findByText(
-            JSON.stringify({ anotherRecord: 'another value', test: 'value' })
-        );
-    });
-    it('return merge the record passed as option with the one from the location state', async () => {
-        const record = { test: 'value' };
-        render(
-            <TestMemoryRouter
-                initialEntries={[
-                    { pathname: `/posts/create`, state: { record } },
-                ]}
-            >
-                <RecordContextProvider value={{ initial: 'initial value' }}>
-                    <UseGetRecordFromLocation
-                        record={{ anotherRecord: 'another value' }}
-                    />
-                </RecordContextProvider>
-            </TestMemoryRouter>
-        );
-
-        await screen.findByText(
-            JSON.stringify({ anotherRecord: 'another value', test: 'value' })
-        );
+        await screen.findByText(JSON.stringify({ test: 'value' }));
     });
 });
 

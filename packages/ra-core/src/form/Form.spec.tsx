@@ -20,8 +20,10 @@ import {
     NullValue,
     InNonDataRouter,
     ServerSideValidation,
+    MultiRoutesForm,
 } from './Form.stories';
 import { mergeTranslations } from '../i18n';
+import { To } from 'react-router';
 
 describe('Form', () => {
     const Input = props => {
@@ -791,4 +793,34 @@ describe('Form', () => {
             'There are validation errors. Please fix them.'
         );
     });
+
+    it.each([
+        {
+            from: 'state',
+            url: {
+                pathname: '/form/general',
+                state: { record: { body: 'from-state' } },
+            },
+            expectedValue: 'from-state',
+        },
+        {
+            from: 'search query',
+            url: `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}` as To,
+            expectedValue: 'from-search',
+        },
+    ])(
+        'should support overriding the record values from the location $from',
+        async ({ url, expectedValue }) => {
+            render(<MultiRoutesForm url={url} />);
+            await screen.findByDisplayValue('lorem');
+            expect(
+                (screen.getByText('Submit') as HTMLInputElement).disabled
+            ).toEqual(false);
+            fireEvent.click(screen.getByText('Settings'));
+            await screen.findByDisplayValue(expectedValue);
+            expect(
+                (screen.getByText('Submit') as HTMLInputElement).disabled
+            ).toEqual(false);
+        }
+    );
 });

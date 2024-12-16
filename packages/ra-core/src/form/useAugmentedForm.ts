@@ -1,13 +1,19 @@
-import { BaseSyntheticEvent, useCallback, useMemo, useRef } from 'react';
+import {
+    BaseSyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+} from 'react';
 import {
     FieldValues,
     SubmitHandler,
     useForm,
     UseFormProps,
 } from 'react-hook-form';
-
+import merge from 'lodash/merge';
 import { RaRecord } from '../types';
-import { SaveHandler, useSaveContext } from '../controller';
+import { SaveHandler, useRecordContext, useSaveContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
 import {
     getSimpleValidationResolver,
@@ -45,7 +51,7 @@ export const useAugmentedForm = <RecordType = any>(
         ...rest
     } = props;
     const saveContext = useSaveContext();
-    const record = useRecordFromLocation(props);
+    const record = useRecordContext(props);
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
@@ -80,6 +86,18 @@ export const useAugmentedForm = <RecordType = any>(
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
+
+    const recordFromLocation = useRecordFromLocation();
+    const recordFromLocationApplied = useRef(false);
+    const { reset } = form;
+    useEffect(() => {
+        if (recordFromLocation && !recordFromLocationApplied.current) {
+            reset(merge({}, record, recordFromLocation), {
+                keepDefaultValues: true,
+            });
+            recordFromLocationApplied.current = true;
+        }
+    }, [record, recordFromLocation, reset]);
 
     // submit callbacks
     const handleSubmit = useCallback(

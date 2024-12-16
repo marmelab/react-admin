@@ -1,33 +1,48 @@
+import { useEffect, useRef, useState } from 'react';
 import { parse } from 'query-string';
 import { Location, useLocation } from 'react-router-dom';
-import merge from 'lodash/merge';
+import isEqual from 'lodash/isEqual';
 import { RaRecord } from '../types';
-import { useRecordContext } from '../controller';
 
 /**
- * A hook that returns the record to use as a form initial values. If a record is passed and the location search or state also contains a record, they will be merged.
+ * A hook that returns the record to use to override the values in a form
  * @param options The hook options
- * @param options.record The record to use as initial values
  * @param options.searchSource The key in the location search to use as a source for the record. Its content should be a stringified JSON object.
  * @param options.stateSource The key in the location state to use as a source for the record
- * @returns The record to use as initial values in a form
+ * @returns The record to use to override the values in a form
  */
 export const useRecordFromLocation = (
     props: UseRecordFromLocationOptions = {}
 ) => {
     const { searchSource, stateSource } = props;
     const location = useLocation();
-    const record = useRecordContext(props);
-    const recordFromLocation = getRecordFromLocation(location, {
-        stateSource,
-        searchSource,
-    });
+    const [recordFromLocation, setRecordFromLocation] = useState(() =>
+        getRecordFromLocation(location, {
+            stateSource,
+            searchSource,
+        })
+    );
 
-    return merge({}, record, recordFromLocation);
+    // To avoid having the form resets when the location changes but the final record is the same
+    // This is needed for forms such as TabbedForm or WizardForm that may change the location for their sections
+    const finalRecordRef = useRef(recordFromLocation);
+
+    useEffect(() => {
+        const newRecordFromLocation = getRecordFromLocation(location, {
+            stateSource,
+            searchSource,
+        });
+
+        if (!isEqual(newRecordFromLocation, finalRecordRef.current)) {
+            finalRecordRef.current = newRecordFromLocation;
+            setRecordFromLocation(newRecordFromLocation);
+        }
+    }, [location, stateSource, searchSource]);
+
+    return recordFromLocation;
 };
 
 export type UseRecordFromLocationOptions = {
-    record?: Partial<RaRecord>;
     searchSource?: string;
     stateSource?: string;
 };
@@ -45,7 +60,7 @@ export const getRecordFromLocation = (
         searchSource?: string;
         stateSource?: string;
     } = {}
-) => {
+): Partial<RaRecord> | null => {
     if (state && state[stateSource]) {
         return state[stateSource];
     }
@@ -58,7 +73,7 @@ export const getRecordFromLocation = (
                     console.error(
                         `Failed to parse location ${searchSource} parameter '${search}'. To pre-fill some fields in the Create form, pass a stringified ${searchSource} parameter (e.g. '?${searchSource}={"title":"foo"}')`
                     );
-                    return;
+                    return null;
                 }
                 return JSON.parse(source);
             }

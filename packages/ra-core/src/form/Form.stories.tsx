@@ -8,7 +8,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Route, Routes, useNavigate, Link, HashRouter } from 'react-router-dom';
+import {
+    Route,
+    Routes,
+    useNavigate,
+    Link,
+    HashRouter,
+    useLocation,
+} from 'react-router-dom';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
@@ -16,7 +23,11 @@ import { useInput } from './useInput';
 import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
 import { I18nProvider } from '../types';
-import { SaveContextProvider, useNotificationContext } from '..';
+import {
+    SaveContextProvider,
+    TestMemoryRouter,
+    useNotificationContext,
+} from '..';
 
 export default {
     title: 'ra-core/form/Form',
@@ -401,5 +412,104 @@ export const ServerSideValidation = () => {
                 <Notifications />
             </SaveContextProvider>
         </CoreAdminContext>
+    );
+};
+
+export const MultiRoutesForm = ({ url }: { url?: any }) => (
+    <TestMemoryRouter key={url} initialEntries={[url]}>
+        <CoreAdminContext i18nProvider={defaultI18nProvider}>
+            <Routes>
+                <Route path="/form/*" element={<FormWithSubRoutes />} />
+            </Routes>
+        </CoreAdminContext>
+    </TestMemoryRouter>
+);
+
+MultiRoutesForm.args = {
+    url: 'unmodified',
+};
+
+MultiRoutesForm.argTypes = {
+    url: {
+        options: [
+            'unmodified',
+            'modified with location state',
+            'modified with location search',
+        ],
+        mapping: {
+            unmodified: '/form/general',
+            'modified with location state': {
+                pathname: '/form/general',
+                state: { record: { body: 'from-state' } },
+            },
+            'modified with location search': `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}`,
+        },
+        control: { type: 'select' },
+    },
+};
+
+const record = { title: 'lorem', body: 'unmodified' };
+const FormWithSubRoutes = () => {
+    return (
+        <>
+            <Form record={record}>
+                <TabbedForm />
+                <SubmitButton />
+            </Form>
+        </>
+    );
+};
+
+const TabbedForm = () => {
+    const location = useLocation();
+
+    return (
+        <>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+                <Link
+                    to={{
+                        ...location,
+                        pathname: 'general',
+                    }}
+                >
+                    General
+                </Link>
+                <Link
+                    to={{
+                        ...location,
+                        pathname: 'content',
+                    }}
+                >
+                    Settings
+                </Link>
+            </div>
+            <Tab name="general">
+                <Input source="title" />
+            </Tab>
+            <Tab name="content">
+                <Input source="body" />
+            </Tab>
+        </>
+    );
+};
+const Tab = ({
+    children,
+    name,
+}: {
+    children: React.ReactNode;
+    name: string;
+}) => {
+    const location = useLocation();
+
+    return (
+        <div
+            style={{
+                display: location.pathname.endsWith(`/${name}`)
+                    ? 'flex'
+                    : 'none',
+            }}
+        >
+            {children}
+        </div>
     );
 };
