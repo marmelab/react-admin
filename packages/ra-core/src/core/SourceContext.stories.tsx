@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Form, useInput } from '../form';
-import { TestMemoryRouter } from '..';
+import { TestMemoryRouter } from '../routing';
 
 export default {
     title: 'ra-core/core/SourceContext',

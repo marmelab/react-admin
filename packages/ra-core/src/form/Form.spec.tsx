@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import assert from 'assert';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import type { To } from 'react-router';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
@@ -23,7 +24,6 @@ import {
     MultiRoutesForm,
 } from './Form.stories';
 import { mergeTranslations } from '../i18n';
-import { To } from 'react-router';
 
 describe('Form', () => {
     const Input = props => {

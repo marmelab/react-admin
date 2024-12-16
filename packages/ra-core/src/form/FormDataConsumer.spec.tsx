@@ -12,7 +12,9 @@ import {
     ArrayInput,
 } from 'ra-ui-materialui';
 import expect from 'expect';
-import { Form, ResourceContextProvider, TestMemoryRouter } from '..';
+import { ResourceContextProvider } from '../core';
+import { Form } from '../form';
+import { TestMemoryRouter } from '../routing';
 
 describe('FormDataConsumerView', () => {
     it('does not call its children function with scopedFormData if it did not receive a source containing an index', () => {

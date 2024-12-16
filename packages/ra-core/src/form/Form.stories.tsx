@@ -18,17 +18,14 @@ import {
 } from 'react-router-dom';
 
 import { CoreAdminContext } from '../core';
+import { RecordContextProvider, SaveContextProvider } from '../controller';
 import { Form } from './Form';
 import { useInput } from './useInput';
 import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
 import { I18nProvider, RaRecord } from '../types';
-import {
-    RecordContextProvider,
-    SaveContextProvider,
-    TestMemoryRouter,
-    useNotificationContext,
-} from '..';
+import { TestMemoryRouter } from '../routing';
+import { useNotificationContext } from '../notification';
 
 export default {
     title: 'ra-core/form/Form',
