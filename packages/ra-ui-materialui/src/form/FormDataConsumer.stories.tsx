@@ -6,6 +6,7 @@ import { AutocompleteInput, ReferenceInput, TextInput } from '../input';
 import { SimpleForm } from './SimpleForm';
 import { Create } from '../detail';
 
+// We keep this test in ra-ui-materialui because we need heavy components to reproduce the issue https://github.com/marmelab/react-admin/issues/10415
 export default { title: 'ra-core/form/FormDataConsumer' };
 
 export const Basic = () => (
