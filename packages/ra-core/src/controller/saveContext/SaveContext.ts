@@ -1,19 +1,15 @@
 import { createContext } from 'react';
-import {
-    RaRecord,
-    OnError,
-    OnSuccess,
-    TransformData,
-    MutationMode,
-} from '../../types';
+import { OnError, OnSuccess, TransformData, MutationMode } from '../../types';
 import { Middleware } from './useMutationMiddlewares';
 import { UseMutationOptions } from '@tanstack/react-query';
 
 export interface SaveContextValue<
-    RecordType extends RaRecord = any,
+    RecordType = any,
     MutateFunc extends (...args: any[]) => any = (...args: any[]) => any,
+    ErrorType = Error,
+    ResultRecordType = RecordType,
 > {
-    save?: SaveHandler<RecordType>;
+    save?: SaveHandler<RecordType, ErrorType, ResultRecordType>;
     /**
      * @deprecated. Rely on the form isSubmitting value instead
      */
@@ -23,17 +19,21 @@ export interface SaveContextValue<
     unregisterMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;
 }
 
-export type SaveHandler<RecordType, ErrorType = Error> = (
+export type SaveHandler<
+    RecordType,
+    ErrorType = Error,
+    ResultRecordType = RecordType,
+> = (
     record: Partial<RecordType>,
-    callbacks?: SaveHandlerCallbacks<RecordType, ErrorType>
+    callbacks?: SaveHandlerCallbacks<ResultRecordType, ErrorType>
 ) => Promise<void | RecordType> | Record<string, string>;
 
 export type SaveHandlerCallbacks<
-    RecordType = any,
+    ResultRecordType = any,
     ErrorType = Error,
     TVariables = any,
 > = Omit<
-    UseMutationOptions<RecordType, ErrorType, TVariables>,
+    UseMutationOptions<ResultRecordType, ErrorType, TVariables>,
     'mutationFn'
 > & {
     onSuccess?: OnSuccess;

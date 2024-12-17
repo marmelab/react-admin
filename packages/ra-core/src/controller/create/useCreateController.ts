@@ -51,7 +51,11 @@ export const useCreateController = <
         MutationOptionsError,
         ResultRecordType
     > = {}
-): CreateControllerResult<RecordType> => {
+): CreateControllerResult<
+    RecordType,
+    MutationOptionsError,
+    ResultRecordType
+> => {
     const {
         disableAuthentication,
         record,
@@ -157,7 +161,10 @@ export const useCreateController = <
                 transform: transformFromSave,
                 meta: metaFromSave,
                 ...callTimeOptions
-            } = {} as SaveHandlerCallbacks
+            } = {} as SaveHandlerCallbacks<
+                ResultRecordType,
+                MutationOptionsError
+            >
         ) =>
             Promise.resolve(
                 transformFromSave
@@ -228,7 +235,14 @@ export interface CreateControllerProps<
 
 export interface CreateControllerResult<
     RecordType extends Omit<RaRecord, 'id'> = any,
-> extends SaveContextValue {
+    MutationOptionsError = any,
+    ResultRecordType extends RaRecord = RecordType & { id: Identifier },
+> extends SaveContextValue<
+        RecordType,
+        (...args: any[]) => any,
+        MutationOptionsError,
+        ResultRecordType
+    > {
     defaultTitle?: string;
     isFetching: boolean;
     isPending: boolean;
