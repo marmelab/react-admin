@@ -958,8 +958,7 @@ To override the style of all instances of `<FilterButton>` using the [applicatio
 
 ## `<SelectAllButton>`
 
-This button is an internal component used by react-admin in [the Datagrid default `bulkActionsToolbar`](./Datagrid.md#bulkactionstoolbar).
-The `<SelectAllButton>` component is a button that is used to select all items from a resource, no matter the pagination.
+The `<SelectAllButton>` component allows users to select all items from a resource, no matter the pagination.
 
 ![SelectAllButton](./img/SelectAllButton.png)
 
