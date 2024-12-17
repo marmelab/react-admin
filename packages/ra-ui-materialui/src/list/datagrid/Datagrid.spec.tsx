@@ -10,9 +10,7 @@ import {
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { Datagrid } from './Datagrid';
-import { SelectAllButton } from '../../button';
-import { AccessControl } from './Datagrid.stories';
-import { BulkActionsToolbar } from '../BulkActionsToolbar';
+import { AccessControl, BulkActionToolbar } from './Datagrid.stories';
 
 const TitleField = (): JSX.Element => {
     const record = useRecordContext();
@@ -117,33 +115,13 @@ describe('<Datagrid />', () => {
     });
 
     it('should accept a custom bulkActionsToolbar', () => {
-        render(
-            <Wrapper listContext={contextValue}>
-                <Datagrid
-                    bulkActionsToolbar={
-                        <BulkActionsToolbar
-                            actions={
-                                <SelectAllButton label="Select All Records" />
-                            }
-                        />
-                    }
-                >
-                    <TitleField />
-                </Datagrid>
-            </Wrapper>
-        );
+        render(<BulkActionToolbar onlyDisplay="custom" />);
         expect(screen.queryByText('Delete')).toBeNull();
-        expect(screen.queryByText('Select All Records')).not.toBeNull();
+        expect(screen.queryByText('Select all records')).not.toBeNull();
     });
 
-    it('should not display the bulk actions toolbar when when `bulkActionsToolbar` prop is true', () => {
-        render(
-            <Wrapper listContext={contextValue}>
-                <Datagrid bulkActionsToolbar={false}>
-                    <TitleField />
-                </Datagrid>
-            </Wrapper>
-        );
+    it('should not display the bulk actions toolbar when when `bulkActionsToolbar` prop is false', () => {
+        render(<BulkActionToolbar onlyDisplay="disabled" />);
         expect(screen.queryByText('Delete')).toBeNull();
         expect(screen.queryByText('Select All')).toBeNull();
     });
@@ -160,7 +138,7 @@ describe('<Datagrid />', () => {
             const { rerender } = render(<Test />);
             const checkboxes = screen.queryAllByRole('checkbox');
             fireEvent.click(checkboxes[1]);
-            rerender(<Test selectedIds={[1]} />);
+            rerender(<Test selectedIds={[1] as never[]} />);
             fireEvent.click(checkboxes[3], {
                 shiftKey: true,
                 checked: true,
@@ -180,7 +158,7 @@ describe('<Datagrid />', () => {
             const { rerender } = render(<Test />);
             const checkboxes = screen.queryAllByRole('checkbox');
             fireEvent.click(checkboxes[3], { checked: true });
-            rerender(<Test selectedIds={[3]} />);
+            rerender(<Test selectedIds={[3] as never[]} />);
             fireEvent.click(checkboxes[1], {
                 shiftKey: true,
                 checked: true,
@@ -197,10 +175,12 @@ describe('<Datagrid />', () => {
                     </Datagrid>
                 </Wrapper>
             );
-            const { rerender } = render(<Test selectedIds={[1, 2, 4]} />);
+            const { rerender } = render(
+                <Test selectedIds={[1, 2, 4] as never[]} />
+            );
             const checkboxes = screen.queryAllByRole('checkbox');
             fireEvent.click(checkboxes[3], { checked: true });
-            rerender(<Test selectedIds={[1, 2, 4, 3]} />);
+            rerender(<Test selectedIds={[1, 2, 4, 3] as never[]} />);
             fireEvent.click(checkboxes[4], { shiftKey: true });
             expect(contextValue.onToggleItem).toHaveBeenCalledTimes(1);
             expect(contextValue.onSelect).toHaveBeenCalledWith([1, 2]);
@@ -243,7 +223,7 @@ describe('<Datagrid />', () => {
             const { rerender } = render(<Test />);
             const checkboxes = screen.queryAllByRole('checkbox');
             fireEvent.click(checkboxes[1], { checked: true });
-            rerender(<Test selectedIds={[1]} />);
+            rerender(<Test selectedIds={[1] as never[]} />);
 
             // Simulate unselecting all items
             rerender(<Test />);
@@ -291,15 +271,15 @@ describe('<Datagrid />', () => {
             fireEvent.click(checkboxes[1], { checked: true });
             expect(contextValue.onToggleItem).toHaveBeenCalledWith(1);
 
-            rerender(<Test selectedIds={[1]} />);
+            rerender(<Test selectedIds={[1] as never[]} />);
             fireEvent.click(checkboxes[2], { shiftKey: true, checked: true });
             expect(contextValue.onSelect).toHaveBeenCalledWith([1, 2]);
 
-            rerender(<Test selectedIds={[1, 2]} />);
+            rerender(<Test selectedIds={[1, 2] as never[]} />);
             fireEvent.click(checkboxes[2]);
             expect(contextValue.onToggleItem).toHaveBeenCalledWith(2);
 
-            rerender(<Test selectedIds={[1]} />);
+            rerender(<Test selectedIds={[1] as never[]} />);
             fireEvent.click(checkboxes[4], { shiftKey: true, checked: true });
             expect(contextValue.onToggleItem).toHaveBeenCalledWith(4);
 

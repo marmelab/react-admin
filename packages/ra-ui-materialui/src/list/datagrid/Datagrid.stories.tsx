@@ -195,30 +195,46 @@ const CutomBulkActionToolbar = () => (
     </BulkActionsToolbar>
 );
 
-export const BulkActionToolbar = () => (
+export const BulkActionToolbar = ({
+    onlyDisplay,
+}: {
+    onlyDisplay?: 'default' | 'disabled' | 'custom';
+}) => (
     <Wrapper>
         <Box sx={{ mt: -7 }}>
-            <h1>Default</h1>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
-            <h1>Disabled</h1>
-            <Datagrid bulkActionsToolbar={false}>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
-            <h1>Custom</h1>
-            <Datagrid bulkActionsToolbar={<CutomBulkActionToolbar />}>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
+            {onlyDisplay && onlyDisplay === 'default' && (
+                <>
+                    <h1>Default</h1>
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </Datagrid>
+                </>
+            )}
+            {onlyDisplay && onlyDisplay === 'disabled' && (
+                <>
+                    <h1>Disabled</h1>
+                    <Datagrid bulkActionsToolbar={false}>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </Datagrid>
+                </>
+            )}
+            {onlyDisplay && onlyDisplay === 'custom' && (
+                <>
+                    <h1>Custom</h1>
+                    <Datagrid bulkActionsToolbar={<CutomBulkActionToolbar />}>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </Datagrid>
+                </>
+            )}
         </Box>
     </Wrapper>
 );
