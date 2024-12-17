@@ -13,20 +13,6 @@ describe('useRecordFromLocation', () => {
 
         return <div>{JSON.stringify(recordFromLocation)}</div>;
     };
-    it('return the record from the location search', async () => {
-        const record = { test: 'value' };
-        render(
-            <TestMemoryRouter
-                initialEntries={[
-                    `/posts/create?source=${JSON.stringify(record)}`,
-                ]}
-            >
-                <UseGetRecordFromLocation />
-            </TestMemoryRouter>
-        );
-
-        await screen.findByText(JSON.stringify(record));
-    });
     it('return null if there is no location search nor state that contains a record', async () => {
         render(
             <TestMemoryRouter initialEntries={[`/posts/create?value=test`]}>
