@@ -791,17 +791,16 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 You sometimes need to pre-populate the form changes to a record. For instance, to revert a record to a previous version, or to make some changes while letting users modify others fields as well.
 
-By default, the `<Edit>` view starts with the current `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Edit>` view uses that `record` to prefill the form.
+By default, the `<Edit>` view starts with the current `record`. However, if the `location` object (injected by [react-router-dom](https://reactrouter.com/6.28.0/start/concepts#locations)) contains a `record` in its `state`, the `<Edit>` view uses that `record` to prefill the form.
 
 That means that if you want to create a link to an edition view, modifying immediately *some* values, all you have to do is to set the `state` prop of the `<EditButton>`:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { EditButton, Datagrid, List, useRecordContext } from 'react-admin';
+import { EditButton, Datagrid, List } from 'react-admin';
 
 const ApproveButton = () => {
-    const record = useRecordContext();
     return (
         <EditButton
             state={{ record: { status: 'approved' } }}
@@ -825,10 +824,9 @@ export default PostList = () => (
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { CreateButton, useRecordContext } from 'react-admin';
+import { EditButton } from 'react-admin';
 
 const ApproveButton = () => {
-    const record = useRecordContext();
     return (
         <EditButton
             to={{
