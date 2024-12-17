@@ -25,7 +25,7 @@ export const useRecordFromLocation = (
 
     // To avoid having the form resets when the location changes but the final record is the same
     // This is needed for forms such as TabbedForm or WizardForm that may change the location for their sections
-    const finalRecordRef = useRef(recordFromLocation);
+    const previousRecordRef = useRef(recordFromLocation);
 
     useEffect(() => {
         const newRecordFromLocation = getRecordFromLocation(location, {
@@ -33,8 +33,8 @@ export const useRecordFromLocation = (
             searchSource,
         });
 
-        if (!isEqual(newRecordFromLocation, finalRecordRef.current)) {
-            finalRecordRef.current = newRecordFromLocation;
+        if (!isEqual(newRecordFromLocation, previousRecordRef.current)) {
+            previousRecordRef.current = newRecordFromLocation;
             setRecordFromLocation(newRecordFromLocation);
         }
     }, [location, stateSource, searchSource]);
