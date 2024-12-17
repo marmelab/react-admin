@@ -65,7 +65,9 @@ describe('useInfiniteListController', () => {
                 <button onClick={() => params.onSelectAll({ limit: 1 })}>
                     Limited Select All
                 </button>
-                <button onClick={() => params.onSelect([0])}>Select 0</button>
+                <button onClick={() => params.onSelect([0])}>
+                    Select item 0
+                </button>
                 <span>children</span>
             </div>
         );
@@ -84,7 +86,7 @@ describe('useInfiniteListController', () => {
         it('should select all records even though some records are already selected', async () => {
             const callback = jest.fn(Children);
             render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
-            fireEvent.click(await screen.findByText('Select 0'));
+            fireEvent.click(await screen.findByText('Select item 0'));
             await waitFor(() => {
                 expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
