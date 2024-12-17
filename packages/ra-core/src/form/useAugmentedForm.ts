@@ -92,12 +92,12 @@ export const useAugmentedForm = <RecordType = any>(
     const { reset } = form;
     useEffect(() => {
         if (recordFromLocation && !recordFromLocationApplied.current) {
-            reset(merge({}, record, recordFromLocation), {
+            reset(merge({}, defaultValuesIncludingRecord, recordFromLocation), {
                 keepDefaultValues: true,
             });
             recordFromLocationApplied.current = true;
         }
-    }, [record, recordFromLocation, reset]);
+    }, [defaultValuesIncludingRecord, recordFromLocation, reset]);
 
     // submit callbacks
     const handleSubmit = useCallback(

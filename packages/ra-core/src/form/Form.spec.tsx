@@ -833,22 +833,46 @@ describe('Form', () => {
                 state: { record: { body: 'from-state' } },
             },
             expectedValue: 'from-state',
+            expectedDefaultValue: '',
+        },
+        {
+            from: 'state with default values',
+            url: {
+                pathname: '/form/general',
+                state: { record: { body: 'from-state' } },
+            },
+            expectedValue: 'from-state',
+            defaultValues: { category: 'default category' },
+            expectedDefaultValue: 'default category',
         },
         {
             from: 'search query',
             url: `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}` as To,
             expectedValue: 'from-search',
+            expectedDefaultValue: '',
+        },
+        {
+            from: 'search query with default values',
+            url: `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}` as To,
+            expectedValue: 'from-search',
+            defaultValues: { category: 'default category' },
+            expectedDefaultValue: 'default category',
         },
     ])(
         'should support overriding the record values from the location $from',
-        async ({ url, expectedValue }) => {
+        async ({ url, defaultValues, expectedValue, expectedDefaultValue }) => {
             render(
                 <MultiRoutesForm
                     url={url}
                     initialRecord={{ title: 'lorem', body: 'unmodified' }}
+                    defaultValues={defaultValues}
                 />
             );
             await screen.findByDisplayValue('lorem');
+            expect(
+                (await screen.findByLabelText<HTMLInputElement>('category'))
+                    .value
+            ).toEqual(expectedDefaultValue);
             expect(
                 (screen.getByText('Submit') as HTMLInputElement).disabled
             ).toEqual(false);

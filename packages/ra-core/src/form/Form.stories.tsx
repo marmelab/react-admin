@@ -19,7 +19,7 @@ import {
 
 import { CoreAdminContext } from '../core';
 import { RecordContextProvider, SaveContextProvider } from '../controller';
-import { Form } from './Form';
+import { Form, FormProps } from './Form';
 import { useInput } from './useInput';
 import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
@@ -58,10 +58,12 @@ const Input = props => {
 };
 
 const SubmitButton = () => {
-    const state = useFormState();
+    const { dirtyFields } = useFormState();
+    // useFormState().isDirty might differ from useFormState().dirtyFields (https://github.com/react-hook-form/react-hook-form/issues/4740)
+    const isDirty = Object.keys(dirtyFields).length > 0;
 
     return (
-        <button type="submit" disabled={!state.isDirty}>
+        <button type="submit" disabled={!isDirty}>
             Submit
         </button>
     );
@@ -416,9 +418,11 @@ export const ServerSideValidation = () => {
 export const MultiRoutesForm = ({
     url,
     initialRecord,
+    defaultValues,
 }: {
     url?: any;
     initialRecord?: Partial<RaRecord>;
+    defaultValues?: Partial<RaRecord>;
 }) => (
     <TestMemoryRouter key={url} initialEntries={[url]}>
         <CoreAdminContext i18nProvider={defaultI18nProvider}>
@@ -427,7 +431,7 @@ export const MultiRoutesForm = ({
                     path="/form/*"
                     element={
                         <RecordContextProvider value={initialRecord}>
-                            <FormWithSubRoutes />
+                            <FormWithSubRoutes defaultValues={defaultValues} />
                         </RecordContextProvider>
                     }
                 />
@@ -458,6 +462,16 @@ MultiRoutesForm.argTypes = {
         },
         control: { type: 'select' },
     },
+    defaultValues: {
+        options: ['none', 'provided'],
+        mapping: {
+            none: undefined,
+            provided: {
+                category: 'default category',
+            },
+        },
+        control: { type: 'select' },
+    },
     initialRecord: {
         options: ['none', 'provided'],
         mapping: {
@@ -468,9 +482,9 @@ MultiRoutesForm.argTypes = {
     },
 };
 
-const FormWithSubRoutes = () => {
+const FormWithSubRoutes = (props: Partial<FormProps>) => {
     return (
-        <Form>
+        <Form {...props}>
             <TabbedForm />
             <SubmitButton />
         </Form>
@@ -502,6 +516,7 @@ const TabbedForm = () => {
             </div>
             <Tab name="general">
                 <Input source="title" />
+                <Input source="category" />
             </Tab>
             <Tab name="content">
                 <Input source="body" />
