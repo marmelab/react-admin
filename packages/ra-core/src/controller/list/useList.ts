@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { removeEmpty } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
-import { useResourceContext } from '../../core';
+import { ResourceContextValue, useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import { useRecordSelection } from './useRecordSelection';
@@ -66,8 +66,8 @@ export const useList = <RecordType extends RaRecord = any>(
         sort: initialSort,
         filterCallback = (record: RecordType) => Boolean(record),
     } = props;
-    const resource = useResourceContext(props);
-
+    const resourceFromContext = useResourceContext(props);
+    const resource = props.storeKey ?? resourceFromContext;
     const [fetchingState, setFetchingState] = useState<boolean>(isFetching) as [
         boolean,
         (isFetching: boolean) => void,
@@ -287,7 +287,7 @@ export const useList = <RecordType extends RaRecord = any>(
         onUnselectItems: selectionModifiers.clearSelection,
         page,
         perPage,
-        resource: '',
+        resource: resource,
         refetch,
         selectedIds,
         setFilters,
@@ -310,6 +310,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     perPage?: number;
     sort?: SortPayload;
     resource?: string;
+    storeKey?: string;
     filterCallback?: (record: RecordType) => boolean;
 }
 
