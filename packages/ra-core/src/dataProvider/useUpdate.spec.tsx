@@ -672,11 +672,7 @@ describe('useUpdate', () => {
             it('does not update getOne query cache if disableCacheUpdate is true', async () => {
                 const queryClient = new QueryClient();
                 queryClient.setQueryData(
-                    [
-                        'foo',
-                        'getOne',
-                        { id: '1', meta: { disableCacheUpdate: true } },
-                    ],
+                    ['foo', 'getOne', { id: '1', meta: undefined }],
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
@@ -698,27 +694,29 @@ describe('useUpdate', () => {
                         <Dummy />
                     </CoreAdminContext>
                 );
-                localUpdate('foo', {
-                    id: 1,
-                    data: { bar: 'baz' },
-                    previousData: { id: 1, bar: 'bar' },
-                    meta: { disableCacheUpdate: true },
-                });
+                localUpdate(
+                    'foo',
+                    {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { disableCacheUpdate: true }
+                );
                 await waitFor(() => {
                     expect(dataProvider.update).toHaveBeenCalledWith('foo', {
                         id: 1,
                         data: { bar: 'baz' },
                         previousData: { id: 1, bar: 'bar' },
-                        meta: { disableCacheUpdate: true },
                     });
                 });
                 // Wait some time after the update
-                await new Promise(resolve => setTimeout(resolve, 50));
+                await new Promise(resolve => setTimeout(resolve, 100));
                 expect(
                     queryClient.getQueryData([
                         'foo',
                         'getOne',
-                        { id: '1', meta: { disableCacheUpdate: true } },
+                        { id: '1', meta: undefined },
                     ])
                 ).toEqual({
                     id: 1,
@@ -729,11 +727,7 @@ describe('useUpdate', () => {
             it('does not update getOne query cache if disableCacheUpdate is true at hook time', async () => {
                 const queryClient = new QueryClient();
                 queryClient.setQueryData(
-                    [
-                        'foo',
-                        'getOne',
-                        { id: '1', meta: { disableCacheUpdate: true } },
-                    ],
+                    ['foo', 'getOne', { id: '1', meta: undefined }],
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
@@ -743,12 +737,15 @@ describe('useUpdate', () => {
                 } as any;
                 let localUpdate;
                 const Dummy = () => {
-                    const [update] = useUpdate('foo', {
-                        id: 1,
-                        data: { bar: 'baz' },
-                        previousData: { id: 1, bar: 'bar' },
-                        meta: { disableCacheUpdate: true },
-                    });
+                    const [update] = useUpdate(
+                        'foo',
+                        {
+                            id: 1,
+                            data: { bar: 'baz' },
+                            previousData: { id: 1, bar: 'bar' },
+                        },
+                        { disableCacheUpdate: true }
+                    );
                     localUpdate = update;
                     return <span />;
                 };
@@ -766,16 +763,15 @@ describe('useUpdate', () => {
                         id: 1,
                         data: { bar: 'baz' },
                         previousData: { id: 1, bar: 'bar' },
-                        meta: { disableCacheUpdate: true },
                     });
                 });
                 // Wait some time after the update
-                await new Promise(resolve => setTimeout(resolve, 50));
+                await new Promise(resolve => setTimeout(resolve, 100));
                 expect(
                     queryClient.getQueryData([
                         'foo',
                         'getOne',
-                        { id: '1', meta: { disableCacheUpdate: true } },
+                        { id: '1', meta: undefined },
                     ])
                 ).toEqual({
                     id: 1,
@@ -994,11 +990,7 @@ describe('useUpdate', () => {
             it('does not update getOne query cache nor invalidates query if disableCacheUpdate is true', async () => {
                 const queryClient = new QueryClient();
                 queryClient.setQueryData(
-                    [
-                        'foo',
-                        'getOne',
-                        { id: '1', meta: { disableCacheUpdate: true } },
-                    ],
+                    ['foo', 'getOne', { id: '1', meta: undefined }],
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
@@ -1026,27 +1018,29 @@ describe('useUpdate', () => {
                         <Dummy />
                     </CoreAdminContext>
                 );
-                localUpdate('foo', {
-                    id: 1,
-                    data: { bar: 'baz' },
-                    previousData: { id: 1, bar: 'bar' },
-                    meta: { disableCacheUpdate: true },
-                });
+                localUpdate(
+                    'foo',
+                    {
+                        id: 1,
+                        data: { bar: 'baz' },
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { disableCacheUpdate: true }
+                );
                 await waitFor(() => {
                     expect(dataProvider.update).toHaveBeenCalledWith('foo', {
                         id: 1,
                         data: { bar: 'baz' },
                         previousData: { id: 1, bar: 'bar' },
-                        meta: { disableCacheUpdate: true },
                     });
                 });
                 // Wait some time after the update
-                await new Promise(resolve => setTimeout(resolve, 50));
+                await new Promise(resolve => setTimeout(resolve, 100));
                 expect(
                     queryClient.getQueryData([
                         'foo',
                         'getOne',
-                        { id: '1', meta: { disableCacheUpdate: true } },
+                        { id: '1', meta: undefined },
                     ])
                 ).toEqual({
                     id: 1,
@@ -1058,11 +1052,7 @@ describe('useUpdate', () => {
             it('does not update getOne query cache nor invalidates query if disableCacheUpdate is true at hook time', async () => {
                 const queryClient = new QueryClient();
                 queryClient.setQueryData(
-                    [
-                        'foo',
-                        'getOne',
-                        { id: '1', meta: { disableCacheUpdate: true } },
-                    ],
+                    ['foo', 'getOne', { id: '1', meta: undefined }],
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
@@ -1082,10 +1072,10 @@ describe('useUpdate', () => {
                             id: 1,
                             data: { bar: 'baz' },
                             previousData: { id: 1, bar: 'bar' },
-                            meta: { disableCacheUpdate: true },
                         },
                         {
                             mutationMode: 'optimistic',
+                            disableCacheUpdate: true,
                         }
                     );
                     localUpdate = update;
@@ -1105,16 +1095,15 @@ describe('useUpdate', () => {
                         id: 1,
                         data: { bar: 'baz' },
                         previousData: { id: 1, bar: 'bar' },
-                        meta: { disableCacheUpdate: true },
                     });
                 });
                 // Wait some time after the update
-                await new Promise(resolve => setTimeout(resolve, 50));
+                await new Promise(resolve => setTimeout(resolve, 100));
                 expect(
                     queryClient.getQueryData([
                         'foo',
                         'getOne',
-                        { id: '1', meta: { disableCacheUpdate: true } },
+                        { id: '1', meta: undefined },
                     ])
                 ).toEqual({
                     id: 1,
@@ -1124,6 +1113,7 @@ describe('useUpdate', () => {
             });
         });
     });
+
     describe('middlewares', () => {
         it('when pessimistic, it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {
             render(<WithMiddlewaresSuccessPessimistic timeout={10} />);

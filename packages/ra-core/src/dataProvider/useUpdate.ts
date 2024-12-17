@@ -96,9 +96,11 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
     const {
         mutationMode = 'pessimistic',
         getMutateWithMiddlewares,
+        disableCacheUpdate: disableCacheUpdateHookTime,
         ...mutationOptions
     } = options;
     const mode = useRef<MutationMode>(mutationMode);
+    const disableCacheUpdate = useRef(disableCacheUpdateHookTime);
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
     // Ref that stores the mutation with middlewares to avoid losing them if the calling component is unmounted
@@ -265,13 +267,13 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             context: unknown
         ) => {
             if (mode.current === 'pessimistic') {
-                // update the getOne and getList query cache with the new result
-                const {
-                    resource: callTimeResource = resource,
-                    id: callTimeId = id,
-                    meta: callTimeMeta = meta,
-                } = variables;
-                if (!callTimeMeta?.disableCacheUpdate) {
+                if (!disableCacheUpdate.current) {
+                    // update the getOne and getList query cache with the new result
+                    const {
+                        resource: callTimeResource = resource,
+                        id: callTimeId = id,
+                        meta: callTimeMeta = meta,
+                    } = variables;
                     updateCache({
                         resource: callTimeResource,
                         id: callTimeId,
@@ -295,9 +297,8 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             context: { snapshot: Snapshot }
         ) => {
             if (mode.current === 'optimistic' || mode.current === 'undoable') {
-                const { meta: callTimeMeta = meta } = variables;
                 // Refetch after error or success unless cache update is disabled
-                if (!callTimeMeta?.disableCacheUpdate || error) {
+                if (!disableCacheUpdate.current || error) {
                     context.snapshot.forEach(([queryKey]) => {
                         queryClient.invalidateQueries({ queryKey });
                     });
@@ -331,10 +332,16 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             ErrorType,
             Partial<UseUpdateMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode; returnPromise?: boolean } = {}
+        > & {
+            mutationMode?: MutationMode;
+            returnPromise?: boolean;
+            disableCacheUpdate?: boolean;
+        } = {}
     ) => {
         const {
             mutationMode,
+            disableCacheUpdate:
+                disableCacheUpdateCallTime = disableCacheUpdateHookTime,
             returnPromise = mutationOptions.returnPromise,
             onError,
             onSettled,
@@ -366,6 +373,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         if (mutationMode) {
             mode.current = mutationMode;
         }
+        disableCacheUpdate.current = disableCacheUpdateCallTime;
 
         if (returnPromise && mode.current !== 'pessimistic') {
             console.warn(
@@ -443,8 +451,8 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
             )
         );
 
-        // Optimistically update to the new value
-        if (!callTimeMeta?.disableCacheUpdate) {
+        if (!disableCacheUpdate.current) {
+            // Optimistically update to the new value
             updateCache({
                 resource: callTimeResource,
                 id: callTimeId,
@@ -524,13 +532,17 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
 export type UseUpdateOptions<
     RecordType extends RaRecord = any,
     ErrorType = Error,
-> = UseMutationOptions<
-    RecordType,
-    ErrorType,
-    Partial<Omit<UseUpdateMutateParams<RecordType>, 'mutationFn'>>
+> = Omit<
+    UseMutationOptions<
+        RecordType,
+        ErrorType,
+        Partial<UseUpdateMutateParams<RecordType>>
+    >,
+    'mutationFn'
 > & {
     mutationMode?: MutationMode;
     returnPromise?: boolean;
+    disableCacheUpdate?: boolean;
     getMutateWithMiddlewares?: <
         UpdateFunctionType extends
             DataProvider['update'] = DataProvider['update'],

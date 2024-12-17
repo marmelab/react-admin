@@ -7,6 +7,7 @@ import {
     MutationMode,
 } from '../../types';
 import { Middleware } from './useMutationMiddlewares';
+import { UseMutationOptions } from '@tanstack/react-query';
 
 export interface SaveContextValue<
     RecordType extends RaRecord = any,
@@ -22,15 +23,23 @@ export interface SaveContextValue<
     unregisterMutationMiddleware?: (callback: Middleware<MutateFunc>) => void;
 }
 
-export type SaveHandler<RecordType> = (
+export type SaveHandler<RecordType, ErrorType = Error> = (
     record: Partial<RecordType>,
-    callbacks?: SaveHandlerCallbacks
+    callbacks?: SaveHandlerCallbacks<RecordType, ErrorType>
 ) => Promise<void | RecordType> | Record<string, string>;
 
-export type SaveHandlerCallbacks = {
+export type SaveHandlerCallbacks<
+    RecordType = any,
+    ErrorType = Error,
+    TVariables = any,
+> = Omit<
+    UseMutationOptions<RecordType, ErrorType, TVariables>,
+    'mutationFn'
+> & {
     onSuccess?: OnSuccess;
     onError?: OnError;
     transform?: TransformData;
     meta?: any;
+    disableCacheUpdate?: boolean;
 };
 export const SaveContext = createContext<SaveContextValue>({});

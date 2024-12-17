@@ -222,7 +222,8 @@ export const useEditController = <
                 onError: onErrorFromSave,
                 transform: transformFromSave,
                 meta: metaFromSave,
-            } = {} as SaveHandlerCallbacks
+                ...otherSaveMutationOptions
+            } = {} as SaveHandlerCallbacks<RecordType, ErrorType>
         ) =>
             Promise.resolve(
                 transformFromSave
@@ -246,6 +247,7 @@ export const useEditController = <
                         {
                             onError: onErrorFromSave,
                             onSuccess: onSuccessFromSave,
+                            ...otherSaveMutationOptions,
                         }
                     );
                 } catch (error) {
