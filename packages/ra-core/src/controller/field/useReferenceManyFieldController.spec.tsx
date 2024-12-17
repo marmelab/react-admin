@@ -6,7 +6,7 @@ import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
 import { useReferenceManyFieldController } from './useReferenceManyFieldController';
 import { memoryStore } from '../../store';
-import { ReferenceManyField } from './ReferenceManyField.stories';
+import { Basic } from './ReferenceManyField.stories';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;
@@ -428,7 +428,7 @@ describe('useReferenceManyFieldController', () => {
 
         it('should select all records', async () => {
             const callback = jest.fn(Children);
-            render(<ReferenceManyField>{callback}</ReferenceManyField>);
+            render(<Basic>{callback}</Basic>);
             fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
                 expect(callback).toHaveBeenCalledWith(
@@ -441,7 +441,7 @@ describe('useReferenceManyFieldController', () => {
 
         it('should select all records even though some records are already selected', async () => {
             const callback = jest.fn(Children);
-            render(<ReferenceManyField>{callback}</ReferenceManyField>);
+            render(<Basic>{callback}</Basic>);
             fireEvent.click(await screen.findByText('Select 1'));
             await waitFor(() => {
                 expect(callback).toHaveBeenCalledWith(
@@ -476,11 +476,7 @@ describe('useReferenceManyFieldController', () => {
                 getManyReference,
             });
             const callback = jest.fn(Children);
-            render(
-                <ReferenceManyField dataProvider={dataProvider}>
-                    {callback}
-                </ReferenceManyField>
-            );
+            render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
             await waitFor(() => {
                 expect(callback).toHaveBeenNthCalledWith(
                     1,

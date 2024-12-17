@@ -75,9 +75,7 @@ const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
     </div>
 );
 
-export const ReferenceArrayField = ({
-    children = ReferenceArrayFieldComponent,
-}) => (
+export const Basic = ({ children = ReferenceArrayFieldComponent }) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ReferenceArrayFieldController
             resource="foo"

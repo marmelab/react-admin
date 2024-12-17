@@ -77,7 +77,7 @@ const ReferenceManyFieldComponent = (props: ListControllerResult) => (
     </div>
 );
 
-export const ReferenceManyField = ({
+export const Basic = ({
     children = ReferenceManyFieldComponent,
     dataProvider = defaultDataProvider,
 }: {

@@ -5,7 +5,7 @@ import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
 import { CoreAdminContext } from '../../core';
-import { ReferenceArrayField } from './ReferenceArrayField.stories';
+import { Basic } from './ReferenceArrayField.stories';
 
 const ReferenceArrayFieldController = props => {
     const { children, ...rest } = props;
@@ -178,7 +178,7 @@ describe('<useReferenceArrayFieldController />', () => {
 
         it('should select all records', async () => {
             const callback = jest.fn(Children);
-            render(<ReferenceArrayField>{callback}</ReferenceArrayField>);
+            render(<Basic>{callback}</Basic>);
             await waitFor(() => {
                 expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
@@ -201,7 +201,7 @@ describe('<useReferenceArrayFieldController />', () => {
 
         it('should select all records even though some records are already selected', async () => {
             const callback = jest.fn(Children);
-            render(<ReferenceArrayField>{callback}</ReferenceArrayField>);
+            render(<Basic>{callback}</Basic>);
             await waitFor(() => {
                 expect(callback).toHaveBeenCalledWith(
                     expect.objectContaining({
