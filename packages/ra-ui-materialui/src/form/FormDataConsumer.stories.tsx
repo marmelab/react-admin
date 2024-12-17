@@ -18,28 +18,28 @@ export const Basic = () => (
                     <FormDataConsumer<any>>
                         {({ formData }) => {
                             console.log({ formData });
-                            if (!!formData.title) {
-                                return (
-                                    <ReferenceInput
-                                        source="userId"
-                                        reference="users"
-                                    >
-                                        <AutocompleteInput
-                                            shouldUnregister
-                                            label="User"
-                                            optionText={choice =>
-                                                `${choice.name} /  (${choice.id})`
-                                            }
-                                            // optionValue="userId"
-                                            noOptionsText="User does'nt exist"
-                                            isRequired
-                                            validate={[
-                                                required('User is Required.'),
-                                            ]}
-                                        />
-                                    </ReferenceInput>
-                                );
-                            } else return null;
+                            if (!formData.title) {
+                                return null;
+                            }
+                            return (
+                                <ReferenceInput
+                                    source="userId"
+                                    reference="users"
+                                >
+                                    <AutocompleteInput
+                                        shouldUnregister
+                                        label="User"
+                                        optionText={choice =>
+                                            `${choice.name} / (${choice.id})`
+                                        }
+                                        noOptionsText="User doesn't exist"
+                                        isRequired
+                                        validate={[
+                                            required('User is required.'),
+                                        ]}
+                                    />
+                                </ReferenceInput>
+                            );
                         }}
                     </FormDataConsumer>
                     <TextInput source="body" multiline rows={5} />
