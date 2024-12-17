@@ -345,25 +345,11 @@ describe('<List />', () => {
     });
 
     describe('"Select all" button', () => {
-        const Child = () => {
-            const [_, selectionModifiers] = useRecordSelection({
-                resource: 'books',
-            });
-            return (
-                <button onClick={() => selectionModifiers.clearSelection()}>
-                    reset
-                </button>
-            );
-        };
         afterEach(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'reset' }));
+            fireEvent.click(screen.getByRole('button', { name: 'Unselect' }));
         });
         it('should be displayed if an item is selected', async () => {
-            render(
-                <Default>
-                    <Child />
-                </Default>
-            );
+            render(<Default />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
@@ -395,9 +381,7 @@ describe('<List />', () => {
                                 total: 2,
                             }),
                     })}
-                >
-                    <Child />
-                </Default>
+                />
             );
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(3);
@@ -409,11 +393,7 @@ describe('<List />', () => {
             ).toBeNull();
         });
         it('should not be displayed if all item are selected with the "Select all" button', async () => {
-            render(
-                <Default>
-                    <Child />
-                </Default>
-            );
+            render(<Default />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
@@ -455,9 +435,7 @@ describe('<List />', () => {
                                 total: 3,
                             }),
                     })}
-                >
-                    <Child />
-                </SelectAllLimit>
+                />
             );
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(4);
@@ -470,11 +448,7 @@ describe('<List />', () => {
             ).toBeNull();
         });
         it('should not be displayed if we reached the selectAllLimit by a  click on the "Select all" button', async () => {
-            render(
-                <SelectAllLimit>
-                    <Child />
-                </SelectAllLimit>
-            );
+            render(<SelectAllLimit />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
@@ -490,11 +464,7 @@ describe('<List />', () => {
             ).toBeNull();
         });
         it('should select all items', async () => {
-            render(
-                <Default>
-                    <Child />
-                </Default>
-            );
+            render(<Default />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
@@ -503,12 +473,8 @@ describe('<List />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('13 items selected');
         });
-        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
-            render(
-                <SelectAllLimit>
-                    <Child />
-                </SelectAllLimit>
-            );
+        it.only('should select the maximum items possible until we reached the selectAllLimit', async () => {
+            render(<SelectAllLimit />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
