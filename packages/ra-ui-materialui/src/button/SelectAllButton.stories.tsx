@@ -86,6 +86,42 @@ const dataProvider = fakeRestDataProvider({
             author: 'James Joyce',
             reads: 12,
         },
+        {
+            id: 12,
+            title: 'The Great Gatsby',
+            author: 'F. Scott Fitzgerald',
+            reads: 123,
+        },
+        {
+            id: 13,
+            title: 'A Journey To The Centre Of The Earth',
+            author: 'Jules Verne',
+            reads: 98,
+        },
+        {
+            id: 14,
+            title: 'The Adventures of Sherlock Holmes',
+            author: 'Arthur Conan Doyle',
+            reads: 123,
+        },
+        {
+            id: 15,
+            title: 'The Odyssey',
+            author: 'Homer',
+            reads: 23,
+        },
+        {
+            id: 16,
+            title: 'The Brothers Karamazov',
+            author: 'Fyodor Dostoevsky',
+            reads: 12,
+        },
+        {
+            id: 17,
+            title: 'The Divine Comedy',
+            author: 'Dante Alighieri',
+            reads: 123,
+        },
     ],
     authors: [],
 });
@@ -126,6 +162,8 @@ export const Label = () => (
 
 export const Limit = () => (
     <Wrapper
-        actions={<SelectAllButton label="Select all books (max 5)" limit={5} />}
+        actions={
+            <SelectAllButton label="Select all books (max 15)" limit={15} />
+        }
     />
 );
