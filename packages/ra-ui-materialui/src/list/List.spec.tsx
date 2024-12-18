@@ -6,7 +6,6 @@ import {
     testDataProvider,
     useListContext,
     TestMemoryRouter,
-    useRecordSelection,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
