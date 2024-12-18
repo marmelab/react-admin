@@ -339,7 +339,7 @@ describe('<ReferenceArrayField />', () => {
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
             });
-            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
             expect(
                 await screen.findByRole('button', { name: 'Select all' })
             ).toBeDefined();
