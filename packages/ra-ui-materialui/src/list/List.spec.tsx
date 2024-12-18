@@ -352,7 +352,7 @@ describe('<List />', () => {
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
-            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
             expect(
                 await screen.findByRole('button', { name: 'Select all' })
             ).toBeDefined();
@@ -451,8 +451,8 @@ describe('<List />', () => {
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
             });
-            fireEvent.click(screen.getAllByRole('checkbox')[1]);
-            await screen.findByText('1 item selected');
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('10 items selected');
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('11 items selected');
             await screen.findByText(
