@@ -15,6 +15,12 @@ const List = () => {
                 <p>Loading...</p>
             ) : (
                 <div>
+                    <div>
+                        <p data-testid="selected_ids">
+                            Selected ids:{' '}
+                            {JSON.stringify(listContext.selectedIds)}
+                        </p>
+                    </div>
                     <ul
                         style={{
                             listStyleType: 'none',

@@ -258,38 +258,38 @@ describe('<useList />', () => {
 
     describe('onSelectAll', () => {
         it('should select all records', async () => {
-            const callback = jest.fn();
-            render(<SelectAll callback={callback} />);
-            fireEvent.click(
-                await screen.findByRole('button', { name: 'Select All' })
-            );
+            render(<SelectAll />);
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                    })
-                );
-            });
-        });
-        it('should select all records even though some records are already selected', async () => {
-            const callback = jest.fn();
-            render(<SelectAll callback={callback} />);
-            fireEvent.click(
-                await screen.findByRole('button', { name: 'Select item 1' })
-            );
-            await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [1],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
                 );
             });
             fireEvent.click(screen.getByRole('button', { name: 'Select All' }));
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7,8,9,10]'
+                );
+            });
+        });
+        it('should select all records even though some records are already selected', async () => {
+            render(<SelectAll />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(
+                screen.getByRole('button', { name: 'Select item 1' })
+            );
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
+                );
+            });
+            fireEvent.click(screen.getByRole('button', { name: 'Select All' }));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7,8,9,10]'
                 );
             });
         });
