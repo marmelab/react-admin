@@ -10,7 +10,7 @@ import {
 
 describe('useSelectAll', () => {
     it('should select all', async () => {
-        render(<Basic options={{}} dataProvider={defaultDataProvider} />);
+        render(<Basic options={{}} />);
         await screen.findByText('Selected ids: []');
         fireEvent.click(screen.getByText('Select All'));
         await waitFor(() => {
@@ -19,7 +19,7 @@ describe('useSelectAll', () => {
     });
 
     it('should select all with limit', async () => {
-        render(<Limit dataProvider={defaultDataProvider} />);
+        render(<Limit />);
         await screen.findByText('Selected ids: []');
         fireEvent.click(screen.getByText('Select All'));
         await waitFor(() => {
