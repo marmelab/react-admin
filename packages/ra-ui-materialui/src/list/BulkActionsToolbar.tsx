@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode, useCallback } from 'react';
-import { styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -46,11 +46,12 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                         aria-label={translate('ra.action.unselect')}
                         title={translate('ra.action.unselect')}
                         onClick={handleUnselectAllClick}
+                        color="primary"
                         size="small"
                     >
                         <CloseIcon fontSize="small" />
                     </IconButton>
-                    <Typography color="inherit" variant="subtitle1">
+                    <Typography color="text.primary" variant="subtitle1">
                         {translate(label, {
                             _: label,
                             smart_count: selectedIds.length,
@@ -144,5 +145,8 @@ const Root = styled('div', {
 
     [`& .${BulkActionsToolbarClasses.icon}`]: {
         marginLeft: '-0.5em',
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.primary.main, 0.12),
+        },
     },
 }));
