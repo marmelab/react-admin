@@ -35,7 +35,7 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
         ...rest
     } = props;
 
-    const { total, selectedIds, onSelectAll } = useListContext();
+    const { total, selectedIds, onSelectAll, data } = useListContext();
     const handleSelectAll = useCallback(
         event => {
             onSelectAll({ limit, queryOptions });
@@ -44,7 +44,14 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
         [onClick, onSelectAll, queryOptions, limit]
     );
 
-    if (total === selectedIds.length || selectedIds.length >= limit)
+    const areAllDataSelected =
+        data && data.every(item => selectedIds.includes(item.id));
+
+    if (
+        total === selectedIds.length ||
+        selectedIds.length >= limit ||
+        !areAllDataSelected
+    )
         return null;
 
     return (
