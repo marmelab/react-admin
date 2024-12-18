@@ -169,55 +169,38 @@ describe('<useReferenceArrayFieldController />', () => {
     });
 
     describe('onSelectAll', () => {
-        const Children = params => (
-            <div>
-                <button onClick={() => params.onSelectAll()}>Select All</button>
-                <span>children</span>
-            </div>
-        );
-
         it('should select all records', async () => {
-            const callback = jest.fn(Children);
-            render(<Basic>{callback}</Basic>);
+            render(<Basic />);
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
                 );
             });
             fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [1, 2],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2]'
                 );
             });
         });
 
         it('should select all records even though some records are already selected', async () => {
-            const callback = jest.fn(Children);
-            render(<Basic>{callback}</Basic>);
+            render(<Basic />);
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        data: [
-                            { id: 1, title: 'bar1' },
-                            { id: 2, title: 'bar2' },
-                        ],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(await screen.findByTestId('checkbox-1'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
                 );
             });
             fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [1, 2],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2]'
                 );
             });
         });

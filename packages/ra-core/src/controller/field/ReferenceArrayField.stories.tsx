@@ -50,7 +50,9 @@ const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
             >
                 Unselect All
             </button>
-            <p>Selected ids: {JSON.stringify(props.selectedIds)}</p>
+            <p data-testid="selected_ids">
+                Selected ids: {JSON.stringify(props.selectedIds)}
+            </p>
         </div>
         <ul
             style={{
@@ -67,6 +69,7 @@ const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
                             cursor: 'pointer',
                             marginRight: '10px',
                         }}
+                        data-testid={`checkbox-${record.id}`}
                     />
                     {record.id} - {record.title}
                 </li>
