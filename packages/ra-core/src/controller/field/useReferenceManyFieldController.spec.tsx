@@ -6,7 +6,7 @@ import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
 import { useReferenceManyFieldController } from './useReferenceManyFieldController';
 import { memoryStore } from '../../store';
-import { Basic } from './ReferenceManyField.stories';
+import { Basic, defaultDataProvider } from './ReferenceManyField.stories';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;
@@ -415,82 +415,58 @@ describe('useReferenceManyFieldController', () => {
     });
 
     describe('onSelectAll', () => {
-        const Children = params => (
-            <div>
-                <button onClick={() => params.onSelectAll()}>Select All</button>
-                <button onClick={() => params.onSelectAll({ limit: 1 })}>
-                    Limited Select All
-                </button>
-                <button onClick={() => params.onSelect([1])}>Select 1</button>
-                <span>children</span>
-            </div>
-        );
-
         it('should select all records', async () => {
-            const callback = jest.fn(Children);
-            render(<Basic>{callback}</Basic>);
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
             fireEvent.click(await screen.findByText('Select All'));
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [0, 1],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [0,1]'
                 );
             });
         });
 
         it('should select all records even though some records are already selected', async () => {
-            const callback = jest.fn(Children);
-            render(<Basic>{callback}</Basic>);
-            fireEvent.click(await screen.findByText('Select 1'));
+            render(<Basic />);
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [1],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
                 );
             });
-            fireEvent.click(screen.getByText('Select All'));
+            fireEvent.click(await screen.findByTestId('checkbox-1'));
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [0, 1],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
+                );
+            });
+            fireEvent.click(await screen.findByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [0,1]'
                 );
             });
         });
 
         it('should not select more records than the provided limit', async () => {
-            const getManyReference = jest
-                .fn()
-                .mockImplementation((_resource, params) =>
-                    Promise.resolve({
-                        data: [{ id: 0 }, { id: 1 }].slice(
-                            0,
-                            params.pagination.perPage
-                        ),
-                        total: 2,
-                    })
-                );
-            const dataProvider = testDataProvider({
-                getManyReference,
-            });
-            const callback = jest.fn(Children);
-            render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
+            const dataProvider = defaultDataProvider;
+            const getManyReference = jest.spyOn(
+                dataProvider,
+                'getManyReference'
+            );
+            render(<Basic dataProvider={dataProvider} />);
             await waitFor(() => {
-                expect(callback).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        selectedIds: [],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
                 );
             });
             fireEvent.click(await screen.findByText('Limited Select All'));
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [0],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [0]'
                 );
             });
             await waitFor(() => {

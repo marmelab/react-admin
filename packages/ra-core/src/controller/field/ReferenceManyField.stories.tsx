@@ -8,7 +8,7 @@ import {
     useReferenceManyFieldController,
 } from '../..';
 
-const defaultDataProvider = testDataProvider({
+export const defaultDataProvider = testDataProvider({
     getManyReference: (_resource, params): Promise<GetManyResult> =>
         Promise.resolve({
             data: [
@@ -47,12 +47,20 @@ const ReferenceManyFieldComponent = (props: ListControllerResult) => (
                 Select All
             </button>
             <button
+                onClick={() => props.onSelectAll({ limit: 1 })}
+                disabled={props.selectedIds.length >= 1}
+            >
+                Limited Select All
+            </button>
+            <button
                 onClick={props.onUnselectItems}
                 disabled={props.selectedIds.length === 0}
             >
                 Unselect All
             </button>
-            <p>Selected ids: {JSON.stringify(props.selectedIds)}</p>
+            <p data-testid="selected_ids">
+                Selected ids: {JSON.stringify(props.selectedIds)}
+            </p>
         </div>
         <ul
             style={{
@@ -69,6 +77,7 @@ const ReferenceManyFieldComponent = (props: ListControllerResult) => (
                             cursor: 'pointer',
                             marginRight: '10px',
                         }}
+                        data-testid={`checkbox-${record.id}`}
                     />
                     {record.id} - {record.title}
                 </li>
@@ -99,4 +108,5 @@ export const Basic = ({
 
 export default {
     title: 'ra-core/fields/ReferenceManyField',
+    excludeStories: ['defaultDataProvider'],
 };
