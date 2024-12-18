@@ -297,6 +297,7 @@ title: "Index"
 
 **- R -**
 * [`useRecordContext`](./useRecordContext.md)
+* [`useRecordFromLocation`](./useRecordFromLocation.md)
 * [`useRedirect`](./useRedirect.md)
 * [`useReference`](./useGetOne.md#aggregating-getone-calls)
 * [`useRefresh`](./useRefresh.md)
