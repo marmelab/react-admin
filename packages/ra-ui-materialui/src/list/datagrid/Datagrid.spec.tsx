@@ -114,15 +114,15 @@ describe('<Datagrid />', () => {
         );
     });
 
-    it('should accept a custom bulkActionsToolbar', () => {
+    it('should accept a custom bulkActionsToolbar', async () => {
         render(<BulkActionToolbar onlyDisplay="custom" />);
-        expect(screen.queryByText('Delete')).toBeNull();
+        fireEvent.click(await screen.findByLabelText('ra.action.select_all'));
         expect(screen.queryByText('Select all records')).not.toBeNull();
     });
 
-    it('should not display the bulk actions toolbar when when `bulkActionsToolbar` prop is false', () => {
+    it('should not display the bulk actions toolbar when when `bulkActionsToolbar` prop is false', async () => {
         render(<BulkActionToolbar onlyDisplay="disabled" />);
-        expect(screen.queryByText('Delete')).toBeNull();
+        fireEvent.click(await screen.findByLabelText('ra.action.select_all'));
         expect(screen.queryByText('Select All')).toBeNull();
     });
 
@@ -313,7 +313,7 @@ describe('<Datagrid />', () => {
             await waitFor(() =>
                 expect(
                     screen.queryAllByLabelText('Select this row')
-                ).toHaveLength(4)
+                ).toHaveLength(7)
             );
         });
     });

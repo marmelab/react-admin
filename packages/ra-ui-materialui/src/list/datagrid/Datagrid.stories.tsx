@@ -38,66 +38,64 @@ import { BulkActionsToolbar } from '../BulkActionsToolbar';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
-const data = [
-    {
-        id: 1,
-        title: 'War and Peace',
-        author: 'Leo Tolstoy',
-        year: 1869,
-    },
-    {
-        id: 2,
-        title: 'Pride and Predjudice',
-        author: 'Jane Austen',
-        year: 1813,
-    },
-    {
-        id: 3,
-        title: 'The Picture of Dorian Gray',
-        author: 'Oscar Wilde',
-        year: 1890,
-    },
-    {
-        id: 4,
-        title: 'Le Petit Prince',
-        author: 'Antoine de Saint-Exupéry',
-        year: 1943,
-    },
-];
+const data = {
+    books: [
+        {
+            id: 1,
+            title: 'War and Peace',
+            author: 'Leo Tolstoy',
+            year: 1869,
+        },
+        {
+            id: 2,
+            title: 'Pride and Predjudice',
+            author: 'Jane Austen',
+            year: 1813,
+        },
+        {
+            id: 3,
+            title: 'The Picture of Dorian Gray',
+            author: 'Oscar Wilde',
+            year: 1890,
+        },
+        {
+            id: 4,
+            title: 'Le Petit Prince',
+            author: 'Antoine de Saint-Exupéry',
+            year: 1943,
+        },
+        {
+            id: 5,
+            title: 'The Alchemist',
+            author: 'Paulo Coelho',
+            year: 1988,
+        },
+        {
+            id: 6,
+            title: 'Madame Bovary',
+            author: 'Gustave Flaubert',
+            year: 1857,
+        },
+        {
+            id: 7,
+            title: 'The Lord of the Rings',
+            author: 'J. R. R. Tolkien',
+            year: 1954,
+        },
+    ],
+};
 
 const theme = createTheme();
 
-const SubWrapper = ({ children }) => {
-    const [selectedIds, selectionModifiers] = useRecordSelection({
-        resource: 'books',
-    });
-    return (
+const Wrapper = ({ children }) => (
+    <CoreAdminContext dataProvider={fakeRestDataProvider(data)}>
         <ThemeProvider theme={theme}>
             <ResourceContextProvider value="books">
-                <ListContextProvider
-                    value={
-                        {
-                            data,
-                            total: 4,
-                            isLoading: false,
-                            sort: { field: 'id', order: 'ASC' },
-                            selectedIds,
-                            onSelect: selectionModifiers.select,
-                            onToggleItem: selectionModifiers.toggle,
-                            onUnselectItems: selectionModifiers.clearSelection,
-                        } as any
-                    }
-                >
-                    <Box sx={{ pt: 7, px: 4 }}>{children}</Box>
-                </ListContextProvider>
+                <List perPage={5} sx={{ px: 4 }}>
+                    {children}
+                </List>
             </ResourceContextProvider>
         </ThemeProvider>
-    );
-};
-
-const Wrapper = ({ children }) => (
-    <CoreAdminContext>
-        <SubWrapper>{children}</SubWrapper>
     </CoreAdminContext>
 );
 
@@ -202,7 +200,7 @@ export const BulkActionToolbar = ({
 }) => (
     <Wrapper>
         <Box sx={{ mt: -7 }}>
-            {onlyDisplay && onlyDisplay === 'default' && (
+            {(!onlyDisplay || onlyDisplay === 'default') && (
                 <>
                     <h1>Default</h1>
                     <Datagrid>
@@ -213,7 +211,7 @@ export const BulkActionToolbar = ({
                     </Datagrid>
                 </>
             )}
-            {onlyDisplay && onlyDisplay === 'disabled' && (
+            {(!onlyDisplay || onlyDisplay === 'disabled') && (
                 <>
                     <h1>Disabled</h1>
                     <Datagrid bulkActionsToolbar={false}>
@@ -224,7 +222,7 @@ export const BulkActionToolbar = ({
                     </Datagrid>
                 </>
             )}
-            {onlyDisplay && onlyDisplay === 'custom' && (
+            {(!onlyDisplay || onlyDisplay === 'custom') && (
                 <>
                     <h1>Custom</h1>
                     <Datagrid bulkActionsToolbar={<CutomBulkActionToolbar />}>
@@ -430,11 +428,7 @@ const MyCustomListInteractive = () => {
 
 export const Standalone = () => (
     <ThemeProvider theme={theme}>
-        <CoreAdminContext
-            dataProvider={testDataProvider({
-                getList: () => Promise.resolve({ data, total: 4 }) as any,
-            })}
-        >
+        <CoreAdminContext dataProvider={fakeRestDataProvider(data)}>
             <ResourceContextProvider value="books">
                 <h1>Static</h1>
                 <MyCustomList />
@@ -526,11 +520,9 @@ export const RowClickFalse = () => (
     </Wrapper>
 );
 
-const dataProvider = fakeRestDataProvider({ books: data });
-
 export const FullApp = () => (
     <AdminContext
-        dataProvider={dataProvider}
+        dataProvider={fakeRestDataProvider(data)}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
     >
         <AdminUI>
