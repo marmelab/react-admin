@@ -280,7 +280,7 @@ describe('<ReferenceManyField />', () => {
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
             });
-            fireEvent.click(screen.getAllByRole('checkbox')[1]);
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
             expect(
                 await screen.findByRole('button', { name: 'Select all' })
             ).toBeDefined();
@@ -379,8 +379,8 @@ describe('<ReferenceManyField />', () => {
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
             });
-            fireEvent.click(screen.getAllByRole('checkbox')[1]);
-            await screen.findByText('1 item selected');
+            fireEvent.click(screen.getAllByRole('checkbox')[0]);
+            await screen.findByText('5 items selected');
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('6 items selected');
             await screen.findByText(
