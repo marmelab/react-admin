@@ -472,7 +472,7 @@ describe('<List />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('13 items selected');
         });
-        it.only('should select the maximum items possible until we reached the selectAllLimit', async () => {
+        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
             render(<SelectAllLimit />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
