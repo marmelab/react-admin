@@ -126,7 +126,10 @@ export interface ReferenceArrayFieldProps<
     reference: string;
     sort?: SortPayload;
     sx?: SxProps;
-    queryOptions?: UseQueryOptions<ReferenceRecordType[], Error>;
+    queryOptions?: Omit<
+        UseQueryOptions<ReferenceRecordType[], Error>,
+        'queryFn' | 'queryKey'
+    >;
 }
 
 export interface ReferenceArrayFieldViewProps

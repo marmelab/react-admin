@@ -3,8 +3,8 @@ import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 
 import { useChoices } from './useChoices';
-import { TestTranslationProvider } from '../i18n';
-import { useRecordContext } from '../controller';
+import { TestTranslationProvider } from '../../i18n';
+import { useRecordContext } from '../../controller';
 
 describe('useChoices hook', () => {
     const defaultProps = {

@@ -10,10 +10,8 @@ import {
 import get from 'lodash/get';
 
 import { useRecordContext } from '../controller';
-import { composeValidators, Validator } from './validate';
-import isRequired from './isRequired';
-import { useFormGroupContext } from './useFormGroupContext';
-import { useFormGroups } from './useFormGroups';
+import { composeValidators, Validator, isRequired } from './validation';
+import { useFormGroupContext, useFormGroups } from './groups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 import { useEvent } from '../util';
 import { useWrappedSource } from '../core';

@@ -66,6 +66,7 @@ export const Tab = ({
     className,
     divider,
     icon,
+    iconPosition,
     label,
     record,
     spacing = 1,
@@ -97,6 +98,7 @@ export const Tab = ({
                 label={tabLabel}
                 value={value}
                 icon={icon}
+                iconPosition={iconPosition}
                 className={clsx('show-tab', className)}
                 {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui/material-ui/issues/9106#issuecomment-451270521
                 {...rest}

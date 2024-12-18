@@ -14,11 +14,11 @@ It renders using Material UI [Autocomplete](https://mui.com/material-ui/react-au
   Your browser does not support the video tag.
 </video>
 
-
 This input allows editing values that are arrays of scalar values, e.g. `[123, 456]`.
 
 **Tip**: React-admin includes other components allowing the edition of such values:
 
+- [`<TextArrayInput>`](./TextArrayInput.md) lets you edit an array of strings
 - [`<SelectArrayInput>`](./SelectArrayInput.md) renders a dropdown list of choices
 - [`<CheckboxGroupInput>`](./CheckboxGroupInput.md) renders a list of checkbox options
 - [`<DualListInput>`](./DualListInput.md) renders a list of choices that can be moved from one list to another
@@ -559,8 +559,6 @@ In that case, set the `translateChoice` prop to `false`.
 <AutocompleteArrayInput source="category" limitTags={2} />
 ```
 {% endraw %}
-
-**Tip**: Like many other inputs, `<AutocompleteArrayInput>` accept a `fullWidth` prop.
 
 **Tip**: To use the `disableCloseOnSelect` prop, you must also set `blurOnSelect={false}`, since this is enabled by default.
 

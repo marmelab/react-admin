@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Resource, testDataProvider, TestMemoryRouter } from 'ra-core';
+import {
+    AuthProvider,
+    Resource,
+    testDataProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 import { Menu } from './Menu';
 import { Layout, LayoutProps } from './Layout';
 import { AdminContext } from '../AdminContext';
@@ -100,12 +105,13 @@ export const AccessControlInsideAdminChildFunction = () => (
     </TestMemoryRouter>
 );
 
-export const AccessControl = () => (
+export const AccessControl = ({
+    authProvider = authProviderForAccessControl,
+}: {
+    authProvider?: AuthProvider;
+}) => (
     <TestMemoryRouter>
-        <AdminContext
-            dataProvider={dataProvider}
-            authProvider={authProviderForAccessControl}
-        >
+        <AdminContext dataProvider={dataProvider} authProvider={authProvider}>
             <AdminUI layout={CustomLayout}>
                 <Resource name="users" list={<p>The users page</p>} />
                 <Resource

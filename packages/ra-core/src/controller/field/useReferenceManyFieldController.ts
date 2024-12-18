@@ -156,7 +156,7 @@ export const useReferenceManyFieldController = <
             filterRef.current = filter;
             setFilterValues(filter);
         }
-    });
+    }, [filter]);
 
     const {
         data,

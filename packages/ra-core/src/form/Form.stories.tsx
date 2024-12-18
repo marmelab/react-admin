@@ -8,16 +8,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Route, Routes, useNavigate, Link, HashRouter } from 'react-router-dom';
+import {
+    Route,
+    Routes,
+    useNavigate,
+    Link,
+    HashRouter,
+    useLocation,
+} from 'react-router-dom';
 
 import { CoreAdminContext } from '../core';
-import { Form } from './Form';
+import { RecordContextProvider, SaveContextProvider } from '../controller';
+import { Form, FormProps } from './Form';
 import { useInput } from './useInput';
-import { required } from './validate';
-import ValidationError from './ValidationError';
+import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
-import { I18nProvider } from '../types';
-import { SaveContextProvider, useNotificationContext } from '..';
+import { I18nProvider, RaRecord } from '../types';
+import { TestMemoryRouter } from '../routing';
+import { useNotificationContext } from '../notification';
 
 export default {
     title: 'ra-core/form/Form',
@@ -50,10 +58,12 @@ const Input = props => {
 };
 
 const SubmitButton = () => {
-    const state = useFormState();
+    const { dirtyFields } = useFormState();
+    // useFormState().isDirty might differ from useFormState().dirtyFields (https://github.com/react-hook-form/react-hook-form/issues/4740)
+    const isDirty = Object.keys(dirtyFields).length > 0;
 
     return (
-        <button type="submit" disabled={!state.isDirty}>
+        <button type="submit" disabled={!isDirty}>
             Submit
         </button>
     );
@@ -402,5 +412,136 @@ export const ServerSideValidation = () => {
                 <Notifications />
             </SaveContextProvider>
         </CoreAdminContext>
+    );
+};
+
+export const MultiRoutesForm = ({
+    url,
+    initialRecord,
+    defaultValues,
+}: {
+    url?: any;
+    initialRecord?: Partial<RaRecord>;
+    defaultValues?: Partial<RaRecord>;
+}) => (
+    <TestMemoryRouter key={url} initialEntries={[url]}>
+        <CoreAdminContext i18nProvider={defaultI18nProvider}>
+            <Routes>
+                <Route
+                    path="/form/*"
+                    element={
+                        <RecordContextProvider value={initialRecord}>
+                            <FormWithSubRoutes defaultValues={defaultValues} />
+                        </RecordContextProvider>
+                    }
+                />
+            </Routes>
+        </CoreAdminContext>
+    </TestMemoryRouter>
+);
+
+MultiRoutesForm.args = {
+    url: 'unmodified',
+    initialRecord: 'none',
+};
+
+MultiRoutesForm.argTypes = {
+    url: {
+        options: [
+            'unmodified',
+            'modified with location state',
+            'modified with location search',
+        ],
+        mapping: {
+            unmodified: '/form/general',
+            'modified with location state': {
+                pathname: '/form/general',
+                state: { record: { body: 'from-state' } },
+            },
+            'modified with location search': `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}`,
+        },
+        control: { type: 'select' },
+    },
+    defaultValues: {
+        options: ['none', 'provided'],
+        mapping: {
+            none: undefined,
+            provided: {
+                category: 'default category',
+            },
+        },
+        control: { type: 'select' },
+    },
+    initialRecord: {
+        options: ['none', 'provided'],
+        mapping: {
+            none: undefined,
+            provided: { title: 'lorem', body: 'unmodified' },
+        },
+        control: { type: 'select' },
+    },
+};
+
+const FormWithSubRoutes = (props: Partial<FormProps>) => {
+    return (
+        <Form {...props}>
+            <TabbedForm />
+            <SubmitButton />
+        </Form>
+    );
+};
+
+const TabbedForm = () => {
+    const location = useLocation();
+
+    return (
+        <>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+                <Link
+                    to={{
+                        ...location,
+                        pathname: 'general',
+                    }}
+                >
+                    General
+                </Link>
+                <Link
+                    to={{
+                        ...location,
+                        pathname: 'content',
+                    }}
+                >
+                    Settings
+                </Link>
+            </div>
+            <Tab name="general">
+                <Input source="title" />
+                <Input source="category" />
+            </Tab>
+            <Tab name="content">
+                <Input source="body" />
+            </Tab>
+        </>
+    );
+};
+const Tab = ({
+    children,
+    name,
+}: {
+    children: React.ReactNode;
+    name: string;
+}) => {
+    const location = useLocation();
+
+    return (
+        <div
+            style={{
+                display: location.pathname.endsWith(`/${name}`)
+                    ? 'flex'
+                    : 'none',
+            }}
+        >
+            {children}
+        </div>
     );
 };

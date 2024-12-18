@@ -83,10 +83,9 @@ export interface ReferenceFieldProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
-    queryOptions?: Partial<
-        UseQueryOptions<ReferenceRecordType[], Error> & {
-            meta?: any;
-        }
+    queryOptions?: Omit<
+        UseQueryOptions<ReferenceRecordType[], Error>,
+        'queryFn' | 'queryKey'
     >;
     reference: string;
     translateChoice?: Function | boolean;

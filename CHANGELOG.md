@@ -1,5 +1,45 @@
 # Changelog
 
+## 5.4.2
+
+* Fix: Improve AutocompleteInput creation support ([#10391](https://github.com/marmelab/react-admin/pull/10391)) ([djhi](https://github.com/djhi))
+* Fix `useLogin` should invalidate the `getPermissions` cache ([#10392](https://github.com/marmelab/react-admin/pull/10392)) ([slax57](https://github.com/slax57))
+* Fix `<Datagrid>` `rowClick` function cannot expand or select ([#10404](https://github.com/marmelab/react-admin/pull/10404)) ([djhi](https://github.com/djhi))
+* Fix `<FileInput>` triggers `onChange` twice with latest version of `react-dropzone` ([#10402](https://github.com/marmelab/react-admin/pull/10402)) ([slax57](https://github.com/slax57))
+* Fix type of disableClearable prop for AutocompleteInput ([#10393](https://github.com/marmelab/react-admin/pull/10393)) ([smeng9](https://github.com/smeng9))
+* [Doc] Backport `<ReferenceManyToManyField  queryOptions>` and `<ReferenceManyToManyInput  queryOptions  mutationOptions>` doc ([#10403](https://github.com/marmelab/react-admin/pull/10403)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `<DateRangeInput>` import syntax ([#10399](https://github.com/marmelab/react-admin/pull/10399)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Introduce `<TreeWithDetails filter>` prop to render a sub tree ([#10398](https://github.com/marmelab/react-admin/pull/10398)) ([djhi](https://github.com/djhi))
+
+## 5.4.1
+
+* Fix access control basename handling ([#10383](https://github.com/marmelab/react-admin/pull/10383)) ([djhi](https://github.com/djhi))
+* Fix ReferenceManyField executes filter reset filter too often ([#10371](https://github.com/marmelab/react-admin/pull/10371)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add video tutorial to Access Control documentation ([#10378](https://github.com/marmelab/react-admin/pull/10378)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix AutocompleteArrrayInput contains a useless tip ([#10373](https://github.com/marmelab/react-admin/pull/10373)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update `useUpdate` doc to explain `returnPromise` option ([#10372](https://github.com/marmelab/react-admin/pull/10372)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix Supabase (GraphQL) DataProvider link label ([#10370](https://github.com/marmelab/react-admin/pull/10370)) ([zackha](https://github.com/zackha))
+* [TypeScript] Fix `<ReferenceArrayField queryOptions>` param type ([#10389](https://github.com/marmelab/react-admin/pull/10389)) ([dricholm](https://github.com/dricholm))
+* [Storybook] Re-enable storysource addon ([#10363](https://github.com/marmelab/react-admin/pull/10363)) ([slax57](https://github.com/slax57))
+* [Chore] Add a story when `TextInput` trigger a server error ([#10386](https://github.com/marmelab/react-admin/pull/10386)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
+## 5.4.0
+
+* Introduce `<FilterLiveForm>` ([#10344](https://github.com/marmelab/react-admin/pull/10344)) ([slax57](https://github.com/slax57))
+* Fix: Remove redundant optimization of cache lookup for `useGetMany`(Aggregate) placeholderData ([#10256](https://github.com/marmelab/react-admin/pull/10256)) ([wattroll](https://github.com/wattroll))
+* Fix `<SortButton>` default translation ([#10368](https://github.com/marmelab/react-admin/pull/10368)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `useCanAccessResources` cannot have react-query options ([#10362](https://github.com/marmelab/react-admin/pull/10362)) ([djhi](https://github.com/djhi))
+* Fix `FilterListItem` story shows wrong way of resetting a filter ([#10358](https://github.com/marmelab/react-admin/pull/10358)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Add missing parameter to `add` function type of `<SimpleFormIteratorContextValue>` ([#10359](https://github.com/marmelab/react-admin/pull/10359)) ([Aikain](https://github.com/Aikain))
+* [Demo] Showcase tabs with icons ([#10369](https://github.com/marmelab/react-admin/pull/10369)) ([fzaninotto](https://github.com/fzaninotto))
+* [Chore] Reorganize ra-core/form directory ([#10364](https://github.com/marmelab/react-admin/pull/10364)) ([fzaninotto](https://github.com/fzaninotto))
+* [Chore] Remove `useSafeSetState` hook ([#10341](https://github.com/marmelab/react-admin/pull/10341)) ([geobde](https://github.com/geobde))
+* [Doc] Document `<DateRangeInput>` as a filter ([#10365](https://github.com/marmelab/react-admin/pull/10365)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `useRegisterMutationMiddleware` documentation ([#10360](https://github.com/marmelab/react-admin/pull/10360)) ([djhi](https://github.com/djhi))
+* [Doc] Improve Access Control for Custom Pages ([#10357](https://github.com/marmelab/react-admin/pull/10357)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<AppBar userMenu>` example usage ([#10356](https://github.com/marmelab/react-admin/pull/10356)) ([fzaninotto](https://github.com/fzaninotto))
+* Build(deps): Bump cross-spawn from 6.0.5 to 6.0.6 ([#10361](https://github.com/marmelab/react-admin/pull/10361)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.3.4
 
 * Fix `<SimpleList>` `ErrorInFetch` story ([#10353](https://github.com/marmelab/react-admin/pull/10353)) ([erwanMarmelab](https://github.com/erwanMarmelab))

@@ -3,14 +3,14 @@ import {
     ValidationErrorMessage,
     ValidationErrorMessageWithArgs,
 } from './validate';
-import { useTranslate } from '../i18n';
+import { useTranslate } from '../../i18n';
 
 export interface ValidationErrorProps {
     error: ValidationErrorMessage;
 }
 
 const ValidationErrorSpecialFormatPrefix = '@@react-admin@@';
-const ValidationError = (props: ValidationErrorProps) => {
+export const ValidationError = (props: ValidationErrorProps) => {
     const { error } = props;
     let errorMessage = error;
     const translate = useTranslate();
@@ -35,5 +35,3 @@ const ValidationError = (props: ValidationErrorProps) => {
 
     return <>{translate(errorMessage as string, { _: errorMessage })}</>;
 };
-
-export default ValidationError;

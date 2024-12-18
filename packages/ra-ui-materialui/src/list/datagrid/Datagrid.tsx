@@ -29,7 +29,7 @@ import difference from 'lodash/difference';
 import { DatagridHeader } from './DatagridHeader';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
-import { RowClickFunction } from './DatagridRow';
+import { RowClickFunction } from '../types';
 import DatagridContextProvider from './DatagridContextProvider';
 import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';

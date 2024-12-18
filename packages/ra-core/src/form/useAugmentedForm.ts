@@ -1,22 +1,28 @@
-import { BaseSyntheticEvent, useCallback, useMemo, useRef } from 'react';
+import {
+    BaseSyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+} from 'react';
 import {
     FieldValues,
     SubmitHandler,
     useForm,
     UseFormProps,
 } from 'react-hook-form';
-
+import merge from 'lodash/merge';
 import { RaRecord } from '../types';
-import { SaveHandler, useSaveContext } from '../controller';
-import { useRecordContext } from '../controller';
+import { SaveHandler, useRecordContext, useSaveContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
 import {
     getSimpleValidationResolver,
     ValidateForm,
-} from './getSimpleValidationResolver';
-import { setSubmissionErrors } from './setSubmissionErrors';
-import { useNotifyIsFormInvalid } from './useNotifyIsFormInvalid';
+} from './validation/getSimpleValidationResolver';
+import { setSubmissionErrors } from './validation/setSubmissionErrors';
+import { useNotifyIsFormInvalid } from './validation/useNotifyIsFormInvalid';
 import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
+import { useRecordFromLocation } from './useRecordFromLocation';
 
 /**
  * Wrapper around react-hook-form's useForm
@@ -44,8 +50,8 @@ export const useAugmentedForm = <RecordType = any>(
         disableInvalidFormNotification,
         ...rest
     } = props;
-    const record = useRecordContext(props);
     const saveContext = useSaveContext();
+    const record = useRecordContext(props);
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
@@ -80,6 +86,18 @@ export const useAugmentedForm = <RecordType = any>(
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
+
+    const recordFromLocation = useRecordFromLocation();
+    const recordFromLocationApplied = useRef(false);
+    const { reset } = form;
+    useEffect(() => {
+        if (recordFromLocation && !recordFromLocationApplied.current) {
+            reset(merge({}, defaultValuesIncludingRecord, recordFromLocation), {
+                keepDefaultValues: true,
+            });
+            recordFromLocationApplied.current = true;
+        }
+    }, [defaultValuesIncludingRecord, recordFromLocation, reset]);
 
     // submit callbacks
     const handleSubmit = useCallback(
