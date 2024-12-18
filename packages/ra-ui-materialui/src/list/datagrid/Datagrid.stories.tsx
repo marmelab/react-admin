@@ -85,10 +85,12 @@ const data = {
     ],
 };
 
+const dataProvider = fakeRestDataProvider(data);
+
 const theme = createTheme();
 
 const Wrapper = ({ children }) => (
-    <CoreAdminContext dataProvider={fakeRestDataProvider(data)}>
+    <CoreAdminContext dataProvider={dataProvider}>
         <ThemeProvider theme={theme}>
             <ResourceContextProvider value="books">
                 <List perPage={5} sx={{ px: 4 }}>
@@ -428,7 +430,7 @@ const MyCustomListInteractive = () => {
 
 export const Standalone = () => (
     <ThemeProvider theme={theme}>
-        <CoreAdminContext dataProvider={fakeRestDataProvider(data)}>
+        <CoreAdminContext dataProvider={dataProvider}>
             <ResourceContextProvider value="books">
                 <h1>Static</h1>
                 <MyCustomList />
@@ -522,7 +524,7 @@ export const RowClickFalse = () => (
 
 export const FullApp = () => (
     <AdminContext
-        dataProvider={fakeRestDataProvider(data)}
+        dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
     >
         <AdminUI>
