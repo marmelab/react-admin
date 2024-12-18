@@ -22,7 +22,7 @@ import {
     CanAccess,
     DisableAuthentication,
 } from './useListController.security.stories';
-import { Basic } from './useListController.stories';
+import { Basic, defaultDataProvider } from './useListController.stories';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -588,76 +588,61 @@ describe('useListController', () => {
     });
 
     describe('onSelectAll', () => {
-        const dataProvider = testDataProvider({
-            getList: jest.fn().mockImplementation((_resource, params) =>
-                Promise.resolve({
-                    data: [{ id: 0 }, { id: 1 }].slice(
-                        0,
-                        params.pagination.perPage
-                    ),
-                    total: 2,
-                })
-            ),
-        });
-        const Children = params => (
-            <div>
-                <button onClick={() => params.onSelectAll()}>Select All</button>
-                <button onClick={() => params.onSelectAll({ limit: 1 })}>
-                    Limited Select All
-                </button>
-                <button onClick={() => params.onSelect([0])}>Select 0</button>
-                <span>children</span>
-            </div>
-        );
         it('should select all records', async () => {
-            const callback = jest.fn(Children);
-            render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
-            fireEvent.click(await screen.findByText('Select All'));
+            render(<Basic />);
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [0, 1],
-                    })
-                );
-            });
-        });
-        it('should select all records even though some records are already selected', async () => {
-            const callback = jest.fn(Children);
-            render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
-            fireEvent.click(await screen.findByText('Select 0'));
-            await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [0],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
                 );
             });
             fireEvent.click(screen.getByText('Select All'));
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [0, 1],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7]'
+                );
+            });
+        });
+        it('should select all records even though some records are already selected', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByText('Select item 1'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
+                );
+            });
+            fireEvent.click(screen.getByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7]'
                 );
             });
         });
         it('should not select more records than the provided limit', async () => {
+            const dataProvider = defaultDataProvider;
             const getList = jest.spyOn(dataProvider, 'getList');
-            const callback = jest.fn(Children);
-            render(<Basic dataProvider={dataProvider}>{callback}</Basic>);
+            render(<Basic dataProvider={dataProvider} />);
             fireEvent.click(await screen.findByText('Limited Select All'));
             await waitFor(() => {
-                expect(callback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        selectedIds: [0],
-                    })
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByText('Limited Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3]'
                 );
             });
             await waitFor(() => {
                 expect(getList).toHaveBeenCalledWith(
                     'posts',
                     expect.objectContaining({
-                        pagination: { page: 1, perPage: 1 },
+                        pagination: { page: 1, perPage: 3 },
                     })
                 );
             });

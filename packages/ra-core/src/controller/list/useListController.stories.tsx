@@ -8,9 +8,10 @@ import type { ListControllerResult } from './useListController';
 
 export default {
     title: 'ra-core/controller/list/useListController',
+    excludeStories: ['defaultDataProvider'],
 };
 
-const defaultDataProvider = fakeDataProvider(
+export const defaultDataProvider = fakeDataProvider(
     {
         posts: [
             { id: 1, title: 'Morbi suscipit malesuada' },
@@ -41,12 +42,26 @@ const List = params => (
                 Select All
             </button>
             <button
+                onClick={() => params.onSelect([1])}
+                disabled={params.selectedIds.includes(1)}
+            >
+                Select item 1
+            </button>
+            <button
+                onClick={() => params.onSelectAll({ limit: 3 })}
+                disabled={params.selectedIds.length >= 3}
+            >
+                Limited Select All
+            </button>
+            <button
                 onClick={params.onUnselectItems}
                 disabled={params.selectedIds.length === 0}
             >
                 Unselect All
             </button>
-            <p>Selected ids: {JSON.stringify(params.selectedIds)}</p>
+            <p data-testid="selected_ids">
+                Selected ids: {JSON.stringify(params.selectedIds)}
+            </p>
         </div>
         <ul
             style={{
