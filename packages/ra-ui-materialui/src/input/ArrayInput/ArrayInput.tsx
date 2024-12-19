@@ -101,8 +101,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
 
-    const { getFieldState, formState, getValues, register, unregister } =
-        useFormContext();
+    const { getFieldState, formState, getValues } = useFormContext();
 
     const fieldProps = useFieldArray({
         name: finalSource,
@@ -121,25 +120,17 @@ export const ArrayInput = (props: ArrayInputProps) => {
         },
     });
 
-    // We need to register the array itself as a field to enable validation at its level
     useEffect(() => {
-        register(finalSource);
-        formGroups &&
-            formGroupName != null &&
+        if (formGroups && formGroupName != null) {
             formGroups.registerField(finalSource, formGroupName);
+        }
 
         return () => {
-            unregister(finalSource, {
-                keepValue: true,
-                keepError: true,
-                keepDirty: true,
-                keepTouched: true,
-            });
-            formGroups &&
-                formGroupName != null &&
+            if (formGroups && formGroupName != null) {
                 formGroups.unregisterField(finalSource, formGroupName);
+            }
         };
-    }, [register, unregister, finalSource, formGroups, formGroupName]);
+    }, [finalSource, formGroups, formGroupName]);
 
     useApplyInputDefaultValues({
         inputProps: props,

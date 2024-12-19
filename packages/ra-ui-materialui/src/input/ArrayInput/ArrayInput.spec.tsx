@@ -4,8 +4,6 @@ import userEvent from '@testing-library/user-event';
 import {
     RecordContextProvider,
     ResourceContextProvider,
-    minLength,
-    required,
     testDataProvider,
 } from 'ra-core';
 
@@ -23,6 +21,7 @@ import {
     NestedInline,
     WithReferenceField,
     NestedInlineNoTranslation,
+    Validation,
 } from './ArrayInput.stories';
 import { useArrayInput } from './useArrayInput';
 
@@ -136,66 +135,19 @@ describe('<ArrayInput />', () => {
     });
 
     it('should apply validation to both itself and its inner inputs', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="bar">
-                    <SimpleForm
-                        onSubmit={jest.fn}
-                        defaultValues={{
-                            arr: [],
-                        }}
-                    >
-                        <ArrayInput
-                            source="arr"
-                            validate={[minLength(2, 'array_min_length')]}
-                        >
-                            <SimpleFormIterator>
-                                <TextInput
-                                    source="id"
-                                    validate={[required('id_required')]}
-                                />
-                                <TextInput
-                                    source="foo"
-                                    validate={[required('foo_required')]}
-                                />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
-        );
+        render(<Validation />);
 
-        fireEvent.click(screen.getByLabelText('ra.action.add'));
-        fireEvent.click(screen.getByText('ra.action.save'));
+        fireEvent.click(await screen.findByLabelText('Add'));
+        fireEvent.click(screen.getByText('Save'));
         await waitFor(() => {
-            expect(screen.queryByText('array_min_length')).not.toBeNull();
+            // The two inputs in each item are required
+            expect(screen.queryAllByText('Required')).toHaveLength(2);
         });
-        fireEvent.click(screen.getByLabelText('ra.action.add'));
-        const firstId = screen.getAllByLabelText(
-            'resources.bar.fields.arr.id *'
-        )[0];
-        fireEvent.change(firstId, {
-            target: { value: 'aaa' },
-        });
-        fireEvent.change(firstId, {
-            target: { value: '' },
-        });
-        fireEvent.blur(firstId);
-        const firstFoo = screen.getAllByLabelText(
-            'resources.bar.fields.arr.foo *'
-        )[0];
-        fireEvent.change(firstFoo, {
-            target: { value: 'aaa' },
-        });
-        fireEvent.change(firstFoo, {
-            target: { value: '' },
-        });
-        fireEvent.blur(firstFoo);
-        expect(screen.queryByText('array_min_length')).toBeNull();
-        await waitFor(() => {
-            expect(screen.queryByText('id_required')).not.toBeNull();
-            expect(screen.queryByText('foo_required')).not.toBeNull();
-        });
+        fireEvent.click(screen.getAllByLabelText('Remove')[2]);
+        fireEvent.click(screen.getAllByLabelText('Remove')[1]);
+        fireEvent.click(screen.getByText('Save'));
+
+        await screen.findByText('You need two authors at minimum');
     });
 
     it('should maintain its form value after having been unmounted', async () => {
