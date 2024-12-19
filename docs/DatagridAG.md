@@ -247,9 +247,10 @@ If you need to use these features, you can use the [`<DatagridAGClient>`](#datag
 
 | Prop                | Required | Type                        | Default                      | Description                                                                                                                            |
 | ------------------- | -------- | --------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `columnDefs`        | Required | Array                       | n/a                          | The columns definitions                                                                                                                |
 | `bulkActionButtons` | Optional | Element                     | `<BulkDelete Button>`        | The component used to render the bulk action buttons                                                                                   |
+| `cellEditor`        | Optional | String, Function or Element |                              | Allows to use a custom component to render the cell editor |
 | `cellRenderer`      | Optional | String, Function or Element |                              | Allows to use a custom component to render the cell content                                                                            |
+| `columnDefs`        | Required | Array                       | n/a                          | The columns definitions                                                                                                                |
 | `darkTheme`         | Optional | String                      | `'ag-theme-alpine-dark'`     | The name of the ag-grid dark theme                                                                                                     |
 | `defaultColDef`     | Optional | Object                      |                              | The default column definition (applied to all columns)                                                                                 |
 | `getAgGridFilters`   | Optional | Function                      |                              | A function mapping react-admin filters to ag-grid filters  |
@@ -310,6 +311,146 @@ export const PostList = () => {
 ```
 {% endraw %}
 
+### `cellEditor`
+
+In a column definition, you can use the `cellEditor` field to specify a custom cell editor. You can use any [Edit Component](https://www.ag-grid.com/react-data-grid/cell-editors/) supported by `ag-grid`, including [Custom Components](https://www.ag-grid.com/react-data-grid/cell-editors/#custom-components).
+
+In addition to that, `<DatagridAG>` supports using [React Admin inputs](./Inputs.md) as `cellEditor`, such as [`<TextInput>`](./TextInput.md) or even [`<ReferenceInput>`](./ReferenceInput.md).
+
+This allows to leverage all the power of react-admin inputs in your grid, for example to edit a reference.
+
+To use a React Admin input as `cellEditor`, you need to pass it as a *React Element*:
+
+```tsx
+import { List, ReferenceInput } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+
+export const CommentList = () => {
+    const columnDefs = [
+        // ...
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts" />
+            ),
+        },
+    ];
+    return (
+        <List>
+            <DatagridAG columnDefs={columnDefs} />
+        </List>
+    );
+};
+```
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-ReferenceInput-AutocompleteInputAG.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+If you are passing a React Admin input as *React Element*, there are two additional props you can use: `submitOnChange` and `noThemeOverride`.
+
+These props need to be passed as `cellEditorParams`.
+
+`submitOnChange` allows to submit the change to ag-grid as soon as the input value changes, without waiting for the user to submit the form (e.g. by pressing Enter or clicking outside the cell).
+
+This provides a better UX for example with components such as `<AutocompleteInput>` or `<SelectInput>`, as the value is immediately updated after the user selects an option.
+
+```tsx
+import { List, ReferenceInput } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+
+export const CommentList = () => {
+    const columnDefs = [
+        // ...
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts" />
+            ),
+            cellEditorParams: {
+                submitOnChange: true,
+            },
+        },
+    ];
+    return (
+        <List>
+            <DatagridAG columnDefs={columnDefs} />
+        </List>
+    );
+};
+```
+
+`noThemeOverride` allows to prevent `DatagridAG` from applying custom styles to the input.
+
+Indeed, `DatagridAG` applies custom styles to the inputs to make them look like ag-grid cells. However, this can cause issues for instance when rendering a `Dialog` containing additional inputs inside the cell editor. This can happen, for example, if you are using a custom create component with `<AutocompleteInput create>`.
+
+To solve this issue, you can set `noThemeOverride` to `true` and apply your own styles to the input component.
+
+```tsx
+import { styled } from '@mui/material';
+import { List, ReferenceInput, AutocompleteInput } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+import { CreatePostDialog } from './CreatePostDialog';
+
+export const CommentList = () => {
+    const columnDefs = [
+        // ...
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts">
+                    <AutocompleteInputWithCreate />
+                </ReferenceInput>
+            ),
+            cellEditorParams: {
+                noThemeOverride: true,
+            },
+        },
+    ];
+    return (
+        <List>
+            <DatagridAG columnDefs={columnDefs} />
+        </List>
+    );
+};
+
+const AutocompleteInputWithCreate = () => {
+    return (
+        <StyledAutocompleteInput
+            variant="outlined"
+            ListboxComponent={StyledListbox}
+            create={<CreatePostDialog />}
+        />
+    );
+};
+
+const StyledAutocompleteInput = styled(AutocompleteInput)({
+    '& .MuiTextField-root': {
+        margin: '1px 0px',
+    },
+    '& .MuiTextField-root fieldset': {
+        border: 'none',
+    },
+    '& .MuiTextField-root input': {
+        fontSize: 14,
+    },
+    '& .MuiInputLabel-root': {
+        display: 'none',
+    },
+});
+
+const StyledListbox = styled('ul')({
+    fontSize: 14,
+});
+```
+
+**Tip:** Be sure to read the [Fine Tuning Input Components Used As Cell Editor](#fine-tuning-input-components-used-as-cell-editor) section to improve the UX of your custom cell editors.
+
+**Tip:** Using a custom `cellEditor` works great in combination with a custom [`cellRenderer`](#cellrenderer).
+
+**Note:** React Admin inputs used ad `cellEditor` do not (yet) support form validation.
+
 ### `cellRenderer`
 
 In a column definition, you can use the `cellRenderer` field to specify a custom cell renderer. In addition to [ag-grid's cell rendering abilities](https://www.ag-grid.com/react-data-grid/cell-rendering/), `<DatagridAG>` supports [react-admin fields](./Fields.md) in `cellRenderer`. This is particularly useful to render a [`<ReferenceField>`](./ReferenceField.md) for instance.
@@ -353,6 +494,8 @@ export const CommentList = () => {
 ![DatagridAG RA Fields](./img/DatagridAG-ra-fields.png)
 
 **Note:** You still need to pass the `source` prop to the field.
+
+**Tip:** This works great in combination with a custom [`cellEditor`](#celleditor).
 
 ### `columnDefs`
 
@@ -1269,6 +1412,201 @@ export const PostList = () => {
 ```
 {% endraw %}
 
+### Fine-Tuning Input Components Used As Cell Editor
+
+The [`cellEditor`](#celleditor) section already explains how you can use React Admin inputs as cell editor in ag-grid.
+
+However, there are some tweaks you can apply to the input components to improve their UX when used as a cell editor.
+
+#### Automatically Focus And Select The Input Value With `<AutocompleteInput>`
+
+When rendering an `<AutocompleteInput>` as a cell editor, it can be useful to automatically focus and select the input value when the cell editor is opened. This saves time for the user, as they can start typing right away, or select an option from the list as it is already open.
+
+This can be achieved using refs like so:
+
+{% raw %}
+```tsx
+const AutocompleteInputWithAutoSelect = props => {
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    return (
+        <AutocompleteInput
+            {...props}
+            TextFieldProps={{
+                inputRef,
+                ref: () => {
+                    setTimeout(() => {
+                        inputRef.current?.select();
+                    }, 50);
+                },
+            }}
+        />
+    );
+};
+```
+{% endraw %}
+
+
+#### Automatically Open The Options List With `<SelectInput>`
+
+When rendering a `<SelectInput>` as a cell editor, it can be useful to automatically open the list of options when the cell editor is opened. This saves time for the user, as they can select an option from the list right away.
+
+This can be achieved using the `defaultOpen` prop like so:
+
+{% raw %}
+```tsx
+const SelectInputWithDefaultOpen = props => {
+    return (
+        <SelectInput
+            {...props}
+            SelectProps={{
+                defaultOpen: true,
+            }}
+        />
+    );
+};
+```
+{% endraw %}
+
+#### Allow To Create New Options On The Fly With `<AutocompleteInput>` Or `<SelectInput>`
+
+As explained in the [`cellEditor`](#celleditor) section, a custom MUI theme will be applied to React Admin inputs to make them look like ag-grid cells. This theme can conflict with other input components that are rendered in the Dialog you open to create a new option on the fly.
+
+This can be solved by passing `noThemeOverride: true` to the `cellEditorParams`.
+
+Besides, the submit button of the Dialog can conflict with the built-in cell editor event handler, resulting in the cell leaving the Edit mode before the newly created option could be selected.
+
+This can be solved by stopping the event propagation when the submit button is clicked in the Dialog.
+
+Here is a complete example of how to create a custom `AutocompleteInputWithCreate` component that solves both issues:
+
+{% raw %}
+```tsx
+import React from 'react';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    TextField as MUITextField,
+    Stack,
+    styled,
+} from '@mui/material';
+import {
+    AutocompleteInput,
+    List,
+    ReferenceInput,
+    useCreate,
+    useCreateSuggestionContext,
+} from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+
+const CreatePostDialog = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const [title, setTitle] = React.useState(filter || '');
+    const [create] = useCreate();
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        event.stopPropagation(); // prevent the default handler from ag-grid
+        create(
+            'posts',
+            {
+                data: { title },
+            },
+            {
+                onSuccess: data => {
+                    setTitle('');
+                    onCreate(data);
+                },
+            }
+        );
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <Stack gap={4}>
+                        <MUITextField
+                            name="title"
+                            value={title}
+                            onChange={event => setTitle(event.target.value)}
+                        />
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+
+const AutocompleteInputWithCreate = props => {
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    return (
+        <StyledAutocompleteInput
+            {...props}
+            variant="outlined"
+            ListboxComponent={StyledListbox}
+            TextFieldProps={{
+                inputRef,
+                ref: () => {
+                    setTimeout(() => {
+                        inputRef.current?.select();
+                    }, 50);
+                },
+            }}
+            create={<CreatePostDialog />}
+        />
+    );
+};
+
+const StyledAutocompleteInput = styled(AutocompleteInput)({
+    '& .MuiTextField-root': {
+        margin: '1px 0px',
+    },
+    '& .MuiTextField-root fieldset': {
+        border: 'none',
+    },
+    '& .MuiTextField-root input': {
+        fontSize: 14,
+    },
+    '& .MuiInputLabel-root': {
+        display: 'none',
+    },
+});
+
+const StyledListbox = styled('ul')({
+    fontSize: 14,
+});
+
+export const CommentListWithAutocompleteWithCreate = () => {
+    const columnDefs = [
+        // ...
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts">
+                    <AutocompleteInputWithCreate />
+                </ReferenceInput>
+            ),
+            cellEditorParams: {
+                submitOnChange: true,
+                noThemeOverride: true, // prevent the default theme override
+            },
+        },
+    ];
+    return (
+        <List>
+            <DatagridAG columnDefs={columnDefs} />
+        </List>
+    );
+};
+```
+{% endraw %}
+
 ### Using AG Grid Enterprise
 `<DatagridAG>` is also compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/).
 
@@ -1468,16 +1806,17 @@ The client-side performance isn't affected by a large number of records, as ag-g
 
 | Prop                | Required | Type                        | Default                      | Description                                                                                                                            |
 | ------------------- | -------- | --------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `columnDefs`        | Required | Array                       | n/a                          | The columns definitions                                                                                                                |
 | `bulkActionButtons` | Optional | Element                     | `<BulkDelete Button>`        | The component used to render the bulk action buttons                                                                                   |
+| `cellEditor`        | Optional | String, Function or Element |                              | Allows to use a custom component to render the cell editor |
 | `cellRenderer`      | Optional | String, Function or Element |                              | Allows to use a custom component to render the cell content                                                                            |
+| `columnDefs`        | Required | Array                       | n/a                          | The columns definitions                                                                                                                |
 | `darkTheme`         | Optional | String                      | `'ag-theme-alpine-dark'`     | The name of the ag-grid dark theme                                                                                                     |
 | `defaultColDef`     | Optional | Object                      |                              | The default column definition (applied to all columns)                                                                                 |
 | `mutationOptions`   | Optional | Object                      |                              | The mutation options                                                                                                                   |
+| `pagination`        | Optional | Boolean                     | `true`                       | Enable or disable pagination                                                                                                           |
 | `preferenceKey`     | Optional | String or `false`           | `${resource}.ag-grid.params` | The key used to persist [`gridState`](https://www.ag-grid.com/react-data-grid/grid-state/) in the Store. `false` disables persistence. |
 | `sx`                | Optional | Object                      |                              | The sx prop passed down to the wrapping `<div>` element                                                                                |
 | `theme`             | Optional | String                      | `'ag-theme-alpine'`          | The name of the ag-grid theme                                                                                                          |
-| `pagination`        | Optional | Boolean                     | `true`                       | Enable or disable pagination                                                                                                           |
 
 `<DatagridAGClient>` also accepts the same props as [`<AgGridReact>`](https://www.ag-grid.com/react-data-grid/grid-options/) with the exception of `rowData`, since the data is fetched from the List context.
 
@@ -1527,6 +1866,146 @@ export const PostList = () => {
 ```
 {% endraw %}
 
+### `cellEditor`
+
+In a column definition, you can use the `cellEditor` field to specify a custom cell editor. You can use any [Edit Component](https://www.ag-grid.com/react-data-grid/cell-editors/) supported by `ag-grid`, including [Custom Components](https://www.ag-grid.com/react-data-grid/cell-editors/#custom-components).
+
+In addition to that, `<DatagridAGClient>` supports using [React Admin inputs](./Inputs.md) as `cellEditor`, such as [`<TextInput>`](./TextInput.md) or even [`<ReferenceInput>`](./ReferenceInput.md).
+
+This allows to leverage all the power of react-admin inputs in your grid, for example to edit a reference.
+
+To use a React Admin input as `cellEditor`, you need to pass it as a *React Element*:
+
+```tsx
+import { List, ReferenceInput } from 'react-admin';
+import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+
+export const CommentList = () => {
+    const columnDefs = [
+        // ...
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts" />
+            ),
+        },
+    ];
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAGClient columnDefs={columnDefs} />
+        </List>
+    );
+};
+```
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-ReferenceInput-AutocompleteInputAG.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+If you are passing a React Admin input as *React Element*, there are two additional props you can use: `submitOnChange` and `noThemeOverride`.
+
+These props need to be passed as `cellEditorParams`.
+
+`submitOnChange` allows to submit the change to ag-grid as soon as the input value changes, without waiting for the user to submit the form (e.g. by pressing Enter or clicking outside the cell).
+
+This provides a better UX for example with components such as `<AutocompleteInput>` or `<SelectInput>`, as the value is immediately updated after the user selects an option.
+
+```tsx
+import { List, ReferenceInput } from 'react-admin';
+import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+
+export const CommentList = () => {
+    const columnDefs = [
+        // ...
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts" />
+            ),
+            cellEditorParams: {
+                submitOnChange: true,
+            },
+        },
+    ];
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAGClient columnDefs={columnDefs} />
+        </List>
+    );
+};
+```
+
+`noThemeOverride` allows to prevent `DatagridAGClient` from applying custom styles to the input.
+
+Indeed, `DatagridAGClient` applies custom styles to the inputs to make them look like ag-grid cells. However, this can cause issues for instance when rendering a `Dialog` containing additional inputs inside the cell editor. This can happen, for example, if you are using a custom create component with `<AutocompleteInput create>`.
+
+To solve this issue, you can set `noThemeOverride` to `true` and apply your own styles to the input component.
+
+```tsx
+import { styled } from '@mui/material';
+import { List, ReferenceInput, AutocompleteInput } from 'react-admin';
+import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+import { CreatePostDialog } from './CreatePostDialog';
+
+export const CommentList = () => {
+    const columnDefs = [
+        // ...
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts">
+                    <AutocompleteInputWithCreate />
+                </ReferenceInput>
+            ),
+            cellEditorParams: {
+                noThemeOverride: true,
+            },
+        },
+    ];
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAGClient columnDefs={columnDefs} />
+        </List>
+    );
+};
+
+const AutocompleteInputWithCreate = () => {
+    return (
+        <StyledAutocompleteInput
+            variant="outlined"
+            ListboxComponent={StyledListbox}
+            create={<CreatePostDialog />}
+        />
+    );
+};
+
+const StyledAutocompleteInput = styled(AutocompleteInput)({
+    '& .MuiTextField-root': {
+        margin: '1px 0px',
+    },
+    '& .MuiTextField-root fieldset': {
+        border: 'none',
+    },
+    '& .MuiTextField-root input': {
+        fontSize: 14,
+    },
+    '& .MuiInputLabel-root': {
+        display: 'none',
+    },
+});
+
+const StyledListbox = styled('ul')({
+    fontSize: 14,
+});
+```
+
+**Tip:** Be sure to read the [Fine Tuning Input Components Used As Cell Editor](#fine-tuning-input-components-used-as-cell-editor) section to improve the UX of your custom cell editors.
+
+**Tip:** Using a custom `cellEditor` works great in combination with a custom [`cellRenderer`](#cellrenderer-1).
+
+**Note:** React Admin inputs used ad `cellEditor` do not (yet) support form validation.
+
 ### `cellRenderer`
 
 In a column definition, you can use the `cellRenderer` field to specify a custom cell renderer. In addition to [ag-grid's cell rendering abilities](https://www.ag-grid.com/react-data-grid/cell-rendering/), `<DatagridAGClient>` supports [react-admin fields](./Fields.md) in `cellRenderer`. This is particularly useful to render a [`<ReferenceField>`](./ReferenceField.md) for instance.
@@ -1572,6 +2051,8 @@ export const CommentList = () => {
 ![DatagridAGClient RA Fields](./img/DatagridAG-ra-fields.png)
 
 **Note:** You still need to pass the `source` prop to the field.
+
+**Tip:** This works great in combination with a custom [`cellEditor`](#celleditor-1).
 
 ### `columnDefs`
 
