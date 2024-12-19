@@ -225,6 +225,25 @@ By default, react-admin displays at most 25 entries from the associative table (
 </ReferenceManyToManyInput>
 ```
 
+You can also use it to pass an `onError` function as follows:
+
+{% raw %}
+
+```tsx
+<ReferenceManyToManyInput
+    reference="venues"
+    through="performances"
+    using="band_id,venue_id"
+    mutationOptions={{ 
+        onError: (error, step, data) => console.warn({ error, step, data })
+    }}
+>
+    {/* ... */}
+</ReferenceManyToManyInput>
+```
+
+{% endraw %}
+
 ## `perPageChoices`
 
 `<ReferenceManyToManyInput>` displays a list of possible values from the reference table (e.g. `venues`) as suggestions in the input. It uses the `getList()` dataProvider call to fetch these possible values.
