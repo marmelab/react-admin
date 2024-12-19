@@ -44,6 +44,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *
  * Props:
  *  - body
+ *  - bulkActionToolbar
  *  - bulkActionButtons
  *  - children
  *  - empty
@@ -132,6 +133,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         className,
         empty = DefaultEmpty,
         expand,
+        bulkActionsToolbar,
         bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
         hover,
         isRowSelectable,
@@ -244,13 +246,15 @@ export const Datagrid: React.ForwardRefExoticComponent<
                     sx={sx}
                     className={clsx(DatagridClasses.root, className)}
                 >
-                    {bulkActionButtons !== false ? (
-                        <BulkActionsToolbar>
-                            {isValidElement(bulkActionButtons)
-                                ? bulkActionButtons
-                                : defaultBulkActionButtons}
-                        </BulkActionsToolbar>
-                    ) : null}
+                    {bulkActionButtons !== false && bulkActionsToolbar !== false
+                        ? bulkActionsToolbar || (
+                              <BulkActionsToolbar>
+                                  {isValidElement(bulkActionButtons)
+                                      ? bulkActionButtons
+                                      : defaultBulkActionButtons}
+                              </BulkActionsToolbar>
+                          )
+                        : null}
                     <div className={DatagridClasses.tableWrapper}>
                         <Table
                             ref={ref}
@@ -316,6 +320,39 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      * A class name to apply to the root table element
      */
     className?: string;
+
+    /**
+     * The component used to render the bulk actions toolbar.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#bulkactionstoolbar
+     * @example
+     * import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton, useUnselectAll, Button } from 'react-admin';
+     *
+     * const UnselectButton = () => {
+     *     const unselect = useUnselectAll('posts');
+     *     return <Button onClick={unselect} label="Unselect all records" />;
+     * };
+     *
+     * const PostBulkActionsToolbar = () => (
+     *     <BulkActionsToolbar actions={
+     *         <>
+     *             <SelectAllButton label="Select all records" />
+     *             <UnselectButton />
+     *         </>
+     *     }>
+     *         <BulkDeleteButton />
+     *     </BulkActionsToolbar>
+     * );
+     *
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid bulkActionsToolbar={<PostBulkActionsToolbar />}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
+    bulkActionsToolbar?: ReactElement | false;
 
     /**
      * The component used to render the bulk action buttons. Defaults to <BulkDeleteButton>.
