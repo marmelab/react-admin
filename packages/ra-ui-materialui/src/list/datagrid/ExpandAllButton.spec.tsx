@@ -19,10 +19,12 @@ describe('ExpandAllButton', () => {
             expect(screen.queryAllByTestId('ExpandPanel')).toHaveLength(count);
         };
 
+        await screen.findByText('War and Peace');
+
         expectExpandedRows(0);
 
         expand();
-        expectExpandedRows(4);
+        expectExpandedRows(5);
 
         collapse();
         expectExpandedRows(0);
