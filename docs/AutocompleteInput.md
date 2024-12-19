@@ -14,7 +14,6 @@ It renders using [Material UI's `<Autocomplete>`](https://mui.com/material-ui/re
   Your browser does not support the video tag.
 </video>
 
-
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
 
 ## Usage

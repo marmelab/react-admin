@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import assert from 'assert';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import type { To } from 'react-router';
 
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
@@ -20,6 +21,7 @@ import {
     NullValue,
     InNonDataRouter,
     ServerSideValidation,
+    MultiRoutesForm,
 } from './Form.stories';
 import { mergeTranslations } from '../i18n';
 
@@ -791,4 +793,94 @@ describe('Form', () => {
             'There are validation errors. Please fix them.'
         );
     });
+
+    it.each([
+        {
+            from: 'state',
+            url: {
+                pathname: '/form/general',
+                state: { record: { body: 'from-state' } },
+            },
+            expectedValue: 'from-state',
+        },
+        {
+            from: 'search query',
+            url: `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}` as To,
+            expectedValue: 'from-search',
+        },
+    ])(
+        'should support prefilling the from values from the location $from',
+        async ({ url, expectedValue }) => {
+            render(<MultiRoutesForm url={url} />);
+            expect(
+                (await screen.findByLabelText<HTMLInputElement>('title')).value
+            ).toEqual('');
+            expect(
+                (screen.getByText('Submit') as HTMLInputElement).disabled
+            ).toEqual(false);
+            fireEvent.click(screen.getByText('Settings'));
+            await screen.findByDisplayValue(expectedValue);
+            expect(
+                screen.getByText<HTMLInputElement>('Submit').disabled
+            ).toEqual(false);
+        }
+    );
+    it.each([
+        {
+            from: 'state',
+            url: {
+                pathname: '/form/general',
+                state: { record: { body: 'from-state' } },
+            },
+            expectedValue: 'from-state',
+            expectedDefaultValue: '',
+        },
+        {
+            from: 'state with default values',
+            url: {
+                pathname: '/form/general',
+                state: { record: { body: 'from-state' } },
+            },
+            expectedValue: 'from-state',
+            defaultValues: { category: 'default category' },
+            expectedDefaultValue: 'default category',
+        },
+        {
+            from: 'search query',
+            url: `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}` as To,
+            expectedValue: 'from-search',
+            expectedDefaultValue: '',
+        },
+        {
+            from: 'search query with default values',
+            url: `/form/general?source=${encodeURIComponent(JSON.stringify({ body: 'from-search' }))}` as To,
+            expectedValue: 'from-search',
+            defaultValues: { category: 'default category' },
+            expectedDefaultValue: 'default category',
+        },
+    ])(
+        'should support overriding the record values from the location $from',
+        async ({ url, defaultValues, expectedValue, expectedDefaultValue }) => {
+            render(
+                <MultiRoutesForm
+                    url={url}
+                    initialRecord={{ title: 'lorem', body: 'unmodified' }}
+                    defaultValues={defaultValues}
+                />
+            );
+            await screen.findByDisplayValue('lorem');
+            expect(
+                (await screen.findByLabelText<HTMLInputElement>('category'))
+                    .value
+            ).toEqual(expectedDefaultValue);
+            expect(
+                (screen.getByText('Submit') as HTMLInputElement).disabled
+            ).toEqual(false);
+            fireEvent.click(screen.getByText('Settings'));
+            await screen.findByDisplayValue(expectedValue);
+            expect(
+                screen.getByText<HTMLInputElement>('Submit').disabled
+            ).toEqual(false);
+        }
+    );
 });

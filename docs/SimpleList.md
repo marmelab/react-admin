@@ -28,7 +28,7 @@ export const PostList = () => (
             primaryText={record => record.title}
             secondaryText={record => `${record.views} views`}
             tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
-            linkType={record => record.canEdit ? "edit" : "show"}
+            rowClick={(id, resource, record) => record.canEdit ? "edit" : "show"}
             rowSx={record => ({ backgroundColor: record.nb_views >= 500 ? '#efe' : 'white' })}
         />
     </List>
@@ -44,7 +44,7 @@ export const PostList = () => (
 | `primaryText` | Optional | mixed | record representation | The primary text to display. |
 | `secondaryText` | Optional | mixed | | The secondary text to display. |
 | `tertiaryText` | Optional | mixed | | The tertiary text to display. |
-| `linkType` | Optional |mixed | `"edit"` | The target of each item click. |
+| `rowClick` | Optional |mixed | `"edit"` | The action to trigger when the user clicks on a row. |
 | `leftAvatar` | Optional | function | | A function returning an `<Avatar>` component to display before the primary text. |
 | `leftIcon` | Optional | function | | A function returning an `<Icon>` component to display before the primary text. |
 | `rightAvatar` | Optional | function | | A function returning an `<Avatar>` component to display after the primary text. |
@@ -79,31 +79,6 @@ This prop should be a function returning an `<Avatar>` component. When present, 
 ## `leftIcon`
 
 This prop should be a function returning an `<Icon>` component. When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>`
-
-## `linkType`
-
-The `<SimpleList>` items link to the edition page by default. You can also set the `linkType` prop to `show` directly to link to the `<Show>` page instead.
-
-```jsx
-import { List, SimpleList } from 'react-admin';
-
-export const PostList = () => (
-    <List>
-        <SimpleList
-            primaryText={record => record.title}
-            secondaryText={record => `${record.views} views`}
-            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
-            linkType="show"
-        />
-    </List>
-);
-```
-
-`linkType` accepts the following values:
-
-* `linkType="edit"`: links to the edit page. This is the default behavior.
-* `linkType="show"`: links to the show page.
-* `linkType={false}`: does not create any link.
 
 ## `primaryText`
 
@@ -190,6 +165,33 @@ This prop should be a function returning an `<Avatar>` component. When present, 
 
 This prop should be a function returning an `<Icon>` component. When present, the `<ListItem>` renders a `<ListIcon>` after the `<ListItemText>`.
 
+## `rowClick`
+
+The `<SimpleList>` items link to the edition page by default. You can also set the `rowClick` prop to `show` directly to link to the `<Show>` page instead. 
+
+```jsx
+import { List, SimpleList } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => `${record.views} views`}
+            tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+            rowClick="show"
+        />
+    </List>
+);
+```
+
+`rowClick` accepts the following values:
+
+* `rowClick="edit"`: links to the edit page. This is the default behavior.
+* `rowClick="show"`: links to the show page.
+* `rowClick={false}`: does not link to anything.
+* `rowClick="/custom"`: links to a custom path.
+* `rowClick={(id, resource, record) => path}`: path can be any of the above values
+
 ## `rowStyle`
 
 *Deprecated - use [`rowSx`](#rowsx) instead.*
@@ -254,7 +256,7 @@ export const PostList = () => {
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
-                    linkType={record => record.canEdit ? "edit" : "show"}   
+                    rowClick={(id, resource, record) => record.canEdit ? "edit" : "show"}   
                 />
             ) : (
                 <Datagrid>
