@@ -261,6 +261,69 @@ const PostShow = () => (
 );
 ```
 
+## Access Control
+
+If you need to hide some fields based on a set of permissions, use the `<SimpleShowLayout>` component from the `@react-admin/ra-rbac` package.
+
+```diff
+-import { SimpleShowLayout } from 'react-admin';
++import { SimpleShowLayout } from '@react-admin/ra-rbac';
+```
+
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+- To see a column, the user must have the "read" permission on the resource column:
+
+```jsx
+{ action: "read", resource: `${resource}.${source}` }
+// Or
+{ action: "read", resource: `${resource}.*` }
+```
+
+Here is an example of how to use the `<SimpleShowLayout>` component with RBAC:
+
+```tsx
+import { SimpleShowLayout } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: ['list', 'show'], resource: 'products' },
+                { action: 'read', resource: 'products.reference' },
+                { action: 'read', resource: 'products.width' },
+                { action: 'read', resource: 'products.height' },
+                // 'products.description' is missing
+                // 'products.image' is missing
+                { action: 'read', resource: 'products.thumbnail' },
+                // 'products.stock' is missing
+            ],
+            action,
+            record,
+            resource,
+        }),
+};
+
+const ProductShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            {/* └── RBAC SimpleShowLayout */}
+            <TextField source="reference" />
+            <TextField source="width" />
+            <TextField source="height" />
+            {/* not displayed */}
+            <TextField source="description" />
+            {/* not displayed */}
+            <TextField source="image" />
+            <TextField source="thumbnail" />
+            {/* not displayed */}
+            <TextField source="stock" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
 ## See Also
 
 * [Field components](./Fields.md)

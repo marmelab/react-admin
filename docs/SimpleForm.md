@@ -512,29 +512,6 @@ const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
-## Displaying Inputs Based On Permissions
-
-You can leverage [the `usePermissions` hook](./usePermissions.md) to display inputs if the user has the required permissions.
-
-{% raw %}
-```jsx
-import { usePermissions, Create, SimpleForm, TextInput } from 'react-admin';
-
-export const UserCreate = () => {
-    const { permissions } = useGetPermissions();
-    return (
-        <Create redirect="show">
-            <SimpleForm>
-                <TextInput source="name" validate={[required()]} />
-                {permissions === 'admin' &&
-                    <TextInput source="role" validate={[required()]} />}
-            </SimpleForm>
-        </Create>
-    );
-}
-```
-{% endraw %}
-
 ## Configurable
 
 You can let end users customize the fields displayed in the `<SimpleForm>` by using the `<SimpleFormConfigurable>` component instead.
@@ -646,51 +623,6 @@ Note that you **must** set the `<SimpleForm resetOptions>` prop to `{ keepDirtyV
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
-
-## Role-Based Access Control (RBAC)
-
-Fine-grained permissions control can be added by using the [`<SimpleForm>`](./AuthRBAC.md#simpleform) component provided by the `@react-admin/ra-rbac` package. 
-
-{% raw %}
-```jsx
-import { Edit, TextInput } from 'react-admin';
-import { SimpleForm } from '@react-admin/ra-rbac';
-
-const authProvider= {
-    // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            // 'delete' is missing
-            { action: ['list', 'edit'], resource: 'products' },
-            { action: 'write', resource: 'products.reference' },
-            { action: 'write', resource: 'products.width' },
-            { action: 'write', resource: 'products.height' },
-            // 'products.description' is missing
-            { action: 'write', resource: 'products.thumbnail' },
-            // 'products.image' is missing
-        ]
-    }),
-};
-
-const ProductEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="reference" />
-            <TextInput source="width" />
-            <TextInput source="height" />
-            {/* not displayed */}
-            <TextInput source="description" />
-            {/* not displayed */}
-            <TextInput source="image" />
-            <TextInput source="thumbnail" />
-            {/* no delete button */}
-        </SimpleForm>
-    </Edit>
-);
-```
-{% endraw %}
-
-Check [the RBAC `<SimpleForm>` component](./AuthRBAC.md#simpleform) documentation for more details.
 
 ## Versioning
 
@@ -829,3 +761,65 @@ export const PostCreate = () => (
 ```
 
 React-admin forms leverage react-hook-form's [`useForm` hook](https://react-hook-form.com/docs/useform).
+
+## Access Control
+
+If you need to hide some inputs based on a set of permissions, use the `<SimpleForm>` component from the `@react-admin/ra-rbac` package.
+
+```diff
+-import { SimpleForm } from 'react-admin';
++import { SimpleForm } from '@react-admin/ra-rbac';
+```
+
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+- To see an input, the user must have the 'write' permission on the resource field:
+
+```jsx
+{ action: "write", resource: `${resource}.${source}` }
+```
+
+- The delete button only renders if the user has the 'delete' permission.
+
+Here is an example of how to use the `<SimpleForm>` component with RBAC:
+
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { SimpleForm } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                // 'delete' is missing
+                { action: ['list', 'edit'], resource: 'products' },
+                { action: 'write', resource: 'products.reference' },
+                { action: 'write', resource: 'products.width' },
+                { action: 'write', resource: 'products.height' },
+                // 'products.description' is missing
+                { action: 'write', resource: 'products.thumbnail' },
+                // 'products.image' is missing
+            ]
+            action,
+            record,
+            resource,
+        }),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="reference" />
+            <TextInput source="width" />
+            <TextInput source="height" />
+            {/* not displayed */}
+            <TextInput source="description" />
+            {/* not displayed */}
+            <TextInput source="image" />
+            <TextInput source="thumbnail" />
+            {/* no delete button */}
+        </SimpleForm>
+    </Edit>
+);
+```

@@ -568,6 +568,80 @@ To override the style of all instances of `<Button>` using the [application-wide
 
 ## `<CloneButton>`
 
+The `<CloneButton>` can be added anywhere there is a `RecordContext` to redirect users to the record's resource create page. The create page form will be prefilled with the record values (except the `id`).
+
+### Usage
+
+`<CloneButton>` reads the current resource from `ResourceContext`, so in general it doesn't need any props:
+
+```jsx
+import { CloneButton, TopToolbar, List } from 'react-admin';
+
+const PostList = () => (
+    <List>
+        <TextField source="title" />
+        <CloneButton />
+    </List>
+);
+```
+
+`<CloneButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Props
+
+| Prop          | Required | Type            | Default            | Description                                  |
+| ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
+| `resource`    | Optional | `string`        | -                  | Target resource, e.g. 'posts'                |
+| `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
+| `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
+| `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
+
+It also supports [all the other `<Button>` props](#button).
+
+### Access Control
+
+If you want to control whether this button should be displayed based on users permissions, use the `<CloneButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
+
+```diff
+-import { CloneButton } from 'react-admin';
++import { CloneButton } from '@react-admin/ra-rbac';
+```
+
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+- It will only render if the user has the `'clone'` permission on the current resource.
+
+```js
+{ action: "clone", resource: [current resource] }
+```
+
+Here is an example of how to use the `<CloneButton>` with RBAC:
+
+```tsx
+import { Edit, TopToolbar } from 'react-admin';
+import { CloneButton } from '@react-admin/ra-rbac';
+
+const PostEditActions = () => (
+    <TopToolbar>
+        <CloneButton />
+    </TopToolbar>
+);
+
+export const PostEdit = () => (
+    <Edit actions={<PostEditActions />}>
+        {/* ... */}
+    </Edit>
+);
+```
+
+This component accepts additional props:
+
+| Prop                 | Required | Type              | Default    | Description                                                            |
+| -------------------- | -------- | ----------------- | ---------- | ---------------------------------------------------------------------- |
+| `accessDenied`       | Optional | ReactNode         | null       | The content to display when users don't have the `'clone'` permission  |
+| `action`             | Optional | String            | `"clone"`  | The action to call `authProvider.canAccess` with                       |
+| `authorizationError` | Optional | ReactNode         | null       | The content to display when an error occurs while checking permission |
+
 ## `<CreateButton>`
 
 Opens the Create view of the current resource:
@@ -941,6 +1015,58 @@ export const PostList = () => (
 | `meta`       | Optional | `any`           | undefined          | Metadata passed to the dataProvider |
 
 **Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
+
+### Access Control
+
+If you want to control whether this button should be displayed based on users permissions, use the `<ExportButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
+
+```diff
+-import { ExportButton } from 'react-admin';
++import { ExportButton } from '@react-admin/ra-rbac';
+```
+
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+- It will only render if the user has the `'export'` permission on the current resource.
+
+```js
+{ action: "export", resource: [current resource] }
+```
+
+- It will only export the fields the user has the `'read'` permission on.
+
+```js
+{ action: "read", resource: `${resource}.${source}` }
+```
+
+Here is an example usage:
+
+```jsx
+import { CreateButton, TopToolbar } from 'react-admin';
+import { ExportButton } from '@react-admin/ra-rbac';
+
+const PostListActions = () => (
+    <TopToolbar>
+        <PostFilter context="button" />
+        <CreateButton />
+        <ExportButton />
+    </TopToolbar>
+);
+
+export const PostList = () => (
+    <List actions={<PostListActions />}>
+        ...
+    </List>
+);
+```
+
+This component accepts additional props:
+
+| Prop                 | Required | Type              | Default    | Description                                                            |
+| -------------------- | -------- | ----------------- | ---------- | ---------------------------------------------------------------------- |
+| `accessDenied`       | Optional | ReactNode         | null       | The content to display when users don't have the `'export'` permission |
+| `action`             | Optional | String            | `"export"` | The action to call `authProvider.canAccess` with                       |
+| `authorizationError` | Optional | ReactNode         | null       | The content to display when an error occurs while checking permission |
 
 ## `<FilterButton>`
 

@@ -249,7 +249,6 @@ const PostShow = () => (
 );
 ```
 
-
 The `<Labeled label>` uses the humanized source by default. You can customize it by passing a `label` prop to the fields:
 
 ```jsx
@@ -345,31 +344,39 @@ const StaticPostShow = () => (
 
 When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the given record.
 
-## Role-Based Access Control (RBAC)
+## Access Control
 
-You can show or hide tabs and inputs based on user permissions by using the [`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) component from the `@react-admin/ra-rbac` package instead of the `react-admin` package.
+If you need to hide some tabs based on a set of permissions, use the `<TabbedShowLayout>` component from the `@react-admin/ra-rbac` package.
 
-[`<TabbedShowLayout>`](./AuthRBAC.md#tabbedshowlayout) shows only the tabs for which users have read permissions, using the `[resource].tab.[tabName]` string as resource identifier. `<TabbedShowLayout.Tab>` shows only the child fields for which users have the read permissions, using the `[resource].[source]` string as resource identifier.
+```diff
+-import { TabbedShowLayout } from 'react-admin';
++import { TabbedShowLayout } from '@react-admin/ra-rbac';
+```
 
-{% raw %}
+Use it in conjunction with [`<TabbedShowLayout.Tab>`](#tabbedshowlayouttab) and add a `name` prop to the `Tab` to define the resource on which the user needs to have the 'read' permissions for.
+
 ```tsx
 import { Show, TextField } from 'react-admin';
 import { TabbedShowLayout } from '@react-admin/ra-rbac';
 
 const authProvider = {
     // ...
-    getPermissions: () => Promise.resolve([
-        // crud
-        { action: ['list', 'show'], resource: 'products' },
-        // tabs ('products.tab.stock' is missing)
-        { action: 'read', resource: 'products.tab.description' },
-        { action: 'read', resource: 'products.tab.images' },
-        // fields ('products.description' and 'products.image' are missing)
-        { action: 'read', resource: 'products.reference' },
-        { action: 'read', resource: 'products.width' },
-        { action: 'read', resource: 'products.height' },
-        { action: 'read', resource: 'products.thumbnail' },
-    ]),
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: ['list', 'show'], resource: 'products' },
+                { action: 'read', resource: 'products.tab.description' },
+                // { action: 'read', resource: 'products.tab.stock' },
+                { action: 'read', resource: 'products.tab.images' },
+                { action: 'read', resource: 'products.reference' },
+                { action: 'read', resource: 'products.width' },
+                { action: 'read', resource: 'products.height' },
+                { action: 'read', resource: 'products.thumbnail' },
+            ],
+            action,
+            record,
+            resource,
+        }),
 };
 
 const ProductShow = () => (
@@ -379,15 +386,13 @@ const ProductShow = () => (
                 <TextField source="reference" />
                 <TextField source="width" />
                 <TextField source="height" />
-                {/* the description field is not displayed */}
                 <TextField source="description" />
             </TabbedShowLayout.Tab>
-            {/* the stock tab is not displayed */}
+            {/* This tab is not displayed for the user */}
             <TabbedShowLayout.Tab label="Stock" name="stock">
                 <TextField source="stock" />
             </TabbedShowLayout.Tab>
             <TabbedShowLayout.Tab label="Images" name="images">
-                {/* the images field is not displayed */}
                 <TextField source="image" />
                 <TextField source="thumbnail" />
             </TabbedShowLayout.Tab>
@@ -395,10 +400,58 @@ const ProductShow = () => (
     </Show>
 );
 ```
-{% endraw %}
 
-Check [the RBAC `<TabbedShowLayout>` component](./AuthRBAC.md#tabbedshowlayout) documentation for more details.
+[`<TabbedShowLayout.Tab>`](#tabbedshowlayouttab) also renders only the child fields for which the user has the 'read' permissions.
 
+```tsx
+import { Show, TextField } from 'react-admin';
+import { TabbedShowLayout } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: ['list', 'show'], resource: 'products' },
+                { action: 'read', resource: 'products.reference' },
+                { action: 'read', resource: 'products.width' },
+                { action: 'read', resource: 'products.height' },
+                // 'products.description' is missing
+                { action: 'read', resource: 'products.thumbnail' },
+                // 'products.image' is missing
+                { action: 'read', resource: 'products.tab.description' },
+                // 'products.tab.stock' is missing
+                { action: 'read', resource: 'products.tab.images' },
+            ],
+            action,
+            record,
+            resource,
+        }),
+};
+
+const ProductShow = () => (
+    <Show>
+        <TabbedShowLayout>
+            <TabbedShowLayout.Tab label="Description" name="description">
+                <TextField source="reference" />
+                <TextField source="width" />
+                <TextField source="height" />
+                {/* Field Description is not displayed */}
+                <TextField source="description" />
+            </TabbedShowLayout.Tab>
+            {/* Tab Stock is not displayed */}
+            <TabbedShowLayout.Tab label="Stock" name="stock">
+                <TextField source="stock" />
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="Images" name="images">
+                {/* Field Image is not displayed */}
+                <TextField source="image" />
+                <TextField source="thumbnail" />
+            </TabbedShowLayout.Tab>
+        </TabbedShowLayout>
+    </Show>
+);
+```
 
 ## See Also
 

@@ -269,12 +269,13 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 const {
                     resource: callTimeResource = resource,
                     id: callTimeId = id,
+                    meta: callTimeMeta = meta,
                 } = variables;
                 updateCache({
                     resource: callTimeResource,
                     id: callTimeId,
                     data,
-                    meta: mutationOptions.meta ?? paramsRef.current.meta,
+                    meta: callTimeMeta,
                 });
 
                 if (

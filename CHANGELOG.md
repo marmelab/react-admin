@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.4.3
+
+* Fix `<FormDataConsumer>` causes its children to flicker ([#10417](https://github.com/marmelab/react-admin/pull/10417)) ([djhi](https://github.com/djhi))
+* [Doc] Remove `<ShowBase emptyWhileLoading>` from the docs ([#10416](https://github.com/marmelab/react-admin/pull/10416)) ([slax57](https://github.com/slax57))
+* [Doc] Introduce `<DatagridAG>` custom cell editors ([#10410](https://github.com/marmelab/react-admin/pull/10410)) ([djhi](https://github.com/djhi))
+* [Doc] Update Access Control instructions following ra-rbac update ([#10409](https://github.com/marmelab/react-admin/pull/10409)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `<TreeWithDetails filter>` doc chapter ([#10406](https://github.com/marmelab/react-admin/pull/10406)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Bump nanoid from 3.3.7 to 3.3.8 ([#10414](https://github.com/marmelab/react-admin/pull/10414)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.4.2
 
 * Fix: Improve AutocompleteInput creation support ([#10391](https://github.com/marmelab/react-admin/pull/10391)) ([djhi](https://github.com/djhi))
