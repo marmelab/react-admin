@@ -16,7 +16,6 @@ This input allows editing values that are arrays of scalar values, e.g. `[123, 4
 
 **Tip**: React-admin includes other components allowing the edition of such values:
 
-- [`<TextArrayInput>`](./TextArrayInput.md) lets you edit an array of strings
 - [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) renders an Autocomplete
 - [`<SelectArrayInput>`](./SelectArrayInput.md) renders a dropdown list of choices
 - [`<CheckboxGroupInput>`](./CheckboxGroupInput.md) renders a list of checkbox options

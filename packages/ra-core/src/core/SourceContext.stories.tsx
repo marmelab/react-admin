@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Form, useInput } from '../form';
-import { TestMemoryRouter } from '../routing';
 
 export default {
     title: 'ra-core/core/SourceContext',
@@ -20,23 +19,19 @@ const TextInput = props => {
 
 export const Basic = () => {
     return (
-        <TestMemoryRouter>
-            <Form>
-                <TextInput source="book" />
-            </Form>
-        </TestMemoryRouter>
+        <Form>
+            <TextInput source="book" />
+        </Form>
     );
 };
 
 export const WithoutSourceContext = () => {
     const form = useForm();
     return (
-        <TestMemoryRouter>
-            <FormProvider {...form}>
-                <form>
-                    <TextInput source="book" />
-                </form>
-            </FormProvider>
-        </TestMemoryRouter>
+        <FormProvider {...form}>
+            <form>
+                <TextInput source="book" />
+            </form>
+        </FormProvider>
     );
 };

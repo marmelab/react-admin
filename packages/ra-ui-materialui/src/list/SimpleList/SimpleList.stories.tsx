@@ -7,20 +7,16 @@ import {
     TestMemoryRouter,
     ResourceContextProvider,
     ResourceProps,
-    ResourceDefinitionContextProvider,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { Alert, Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
-import { Location } from 'react-router';
+import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
+import { SimpleList } from './SimpleList';
 import { AdminUI } from '../../AdminUI';
 import { AdminContext, AdminContextProps } from '../../AdminContext';
 import { EditGuesser } from '../../detail';
 import { List, ListProps } from '../List';
-import { RowClickFunction } from '../types';
-import { SimpleList } from './SimpleList';
-import { FunctionLinkType } from './SimpleListItem';
 
 export default { title: 'ra-ui-materialui/list/SimpleList' };
 
@@ -109,124 +105,16 @@ const data = {
 
 export const Basic = () => (
     <TestMemoryRouter>
-        <AdminContext>
-            <ResourceContextProvider value="books">
-                <SimpleList
-                    data={data.books}
-                    primaryText={record => record.title}
-                    secondaryText={record => record.author}
-                    tertiaryText={record => record.year}
-                />
-            </ResourceContextProvider>
-        </AdminContext>
+        <ResourceContextProvider value="books">
+            <SimpleList
+                data={data.books}
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                tertiaryText={record => record.year}
+            />
+        </ResourceContextProvider>
     </TestMemoryRouter>
 );
-
-export const LinkType = ({
-    linkType,
-    locationCallback,
-}: {
-    linkType: string | FunctionLinkType | false;
-    locationCallback?: (l: Location) => void;
-}) => (
-    <TestMemoryRouter locationCallback={locationCallback}>
-        <AdminContext>
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    books: {
-                        name: 'books',
-                        hasList: true,
-                        hasEdit: true,
-                        hasShow: false,
-                    },
-                }}
-            >
-                <ResourceContextProvider value="books">
-                    <Alert color="info">Inferred should target edit</Alert>
-                    <SimpleList
-                        data={data.books}
-                        primaryText={record => record.title}
-                        secondaryText={record => record.author}
-                        tertiaryText={record => record.year}
-                        linkType={linkType}
-                    />
-                </ResourceContextProvider>
-            </ResourceDefinitionContextProvider>
-        </AdminContext>
-    </TestMemoryRouter>
-);
-
-LinkType.args = {
-    linkType: 'edit',
-};
-LinkType.argTypes = {
-    linkType: {
-        options: ['inferred', 'edit', 'show', 'no-link', 'function'],
-        mapping: {
-            inferred: undefined,
-            show: 'show',
-            edit: 'edit',
-            'no-link': false,
-            function: (record, id) =>
-                alert(`Clicked on record ${record.title} (#${id})`),
-        },
-        control: { type: 'select' },
-    },
-};
-
-export const RowClick = ({
-    locationCallback,
-    rowClick,
-}: {
-    locationCallback?: (l: Location) => void;
-    rowClick: string | RowClickFunction | false;
-}) => (
-    <TestMemoryRouter locationCallback={locationCallback}>
-        <AdminContext>
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    books: {
-                        name: 'books',
-                        hasList: true,
-                        hasEdit: true,
-                        hasShow: false,
-                    },
-                }}
-            >
-                <ResourceContextProvider value="books">
-                    <Alert color="info">Inferred should target edit</Alert>
-                    <SimpleList
-                        data={data.books}
-                        primaryText={record => record.title}
-                        secondaryText={record => record.author}
-                        tertiaryText={record => record.year}
-                        rowClick={rowClick}
-                    />
-                </ResourceContextProvider>
-            </ResourceDefinitionContextProvider>
-        </AdminContext>
-    </TestMemoryRouter>
-);
-
-RowClick.args = {
-    rowClick: 'edit',
-};
-RowClick.argTypes = {
-    rowClick: {
-        options: ['inferred', 'edit', 'show', 'no-link', 'function'],
-        mapping: {
-            inferred: undefined,
-            show: 'show',
-            edit: 'edit',
-            'no-link': false,
-            function: (id, resource, record) =>
-                alert(
-                    `Clicked on record ${record.title} (#${id}) of type ${resource}`
-                ),
-        },
-        control: { type: 'select' },
-    },
-};
 
 const myDataProvider = fakeRestDataProvider(data);
 
@@ -401,32 +289,26 @@ export const FullAppInError = () => (
 
 export const Standalone = () => (
     <TestMemoryRouter>
-        <AdminContext>
-            <ResourceContextProvider value="books">
-                <SimpleList
-                    data={data.books}
-                    primaryText={record => record.title}
-                    secondaryText={record => record.author}
-                    tertiaryText={record => record.year}
-                    linkType={false}
-                />
-            </ResourceContextProvider>
-        </AdminContext>
+        <SimpleList
+            data={data.books}
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+            tertiaryText={record => record.year}
+            linkType={false}
+        />
     </TestMemoryRouter>
 );
 
 export const StandaloneEmpty = () => (
     <TestMemoryRouter>
-        <AdminContext>
-            <ResourceContextProvider value="books">
-                <SimpleList<any>
-                    data={[]}
-                    primaryText={record => record.title}
-                    secondaryText={record => record.author}
-                    tertiaryText={record => record.year}
-                    linkType={false}
-                />
-            </ResourceContextProvider>
-        </AdminContext>
+        <ResourceContextProvider value="books">
+            <SimpleList<any>
+                data={[]}
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                tertiaryText={record => record.year}
+                linkType={false}
+            />
+        </ResourceContextProvider>
     </TestMemoryRouter>
 );

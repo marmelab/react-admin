@@ -27,7 +27,6 @@ import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
 import { DatagridClasses } from './useDatagridStyles';
 import { useDatagridContext } from './useDatagridContext';
-import { RowClickFunction } from '../types';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -270,6 +269,12 @@ export interface DatagridRowProps
     style?: any;
     selectable?: boolean;
 }
+
+export type RowClickFunction = (
+    id: Identifier,
+    resource: string,
+    record: RaRecord
+) => string | false | Promise<string | false>;
 
 const areEqual = (prevProps, nextProps) => {
     const { children: _1, expand: _2, ...prevPropsWithoutChildren } = prevProps;

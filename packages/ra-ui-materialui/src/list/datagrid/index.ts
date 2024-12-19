@@ -8,7 +8,11 @@ import DatagridHeaderCell, {
     DatagridHeaderCellProps,
 } from './DatagridHeaderCell';
 import DatagridLoading, { DatagridLoadingProps } from './DatagridLoading';
-import DatagridRow, { DatagridRowProps, PureDatagridRow } from './DatagridRow';
+import DatagridRow, {
+    DatagridRowProps,
+    PureDatagridRow,
+    RowClickFunction,
+} from './DatagridRow';
 import ExpandRowButton, { ExpandRowButtonProps } from './ExpandRowButton';
 
 export * from './Datagrid';
@@ -39,4 +43,5 @@ export type {
     DatagridLoadingProps,
     DatagridRowProps,
     ExpandRowButtonProps,
+    RowClickFunction,
 };

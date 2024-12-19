@@ -45,7 +45,7 @@ On our [Youtube channel](https://www.youtube.com/@react-admin), you can find som
 
 <div class="iframe-wrapper">
     <iframe
-        src="https://www.youtube.com/embed/videoseries?si=-m56_m4W9dEcJjw5&amp;list=PLBCskKfEEuGvgjdpfvH4ZAIGx4UJAUNwP">
+        src="https://www.youtube.com/embed?listType=playlist&list=UUx-g3k3eDFyy-3E7vxWVN-Q">
     </iframe>
 </div>
 

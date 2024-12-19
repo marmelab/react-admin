@@ -441,7 +441,7 @@ You can do the same for error notifications, by passing a custom `onError`  call
 
 You sometimes need to pre-populate a record based on a *related* record. For instance, to create a comment related to an existing post.
 
-By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reactrouter.com/6.28.0/start/concepts#locations)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
+By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
 That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the `state` prop of the `<CreateButton>`:
 

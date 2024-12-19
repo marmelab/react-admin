@@ -5,7 +5,6 @@ export * from './groups';
 export * from './useApplyInputDefaultValues';
 export * from './useAugmentedForm';
 export * from './useInput';
-export * from './useRecordFromLocation';
 export * from './useSuggestions';
 export * from './useWarnWhenUnsavedChanges';
 export * from './validation';

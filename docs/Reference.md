@@ -188,7 +188,6 @@ title: "Index"
 * [`<TabbedForm>`](./TabbedForm.md)
 * [`<TabbedFormWithRevision>`](./TabbedForm.md#versioning)<img class="icon" src="./img/premium.svg" />
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
-* [`<TextArrayInput>`](./TextArrayInput.md)
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
 * [`<TimeInput>`](./TimeInput.md)
@@ -297,7 +296,6 @@ title: "Index"
 
 **- R -**
 * [`useRecordContext`](./useRecordContext.md)
-* [`useRecordFromLocation`](./useRecordFromLocation.md)
 * [`useRedirect`](./useRedirect.md)
 * [`useReference`](./useGetOne.md#aggregating-getone-calls)
 * [`useRefresh`](./useRefresh.md)

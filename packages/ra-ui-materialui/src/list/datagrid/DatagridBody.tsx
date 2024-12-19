@@ -4,9 +4,8 @@ import { SxProps, TableBody, TableBodyProps } from '@mui/material';
 import clsx from 'clsx';
 import { Identifier, RaRecord, RecordContextProvider } from 'ra-core';
 
-import { RowClickFunction } from '../types';
 import { DatagridClasses } from './useDatagridStyles';
-import DatagridRow, { PureDatagridRow } from './DatagridRow';
+import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
 
 const DatagridBody: React.ForwardRefExoticComponent<
     Omit<DatagridBodyProps, 'ref'> &
