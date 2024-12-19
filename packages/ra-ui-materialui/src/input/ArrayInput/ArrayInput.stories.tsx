@@ -62,7 +62,6 @@ const BookEdit = () => {
             }}
         >
             <SimpleForm>
-                <FormInspector />
                 <TextInput source="title" />
                 <ArrayInput source="authors">
                     <SimpleFormIterator>
@@ -70,6 +69,7 @@ const BookEdit = () => {
                         <TextInput source="role" />
                     </SimpleFormIterator>
                 </ArrayInput>
+                <FormInspector />
             </SimpleForm>
         </Edit>
     );
@@ -89,6 +89,7 @@ const FormInspector = () => {
         </div>
     );
 };
+
 export const Basic = () => (
     <React.StrictMode>
         <TestMemoryRouter initialEntries={['/books/1']}>
