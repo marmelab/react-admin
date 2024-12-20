@@ -25,6 +25,7 @@ import { ListControllerResult } from './useListController';
  * @prop {Function} hideFilter a callback to hide one of the filters, e.g. hideFilter('title')
  * @prop {Array}    selectedIds an array listing the ids of the selected rows, e.g. [123, 456]
  * @prop {Function} onSelect callback to change the list of selected rows, e.g. onSelect([456, 789])
+ * @prop {Function} onSelectAll callback to select all the records, e.g. onSelectAll()
  * @prop {Function} onToggleItem callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
  * @prop {Function} onUnselectItems callback to clear the selection, e.g. onUnselectItems();
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'

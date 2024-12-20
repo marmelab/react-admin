@@ -20,6 +20,7 @@ React-Admin provides button components for all the common uses.
     - [`<BulkUpdateButton>`](#bulkupdatebutton)
     - [`<BulkUpdateFormButton>`](#bulkupdateformbutton)
     - [`<FilterButton>`](#filterbutton)
+    - [`<SelectAllButton>`](#selectallbutton)
 
 - **Record Buttons**: To be used in detail views
     - [`<UpdateButton>`](#updatebutton)
@@ -1080,6 +1081,44 @@ This button is an internal component used by react-admin in [the Filter button/f
 ### `sx`: CSS API
 
 To override the style of all instances of `<FilterButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaFilterButton` key.
+
+## `<SelectAllButton>`
+
+The `<SelectAllButton>` component allows users to select all items from a resource, no matter the pagination.
+
+![SelectAllButton](./img/SelectAllButton.png)
+
+### `label`
+
+By default, the `<SelectAllButton>` label is "Select all" (or the `ra.action.select_all_button` message translation). You can also pass a custom `label`:
+
+```jsx
+const PostSelectAllButton = () => <SelectAllButton label="Select all posts" />;
+```
+
+**Tip**: The label will go through [the `useTranslate` hook](./useTranslate.md), so you can use translation keys.
+
+### `limit`
+
+By default, `<SelectAllButton>` selects the 250 first items of your list. To customize this limit, you can use the `limit` prop:
+
+```jsx
+const PostSelectAllButton = () => <SelectAllButton limit={100} />;
+```
+
+### `queryOptions`
+
+`<SelectAllButton>` calls a `get` method of your `dataProvider` via a react-query's `useQuery` hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the call.
+
+{% raw %}
+```jsx
+const PostSelectAllButton = () => <SelectAllButton queryOptions={{ meta: { foo: 'bar' } }} />;
+```
+{% endraw %}
+
+### `sx`: CSS API
+
+To override the style of all instances of `<SelectAllButton>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSelectAllButton` key.
 
 ## `<ListButton>`
 

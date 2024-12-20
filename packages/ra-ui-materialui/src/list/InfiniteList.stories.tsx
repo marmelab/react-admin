@@ -12,7 +12,7 @@ import { Box, Button, Card, Typography } from '@mui/material';
 
 import { InfiniteList } from './InfiniteList';
 import { SimpleList } from './SimpleList';
-import { Datagrid } from './datagrid';
+import { Datagrid, type DatagridProps } from './datagrid';
 import {
     InfinitePagination,
     Pagination as DefaultPagination,
@@ -21,8 +21,9 @@ import { AdminUI } from '../AdminUI';
 import { AdminContext } from '../AdminContext';
 import { TextField } from '../field';
 import { SearchInput } from '../input';
-import { SortButton } from '../button';
+import { BulkDeleteButton, SelectAllButton, SortButton } from '../button';
 import { TopToolbar, Layout } from '../layout';
+import { BulkActionsToolbar } from './BulkActionsToolbar';
 
 export default {
     title: 'ra-ui-materialui/list/InfiniteList',
@@ -345,13 +346,17 @@ export const WithFooter = () => (
     </Admin>
 );
 
-export const WithDatagrid = () => (
+export const WithDatagrid = ({
+    bulkActionsToolbar,
+}: {
+    bulkActionsToolbar?: DatagridProps['bulkActionsToolbar'];
+}) => (
     <Admin dataProvider={dataProvider}>
         <Resource
             name="books"
             list={() => (
                 <InfiniteList>
-                    <Datagrid>
+                    <Datagrid bulkActionsToolbar={bulkActionsToolbar}>
                         <TextField source="id" />
                         <TextField source="title" />
                         <TextField source="author" />
@@ -360,6 +365,20 @@ export const WithDatagrid = () => (
             )}
         />
     </Admin>
+);
+
+export const WithDatagridAndSelectAllLimit = ({
+    limit = 23,
+}: {
+    limit?: number;
+}) => (
+    <WithDatagrid
+        bulkActionsToolbar={
+            <BulkActionsToolbar actions={<SelectAllButton limit={limit} />}>
+                <BulkDeleteButton />
+            </BulkActionsToolbar>
+        }
+    />
 );
 
 const BookActions = () => (

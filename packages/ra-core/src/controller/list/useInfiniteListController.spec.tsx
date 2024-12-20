@@ -22,11 +22,13 @@ import {
 import { CoreAdminContext } from '../../core';
 import { TestMemoryRouter } from '../../routing';
 import {
+    Basic,
     Authenticated,
     CanAccess,
     DisableAuthentication,
-} from './useInfiniteListController.security.stories';
-import { AuthProvider } from '../../types';
+    defaultDataProvider,
+} from './useInfiniteListController.stories';
+import type { AuthProvider } from '../../types';
 
 const InfiniteListController = ({
     children,
@@ -44,6 +46,67 @@ describe('useInfiniteListController', () => {
         resource: 'posts',
         debounce: 200,
     };
+
+    describe('onSelectAll', () => {
+        it('should select all records', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7]'
+                );
+            });
+        });
+        it('should select all records even though some records are already selected', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByText('Select item 1'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
+                );
+            });
+            fireEvent.click(screen.getByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7]'
+                );
+            });
+        });
+        it('should not select more records than the provided limit', async () => {
+            const dataProvider = defaultDataProvider;
+            const getList = jest.spyOn(dataProvider, 'getList');
+            render(<Basic dataProvider={dataProvider} />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByText('Limited Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3]'
+                );
+            });
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledWith(
+                    'posts',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 3 },
+                    })
+                );
+            });
+        });
+    });
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {

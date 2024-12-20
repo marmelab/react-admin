@@ -22,6 +22,7 @@ import {
     CanAccess,
     DisableAuthentication,
 } from './useListController.security.stories';
+import { Basic, defaultDataProvider } from './useListController.stories';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -583,6 +584,68 @@ describe('useListController', () => {
             await screen.findByText('A post - 0 votes');
             expect(dataProvider.getList).toHaveBeenCalled();
             expect(authProvider.checkAuth).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all records', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7]'
+                );
+            });
+        });
+        it('should select all records even though some records are already selected', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByText('Select item 1'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
+                );
+            });
+            fireEvent.click(screen.getByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7]'
+                );
+            });
+        });
+        it('should not select more records than the provided limit', async () => {
+            const dataProvider = defaultDataProvider;
+            const getList = jest.spyOn(dataProvider, 'getList');
+            render(<Basic dataProvider={dataProvider} />);
+            fireEvent.click(await screen.findByText('Limited Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByText('Limited Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3]'
+                );
+            });
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledWith(
+                    'posts',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 3 },
+                    })
+                );
+            });
         });
     });
 });

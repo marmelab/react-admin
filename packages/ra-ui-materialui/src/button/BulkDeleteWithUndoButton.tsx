@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
-import { alpha } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import {
     useDeleteMany,
     useRefresh,
