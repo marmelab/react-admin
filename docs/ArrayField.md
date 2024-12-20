@@ -71,12 +71,13 @@ const PostShow = () => (
 
 ## Props
 
-| Prop       | Required | Type              | Default | Description                              |
-|------------|----------|-------------------|---------|------------------------------------------|
-| `children` | Required | `ReactNode`       |         | The component to render the list.        |
-| `filter`   | Optional | `object`          |         | The filter to apply to the list.         |
-| `perPage`  | Optional | `number`          | 1000    | The number of items to display per page. |
-| `sort`     | Optional | `{ field, order}` |         | The sort to apply to the list.           |
+| Prop       | Required | Type              | Default | Description                                        |
+|------------|----------|-------------------|---------|----------------------------------------------------|
+| `children` | Required | `ReactNode`       |         | The component to render the list.                  |
+| `filter`   | Optional | `object`          |         | The filter to apply to the list.                   |
+| `perPage`  | Optional | `number`          | 1000    | The number of items to display per page.           |
+| `sort`     | Optional | `{ field, order}` |         | The sort to apply to the list.                     |
+| `storeKey` | Optional | `string`          |         | The key to use to store the records selection state|
 
 `<ArrayField>` accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
@@ -216,6 +217,35 @@ By default, `<ArrayField>` displays the items in the order they are stored in th
 </ArrayField>
 ```
 {% endraw %}
+
+## `storeKey`
+
+By default, `ArrayField` stores the selection state in localStorage so users can revisit the page and find the selection preserved. The key for storing this state is based on the resource name, formatted as `${resource}.selectedIds`.
+
+When displaying multiple lists with the same data source, you may need to distinguish their selection states. To achieve this, assign a unique `storeKey` to each `ArrayField`. This allows each list to maintain its own selection state independently.
+
+In the example below, two `ArrayField` components display the same data source (`books`), but each stores its selection state under a different key (`books.selectedIds` and `custom.selectedIds`). This ensures that both components can coexist on the same page without interfering with each other's state.
+
+```jsx
+<Stack direction="row" spacing={2}>
+    <ArrayField
+        source="books"
+        storeKey="customOne"
+    >
+        <Datagrid>
+            <TextField source="title" />
+        </Datagrid>
+    </ArrayField>
+    <ArrayField
+        source="books"
+        storeKey="customTwo"
+    >
+        <Datagrid>
+            <TextField source="title" />
+        </Datagrid>
+    </ArrayField>
+</Stack>
+```
 
 ## Using The List Context
 
