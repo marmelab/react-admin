@@ -1074,48 +1074,6 @@ Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-gr
 
 Check [the `<DatagridAG>` documentation](./DatagridAG.md) for more details.
 
-## Fields And Permissions
-
-You might want to display some fields only to users with specific permissions. Use the `usePermissions` hook to get the user permissions and hide Fields accordingly:
-
-{% raw %}
-```tsx
-import { List, Datagrid, TextField, TextInput, ShowButton, usePermissions } from 'react-admin';
-
-const getUserFilters = (permissions) => ([
-    <TextInput label="user.list.search" source="q" alwaysOn />,
-    <TextInput source="name" />,
-    permissions === 'admin' ? <TextInput source="role" /> : null,
-    ].filter(filter => filter !== null)
-);
-
-export const UserList = ({ permissions, ...props }) => {
-    const { permissions } = usePermissions();
-    return (
-        <List
-            {...props}
-            filters={getUserFilters(permissions)}
-            sort={{ field: 'name', order: 'ASC' }}
-        >
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="name" />
-                {permissions === 'admin' && <TextField source="role" />}
-                {permissions === 'admin' && <EditButton />}
-                <ShowButton />
-            </Datagrid>
-        </List>
-    )
-};
-```
-{% endraw %}
-
-Note how the `permissions` prop is passed down to the custom `filters` component to allow Filter customization, too.
-
-It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component. Check [the authProvider documentation](./Authentication.md) for more information.
-
-**Tip**: The [ra-rbac module](./AuthRBAC.md#datagrid) provides a wrapper for the `<Datagrid>` with built-in permission check for columns.
-
 ## Standalone Usage
 
 You can use the `<Datagrid>` component to display data that you've fetched yourself. You'll need to pass all the props required for its features:
@@ -1386,3 +1344,130 @@ export const PostList = () => (
     </List>
 );
 ```
+
+## Access Control
+
+If you need to hide some columns based on a set of permissions, use the `<Datagrid>` component from the `@react-admin/ra-rbac` package.
+
+```diff
+-import { Datagrid } from 'react-admin';
++import { Datagrid } from '@react-admin/ra-rbac';
+```
+
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+-   Users must have the `'read'` permission on a resource column to see it in the export:
+
+```jsx
+{ action: "read", resource: `${resource}.${source}` }.
+// or
+{ action: "read", resource: `${resource}.*` }.
+```
+
+-   Users must have the `'delete'` permission on the resource to see the `<BulkExportButton>`.
+
+- The default `rowClick` depends on the user permissions:
+    -   `"edit"` if the user can access the current resource with the `edit` action
+    -   `"show"` if the user can access the current resource with the `show` action
+    -   empty otherwise
+
+Here is an example of `<Datagrid>` with RBAC:
+
+```tsx
+import { canAccessWithPermissions, List, Datagrid } from '@react-admin/ra-rbac';
+import {
+    ImageField,
+    TextField,
+    ReferenceField,
+    NumberField,
+} from 'react-admin';
+
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: 'list', resource: 'products' },
+                { action: 'read', resource: 'products.thumbnail' },
+                { action: 'read', resource: 'products.reference' },
+                { action: 'read', resource: 'products.category_id' },
+                { action: 'read', resource: 'products.width' },
+                { action: 'read', resource: 'products.height' },
+                { action: 'read', resource: 'products.price' },
+                { action: 'read', resource: 'products.description' },
+                // { action: 'read', resource: 'products.stock' },
+                // { action: 'read', resource: 'products.sales' },
+                // { action: 'delete', resource: 'products' },
+                { action: 'show', resource: 'products' },
+            ],
+            action,
+            record,
+            resource
+        }),
+};
+
+const ProductList = () => (
+    <List>
+        {/* The datagrid has no bulk actions as the user doesn't have the 'delete' permission */}
+        <Datagrid>
+            <ImageField source="thumbnail" />
+            <TextField source="reference" />
+            <ReferenceField source="category_id" reference="categories">
+                <TextField source="name" />
+            </ReferenceField>
+            <NumberField source="width" />
+            <NumberField source="height" />
+            <NumberField source="price" />
+            <TextField source="description" />
+            {/** These two columns are not visible to the user **/}
+            <NumberField source="stock" />
+            <NumberField source="sales" />
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: Adding the 'read' permission on the resource itself doesn't grant the 'read' permission on the columns. If you want a user to see all possible columns, add the 'read' permission on columns using a wildcard:
+
+```jsx
+{ action: "read", resource: "products.*" }.
+```
+
+Fow simple cases, you can also use [the `useCanAccess` hook](./useCanAccess.md) to check whether users have access to a field:
+
+{% raw %}
+```tsx
+import { List, Datagrid, TextField, TextInput, ShowButton, useCanAccess } from 'react-admin';
+
+const getUserFilters = (canAccessRole) => ([
+    <TextInput label="user.list.search" source="q" alwaysOn />,
+    <TextInput source="name" />,
+    canAccessRole ? <TextInput source="role" /> : null,
+    ].filter(filter => filter !== null)
+);
+
+export const UserList = ({ permissions, ...props }) => {
+    const { canAccess, error, isPending } = useCanAccess({
+        resource: 'users.role',
+        action: 'read'
+    });
+    return (
+        <List
+            {...props}
+            filters={getUserFilters(canAccess)}
+            sort={{ field: 'name', order: 'ASC' }}
+        >
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+                {canAccess ? <TextField source="role" /> : null}
+                <EditButton />
+                <ShowButton />
+            </Datagrid>
+        </List>
+    )
+};
+```
+{% endraw %}
+
+Note how the `canAccess` value is passed down to the custom `filters` component to allow Filter customization, too.

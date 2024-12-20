@@ -81,7 +81,7 @@ import { Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
 const BookShow = () => (
-    <ShowBase emptyWhileLoading>
+    <ShowBase>
         <Grid container spacing={2} sx={{ margin: 2 }}>
             <Grid item xs={12} sm={6}>
                 <TextField label="Title" source="title" />
@@ -112,20 +112,6 @@ By default, the `<ShowBase>` component will automatically redirect the user to t
 ```jsx
 const PostShow = () => (
     <ShowBase disableAuthentication>
-        ...
-    </ShowBase>
-);
-```
-
-## `emptyWhileLoading`
-
-By default, `<ShowBase>` renders its child component even before the `dataProvider.getOne()` call returns. If you use `<SimpleShowLayout>` or `<TabbedShowLayout>`, this isn't a problem as these components only render when the record has been fetched. But if you use a custom child component that expects the record context to be defined, your component will throw an error.
-
-The `<ShowBase emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<ShowBase>` won't render its child until the record is loaded.
-
-```jsx
-const BookShow = () => (
-    <ShowBase emptyWhileLoading>
         ...
     </ShowBase>
 );
