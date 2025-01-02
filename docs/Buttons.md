@@ -962,6 +962,33 @@ The `<SelectAllButton>` component allows users to select all items from a resour
 
 ![SelectAllButton](./img/SelectAllButton.png)
 
+## Usage
+
+By default, react-admin's `<Datagrid>` displays a `<SelectAllButton>` in their List view action toolbar. You can custom it by specifying your own `selectAllButton`:
+
+{% raw %}
+
+```jsx
+import { List, Datagrid, SelectAllButton } from 'react-admin';
+
+const PostSelectAllButton = () => (
+    <SelectAllButton 
+        label="Select all records"
+        queryOptions={{ meta: { foo: 'bar' } }}
+    />
+);
+
+export const PostList = () => (
+    <List>
+        <Datagrid selectAllButton={<PostSelectAllButton />}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+{% endraw %}
+
 ### `label`
 
 By default, the `<SelectAllButton>` label is "Select all" (or the `ra.action.select_all_button` message translation). You can also pass a custom `label`:
