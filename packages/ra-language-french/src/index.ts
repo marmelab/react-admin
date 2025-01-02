@@ -166,7 +166,6 @@ const frenchMessages: TranslationMessages = {
             deleted: 'Élément supprimé |||| %{smart_count} éléments supprimés',
             bad_item: 'Élément inconnu',
             item_doesnt_exist: "L'élément n'existe pas",
-            simple_error: 'Une erreur est survenue. Veuillez réessayer.',
             http_error: 'Erreur de communication avec le serveur',
             data_provider_error:
                 'Erreur dans le dataProvider. Plus de détails dans la console.',

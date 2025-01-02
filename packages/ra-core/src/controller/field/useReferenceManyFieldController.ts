@@ -251,7 +251,7 @@ export const useReferenceManyFieldController = <
                 if (onError) {
                     onError(error);
                 }
-                notify('ra.notification.simple_error', { type: 'warning' });
+                notify('ra.notification.http_error', { type: 'warning' });
             }
         }
     );

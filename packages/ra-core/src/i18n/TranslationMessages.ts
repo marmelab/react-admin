@@ -158,7 +158,6 @@ export interface TranslationMessages extends StringMap {
             deleted: string;
             bad_item: string;
             item_doesnt_exist: string;
-            simple_error: string;
             http_error: string;
             data_provider_error: string;
             i18n_error: string;

@@ -160,7 +160,6 @@ const englishMessages: TranslationMessages = {
             deleted: 'Element deleted |||| %{smart_count} elements deleted',
             bad_item: 'Incorrect element',
             item_doesnt_exist: 'Element does not exist',
-            simple_error: 'An error occurred. Please try again.',
             http_error: 'Server communication error',
             data_provider_error:
                 'dataProvider error. Check the console for details.',
