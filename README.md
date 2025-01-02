@@ -47,21 +47,20 @@ yarn add react-admin
 ```jsx
 // in app.js
 import * as React from "react";
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { Admin, Resource } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 
 import { PostList, PostEdit, PostCreate, PostIcon } from './posts';
 
-render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
     <Admin dataProvider={restProvider('http://localhost:3000')}>
         <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
-    </Admin>,
-    document.getElementById('root')
+    </Admin>
 );
 ```
 
-The `<Resource>` component is a configuration component that allows you to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from react-admin:
+The `<Resource>` component defines CRUD pages (`list`, `edit`, and `create`) for an API endpoint (`/posts`). The page components use react-admin components to fetch and render data:
 
 ```jsx
 // in posts.js
@@ -273,10 +272,8 @@ And then browse to [http://localhost:4000/](http://localhost:4000/)
 
 ## License
 
-React-admin is licensed under the [MIT License](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](https://marmelab.com).
+React-admin is licensed under the [MIT License](https://github.com/marmelab/react-admin/blob/master/LICENSE.md), sponsored and supported by [marmelab](https://marmelab.com). It is free to use, even for commercial purpose. 
+
+If you want to give back, please talk about it, [help newcomers](https://stackoverflow.com/questions/tagged/react-admin), [subscribe to the Enterprise Edition](https://react-admin-ee.marmelab.com/), or contribute code.
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin?ref=badge_large)
-
-## Donate
-
-This library is free to use, even for commercial purpose. If you want to give back, please talk about it, [help newcomers](https://stackoverflow.com/questions/tagged/react-admin), or contribute code. But the best way to give back is to **donate to a charity**. We recommend [Doctors Without Borders](https://www.doctorswithoutborders.org/).
