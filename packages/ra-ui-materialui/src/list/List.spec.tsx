@@ -357,7 +357,7 @@ describe('<List />', () => {
                 await screen.findByRole('button', { name: 'Select all' })
             ).toBeDefined();
         });
-        it('should not be displayed if all item are manually selected', async () => {
+        it('should not be displayed if all items are manually selected', async () => {
             render(
                 <Default
                     dataProvider={testDataProvider({
@@ -391,7 +391,7 @@ describe('<List />', () => {
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
         });
-        it('should not be displayed if all item are selected with the "Select all" button', async () => {
+        it('should not be displayed if all items are selected with the "Select all" button', async () => {
             render(<Default />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
@@ -404,7 +404,7 @@ describe('<List />', () => {
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
         });
-        it('should not be displayed if we reached the limit by a manual selection', async () => {
+        it('should not be displayed if the user reaches the limit by a manual selection', async () => {
             render(
                 <SelectAllLimit
                     limit={2}
@@ -446,7 +446,7 @@ describe('<List />', () => {
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
         });
-        it('should not be displayed if we reached the selectAllLimit by a  click on the "Select all" button', async () => {
+        it('should not be displayed if the user reaches the selectAllLimit by a click on the "Select all" button', async () => {
             render(<SelectAllLimit />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
@@ -472,7 +472,7 @@ describe('<List />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('13 items selected');
         });
-        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
+        it('should select the maximum items possible up to the selectAllLimit', async () => {
             render(<SelectAllLimit />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(11);

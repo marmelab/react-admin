@@ -275,7 +275,7 @@ describe('<ReferenceManyField />', () => {
     });
 
     describe('"Select all" button', () => {
-        it('should be displayed if an item is selected', async () => {
+        it('should be displayed if all the items of the page are selected', async () => {
             render(<WithPagination />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
@@ -285,7 +285,7 @@ describe('<ReferenceManyField />', () => {
                 await screen.findByRole('button', { name: 'Select all' })
             ).toBeDefined();
         });
-        it('should not be displayed if all item are manyally selected', async () => {
+        it('should not be displayed if all item are manually selected', async () => {
             render(
                 <WithPagination
                     dataProvider={testDataProvider({
@@ -319,7 +319,7 @@ describe('<ReferenceManyField />', () => {
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
         });
-        it('should not be displayed if all item are selected with the "Select all" button', async () => {
+        it('should not be displayed if all items are selected with the "Select all" button', async () => {
             render(<WithPagination />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
@@ -332,7 +332,7 @@ describe('<ReferenceManyField />', () => {
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
         });
-        it('should not be displayed if we reached de limit by a manyally selection', async () => {
+        it('should not be displayed if we reached the limit by a manual selection', async () => {
             render(
                 <WithPaginationAndSelectAllLimit
                     limit={2}
@@ -374,7 +374,7 @@ describe('<ReferenceManyField />', () => {
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
         });
-        it('should not be displayed if we reached de selectAllLimit by a  click on the "Select all" button', async () => {
+        it('should not be displayed if we reached the selectAllLimit by a click on the "Select all" button', async () => {
             render(<WithPaginationAndSelectAllLimit />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
@@ -400,7 +400,7 @@ describe('<ReferenceManyField />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('7 items selected');
         });
-        it('should select the maximum items possible until we reached the selectAllLimit', async () => {
+        it('should select the maximum items possible until we reach the selectAllLimit', async () => {
             render(<WithPaginationAndSelectAllLimit />);
             await waitFor(() => {
                 expect(screen.queryAllByRole('checkbox')).toHaveLength(6);
