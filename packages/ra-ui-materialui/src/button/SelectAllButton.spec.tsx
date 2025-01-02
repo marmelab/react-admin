@@ -15,9 +15,7 @@ describe('<SelectAllButton />', () => {
         await screen.findByText('War and Peace');
         fireEvent.click(screen.getAllByRole('checkbox')[0]);
         await screen.findByText('10 items selected');
-        expect(
-            screen.queryByRole('button', { name: 'Select all' })
-        ).not.toBeNull();
+        await screen.findByRole('button', { name: 'Select all' });
         fireEvent.click(screen.getAllByRole('checkbox')[1]);
         await screen.findByText('9 items selected');
         expect(screen.queryByRole('button', { name: 'Select all' })).toBeNull();
