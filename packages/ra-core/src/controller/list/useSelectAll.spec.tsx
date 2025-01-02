@@ -14,7 +14,9 @@ describe('useSelectAll', () => {
         await screen.findByText('Selected ids: []');
         fireEvent.click(screen.getByText('Select All'));
         await waitFor(() => {
-            expect(screen.queryByText('Selected ids: []')).not.toBeNull();
+            expect(
+                screen.queryByText('Selected ids: [1,2,3,4,5,6,7]')
+            ).not.toBeNull();
         });
     });
 
