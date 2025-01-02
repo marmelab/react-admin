@@ -7,9 +7,8 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { SelectAllButton } from './SelectAllButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { List, Datagrid, BulkActionsToolbar } from '../list';
+import { List, Datagrid } from '../list';
 import { TextField, NumberField } from '../field';
-import { BulkDeleteButton } from './BulkDeleteButton';
 
 export default { title: 'ra-ui-materialui/button/SelectAllButton' };
 
@@ -126,7 +125,7 @@ const dataProvider = fakeRestDataProvider({
     authors: [],
 });
 
-const Wrapper = ({ actions }) => (
+const Wrapper = ({ children }) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <AdminUI>
@@ -134,13 +133,7 @@ const Wrapper = ({ actions }) => (
                     name="books"
                     list={() => (
                         <List>
-                            <Datagrid
-                                bulkActionsToolbar={
-                                    <BulkActionsToolbar actions={actions}>
-                                        <BulkDeleteButton />
-                                    </BulkActionsToolbar>
-                                }
-                            >
+                            <Datagrid selectAllButton={children}>
                                 <TextField source="id" />
                                 <TextField source="title" />
                                 <TextField source="author" />
@@ -154,16 +147,20 @@ const Wrapper = ({ actions }) => (
     </TestMemoryRouter>
 );
 
-export const Basic = () => <Wrapper actions={<SelectAllButton />} />;
+export const Basic = () => (
+    <Wrapper>
+        <SelectAllButton />
+    </Wrapper>
+);
 
 export const Label = () => (
-    <Wrapper actions={<SelectAllButton label="Select all books" />} />
+    <Wrapper>
+        <SelectAllButton label="Select all books" />
+    </Wrapper>
 );
 
 export const Limit = () => (
-    <Wrapper
-        actions={
-            <SelectAllButton label="Select all books (max 15)" limit={15} />
-        }
-    />
+    <Wrapper>
+        <SelectAllButton label="Select all books (max 15)" limit={15} />
+    </Wrapper>
 );

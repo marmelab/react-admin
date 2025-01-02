@@ -5,7 +5,7 @@ import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
 import { CoreAdminContext } from '../../core';
-import { Basic } from './ReferenceArrayField.stories';
+import { Basic } from './useReferenceArrayFieldController.stories';
 
 const ReferenceArrayFieldController = props => {
     const { children, ...rest } = props;

@@ -6,7 +6,10 @@ import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
 import { useReferenceManyFieldController } from './useReferenceManyFieldController';
 import { memoryStore } from '../../store';
-import { Basic, defaultDataProvider } from './ReferenceManyField.stories';
+import {
+    Basic,
+    defaultDataProvider,
+} from './useReferenceManyFieldController.stories';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;

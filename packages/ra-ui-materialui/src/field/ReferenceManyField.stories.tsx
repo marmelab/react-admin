@@ -190,10 +190,10 @@ export const StoreKey = () => (
 
 export const WithPagination = ({
     dataProvider = fullDataProvider,
-    bulkActionsToolbar,
+    selectAllButton,
 }: {
     dataProvider?: AdminProps['dataProvider'];
-    bulkActionsToolbar?: DatagridProps['bulkActionsToolbar'];
+    selectAllButton?: DatagridProps['selectAllButton'];
 }) => (
     <Wrapper
         i18nProvider={polyglotI18nProvider(() => englishMessages)}
@@ -206,7 +206,7 @@ export const WithPagination = ({
             pagination={<Pagination />}
             perPage={5}
         >
-            <Datagrid bulkActionsToolbar={bulkActionsToolbar}>
+            <Datagrid selectAllButton={selectAllButton}>
                 <TextField source="title" />
             </Datagrid>
         </ReferenceManyField>
@@ -221,11 +221,7 @@ export const WithPaginationAndSelectAllLimit = ({
     limit?: number;
 }) => (
     <WithPagination
-        bulkActionsToolbar={
-            <BulkActionsToolbar actions={<SelectAllButton limit={limit} />}>
-                <BulkDeleteButton />
-            </BulkActionsToolbar>
-        }
+        selectAllButton={<SelectAllButton limit={limit} />}
         dataProvider={dataProvider}
     />
 );

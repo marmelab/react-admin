@@ -470,11 +470,11 @@ export const Meta = () => (
 export const Default = ({
     dataProvider = defaultDataProvider,
     children,
-    bulkActionsToolbar,
+    selectAllButton,
 }: {
     dataProvider?: DataProvider;
     children?: React.ReactNode;
-    bulkActionsToolbar?: DatagridProps['bulkActionsToolbar'];
+    selectAllButton?: DatagridProps['selectAllButton'];
 }) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={dataProvider}>
@@ -482,7 +482,7 @@ export const Default = ({
                 name="books"
                 list={() => (
                     <List filters={[<SearchInput source="q" alwaysOn />]}>
-                        <Datagrid bulkActionsToolbar={bulkActionsToolbar}>
+                        <Datagrid selectAllButton={selectAllButton}>
                             <TextField source="id" />
                             <TextField source="title" />
                             <TextField source="author" />
@@ -506,11 +506,7 @@ export const SelectAllLimit = ({
     limit?: number;
 }) => (
     <Default
-        bulkActionsToolbar={
-            <BulkActionsToolbar actions={<SelectAllButton limit={limit} />}>
-                <BulkDeleteButton />
-            </BulkActionsToolbar>
-        }
+        selectAllButton={<SelectAllButton limit={limit} />}
         dataProvider={dataProvider}
     >
         {children}
