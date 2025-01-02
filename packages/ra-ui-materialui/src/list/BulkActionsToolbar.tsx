@@ -12,14 +12,14 @@ import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
 import TopToolbar from '../layout/TopToolbar';
 import { SelectAllButton } from '../button';
 
-const defaultActions = <SelectAllButton />;
+const defaultSelectAllButton = <SelectAllButton />;
 
 export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
         label = 'ra.action.bulk_actions',
         children,
         className,
-        actions = defaultActions,
+        selectAllButton = defaultSelectAllButton,
         ...rest
     } = props;
     const { selectedIds = [], onUnselectItems } = useListContext();
@@ -57,10 +57,10 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                             smart_count: selectedIds.length,
                         })}
                     </Typography>
-                    {actions !== false
-                        ? isValidElement(actions)
-                            ? actions
-                            : defaultActions
+                    {selectAllButton !== false
+                        ? isValidElement(selectAllButton)
+                            ? selectAllButton
+                            : defaultSelectAllButton
                         : null}
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
@@ -75,7 +75,7 @@ export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
     className?: string;
-    actions?: ReactElement | false;
+    selectAllButton?: ReactElement | false;
 }
 
 const PREFIX = 'RaBulkActionsToolbar';

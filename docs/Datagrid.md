@@ -50,7 +50,6 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 | `children`           | Required | Element                 | n/a                   | The list of `<Field>` components to render as columns.        |
 | `body`               | Optional | Element                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
 | `bulkActionButtons`  | Optional | Element                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
-| `bulkActionsToolbar` | Optional | Element                 |                       | The component used to render the bulk actions toolbar.        |
 | `empty`              | Optional | Element                 | `<Empty>`             | The component used to render the empty table.                 |
 | `expand`             | Optional | Element                 |                       | The component used to render the expand panel for each row.   |
 | `expandSingle`       | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
@@ -62,6 +61,7 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 | `rowClick`           | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
 | `rowStyle`           | Optional | Function                |                       | A function that returns the style to apply to a row.          |
 | `rowSx`              | Optional | Function                |                       | A function that returns the sx prop to apply to a row.        |
+| `selectAllButton`    | Optional | Element or  `false`     |                       | The button used to select all records.                        |
 | `size`               | Optional | `'small'` or `'medium'` | `'small'`             | The size of the table.                                        |
 | `sx`                 | Optional | Object                  |                       | The sx prop passed down to the Material UI `<Table>` element. |
 
@@ -374,60 +374,37 @@ const CustomResetViewsButton = () => {
 };
 ```
 
-## `bulkActionsToolbar`
+## `selectAllButton`
 
-You can use the `bulkActionsToolbar` prop to customize the bulk action toolbar, displayed when at least one row is selected.
+You can use the `selectAllButton` prop to customize the default [`<SelectAllButton>`](./Buttons.md#selectallbutton) displayed in the bulk action toolbar when at least one row is selected.
 
-You disable this feature by setting the `bulkActionsToolbar` prop to `false`:
+```tsx
+import { List, Datagrid, SelectAllButton } from 'react-admin';
+
+const PostSelectAllButton = () => <SelectAllButton label="Select all records" />
+
+export const PostList = () => (
+    <List>
+        <Datagrid selectAllButton={<PostSelectAllButton />}>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+You disable this feature by setting the `selectAllButton` prop to `false`:
 
 ```tsx
 import { Datagrid, List } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid bulkActionsToolbar={false}>
+        <Datagrid selectAllButton={false}>
             ...
         </Datagrid>
     </List>
 );
 ```
-
-By default, all Datagrids have a single `action`, [the select all button](./Buttons.md#selectallbutton).
-You can customize this button or add others by passing a custom element as the `bulkActionsToolbar` prop of the `<Datagrid>` component:
-
-{% raw %}
-
-```tsx
-import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton, useUnselectAll, Button } from 'react-admin';
-
-const UnselectButton = () => {
-    const unselect = useUnselectAll('posts');
-    return <Button onClick={unselect} label="Unselect all records" />;
-};
-
-const PostBulkActionsToolbar = () => (
-    <BulkActionsToolbar actions={
-        <>
-            <SelectAllButton label="Select all records" />
-            <UnselectButton />
-        </>
-    }>
-        <BulkDeleteButton />
-    </BulkActionsToolbar>
-);
-
-export const PostList = () => (
-    <List>
-        <Datagrid bulkActionsToolbar={<PostBulkActionsToolbar />}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-
-{% endraw %}
-
-**Tip**: This customization will bring up your new `UnselectAll` button on the left-hand side of the toolbar. To work on the right-hand side, you can use the [`bulkActionButtons`](#bulkactionbuttons) prop.
 
 ## `children`
 

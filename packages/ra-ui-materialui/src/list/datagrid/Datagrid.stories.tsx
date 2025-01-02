@@ -22,7 +22,7 @@ import { FieldProps, TextField } from '../../field';
 import {
     BulkDeleteButton,
     BulkExportButton,
-    SelectAllButton,
+    SelectAllButton as RaSelectAllButton,
 } from '../../button';
 import { Datagrid, DatagridProps } from './Datagrid';
 import { ShowGuesser, SimpleShowLayout } from '../../detail';
@@ -32,7 +32,6 @@ import { List } from '../List';
 import { EditGuesser } from '../../detail';
 import { DatagridRowProps } from './DatagridRow';
 import DatagridBody, { DatagridBodyProps } from './DatagridBody';
-import { BulkActionsToolbar } from '../BulkActionsToolbar';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -185,15 +184,7 @@ export const RowSx = () => (
     </Wrapper>
 );
 
-const CutomBulkActionToolbar = () => (
-    <BulkActionsToolbar
-        actions={<SelectAllButton label="Select all records" />}
-    >
-        <BulkDeleteButton />
-    </BulkActionsToolbar>
-);
-
-export const BulkActionToolbar = ({
+export const SelectAllButton = ({
     onlyDisplay,
 }: {
     onlyDisplay?: 'default' | 'disabled' | 'custom';
@@ -214,7 +205,7 @@ export const BulkActionToolbar = ({
             {(!onlyDisplay || onlyDisplay === 'disabled') && (
                 <>
                     <h1>Disabled</h1>
-                    <Datagrid bulkActionsToolbar={false}>
+                    <Datagrid selectAllButton={false}>
                         <TextField source="id" />
                         <TextField source="title" />
                         <TextField source="author" />
@@ -225,7 +216,11 @@ export const BulkActionToolbar = ({
             {(!onlyDisplay || onlyDisplay === 'custom') && (
                 <>
                     <h1>Custom</h1>
-                    <Datagrid bulkActionsToolbar={<CutomBulkActionToolbar />}>
+                    <Datagrid
+                        selectAllButton={
+                            <RaSelectAllButton label="Select all records" />
+                        }
+                    >
                         <TextField source="id" />
                         <TextField source="title" />
                         <TextField source="author" />

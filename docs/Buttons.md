@@ -964,7 +964,7 @@ The `<SelectAllButton>` component allows users to select all items from a resour
 
 ## Usage
 
-By default, react-admin's `<Datagrid>` displays a `<SelectAllButton>` in their List view action toolbar. You can custom it by specifying your own `selectAllButton`:
+By default, react-admin's `<Datagrid>` displays a `<SelectAllButton>` in their List view action toolbar. You can custom it by specifying your own [`selectAllButton`](./Datagrid.md#selectallbutton):
 
 {% raw %}
 

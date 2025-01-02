@@ -10,7 +10,7 @@ import {
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { Datagrid } from './Datagrid';
-import { AccessControl, BulkActionToolbar } from './Datagrid.stories';
+import { AccessControl, SelectAllButton } from './Datagrid.stories';
 
 const TitleField = (): JSX.Element => {
     const record = useRecordContext();
@@ -115,13 +115,13 @@ describe('<Datagrid />', () => {
     });
 
     it('should accept a custom bulkActionsToolbar', async () => {
-        render(<BulkActionToolbar onlyDisplay="custom" />);
+        render(<SelectAllButton onlyDisplay="custom" />);
         fireEvent.click(await screen.findByLabelText('ra.action.select_all'));
         expect(screen.queryByText('Select all records')).not.toBeNull();
     });
 
     it('should not display the bulk actions toolbar when when `bulkActionsToolbar` prop is false', async () => {
-        render(<BulkActionToolbar onlyDisplay="disabled" />);
+        render(<SelectAllButton onlyDisplay="disabled" />);
         fireEvent.click(await screen.findByLabelText('ra.action.select_all'));
         expect(screen.queryByText('Select All')).toBeNull();
     });
