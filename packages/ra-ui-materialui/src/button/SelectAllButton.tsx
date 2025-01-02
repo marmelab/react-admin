@@ -47,7 +47,7 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
     } = props;
 
     const { total, selectedIds, onSelectAll, data } = useListContext();
-    const handleSelectAll = useCallback(
+    const handleClick = useCallback(
         event => {
             onSelectAll({ limit, queryOptions });
             if (onClick) onClick(event);
@@ -68,7 +68,7 @@ export const SelectAllButton = (props: SelectAllButtonProps) => {
     return (
         <StyledButton
             label={label}
-            onClick={handleSelectAll}
+            onClick={handleClick}
             type="button"
             {...rest}
         />
