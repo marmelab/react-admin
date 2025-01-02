@@ -214,6 +214,8 @@ export const useReferenceManyFieldController = <
                         resource,
                         'getManyReference',
                         {
+                            target,
+                            id: get(record, source) as Identifier,
                             pagination: { page: 1, perPage: limit },
                             sort,
                             filter,
@@ -224,10 +226,7 @@ export const useReferenceManyFieldController = <
                         dataProvider.getManyReference(reference, {
                             target,
                             id: get(record, source) as Identifier,
-                            pagination: {
-                                page: 1,
-                                perPage: limit,
-                            },
+                            pagination: { page: 1, perPage: limit },
                             sort,
                             filter,
                             meta,
