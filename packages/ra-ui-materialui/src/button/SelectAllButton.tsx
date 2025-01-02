@@ -23,7 +23,18 @@ import { Button, ButtonProps } from './Button';
  * @param {Props} props
  *
  * @example
+ *
+ * import { SelectAllButton, List, Datagrid } from 'react-admin';
+ *
  * const MySelectAllButton = () => <SelectAllButton limit={100} label="Select all books" />;
+ *
+ * const PostList = () => (
+ *    <List>
+ *       <Datagrid selectAllButton={<MySelectAllButton />}>
+ *          // ...
+ *      </Datagrid>
+ *   </List>
+ * );
  */
 
 export const SelectAllButton = (props: SelectAllButtonProps) => {
