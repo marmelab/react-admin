@@ -25,7 +25,7 @@ export const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const List = ({ options, ...params }) => (
+const ListView = ({ options, ...params }) => (
     <div>
         <SelectAllButton options={options} />
         <p>Selected ids: {JSON.stringify(params.selectedIds)}</p>
@@ -70,7 +70,9 @@ const SelectAllButton = ({ options }) => {
 export const Basic = ({ dataProvider = defaultDataProvider, options }) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ListController resource="posts">
-            {controllerProps => <List {...controllerProps} options={options} />}
+            {controllerProps => (
+                <ListView {...controllerProps} options={options} />
+            )}
         </ListController>
     </CoreAdminContext>
 );

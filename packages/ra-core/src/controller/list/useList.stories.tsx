@@ -7,7 +7,7 @@ export default {
     title: 'ra-core/controller/list/useList',
 };
 
-const List = () => {
+const ListView = () => {
     const listContext = useListContext();
     return (
         <div>
@@ -65,7 +65,7 @@ const data = [
 ];
 
 const Wrapper = ({
-    children = <List />,
+    children = <ListView />,
     callback,
     ...props
 }: {
@@ -113,7 +113,7 @@ const SortButton = () => {
 export const Sort = props => (
     <Wrapper {...props}>
         <SortButton />
-        <List />
+        <ListView />
     </Wrapper>
 );
 
@@ -140,6 +140,6 @@ const SelectAllButton = () => {
 export const SelectAll = props => (
     <Wrapper {...props}>
         <SelectAllButton />
-        <List />
+        <ListView />
     </Wrapper>
 );

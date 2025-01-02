@@ -26,7 +26,7 @@ export const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const List = params => (
+const ListView = params => (
     <div>
         <div
             style={{
@@ -88,7 +88,7 @@ const List = params => (
 
 export const Basic = ({
     dataProvider = defaultDataProvider,
-    children = List,
+    children = ListView,
 }: {
     dataProvider?: DataProvider;
     children?: (params: ListControllerResult) => JSX.Element;
