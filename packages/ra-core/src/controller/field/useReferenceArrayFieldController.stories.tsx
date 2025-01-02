@@ -92,5 +92,5 @@ export const Basic = ({ children = ReferenceArrayFieldComponent }) => (
 );
 
 export default {
-    title: 'ra-core/fields/ReferenceArrayField',
+    title: 'ra-core/controller/useReferenceArrayFieldController',
 };
