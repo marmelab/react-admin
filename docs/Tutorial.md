@@ -881,15 +881,15 @@ export const App = () => (
 
 [![Custom home page](./img/dashboard.png)](./img/dashboard.png)
 
-## Adding a Login Page
+## Adding Authentication
 
-Most admin apps require authentication. React-admin can check user credentials before displaying a page and redirect to a login form when the REST API returns a 403 error code.
+Most admin apps require authentication. React-admin can check user credentials before displaying a page and redirect to a login page when the REST API returns a 403 error code.
 
-*What* those credentials are, and *how* to get them, are questions that you, as a developer, must answer. React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc.), but gives you the ability to add the auth logic at the right place - using [the `authProvider` object](./Authentication.md).
+React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc.), but gives you the ability to add the auth logic at the right place - using [the `authProvider` object](./Authentication.md).
 
 For this tutorial, since there is no public authentication API, we can use a fake authentication provider that accepts every login request and stores the `username` in `localStorage`. Each page change will require that `localStorage` contains a `username` item.
 
-The `authProvider` must expose 5 methods, each returning a `Promise`:
+The `authProvider` must expose 4 async methods:
 
 ```tsx
 // in src/authProvider.ts
@@ -897,36 +897,32 @@ import { AuthProvider } from "react-admin";
 
 export const authProvider: AuthProvider = {
     // called when the user attempts to log in
-    login: ({ username }) => {
-        localStorage.setItem("username", username);
+    async login({ username, password }) {
         // accept all username/password combinations
-        return Promise.resolve();
+        if (false) {
+            throw new Error("Invalid credentials, please try again");
+        }
+        localStorage.setItem("username", username);
     },
     // called when the user clicks on the logout button
-    logout: () => {
+    async logout() {
         localStorage.removeItem("username");
-        return Promise.resolve();
     },
     // called when the API returns an error
-    checkError: ({ status }: { status: number }) => {
+    async checkError({ status }: { status: number }) {
         if (status === 401 || status === 403) {
             localStorage.removeItem("username");
-            return Promise.reject();
+            throw new Error("Session expired");
         }
-        return Promise.resolve();
     },
     // called when the user navigates to a new location, to check for authentication
-    checkAuth: () => {
-        return localStorage.getItem("username")
-            ? Promise.resolve()
-            : Promise.reject();
+    async checkAuth() {
+        if (!localStorage.getItem("username")) {
+            throw new Error("Authentication required");
+        }
     },
-    // called when the user navigates to a new location, to check for permissions / roles
-    getPermissions: () => Promise.resolve(),
 };
 ```
-
-**Tip**: As the `authProvider` calls are asynchronous, you can easily fetch an authentication server there.
 
 To enable this authentication strategy, pass the `authProvider` to the `<Admin>` component:
 
