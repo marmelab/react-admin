@@ -7,8 +7,9 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { SelectAllButton } from './SelectAllButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { List, Datagrid } from '../list';
+import { List, Datagrid, BulkActionsToolbar } from '../list';
 import { TextField, NumberField } from '../field';
+import { BulkDeleteButton } from './BulkDeleteButton';
 
 export default { title: 'ra-ui-materialui/button/SelectAllButton' };
 
@@ -133,7 +134,15 @@ const Wrapper = ({ children }) => (
                     name="books"
                     list={() => (
                         <List>
-                            <Datagrid selectAllButton={children}>
+                            <Datagrid
+                                bulkActionsToolbar={
+                                    <BulkActionsToolbar
+                                        selectAllButton={children}
+                                    >
+                                        <BulkDeleteButton />
+                                    </BulkActionsToolbar>
+                                }
+                            >
                                 <TextField source="id" />
                                 <TextField source="title" />
                                 <TextField source="author" />

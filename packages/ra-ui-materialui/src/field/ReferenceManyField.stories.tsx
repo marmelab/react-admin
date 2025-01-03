@@ -193,7 +193,7 @@ export const WithPagination = ({
     selectAllButton,
 }: {
     dataProvider?: AdminProps['dataProvider'];
-    selectAllButton?: DatagridProps['selectAllButton'];
+    selectAllButton?: React.ReactElement;
 }) => (
     <Wrapper
         i18nProvider={polyglotI18nProvider(() => englishMessages)}
@@ -206,7 +206,13 @@ export const WithPagination = ({
             pagination={<Pagination />}
             perPage={5}
         >
-            <Datagrid selectAllButton={selectAllButton}>
+            <Datagrid
+                bulkActionsToolbar={
+                    <BulkActionsToolbar selectAllButton={selectAllButton}>
+                        <BulkDeleteButton />
+                    </BulkActionsToolbar>
+                }
+            >
                 <TextField source="title" />
             </Datagrid>
         </ReferenceManyField>

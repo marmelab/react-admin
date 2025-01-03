@@ -13,7 +13,7 @@ import { Box, Card, Typography, Button, Link as MuiLink } from '@mui/material';
 import { List } from './List';
 import { SimpleList } from './SimpleList';
 import { ListActions } from './ListActions';
-import { Datagrid, DatagridProps } from './datagrid';
+import { Datagrid } from './datagrid';
 import { TextField } from '../field';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
@@ -474,7 +474,7 @@ export const Default = ({
 }: {
     dataProvider?: DataProvider;
     children?: React.ReactNode;
-    selectAllButton?: DatagridProps['selectAllButton'];
+    selectAllButton?: React.ReactElement;
 }) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={dataProvider}>
@@ -482,7 +482,15 @@ export const Default = ({
                 name="books"
                 list={() => (
                     <List filters={[<SearchInput source="q" alwaysOn />]}>
-                        <Datagrid selectAllButton={selectAllButton}>
+                        <Datagrid
+                            bulkActionsToolbar={
+                                <BulkActionsToolbar
+                                    selectAllButton={selectAllButton}
+                                >
+                                    <BulkDeleteButton />
+                                </BulkActionsToolbar>
+                            }
+                        >
                             <TextField source="id" />
                             <TextField source="title" />
                             <TextField source="author" />
