@@ -59,7 +59,7 @@ export const useSelectAll = (
         async ({
             queryOptions = {},
             limit = 250,
-        }: handleSelectAllParams = {}) => {
+        }: HandleSelectAllParams = {}) => {
             const { meta, onSuccess, onError, ...otherQueryOptions } =
                 queryOptions;
             try {
@@ -119,9 +119,9 @@ export interface UseSelectAllParams {
     filter?: FilterPayload;
 }
 
-export interface handleSelectAllParams<RecordType extends RaRecord = any> {
+export interface HandleSelectAllParams<RecordType extends RaRecord = any> {
     limit?: number;
     queryOptions?: UseGetListOptions<RecordType>;
 }
 
-export type UseSelectAllResult = (options?: handleSelectAllParams) => void;
+export type UseSelectAllResult = (options?: HandleSelectAllParams) => void;
