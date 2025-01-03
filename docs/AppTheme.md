@@ -145,10 +145,10 @@ export const App = () => (
 );
 ```
 
-You must also import the Onest font in your `index.html` file:
+You must also import the Inter font in your `index.html` file:
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
 ```
 
 ### Radiant
