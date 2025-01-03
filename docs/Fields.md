@@ -520,7 +520,7 @@ const TextField = (props) => {
 -    const record = useRecordContext();
 +   const value = useFieldValue(props);
 -   return record ? <span>{record[props.source]}</span> : null;
-+   return <span>{value}</span> : null;
++   return value ? <span>{value}</span> : null;
 }
 
 export default TextField;
