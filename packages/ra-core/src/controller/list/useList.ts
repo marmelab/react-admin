@@ -67,8 +67,8 @@ export const useList = <RecordType extends RaRecord = any>(
         sort: initialSort,
         filterCallback = (record: RecordType) => Boolean(record),
     } = props;
-    const resource = useResourceContext(props);
-
+    const resourceFromContext = useResourceContext(props);
+    const resource = props.storeKey ?? resourceFromContext;
     const [fetchingState, setFetchingState] = useState<boolean>(isFetching) as [
         boolean,
         (isFetching: boolean) => void,
@@ -92,11 +92,44 @@ export const useList = <RecordType extends RaRecord = any>(
         total: data ? data.length : undefined,
     }));
 
+    // Store pagination states for each storeKey
+    const storeKeyPaginationRef = useRef<{
+        [key: string]: { page: number; perPage: number };
+    }>({});
+
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
         page: initialPage,
         perPage: initialPerPage,
     });
+
+    useEffect(() => {
+        if (!resource) return;
+        // Check if storeKey exists in the pagination store
+        const currentPagination = storeKeyPaginationRef.current[resource];
+        if (currentPagination) {
+            // Restore existing pagination state for the storeKey
+            if (
+                page !== currentPagination.page ||
+                perPage !== currentPagination.perPage
+            ) {
+                setPage(currentPagination.page);
+                setPerPage(currentPagination.perPage);
+            }
+        } else {
+            setPage(initialPage);
+            setPerPage(initialPerPage);
+        }
+        storeKeyPaginationRef.current[resource] = { page, perPage };
+    }, [
+        resource,
+        setPage,
+        setPerPage,
+        initialPage,
+        initialPerPage,
+        page,
+        perPage,
+    ]);
 
     // sort logic
     const { sort, setSort: setSortState } = useSortState(initialSort);
@@ -295,7 +328,7 @@ export const useList = <RecordType extends RaRecord = any>(
         onUnselectItems: selectionModifiers.clearSelection,
         page,
         perPage,
-        resource: '',
+        resource: resource,
         refetch,
         selectedIds,
         setFilters,
@@ -318,6 +351,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     perPage?: number;
     sort?: SortPayload;
     resource?: string;
+    storeKey?: string;
     filterCallback?: (record: RecordType) => boolean;
 }
 
