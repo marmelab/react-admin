@@ -1,24 +1,8 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 import expect from 'expect';
+import { fireEvent, render, waitFor, screen } from '@testing-library/react';
 
-import { useList, UseListOptions, UseListValue } from './useList';
-import { fireEvent, render, waitFor } from '@testing-library/react';
-import { ListContextProvider } from './ListContextProvider';
-import { useListContext } from './useListContext';
-
-const UseList = ({
-    children,
-    callback,
-    ...props
-}: UseListOptions & {
-    children?: ReactNode;
-    callback: (value: UseListValue) => void;
-}) => {
-    const value = useList(props);
-    callback(value);
-    return <ListContextProvider value={value}>{children}</ListContextProvider>;
-};
+import { Basic, SelectAll, Sort } from './useList.stories';
 
 describe('<useList />', () => {
     it('should apply sorting correctly', async () => {
@@ -28,28 +12,12 @@ describe('<useList />', () => {
             { id: 2, title: 'world' },
         ];
 
-        const SortButton = () => {
-            const listContext = useListContext();
-
-            return (
-                <button
-                    onClick={() =>
-                        listContext.setSort({ field: 'title', order: 'ASC' })
-                    }
-                >
-                    Sort by title ASC
-                </button>
-            );
-        };
-
         const { getByText } = render(
-            <UseList
+            <Sort
                 data={data}
                 sort={{ field: 'title', order: 'DESC' }}
                 callback={callback}
-            >
-                <SortButton />
-            </UseList>
+            />
         );
 
         await waitFor(() => {
@@ -88,25 +56,7 @@ describe('<useList />', () => {
 
     it('should apply pagination correctly', async () => {
         const callback = jest.fn();
-        const data = [
-            { id: 1, title: 'hello' },
-            { id: 2, title: 'world' },
-            { id: 3, title: 'baz' },
-            { id: 4, title: 'bar' },
-            { id: 5, title: 'foo' },
-            { id: 6, title: 'plop' },
-            { id: 7, title: 'bazinga' },
-        ];
-
-        render(
-            <UseList
-                data={data}
-                sort={{ field: 'id', order: 'ASC' }}
-                page={2}
-                perPage={5}
-                callback={callback}
-            />
-        );
+        render(<Basic page={2} perPage={5} callback={callback} />);
 
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
@@ -115,13 +65,19 @@ describe('<useList />', () => {
                     isFetching: false,
                     isLoading: false,
                     data: [
-                        { id: 6, title: 'plop' },
-                        { id: 7, title: 'bazinga' },
+                        { id: 6, title: 'And Then There Were None' },
+                        { id: 7, title: 'Dream of the Red Chamber' },
+                        { id: 8, title: 'The Hobbit' },
+                        { id: 9, title: 'She: A History of Adventure' },
+                        {
+                            id: 10,
+                            title: 'The Lion, the Witch and the Wardrobe',
+                        },
                     ],
                     page: 2,
                     perPage: 5,
                     error: null,
-                    total: 7,
+                    total: 10,
                 })
             );
         });
@@ -135,20 +91,15 @@ describe('<useList />', () => {
         ];
 
         const { rerender } = render(
-            <UseList
-                filter={{ title: 'world' }}
-                sort={{ field: 'id', order: 'ASC' }}
-                callback={callback}
-            />
+            <Basic filter={{ title: 'world' }} callback={callback} />
         );
 
         rerender(
-            <UseList
+            <Basic
                 data={data}
                 isFetching={true}
                 isLoading={false}
                 filter={{ title: 'world' }}
-                sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
             />
         );
@@ -168,18 +119,8 @@ describe('<useList />', () => {
     describe('filter', () => {
         it('should filter string data based on the filter props', () => {
             const callback = jest.fn();
-            const data = [
-                { id: 1, title: 'hello' },
-                { id: 2, title: 'world' },
-            ];
-
             render(
-                <UseList
-                    data={data}
-                    filter={{ title: 'world' }}
-                    sort={{ field: 'id', order: 'ASC' }}
-                    callback={callback}
-                />
+                <Basic filter={{ title: 'The Hobbit' }} callback={callback} />
             );
 
             expect(callback).toHaveBeenCalledWith(
@@ -187,7 +128,7 @@ describe('<useList />', () => {
                     sort: { field: 'id', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
-                    data: [{ id: 2, title: 'world' }],
+                    data: [{ id: 8, title: 'The Hobbit' }],
                     error: null,
                     total: 1,
                 })
@@ -204,10 +145,9 @@ describe('<useList />', () => {
             ];
 
             render(
-                <UseList
+                <Basic
                     data={data}
                     filter={{ items: ['two', 'four', 'five'] }}
-                    sort={{ field: 'id', order: 'ASC' }}
                     callback={callback}
                 />
             );
@@ -240,7 +180,7 @@ describe('<useList />', () => {
             ];
 
             render(
-                <UseList
+                <Basic
                     data={data}
                     sort={{ field: 'id', order: 'ASC' }}
                     filterCallback={record => record.id > 2}
@@ -273,12 +213,13 @@ describe('<useList />', () => {
             ];
 
             render(
-                <UseList
+                <Basic
                     data={data}
                     filter={{ title: { name: 'world' } }}
-                    sort={{ field: 'id', order: 'ASC' }}
                     callback={callback}
-                />
+                >
+                    children
+                </Basic>
             );
 
             expect(callback).toHaveBeenCalledWith(
@@ -295,24 +236,62 @@ describe('<useList />', () => {
 
         it('should apply the q filter as a full-text filter', () => {
             const callback = jest.fn();
-            const data = [
-                { id: 1, title: 'Abc', author: 'Def' }, // matches 'ab'
-                { id: 2, title: 'Ghi', author: 'Jkl' }, // does not match 'ab'
-                { id: 3, title: 'Mno', author: 'Abc' }, // matches 'ab'
-            ];
-
-            render(
-                <UseList data={data} filter={{ q: 'ab' }} callback={callback} />
-            );
+            render(<Basic filter={{ q: 'The' }} callback={callback} />);
 
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
                     data: [
-                        { id: 1, title: 'Abc', author: 'Def' },
-                        { id: 3, title: 'Mno', author: 'Abc' },
+                        { id: 2, title: 'The Little Prince' },
+                        { id: 5, title: 'The Lord of the Rings' },
+                        { id: 6, title: 'And Then There Were None' },
+                        { id: 7, title: 'Dream of the Red Chamber' },
+                        { id: 8, title: 'The Hobbit' },
+                        {
+                            id: 10,
+                            title: 'The Lion, the Witch and the Wardrobe',
+                        },
                     ],
                 })
             );
+        });
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all records', async () => {
+            render(<SelectAll />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByRole('button', { name: 'Select All' }));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7,8,9,10]'
+                );
+            });
+        });
+        it('should select all records even though some records are already selected', async () => {
+            render(<SelectAll />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(
+                screen.getByRole('button', { name: 'Select item 1' })
+            );
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
+                );
+            });
+            fireEvent.click(screen.getByRole('button', { name: 'Select All' }));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3,4,5,6,7,8,9,10]'
+                );
+            });
         });
     });
 });

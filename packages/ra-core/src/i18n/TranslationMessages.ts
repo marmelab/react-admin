@@ -29,6 +29,7 @@ export interface TranslationMessages extends StringMap {
             save: string;
             search: string;
             select_all: string;
+            select_all_button: string;
             select_row: string;
             show: string;
             sort: string;
@@ -94,7 +95,9 @@ export interface TranslationMessages extends StringMap {
         message: {
             [key: string]: StringMap | string;
             about: string;
+            access_denied: string;
             are_you_sure: string;
+            authentication_error: string;
             auth_error: string;
             bulk_delete_content: string;
             bulk_delete_title: string;
@@ -109,10 +112,9 @@ export interface TranslationMessages extends StringMap {
             loading: string;
             no: string;
             not_found: string;
-            yes: string;
+            select_all_limit_reached: string;
             unsaved_changes: string;
-            access_denied: string;
-            authentication_error: string;
+            yes: string;
         };
         navigation: {
             [key: string]: StringMap | string;

@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { UseQueryOptions } from '@tanstack/react-query';
+import { useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
 
-import { removeEmpty } from '../../util';
-import { useGetManyReference } from '../../dataProvider';
+import { removeEmpty, useEvent } from '../../util';
+import { useDataProvider, useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
-import { ListControllerResult } from '../list';
+import type { ListControllerResult, HandleSelectAllParams } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
@@ -67,6 +67,8 @@ export const useReferenceManyFieldController = <
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const dataProvider = useDataProvider();
+    const queryClient = useQueryClient();
     const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
 
@@ -200,6 +202,60 @@ export const useReferenceManyFieldController = <
         }
     );
 
+    const onSelectAll = useEvent(
+        async ({
+            limit = 250,
+            queryOptions = {},
+        }: HandleSelectAllParams = {}) => {
+            const { meta, onSuccess, onError } = queryOptions;
+            try {
+                const results = await queryClient.fetchQuery({
+                    queryKey: [
+                        resource,
+                        'getManyReference',
+                        {
+                            target,
+                            id: get(record, source) as Identifier,
+                            pagination: { page: 1, perPage: limit },
+                            sort,
+                            filter,
+                            meta,
+                        },
+                    ],
+                    queryFn: () =>
+                        dataProvider.getManyReference(reference, {
+                            target,
+                            id: get(record, source) as Identifier,
+                            pagination: { page: 1, perPage: limit },
+                            sort,
+                            filter,
+                            meta,
+                        }),
+                });
+
+                const allIds = results.data?.map(({ id }) => id) || [];
+                selectionModifiers.select(allIds);
+                if (allIds.length === limit) {
+                    notify('ra.message.select_all_limit_reached', {
+                        messageArgs: { max: limit },
+                        type: 'warning',
+                    });
+                }
+
+                if (onSuccess) {
+                    onSuccess(results);
+                }
+
+                return results.data;
+            } catch (error) {
+                if (onError) {
+                    onError(error);
+                }
+                notify('ra.notification.http_error', { type: 'warning' });
+            }
+        }
+    );
+
     return {
         sort,
         data,
@@ -213,6 +269,7 @@ export const useReferenceManyFieldController = <
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page,

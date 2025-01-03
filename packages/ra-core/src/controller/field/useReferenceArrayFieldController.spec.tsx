@@ -1,10 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
 import { CoreAdminContext } from '../../core';
+import { Basic } from './useReferenceArrayFieldController.stories';
 
 const ReferenceArrayFieldController = props => {
     const { children, ...rest } = props;
@@ -165,5 +166,43 @@ describe('<useReferenceArrayFieldController />', () => {
                 error: null,
             })
         );
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all records', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(await screen.findByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2]'
+                );
+            });
+        });
+
+        it('should select all records even though some records are already selected', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(await screen.findByTestId('checkbox-1'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
+                );
+            });
+            fireEvent.click(await screen.findByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2]'
+                );
+            });
+        });
     });
 });

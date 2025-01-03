@@ -26,6 +26,7 @@ export * from './PrevNextButtons';
 export * from './RefreshButton';
 export * from './RefreshIconButton';
 export * from './SaveButton';
+export * from './SelectAllButton';
 export * from './SkipNavigationButton';
 export * from './ToggleThemeButton';
 export * from './UpdateButton';
