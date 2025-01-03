@@ -33,7 +33,6 @@ import { RowClickFunction } from '../types';
 import DatagridContextProvider from './DatagridContextProvider';
 import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
-import type { BulkActionsToolbarProps } from '../BulkActionsToolbar';
 import { BulkDeleteButton } from '../../button';
 import { ListNoResults } from '../ListNoResults';
 
@@ -45,7 +44,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *
  * Props:
  *  - body
- *  - selectAllButton
+ *  - bulkActionToolbar
  *  - bulkActionButtons
  *  - children
  *  - empty
@@ -134,7 +133,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         className,
         empty = DefaultEmpty,
         expand,
-        selectAllButton,
+        bulkActionsToolbar,
         bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
         hover,
         isRowSelectable,
@@ -247,13 +246,14 @@ export const Datagrid: React.ForwardRefExoticComponent<
                     sx={sx}
                     className={clsx(DatagridClasses.root, className)}
                 >
-                    {bulkActionButtons !== false ? (
-                        <BulkActionsToolbar selectAllButton={selectAllButton}>
-                            {isValidElement(bulkActionButtons)
-                                ? bulkActionButtons
-                                : defaultBulkActionButtons}
-                        </BulkActionsToolbar>
-                    ) : null}
+                    {bulkActionsToolbar ??
+                        (bulkActionButtons !== false ? (
+                            <BulkActionsToolbar>
+                                {isValidElement(bulkActionButtons)
+                                    ? bulkActionButtons
+                                    : defaultBulkActionButtons}
+                            </BulkActionsToolbar>
+                        ) : null)}
                     <div className={DatagridClasses.tableWrapper}>
                         <Table
                             ref={ref}
@@ -321,21 +321,26 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     className?: string;
 
     /**
-     * The button used to select all records.
+     * The component used to render the bulk actions toolbar.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#selectallbutton
      * @example
-     * import { List, Datagrid, SelectAllButton } from 'react-admin';
+     * import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
+     *
+     * const PostBulkActionsToolbar = () => (
+     *     <BulkActionsToolbar selectAllButton={<SelectAllButton label="Select all records" />}>
+     *         <BulkDeleteButton />
+     *     </BulkActionsToolbar>
+     * );
      *
      * export const PostList = () => (
      *     <List>
-     *         <Datagrid selectAllButton={<SelectAllButton label="Select all records" />}>
+     *         <Datagrid bulkActionsToolbar={<PostBulkActionsToolbar />}>
      *             ...
      *         </Datagrid>
      *     </List>
      * );
      */
-    selectAllButton?: BulkActionsToolbarProps['selectAllButton'];
+    bulkActionsToolbar?: ReactElement;
 
     /**
      * The component used to render the bulk action buttons. Defaults to <BulkDeleteButton>.

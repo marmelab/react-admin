@@ -61,7 +61,6 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 | `rowClick`           | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
 | `rowStyle`           | Optional | Function                |                       | A function that returns the style to apply to a row.          |
 | `rowSx`              | Optional | Function                |                       | A function that returns the sx prop to apply to a row.        |
-| `selectAllButton`    | Optional | Element or  `false`     |                       | The button used to select all records.                        |
 | `size`               | Optional | `'small'` or `'medium'` | `'small'`             | The size of the table.                                        |
 | `sx`                 | Optional | Object                  |                       | The sx prop passed down to the Material UI `<Table>` element. |
 
@@ -372,38 +371,6 @@ const CustomResetViewsButton = () => {
         </Button>
     );
 };
-```
-
-## `selectAllButton`
-
-You can use the `selectAllButton` prop to customize the default [`<SelectAllButton>`](./Buttons.md#selectallbutton) displayed in the bulk action toolbar when at least one row is selected.
-
-```tsx
-import { List, Datagrid, SelectAllButton } from 'react-admin';
-
-const PostSelectAllButton = () => <SelectAllButton label="Select all records" />
-
-export const PostList = () => (
-    <List>
-        <Datagrid selectAllButton={<PostSelectAllButton />}>
-            ...
-        </Datagrid>
-    </List>
-);
-```
-
-You disable this feature by setting the `selectAllButton` prop to `false`:
-
-```tsx
-import { Datagrid, List } from 'react-admin';
-
-export const PostList = () => (
-    <List>
-        <Datagrid selectAllButton={false}>
-            ...
-        </Datagrid>
-    </List>
-);
 ```
 
 ## `children`

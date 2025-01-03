@@ -32,6 +32,7 @@ import { List } from '../List';
 import { EditGuesser } from '../../detail';
 import { DatagridRowProps } from './DatagridRow';
 import DatagridBody, { DatagridBodyProps } from './DatagridBody';
+import { BulkActionsToolbar } from '../BulkActionsToolbar';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
@@ -205,7 +206,13 @@ export const SelectAllButton = ({
             {(!onlyDisplay || onlyDisplay === 'disabled') && (
                 <>
                     <h1>Disabled</h1>
-                    <Datagrid selectAllButton={false}>
+                    <Datagrid
+                        bulkActionsToolbar={
+                            <BulkActionsToolbar selectAllButton={false}>
+                                <BulkDeleteButton />
+                            </BulkActionsToolbar>
+                        }
+                    >
                         <TextField source="id" />
                         <TextField source="title" />
                         <TextField source="author" />
@@ -217,8 +224,14 @@ export const SelectAllButton = ({
                 <>
                     <h1>Custom</h1>
                     <Datagrid
-                        selectAllButton={
-                            <RaSelectAllButton label="Select all records" />
+                        bulkActionsToolbar={
+                            <BulkActionsToolbar
+                                selectAllButton={
+                                    <RaSelectAllButton label="Select all records" />
+                                }
+                            >
+                                <BulkDeleteButton />
+                            </BulkActionsToolbar>
                         }
                     >
                         <TextField source="id" />

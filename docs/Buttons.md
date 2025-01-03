@@ -964,7 +964,7 @@ The `<SelectAllButton>` component allows users to select all items from a resour
 
 ## Usage
 
-By default, react-admin's `<Datagrid>` displays a `<SelectAllButton>` in their List view action toolbar. You can custom it by specifying your own [`selectAllButton`](./Datagrid.md#selectallbutton):
+By default, react-admin's `<Datagrid>` displays a `<SelectAllButton>` in their `bulkActionsToolbar`. You can custom it by specifying your own `selectAllButton`:
 
 {% raw %}
 
@@ -980,7 +980,13 @@ const PostSelectAllButton = () => (
 
 export const PostList = () => (
     <List>
-        <Datagrid selectAllButton={<PostSelectAllButton />}>
+        <Datagrid
+            bulkActionsToolbar={
+                <BulkActionsToolbar selectAllButton={PostSelectAllButton}>
+                    <BulkDeleteButton />
+                </BulkActionsToolbar>
+            }
+        >
             ...
         </Datagrid>
     </List>
@@ -1012,9 +1018,11 @@ const PostSelectAllButton = () => <SelectAllButton limit={100} />;
 `<SelectAllButton>` calls a `get` method of your `dataProvider` via a react-query's `useQuery` hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the call.
 
 {% raw %}
+
 ```jsx
 const PostSelectAllButton = () => <SelectAllButton queryOptions={{ meta: { foo: 'bar' } }} />;
 ```
+
 {% endraw %}
 
 ### `sx`: CSS API
