@@ -956,20 +956,75 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 To override the style of all instances of `<FilterButton>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaFilterButton` key.
 
+## `<ListButton>`
+
+Opens the List view of a given resource.
+
+![List button](./img/list-button.png)
+
+`<ListButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
+
+### Usage
+
+By default, react-admin doesn't display a `<ListButton>` in Edit and Show views action toolbar. This saves visual clutter, and users can always use the back button.
+
+You can add it by specifying your own `actions`:
+
+```jsx
+// linking back to the list from the Show view
+import { TopToolbar, ListButton, Show } from 'react-admin';
+
+const PostShowActions = () => (
+    <TopToolbar>
+        <ListButton />
+    </TopToolbar>
+);
+
+export const PostShow = () => (
+    <Show actions={<PostShowActions />}>
+        ...
+    </Show>
+);
+```
+
+**Tip**: If you want to link to the List view manually, use the `/{resource}` location.
+
+### Props
+
+| Prop       | Required | Type            | Default          | Description                                  |
+| ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
+| `resource` | Optional | `string`        | -                | target resource, e.g. 'posts'                |
+| `label`    | Optional | `string`        | 'ra.action.list' | label or translation message to use          |
+| `icon`     | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`          |
+
+It also supports [all the other `<Button>` props](#button).
+
+### Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<ListButton>` will only render if the user has the "list" access to the related resource.
+
+`<ListButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "list", resource: [current resource] }
+```
+
+## `<RefreshButton>`
+
 ## `<SelectAllButton>`
 
 The `<SelectAllButton>` component allows users to select all items from a resource, no matter the pagination.
 
 ![SelectAllButton](./img/SelectAllButton.png)
 
-## Usage
+### Usage
 
-By default, react-admin's `<Datagrid>` displays a `<SelectAllButton>` in their `bulkActionsToolbar`. You can custom it by specifying your own `selectAllButton`:
+By default, react-admin's `<Datagrid>` displays a `<SelectAllButton>` in its `bulkActionsToolbar`. You can customize it by specifying your own `<BulkActionsToolbar selectAllButton>`:
 
 {% raw %}
 
 ```jsx
-import { List, Datagrid, SelectAllButton } from 'react-admin';
+import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
 
 const PostSelectAllButton = () => (
     <SelectAllButton 
@@ -1028,61 +1083,6 @@ const PostSelectAllButton = () => <SelectAllButton queryOptions={{ meta: { foo: 
 ### `sx`: CSS API
 
 To override the style of all instances of `<SelectAllButton>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSelectAllButton` key.
-
-## `<ListButton>`
-
-Opens the List view of a given resource.
-
-![List button](./img/list-button.png)
-
-`<ListButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
-
-### Usage
-
-By default, react-admin doesn't display a `<ListButton>` in Edit and Show views action toolbar. This saves visual clutter, and users can always use the back button.
-
-You can add it by specifying your own `actions`:
-
-```jsx
-// linking back to the list from the Show view
-import { TopToolbar, ListButton, Show } from 'react-admin';
-
-const PostShowActions = () => (
-    <TopToolbar>
-        <ListButton />
-    </TopToolbar>
-);
-
-export const PostShow = () => (
-    <Show actions={<PostShowActions />}>
-        ...
-    </Show>
-);
-```
-
-**Tip**: If you want to link to the List view manually, use the `/{resource}` location.
-
-### Props
-
-| Prop       | Required | Type            | Default          | Description                                  |
-| ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
-| `resource` | Optional | `string`        | -                | target resource, e.g. 'posts'                |
-| `label`    | Optional | `string`        | 'ra.action.list' | label or translation message to use          |
-| `icon`     | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`          |
-
-It also supports [all the other `<Button>` props](#button).
-
-### Access Control
-
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<ListButton>` will only render if the user has the "list" access to the related resource.
-
-`<ListButton>` will call `authProvider.canAccess()` using the following parameters:
-
-```txt
-{ action: "list", resource: [current resource] }
-```
-
-## `<RefreshButton>`
 
 ## `<SkipNavigationButton>`
 

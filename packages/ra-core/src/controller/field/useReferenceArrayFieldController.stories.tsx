@@ -17,6 +17,9 @@ const dataProvider = testDataProvider({
         }),
 });
 
+/**
+ * Render prop version of the controller hook
+ */
 const ReferenceArrayFieldController = props => {
     const { children, ...rest } = props;
     const controllerProps = useReferenceArrayFieldController({
@@ -29,7 +32,7 @@ const ReferenceArrayFieldController = props => {
     return children(controllerProps);
 };
 
-const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
+const defaultRenderProp = (props: ListControllerResult) => (
     <div>
         <div
             style={{
@@ -78,7 +81,7 @@ const ReferenceArrayFieldComponent = (props: ListControllerResult) => (
     </div>
 );
 
-export const Basic = ({ children = ReferenceArrayFieldComponent }) => (
+export const Basic = ({ children = defaultRenderProp }) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ReferenceArrayFieldController
             resource="foo"

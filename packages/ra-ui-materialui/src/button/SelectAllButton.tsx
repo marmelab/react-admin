@@ -24,19 +24,29 @@ import { Button, ButtonProps } from './Button';
  *
  * @example
  *
- * import { SelectAllButton, List, Datagrid } from 'react-admin';
+ * import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
  *
- * const MySelectAllButton = () => <SelectAllButton limit={100} label="Select all books" />;
+ * const PostSelectAllButton = () => (
+ *     <SelectAllButton
+ *         label="Select all records"
+ *         queryOptions={{ meta: { foo: 'bar' } }}
+ *     />
+ * );
  *
- * const PostList = () => (
- *    <List>
- *       <Datagrid selectAllButton={<MySelectAllButton />}>
- *          // ...
- *      </Datagrid>
- *   </List>
+ * export const PostList = () => (
+ *     <List>
+ *         <Datagrid
+ *             bulkActionsToolbar={
+ *                 <BulkActionsToolbar selectAllButton={PostSelectAllButton}>
+ *                     <BulkDeleteButton />
+ *                 </BulkActionsToolbar>
+ *             }
+ *         >
+ *             ...
+ *         </Datagrid>
+ *     </List>
  * );
  */
-
 export const SelectAllButton = (props: SelectAllButtonProps) => {
     const {
         label = 'ra.action.select_all_button',

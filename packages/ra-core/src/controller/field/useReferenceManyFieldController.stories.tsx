@@ -19,6 +19,9 @@ export const defaultDataProvider = testDataProvider({
         }),
 });
 
+/**
+ * Render prop version of the controller hook
+ */
 const ReferenceManyFieldController = props => {
     const { children, ...rest } = props;
     const controllerProps = useReferenceManyFieldController({
@@ -31,7 +34,7 @@ const ReferenceManyFieldController = props => {
     return children(controllerProps);
 };
 
-const ReferenceManyFieldComponent = (props: ListControllerResult) => (
+const defaultRenderProp = (props: ListControllerResult) => (
     <div>
         <div
             style={{
@@ -87,7 +90,7 @@ const ReferenceManyFieldComponent = (props: ListControllerResult) => (
 );
 
 export const Basic = ({
-    children = ReferenceManyFieldComponent,
+    children = defaultRenderProp,
     dataProvider = defaultDataProvider,
 }: {
     children?: (props: ListControllerResult) => React.ReactNode;

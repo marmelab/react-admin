@@ -3,15 +3,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useNotify } from '../../notification';
 import { useDataProvider, UseGetListOptions } from '../../dataProvider';
 import { useRecordSelection } from './useRecordSelection';
+import { useResourceContext } from '../../core';
 import { useEvent } from '../../util';
 import type { FilterPayload, RaRecord, SortPayload } from '../../types';
 
 /**
- * Select all records of a resource (capped by the limit prop)
+ * Get a callback to select all records of a resource (capped by the limit parameter)
  *
- * @param {string} resource Required. The resource name
- * @param {SortPayload} sort Optional. The sort object passed to the dataProvider
- * @param {FilterPayload} filter Optional. The filter object passed to the dataProvider
+ * @param {Object} params The hook parameters { resource, sort, filter }
  * @returns {Function} handleSelectAll A function to select all items of a list
  *
  * @example
@@ -41,11 +40,16 @@ import type { FilterPayload, RaRecord, SortPayload } from '../../types';
  *     </List>
  * );
  */
-export const useSelectAll = ({
-    resource,
-    sort,
-    filter,
-}: useSelectAllProps): ((options?: handleSelectAllParams) => void) => {
+export const useSelectAll = (
+    params: UseSelectAllParams
+): UseSelectAllResult => {
+    const { sort, filter } = params;
+    const resource = useResourceContext(params);
+    if (!resource) {
+        throw new Error(
+            'useSelectAll should be used inside a ResourceContextProvider or passed a resource prop'
+        );
+    }
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const [, { select }] = useRecordSelection({ resource });
@@ -56,7 +60,8 @@ export const useSelectAll = ({
             queryOptions = {},
             limit = 250,
         }: handleSelectAllParams = {}) => {
-            const { meta, onSuccess, onError } = queryOptions;
+            const { meta, onSuccess, onError, ...otherQueryOptions } =
+                queryOptions;
             try {
                 const results = await queryClient.fetchQuery({
                     queryKey: [
@@ -79,6 +84,7 @@ export const useSelectAll = ({
                             filter,
                             meta,
                         }),
+                    ...otherQueryOptions,
                 });
 
                 const allIds = results.data?.map(({ id }) => id) || [];
@@ -98,16 +104,17 @@ export const useSelectAll = ({
             } catch (error) {
                 if (onError) {
                     onError(error);
+                } else {
+                    notify('ra.notification.http_error', { type: 'warning' });
                 }
-                notify('ra.notification.http_error', { type: 'warning' });
             }
         }
     );
     return handleSelectAll;
 };
 
-export interface useSelectAllProps {
-    resource: string;
+export interface UseSelectAllParams {
+    resource?: string;
     sort?: SortPayload;
     filter?: FilterPayload;
 }
@@ -116,3 +123,5 @@ export interface handleSelectAllParams<RecordType extends RaRecord = any> {
     limit?: number;
     queryOptions?: UseGetListOptions<RecordType>;
 }
+
+export type UseSelectAllResult = (options?: handleSelectAllParams) => void;

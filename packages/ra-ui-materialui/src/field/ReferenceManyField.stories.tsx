@@ -24,7 +24,6 @@ import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectAllButton, BulkDeleteButton } from '../button';
-import type { DatagridProps } from '../list/datagrid/Datagrid';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
 

@@ -19,7 +19,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
         label = 'ra.action.bulk_actions',
         children,
         className,
-        selectAllButton = defaultSelectAllButton,
+        selectAllButton,
         ...rest
     } = props;
     const { selectedIds = [], onUnselectItems } = useListContext();

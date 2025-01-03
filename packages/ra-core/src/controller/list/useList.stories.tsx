@@ -89,22 +89,31 @@ const SortButton = () => {
         <div style={{ display: 'flex', gap: '10px', margin: '10px' }}>
             <button
                 onClick={() =>
-                    listContext.sort.order === 'DESC'
-                        ? listContext.setSort({ field: 'title', order: 'ASC' })
-                        : listContext.setSort({ field: 'title', order: 'DESC' })
+                    listContext.sort.field === 'id' &&
+                    listContext.sort.order === 'ASC'
+                        ? listContext.setSort({ field: 'id', order: 'DESC' })
+                        : listContext.setSort({ field: 'id', order: 'ASC' })
                 }
             >
-                Sort by id {listContext.sort.order === 'DESC' ? 'ASC' : 'DESC'}
+                Sort by id{' '}
+                {listContext.sort.field === 'id' &&
+                listContext.sort.order === 'ASC'
+                    ? 'DESC'
+                    : 'ASC'}
             </button>
             <button
                 onClick={() =>
-                    listContext.sort.order === 'DESC'
-                        ? listContext.setSort({ field: 'title', order: 'ASC' })
-                        : listContext.setSort({ field: 'title', order: 'DESC' })
+                    listContext.sort.field === 'title' &&
+                    listContext.sort.order === 'ASC'
+                        ? listContext.setSort({ field: 'title', order: 'DESC' })
+                        : listContext.setSort({ field: 'title', order: 'ASC' })
                 }
             >
                 Sort by title{' '}
-                {listContext.sort.order === 'DESC' ? 'ASC' : 'DESC'}
+                {listContext.sort.field === 'title' &&
+                listContext.sort.order === 'ASC'
+                    ? 'DESC'
+                    : 'ASC'}
             </button>
         </div>
     );
