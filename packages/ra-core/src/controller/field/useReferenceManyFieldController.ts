@@ -8,7 +8,7 @@ import { removeEmpty, useEvent } from '../../util';
 import { useDataProvider, useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
-import type { ListControllerResult, handleSelectAllParams } from '../list';
+import type { ListControllerResult, HandleSelectAllParams } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
@@ -206,7 +206,7 @@ export const useReferenceManyFieldController = <
         async ({
             limit = 250,
             queryOptions = {},
-        }: handleSelectAllParams = {}) => {
+        }: HandleSelectAllParams = {}) => {
             const { meta, onSuccess, onError } = queryOptions;
             try {
                 const results = await queryClient.fetchQuery({
