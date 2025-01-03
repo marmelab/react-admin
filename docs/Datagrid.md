@@ -187,7 +187,7 @@ export const PostList = () => (
 ```
 {% endraw %}
 
-<video controls autoplay playsinline muted loop>
+<video controls autoplay playsinline muted loop poster="./img/BulkActionButtons.jpg">
   <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -205,6 +205,10 @@ React-admin provides four components that you can use in `bulkActionButtons`:
   <source src="./img/datagrid-select-range.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+**Tip**: When users select all the records of the current page using the "select all" checkbox in the header, the bulk actions toolbar shows a ["Select All" button](./Buttons.md#selectallbutton) to let them select all the recorfds regardless of pagination.
+
+![SelectAllButton](./img/SelectAllButton.png)
 
 You can write a custom bulk action button components using the [`useListContext`](./useListContext.md) hook to get the following data and callbacks:
 
