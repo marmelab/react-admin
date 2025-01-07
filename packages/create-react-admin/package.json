@@ -27,7 +27,7 @@
         "ink-text-input": "^6.0.0",
         "lodash": "~4.17.5",
         "meow": "^9.0.0",
-        "react": "^18.3.1",
+        "react": "^19.0.0",
         "yn": "^5.0.0"
     },
     "devDependencies": {

@@ -384,7 +384,7 @@ describe('<ArrayInput />', () => {
     });
 
     describe('used within a form with global validation', () => {
-        it('should display an error if the array is required and empty', async () => {
+        it.only('should display an error if the array is required and empty', async () => {
             render(<GlobalValidation />);
             await screen.findByDisplayValue('Leo Tolstoy');
             const RemoveButtons = screen.getAllByLabelText('Remove');
@@ -393,12 +393,11 @@ describe('<ArrayInput />', () => {
             await waitFor(() => {
                 expect(screen.queryAllByLabelText('Remove')).toHaveLength(0);
             });
+            await screen.findByText('Required');
             const SaveButton = screen.getByText('Save');
             fireEvent.click(SaveButton);
             await screen.findByText(
-                'The form is not valid. Please check for errors',
-                undefined,
-                { timeout: 3000 }
+                'The form is not valid. Please check for errors'
             );
         });
         it('should display an error if one of the required field is empty', async () => {

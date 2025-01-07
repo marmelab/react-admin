@@ -10,10 +10,8 @@
         "type-check": "tsc --noEmit"
     },
     "dependencies": {
-        "@emotion/react": "^11.7.1",
-        "@emotion/styled": "^11.6.0",
-        "@mui/icons-material": "^5.15.20",
-        "@mui/material": "^5.15.20",
+        "@mui/icons-material": "^5.16.12",
+        "@mui/material": "^5.16.12",
         "@tanstack/react-query": "^5.21.7",
         "@tanstack/react-query-devtools": "^5.21.7",
         "jsonexport": "^3.2.0",
@@ -23,9 +21,9 @@
         "ra-input-rich-text": "^5.4.3",
         "ra-language-english": "^5.4.3",
         "ra-language-french": "^5.4.3",
-        "react": "^18.3.1",
+        "react": "^19.0.0",
         "react-admin": "^5.4.3",
-        "react-dom": "^18.3.1",
+        "react-dom": "^19.0.0",
         "react-hook-form": "^7.53.0",
         "react-router": "^6.22.0",
         "react-router-dom": "^6.22.0"
