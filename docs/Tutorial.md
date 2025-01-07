@@ -6,9 +6,15 @@ title: "My First Project Tutorial"
 
 # React-Admin Tutorial
 
-In this 30-minute tutorial, you will learn how to create a new admin app based on an existing REST API.
+In this 45-minute tutorial, you will learn how to create a web application with react-admin based on an existing REST API.
 
-Here is a preview of the final result:
+You can follow along by reading the text, or by watching the video below, made by Brad from Traversy Media, and which covers roughly the same content:
+
+<iframe src="https://www.youtube-nocookie.com/embed/PyaSnpXssks?si=Xvp5PrbRcq-PFOf0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+If you prefer text, you're in good hands! We will go from absolute basics to a fully functional admin app. By the end of this tutorial, you will have a good understanding of the features and developer experience react-admin provides.
+
+The final result is a web application that allows you to list, create, edit, and delete users and posts. Here is a preview of the app:
 
 <video controls autoplay playsinline muted loop poster="./img/tutorial_overview.png">
   <source src="./img/tutorial_overview.mp4" type="video/mp4"/>
@@ -948,7 +954,7 @@ Once the app reloads, it's now behind a login form that accepts everyone:
 
 ## Connecting To A Real API
 
-Here is the elephant in the room of this tutorial. In real-world projects, the dialect of your API (REST? GraphQL? Something else?) won't match the JSONPlaceholder dialect. [Writing a Data Provider](./DataProviderWriting.md) is probably the first thing you'll have to do to make react-admin work, unless your API backend is already supported [see the list here](./DataProviderList.md). Depending on your API, this can require a few hours of additional work.
+Here is the elephant in the room of this tutorial. In real-world projects, the dialect of your API (REST? GraphQL? Something else?) won't match the JSONPlaceholder dialect. [Writing a Data Provider](./DataProviderWriting.md) is probably the first thing you'll have to do to make react-admin work, unless your API backend is already supported ([see the list here](./DataProviderList.md)). Depending on your API, this can require a few hours of additional work.
 
 React-admin delegates every data query to a Data Provider object, which acts as an adapter to your API. This makes react-admin capable of mapping any API dialect, using endpoints from several domains, etc.
 
