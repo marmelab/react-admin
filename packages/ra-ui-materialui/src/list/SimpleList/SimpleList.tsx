@@ -85,6 +85,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         ref,
         rowSx,
         rowStyle,
+        resource,
         ...rest
     } = props;
     const { data, isPending, total } =
@@ -121,6 +122,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                         rowClick={rowClick}
                         rowSx={rowSx}
                         rowStyle={rowStyle}
+                        resource={resource}
                     >
                         <SimpleListItemContent
                             leftAvatar={leftAvatar}
