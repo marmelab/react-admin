@@ -25,7 +25,7 @@ export default defineConfig(async () => {
                     dirName,
                     'package.json'
                 ),
-                { assert: { type: 'json' } }
+                { with: { type: 'json' } }
             );
             aliases.push({
                 find: new RegExp(`^${packageJson.default.name}$`),
