@@ -216,38 +216,40 @@ const DealsIterator = () => {
         <Box>
             <List dense>
                 {deals.map(deal => (
-                    <ListItem
-                        button
-                        key={deal.id}
-                        component={RouterLink}
-                        to={`/deals/${deal.id}/show`}
-                    >
-                        <ListItemText
-                            primary={deal.name}
-                            secondary={
-                                <>
-                                    {findDealLabel(dealStages, deal.stage)},{' '}
-                                    {deal.amount.toLocaleString('en-US', {
-                                        notation: 'compact',
-                                        style: 'currency',
-                                        currency: 'USD',
-                                        currencyDisplay: 'narrowSymbol',
-                                        minimumSignificantDigits: 3,
-                                    })}
-                                    {deal.category ? `, ${deal.category}` : ''}
-                                </>
-                            }
-                        />
-                        <ListItemSecondaryAction>
-                            <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="span"
-                            >
-                                last activity{' '}
-                                {formatDistance(deal.updated_at, now)} ago{' '}
-                            </Typography>
-                        </ListItemSecondaryAction>
+                    <ListItem key={deal.id} disablePadding>
+                        <ListItemButton
+                            component={RouterLink}
+                            to={`/deals/${deal.id}/show`}
+                        >
+                            <ListItemText
+                                primary={deal.name}
+                                secondary={
+                                    <>
+                                        {findDealLabel(dealStages, deal.stage)},{' '}
+                                        {deal.amount.toLocaleString('en-US', {
+                                            notation: 'compact',
+                                            style: 'currency',
+                                            currency: 'USD',
+                                            currencyDisplay: 'narrowSymbol',
+                                            minimumSignificantDigits: 3,
+                                        })}
+                                        {deal.category
+                                            ? `, ${deal.category}`
+                                            : ''}
+                                    </>
+                                }
+                            />
+                            <ListItemSecondaryAction>
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                    component="span"
+                                >
+                                    last activity{' '}
+                                    {formatDistance(deal.updated_at, now)} ago{' '}
+                                </Typography>
+                            </ListItemSecondaryAction>
+                        </ListItemButton>
                     </ListItem>
                 ))}
             </List>
