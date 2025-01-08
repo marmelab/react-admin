@@ -8,7 +8,7 @@
         "serve": "vite preview"
     },
     "dependencies": {
-        "@mui/material": "^5.16.12",
+        "@mui/material": "^6.0.0",
         "ra-data-local-storage": "^5.0.0",
         "ra-no-code": "^5.0.0",
         "react": "^18.3.1",

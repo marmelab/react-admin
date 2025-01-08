@@ -8,6 +8,7 @@ import {
     List,
     ListItem,
     ListItemAvatar,
+    ListItemButton,
     ListItemText,
     Typography,
 } from '@mui/material';
@@ -102,24 +103,24 @@ const Applications = ({ onApplicationSelected }) => {
                 <Card className={classes.applications}>
                     <List>
                         {applications.map(application => (
-                            <ListItem
-                                key={application.name}
-                                button
-                                onClick={() =>
-                                    onApplicationSelected(application)
-                                }
-                            >
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <FolderIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={application.name}
-                                    secondary={new Date(
-                                        application.created_at
-                                    ).toLocaleDateString()}
-                                />
+                            <ListItem key={application.name}>
+                                <ListItemButton
+                                    onClick={() =>
+                                        onApplicationSelected(application)
+                                    }
+                                >
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <FolderIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={application.name}
+                                        secondary={new Date(
+                                            application.created_at
+                                        ).toLocaleDateString()}
+                                    />
+                                </ListItemButton>
                             </ListItem>
                         ))}
                     </List>

@@ -51,7 +51,12 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                     >
                         <CloseIcon fontSize="small" />
                     </IconButton>
-                    <Typography color="text.primary" variant="subtitle1">
+                    <Typography
+                        sx={{
+                            color: theme => theme.palette.text.primary,
+                        }}
+                        variant="subtitle1"
+                    >
                         {translate(label, {
                             _: label,
                             smart_count: selectedIds.length,

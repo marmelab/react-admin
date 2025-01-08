@@ -4,6 +4,7 @@ import { Stack, StackProps, Theme, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Property } from 'csstype';
 import clsx from 'clsx';
+import get from 'lodash/get';
 
 import { FieldTitle } from 'ra-core';
 import { ResponsiveStyleValue } from '@mui/system';
@@ -47,7 +48,13 @@ export const Labeled = ({
         children.type?.displayName !== 'Labeled' &&
         // @ts-ignore
         children.type?.displayName !== 'Labeled' ? (
-            <Typography color={color} className={LabeledClasses.label}>
+            <Typography
+                sx={{
+                    color: theme =>
+                        get(theme.palette, color.toString(), color).toString(),
+                }}
+                className={LabeledClasses.label}
+            >
                 <FieldTitle
                     label={label || children.props.label}
                     source={source || children.props.source}

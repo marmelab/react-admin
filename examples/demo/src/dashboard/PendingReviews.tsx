@@ -6,6 +6,7 @@ import {
     List,
     ListItem,
     ListItemAvatar,
+    ListItemButton,
     ListItemText,
 } from '@mui/material';
 import CommentIcon from '@mui/icons-material/Comment';
@@ -61,51 +62,51 @@ const PendingReviews = () => {
         >
             <List sx={{ display }}>
                 {reviews?.map((record: Review) => (
-                    <ListItem
-                        key={record.id}
-                        button
-                        component={Link}
-                        to={`/reviews/${record.id}`}
-                        alignItems="flex-start"
-                    >
-                        <ListItemAvatar>
-                            <ReferenceField
-                                record={record}
-                                source="customer_id"
-                                reference="customers"
-                                link={false}
-                            >
-                                <FunctionField<Customer>
-                                    render={customer => (
-                                        <Avatar
-                                            src={`${customer.avatar}?size=32x32`}
-                                            sx={{
-                                                bgcolor: 'background.paper',
-                                            }}
-                                            alt={`${customer.first_name} ${customer.last_name}`}
-                                        />
-                                    )}
-                                />
-                            </ReferenceField>
-                        </ListItemAvatar>
-
-                        <ListItemText
-                            primary={
-                                <StarRatingField
+                    <ListItem key={record.id} disablePadding>
+                        <ListItemButton
+                            alignItems="flex-start"
+                            component={Link}
+                            to={`/reviews/${record.id}`}
+                        >
+                            <ListItemAvatar>
+                                <ReferenceField
                                     record={record}
-                                    source="rating"
-                                />
-                            }
-                            secondary={record.comment}
-                            sx={{
-                                overflowY: 'hidden',
-                                height: '4em',
-                                display: '-webkit-box',
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: 'vertical',
-                                paddingRight: 0,
-                            }}
-                        />
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                >
+                                    <FunctionField<Customer>
+                                        render={customer => (
+                                            <Avatar
+                                                src={`${customer.avatar}?size=32x32`}
+                                                sx={{
+                                                    bgcolor: 'background.paper',
+                                                }}
+                                                alt={`${customer.first_name} ${customer.last_name}`}
+                                            />
+                                        )}
+                                    />
+                                </ReferenceField>
+                            </ListItemAvatar>
+
+                            <ListItemText
+                                primary={
+                                    <StarRatingField
+                                        record={record}
+                                        source="rating"
+                                    />
+                                }
+                                secondary={record.comment}
+                                sx={{
+                                    overflowY: 'hidden',
+                                    height: '4em',
+                                    display: '-webkit-box',
+                                    WebkitLineClamp: 2,
+                                    WebkitBoxOrient: 'vertical',
+                                    paddingRight: 0,
+                                }}
+                            />
+                        </ListItemButton>
                     </ListItem>
                 ))}
             </List>

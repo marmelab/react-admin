@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { List, ListItem, ListItemText, Menu, MenuItem } from '@mui/material';
+import {
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    Menu,
+    MenuItem,
+} from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTranslate } from 'ra-core';
@@ -93,25 +100,27 @@ export const LevelSelect = (props: LevelSelectProps) => {
                 className={classes.list}
             >
                 <ListItem
-                    button
-                    aria-haspopup="true"
-                    aria-controls="level-menu"
-                    aria-label={translate('ra.tiptap.current_level', {
-                        _: 'Current level',
-                    })}
-                    disabled={!editor?.isEditable}
-                    onClick={handleClickListItem}
                     className={clsx({
                         [classes.sizeSmall]: size === 'small',
                         [classes.sizeLarge]: size === 'large',
                     })}
                 >
-                    <ListItemText
-                        primary={translate(selectedOption.label, {
-                            _: selectedOption.defaultLabel,
+                    <ListItemButton
+                        aria-haspopup="true"
+                        aria-controls="level-menu"
+                        aria-label={translate('ra.tiptap.current_level', {
+                            _: 'Current level',
                         })}
-                    />
-                    <ArrowDropDownIcon />
+                        disabled={!editor?.isEditable}
+                        onClick={handleClickListItem}
+                    >
+                        <ListItemText
+                            primary={translate(selectedOption.label, {
+                                _: selectedOption.defaultLabel,
+                            })}
+                        />
+                        <ArrowDropDownIcon />
+                    </ListItemButton>
                 </ListItem>
             </List>
             <Menu

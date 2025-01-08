@@ -66,7 +66,6 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
                     },
                 }}
             >
-                {/* @ts-ignore */}
                 <ListItemButton
                     onClick={handleClick}
                     style={rowStyle ? rowStyle(record, rowIndex) : undefined}

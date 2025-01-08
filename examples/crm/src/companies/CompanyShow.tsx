@@ -7,6 +7,7 @@ import {
     List,
     ListItem,
     ListItemAvatar,
+    ListItemButton,
     ListItemSecondaryAction,
     ListItemText,
     Stack,
@@ -142,43 +143,46 @@ const ContactsIterator = () => {
         <List dense sx={{ pt: 0 }}>
             {contacts.map(contact => (
                 <RecordContextProvider key={contact.id} value={contact}>
-                    <ListItem
-                        button
-                        component={RouterLink}
-                        to={`/contacts/${contact.id}/show`}
-                        state={{ from: location.pathname }}
-                    >
-                        <ListItemAvatar>
-                            <Avatar />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={`${contact.first_name} ${contact.last_name}`}
-                            secondary={
-                                <>
-                                    {contact.title}
-                                    {contact.nb_tasks
-                                        ? ` - ${contact.nb_tasks} task${
-                                              contact.nb_tasks > 1 ? 's' : ''
-                                          }`
-                                        : ''}
-                                    &nbsp; &nbsp;
-                                    <TagsList />
-                                </>
-                            }
-                        />
-                        {contact.last_seen && (
-                            <ListItemSecondaryAction>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    component="span"
-                                >
-                                    last activity{' '}
-                                    {formatDistance(contact.last_seen, now)} ago{' '}
-                                    <Status status={contact.status} />
-                                </Typography>
-                            </ListItemSecondaryAction>
-                        )}
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component={RouterLink}
+                            to={`/contacts/${contact.id}/show`}
+                            state={{ from: location.pathname }}
+                        >
+                            <ListItemAvatar>
+                                <Avatar />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={`${contact.first_name} ${contact.last_name}`}
+                                secondary={
+                                    <>
+                                        {contact.title}
+                                        {contact.nb_tasks
+                                            ? ` - ${contact.nb_tasks} task${
+                                                  contact.nb_tasks > 1
+                                                      ? 's'
+                                                      : ''
+                                              }`
+                                            : ''}
+                                        &nbsp; &nbsp;
+                                        <TagsList />
+                                    </>
+                                }
+                            />
+                            {contact.last_seen && (
+                                <ListItemSecondaryAction>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                        component="span"
+                                    >
+                                        last activity{' '}
+                                        {formatDistance(contact.last_seen, now)}{' '}
+                                        ago <Status status={contact.status} />
+                                    </Typography>
+                                </ListItemSecondaryAction>
+                            )}
+                        </ListItemButton>
                     </ListItem>
                 </RecordContextProvider>
             ))}
