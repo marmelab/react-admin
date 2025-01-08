@@ -3123,7 +3123,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/utils@npm:^5.16.12, @mui/utils@npm:^5.16.14":
+"@mui/utils@npm:^5.16.14":
   version: 5.16.14
   resolution: "@mui/utils@npm:5.16.14"
   dependencies:
@@ -3143,7 +3143,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/utils@npm:^6.3.1":
+"@mui/utils@npm:^6.0.0, @mui/utils@npm:^6.3.1":
   version: 6.3.1
   resolution: "@mui/utils@npm:6.3.1"
   dependencies:
@@ -14343,7 +14343,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "no-code@workspace:examples/no-code"
   dependencies:
-    "@mui/material": "npm:^5.16.12"
+    "@mui/material": "npm:^6.0.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
     ra-data-local-storage: "npm:^5.0.0"
     ra-no-code: "npm:^5.0.0"
@@ -16305,8 +16305,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
-    "@mui/icons-material": "npm:^5.16.12"
-    "@mui/material": "npm:^5.16.12"
+    "@mui/icons-material": "npm:^6.0.0"
+    "@mui/material": "npm:^6.0.0"
     "@testing-library/react": "npm:^15.0.7"
     "@tiptap/core": "npm:^2.0.3"
     "@tiptap/extension-color": "npm:^2.0.3"
@@ -16397,9 +16397,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
-    "@mui/icons-material": "npm:^5.16.12"
-    "@mui/material": "npm:^5.16.12"
-    "@mui/utils": "npm:^5.16.12"
+    "@mui/icons-material": "npm:^6.0.0"
+    "@mui/material": "npm:^6.0.0"
+    "@mui/utils": "npm:^6.0.0"
     "@tanstack/react-query": "npm:^5.21.7"
     "@testing-library/react": "npm:^15.0.7"
     "@types/dompurify": "npm:^3.0.2"
@@ -16496,8 +16496,8 @@ __metadata:
   resolution: "react-admin-crm@workspace:examples/crm"
   dependencies:
     "@hello-pangea/dnd": "npm:^16.3.0"
-    "@mui/icons-material": "npm:^5.16.12"
-    "@mui/material": "npm:^5.16.12"
+    "@mui/icons-material": "npm:^6.0.0"
+    "@mui/material": "npm:^6.0.0"
     "@nivo/bar": "npm:^0.80.0"
     "@nivo/core": "npm:^0.80.0"
     "@testing-library/jest-dom": "npm:^6.4.5"
