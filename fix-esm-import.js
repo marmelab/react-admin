@@ -78,18 +78,90 @@ module.exports = function (fileInfo, api) {
         }
     });
 
-    // Find import declarations that are importing from @mui/material/styles or any other submodule of @mui/material
+    // Find import declarations that are importing from submodule of @mui/material except @mui/material/styles
     root.find(j.ImportDeclaration).forEach(path => {
         const importSource = path.node.source.value;
 
         // Check if the import source starts with '@mui/material/'
-        if (importSource.startsWith('@mui/material/')) {
+        if (
+            importSource.startsWith('@mui/material/') &&
+            !importSource.startsWith('@mui/material/styles')
+        ) {
             // If the import does not already end with '.js', modify the path
             if (!importSource.endsWith('.js')) {
                 path.node.source.value = `${importSource}/index.js`;
             }
         }
     });
+
+    // Find all imports from '@mui/material/styles'
+    const imports = root
+        .find(j.ImportDeclaration)
+        .filter(path => path.node.source.value === '@mui/material/styles');
+
+    if (imports.length > 0) {
+        // Collect all named imports for '@mui/material/styles'
+        let namedImports = [];
+        imports.forEach(importPath => {
+            importPath.node.specifiers.forEach(specifier => {
+                if (specifier.type === 'ImportSpecifier') {
+                    namedImports.push(specifier.imported.name);
+                }
+            });
+        });
+
+        // Deduplicate imports
+        namedImports = [...new Set(namedImports)];
+
+        // Remove any duplicate import declarations
+        imports.filter((path, index) => index !== 0).remove();
+
+        imports.forEach(importPath => {
+            importPath.node.specifiers = namedImports.map(name =>
+                j.importSpecifier(j.identifier(name))
+            );
+        });
+    }
+
+    //Find all import declarations from '@mui/material/styles'
+    // root
+    // .find(j.ImportDeclaration, {
+    //   source: { value: '@mui/material/styles' }
+    // })
+    // .forEach(path => {
+    //   // Collect all named imports
+    //   const namedImports = path.node.specifiers.filter(specifier => specifier.type === 'ImportSpecifier');
+    //
+    //   // Create a new import statement for the default import `pkg`
+    //   const newImport = j.importDeclaration(
+    //     [j.importDefaultSpecifier(j.identifier('pkg'))],
+    //     j.literal('@mui/material/styles/index.js')
+    //   );
+    //
+    //   // Replace the original import statement with the new import
+    //   j(path).replaceWith(newImport);
+    //
+    //   // After replacing the import, insert the unpacking const statement
+    //   if (namedImports.length > 0) {
+    //     // Create destructuring for all named imports
+    //     const unpackStatement = j.variableDeclaration('const', [
+    //       j.variableDeclarator(
+    //         j.objectPattern(
+    //           namedImports.map(specifier =>
+    //             j.property('init', j.identifier(specifier.imported.name), j.identifier(specifier.local.name))
+    //           )
+    //         ),
+    //         j.identifier('pkg')
+    //       )
+    //     ]);
+    //
+    //     // Insert this unpacking statement after the last import
+    //     root
+    //       .find(j.ImportDeclaration)
+    //       .at(-1) // Insert after the last import statement
+    //       .insertAfter(unpackStatement);
+    //   }
+    // });
 
     // Find import declarations that are importing from @mui/icons-material/xxx or any other submodule of @mui/icons-material
     root.find(j.ImportDeclaration).forEach(path => {
