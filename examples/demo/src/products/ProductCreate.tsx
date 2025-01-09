@@ -6,7 +6,6 @@ import {
     required,
     useDefaultTitle,
     useGetResourceLabel,
-    useResourceContext,
     useTranslate,
 } from 'react-admin';
 import { ProductEditDetails } from './ProductEditDetails';
@@ -17,22 +16,16 @@ const RichTextInput = React.lazy(() =>
 );
 
 const ProductTitle = () => {
-    const title = useDefaultTitle();
+    const appTitle = useDefaultTitle();
     const translate = useTranslate();
-    const resource = useResourceContext();
     const getResourceLabel = useGetResourceLabel();
-    if (!resource) {
-        throw new Error(
-            'useCreateController requires a non-empty resource prop or context'
-        );
-    }
-    const defaultTitle = translate('ra.page.create', {
-        name: getResourceLabel(resource, 1),
+    const pageTitle = translate('ra.page.create', {
+        name: getResourceLabel('products', 1),
     });
     return (
         <>
-            <title>{`${title} - ${defaultTitle}`}</title>
-            <span>{defaultTitle}</span>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
         </>
     );
 };

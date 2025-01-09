@@ -12,6 +12,9 @@ import {
     SearchInput,
     SelectColumnsButton,
     TopToolbar,
+    useDefaultTitle,
+    useGetResourceLabel,
+    useTranslate,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
 
@@ -38,6 +41,21 @@ const VisitorListActions = () => (
     </TopToolbar>
 );
 
+const VisitorTitle = () => {
+    const title = useDefaultTitle();
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const pageTitle = translate('ra.page.list', {
+        name: getResourceLabel('customers', 2),
+    });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
+
 const VisitorList = () => {
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
@@ -50,6 +68,7 @@ const VisitorList = () => {
             perPage={25}
             aside={<VisitorListAside />}
             actions={<VisitorListActions />}
+            title={<VisitorTitle />}
         >
             {isXsmall ? (
                 <MobileGrid />

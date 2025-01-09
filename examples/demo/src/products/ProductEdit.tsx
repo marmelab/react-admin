@@ -13,6 +13,8 @@ import {
     TextInput,
     useRecordContext,
     useDefaultTitle,
+    useTranslate,
+    useGetResourceLabel,
 } from 'react-admin';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
@@ -33,13 +35,19 @@ const RichTextInput = React.lazy(() =>
 );
 
 const ProductTitle = () => {
-    const title = useDefaultTitle();
-
+    const appTitle = useDefaultTitle();
+    const translate = useTranslate();
     const record = useRecordContext<Product>();
+    const getResourceLabel = useGetResourceLabel();
+
+    const pageTitle = translate('ra.page.edit', {
+        name: getResourceLabel('products', 1),
+        recordRepresentation: `"${record?.reference}"`,
+    });
     return record ? (
         <>
-            <title>{`${title} - Poster "${record.reference}`}</title>
-            <span>Poster "{record.reference}"</span>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
         </>
     ) : null;
 };

@@ -10,10 +10,28 @@ import {
     useNotify,
     useRedirect,
     getRecordFromLocation,
+    useDefaultTitle,
+    useTranslate,
+    useGetResourceLabel,
 } from 'react-admin';
 import { useLocation } from 'react-router';
 
 import StarRatingInput from './StarRatingInput';
+
+const ReviewTitle = () => {
+    const appTitle = useDefaultTitle();
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const pageTitle = translate('ra.page.create', {
+        name: getResourceLabel('reviews', 1),
+    });
+    return (
+        <>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
 
 const ReviewCreate = () => {
     const notify = useNotify();
@@ -31,7 +49,7 @@ const ReviewCreate = () => {
     };
 
     return (
-        <Create mutationOptions={{ onSuccess }}>
+        <Create mutationOptions={{ onSuccess }} title={<ReviewTitle />}>
             <SimpleForm
                 defaultValues={{ status: 'pending' }}
                 sx={{

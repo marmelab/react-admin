@@ -3,7 +3,10 @@ import {
     EditButton,
     List,
     RecordContextProvider,
+    useDefaultTitle,
+    useGetResourceLabel,
     useListContext,
+    useTranslate,
 } from 'react-admin';
 import {
     Grid,
@@ -18,6 +21,21 @@ import { humanize } from 'inflection';
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
 
+const CategoriesTitle = () => {
+    const title = useDefaultTitle();
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const pageTitle = translate('ra.page.list', {
+        name: getResourceLabel('categories', 2),
+    });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
+
 const CategoryList = () => (
     <List
         sort={{ field: 'name', order: 'ASC' }}
@@ -25,6 +43,7 @@ const CategoryList = () => (
         pagination={false}
         component="div"
         actions={false}
+        title={<CategoriesTitle />}
     >
         <CategoryGrid />
     </List>

@@ -7,6 +7,8 @@ import {
     PasswordInput,
     SimpleForm,
     useTranslate,
+    useDefaultTitle,
+    useRecordContext,
 } from 'react-admin';
 import { Grid, Box, Typography } from '@mui/material';
 
@@ -14,6 +16,7 @@ import Aside from './Aside';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
 import { validateForm } from './VisitorCreate';
+import { Customer } from '../types';
 
 const VisitorEdit = () => {
     const translate = useTranslate();
@@ -113,8 +116,19 @@ const VisitorEdit = () => {
     );
 };
 
-const VisitorTitle = () => (
-    <FullNameField source="last_name" size="32" sx={{ margin: '5px 0' }} />
-);
+const VisitorTitle = () => {
+    const appTitle = useDefaultTitle();
+    const record = useRecordContext<Customer>();
+    return (
+        <>
+            <title>{`${appTitle} - ${record?.first_name} ${record?.last_name}`}</title>
+            <FullNameField
+                source="last_name"
+                size="32"
+                sx={{ margin: '5px 0' }}
+            />
+        </>
+    );
+};
 
 export default VisitorEdit;

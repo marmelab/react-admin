@@ -25,13 +25,17 @@ import ImageList from './GridList';
 import Aside from './Aside';
 
 const ProductList = () => {
-    const title = useDefaultTitle();
+    const appTitle = useDefaultTitle();
+    const translate = useTranslate();
     const getResourceLabel = useGetResourceLabel();
+    const pageTitle = translate('ra.page.list', {
+        name: getResourceLabel('products', 2),
+    });
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <ListBase perPage={24} sort={{ field: 'reference', order: 'ASC' }}>
-            <title>{`${title} - ${getResourceLabel('products', 2)}`}</title>
-            <Title defaultTitle={getResourceLabel('products', 2)} />
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <Title defaultTitle={pageTitle} />
             <FilterContext.Provider value={productFilters}>
                 <ListActions isSmall={isSmall} />
                 {isSmall && (

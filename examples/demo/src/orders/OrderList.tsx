@@ -19,7 +19,10 @@ import {
     SelectColumnsButton,
     TextField,
     TopToolbar,
+    useDefaultTitle,
+    useGetResourceLabel,
     useListContext,
+    useTranslate,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 
@@ -36,6 +39,21 @@ const ListActions = () => (
     </TopToolbar>
 );
 
+const OrdersTitle = () => {
+    const title = useDefaultTitle();
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const pageTitle = translate('ra.page.list', {
+        name: getResourceLabel('orders', 2),
+    });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
+
 const OrderList = () => (
     <List
         filterDefaultValues={{ status: 'ordered' }}
@@ -43,6 +61,7 @@ const OrderList = () => (
         perPage={25}
         filters={orderFilters}
         actions={<ListActions />}
+        title={<OrdersTitle />}
     >
         <TabbedDatagrid />
     </List>

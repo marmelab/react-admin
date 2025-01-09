@@ -12,6 +12,9 @@ import {
     SelectColumnsButton,
     ReferenceInput,
     FilterButton,
+    useDefaultTitle,
+    useTranslate,
+    useGetResourceLabel,
 } from 'react-admin';
 
 import FullNameField from '../visitors/FullNameField';
@@ -33,12 +36,28 @@ const ListActions = () => (
     </TopToolbar>
 );
 
+const InvoicesTitle = () => {
+    const title = useDefaultTitle();
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const pageTitle = translate('ra.page.list', {
+        name: getResourceLabel('invoices', 2),
+    });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
+
 const InvoiceList = () => (
     <List
         filters={listFilters}
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
         actions={<ListActions />}
+        title={<InvoicesTitle />}
     >
         <DatagridConfigurable
             rowClick="expand"

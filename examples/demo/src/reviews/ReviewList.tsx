@@ -7,6 +7,9 @@ import {
     List,
     SelectColumnsButton,
     TopToolbar,
+    useDefaultTitle,
+    useGetResourceLabel,
+    useTranslate,
 } from 'react-admin';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Drawer, useMediaQuery, Theme } from '@mui/material';
@@ -24,6 +27,21 @@ const ReviewListActions = () => (
         <ExportButton />
     </TopToolbar>
 );
+
+const ReviewsTitle = () => {
+    const title = useDefaultTitle();
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const pageTitle = translate('ra.page.list', {
+        name: getResourceLabel('reviews', 2),
+    });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
 
 const ReviewList = () => {
     const isXSmall = useMediaQuery<Theme>(theme =>
@@ -53,6 +71,7 @@ const ReviewList = () => {
                 perPage={25}
                 sort={{ field: 'date', order: 'DESC' }}
                 actions={<ReviewListActions />}
+                title={<ReviewsTitle />}
             >
                 {isXSmall ? (
                     <ReviewListMobile />

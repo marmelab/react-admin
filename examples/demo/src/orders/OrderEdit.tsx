@@ -13,6 +13,7 @@ import {
     Toolbar,
     useRecordContext,
     useTranslate,
+    useDefaultTitle,
 } from 'react-admin';
 import { Card, CardContent, Box, Grid, Typography, Link } from '@mui/material';
 
@@ -27,14 +28,17 @@ const OrderEdit = () => (
 );
 
 const OrderTitle = () => {
+    const appTitle = useDefaultTitle();
     const translate = useTranslate();
     const record = useRecordContext<Order>();
+    const pageTitle = translate('resources.orders.title', {
+        reference: record?.reference,
+    });
     return record ? (
-        <span>
-            {translate('resources.orders.title', {
-                reference: record.reference,
-            })}
-        </span>
+        <>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
     ) : null;
 };
 
