@@ -7,7 +7,6 @@ import {
     DateField,
     Labeled,
     useDefaultTitle,
-    useRecordContext,
 } from 'react-admin';
 import { Box, Grid, Stack, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
