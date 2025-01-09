@@ -11,11 +11,12 @@ import { useTranslate, Title, useDefaultTitle } from 'react-admin';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
 import segments from './data';
+import { usePageTitle } from '../usePageTitle';
 
 const Segments = () => {
     const appTitle = useDefaultTitle();
     const translate = useTranslate();
-    const pageTitle = translate('resources.segments.name', { smart_count: 2 });
+    const pageTitle = usePageTitle({ view: 'list' });
 
     return (
         <>

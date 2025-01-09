@@ -13,13 +13,12 @@ import {
     ReferenceInput,
     FilterButton,
     useDefaultTitle,
-    useTranslate,
-    useGetResourceLabel,
 } from 'react-admin';
 
 import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
+import { usePageTitle } from '../usePageTitle';
 
 const listFilters = [
     <DateInput source="date_gte" alwaysOn />,
@@ -38,11 +37,7 @@ const ListActions = () => (
 
 const InvoicesTitle = () => {
     const title = useDefaultTitle();
-    const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-    const pageTitle = translate('ra.page.list', {
-        name: getResourceLabel('invoices', 2),
-    });
+    const pageTitle = usePageTitle({ view: 'list' });
     return (
         <>
             <title>{`${title} - ${pageTitle}`}</title>

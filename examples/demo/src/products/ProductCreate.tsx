@@ -5,10 +5,9 @@ import {
     TextInput,
     required,
     useDefaultTitle,
-    useGetResourceLabel,
-    useTranslate,
 } from 'react-admin';
 import { ProductEditDetails } from './ProductEditDetails';
+import { usePageTitle } from '../usePageTitle';
 const RichTextInput = React.lazy(() =>
     import('ra-input-rich-text').then(module => ({
         default: module.RichTextInput,
@@ -17,11 +16,8 @@ const RichTextInput = React.lazy(() =>
 
 const ProductTitle = () => {
     const appTitle = useDefaultTitle();
-    const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-    const pageTitle = translate('ra.page.create', {
-        name: getResourceLabel('products', 1),
-    });
+    const pageTitle = usePageTitle({ view: 'list' });
+
     return (
         <>
             <title>{`${appTitle} - ${pageTitle}`}</title>

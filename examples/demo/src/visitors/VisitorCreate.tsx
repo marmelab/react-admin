@@ -8,9 +8,9 @@ import {
     PasswordInput,
     email,
     useDefaultTitle,
-    useGetResourceLabel,
 } from 'react-admin';
 import { Box, Typography } from '@mui/material';
+import { usePageTitle } from '../usePageTitle';
 
 export const validateForm = (
     values: Record<string, any>
@@ -39,11 +39,7 @@ export const validateForm = (
 
 const VisitorTitle = () => {
     const appTitle = useDefaultTitle();
-    const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-    const pageTitle = translate('ra.page.create', {
-        name: getResourceLabel('customers', 1),
-    });
+    const pageTitle = usePageTitle({ view: 'create' });
     return (
         <>
             <title>{`${appTitle} - ${pageTitle}`}</title>

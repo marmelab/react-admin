@@ -17,9 +17,10 @@ import {
 } from 'react-admin';
 import { Card, CardContent, Box, Grid, Typography, Link } from '@mui/material';
 
-import { Order, Customer } from '../types';
+import { Customer } from '../types';
 import Basket from './Basket';
 import Totals from './Totals';
+import { usePageTitle } from '../usePageTitle';
 
 const OrderEdit = () => (
     <Edit title={<OrderTitle />} component="div">
@@ -29,17 +30,13 @@ const OrderEdit = () => (
 
 const OrderTitle = () => {
     const appTitle = useDefaultTitle();
-    const translate = useTranslate();
-    const record = useRecordContext<Order>();
-    const pageTitle = translate('resources.orders.title', {
-        reference: record?.reference,
-    });
-    return record ? (
+    const pageTitle = usePageTitle({ view: 'edit' });
+    return (
         <>
             <title>{`${appTitle} - ${pageTitle}`}</title>
             <span>{pageTitle}</span>
         </>
-    ) : null;
+    );
 };
 
 const CustomerDetails = () => {

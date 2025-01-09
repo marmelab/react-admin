@@ -17,20 +17,16 @@ import {
     Title,
     TopToolbar,
     useTranslate,
-    useGetResourceLabel,
     useDefaultTitle,
 } from 'react-admin';
 
 import ImageList from './GridList';
 import Aside from './Aside';
+import { usePageTitle } from '../usePageTitle';
 
 const ProductList = () => {
     const appTitle = useDefaultTitle();
-    const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-    const pageTitle = translate('ra.page.list', {
-        name: getResourceLabel('products', 2),
-    });
+    const pageTitle = usePageTitle({ view: 'list' });
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <ListBase perPage={24} sort={{ field: 'reference', order: 'ASC' }}>

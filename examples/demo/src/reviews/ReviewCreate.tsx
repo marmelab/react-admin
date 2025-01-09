@@ -11,20 +11,15 @@ import {
     useRedirect,
     getRecordFromLocation,
     useDefaultTitle,
-    useTranslate,
-    useGetResourceLabel,
 } from 'react-admin';
 import { useLocation } from 'react-router';
 
 import StarRatingInput from './StarRatingInput';
+import { usePageTitle } from '../usePageTitle';
 
 const ReviewTitle = () => {
     const appTitle = useDefaultTitle();
-    const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-    const pageTitle = translate('ra.page.create', {
-        name: getResourceLabel('reviews', 1),
-    });
+    const pageTitle = usePageTitle({ view: 'create' });
     return (
         <>
             <title>{`${appTitle} - ${pageTitle}`}</title>

@@ -8,7 +8,6 @@ import {
     SimpleForm,
     useTranslate,
     useDefaultTitle,
-    useRecordContext,
 } from 'react-admin';
 import { Grid, Box, Typography } from '@mui/material';
 
@@ -16,7 +15,7 @@ import Aside from './Aside';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
 import { validateForm } from './VisitorCreate';
-import { Customer } from '../types';
+import { usePageTitle } from '../usePageTitle';
 
 const VisitorEdit = () => {
     const translate = useTranslate();
@@ -118,10 +117,10 @@ const VisitorEdit = () => {
 
 const VisitorTitle = () => {
     const appTitle = useDefaultTitle();
-    const record = useRecordContext<Customer>();
+    const pageTitle = usePageTitle({ view: 'edit' });
     return (
         <>
-            <title>{`${appTitle} - ${record?.first_name} ${record?.last_name}`}</title>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
             <FullNameField
                 source="last_name"
                 size="32"

@@ -13,8 +13,6 @@ import {
     SelectColumnsButton,
     TopToolbar,
     useDefaultTitle,
-    useGetResourceLabel,
-    useTranslate,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
 
@@ -24,6 +22,7 @@ import CustomerLinkField from './CustomerLinkField';
 import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
+import { usePageTitle } from '../usePageTitle';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -43,11 +42,7 @@ const VisitorListActions = () => (
 
 const VisitorTitle = () => {
     const title = useDefaultTitle();
-    const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-    const pageTitle = translate('ra.page.list', {
-        name: getResourceLabel('customers', 2),
-    });
+    const pageTitle = usePageTitle({ view: 'list' });
     return (
         <>
             <title>{`${title} - ${pageTitle}`}</title>

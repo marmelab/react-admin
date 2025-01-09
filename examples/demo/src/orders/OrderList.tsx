@@ -20,9 +20,7 @@ import {
     TextField,
     TopToolbar,
     useDefaultTitle,
-    useGetResourceLabel,
     useListContext,
-    useTranslate,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 
@@ -30,6 +28,7 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
+import { usePageTitle } from '../usePageTitle';
 
 const ListActions = () => (
     <TopToolbar>
@@ -41,11 +40,7 @@ const ListActions = () => (
 
 const OrdersTitle = () => {
     const title = useDefaultTitle();
-    const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-    const pageTitle = translate('ra.page.list', {
-        name: getResourceLabel('orders', 2),
-    });
+    const pageTitle = usePageTitle({ view: 'list' });
     return (
         <>
             <title>{`${title} - ${pageTitle}`}</title>
