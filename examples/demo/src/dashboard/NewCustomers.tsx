@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Avatar, Box, Button } from '@mui/material';
 import CustomerIcon from '@mui/icons-material/PersonAdd';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import {
     ListBase,
     WithListContext,

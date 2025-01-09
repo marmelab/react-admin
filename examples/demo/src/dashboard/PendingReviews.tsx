@@ -10,7 +10,7 @@ import {
     ListItemText,
 } from '@mui/material';
 import CommentIcon from '@mui/icons-material/Comment';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 import {
     ReferenceField,

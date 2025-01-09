@@ -43,8 +43,8 @@
         "ra-language-english": "^5.4.3",
         "ra-ui-materialui": "^5.4.3",
         "react-hook-form": "^7.53.0",
-        "react-router": "^6.22.0",
-        "react-router-dom": "^6.22.0"
+        "react-router": "^6.22.0 || ^7.0.0",
+        "react-router-dom": "^6.22.0 || ^7.0.0"
     },
     "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7"
 }

@@ -9,7 +9,7 @@ import {
     TopToolbar,
     useDefaultTitle,
 } from 'react-admin';
-import { matchPath, useLocation, useNavigate } from 'react-router-dom';
+import { matchPath, useLocation, useNavigate } from 'react-router';
 import { Box, Drawer, useMediaQuery, Theme } from '@mui/material';
 
 import ReviewListMobile from './ReviewListMobile';
