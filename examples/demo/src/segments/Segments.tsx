@@ -16,7 +16,7 @@ import { usePageTitle } from '../usePageTitle';
 const Segments = () => {
     const appTitle = useDefaultTitle();
     const translate = useTranslate();
-    const pageTitle = usePageTitle({ view: 'list' });
+    const pageTitle = usePageTitle({ view: 'list', resource: 'segments' });
 
     return (
         <>
