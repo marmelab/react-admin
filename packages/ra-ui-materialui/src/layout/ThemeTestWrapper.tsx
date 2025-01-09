@@ -22,8 +22,8 @@ export const ThemeTestWrapper = ({
             mode === 'dark' && query === '(prefers-color-scheme: dark)'
                 ? true
                 : false,
-        addListener: () => {},
-        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
     });
 
     return (
