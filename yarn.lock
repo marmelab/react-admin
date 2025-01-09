@@ -7586,7 +7586,7 @@ __metadata:
     ink-text-input: "npm:^6.0.0"
     lodash: "npm:~4.17.5"
     meow: "npm:^9.0.0"
-    react: "npm:^19.0.0"
+    react: "npm:18.3.1"
     typescript: "npm:^5.1.3"
     yn: "npm:^5.0.0"
   bin:
@@ -13977,9 +13977,9 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.2.1"
     ra-data-local-storage: "npm:^5.0.0"
     ra-no-code: "npm:^5.0.0"
-    react: "npm:^19.0.0"
+    react: "npm:18.3.1"
     react-admin: "npm:^5.0.0"
-    react-dom: "npm:^19.0.0"
+    react-dom: "npm:18.3.1"
     typescript: "npm:^5.1.3"
     vite: "npm:^5.0.11"
   languageName: unknown
@@ -15777,8 +15777,8 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     lodash: "npm:^4.17.21"
     query-string: "npm:^7.1.3"
-    react: "npm:^19.0.0"
-    react-dom: "npm:^19.0.0"
+    react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.53.0"
     react-is: "npm:^18.2.0"
@@ -15957,8 +15957,8 @@ __metadata:
     ra-core: "npm:^5.4.3"
     ra-data-fakerest: "npm:^5.4.3"
     ra-ui-materialui: "npm:^5.4.3"
-    react: "npm:^19.0.0"
-    react-dom: "npm:^19.0.0"
+    react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
     react-hook-form: "npm:^7.53.0"
     rimraf: "npm:^3.0.2"
     tippy.js: "npm:^6.3.7"
@@ -16007,9 +16007,9 @@ __metadata:
     lodash: "npm:~4.17.5"
     papaparse: "npm:^5.3.0"
     ra-data-local-storage: "npm:^5.4.3"
-    react: "npm:^19.0.0"
+    react: "npm:18.3.1"
     react-admin: "npm:^5.4.3"
-    react-dom: "npm:^19.0.0"
+    react-dom: "npm:18.3.1"
     react-dropzone: "npm:^14.2.3"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
@@ -16052,8 +16052,8 @@ __metadata:
     ra-core: "npm:^5.4.3"
     ra-i18n-polyglot: "npm:^5.4.3"
     ra-language-english: "npm:^5.4.3"
-    react: "npm:^19.0.0"
-    react-dom: "npm:^19.0.0"
+    react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
     react-dropzone: "npm:^14.2.3"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.53.0"
@@ -16147,10 +16147,10 @@ __metadata:
     lodash: "npm:~4.17.5"
     papaparse: "npm:^5.4.1"
     ra-data-fakerest: "npm:^5.3.0"
-    react: "npm:^19.0.0"
+    react: "npm:18.3.1"
     react-admin: "npm:^5.3.0"
     react-cropper: "npm:^2.3.3"
-    react-dom: "npm:^19.0.0"
+    react-dom: "npm:18.3.1"
     react-error-boundary: "npm:^4.0.3"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
@@ -16198,8 +16198,8 @@ __metadata:
     lolex: "npm:~2.3.2"
     prettier: "npm:~3.2.5"
     raf: "npm:~3.4.1"
-    react: "npm:^19.0.0"
-    react-dom: "npm:^19.0.0"
+    react: "npm:18.3.1"
+    react-dom: "npm:18.3.1"
     storybook: "npm:^8.4.4"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.1.3"
@@ -16268,6 +16268,18 @@ __metadata:
     resolve: "npm:^1.22.1"
     strip-indent: "npm:^4.0.0"
   checksum: 74622750e60b287d2897a6887a2bd88303fadd84540247e162e9e970430864ae7b49152de043233d873a0aa7cffa406e5cd8fc1e8e2c277b8da73198b570f16b
+  languageName: node
+  linkType: hard
+
+"react-dom@npm:18.3.1":
+  version: 18.3.1
+  resolution: "react-dom@npm:18.3.1"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+    scheduler: "npm:^0.23.2"
+  peerDependencies:
+    react: ^18.3.1
+  checksum: a752496c1941f958f2e8ac56239172296fcddce1365ce45222d04a1947e0cc5547df3e8447f855a81d6d39f008d7c32eab43db3712077f09e3f67c4874973e85
   languageName: node
   linkType: hard
 
@@ -16506,6 +16518,15 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: 2ba754ba748faefa15f87c96dfa700d5525054a0141de8c75763aae6734af0740e77e11261a1e8f4ffc08fd9ab78510122e05c21c2d79066c38bb6861a886c82
+  languageName: node
+  linkType: hard
+
+"react@npm:18.3.1":
+  version: 18.3.1
+  resolution: "react@npm:18.3.1"
+  dependencies:
+    loose-envify: "npm:^1.1.0"
+  checksum: 283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
   languageName: node
   linkType: hard
 
@@ -17506,9 +17527,9 @@ __metadata:
     ra-input-rich-text: "npm:^5.4.3"
     ra-language-english: "npm:^5.4.3"
     ra-language-french: "npm:^5.4.3"
-    react: "npm:^19.0.0"
+    react: "npm:18.3.1"
     react-admin: "npm:^5.4.3"
-    react-dom: "npm:^19.0.0"
+    react-dom: "npm:18.3.1"
     react-hook-form: "npm:^7.53.0"
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
