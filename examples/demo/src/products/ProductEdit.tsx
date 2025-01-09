@@ -52,89 +52,83 @@ const ProductTitle = () => {
     ) : null;
 };
 
-const ProductEdit = () => {
-    return (
-        <Edit title={<ProductTitle />}>
-            <TabbedForm>
-                <TabbedForm.Tab
-                    label="resources.products.tabs.image"
-                    sx={{ maxWidth: '40em', minHeight: 48 }}
-                    iconPosition="start"
-                    icon={<PhotoCameraIcon />}
-                >
-                    <Poster />
-                    <TextInput source="image" validate={req} />
-                    <TextInput source="thumbnail" validate={req} />
-                </TabbedForm.Tab>
-                <TabbedForm.Tab
-                    label="resources.products.tabs.details"
-                    path="details"
-                    sx={{ maxWidth: '40em', minHeight: 48 }}
-                    iconPosition="start"
-                    icon={<AspectRatioIcon />}
-                >
-                    <ProductEditDetails />
-                </TabbedForm.Tab>
-                <TabbedForm.Tab
-                    label="resources.products.tabs.description"
-                    path="description"
-                    sx={{ maxWidth: '40em', minHeight: 48 }}
-                    iconPosition="start"
-                    icon={<EditNoteIcon />}
-                >
-                    <RichTextInput
-                        source="description"
-                        label=""
-                        validate={req}
-                    />
-                </TabbedForm.Tab>
-                <TabbedForm.Tab
-                    label="resources.products.tabs.reviews"
-                    count={
-                        <ReferenceManyCount
-                            reference="reviews"
-                            target="product_id"
-                            sx={{ lineHeight: 'inherit' }}
-                        />
-                    }
-                    path="reviews"
-                    sx={{ minHeight: 48 }}
-                    iconPosition="start"
-                    icon={<ReviewIcon />}
-                >
-                    <ReferenceManyField
+const ProductEdit = () => (
+    <Edit title={<ProductTitle />}>
+        <TabbedForm>
+            <TabbedForm.Tab
+                label="resources.products.tabs.image"
+                sx={{ maxWidth: '40em', minHeight: 48 }}
+                iconPosition="start"
+                icon={<PhotoCameraIcon />}
+            >
+                <Poster />
+                <TextInput source="image" validate={req} />
+                <TextInput source="thumbnail" validate={req} />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
+                label="resources.products.tabs.details"
+                path="details"
+                sx={{ maxWidth: '40em', minHeight: 48 }}
+                iconPosition="start"
+                icon={<AspectRatioIcon />}
+            >
+                <ProductEditDetails />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
+                label="resources.products.tabs.description"
+                path="description"
+                sx={{ maxWidth: '40em', minHeight: 48 }}
+                iconPosition="start"
+                icon={<EditNoteIcon />}
+            >
+                <RichTextInput source="description" label="" validate={req} />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
+                label="resources.products.tabs.reviews"
+                count={
+                    <ReferenceManyCount
                         reference="reviews"
                         target="product_id"
-                        pagination={<Pagination />}
+                        sx={{ lineHeight: 'inherit' }}
+                    />
+                }
+                path="reviews"
+                sx={{ minHeight: 48 }}
+                iconPosition="start"
+                icon={<ReviewIcon />}
+            >
+                <ReferenceManyField
+                    reference="reviews"
+                    target="product_id"
+                    pagination={<Pagination />}
+                >
+                    <Datagrid
+                        sx={{
+                            width: '100%',
+                            '& .column-comment': {
+                                maxWidth: '20em',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                            },
+                        }}
                     >
-                        <Datagrid
-                            sx={{
-                                width: '100%',
-                                '& .column-comment': {
-                                    maxWidth: '20em',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                },
-                            }}
-                        >
-                            <DateField source="date" />
-                            <CustomerReferenceField source="customer_id" />
-                            <StarRatingField
-                                label="resources.reviews.fields.rating"
-                                source="rating"
-                            />
-                            <TextField source="comment" />
-                            <TextField source="status" />
-                            <EditButton />
-                        </Datagrid>
-                        <CreateRelatedReviewButton />
-                    </ReferenceManyField>
-                </TabbedForm.Tab>
-            </TabbedForm>
-        </Edit>
-    );
-};
+                        <DateField source="date" />
+                        <CustomerReferenceField source="customer_id" />
+                        <StarRatingField
+                            label="resources.reviews.fields.rating"
+                            source="rating"
+                        />
+                        <TextField source="comment" />
+                        <TextField source="status" />
+                        <EditButton />
+                    </Datagrid>
+                    <CreateRelatedReviewButton />
+                </ReferenceManyField>
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Edit>
+);
 
 const req = [required()];
 
