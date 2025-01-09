@@ -18,16 +18,19 @@ import {
     TopToolbar,
     useTranslate,
     useGetResourceLabel,
+    useDefaultTitle,
 } from 'react-admin';
 
 import ImageList from './GridList';
 import Aside from './Aside';
 
 const ProductList = () => {
+    const title = useDefaultTitle();
     const getResourceLabel = useGetResourceLabel();
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <ListBase perPage={24} sort={{ field: 'reference', order: 'ASC' }}>
+            <title>{`${title} - ${getResourceLabel('products', 2)}`}</title>
             <Title defaultTitle={getResourceLabel('products', 2)} />
             <FilterContext.Provider value={productFilters}>
                 <ListActions isSmall={isSmall} />
