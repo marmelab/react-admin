@@ -5,8 +5,8 @@
     "type": "module",
     "dependencies": {
         "@hello-pangea/dnd": "^16.3.0",
-        "@mui/icons-material": "^6.0.0",
-        "@mui/material": "^6.0.0",
+        "@mui/icons-material": "^5.16.12",
+        "@mui/material": "^5.16.12",
         "@nivo/bar": "^0.80.0",
         "@nivo/core": "^0.80.0",
         "clsx": "^2.1.1",

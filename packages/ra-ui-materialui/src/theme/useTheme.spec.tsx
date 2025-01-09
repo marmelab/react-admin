@@ -59,8 +59,8 @@ describe('useTheme', () => {
     it('should return the user preferred theme by default', async () => {
         const ssrMatchMedia = query => ({
             matches: query === '(prefers-color-scheme: dark)' ? true : false,
-            addEventListener: () => {},
-            removeEventListener: () => {},
+            addListener: () => {},
+            removeListener: () => {},
         });
 
         render(
