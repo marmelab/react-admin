@@ -258,7 +258,11 @@ const Order = () => {
     if (!record) return null;
     return (
         <>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
+            <Typography
+                variant="body2"
+                sx={{ color: theme => theme.palette.text.secondary }}
+                gutterBottom
+            >
                 {new Date(record.date).toLocaleString(locale, {
                     year: 'numeric',
                     month: 'short',
@@ -267,11 +271,18 @@ const Order = () => {
                     minute: 'numeric',
                 })}
             </Typography>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
+            <Typography
+                variant="body2"
+                sx={{ color: theme => theme.palette.text.secondary }}
+                gutterBottom
+            >
                 Reference &nbsp;#{record.reference}&nbsp;-&nbsp;
                 <TextField source="status" />
             </Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography
+                variant="body2"
+                sx={{ color: theme => theme.palette.text.secondary }}
+            >
                 <NumberField
                     source="total"
                     options={{ style: 'currency', currency: 'USD' }}
@@ -304,7 +315,11 @@ const Review = () => {
     if (!record) return null;
     return (
         <>
-            <Typography variant="body2" color="textSecondary" gutterBottom>
+            <Typography
+                variant="body2"
+                sx={{ color: theme => theme.palette.text.secondary }}
+                gutterBottom
+            >
                 {new Date(record.date).toLocaleString(locale, {
                     year: 'numeric',
                     month: 'short',
@@ -326,7 +341,10 @@ const Review = () => {
             >
                 {record.comment}
             </Typography>
-            <Typography variant="body2" color="textSecondary">
+            <Typography
+                variant="body2"
+                sx={{ color: theme => theme.palette.text.secondary }}
+            >
                 <StarRatingField source="rating" />
             </Typography>
         </>
