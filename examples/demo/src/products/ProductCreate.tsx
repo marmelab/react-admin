@@ -16,7 +16,7 @@ const RichTextInput = React.lazy(() =>
 
 const ProductTitle = () => {
     const appTitle = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'list' });
+    const pageTitle = usePageTitle({ view: 'create' });
 
     return (
         <>
