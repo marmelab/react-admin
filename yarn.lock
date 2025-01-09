@@ -15781,7 +15781,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.53.0"
-    react-is: "npm:^18.2.0"
+    react-is: "npm:^18.2.0 || ^19.0.0"
     react-router: "npm:^6.25.1"
     react-router-dom: "npm:^6.25.1"
     recharts: "npm:^2.1.15"
@@ -16057,7 +16057,7 @@ __metadata:
     react-dropzone: "npm:^14.2.3"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.53.0"
-    react-is: "npm:^18.2.0"
+    react-is: "npm:^18.2.0 || ^19.0.0"
     react-router: "npm:^6.25.1"
     react-router-dom: "npm:^6.25.1"
     react-transition-group: "npm:^4.4.5"
@@ -16071,7 +16071,7 @@ __metadata:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: "*"
-    react-is: ^18.0.0
+    react-is: ^18.0.0 || ^19.0.0
     react-router: ^6.22.0
     react-router-dom: ^6.22.0
   languageName: unknown
@@ -16359,14 +16359,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^18.0.0, react-is@npm:^18.2.0":
+"react-is@npm:^18.0.0":
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
   checksum: 6eb5e4b28028c23e2bfcf73371e72cd4162e4ac7ab445ddae2afe24e347a37d6dc22fae6e1748632cd43c6d4f9b8f86dcf26bf9275e1874f436d129952528ae0
   languageName: node
   linkType: hard
 
-"react-is@npm:^19.0.0":
+"react-is@npm:^18.2.0 || ^19.0.0, react-is@npm:^19.0.0":
   version: 19.0.0
   resolution: "react-is@npm:19.0.0"
   checksum: d1be8e8500cf04f76df71942a21ef3a71266397a383d7ec8885f35190df818d35c65efd35aed7be47a89ad99aaff2c52e0c4e39e8930844a6b997622e50625a8
