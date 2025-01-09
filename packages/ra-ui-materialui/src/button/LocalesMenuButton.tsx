@@ -85,7 +85,7 @@ const PREFIX = 'RaLocalesMenuButton';
 
 export const LocalesMenuButtonClasses = {};
 
-const Root = styled('div', {
+const Root = styled('span', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({}) as typeof Box;
