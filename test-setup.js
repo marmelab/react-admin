@@ -26,3 +26,10 @@ global.Request = Request;
 
 /** Mock scrollTo as it is not supported by JSDOM */
 global.scrollTo = jest.fn();
+
+/** Mock TextEncoder as it is not supported by JSDOM */
+if (!global.TextEncoder || !global.TextDecoder) {
+    const { TextDecoder, TextEncoder } = require('node:util');
+    global.TextEncoder = TextEncoder;
+    global.TextDecoder = TextDecoder;
+}
