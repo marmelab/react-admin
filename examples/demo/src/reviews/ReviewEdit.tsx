@@ -6,6 +6,8 @@ import {
     SimpleForm,
     DateField,
     Labeled,
+    useDefaultTitle,
+    useRecordContext,
 } from 'react-admin';
 import { Box, Grid, Stack, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,16 +17,25 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
 import { Review } from '../types';
+import { usePageTitle } from '../usePageTitle';
 
 interface ReviewEditProps {
     id: Review['id'];
     onCancel: () => void;
 }
 
+const ReviewTitle = () => {
+    const appTitle = useDefaultTitle();
+    const pageTitle = usePageTitle({ view: 'edit' });
+    return <title>{`${appTitle} - ${pageTitle}`}</title>;
+};
+
 const ReviewEdit = ({ id, onCancel }: ReviewEditProps) => {
     const translate = useTranslate();
     return (
         <EditBase id={id}>
+            <ReviewTitle />
+
             <Box pt={5} width={{ xs: '100vW', sm: 400 }} mt={{ xs: 2, sm: 1 }}>
                 <Stack direction="row" p={2}>
                     <Typography variant="h6" flex="1">
