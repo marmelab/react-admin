@@ -151,6 +151,7 @@ const CommentEdit = props => {
                                         return title.includes(filterValue);
                                     }}
                                     optionText={<OptionRenderer />}
+                                    openOnFocus={false}
                                     inputText={inputText}
                                 />
                             </ReferenceInput>
