@@ -76,7 +76,7 @@ const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
     const open = openChildren.includes(root.id);
     return (
         <Fragment>
-            <ListItem style={{ paddingLeft: level * 16 }}>
+            <ListItem disablePadding style={{ paddingLeft: level * 16 }}>
                 <ListItemButton onClick={() => hasChildren && toggleNode(root)}>
                     {hasChildren && open && <ExpandLess />}
                     {hasChildren && !open && <ExpandMore />}
