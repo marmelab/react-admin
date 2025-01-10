@@ -7,8 +7,10 @@ import {
     useTranslate,
     PasswordInput,
     email,
+    useDefaultTitle,
 } from 'react-admin';
 import { Box, Typography } from '@mui/material';
+import { usePageTitle } from '../usePageTitle';
 
 export const validateForm = (
     values: Record<string, any>
@@ -35,8 +37,19 @@ export const validateForm = (
     return errors;
 };
 
+const VisitorTitle = () => {
+    const appTitle = useDefaultTitle();
+    const pageTitle = usePageTitle({ view: 'create' });
+    return (
+        <>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
+
 const VisitorCreate = () => (
-    <Create>
+    <Create title={<VisitorTitle />}>
         <SimpleForm
             sx={{ maxWidth: 500 }}
             // Here for the GQL provider

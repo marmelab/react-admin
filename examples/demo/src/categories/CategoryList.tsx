@@ -3,6 +3,7 @@ import {
     EditButton,
     List,
     RecordContextProvider,
+    useDefaultTitle,
     useListContext,
 } from 'react-admin';
 import {
@@ -17,6 +18,18 @@ import { humanize } from 'inflection';
 
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
+import { usePageTitle } from '../usePageTitle';
+
+const CategoriesTitle = () => {
+    const title = useDefaultTitle();
+    const pageTitle = usePageTitle({ view: 'list' });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
 
 const CategoryList = () => (
     <List
@@ -25,6 +38,7 @@ const CategoryList = () => (
         pagination={false}
         component="div"
         actions={false}
+        title={<CategoriesTitle />}
     >
         <CategoryGrid />
     </List>

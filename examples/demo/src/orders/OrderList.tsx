@@ -19,6 +19,7 @@ import {
     SelectColumnsButton,
     TextField,
     TopToolbar,
+    useDefaultTitle,
     useListContext,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
@@ -27,6 +28,7 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
+import { usePageTitle } from '../usePageTitle';
 
 const ListActions = () => (
     <TopToolbar>
@@ -36,6 +38,17 @@ const ListActions = () => (
     </TopToolbar>
 );
 
+const OrdersTitle = () => {
+    const title = useDefaultTitle();
+    const pageTitle = usePageTitle({ view: 'list' });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
+
 const OrderList = () => (
     <List
         filterDefaultValues={{ status: 'ordered' }}
@@ -43,6 +56,7 @@ const OrderList = () => (
         perPage={25}
         filters={orderFilters}
         actions={<ListActions />}
+        title={<OrdersTitle />}
     >
         <TabbedDatagrid />
     </List>

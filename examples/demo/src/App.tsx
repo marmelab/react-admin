@@ -47,7 +47,7 @@ const App = () => {
     const darkTheme = themes.find(theme => theme.name === themeName)?.dark;
     return (
         <Admin
-            title=""
+            title="Posters Galore Admin"
             dataProvider={dataProviderFactory(
                 process.env.REACT_APP_DATA_PROVIDER || ''
             )}

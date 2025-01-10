@@ -12,6 +12,9 @@ import {
     TextField,
     TextInput,
     useRecordContext,
+    useDefaultTitle,
+    useTranslate,
+    useGetResourceLabel,
 } from 'react-admin';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
@@ -32,8 +35,21 @@ const RichTextInput = React.lazy(() =>
 );
 
 const ProductTitle = () => {
+    const appTitle = useDefaultTitle();
+    const translate = useTranslate();
     const record = useRecordContext<Product>();
-    return record ? <span>Poster "{record.reference}"</span> : null;
+    const getResourceLabel = useGetResourceLabel();
+
+    const pageTitle = translate('ra.page.edit', {
+        name: getResourceLabel('products', 1),
+        recordRepresentation: `"${record?.reference}"`,
+    });
+    return record ? (
+        <>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    ) : null;
 };
 
 const ProductEdit = () => (

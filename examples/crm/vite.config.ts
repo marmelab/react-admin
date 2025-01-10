@@ -14,7 +14,7 @@ export default defineConfig(async () => {
         // eslint-disable-next-line prettier/prettier
         const packageJson = await import(
             path.resolve(__dirname, '../../packages', dirName, 'package.json'),
-            { assert: { type: 'json' } }
+            { with: { type: 'json' } }
         );
         aliases[packageJson.default.name] = path.resolve(
             __dirname,

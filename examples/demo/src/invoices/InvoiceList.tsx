@@ -12,11 +12,13 @@ import {
     SelectColumnsButton,
     ReferenceInput,
     FilterButton,
+    useDefaultTitle,
 } from 'react-admin';
 
 import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
+import { usePageTitle } from '../usePageTitle';
 
 const listFilters = [
     <DateInput source="date_gte" alwaysOn />,
@@ -33,12 +35,24 @@ const ListActions = () => (
     </TopToolbar>
 );
 
+const InvoicesTitle = () => {
+    const title = useDefaultTitle();
+    const pageTitle = usePageTitle({ view: 'list' });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
+
 const InvoiceList = () => (
     <List
         filters={listFilters}
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
         actions={<ListActions />}
+        title={<InvoicesTitle />}
     >
         <DatagridConfigurable
             rowClick="expand"

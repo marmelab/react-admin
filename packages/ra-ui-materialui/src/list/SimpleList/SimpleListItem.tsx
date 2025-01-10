@@ -28,6 +28,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
         typeof linkType === 'function' || typeof rowClick === 'function';
     const pathForRecord = useGetPathForRecord({
         link: isFunctionLink ? false : linkType ?? rowClick,
+        resource,
     });
     const getPathForRecord = useGetPathForRecordCallback();
     const handleClick = useEvent(async () => {

@@ -10,6 +10,8 @@ import {
     TextInput,
     useTranslate,
     useRecordContext,
+    useDefaultTitle,
+    useGetResourceLabel,
 } from 'react-admin';
 
 import ThumbnailField from '../products/ThumbnailField';
@@ -59,14 +61,21 @@ const CategoryEdit = () => (
 );
 
 const CategoryTitle = () => {
+    const appTitle = useDefaultTitle();
     const record = useRecordContext<Category>();
     const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+
+    const pageTitle = translate('ra.page.edit', {
+        name: getResourceLabel('categories', 1),
+        recordRepresentation: `"${record?.name}"`,
+    });
 
     return record ? (
-        <span>
-            {translate('resources.categories.name', { smart_count: 1 })} &quot;
-            {record.name}&quot;
-        </span>
+        <>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
     ) : null;
 };
 

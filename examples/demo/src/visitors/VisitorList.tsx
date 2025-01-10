@@ -12,6 +12,7 @@ import {
     SearchInput,
     SelectColumnsButton,
     TopToolbar,
+    useDefaultTitle,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
 
@@ -21,6 +22,7 @@ import CustomerLinkField from './CustomerLinkField';
 import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
+import { usePageTitle } from '../usePageTitle';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -38,6 +40,17 @@ const VisitorListActions = () => (
     </TopToolbar>
 );
 
+const VisitorTitle = () => {
+    const title = useDefaultTitle();
+    const pageTitle = usePageTitle({ view: 'list' });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
+
 const VisitorList = () => {
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
@@ -50,6 +63,7 @@ const VisitorList = () => {
             perPage={25}
             aside={<VisitorListAside />}
             actions={<VisitorListActions />}
+            title={<VisitorTitle />}
         >
             {isXsmall ? (
                 <MobileGrid />

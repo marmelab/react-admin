@@ -7,6 +7,7 @@ import {
     List,
     SelectColumnsButton,
     TopToolbar,
+    useDefaultTitle,
 } from 'react-admin';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Drawer, useMediaQuery, Theme } from '@mui/material';
@@ -15,6 +16,7 @@ import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
 import reviewFilters from './reviewFilters';
 import ReviewEdit from './ReviewEdit';
+import { usePageTitle } from '../usePageTitle';
 
 const ReviewListActions = () => (
     <TopToolbar>
@@ -24,6 +26,17 @@ const ReviewListActions = () => (
         <ExportButton />
     </TopToolbar>
 );
+
+const ReviewsTitle = () => {
+    const title = useDefaultTitle();
+    const pageTitle = usePageTitle({ view: 'list' });
+    return (
+        <>
+            <title>{`${title} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
 
 const ReviewList = () => {
     const isXSmall = useMediaQuery<Theme>(theme =>
@@ -53,6 +66,7 @@ const ReviewList = () => {
                 perPage={25}
                 sort={{ field: 'date', order: 'DESC' }}
                 actions={<ReviewListActions />}
+                title={<ReviewsTitle />}
             >
                 {isXSmall ? (
                     <ReviewListMobile />

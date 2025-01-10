@@ -10,10 +10,23 @@ import {
     useNotify,
     useRedirect,
     getRecordFromLocation,
+    useDefaultTitle,
 } from 'react-admin';
 import { useLocation } from 'react-router';
 
 import StarRatingInput from './StarRatingInput';
+import { usePageTitle } from '../usePageTitle';
+
+const ReviewTitle = () => {
+    const appTitle = useDefaultTitle();
+    const pageTitle = usePageTitle({ view: 'create' });
+    return (
+        <>
+            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <span>{pageTitle}</span>
+        </>
+    );
+};
 
 const ReviewCreate = () => {
     const notify = useNotify();
@@ -31,7 +44,7 @@ const ReviewCreate = () => {
     };
 
     return (
-        <Create mutationOptions={{ onSuccess }}>
+        <Create mutationOptions={{ onSuccess }} title={<ReviewTitle />}>
             <SimpleForm
                 defaultValues={{ status: 'pending' }}
                 sx={{
