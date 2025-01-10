@@ -103,7 +103,7 @@ const Applications = ({ onApplicationSelected }) => {
                 <Card className={classes.applications}>
                     <List>
                         {applications.map(application => (
-                            <ListItem key={application.name}>
+                            <ListItem key={application.name} disablePadding>
                                 <ListItemButton
                                     onClick={() =>
                                         onApplicationSelected(application)
