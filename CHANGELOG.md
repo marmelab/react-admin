@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.4.4
+
+* Fix `useUpdate` ignores `meta` when populating the query cache in pessimistic mode ([#10422](https://github.com/marmelab/react-admin/pull/10422)) ([slax57](https://github.com/slax57))
+* Fix `<ArrayInput>` makes the form dirty in strict mode ([#10421](https://github.com/marmelab/react-admin/pull/10421)) ([djhi](https://github.com/djhi))
+* [Doc] Add video to the Getting Started tutorial ([#10438](https://github.com/marmelab/react-admin/pull/10438)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix invalid code example in Writing Your Own Field Component tutorial ([#10428](https://github.com/marmelab/react-admin/pull/10428)) ([Aikain](https://github.com/Aikain))
+* [Doc] Backport `ReferenceManyToMany`'s error support documentation ([#10426](https://github.com/marmelab/react-admin/pull/10426)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Chore] Add a check for videos format in CI ([#10441](https://github.com/marmelab/react-admin/pull/10441)) ([djhi](https://github.com/djhi))
+* [Storybook] Fix `<ArrayField>` Story ([#10436](https://github.com/marmelab/react-admin/pull/10436)) ([djhi](https://github.com/djhi))
+
 ## 5.4.3
 
 * Fix `<FormDataConsumer>` causes its children to flicker ([#10417](https://github.com/marmelab/react-admin/pull/10417)) ([djhi](https://github.com/djhi))
