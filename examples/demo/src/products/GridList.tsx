@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useTheme, useMediaQuery } from '@mui/material';
 import { Box, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
 import { useCreatePath, NumberField, useListContext } from 'react-admin';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const GridList = () => {
     const { isPending } = useListContext();

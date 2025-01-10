@@ -8,7 +8,7 @@ import {
     Box,
     ListItemButton,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useTranslate, useReference } from 'react-admin';
 
 import { Customer, Order } from '../types';

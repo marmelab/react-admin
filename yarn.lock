@@ -2846,7 +2846,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:^5.16.12 || ^6.0.0, @mui/icons-material@npm:^6.0.0":
+"@mui/icons-material@npm:^6.0.0":
   version: 6.3.1
   resolution: "@mui/icons-material@npm:6.3.1"
   dependencies:
@@ -2895,7 +2895,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.16.12 || ^6.0.0, @mui/material@npm:^6.0.0":
+"@mui/material@npm:^6.0.0":
   version: 6.3.1
   resolution: "@mui/material@npm:6.3.1"
   dependencies:
@@ -4834,6 +4834,13 @@ __metadata:
   dependencies:
     "@babel/types": "npm:^7.20.7"
   checksum: 033abcb2f4c084ad33e30c3efaad82161240f351e3c71b6154ed289946b33b363696c0fbd42502b68e4582a87413c418321f40eb1ea863e34fe525641345e05b
+  languageName: node
+  linkType: hard
+
+"@types/cookie@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@types/cookie@npm:0.6.0"
+  checksum: 5b326bd0188120fb32c0be086b141b1481fec9941b76ad537f9110e10d61ee2636beac145463319c71e4be67a17e85b81ca9e13ceb6e3bb63b93d16824d6c149
   languageName: node
   linkType: hard
 
@@ -7694,6 +7701,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie@npm:^1.0.1":
+  version: 1.0.2
+  resolution: "cookie@npm:1.0.2"
+  checksum: fd25fe79e8fbcfcaf6aa61cd081c55d144eeeba755206c058682257cb38c4bd6795c6620de3f064c740695bb65b7949ebb1db7a95e4636efb8357a335ad3f54b
+  languageName: node
+  linkType: hard
+
 "core-js-compat@npm:^3.20.0, core-js-compat@npm:^3.31.0, core-js-compat@npm:^3.36.1":
   version: 3.37.1
   resolution: "core-js-compat@npm:3.37.1"
@@ -8514,8 +8528,8 @@ __metadata:
     react: "npm:^19.0.0"
     react-admin: "npm:^5.0.0"
     react-dom: "npm:^19.0.0"
-    react-router: "npm:^6.22.0"
-    react-router-dom: "npm:^6.22.0"
+    react-router: "npm:^7.1.1"
+    react-router-dom: "npm:^7.1.1"
     recharts: "npm:^2.15.0"
     rewire: "npm:^5.0.0"
     rollup-plugin-visualizer: "npm:^5.12.0"
@@ -16117,8 +16131,8 @@ __metadata:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: ^7.53.0
-    react-router: ^6.22.0
-    react-router-dom: ^6.22.0
+    react-router: ^6.22.0 || ^7.0.0
+    react-router-dom: ^6.22.0 || ^7.0.0
   languageName: unknown
   linkType: soft
 
@@ -16396,8 +16410,8 @@ __metadata:
     react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: "*"
     react-is: ^18.0.0 || ^19.0.0
-    react-router: ^6.22.0
-    react-router-dom: ^6.22.0
+    react-router: ^6.22.0 || ^7.0.0
+    react-router-dom: ^6.22.0 || ^7.0.0
   languageName: unknown
   linkType: soft
 
@@ -16538,8 +16552,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
-    "@mui/icons-material": "npm:^5.16.12 || ^6.0.0"
-    "@mui/material": "npm:^5.16.12 || ^6.0.0"
+    "@mui/icons-material": "npm:^5.16.12"
+    "@mui/material": "npm:^5.16.12"
     cross-env: "npm:^5.2.0"
     expect: "npm:^27.4.6"
     ra-core: "npm:^5.4.3"
@@ -16547,8 +16561,8 @@ __metadata:
     ra-language-english: "npm:^5.4.3"
     ra-ui-materialui: "npm:^5.4.3"
     react-hook-form: "npm:^7.53.0"
-    react-router: "npm:^6.22.0"
-    react-router-dom: "npm:^6.22.0"
+    react-router: "npm:^6.25.1"
+    react-router-dom: "npm:^6.25.1"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -16787,6 +16801,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router-dom@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "react-router-dom@npm:7.1.1"
+  dependencies:
+    react-router: "npm:7.1.1"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 2dc5b231dd21aab21378c615b1e373149007d173e90db984e6f708b5ee4b28923b3cf88ce7d6f727be927829b37ba37c01436f9f7abeb84ba3d1bfc9ecd4bc72
+  languageName: node
+  linkType: hard
+
 "react-router@npm:6.25.1, react-router@npm:^6.22.0, react-router@npm:^6.25.1":
   version: 6.25.1
   resolution: "react-router@npm:6.25.1"
@@ -16795,6 +16821,24 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: a7e824c1f6d9641beabc23111865ddd2525b3794403e07b297fc2bdd4cddec93e166aacdb9d2602768864d70f3bf490f59eeab8474a04ae1f13a832f305eeec3
+  languageName: node
+  linkType: hard
+
+"react-router@npm:7.1.1, react-router@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "react-router@npm:7.1.1"
+  dependencies:
+    "@types/cookie": "npm:^0.6.0"
+    cookie: "npm:^1.0.1"
+    set-cookie-parser: "npm:^2.6.0"
+    turbo-stream: "npm:2.4.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 39f4859670f286eb2eac29e5830c1f730405701fca0808e5db853ec05e54e55a848c764e10ffd14a7b9b3b2154a0d6449656d7f208b9b3e4b2af780e07bf57a8
   languageName: node
   linkType: hard
 
@@ -17757,6 +17801,13 @@ __metadata:
   version: 2.0.0
   resolution: "set-blocking@npm:2.0.0"
   checksum: 9f8c1b2d800800d0b589de1477c753492de5c1548d4ade52f57f1d1f5e04af5481554d75ce5e5c43d4004b80a3eb714398d6907027dc0534177b7539119f4454
+  languageName: node
+  linkType: hard
+
+"set-cookie-parser@npm:^2.6.0":
+  version: 2.7.1
+  resolution: "set-cookie-parser@npm:2.7.1"
+  checksum: 060c198c4c92547ac15988256f445eae523f57f2ceefeccf52d30d75dedf6bff22b9c26f756bd44e8e560d44ff4ab2130b178bd2e52ef5571bf7be3bd7632d9a
   languageName: node
   linkType: hard
 
@@ -18983,6 +19034,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"turbo-stream@npm:2.4.0":
+  version: 2.4.0
+  resolution: "turbo-stream@npm:2.4.0"
+  checksum: e68b2569f1f16e6e9633d090c6024b2ae9f0e97bfeacb572451ca3732e120ebbb546f3bc4afc717c46cb57b5aea6104e04ef497f9912eef6a7641e809518e98a
+  languageName: node
+  linkType: hard
+
 "tutorial@workspace:examples/tutorial":
   version: 0.0.0-use.local
   resolution: "tutorial@workspace:examples/tutorial"
@@ -18996,6 +19054,8 @@ __metadata:
     react: "npm:^19.0.0"
     react-admin: "npm:^5.0.0"
     react-dom: "npm:^19.0.0"
+    react-router: "npm:^7.1.1"
+    react-router-dom: "npm:^7.1.1"
     typescript: "npm:^5.1.3"
     vite: "npm:^5.0.11"
   languageName: unknown

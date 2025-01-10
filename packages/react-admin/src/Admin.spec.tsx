@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Basic, InsideRouter, SubPath, DefaultError } from './Admin.stories';
 
@@ -25,7 +25,7 @@ describe('<Admin>', () => {
 
     it('works when mounted in a subPath', async () => {
         render(<SubPath />);
-        screen.getByText('Go to admin').click();
+        fireEvent.click(await screen.findByText('Go to admin'));
         await screen.findByText('Post List');
         screen.getAllByText('Comments')[0].click();
         await screen.findByText('Comment List');
