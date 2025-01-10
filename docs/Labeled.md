@@ -173,8 +173,11 @@ To override the style of all instances of `<Labeled>` using the [application-wid
 
 The `<Labeled>` component accept a `TypographyProps` prop that allows you to pass any prop supported by [`<Typography>`](https://mui.com/material-ui/api/typography/).
 
+{% raw %}
 ```tsx
 <Labeled TypographyProps={{ noWrap: true }}>
    <TextField source="title" />
 </Labeled>
 ```
+{% endraw %}
+
