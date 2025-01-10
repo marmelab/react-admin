@@ -56,11 +56,7 @@ const CardWithIcon = ({ icon, title, subtitle, to, children }: Props) => (
                     {createElement(icon, { fontSize: 'large' })}
                 </Box>
                 <Box textAlign="right">
-                    <Typography
-                        sx={{ color: theme => theme.palette.text.secondary }}
-                    >
-                        {title}
-                    </Typography>
+                    <Typography color="textSecondary">{title}</Typography>
                     <Typography variant="h5" component="h2">
                         {subtitle || ' '}
                     </Typography>

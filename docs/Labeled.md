@@ -36,15 +36,16 @@ const BookShow = () => (
 
 ## Props
 
-| Prop         | Required | Type             | Default   | Description |
-|:-------------|:---------|:-----------------|:----------|:------------|
-| `children`   | Required | Element          |           | The wrapped component |
-| `className`  | Optional | string           |           | The class name |
-| `color`      | Optional | string           | `text.secondary` | The color of the label |
-| `fullWidth`  | Optional | boolean          | `false`   | Whether to stretch the label to the full width of the container |
-| `isRequired` | Optional | boolean          | `false`   | Whether to display an asterisk. |
-| `label`      | Optional | string           |           | The label. If not set, the label is inferred from the child component |
-| `sx`         | Optional | [SxProps](https://mui.com/system/the-sx-prop/) |           | Custom styles |
+| Prop              | Required | Type             | Default   | Description |
+|:----------------- |:-------- |:---------------- |:----------|:------------|
+| `children`        | Required | Element          |           | The wrapped component |
+| `className`       | Optional | string           |           | The class name |
+| `color`           | Optional | string           | `text.secondary` | The color of the label |
+| `fullWidth`       | Optional | boolean          | `false`   | Whether to stretch the label to the full width of the container |
+| `isRequired`      | Optional | boolean          | `false`   | Whether to display an asterisk. |
+| `label`           | Optional | string           |           | The label. If not set, the label is inferred from the child component |
+| `sx`              | Optional | [SxProps](https://mui.com/system/the-sx-prop/) |           | Custom styles |
+| `TypographyProps` | Optional | [TypographyProps](https://mui.com/material-ui/api/typography/) |           | Custom props |
 
 Additional props are passed to the underlying [Material UI `<Stack>` element](https://mui.com/material-ui/react-stack/).
 
@@ -167,3 +168,13 @@ The `<Labeled>` component accepts the usual `className` prop. You can also overr
 
 
 To override the style of all instances of `<Labeled>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaLabeled` key.
+
+## `TypographyProps`
+
+The `<Labeled>` component accept a `TypographyProps` prop that allows you to pass any prop supported by [`<Typography>`](https://mui.com/material-ui/api/typography/).
+
+```tsx
+<Labeled TypographyProps={{ noWrap: true }}>
+   <TextField source="title" />
+</Labeled>
+```
