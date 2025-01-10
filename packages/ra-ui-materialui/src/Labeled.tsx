@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { ElementType, ReactElement } from 'react';
-import { Stack, StackProps, Theme, Typography } from '@mui/material';
+import {
+    Stack,
+    StackProps,
+    Theme,
+    Typography,
+    TypographyProps,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Property } from 'csstype';
 import clsx from 'clsx';
@@ -23,13 +29,14 @@ import { ResponsiveStyleValue } from '@mui/system';
 export const Labeled = ({
     children,
     className = '',
-    color = 'text.secondary',
+    color,
     component = 'span',
     fullWidth,
     isRequired,
     label,
     resource,
     source,
+    TypographyProps,
     ...rest
 }: LabeledProps) => (
     <Root
@@ -47,7 +54,18 @@ export const Labeled = ({
         children.type?.displayName !== 'Labeled' &&
         // @ts-ignore
         children.type?.displayName !== 'Labeled' ? (
-            <Typography color={color} className={LabeledClasses.label}>
+            <Typography
+                sx={
+                    color
+                        ? undefined
+                        : {
+                              color: theme => theme.palette.text.secondary,
+                          }
+                }
+                color={color}
+                className={LabeledClasses.label}
+                {...TypographyProps}
+            >
                 <FieldTitle
                     label={label || children.props.label}
                     source={source || children.props.source}
@@ -77,6 +95,7 @@ export interface LabeledProps extends StackProps {
     label?: string | ReactElement | boolean;
     resource?: string;
     source?: string;
+    TypographyProps?: TypographyProps;
 }
 
 const PREFIX = 'RaLabeled';

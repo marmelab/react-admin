@@ -1,4 +1,4 @@
-import Typography from '@mui/material/Typography';
+import { Typography } from '@mui/material';
 import { ReferenceField } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';

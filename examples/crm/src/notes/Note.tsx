@@ -100,7 +100,10 @@ export const Note = ({
                         <CompanyAvatar width={20} height={20} />
                     </ReferenceField>
                 )}
-                <Typography color="text.secondary" variant="body2">
+                <Typography
+                    sx={{ color: theme => theme.palette.text.secondary }}
+                    variant="body2"
+                >
                     <ReferenceField
                         record={note}
                         resource={resource}

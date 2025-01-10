@@ -1,7 +1,5 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
+import { Box, Card, Typography } from '@mui/material';
 import { ActivityLog } from '../activity/ActivityLog';
 import { Stack } from '@mui/material';
 
@@ -12,7 +10,10 @@ export function DashboardActivityLog() {
                 <Box mr={1} display="flex">
                     <AccessTimeIcon color="disabled" fontSize="medium" />
                 </Box>
-                <Typography variant="h5" color="textSecondary">
+                <Typography
+                    variant="h5"
+                    sx={{ color: theme => theme.palette.text.secondary }}
+                >
                     Latest Activity
                 </Typography>
             </Box>

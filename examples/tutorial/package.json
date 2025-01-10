@@ -9,6 +9,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@mui/icons-material": "^6.0.0",
+        "@mui/material": "^6.0.0",
         "ra-data-json-server": "^5.0.0",
         "react": "^19.0.0",
         "react-admin": "^5.0.0",

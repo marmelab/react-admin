@@ -85,10 +85,10 @@ const PREFIX = 'RaLocalesMenuButton';
 
 export const LocalesMenuButtonClasses = {};
 
-const Root = styled(Box, {
+const Root = styled('span', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})({});
+})({}) as typeof Box;
 
 export interface LocalesMenuButtonProps {
     icon?: ReactNode;

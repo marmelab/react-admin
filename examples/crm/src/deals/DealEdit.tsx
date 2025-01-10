@@ -1,7 +1,11 @@
-import { Button, DialogContent, Stack } from '@mui/material';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import Typography from '@mui/material/Typography';
+import {
+    Button,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    Stack,
+    Typography,
+} from '@mui/material';
 import {
     DeleteButton,
     EditBase,
