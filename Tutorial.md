@@ -6,9 +6,15 @@ title: "My First Project Tutorial"
 
 # React-Admin Tutorial
 
-In this 30-minute tutorial, you will learn how to create a new admin app based on an existing REST API.
+In this 45-minute tutorial, you will learn how to create a web application with react-admin based on an existing REST API.
 
-Here is a preview of the final result:
+You can follow along by reading the text, or by watching the video below, made by Brad from Traversy Media, and which covers roughly the same content:
+
+<iframe src="https://www.youtube-nocookie.com/embed/PyaSnpXssks?si=Xvp5PrbRcq-PFOf0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
+If you prefer text, you're in good hands! We will go from absolute basics to a fully functional admin app. By the end of this tutorial, you will have a good understanding of the features and developer experience react-admin provides.
+
+The final result is a web application that allows you to list, create, edit, and delete users and posts. Here is a preview of the app:
 
 <video controls autoplay playsinline muted loop poster="./img/tutorial_overview.png">
   <source src="./img/tutorial_overview.mp4" type="video/mp4"/>
@@ -881,15 +887,15 @@ export const App = () => (
 
 [![Custom home page](./img/dashboard.png)](./img/dashboard.png)
 
-## Adding a Login Page
+## Adding Authentication
 
-Most admin apps require authentication. React-admin can check user credentials before displaying a page and redirect to a login form when the REST API returns a 403 error code.
+Most admin apps require authentication. React-admin can check user credentials before displaying a page and redirect to a login page when the REST API returns a 403 error code.
 
-*What* those credentials are, and *how* to get them, are questions that you, as a developer, must answer. React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc.), but gives you the ability to add the auth logic at the right place - using [the `authProvider` object](./Authentication.md).
+React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc.), but gives you the ability to add the auth logic at the right place - using [the `authProvider` object](./Authentication.md).
 
 For this tutorial, since there is no public authentication API, we can use a fake authentication provider that accepts every login request and stores the `username` in `localStorage`. Each page change will require that `localStorage` contains a `username` item.
 
-The `authProvider` must expose 5 methods, each returning a `Promise`:
+The `authProvider` must expose 4 async methods:
 
 ```tsx
 // in src/authProvider.ts
@@ -897,36 +903,32 @@ import { AuthProvider } from "react-admin";
 
 export const authProvider: AuthProvider = {
     // called when the user attempts to log in
-    login: ({ username }) => {
-        localStorage.setItem("username", username);
+    async login({ username, password }) {
         // accept all username/password combinations
-        return Promise.resolve();
+        if (false) {
+            throw new Error("Invalid credentials, please try again");
+        }
+        localStorage.setItem("username", username);
     },
     // called when the user clicks on the logout button
-    logout: () => {
+    async logout() {
         localStorage.removeItem("username");
-        return Promise.resolve();
     },
     // called when the API returns an error
-    checkError: ({ status }: { status: number }) => {
+    async checkError({ status }: { status: number }) {
         if (status === 401 || status === 403) {
             localStorage.removeItem("username");
-            return Promise.reject();
+            throw new Error("Session expired");
         }
-        return Promise.resolve();
     },
     // called when the user navigates to a new location, to check for authentication
-    checkAuth: () => {
-        return localStorage.getItem("username")
-            ? Promise.resolve()
-            : Promise.reject();
+    async checkAuth() {
+        if (!localStorage.getItem("username")) {
+            throw new Error("Authentication required");
+        }
     },
-    // called when the user navigates to a new location, to check for permissions / roles
-    getPermissions: () => Promise.resolve(),
 };
 ```
-
-**Tip**: As the `authProvider` calls are asynchronous, you can easily fetch an authentication server there.
 
 To enable this authentication strategy, pass the `authProvider` to the `<Admin>` component:
 
@@ -952,7 +954,7 @@ Once the app reloads, it's now behind a login form that accepts everyone:
 
 ## Connecting To A Real API
 
-Here is the elephant in the room of this tutorial. In real-world projects, the dialect of your API (REST? GraphQL? Something else?) won't match the JSONPlaceholder dialect. [Writing a Data Provider](./DataProviderWriting.md) is probably the first thing you'll have to do to make react-admin work, unless your API backend is already supported [see the list here](./DataProviderList.md). Depending on your API, this can require a few hours of additional work.
+Here is the elephant in the room of this tutorial. In real-world projects, the dialect of your API (REST? GraphQL? Something else?) won't match the JSONPlaceholder dialect. [Writing a Data Provider](./DataProviderWriting.md) is probably the first thing you'll have to do to make react-admin work, unless your API backend is already supported ([see the list here](./DataProviderList.md)). Depending on your API, this can require a few hours of additional work.
 
 React-admin delegates every data query to a Data Provider object, which acts as an adapter to your API. This makes react-admin capable of mapping any API dialect, using endpoints from several domains, etc.
 

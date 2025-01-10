@@ -119,7 +119,13 @@ const App = () => (
 );
 ```
 
-React-admin comes with 4 built-in themes: [Default](./AppTheme.md#default), [Nano](./AppTheme.md#nano), [Radiant](./AppTheme.md#radiant), and [House](./AppTheme.md#house). The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+React-admin comes with 4 built-in themes: 
+
+| :---: | :---: |
+| &nbsp;&nbsp; [Default](./AppTheme.md#default) [![Default light theme](./img/defaultLightTheme1.jpg)]((./AppTheme.md#default)) | &nbsp;&nbsp; [Nano](./AppTheme.md#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](./AppTheme.md#nano) |
+| &nbsp;&nbsp; [Radiant](./AppTheme.md#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](./AppTheme.md#radiant) | &nbsp;&nbsp; [House](./AppTheme.md#house) [![House light theme](./img/houseLightTheme1.jpg)](./AppTheme.md#house) |
+
+The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/demo-themes.mp4" type="video/mp4"/>
