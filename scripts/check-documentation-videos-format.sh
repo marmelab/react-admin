@@ -6,5 +6,6 @@ for file in ./docs/img/**; do
     echo "ffmpeg -i $file -c:v libx264 -c:a copy ${file%.*}_avc1.${file##*.}"
     echo "rm $file"
     echo "mv $output_file $file"
+    exit 1;
   fi
 done
