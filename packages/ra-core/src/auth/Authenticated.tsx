@@ -35,9 +35,9 @@ export const Authenticated = (props: AuthenticatedProps) => {
     const { authParams, loading = null, children } = props;
 
     // this hook will redirect to login if the user is not authenticated
-    const { isPending } = useAuthenticated({ params: authParams });
+    const { isPending, isError } = useAuthenticated({ params: authParams });
 
-    if (isPending) {
+    if (isPending || isError) {
         return loading;
     }
 

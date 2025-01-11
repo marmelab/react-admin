@@ -26,6 +26,34 @@ describe('<Authenticated>', () => {
         );
         await screen.findByText('Loading');
     });
+
+    it('should not render its child when checkAuth raises an error', async () => {
+        const NeverDisplayedComponent = jest.fn(() => (
+            <div>It should not be called</div>
+        ));
+
+        const authProvider = {
+            checkAuth: jest.fn().mockRejectedValue(undefined),
+            logout: jest.fn().mockResolvedValue(undefined),
+        } as any;
+
+        render(
+            <CoreAdminContext authProvider={authProvider}>
+                <Authenticated>
+                    <NeverDisplayedComponent />
+                </Authenticated>
+            </CoreAdminContext>
+        );
+
+        // Ensure that the NeverDisplayedComponent is not called
+        await waitFor(() => {
+            // Ensure that checkAuth and logout were called as expected
+            expect(authProvider.checkAuth).toHaveBeenCalled();
+            expect(authProvider.logout).toHaveBeenCalled();
+            expect(NeverDisplayedComponent).toHaveBeenCalledTimes(0);
+        });
+    });
+
     it('should render its child when authenticated', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
