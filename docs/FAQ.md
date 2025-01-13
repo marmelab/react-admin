@@ -10,6 +10,7 @@ title: "FAQ"
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
 - [UI in production build is empty or broken](#ui-in-production-build-is-empty-or-broken)
 - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
+- [Can I use react-router v7?](#can-i-use-react-router-v7)
 
 ## Can I have custom identifiers/primary keys for my resources?
 
@@ -167,3 +168,7 @@ export const MyMenu = () => (
     </Menu>
 );
 ```
+
+## Can I use react-router v7
+
+You can use react-router v7 with React-admin. Note that some package managers may require you to add [overrides (NPM)](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides) or [resolutions (Yarn)](https://classic.yarnpkg.com/lang/en/docs/selective-version-resolutions/) in order to avoid dependencies conflict with React-admin.
