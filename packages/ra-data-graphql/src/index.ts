@@ -131,7 +131,7 @@ export type Options = {
     watchQuery?: GetWatchQueryOptions;
 };
 
-const buildGraphQLProvider = (options: Options): DataProvider => {
+const buildGraphQLProvider = (options: Options): GraphqlDataProvider => {
     const {
         client: clientObject,
         clientOptions,
@@ -224,7 +224,7 @@ const buildGraphQLProvider = (options: Options): DataProvider => {
         );
     };
 
-    const raDataProvider: DataProvider = {
+    const raDataProvider: GraphqlDataProvider = {
         create: (resource, params) => callApollo(CREATE, resource, params),
         delete: (resource, params) => callApollo(DELETE, resource, params),
         deleteMany: (resource, params) =>
@@ -237,6 +237,19 @@ const buildGraphQLProvider = (options: Options): DataProvider => {
         update: (resource, params) => callApollo(UPDATE, resource, params),
         updateMany: (resource, params) =>
             callApollo(UPDATE_MANY, resource, params),
+        getIntrospection: () => {
+            if (introspection) {
+                if (!introspectionResultsPromise) {
+                    introspectionResultsPromise = resolveIntrospection(
+                        client,
+                        introspection
+                    );
+                }
+
+                return introspectionResultsPromise;
+            }
+        },
+        client,
     };
 
     return raDataProvider;
@@ -259,6 +272,11 @@ const getQueryOperation = query => {
     }
 
     throw new Error('Unable to determine the query operation');
+};
+
+export type GetIntrospection = () => Promise<IntrospectionResult>;
+export type GraphqlDataProvider = DataProvider & {
+    getIntrospection: GetIntrospection;
 };
 
 export default buildGraphQLProvider;
