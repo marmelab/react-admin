@@ -212,7 +212,7 @@ const CreateRole = () => {
 ```
 {% endraw %}
 
-**Tip**: In development with `React.StrictMode`, you may run into an issue where the `<AutocompleteInput>` menu reopens after clicking the create item when the [`openOnFocus`](https://mui.com/material-ui/api/autocomplete/#autocomplete-prop-openOnFocus) prop is set to `true` which is the default with React-admin. If that bothers you, set the `openOnFocus` prop to `false`.
+**Tip**: In development with `React.StrictMode`, you may run into an issue where the `<AutocompleteArrayInput>` menu reopens after clicking the create item when the [`openOnFocus`](https://mui.com/material-ui/api/autocomplete/#autocomplete-prop-openOnFocus) prop is set to `true` which is the default with React-admin. If that bothers you, set the `openOnFocus` prop to `false`.
 
 If you just need to ask users for a single string to create the new option, you can use [the `onCreate` prop](#oncreate) instead.
 
