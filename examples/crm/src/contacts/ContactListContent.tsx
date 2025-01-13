@@ -4,6 +4,7 @@ import {
     Checkbox,
     List,
     ListItem,
+    ListItemButton,
     ListItemAvatar,
     ListItemIcon,
     ListItemSecondaryAction,
@@ -50,76 +51,79 @@ export const ContactListContent = () => {
             <List dense>
                 {contacts.map(contact => (
                     <RecordContextProvider key={contact.id} value={contact}>
-                        <ListItem
-                            button
-                            component={Link}
-                            to={`/contacts/${contact.id}/show`}
-                        >
-                            <ListItemIcon sx={{ minWidth: '2.5em' }}>
-                                <Checkbox
-                                    edge="start"
-                                    checked={selectedIds.includes(contact.id)}
-                                    tabIndex={-1}
-                                    disableRipple
-                                    onClick={e => {
-                                        e.stopPropagation();
-                                        onToggleItem(contact.id);
-                                    }}
-                                />
-                            </ListItemIcon>
-                            <ListItemAvatar>
-                                <Avatar />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={`${contact.first_name} ${contact.last_name ?? ''}`}
-                                secondary={
-                                    <>
-                                        {contact.title}
-                                        {contact.title &&
-                                            contact.company_id != null &&
-                                            ' at '}
-                                        {contact.company_id != null && (
-                                            <ReferenceField
-                                                source="company_id"
-                                                reference="companies"
-                                                link={false}
-                                            >
-                                                <TextField source="name" />
-                                            </ReferenceField>
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                component={Link}
+                                to={`/contacts/${contact.id}/show`}
+                            >
+                                <ListItemIcon sx={{ minWidth: '2.5em' }}>
+                                    <Checkbox
+                                        edge="start"
+                                        checked={selectedIds.includes(
+                                            contact.id
                                         )}
-                                        {contact.nb_tasks
-                                            ? ` - ${contact.nb_tasks} task${
-                                                  contact.nb_tasks > 1
-                                                      ? 's'
-                                                      : ''
-                                              }`
-                                            : ''}
-                                        &nbsp;&nbsp;
-                                        <TagsList />
-                                    </>
-                                }
-                            />
-                            {contact.last_seen && (
-                                <ListItemSecondaryAction
-                                    sx={{
-                                        top: '10px',
-                                        transform: 'none',
-                                    }}
-                                >
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        title={contact.last_seen}
+                                        tabIndex={-1}
+                                        disableRipple
+                                        onClick={e => {
+                                            e.stopPropagation();
+                                            onToggleItem(contact.id);
+                                        }}
+                                    />
+                                </ListItemIcon>
+                                <ListItemAvatar>
+                                    <Avatar />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={`${contact.first_name} ${contact.last_name ?? ''}`}
+                                    secondary={
+                                        <>
+                                            {contact.title}
+                                            {contact.title &&
+                                                contact.company_id != null &&
+                                                ' at '}
+                                            {contact.company_id != null && (
+                                                <ReferenceField
+                                                    source="company_id"
+                                                    reference="companies"
+                                                    link={false}
+                                                >
+                                                    <TextField source="name" />
+                                                </ReferenceField>
+                                            )}
+                                            {contact.nb_tasks
+                                                ? ` - ${contact.nb_tasks} task${
+                                                      contact.nb_tasks > 1
+                                                          ? 's'
+                                                          : ''
+                                                  }`
+                                                : ''}
+                                            &nbsp;&nbsp;
+                                            <TagsList />
+                                        </>
+                                    }
+                                />
+                                {contact.last_seen && (
+                                    <ListItemSecondaryAction
+                                        sx={{
+                                            top: '10px',
+                                            transform: 'none',
+                                        }}
                                     >
-                                        {!isSmall && 'last activity '}
-                                        {formatRelative(
-                                            contact.last_seen,
-                                            now
-                                        )}{' '}
-                                        <Status status={contact.status} />
-                                    </Typography>
-                                </ListItemSecondaryAction>
-                            )}
+                                        <Typography
+                                            variant="body2"
+                                            color="textSecondary"
+                                            title={contact.last_seen}
+                                        >
+                                            {!isSmall && 'last activity '}
+                                            {formatRelative(
+                                                contact.last_seen,
+                                                now
+                                            )}{' '}
+                                            <Status status={contact.status} />
+                                        </Typography>
+                                    </ListItemSecondaryAction>
+                                )}
+                            </ListItemButton>
                         </ListItem>
                     </RecordContextProvider>
                 ))}

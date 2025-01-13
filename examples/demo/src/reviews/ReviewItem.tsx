@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { Fragment } from 'react';
-import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import {
+    ListItem,
+    ListItemAvatar,
+    ListItemButton,
+    ListItemText,
+} from '@mui/material';
 import {
     useCreatePath,
     ReferenceField,
@@ -20,16 +25,15 @@ export const ReviewItem = () => {
         return null;
     }
     return (
-        <Link
-            to={createPath({
-                resource: 'reviews',
-                type: 'edit',
-                id: record.id,
-            })}
-            underline="none"
-            color="inherit"
-        >
-            <ListItem button>
+        <ListItem disablePadding>
+            <ListItemButton
+                component={Link}
+                to={createPath({
+                    resource: 'reviews',
+                    type: 'edit',
+                    id: record.id,
+                })}
+            >
                 <ListItemAvatar>
                     <ReferenceField
                         source="customer_id"
@@ -70,7 +74,7 @@ export const ReviewItem = () => {
                     secondary={record.comment}
                     secondaryTypographyProps={{ noWrap: true }}
                 />
-            </ListItem>
-        </Link>
+            </ListItemButton>
+        </ListItem>
     );
 };

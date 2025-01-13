@@ -71,8 +71,8 @@ export const StringChoices = () => (
 const dataProvider = testDataProvider({
     // @ts-ignore
     getList: () => Promise.resolve({ data: choices, total: choices.length }),
-    // @ts-ignore
     getMany: (resource, params) =>
+        // @ts-ignore
         Promise.resolve({
             data: choices.filter(choice => params.ids.includes(choice.id)),
             total: choices.length,
@@ -197,7 +197,12 @@ const OptionTextComponent = () => {
     return (
         <>
             <Typography sx={{ marginTop: 0.5 }}>{record?.name}</Typography>
-            <Typography color="textSecondary" sx={{ marginBottom: 2 }}>
+            <Typography
+                sx={{
+                    color: theme => theme.palette.text.secondary,
+                    marginBottom: 2,
+                }}
+            >
                 {record?.details}
             </Typography>
         </>

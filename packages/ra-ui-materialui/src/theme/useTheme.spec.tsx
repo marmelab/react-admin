@@ -35,7 +35,7 @@ describe('useTheme', () => {
         expect(screen.queryByText('light')).not.toBeNull();
     });
 
-    it('should return the light theme when no dark theme is provided even though user prefers dark mode', () => {
+    it('should return the light theme when no dark theme is provided even though user prefers dark mode', async () => {
         render(
             <ThemeTestWrapper mode="dark">
                 <CoreAdminContext authProvider={authProvider}>
@@ -43,7 +43,7 @@ describe('useTheme', () => {
                 </CoreAdminContext>
             </ThemeTestWrapper>
         );
-        expect(screen.queryByText('light')).not.toBeNull();
+        await screen.findByText('light');
     });
 
     it('should return the light theme when no dark theme is provided even though the stored theme is dark', () => {

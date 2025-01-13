@@ -166,14 +166,11 @@ export const FilterListItem = memo((props: FilterListItemProps) => {
     const handleClick = () => setFilters(toggleFilter(value, filterValues));
 
     return (
-        <StyledListItem
-            onClick={handleClick}
-            selected={isSelected}
-            disablePadding
-            {...rest}
-        >
+        <StyledListItem disablePadding {...rest}>
             <ListItemButton
                 disableGutters
+                onClick={handleClick}
+                selected={isSelected}
                 className={FilterListItemClasses.listItemButton}
             >
                 {icon && (

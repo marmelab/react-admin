@@ -66,10 +66,29 @@ export const Color = () => (
                 <Labeled>
                     <TextField source="title" />
                 </Labeled>
+                <Labeled color="secondary">
+                    <TextField source="title" />
+                </Labeled>
                 <Labeled color="success.main">
                     <TextField source="title" />
                 </Labeled>
                 <Labeled color="#abcdef">
+                    <TextField source="title" />
+                </Labeled>
+            </Stack>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
+export const TypographyProps = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider value={record}>
+            <Stack gap={1} sx={{ m: 1 }}>
+                <Labeled
+                    TypographyProps={{
+                        sx: { color: theme => theme.palette.secondary.main },
+                    }}
+                >
                     <TextField source="title" />
                 </Labeled>
             </Stack>
