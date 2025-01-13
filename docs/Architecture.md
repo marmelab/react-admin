@@ -167,7 +167,7 @@ Some of the other useful react-admin components include those for guided tours, 
 
 ## Composition
 
-React-admin follows the principle of avoiding components that accept an overwhelming number of props, which are often referred to as "God Components." Instead, react-admin encourages the use of composition, where components accept subcomponents (either through children or specific props) to handle a share of the logic.
+React-admin avoids components that accept an overwhelming number of props, which are often referred to as "God Components." Instead, react-admin encourages the use of composition, where components accept subcomponents (either through children or specific props) to handle a share of the logic.
 
 For example, while you cannot directly pass a list of actions to the `<Edit>` component, you can achieve the same result by passing an `actions` component:
 
@@ -191,26 +191,25 @@ const PostEditActions = () => (
 
 This approach enables you to override specific parts of the logic of a component by composing it with another component.
 
-Many react-admin components can be easily customized by passing custom components as children or through props.
-
-The trade-off with this approach is that sometimes react-admin may require you to override several components just to enable one specific feature. For instance, to override the Menu, you must pass a custom Menu component to a custom `<Layout>`, and pass that custom `<Layout>` to the `<Admin>` component:
+The trade-off with this approach is that sometimes react-admin may require you to override several components just to enable one specific feature. For instance, to override the Menu, you must first create a custom layout using your menu as the `<Layout menu>` prop, then pass it as the `<Admin layout>` prop:
 
 ```jsx
-// in src/Layout.js
+// in src/MyLayout.js
 import { Layout } from 'react-admin';
 import { Menu } from './Menu';
 
-export const Layout = ({ children }) => (
+export const MyLayout = ({ children }) => (
     <Layout menu={Menu}>
         {children}
     </Layout>
 );
 
 // in src/App.js
-import { Layout }  from './Layout';
+import { Admin } from 'react-admin';
+import { MyLayout }  from './MyLayout';
 
 const App = () => (
-    <Admin layout={Layout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin layout={MyLayout} dataProvider={...}>
         // ...
     </Admin>
 );
@@ -399,126 +398,3 @@ This particular example is sourced from [Atomic CRM](https://marmelab.com/react-
 Never hesitate to replace a react-admin component with one of your own design. React-admin does not aim to cover all possible use cases, instead, it provides hooks for incorporating custom components. After all, "It's just React"™.
 
 With react-admin, you'll never find yourself backed into a corner.
-
-## User Experience Is King
-
-React-admin has two distinct sets of users:
-
-- End users, who use the react-admin app in their browser
-- Developers, who work with the react-admin code in their IDE
-
-We meticulously design both the User Experience (UX) and the Developer Experience (DX) for each feature.
-
-For the visual part, react-admin builds upon Material UI, which is a practical implementation of [Material Design](https://m3.material.io/). This design system is painstakingly constructed for web and mobile apps and serves as an excellent foundation for creating user-friendly, consistent user interfaces. However, it's only part of the story.
-
-We invest considerable time fine-tuning the UI to be as intuitive as possible. Small alignment discrepancies, screen flashes, and color inconsistencies are under constant scrutiny. We continually iterate based on customer feedback, working diligently to resolve any visual and animation issues that arise in real-world applications.
-
-By default, react-admin produces a purposefully bland user interface because we want the focus to be on the content rather than the aesthetics.
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/sort-button.webm" type="video/webm"/>
-  <source src="./img/sort-button.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-
-Regarding the developer experience, react-admin is always evolving to strike the right balance between an intuitive API, advanced features, a reasonable level of abstraction, and comprehensive documentation. The core team members are the initial testers of react-admin, focusing on productivity, debuggability, discoverability, performance, and reliability of all hooks and components.
-
-## Built On The Shoulders Of Giants
-
-Many excellent open-source libraries already address partial requirements of B2B apps: data fetching, forms, UI components, testing, etc.
-
-Rather than reinventing the wheel, react-admin uses the best tools in each category (in terms of features, developer experience, active maintenance, documentation, user base), and provides a glue around these libraries.
-
-In react-admin v4, these libraries are called [React Query](https://tanstack.com/query/v3), [react-router](https://reactrouter.com/en/main), [react-hook-form](https://react-hook-form.com/), [Material UI](https://mui.com/), [emotion](https://emotion.sh/docs/introduction), [testing-library](https://testing-library.com/docs/react-testing-library/intro), [date-fns](https://date-fns.org/), and [lodash](https://lodash.com/).
-
-When a new requirement arises, the react-admin teams always looks for an existing solution, and prefers integrating it rather than redeveloping it.
-
-There is one constraint, though: all react-admin's dependencies must be compatible with the [MIT license](https://github.com/marmelab/react-admin/blob/master/LICENSE.md). 
-
-## Minimal API Surface
-
-Before introducing a new hook or adding a new prop to an existing component, we always consider whether there's a straightforward way to implement the feature using pure React. If it's feasible, we opt not to add the new prop. Our goal is to maintain simplicity in the react-admin API, code, testing, and documentation. This decision is critical to ensuring a manageable learning curve and a low maintenance burden.
-
-Take the `<SimpleShowLayout>` component as an example, which displays Field elements in a column. Suppose you want to place two fields in a single column. We could introduce a specific syntax to indicate the number of elements per column and per line. However, this would overcomplicate the usage and documentation for simple use cases. Moreover, achieving this is quite doable in pure React, without necessitating any changes in the react-admin core. For instance, you can utilize Material UI's `<Stack>` component:
-
-```jsx
-import * as React from 'react';
-import { Show, SimpleShowLayout, TextField } from 'react-admin';
-import { Stack } from '@mui/material';
-
-const PostShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <Stack direction="row" spacing={2}>
-                <TextField source="title" />
-                <TextField source="body" />
-            </Stack>
-            <TextField source="author" />
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
-We believe this code snippet is simple enough for a React developer, so we chose not to add core support for multiple elements per line.
-
-If you can't find a specific feature in the react-admin documentation, it's often because it can be quickly achieved using pure React.
-
-## Backward Compatibility Is More Important Than New Features
-
-Nobody enjoys updating their app's code simply because a foundational library has introduced a breaking change. React-admin makes a concerted effort to prevent such disruptions and the unnecessary time loss they cause for developers.
-
-Some components may have peculiar APIs, often for historical reasons. We prioritize maintaining backward compatibility as much as possible, occasionally at the expense of API consistency.
-
-The code for some components may seem unnecessarily complex. This usually happens when a component has to support both old and new syntaxes.
-
-Maintaining this backward compatibility requires a significant effort from the react-admin core team, but it pays off by saving substantial time for react-admin users.
-
-## Principle of Least Surprise
-
-Due to our emphasis on [composition](#composition), you should be able to combine react-admin components in various ways and expect them to work seamlessly (courtesy of to [contexts](#context-pull-dont-push)). We have a comprehensive test suite to ensure that the react-admin components interact well together. Moreover, TypeScript assists in identifying if you're using a component in a manner that isn't supported.
-
-These considerations lead to strong design choices in the react-admin code.
-
-One notable example relates to child inspection, which we strive to avoid whenever possible. An exception is the `<Datagrid>` component, which inspects its Field children at runtime to determine the column headers. This practice has significant drawbacks:
-
-- If a child is wrapped inside another component that doesn't follow the same API, the feature breaks
-- Developers typically expect a component to affect its subtree, not its ancestors. Violating this expectation can lead to difficult-to-explain bugs.
-
-We keep child inspection in `<Datagrid>` because there is no superior alternative, but it's an uncommon exception. Every time we've implemented child inspection, we regretted it later. 
-
-To minimize surprises, we also avoid using `React.cloneElement()` and refrain from passing props down the tree.
-
-## Principle Of Least Documentation
-
-No one reads docs. This is an unfortunate reality that we have come to terms with.
-
-Therefore, when designing a new feature, our priority is to make it as intuitive as possible for developers. We keep the API minimal ([see above](#minimal-api-surface)). We emulate the APIs of well-established libraries. We throw errors with clear and informative messages. To aid developers in discovering the API within their IDE, we provide TypeScript types and JSDoc. Furthermore, we publish live examples complemented by annotated code.
-
-Despite this, given the extensive nature of react-admin, it inevitably comes with comprehensive documentation. We cover a wide variety of use cases, extending our documentation beyond mere usage instructions and API descriptions. To ensure that you find the information you need quickly, we frequently duplicate the same information in different places. We truly believe in the power of [serendipity](https://en.wikipedia.org/wiki/Serendipity).
-
-If you find this documentation overwhelming at first, don't fret. There's no need to read everything all at once. Start with the Introduction chapter of each section and examine the demo codes. Over time, you'll become familiar with the react-admin API, and finding the information you need will become a breeze.
-
-## Monorepo
-
-Whenever you import a react-admin component, it's sourced from the `react-admin` package:
-
-```jsx
-import { List, Datagrid, TextField } from 'react-admin';
-```
-
-But if you peek at [the react-admin source code](https://github.com/marmelab/react-admin) (which we encourage you to do), you will find imports like:
-
-```jsx
-import { useListController } from 'ra-core';
-```
-
-That's because the `react-admin` package simply re-exports components from internal packages. React-admin is a *distribution* of several packages, each dedicated to a specific feature. These packages can be found in [the `packages/` directory](https://github.com/marmelab/react-admin/tree/master/packages). Some of the more notable packages include:
-    
-* `ra-core`: The core react-admin logic, without any UI.
-* `ra-ui-materialui`: The Material UI skin for react-admin.
-* `ra-data-*`: Data providers for various data backends.
-* `ra-language-*`: Interface translations for various languages.
-* `react-admin`: the standard distribution of react-admin
-
-You can construct your own distribution of react-admin by combining various packages. Alternatively, you can import hooks and components directly from one of these packages if you don't want to import the entire react-admin distribution.
