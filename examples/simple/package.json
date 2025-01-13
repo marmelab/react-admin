@@ -4,7 +4,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --force",
         "build": "vite build",
         "serve": "vite preview",
         "type-check": "tsc --noEmit"

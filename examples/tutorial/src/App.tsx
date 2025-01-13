@@ -1,7 +1,9 @@
-import { Admin, Resource, ShowGuesser } from 'react-admin';
+import { Admin, CustomRoutes, Resource, ShowGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import PostIcon from '@mui/icons-material/Book';
 import UserIcon from '@mui/icons-material/Group';
+import { Route } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { PostList, PostEdit, PostCreate } from './posts';
 import { UserList } from './users';
@@ -30,6 +32,16 @@ const App = () => (
             icon={UserIcon}
             recordRepresentation="name"
         />
+        <CustomRoutes>
+            <Route
+                path="/segments"
+                element={
+                    <>
+                        <Link to="path" />
+                    </>
+                }
+            />
+        </CustomRoutes>
     </Admin>
 );
 
