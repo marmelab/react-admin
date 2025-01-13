@@ -159,6 +159,7 @@ const PostCreate = () => {
                                 <AutocompleteInput
                                     label="User"
                                     create={<CreateUser />}
+                                    openOnFocus={false}
                                 />
                             </ReferenceInput>
                             <FormDataConsumer>
