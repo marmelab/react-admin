@@ -217,7 +217,7 @@ const App = () => (
 
 ## Handling Authentication
 
-In react-admin, the `dataProvider` is responsible for fetching data, while [the `authProvider`](./Authentication.md) is responsible for managing authentication. To authenticate API requests, you need to use information from the `authProvider` in the queries made by the `dataProvider`. You can use `localStorage` for this purpose.
+React-admin uses the `dataProvider` to fetch data and the [`authProvider`](./Authentication.md) to handle authentication. The `authProvider` typically stores an authentication token, shares it with the `dataProvider` (often via `localStorage`), which then adds it to HTTP headers for API requests.
 
 For example, here's how to use a token returned during the login process to authenticate all requests to the API via a Bearer token, using the Simple REST data provider:
 
@@ -260,7 +260,11 @@ const fetchJson = (url, options = {}) => {
 const dataProvider = simpleRestProvider('http://path.to.my.api/', fetchJson);
 ```
 
-Now all requests to the REST API will include the `Authorization: Bearer YOUR_TOKEN_HERE` header.
+Now all requests to the REST API will include following header:
+
+```
+Authorization: Bearer YOUR_TOKEN_HERE
+```
 
 In this example, the `simpleRestProvider` accepts a second parameter to set authentication. Each Data Provider has its own way of accepting credentials. Refer to the documentation of your Data Provider for details.
 

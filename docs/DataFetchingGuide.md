@@ -84,6 +84,20 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
+You can also call the `useDataProvider` hook to access the `dataProvider` directly:
+
+```jsx
+import { useDataProvider } from 'react-admin';
+
+const BanUserButton = ({ userId }) => {
+    const dataProvider = useDataProvider();
+    const handleClick = () => {
+        dataProvider.update('users', { id: userId, data: { isBanned: true } });
+    };
+    return <Button label="Ban user" onClick={handleClick} />;
+};
+```
+
 The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each of them.
 
 ## Adding Custom Methods
@@ -131,11 +145,18 @@ Check the [Calling Custom Methods](./Actions.md#calling-custom-methods) document
 
 ## Handling Authentication
 
-In react-admin, the `dataProvider` is responsible for fetching data, while [the `authProvider`](./Authentication.md) is responsible for managing authentication. To authenticate API requests, you need to use information from the `authProvider` in the queries made by the `dataProvider`. You can use `localStorage` for this purpose.
+The `dataProvider` often needs to send an authentication token in API requests. The [`authProvider`](./Authentication.md) manages the authentication process. Here's how the two work together:
 
-For example, here's how to use a token returned during the login process to authenticate all requests to the API via a Bearer token, using the Simple REST data provider:
+1. The user logs in with their email and password
+2. React-admin calls `authProvider.login()` with these credentials.
+3. The `authProvider` sends the login request to the authentication backend.
+4. The backend validates the credentials and returns an authentication token.
+5. The `authProvider` stores the token in `localStorage`
+6. When making requests, the `dataProvider` reads the token from `localStorage` and adds it to the request headers.
 
-```js
+You need to implement the interaction between the `authProvider` and `dataProvider`. Here's an example for the authProvider:
+
+```jsx
 // in authProvider.js
 const authProvider = {
     async login({ username, password })  {
@@ -156,9 +177,16 @@ const authProvider = {
         const { token } = await response.json();
         localStorage.setItem('token', token);
     },
+    async logout() {
+        localStorage.removeItem('token');
+    },
     // ...
 };
+```
 
+Many Data Providers, like `simpleRestProvider`, support authentication. Here's how you can configure it to include the token:
+
+```js
 // in dataProvider.js
 import { fetchUtils } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
@@ -166,69 +194,80 @@ import simpleRestProvider from 'ra-data-simple-rest';
 const fetchJson = (url, options = {}) => {
     options.user = {
         authenticated: true,
-        // use the token from local storage
-        token: localStorage.getItem('token')
+        token: localStorage.getItem('token') // Include the token
     };
     return fetchUtils.fetchJson(url, options);
 };
 const dataProvider = simpleRestProvider('http://path.to.my.api/', fetchJson);
 ```
 
-Now all requests to the REST API will include the `Authorization: Bearer YOUR_TOKEN_HERE` header.
+Check your Data Provider's documentation for specific configuration options.
 
-In this example, the `simpleRestProvider` accepts a second parameter to set authentication. Each Data Provider has its own way of accepting credentials. Refer to the documentation of your Data Provider for details.
+## Handling Relationships
 
-## Embedding Relationships
+React-admin simplifies working with relational APIs by managing related records at the component level. This means you can leverage [relationship support](./Features.md#relationships) without modifying your Data Provider or API.
 
-Some API backends with knowledge of the relationships between resources can embed related records in the response.
+For instance, let's imagine an API exposing CRUD endpoints for books and authors:
 
-For instance, JSON Server can return a post and its author in a single response:
-
-```txt
-GET /posts/123?embed=author
+```
+┌──────────────┐       ┌────────────────┐
+│ books        │       │ authors        │
+│--------------│       │----------------│
+│ id           │   ┌───│ id             │
+│ author_id    │╾──┘   │ first_name     │
+│ title        │       │ last_name      │
+│ published_at │       │ date_of_birth  │
+└──────────────┘       └────────────────┘
 ```
 
-```json
-{
-    "id": 123,
-    "title": "Hello, world",
-    "author_id": 456,
-    "author": {
-        "id": 456,
-        "name": "John Doe"
-    }
-}
-```
-
-Data providers implementing this feature often use the `meta` key in the query parameters to pass the embed parameter to the API.
+The Book show page should display a book title and the name of its author. In a server-side framework, you would issue a SQL query with a JOIN clause. In React-admin, components request only the data they need, and React-admin handles the relationship resolution.
 
 ```jsx
-const { data } = useGetOne('posts', { id: 123, meta: { embed: ['author'] } });
-```
-
-Leveraging embeds can reduce the number of requests made by react-admin to the API, and thus improve the app's performance.
-
-For example, this allows you to display data from a related resource without making an additional request (and without using a `<ReferenceField>`).
-
-{% raw %}
-
-```diff
-const PostList = () => (
--   <List>
-+   <List queryOptions={{ meta: { embed: ["author"] } }}>
-        <Datagrid>
+const BookShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="id" />
             <TextField source="title" />
--           <ReferenceField source="author_id" reference="authors>
--               <TextField source="name" />
--           </ReferenceField>
-+           <TextField source="author.name" />
-        </Datagrid>
-    </List>
+            <ReferenceField source="author_id" reference="authors" />
+            <TextField source="year" />
+        </SimpleShowLayout>
+    </Show>
 );
 ```
 
-{% endraw %}
+In the example above, two components call the Data Provider on mount:
 
-Refer to your data provider's documentation to verify if it supports this feature. If you're writing your own data provider, check the [Writing a Data Provider](./DataProviderWriting.md#embedded-data) documentation for more details.
+- The `Show` component calls `dataProvider.getOne('books')` and receives a book with an `author_id` field
+- The `ReferenceField` component reads the current book record and calls `dataProvider.getOne('authors')` using the `author_id` value
 
-**Note**: Embeds are a double-edged sword. They can make the response larger and break the sharing of data between pages. Measure the performance of your app before and after using embeds to ensure they are beneficial.
+This approach improves the developer experience as you don't need to build complex queries for each page. Components remain independent of each other and are easy to compose.
+
+However, this cascade of Data Provider requests can appear inefficient in terms of user-perceived performance. React-admin includes several optimizations to mitigate this:
+
+- **Partial Rendering**: React-admin renders the page with the book data first and updates it when the author data arrives. This ensures users see data as soon as possible.
+- **Caching**: If the author data is already cached, React-admin displays it immediately, rendering the entire page in one pass. Since most admin apps are long-lived, the cache is often populated.
+- **Local Database Mirror**: React-admin populates its internal cache with individual records fetched using `dataProvider.getList()`. When a user views a specific record, React-admin leverages its internal database to pre-fill the `dataProvider.getOne()` query response. As a result, record details are displayed instantaneously, without any wait time for server responses.
+- **Query Aggregation**: React-admin intercepts all calls to `dataProvider.getOne()` for related data when a `<ReferenceField>` is used in a list. It aggregates and deduplicates the requested ids, and issues a single `dataProvider.getMany()` request. This technique effectively addresses the n+1 query problem, reduces server queries, and accelerates list view rendering.
+- **Smart Loading Indicators**: `<ReferenceField>` renders blank placeholders during the first second to avoid layout shifts when the response arrives. If the response takes longer, React-admin shows a spinner to indicate progress while maintaining a smooth user experience.
+- **Embedded Data** and **Prefetching**: Data providers can return data from related resources in the same response as the requested resource. React-admin uses this feature to avoid additional network requests and to display related data immediately.
+
+Even on complex pages that aggregate data from multiple resources, Reference components optimize API requests, reducing their number while ensuring users quickly see the data they need.
+
+Relationship support in React-admin works out of the box with any API that provides foreign keys. No special configurations are required for your API or Data Provider.
+
+Here is a list of react-admin's [relationship components](./Features.md#relationships):
+
+- [`<ReferenceField>`](./ReferenceField.md)
+- [`<ReferenceArrayField>`](./ReferenceArrayField.md)
+- [`<ReferenceManyField>`](./ReferenceManyField.md)
+- [`<ReferenceManyCount>`](./ReferenceManyCount.md)
+- [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md)
+- [`<ReferenceOneField>`](./ReferenceOneField.md)
+- [`<ReferenceInput>`](./ReferenceInput.md)
+- [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)
+- [`<ReferenceManyInput>`](./ReferenceManyInput.md)
+- [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)
+- [`<ReferenceOneInput>`](./ReferenceOneInput.md)
+
+If a relationship component doesn't fit your specific use case, you can always use a [custom data provider method](#adding-custom-methods) to fetch the required data.
+
