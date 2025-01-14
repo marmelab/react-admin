@@ -16561,8 +16561,8 @@ __metadata:
     ra-language-english: "npm:^5.4.3"
     ra-ui-materialui: "npm:^5.4.3"
     react-hook-form: "npm:^7.53.0"
-    react-router: "npm:^6.25.1 || ^7.0.0"
-    react-router-dom: "npm:^6.25.1 || ^7.0.0"
+    react-router: "npm:^6.25.1"
+    react-router-dom: "npm:^6.25.1"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -16801,7 +16801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.25.1 || ^7.0.0, react-router-dom@npm:^7.0.0":
+"react-router-dom@npm:^7.0.0":
   version: 7.1.1
   resolution: "react-router-dom@npm:7.1.1"
   dependencies:
@@ -16824,7 +16824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:7.1.1, react-router@npm:^6.25.1 || ^7.0.0, react-router@npm:^7.0.0":
+"react-router@npm:7.1.1, react-router@npm:^7.0.0":
   version: 7.1.1
   resolution: "react-router@npm:7.1.1"
   dependencies:
