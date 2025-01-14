@@ -1,3 +1,4 @@
+import { RaRecord } from '../../types';
 import {
     useShowController,
     ShowControllerProps,
@@ -17,12 +18,17 @@ import {
  *     </ShowController>
  * );
  */
-export const ShowController = ({
+export const ShowController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>({
     children,
     ...props
 }: {
-    children: (params: ShowControllerResult) => JSX.Element;
-} & ShowControllerProps) => {
-    const controllerProps = useShowController(props);
+    children: (
+        params: ShowControllerResult<RecordType, ErrorType>
+    ) => JSX.Element;
+} & ShowControllerProps<RecordType, ErrorType>) => {
+    const controllerProps = useShowController<RecordType, ErrorType>(props);
     return children(controllerProps);
 };

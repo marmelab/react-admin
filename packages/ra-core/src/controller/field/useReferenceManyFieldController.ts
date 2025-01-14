@@ -44,12 +44,14 @@ import { useResourceContext } from '../../core';
 export const useReferenceManyFieldController = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
 >(
     props: UseReferenceManyFieldControllerParams<
         RecordType,
-        ReferenceRecordType
+        ReferenceRecordType,
+        ErrorType
     >
-): ListControllerResult<ReferenceRecordType> => {
+): ListControllerResult<ReferenceRecordType, ErrorType> => {
     const {
         debounce = 500,
         reference,
@@ -168,7 +170,7 @@ export const useReferenceManyFieldController = <
         isLoading,
         isPending,
         refetch,
-    } = useGetManyReference<ReferenceRecordType>(
+    } = useGetManyReference<ReferenceRecordType, ErrorType>(
         reference,
         {
             target,
@@ -180,20 +182,22 @@ export const useReferenceManyFieldController = <
         },
         {
             enabled: get(record, source) != null,
+            // @ts-expect-error FIXME The error type is not correctly inferred
             placeholderData: previousData => previousData,
             onError: error =>
                 notify(
                     typeof error === 'string'
                         ? error
-                        : error.message || 'ra.notification.http_error',
+                        : (error as Error)?.message ||
+                              'ra.notification.http_error',
                     {
                         type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : error && error.message
-                                      ? error.message
+                                    : (error as Error)?.message
+                                      ? (error as Error).message
                                       : undefined,
                         },
                     }
@@ -289,12 +293,13 @@ export const useReferenceManyFieldController = <
         setSort,
         showFilter,
         total,
-    } as ListControllerResult<ReferenceRecordType>;
+    } as ListControllerResult<ReferenceRecordType, ErrorType>;
 };
 
 export interface UseReferenceManyFieldControllerParams<
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends Record<string, any> = Record<string, any>,
+    ErrorType = Error,
 > {
     debounce?: number;
     filter?: FilterPayload;
@@ -308,7 +313,10 @@ export interface UseReferenceManyFieldControllerParams<
     storeKey?: string;
     target: string;
     queryOptions?: Omit<
-        UseQueryOptions<{ data: ReferenceRecordType[]; total: number }, Error>,
+        UseQueryOptions<
+            { data: ReferenceRecordType[]; total: number },
+            ErrorType
+        >,
         'queryKey' | 'queryFn'
     >;
 }

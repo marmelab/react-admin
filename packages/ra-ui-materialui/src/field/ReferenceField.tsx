@@ -111,14 +111,14 @@ export const ReferenceFieldView = <
 
     if (error) {
         return (
-            /* eslint-disable jsx-a11y/role-supports-aria-props */
             <ErrorIcon
-                aria-errormessage={error.message ? error.message : error}
+                aria-errormessage={
+                    typeof error === 'string' ? error : error?.message
+                }
                 role="presentation"
                 color="error"
                 fontSize="small"
             />
-            /* eslint-enable */
         );
     }
     // We explicitly check isLoading here as the record may not have an id for the reference,

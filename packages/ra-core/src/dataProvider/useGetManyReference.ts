@@ -88,11 +88,7 @@ export const useGetManyReference = <
     const onErrorEvent = useEvent(onError);
     const onSettledEvent = useEvent(onSettled);
 
-    const result = useQuery<
-        GetManyReferenceResult<RecordType>,
-        ErrorType,
-        GetManyReferenceResult<RecordType>
-    >({
+    const result = useQuery<GetManyReferenceResult<RecordType>, ErrorType>({
         queryKey: [
             resource,
             'getManyReference',
