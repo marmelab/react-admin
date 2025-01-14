@@ -98,9 +98,31 @@ const BanUserButton = ({ userId }) => {
 };
 ```
 
+Finally, you can use any of TanStack Query's hooks:
+
+- [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/guides/queries) for reading data
+- [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/guides/mutations) for writing data.
+
 The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each of them.
 
-## Adding Custom Methods
+## Auto Refresh
+
+When calling the data provider via `useUpdate`, `useDelete`, or any other mutation hook, react-admin automatically refreshes the affected views. This ensures that the UI remains in sync with the server.
+
+For instance, if you put a `<DeleteButton>` on each row of a list, clicking the button will remove the row from the list immediately, and refresh the list view to load one additional row.
+
+<video controls autoplay playsinline muted loop width="100%">
+  <source src="./img/AutoRefresh.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+This works out of the box and leverages TanStack Query's query invalidation mechanism. When a mutation is successful, react-admin invalidates the queries that depend on the affected records. TanStack Query then refetches the data from the server, ensuring that the UI remains up to date.
+
+You don't need to do anything to enable this feature. It's part of react-admin's core functionality.
+
+## Optimistic Updates and Undo
+
+## Custom Data Provider Methods
 
 Your API backend may expose non-CRUD endpoints, e.g., for calling Remote Procedure Calls (RPC).
 
@@ -143,7 +165,7 @@ const BanUserButton = ({ userId }) => {
 
 Check the [Calling Custom Methods](./Actions.md#calling-custom-methods) documentation for more details.
 
-## Handling Authentication
+## Authentication
 
 The `dataProvider` often needs to send an authentication token in API requests. The [`authProvider`](./Authentication.md) manages the authentication process. Here's how the two work together:
 
@@ -203,7 +225,7 @@ const dataProvider = simpleRestProvider('http://path.to.my.api/', fetchJson);
 
 Check your Data Provider's documentation for specific configuration options.
 
-## Handling Relationships
+## Relationships
 
 React-admin simplifies working with relational APIs by managing related records at the component level. This means you can leverage [relationship support](./Features.md#relationships) without modifying your Data Provider or API.
 
@@ -270,4 +292,69 @@ Here is a list of react-admin's [relationship components](./Features.md#relation
 - [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 
 If a relationship component doesn't fit your specific use case, you can always use a [custom data provider method](#adding-custom-methods) to fetch the required data.
+``
 
+## Real-Time Updates And Locks
+
+Teams where several people work in parallel on a common task need to allow live updates, real-time notifications, and prevent data loss when two editors work on the same resource concurrently. 
+
+<video controls autoplay playsinline muted>
+  <source src="./img/CollaborativeDemo.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+React-admin offers powerful realtime features to help you build collaborative applications, based on the Publish / Subscribe (PubSub) pattern. The [Realtime documentation](./Realtime.md) explains how to use them.
+
+These features are part of the [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" />.
+
+### Realtime Data Provider
+
+The realtime features are backend agnostic. Just like for CRUD operations,realtime operations rely on the data provider, using additional methods:
+
+- `dataProvider.subscribe(topic, callback)`
+- `dataProvider.unsubscribe(topic, callback)`
+- `dataProvider.publish(topic, event)` (optional - publication is often done server-side)
+
+In addition, to support the lock features, the `dataProvider` must implement 4 more methods:
+
+- `dataProvider.lock(resource, { id, identity, meta })`
+- `dataProvider.unlock(resource, { id, identity, meta })`
+- `dataProvider.getLock(resource, { id, meta })`
+- `dataProvider.getLocks(resource, { meta })`
+
+You can implement these features using any realtime backend, including:
+
+- [Mercure](https://mercure.rocks/),
+- [API Platform](https://api-platform.com/docs/admin/real-time-mercure/#real-time-updates-with-mercure),
+- [supabase](https://supabase.com/),
+- [Socket.IO](https://socket.io/),
+- [Ably](https://ably.com/),
+- and many more.
+
+Check the [Realtime Data Provider documentation](./RealtimeDataProvider.md) for more information, and for helpers to build your own realtime data provider.
+
+### Realtime Hooks And Components
+
+Once your data provider has enabled realtime features, you can use these hooks and components to build realtime applications:
+
+- [`usePublish`](./usePublish.md)
+- [`useSubscribe`](./useSubscribe.md)
+- [`useSubscribeCallback`](./useSubscribeCallback.md)
+- [`useSubscribeToRecord`](./useSubscribeToRecord.md)
+- [`useSubscribeToRecordList`](./useSubscribeToRecordList.md)
+- [`useLock`](./useLock.md)
+- [`useUnlock`](./useUnlock.md)
+- [`useGetLock`](./useGetLock.md)
+- [`useGetLockLive`](./useGetLockLive.md)
+- [`useGetLocks`](./useGetLocks.md)
+- [`useGetLocksLive`](./useGetLocksLive.md)
+- [`useLockOnMount`](./useLockOnMount.md)
+- [`useLockOnCall`](./useLockOnCall.md)
+- [`useGetListLive`](./useGetListLive.md)
+- [`useGetOneLive`](./useGetOneLive.md)
+- [`<ListLive>`](./ListLive.md)
+- [`<EditLive>`](./EditLive.md)
+- [`<ShowLive>`](./ShowLive.md)
+- [`<MenuLive>`](./MenuLive.md)
+
+Refer to the [Realtime documentation](./Realtime.md) for more information.
