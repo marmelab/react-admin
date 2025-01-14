@@ -256,16 +256,6 @@ export const useDelete = <
             context: unknown
         ) => {
             if (mode.current === 'pessimistic') {
-                // update the getOne and getList query cache with the new result
-                const {
-                    resource: callTimeResource = resource,
-                    id: callTimeId = id,
-                } = variables;
-                updateCache({
-                    resource: callTimeResource,
-                    id: callTimeId,
-                });
-
                 if (
                     mutationOptions.onSuccess &&
                     !hasCallTimeOnSuccess.current
@@ -281,12 +271,10 @@ export const useDelete = <
             variables: Partial<UseDeleteMutateParams<RecordType>> = {},
             context: { snapshot: Snapshot }
         ) => {
-            if (mode.current === 'optimistic' || mode.current === 'undoable') {
-                // Always refetch after error or success:
-                context.snapshot.forEach(([queryKey]) => {
-                    queryClient.invalidateQueries({ queryKey });
-                });
-            }
+            // Always refetch after error or success:
+            context.snapshot.forEach(([queryKey]) => {
+                queryClient.invalidateQueries({ queryKey });
+            });
 
             if (mutationOptions.onSettled && !hasCallTimeOnSettled.current) {
                 return mutationOptions.onSettled(
@@ -330,13 +318,6 @@ export const useDelete = <
             mode.current = mutationMode;
         }
 
-        if (mode.current === 'pessimistic') {
-            return mutation.mutate(
-                { resource: callTimeResource, ...callTimeParams },
-                otherCallTimeOptions
-            );
-        }
-
         const {
             id: callTimeId = id,
             previousData: callTimePreviousData = previousData,
@@ -371,6 +352,13 @@ export const useDelete = <
                 prev.concat(queryClient.getQueriesData({ queryKey })),
             [] as Snapshot
         );
+
+        if (mode.current === 'pessimistic') {
+            return mutation.mutate(
+                { resource: callTimeResource, ...callTimeParams },
+                otherCallTimeOptions
+            );
+        }
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
         await Promise.all(
