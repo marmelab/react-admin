@@ -65,11 +65,14 @@ import { useEvent } from '../util';
  *      );
  * };
  */
-export const useGetManyAggregate = <RecordType extends RaRecord = any>(
+export const useGetManyAggregate = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
     resource: string,
     params: Partial<GetManyParams<RecordType>>,
-    options: UseGetManyAggregateOptions<RecordType> = {}
-): UseGetManyHookValue<RecordType> => {
+    options: UseGetManyAggregateOptions<RecordType, ErrorType> = {}
+): UseGetManyHookValue<RecordType, ErrorType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const {
@@ -99,7 +102,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
         }
     }, [ids, queryClient, resource, meta]);
 
-    const result = useQuery<RecordType[], Error, RecordType[]>({
+    const result = useQuery<RecordType[], ErrorType, RecordType[]>({
         queryKey: [
             resource,
             'getMany',
@@ -373,11 +376,11 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
 
 const noop = () => undefined;
 
-export type UseGetManyAggregateOptions<RecordType extends RaRecord> = Omit<
-    UseQueryOptions<RecordType[]>,
-    'queryKey' | 'queryFn'
-> & {
+export type UseGetManyAggregateOptions<
+    RecordType extends RaRecord,
+    ErrorType = Error,
+> = Omit<UseQueryOptions<RecordType[], ErrorType>, 'queryKey' | 'queryFn'> & {
     onSuccess?: (data: RecordType[]) => void;
-    onError?: (error: Error) => void;
-    onSettled?: (data?: RecordType[], error?: Error | null) => void;
+    onError?: (error: ErrorType) => void;
+    onSettled?: (data?: RecordType[], error?: ErrorType | null) => void;
 };

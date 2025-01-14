@@ -60,11 +60,14 @@ import { useEvent } from '../util';
  *     )}</ul>;
  * };
  */
-export const useGetManyReference = <RecordType extends RaRecord = any>(
+export const useGetManyReference = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
     resource: string,
     params: Partial<GetManyReferenceParams> = {},
-    options: UseGetManyReferenceHookOptions<RecordType> = {}
-): UseGetManyReferenceHookValue<RecordType> => {
+    options: UseGetManyReferenceHookOptions<RecordType, ErrorType> = {}
+): UseGetManyReferenceHookValue<RecordType, ErrorType> => {
     const {
         target,
         id,
@@ -87,7 +90,7 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
 
     const result = useQuery<
         GetManyReferenceResult<RecordType>,
-        Error,
+        ErrorType,
         GetManyReferenceResult<RecordType>
     >({
         queryKey: [
@@ -156,7 +159,7 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                   }
                 : result,
         [result]
-    ) as UseQueryResult<RecordType[], Error> & {
+    ) as UseQueryResult<RecordType[], ErrorType> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;
@@ -166,27 +169,31 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     };
 };
 
-export type UseGetManyReferenceHookOptions<RecordType extends RaRecord = any> =
-    Omit<
-        UseQueryOptions<GetManyReferenceResult<RecordType>>,
-        'queryKey' | 'queryFn'
-    > & {
-        onSuccess?: (data: GetManyReferenceResult<RecordType>) => void;
-        onError?: (error: Error) => void;
-        onSettled?: (
-            data?: GetManyReferenceResult<RecordType>,
-            error?: Error | null
-        ) => void;
-    };
+export type UseGetManyReferenceHookOptions<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = Omit<
+    UseQueryOptions<GetManyReferenceResult<RecordType>, ErrorType>,
+    'queryKey' | 'queryFn'
+> & {
+    onSuccess?: (data: GetManyReferenceResult<RecordType>) => void;
+    onError?: (error: ErrorType) => void;
+    onSettled?: (
+        data?: GetManyReferenceResult<RecordType>,
+        error?: ErrorType | null
+    ) => void;
+};
 
-export type UseGetManyReferenceHookValue<RecordType extends RaRecord = any> =
-    UseQueryResult<RecordType[]> & {
-        total?: number;
-        pageInfo?: {
-            hasNextPage?: boolean;
-            hasPreviousPage?: boolean;
-        };
-        meta?: any;
+export type UseGetManyReferenceHookValue<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = UseQueryResult<RecordType[], ErrorType> & {
+    total?: number;
+    pageInfo?: {
+        hasNextPage?: boolean;
+        hasPreviousPage?: boolean;
     };
+    meta?: any;
+};
 
 const noop = () => undefined;
