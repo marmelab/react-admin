@@ -256,6 +256,16 @@ export const useDelete = <
             context: unknown
         ) => {
             if (mode.current === 'pessimistic') {
+                // update the getOne and getList query cache with the new result
+                const {
+                    resource: callTimeResource = resource,
+                    id: callTimeId = id,
+                } = variables;
+                updateCache({
+                    resource: callTimeResource,
+                    id: callTimeId,
+                });
+
                 if (
                     mutationOptions.onSuccess &&
                     !hasCallTimeOnSuccess.current
