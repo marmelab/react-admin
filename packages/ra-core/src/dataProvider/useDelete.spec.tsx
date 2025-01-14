@@ -448,10 +448,14 @@ describe('useDelete', () => {
             } as any;
             let localDeleteOne;
             const Dummy = () => {
-                const [deleteOne] = useDelete('foo', {
-                    id: 1,
-                    previousData: { id: 1, bar: 'bar' },
-                });
+                const [deleteOne] = useDelete(
+                    'foo',
+                    {
+                        id: 1,
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { mutationMode: 'optimistic' }
+                );
                 localDeleteOne = deleteOne;
                 return <span />;
             };
@@ -499,10 +503,14 @@ describe('useDelete', () => {
             } as any;
             let localDeleteOne;
             const Dummy = () => {
-                const [deleteOne] = useDelete('foo', {
-                    id: 1,
-                    previousData: { id: 1, bar: 'bar' },
-                });
+                const [deleteOne] = useDelete(
+                    'foo',
+                    {
+                        id: 1,
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { mutationMode: 'optimistic' }
+                );
                 localDeleteOne = deleteOne;
                 return <span />;
             };
@@ -555,10 +563,14 @@ describe('useDelete', () => {
             } as any;
             let localDeleteOne;
             const Dummy = () => {
-                const [deleteOne] = useDelete('foo', {
-                    id: 1,
-                    previousData: { id: 1, bar: 'bar' },
-                });
+                const [deleteOne] = useDelete(
+                    'foo',
+                    {
+                        id: 1,
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { mutationMode: 'optimistic' }
+                );
                 localDeleteOne = deleteOne;
                 return <span />;
             };
