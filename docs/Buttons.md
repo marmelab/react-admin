@@ -598,6 +598,14 @@ const PostList = () => (
 
 It also supports [all the other `<Button>` props](#button).
 
+### `scrollToTop`
+
+By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+
+```jsx
+const CloneButtonWithoutScrollToTop = () => <CloneButton scrollToTop={false} />
+```
+
 ### Access Control
 
 If you want to control whether this button should be displayed based on users permissions, use the `<CloneButton>` exported by the `@react-admin/ra-rbac` Enterprise package.
@@ -688,6 +696,14 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
 
 **Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
+
+### `scrollToTop`
+
+By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+
+```jsx
+const CreateButtonWithoutScrollToTop = () => <CreateButton scrollToTop={false} />
+```
 
 ### `sx`: CSS API
 
@@ -962,6 +978,14 @@ It also supports [all the other `<Button>` props](#button).
 
 **Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
 
+### `scrollToTop`
+
+By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+
+```jsx
+const EditButtonWithoutScrollToTop = () => <EditButton scrollToTop={false} />
+```
+
 ### Access Control
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<EditButton>` will only render if the user has the "edit" access to the related resource.
@@ -1190,6 +1214,14 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
+
+### `scrollToTop`
+
+By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+
+```jsx
+const ShowButtonWithoutScrollToTop = () => <ShowButton scrollToTop={false} />
+```
 
 ### Access Control
 
