@@ -1,6 +1,6 @@
 {
     "name": "react-admin",
-    "version": "5.4.3",
+    "version": "5.4.4",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -38,6 +38,8 @@
         "react-dom": "^18.0.0 || ^19.0.0"
     },
     "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.0",
         "@mui/icons-material": "^5.16.12 || ^6.0.0",
         "@mui/material": "^5.16.12 || ^6.0.0",
         "ra-core": "^5.4.3",

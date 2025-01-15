@@ -832,7 +832,7 @@ export const PostList = () => (
 
 ## `queryOptions`
 
-`<List>` accepts a `queryOptions` prop to pass options to the react-query client.
+`<List>` accepts a `queryOptions` prop to pass [query options](DataProviders.html#react-query-options) to the react-query client. Check react-query's [`useQuery` documentation]([query options](https://tanstack.com/query/v5/docs/react/reference/useQuery)) for the list of available options.
 
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
 
@@ -848,11 +848,9 @@ const PostList = () => (
 ```
 {% endraw %}
 
-With this option, react-admin will call `dataProvider.getList()` on mount with the ` meta: { foo: 'bar' }` option.
+With this option, react-admin will call `dataProvider.getList()` on mount with the `meta: { foo: 'bar' }` option.
 
-You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getList()` call fails, react-admin shows an error notification.
-
-You can override this behavior and pass custom side effects by providing a `queryOptions` prop:
+You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getList()` call fails, react-admin shows an error notification. Here is how to show a custom notification instead:
 
 {% raw %}
 ```jsx

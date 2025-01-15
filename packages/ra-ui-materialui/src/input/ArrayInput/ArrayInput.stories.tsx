@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
 import {
+    minLength,
     required,
     Resource,
     testI18nProvider,
@@ -19,6 +20,7 @@ import { AutocompleteInput } from '../AutocompleteInput';
 import { TranslatableInputs } from '../TranslatableInputs';
 import { ReferenceField, TextField, TranslatableFields } from '../../field';
 import { Labeled } from '../../Labeled';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 export default { title: 'ra-ui-materialui/input/ArrayInput' };
 
@@ -67,17 +69,35 @@ const BookEdit = () => {
                         <TextInput source="role" />
                     </SimpleFormIterator>
                 </ArrayInput>
+                <FormInspector />
             </SimpleForm>
         </Edit>
     );
 };
 
+const FormInspector = () => {
+    const {
+        formState: { defaultValues, isDirty, dirtyFields },
+    } = useFormContext();
+    const values = useWatch();
+    return (
+        <div>
+            <div>isDirty: {isDirty.toString()}</div>
+            <div>dirtyFields: {JSON.stringify(dirtyFields, null, 2)}</div>
+            <div>defaultValues: {JSON.stringify(defaultValues, null, 2)}</div>
+            <div>values: {JSON.stringify(values, null, 2)}</div>
+        </div>
+    );
+};
+
 export const Basic = () => (
-    <TestMemoryRouter initialEntries={['/books/1']}>
-        <Admin dataProvider={dataProvider}>
-            <Resource name="books" edit={BookEdit} />
-        </Admin>
-    </TestMemoryRouter>
+    <React.StrictMode>
+        <TestMemoryRouter initialEntries={['/books/1']}>
+            <Admin dataProvider={dataProvider}>
+                <Resource name="books" edit={BookEdit} />
+            </Admin>
+        </TestMemoryRouter>
+    </React.StrictMode>
 );
 
 export const Disabled = () => (
@@ -669,24 +689,44 @@ export const ActionsLeft = () => (
     </TestMemoryRouter>
 );
 
-const globalValidator = values => {
-    const errors: any = {};
-    if (!values.authors || !values.authors.length) {
-        errors.authors = 'ra.validation.required';
-    } else {
-        errors.authors = values.authors.map(author => {
-            const authorErrors: any = {};
-            if (!author?.name) {
-                authorErrors.name = 'A name is required';
-            }
-            if (!author?.role) {
-                authorErrors.role = 'ra.validation.required';
-            }
-            return authorErrors;
-        });
-    }
-    return errors;
+const BookEditValidation = () => {
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <ArrayInput
+                    source="authors"
+                    fullWidth
+                    validate={[
+                        required(),
+                        minLength(2, 'You need two authors at minimum'),
+                    ]}
+                    helperText="At least two authors"
+                >
+                    <SimpleFormIterator>
+                        <TextInput source="name" validate={required()} />
+                        <TextInput source="role" validate={required()} />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    );
 };
+
+export const Validation = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditValidation} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const BookEditGlobalValidation = () => {
     return (
         <Edit
@@ -712,6 +752,26 @@ const BookEditGlobalValidation = () => {
         </Edit>
     );
 };
+
+const globalValidator = values => {
+    const errors: any = {};
+    if (!values.authors || !values.authors.length) {
+        errors.authors = 'ra.validation.required';
+    } else {
+        errors.authors = values.authors.map(author => {
+            const authorErrors: any = {};
+            if (!author?.name) {
+                authorErrors.name = 'A name is required';
+            }
+            if (!author?.role) {
+                authorErrors.role = 'ra.validation.required';
+            }
+            return authorErrors;
+        });
+    }
+    return errors;
+};
+
 export const GlobalValidation = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin dataProvider={dataProvider}>

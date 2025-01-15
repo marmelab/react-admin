@@ -175,3 +175,6 @@ build-storybook: ## Build the storybook
 
 update-sandbox: ## Push the local version of the simple example to the sandbox repository
 	./scripts/update-sandbox.sh
+
+check-documentation-videos-format: ## Check the documentation format
+	./scripts/check-documentation-videos-format.sh

@@ -57,6 +57,15 @@ jobs:
     - name: Type check simple example
       run: cd examples/simple && yarn type-check
 
+  doc-videos-format-check:
+    runs-on: ubuntu-latest
+    if: github.ref_type != 'tag'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Videos format check
+        run: make check-documentation-videos-format
+
   doc-check:
     runs-on: ubuntu-latest
     if: github.ref_type != 'tag'

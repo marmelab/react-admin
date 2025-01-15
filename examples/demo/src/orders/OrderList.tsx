@@ -143,6 +143,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
+                            preferenceKey="orders.list1"
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
@@ -194,6 +195,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
+                            preferenceKey="orders.list2"
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
@@ -249,6 +251,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
+                            preferenceKey="orders.list3"
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />

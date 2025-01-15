@@ -46,6 +46,7 @@ const TagReferenceInput = ({
                 <AutocompleteArrayInput
                     create={<CreateTag />}
                     optionText={`name.${locale}`}
+                    openOnFocus={false}
                 />
             </ReferenceArrayInput>
             <Button
