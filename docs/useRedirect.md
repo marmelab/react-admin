@@ -47,6 +47,14 @@ redirect(false);
 
 Note that `useRedirect` allows redirection to an absolute URL outside the current React app.
 
+**Tip:** By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+
+```jsx
+redirect(`/deals/${deal.id}/show`, undefined, undefined, undefined, {
+    _scrollToTop: false,
+});
+```
+
 **Tip:** For even more specific navigation, you can use the [`useNavigate`](https://reactrouter.com/en/main/hooks/use-navigate) hook from `react-router-dom` as follows:
 
 ```jsx
