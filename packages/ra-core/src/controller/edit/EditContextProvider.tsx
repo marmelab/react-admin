@@ -34,7 +34,7 @@ export const EditContextProvider = ({
     value,
 }: {
     children: ReactNode;
-    value: EditControllerResult;
+    value: EditControllerResult<any, any>;
 }) => (
     <EditContext.Provider value={value}>
         <SaveContextProvider value={usePickSaveContext(value)}>

@@ -53,7 +53,7 @@ export const useEditController = <
     ErrorType = Error,
 >(
     props: EditControllerProps<RecordType, ErrorType> = {}
-): EditControllerResult<RecordType> => {
+): EditControllerResult<RecordType, ErrorType> => {
     const {
         disableAuthentication = false,
         id: propsId,
@@ -111,7 +111,7 @@ export const useEditController = <
         isFetching,
         isPending,
         refetch,
-    } = useGetOne<RecordType>(
+    } = useGetOne<RecordType, ErrorType>(
         resource,
         { id, meta: queryMeta },
         {
@@ -279,7 +279,7 @@ export const useEditController = <
         save,
         saving,
         unregisterMutationMiddleware,
-    } as EditControllerResult<RecordType>;
+    } as EditControllerResult<RecordType, ErrorType>;
 };
 
 const DefaultRedirect = 'list';
@@ -292,7 +292,7 @@ export interface EditControllerProps<
     id?: RecordType['id'];
     mutationMode?: MutationMode;
     mutationOptions?: UseUpdateOptions<RecordType, ErrorType>;
-    queryOptions?: UseGetOneOptions<RecordType>;
+    queryOptions?: UseGetOneOptions<RecordType, ErrorType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
@@ -339,8 +339,11 @@ export interface EditControllerSuccessResult<RecordType extends RaRecord = any>
     isPending: false;
 }
 
-export type EditControllerResult<RecordType extends RaRecord = any> =
+export type EditControllerResult<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> =
     | EditControllerLoadingResult<RecordType>
-    | EditControllerLoadingErrorResult<RecordType>
-    | EditControllerRefetchErrorResult<RecordType>
+    | EditControllerLoadingErrorResult<RecordType, ErrorType>
+    | EditControllerRefetchErrorResult<RecordType, ErrorType>
     | EditControllerSuccessResult<RecordType>;

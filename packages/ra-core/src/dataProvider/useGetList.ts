@@ -54,10 +54,13 @@ const MAX_DATA_LENGTH_TO_CACHE = 100;
  *     )}</ul>;
  * };
  */
-export const useGetList = <RecordType extends RaRecord = any>(
+export const useGetList = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options: UseGetListOptions<RecordType> = {}
+    options: UseGetListOptions<RecordType, ErrorType> = {}
 ): UseGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },
@@ -79,7 +82,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
 
     const result = useQuery<
         GetListResult<RecordType>,
-        Error,
+        ErrorType,
         GetListResult<RecordType>
     >({
         queryKey: [resource, 'getList', { pagination, sort, filter, meta }],
@@ -185,15 +188,18 @@ export const useGetList = <RecordType extends RaRecord = any>(
 
 const noop = () => undefined;
 
-export type UseGetListOptions<RecordType extends RaRecord = any> = Omit<
-    UseQueryOptions<GetListResult<RecordType>, Error>,
+export type UseGetListOptions<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = Omit<
+    UseQueryOptions<GetListResult<RecordType>, ErrorType>,
     'queryKey' | 'queryFn'
 > & {
     onSuccess?: (value: GetListResult<RecordType>) => void;
-    onError?: (error: Error) => void;
+    onError?: (error: ErrorType) => void;
     onSettled?: (
         data?: GetListResult<RecordType>,
-        error?: Error | null
+        error?: ErrorType | null
     ) => void;
 };
 

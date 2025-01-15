@@ -481,7 +481,7 @@ describe('<ReferenceField />', () => {
             hidden: true,
         });
         expect(ErrorIcon).not.toBeNull();
-        expect(ErrorIcon?.getAttribute('aria-errormessage')).toBe('boo');
+        await screen.findByText('boo');
     });
 
     describe('link', () => {

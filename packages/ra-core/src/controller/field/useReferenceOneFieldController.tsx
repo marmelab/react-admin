@@ -8,6 +8,7 @@ import { UseReferenceResult } from '../useReference';
 
 export interface UseReferenceOneFieldControllerParams<
     RecordType extends RaRecord = any,
+    ErrorType = Error,
 > {
     record?: RaRecord;
     reference: string;
@@ -16,10 +17,13 @@ export interface UseReferenceOneFieldControllerParams<
     sort?: SortPayload;
     filter?: any;
     queryOptions?: Omit<
-        UseQueryOptions<{
-            data: RecordType[];
-            total: number;
-        }>,
+        UseQueryOptions<
+            {
+                data: RecordType[];
+                total: number;
+            },
+            ErrorType
+        >,
         'queryFn' | 'queryKey'
     > & { meta?: any };
 }
@@ -49,9 +53,10 @@ export interface UseReferenceOneFieldControllerParams<
  */
 export const useReferenceOneFieldController = <
     RecordType extends RaRecord = any,
+    ErrorType = Error,
 >(
-    props: UseReferenceOneFieldControllerParams<RecordType>
-): UseReferenceResult<RecordType> => {
+    props: UseReferenceOneFieldControllerParams<RecordType, ErrorType>
+): UseReferenceResult<RecordType, ErrorType> => {
     const {
         reference,
         record,
@@ -65,7 +70,7 @@ export const useReferenceOneFieldController = <
     const { meta, ...otherQueryOptions } = queryOptions;
 
     const { data, error, isFetching, isLoading, isPending, refetch } =
-        useGetManyReference<RecordType>(
+        useGetManyReference<RecordType, ErrorType>(
             reference,
             {
                 target,
@@ -81,15 +86,16 @@ export const useReferenceOneFieldController = <
                     notify(
                         typeof error === 'string'
                             ? error
-                            : error.message || 'ra.notification.http_error',
+                            : (error as Error).message ||
+                                  'ra.notification.http_error',
                         {
                             type: 'error',
                             messageArgs: {
                                 _:
                                     typeof error === 'string'
                                         ? error
-                                        : error && error.message
-                                          ? error.message
+                                        : (error as Error)?.message
+                                          ? (error as Error).message
                                           : undefined,
                             },
                         }

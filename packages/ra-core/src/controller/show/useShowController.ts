@@ -49,9 +49,12 @@ import {
  *     return <ShowView {...controllerProps} />;
  * };
  */
-export const useShowController = <RecordType extends RaRecord = any>(
-    props: ShowControllerProps<RecordType> = {}
-): ShowControllerResult<RecordType> => {
+export const useShowController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
+    props: ShowControllerProps<RecordType, ErrorType> = {}
+): ShowControllerResult<RecordType, ErrorType> => {
     const {
         disableAuthentication = false,
         id: propsId,
@@ -96,7 +99,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
         isFetching,
         isPending,
         refetch,
-    } = useGetOne<RecordType>(
+    } = useGetOne<RecordType, ErrorType>(
         resource,
         { id, meta },
         {
@@ -143,13 +146,16 @@ export const useShowController = <RecordType extends RaRecord = any>(
         record,
         refetch,
         resource,
-    } as ShowControllerResult<RecordType>;
+    } as ShowControllerResult<RecordType, ErrorType>;
 };
 
-export interface ShowControllerProps<RecordType extends RaRecord = any> {
+export interface ShowControllerProps<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
-    queryOptions?: UseGetOneOptions<RecordType>;
+    queryOptions?: UseGetOneOptions<RecordType, ErrorType>;
     resource?: string;
 }
 
@@ -191,8 +197,11 @@ export interface ShowControllerSuccessResult<RecordType extends RaRecord = any>
     isPending: false;
 }
 
-export type ShowControllerResult<RecordType extends RaRecord = any> =
+export type ShowControllerResult<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> =
     | ShowControllerLoadingResult<RecordType>
-    | ShowControllerLoadingErrorResult<RecordType>
-    | ShowControllerRefetchErrorResult<RecordType>
+    | ShowControllerLoadingErrorResult<RecordType, ErrorType>
+    | ShowControllerRefetchErrorResult<RecordType, ErrorType>
     | ShowControllerSuccessResult<RecordType>;

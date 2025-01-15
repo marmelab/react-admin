@@ -47,11 +47,11 @@ import { useEvent } from '../util';
  *     return <div>User {data.username}</div>;
  * };
  */
-export const useGetOne = <RecordType extends RaRecord = any>(
+export const useGetOne = <RecordType extends RaRecord = any, ErrorType = Error>(
     resource: string,
     { id, meta }: Partial<GetOneParams<RecordType>>,
-    options: UseGetOneOptions<RecordType> = {}
-): UseGetOneHookValue<RecordType> => {
+    options: UseGetOneOptions<RecordType, ErrorType> = {}
+): UseGetOneHookValue<RecordType, ErrorType> => {
     const dataProvider = useDataProvider();
     const {
         onError = noop,
@@ -64,7 +64,7 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     const onErrorEvent = useEvent(onError);
     const onSettledEvent = useEvent(onSettled);
 
-    const result = useQuery<RecordType>({
+    const result = useQuery<RecordType, ErrorType>({
         // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
         // Sometimes the id comes as a number (e.g. when read from a Record in useGetList response).
         // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
@@ -117,17 +117,22 @@ export const useGetOne = <RecordType extends RaRecord = any>(
 
 const noop = () => undefined;
 
-export type UseGetOneOptions<RecordType extends RaRecord = any> = Omit<
-    UseQueryOptions<GetOneResult<RecordType>['data']>,
+export type UseGetOneOptions<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = Omit<
+    UseQueryOptions<GetOneResult<RecordType>['data'], ErrorType>,
     'queryKey' | 'queryFn'
 > & {
     onSuccess?: (data: GetOneResult<RecordType>['data']) => void;
-    onError?: (error: Error) => void;
+    onError?: (error: ErrorType) => void;
     onSettled?: (
         data?: GetOneResult<RecordType>['data'],
-        error?: Error | null
+        error?: ErrorType | null
     ) => void;
 };
 
-export type UseGetOneHookValue<RecordType extends RaRecord = any> =
-    UseQueryResult<GetOneResult<RecordType>['data']>;
+export type UseGetOneHookValue<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = UseQueryResult<GetOneResult<RecordType>['data'], ErrorType>;

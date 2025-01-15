@@ -8,6 +8,7 @@ import { UseQueryOptions } from '@tanstack/react-query';
 export interface UseReferenceArrayFieldControllerParams<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
 > {
     filter?: any;
     page?: number;
@@ -18,7 +19,7 @@ export interface UseReferenceArrayFieldControllerParams<
     sort?: SortPayload;
     source: string;
     queryOptions?: Omit<
-        UseQueryOptions<ReferenceRecordType[]>,
+        UseQueryOptions<ReferenceRecordType[], ErrorType>,
         'queryFn' | 'queryKey'
     >;
 }
@@ -52,12 +53,14 @@ const defaultFilter = {};
 export const useReferenceArrayFieldController = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
 >(
     props: UseReferenceArrayFieldControllerParams<
         RecordType,
-        ReferenceRecordType
+        ReferenceRecordType,
+        ErrorType
     >
-): ListControllerResult => {
+): ListControllerResult<ReferenceRecordType, ErrorType> => {
     const {
         filter = defaultFilter,
         page = 1,
@@ -74,7 +77,7 @@ export const useReferenceArrayFieldController = <
     const ids = Array.isArray(value) ? value : emptyArray;
 
     const { data, error, isLoading, isFetching, isPending, refetch } =
-        useGetManyAggregate<ReferenceRecordType>(
+        useGetManyAggregate<ReferenceRecordType, ErrorType>(
             reference,
             { ids, meta },
             {
@@ -82,15 +85,16 @@ export const useReferenceArrayFieldController = <
                     notify(
                         typeof error === 'string'
                             ? error
-                            : error.message || 'ra.notification.http_error',
+                            : (error as Error)?.message ||
+                                  'ra.notification.http_error',
                         {
                             type: 'error',
                             messageArgs: {
                                 _:
                                     typeof error === 'string'
                                         ? error
-                                        : error && error.message
-                                          ? error.message
+                                        : (error as Error)?.message
+                                          ? (error as Error).message
                                           : undefined,
                             },
                         }
@@ -99,7 +103,7 @@ export const useReferenceArrayFieldController = <
             }
         );
 
-    const listProps = useList<ReferenceRecordType>({
+    const listProps = useList<ReferenceRecordType, ErrorType>({
         data,
         error,
         filter,

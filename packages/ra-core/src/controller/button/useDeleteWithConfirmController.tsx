@@ -64,8 +64,11 @@ import { useTranslate } from '../../i18n';
  *     );
  * };
  */
-const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
-    props: UseDeleteWithConfirmControllerParams<RecordType>
+const useDeleteWithConfirmController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
+    props: UseDeleteWithConfirmControllerParams<RecordType, ErrorType>
 ): UseDeleteWithConfirmControllerReturn => {
     const {
         record,
@@ -83,7 +86,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const redirect = useRedirect();
     const translate = useTranslate();
 
-    const [deleteOne, { isPending }] = useDelete<RecordType>(
+    const [deleteOne, { isPending }] = useDelete<RecordType, ErrorType>(
         resource,
         undefined,
         {
@@ -106,21 +109,22 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                 record && unselect([record.id]);
                 redirect(redirectTo, resource);
             },
-            onError: (error: Error) => {
+            onError: error => {
                 setOpen(false);
 
                 notify(
                     typeof error === 'string'
                         ? error
-                        : error.message || 'ra.notification.http_error',
+                        : (error as Error)?.message ||
+                              'ra.notification.http_error',
                     {
                         type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : error && error.message
-                                      ? error.message
+                                    : (error as Error)?.message
+                                      ? (error as Error).message
                                       : undefined,
                         },
                     }

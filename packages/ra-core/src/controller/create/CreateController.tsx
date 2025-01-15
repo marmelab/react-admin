@@ -4,6 +4,7 @@ import {
     CreateControllerProps,
     CreateControllerResult,
 } from './useCreateController';
+import { RaRecord } from '../../types';
 
 /**
  * Render prop version of the useCreateController hook
@@ -18,12 +19,18 @@ import {
  *     </CreateController>
  * );
  */
-export const CreateController = ({
+export const CreateController = <
+    RecordType extends Omit<RaRecord, 'id'> = any,
+    MutationOptionsError = Error,
+>({
     children,
     ...props
 }: {
-    children: (params: CreateControllerResult) => ReactNode;
-} & CreateControllerProps) => {
-    const controllerProps = useCreateController(props);
+    children: (params: CreateControllerResult<RecordType>) => ReactNode;
+} & CreateControllerProps<RecordType, MutationOptionsError>) => {
+    const controllerProps = useCreateController<
+        RecordType,
+        MutationOptionsError
+    >(props);
     return children(controllerProps);
 };

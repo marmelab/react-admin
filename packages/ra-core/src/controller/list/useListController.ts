@@ -42,9 +42,12 @@ import type {
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-export const useListController = <RecordType extends RaRecord = any>(
-    props: ListControllerProps<RecordType> = {}
-): ListControllerResult<RecordType> => {
+export const useListController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
+    props: ListControllerProps<RecordType, ErrorType> = {}
+): ListControllerResult<RecordType, ErrorType> => {
     const {
         debounce = 500,
         disableAuthentication = false,
@@ -114,7 +117,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         isFetching,
         isPending,
         refetch,
-    } = useGetList<RecordType>(
+    } = useGetList<RecordType, ErrorType>(
         resource,
         {
             pagination: {
@@ -132,12 +135,15 @@ export const useListController = <RecordType extends RaRecord = any>(
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
-                notify(error?.message || 'ra.notification.http_error', {
-                    type: 'error',
-                    messageArgs: {
-                        _: error?.message,
-                    },
-                }),
+                notify(
+                    (error as Error)?.message || 'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _: (error as Error)?.message,
+                        },
+                    }
+                ),
             ...otherQueryOptions,
         }
     );
@@ -219,10 +225,13 @@ export const useListController = <RecordType extends RaRecord = any>(
               ? query.page * query.perPage < total
               : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : query.page > 1,
-    } as ListControllerResult<RecordType>;
+    } as ListControllerResult<RecordType, ErrorType>;
 };
 
-export interface ListControllerProps<RecordType extends RaRecord = any> {
+export interface ListControllerProps<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> {
     /**
      * The debounce delay for filter queries in milliseconds. Defaults to 500ms.
      *
@@ -380,7 +389,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      *     );
      * }
      */
-    queryOptions?: UseGetListOptions<RecordType>;
+    queryOptions?: UseGetListOptions<RecordType, ErrorType>;
 
     /**
      * The resource name. Defaults to the resource from ResourceContext.
@@ -559,8 +568,11 @@ export interface ListControllerSuccessResult<RecordType extends RaRecord = any>
     isPending: false;
 }
 
-export type ListControllerResult<RecordType extends RaRecord = any> =
+export type ListControllerResult<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> =
     | ListControllerLoadingResult<RecordType>
-    | ListControllerErrorResult<RecordType>
-    | ListControllerRefetchErrorResult<RecordType>
+    | ListControllerErrorResult<RecordType, ErrorType>
+    | ListControllerRefetchErrorResult<RecordType, ErrorType>
     | ListControllerSuccessResult<RecordType>;

@@ -2,21 +2,30 @@ import { RaRecord, Identifier } from '../types';
 import { UseGetManyHookValue, useGetManyAggregate } from '../dataProvider';
 import { UseQueryOptions } from '@tanstack/react-query';
 
-interface UseReferenceProps<RecordType extends RaRecord = any> {
+interface UseReferenceProps<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> {
     id: Identifier;
     reference: string;
-    options?: Omit<UseQueryOptions<RecordType[]>, 'queryFn' | 'queryKey'> & {
+    options?: Omit<
+        UseQueryOptions<RecordType[], ErrorType>,
+        'queryFn' | 'queryKey'
+    > & {
         meta?: any;
     };
 }
 
-export interface UseReferenceResult<RecordType extends RaRecord = any> {
+export interface UseReferenceResult<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> {
     isLoading: boolean;
     isPending: boolean;
     isFetching: boolean;
     referenceRecord?: RecordType;
-    error?: any;
-    refetch: UseGetManyHookValue<RecordType>['refetch'];
+    error?: ErrorType | null;
+    refetch: UseGetManyHookValue<RecordType, ErrorType>['refetch'];
 }
 
 /**
@@ -47,14 +56,20 @@ export interface UseReferenceResult<RecordType extends RaRecord = any> {
  *
  * @returns {UseReferenceResult} The reference record
  */
-export const useReference = <RecordType extends RaRecord = RaRecord>({
+export const useReference = <
+    RecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
+>({
     reference,
     id,
     options = {},
-}: UseReferenceProps<RecordType>): UseReferenceResult<RecordType> => {
+}: UseReferenceProps<RecordType, ErrorType>): UseReferenceResult<
+    RecordType,
+    ErrorType
+> => {
     const { meta, ...otherQueryOptions } = options;
     const { data, error, isLoading, isFetching, isPending, refetch } =
-        useGetManyAggregate<RecordType>(
+        useGetManyAggregate<RecordType, ErrorType>(
             reference,
             { ids: [id], meta },
             otherQueryOptions
