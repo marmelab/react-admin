@@ -105,22 +105,25 @@ Finally, you can use any of TanStack Query's hooks:
 
 The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each of them.
 
-## Auto Refresh
+## Local API Mirror
 
-When calling the data provider via `useUpdate`, `useDelete`, or any other mutation hook, react-admin automatically refreshes the affected views. This ensures that the UI remains in sync with the server.
+React-admin caches query data locally in the browser and automatically reuses it to answer future queries whenever possible. By structuring and indexing the data by resource name and ID, React-admin offers several advantages:
 
-For instance, if you put a `<DeleteButton>` on each row of a list, clicking the button will remove the row from the list immediately, and refresh the list view to load one additional row.
+- **Stale-While-Revalidate**: React-admin renders the UI immediately using cached data while fetching fresh data from the server in the background. Once the server response arrives, the UI updates with the latest data seamlessly.
+- **Data Sharing Between Views**: When navigating from a list view to a show view, React-admin reuses data from the list to render the show view instantly, eliminating the need to wait for the `dataProvider.getOne()` response.
+- **Optimistic Updates**: Upon user actions like deleting or updating a record, React-admin immediately updates the local cache to reflect the change, providing instant UI feedback. The server request follows, and if it fails, React-admin reverts the local data and notifies the user.
+- **Auto Refresh**: After a successful mutation, React-admin invalidates dependent queries. TanStack Query then refetches the necessary data, ensuring the UI remains up-to-date automatically.
+
+For example, when a user deletes a book in a list, React-admin immediately removes it, making the row disappear. After the API confirms the deletion, React-admin invalidates the list’s cache, refreshes it, and another record appears at the end of the list.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="./img/AutoRefresh.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
-This works out of the box and leverages TanStack Query's query invalidation mechanism. When a mutation is successful, react-admin invalidates the queries that depend on the affected records. TanStack Query then refetches the data from the server, ensuring that the UI remains up to date.
+The local API mirror significantly enhances both the user experience (with a snappy and responsive UI) and the developer experience (by abstracting caching, invalidation, and optimistic updates).
 
-You don't need to do anything to enable this feature. It's part of react-admin's core functionality.
-
-## Optimistic Updates and Undo
+## Mutation Mode
 
 ## Custom Data Provider Methods
 
