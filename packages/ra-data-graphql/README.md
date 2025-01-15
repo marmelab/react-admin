@@ -229,7 +229,7 @@ This is useful if you need to support custom dataProvider methods such as those 
 ```tsx
 import { Identifier, GET_LIST, GET_ONE } from 'ra-core';
 import { RealTimeDataProvider } from '@react-admin/ra-realtime';
-import { IntrospectedResource } from 'ra-data-graphql';
+import { buildDataProvider, IntrospectedResource } from 'ra-data-graphql';
 
 const subscriptions: {
     topic: string;
@@ -256,7 +256,7 @@ export const dataProvider: RealTimeDataProvider = {
         if (!resourceIntrospection) throw new Error(`Invalid resource ${resourceName}`);
 
         const { query, queryName, variables } = buildQuery({ id, resource, resourceIntrospection });
-        const subscription = dataProvider.client
+        const subscription = baseDataProvider.client
             .subscribe({ query, variables })
             .subscribe(data =>
                 subscriptionCallback(data.data[queryName].event)
@@ -271,11 +271,16 @@ export const dataProvider: RealTimeDataProvider = {
         return Promise.resolve({ data: null });
     },
     unsubscribe: async (topic: string, subscriptionCallback: any) => {
-        subscriptions = subscriptions.filter(
+        const subscriptionIndex = subscriptions.findIndex(
             subscription =>
                 subscription.topic !== topic ||
                 subscription.subscriptionCallback !== subscriptionCallback
         );
+
+        if (subscriptionIndex) {
+            subscriptions[subscriptionIndex].unsubscribe();
+            subscriptions = subscriptions.splice(subscriptionIndex, 1);
+        }
         return Promise.resolve({ data: null });
     },
 }

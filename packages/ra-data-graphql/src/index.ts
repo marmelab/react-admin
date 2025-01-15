@@ -277,6 +277,7 @@ const getQueryOperation = query => {
 export type GetIntrospection = () => Promise<IntrospectionResult>;
 export type GraphqlDataProvider = DataProvider & {
     getIntrospection: GetIntrospection;
+    client: ApolloClient<unknown>;
 };
 
 export default buildGraphQLProvider;
