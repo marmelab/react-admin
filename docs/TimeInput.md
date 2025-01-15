@@ -47,6 +47,14 @@ import { TimeInput } from 'react-admin';
 <TimeInput source="published_at" />
 ```
 
+The input value must be a `Date` object, a string with the following format `'hh:mm'`, or a valid date string.
+Strings with [the ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) 'yyyy-MM-ddThh:mm' are the most common (e.g. `'2022-04-30T12:30'`).
+The field value may contain a timezone offset, e.g. `'2022-04-30T12:30+02:00'`.
+If no timezone is specified, the browser's timezone is used.
+
+After modification by the user, the value is stored as a `Date` object, using the browser's timezone.
+When transformed to JSON, the date is serialized as a string in the ISO 8601 format ('yyyy-MM-ddThh:mm').
+
 **Tip**: For a Material UI styled `<TimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
 ## Props
@@ -55,7 +63,7 @@ import { TimeInput } from 'react-admin';
 
 ## Material UI
 
-[React-admin Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<TimeInput>` styled with Material UI. 
+[React-admin Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> proposes an alternative `<TimeInput>` styled with Material UI. 
 
 ![TimeInput with Material UI](./img/TimeInput-MUI.png)
 
