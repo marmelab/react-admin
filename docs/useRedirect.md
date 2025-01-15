@@ -7,6 +7,8 @@ title: "useRedirect"
 
 This hook returns a function that redirects the user to another page.
 
+## Usage
+
 ```jsx
 import { useRedirect } from 'react-admin';
 
@@ -20,13 +22,14 @@ const DashboardButton = () => {
 ```
 
 The callback takes 5 arguments:
- - The page to redirect the user to ('list', 'create', 'edit', 'show', a function or a custom path)
- - The current `resource`
- - The `id` of the record to redirect to (if any)
- - A record-like object to be passed to the first argument, when the first argument is a function
- - A `state` to be set to the location
 
-Here are more examples of `useRedirect` calls: 
+- The page to redirect the user to ('list', 'create', 'edit', 'show', a function or a custom path)
+- The current `resource`
+- The `id` of the record to redirect to (if any)
+- A record-like object to be passed to the first argument, when the first argument is a function
+- A `state` to be set to the location
+
+Here are more examples of `useRedirect` calls:
 
 ```jsx
 // redirect to the post list page
@@ -35,25 +38,11 @@ redirect('list', 'posts');
 redirect('edit', 'posts', 1);
 // redirect to the post creation page:
 redirect('create', 'posts');
-// redirect to the result of a function
-redirect((resource, id, data) => { 
-    return data.hasComments ? '/comments' : '/posts';
-}, 'posts', 1, { hasComments: true });
 // redirect to edit view with state data
 redirect('edit', 'posts', 1, {}, { record: { post_id: record.id } });
-// do not redirect (resets the record form)
-redirect(false);
 ```
 
 Note that `useRedirect` allows redirection to an absolute URL outside the current React app.
-
-**Tip:** By default, react-admin scrolls to top on each redirection. You can disable it as follows:
-
-```jsx
-redirect(`/deals/${deal.id}/show`, undefined, undefined, undefined, {
-    _scrollToTop: false,
-});
-```
 
 **Tip:** For even more specific navigation, you can use the [`useNavigate`](https://reactrouter.com/en/main/hooks/use-navigate) hook from `react-router-dom` as follows:
 
@@ -76,4 +65,33 @@ const MyPageButton = () => {
     }
     return <button onClick={handleClick}>My page</button>;
 };
+```
+
+## Redirect function
+
+`useRedirect` allows you to redirect to the result of a function as follows:
+
+```jsx
+redirect((resource, id, data) => { 
+    return data.hasComments ? '/comments' : '/posts';
+}, 'posts', 1, { hasComments: true });
+```
+
+## `_scrollToTop`
+
+**Tip:** By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+
+```jsx
+redirect(`/deals/${deal.id}/show`, undefined, undefined, undefined, {
+    _scrollToTop: false,
+});
+```
+
+## Reset the record form
+
+`useRedirect` resets the record form, so you can use the `redirect` function to reset it without redirecting as follows:
+
+```jsx
+// do not redirect (resets the record form)
+redirect(false);
 ```
