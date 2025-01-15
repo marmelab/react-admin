@@ -19,6 +19,7 @@ import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
+import { visuallyHidden } from '@mui/utils';
 
 /**
  * Fetch reference record, and render its representation, or delegate rendering to child component.
@@ -111,13 +112,12 @@ export const ReferenceFieldView = <
 
     if (error) {
         return (
-            <ErrorIcon
-                aria-errormessage={
-                    typeof error === 'string' ? error : error?.message
-                }
-                color="error"
-                fontSize="small"
-            />
+            <div>
+                <ErrorIcon role="presentation" color="error" fontSize="small" />
+                <span style={visuallyHidden}>
+                    {typeof error === 'string' ? error : error?.message}
+                </span>
+            </div>
         );
     }
     // We explicitly check isLoading here as the record may not have an id for the reference,
