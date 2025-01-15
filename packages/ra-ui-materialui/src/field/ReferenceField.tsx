@@ -115,7 +115,6 @@ export const ReferenceFieldView = <
                 aria-errormessage={
                     typeof error === 'string' ? error : error?.message
                 }
-                role="presentation"
                 color="error"
                 fontSize="small"
             />

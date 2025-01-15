@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { RaRecord } from '../../types';
 import {
     useShowController,
@@ -27,7 +28,7 @@ export const ShowController = <
 }: {
     children: (
         params: ShowControllerResult<RecordType, ErrorType>
-    ) => JSX.Element;
+    ) => ReactNode;
 } & ShowControllerProps<RecordType, ErrorType>) => {
     const controllerProps = useShowController<RecordType, ErrorType>(props);
     return children(controllerProps);

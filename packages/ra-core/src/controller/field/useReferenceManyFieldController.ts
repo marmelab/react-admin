@@ -64,7 +64,7 @@ export const useReferenceManyFieldController = <
         sort: initialSort = { field: 'id', order: 'DESC' },
         queryOptions = {} as UseQueryOptions<
             { data: ReferenceRecordType[]; total: number },
-            Error
+            ErrorType
         >,
     } = props;
     const notify = useNotify();
@@ -182,7 +182,6 @@ export const useReferenceManyFieldController = <
         },
         {
             enabled: get(record, source) != null,
-            // @ts-expect-error FIXME The error type is not correctly inferred
             placeholderData: previousData => previousData,
             onError: error =>
                 notify(
