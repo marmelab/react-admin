@@ -125,6 +125,30 @@ The local API mirror significantly enhances both the user experience (with a sna
 
 ## Mutation Mode
 
+React-admin provides three approaches for handling updates and deletions:
+
+- **Undoable** (default): React-admin updates the UI immediately and displays an undo button. During this time, it doesn't send a request to the server. If the user clicks the undo button, React-admin restores the previous UI state and cancels the server request. If the user doesn't click the undo button, it sends the request to the server after the delay.
+- **Optimistic**: React-admin updates the UI immediately and sends the request to the server at the same time. If the server request fails, it reverts the UI to its previous state to maintain consistency.
+- **Pessimistic**: React-admin sends the request to the server first. After the server confirms success, it updates the UI. If the request fails, it displays an error message to inform the user.
+
+![Success message with undo](./img/DeleteButton_success.png)
+
+For each mutation hook or component, you can specify the mutation mode:
+
+```jsx
+const DeletePostButton = ({ record }) => {
+    const [deleteOne] = useDelete(
+        'posts',
+        { id: record.id },
+        { mutationMode: 'pessimistic' }
+    );
+    const handleClick = () => deleteOne();
+    return <Button label="Delete" onClick={handleClick} />;
+};
+```
+
+Refer to the [Querying the API](./Actions.md#optimistic-rendering-and-undo) chapter for details.
+
 ## Custom Data Provider Methods
 
 Your API backend may expose non-CRUD endpoints, e.g., for calling Remote Procedure Calls (RPC).
@@ -269,9 +293,8 @@ This approach improves the developer experience as you don't need to build compl
 
 However, this cascade of Data Provider requests can appear inefficient in terms of user-perceived performance. React-admin includes several optimizations to mitigate this:
 
+- [**Local API Mirror**](#local-api-mirror) (see above)
 - **Partial Rendering**: React-admin renders the page with the book data first and updates it when the author data arrives. This ensures users see data as soon as possible.
-- **Caching**: If the author data is already cached, React-admin displays it immediately, rendering the entire page in one pass. Since most admin apps are long-lived, the cache is often populated.
-- **Local Database Mirror**: React-admin populates its internal cache with individual records fetched using `dataProvider.getList()`. When a user views a specific record, React-admin leverages its internal database to pre-fill the `dataProvider.getOne()` query response. As a result, record details are displayed instantaneously, without any wait time for server responses.
 - **Query Aggregation**: React-admin intercepts all calls to `dataProvider.getOne()` for related data when a `<ReferenceField>` is used in a list. It aggregates and deduplicates the requested ids, and issues a single `dataProvider.getMany()` request. This technique effectively addresses the n+1 query problem, reduces server queries, and accelerates list view rendering.
 - **Smart Loading Indicators**: `<ReferenceField>` renders blank placeholders during the first second to avoid layout shifts when the response arrives. If the response takes longer, React-admin shows a spinner to indicate progress while maintaining a smooth user experience.
 - **Embedded Data** and **Prefetching**: Data providers can return data from related resources in the same response as the requested resource. React-admin uses this feature to avoid additional network requests and to display related data immediately.
