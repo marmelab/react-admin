@@ -39,6 +39,7 @@ export const ReferenceOneField = <
         reference,
         source = 'id',
         target,
+        emptyContent,
         emptyText,
         sort,
         filter,
@@ -76,7 +77,9 @@ export const ReferenceOneField = <
     return !record ||
         (!controllerProps.isPending &&
             controllerProps.referenceRecord == null) ? (
-        emptyText ? (
+        emptyContent ? (
+            emptyContent
+        ) : emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
@@ -105,6 +108,7 @@ export interface ReferenceOneFieldProps<
     source?: string;
     filter?: any;
     link?: LinkToType<ReferenceRecordType>;
+    emptyContent?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];
