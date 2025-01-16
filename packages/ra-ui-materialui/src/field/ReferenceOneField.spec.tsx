@@ -6,6 +6,7 @@ import {
     Basic,
     EmptyWithTranslate,
     QueryOptions,
+    EmptyContent,
 } from './ReferenceOneField.stories';
 
 describe('ReferenceOneField', () => {
@@ -13,6 +14,7 @@ describe('ReferenceOneField', () => {
         render(<RecordRepresentation />);
         await screen.findByText('Genre: novel, ISBN: 9780393966473');
     });
+
     it('should render its child in the context of the related record', async () => {
         render(<Basic />);
         await screen.findByText('9780393966473');
@@ -23,6 +25,7 @@ describe('ReferenceOneField', () => {
 
         await screen.findByText('Not found');
     });
+
     it('should accept a queryOptions prop', async () => {
         const dataProvider = {
             getManyReference: jest.fn().mockImplementationOnce(() =>
@@ -47,5 +50,10 @@ describe('ReferenceOneField', () => {
                 }
             );
         });
+    });
+
+    it('should render the "emptyContent" prop when the record is not found', async () => {
+        render(<EmptyContent />);
+        await screen.findByText('Create');
     });
 });
