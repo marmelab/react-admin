@@ -600,7 +600,7 @@ It also supports [all the other `<Button>` props](#button).
 
 ### `scrollToTop`
 
-By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+By default, react-admin scrolls when redirecting to the create view. You can disable it as follows:
 
 ```jsx
 const CloneButtonWithoutScrollToTop = () => <CloneButton scrollToTop={false} />
@@ -699,7 +699,7 @@ It also supports [all the other `<Button>` props](#button).
 
 ### `scrollToTop`
 
-By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+By default, react-admin will scroll the page to the top after redirecting. You can disable it as follows:
 
 ```jsx
 const CreateButtonWithoutScrollToTop = () => <CreateButton scrollToTop={false} />
@@ -980,7 +980,7 @@ It also supports [all the other `<Button>` props](#button).
 
 ### `scrollToTop`
 
-By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+By default, react-admin will scroll the page to the top after redirecting. You can disable it as follows:
 
 ```jsx
 const EditButtonWithoutScrollToTop = () => <EditButton scrollToTop={false} />
@@ -1217,7 +1217,7 @@ It also supports [all the other `<Button>` props](#button).
 
 ### `scrollToTop`
 
-By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+By default, react-admin will scroll the page to the top after redirecting. You can disable it as follows:
 
 ```jsx
 const ShowButtonWithoutScrollToTop = () => <ShowButton scrollToTop={false} />
