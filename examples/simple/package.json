@@ -25,8 +25,8 @@
         "react-admin": "^5.4.4",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.53.0",
-        "react-router": "^6.25.1",
-        "react-router-dom": "^6.25.1"
+        "react-router": "^6.28.1",
+        "react-router-dom": "^6.28.1"
     },
     "devDependencies": {
         "@hookform/devtools": "^4.3.3",

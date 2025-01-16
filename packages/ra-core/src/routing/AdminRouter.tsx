@@ -4,6 +4,7 @@ import {
     useInRouterContext,
     createHashRouter,
     RouterProvider,
+    FutureConfig,
 } from 'react-router-dom';
 
 import { BasenameContextProvider } from './BasenameContextProvider';
@@ -35,6 +36,10 @@ const DummyRouter = ({
     basename?: string;
 }) => <>{children}</>;
 
+const routerProviderFuture: Partial<Pick<FutureConfig, 'v7_startTransition'>> =
+    // @ts-expect-error react-router types are not up-to-date
+    { v7_startTransition: false, v7_relativeSplatPath: false };
+
 const InternalRouter = ({
     children,
     basename,
@@ -44,6 +49,13 @@ const InternalRouter = ({
 }) => {
     const router = createHashRouter([{ path: '*', element: <>{children}</> }], {
         basename,
+        future: {
+            v7_fetcherPersist: false,
+            v7_normalizeFormMethod: false,
+            v7_partialHydration: false,
+            v7_relativeSplatPath: false,
+            v7_skipActionErrorRevalidation: false,
+        },
     });
-    return <RouterProvider router={router} />;
+    return <RouterProvider router={router} future={routerProviderFuture} />;
 };

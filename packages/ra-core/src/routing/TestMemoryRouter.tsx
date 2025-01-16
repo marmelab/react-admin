@@ -69,7 +69,22 @@ export const TestMemoryRouter = ({
                 ),
             },
         ],
-        { ...rest }
+        {
+            future: {
+                v7_fetcherPersist: false,
+                v7_normalizeFormMethod: false,
+                v7_partialHydration: false,
+                v7_relativeSplatPath: false,
+                v7_skipActionErrorRevalidation: false,
+            },
+            ...rest,
+        }
     );
-    return <RouterProvider router={router} />;
+    return (
+        <RouterProvider
+            router={router}
+            // @ts-expect-error react-router types are not up-to-date
+            future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
+        />
+    );
 };
