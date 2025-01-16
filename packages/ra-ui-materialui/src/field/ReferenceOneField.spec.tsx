@@ -6,7 +6,7 @@ import {
     Basic,
     EmptyWithTranslate,
     QueryOptions,
-    EmptyContent,
+    EmptyText,
 } from './ReferenceOneField.stories';
 
 describe('ReferenceOneField', () => {
@@ -53,7 +53,7 @@ describe('ReferenceOneField', () => {
     });
 
     it('should render the "emptyContent" prop when the record is not found', async () => {
-        render(<EmptyContent />);
+        render(<EmptyText />);
         await waitFor(() => {
             expect(screen.queryAllByText('no detail')).toHaveLength(3);
         });

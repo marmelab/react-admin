@@ -116,18 +116,6 @@ const emptyDataProvider = {
         }),
 } as any;
 
-export const EmptyText = () => (
-    <Wrapper dataProvider={emptyDataProvider}>
-        <ReferenceOneField
-            reference="book_details"
-            target="book_id"
-            emptyText="no detail"
-        >
-            <TextField source="ISBN" />
-        </ReferenceOneField>
-    </Wrapper>
-);
-
 const dataProvider = fakeRestDataProvider({
     book_details: [],
     books: [
@@ -152,7 +140,7 @@ const dataProvider = fakeRestDataProvider({
     ],
 });
 
-export const EmptyContent = () => (
+export const EmptyText = () => (
     <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
         <AdminUI>
             <Resource
