@@ -55,8 +55,6 @@ If no timezone is specified, the browser's timezone is used.
 After modification by the user, the value is stored as a `Date` object, using the browser's timezone.
 When transformed to JSON, the date is serialized as a string in the ISO 8601 format ('yyyy-MM-ddThh:mm').
 
-**Tip**: For a Material UI styled `<TimeInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
-
 ## Props
 
 `<TimeInput>` accepts the [common input props](./Inputs.md#common-input-props).
