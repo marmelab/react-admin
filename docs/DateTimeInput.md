@@ -13,7 +13,6 @@ An input for editing dates with time. `<DateTimeInput>` renders an `<input type=
   Your browser does not support the video tag.
 </video>
 
-
 The appearance depends on the browser, and falls back to a text input on safari. The date formatting in this input depends on the user's locale.
 
 React-admin also proposes a [DateTimeInput styled with Material UI](#material-ui) documented at the end of this page.
@@ -44,7 +43,7 @@ If you need to implement your own `format` and `parse` functions, make sure the 
 
 ## Material UI
 
-[React-admin Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> proposes an alternative `<DateTimeInput>` styled with Material UI. 
+[React-admin Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> proposes an alternative `<DateTimeInput>` styled with Material UI.
 
 ![DateTimeInput with Material UI](./img/DateTimeInput-MUI.png)
 
