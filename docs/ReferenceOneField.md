@@ -78,7 +78,6 @@ For instance, if you want to render both the genre and the ISBN for a book:
 </ReferenceOneField>
 ```
 
-
 ## `emptyText`
 
 Use `emptyText` to customize the text displayed when the related record is empty.
