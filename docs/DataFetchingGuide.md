@@ -50,7 +50,9 @@ The Data Provider is a key part of react-admin's architecture. By standardizing 
 
 ## Calling The Data Provider
 
-React-admin uses [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview) to call your Data Provider (mostly by leveraging TanStack Query's `useQuery` and `useMutation` hooks). You don't need to know TanStack Query to fetch or update data, as react-admin exposes one hook per Data Provider method:
+Many react-admin components use the Data Provider: page components like `<List>` and `<Edit>`, reference components like `<ReferenceField>` and `<ReferenceInput>`, action Buttons like `<DeleteButton>` and `<SaveButton>`, and many more.
+
+If you need to call the Data Provider directly from your own components, you can use the specialized hooks provided by react-admin:
 
 * [`useGetList`](./useGetList.md)
 * [`useGetOne`](./useGetOne.md)
@@ -98,12 +100,35 @@ const BanUserButton = ({ userId }) => {
 };
 ```
 
-Finally, you can use any of TanStack Query's hooks:
+The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each of them.
+
+## React Query
+
+React-admin uses [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/overview) to call the Data Provider. Specialized hooks like `useGetOne` use TanStack Query's hooks under the hood, and accept the same options.
+
+You can use any of TanStack Query's hooks in your own code:
 
 - [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/guides/queries) for reading data
 - [`useMutation`](https://tanstack.com/query/latest/docs/framework/react/guides/mutations) for writing data.
 
-The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each of them.
+For instance, you can use `useMutation` to call the `dataProvider.update()` directly. This lets you track the mutation's status and add side effects:
+
+```jsx
+import { useDataProvider, useNotify } from 'react-admin';
+import { useQuery } from '@tanstack/react-query';
+
+const BanUserButton = ({ userId }) => {
+    const dataProvider = useDataProvider();
+    const notify = useNotify();
+    const { mutate, isPending } = useMutation({
+        mutationFn: () => dataProvider.update('users', { id: userId, data: { isBanned: true } }),
+        onSuccess: () => notify('User banned'),
+    });
+    return <Button label="Ban user" onClick={() => mutate()} disabled={isPending} />;
+};
+```
+
+Check out the [TanStack Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview) for more information on how to use it.
 
 ## Local API Mirror
 
@@ -320,9 +345,7 @@ Here is a list of react-admin's [relationship components](./Features.md#relation
 If a relationship component doesn't fit your specific use case, you can always use a [custom data provider method](#adding-custom-methods) to fetch the required data.
 ``
 
-## Real-Time Updates And Locks
-
-Teams where several people work in parallel on a common task need to allow live updates, real-time notifications, and prevent data loss when two editors work on the same resource concurrently. 
+## Realtime
 
 <video controls autoplay playsinline muted>
   <source src="./img/CollaborativeDemo.mp4" type="video/mp4" />

@@ -22,7 +22,7 @@
   <li {% if page.path == 'Architecture.md' %} class="active" {% endif %}><a class="nav-link" href="./Architecture.html">General Concepts</a></li>
   <li {% if page.path == 'Features.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Features.html">Features</a></li>
   <li {% if page.path == 'DataFetchingGuide.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./DataFetchingGuide.html">Data Fetching</a></li>
-  <li {% if page.path == 'Authentication.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Authentication.html">Security</a></li>
+  <li {% if page.path == 'SecurityGuide.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./SecurityGuide.html">Security</a></li>
   <li {% if page.path == 'ListTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./ListTutorial.html">CRUD: List</a></li>
   <li {% if page.path == 'EditTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./EditTutorial.html">CRUD: Creation & Edition</a></li>
   <li {% if page.path == 'ShowTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./ShowTutorial.html">CRUD: Show</a></li>
@@ -64,6 +64,7 @@
   </ul>
   
   <ul><div>Security</div>
+    <li {% if page.path == 'Authentication.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Authentication.html">Auth Provider Setup</a></li>
     <li {% if page.path == 'AuthProviderList.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./AuthProviderList.html">Supported backends</a></li>
     <li {% if page.path == 'AuthProviderWriting.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./AuthProviderWriting.html">Writing An Auth Provider</a></li>
     <li {% if page.path == 'Permissions.md' %} class="active" {% endif %}><a class="nav-link" href="./Permissions.html">Authorization</a></li>
