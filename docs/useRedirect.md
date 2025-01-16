@@ -77,6 +77,21 @@ redirect((resource, id, data) => {
 }, 'posts', 1, { hasComments: true });
 ```
 
+Your function can also return an object containing a `pathname` and optionally some keys of [a `NavigateOptions` object](https://api.reactrouter.com/dev/interfaces/react_router.NavigateOptions.html).
+
+```jsx
+redirect((resource, id, data) => { 
+    return {
+        pathname: `/${resource}/1`,
+        state: { record: { id: 1, foo: 'bar' } },
+        flushSync: true,
+        preventScrollReset: true,
+        replace: false,
+        viewTransition: true,
+    };
+});
+```
+
 ## `_scrollToTop`
 
 **Tip:** By default, react-admin scrolls to top on each redirection. You can disable it as follows:
