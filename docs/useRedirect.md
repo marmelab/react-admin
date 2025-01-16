@@ -77,9 +77,9 @@ redirect((resource, id, data) => {
 }, 'posts', 1, { hasComments: true });
 ```
 
-## `_scrollToTop`
+## Disable Scroll To Top
 
-**Tip:** By default, react-admin scrolls to top on each redirection. You can disable it as follows:
+By default, react-admin scrolls to top on each redirection. You can disable it by passing a `_scrollToTop: false` option in the 5th argument:
 
 ```jsx
 redirect(`/deals/${deal.id}/show`, undefined, undefined, undefined, {
