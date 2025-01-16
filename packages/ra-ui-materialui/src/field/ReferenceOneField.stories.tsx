@@ -27,7 +27,6 @@ import {
     CreateButton,
     Create,
     List,
-    ListGuesser,
     Show,
     SimpleShowLayout,
     SimpleForm,
@@ -154,63 +153,78 @@ const dataProvider = fakeRestDataProvider({
 });
 
 export const EmptyContent = () => (
-    <TestMemoryRouter initialEntries={['/books/1/show']}>
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <AdminUI>
-                <Resource
-                    name="books"
-                    list={ListGuesser}
-                    show={() => (
-                        <Show>
-                            <SimpleShowLayout>
-                                <TextField source="id" />
-                                <TextField source="title" />
-                                <TextField source="year" />
-                                <TextField source="Genre" />
-                                <ReferenceOneField
-                                    reference="book_details"
-                                    target="book_id"
-                                    label="ISBN"
-                                    emptyContent={
-                                        <CreateButton to="/book_details/create" />
-                                    }
-                                >
-                                    <TextField source="ISBN" />
-                                </ReferenceOneField>
-                            </SimpleShowLayout>
-                        </Show>
-                    )}
-                />
-                <Resource
-                    name="book_details"
-                    list={() => (
-                        <List>
-                            <Datagrid>
-                                <TextField source="id" />
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="title" />
+                            <TextField source="year" />
+                            <TextField source="Genre" />
+                            <ReferenceOneField
+                                reference="book_details"
+                                target="book_id"
+                                label="ISBN"
+                                emptyText="no detail"
+                            >
                                 <TextField source="ISBN" />
-                                <ReferenceField
-                                    source="book_id"
-                                    reference="books"
-                                />
-                            </Datagrid>
-                        </List>
-                    )}
-                    create={() => (
-                        <Create>
-                            <SimpleForm>
-                                <TextInput source="ISBN" />
-                                <ReferenceInput
-                                    source="book_id"
-                                    reference="books"
-                                    label="Book"
-                                />
-                            </SimpleForm>
-                        </Create>
-                    )}
-                />
-            </AdminUI>
-        </AdminContext>
-    </TestMemoryRouter>
+                            </ReferenceOneField>
+                        </Datagrid>
+                    </List>
+                )}
+                show={() => (
+                    <Show>
+                        <SimpleShowLayout>
+                            <TextField source="id" />
+                            <TextField source="title" />
+                            <TextField source="year" />
+                            <TextField source="Genre" />
+                            <ReferenceOneField
+                                reference="book_details"
+                                target="book_id"
+                                label="ISBN"
+                                emptyText={
+                                    <CreateButton to="/book_details/create" />
+                                }
+                            >
+                                <TextField source="ISBN" />
+                            </ReferenceOneField>
+                        </SimpleShowLayout>
+                    </Show>
+                )}
+            />
+            <Resource
+                name="book_details"
+                list={() => (
+                    <List>
+                        <Datagrid>
+                            <TextField source="id" />
+                            <TextField source="ISBN" />
+                            <ReferenceField
+                                source="book_id"
+                                reference="books"
+                            />
+                        </Datagrid>
+                    </List>
+                )}
+                create={() => (
+                    <Create>
+                        <SimpleForm>
+                            <TextInput source="ISBN" />
+                            <ReferenceInput
+                                source="book_id"
+                                reference="books"
+                                label="Book"
+                            />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </AdminUI>
+    </AdminContext>
 );
 
 export const EmptyWithTranslate = () => (

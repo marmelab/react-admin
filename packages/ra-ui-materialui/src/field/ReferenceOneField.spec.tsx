@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import {
     RecordRepresentation,
@@ -54,6 +54,10 @@ describe('ReferenceOneField', () => {
 
     it('should render the "emptyContent" prop when the record is not found', async () => {
         render(<EmptyContent />);
+        await waitFor(() => {
+            expect(screen.queryAllByText('no detail')).toHaveLength(3);
+        });
+        fireEvent.click(screen.getByText('War and Peace'));
         await screen.findByText('Create');
     });
 });
