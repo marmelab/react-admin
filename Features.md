@@ -1123,7 +1123,7 @@ These building blocks include:
 - A [rich text editor](./RichTextInput.md),
 - A [markdown editor](./MarkdownInput.md)
 - A [clone button](./Buttons.md#clonebutton)
-- Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./HorizontalMenu.md), etc.)
+- Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./ContainerLayout.md#horizontalmenu), etc.)
 - Various [page](./ContainerLayout.md) and [form](https://react-admin-ee.marmelab.com/documentation/ra-form-layout) layouts
 - ...and many more.
 
@@ -1723,3 +1723,4 @@ The core team is fortunate to be able to work full-time on react-admin, and this
 - contribute to the open-source community
 
 At Marmelab, "sustainable" also means **low carbon footprint**. React-admin is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://tanstack.com/query/v5/) for caching data in react-admin reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.
+
