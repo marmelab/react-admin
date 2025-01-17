@@ -600,7 +600,7 @@ It also supports [all the other `<Button>` props](#button).
 
 ### `scrollToTop`
 
-By default, react-admin scrolls when redirecting to the create view. You can disable it as follows:
+By default, react-admin scrolls the page to the top after redirecting to the create view. You can disable it as follows:
 
 ```jsx
 const CloneButtonWithoutScrollToTop = () => <CloneButton scrollToTop={false} />
