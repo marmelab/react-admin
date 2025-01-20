@@ -344,7 +344,9 @@ export const InNonDataRouter = ({
 }: {
     i18nProvider?: I18nProvider;
 }) => (
-    <HashRouter>
+    <HashRouter
+        future={{ v7_relativeSplatPath: false, v7_startTransition: false }}
+    >
         <CoreAdminContext i18nProvider={i18nProvider}>
             <Routes>
                 <Route path="/" element={<Link to="/form">Go to form</Link>} />

@@ -5,11 +5,13 @@ import {
     useListContext,
     useRecordContext,
     TestMemoryRouter,
+    ResourceContextProvider,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Card, ThemeProvider, createTheme } from '@mui/material';
 
+import { AdminContext } from '../AdminContext';
 import { ArrayField } from './ArrayField';
 import { Datagrid, SingleFieldList } from '../list';
 import { ChipField } from './ChipField';
@@ -133,42 +135,50 @@ export const ListContext = () => (
 
 export const InShowLayout = () => (
     <TestMemoryRouter>
-        <RecordContextProvider
-            value={{
-                id: 123,
-                title: 'Lorem Ipsum Sit Amet',
-                tags: [{ name: 'dolor' }, { name: 'sit' }, { name: 'amet' }],
-                backlinks: [
-                    {
-                        uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
-                        date: '2012-08-10T00:00:00.000Z',
-                        url: 'http://example.com/foo/bar.html',
-                    },
-                    {
-                        uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',
-                        date: '2012-08-14T00:00:00.000Z',
-                        url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
-                    },
-                ],
-            }}
-        >
-            <Card sx={{ m: 1, p: 1 }}>
-                <SimpleShowLayout>
-                    <TextField source="title" />
-                    <ArrayField source="tags">
-                        <SingleFieldList linkType={false}>
-                            <ChipField source="name" size="small" />
-                        </SingleFieldList>
-                    </ArrayField>
-                    <ArrayField source="backlinks">
-                        <Datagrid bulkActionButtons={false}>
-                            <TextField source="uuid" />
-                            <TextField source="date" />
-                            <TextField source="url" />
-                        </Datagrid>
-                    </ArrayField>
-                </SimpleShowLayout>
-            </Card>
-        </RecordContextProvider>
+        <AdminContext>
+            <ResourceContextProvider value="posts">
+                <RecordContextProvider
+                    value={{
+                        id: 123,
+                        title: 'Lorem Ipsum Sit Amet',
+                        tags: [
+                            { name: 'dolor' },
+                            { name: 'sit' },
+                            { name: 'amet' },
+                        ],
+                        backlinks: [
+                            {
+                                uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
+                                date: '2012-08-10T00:00:00.000Z',
+                                url: 'http://example.com/foo/bar.html',
+                            },
+                            {
+                                uuid: 'd907743a-253d-4ec1-8329-404d4c5e6cf1',
+                                date: '2012-08-14T00:00:00.000Z',
+                                url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+                            },
+                        ],
+                    }}
+                >
+                    <Card sx={{ m: 1, p: 1 }}>
+                        <SimpleShowLayout>
+                            <TextField source="title" />
+                            <ArrayField source="tags">
+                                <SingleFieldList linkType={false}>
+                                    <ChipField source="name" size="small" />
+                                </SingleFieldList>
+                            </ArrayField>
+                            <ArrayField source="backlinks">
+                                <Datagrid bulkActionButtons={false}>
+                                    <TextField source="uuid" />
+                                    <TextField source="date" />
+                                    <TextField source="url" />
+                                </Datagrid>
+                            </ArrayField>
+                        </SimpleShowLayout>
+                    </Card>
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </AdminContext>
     </TestMemoryRouter>
 );

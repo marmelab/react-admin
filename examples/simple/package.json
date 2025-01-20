@@ -1,6 +1,6 @@
 {
     "name": "simple",
-    "version": "5.4.3",
+    "version": "5.4.4",
     "private": true,
     "type": "module",
     "scripts": {
@@ -16,17 +16,17 @@
         "@tanstack/react-query-devtools": "^5.21.7",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
-        "ra-data-fakerest": "^5.4.3",
-        "ra-i18n-polyglot": "^5.4.3",
-        "ra-input-rich-text": "^5.4.3",
-        "ra-language-english": "^5.4.3",
-        "ra-language-french": "^5.4.3",
+        "ra-data-fakerest": "^5.4.4",
+        "ra-i18n-polyglot": "^5.4.4",
+        "ra-input-rich-text": "^5.4.4",
+        "ra-language-english": "^5.4.4",
+        "ra-language-french": "^5.4.4",
         "react": "^18.3.1",
-        "react-admin": "^5.4.3",
+        "react-admin": "^5.4.4",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.53.0",
-        "react-router": "^6.25.1",
-        "react-router-dom": "^6.25.1"
+        "react-router": "^6.28.1",
+        "react-router-dom": "^6.28.1"
     },
     "devDependencies": {
         "@hookform/devtools": "^4.3.3",

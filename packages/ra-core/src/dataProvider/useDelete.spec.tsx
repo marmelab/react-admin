@@ -9,6 +9,7 @@ import { useDelete } from './useDelete';
 import {
     ErrorCase as ErrorCasePessimistic,
     SuccessCase as SuccessCasePessimistic,
+    InList,
 } from './useDelete.pessimistic.stories';
 import {
     ErrorCase as ErrorCaseOptimistic,
@@ -314,6 +315,25 @@ describe('useDelete', () => {
                 { timeout: 4000 }
             );
         });
+        it('when pessimistic, forces a refresh of related queries', async () => {
+            render(<InList />);
+            await screen.findByText('Books 1-10 on 25');
+            // Element #2 is there
+            expect(screen.queryByText('The Little Prince')).not.toBeNull();
+            // Element #11 is not in this page
+            expect(screen.queryByText('The Chronicles of Narnia')).toBeNull();
+            // Delete element #2
+            const TheLittlePrinceDeleteButton =
+                screen.queryAllByText('Delete')[1];
+            TheLittlePrinceDeleteButton.click();
+            await screen.findByText('Books 1-10 on 24');
+            // Element #2 is not there anymore
+            expect(screen.queryByText('The Little Prince')).toBeNull();
+            // The list was refetched, so a new element appeared at the end
+            expect(
+                screen.queryByText('The Chronicles of Narnia')
+            ).not.toBeNull();
+        });
         it('when optimistic, displays result and success side effects right away', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseOptimistic />);
@@ -448,10 +468,14 @@ describe('useDelete', () => {
             } as any;
             let localDeleteOne;
             const Dummy = () => {
-                const [deleteOne] = useDelete('foo', {
-                    id: 1,
-                    previousData: { id: 1, bar: 'bar' },
-                });
+                const [deleteOne] = useDelete(
+                    'foo',
+                    {
+                        id: 1,
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { mutationMode: 'optimistic' }
+                );
                 localDeleteOne = deleteOne;
                 return <span />;
             };
@@ -499,10 +523,14 @@ describe('useDelete', () => {
             } as any;
             let localDeleteOne;
             const Dummy = () => {
-                const [deleteOne] = useDelete('foo', {
-                    id: 1,
-                    previousData: { id: 1, bar: 'bar' },
-                });
+                const [deleteOne] = useDelete(
+                    'foo',
+                    {
+                        id: 1,
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { mutationMode: 'optimistic' }
+                );
                 localDeleteOne = deleteOne;
                 return <span />;
             };
@@ -555,10 +583,14 @@ describe('useDelete', () => {
             } as any;
             let localDeleteOne;
             const Dummy = () => {
-                const [deleteOne] = useDelete('foo', {
-                    id: 1,
-                    previousData: { id: 1, bar: 'bar' },
-                });
+                const [deleteOne] = useDelete(
+                    'foo',
+                    {
+                        id: 1,
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { mutationMode: 'optimistic' }
+                );
                 localDeleteOne = deleteOne;
                 return <span />;
             };
