@@ -147,6 +147,43 @@ const App = () => (
 export default App;
 ```
 
+## Unit Test Your App with Vitest
+
+Vitest is a fast and efficient unit testing framework designed specifically for the Vite ecosystem. 
+
+To enable it, start by adding the dependencies:
+
+```sh
+yarn add -D vitest @vitest/browser playwright
+```
+
+Then modify and use the following configs:
+
+```diff
+// in vite.config.ts
+
++/// <reference types="vitest" />
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
++ test: {
++   browser: {
++     enabled: true,
++     provider: "playwright",
++     instances: [
++       {
++         browser: "chromium",
++       },
++     ],
++   },
++   globals: true,
++ },
+});
+```
+
 ## Troubleshooting
 
 ### Error about `global` Being `undefined`
