@@ -23,9 +23,7 @@
   <li {% if page.path == 'Features.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Features.html">Features</a></li>
   <li {% if page.path == 'DataFetchingGuide.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./DataFetchingGuide.html">Data Fetching</a></li>
   <li {% if page.path == 'SecurityGuide.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./SecurityGuide.html">Security</a></li>
-  <li {% if page.path == 'ListTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./ListTutorial.html">CRUD: List</a></li>
-  <li {% if page.path == 'EditTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./EditTutorial.html">CRUD: Creation & Edition</a></li>
-  <li {% if page.path == 'ShowTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./ShowTutorial.html">CRUD: Show</a></li>
+  <li {% if page.path == 'CRUD.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./CRUD.html">CRUD Pages</a></li>
   <li {% if page.path == 'Fields.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Fields.html">Fields</a></li>
   <li {% if page.path == 'Forms.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Forms.html">Forms</a></li>
   <li {% if page.path == 'Inputs.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Inputs.html">Inputs</a></li>
@@ -84,6 +82,7 @@
   </ul>
   
   <ul><div>List Page</div>
+    <li {% if page.path == 'ListTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./ListTutorial.html">Introduction</a></li>
     <li {% if page.path == 'FilteringTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./FilteringTutorial.html">Filtering The List</a></li>
     <li {% if page.path == 'List.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./List.html"><code>&lt;List&gt;</code></a></li>
     <li {% if page.path == 'ListBase.md' %} class="active" {% endif %}><a class="nav-link" href="./ListBase.html"><code>&lt;ListBase&gt;</code></a></li>
@@ -95,6 +94,7 @@
     <li {% if page.path == 'SimpleList.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./SimpleList.html"><code>&lt;SimpleList&gt;</code></a></li>
     <li {% if page.path == 'SingleFieldList.md' %} class="active" {% endif %}><a class="nav-link" href="./SingleFieldList.html"><code>&lt;SingleFieldList&gt;</code></a></li>
     <li {% if page.path == 'EditableDatagrid.md' %} class="active" {% endif %}><a class="nav-link" href="./EditableDatagrid.html"><code>&lt;EditableDatagrid&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+    <li {% if page.path == 'EditInDialogButton.md' %} class="active" {% endif %}><a class="nav-link" href="./EditInDialogButton.html"><code>&lt;EditInDialogButton&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'Calendar.md' %} class="active" {% endif %}><a class="nav-link" href="./Calendar.html"><code>&lt;Calendar&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'FilterButton.md' %} class="active" {% endif %}><a class="nav-link" href="./FilterButton.html"><code>&lt;FilterButton&gt;</code></a></li>
     <li {% if page.path == 'FilterList.md' %} class="active" {% endif %}><a class="nav-link" href="./FilterList.html"><code>&lt;FilterList&gt;</code></a></li>
@@ -115,6 +115,7 @@
   </ul>
   
   <ul><div>Creation & Edition Pages</div>
+    <li {% if page.path == 'EditTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./EditTutorial.html">Introduction</a></li>
     <li {% if page.path == 'Validation.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Validation.html">Form Validation</a></li>
     <li {% if page.path == 'Create.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Create.html"><code>&lt;Create&gt;</code></a></li>
     <li {% if page.path == 'CreateBase.md' %} class="active" {% endif %}><a class="nav-link" href="./CreateBase.html"><code>&lt;CreateBase&gt;</code></a></li>
@@ -128,7 +129,6 @@
     <li {% if page.path == 'AccordionForm.md' %} class="active" {% endif %}><a class="nav-link" href="./AccordionForm.html"><code>&lt;AccordionForm&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'WizardForm.md' %} class="active" {% endif %}><a class="nav-link" href="./WizardForm.html"><code>&lt;WizardForm&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'EditDialog.md' %} class="active" {% endif %}><a class="nav-link" href="./EditDialog.html"><code>&lt;EditDialog&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
-    <li {% if page.path == 'EditInDialogButton.md' %} class="active" {% endif %}><a class="nav-link" href="./EditInDialogButton.html"><code>&lt;EditInDialogButton&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'CreateDialog.md' %} class="active" {% endif %}><a class="nav-link" href="./CreateDialog.html"><code>&lt;CreateDialog&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'CreateInDialogButton.md' %} class="active" {% endif %}><a class="nav-link" href="./CreateInDialogButton.html"><code>&lt;CreateInDialogButton&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
     <li {% if page.path == 'JsonSchemaForm.md' %} class="active" {% endif %}><a class="nav-link" href="./JsonSchemaForm.html"><code>&lt;JsonSchemaForm&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
@@ -145,6 +145,7 @@
   </ul>
   
   <ul><div>Show Page</div>
+    <li {% if page.path == 'ShowTutorial.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./ShowTutorial.html">Introduction</a></li>
     <li {% if page.path == 'Show.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./Show.html"><code>&lt;Show&gt;</code></a></li>
     <li {% if page.path == 'ShowBase.md' %} class="active" {% endif %}><a class="nav-link" href="./ShowBase.html"><code>&lt;ShowBase&gt;</code></a></li>
     <li {% if page.path == 'ShowGuesser.md' %} class="active beginner" {% else %} class="beginner" {% endif %}><a class="nav-link" href="./ShowGuesser.html"><code>&lt;ShowGuesser&gt;</code></a></li>

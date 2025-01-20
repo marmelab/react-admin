@@ -398,3 +398,17 @@ This particular example is sourced from [Atomic CRM](https://marmelab.com/react-
 Never hesitate to replace a react-admin component with one of your own design. React-admin does not aim to cover all possible use cases, instead, it provides hooks for incorporating custom components. After all, "It's just React"™.
 
 With react-admin, you'll never find yourself backed into a corner.
+
+## Awesome Developer Experience
+
+With react-admin, developers assemble application components without having to worry about low-level details. They need less code for the same result, and they can **focus on the business logic** of their app.
+
+[![List view without and with react-admin](./img/list-from-react-to-react-admin.webp)](./img/list-from-react-to-react-admin.webp)
+
+We've crafted the API of react-admin's components and hooks to be as **intuitive** as possible. The react-admin core team uses react-admin every day, and we're always looking for ways to improve the developer experience.
+
+React-admin provides the **best-in-class documentation**, demo apps, and support. Error messages are clear and actionable. Thanks to extensive TypeScript types and JSDoc, it's easy to use react-admin in any IDE. The API is stable and **breaking changes are very rare**. You can debug your app with the [query](./DataProviders.md#enabling-query-logs) and [form](https://react-hook-form.com/dev-tools) developer tools, and inspect the react-admin code right in your browser.
+
+That probably explains why more than 3,000 new apps are published every month using react-admin.
+
+So react-admin is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/) and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
