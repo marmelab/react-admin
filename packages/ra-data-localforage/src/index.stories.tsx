@@ -1,5 +1,11 @@
 import React from 'react';
-import { Admin, EditGuesser, ListGuesser, Resource } from 'react-admin';
+import { Resource } from 'ra-core';
+import {
+    AdminContext,
+    AdminUI,
+    EditGuesser,
+    ListGuesser,
+} from 'ra-ui-materialui';
 import localforageDataProvider from './index';
 
 export default {
@@ -18,8 +24,10 @@ export const Basic = () => {
     });
 
     return (
-        <Admin dataProvider={dataProvider}>
-            <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
-        </Admin>
+        <AdminContext dataProvider={dataProvider}>
+            <AdminUI>
+                <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
+            </AdminUI>
+        </AdminContext>
     );
 };
