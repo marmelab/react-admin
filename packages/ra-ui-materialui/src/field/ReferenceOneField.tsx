@@ -66,16 +66,6 @@ export const ReferenceOneField = <
         link,
     });
 
-    const renderEmptyItemOption = useCallback(() => {
-        return typeof emptyText === 'string' ? (
-            <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : emptyText ? (
-            emptyText
-        ) : null;
-    }, [emptyText, translate]);
-
     const context = useMemo<UseReferenceFieldControllerResult>(
         () => ({
             ...controllerProps,
@@ -86,7 +76,13 @@ export const ReferenceOneField = <
     return !record ||
         (!controllerProps.isPending &&
             controllerProps.referenceRecord == null) ? (
-        renderEmptyItemOption()
+        typeof emptyText === 'string' ? (
+            <Typography component="span" variant="body2">
+                {emptyText && translate(emptyText, { _: emptyText })}
+            </Typography>
+        ) : emptyText ? (
+            emptyText
+        ) : null
     ) : (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
