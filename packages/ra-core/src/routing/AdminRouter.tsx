@@ -36,9 +36,9 @@ const DummyRouter = ({
     basename?: string;
 }) => <>{children}</>;
 
-const routerProviderFuture: Partial<Pick<FutureConfig, 'v7_startTransition'>> =
-    // @ts-expect-error react-router types are not up-to-date
-    { v7_startTransition: false, v7_relativeSplatPath: false };
+const routerProviderFuture: Partial<
+    Pick<FutureConfig, 'v7_startTransition' | 'v7_relativeSplatPath'>
+> = { v7_startTransition: false, v7_relativeSplatPath: false };
 
 const InternalRouter = ({
     children,
