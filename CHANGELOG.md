@@ -1,5 +1,26 @@
 # Changelog
 
+## 5.5.0
+
+* Add support for React router v7 ([#10440](https://github.com/marmelab/react-admin/pull/10440)) ([djhi](https://github.com/djhi))
+* Add support for MUI v6 ([#10439](https://github.com/marmelab/react-admin/pull/10439)) ([djhi](https://github.com/djhi))
+* Add support for React 19 ([#10437](https://github.com/marmelab/react-admin/pull/10437)) ([djhi](https://github.com/djhi))
+* Add a *SELECT ALL* button in the `<BulkActionsToolbar>` ([#10367](https://github.com/marmelab/react-admin/pull/10367)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add `<TextArrayInput>` to edit arrays of strings ([#10384](https://github.com/marmelab/react-admin/pull/10384)) ([fzaninotto](https://github.com/fzaninotto))
+* Allow record override from location everywhere ([#10412](https://github.com/marmelab/react-admin/pull/10412)) ([djhi](https://github.com/djhi))
+* Introduce `<SimpleList rowClick>` ([#10385](https://github.com/marmelab/react-admin/pull/10385)) ([djhi](https://github.com/djhi))
+* Allow graphql dataProviders to leverage the introspection results ([#10444](https://github.com/marmelab/react-admin/pull/10444)) ([djhi](https://github.com/djhi))
+* Fix `<Authenticated>` briefly renders its children when checkAuth returns error ([#10443](https://github.com/marmelab/react-admin/pull/10443)) ([adrien-may](https://github.com/adrien-may))
+* Fix `useDelete` does not invalidate cache in `pessimistic` mode ([#10446](https://github.com/marmelab/react-admin/pull/10446)) ([fzaninotto](https://github.com/fzaninotto))
+* Hide `react-router` deprecation warnings in react-admin default router
+* Revert #10417 as it causes issues with `<StackedFilters>`
+* [TypeScript] Allow providing error type in dataProvider and controllers hooks ([#10445](https://github.com/marmelab/react-admin/pull/10445)) ([djhi](https://github.com/djhi))
+* [Doc] Add vitest tutorial ([#10453](https://github.com/marmelab/react-admin/pull/10453)) ([smeng9](https://github.com/smeng9))
+* [Doc] Remove mention of obsolete time input community package ([#10451](https://github.com/marmelab/react-admin/pull/10451)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `DateInput`, `TimeInput`, and `DateTimeInput` documentation ([#10447](https://github.com/marmelab/react-admin/pull/10447)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Explain `openOnFocus` in `<AutocompleteInput>` with StrictMode ([#10442](https://github.com/marmelab/react-admin/pull/10442)) ([djhi](https://github.com/djhi))
+* [Demo] Adjust Nano theme for better legibility ([#10433](https://github.com/marmelab/react-admin/pull/10433)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## 5.4.4
 
 * Fix `useUpdate` ignores `meta` when populating the query cache in pessimistic mode ([#10422](https://github.com/marmelab/react-admin/pull/10422)) ([slax57](https://github.com/slax57))
