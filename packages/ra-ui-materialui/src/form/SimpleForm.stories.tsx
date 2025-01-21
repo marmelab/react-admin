@@ -14,6 +14,7 @@ import { NumberInput, TextInput } from '../input';
 import { SimpleForm } from './SimpleForm';
 import { Labeled } from '../Labeled';
 import { TextField, NumberField } from '../field';
+import { Query, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/forms/SimpleForm' };
 
@@ -203,15 +204,16 @@ export const Controlled = () => {
     return (
         <TestMemoryRouter>
             <ThemeProvider theme={createTheme()}>
-                <SimpleForm
-                    resource="books"
-                    onSubmit={values => setRecord(values)}
-                >
-                    <TextInput source="title" />
-                    <TextInput source="author" />
-                    <NumberInput source="year" />
-                </SimpleForm>
-                <div>Record values: {JSON.stringify(record)}</div>
+                <QueryClientProvider client={new QueryClient()}>
+                    <ResourceContextProvider value="books">
+                        <SimpleForm onSubmit={values => setRecord(values)}>
+                            <TextInput source="title" />
+                            <TextInput source="author" />
+                            <NumberInput source="year" />
+                        </SimpleForm>
+                        <div>Record values: {JSON.stringify(record)}</div>
+                    </ResourceContextProvider>
+                </QueryClientProvider>
             </ThemeProvider>
         </TestMemoryRouter>
     );
