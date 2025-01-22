@@ -43,16 +43,15 @@ const MyComponent = () => (
 ```jsx
 const MyComponent = () => (
     <Box
-        width={300}
-        height={300}
-        bgcolor="primary.main"
         sx={{
-          '&:hover': {
-            backgroundColor: 'primary.dark',
-            opacity: [0.9, 0.8, 0.7],
-          },
-        }}
-    >
+            width: 300,
+            height: 300,
+            bgcolor: "primary.main",
+            '&:hover': {
+              backgroundColor: 'primary.dark',
+              opacity: [0.9, 0.8, 0.7],
+            }
+        }}>
         // ...
     </Box>
 );

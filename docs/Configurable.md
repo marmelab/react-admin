@@ -64,10 +64,12 @@ The inner component reads the preferences using the same `usePreference` hook:
 const TextBlock = ({ title, content }) => {
     const [color] = usePreference('color', '#ffffff');
     return (
-        <Box bgcolor={color}>
+        (<Box sx={{
+            bgcolor: color
+        }}>
             <Typography variant="h6">{title}</Typography>
             <Typography>{content}</Typography>
-        </Box>
+        </Box>)
     );
 };
 ```

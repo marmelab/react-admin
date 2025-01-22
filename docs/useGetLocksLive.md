@@ -20,7 +20,11 @@ const LockField = ({ locks }) => {
     const record = useRecordContext();
     if (!record) return null;
     const lock = locks?.find(lock => lock.recordId === record?.id);
-    if (!lock) return <Box width={20} />;
+    if (!lock) return (
+        <Box sx={{
+            width: 20
+        }} />
+    );
     return <LockIcon fontSize="small" color="disabled" />;
 };
 

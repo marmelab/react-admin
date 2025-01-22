@@ -104,9 +104,13 @@ import Logo from './Logo';
 export const MyAppBar = () => (
     <AppBar color="primary">
         <TitlePortal />
-        <Box flex="1" />
+        <Box sx={{
+            flex: "1"
+        }} />
         <Logo />
-        <Box flex="1" />
+        <Box sx={{
+            flex: "1"
+        }} />
     </AppBar>
 );
 ```

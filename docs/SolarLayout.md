@@ -83,14 +83,23 @@ const CustomAppBar = () => (
         sx={{ color: 'text.secondary', bgcolor: 'background.default' }}
         toolbar={
             <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-            >
-                <Box mr={1}>Custom toolbar</Box>
-                <Box mr={1}>with</Box>
-                <Box mr={1}>multiple</Box>
-                <Box mr={1}>elements</Box>
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                }}>
+                <Box sx={{
+                    mr: 1
+                }}>Custom toolbar</Box>
+                <Box sx={{
+                    mr: 1
+                }}>with</Box>
+                <Box sx={{
+                    mr: 1
+                }}>multiple</Box>
+                <Box sx={{
+                    mr: 1
+                }}>elements</Box>
             </Box>
         }
     />
