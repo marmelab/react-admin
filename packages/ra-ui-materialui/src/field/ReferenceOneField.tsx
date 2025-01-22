@@ -73,16 +73,20 @@ export const ReferenceOneField = <
         }),
         [controllerProps, path]
     );
-    return !record ||
-        (!controllerProps.isPending &&
-            controllerProps.referenceRecord == null) ? (
+
+    const Empty =
         typeof emptyText === 'string' ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
         ) : emptyText ? (
             emptyText
-        ) : null
+        ) : null;
+
+    return !record ||
+        (!controllerProps.isPending &&
+            controllerProps.referenceRecord == null) ? (
+        Empty
     ) : (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
