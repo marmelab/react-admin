@@ -600,7 +600,7 @@ It also supports [all the other `<Button>` props](#button).
 
 ### `scrollToTop`
 
-By default, react-admin scrolls the page to the top after redirecting to the create view. You can disable it as follows:
+By default, `<CloneButton>` scrolls the page to the top after redirecting to the create view. You can disable it as follows:
 
 ```jsx
 const CloneButtonWithoutScrollToTop = () => <CloneButton scrollToTop={false} />
@@ -1140,13 +1140,22 @@ export const PostShow = () => (
 
 ### Props
 
-| Prop       | Required | Type            | Default          | Description                                  |
-| ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
-| `resource` | Optional | `string`        | -                | target resource, e.g. 'posts'                |
-| `label`    | Optional | `string`        | 'ra.action.list' | label or translation message to use          |
-| `icon`     | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`          |
+| Prop          | Required | Type            | Default          | Description                                    |
+| ------------- | -------- | --------------- | ---------------- | ---------------------------------------------- |
+| `resource`    | Optional | `string`        | -                | target resource, e.g. 'posts'                  |
+| `label`       | Optional | `string`        | 'ra.action.list' | label or translation message to use            |
+| `icon`        | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`            |
+| `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                       |
 
 It also supports [all the other `<Button>` props](#button).
+
+### `scrollToTop`
+
+By default, `<ListButton>` scrolls the page to the top after redirecting. You can disable it as follows:
+
+```jsx
+const ListButtonWithoutScrollToTop = () => <ListButton scrollToTop={false} />
+```
 
 ### Access Control
 
