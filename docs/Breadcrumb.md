@@ -356,7 +356,13 @@ const IconAndLabel = ({
     label: string;
     icon: React.ReactNode;
 }) => (
-    <Stack direction="row" alignItems="center" spacing={1}>
+    <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+            alignItems: "center",
+        }}
+    >
         {icon}
         <Typography variant="body2">{label}</Typography>
     </Stack>
@@ -540,7 +546,13 @@ const MyBreadcrumbCustomHome = () => (
     <Breadcrumb>
         <Breadcrumb.DashboardItem
             label={
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                        alignItems: "center",
+                    }}
+                >
                     <CabinIcon />
                     <Box sx={visuallyHidden}>Dashboard</Box>
                 </Stack>

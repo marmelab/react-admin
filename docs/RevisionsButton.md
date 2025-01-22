@@ -98,11 +98,20 @@ import {
 import { Edit, NumberField } from 'react-admin';
 
 const ProductDiff = () => (
-    <Stack gap={1}>
+    <Stack
+        sx={{
+            gap: 1,
+        }}
+    >
         <FieldDiff source="reference" />
         <SmartFieldDiff source="description" />
         <SmartFieldDiff source="image" />
-        <Stack direction="row" gap={2}>
+        <Stack
+            direction="row"
+            sx={{
+                gap: 2,
+            }}
+        >
             <FieldDiff inline>
                 <NumberField source="width" />
             </FieldDiff>
@@ -110,7 +119,12 @@ const ProductDiff = () => (
                 <NumberField source="height" />
             </FieldDiff>
         </Stack>
-        <Stack direction="row" gap={2}>
+        <Stack
+            direction="row"
+            sx={{
+                gap: 2,
+            }}
+        >
             <FieldDiff inline>
                 <NumberField source="price" />
             </FieldDiff>
@@ -188,7 +202,12 @@ import {
 import { Box, Typography } from "@mui/material";
 
 const ProductAside = () => (
-  <Box width={300} px={2}>
+  <Box
+    sx={{
+      width: 300,
+      px: 2,
+    }}
+  >
     <Typography variant="h6" gutterBottom>
       Revisions
     </Typography>

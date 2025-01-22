@@ -39,16 +39,32 @@ const BookShow = () => {
     if (isPending) { return <Loading />; }
     return (
         <div>
-            <Title title="Book Show"/>
+            <Title title="Book Show" />
             <Card>
                 <Stack spacing={1}>
                     <div>
-                        <Typography variant="caption" display="block">Title</Typography>
+                        <Typography
+                            variant="caption"
+                            sx={{
+                                display: "block",
+                            }}
+                        >
+                            Title
+                        </Typography>
                         <Typography variant="body2">{data.title}</Typography>
                     </div>
                     <div>
-                        <Typography variant="caption" display="block">Publication Date</Typography>
-                        <Typography variant="body2">{new Date(data.published_at).toDateString()}</Typography>
+                        <Typography
+                            variant="caption"
+                            sx={{
+                                display: "block",
+                            }}
+                        >
+                            Publication Date
+                        </Typography>
+                        <Typography variant="body2">
+                            {new Date(data.published_at).toDateString()}
+                        </Typography>
                     </div>
                 </Stack>
             </Card>

@@ -62,14 +62,16 @@ The inner component reads the preferences using the same `usePreference` hook:
 
 ```jsx
 const TextBlock = ({ title, content }) => {
-    const [color] = usePreference('color', '#ffffff');
+    const [color] = usePreference("color", "#ffffff");
     return (
-        (<Box sx={{
-            bgcolor: color
-        }}>
+        <Box
+            sx={{
+                bgcolor: color,
+            }}
+        >
             <Typography variant="h6">{title}</Typography>
             <Typography>{content}</Typography>
-        </Box>)
+        </Box>
     );
 };
 ```
@@ -228,31 +230,42 @@ import { Box } from '@mui/material';
 import { AppBar, Menu, Sidebar, Inspector } from 'react-admin';
 
 const MyLayout = ({ children, dashboard }) => (
-    <Box 
-        display="flex"
-        flexDirection="column"
-        zIndex={1}
-        minHeight="100vh"
-        backgroundColor="theme.palette.background.default"
-        position="relative"
+    <Box
+        sx={{
+            display: "flex",
+            flexDirection: "column",
+            zIndex: 1,
+            minHeight: "100vh",
+            backgroundColor: "theme.palette.background.default",
+            position: "relative"
+        }}
     >
         <Box
-            display="flex"
-            flexDirection="column"
             overflowX="auto"
+            sx={{
+                display: "flex",
+                flexDirection: "column"
+            }}
         >
             <AppBar />
-            <Box display="flex" flexGrow={1}>
+            <Box
+                sx={{
+                    display: "flex",
+                    flexGrow: 1
+                }}
+            >
                 <Sidebar>
                     <Menu hasDashboard={!!dashboard} />
                 </Sidebar>
                 <Box
-                    display="flex"
-                    flexDirection="column"
-                    flexGrow={2}
-                    p={3}
-                    marginTop="4em"
-                    paddingLeft={5}
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        flexGrow: 2,
+                        p: 3,
+                        marginTop: "4em",
+                        paddingLeft: 5
+                    }}
                 >
                     {children}
                 </Box>

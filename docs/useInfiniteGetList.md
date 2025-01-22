@@ -230,7 +230,13 @@ const LatestNews = () => {
                     ));
                 })}
             </List>
-            <Typography ref={observerElem} variant="body2" color="grey.500" >
+            <Typography
+                ref={observerElem}
+                variant="body2"
+                sx={{
+                    color: "grey.500",
+                }}
+            >
                 {isFetchingNextPage && hasNextPage
                     ? 'Loading...'
                     : 'No search left'}

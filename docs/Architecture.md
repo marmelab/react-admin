@@ -349,22 +349,28 @@ const ContactShowContent = () => {
         <Box
             sx={{
                 mt: 2,
-                display: "flex"
-            }}>
-            <Box sx={{
-                flex: "1"
-            }}>
+                display: "flex",
+            }}
+        >
+            <Box
+                sx={{
+                    flex: "1",
+                }}
+            >
                 <Card>
                     <CardContent>
-                        <Box sx={{
-                            display: "flex"
-                        }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                            }}
+                        >
                             <Avatar />
                             <Box
                                 sx={{
                                     ml: 2,
-                                    flex: "1"
-                                }}>
+                                    flex: "1",
+                                }}
+                            >
                                 <Typography variant="h5">
                                     {record.first_name} {record.last_name}
                                 </Typography>

@@ -185,16 +185,18 @@ export const RecomputeProjectStatsButton = () => {
     );
 };
 
-const LinearProgressWithLabel = props => {
+const LinearProgressWithLabel = (props) => {
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ width: '100%', mr: 1 }}>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box sx={{ width: "100%", mr: 1 }}>
                 <LinearProgress variant="determinate" {...props} />
             </Box>
             <Box sx={{ minWidth: 35 }}>
                 <Typography
                     variant="body2"
-                    color="text.secondary"
+                    sx={{
+                        color: "text.secondary",
+                    }}
                 >{`${Math.round(props.value)}%`}</Typography>
             </Box>
         </Box>

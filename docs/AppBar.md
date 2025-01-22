@@ -128,9 +128,19 @@ import { Logo } from './Logo';
 
 const MyAppBar = () => (
     <AppBar>
-        <Box component="span" flex={1} />
+        <Box
+            component="span"
+            sx={{
+                flex: 1,
+            }}
+        />
         <Logo />
-        <Box component="span" flex={1} />
+        <Box
+            component="span"
+            sx={{
+                flex: 1,
+            }}
+        />
         <Search />
     </AppBar>
 );
@@ -459,7 +469,11 @@ export const MyAppBar = () => (
     <AppBar position="static">
         <Toolbar>
             <TitlePortal />
-            <Box flex="1" />
+            <Box
+                sx={{
+                    flex: "1",
+                }}
+            />
             <RefreshIconButton />
         </Toolbar>
     </AppBar>

@@ -39,7 +39,12 @@ const postFilters = [
 ];
 
 const ListToolbar = () => (
-    <Stack direction="row" justifyContent="space-between">
+    <Stack
+        direction="row"
+        sx={{
+            justifyContent: "space-between",
+        }}
+    >
         <FilterForm filters={postFilters} />
         <div>
             <FilterButton filters={postFilters} />
