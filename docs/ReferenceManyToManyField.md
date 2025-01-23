@@ -101,7 +101,7 @@ export const BandShow = () => (
 );
 ```
 
-## `filter`
+## `filter`: Permanent Filter
 
 You can filter the records of the associative table (e.g. `performances`) using the `filter` prop. This `filter` is passed to the `getManyReference()` call.
 
@@ -119,6 +119,36 @@ You can filter the records of the associative table (e.g. `performances`) using 
 ```
 
 {% endraw %}
+
+## Filter Inputs
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/ReferenceManyToManyFieldFilterInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+You can add an array of filter Inputs to the `ReferenceManyToManyField` using [the `FilterForm` component](./FilterForm.md):
+
+{% raw %}
+
+```tsx
+<ReferenceManyToManyField
+    reference="venues"
+    through="performances"
+    using="band_id,venue_id"
+>
+    <FilterForm
+        filters={[<TextInput source="q" label="Search" alwaysOn />]}
+    />
+    <Datagrid>
+        {/* ... */}
+    </Datagrid>
+</ReferenceManyToManyField>
+```
+
+{% endraw %}
+
+**Tip:** `ReferenceManyToManyField` doesn't provide any `FilterButton`, so you need to add the `alwaysOn` prop to your filter inputs.
 
 ## `joinLimit`
 

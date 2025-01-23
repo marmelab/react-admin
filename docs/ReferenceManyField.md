@@ -171,11 +171,12 @@ const PostCommentsField = () => (
 );
 ```
 
-## `filter`
+## `filter`: Permanent Filter
 
 You can filter the query used to populate the possible values. Use the `filter` prop for that.
 
 {% raw %}
+
 ```jsx
 <ReferenceManyField
   reference="comments"
@@ -185,7 +186,34 @@ You can filter the query used to populate the possible values. Use the `filter` 
    ...
 </ReferenceManyField>
 ```
+
 {% endraw %}
+
+## Filter Inputs
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ReferenceManyFieldFilterInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+You can add an array of filter inputs to the `ReferenceManyField` using [the `FilterForm` component](./FilterForm.md):
+
+{% raw %}
+
+```jsx
+<ReferenceManyField reference="comments" target="post_id">
+    <FilterForm
+        filters={[<TextInput source="q" label="Search" alwaysOn />]}
+    />
+    <Datagrid>
+        ...
+    </Datagrid>
+</ReferenceManyField>
+```
+
+{% endraw %}
+
+**Tip:** `ReferenceManyField` doesn't provide any `FilterButton`, so you need to add the `alwaysOn` prop to your filter inputs.
 
 ## `label`
 
