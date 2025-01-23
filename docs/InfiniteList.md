@@ -150,12 +150,12 @@ const CustomPagination = () => {
                     sx={{
                         position: "sticky",
                         bottom: 0,
-                        textAlign: "center",
+                        textAlign: "center"
                     }}
                 >
                     <Card
                         elevation={2}
-                        sx={{ px: 2, py: 1, mb: 1, display: "inline-block" }}
+                        sx={{ px: 2, py: 1, mb: 1, display: 'inline-block' }}
                     >
                         <Typography variant="body2">{total} results</Typography>
                     </Card>

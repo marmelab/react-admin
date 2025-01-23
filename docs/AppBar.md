@@ -131,14 +131,14 @@ const MyAppBar = () => (
         <Box
             component="span"
             sx={{
-                flex: 1,
+                flex: 1
             }}
         />
         <Logo />
         <Box
             component="span"
             sx={{
-                flex: 1,
+                flex: 1
             }}
         />
         <Search />
@@ -471,7 +471,7 @@ export const MyAppBar = () => (
             <TitlePortal />
             <Box
                 sx={{
-                    flex: "1",
+                    flex: "1"
                 }}
             />
             <RefreshIconButton />

@@ -445,13 +445,13 @@ const UserCreate = () => (
             </Typography>
             <Box
                 sx={{
-                    display: { xs: "block", sm: "flex", width: "100%" },
+                    display: { xs: "block", sm: "flex", width: "100%" }
                 }}
             >
                 <Box
                     sx={{
                         flex: 1,
-                        mr: { xs: 0, sm: "0.5em" },
+                        mr: { xs: 0, sm: "0.5em" }
                     }}
                 >
                     <TextInput source="first_name" isRequired />
@@ -459,7 +459,7 @@ const UserCreate = () => (
                 <Box
                     sx={{
                         flex: 1,
-                        ml: { xs: 0, sm: "0.5em" },
+                        ml: { xs: 0, sm: "0.5em" }
                     }}
                 >
                     <TextInput source="last_name" isRequired />
@@ -475,13 +475,13 @@ const UserCreate = () => (
             <TextInput source="address" multiline helperText={false} />
             <Box
                 sx={{
-                    display: { xs: "block", sm: "flex" },
+                    display: { xs: "block", sm: "flex" }
                 }}
             >
                 <Box
                     sx={{
                         flex: 2,
-                        mr: { xs: 0, sm: "0.5em" },
+                        mr: { xs: 0, sm: "0.5em" }
                     }}
                 >
                     <TextInput source="city" helperText={false} />
@@ -489,14 +489,14 @@ const UserCreate = () => (
                 <Box
                     sx={{
                         flex: 1,
-                        mr: { xs: 0, sm: "0.5em" },
+                        mr: { xs: 0, sm: "0.5em" }
                     }}
                 >
                     <TextInput source="stateAbbr" helperText={false} />
                 </Box>
                 <Box
                     sx={{
-                        flex: 2,
+                        flex: 2
                     }}
                 >
                     <TextInput source="zipcode" helperText={false} />
@@ -509,13 +509,13 @@ const UserCreate = () => (
             </Typography>
             <Box
                 sx={{
-                    display: { xs: "block", sm: "flex" },
+                    display: { xs: "block", sm: "flex" }
                 }}
             >
                 <Box
                     sx={{
                         flex: 1,
-                        mr: { xs: 0, sm: "0.5em" },
+                        mr: { xs: 0, sm: "0.5em" }
                     }}
                 >
                     <PasswordInput source="password" />
@@ -523,7 +523,7 @@ const UserCreate = () => (
                 <Box
                     sx={{
                         flex: 1,
-                        ml: { xs: 0, sm: "0.5em" },
+                        ml: { xs: 0, sm: "0.5em" }
                     }}
                 >
                     <PasswordInput source="confirm_password" />
@@ -536,7 +536,7 @@ const UserCreate = () => (
 const Separator = () => (
     <Box
         sx={{
-            pt: "1em",
+            pt: "1em"
         }}
     />
 );

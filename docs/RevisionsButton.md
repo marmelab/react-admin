@@ -100,7 +100,7 @@ import { Edit, NumberField } from 'react-admin';
 const ProductDiff = () => (
     <Stack
         sx={{
-            gap: 1,
+            gap: 1
         }}
     >
         <FieldDiff source="reference" />
@@ -109,7 +109,7 @@ const ProductDiff = () => (
         <Stack
             direction="row"
             sx={{
-                gap: 2,
+                gap: 2
             }}
         >
             <FieldDiff inline>
@@ -122,7 +122,7 @@ const ProductDiff = () => (
         <Stack
             direction="row"
             sx={{
-                gap: 2,
+                gap: 2
             }}
         >
             <FieldDiff inline>
@@ -205,7 +205,7 @@ const ProductAside = () => (
   <Box
     sx={{
       width: 300,
-      px: 2,
+      px: 2
     }}
   >
     <Typography variant="h6" gutterBottom>

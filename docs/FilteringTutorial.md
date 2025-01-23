@@ -537,13 +537,13 @@ const PostFilterForm = () => (
             sx={{
                 display: "flex",
                 alignItems: "flex-end",
-                mb: 1,
+                mb: 1
             }}
         >
             <Box
                 component="span"
                 sx={{
-                    mr: 2,
+                    mr: 2
                 }}
             >
                 {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
@@ -557,14 +557,14 @@ const PostFilterForm = () => (
                             <InputAdornment>
                                 <SearchIcon color="disabled" />
                             </InputAdornment>
-                        ),
+                        )
                     }}
                 />
             </Box>
             <Box
                 component="span"
                 sx={{
-                    mr: 2,
+                    mr: 2
                 }}
             >
                 {/* Commentable filter */}
@@ -622,13 +622,13 @@ const PostFilterForm = () => {
                     sx={{
                         display: "flex",
                         alignItems: "flex-end",
-                        mb: 1,
+                        mb: 1
                     }}
                 >
                     <Box
                         component="span"
                         sx={{
-                            mr: 2,
+                            mr: 2
                         }}
                     >
                         {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
@@ -642,14 +642,14 @@ const PostFilterForm = () => {
                                     <InputAdornment>
                                         <SearchIcon color="disabled" />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                         />
                     </Box>
                     <Box
                         component="span"
                         sx={{
-                            mr: 2,
+                            mr: 2
                         }}
                     >
                         {/* Commentable filter */}
@@ -662,7 +662,7 @@ const PostFilterForm = () => {
                         component="span"
                         sx={{
                             mr: 2,
-                            mb: 1.5,
+                            mb: 1.5
                         }}
                     >
                         <Button
@@ -676,7 +676,7 @@ const PostFilterForm = () => {
                     <Box
                         component="span"
                         sx={{
-                            mb: 1.5,
+                            mb: 1.5
                         }}
                     >
                         <Button variant="outlined" onClick={resetFilter}>
@@ -702,7 +702,7 @@ import { Box } from '@mui/material';
 const ListActions = () => (
     <Box
         sx={{
-            width: "100%",
+            width: "100%"
         }}
     >
         <TopToolbar>

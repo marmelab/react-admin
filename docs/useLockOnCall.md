@@ -31,7 +31,7 @@ const PostAside = () => {
         <Box
             sx={{
                 width: 200,
-                ml: 1,
+                ml: 1
             }}
         >
             {isLoading ? (

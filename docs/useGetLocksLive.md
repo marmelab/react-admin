@@ -24,7 +24,7 @@ const LockField = ({ locks }) => {
         return (
             <Box
                 sx={{
-                    width: 20,
+                    width: 20
                 }}
             />
         );

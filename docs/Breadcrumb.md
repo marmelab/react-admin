@@ -360,7 +360,7 @@ const IconAndLabel = ({
         direction="row"
         spacing={1}
         sx={{
-            alignItems: "center",
+            alignItems: "center"
         }}
     >
         {icon}
@@ -550,7 +550,7 @@ const MyBreadcrumbCustomHome = () => (
                     direction="row"
                     spacing={1}
                     sx={{
-                        alignItems: "center",
+                        alignItems: "center"
                     }}
                 >
                     <CabinIcon />

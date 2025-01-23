@@ -1528,13 +1528,13 @@ const CreatePostDialog = () => {
                 <DialogContent>
                     <Stack
                         sx={{
-                            gap: 4,
+                            gap: 4
                         }}
                     >
                         <MUITextField
                             name="title"
                             value={title}
-                            onChange={(event) => setTitle(event.target.value)}
+                            onChange={event => setTitle(event.target.value)}
                         />
                     </Stack>
                 </DialogContent>

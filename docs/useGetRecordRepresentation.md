@@ -31,7 +31,7 @@ export const PostBreadcrumbs = () => {
                 </Link>
                 <Typography
                     sx={{
-                        color: "text.primary",
+                        color: "text.primary"
                     }}
                 >
                     {getRecordRepresentation(record)}

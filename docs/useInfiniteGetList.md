@@ -234,7 +234,7 @@ const LatestNews = () => {
                 ref={observerElem}
                 variant="body2"
                 sx={{
-                    color: "grey.500",
+                    color: "grey.500"
                 }}
             >
                 {isFetchingNextPage && hasNextPage

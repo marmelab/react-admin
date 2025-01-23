@@ -46,7 +46,7 @@ const BookShow = () => {
                         <Typography
                             variant="caption"
                             sx={{
-                                display: "block",
+                                display: "block"
                             }}
                         >
                             Title
@@ -57,14 +57,12 @@ const BookShow = () => {
                         <Typography
                             variant="caption"
                             sx={{
-                                display: "block",
+                                display: "block"
                             }}
                         >
                             Publication Date
                         </Typography>
-                        <Typography variant="body2">
-                            {new Date(data.published_at).toDateString()}
-                        </Typography>
+                        <Typography variant="body2">{new Date(data.published_at).toDateString()}</Typography>
                     </div>
                 </Stack>
             </Card>

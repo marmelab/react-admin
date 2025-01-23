@@ -106,13 +106,13 @@ export const MyAppBar = () => (
         <TitlePortal />
         <Box
             sx={{
-                flex: "1",
+                flex: "1"
             }}
         />
         <Logo />
         <Box
             sx={{
-                flex: "1",
+                flex: "1"
             }}
         />
     </AppBar>
@@ -484,21 +484,21 @@ const MyLayout = ({ children }) => (
             zIndex: 1,
             minHeight: "100vh",
             backgroundColor: "theme.palette.background.default",
-            position: "relative",
+            position: "relative"
         }}
     >
         <Box
             overflowX="auto"
             sx={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "column"
             }}
         >
             <AppBar />
             <Box
                 sx={{
                     display: "flex",
-                    flexGrow: 1,
+                    flexGrow: 1
                 }}
             >
                 <Sidebar>
@@ -511,7 +511,7 @@ const MyLayout = ({ children }) => (
                         flexGrow: 2,
                         p: 3,
                         marginTop: "4em",
-                        paddingLeft: 5,
+                        paddingLeft: 5
                     }}
                 >
                     {children}

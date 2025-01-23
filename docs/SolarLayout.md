@@ -86,33 +86,33 @@ const CustomAppBar = () => (
                 sx={{
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center",
+                    alignItems: "center"
                 }}
             >
                 <Box
                     sx={{
-                        mr: 1,
+                        mr: 1
                     }}
                 >
                     Custom toolbar
                 </Box>
                 <Box
                     sx={{
-                        mr: 1,
+                        mr: 1
                     }}
                 >
                     with
                 </Box>
                 <Box
                     sx={{
-                        mr: 1,
+                        mr: 1
                     }}
                 >
                     multiple
                 </Box>
                 <Box
                     sx={{
-                        mr: 1,
+                        mr: 1
                     }}
                 >
                     elements
