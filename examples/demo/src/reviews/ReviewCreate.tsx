@@ -11,19 +11,19 @@ import {
     useRedirect,
     getRecordFromLocation,
     useDefaultTitle,
+    useCreateContext,
 } from 'react-admin';
 import { useLocation } from 'react-router';
 
 import StarRatingInput from './StarRatingInput';
-import { usePageTitle } from '../usePageTitle';
 
 const ReviewTitle = () => {
     const appTitle = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'create' });
+    const { defaultTitle } = useCreateContext();
     return (
         <>
-            <title>{`${appTitle} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
     );
 };

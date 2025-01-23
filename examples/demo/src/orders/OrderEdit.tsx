@@ -14,13 +14,13 @@ import {
     useRecordContext,
     useTranslate,
     useDefaultTitle,
+    useEditContext,
 } from 'react-admin';
 import { Card, CardContent, Box, Grid, Typography, Link } from '@mui/material';
 
 import { Customer } from '../types';
 import Basket from './Basket';
 import Totals from './Totals';
-import { usePageTitle } from '../usePageTitle';
 
 const OrderEdit = () => (
     <Edit title={<OrderTitle />} component="div">
@@ -30,11 +30,11 @@ const OrderEdit = () => (
 
 const OrderTitle = () => {
     const appTitle = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'edit' });
+    const { defaultTitle } = useEditContext();
     return (
         <>
-            <title>{`${appTitle} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
     );
 };

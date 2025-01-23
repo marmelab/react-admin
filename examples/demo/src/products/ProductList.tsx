@@ -18,20 +18,17 @@ import {
     TopToolbar,
     useTranslate,
     useDefaultTitle,
+    useListContext,
 } from 'react-admin';
 
 import ImageList from './GridList';
 import Aside from './Aside';
-import { usePageTitle } from '../usePageTitle';
 
 const ProductList = () => {
-    const appTitle = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'list' });
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <ListBase perPage={24} sort={{ field: 'reference', order: 'ASC' }}>
-            <title>{`${appTitle} - ${pageTitle}`}</title>
-            <Title defaultTitle={pageTitle} />
+            <ProductTitle />
             <FilterContext.Provider value={productFilters}>
                 <ListActions isSmall={isSmall} />
                 {isSmall && (
@@ -48,6 +45,18 @@ const ProductList = () => {
                 </Box>
             </Box>
         </ListBase>
+    );
+};
+
+const ProductTitle = () => {
+    const appTitle = useDefaultTitle();
+    const { defaultTitle } = useListContext();
+
+    return (
+        <>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <Title defaultTitle={defaultTitle} />
+        </>
     );
 };
 

@@ -28,7 +28,6 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
-import { usePageTitle } from '../usePageTitle';
 
 const ListActions = () => (
     <TopToolbar>
@@ -40,11 +39,11 @@ const ListActions = () => (
 
 const OrdersTitle = () => {
     const title = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'list' });
+    const { defaultTitle } = useListContext();
     return (
         <>
-            <title>{`${title} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${title} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
     );
 };

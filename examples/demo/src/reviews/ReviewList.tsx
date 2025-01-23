@@ -8,6 +8,7 @@ import {
     SelectColumnsButton,
     TopToolbar,
     useDefaultTitle,
+    useListContext,
 } from 'react-admin';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Drawer, useMediaQuery, Theme } from '@mui/material';
@@ -16,7 +17,6 @@ import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
 import reviewFilters from './reviewFilters';
 import ReviewEdit from './ReviewEdit';
-import { usePageTitle } from '../usePageTitle';
 
 const ReviewListActions = () => (
     <TopToolbar>
@@ -29,11 +29,11 @@ const ReviewListActions = () => (
 
 const ReviewsTitle = () => {
     const title = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'list' });
+    const { defaultTitle } = useListContext();
     return (
         <>
-            <title>{`${title} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${title} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
     );
 };

@@ -11,10 +11,8 @@ import {
     TabbedForm,
     TextField,
     TextInput,
-    useRecordContext,
     useDefaultTitle,
-    useTranslate,
-    useGetResourceLabel,
+    useEditContext,
 } from 'react-admin';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
@@ -25,7 +23,6 @@ import { ProductEditDetails } from './ProductEditDetails';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
-import { Product } from '../types';
 import CreateRelatedReviewButton from './CreateRelatedReviewButton';
 
 const RichTextInput = React.lazy(() =>
@@ -36,20 +33,13 @@ const RichTextInput = React.lazy(() =>
 
 const ProductTitle = () => {
     const appTitle = useDefaultTitle();
-    const translate = useTranslate();
-    const record = useRecordContext<Product>();
-    const getResourceLabel = useGetResourceLabel();
-
-    const pageTitle = translate('ra.page.edit', {
-        name: getResourceLabel('products', 1),
-        recordRepresentation: `"${record?.reference}"`,
-    });
-    return record ? (
+    const { defaultTitle } = useEditContext();
+    return (
         <>
-            <title>{`${appTitle} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
-    ) : null;
+    );
 };
 
 const ProductEdit = () => (
