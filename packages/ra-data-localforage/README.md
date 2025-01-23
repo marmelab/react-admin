@@ -19,24 +19,9 @@ import { Admin, Resource } from 'react-admin';
 import localForageDataProvider from 'ra-data-local-forage';
 
 import { PostList } from './posts';
+const dataProvider = localForageDataProvider();
 
 const App = () => {
-  const [dataProvider, setDataProvider] = React.useState<DataProvider | null>(null);
-
-  React.useEffect(() => {
-    async function startDataProvider() {
-      const localForageProvider = await localForageDataProvider();
-      setDataProvider(localForageProvider);
-    }
-
-    if (dataProvider === null) {
-      startDataProvider();
-    }
-  }, [dataProvider]);
-
-  // hide the admin until the data provider is ready
-  if (!dataProvider) return <p>Loading...</p>;
-
   return (
     <Admin dataProvider={dataProvider}>
       <Resource name="posts" list={ListGuesser}/>
@@ -52,7 +37,7 @@ export default App;
 By default, the data provider starts with no resource. To set default data if the IndexedDB is empty, pass a JSON object as the `defaultData` argument:
 
 ```js
-const dataProvider = await localForageDataProvider({
+const dataProvider = localForageDataProvider({
     defaultData: {
         posts: [
             { id: 0, title: 'Hello, world!' },
@@ -75,7 +60,7 @@ Foreign keys are also supported: just name the field `{related_resource_name}_id
 As this data provider doesn't use the network, you can't debug it using the network tab of your browser developer tools. However, it can log all calls (input and output) in the console, provided you set the `loggingEnabled` parameter:
 
 ```js
-const dataProvider = await localForageDataProvider({
+const dataProvider = localForageDataProvider({
     loggingEnabled: true
 });
 ```
