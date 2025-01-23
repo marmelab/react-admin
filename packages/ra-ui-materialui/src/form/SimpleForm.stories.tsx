@@ -14,7 +14,7 @@ import { NumberInput, TextInput } from '../input';
 import { SimpleForm } from './SimpleForm';
 import { Labeled } from '../Labeled';
 import { TextField, NumberField } from '../field';
-import { Query, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/forms/SimpleForm' };
 
