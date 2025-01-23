@@ -91,6 +91,7 @@ You can replace the default "load on scroll" pagination (triggered by a componen
 
 For example, here is a custom infinite pagination component displaying a "Load More" button at the bottom of the list:
 
+{% raw %}
 ```jsx
 import { InfiniteList, useInfinitePaginationContext, Datagrid, TextField } from 'react-admin';
 import { Box, Button } from '@mui/material';
@@ -128,6 +129,7 @@ export const BookList = () => (
     </InfiniteList>
 );
 ```
+{% endraw %}
 
 ## Showing The Record Count
 

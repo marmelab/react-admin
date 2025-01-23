@@ -88,6 +88,7 @@ This element can grab the current record using `useRecordContext`, and the recor
 
 So a custom diff view is usually a layout component with `<FieldDiff>` and `<SmartFieldDiff>` components as children:
 
+{% raw %}
 ```tsx
 import { Stack } from '@mui/material';
 import {
@@ -144,6 +145,7 @@ const ProductEditActions = () => (
     </TopToolbar>
 );
 ```
+{% endraw %}
 
 ## `onSelect`
 
@@ -193,6 +195,7 @@ By default, the `<RevisionsButton>` component only shows the list of revisions w
 
 This component is usually used in an `<Edit aside>`.
 
+{% raw %}
 ```tsx
 import { Edit } from "react-admin";
 import {
@@ -221,5 +224,6 @@ export const ProductEdit = () => (
   </Edit>
 );
 ```
+{% endraw %}
 
 Check the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog) documentation for more details.

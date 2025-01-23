@@ -20,6 +20,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 
 Use this hook in a toolbar, to let the user lock the record manually.
 
+{% raw %}
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { useLockOnMount } from '@react-admin/ra-realtime';
@@ -63,6 +64,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ## Parameters
 

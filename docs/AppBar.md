@@ -118,6 +118,7 @@ export const MyAppBar = () => (
  
 If you omit `<TitlePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
+{% raw %}
 ```jsx
 // in src/MyAppBar.js
 import { AppBar } from 'react-admin';
@@ -145,6 +146,7 @@ const MyAppBar = () => (
     </AppBar>
 );
 ```
+{% endraw %}
 
 ## `color`
 
@@ -460,6 +462,7 @@ export const MyAppbar = () => (
 
 If react-admin's `<AppBar>` component doesn't meet your needs, you can build your own component using Material UI's `<AppBar>`. Here is an example:
 
+{% raw %}
 ```jsx
 // in src/MyAppBar.js
 import { AppBar, Toolbar, Box } from '@mui/material';
@@ -479,6 +482,7 @@ export const MyAppBar = () => (
     </AppBar>
 );
 ```
+{% endraw %}
 
 Then, use your custom app bar in a custom `<Layout>` component:
 

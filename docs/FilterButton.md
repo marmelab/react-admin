@@ -19,6 +19,7 @@ It's an internal component that you should only need if you build a custom List 
 
 `<FilterButton>` expects an array of filter inputs as `filters` prop:
 
+{% raw %}
 ```jsx
 import {
     CreateButton,
@@ -65,11 +66,13 @@ const PostList = () => (
     </ListBase>
 )
 ```
+{% endraw %}
 
 ## `disableSaveQuery`
 
 By default, the filter button lets users save a group of filters for later reuse. You can set the `disableSaveQuery` prop in the filter button to disable this feature.
 
+{% raw %}
 ```jsx
 const ListToolbar = () => (
     <Stack
@@ -86,3 +89,4 @@ const ListToolbar = () => (
     </Stack>
 )
 ```
+{% endraw %}

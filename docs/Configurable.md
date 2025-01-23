@@ -60,6 +60,7 @@ const TextBlockEditor = () => {
 ```
 The inner component reads the preferences using the same `usePreference` hook:
 
+{% raw %}
 ```jsx
 const TextBlock = ({ title, content }) => {
     const [color] = usePreference('color', '#ffffff');
@@ -75,6 +76,7 @@ const TextBlock = ({ title, content }) => {
     );
 };
 ```
+{% endraw %}
 
 Then, use the configurable component in your app:
 

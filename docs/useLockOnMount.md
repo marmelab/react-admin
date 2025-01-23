@@ -20,6 +20,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 
 Use this hook e.g. in an `<Edit>` component to lock the record so that it only accepts updates from the current user.
 
+{% raw %}
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { useLockOnMount } from '@react-admin/ra-realtime';
@@ -60,6 +61,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ## Parameters
 

@@ -695,6 +695,7 @@ const PostFilterForm = () => {
 
 To finish, create a `<ListAction>` component and pass it to the `<List>` component using the `actions` prop:
 
+{% raw %}
 ```jsx
 import { TopToolbar, ExportButton } from 'react-admin';
 import { Box } from '@mui/material';
@@ -719,6 +720,7 @@ export const PostList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 **Tip**: No need to pass any `filters` to the list anymore, as the `<PostFilterForm>` component will display them.
 

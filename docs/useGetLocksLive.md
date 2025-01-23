@@ -11,6 +11,7 @@ This means that if a lock is acquired or released by another user while the curr
 
 ## Usage
 
+{% raw %}
 ```jsx
 import { List, useRecordContext } from 'react-admin';
 import LockIcon from '@mui/icons-material/Lock';
@@ -43,6 +44,7 @@ const PostList = () => {
     );
 };
 ```
+{% endraw %}
 
 `useGetLocksLive` reads the current resource from the `ResourceContext`. You can provide it explicitly if you are not in such a context:
 

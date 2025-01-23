@@ -344,6 +344,7 @@ const MyBreadcrumb = () => (
 
 Here is another example, showing how to use a React component as label:
 
+{% raw %}
 ```jsx
 import { Breadcrumb } from '@react-admin/ra-navigation';
 import { Typography, Stack } from '@mui/material';
@@ -394,6 +395,7 @@ const MyBreadcrumb = () => (
     </Breadcrumb>
 );
 ```
+{% endraw %}
 
 `<Breadcrumb>` contains shortcut components for defining several `<Breadcrumb.Item>` children in a row: `<Breadcrumb.ResourceItem>`and `<Breadcrumb.ResourceItems>`.
 
@@ -536,6 +538,7 @@ const MyBreadcrumbCustomHome = () => (
 
 Just like with `<Breadcrumb.Item>`, you can also use a React component as label:
 
+{% raw %}
 ```tsx
 import { Breadcrumb } from '@react-admin/ra-navigation';
 import { Box, Stack } from '@mui/material';
@@ -564,6 +567,7 @@ const MyBreadcrumbCustomHome = () => (
     </Breadcrumb>
 );
 ```
+{% endraw %}
 
 **Tip:** It's a good practice to include a visually hidden placeholder ('Dashboard' in this example) for screen readers when using an icon as label.
 

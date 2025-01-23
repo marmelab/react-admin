@@ -11,6 +11,7 @@ You can also use the component version: [`<RecordRepresentation>`](./RecordRepre
 
 ## Usage
 
+{% raw %}
 ```tsx
 // in src/posts/PostBreadcrumbs.tsx
 import * as React from 'react';
@@ -56,6 +57,7 @@ const PostEdit = () => (
     </EditBase>
 )
 ```
+{% endraw %}
 
 ## Default Representation
 

@@ -15,6 +15,7 @@ You can also use its hook version: [`useGetRecordRepresentation`](./useGetRecord
 
 The component uses the [`useRecordRepresentation`](./useRecordRepresentation.md) hook and the same [rules](./useRecordRepresentation.md#preferences) are therefore applied.
 
+{% raw %}
 ```tsx
 // in src/posts/PostBreadcrumbs.tsx
 import * as React from 'react';
@@ -58,6 +59,7 @@ const PostEdit = () => (
     </EditBase>
 )
 ```
+{% endraw %}
 
 ## Props
 
