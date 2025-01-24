@@ -98,6 +98,7 @@ export const PostCreate = () => (
 You may want to display additional information on the side of the form. Use the `aside` prop for that, passing the component of your choice:
 
 {% raw %}
+
 ```jsx
 const Aside = () => (
     <Box sx={{ width: '200px', margin: '1em' }}>
@@ -114,6 +115,7 @@ const PostCreate = () => (
     </Create>
 );
 ```
+
 {% endraw %}
 
 ## `component`
@@ -157,6 +159,7 @@ const PostCreate = () => (
 You can customize the options you pass to react-query's `useMutation` hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.create()` call.
 
 {% raw %}
+
 ```jsx
 import { Create, SimpleForm } from 'react-admin';
 
@@ -168,6 +171,7 @@ const PostCreate = () => (
     </Create>
 );
 ```
+
 {% endraw %}
 
 You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
@@ -175,6 +179,7 @@ You can also use `mutationOptions` to override success or error side effects, by
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the new record edit page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
@@ -197,6 +202,7 @@ const PostCreate = () => {
     );
 }
 ```
+
 {% endraw %}
 
 The default `onSuccess` function is:
@@ -215,6 +221,7 @@ The default `onSuccess` function is:
 Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows an error notification.
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { useNotify, Create, SimpleForm } from 'react-admin';
@@ -235,6 +242,7 @@ const PostCreate = () => {
     );
 }
 ```
+
 {% endraw %}
 
 The `onError` function receives the error from the `dataProvider.create()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
@@ -259,12 +267,11 @@ By default, submitting the form in the `<Create>` view redirects to the `<Edit>`
 
 You can customize the redirection by setting the `redirect` prop to one of the following values:
 
-- `'edit'`: redirect to the Edit view (the default)
-- `'list'`: redirect to the List view
-- `'show'`: redirect to the Show view
-- `false`: do not redirect
-- A function `(resource, id, data) => string` to redirect to different targets depending on the record
-
+* `'edit'`: redirect to the Edit view (the default)
+* `'list'`: redirect to the List view
+* `'show'`: redirect to the Show view
+* `false`: do not redirect
+* A function `(resource, id, data) => string` to redirect to different targets depending on the record
 
 ```jsx
 const PostCreate = () => (
@@ -274,7 +281,7 @@ const PostCreate = () => (
 );
 ```
 
-Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case. 
+Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case.
 
 If you want to allow the user to enter several records one after the other, setting `redirect` to `false` won't make it, as the form isn't emptied by default. You'll have to empty the form using the `mutationOptions`, and this option disables the `redirect` prop. Check [the Save And Add Another section](#save-and-add-another) for more details.
 
@@ -380,6 +387,7 @@ export const UserCreate = () => {
 Use [the `mutationOptions` prop](#mutationoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.create()` call.
 
 {% raw %}
+
 ```jsx
 import { Create, SimpleForm } from 'react-admin';
 
@@ -391,24 +399,26 @@ const PostCreate = () => (
     </Create>
 );
 ```
+
 {% endraw %}
 
 ## Changing The Notification Message
 
 ![Create notification](./img/CreateSuccess.png)
 
-Once the `dataProvider.create()` request returns successfully, users see a generic notification ("Element created"). 
+Once the `dataProvider.create()` request returns successfully, users see a generic notification ("Element created").
 
 `<Create>` uses two successive translation keys to build the success message:
 
-- `resources.{resource}.notifications.create` as a first choice
-- `ra.notification.create` as a fallback
+* `resources.{resource}.notifications.create` as a first choice
+* `ra.notification.create` as a fallback
 
 To customize the notification message, you can set custom translation for these keys in your i18nProvider.
 
 Alternately, you can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
@@ -431,6 +441,7 @@ const PostCreate = () => {
     );
 }
 ```
+
 {% endraw %}
 
 You can do the same for error notifications, by passing a custom `onError`  callback.
@@ -446,6 +457,7 @@ By default, the `<Create>` view starts with an empty `record`. However, if the `
 That means that if you want to create a link to a creation form, presetting *some* values, all you have to do is to set the `state` prop of the `<CreateButton>`:
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { CreateButton, Datagrid, List, useRecordContext } from 'react-admin';
@@ -469,11 +481,13 @@ export default PostList = () => (
     </List>
 )
 ```
+
 {% endraw %}
 
 **Tip**: The `<Create>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could also be written as:
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { CreateButton, useRecordContext } from 'react-admin';
@@ -490,21 +504,23 @@ const CreateRelatedCommentButton = () => {
     );
 };
 ```
+
 {% endraw %}
 
 Should you use the location `state` or the location `search`? The latter modifies the URL, so it's only necessary if you want to build cross-application links (e.g. from one admin to the other). In general, using the location `state` is a safe bet.
 
 And if you want to prefill the form with constant values, use the `defaultValues` prop on the Form tag.
 
-**Tip**: [The `<Clonebutton>` component](./CloneButton.md) redirects to a Creation view prefilled with the same data as the current context. You can use it e.g. in a `<Datagrid>`, or in the `<Edit actions>` toolbar.
+**Tip**: [The `<Clonebutton>` component](./Buttons.md#clonebutton) redirects to a Creation view prefilled with the same data as the current context. You can use it e.g. in a `<Datagrid>`, or in the `<Edit actions>` toolbar.
 
 ## Save And Add Another
 
-When users need to create several records in a row, a good UX is to stay on the Create form after a successfull submission, and to empty that form to allow a new entry. 
+When users need to create several records in a row, a good UX is to stay on the Create form after a successfull submission, and to empty that form to allow a new entry.
 
 Setting the `<Create redirect={false}>` prop only solves part of the problem: the form still needs to be emptied. That's why the right implementation for this use case is to add a custom `<SaveButton>` in the form toolbar, making useof  the `mutationOptions` prop:
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import {
@@ -551,6 +567,7 @@ const PostCreate = () => {
     );
 }
 ```
+
 {% endraw %}
 
 You can also leave the choice to the user, by supplying two submit buttons: one with a redirect, and one with a form reset. The same technique applies: use the `mutationOptions` prop on the `<SaveButton>` component.
@@ -559,7 +576,7 @@ Note: In order to get the `mutationOptions` being considered, you have to set th
 
 ## Creating A New Record In A Modal
 
-`<Create>` is designed to be a page component, passed to the `create` prop of the `<Resource>` component. But you may want to let users create a record from another page. 
+`<Create>` is designed to be a page component, passed to the `create` prop of the `<Resource>` component. But you may want to let users create a record from another page.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/create-dialog.mp4" type="video/mp4" />
@@ -616,7 +633,7 @@ export default OrderEdit;
 
 ## Controlled Mode
 
-`<Create>` deduces the resource and the initial form values from the URL. This is fine for a creation page, but if you need to let users create records from another page, you probably want to define this parameter yourself. 
+`<Create>` deduces the resource and the initial form values from the URL. This is fine for a creation page, but if you need to let users create records from another page, you probably want to define this parameter yourself.
 
 In that case, use the [`resource`](#resource) and [`record`](#record) props to set the creation parameters regardless of the URL.
 

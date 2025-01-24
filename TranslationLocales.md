@@ -41,7 +41,7 @@ You can find translation packages for the following languages:
 - Romanian (`ro`): [gyhaLabs/ra-language-romanian](https://github.com/gyhaLabs/ra-language-romanian)
 - Russian (`ru`): [klucherev/ra-language-russian](https://github.com/klucherev/ra-language-russian)
 - Slovak (`sk`): [zavadpe/ra-language-slovak](https://github.com/zavadpe/ra-language-slovak)
-- Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/ra-language-spanish)
+- Spanish (`es`): [blackboxvision/ra-language-spanish](https://github.com/BlackBoxVision/react-admin-extensions/tree/main/packages/ra-language-spanish)
 - Swedish (`sv`): [kolben/ra-language-swedish](https://github.com/kolben/ra-language-swedish)
 - Turkish (`tr`): [KamilGunduz/ra-language-turkish](https://github.com/KamilGunduz/ra-language-turkish)
 - Ukrainian (`ua`): [koresar/ra-language-ukrainian](https://github.com/koresar/ra-language-ukrainian)
