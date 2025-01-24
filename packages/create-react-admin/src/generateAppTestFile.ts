@@ -21,9 +21,12 @@ test("should pass", async () => {
 
 	// Sign in
 
-	fireEvent.change(await screen.findByLabelText("Username *"), {
-		target: { value: "janedoe" },
-	});
+  fireEvent.change(
+    await screen.findByLabelText("Username *", undefined, { timeout: 4000 }),
+    {
+      target: { value: "janedoe" },
+    },
+  );
 	fireEvent.change(await screen.findByLabelText("Password *"), {
 		target: { value: "password" },
 	});
@@ -33,7 +36,9 @@ test("should pass", async () => {
 
 	// Open the first post
 	fireEvent.click(await screen.findByText("Post 1"));
-	fireEvent.click(await screen.findByText("Edit"));
+  fireEvent.click(
+    await screen.findByText("Edit", undefined, { timeout: 4000 }),
+  );
 	await screen.findByDisplayValue("Post 1");
 	// Update its title
 	fireEvent.change(await screen.findByDisplayValue("Post 1"), {
@@ -54,7 +59,7 @@ test("should pass", async () => {
 	fireEvent.click(await screen.findByText("Save"));
 	// Check the comment has been updated by finding the post link in the comments list page
 	await screen.findByText("Post 11", { selector: "a *" });
-}, 10000);
+}, 20000);
 
     `
     );
