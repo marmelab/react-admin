@@ -10,11 +10,16 @@ export const generateAppTestFile = (
         path.join(projectDirectory, 'src', 'App.spec.tsx'),
         `
 import { fireEvent, render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
 import { App } from "./App";
 
 test("should pass", async () => {
   vi.spyOn(window, "scrollTo").mockImplementation(() => { /* do nothing */ });
-  render(<App />);
+  render(
+    <MemoryRouter>
+      <App />
+    </MemoryRouter>,
+  );
     ${
         state.authProvider !== 'none'
             ? `
