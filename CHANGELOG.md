@@ -1,5 +1,19 @@
 # Changelog
 
+## 5.5.1
+
+* Fix TabbedForm and TabbedShowLayout with react-router v7 ([#10469](https://github.com/marmelab/react-admin/pull/10469)) ([slax57](https://github.com/slax57))
+* Simplify ra-data-localforage setup ([#10455](https://github.com/marmelab/react-admin/pull/10455)) ([djhi](https://github.com/djhi))
+* [Doc] Document how to have sourcemaps in production ([#10466](https://github.com/marmelab/react-admin/pull/10466)) ([djhi](https://github.com/djhi))
+* [Doc] Impove `scrollToTop` in buttons doc and document `_scrollToTop` in `useRedirect`  ([#10449](https://github.com/marmelab/react-admin/pull/10449)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Document live filtering with `ReferenceManyField` and `ReferenceManyToManyField` ([#10467](https://github.com/marmelab/react-admin/pull/10467)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix the `<ReferenceManyToManyInput mutationOption={{onError}}>` doc ([#10462](https://github.com/marmelab/react-admin/pull/10462)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix link to Spanish translation package ([#10457](https://github.com/marmelab/react-admin/pull/10457)) ([adrien-may](https://github.com/adrien-may))
+* [Doc] Udate `MultiLevelMenu` screenshot ([#10468](https://github.com/marmelab/react-admin/pull/10468)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Demo] Simplify demo titles ([#10461](https://github.com/marmelab/react-admin/pull/10461)) ([djhi](https://github.com/djhi))
+* [Demo] Fix UI glitches due to multiple conflicting MUI packages ([#10464](https://github.com/marmelab/react-admin/pull/10464)) ([djhi](https://github.com/djhi))
+* [Tutorial] Fix tutorial has multiple conflicting MUI packages ([#10465](https://github.com/marmelab/react-admin/pull/10465)) ([djhi](https://github.com/djhi))
+
 ## 5.5.0
 
 * Add support for React router v7 ([#10440](https://github.com/marmelab/react-admin/pull/10440)) ([djhi](https://github.com/djhi))
