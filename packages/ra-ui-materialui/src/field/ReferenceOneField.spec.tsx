@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import {
     RecordRepresentation,
     Basic,
     EmptyWithTranslate,
     QueryOptions,
+    EmptyText,
 } from './ReferenceOneField.stories';
 
 describe('ReferenceOneField', () => {
@@ -13,6 +14,7 @@ describe('ReferenceOneField', () => {
         render(<RecordRepresentation />);
         await screen.findByText('Genre: novel, ISBN: 9780393966473');
     });
+
     it('should render its child in the context of the related record', async () => {
         render(<Basic />);
         await screen.findByText('9780393966473');
@@ -23,6 +25,7 @@ describe('ReferenceOneField', () => {
 
         await screen.findByText('Not found');
     });
+
     it('should accept a queryOptions prop', async () => {
         const dataProvider = {
             getManyReference: jest.fn().mockImplementationOnce(() =>
@@ -47,5 +50,14 @@ describe('ReferenceOneField', () => {
                 }
             );
         });
+    });
+
+    it('should render the "emptyContent" prop when the record is not found', async () => {
+        render(<EmptyText />);
+        await waitFor(() => {
+            expect(screen.queryAllByText('no detail')).toHaveLength(3);
+        });
+        fireEvent.click(screen.getByText('War and Peace'));
+        await screen.findByText('Create');
     });
 });
