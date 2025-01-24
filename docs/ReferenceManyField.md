@@ -189,31 +189,36 @@ You can filter the query used to populate the possible values. Use the `filter` 
 
 {% endraw %}
 
-## Filter Inputs
+## Filtering The References
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/ReferenceManyFieldFilterInput.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
-You can add an array of filter inputs to the `ReferenceManyField` using [the `FilterForm` component](./FilterForm.md):
+You can add an array of filter inputs to the `ReferenceManyField` using [the `FilterForm`](./FilterForm.md) and to [the `FilterButton`](./FilterButton.md)  components:
 
 {% raw %}
 
 ```jsx
-<ReferenceManyField reference="comments" target="post_id">
-    <FilterForm
-        filters={[<TextInput source="q" label="Search" alwaysOn />]}
-    />
-    <Datagrid>
-        ...
-    </Datagrid>
-</ReferenceManyField>
+const filters = [<TextInput source="q" label="Search" />];
+
+const AuthorEdit = () => (
+  <Edit>
+    <SimpleForm>
+      <ReferenceManyField reference="comments" target="post_id">
+          <FilterButton filters={filters}/>
+          <FilterForm filters={filters}/>
+          <Datagrid>
+              ...
+          </Datagrid>
+      </ReferenceManyField>
+    </SimpleForm>
+  </Edit>
+);
 ```
 
 {% endraw %}
-
-**Tip:** `ReferenceManyField` doesn't provide any `FilterButton`, so you need to add the `alwaysOn` prop to your filter inputs.
 
 ## `label`
 
