@@ -171,11 +171,12 @@ const PostCommentsField = () => (
 );
 ```
 
-## `filter`
+## `filter`: Permanent Filter
 
 You can filter the query used to populate the possible values. Use the `filter` prop for that.
 
 {% raw %}
+
 ```jsx
 <ReferenceManyField
   reference="comments"
@@ -185,6 +186,38 @@ You can filter the query used to populate the possible values. Use the `filter` 
    ...
 </ReferenceManyField>
 ```
+
+{% endraw %}
+
+## Filtering The References
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/ReferenceManyFieldFilterInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+You can add filters to `<ReferenceManyField>` by adding [`<FilterForm>`](./FilterForm.md) and [`<FilterButton>`](./FilterButton.md):
+
+{% raw %}
+
+```jsx
+const filters = [<TextInput source="q" label="Search" />];
+
+const AuthorEdit = () => (
+  <Edit>
+    <SimpleForm>
+      <ReferenceManyField reference="comments" target="post_id">
+          <FilterButton filters={filters}/>
+          <FilterForm filters={filters}/>
+          <Datagrid>
+              ...
+          </Datagrid>
+      </ReferenceManyField>
+    </SimpleForm>
+  </Edit>
+);
+```
+
 {% endraw %}
 
 ## `label`

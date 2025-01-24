@@ -17,7 +17,12 @@ import englishMessages from 'ra-language-english';
 import { TextField } from '../field';
 import { ReferenceManyField } from './ReferenceManyField';
 import { Datagrid } from '../list/datagrid/Datagrid';
-import { BulkActionsToolbar, Pagination, SingleFieldList } from '../list';
+import {
+    BulkActionsToolbar,
+    FilterButton,
+    Pagination,
+    SingleFieldList,
+} from '../list';
 import { Notification } from '../layout/Notification';
 import { FilterForm } from '../list';
 import { TextInput } from '../input';
@@ -128,12 +133,13 @@ export const WithSingleFieldList = () => (
     </Wrapper>
 );
 
+const filters = [<TextInput source="q" label="Search" />];
+
 export const WithFilter = () => (
     <Wrapper>
         <ReferenceManyField reference="books" target="author_id">
-            <FilterForm
-                filters={[<TextInput source="q" label="Search" alwaysOn />]}
-            />
+            <FilterButton filters={filters} />
+            <FilterForm filters={filters} />
             <Datagrid bulkActionButtons={false}>
                 <TextField source="title" />
             </Datagrid>
