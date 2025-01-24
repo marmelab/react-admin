@@ -74,12 +74,15 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                         return null;
                     }
                     const tabPath = getTabbedFormTabFullPath(tab, index);
+                    console.log(
+                        'matchPath',
+                        `${splatPathBase}/${tabPath}`,
+                        location.pathname
+                    );
                     const hidden = syncWithLocation
                         ? !matchPath(
                               `${splatPathBase}/${tabPath}`,
-                              // The current location might have encoded segments (e.g. the record id) but resolvedPath.pathname doesn't
-                              // and the match would fail.
-                              getDecodedPathname(location.pathname)
+                              location.pathname
                           )
                         : tabValue !== index;
 
@@ -97,12 +100,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         </Root>
     );
 };
-
-/**
- * Returns the pathname with each segment decoded
- */
-const getDecodedPathname = (pathname: string) =>
-    pathname.split('/').map(decodeURIComponent).join('/');
 
 const DefaultTabs = <TabbedFormTabs />;
 const DefaultComponent = ({ children }) => (
