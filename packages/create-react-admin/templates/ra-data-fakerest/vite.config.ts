@@ -33,7 +33,7 @@ const alias = [
 ];
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [react()],
     server: {
         host: true,
@@ -47,4 +47,4 @@ export default defineConfig({
         globals: true,
         environment: 'jsdom'
     }
-});
+}));
