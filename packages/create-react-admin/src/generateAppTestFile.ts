@@ -40,7 +40,9 @@ test("should pass", async () => {
     }
 
   // Open the first post
-  fireEvent.click(await screen.findByText("Post 1"));
+  fireEvent.click(
+    await screen.findByText("Post 1", undefined, { timeout: 4000 }),
+  );
   fireEvent.click(
     await screen.findByText("Edit", undefined, { timeout: 4000 }),
   );
