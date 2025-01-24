@@ -8,15 +8,12 @@ import {
     ReferenceManyField,
     SimpleForm,
     TextInput,
-    useTranslate,
-    useRecordContext,
     useDefaultTitle,
-    useGetResourceLabel,
+    useEditContext,
 } from 'react-admin';
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
-import { Category } from '../types';
 
 const CategoryEdit = () => (
     <Edit title={<CategoryTitle />}>
@@ -62,21 +59,13 @@ const CategoryEdit = () => (
 
 const CategoryTitle = () => {
     const appTitle = useDefaultTitle();
-    const record = useRecordContext<Category>();
-    const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-
-    const pageTitle = translate('ra.page.edit', {
-        name: getResourceLabel('categories', 1),
-        recordRepresentation: `"${record?.name}"`,
-    });
-
-    return record ? (
+    const { defaultTitle } = useEditContext();
+    return (
         <>
-            <title>{`${appTitle} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
-    ) : null;
+    );
 };
 
 export default CategoryEdit;

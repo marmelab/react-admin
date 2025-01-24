@@ -13,6 +13,7 @@ import {
     SelectColumnsButton,
     TopToolbar,
     useDefaultTitle,
+    useListContext,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
 
@@ -22,7 +23,6 @@ import CustomerLinkField from './CustomerLinkField';
 import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
-import { usePageTitle } from '../usePageTitle';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -42,11 +42,11 @@ const VisitorListActions = () => (
 
 const VisitorTitle = () => {
     const title = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'list' });
+    const { defaultTitle } = useListContext();
     return (
         <>
-            <title>{`${title} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${title} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
     );
 };

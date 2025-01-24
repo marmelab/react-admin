@@ -25,12 +25,12 @@ import localforage from 'localforage';
  * @example // initialize with no data
  *
  * import localForageDataProvider from 'ra-data-local-forage';
- * const dataProvider = await localForageDataProvider();
+ * const dataProvider = localForageDataProvider();
  *
  * @example // initialize with default data (will be ignored if data has been modified by user)
  *
  * import localForageDataProvider from 'ra-data-local-forage';
- * const dataProvider = await localForageDataProvider({
+ * const dataProvider = localForageDataProvider({
  *   defaultData: {
  *     posts: [
  *       { id: 0, title: 'Hello, world!' },
@@ -43,14 +43,16 @@ import localforage from 'localforage';
  *   }
  * });
  */
-export default async (
-    params?: LocalForageDataProviderParams
-): Promise<DataProvider> => {
+export default (params?: LocalForageDataProviderParams): DataProvider => {
     const {
         defaultData = {},
         prefixLocalForageKey = 'ra-data-local-forage-',
         loggingEnabled = false,
     } = params || {};
+
+    let data: Record<string, any> | undefined;
+    let baseDataProvider: DataProvider | undefined;
+    let initializePromise: Promise<void> | undefined;
 
     const getLocalForageData = async (): Promise<any> => {
         const keys = await localforage.keys();
@@ -71,28 +73,44 @@ export default async (
         return localForageData;
     };
 
-    const localForageData = await getLocalForageData();
-    const data = localForageData ?? defaultData;
+    const initialize = async () => {
+        if (!initializePromise) {
+            initializePromise = initializeProvider();
+        }
+        return initializePromise;
+    };
+
+    const initializeProvider = async () => {
+        const localForageData = await getLocalForageData();
+        data = localForageData ?? defaultData;
+
+        baseDataProvider = fakeRestProvider(
+            data,
+            loggingEnabled
+        ) as DataProvider;
+    };
 
     // Persist in localForage
     const updateLocalForage = (resource: string) => {
+        if (!data) {
+            throw new Error('The dataProvider is not initialized.');
+        }
         localforage.setItem(
             `${prefixLocalForageKey}${resource}`,
             data[resource]
         );
     };
 
-    const baseDataProvider = fakeRestProvider(
-        data,
-        loggingEnabled
-    ) as DataProvider;
-
     return {
         // read methods are just proxies to FakeRest
-        getList: <RecordType extends RaRecord = any>(
+        getList: async <RecordType extends RaRecord = any>(
             resource: string,
             params: GetListParams
         ) => {
+            await initialize();
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
             return baseDataProvider
                 .getList<RecordType>(resource, params)
                 .catch(error => {
@@ -104,19 +122,35 @@ export default async (
                     }
                 });
         },
-        getOne: <RecordType extends RaRecord = any>(
+        getOne: async <RecordType extends RaRecord = any>(
             resource: string,
             params: GetOneParams<any>
-        ) => baseDataProvider.getOne<RecordType>(resource, params),
-        getMany: <RecordType extends RaRecord = any>(
+        ) => {
+            await initialize();
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+            return baseDataProvider.getOne<RecordType>(resource, params);
+        },
+        getMany: async <RecordType extends RaRecord = any>(
             resource: string,
             params: GetManyParams<RecordType>
-        ) => baseDataProvider.getMany<RecordType>(resource, params),
-        getManyReference: <RecordType extends RaRecord = any>(
+        ) => {
+            await initialize();
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+            return baseDataProvider.getMany<RecordType>(resource, params);
+        },
+        getManyReference: async <RecordType extends RaRecord = any>(
             resource: string,
             params: GetManyReferenceParams
-        ) =>
-            baseDataProvider
+        ) => {
+            await initialize();
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+            return baseDataProvider
                 .getManyReference<RecordType>(resource, params)
                 .catch(error => {
                     if (error.code === 1) {
@@ -125,13 +159,22 @@ export default async (
                     } else {
                         throw error;
                     }
-                }),
+                });
+        },
 
         // update methods need to persist changes in localForage
-        update: <RecordType extends RaRecord = any>(
+        update: async <RecordType extends RaRecord = any>(
             resource: string,
             params: UpdateParams<any>
         ) => {
+            await initialize();
+            if (!data) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+
             const index = data[resource].findIndex(
                 (record: { id: any }) => record.id === params.id
             );
@@ -142,8 +185,16 @@ export default async (
             updateLocalForage(resource);
             return baseDataProvider.update<RecordType>(resource, params);
         },
-        updateMany: (resource: string, params: UpdateManyParams<any>) => {
+        updateMany: async (resource: string, params: UpdateManyParams<any>) => {
+            await initialize();
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+
             params.ids.forEach((id: Identifier) => {
+                if (!data) {
+                    throw new Error('The dataProvider is not initialized.');
+                }
                 const index = data[resource].findIndex(
                     (record: { id: Identifier }) => record.id === id
                 );
@@ -155,14 +206,21 @@ export default async (
             updateLocalForage(resource);
             return baseDataProvider.updateMany(resource, params);
         },
-        create: <RecordType extends Omit<RaRecord, 'id'> = any>(
+        create: async <RecordType extends Omit<RaRecord, 'id'> = any>(
             resource: string,
             params: CreateParams<any>
         ) => {
+            await initialize();
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
             // we need to call the fakerest provider first to get the generated id
             return baseDataProvider
                 .create<RecordType>(resource, params)
                 .then(response => {
+                    if (!data) {
+                        throw new Error('The dataProvider is not initialized.');
+                    }
                     if (!data.hasOwnProperty(resource)) {
                         data[resource] = [];
                     }
@@ -171,10 +229,17 @@ export default async (
                     return response;
                 });
         },
-        delete: <RecordType extends RaRecord = any>(
+        delete: async <RecordType extends RaRecord = any>(
             resource: string,
             params: DeleteParams<RecordType>
         ) => {
+            await initialize();
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+            if (!data) {
+                throw new Error('The dataProvider is not initialized.');
+            }
             const index = data[resource].findIndex(
                 (record: { id: any }) => record.id === params.id
             );
@@ -182,10 +247,22 @@ export default async (
             updateLocalForage(resource);
             return baseDataProvider.delete<RecordType>(resource, params);
         },
-        deleteMany: (resource: string, params: DeleteManyParams<any>) => {
-            const indexes = params.ids.map((id: any) =>
-                data[resource].findIndex((record: any) => record.id === id)
-            );
+        deleteMany: async (resource: string, params: DeleteManyParams<any>) => {
+            await initialize();
+            if (!baseDataProvider) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+            if (!data) {
+                throw new Error('The dataProvider is not initialized.');
+            }
+            const indexes = params.ids.map((id: any) => {
+                if (!data) {
+                    throw new Error('The dataProvider is not initialized.');
+                }
+                return data[resource].findIndex(
+                    (record: any) => record.id === id
+                );
+            });
             pullAt(data[resource], indexes);
             updateLocalForage(resource);
             return baseDataProvider.deleteMany(resource, params);

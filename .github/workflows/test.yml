@@ -18,7 +18,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v4
       with:
-        node-version: '18.x'
+        node-version: '22.x'
         cache: 'yarn'
     - name: Install dependencies
       run: yarn
@@ -44,7 +44,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v4
       with:
-        node-version: '18.x'
+        node-version: '22.x'
         cache: 'yarn'
     - name: Install dependencies
       run: yarn
@@ -83,7 +83,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -100,7 +100,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -119,7 +119,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -154,7 +154,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -182,7 +182,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -211,7 +211,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -234,7 +234,7 @@ jobs:
         - name: Use Node.js LTS
           uses: actions/setup-node@v3
           with:
-              node-version: '18.x'
+              node-version: '22.x'
         - name: Update Sandbox Repository
           env:
               SSH_SANDBOX_DEPLOY_KEY: ${{ secrets.SSH_SANDBOX_DEPLOY_KEY }}

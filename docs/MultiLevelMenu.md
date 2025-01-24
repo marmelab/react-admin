@@ -5,7 +5,7 @@ title: "The MultiLevelMenu Component"
 
 # `<MultiLevelMenu>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component adds support for nested sub menus in the left navigation bar.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component adds support for nested sub menus in the left navigation bar.
 
 ![MultiLevelMenu](./img/multilevelmenu.png)
 
