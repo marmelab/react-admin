@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useCallback, useMemo } from 'react';
+import React, { ReactElement, ReactNode, useMemo } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
@@ -74,7 +74,7 @@ export const ReferenceOneField = <
         [controllerProps, path]
     );
 
-    const Empty =
+    const empty =
         typeof emptyText === 'string' ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
@@ -86,7 +86,7 @@ export const ReferenceOneField = <
     return !record ||
         (!controllerProps.isPending &&
             controllerProps.referenceRecord == null) ? (
-        Empty
+        empty
     ) : (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
