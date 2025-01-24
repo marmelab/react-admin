@@ -74,11 +74,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                         return null;
                     }
                     const tabPath = getTabbedFormTabFullPath(tab, index);
-                    console.log(
-                        'matchPath',
-                        `${splatPathBase}/${tabPath}`,
-                        location.pathname
-                    );
                     const hidden = syncWithLocation
                         ? !matchPath(
                               `${splatPathBase}/${tabPath}`,
