@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.5.2
+
+* Fix create-react-admin Vite alias and test ([#10472](https://github.com/marmelab/react-admin/pull/10472)) ([slax57](https://github.com/slax57))
+* [chore] Bump vite from 5.4.6 to 5.4.12 ([#10470](https://github.com/marmelab/react-admin/pull/10470)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.5.1
 
 * Fix TabbedForm and TabbedShowLayout with react-router v7 ([#10469](https://github.com/marmelab/react-admin/pull/10469)) ([slax57](https://github.com/slax57))
