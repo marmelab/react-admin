@@ -10,16 +10,10 @@ import {
     useState,
 } from 'react';
 import clsx from 'clsx';
-import {
-    Routes,
-    Route,
-    matchPath,
-    useResolvedPath,
-    useLocation,
-} from 'react-router-dom';
+import { Routes, Route, matchPath, useLocation } from 'react-router-dom';
 import { CardContent, Divider, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useResourceContext } from 'ra-core';
+import { useResourceContext, useSplatPathBase } from 'ra-core';
 import { Toolbar } from './Toolbar';
 import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
@@ -35,9 +29,9 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         ...rest
     } = props;
     const location = useLocation();
-    const resolvedPath = useResolvedPath('');
     const resource = useResourceContext(props);
     const [tabValue, setTabValue] = useState(0);
+    const splatPathBase = useSplatPathBase();
 
     const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
         if (!syncWithLocation) {
@@ -82,7 +76,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     const tabPath = getTabbedFormTabFullPath(tab, index);
                     const hidden = syncWithLocation
                         ? !matchPath(
-                              `${resolvedPath.pathname}/${tabPath}`,
+                              `${splatPathBase}/${tabPath}`,
                               // The current location might have encoded segments (e.g. the record id) but resolvedPath.pathname doesn't
                               // and the match would fail.
                               getDecodedPathname(location.pathname)

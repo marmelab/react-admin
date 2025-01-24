@@ -8,7 +8,7 @@ import {
     styled,
 } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
-import { useTranslate, RaRecord } from 'ra-core';
+import { useTranslate, RaRecord, useSplatPathBase } from 'ra-core';
 import clsx from 'clsx';
 
 import { Labeled } from '../Labeled';
@@ -76,9 +76,14 @@ export const Tab = ({
 }: TabProps) => {
     const translate = useTranslate();
     const location = useLocation();
+    const splatPathBase = useSplatPathBase();
+    const newPathName =
+        value == null || value === ''
+            ? splatPathBase
+            : `${splatPathBase}/${value}`;
     const propsForLink = {
         component: Link,
-        to: { ...location, pathname: value },
+        to: { ...location, pathname: newPathName },
     };
 
     const renderHeader = () => {
