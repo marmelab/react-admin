@@ -39,6 +39,9 @@ export default defineConfig({
         host: true,
     },
     base: './',
+    build: {
+        sourcemap: mode === "developement",
+    },
     resolve: { alias },
     test: {
         globals: true,
