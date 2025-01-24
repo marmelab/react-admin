@@ -196,7 +196,7 @@ You can filter the query used to populate the possible values. Use the `filter` 
   Your browser does not support the video tag.
 </video>
 
-You can add an array of filter inputs to the `ReferenceManyField` using [the `FilterForm`](./FilterForm.md) and to [the `FilterButton`](./FilterButton.md)  components:
+You can add filters to `<ReferenceManyField>` by adding [`<FilterForm>`](./FilterForm.md) and [`<FilterButton>`](./FilterButton.md):
 
 {% raw %}
 
