@@ -7,12 +7,12 @@ title: "CRUD Pages"
 
 Most admin and B2B apps start with a few basic screens to manipulate records:
 
-- A list page, including the ability to filter, paginate and sort the records
-- A read-only page, displaying the record details
+- A list page, including the ability to filter, paginate, and sort the records
+- A read-only page displaying the record details
 - An edition page, allowing to update the record via a form
 - A creation page
 
-We call this type of interface a "CRUD" interface because it allows us to Create, Read, Update and Delete records.
+We call this type of interface a "CRUD" interface because it allows us to Create, Read, Update, and Delete records.
 
 React-admin started as an engine to generate such CRUD interfaces, and it still does it very well. **Building CRUD interfaces with react-admin requires little to no effort**, and it's very easy to customize them.
 
@@ -31,7 +31,7 @@ React-admin provides page components for CRUD operations:
 - [`<Edit>`](./EditTutorial.md) displays a form to edit a record
 - [`<Create>`](./Create.md) displays a form to create a record
 
-Each of these components reads the parameters from the URL, fetches the data from the data provider, stores the data in a context, and renders its child component.
+Each component reads the parameters from the URL, fetches the data from the data provider, stores the data in a context, and renders its child component.
 
 For example, to display a list of posts, you would use the `<List>` component:
 
@@ -49,11 +49,11 @@ const PostList = () => (
 );
 ```
 
-Here, the `<List>` component will call `dataProvider.getList('posts')` to fetch the list of posts, and create a `ListContext` to store the data. The `<Datagrid>` component will read the data from that `ListContext` and render a row for each post. That's why there is no need to explicitly pass the data to the `<Datagrid>` component.
+Here, the `<List>` component will call `dataProvider.getList('posts')` to fetch the list of posts and create a `ListContext` to store the data. The `<Datagrid>` component will read the data from that `ListContext` and render a row for each post. That's why there is no need to explicitly pass the data to the `<Datagrid>` component.
 
 ## Page Context
 
-`<List>` and other page component don't just fetch data: they provide the way to update the page settings:
+`<List>` and other page component don't just fetch data; they provide a way to update the page settings:
 
 - Sort field and order
 - Current page & page size
@@ -102,7 +102,7 @@ const {
 
 ## CRUD Routes
 
-You could declare the CRUD routes manually using react-router's `<Route>` component. But it's such a common pattern that react-admin provides a shortcut: the [`<Resource>`](./Resource.md) component.
+You could declare the CRUD routes manually using react-router's `<Route>` component. But it's such a typical pattern that react-admin provides a shortcut: the [`<Resource>`](./Resource.md) component.
 
 ```jsx
 <Resource
@@ -114,7 +114,7 @@ You could declare the CRUD routes manually using react-router's `<Route>` compon
 />
 ```
 
-This is the equivalent to the following react-router configuration:
+This is the equivalent of the following react-router configuration:
 
 ```jsx
 <ResourceContextProvider value="posts">
@@ -146,7 +146,7 @@ Check [the `<Resource>` documentation](./Resource.md) to learn more about routin
 
 ## The List Page
 
-To build list pages, developers mostly use the [`<List>`](./List.md) component. It fetches a list of records from the data provider and delegates the rendering to its child component (often a [`<Datagrid>`](./Datagrid.md), as in the example below).
+To build list pages, developers primarily use the [`<List>`](./List.md) component. It fetches a list of records from the data provider and delegates the rendering to its child component (often a [`<Datagrid>`](./Datagrid.md), as in the example below).
 
 ```jsx
 import { List, Datagrid, TextField, TextInput} from 'react-admin';
@@ -165,7 +165,7 @@ const BookList = () => (
 );
 ```
 
-`<List>` also lets you customize the UI for filters and pagination. As for `<Datagrid>`, it provides tons of customization options, like row expanders, bulk actions, and columns chooser. You can learn more in the [List Tutorial](./ListTutorial.md).
+`<List>` also lets you customize the UI for filters and pagination. As for `<Datagrid>`, it provides tons of customization options, like row expanders, bulk actions, and column chooser. You can learn more in the [List Tutorial](./ListTutorial.md).
 
 ### List Layouts
 
@@ -251,7 +251,7 @@ Inside these list layouts, you can use any of react-admin’s Field components t
 
 ### Misc
 
-- [`<Pagination>`](./Pagination.md): Renders the page count, and buttons to navigate to the previous and next pages
+- [`<Pagination>`](./Pagination.md): Renders the page count and buttons to navigate to the previous and next pages
 - [`<SavedQueriesList>`](./SavedQueriesList.md): Lets user save a combination of filters
 
 ### Alternatives to List
@@ -264,7 +264,7 @@ You can also use specialized alternatives to the `<List>` component, which offer
 
 ## The Show Page
 
-Show pages rely on the [`<Show>`](./Show.md) component. It reads the record id from the URL, fetches the record from the data provider and delegates the rendering to its child component, e.g. a [`<SimpleShowLayout>`](./SimpleShowLayout.md):
+Show pages rely on the [`<Show>`](./Show.md) component. It reads the record id from the URL, fetches the record from the data provider, and delegates the rendering to its child component, e.g., a [`<SimpleShowLayout>`](./SimpleShowLayout.md):
 
 ```jsx
 import { Show, SimpleShowLayout, TextField} from 'react-admin';
@@ -319,7 +319,7 @@ Inside these show layouts, you can use any of react-admin's [Field components](.
 
 ## The Edit & Create Pages
 
-The [`<Edit>`](./Edit.md) and [`<Create>`](./Create.md) components are very similar. They are useful to edit a record - either a record fetched from the API or a new record. Typically, the child component of these pages is a form layout, like a [`<SimpleForm>`](./SimpleForm.md):
+The [`<Edit>`](./Edit.md) and [`<Create>`](./Create.md) components are very similar. They are useful for editing a record - either fetched from the API or a new record. Typically, the child component of these pages is a form layout, like a [`<SimpleForm>`](./SimpleForm.md):
 
 ```jsx
 import { Edit, SimpleForm, TextInput} from 'react-admin';
@@ -378,7 +378,7 @@ You can use any of the following components to build the edit and create pages:
     </svg>
 </figure>
 
-Forms are very powerful in react-admin. They support default values, sync and async validation, dependent inputs, access control, sub forms, and much more. Check out the [Forms introduction](./Form.md) for more information. Inside the form layouts, you can use any of react-admin's [Input components](./Inputs.md) to edit the record data.
+Forms are very powerful in react-admin. They support default values, sync and async validation, dependent inputs, access control, sub-forms, and more. Check out the [Forms introduction](./Form.md) for more information. Inside the form layouts, you can use any of react-admin's [Input components](./Inputs.md) to edit the record data.
 
 ### Buttons
 
@@ -408,7 +408,7 @@ const App = () => (
 );
 ```
 
-Guesser components start by fetching data from the API, analyzing the shape of the response, then picking up Field and Input components that match the data type. They also dump the generated code in the console, to let you start customizing the UI.
+Guesser components start by fetching data from the API, analyzing the shape of the response, and then picking up Field and Input components that match the data type. They also dump the generated code in the console to let you start customizing the UI.
 
 ![ListGuesser](./img/tutorial_guessed_list.png)
 
@@ -422,7 +422,7 @@ Check the following components to learn more about guessers:
 
 `<List>` and other page components render their children (e.g., `<Datagrid>`) in a page layout. This layout contains a page title (e.g., "Posts"), toolbars for action buttons & filters, a footer for pagination, and a side column.
 
-But sometimes you want to use the list data in a different layout, without the page title and toolbar, or with a different UI kit. For these use cases, you can use the headless variants of the page components, which come in two flavors:
+But sometimes, you want to use the list data in a different layout, without the page title and toolbar, or with a different UI kit. For these use cases, you can use the headless variants of the page components, which come in two flavors:
 
 - **Hook**: `useListController`, `useEditController`, `useCreateController`, `useShowController`
 - **Component**: `<ListBase>`, `<ShowBase>`, `<EditBase>`, `<CreateBase>`

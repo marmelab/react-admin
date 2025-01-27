@@ -7,7 +7,7 @@ title: "Security"
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/login.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
+ Your browser does not support the video tag.
 </video>
 
 Web applications often need to limit access to specific pages or resources to authenticated users ("**authentication**") and ensure that users can only perform permitted actions ("**authorization**").
@@ -59,7 +59,7 @@ Once you set an `<Admin authProvider>`, react-admin enables authentication autom
 ```tsx
 const App = () => (
     <Admin authProvider={authProvider}>
-        ...
+ ...
     </Admin>
 );
 ```
@@ -226,7 +226,7 @@ const App = () => (
 );
 ```
 
-You can also disable the `/login` route entirely by passing `false` to this prop. In this case, the `authProvider` must handle redirecting unauthenticated users to a custom login page by returning a `redirectTo` field in response to `checkAuth` (see [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) for details). If you fail to customize the redirection, the app may end up in an infinite loop.
+You can also entirely turn off the `/login` route by passing `false` to this prop. In this case, the `authProvider` must handle redirecting unauthenticated users to a custom login page by returning a `redirectTo` field in response to `checkAuth` (see [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) for details). If you fail to customize the redirection, the app may end up in an infinite loop.
 
 ```tsx
 const authProvider = {
