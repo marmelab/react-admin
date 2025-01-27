@@ -87,6 +87,8 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
       - name: Unit Tests
         run: make test-unit
         env:
