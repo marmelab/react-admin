@@ -199,6 +199,38 @@ You can also use specialized alternatives to the `<List>` component, which offer
 
 ## The Show Page
 
+Children of the `<Show>` component display a record in read-only mode.
+
+### Show Layouts
+
+<table><tbody>
+<tr style="border:none">
+    <td style="width:50%;border:none;text-align:center">
+        <a title="<SimpleShowLayout>" href="./SimpleShowLayout.html">
+            <img src="./img/SimpleShowLayout_small.png">
+        </a>
+        <a href="./SimpleShowLayout.html" style="display: block;transform: translateY(-10px);"><code>&lt;SimpleShowLayout&gt;</code></a>
+    </td>
+    <td style="width:50%;border:none;text-align:center">
+         <a title="<TabbedShowLayout>" href="./TabbedShowLayout.html">
+            <img src="./img/TabbedShowLayout_small.png">
+        </a>
+        <a href="./TabbedShowLayout.html" style="display: block;transform: translateY(-10px);"><code>&lt;TabbedShowLayout&gt;</code></a>
+    </td>
+</tr>
+</tbody></table>
+
+### Buttons
+
+- [`<EditButton>`](./Buttons.md#editbutton): Go to the edit page for a record
+- [`<CreateButton>`](./Buttons.md#createbutton): A button to create a new record
+- [`<ListButton>`](./Buttons.md#listbutton): Go to the list page for a record
+- [`<CloneButton>`](./Buttons.md#clonevutton): Clone a record
+
+### Misc
+
+- [`<Labeled>`](./Labeled.md): A component to display a field with a label
+
 ## The Edit & Create Pages
 
 ## CRUD Routing
