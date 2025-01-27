@@ -31,7 +31,7 @@ React-admin provides page components for CRUD operations:
 - [`<Edit>`](./EditTutorial.md) displays a form to edit a record
 - [`<Create>`](./Create.md) displays a form to create a record
 
-Each of these components reads the parameters from the URL, fetches the data from the data provider, stores the data in a context, and renders its child component. 
+Each of these components reads the parameters from the URL, fetches the data from the data provider, stores the data in a context, and renders its child component.
 
 For example, to display a list of posts, you would use the `<List>` component:
 
@@ -102,12 +102,11 @@ const {
 
 ## The List Page
 
-Children of the  `<List>` component display a list of records, and let users change the list parameters. 
+Children of the  `<List>` component display a list of records, and let users change the list parameters.
 
 You can use any of the following components to build the list page:
 
 ### List iterators
-
 
 <table><tbody>
 <tr style="border:none">
@@ -145,40 +144,29 @@ You can use any of the following components to build the list page:
 <table><tbody>
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Filter Button/Form Combo" href="./img/list_filter.mp4">
-            <video controls autoplay playsinline muted loop>
-                <source src="./img/list_filter.mp4" type="video/mp4"/>
-                Your browser does not support the video tag.
-            </video>
+        <a title="Filter Button/Form Combo" href="./FilteringTutorial.html#the-filter-buttonform-combo">
+            <img src="./img/FilterButtonFormCombo.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-filter-buttonform-combo" style="display: block;transform: translateY(-10px);">Filter Button/Form Combo</a>
     </td>
     <td style="width:50%;border:none;text-align:center">
-         <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
-            <video controls autoplay playsinline muted loop>
-                <source src="./img/filter-sidebar.webm" type="video/webm"/>
-                <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
-                Your browser does not support the video tag.
-            </video>
+        <a title="FilterList sidebar" href="./FilteringTutorial.html#the-filterlist-sidebar">
+            <img src="./img/FilterList.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-filterlist-sidebar" style="display: block;transform: translateY(-10px);"><code>&lt;FilterList&gt;</code> Sidebar</a>
     </td>
 </tr>
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Stacked Filters" href="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4">
-            <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-            </video>
+        <a title="Stacked Filters" href="./FilteringTutorial.html#the-stackedfilters-component">
+            <img src="./img/StackedFilters.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-stackedfilters-component" style="display: block;transform: translateY(-10px);"><code>&lt;StackedFilters&gt;</code> Dialog</a>
     </td>
     <td style="width:50%;border:none;text-align:center;vertical-align:top;">
-        <a title="<Search> input" href="https://react-admin-ee.marmelab.com/assets/ra-search-overview.mp4"><video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-            </video></a>
+            <a title="<Search> input" href="./FilteringTutorial.html#global-search">
+            <img src="./img/Search.jpg">
+        </a>
         <a href="./FilteringTutorial.html#global-search" style="display: block;transform: translateY(-10px);">Global <code>&lt;Search&gt;</code></a>
     </td>
 </tr>
@@ -285,7 +273,7 @@ Check the following components to learn more about guessers:
 
 ## Headless Variants
 
-`<List>` and other page components render their children (e.g., `<Datagrid>`) in a page layout. This layout contains a page title (e.g., "Posts"), toolbars for action buttons & filters, a footer for pagination, and a side column. 
+`<List>` and other page components render their children (e.g., `<Datagrid>`) in a page layout. This layout contains a page title (e.g., "Posts"), toolbars for action buttons & filters, a footer for pagination, and a side column.
 
 But sometimes you want to use the list data in a different layout, without the page title and toolbar, or with a different UI kit. For these use cases, you can use the headless variants of the page components, which come in two flavors:
 
@@ -328,6 +316,3 @@ const MyList = () => (
     </ListBase>
 );
 ```
-
-
-
