@@ -100,13 +100,76 @@ const {
 } = listContext;
 ```
 
+## CRUD Routes
+
+You could declare the CRUD routes manually using react-router's `<Route>` component. But it's such a common pattern that react-admin provides a shortcut: the [`<Resource>`](./Resource.md) component.
+
+```jsx
+<Resource
+    name="posts"
+    list={PostList}     // maps PostList to /posts
+    show={PostShow}     // maps PostShow to /posts/:id/show
+    edit={PostEdit}     // maps PostEdit to /posts/:id
+    create={PostCreate} // maps PostCreate to /posts/create
+/>
+```
+
+This is the equivalent to the following react-router configuration:
+
+```jsx
+<ResourceContextProvider value="posts">
+    <Route path="/posts" element={<PostList />} />
+    <Route path="/posts/:id/show" element={<PostShow />} />
+    <Route path="/posts/:id" element={<PostEdit />} />
+    <Route path="/posts/create" element={<PostCreate />} />
+</ResourceContextProvider>
+```
+
+`<Resource>` defines a `ResourceContext` storing the current resource `name`. This context is used by the `<List>`, `<Edit>`, `<Create>`, and `<Show>` components to determine the resource they should fetch. So when declaring page components with `<Resource>`, you don't need to pass the `resource` prop to them.
+
+```diff
+import { List, Datagrid, TextField } from 'react-admin';
+
+const PostList = () => (
+-   <List resource="posts">
++   <List>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+
+Check [the `<Resource>` documentation](./Resource.md) to learn more about routing and resource context.
+
 ## The List Page
 
-Children of the  `<List>` component display a list of records, and let users change the list parameters. You can learn more in the [List Tutorial](./ListTutorial.md).
+To build list pages, developers mostly use the [`<List>`](./List.md) component. It fetches a list of records from the data provider and delegates the rendering to its child component (often a [`<Datagrid>`](./Datagrid.md), as in the example below).
+
+```jsx
+import { List, Datagrid, TextField, TextInput} from 'react-admin';
+
+const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
+
+const BookList = () => (
+    <List filters={filters}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+```
+
+`<List>` also lets you customize the UI for filters and pagination. As for `<Datagrid>`, it provides tons of customization options, like row expanders, bulk actions, and columns chooser. You can learn more in the [List Tutorial](./ListTutorial.md).
+
+### List Layouts
 
 You can use any of the following components to build the list page:
-
-### List iterators
 
 <table><tbody>
 <tr style="border:none">
@@ -139,7 +202,9 @@ You can use any of the following components to build the list page:
 </tr>
 </tbody></table>
 
-### Filter components
+Inside these list layouts, you can use any of react-admin’s Field components to display the record data.
+
+### Filter Components
 
 <table><tbody>
 <tr style="border:none">
@@ -199,11 +264,28 @@ You can also use specialized alternatives to the `<List>` component, which offer
 
 ## The Show Page
 
-Children of the `<Show>` component display a record in read-only mode. You can learn more in the [Show Tutorial](./ShowTutorial.md).
+Show pages rely on the [`<Show>`](./Show.md) component. It reads the record id from the URL, fetches the record from the data provider and delegates the rendering to its child component, e.g. a [`<SimpleShowLayout>`](./SimpleShowLayout.md):
 
-You can use any of the following components to build the show page:
+```jsx
+import { Show, SimpleShowLayout, TextField} from 'react-admin';
+
+const BookShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+You can learn more in the [Show Tutorial](./ShowTutorial.md).
 
 ### Show Layouts
+
+You can use any of the following components to build the show page:
 
 <table><tbody>
 <tr style="border:none">
@@ -237,13 +319,28 @@ Inside these show layouts, you can use any of react-admin's [Field components](.
 
 ## The Edit & Create Pages
 
-Children of the `<Edit>` and `<Create>` components display a form to edit or create a record. You can learn more in the [Edit Tutorial](./EditTutorial.md).
+The [`<Edit>`](./Edit.md) and [`<Create>`](./Create.md) components are very similar. They are useful to edit a record - either a record fetched from the API or a new record. Typically, the child component of these pages is a form layout, like a [`<SimpleForm>`](./SimpleForm.md):
 
-You can use any of the following components to build the edit and create pages:
+```jsx
+import { Edit, SimpleForm, TextInput} from 'react-admin';
+
+const BookEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="id" />
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="year" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+You can learn more in the [Edit Tutorial](./EditTutorial.md).
 
 ### Form Layouts
 
-React-admin provides several form components to help you build forms with different layouts:
+You can use any of the following components to build the edit and create pages:
 
 <figure>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1179 620" preserveAspectRatio="xMinYMin meet">
@@ -281,7 +378,7 @@ React-admin provides several form components to help you build forms with differ
     </svg>
 </figure>
 
-Inside these form layouts, you can use any of react-admin's [Input components](./Inputs.md) to edit the record data.
+Forms are very powerful in react-admin. They support default values, sync and async validation, dependent inputs, access control, sub forms, and much more. Check out the [Forms introduction](./Form.md) for more information. Inside the form layouts, you can use any of react-admin's [Input components](./Inputs.md) to edit the record data.
 
 ### Buttons
 
@@ -294,50 +391,6 @@ Inside these form layouts, you can use any of react-admin's [Input components](.
 - [`<Toolbar>`](./Toolbar.md): Customize the form toolbar
 - [`<JsonSchemaForm>`](./JsonSchemaForm.md): A form based on a JSON schema
 - [`<AutoSave>`](./AutoSave.md): Automatically save the form
-
-## CRUD Routing
-
-You could declare the CRUD routes manually using react-router's `<Route>` component. But it's such a common pattern that react-admin provides a shortcut: the [`<Resource>`](./Resource.md) component.
-
-```jsx
-<Resource
-    name="posts"
-    list={PostList}     // maps PostList to /posts
-    show={PostShow}     // maps PostShow to /posts/:id/show
-    edit={PostEdit}     // maps PostEdit to /posts/:id
-    create={PostCreate} // maps PostCreate to /posts/create
-/>
-```
-
-This is the equivalent to the following react-router configuration:
-
-```jsx
-<ResourceContextProvider value="posts">
-    <Route path="/posts" element={<PostList />} />
-    <Route path="/posts/:id/show" element={<PostShow />} />
-    <Route path="/posts/:id" element={<PostEdit />} />
-    <Route path="/posts/create" element={<PostCreate />} />
-</ResourceContextProvider>
-```
-
-`<Resource>` defines a `ResourceContext` storing the current resource `name`. This context is used by the `<List>`, `<Edit>`, `<Create>`, and `<Show>` components to determine the resource they should fetch. So when declaring page components with `<Resource>`, you don't need to pass the `resource` prop to them.
-
-```diff
-import { List, Datagrid, TextField } from 'react-admin';
-
-const PostList = () => (
--   <List resource="posts">
-+   <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
-    </List>
-);
-```
-
-Check [the `<Resource>` documentation](./Resource.md) to learn more about routing and resource context.
 
 ## Guessers & Scaffolding
 

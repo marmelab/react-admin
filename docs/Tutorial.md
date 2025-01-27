@@ -1086,21 +1086,14 @@ const App = () => (
 
 React-admin was built with customization in mind. You can replace any react-admin component with a component of your own, for instance, to display a custom list layout or a different edit form for a given resource.
 
-Now that you've completed the tutorial, continue your journey with [the Features chapter](./Features.md), which lists all the features of react-admin.
+Now that you've completed the tutorial, continue your journey with the [Guides and Concepts](./Architecture.md) section.
 
-After that, the best way to learn react-admin is by reading the introduction chapters to each of its major parts:
+**Tip**: React-admin is a large framework, so its documentation is quite extensive. Don't get intimidated! React-admin works well for projects of any size. To continue your discovery of react-admin, we recommend that you **[enable beginner mode](#beginner-mode)** by clicking on the button located at the top of the navigation sidebar. It will hide the advanced features from the sidebar. Just remember to disable it when you're ready to go further.
 
-- [Data Provider and API Calls](./DataProviders.md)
-- [Auth Provider and Security](./Authentication.md)
-- [List Page](./ListTutorial.md)
-- [Creation & Edition Pages](./EditTutorial.md)
-- [Show Pages](./ShowTutorial.md)
-- [Fields](./Fields.md)
-- [Inputs](./Inputs.md)
-- [Preferences](./Store.md)
-- [Realtime](./Realtime.md)
-
-**Tip**: React-admin is a large framework, so its documentation is quite extensive. Don't get intimidated! React-admin works well for projects of any size. To continue your discovery of react-admin, we recommend that you **[enable beginner mode](#beginner-mode)**, which hides the advanced features from the sidebar. Just remember to disable it when you're ready to go further.
+<video controls autoplay playsinline muted loop >
+  <source src="./img/beginner_mode.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
 
 And to help you close the gap between theoretical knowledge and practical experience, take advantage of the react-admin [Demos](./Demos.md). They are great examples of how to use react-admin in a real-world application. They also show the best practices for going beyond simple CRUD apps.
 
