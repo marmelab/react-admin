@@ -3,6 +3,7 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/jest-globals';
 
 // Ignore warnings about act()
 // See https://github.com/testing-library/react-testing-library/issues/281,

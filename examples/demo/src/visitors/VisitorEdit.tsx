@@ -8,6 +8,7 @@ import {
     SimpleForm,
     useTranslate,
     useDefaultTitle,
+    useEditContext,
 } from 'react-admin';
 import { Grid, Box, Typography } from '@mui/material';
 
@@ -15,7 +16,6 @@ import Aside from './Aside';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
 import { validateForm } from './VisitorCreate';
-import { usePageTitle } from '../usePageTitle';
 
 const VisitorEdit = () => {
     const translate = useTranslate();
@@ -117,10 +117,10 @@ const VisitorEdit = () => {
 
 const VisitorTitle = () => {
     const appTitle = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'edit' });
+    const { defaultTitle } = useEditContext();
     return (
         <>
-            <title>{`${appTitle} - ${pageTitle}`}</title>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
             <FullNameField
                 source="last_name"
                 size="32"

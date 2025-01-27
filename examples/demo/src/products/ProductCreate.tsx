@@ -4,10 +4,10 @@ import {
     TabbedForm,
     TextInput,
     required,
+    useCreateContext,
     useDefaultTitle,
 } from 'react-admin';
 import { ProductEditDetails } from './ProductEditDetails';
-import { usePageTitle } from '../usePageTitle';
 const RichTextInput = React.lazy(() =>
     import('ra-input-rich-text').then(module => ({
         default: module.RichTextInput,
@@ -16,12 +16,12 @@ const RichTextInput = React.lazy(() =>
 
 const ProductTitle = () => {
     const appTitle = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'create' });
+    const { defaultTitle } = useCreateContext();
 
     return (
         <>
-            <title>{`${appTitle} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
     );
 };

@@ -7,6 +7,7 @@ import {
     DateField,
     Labeled,
     useDefaultTitle,
+    useEditContext,
 } from 'react-admin';
 import { Box, Grid, Stack, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -16,7 +17,6 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
 import { Review } from '../types';
-import { usePageTitle } from '../usePageTitle';
 
 interface ReviewEditProps {
     id: Review['id'];
@@ -25,8 +25,8 @@ interface ReviewEditProps {
 
 const ReviewTitle = () => {
     const appTitle = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'edit' });
-    return <title>{`${appTitle} - ${pageTitle}`}</title>;
+    const { defaultTitle } = useEditContext();
+    return <title>{`${appTitle} - ${defaultTitle}`}</title>;
 };
 
 const ReviewEdit = ({ id, onCancel }: ReviewEditProps) => {

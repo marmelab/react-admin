@@ -210,21 +210,6 @@ You can for instance use it to pass [a custom meta](./Actions.md#meta-parameter)
 
 {% endraw %}
 
-## `perPage`
-
-By default, react-admin displays at most 25 entries from the associative table (e.g. 25 `performances`). You can change the limit by setting the `perPage` prop:
-
-```tsx
-<ReferenceManyToManyInput
-    reference="venues"
-    through="performances"
-    using="band_id,venue_id"
-    perPage={10}
->
-    {/* ... */}
-</ReferenceManyToManyInput>
-```
-
 You can also use it to pass an `onError` function as follows:
 
 {% raw %}
@@ -243,6 +228,21 @@ You can also use it to pass an `onError` function as follows:
 ```
 
 {% endraw %}
+
+## `perPage`
+
+By default, react-admin displays at most 25 entries from the associative table (e.g. 25 `performances`). You can change the limit by setting the `perPage` prop:
+
+```tsx
+<ReferenceManyToManyInput
+    reference="venues"
+    through="performances"
+    using="band_id,venue_id"
+    perPage={10}
+>
+    {/* ... */}
+</ReferenceManyToManyInput>
+```
 
 ## `perPageChoices`
 

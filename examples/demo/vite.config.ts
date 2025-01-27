@@ -16,14 +16,20 @@ export default defineConfig(async () => {
     };
     for (const dirName of packages) {
         if (dirName === 'create-react-admin') continue;
-        // eslint-disable-next-line prettier/prettier
-        const packageJson = await import(
-            path.resolve(__dirname, '../../packages', dirName, 'package.json'),
-            { with: { type: 'json' } }
+        const packageJson = JSON.parse(
+            fs.readFileSync(
+                path.resolve(
+                    __dirname,
+                    '../../packages',
+                    dirName,
+                    'package.json'
+                ),
+                'utf8'
+            )
         );
-        aliases[packageJson.default.name] = path.resolve(
+        aliases[packageJson.name] = path.resolve(
             __dirname,
-            `../../packages/${packageJson.default.name}/src`
+            `../../packages/${packageJson.name}/src`
         );
     }
 
@@ -62,6 +68,21 @@ export default defineConfig(async () => {
                 //     find: 'scheduler/tracing',
                 //     replacement: 'scheduler/tracing-profiling',
                 // },
+                // The 2 next aliases are needed to avoid having multiple MUI instances
+                {
+                    find: '@mui/material',
+                    replacement: path.resolve(
+                        __dirname,
+                        'node_modules/@mui/material'
+                    ),
+                },
+                {
+                    find: '@mui/icons-material',
+                    replacement: path.resolve(
+                        __dirname,
+                        'node_modules/@mui/icons-material'
+                    ),
+                },
                 // we need to manually follow the symlinks for local packages to allow deep HMR
                 ...Object.keys(aliases).map(packageName => ({
                     find: packageName,

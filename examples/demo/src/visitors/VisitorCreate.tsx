@@ -8,9 +8,9 @@ import {
     PasswordInput,
     email,
     useDefaultTitle,
+    useCreateContext,
 } from 'react-admin';
 import { Box, Typography } from '@mui/material';
-import { usePageTitle } from '../usePageTitle';
 
 export const validateForm = (
     values: Record<string, any>
@@ -39,11 +39,11 @@ export const validateForm = (
 
 const VisitorTitle = () => {
     const appTitle = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'create' });
+    const { defaultTitle } = useCreateContext();
     return (
         <>
-            <title>{`${appTitle} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
     );
 };

@@ -18,15 +18,14 @@ import { humanize } from 'inflection';
 
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
-import { usePageTitle } from '../usePageTitle';
 
 const CategoriesTitle = () => {
     const title = useDefaultTitle();
-    const pageTitle = usePageTitle({ view: 'list' });
+    const { defaultTitle } = useListContext();
     return (
         <>
-            <title>{`${title} - ${pageTitle}`}</title>
-            <span>{pageTitle}</span>
+            <title>{`${title} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
         </>
     );
 };

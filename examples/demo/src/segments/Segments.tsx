@@ -7,16 +7,23 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
-import { useTranslate, Title, useDefaultTitle } from 'react-admin';
+import {
+    useTranslate,
+    Title,
+    useDefaultTitle,
+    useGetResourceLabel,
+} from 'react-admin';
 
 import LinkToRelatedCustomers from './LinkToRelatedCustomers';
 import segments from './data';
-import { usePageTitle } from '../usePageTitle';
 
 const Segments = () => {
     const appTitle = useDefaultTitle();
     const translate = useTranslate();
-    const pageTitle = usePageTitle({ view: 'list', resource: 'segments' });
+    const getResourceLabel = useGetResourceLabel();
+    const pageTitle = translate(`ra.page.list`, {
+        name: getResourceLabel('segments', 2),
+    });
 
     return (
         <>
