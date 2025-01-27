@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 
 import { testDataProvider } from '../../dataProvider';
@@ -13,7 +13,7 @@ describe('CreateBase', () => {
     it('should give access to the save function', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            create: jest.fn((_, { data }) =>
+            create: vi.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
         });
@@ -31,11 +31,11 @@ describe('CreateBase', () => {
     it('should allow to override the onSuccess function', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            create: jest.fn((_, { data }) =>
+            create: vi.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
         });
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
 
         render(
             <NoAuthProvider
@@ -61,12 +61,12 @@ describe('CreateBase', () => {
     it('should allow to override the onSuccess function at call time', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            create: jest.fn((_, { data }) =>
+            create: vi.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
         });
-        const onSuccess = jest.fn();
-        const onSuccessOverride = jest.fn();
+        const onSuccess = vi.fn();
+        const onSuccessOverride = vi.fn();
 
         const { getByText } = render(
             <NoAuthProvider
@@ -92,12 +92,12 @@ describe('CreateBase', () => {
     });
 
     it('should allow to override the onError function', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             // @ts-ignore
-            create: jest.fn(() => Promise.reject({ message: 'test' })),
+            create: vi.fn(() => Promise.reject({ message: 'test' })),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
 
         render(
             <NoAuthProvider
@@ -120,10 +120,10 @@ describe('CreateBase', () => {
     it('should allow to override the onError function at call time', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            create: jest.fn(() => Promise.reject({ message: 'test' })),
+            create: vi.fn(() => Promise.reject({ message: 'test' })),
         });
-        const onError = jest.fn();
-        const onErrorOverride = jest.fn();
+        const onError = vi.fn();
+        const onErrorOverride = vi.fn();
 
         render(
             <NoAuthProvider
@@ -148,11 +148,11 @@ describe('CreateBase', () => {
     it('should allow to override the transform function', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            create: jest.fn((_, { data }) =>
+            create: vi.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
         });
-        const transform = jest
+        const transform = vi
             .fn()
             .mockReturnValueOnce({ test: 'test transformed' });
 
@@ -175,12 +175,12 @@ describe('CreateBase', () => {
     it('should allow to override the transform function at call time', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            create: jest.fn((_, { data }) =>
+            create: vi.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
             ),
         });
-        const transform = jest.fn();
-        const transformOverride = jest
+        const transform = vi.fn();
+        const transformOverride = vi
             .fn()
             .mockReturnValueOnce({ test: 'test transformed' });
 
@@ -245,7 +245,7 @@ describe('CreateBase', () => {
                 new Promise<void>(resolve => {
                     resolveAuth = resolve;
                 }),
-            canAccess: jest.fn(
+            canAccess: vi.fn(
                 () =>
                     new Promise<boolean>(resolve => {
                         resolveCanAccess = resolve;

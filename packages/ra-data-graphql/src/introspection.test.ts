@@ -140,7 +140,7 @@ describe('introspection', () => {
 
     describe('introspection parsing returns an object', () => {
         const client = {
-            query: jest.fn(() =>
+            query: vi.fn(() =>
                 Promise.resolve({
                     data: {
                         __schema: {

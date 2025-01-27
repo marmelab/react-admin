@@ -1,5 +1,5 @@
 import React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { Route, Routes } from 'react-router';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 
@@ -16,7 +16,7 @@ describe('useDeleteWithUndoController', () => {
     it('should call the dataProvider.delete() function with the meta param', async () => {
         let receivedMeta = null;
         const dataProvider = testDataProvider({
-            delete: jest.fn((ressource, params) => {
+            delete: vi.fn((ressource, params) => {
                 receivedMeta = params?.meta?.key;
                 return Promise.resolve({ data: params?.meta?.key });
             }),
@@ -52,7 +52,7 @@ describe('useDeleteWithUndoController', () => {
     it('should display success message after successful deletion', async () => {
         const successMessage = 'Test Message';
         const dataProvider = testDataProvider({
-            delete: jest.fn().mockResolvedValue({ data: {} }),
+            delete: vi.fn().mockResolvedValue({ data: {} }),
         });
 
         const MockComponent = () => {

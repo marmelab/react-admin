@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { screen, render, waitFor } from '@testing-library/react';
 import { Location } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
@@ -12,9 +12,9 @@ import { BasenameContextProvider, TestMemoryRouter } from '../routing';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 
-jest.mock('../notification/useNotify');
+vi.mock('../notification/useNotify');
 
-const notify = jest.fn();
+const notify = vi.fn();
 useNotify.mockImplementation(() => notify);
 
 const TestComponent = ({

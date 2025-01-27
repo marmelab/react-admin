@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 
 import { ListContextProvider, ListControllerResult } from 'ra-core';

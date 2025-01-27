@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { CoreAdminContext, testDataProvider } from 'ra-core';
 
@@ -8,7 +8,7 @@ import { ThemeProvider } from '../theme/ThemeProvider';
 
 describe('<ListGuesser />', () => {
     it('should log the guessed List view based on the fetched records', async () => {
-        const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+        const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             getList: () =>
                 Promise.resolve({

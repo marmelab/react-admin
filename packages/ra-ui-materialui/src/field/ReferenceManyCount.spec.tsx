@@ -15,7 +15,7 @@ describe('<ReferenceManyCount />', () => {
         await screen.findByText('3');
     });
     it('should render an error icon when the request fails', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         render(<ErrorState />);
         await screen.findByTitle('error');
     });
@@ -25,7 +25,7 @@ describe('<ReferenceManyCount />', () => {
     });
     it('should accept a sort prop', async () => {
         const dataProvider = {
-            getManyReference: jest.fn(),
+            getManyReference: vi.fn(),
         } as any;
         render(
             <Wrapper dataProvider={dataProvider}>

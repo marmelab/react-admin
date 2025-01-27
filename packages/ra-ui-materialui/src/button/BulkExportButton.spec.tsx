@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     CoreAdminContext,
     testDataProvider,
@@ -14,9 +14,9 @@ const theme = createTheme();
 
 describe('<BulkExportButton />', () => {
     it('should invoke dataProvider with meta', async () => {
-        const exporter = jest.fn().mockName('exporter');
+        const exporter = vi.fn().mockName('exporter');
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValueOnce({ data: [], total: 0 }),
+            getMany: vi.fn().mockResolvedValueOnce({ data: [], total: 0 }),
         });
 
         render(

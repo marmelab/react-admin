@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { RaRecord } from '../types';
 import { testDataProvider } from './testDataProvider';
@@ -15,7 +15,7 @@ import {
 describe('useCreate', () => {
     it('returns a callback that can be used with create arguments', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: vi.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -39,7 +39,7 @@ describe('useCreate', () => {
 
     it('returns a callback that can be used with no arguments', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: vi.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -63,7 +63,7 @@ describe('useCreate', () => {
 
     it('uses call time params over hook time params', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: vi.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -87,7 +87,7 @@ describe('useCreate', () => {
 
     it('accepts a meta paramater', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: vi.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -115,7 +115,7 @@ describe('useCreate', () => {
             sku: string;
         }
         const dataProvider = testDataProvider({
-            create: jest.fn(() =>
+            create: vi.fn(() =>
                 Promise.resolve({ data: { id: 1, sku: 'abc' } } as any)
             ),
         });
@@ -207,7 +207,7 @@ describe('useCreate', () => {
         });
 
         it('it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<WithMiddlewaresError timeout={10} />);
             screen.getByText('Create post').click();
             await waitFor(() => {

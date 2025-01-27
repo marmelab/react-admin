@@ -1,4 +1,4 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 import removeKey from './removeKey';
 
 describe('removeKey', () => {

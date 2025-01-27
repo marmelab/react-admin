@@ -1,5 +1,5 @@
 import getValue from './getValue';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 describe('getValue', () => {
     it('returns directly the value if it is not an object', () => {

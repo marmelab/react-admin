@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
@@ -87,9 +87,7 @@ describe('useReferenceManyFieldController', () => {
 
     it('should call dataProvider.getManyReferences on mount', async () => {
         const dataProvider = testDataProvider({
-            getManyReference: jest
-                .fn()
-                .mockResolvedValue({ data: [], total: 0 }),
+            getManyReference: vi.fn().mockResolvedValue({ data: [], total: 0 }),
         });
 
         render(
@@ -122,7 +120,7 @@ describe('useReferenceManyFieldController', () => {
     });
 
     it('should pass data to children function', async () => {
-        const children = jest.fn().mockReturnValue('children');
+        const children = vi.fn().mockReturnValue('children');
         const dataProvider = testDataProvider({
             getManyReference: () =>
                 Promise.resolve({
@@ -163,7 +161,7 @@ describe('useReferenceManyFieldController', () => {
     });
 
     it('should handle partial pagination', async () => {
-        const children = jest.fn().mockReturnValue('children');
+        const children = vi.fn().mockReturnValue('children');
         const dataProvider = testDataProvider({
             getManyReference: () =>
                 Promise.resolve({
@@ -204,9 +202,7 @@ describe('useReferenceManyFieldController', () => {
 
     it('should support custom source', async () => {
         const dataProvider = testDataProvider({
-            getManyReference: jest
-                .fn()
-                .mockResolvedValue({ data: [], total: 0 }),
+            getManyReference: vi.fn().mockResolvedValue({ data: [], total: 0 }),
         });
 
         render(
@@ -244,9 +240,7 @@ describe('useReferenceManyFieldController', () => {
 
     it('should call crudGetManyReference when its props changes', async () => {
         const dataProvider = testDataProvider({
-            getManyReference: jest
-                .fn()
-                .mockResolvedValue({ data: [], total: 0 }),
+            getManyReference: vi.fn().mockResolvedValue({ data: [], total: 0 }),
         });
         const ControllerWrapper = props => (
             <CoreAdminContext dataProvider={dataProvider}>
@@ -294,9 +288,7 @@ describe('useReferenceManyFieldController', () => {
             />
         );
         const dataProvider = testDataProvider({
-            getManyReference: jest
-                .fn()
-                .mockResolvedValue({ data: [], total: 0 }),
+            getManyReference: vi.fn().mockResolvedValue({ data: [], total: 0 }),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -334,7 +326,7 @@ describe('useReferenceManyFieldController', () => {
 
     it('should support custom storeKey', async () => {
         const store = memoryStore();
-        const setStore = jest.spyOn(store, 'setItem');
+        const setStore = vi.spyOn(store, 'setItem');
 
         render(
             <CoreAdminContext store={store}>
@@ -456,10 +448,7 @@ describe('useReferenceManyFieldController', () => {
 
         it('should not select more records than the provided limit', async () => {
             const dataProvider = defaultDataProvider;
-            const getManyReference = jest.spyOn(
-                dataProvider,
-                'getManyReference'
-            );
+            const getManyReference = vi.spyOn(dataProvider, 'getManyReference');
             render(<Basic dataProvider={dataProvider} />);
             await waitFor(() => {
                 expect(screen.getByTestId('selected_ids').textContent).toBe(

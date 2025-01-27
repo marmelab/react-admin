@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { Routes, Route } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { useGetOne } from '../dataProvider';
 import useLogout from './useLogout';

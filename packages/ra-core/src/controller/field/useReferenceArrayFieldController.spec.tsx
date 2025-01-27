@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
@@ -21,7 +21,7 @@ const ReferenceArrayFieldController = props => {
 
 describe('<useReferenceArrayFieldController />', () => {
     const dataProvider = testDataProvider({
-        getMany: jest.fn().mockResolvedValue({
+        getMany: vi.fn().mockResolvedValue({
             data: [
                 { id: 1, title: 'bar1' },
                 { id: 2, title: 'bar2' },
@@ -37,7 +37,7 @@ describe('<useReferenceArrayFieldController />', () => {
     });
 
     it('should set the isLoading prop to true when related records are not yet fetched', () => {
-        const children = jest.fn().mockReturnValue('child');
+        const children = vi.fn().mockReturnValue('child');
         render(
             <CoreAdminContext
                 dataProvider={testDataProvider({
@@ -66,7 +66,7 @@ describe('<useReferenceArrayFieldController />', () => {
     });
 
     it('should call dataProvider.getMAny on mount and return the result in the data prop', async () => {
-        const children = jest.fn().mockReturnValue('child');
+        const children = vi.fn().mockReturnValue('child');
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ReferenceArrayFieldController
@@ -97,7 +97,7 @@ describe('<useReferenceArrayFieldController />', () => {
     });
 
     it('should filter string data based on the filter props', async () => {
-        const children = jest.fn().mockReturnValue('child');
+        const children = vi.fn().mockReturnValue('child');
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ReferenceArrayFieldController
@@ -126,9 +126,9 @@ describe('<useReferenceArrayFieldController />', () => {
     });
 
     it('should filter array data based on the filter props', async () => {
-        const children = jest.fn().mockReturnValue('child');
+        const children = vi.fn().mockReturnValue('child');
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
+            getMany: vi.fn().mockResolvedValue({
                 data: [
                     { id: 1, items: ['one', 'two'] },
                     { id: 2, items: ['three'] },

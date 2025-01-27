@@ -1,5 +1,5 @@
-import expect from 'expect';
-import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
+import { expect } from 'vitest';
+import { getFieldLabelTranslationArgs } from './getFieldLabelTranslationArgs';
 
 describe('getFieldLabelTranslationArgs', () => {
     it('should return empty span by default', () =>

@@ -30,7 +30,7 @@ describe('<FileInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <FileInput {...defaultProps}>
                             <div />
                         </FileInput>
@@ -48,7 +48,7 @@ describe('<FileInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <FileInput {...defaultProps} multiple>
                             <div />
                         </FileInput>
@@ -64,7 +64,7 @@ describe('<FileInput />', () => {
 
     // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
     it.skip('should correctly update upon drop when allowing a single file', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -99,7 +99,7 @@ describe('<FileInput />', () => {
 
     // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
     it.skip('should correctly update upon drop when allowing multiple files', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -137,7 +137,7 @@ describe('<FileInput />', () => {
     });
 
     it('should correctly update upon removal when allowing a single file', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -174,7 +174,7 @@ describe('<FileInput />', () => {
     });
 
     it('should correctly update upon removal when allowing multiple file (removing first file)', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -222,7 +222,7 @@ describe('<FileInput />', () => {
     });
 
     it('should correctly update upon removal when allowing multiple files (removing second file)', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -276,7 +276,7 @@ describe('<FileInput />', () => {
 
     describe('should call validateFileRemoval on removal to allow developers to conditionally prevent the removal', () => {
         it('normal function', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
@@ -330,7 +330,7 @@ describe('<FileInput />', () => {
         });
 
         it('promise function', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
@@ -384,7 +384,7 @@ describe('<FileInput />', () => {
 
     describe('should continue to remove file when validateFileRemoval returns true.', () => {
         it('normal function', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
@@ -425,7 +425,7 @@ describe('<FileInput />', () => {
             });
         });
         it('promise function', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
@@ -472,7 +472,7 @@ describe('<FileInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <FileInput
                                 {...defaultProps}
                                 placeholder={expectedLabel}
@@ -495,7 +495,7 @@ describe('<FileInput />', () => {
 
     describe('Validation', () => {
         it('should display a validation error if the value is required and there is no file', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
@@ -526,7 +526,7 @@ describe('<FileInput />', () => {
         });
 
         it('should display a validation error if the value is required and the file is removed', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
@@ -562,7 +562,7 @@ describe('<FileInput />', () => {
         });
 
         it('should display a validation error right away when form mode is onChange', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>
@@ -604,7 +604,7 @@ describe('<FileInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{
                                 image: {
                                     url: 'http://foo.com/bar.jpg',
@@ -632,7 +632,7 @@ describe('<FileInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{
                                 images: [
                                     {
@@ -672,7 +672,7 @@ describe('<FileInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             record={{
                                 image: {
                                     title: 'Hello world!',
@@ -698,7 +698,7 @@ describe('<FileInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             record={{
                                 image: {
                                     title: 'Hello world!',
@@ -723,7 +723,7 @@ describe('<FileInput />', () => {
 
         // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
         it.skip('should update previews when dropping a file', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ResourceContextProvider, required, testDataProvider } from 'ra-core';
 import { format } from 'date-fns';
@@ -20,7 +20,7 @@ describe('<TimeInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <TimeInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -43,7 +43,7 @@ describe('<TimeInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         record={{
                             id: 1,
                             publishedAt: publishedAt.toISOString(),
@@ -69,7 +69,7 @@ describe('<TimeInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ArrayInput
                             defaultValue={backlinksDefaultValue}
                             source="backlinks"
@@ -88,7 +88,7 @@ describe('<TimeInput />', () => {
 
     it('should submit the form default value with its timezone', async () => {
         const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
@@ -122,7 +122,7 @@ describe('<TimeInput />', () => {
 
     it('should submit the input default value with its timezone', async () => {
         const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
@@ -158,7 +158,7 @@ describe('<TimeInput />', () => {
 
     it('should submit null when empty', async () => {
         const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
@@ -203,7 +203,7 @@ describe('<TimeInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <TimeInput
                                 {...defaultProps}
                                 validate={required()}
@@ -219,7 +219,7 @@ describe('<TimeInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()} mode="onBlur">
+                        <SimpleForm onSubmit={vi.fn()} mode="onBlur">
                             <TimeInput
                                 {...defaultProps}
                                 validate={required()}
@@ -240,7 +240,7 @@ describe('<TimeInput />', () => {
         });
 
         it('should be displayed if field has been touched multiple times and is invalid', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">

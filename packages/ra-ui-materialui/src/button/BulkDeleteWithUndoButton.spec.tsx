@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     CoreAdminContext,
     testDataProvider,
@@ -16,9 +16,7 @@ const theme = createTheme();
 describe('<BulkDeleteWithUndoButton />', () => {
     it('should display success message after successful deletion', async () => {
         const dataProvider = testDataProvider({
-            deleteMany: jest
-                .fn()
-                .mockResolvedValueOnce({ data: [{ id: 123 }] }),
+            deleteMany: vi.fn().mockResolvedValueOnce({ data: [{ id: 123 }] }),
         });
 
         let notificationsSpy;
@@ -37,7 +35,7 @@ describe('<BulkDeleteWithUndoButton />', () => {
                     <ListContextProvider
                         value={{
                             selectedIds: [123],
-                            onUnselectItems: jest.fn(),
+                            onUnselectItems: vi.fn(),
                         }}
                     >
                         <BulkDeleteWithUndoButton

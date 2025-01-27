@@ -12,7 +12,7 @@ describe('useGetIdentity', () => {
         await screen.findByText('John Doe');
     });
     it('should return the authProvider error', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'error').mockImplementationOnce(() => {});
         render(<ErrorCase />);
         await screen.findByText('Error');
     });
@@ -58,9 +58,9 @@ describe('useGetIdentity', () => {
     });
 
     it('should abort the request if the query is canceled', async () => {
-        const abort = jest.fn();
+        const abort = vi.fn();
         const authProvider = {
-            getIdentity: jest.fn(
+            getIdentity: vi.fn(
                 ({ signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {

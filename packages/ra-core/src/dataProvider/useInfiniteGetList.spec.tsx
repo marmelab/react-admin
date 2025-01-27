@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import { Basic, PageInfo } from './useInfiniteGetList.stories';
 import { QueryClient } from '@tanstack/react-query';
@@ -37,7 +37,7 @@ describe('useInfiniteGetList', () => {
 
     it('should call dataProvider.getList() on mount', async () => {
         const dataProvider = {
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [{ id: 73, name: 'France', code: 'FR' }],
                     total: 1,
@@ -59,7 +59,7 @@ describe('useInfiniteGetList', () => {
 
     it('should not call the dataProvider on update', async () => {
         const dataProvider = {
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [{ id: 73, name: 'France', code: 'FR' }],
                     total: 1,
@@ -78,7 +78,7 @@ describe('useInfiniteGetList', () => {
 
     it('should call the dataProvider on update when the resource changes', async () => {
         const dataProvider = {
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [{ id: 73, name: 'France', code: 'FR' }],
                     total: 1,
@@ -99,7 +99,7 @@ describe('useInfiniteGetList', () => {
 
     it('should accept a meta parameter', async () => {
         const dataProvider = {
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [{ id: 73, name: 'France', code: 'FR' }],
                     total: 1,
@@ -126,7 +126,7 @@ describe('useInfiniteGetList', () => {
     });
 
     it('should call success side effects on success', async () => {
-        const onSuccess1 = jest.fn();
+        const onSuccess1 = vi.fn();
 
         const countries = [
             { id: 73, name: 'France', code: 'FR' },
@@ -170,11 +170,11 @@ describe('useInfiniteGetList', () => {
     });
 
     it('should not pre-populate getOne Query Cache if more than 100 results', async () => {
-        const callback: any = jest.fn();
+        const callback: any = vi.fn();
         const queryClient = new QueryClient();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn((_resource, { pagination: { page, perPage } }) =>
+            getList: vi.fn((_resource, { pagination: { page, perPage } }) =>
                 Promise.resolve({
                     data: Array.from(Array(perPage).keys()).map(index => ({
                         id: index + 1 + (page - 1) * perPage,
@@ -219,13 +219,13 @@ describe('useInfiniteGetList', () => {
 
     it('should not pre-populate getOne Query Cache if more than 100 results across several pages', async () => {
         let hookValue;
-        const callback: any = jest.fn(value => {
+        const callback: any = vi.fn(value => {
             hookValue = value;
         });
         const queryClient = new QueryClient();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn((_resource, { pagination: { page, perPage } }) =>
+            getList: vi.fn((_resource, { pagination: { page, perPage } }) =>
                 Promise.resolve({
                     data: Array.from(Array(perPage).keys()).map(index => ({
                         id: index + 1 + (page - 1) * perPage,
@@ -304,13 +304,13 @@ describe('useInfiniteGetList', () => {
 
     it('should only populate the getOne Query Cache with the records from the last fetched page', async () => {
         let hookValue;
-        const callback: any = jest.fn(value => {
+        const callback: any = vi.fn(value => {
             hookValue = value;
         });
         const queryClient = new QueryClient();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn((_resource, { pagination: { page } }) =>
+            getList: vi.fn((_resource, { pagination: { page } }) =>
                 Promise.resolve({
                     data: [
                         {
@@ -382,9 +382,9 @@ describe('useInfiniteGetList', () => {
     });
 
     it('should abort the request if the query is canceled', async () => {
-        const abort = jest.fn();
+        const abort = vi.fn();
         const dataProvider = testDataProvider({
-            getList: jest.fn(
+            getList: vi.fn(
                 (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {

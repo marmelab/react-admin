@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     ResourceContextProvider,
@@ -31,7 +31,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'visa' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -64,7 +64,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'visa' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             resource={'people'}
@@ -99,13 +99,13 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should trigger custom onChange when clicking radio button', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'visa' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -136,7 +136,7 @@ describe('<RadioButtonGroupInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ type: 'mastercard' }}
                     >
                         <RadioButtonGroupInput {...defaultProps} />
@@ -160,10 +160,7 @@ describe('<RadioButtonGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="creditcards">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ type: 1 }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ type: 1 }}>
                         <RadioButtonGroupInput
                             {...defaultProps}
                             choices={choices}
@@ -184,7 +181,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'mc' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -206,7 +203,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'mc' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -230,7 +227,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'mc' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -250,7 +247,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'mc' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -272,7 +269,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'mc' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -296,7 +293,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'mc' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -352,7 +349,7 @@ describe('<RadioButtonGroupInput />', () => {
                     <ResourceContextProvider value="creditcards">
                         <SimpleForm
                             defaultValues={{ type: 'mc' }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                         >
                             <RadioButtonGroupInput
                                 {...defaultProps}
@@ -374,7 +371,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'visa' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput
                             {...defaultProps}
@@ -397,7 +394,7 @@ describe('<RadioButtonGroupInput />', () => {
                     <ResourceContextProvider value="creditcards">
                         <SimpleForm
                             defaultValues={{ type: 'visa' }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             mode="onBlur"
                         >
                             <RadioButtonGroupInput
@@ -420,7 +417,7 @@ describe('<RadioButtonGroupInput />', () => {
                     <ResourceContextProvider value="creditcards">
                         <SimpleForm
                             defaultValues={{ type: 'visa' }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             mode="onBlur"
                         >
                             <RadioButtonGroupInput
@@ -454,7 +451,7 @@ describe('<RadioButtonGroupInput />', () => {
                     <ResourceContextProvider value="creditcards">
                         <SimpleForm
                             defaultValues={{ type: 'visa' }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             mode="onBlur"
                         >
                             <RadioButtonGroupInput
@@ -487,7 +484,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'visa' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput {...defaultProps} isPending />
                     </SimpleForm>
@@ -504,7 +501,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'visa' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput {...defaultProps} isPending />
                     </SimpleForm>
@@ -523,7 +520,7 @@ describe('<RadioButtonGroupInput />', () => {
                 <ResourceContextProvider value="creditcards">
                     <SimpleForm
                         defaultValues={{ type: 'visa' }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <RadioButtonGroupInput {...defaultProps} />
                     </SimpleForm>

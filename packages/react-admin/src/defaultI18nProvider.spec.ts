@@ -1,4 +1,4 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 import { defaultI18nProvider } from './defaultI18nProvider';
 
 describe('defaultI18nProvider', () => {
@@ -9,7 +9,7 @@ describe('defaultI18nProvider', () => {
         expect(defaultI18nProvider.translate('bar')).toBe('bar');
     });
     it('should not log any warning for missing translations', () => {
-        const spy = jest.spyOn(console, 'error');
+        const spy = vi.spyOn(console, 'error');
         defaultI18nProvider.translate('foo');
         expect(spy).not.toHaveBeenCalled();
         spy.mockRestore();

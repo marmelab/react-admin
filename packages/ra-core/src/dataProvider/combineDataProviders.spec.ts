@@ -1,18 +1,14 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 import { testDataProvider } from './testDataProvider';
 import { combineDataProviders } from './combineDataProviders';
 
 describe('combineDataProviders', () => {
     it('calls the right dataProvider depending on the matcher function', async () => {
         const dataProvider1 = testDataProvider({
-            getOne: jest
-                .fn()
-                .mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
+            getOne: vi.fn().mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
         });
         const dataProvider2 = testDataProvider({
-            getOne: jest
-                .fn()
-                .mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
+            getOne: vi.fn().mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
         });
         const dataProvider = combineDataProviders(resource => {
             switch (resource) {
@@ -32,14 +28,10 @@ describe('combineDataProviders', () => {
     });
     it('works with a dataProvider that returns a promise', async () => {
         const dataProvider1 = testDataProvider({
-            getOne: jest
-                .fn()
-                .mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
+            getOne: vi.fn().mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
         });
         const dataProvider2 = testDataProvider({
-            getOne: jest
-                .fn()
-                .mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
+            getOne: vi.fn().mockResolvedValue({ data: { id: 1, foo: 'bar' } }),
         });
         const dataProviderValue = combineDataProviders(resource => {
             switch (resource) {

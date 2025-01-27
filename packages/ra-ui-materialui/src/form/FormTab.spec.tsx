@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { ResourceContextProvider, testDataProvider } from 'ra-core';
 import { render, screen, waitFor } from '@testing-library/react';
 import { TabbedForm } from './TabbedForm';
@@ -27,7 +27,7 @@ describe('<TabbedForm.Tab label="foo" />', () => {
 
     it('should render a TabbedForm with TabbedForm.Tabs having custom props without warnings', async () => {
         let countWarnings = 0;
-        const spy = jest
+        const spy = vi
             .spyOn(console, 'error')
             .mockImplementation((message: string) => {
                 if (!message.includes('a test was not wrapped in act')) {

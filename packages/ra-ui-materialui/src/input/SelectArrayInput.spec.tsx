@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     ResourceContextProvider,
@@ -34,7 +34,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -48,7 +48,7 @@ describe('<SelectArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{
                             categories: ['programming', 'lifestyle'],
                         }}
@@ -67,7 +67,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -88,7 +88,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             optionValue="foobar"
@@ -111,7 +111,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             optionValue="foobar.id"
@@ -137,7 +137,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             optionText="foobar"
@@ -159,7 +159,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             optionText="foobar.name"
@@ -184,7 +184,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             optionText={choice => choice.foobar}
@@ -210,7 +210,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             optionText={<Foobar />}
@@ -232,7 +232,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             choices={[
@@ -293,7 +293,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             helperText="Can I help you?"
@@ -310,7 +310,7 @@ describe('<SelectArrayInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                        <SimpleForm mode="onBlur" onSubmit={vi.fn()}>
                             <SelectArrayInput
                                 {...defaultProps}
                                 validate={() => 'error'}
@@ -327,7 +327,7 @@ describe('<SelectArrayInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <SelectArrayInput
                                 {...defaultProps}
                                 validate={() => 'error'}
@@ -349,7 +349,7 @@ describe('<SelectArrayInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <SelectArrayInput {...defaultProps} isPending />
                         </SimpleForm>
                     </ResourceContextProvider>
@@ -363,7 +363,7 @@ describe('<SelectArrayInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <SelectArrayInput {...defaultProps} isPending />
                         </SimpleForm>
                     </ResourceContextProvider>
@@ -379,7 +379,7 @@ describe('<SelectArrayInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <SelectArrayInput {...defaultProps} />
                         </SimpleForm>
                     </ResourceContextProvider>
@@ -397,7 +397,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             choices={choices}
@@ -431,7 +431,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             choices={choices}
@@ -478,7 +478,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             choices={choices}
@@ -514,7 +514,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             choices={choices}
@@ -560,7 +560,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             choices={choices}
@@ -600,7 +600,7 @@ describe('<SelectArrayInput />', () => {
 
     it('should receive an event object on change', async () => {
         const choices = [...defaultProps.choices];
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -631,10 +631,10 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should receive a value on change when creating a new choice', async () => {
-        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        vi.spyOn(console, 'warn').mockImplementation(() => {});
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         const Create = () => {
             const context = useCreateSuggestionContext();
@@ -649,7 +649,7 @@ describe('<SelectArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <SelectArrayInput
                             {...defaultProps}
                             choices={choices}
@@ -712,7 +712,7 @@ describe('<SelectArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ categories: 1 }}
                     >
                         <SelectArrayInput {...defaultProps} />
@@ -748,7 +748,7 @@ describe('<SelectArrayInput />', () => {
             await screen.findByText('Leo Tolstoy');
         });
         it('should not change an undefined value to empty string', async () => {
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
             render(
                 <InsideReferenceArrayInputDefaultValue onSuccess={onSuccess} />
             );

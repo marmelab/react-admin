@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     RecordContextProvider,
@@ -36,7 +36,7 @@ describe('<ReferenceField />', () => {
     describe('Progress bar', () => {
         it("should not display a loader on mount if the reference is not in the store and a second hasn't passed yet", async () => {
             const dataProvider = testDataProvider({
-                getMany: jest.fn().mockImplementation(
+                getMany: vi.fn().mockImplementation(
                     () =>
                         new Promise(resolve =>
                             setTimeout(
@@ -79,7 +79,7 @@ describe('<ReferenceField />', () => {
 
         it('should display a loader on mount if the reference is not in the store and a second has passed', async () => {
             const dataProvider = testDataProvider({
-                getMany: jest.fn().mockImplementation(
+                getMany: vi.fn().mockImplementation(
                     () =>
                         new Promise(resolve =>
                             setTimeout(
@@ -122,7 +122,7 @@ describe('<ReferenceField />', () => {
 
         it('should not display a loader on mount if the reference was already fetched', async () => {
             const dataProvider = testDataProvider({
-                getMany: jest.fn().mockResolvedValue({
+                getMany: vi.fn().mockResolvedValue({
                     data: [{ id: 123, title: 'foo' }],
                 }),
             });
@@ -144,7 +144,7 @@ describe('<ReferenceField />', () => {
                 expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             });
             const slowDataProvider = testDataProvider({
-                getMany: jest.fn().mockImplementation(
+                getMany: vi.fn().mockImplementation(
                     () =>
                         new Promise(resolve =>
                             setTimeout(
@@ -190,7 +190,7 @@ describe('<ReferenceField />', () => {
 
         it('should not display a loader after the dataProvider query completes', async () => {
             const dataProvider = testDataProvider({
-                getMany: jest.fn().mockResolvedValue({
+                getMany: vi.fn().mockResolvedValue({
                     data: [{ id: 123, title: 'foo' }],
                 }),
             });
@@ -226,7 +226,7 @@ describe('<ReferenceField />', () => {
 
         it('should not display a loader if the dataProvider query completes without finding the reference', async () => {
             const dataProvider = testDataProvider({
-                getMany: jest.fn().mockResolvedValue({
+                getMany: vi.fn().mockResolvedValue({
                     data: [],
                 }),
             });
@@ -259,9 +259,9 @@ describe('<ReferenceField />', () => {
         });
 
         it('should not display a loader if the dataProvider query fails', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             const dataProvider = testDataProvider({
-                getMany: jest.fn().mockRejectedValue(new Error()),
+                getMany: vi.fn().mockRejectedValue(new Error()),
             });
             render(
                 <ThemeProvider theme={theme}>
@@ -319,7 +319,7 @@ describe('<ReferenceField />', () => {
 
     it('should use record from RecordContext', async () => {
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
+            getMany: vi.fn().mockResolvedValue({
                 data: [{ id: 123, title: 'foo' }],
             }),
         });
@@ -356,7 +356,7 @@ describe('<ReferenceField />', () => {
 
     it('should use recordRepresentation to render the related record', async () => {
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
+            getMany: vi.fn().mockResolvedValue({
                 data: [{ id: 123, title: 'foo' }],
             }),
         });
@@ -394,7 +394,7 @@ describe('<ReferenceField />', () => {
 
     it('should render its child component when given', async () => {
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
+            getMany: vi.fn().mockResolvedValue({
                 data: [{ id: 123, title: 'foo' }],
             }),
         });
@@ -433,7 +433,7 @@ describe('<ReferenceField />', () => {
 
     it('should call the dataProvider for the related record', async () => {
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
+            getMany: vi.fn().mockResolvedValue({
                 data: [{ id: 123, title: 'foo' }],
             }),
         });
@@ -458,9 +458,9 @@ describe('<ReferenceField />', () => {
     });
 
     it('should display an error icon if the dataProvider call fails', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockRejectedValue(new Error('boo')),
+            getMany: vi.fn().mockRejectedValue(new Error('boo')),
         });
         render(
             <ThemeProvider theme={theme}>
@@ -529,11 +529,11 @@ describe('<ReferenceField />', () => {
 
         it('should call the link function with the referenced record', async () => {
             const dataProvider = testDataProvider({
-                getMany: jest.fn().mockResolvedValue({
+                getMany: vi.fn().mockResolvedValue({
                     data: [{ id: 123, title: 'foo' }],
                 }),
             });
-            const link = jest.fn().mockReturnValue('/posts/123');
+            const link = vi.fn().mockReturnValue('/posts/123');
 
             render(
                 <ThemeProvider theme={theme}>
@@ -589,7 +589,7 @@ describe('<ReferenceField />', () => {
 
     it('should accept a queryOptions prop', async () => {
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
+            getMany: vi.fn().mockResolvedValue({
                 data: [{ id: 123, title: 'foo' }],
             }),
         });
@@ -690,7 +690,7 @@ describe('<ReferenceField />', () => {
             const root = elt.parentNode as HTMLElement;
             expect(
                 getComputedStyle(root).getPropertyValue('background-color')
-            ).toBe('red');
+            ).toBe('rgb(255, 0, 0)');
         });
         it('should override the default styles when using link', async () => {
             render(<SXLink />);
@@ -699,7 +699,7 @@ describe('<ReferenceField />', () => {
             const root = elt.parentNode!.parentNode as HTMLElement;
             expect(
                 getComputedStyle(root).getPropertyValue('background-color')
-            ).toBe('red');
+            ).toBe('rgb(255, 0, 0)');
         });
     });
 });

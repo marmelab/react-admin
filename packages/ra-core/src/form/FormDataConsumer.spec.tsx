@@ -11,14 +11,14 @@ import {
     SimpleFormIterator,
     ArrayInput,
 } from 'ra-ui-materialui';
-import expect from 'expect';
+import { expect, vi } from 'vitest';
 import { ResourceContextProvider } from '../core';
 import { Form } from '../form';
 import { TestMemoryRouter } from '../routing';
 
 describe('FormDataConsumerView', () => {
     it('does not call its children function with scopedFormData if it did not receive a source containing an index', () => {
-        const children = jest.fn();
+        const children = vi.fn();
         const formData = { id: 123, title: 'A title' };
 
         render(
@@ -43,20 +43,22 @@ describe('FormDataConsumerView', () => {
     it('calls its children with updated formData on first render', async () => {
         let globalFormData;
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm>
-                        <BooleanInput source="hi" defaultValue />
-                        <FormDataConsumer>
-                            {({ formData }) => {
-                                globalFormData = formData;
+            <TestMemoryRouter>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm>
+                            <BooleanInput source="hi" defaultValue />
+                            <FormDataConsumer>
+                                {({ formData }) => {
+                                    globalFormData = formData;
 
-                                return <TextInput source="bye" />;
-                            }}
-                        </FormDataConsumer>
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+                                    return <TextInput source="bye" />;
+                                }}
+                            </FormDataConsumer>
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         await waitFor(() => {
@@ -66,18 +68,22 @@ describe('FormDataConsumerView', () => {
 
     it('should be reactive', async () => {
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm>
-                        <BooleanInput source="hi" defaultValue />
-                        <FormDataConsumer>
-                            {({ formData }) =>
-                                !formData.hi ? <TextInput source="bye" /> : null
-                            }
-                        </FormDataConsumer>
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm>
+                            <BooleanInput source="hi" defaultValue />
+                            <FormDataConsumer>
+                                {({ formData }) =>
+                                    !formData.hi ? (
+                                        <TextInput source="bye" />
+                                    ) : null
+                                }
+                            </FormDataConsumer>
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         await waitFor(() => {
@@ -98,31 +104,34 @@ describe('FormDataConsumerView', () => {
     it('calls its children with updated scopedFormData when inside an ArrayInput', async () => {
         let globalScopedFormData;
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm>
-                        <ArrayInput source="authors">
-                            <SimpleFormIterator>
-                                <TextInput source="name" />
-                                <FormDataConsumer>
-                                    {({ scopedFormData }) => {
-                                        globalScopedFormData = scopedFormData;
-                                        return scopedFormData &&
-                                            scopedFormData.name ? (
-                                            <TextInput source="role" />
-                                        ) : null;
-                                    }}
-                                </FormDataConsumer>
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm>
+                            <ArrayInput source="authors">
+                                <SimpleFormIterator>
+                                    <TextInput source="name" />
+                                    <FormDataConsumer>
+                                        {({ scopedFormData }) => {
+                                            globalScopedFormData =
+                                                scopedFormData;
+                                            return scopedFormData &&
+                                                scopedFormData.name ? (
+                                                <TextInput source="role" />
+                                            ) : null;
+                                        }}
+                                    </FormDataConsumer>
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         expect(globalScopedFormData).toEqual(undefined);
 
-        fireEvent.click(screen.getByLabelText('ra.action.add'));
+        fireEvent.click(await screen.findByLabelText('ra.action.add'));
 
         expect(globalScopedFormData).toEqual({ name: null });
 

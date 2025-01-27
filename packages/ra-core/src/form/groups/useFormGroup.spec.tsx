@@ -8,10 +8,10 @@ import {
     TextInput,
 } from 'ra-ui-materialui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { FormGroupContextProvider } from './FormGroupContextProvider';
 import { testDataProvider } from '../../dataProvider';
-import { ResourceContextProvider } from '../..';
+import { ResourceContextProvider, TestMemoryRouter } from '../..';
 
 describe('useFormGroup', () => {
     test.each([
@@ -111,16 +111,18 @@ describe('useFormGroup', () => {
         };
 
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm mode="onChange">
-                        <FormGroupContextProvider name="simplegroup">
-                            <IsDirty />
-                            <TextInput source="url" />
-                        </FormGroupContextProvider>
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onChange">
+                            <FormGroupContextProvider name="simplegroup">
+                                <IsDirty />
+                                <TextInput source="url" />
+                            </FormGroupContextProvider>
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         await waitFor(() => {
@@ -172,19 +174,21 @@ describe('useFormGroup', () => {
         };
 
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm mode="onChange">
-                        <FormGroupContextProvider name="simplegroup">
-                            <TextInput source="url" />
-                        </FormGroupContextProvider>
-                        <FormGroupContextProvider name="simplegroup2">
-                            <TextInput source="test" />
-                        </FormGroupContextProvider>
-                        <IsDirty />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm mode="onChange">
+                            <FormGroupContextProvider name="simplegroup">
+                                <TextInput source="url" />
+                            </FormGroupContextProvider>
+                            <FormGroupContextProvider name="simplegroup2">
+                                <TextInput source="test" />
+                            </FormGroupContextProvider>
+                            <IsDirty />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         await waitFor(() => {
@@ -236,29 +240,31 @@ describe('useFormGroup', () => {
             },
         ];
         render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm>
-                        <FormGroupContextProvider name="backlinks">
-                            <IsDirty />
-                            <ArrayInput
-                                defaultValue={backlinksDefaultValue}
-                                source="backlinks"
-                            >
-                                <SimpleFormIterator>
-                                    <TextInput source="url" />
-                                    <TextInput source="date" />
-                                </SimpleFormIterator>
-                            </ArrayInput>
-                        </FormGroupContextProvider>
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
+            <TestMemoryRouter>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm>
+                            <FormGroupContextProvider name="backlinks">
+                                <IsDirty />
+                                <ArrayInput
+                                    defaultValue={backlinksDefaultValue}
+                                    source="backlinks"
+                                >
+                                    <SimpleFormIterator>
+                                        <TextInput source="url" />
+                                        <TextInput source="date" />
+                                    </SimpleFormIterator>
+                                </ArrayInput>
+                            </FormGroupContextProvider>
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
         );
 
         await waitFor(() => {
             expect(state).toEqual({
-                errors: {},
+                errors: undefined,
                 isDirty: false,
                 isTouched: false,
                 isValid: true,
@@ -273,7 +279,7 @@ describe('useFormGroup', () => {
         fireEvent.click(addItemElement);
         await waitFor(() => {
             expect(state).toEqual({
-                errors: {},
+                errors: undefined,
                 isDirty: true,
                 isTouched: false,
                 isValid: true,

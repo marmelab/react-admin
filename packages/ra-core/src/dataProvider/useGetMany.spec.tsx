@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -55,7 +55,7 @@ describe('useGetMany', () => {
 
     beforeEach(() => {
         dataProvider = testDataProvider({
-            getMany: jest
+            getMany: vi
                 .fn()
                 .mockResolvedValue({ data: [{ id: 1, title: 'foo' }] }),
         });
@@ -181,7 +181,7 @@ describe('useGetMany', () => {
             useGetMany('posts', { ids: ['1'] });
             return <span>dummy</span>;
         };
-        const hookValue = jest.fn();
+        const hookValue = vi.fn();
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <FecthGetMany />
@@ -219,10 +219,10 @@ describe('useGetMany', () => {
     });
 
     it('should set the error state when the dataProvider fails', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const hookValue = jest.fn();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const hookValue = vi.fn();
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockRejectedValue(new Error('failed')),
+            getMany: vi.fn().mockRejectedValue(new Error('failed')),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -247,7 +247,7 @@ describe('useGetMany', () => {
     });
 
     it('should execute success side effects on success', async () => {
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany
@@ -264,11 +264,11 @@ describe('useGetMany', () => {
     });
 
     it('should execute error side effects on failure', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockRejectedValue(new Error('failed')),
+            getMany: vi.fn().mockRejectedValue(new Error('failed')),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} options={{ onError }} />
@@ -283,7 +283,7 @@ describe('useGetMany', () => {
     it('should update loading state when ids change', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getMany: jest.fn((resource, params) => {
+            getMany: vi.fn((resource, params) => {
                 if (params.ids.length === 1) {
                     return Promise.resolve({
                         data: [{ id: 1, title: 'foo' }],
@@ -299,7 +299,7 @@ describe('useGetMany', () => {
             }),
         });
 
-        const hookValue = jest.fn();
+        const hookValue = vi.fn();
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseCustomGetMany
@@ -367,9 +367,9 @@ describe('useGetMany', () => {
     });
 
     it('should abort the request if the query is canceled', async () => {
-        const abort = jest.fn();
+        const abort = vi.fn();
         const dataProvider = testDataProvider({
-            getMany: jest.fn(
+            getMany: vi.fn(
                 (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {

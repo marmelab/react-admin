@@ -18,7 +18,7 @@ describe('useResourceDefinition', () => {
     };
 
     it('should not fail when used outside of a ResourceDefinitionContext', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         render(<UseResourceDefinition callback={callback} />);
         expect(callback).toHaveBeenCalledWith({
             hasCreate: undefined,
@@ -29,7 +29,7 @@ describe('useResourceDefinition', () => {
     });
 
     it('should use the definition from ResourceDefinitionContext', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         render(
             <ResourceDefinitionContextProvider
                 definitions={{

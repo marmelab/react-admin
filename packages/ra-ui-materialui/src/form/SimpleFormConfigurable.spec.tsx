@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { Basic, Omit, PreferenceKey } from './SimpleFormConfigurable.stories';
 

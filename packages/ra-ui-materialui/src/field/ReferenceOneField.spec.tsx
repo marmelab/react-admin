@@ -25,7 +25,7 @@ describe('ReferenceOneField', () => {
     });
     it('should accept a queryOptions prop', async () => {
         const dataProvider = {
-            getManyReference: jest.fn().mockImplementationOnce(() =>
+            getManyReference: vi.fn().mockImplementationOnce(() =>
                 Promise.resolve({
                     data: [{ id: 1, ISBN: '9780393966473', genre: 'novel' }],
                     total: 1,

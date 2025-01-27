@@ -1,4 +1,4 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 import { getSuggestionsFactory as getSuggestions } from './useSuggestions';
 
 describe('getSuggestions', () => {

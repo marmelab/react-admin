@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { testDataProvider } from './testDataProvider';
 import { CoreAdminContext } from '../core';
@@ -11,7 +11,7 @@ import { UndefinedValues } from './useUpdateMany.stories';
 describe('useUpdateMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
         const dataProvider = testDataProvider({
-            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            updateMany: vi.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localUpdateMany;
         const Dummy = () => {
@@ -35,7 +35,7 @@ describe('useUpdateMany', () => {
 
     it('returns a callback that can be used with no arguments', async () => {
         const dataProvider = testDataProvider({
-            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            updateMany: vi.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localUpdateMany;
         const Dummy = () => {
@@ -62,7 +62,7 @@ describe('useUpdateMany', () => {
 
     it('uses callback call time params rather than hook call time params', async () => {
         const dataProvider = testDataProvider({
-            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            updateMany: vi.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localUpdateMany;
         const Dummy = () => {
@@ -90,7 +90,7 @@ describe('useUpdateMany', () => {
 
     it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
-            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            updateMany: vi.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localUpdateMany;
         const Dummy = () => {
@@ -128,7 +128,7 @@ describe('useUpdateMany', () => {
                 total: 2,
             });
             const dataProvider = {
-                updateMany: jest.fn(() =>
+                updateMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;
@@ -173,7 +173,7 @@ describe('useUpdateMany', () => {
                 total: 2,
             });
             const dataProvider = {
-                updateMany: jest.fn(() =>
+                updateMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;
@@ -220,7 +220,7 @@ describe('useUpdateMany', () => {
                 total: 2,
             });
             const dataProvider = {
-                updateMany: jest.fn(() =>
+                updateMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;
@@ -268,7 +268,7 @@ describe('useUpdateMany', () => {
                 total: 2,
             });
             const dataProvider = {
-                updateMany: jest.fn(() =>
+                updateMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;
@@ -324,7 +324,7 @@ describe('useUpdateMany', () => {
                 },
             });
             const dataProvider = {
-                updateMany: jest.fn(() =>
+                updateMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;
@@ -380,7 +380,7 @@ describe('useUpdateMany', () => {
                 pageParams: [],
             });
             const dataProvider = {
-                updateMany: jest.fn(() =>
+                updateMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;

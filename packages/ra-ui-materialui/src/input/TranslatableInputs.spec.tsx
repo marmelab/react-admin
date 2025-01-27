@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { TextInput } from './TextInput';
 import {
     ResourceContextProvider,
@@ -36,7 +36,7 @@ const record = {
 
 describe('<TranslatableInputs />', () => {
     it('should display every input for every locale', () => {
-        const handleSubmit = jest.fn();
+        const handleSubmit = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
@@ -82,7 +82,7 @@ describe('<TranslatableInputs />', () => {
     });
 
     it('should display validation errors and highlight the tab which has invalid inputs', async () => {
-        const handleSubmit = jest.fn();
+        const handleSubmit = vi.fn();
 
         const Selector = () => {
             const { locales, selectLocale, selectedLocale } =
@@ -156,7 +156,7 @@ describe('<TranslatableInputs />', () => {
     });
 
     it('should allow to update any input for any locale', async () => {
-        const save = jest.fn();
+        const save = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">

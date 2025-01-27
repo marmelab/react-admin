@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useForm, useFormContext, FormProvider } from 'react-hook-form';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
@@ -83,7 +83,7 @@ describe('useWarnWhenUnsavedChanges', () => {
     let originalConsoleError;
     beforeAll(() => {
         originalConsoleError = console.error;
-        console.error = jest.fn(message => {
+        console.error = vi.fn(message => {
             if (message.includes('Error: Not implemented: window.confirm')) {
                 return;
             }
@@ -96,7 +96,7 @@ describe('useWarnWhenUnsavedChanges', () => {
     });
 
     it('should not warn when leaving form with no changes', async () => {
-        window.confirm = jest.fn().mockReturnValue(true);
+        window.confirm = vi.fn().mockReturnValue(true);
         render(<App />);
         fireEvent.click(screen.getByText('Leave'));
         await waitFor(() => screen.getByText('Somewhere'));
@@ -109,7 +109,7 @@ describe('useWarnWhenUnsavedChanges', () => {
     ])(
         'should not warn when leaving form with submit button after updating %s field',
         async (_, field) => {
-            window.confirm = jest.fn().mockReturnValue(true);
+            window.confirm = vi.fn().mockReturnValue(true);
             render(<App />);
             fireEvent.change(screen.getByLabelText(field), {
                 target: { value: 'John Doe' },
@@ -127,7 +127,7 @@ describe('useWarnWhenUnsavedChanges', () => {
     ])(
         'should not warn when navigating to a sub page of a form with submit button after updating %s field',
         async (_, field) => {
-            window.confirm = jest.fn().mockReturnValue(true);
+            window.confirm = vi.fn().mockReturnValue(true);
             render(<App />);
             fireEvent.change(screen.getByLabelText(field), {
                 target: { value: 'John Doe' },
@@ -145,7 +145,7 @@ describe('useWarnWhenUnsavedChanges', () => {
     ])(
         'should not warn when navigating from a sub page with submit button after updating %s field',
         async (_, field) => {
-            window.confirm = jest.fn().mockReturnValue(true);
+            window.confirm = vi.fn().mockReturnValue(true);
             render(<App initialEntries={['/form/part1']} />);
             fireEvent.change(screen.getByLabelText(field), {
                 target: { value: 'John Doe' },
@@ -163,7 +163,7 @@ describe('useWarnWhenUnsavedChanges', () => {
     ])(
         'should not warn when navigating from a sub page of a form to the root part with submit button after updating %s field',
         async (_, field) => {
-            window.confirm = jest.fn().mockReturnValue(true);
+            window.confirm = vi.fn().mockReturnValue(true);
             render(<App initialEntries={['/form/part1']} />);
             fireEvent.change(screen.getByLabelText(field), {
                 target: { value: 'John Doe' },
@@ -182,7 +182,7 @@ describe('useWarnWhenUnsavedChanges', () => {
         'should warn when leaving form with unsaved changes after updating %s field',
         (_, field) => {
             // mock click on "cancel" in the confirm dialog
-            window.confirm = jest.fn().mockReturnValue(false);
+            window.confirm = vi.fn().mockReturnValue(false);
             render(<App />);
             const input = screen.getByLabelText(field) as HTMLInputElement;
             fireEvent.change(input, { target: { value: 'John Doe' } });
@@ -205,7 +205,7 @@ describe('useWarnWhenUnsavedChanges', () => {
         'should warn when leaving form with unsaved changes but accept override',
         async (_, field) => {
             // mock click on "OK" in the confirm dialog
-            window.confirm = jest.fn().mockReturnValue(true);
+            window.confirm = vi.fn().mockReturnValue(true);
             render(<App />);
             const input = screen.getByLabelText(field) as HTMLInputElement;
             fireEvent.change(input, { target: { value: 'John Doe' } });
@@ -223,7 +223,7 @@ describe('useWarnWhenUnsavedChanges', () => {
 
     it('should warn when navigating from root to the show view with unsaved changes', () => {
         // mock click on "cancel" in the confirm dialog
-        window.confirm = jest.fn().mockReturnValue(false);
+        window.confirm = vi.fn().mockReturnValue(false);
         render(<App />);
         const input = screen.getByLabelText('First Name') as HTMLInputElement;
         fireEvent.change(input, { target: { value: 'John Doe' } });
@@ -239,7 +239,7 @@ describe('useWarnWhenUnsavedChanges', () => {
     });
     it('should warn when navigating from a sub page to the show view with unsaved changes', () => {
         // mock click on "cancel" in the confirm dialog
-        window.confirm = jest.fn().mockReturnValue(false);
+        window.confirm = vi.fn().mockReturnValue(false);
         render(<App initialEntries={['/form/part1']} />);
         const input = screen.getByLabelText('First Name') as HTMLInputElement;
         fireEvent.change(input, { target: { value: 'John Doe' } });

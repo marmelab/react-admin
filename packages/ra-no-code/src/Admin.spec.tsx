@@ -1,41 +1,18 @@
 import * as React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvents from '@testing-library/user-event';
-import fs from 'fs';
-import path from 'path';
 import { Admin } from './Admin';
 import { ApplicationContext } from './ApplicationContext';
+// @ts-expect-error
+import customers from '../assets/ra-customers.csv?raw';
+// @ts-expect-error
+import orders1 from '../assets/ra-orders-1.csv?raw';
+// @ts-expect-error
+import orders2 from '../assets/ra-orders-2.csv?raw';
 
 describe('Admin', () => {
     it('should be functional', async () => {
-        const customersPromise = fs.promises.readFile(
-            path.resolve(__dirname, '../assets/ra-customers.csv'),
-            {
-                encoding: 'utf-8',
-            }
-        );
-        const orders1Promise = fs.promises.readFile(
-            path.resolve(__dirname, '../assets/ra-orders-1.csv'),
-            {
-                encoding: 'utf-8',
-            }
-        );
-        const orders2Promise = fs.promises.readFile(
-            path.resolve(__dirname, '../assets/ra-orders-2.csv'),
-            {
-                encoding: 'utf-8',
-            }
-        );
-
-        const [customers, orders1, orders2] = await Promise.all([
-            customersPromise,
-            orders1Promise,
-            orders2Promise,
-        ]);
-
-        let file = new File([customers], 'customers.csv', {
-            type: 'text/csv',
-        });
+        localStorage.clear();
         render(
             <ApplicationContext.Provider
                 value={{
@@ -47,18 +24,19 @@ describe('Admin', () => {
             </ApplicationContext.Provider>
         );
 
-        await waitFor(() => {
-            screen.getByLabelText('CSV File');
-        });
-
-        userEvents.upload(screen.getByLabelText('CSV File'), file);
+        userEvents.upload(
+            await screen.findByLabelText('CSV File'),
+            new File([customers], 'customers.csv', {
+                type: 'text/csv',
+            })
+        );
 
         await screen.findByDisplayValue('customers');
 
-        fireEvent.click(screen.getByText('Import'));
+        fireEvent.click(await screen.findByText('Import'));
 
-        await waitFor(() => {
-            screen.getByText('Customers', { selector: '#react-admin-title *' });
+        await screen.findByText('Customers', {
+            selector: '#react-admin-title *',
         });
         await screen.findByText('Id', { selector: 'th *' });
         await screen.findByText('First name', { selector: 'th *' });
@@ -86,18 +64,18 @@ describe('Admin', () => {
             })[0]
         );
 
-        file = new File([orders1], 'orders.csv', {
-            type: 'text/csv',
-        });
-        userEvents.upload(screen.getByLabelText('CSV File'), file);
+        userEvents.upload(
+            await screen.findByLabelText('CSV File'),
+            new File([orders1], 'orders.csv', {
+                type: 'text/csv',
+            })
+        );
 
         await screen.findByDisplayValue('orders');
 
-        fireEvent.click(screen.getByText('Import'));
+        fireEvent.click(await screen.findByText('Import'));
 
-        await waitFor(() => {
-            screen.getByText('Orders', { selector: '#react-admin-title *' });
-        });
+        await screen.findByText('Orders', { selector: '#react-admin-title *' });
         await screen.findByText('Id', { selector: 'th *' });
         await screen.findByText('Reference', { selector: 'th *' });
         await screen.findByText('Date', { selector: 'th *' });
@@ -118,17 +96,19 @@ describe('Admin', () => {
             })[0]
         );
 
-        file = new File([orders2], 'orders2.csv', {
-            type: 'text/csv',
-        });
-        userEvents.upload(screen.getByLabelText('CSV File'), file);
+        userEvents.upload(
+            await screen.findByLabelText('CSV File'),
+            new File([orders2], 'orders2.csv', {
+                type: 'text/csv',
+            })
+        );
 
         const order2El = await screen.findByDisplayValue('orders2');
 
         fireEvent.change(order2El, {
             target: { value: 'orders' },
         });
-        fireEvent.click(screen.getByText('Import'));
+        fireEvent.click(await screen.findByText('Import'));
 
         await screen.findByText('Orders', { selector: '#react-admin-title *' });
         await screen.findByText('1-10 of 12');

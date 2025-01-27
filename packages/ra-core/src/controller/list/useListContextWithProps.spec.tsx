@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render } from '@testing-library/react';
 
 import { ListContext } from './ListContext';
@@ -31,7 +31,7 @@ describe('useListContextWithProps', () => {
     });
 
     it('should return injected props if the context was not set', () => {
-        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'log').mockImplementationOnce(() => {});
         const { getByText } = render(
             <NaiveList resource="foo" data={[{ id: 1, title: 'hello' }]} />
         );

@@ -36,7 +36,7 @@ describe('<ArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{
                             foo: [{ id: 1 }, { id: 2 }],
                         }}
@@ -58,7 +58,7 @@ describe('<ArrayInput />', () => {
         const { baseElement } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <ArrayInput source="foo">
                             <SimpleFormIterator />
                         </ArrayInput>
@@ -74,7 +74,7 @@ describe('<ArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="bar">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{
                             foo: [{}, {}, {}],
                         }}
@@ -98,7 +98,7 @@ describe('<ArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="bar">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{
                             arr: [
                                 { id: 123, foo: 'bar' },
@@ -156,7 +156,7 @@ describe('<ArrayInput />', () => {
         const MyArrayInput = () => {
             const [visible, setVisible] = React.useState(true);
             const { getValues } = useFormContext();
-            value = jest.fn(() => getValues('arr'));
+            value = vi.fn(() => getValues('arr'));
             value();
 
             setArrayInputVisible = setVisible;
@@ -175,7 +175,7 @@ describe('<ArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="bar">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{
                             arr: [
                                 { id: 1, foo: 'bar' },
@@ -228,7 +228,7 @@ describe('<ArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="bar">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{
                             arr: [
                                 { id: 1, foo: 'bar' },
@@ -270,7 +270,7 @@ describe('<ArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="bar">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <ArrayInput source="foo" helperText="test helper text">
                             <SimpleFormIterator />
                         </ArrayInput>
@@ -290,7 +290,7 @@ describe('<ArrayInput />', () => {
                      * a react admin lifecycle and giving a non dirty form state. This in turn means the submit button is disabled on first render.
                      */}
                     <RecordContextProvider value={{ foo: 'bar' }}>
-                        <SimpleForm onSubmit={jest.fn}>
+                        <SimpleForm onSubmit={vi.fn}>
                             <ArrayInput
                                 source="arr"
                                 defaultValue={[{ id: 'foo' }]}

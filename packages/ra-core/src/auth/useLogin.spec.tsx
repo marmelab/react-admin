@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Routes, Route } from 'react-router-dom';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { CoreAdminContext } from '../core/CoreAdminContext';
 import useLogin from './useLogin';

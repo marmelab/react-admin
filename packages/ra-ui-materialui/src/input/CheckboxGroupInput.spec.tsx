@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     testDataProvider,
@@ -27,7 +27,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <CheckboxGroupInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -48,7 +48,7 @@ describe('<CheckboxGroupInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{
                             tags: ['ang'],
                         }}
@@ -74,7 +74,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             optionValue="foobar"
@@ -92,7 +92,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             optionValue="foobar.id"
@@ -110,7 +110,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             optionText="foobar"
@@ -127,7 +127,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             optionText="foobar.name"
@@ -144,7 +144,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             optionText={choice => choice.foobar}
@@ -165,7 +165,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             optionText={<Foobar />}
@@ -189,7 +189,7 @@ describe('<CheckboxGroupInput />', () => {
                     }}
                 >
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn}>
+                        <SimpleForm onSubmit={vi.fn}>
                             <CheckboxGroupInput {...defaultProps} />
                         </SimpleForm>
                     </ResourceContextProvider>
@@ -210,7 +210,7 @@ describe('<CheckboxGroupInput />', () => {
                     }}
                 >
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn}>
+                        <SimpleForm onSubmit={vi.fn}>
                             <CheckboxGroupInput
                                 {...defaultProps}
                                 translateChoice={false}
@@ -230,7 +230,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             helperText="Can I help you?"
@@ -243,7 +243,7 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should not parse selected values types to numbers if all choices types are non numbers', async () => {
-        const handleSubmit = jest.fn();
+        const handleSubmit = vi.fn();
         const { getByLabelText } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <Form
@@ -277,7 +277,7 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should parse selected values types to numbers if some choices are numbers', async () => {
-        const handleSubmit = jest.fn();
+        const handleSubmit = vi.fn();
         const { getByLabelText } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <Form
@@ -315,7 +315,7 @@ describe('<CheckboxGroupInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn}>
+                        <SimpleForm onSubmit={vi.fn}>
                             <CheckboxGroupInput
                                 {...defaultProps}
                                 validate={() => 'error'}
@@ -331,7 +331,7 @@ describe('<CheckboxGroupInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn}>
+                        <SimpleForm onSubmit={vi.fn}>
                             <CheckboxGroupInput
                                 {...defaultProps}
                                 validate={() => 'error'}
@@ -347,7 +347,7 @@ describe('<CheckboxGroupInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn} mode="onBlur">
+                        <SimpleForm onSubmit={vi.fn} mode="onBlur">
                             <CheckboxGroupInput
                                 {...defaultProps}
                                 validate={() => 'error'}
@@ -371,7 +371,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             isFetching
@@ -389,7 +389,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                    <SimpleForm mode="onBlur" onSubmit={vi.fn()}>
                         <CheckboxGroupInput
                             {...defaultProps}
                             choices={[]}
@@ -409,7 +409,7 @@ describe('<CheckboxGroupInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <CheckboxGroupInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>

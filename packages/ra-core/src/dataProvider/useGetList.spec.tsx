@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -38,7 +38,7 @@ describe('useGetList', () => {
     it('should call dataProvider.getList() on mount', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [{ id: 1, title: 'foo' }],
                     total: 1,
@@ -64,7 +64,7 @@ describe('useGetList', () => {
     it('should not call the dataProvider on update', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         });
@@ -89,7 +89,7 @@ describe('useGetList', () => {
     it('should call the dataProvider on update when the resource changes', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         });
@@ -114,7 +114,7 @@ describe('useGetList', () => {
     it('should accept a meta parameter', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         });
@@ -138,7 +138,7 @@ describe('useGetList', () => {
     });
 
     it('should return initial data based on Query Cache', async () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         const queryClient = new QueryClient();
         queryClient.setQueryData(
             [
@@ -157,7 +157,7 @@ describe('useGetList', () => {
         );
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
         });
@@ -182,10 +182,10 @@ describe('useGetList', () => {
     });
 
     it('should return isFetching false once the dataProvider returns', async () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [
                         { id: 1, title: 'foo' },
@@ -213,11 +213,11 @@ describe('useGetList', () => {
     });
 
     it('should set the error state when the dataProvider fails', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const callback = jest.fn();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const callback = vi.fn();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() => Promise.reject(new Error('failed'))),
+            getList: vi.fn(() => Promise.reject(new Error('failed'))),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -237,11 +237,11 @@ describe('useGetList', () => {
     });
 
     it('should execute success side effects on success', async () => {
-        const onSuccess1 = jest.fn();
-        const onSuccess2 = jest.fn();
+        const onSuccess1 = vi.fn();
+        const onSuccess2 = vi.fn();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest
+            getList: vi
                 .fn()
                 .mockReturnValueOnce(
                     Promise.resolve({
@@ -292,11 +292,11 @@ describe('useGetList', () => {
     });
 
     it('should execute error side effects on failure', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const onError = jest.fn();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const onError = vi.fn();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() => Promise.reject(new Error('failed'))),
+            getList: vi.fn(() => Promise.reject(new Error('failed'))),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -310,11 +310,11 @@ describe('useGetList', () => {
     });
 
     it('should pre-populate getOne Query Cache', async () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         const queryClient = new QueryClient();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
         });
@@ -337,12 +337,12 @@ describe('useGetList', () => {
     });
 
     it('should still pre-populate getOne Query Cache with custom onSuccess', async () => {
-        const callback = jest.fn();
-        const onSuccess = jest.fn();
+        const callback = vi.fn();
+        const onSuccess = vi.fn();
         const queryClient = new QueryClient();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
             ),
         });
@@ -370,11 +370,11 @@ describe('useGetList', () => {
     });
 
     it('should not pre-populate getOne Query Cache if more than 100 results', async () => {
-        const callback: any = jest.fn();
+        const callback: any = vi.fn();
         const queryClient = new QueryClient();
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: Array.from(Array(101).keys()).map(index => ({
                         id: index + 1,
@@ -408,9 +408,9 @@ describe('useGetList', () => {
     });
 
     it('should abort the request if the query is canceled', async () => {
-        const abort = jest.fn();
+        const abort = vi.fn();
         const dataProvider = testDataProvider({
-            getList: jest.fn(
+            getList: vi.fn(
                 (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {

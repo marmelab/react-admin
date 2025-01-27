@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { CoreAdminContext, testDataProvider } from 'ra-core';
 import { screen, render } from '@testing-library/react';
 

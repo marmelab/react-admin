@@ -40,7 +40,6 @@
         "fakerest": "^4.0.1"
     },
     "devDependencies": {
-        "@types/jest": "^29.5.2",
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
         "ra-core": "^5.5.2",

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { ShowController } from './ShowController';
@@ -23,7 +23,7 @@ describe('useShowController', () => {
     };
 
     it('should call the dataProvider.getOne() function on mount', async () => {
-        const getOne = jest
+        const getOne = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
@@ -48,7 +48,7 @@ describe('useShowController', () => {
     ])(
         'should decode the id $id from the route params',
         async ({ id, url }) => {
-            const getOne = jest
+            const getOne = vi
                 .fn()
                 .mockImplementationOnce(() =>
                     Promise.resolve({ data: { id, title: 'hello' } })
@@ -68,7 +68,7 @@ describe('useShowController', () => {
     );
 
     it('should use the id provided through props if any', async () => {
-        const getOne = jest
+        const getOne = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 0, title: 'hello' } })
@@ -104,11 +104,11 @@ describe('useShowController', () => {
     });
 
     it('should accept custom client query options', async () => {
-        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const getOne = jest
+        const mock = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const getOne = vi
             .fn()
             .mockImplementationOnce(() => Promise.reject(new Error()));
-        const onError = jest.fn();
+        const onError = vi.fn();
         const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <TestMemoryRouter initialEntries={['/posts/1']}>
@@ -137,7 +137,7 @@ describe('useShowController', () => {
     });
 
     it('should accept meta in queryOptions', async () => {
-        const getOne = jest
+        const getOne = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 0, title: 'hello' } })
@@ -176,7 +176,7 @@ describe('useShowController', () => {
         it('should not call the dataProvider until the authentication check passes', async () => {
             let resolveAuthCheck: () => void;
             const authProvider: AuthProvider = {
-                checkAuth: jest.fn(
+                checkAuth: vi.fn(
                     () =>
                         new Promise(resolve => {
                             resolveAuthCheck = resolve;
@@ -189,7 +189,7 @@ describe('useShowController', () => {
             };
             const dataProvider = testDataProvider({
                 // @ts-ignore
-                getOne: jest.fn(() =>
+                getOne: vi.fn(() =>
                     Promise.resolve({
                         data: { id: 1, title: 'A post', votes: 0 },
                     })
@@ -229,7 +229,7 @@ describe('useShowController', () => {
 
         it('should call the dataProvider if disableAuthentication is true', async () => {
             const authProvider: AuthProvider = {
-                checkAuth: jest.fn(),
+                checkAuth: vi.fn(),
                 login: () => Promise.resolve(),
                 logout: () => Promise.resolve(),
                 checkError: () => Promise.resolve(),
@@ -237,7 +237,7 @@ describe('useShowController', () => {
             };
             const dataProvider = testDataProvider({
                 // @ts-ignore
-                getOne: jest.fn(() =>
+                getOne: vi.fn(() =>
                     Promise.resolve({
                         data: { id: 1, title: 'A post', votes: 0 },
                     })

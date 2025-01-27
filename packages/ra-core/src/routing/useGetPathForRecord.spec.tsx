@@ -51,7 +51,7 @@ describe('useGetPathForRecord', () => {
             checkAuth: () => Promise.resolve(),
             checkError: () => Promise.resolve(),
             getPermissions: () => Promise.resolve(),
-            canAccess: jest.fn(),
+            canAccess: vi.fn(),
         };
         render(
             <AccessControlWithLinkTypeProvided authProvider={authProvider} />

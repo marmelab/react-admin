@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -22,7 +22,7 @@ const invalidButtonDomProps = {
 
 describe('<UpdateWithConfirmButton />', () => {
     it('should render a button with no DOM errors', async () => {
-        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
@@ -60,7 +60,7 @@ describe('<UpdateWithConfirmButton />', () => {
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 1000 },
                 }),
-            update: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+            update: vi.fn().mockResolvedValueOnce({ data: { id: 123 } }),
         });
         const EditToolbar = props => (
             <Toolbar {...props}>
@@ -104,7 +104,7 @@ describe('<UpdateWithConfirmButton />', () => {
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 1000 },
                 }),
-            update: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+            update: vi.fn().mockResolvedValueOnce({ data: { id: 123 } }),
         });
         const EditToolbar = props => (
             <Toolbar {...props}>
@@ -150,9 +150,9 @@ describe('<UpdateWithConfirmButton />', () => {
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 1000 },
                 }),
-            update: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+            update: vi.fn().mockResolvedValueOnce({ data: { id: 123 } }),
         });
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <UpdateWithConfirmButton
@@ -195,16 +195,16 @@ describe('<UpdateWithConfirmButton />', () => {
     });
 
     it('should allow to override the error side effects', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 1000 },
                 }),
-            update: jest.fn().mockRejectedValueOnce(new Error('not good')),
+            update: vi.fn().mockRejectedValueOnce(new Error('not good')),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <UpdateWithConfirmButton

@@ -4,10 +4,6 @@
         "outDir": "lib",
         "rootDir": "src",
         "allowJs": false,
-        "types": [
-            "jest",
-            "@types/node"
-        ]
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"]

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 
 import { CoreAdminContext } from '../core';
@@ -22,7 +22,7 @@ describe('useReference', () => {
 
     beforeEach(() => {
         dataProvider = testDataProvider({
-            getMany: jest
+            getMany: vi
                 .fn()
                 .mockResolvedValue({ data: [{ id: 1, title: 'foo' }] }),
         });
@@ -117,7 +117,7 @@ describe('useReference', () => {
     });
 
     it('should retrieve referenceRecord from dataProvider state', async () => {
-        const hookValue = jest.fn();
+        const hookValue = vi.fn();
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseReference {...defaultProps} callback={hookValue} />
@@ -149,7 +149,7 @@ describe('useReference', () => {
             useGetMany('posts', { ids: ['1'] });
             return <span>dummy</span>;
         };
-        const hookValue = jest.fn();
+        const hookValue = vi.fn();
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <FecthGetMany />

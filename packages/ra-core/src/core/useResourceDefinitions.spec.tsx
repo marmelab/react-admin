@@ -17,13 +17,13 @@ describe('useResourceDefinitions', () => {
     };
 
     it('should not fail when used outside of a ResourceDefinitionContext', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         render(<UseResourceDefinitions callback={callback} />);
         expect(callback).toHaveBeenCalledWith({});
     });
 
     it('should use the definition from ResourceDefinitionContext', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         render(
             <ResourceDefinitionContextProvider
                 definitions={{

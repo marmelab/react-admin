@@ -1,11 +1,11 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { waitFor, render, fireEvent, screen } from '@testing-library/react';
 import { Basic } from './useCanAccessCallback.stories';
 
 describe('useCanAccessCallback', () => {
     it('should return a function allowing to call authProvider.canAccess', async () => {
-        const canAccess = jest
+        const canAccess = vi
             .fn()
             .mockImplementation(async ({ action }) => action === 'read');
         const authProvider = {
@@ -54,7 +54,7 @@ describe('useCanAccessCallback', () => {
     });
 
     it('should reject when an error is thrown by canAccess', async () => {
-        const canAccess = jest
+        const canAccess = vi
             .fn()
             .mockRejectedValue(new Error('uh oh, something went wrong'));
         const authProvider = {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 import { CoreAdminContext } from '../../core';
@@ -27,11 +27,11 @@ describe('<ReferenceInputBase />', () => {
     };
 
     beforeAll(() => {
-        window.scrollTo = jest.fn();
+        window.scrollTo = vi.fn();
     });
 
     it('should display an error if error is defined', async () => {
-        jest.spyOn(console, 'error')
+        vi.spyOn(console, 'error')
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
 
@@ -50,7 +50,7 @@ describe('<ReferenceInputBase />', () => {
                     getList: () => Promise.reject(new Error('fetch error')),
                 })}
             >
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceInputBase {...defaultProps}>
                         <AutocompleteInput />
                     </ReferenceInputBase>
@@ -74,7 +74,7 @@ describe('<ReferenceInputBase />', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceInputBase {...defaultProps}>
                         <MyComponent />
                     </ReferenceInputBase>
@@ -98,7 +98,7 @@ describe('<ReferenceInputBase />', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceInputBase {...defaultProps}>
                         <Children />
                     </ReferenceInputBase>
@@ -111,7 +111,7 @@ describe('<ReferenceInputBase />', () => {
     });
 
     it('should accept meta in queryOptions', async () => {
-        const getList = jest
+        const getList = vi
             .fn()
             .mockImplementation(() => Promise.resolve({ data: [], total: 25 }));
         const dataProvider = testDataProvider({
@@ -132,12 +132,12 @@ describe('<ReferenceInputBase />', () => {
     });
 
     it('should use meta when fetching current value', async () => {
-        const getList = jest
+        const getList = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: [], total: 25 })
             );
-        const getMany = jest
+        const getMany = vi
             .fn()
             .mockImplementationOnce(() => Promise.resolve({ data: [] }));
         const dataProvider = testDataProvider({ getList, getMany });
@@ -173,8 +173,8 @@ describe('<ReferenceInputBase />', () => {
     });
 
     it('should not throw an error on save when it is a self reference and the reference is undefined', async () => {
-        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'log').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'error').mockImplementationOnce(() => {});
         render(<SelfReference />);
         fireEvent.click(await screen.findByLabelText('Self reference'));
         await waitFor(() => {

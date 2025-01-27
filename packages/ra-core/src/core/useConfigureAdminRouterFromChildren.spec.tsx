@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { Route } from 'react-router-dom';
 import { useResourceDefinitions } from './useResourceDefinitions';
 
@@ -268,7 +268,7 @@ describe('useConfigureAdminRouterFromChildren', () => {
         ).toBeNull();
     });
     it('should not call the children function until the permissions have been retrieved', async () => {
-        const callback = jest.fn(() =>
+        const callback = vi.fn(() =>
             Promise.resolve(resolve => setTimeout(resolve, 50))
         );
 

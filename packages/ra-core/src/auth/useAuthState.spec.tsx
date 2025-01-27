@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { waitFor, render, screen } from '@testing-library/react';
 import { CoreAdminContext } from '../core/CoreAdminContext';
 
@@ -49,9 +49,9 @@ describe('useAuthState', () => {
     });
 
     it('should abort the request if the query is canceled', async () => {
-        const abort = jest.fn();
+        const abort = vi.fn();
         const authProvider = {
-            checkAuth: jest.fn(
+            checkAuth: vi.fn(
                 ({ signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {

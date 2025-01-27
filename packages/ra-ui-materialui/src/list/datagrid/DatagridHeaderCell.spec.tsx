@@ -1,4 +1,4 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ResourceContextProvider } from 'ra-core';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { testDataProvider } from '../../dataProvider';
@@ -15,7 +15,7 @@ describe('EditBase', () => {
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            update: jest.fn((_, { id, data, previousData }) =>
+            update: vi.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
             ),
         });
@@ -46,11 +46,11 @@ describe('EditBase', () => {
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            update: jest.fn((_, { id, data, previousData }) =>
+            update: vi.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
             ),
         });
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
 
         render(
             <NoAuthProvider
@@ -86,12 +86,12 @@ describe('EditBase', () => {
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            update: jest.fn((_, { id, data, previousData }) =>
+            update: vi.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
             ),
         });
-        const onSuccess = jest.fn();
-        const onSuccessOverride = jest.fn();
+        const onSuccess = vi.fn();
+        const onSuccessOverride = vi.fn();
 
         render(
             <NoAuthProvider
@@ -125,15 +125,15 @@ describe('EditBase', () => {
     });
 
     it('should allow to override the onError function', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             // @ts-ignore
-            update: jest.fn(() => Promise.reject({ message: 'test' })),
+            update: vi.fn(() => Promise.reject({ message: 'test' })),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
 
         render(
             <NoAuthProvider
@@ -165,10 +165,10 @@ describe('EditBase', () => {
             getOne: () =>
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             // @ts-ignore
-            update: jest.fn(() => Promise.reject({ message: 'test' })),
+            update: vi.fn(() => Promise.reject({ message: 'test' })),
         });
-        const onError = jest.fn();
-        const onErrorOverride = jest.fn();
+        const onError = vi.fn();
+        const onErrorOverride = vi.fn();
 
         render(
             <NoAuthProvider
@@ -201,11 +201,11 @@ describe('EditBase', () => {
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            update: jest.fn((_, { id, data, previousData }) =>
+            update: vi.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
             ),
         });
-        const transform = jest.fn((data, _options) => ({
+        const transform = vi.fn((data, _options) => ({
             ...data,
             test: 'test transformed',
         }));
@@ -241,12 +241,12 @@ describe('EditBase', () => {
             // @ts-ignore
             getOne: () =>
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            update: jest.fn((_, { id, data, previousData }) =>
+            update: vi.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
             ),
         });
-        const transform = jest.fn();
-        const transformOverride = jest.fn((data, _options) => ({
+        const transform = vi.fn();
+        const transformOverride = vi.fn((data, _options) => ({
             ...data,
             test: 'test transformed',
         }));
@@ -284,7 +284,7 @@ describe('EditBase', () => {
     it('should load data immediately if authProvider is not provided', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getOne: jest.fn(() =>
+            getOne: vi.fn(() =>
                 Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });
@@ -305,7 +305,7 @@ describe('EditBase', () => {
         };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getOne: jest.fn(() =>
+            getOne: vi.fn(() =>
                 Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });
@@ -331,7 +331,7 @@ describe('EditBase', () => {
                 new Promise<void>(resolve => {
                     resolveAuth = resolve;
                 }),
-            canAccess: jest.fn(
+            canAccess: vi.fn(
                 () =>
                     new Promise<boolean>(resolve => {
                         resolveCanAccess = resolve;
@@ -340,7 +340,7 @@ describe('EditBase', () => {
         };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getOne: jest.fn(() =>
+            getOne: vi.fn(() =>
                 Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });

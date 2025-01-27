@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ResourceContextProvider, testDataProvider } from 'ra-core';
 
@@ -44,9 +44,7 @@ describe('<SimpleForm />', () => {
 
     describe('validation', () => {
         it('should support translations with global validation', async () => {
-            const mock = jest
-                .spyOn(console, 'warn')
-                .mockImplementation(() => {});
+            const mock = vi.spyOn(console, 'warn').mockImplementation(() => {});
             render(<GlobalValidation />);
             fireEvent.change(await screen.findByLabelText('Title'), {
                 target: { value: '' },
@@ -74,9 +72,7 @@ describe('<SimpleForm />', () => {
         });
 
         it('should support translations with per input validation', async () => {
-            const mock = jest
-                .spyOn(console, 'warn')
-                .mockImplementation(() => {});
+            const mock = vi.spyOn(console, 'warn').mockImplementation(() => {});
             render(<InputBasedValidation />);
             fireEvent.change(await screen.findByLabelText('Title *'), {
                 target: { value: '' },

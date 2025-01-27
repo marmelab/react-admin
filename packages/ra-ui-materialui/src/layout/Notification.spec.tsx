@@ -5,7 +5,7 @@ import { ConsecutiveUndoable } from './Notification.stories';
 
 describe('<Notification />', () => {
     it('should confirm the first undoable notification when a second one starts', async () => {
-        const deleteOne = jest
+        const deleteOne = vi
             .fn()
             .mockImplementation((_resource, { id }) =>
                 Promise.resolve({ data: { id } })

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 
 import {
@@ -37,21 +37,21 @@ describe('useReferenceArrayInputController', () => {
 
     describe('isLoading', () => {
         it('should set isLoading to true as long as there are no references fetched and no selected references', () => {
-            const children = jest.fn(({ isLoading }) => (
+            const children = vi.fn(({ isLoading }) => (
                 <div>{isLoading.toString()}</div>
             ));
             render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
-                        getMany: jest.fn().mockResolvedValue({ data: [] }),
-                        getList: jest
+                        getMany: vi.fn().mockResolvedValue({ data: [] }),
+                        getList: vi
                             .fn()
                             .mockResolvedValue({ data: [], total: 0 }),
                     })}
                 >
                     <Form
                         defaultValues={{ tag_ids: [1, 2] }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <ReferenceArrayInputController {...defaultProps}>
                             {children}
@@ -63,17 +63,17 @@ describe('useReferenceArrayInputController', () => {
         });
 
         it('should set isLoading to false once the dataProvider returns', async () => {
-            const children = jest.fn(({ isLoading }) => (
+            const children = vi.fn(({ isLoading }) => (
                 <div>{isLoading.toString()}</div>
             ));
             const dataProvider = testDataProvider({
-                getMany: jest.fn().mockResolvedValue({ data: [] }),
-                getList: jest.fn().mockResolvedValue({ data: [], total: 0 }),
+                getMany: vi.fn().mockResolvedValue({ data: [] }),
+                getList: vi.fn().mockResolvedValue({ data: [], total: 0 }),
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Form
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ tag_ids: [1, 2] }}
                     >
                         <ReferenceArrayInputController {...defaultProps}>
@@ -94,10 +94,8 @@ describe('useReferenceArrayInputController', () => {
 
     describe('error', () => {
         it('should set error in case of references fetch error and there are no selected reference in the input value', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
-            const children = jest.fn(({ error }) => (
-                <div>{error?.message}</div>
-            ));
+            vi.spyOn(console, 'error').mockImplementation(() => {});
+            const children = vi.fn(({ error }) => <div>{error?.message}</div>);
             render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
@@ -105,7 +103,7 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <ReferenceArrayInputController {...defaultProps}>
                             {children}
                         </ReferenceArrayInputController>
@@ -119,10 +117,8 @@ describe('useReferenceArrayInputController', () => {
         });
 
         it('should set error in case of references fetch error and there are no data found for the references already selected', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
-            const children = jest.fn(({ error }) => (
-                <div>{error?.message}</div>
-            ));
+            vi.spyOn(console, 'error').mockImplementation(() => {});
+            const children = vi.fn(({ error }) => <div>{error?.message}</div>);
             render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
@@ -130,7 +126,7 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <ReferenceArrayInputController
                             {...defaultProps}
                             field={{ value: [1] }}
@@ -146,9 +142,7 @@ describe('useReferenceArrayInputController', () => {
         });
 
         it.skip('should not display an error in case of references fetch error but data from at least one selected reference was found', async () => {
-            const children = jest.fn(({ error }) => (
-                <div>{error?.message}</div>
-            ));
+            const children = vi.fn(({ error }) => <div>{error?.message}</div>);
             render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
@@ -160,7 +154,7 @@ describe('useReferenceArrayInputController', () => {
                             }),
                     })}
                 >
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <ReferenceArrayInputController
                             {...defaultProps}
                             field={{ value: [1, 2] }}
@@ -178,16 +172,16 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should call getList on mount with default params', async () => {
-        const children = jest.fn(() => <div />);
+        const children = vi.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest
+            getList: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceArrayInputController {...defaultProps}>
                         {children}
                     </ReferenceArrayInputController>
@@ -210,16 +204,16 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should call getList with meta when provided', async () => {
-        const children = jest.fn(() => <div />);
+        const children = vi.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest
+            getList: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceArrayInputController
                         {...defaultProps}
                         queryOptions={{ meta: { value: 'a' } }}
@@ -245,15 +239,15 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should allow to customize getList arguments with perPage, sort, and filter props', () => {
-        const children = jest.fn(() => <div />);
+        const children = vi.fn(() => <div />);
         const dataProvider = testDataProvider({
-            getList: jest
+            getList: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceArrayInputController
                         {...defaultProps}
                         sort={{ field: 'foo', order: 'ASC' }}
@@ -282,20 +276,20 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should call getList when setFilters is called', async () => {
-        const children = jest.fn(({ setFilters }) => (
+        const children = vi.fn(({ setFilters }) => (
             <button
                 aria-label="Filter"
                 onClick={() => setFilters({ q: 'bar' })}
             />
         ));
         const dataProvider = testDataProvider({
-            getList: jest
+            getList: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceArrayInputController {...defaultProps}>
                         {children}
                     </ReferenceArrayInputController>
@@ -321,10 +315,10 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should call getMany on mount if value is set', async () => {
-        const children = jest.fn(() => <div />);
+        const children = vi.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getMany: jest
+            getMany: vi
                 .fn()
                 .mockResolvedValue(
                     Promise.resolve({ data: [{ id: 5 }, { id: 6 }] })
@@ -332,7 +326,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()} defaultValues={{ tag_ids: [5, 6] }}>
+                <Form onSubmit={vi.fn()} defaultValues={{ tag_ids: [5, 6] }}>
                     <ReferenceArrayInputController {...defaultProps}>
                         {children}
                     </ReferenceArrayInputController>
@@ -348,10 +342,10 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should call getMany with meta when provided', async () => {
-        const children = jest.fn(() => <div />);
+        const children = vi.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getMany: jest
+            getMany: vi
                 .fn()
                 .mockResolvedValue(
                     Promise.resolve({ data: [{ id: 5 }, { id: 6 }] })
@@ -359,7 +353,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()} defaultValues={{ tag_ids: [5, 6] }}>
+                <Form onSubmit={vi.fn()} defaultValues={{ tag_ids: [5, 6] }}>
                     <ReferenceArrayInputController
                         {...defaultProps}
                         queryOptions={{ meta: { value: 'a' } }}
@@ -379,7 +373,7 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should not call getMany when calling setFilters', async () => {
-        const children = jest.fn(({ setFilters }) => (
+        const children = vi.fn(({ setFilters }) => (
             <button
                 aria-label="Filter"
                 onClick={() => setFilters({ q: 'bar' })}
@@ -387,17 +381,17 @@ describe('useReferenceArrayInputController', () => {
         ));
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest
+            getList: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
             // @ts-ignore
-            getMany: jest
+            getMany: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [{ id: 5 }] })),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()} defaultValues={{ tag_ids: [5] }}>
+                <Form onSubmit={vi.fn()} defaultValues={{ tag_ids: [5] }}>
                     <ReferenceArrayInputController {...defaultProps}>
                         {children}
                     </ReferenceArrayInputController>
@@ -417,15 +411,15 @@ describe('useReferenceArrayInputController', () => {
 
     it('should not call getMany when props other than input are changed from outside', async () => {
         const record = { tag_ids: [5] };
-        const onSubmit = jest.fn();
-        const children = jest.fn(() => <div />);
+        const onSubmit = vi.fn();
+        const children = vi.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest
+            getList: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
             // @ts-ignore
-            getMany: jest
+            getMany: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [{ id: 5 }] })),
         });
@@ -504,17 +498,17 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should call getMany when input value changes', async () => {
-        const children = jest.fn(() => <div />);
+        const children = vi.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest
+            getList: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
-            getMany: jest.fn().mockResolvedValue({ data: [] }),
+            getMany: vi.fn().mockResolvedValue({ data: [] }),
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form record={{ tag_ids: [5] }} onSubmit={jest.fn()}>
+                <Form record={{ tag_ids: [5] }} onSubmit={vi.fn()}>
                     <ReferenceArrayInputController {...defaultProps}>
                         {children}
                     </ReferenceArrayInputController>
@@ -529,7 +523,7 @@ describe('useReferenceArrayInputController', () => {
         });
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form record={{ tag_ids: [5, 6] }} onSubmit={jest.fn()}>
+                <Form record={{ tag_ids: [5, 6] }} onSubmit={vi.fn()}>
                     <ReferenceArrayInputController {...defaultProps}>
                         {children}
                     </ReferenceArrayInputController>
@@ -574,13 +568,13 @@ describe('useReferenceArrayInputController', () => {
 
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest
+            getList: vi
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceArrayInputController
                         {...defaultProps}
                         field={{ value: [5, 6] }}
@@ -644,10 +638,10 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should call its children with the correct resource', () => {
-        const children = jest.fn(() => null);
+        const children = vi.fn(() => null);
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <ReferenceArrayInputController
                         {...defaultProps}
                         field={{ value: [1, 2] }}
@@ -664,18 +658,18 @@ describe('useReferenceArrayInputController', () => {
 
     describe('enableGetChoices', () => {
         it('should not fetch possible values using getList on load but only when enableGetChoices returns true', async () => {
-            const children = jest.fn().mockReturnValue(<div />);
-            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
+            const children = vi.fn().mockReturnValue(<div />);
+            const enableGetChoices = vi.fn().mockImplementation(({ q }) => {
                 return q ? q.length > 2 : false;
             });
             const dataProvider = testDataProvider({
-                getList: jest
+                getList: vi
                     .fn()
                     .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <ReferenceArrayInputController
                             {...defaultProps}
                             enableGetChoices={enableGetChoices}
@@ -714,20 +708,20 @@ describe('useReferenceArrayInputController', () => {
         });
 
         it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {
-            const children = jest.fn(() => <div />);
+            const children = vi.fn(() => <div />);
             const dataProvider = testDataProvider({
                 // @ts-ignore
-                getList: jest
+                getList: vi
                     .fn()
                     .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
                 // @ts-ignore
-                getMany: jest
+                getMany: vi
                     .fn()
                     .mockResolvedValue({ data: [{ id: 5 }, { id: 6 }] }),
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <Form onSubmit={jest.fn()} record={{ tag_ids: [5, 6] }}>
+                    <Form onSubmit={vi.fn()} record={{ tag_ids: [5, 6] }}>
                         <ReferenceArrayInputController
                             {...defaultProps}
                             enableGetChoices={() => false}
@@ -746,12 +740,12 @@ describe('useReferenceArrayInputController', () => {
         });
 
         it('should set isLoading to false if enableGetChoices returns false', async () => {
-            const children = jest.fn().mockReturnValue(<div />);
+            const children = vi.fn().mockReturnValue(<div />);
             await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
-            const enableGetChoices = jest.fn().mockImplementation(() => false);
+            const enableGetChoices = vi.fn().mockImplementation(() => false);
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <ReferenceArrayInputController
                             {...defaultProps}
                             enableGetChoices={enableGetChoices}

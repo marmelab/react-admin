@@ -2,6 +2,7 @@ import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { address, internet, name } from 'faker/locale/en_GB';
 import fakeRestDataProvider from 'ra-data-fakerest';
+import { vi } from 'vitest';
 
 import {
     Basic,
@@ -14,11 +15,11 @@ import {
 
 describe('<PrevNextButtons />', () => {
     beforeEach(() => {
-        window.scrollTo = jest.fn();
+        window.scrollTo = vi.fn();
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should render the current record position according to the clicked item in the list', async () => {
@@ -74,7 +75,7 @@ describe('<PrevNextButtons />', () => {
     });
 
     it('should render an error UI in case of data provider error', async () => {
-        console.error = jest.fn();
+        console.error = vi.fn();
         render(<ErrorState />);
         await screen.findByText('error');
     });
@@ -133,7 +134,7 @@ describe('<PrevNextButtons />', () => {
                 }),
             };
             const dataProvider = fakeRestDataProvider(data);
-            const spy = jest.spyOn(dataProvider, 'getList');
+            const spy = vi.spyOn(dataProvider, 'getList');
             render(<WithLimit customDataProvider={dataProvider} />);
             const item = await screen.findByText('9');
             fireEvent.click(item);

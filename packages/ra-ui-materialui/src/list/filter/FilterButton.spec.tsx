@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createTheme } from '@mui/material/styles';
@@ -35,12 +35,12 @@ describe('<FilterButton />', () => {
     };
 
     beforeAll(() => {
-        window.scrollTo = jest.fn();
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        window.scrollTo = vi.fn();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterAll(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     describe('filter selection menu', () => {

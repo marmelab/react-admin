@@ -1,4 +1,4 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 import { queryReducer, SORT_ASC, SORT_DESC } from './queryReducer';
 
 describe('Query Reducer', () => {

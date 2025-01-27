@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { testDataProvider, useListContext, TestMemoryRouter } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';

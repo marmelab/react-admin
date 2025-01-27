@@ -29,18 +29,18 @@ describe('buildQuery', () => {
     });
 
     it('correctly builds a query and returns it along with variables and parseResponse', () => {
-        const buildVariables = jest.fn(() => ({ foo: true }));
-        const buildGqlQuery = jest.fn(
+        const buildVariables = vi.fn(() => ({ foo: true }));
+        const buildGqlQuery = vi.fn(
             () => gql`
                 query {
                     id
                 }
             `
         );
-        const getResponseParser = jest.fn(() => 'parseResponseFunction');
-        const buildVariablesFactory = jest.fn(() => buildVariables);
-        const buildGqlQueryFactory = jest.fn(() => buildGqlQuery);
-        const getResponseParserFactory = jest.fn(() => getResponseParser);
+        const getResponseParser = vi.fn(() => 'parseResponseFunction');
+        const buildVariablesFactory = vi.fn(() => buildVariables);
+        const buildGqlQueryFactory = vi.fn(() => buildGqlQuery);
+        const getResponseParserFactory = vi.fn(() => getResponseParser);
 
         expect(
             buildQueryFactory(

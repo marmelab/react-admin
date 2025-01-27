@@ -1,22 +1,15 @@
 import * as React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-
+import { vi } from 'vitest';
 import { FileInputPreview } from './FileInputPreview';
 
 describe('<FileInputPreview />', () => {
     beforeAll(() => {
-        // @ts-ignore
-        global.URL.revokeObjectURL = jest.fn();
+        vi.spyOn(URL, 'revokeObjectURL');
     });
 
-    afterAll(() => {
-        // @ts-ignore
-        delete global.URL.revokeObjectURL;
-    });
-
-    afterEach(() => {
-        // @ts-ignore
-        global.URL.revokeObjectURL.mockClear();
+    beforeEach(() => {
+        vi.clearAllMocks();
     });
 
     const file = {
@@ -25,11 +18,11 @@ describe('<FileInputPreview />', () => {
 
     const defaultProps = {
         file,
-        onRemove: jest.fn(),
+        onRemove: vi.fn(),
     };
 
     it('should call `onRemove` prop when clicking on remove button', () => {
-        const onRemoveSpy = jest.fn();
+        const onRemoveSpy = vi.fn();
 
         const { getByLabelText } = render(
             <FileInputPreview {...defaultProps} onRemove={onRemoveSpy}>
@@ -62,9 +55,7 @@ describe('<FileInputPreview />', () => {
         unmount();
         await waitFor(() => {
             // @ts-ignore
-            expect(global.URL.revokeObjectURL).toHaveBeenCalledWith(
-                'previewUrl'
-            );
+            expect(URL.revokeObjectURL).toHaveBeenCalledWith('previewUrl');
         });
     });
 
@@ -79,8 +70,7 @@ describe('<FileInputPreview />', () => {
 
         unmount();
         await waitFor(() => {
-            // @ts-ignore
-            expect(global.URL.revokeObjectURL).not.toHaveBeenCalled();
+            expect(URL.revokeObjectURL).not.toHaveBeenCalled();
         });
     });
 });

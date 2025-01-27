@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { Basic, Unmount } from './Configurable.stories';
 

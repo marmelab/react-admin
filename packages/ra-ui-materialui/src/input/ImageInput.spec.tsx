@@ -22,7 +22,7 @@ describe('<ImageInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ImageInput {...defaultProps}>
                             <div />
                         </ImageInput>
@@ -40,7 +40,7 @@ describe('<ImageInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ImageInput {...defaultProps} multiple>
                             <div />
                         </ImageInput>
@@ -56,13 +56,13 @@ describe('<ImageInput />', () => {
 
     // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
     it.skip('should correctly update upon drop when allowing a single file', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{
                             image: undefined,
                         }}
@@ -96,7 +96,7 @@ describe('<ImageInput />', () => {
 
     // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
     it.skip('should correctly update upon drop when allowing multiple files', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -139,7 +139,7 @@ describe('<ImageInput />', () => {
     });
 
     it('should correctly update upon removal when allowing a single file', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -176,7 +176,7 @@ describe('<ImageInput />', () => {
     });
 
     it('should correctly update upon removal when allowing multiple file (removing first file)', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -224,7 +224,7 @@ describe('<ImageInput />', () => {
     });
 
     it('should correctly update upon removal when allowing multiple files (removing second file)', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -277,7 +277,7 @@ describe('<ImageInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <ImageInput
                                 {...defaultProps}
                                 placeholder={expectedLabel}
@@ -304,7 +304,7 @@ describe('<ImageInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{
                                 image: {
                                     url: 'http://foo.com/bar.jpg',
@@ -332,7 +332,7 @@ describe('<ImageInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{
                                 images: [
                                     {
@@ -372,7 +372,7 @@ describe('<ImageInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             record={{
                                 image: {
                                     title: 'Hello world!',
@@ -398,7 +398,7 @@ describe('<ImageInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             record={{
                                 image: {
                                     title: 'Hello world!',
@@ -423,7 +423,7 @@ describe('<ImageInput />', () => {
 
         // Skipped until https://github.com/jsdom/jsdom/issues/1568 is fixed
         it.skip('should update previews when dropping a file', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext dataProvider={testDataProvider()}>

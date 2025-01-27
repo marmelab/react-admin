@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Typography } from '@mui/material';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { memoryStore } from 'ra-core';
 
 import { AdminContext } from './AdminContext';

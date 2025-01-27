@@ -5,7 +5,7 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { createMemoryHistory } from 'history';
 import * as React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
@@ -40,7 +40,7 @@ describe('useEditController', () => {
     };
 
     it('should call the dataProvider.getOne() function on mount', async () => {
-        const getOne = jest
+        const getOne = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
@@ -60,7 +60,7 @@ describe('useEditController', () => {
     });
 
     it('should decode the id from the route params', async () => {
-        const getOne = jest
+        const getOne = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 'test?', title: 'hello' } })
@@ -95,7 +95,7 @@ describe('useEditController', () => {
     });
 
     it('should use the id provided through props if any', async () => {
-        const getOne = jest
+        const getOne = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 0, title: 'hello' } })
@@ -130,7 +130,7 @@ describe('useEditController', () => {
     });
 
     it('should return the `redirect` provided through props or the default', async () => {
-        const getOne = jest
+        const getOne = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
@@ -157,13 +157,13 @@ describe('useEditController', () => {
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
-            const mock = jest
+            const mock = vi
                 .spyOn(console, 'error')
                 .mockImplementation(() => {});
-            const getOne = jest
+            const getOne = vi
                 .fn()
                 .mockImplementationOnce(() => Promise.reject(new Error()));
-            const onError = jest.fn();
+            const onError = vi.fn();
             const dataProvider = { getOne } as unknown as DataProvider;
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -184,7 +184,7 @@ describe('useEditController', () => {
         });
 
         it('should accept a meta in query options', async () => {
-            const getOne = jest
+            const getOne = vi
                 .fn()
                 .mockImplementationOnce(() =>
                     Promise.resolve({ data: { id: 0, title: 'hello' } })
@@ -211,7 +211,7 @@ describe('useEditController', () => {
     });
 
     it('should call the dataProvider.update() function on save', async () => {
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -255,7 +255,7 @@ describe('useEditController', () => {
 
     it('should return an undoable save callback by default', async () => {
         let post = { id: 12, test: 'previous' };
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { data, previousData }) => {
                 post = { ...previousData, ...data };
@@ -307,7 +307,7 @@ describe('useEditController', () => {
 
     it('should return an immediate save callback when mutationMode is pessimistic', async () => {
         let post = { id: 12 };
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { data, previousData }) => {
                 post = { ...previousData, ...data };
@@ -392,7 +392,7 @@ describe('useEditController', () => {
                 update: (_, { id, data, previousData }) =>
                     Promise.resolve({ data: { id, ...previousData, ...data } }),
             } as unknown as DataProvider;
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
 
             let notificationsSpy;
             const Notification = () => {
@@ -430,7 +430,7 @@ describe('useEditController', () => {
                 update: (_, { id, data, previousData }) =>
                     Promise.resolve({ data: { id, ...previousData, ...data } }),
             } as unknown as DataProvider;
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
 
             let notificationsSpy;
             const Notification = () => {
@@ -468,7 +468,7 @@ describe('useEditController', () => {
                 update: (_, { id, data, previousData }) =>
                     Promise.resolve({ data: { id, ...previousData, ...data } }),
             } as unknown as DataProvider;
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
 
             let notificationsSpy;
             const Notification = () => {
@@ -499,13 +499,13 @@ describe('useEditController', () => {
         });
 
         it('should allow mutationOptions to override the default failure side effects in pessimistic mode', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             let saveCallback;
             const dataProvider = {
                 getOne: () => Promise.resolve({ data: { id: 12 } }),
                 update: () => Promise.reject({ message: 'not good' }),
             } as unknown as DataProvider;
-            const onError = jest.fn();
+            const onError = vi.fn();
 
             let notificationsSpy;
             const Notification = () => {
@@ -538,13 +538,13 @@ describe('useEditController', () => {
         });
 
         it('should allow mutationOptions to override the default failure side effects in optimistic mode', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             let saveCallback;
             const dataProvider = {
                 getOne: () => Promise.resolve({ data: { id: 12 } }),
                 update: () => Promise.reject({ message: 'not good' }),
             } as unknown as DataProvider;
-            const onError = jest.fn();
+            const onError = vi.fn();
 
             let notificationsSpy;
             const Notification = () => {
@@ -591,7 +591,7 @@ describe('useEditController', () => {
 
         it('should accept meta in mutationOptions', async () => {
             let saveCallback;
-            const update = jest
+            const update = vi
                 .fn()
                 .mockImplementationOnce((_, { id, data, previousData }) =>
                     Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -629,7 +629,7 @@ describe('useEditController', () => {
 
     it('should accept meta as a save option', async () => {
         let saveCallback;
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -669,8 +669,8 @@ describe('useEditController', () => {
             update: (_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown as DataProvider;
-        const onSuccess = jest.fn();
-        const onSuccessSave = jest.fn();
+        const onSuccess = vi.fn();
+        const onSuccessSave = vi.fn();
 
         let notificationsSpy;
         const Notification = () => {
@@ -710,7 +710,7 @@ describe('useEditController', () => {
     });
 
     it('should execute error side effects on error in pessimistic mode', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -749,14 +749,14 @@ describe('useEditController', () => {
     });
 
     it('should allow the save onError option to override the failure side effects override', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: () => Promise.reject({ message: 'not good' }),
         } as unknown as DataProvider;
-        const onError = jest.fn();
-        const onErrorSave = jest.fn();
+        const onError = vi.fn();
+        const onErrorSave = vi.fn();
 
         let notificationsSpy;
         const Notification = () => {
@@ -797,7 +797,7 @@ describe('useEditController', () => {
 
     it('should allow transform to transform the data before save', async () => {
         let saveCallback;
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { id, data }) =>
                 Promise.resolve({ data: { id, ...data } })
@@ -806,7 +806,7 @@ describe('useEditController', () => {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
         } as unknown as DataProvider;
-        const transform = jest.fn().mockImplementationOnce(data => ({
+        const transform = vi.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
         }));
@@ -839,7 +839,7 @@ describe('useEditController', () => {
 
     it('should allow the save transform option to override the transform side effect', async () => {
         let saveCallback;
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { id, data }) =>
                 Promise.resolve({ data: { id, ...data } })
@@ -848,8 +848,8 @@ describe('useEditController', () => {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
         } as unknown as DataProvider;
-        const transform = jest.fn();
-        const transformSave = jest.fn().mockImplementationOnce(data => ({
+        const transform = vi.fn();
+        const transformSave = vi.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
         }));
@@ -889,7 +889,7 @@ describe('useEditController', () => {
 
     it('should allow to register middlewares', async () => {
         let saveCallback;
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { id, data }) =>
                 Promise.resolve({ data: { id, ...data } })
@@ -899,7 +899,7 @@ describe('useEditController', () => {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update,
         });
-        const middleware: Middleware<ReturnType<typeof useUpdate>[0]> = jest.fn(
+        const middleware: Middleware<ReturnType<typeof useUpdate>[0]> = vi.fn(
             (resource, params, options, next) => {
                 return next(
                     resource,
@@ -964,7 +964,7 @@ describe('useEditController', () => {
 
     it('should return errors from the update call in pessimistic mode', async () => {
         let post = { id: 12 };
-        const update = jest.fn().mockImplementationOnce(() => {
+        const update = vi.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });
         const dataProvider = {

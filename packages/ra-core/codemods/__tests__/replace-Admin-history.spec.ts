@@ -1,6 +1,6 @@
 import { defineTest } from 'jscodeshift/dist/testUtils';
 
-jest.autoMockOff();
+vi.autoMockOff();
 
 defineTest(
     __dirname,

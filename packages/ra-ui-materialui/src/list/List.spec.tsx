@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import {
     CoreAdminContext,
@@ -119,7 +119,7 @@ describe('<List />', () => {
                 return <div>{isPending ? 'loading' : 'dummy'}</div>;
             };
             const dataProvider = {
-                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+                getList: vi.fn(() => Promise.resolve({ data: [], total: 0 })),
             } as any;
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -142,7 +142,7 @@ describe('<List />', () => {
                 return <div>{isPending ? 'loading' : 'dummy'}</div>;
             };
             const dataProvider = {
-                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+                getList: vi.fn(() => Promise.resolve({ data: [], total: 0 })),
             } as any;
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -172,7 +172,7 @@ describe('<List />', () => {
             const CustomEmpty = () => <div>Custom Empty</div>;
 
             const dataProvider = {
-                getList: jest.fn(() =>
+                getList: vi.fn(() =>
                     Promise.resolve({
                         data: [],
                         pageInfo: {
@@ -203,7 +203,7 @@ describe('<List />', () => {
                 return <div>{isPending ? 'loading' : 'dummy'}</div>;
             };
             const dataProvider = {
-                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+                getList: vi.fn(() => Promise.resolve({ data: [], total: 0 })),
             } as any;
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -233,7 +233,7 @@ describe('<List />', () => {
         );
         const Dummy = () => <div>Dummy</div>;
         const dataProvider = {
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 0 }], total: 1 })
             ),
         } as any;
@@ -268,7 +268,7 @@ describe('<List />', () => {
         ];
         const Dummy = () => <div>Dummy</div>;
         const dataProvider = {
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 0 }], total: 1 })
             ),
         } as any;
@@ -297,10 +297,10 @@ describe('<List />', () => {
     });
 
     it('should render a list page with an error notification when there is an error', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         const Datagrid = () => <div>datagrid</div>;
         const dataProvider = {
-            getList: jest.fn(() => Promise.reject(new Error('Lorem ipsum'))),
+            getList: vi.fn(() => Promise.reject(new Error('Lorem ipsum'))),
         } as any;
         render(
             <CoreAdminContext dataProvider={dataProvider}>

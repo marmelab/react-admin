@@ -2,7 +2,7 @@ import { setSubmissionErrors } from './setSubmissionErrors';
 
 describe('setSubmissionErrors', () => {
     it('calls setError for simple form schema', () => {
-        const setError = jest.fn();
+        const setError = vi.fn();
 
         setSubmissionErrors(
             {
@@ -22,7 +22,7 @@ describe('setSubmissionErrors', () => {
         });
     });
     it('calls setError for form schema with deep paths', () => {
-        const setError = jest.fn();
+        const setError = vi.fn();
 
         setSubmissionErrors(
             {
@@ -51,7 +51,7 @@ describe('setSubmissionErrors', () => {
         });
     });
     it('calls setError for form schema containing arrays', () => {
-        const setError = jest.fn();
+        const setError = vi.fn();
 
         setSubmissionErrors(
             {
@@ -76,7 +76,7 @@ describe('setSubmissionErrors', () => {
         });
     });
     it('calls setError for form schema containing nested arrays', () => {
-        const setError = jest.fn();
+        const setError = vi.fn();
 
         setSubmissionErrors(
             {

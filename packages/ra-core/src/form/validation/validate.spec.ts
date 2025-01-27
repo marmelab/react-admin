@@ -255,7 +255,7 @@ describe('Validators', () => {
             expect(required().isRequired).toEqual(true);
         });
         it('should allow message to be a callback', () => {
-            const message = jest.fn(() => 'ra.validation.required');
+            const message = vi.fn(() => 'ra.validation.required');
             test(
                 required(message),
                 [undefined, '', null, []],
@@ -283,7 +283,7 @@ describe('Validators', () => {
             test(minLength(5), ['1234', '12'], 'ra.validation.minLength');
         });
         it('should allow message to be a callback', () => {
-            const message = jest.fn(() => 'ra.validation.minLength');
+            const message = vi.fn(() => 'ra.validation.minLength');
             test(
                 minLength(5, message),
                 ['1234', '12'],
@@ -311,7 +311,7 @@ describe('Validators', () => {
             test(maxLength(10), ['12345678901'], 'ra.validation.maxLength');
         });
         it('should allow message to be a callback', () => {
-            const message = jest.fn(() => 'ra.validation.maxLength');
+            const message = vi.fn(() => 'ra.validation.maxLength');
             test(
                 maxLength(10, message),
                 ['12345678901'],
@@ -339,7 +339,7 @@ describe('Validators', () => {
             test(minValue(10), [0], 'ra.validation.minValue');
         });
         it('should allow message to be a callback', () => {
-            const message = jest.fn(() => 'ra.validation.minValue');
+            const message = vi.fn(() => 'ra.validation.minValue');
             test(minValue(10, message), [0], 'ra.validation.minValue');
             expect(message).toHaveBeenCalledTimes(1);
             expect(message).toHaveBeenLastCalledWith({
@@ -363,7 +363,7 @@ describe('Validators', () => {
             test(maxValue(10), [0], undefined);
         });
         it('should allow message to be a callback', () => {
-            const message = jest.fn(() => 'ra.validation.maxValue');
+            const message = vi.fn(() => 'ra.validation.maxValue');
             test(
                 maxValue(10, message),
                 [11, 10.5, '11'],
@@ -388,7 +388,7 @@ describe('Validators', () => {
             test(number(), ['foo'], 'ra.validation.number');
         });
         it('should allow message to be a callback', () => {
-            const message = jest.fn(() => 'ra.validation.number');
+            const message = vi.fn(() => 'ra.validation.number');
             test(number(message), ['foo'], 'ra.validation.number');
             expect(message).toHaveBeenCalledTimes(1);
             expect(message).toHaveBeenLastCalledWith({

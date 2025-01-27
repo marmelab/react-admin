@@ -522,7 +522,7 @@ const BookEditWithSelfReference = () => {
                 onSuccess: () => {
                     // Redirecting to another page is an indirect way to make sure that
                     // no errors happened during the update nor its side effects
-                    // (used by the jest tests)
+                    // (used by the vi tests)
                     redirect('/authors');
                 },
             }}
