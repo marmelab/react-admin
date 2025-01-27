@@ -102,7 +102,7 @@ const {
 
 ## The List Page
 
-Children of the  `<List>` component display a list of records, and let users change the list parameters.
+Children of the  `<List>` component display a list of records, and let users change the list parameters. You can learn more in the [List Tutorial](./ListTutorial.md).
 
 You can use any of the following components to build the list page:
 
@@ -199,7 +199,9 @@ You can also use specialized alternatives to the `<List>` component, which offer
 
 ## The Show Page
 
-Children of the `<Show>` component display a record in read-only mode.
+Children of the `<Show>` component display a record in read-only mode. You can learn more in the [Show Tutorial](./ShowTutorial.md).
+
+You can use any of the following components to build the show page:
 
 ### Show Layouts
 
@@ -220,6 +222,8 @@ Children of the `<Show>` component display a record in read-only mode.
 </tr>
 </tbody></table>
 
+Inside these show layouts, you can use any of react-admin's [Field components](./Fields.md) to display the record data.
+
 ### Buttons
 
 - [`<EditButton>`](./Buttons.md#editbutton): Go to the edit page for a record
@@ -232,6 +236,64 @@ Children of the `<Show>` component display a record in read-only mode.
 - [`<Labeled>`](./Labeled.md): A component to display a field with a label
 
 ## The Edit & Create Pages
+
+Children of the `<Edit>` and `<Create>` components display a form to edit or create a record. You can learn more in the [Edit Tutorial](./EditTutorial.md).
+
+You can use any of the following components to build the edit and create pages:
+
+### Form Layouts
+
+React-admin provides several form components to help you build forms with different layouts:
+
+<figure>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1179 620" preserveAspectRatio="xMinYMin meet">
+        <image width="1179" height="620" xlink:href="./img/form-layouts.png" />
+        <g opacity="0">
+            <a href="./Form.html" aria-label="Form">
+                <rect x="0" y="0" width="348" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./SimpleForm.html" aria-label="SimpleForm">
+                <rect x="373" y="0" width="408" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./TabbedForm.html" aria-label="TabbedForm">
+                <rect x="801" y="0" width="376" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./AccordionForm.html" aria-label="AccordionForm">
+                <rect x="0" y="330" width="348" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./WizardForm.html" aria-label="WizardForm">
+                <rect x="373" y="330" width="408" height="290"/>
+            </a>
+        </g>
+        <g opacity="0">
+            <a href="./LongForm.html" aria-label="LongForm">
+                <rect x="801" y="330" width="376" height="290"/>
+            </a>
+        </g>
+    </svg>
+</figure>
+
+Inside these form layouts, you can use any of react-admin's [Input components](./Inputs.md) to edit the record data.
+
+### Buttons
+
+- [`<ShowButton>`](./Buttons.md#showbutton): Go to the show page for a record
+- [`<SaveButton>`](./SaveButton.md): The submit button for the form
+- [`<CloneButton>`](./Buttons.md#clonevutton): Clone a record
+
+### Misc
+
+- [`<Toolbar>`](./Toolbar.md): Customize the form toolbar
+- [`<JsonSchemaForm>`](./JsonSchemaForm.md): A form based on a JSON schema
+- [`<AutoSave>`](./AutoSave.md): Automatically save the form
 
 ## CRUD Routing
 
