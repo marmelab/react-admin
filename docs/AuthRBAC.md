@@ -11,8 +11,6 @@ Building up on react-admin's [Access Control features](./Permissions.md#access-c
     <source src="./img/ra-rbac.mp4" type="video/mp4" />
 </video>
 
-The RBAC features are part of [ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> package. Test them live in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-rbac-full-app--full-app).
-
 ## At a Glance
 
 RBAC relies on an array of roles and permissions to determine what a user can do in a React-admin application. You can define permissions for pages, fields, buttons, etc. These permissions use a serialization format that is easy to understand and to maintain. You can store them in a database, in a JSON file, or in your code.
@@ -372,7 +370,7 @@ Ra-rbac provides alternative components to react-admin base components with RBAC
     - [`<SimpleForm>`](./SimpleForm.md#access-control)
     - [`<TabbedForm>`](./TabbedForm.md#access-control)
 
-In addition, the following components from te Enterprise edition have built-in RBAC support:
+In addition, the following components from the Enterprise edition have built-in RBAC support:
 
 - [`<AccordionForm>`](./AccordionForm.md#access-control)
 - [`<LongForm>`](./LongForm.md#access-control)
