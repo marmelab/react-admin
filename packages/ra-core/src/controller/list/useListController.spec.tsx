@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     render,
     fireEvent,
@@ -26,18 +26,18 @@ import { Basic, defaultDataProvider } from './useListController.stories';
 
 describe('useListController', () => {
     const defaultProps = {
-        children: jest.fn(),
+        children: vi.fn(),
         resource: 'posts',
         debounce: 200,
     };
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
-            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-            const getList = jest
+            vi.spyOn(console, 'error').mockImplementationOnce(() => {});
+            const getList = vi
                 .fn()
                 .mockImplementationOnce(() => Promise.reject(new Error()));
-            const onError = jest.fn();
+            const onError = vi.fn();
             const dataProvider = testDataProvider({ getList });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -53,7 +53,7 @@ describe('useListController', () => {
         });
 
         it('should accept meta in queryOptions', async () => {
-            const getList = jest
+            const getList = vi
                 .fn()
                 .mockImplementationOnce(() =>
                     Promise.resolve({ data: [], total: 25 })
@@ -81,7 +81,7 @@ describe('useListController', () => {
         });
 
         it('should reset page when enabled is set to false', async () => {
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const children = vi.fn().mockReturnValue(<span>children</span>);
             const dataProvider = testDataProvider({
                 getList: () => Promise.resolve({ data: [], total: 0 }),
             });
@@ -130,7 +130,7 @@ describe('useListController', () => {
                 children: childFunction,
             };
             const store = memoryStore();
-            const storeSpy = jest.spyOn(store, 'setItem');
+            const storeSpy = vi.spyOn(store, 'setItem');
 
             render(
                 <CoreAdminContext
@@ -168,7 +168,7 @@ describe('useListController', () => {
             };
 
             const store = memoryStore();
-            const storeSpy = jest.spyOn(store, 'setItem');
+            const storeSpy = vi.spyOn(store, 'setItem');
             render(
                 <TestMemoryRouter
                     initialEntries={[
@@ -209,13 +209,13 @@ describe('useListController', () => {
         });
 
         it('should update data if permanent filters change', async () => {
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const children = vi.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
                 debounce: 200,
                 children,
             };
-            const getList = jest
+            const getList = vi
                 .fn()
                 .mockImplementation(() =>
                     Promise.resolve({ data: [], total: 0 })
@@ -361,13 +361,13 @@ describe('useListController', () => {
 
     describe('pagination', () => {
         it('should compute hasNextPage and hasPreviousPage based on total', async () => {
-            const getList = jest
+            const getList = vi
                 .fn()
                 .mockImplementation(() =>
                     Promise.resolve({ data: [], total: 25 })
                 );
             const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const children = vi.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
                 children,
@@ -417,14 +417,14 @@ describe('useListController', () => {
             });
         });
         it('should compute hasNextPage and hasPreviousPage based on pageInfo', async () => {
-            const getList = jest.fn().mockImplementation(() =>
+            const getList = vi.fn().mockImplementation(() =>
                 Promise.resolve({
                     data: [],
                     pageInfo: { hasNextPage: true, hasPreviousPage: false },
                 })
             );
             const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const children = vi.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
                 children,
@@ -508,7 +508,7 @@ describe('useListController', () => {
         it('should not call the dataProvider until the authentication check passes', async () => {
             let resolveAuthCheck: () => void;
             const authProvider: AuthProvider = {
-                checkAuth: jest.fn(
+                checkAuth: vi.fn(
                     () =>
                         new Promise(resolve => {
                             resolveAuthCheck = resolve;
@@ -521,7 +521,7 @@ describe('useListController', () => {
             };
             const dataProvider = testDataProvider({
                 // @ts-ignore
-                getList: jest.fn(() =>
+                getList: vi.fn(() =>
                     Promise.resolve({
                         data: [{ id: 1, title: 'A post', votes: 0 }],
                         total: 0,
@@ -559,7 +559,7 @@ describe('useListController', () => {
 
         it('should call the dataProvider if disableAuthentication is true', async () => {
             const authProvider: AuthProvider = {
-                checkAuth: jest.fn(),
+                checkAuth: vi.fn(),
                 login: () => Promise.resolve(),
                 logout: () => Promise.resolve(),
                 checkError: () => Promise.resolve(),
@@ -567,7 +567,7 @@ describe('useListController', () => {
             };
             const dataProvider = testDataProvider({
                 // @ts-ignore
-                getList: jest.fn(() =>
+                getList: vi.fn(() =>
                     Promise.resolve({
                         data: [{ id: 1, title: 'A post', votes: 0 }],
                         total: 0,
@@ -624,7 +624,7 @@ describe('useListController', () => {
         });
         it('should not select more records than the provided limit', async () => {
             const dataProvider = defaultDataProvider;
-            const getList = jest.spyOn(dataProvider, 'getList');
+            const getList = vi.spyOn(dataProvider, 'getList');
             render(<Basic dataProvider={dataProvider} />);
             fireEvent.click(await screen.findByText('Limited Select All'));
             await waitFor(() => {

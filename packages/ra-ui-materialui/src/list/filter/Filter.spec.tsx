@@ -10,9 +10,9 @@ describe('<Filter />', () => {
         const defaultProps: any = {
             context: 'form',
             resource: 'posts',
-            setFilters: jest.fn(),
-            hideFilter: jest.fn(),
-            showFilter: jest.fn(),
+            setFilters: vi.fn(),
+            hideFilter: vi.fn(),
+            showFilter: vi.fn(),
             displayedFilters: { title: true },
         };
 

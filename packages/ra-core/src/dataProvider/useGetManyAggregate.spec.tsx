@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 
 import { CoreAdminContext } from '../core';
@@ -23,7 +23,7 @@ describe('useGetManyAggregate', () => {
 
     beforeEach(() => {
         dataProvider = testDataProvider({
-            getMany: jest
+            getMany: vi
                 .fn()
                 .mockResolvedValue({ data: [{ id: 1, title: 'foo' }] }),
         });
@@ -146,7 +146,7 @@ describe('useGetManyAggregate', () => {
             useGetManyAggregate('posts', { ids: ['1'] });
             return <span>dummy</span>;
         };
-        const hookValue = jest.fn();
+        const hookValue = vi.fn();
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <FetchGetMany />
@@ -186,10 +186,10 @@ describe('useGetManyAggregate', () => {
     });
 
     it('should set the error state when the dataProvider fails', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const hookValue = jest.fn();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const hookValue = vi.fn();
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockRejectedValue(new Error('failed')),
+            getMany: vi.fn().mockRejectedValue(new Error('failed')),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -216,7 +216,7 @@ describe('useGetManyAggregate', () => {
     });
 
     it('should execute success side effects on success', async () => {
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetManyAggregate
@@ -233,11 +233,11 @@ describe('useGetManyAggregate', () => {
     });
 
     it('should execute error side effects on failure', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockRejectedValue(new Error('failed')),
+            getMany: vi.fn().mockRejectedValue(new Error('failed')),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetManyAggregate
@@ -309,11 +309,11 @@ describe('useGetManyAggregate', () => {
     });
 
     it('should aggregate multiple calls for the same resource into one even if one of the calls requests all the aggregated ids', async () => {
-        const firstCallback = jest.fn();
-        const secondCallback = jest.fn();
-        const thirdCallback = jest.fn();
+        const firstCallback = vi.fn();
+        const secondCallback = vi.fn();
+        const thirdCallback = vi.fn();
         const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValue({
+            getMany: vi.fn().mockResolvedValue({
                 data: [
                     { id: 1, title: 'one' },
                     { id: 2, title: 'two' },
@@ -397,9 +397,9 @@ describe('useGetManyAggregate', () => {
     ])(
         'should abort the request if the query is canceled',
         async ({ queries, expectedQueryKeyParams }) => {
-            const abort = jest.fn();
+            const abort = vi.fn();
             const dataProvider = testDataProvider({
-                getMany: jest.fn(
+                getMany: vi.fn(
                     (_resource, { signal }) =>
                         new Promise(() => {
                             signal.addEventListener('abort', () => {
@@ -442,10 +442,10 @@ describe('useGetManyAggregate', () => {
     );
 
     it('should only call a query that is not yet aborted and then abort it successfully', async () => {
-        const abort = jest.fn();
-        const reject = jest.fn();
+        const abort = vi.fn();
+        const reject = vi.fn();
         const dataProvider = testDataProvider({
-            getMany: jest.fn(
+            getMany: vi.fn(
                 (_resource, { signal }) =>
                     new Promise(() => {
                         if (signal.aborted) {

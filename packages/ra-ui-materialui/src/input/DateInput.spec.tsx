@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { required, ResourceContextProvider, testDataProvider } from 'ra-core';
 import { format } from 'date-fns';
@@ -27,7 +27,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date string as value', async () => {
-        let onSubmit = jest.fn();
+        let onSubmit = vi.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -53,7 +53,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date time string as value', async () => {
-        let onSubmit = jest.fn();
+        let onSubmit = vi.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -79,7 +79,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date object as value', async () => {
-        let onSubmit = jest.fn();
+        let onSubmit = vi.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -113,7 +113,7 @@ describe('<DateInput />', () => {
             '2021-09-11T20:46:20.000Z',
             '2021-09-11 20:46:20.000Z',
         ])('should accept a value with timezone %s', async publishedAt => {
-            let onSubmit = jest.fn();
+            let onSubmit = vi.fn();
             render(
                 <Basic
                     simpleFormProps={{
@@ -142,7 +142,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a parse function', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <Parse
                 simpleFormProps={{
@@ -168,7 +168,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a parse function returning null', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -208,7 +208,7 @@ describe('<DateInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         record={{
                             id: 1,
                             publishedAt: publishedAt.toISOString(),
@@ -225,7 +225,7 @@ describe('<DateInput />', () => {
     });
 
     it('should return null when date is empty', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <Basic
                 simpleFormProps={{

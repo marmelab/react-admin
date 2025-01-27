@@ -44,7 +44,7 @@ describe('<AutocompleteInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ role: null }}
                     >
                         <AutocompleteInput
@@ -65,10 +65,7 @@ describe('<AutocompleteInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ role: 2 }}>
                         <AutocompleteInput
                             {...defaultProps}
                             choices={[{ id: 2, name: 'foo' }]}
@@ -126,7 +123,7 @@ describe('<AutocompleteInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <AutocompleteInput
                                 emptyText={emptyText}
                                 {...defaultProps}
@@ -153,7 +150,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 1 }}
                         >
                             <AutocompleteInput
@@ -180,7 +177,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 1 }}
                         >
                             <AutocompleteInput
@@ -209,7 +206,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 1 }}
                         >
                             <AutocompleteInput
@@ -239,7 +236,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 2 }}
                         >
                             <AutocompleteInput
@@ -268,7 +265,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 2 }}
                         >
                             <AutocompleteInput
@@ -299,7 +296,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 2 }}
                         >
                             <AutocompleteInput
@@ -329,7 +326,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 2 }}
                         >
                             <AutocompleteInput
@@ -358,7 +355,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 2 }}
                         >
                             <AutocompleteInput
@@ -388,7 +385,7 @@ describe('<AutocompleteInput />', () => {
                 { id: 'ang', fullname: 'Angular' },
                 { id: 'rea', fullname: 'React' },
             ];
-            const optionText = jest.fn(choice => choice.fullname);
+            const optionText = vi.fn(choice => choice.fullname);
 
             const handleCreate = filter => ({
                 id: 'newid',
@@ -398,7 +395,7 @@ describe('<AutocompleteInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                        <SimpleForm mode="onBlur" onSubmit={vi.fn()}>
                             <AutocompleteInput
                                 source="language"
                                 resource="posts"
@@ -430,7 +427,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 2 }}
                         >
                             <AutocompleteInput
@@ -455,7 +452,7 @@ describe('<AutocompleteInput />', () => {
         });
 
         it('should throw an error if no inputText was provided when the optionText returns an element', async () => {
-            const mock = jest
+            const mock = vi
                 .spyOn(console, 'error')
                 .mockImplementation(() => {});
             const SuggestionItem = props => {
@@ -467,7 +464,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 2 }}
                         >
                             <AutocompleteInput
@@ -500,7 +497,7 @@ describe('<AutocompleteInput />', () => {
             render(
                 <AdminContext>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                        <SimpleForm mode="onBlur" onSubmit={vi.fn()}>
                             <AutocompleteInput
                                 source="language"
                                 resource="posts"
@@ -561,7 +558,7 @@ describe('<AutocompleteInput />', () => {
             render(
                 <AdminContext>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                        <SimpleForm mode="onBlur" onSubmit={vi.fn()}>
                             <AutocompleteInput
                                 source="language"
                                 resource="posts"
@@ -685,10 +682,7 @@ describe('<AutocompleteInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ role: 2 }}>
                         <AutocompleteInput
                             {...defaultProps}
                             choices={[
@@ -711,10 +705,7 @@ describe('<AutocompleteInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ role: 2 }}>
                         <AutocompleteInput
                             {...defaultProps}
                             shouldRenderSuggestions={() => false}
@@ -741,7 +732,7 @@ describe('<AutocompleteInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ role: null }}
                     >
                         <AutocompleteInput
@@ -763,7 +754,7 @@ describe('<AutocompleteInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ role: null }}
                     >
                         <AutocompleteInput
@@ -783,7 +774,7 @@ describe('<AutocompleteInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ role: null }}
                     >
                         <AutocompleteInput
@@ -815,7 +806,7 @@ describe('<AutocompleteInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ role: null }}
                     >
                         <AutocompleteInput
@@ -837,7 +828,7 @@ describe('<AutocompleteInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ role: null }}
                     >
                         <AutocompleteInput
@@ -856,10 +847,7 @@ describe('<AutocompleteInput />', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ role: 2 }}>
                         <AutocompleteInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -872,10 +860,7 @@ describe('<AutocompleteInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ role: 2 }}>
                         <AutocompleteInput
                             {...defaultProps}
                             choices={[
@@ -895,11 +880,11 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should reset filter when input value changed', async () => {
-        const setFilter = jest.fn();
+        const setFilter = vi.fn();
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()} record={{ role: 2 }}>
+                    <SimpleForm onSubmit={vi.fn()} record={{ role: 2 }}>
                         <AutocompleteInput
                             {...defaultProps}
                             setFilter={setFilter}
@@ -922,7 +907,7 @@ describe('<AutocompleteInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()} record={{ role: 1 }}>
+                    <SimpleForm onSubmit={vi.fn()} record={{ role: 1 }}>
                         <AutocompleteInput
                             {...defaultProps}
                             setFilter={setFilter}
@@ -942,11 +927,11 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should reset filter when users selected a value', async () => {
-        const setFilter = jest.fn();
+        const setFilter = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteInput
                             {...defaultProps}
                             setFilter={setFilter}
@@ -979,16 +964,13 @@ describe('<AutocompleteInput />', () => {
 
     it('should display options properly when labels are identical', () => {
         let errMessage = undefined;
-        jest.spyOn(console, 'error').mockImplementation(
+        vi.spyOn(console, 'error').mockImplementation(
             message => (errMessage = message)
         );
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ role: 2 }}>
                         <AutocompleteInput
                             {...defaultProps}
                             getOptionLabel={option => option.name}
@@ -1014,10 +996,7 @@ describe('<AutocompleteInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ role: 1 }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ role: 1 }}>
                         <AutocompleteInput
                             {...defaultProps}
                             helperText="Can I help you?"
@@ -1038,7 +1017,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ role: 1 }}
                         >
                             <AutocompleteInput
@@ -1058,7 +1037,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             mode="onBlur"
                             defaultValues={{ role: 1 }}
                         >
@@ -1090,7 +1069,7 @@ describe('<AutocompleteInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteInput
                             {...defaultProps}
                             choices={[
@@ -1119,7 +1098,7 @@ describe('<AutocompleteInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteInput
                             {...defaultProps}
                             choices={[
@@ -1143,7 +1122,7 @@ describe('<AutocompleteInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteInput
                             {...defaultProps}
                             choices={[{ id: 0, name: 'foo' }]}
@@ -1287,7 +1266,7 @@ describe('<AutocompleteInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             mode="onBlur"
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ language: 'ang' }}
                         >
                             <AutocompleteInput
@@ -1315,7 +1294,7 @@ describe('<AutocompleteInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             mode="onBlur"
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ language: 'ang' }}
                         >
                             <AutocompleteInput
@@ -1376,7 +1355,7 @@ describe('<AutocompleteInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             mode="onBlur"
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ language: 'ang' }}
                         >
                             <AutocompleteInput
@@ -1404,7 +1383,7 @@ describe('<AutocompleteInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             mode="onBlur"
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ language: 'ang' }}
                         >
                             <AutocompleteInput
@@ -1479,7 +1458,7 @@ describe('<AutocompleteInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             mode="onBlur"
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ language: 'ang' }}
                         >
                             <AutocompleteInput
@@ -1507,7 +1486,7 @@ describe('<AutocompleteInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             mode="onBlur"
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             defaultValues={{ language: 'ang' }}
                         >
                             <AutocompleteInput
@@ -1533,7 +1512,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should return null when no choice is selected', async () => {
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         render(<Basic onSuccess={onSuccess} />);
         const clearBtn = await screen.findByLabelText('Clear value');
         fireEvent.click(clearBtn);
@@ -1548,7 +1527,7 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should include full record when calling onChange', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         render(<OnChange onChange={onChange} />);
         await waitFor(() => {
             expect(
@@ -1639,7 +1618,7 @@ describe('<AutocompleteInput />', () => {
         });
 
         it('should not change an undefined value to empty string', async () => {
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
             render(<InsideReferenceInputDefaultValue onSuccess={onSuccess} />);
             const input = await screen.findByDisplayValue('War and Peace');
             fireEvent.change(input, { target: { value: 'War' } });
@@ -1678,7 +1657,7 @@ describe('<AutocompleteInput />', () => {
 
         it('should not use getSuggestions to do client-side filtering', async () => {
             // filtering should be done server-side only, and hence matchSuggestion should never be called
-            const matchSuggestion = jest.fn().mockReturnValue(true);
+            const matchSuggestion = vi.fn().mockReturnValue(true);
             render(
                 <InsideReferenceInputWithCustomizedItemRendering
                     matchSuggestion={matchSuggestion}
@@ -1707,7 +1686,7 @@ describe('<AutocompleteInput />', () => {
         }, 20000);
 
         it('should include full record when calling onChange', async () => {
-            const onChange = jest.fn();
+            const onChange = vi.fn();
             render(<InsideReferenceInputOnChange onChange={onChange} />);
             (await screen.findAllByRole('combobox'))[0].focus();
             fireEvent.click(await screen.findByText('Victor Hugo'));
@@ -1729,7 +1708,7 @@ describe('<AutocompleteInput />', () => {
                     <SimpleForm
                         mode="onBlur"
                         resource="posts"
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ role: 2 }}
                     >
                         <FormDataConsumer>
@@ -1810,7 +1789,7 @@ describe('<AutocompleteInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteInput
                             {...defaultProps}
                             clearOnBlur
@@ -1870,12 +1849,12 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should call the onInputChange callback', async () => {
-        const onInputChange = jest.fn();
+        const onInputChange = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteInput
                             {...defaultProps}
                             onInputChange={onInputChange}

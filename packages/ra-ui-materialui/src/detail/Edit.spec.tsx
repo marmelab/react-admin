@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     render,
     screen,
@@ -58,7 +58,7 @@ describe('<Edit />', () => {
     });
 
     it('should call dataProvider.update() when the child calls the save callback', async () => {
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
         const dataProvider = {
@@ -111,7 +111,7 @@ describe('<Edit />', () => {
         let resolveGetOne;
         const RenderedComponent = () => {
             const myDataProvider = {
-                getOne: jest.fn(
+                getOne: vi.fn(
                     () => new Promise(resolve => (resolveGetOne = resolve))
                 ),
             } as any;
@@ -143,7 +143,7 @@ describe('<Edit />', () => {
     describe('mutationMode prop', () => {
         it('should be undoable by default', async () => {
             let post = { id: 1234, title: 'lorem' };
-            const update = jest.fn().mockImplementationOnce((_, { data }) => {
+            const update = vi.fn().mockImplementationOnce((_, { data }) => {
                 post = data;
                 return Promise.resolve({ data });
             });
@@ -151,7 +151,7 @@ describe('<Edit />', () => {
                 getOne: () => Promise.resolve({ data: post }),
                 update,
             } as any;
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
             const FakeForm = () => {
                 const record = useRecordContext();
                 const { save } = useSaveContext();
@@ -216,7 +216,7 @@ describe('<Edit />', () => {
 
         it('should accept optimistic mode', async () => {
             let post = { id: 1234, title: 'lorem' };
-            const update = jest.fn().mockImplementationOnce((_, { data }) => {
+            const update = vi.fn().mockImplementationOnce((_, { data }) => {
                 post = data;
                 return Promise.resolve({ data });
             });
@@ -224,7 +224,7 @@ describe('<Edit />', () => {
                 getOne: () => Promise.resolve({ data: post }),
                 update,
             } as any;
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
             const FakeForm = () => {
                 const record = useRecordContext();
                 const { save } = useSaveContext();
@@ -269,7 +269,7 @@ describe('<Edit />', () => {
         it('should accept pessimistic mode', async () => {
             let post = { id: 1234, title: 'lorem' };
             let resolveUpdate;
-            const update = jest.fn().mockImplementationOnce((_, { data }) =>
+            const update = vi.fn().mockImplementationOnce((_, { data }) =>
                 new Promise(resolve => {
                     resolveUpdate = resolve;
                     post = data;
@@ -279,7 +279,7 @@ describe('<Edit />', () => {
                 getOne: () => Promise.resolve({ data: post }),
                 update,
             } as any;
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
             const FakeForm = () => {
                 const record = useRecordContext();
                 const { save } = useSaveContext();
@@ -341,7 +341,7 @@ describe('<Edit />', () => {
                     }),
                 update: (_, { data }) => Promise.resolve({ data }),
             } as any;
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
             const FakeForm = () => {
                 const record = useRecordContext();
                 const { save } = useSaveContext();
@@ -397,8 +397,8 @@ describe('<Edit />', () => {
                     }),
                 update: (_, { data }) => Promise.resolve({ data }),
             } as any;
-            const onSuccess = jest.fn();
-            const onSuccessSave = jest.fn();
+            const onSuccess = vi.fn();
+            const onSuccessSave = vi.fn();
             const FakeForm = () => {
                 const record = useRecordContext();
                 const { save } = useSaveContext();
@@ -456,7 +456,7 @@ describe('<Edit />', () => {
 
     describe('onError prop', () => {
         it('should allow to override the default error side effects', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             const dataProvider = {
                 getOne: () =>
                     Promise.resolve({
@@ -464,7 +464,7 @@ describe('<Edit />', () => {
                     }),
                 update: () => Promise.reject({ message: 'not good' }),
             } as any;
-            const onError = jest.fn();
+            const onError = vi.fn();
             const FakeForm = () => {
                 const record = useRecordContext();
                 const { save } = useSaveContext();
@@ -510,7 +510,7 @@ describe('<Edit />', () => {
         });
 
         it('should be overridden by onError save option', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             const dataProvider = {
                 getOne: () =>
                     Promise.resolve({
@@ -518,8 +518,8 @@ describe('<Edit />', () => {
                     }),
                 update: () => Promise.reject({ message: 'not good' }),
             } as any;
-            const onError = jest.fn();
-            const onErrorSave = jest.fn();
+            const onError = vi.fn();
+            const onErrorSave = vi.fn();
             const FakeForm = () => {
                 const record = useRecordContext();
                 const { save } = useSaveContext();
@@ -576,7 +576,7 @@ describe('<Edit />', () => {
 
     describe('transform prop', () => {
         it('should allow to transform the data before calling update', async () => {
-            const update = jest
+            const update = vi
                 .fn()
                 .mockImplementationOnce((_, { data }) =>
                     Promise.resolve({ data })
@@ -588,7 +588,7 @@ describe('<Edit />', () => {
                     }),
                 update,
             } as any;
-            const transform = jest.fn().mockImplementationOnce(data => ({
+            const transform = vi.fn().mockImplementationOnce(data => ({
                 ...data,
                 transformed: true,
             }));
@@ -641,7 +641,7 @@ describe('<Edit />', () => {
         });
 
         it('should be overridden by transform save option', async () => {
-            const update = jest
+            const update = vi
                 .fn()
                 .mockImplementationOnce((_, { data }) =>
                     Promise.resolve({ data })
@@ -653,8 +653,8 @@ describe('<Edit />', () => {
                     }),
                 update,
             } as any;
-            const transform = jest.fn();
-            const transformSave = jest.fn().mockImplementationOnce(data => ({
+            const transform = vi.fn();
+            const transformSave = vi.fn().mockImplementationOnce(data => ({
                 ...data,
                 transformed: true,
             }));
@@ -712,7 +712,7 @@ describe('<Edit />', () => {
             });
         });
         it('should be passed previousData via argument on transform called', async () => {
-            const update = jest
+            const update = vi
                 .fn()
                 .mockImplementationOnce((_, { data }) =>
                     Promise.resolve({ data })
@@ -724,7 +724,7 @@ describe('<Edit />', () => {
                     }),
                 update,
             } as any;
-            const transform = jest.fn().mockImplementationOnce(data => ({
+            const transform = vi.fn().mockImplementationOnce(data => ({
                 ...data,
                 transformed: true,
             }));
@@ -776,7 +776,7 @@ describe('<Edit />', () => {
             });
         });
         it('should be passed previousData via argument on transformSave called', async () => {
-            const update = jest
+            const update = vi
                 .fn()
                 .mockImplementationOnce((_, { data }) =>
                     Promise.resolve({ data })
@@ -788,8 +788,8 @@ describe('<Edit />', () => {
                     }),
                 update,
             } as any;
-            const transform = jest.fn();
-            const transformSave = jest.fn().mockImplementationOnce(data => ({
+            const transform = vi.fn();
+            const transformSave = vi.fn().mockImplementationOnce(data => ({
                 ...data,
                 transformed: true,
             }));

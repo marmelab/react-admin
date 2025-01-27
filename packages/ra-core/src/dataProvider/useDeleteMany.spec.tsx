@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { waitFor, render } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from './testDataProvider';
@@ -10,7 +10,7 @@ import { QueryClient } from '@tanstack/react-query';
 describe('useDeleteMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
         const dataProvider = testDataProvider({
-            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            deleteMany: vi.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localDeleteMany;
         const Dummy = () => {
@@ -34,7 +34,7 @@ describe('useDeleteMany', () => {
 
     it('returns a callback that can be used with no arguments', async () => {
         const dataProvider = testDataProvider({
-            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            deleteMany: vi.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localDeleteMany;
         const Dummy = () => {
@@ -58,7 +58,7 @@ describe('useDeleteMany', () => {
 
     it('uses call time params over hook time params', async () => {
         const dataProvider = testDataProvider({
-            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            deleteMany: vi.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localDeleteMany;
         const Dummy = () => {
@@ -82,7 +82,7 @@ describe('useDeleteMany', () => {
 
     it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
-            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+            deleteMany: vi.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localDeleteMany;
         const Dummy = () => {
@@ -118,7 +118,7 @@ describe('useDeleteMany', () => {
                 total: 4,
             });
             const dataProvider = {
-                deleteMany: jest.fn(() =>
+                deleteMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;
@@ -167,7 +167,7 @@ describe('useDeleteMany', () => {
                 },
             });
             const dataProvider = {
-                deleteMany: jest.fn(() =>
+                deleteMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;
@@ -221,7 +221,7 @@ describe('useDeleteMany', () => {
                 pageParams: [],
             });
             const dataProvider = {
-                deleteMany: jest.fn(() =>
+                deleteMany: vi.fn(() =>
                     Promise.resolve({ data: [1, 2] } as any)
                 ),
             } as any;

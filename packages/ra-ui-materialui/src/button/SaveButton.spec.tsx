@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     Form,
     MutationMode,
@@ -27,7 +27,7 @@ const invalidButtonDomProps = {
 
 describe('<SaveButton />', () => {
     it('should render as submit type with no DOM errors', async () => {
-        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -95,7 +95,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should trigger submit action when clicked if no saving is in progress', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <Form onSubmit={onSubmit}>
@@ -112,7 +112,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should not trigger submit action when clicked if saving is in progress', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -139,7 +139,7 @@ describe('<SaveButton />', () => {
                 // @ts-ignore
                 Promise.resolve({ data }),
         });
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <SaveButton mutationOptions={{ onSuccess }} type="button" />
@@ -182,7 +182,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should allow to override the onError side effects', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             getOne: () =>
                 // @ts-ignore
@@ -191,7 +191,7 @@ describe('<SaveButton />', () => {
                 }),
             update: () => Promise.reject({ message: 'not good' }),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <SaveButton mutationOptions={{ onError }} type="button" />
@@ -233,7 +233,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should allow to transform the record before save', async () => {
-        const update = jest
+        const update = vi
             .fn()
             .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
         const dataProvider = testDataProvider({
@@ -244,7 +244,7 @@ describe('<SaveButton />', () => {
                 }),
             update,
         });
-        const transform = jest.fn().mockImplementationOnce(data => ({
+        const transform = vi.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
         }));
@@ -366,13 +366,13 @@ describe('<SaveButton />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <>
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <TextInput source="name" validate={required()} />
                         <SaveButton
                             alwaysEnable
                             type="button"
                             mutationOptions={{
-                                onSuccess: jest.fn(),
+                                onSuccess: vi.fn(),
                             }}
                         />
                     </Form>
@@ -408,7 +408,7 @@ describe('<SaveButton />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         resource="myresource"
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{
                             test: 'test',
                         }}

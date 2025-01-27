@@ -1,4 +1,4 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     resolveBrowserLocale,
     mergeTranslations,
@@ -9,9 +9,9 @@ describe('TranslationUtils', () => {
     describe('resolveBrowserLocale', () => {
         let languageGetter;
         beforeEach(() => {
-            //https://stackoverflow.com/questions/52868727/how-to-mock-window-navigator-language-using-jest
+            //https://stackoverflow.com/questions/52868727/how-to-mock-window-navigator-language-using-vi
             // @ts-ignore
-            languageGetter = jest.spyOn(window.navigator, 'language', 'get');
+            languageGetter = vi.spyOn(window.navigator, 'language', 'get');
             languageGetter.mockReturnValue('en-US');
         });
 

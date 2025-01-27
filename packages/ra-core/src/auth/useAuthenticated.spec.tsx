@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { memoryStore } from '../store';
@@ -21,12 +21,12 @@ describe('useAuthenticated', () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
-            checkAuth: jest.fn().mockResolvedValueOnce(''),
+            checkAuth: vi.fn().mockResolvedValueOnce(''),
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
         const store = memoryStore();
-        const reset = jest.spyOn(store, 'reset');
+        const reset = vi.spyOn(store, 'reset');
         render(
             <CoreAdminContext authProvider={authProvider} store={store}>
                 <Authenticated>
@@ -51,12 +51,12 @@ describe('useAuthenticated', () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
-            checkAuth: jest.fn().mockResolvedValue(''),
+            checkAuth: vi.fn().mockResolvedValue(''),
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
         const store = memoryStore();
-        const reset = jest.spyOn(store, 'reset');
+        const reset = vi.spyOn(store, 'reset');
 
         const FooWrapper = props => (
             <CoreAdminContext authProvider={authProvider} store={store}>
@@ -79,12 +79,12 @@ describe('useAuthenticated', () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
-            checkAuth: jest.fn().mockResolvedValue(''),
+            checkAuth: vi.fn().mockResolvedValue(''),
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
         const store = memoryStore();
-        const reset = jest.spyOn(store, 'reset');
+        const reset = vi.spyOn(store, 'reset');
 
         render(
             <CoreAdminContext authProvider={authProvider} store={store}>
@@ -99,14 +99,14 @@ describe('useAuthenticated', () => {
 
     it('should logout, redirect to login and show a notification after a tick if the auth fails', async () => {
         const authProvider = {
-            login: jest.fn().mockResolvedValue(''),
-            logout: jest.fn().mockResolvedValue(''),
-            checkAuth: jest.fn().mockRejectedValue(undefined),
-            checkError: jest.fn().mockResolvedValue(''),
-            getPermissions: jest.fn().mockResolvedValue(''),
+            login: vi.fn().mockResolvedValue(''),
+            logout: vi.fn().mockResolvedValue(''),
+            checkAuth: vi.fn().mockRejectedValue(undefined),
+            checkError: vi.fn().mockResolvedValue(''),
+            getPermissions: vi.fn().mockResolvedValue(''),
         };
         const store = memoryStore();
-        const reset = jest.spyOn(store, 'reset');
+        const reset = vi.spyOn(store, 'reset');
 
         const Login = () => {
             const location = useLocation();

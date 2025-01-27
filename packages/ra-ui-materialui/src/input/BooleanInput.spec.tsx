@@ -17,7 +17,7 @@ describe('<BooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: true }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <BooleanInput {...defaultProps} />
                     </SimpleForm>
@@ -37,7 +37,7 @@ describe('<BooleanInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{ isPublished: true }}
                     >
                         <BooleanInput {...defaultProps} />
@@ -58,7 +58,7 @@ describe('<BooleanInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{ isPublished: false }}
                     >
                         <BooleanInput {...defaultProps} />
@@ -78,7 +78,7 @@ describe('<BooleanInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <BooleanInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -96,7 +96,7 @@ describe('<BooleanInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <BooleanInput {...defaultProps} defaultValue={true} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -114,10 +114,7 @@ describe('<BooleanInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn}
-                        record={{ isPublished: true }}
-                    >
+                    <SimpleForm onSubmit={vi.fn} record={{ isPublished: true }}>
                         <BooleanInput {...defaultProps} defaultValue={false} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -137,7 +134,7 @@ describe('<BooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: false }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <BooleanInput {...defaultProps} />
                     </SimpleForm>
@@ -163,7 +160,7 @@ describe('<BooleanInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                         defaultValues={{ isPublished: true }}
                         mode="onChange"
                     >

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { Inspector } from './Inspector.stories';
 

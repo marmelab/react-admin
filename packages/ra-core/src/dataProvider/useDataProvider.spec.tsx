@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { render, act, screen } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { useDataProvider } from './useDataProvider';
 import { CoreAdminContext } from '../core';
@@ -60,7 +60,7 @@ const UseGetCustom = () => {
 
 describe('useDataProvider', () => {
     it('should return a way to call the dataProvider', async () => {
-        const getOne = jest.fn(() =>
+        const getOne = vi.fn(() =>
             Promise.resolve({ data: { id: 1, title: 'foo' } })
         );
         const dataProvider = { getOne };
@@ -81,8 +81,8 @@ describe('useDataProvider', () => {
     });
 
     it('should handle async errors in the dataProvider', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const getOne = jest.fn(() => Promise.reject(new Error('foo')));
+        vi.spyOn(console, 'error').mockImplementationOnce(() => {});
+        const getOne = vi.fn(() => Promise.reject(new Error('foo')));
         const dataProvider = { getOne };
         const { queryByTestId } = render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -99,8 +99,8 @@ describe('useDataProvider', () => {
     });
 
     it('should display a meaningful error when the dataProvider throws a sync error', async () => {
-        const c = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const getOne = jest.fn(() => {
+        const c = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const getOne = vi.fn(() => {
             throw new Error('foo');
         });
         const dataProvider = { getOne };
@@ -131,7 +131,7 @@ describe('useDataProvider', () => {
                 return <div data-testid="data">{JSON.stringify(data)}</div>;
             return <div data-testid="loading">loading</div>;
         };
-        const customVerb = jest.fn(() => Promise.resolve({ data: null }));
+        const customVerb = vi.fn(() => Promise.resolve({ data: null }));
         const dataProvider = { customVerb };
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -162,7 +162,7 @@ describe('useDataProvider', () => {
                 return <div data-testid="data">{JSON.stringify(data)}</div>;
             return <div data-testid="loading">loading</div>;
         };
-        const customVerb = jest.fn(() => Promise.resolve({ data: null }));
+        const customVerb = vi.fn(() => Promise.resolve({ data: null }));
         const dataProvider = { customVerb };
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -193,7 +193,7 @@ describe('useDataProvider', () => {
                 return <div data-testid="data">{JSON.stringify(data)}</div>;
             return <div data-testid="loading">loading</div>;
         };
-        const customVerb = jest.fn(() => Promise.resolve({ data: null }));
+        const customVerb = vi.fn(() => Promise.resolve({ data: null }));
         const dataProvider = { customVerb };
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -209,7 +209,7 @@ describe('useDataProvider', () => {
     });
 
     it('should call getList and not show error', async () => {
-        const getList = jest.fn(() =>
+        const getList = vi.fn(() =>
             Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
         );
         const dataProvider = { getList };
@@ -230,9 +230,9 @@ describe('useDataProvider', () => {
     });
 
     it('should call getList and show error', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
 
-        const getList = jest.fn(() =>
+        const getList = vi.fn(() =>
             Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
         );
         const dataProvider = { getList };
@@ -254,7 +254,7 @@ describe('useDataProvider', () => {
     });
 
     it('should call custom and not show error', async () => {
-        const getCustom = jest.fn(() =>
+        const getCustom = vi.fn(() =>
             Promise.resolve({ result: [{ id: 1, title: 'foo' }] })
         );
         const dataProvider = { getCustom };
@@ -339,7 +339,7 @@ describe('useDataProvider', () => {
     });
 
     it('should allow prefetching', async () => {
-        const getMany = jest
+        const getMany = vi
             .fn()
             .mockResolvedValue({ data: [{ id: 1, name: 'John Doe' }] });
         const dataProvider = {

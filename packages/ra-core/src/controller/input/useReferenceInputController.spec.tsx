@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useCallback, ReactElement } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { useReferenceInputController } from './useReferenceInputController';
 import { CoreAdminContext } from '../../core';
@@ -20,18 +20,16 @@ const ReferenceInputController = props => {
 
 describe('useReferenceInputController', () => {
     const defaultProps = {
-        children: jest.fn(),
-        onChange: jest.fn(),
+        children: vi.fn(),
+        onChange: vi.fn(),
         reference: 'posts',
         resource: 'comments',
         source: 'post_id',
     };
 
     const dataProvider = testDataProvider({
-        getMany: jest
-            .fn()
-            .mockResolvedValue({ data: [{ id: 1, title: 'foo' }] }),
-        getList: jest.fn().mockResolvedValue({
+        getMany: vi.fn().mockResolvedValue({ data: [{ id: 1, title: 'foo' }] }),
+        getList: vi.fn().mockResolvedValue({
             data: [
                 { id: 1, title: 'foo' },
                 { id: 2, title: 'bar' },
@@ -48,7 +46,7 @@ describe('useReferenceInputController', () => {
     });
 
     it('should fetch possible values using getList', async () => {
-        const children = jest.fn().mockReturnValue(<p>child</p>);
+        const children = vi.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form>
@@ -78,7 +76,7 @@ describe('useReferenceInputController', () => {
     });
 
     it('should allow getList pagination and sorting customization', async () => {
-        const children = jest.fn().mockReturnValue(<p>child</p>);
+        const children = vi.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form>
@@ -113,7 +111,7 @@ describe('useReferenceInputController', () => {
     });
 
     it('should fetch current value using getMany', async () => {
-        const children = jest.fn().mockReturnValue(<p>child</p>);
+        const children = vi.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form defaultValues={{ post_id: 1 }}>
@@ -135,7 +133,7 @@ describe('useReferenceInputController', () => {
     });
 
     it('should not fetch current value using getMany if it is empty', async () => {
-        const children = jest.fn().mockReturnValue(<p>child</p>);
+        const children = vi.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form defaultValues={{ post_id: '' }}>
@@ -154,7 +152,7 @@ describe('useReferenceInputController', () => {
     });
 
     it('should pass possibleValues and record to child', async () => {
-        const children = jest.fn().mockReturnValue(<p>child</p>);
+        const children = vi.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form defaultValues={{ post_id: 1 }}>
@@ -209,7 +207,7 @@ describe('useReferenceInputController', () => {
     });
 
     it('should refetch reference getList when its props change', async () => {
-        const children = jest.fn().mockReturnValue(<p>child</p>);
+        const children = vi.fn().mockReturnValue(<p>child</p>);
         const Component = () => {
             const [sort, setSort] = useState({ field: 'title', order: 'ASC' });
             const handleClick = useCallback(
@@ -271,8 +269,8 @@ describe('useReferenceInputController', () => {
 
     describe('enableGetChoices', () => {
         it('should not fetch possible values using getList on load but only when enableGetChoices returns true', async () => {
-            const children = jest.fn().mockReturnValue(<p>child</p>);
-            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
+            const children = vi.fn().mockReturnValue(<p>child</p>);
+            const enableGetChoices = vi.fn().mockImplementation(({ q }) => {
                 return !!q && q.length > 2;
             });
             render(
@@ -306,7 +304,7 @@ describe('useReferenceInputController', () => {
         });
 
         it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {
-            const children = jest.fn().mockReturnValue(<p>child</p>);
+            const children = vi.fn().mockReturnValue(<p>child</p>);
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Form defaultValues={{ post_id: 1 }}>

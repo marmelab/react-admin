@@ -2,7 +2,7 @@ import { asyncDebounce } from './asyncDebounce';
 
 describe('asyncDebounce', () => {
     it('should return a debounced function that returns a promise resolving once the delay is passed', async () => {
-        const func = jest.fn(value => Promise.resolve(value));
+        const func = vi.fn(value => Promise.resolve(value));
         const debounced = asyncDebounce(func, 100);
 
         const promise1 = debounced('not expected');
@@ -22,7 +22,7 @@ describe('asyncDebounce', () => {
     });
 
     it('should return a debounced function that allow multiple calls after the delay', async () => {
-        const func = jest.fn(value => Promise.resolve(value));
+        const func = vi.fn(value => Promise.resolve(value));
         const debounced = asyncDebounce(func, 100);
 
         const promise1 = debounced('not expected');

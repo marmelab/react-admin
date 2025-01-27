@@ -2,7 +2,7 @@ import getFormInitialValues from './getFormInitialValues';
 
 describe('getFormInitialValues', () => {
     test('should merge initial values from all sources when all are objects', () => {
-        jest.spyOn(console, 'warn').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'warn').mockImplementationOnce(() => {});
         expect(
             getFormInitialValues(
                 {
@@ -21,7 +21,7 @@ describe('getFormInitialValues', () => {
         });
     });
     test('should merge initial values from all sources when defaultValue is a function and other sources are objects', () => {
-        jest.spyOn(console, 'warn').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'warn').mockImplementationOnce(() => {});
         expect(
             getFormInitialValues(
                 () => ({

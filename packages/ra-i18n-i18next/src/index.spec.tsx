@@ -9,10 +9,10 @@ import {
 
 describe('i18next i18nProvider', () => {
     beforeAll(() => {
-        window.scrollTo = jest.fn();
+        window.scrollTo = vi.fn();
     });
     afterAll(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
     test('should work with no configuration except the messages', async () => {
         render(<Basic />);

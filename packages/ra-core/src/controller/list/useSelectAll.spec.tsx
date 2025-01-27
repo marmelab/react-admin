@@ -30,7 +30,7 @@ describe('useSelectAll', () => {
     });
 
     it('should pass query options', async () => {
-        const getList = jest.spyOn(defaultDataProvider, 'getList');
+        const getList = vi.spyOn(defaultDataProvider, 'getList');
         render(<QueryOptions dataProvider={defaultDataProvider} />);
         await screen.findByText('Selected ids: []');
         fireEvent.click(screen.getByText('Select All'));

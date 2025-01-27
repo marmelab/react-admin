@@ -32,7 +32,7 @@ describe('<NumberInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <NumberInput {...defaultProps} />
                     </SimpleForm>
@@ -50,7 +50,7 @@ describe('<NumberInput />', () => {
         render(
             <AdminContext>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <NumberInput {...defaultProps} step="0.1" />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -68,7 +68,7 @@ describe('<NumberInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <NumberInput {...defaultProps} />
                         <RecordWatcher />
@@ -91,7 +91,7 @@ describe('<NumberInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <NumberInput {...defaultProps} />
                         <RecordWatcher />
@@ -122,7 +122,7 @@ describe('<NumberInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ views: 12 }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <NumberInput {...defaultProps} />
                         <UpdateViewsButton />
@@ -140,7 +140,7 @@ describe('<NumberInput />', () => {
         render(
             <AdminContext>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <NumberInput {...defaultProps} />
                         <RecordWatcher />
                     </SimpleForm>
@@ -255,7 +255,7 @@ describe('<NumberInput />', () => {
 
     describe('format and parse', () => {
         it('should get the same value as injected value ', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext>
@@ -281,7 +281,7 @@ describe('<NumberInput />', () => {
         });
 
         it('should return null when no defaultValue', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
             render(
                 <AdminContext>
                     <ResourceContextProvider value="posts">
@@ -302,7 +302,7 @@ describe('<NumberInput />', () => {
         });
 
         it('should cast value to numeric', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext>
@@ -329,7 +329,7 @@ describe('<NumberInput />', () => {
         });
 
         it('should cast empty value to null', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext>
@@ -356,7 +356,7 @@ describe('<NumberInput />', () => {
         });
 
         it('should cast value to a numeric with a custom parse function', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext>
@@ -383,7 +383,7 @@ describe('<NumberInput />', () => {
         });
 
         it('should cast 0 to a numeric with a custom parse function', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext>
@@ -422,7 +422,7 @@ describe('<NumberInput />', () => {
                 );
             };
 
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
 
             render(
                 <AdminContext>
@@ -457,7 +457,7 @@ describe('<NumberInput />', () => {
     describe('onChange event', () => {
         it('should be customizable via the `onChange` prop', async () => {
             let value;
-            const onChange = jest.fn(event => {
+            const onChange = vi.fn(event => {
                 value = event.target.value;
             });
 
@@ -466,7 +466,7 @@ describe('<NumberInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             defaultValues={{ views: 12 }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                         >
                             <NumberInput
                                 {...defaultProps}
@@ -484,9 +484,9 @@ describe('<NumberInput />', () => {
         });
 
         it('should keep calling the form library original event', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
             let value;
-            const onChange = jest.fn(event => {
+            const onChange = vi.fn(event => {
                 value = event.target.value;
             });
             render(
@@ -519,14 +519,14 @@ describe('<NumberInput />', () => {
 
     describe('onFocus event', () => {
         it('should be customizable via the `onFocus` prop', () => {
-            const onFocus = jest.fn();
+            const onFocus = vi.fn();
 
             render(
                 <AdminContext>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             defaultValues={{ views: 12 }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                         >
                             <NumberInput {...defaultProps} onFocus={onFocus} />
                         </SimpleForm>
@@ -541,14 +541,14 @@ describe('<NumberInput />', () => {
 
     describe('onBlur event', () => {
         it('should be customizable via the `onBlur` prop', () => {
-            const onBlur = jest.fn();
+            const onBlur = vi.fn();
 
             render(
                 <AdminContext>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             defaultValues={{ views: 12 }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                         >
                             <NumberInput {...defaultProps} onBlur={onBlur} />
                         </SimpleForm>
@@ -561,14 +561,14 @@ describe('<NumberInput />', () => {
         });
 
         it('should display error message onBlur if required', async () => {
-            const onBlur = jest.fn();
+            const onBlur = vi.fn();
 
             render(
                 <AdminContext>
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             defaultValues={{ views: 12 }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                             mode="onBlur"
                         >
                             <NumberInput
@@ -602,7 +602,7 @@ describe('<NumberInput />', () => {
                         <SimpleForm
                             toolbar={<MyToolbar />}
                             defaultValues={{ views: 12 }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                         >
                             <NumberInput
                                 {...defaultProps}
@@ -624,7 +624,7 @@ describe('<NumberInput />', () => {
                         <SimpleForm
                             toolbar={<MyToolbar />}
                             defaultValues={{ views: 12 }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                         >
                             <NumberInput
                                 {...defaultProps}
@@ -650,7 +650,7 @@ describe('<NumberInput />', () => {
                         <SimpleForm
                             toolbar={<MyToolbar />}
                             defaultValues={{ views: 12 }}
-                            onSubmit={jest.fn()}
+                            onSubmit={vi.fn()}
                         >
                             <NumberInput
                                 {...defaultProps}

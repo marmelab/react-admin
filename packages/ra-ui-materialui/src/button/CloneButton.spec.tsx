@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
 import { AdminContext } from '../AdminContext';
@@ -27,7 +27,7 @@ describe('<CloneButton />', () => {
     });
 
     it('should render as button type with no DOM errors', () => {
-        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
         render(
             <AdminContext>

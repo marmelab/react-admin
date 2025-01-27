@@ -42,8 +42,8 @@ describe('useStore', () => {
     });
 
     it('should subscribe to changes on the key on mount', () => {
-        const unsubscribe = jest.fn();
-        const subscribe = jest.fn().mockImplementation(() => unsubscribe);
+        const unsubscribe = vi.fn();
+        const subscribe = vi.fn().mockImplementation(() => unsubscribe);
         const { unmount } = render(
             <StoreContextProvider
                 value={

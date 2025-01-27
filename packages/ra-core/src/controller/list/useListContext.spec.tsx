@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render } from '@testing-library/react';
 
 import { ListContext } from './ListContext';
@@ -36,7 +36,7 @@ describe('useListContext', () => {
     });
 
     it('should throw when called outside of a ListContextProvider', () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         expect(() => render(<NaiveList />)).toThrow(
             'useListContext must be used inside a ListContextProvider'
         );

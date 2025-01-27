@@ -3,7 +3,7 @@ import simpleClient from '.';
 describe('Data Simple REST Client', () => {
     describe('getList', () => {
         it('should include the `Range` header in request (for Chrome compatibility purpose)', async () => {
-            const httpClient = jest.fn(() =>
+            const httpClient = vi.fn(() =>
                 Promise.resolve({
                     headers: new Headers({
                         'content-range': '0/4-8',
@@ -26,18 +26,16 @@ describe('Data Simple REST Client', () => {
 
             expect(httpClient).toHaveBeenCalledWith(
                 'http://localhost:3000/posts?filter=%7B%7D&range=%5B0%2C9%5D&sort=%5B%22title%22%2C%22DESC%22%5D',
-                {
-                    headers: {
-                        map: {
-                            range: 'posts=0-9',
-                        },
-                    },
-                }
+                expect.objectContaining({
+                    headers: new Headers({
+                        range: 'posts=0-9',
+                    }),
+                })
             );
         });
 
         it('should use a custom http header to retrieve the number of items in the collection', async () => {
-            const httpClient = jest.fn(() =>
+            const httpClient = vi.fn(() =>
                 Promise.resolve({
                     headers: new Headers({
                         'x-total-count': '42',
@@ -70,7 +68,7 @@ describe('Data Simple REST Client', () => {
     });
     describe('getOne', () => {
         it('should allow numeric id in path', async () => {
-            const httpClient = jest.fn().mockResolvedValue({ id: 123 });
+            const httpClient = vi.fn().mockResolvedValue({ id: 123 });
             const client = simpleClient('http://localhost:3000', httpClient);
 
             await client.getOne('posts', { id: 123 });
@@ -81,7 +79,7 @@ describe('Data Simple REST Client', () => {
             );
         });
         it('should escape id in path', async () => {
-            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const httpClient = vi.fn().mockResolvedValue({ id: 'Post#123' });
             const client = simpleClient('http://localhost:3000', httpClient);
 
             await client.getOne('posts', { id: 'Post#123' });
@@ -94,7 +92,7 @@ describe('Data Simple REST Client', () => {
     });
     describe('update', () => {
         it('should escape id in path', async () => {
-            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const httpClient = vi.fn().mockResolvedValue({ id: 'Post#123' });
             const client = simpleClient('http://localhost:3000', httpClient);
 
             await client.update('posts', {
@@ -111,7 +109,7 @@ describe('Data Simple REST Client', () => {
     });
     describe('updateMany', () => {
         it('should escape id in path', async () => {
-            const httpClient = jest
+            const httpClient = vi
                 .fn()
                 .mockResolvedValue({ json: ['Post#123'] });
             const client = simpleClient('http://localhost:3000', httpClient);
@@ -129,7 +127,7 @@ describe('Data Simple REST Client', () => {
     });
     describe('delete', () => {
         it('should set the `Content-Type` header to `text/plain`', async () => {
-            const httpClient = jest.fn().mockResolvedValue({ json: { id: 1 } });
+            const httpClient = vi.fn().mockResolvedValue({ json: { id: 1 } });
 
             const client = simpleClient('http://localhost:3000', httpClient);
 
@@ -149,7 +147,7 @@ describe('Data Simple REST Client', () => {
             );
         });
         it('should escape id in path', async () => {
-            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const httpClient = vi.fn().mockResolvedValue({ id: 'Post#123' });
             const client = simpleClient('http://localhost:3000', httpClient);
 
             await client.delete('posts', {
@@ -165,7 +163,7 @@ describe('Data Simple REST Client', () => {
     });
     describe('deleteMany', () => {
         it('should set the `Content-Type` header to `text/plain`', async () => {
-            const httpClient = jest.fn().mockResolvedValue({ json: [1] });
+            const httpClient = vi.fn().mockResolvedValue({ json: [1] });
 
             const client = simpleClient('http://localhost:3000', httpClient);
 
@@ -194,7 +192,7 @@ describe('Data Simple REST Client', () => {
             );
         });
         it('should escape id in path', async () => {
-            const httpClient = jest
+            const httpClient = vi
                 .fn()
                 .mockResolvedValue({ json: ['Post#123'] });
             const client = simpleClient('http://localhost:3000', httpClient);

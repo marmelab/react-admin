@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     render,
     fireEvent,
@@ -42,7 +42,7 @@ const InfiniteListController = ({
 
 describe('useInfiniteListController', () => {
     const defaultProps = {
-        children: jest.fn(),
+        children: vi.fn(),
         resource: 'posts',
         debounce: 200,
     };
@@ -84,7 +84,7 @@ describe('useInfiniteListController', () => {
         });
         it('should not select more records than the provided limit', async () => {
             const dataProvider = defaultDataProvider;
-            const getList = jest.spyOn(dataProvider, 'getList');
+            const getList = vi.spyOn(dataProvider, 'getList');
             render(<Basic dataProvider={dataProvider} />);
             await waitFor(() => {
                 expect(screen.getByTestId('selected_ids').textContent).toBe(
@@ -110,11 +110,11 @@ describe('useInfiniteListController', () => {
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
-            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-            const getList = jest
+            vi.spyOn(console, 'error').mockImplementationOnce(() => {});
+            const getList = vi
                 .fn()
                 .mockImplementationOnce(() => Promise.reject(new Error()));
-            const onError = jest.fn();
+            const onError = vi.fn();
             const dataProvider = testDataProvider({ getList });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -133,7 +133,7 @@ describe('useInfiniteListController', () => {
         });
 
         it('should accept meta in queryOptions', async () => {
-            const getList = jest
+            const getList = vi
                 .fn()
                 .mockImplementationOnce(() =>
                     Promise.resolve({ data: [], total: 25 })
@@ -161,7 +161,7 @@ describe('useInfiniteListController', () => {
         });
 
         it('should reset page when enabled is set to false', async () => {
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const children = vi.fn().mockReturnValue(<span>children</span>);
             const dataProvider = testDataProvider({
                 getList: () => Promise.resolve({ data: [], total: 0 }),
             });
@@ -209,7 +209,7 @@ describe('useInfiniteListController', () => {
                 children: childFunction,
             };
             const store = memoryStore();
-            const storeSpy = jest.spyOn(store, 'setItem');
+            const storeSpy = vi.spyOn(store, 'setItem');
 
             render(
                 <CoreAdminContext
@@ -247,7 +247,7 @@ describe('useInfiniteListController', () => {
             };
 
             const store = memoryStore();
-            const storeSpy = jest.spyOn(store, 'setItem');
+            const storeSpy = vi.spyOn(store, 'setItem');
             render(
                 <TestMemoryRouter
                     initialEntries={[
@@ -288,13 +288,13 @@ describe('useInfiniteListController', () => {
         });
 
         it('should update data if permanent filters change', () => {
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const children = vi.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
                 debounce: 200,
                 children,
             };
-            const getList = jest
+            const getList = vi
                 .fn()
                 .mockImplementation(() =>
                     Promise.resolve({ data: [], total: 0 })
@@ -442,13 +442,13 @@ describe('useInfiniteListController', () => {
 
     describe('pagination', () => {
         it('should compute hasNextPage and hasPreviousPage based on total', async () => {
-            const getList = jest
+            const getList = vi
                 .fn()
                 .mockImplementation(() =>
                     Promise.resolve({ data: [], total: 25 })
                 );
             const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const children = vi.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
                 children,
@@ -501,14 +501,14 @@ describe('useInfiniteListController', () => {
             });
         });
         it('should compute hasNextPage and hasPreviousPage based on pageInfo', async () => {
-            const getList = jest.fn().mockImplementation(() =>
+            const getList = vi.fn().mockImplementation(() =>
                 Promise.resolve({
                     data: [],
                     pageInfo: { hasNextPage: true, hasPreviousPage: false },
                 })
             );
             const dataProvider = testDataProvider({ getList });
-            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const children = vi.fn().mockReturnValue(<span>children</span>);
             const props = {
                 ...defaultProps,
                 children,
@@ -593,7 +593,7 @@ describe('useInfiniteListController', () => {
     });
 
     it('should return correct total value for empty data', async () => {
-        const getList = jest.fn().mockImplementation(() =>
+        const getList = vi.fn().mockImplementation(() =>
             Promise.resolve({
                 data: [],
                 total: 0,
@@ -626,7 +626,7 @@ describe('useInfiniteListController', () => {
         it('should not call the dataProvider until the authentication check passes', async () => {
             let resolveAuthCheck: () => void;
             const authProvider: AuthProvider = {
-                checkAuth: jest.fn(
+                checkAuth: vi.fn(
                     () =>
                         new Promise(resolve => {
                             resolveAuthCheck = resolve;
@@ -639,7 +639,7 @@ describe('useInfiniteListController', () => {
             };
             const dataProvider = testDataProvider({
                 // @ts-ignore
-                getList: jest.fn(() =>
+                getList: vi.fn(() =>
                     Promise.resolve({
                         data: [{ id: 1, title: 'A post', votes: 0 }],
                         total: 0,
@@ -677,7 +677,7 @@ describe('useInfiniteListController', () => {
 
         it('should call the dataProvider if disableAuthentication is true', async () => {
             const authProvider: AuthProvider = {
-                checkAuth: jest.fn(),
+                checkAuth: vi.fn(),
                 login: () => Promise.resolve(),
                 logout: () => Promise.resolve(),
                 checkError: () => Promise.resolve(),
@@ -685,7 +685,7 @@ describe('useInfiniteListController', () => {
             };
             const dataProvider = testDataProvider({
                 // @ts-ignore
-                getList: jest.fn(() =>
+                getList: vi.fn(() =>
                     Promise.resolve({
                         data: [{ id: 1, title: 'A post', votes: 0 }],
                         total: 0,

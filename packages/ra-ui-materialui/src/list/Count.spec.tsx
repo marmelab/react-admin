@@ -11,7 +11,7 @@ describe('<Count />', () => {
         await screen.findByText('5');
     });
     it('should render an error icon when the request fails', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         render(<ErrorState />);
         await screen.findByTitle('error');
     });
@@ -21,7 +21,7 @@ describe('<Count />', () => {
     });
     it('should accept a sort prop', async () => {
         const dataProvider = {
-            getList: jest.fn(),
+            getList: vi.fn(),
         } as any;
         render(
             <Wrapper dataProvider={dataProvider}>

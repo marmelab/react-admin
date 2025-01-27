@@ -290,7 +290,7 @@ describe('<TabbedForm />', () => {
     });
 
     it('should not warn for `toolbar` prop of type `false`', () => {
-        const consoleSpy = jest
+        const consoleSpy = vi
             .spyOn(console, 'error')
             .mockImplementation(() => {});
 

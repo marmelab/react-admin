@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { Basic, AccessControl } from './CreateButton.stories';
 
 const invalidButtonDomProps = {
@@ -10,7 +10,7 @@ const invalidButtonDomProps = {
 
 describe('<CreateButton />', () => {
     it('should render a button with no DOM errors', () => {
-        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
         render(<Basic buttonProps={invalidButtonDomProps} />);
 

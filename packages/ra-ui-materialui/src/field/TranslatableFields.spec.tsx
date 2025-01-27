@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useTranslatableContext } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';

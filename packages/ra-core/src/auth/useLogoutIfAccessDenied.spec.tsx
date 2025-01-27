@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ const authProvider: AuthProvider = {
         loggedIn = true;
         return Promise.resolve();
     },
-    logout: jest.fn(() => {
+    logout: vi.fn(() => {
         loggedIn = false;
         return Promise.resolve();
     }),
@@ -47,15 +47,15 @@ const TestComponent = ({ error }: { error?: any }) => {
     return <div>{loggedOut ? '' : 'logged in'}</div>;
 };
 
-jest.mock('./useLogout');
-jest.mock('../notification/useNotify');
+vi.mock('./useLogout');
+vi.mock('../notification/useNotify');
 
 //@ts-expect-error
 useLogout.mockImplementation(() => {
     const logout = () => authProvider.logout(null);
     return logout;
 });
-const notify = jest.fn();
+const notify = vi.fn();
 //@ts-expect-error
 useNotify.mockImplementation(() => notify);
 

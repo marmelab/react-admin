@@ -36,7 +36,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should display an error if error is defined', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         render(
             <AdminContext
                 queryClient={
@@ -49,7 +49,7 @@ describe('<ReferenceArrayInput />', () => {
                 })}
             >
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ReferenceArrayInput {...defaultProps}>
                             <SelectArrayInput optionText="name" />
                         </ReferenceArrayInput>
@@ -69,7 +69,7 @@ describe('<ReferenceArrayInput />', () => {
         render(
             <AdminContext>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ReferenceArrayInput {...defaultProps}>
                             <MyComponent />
                         </ReferenceArrayInput>
@@ -98,7 +98,7 @@ describe('<ReferenceArrayInput />', () => {
         render(
             <AdminContext dataProvider={dataProvider}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ReferenceArrayInput {...defaultProps}>
                             <Children />
                         </ReferenceArrayInput>
@@ -118,7 +118,7 @@ describe('<ReferenceArrayInput />', () => {
             return <div>{allChoices?.map(item => item.id).join()}</div>;
         };
         const dataProvider = testDataProvider({
-            getMany: jest
+            getMany: vi
                 .fn()
                 .mockResolvedValue({ data: [{ id: 1 }, { id: 2 }] }),
         });
@@ -126,7 +126,7 @@ describe('<ReferenceArrayInput />', () => {
         render(
             <AdminContext dataProvider={dataProvider}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ReferenceArrayInput {...defaultProps}>
                             <MyComponent />
                         </ReferenceArrayInput>
@@ -165,7 +165,7 @@ describe('<ReferenceArrayInput />', () => {
             <AdminContext dataProvider={dataProvider}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ tag_ids: [5] }}
                     >
                         <ReferenceArrayInput reference="tags" source="tag_ids">
@@ -224,7 +224,7 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should accept meta in queryOptions', async () => {
-        const getList = jest
+        const getList = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: [], total: 25 })

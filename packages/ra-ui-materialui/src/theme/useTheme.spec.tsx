@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CoreAdminContext, useStore, memoryStore } from 'ra-core';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import { useTheme } from './useTheme';
@@ -9,11 +9,11 @@ import { ThemeTestWrapper } from '../layout/ThemeTestWrapper';
 import { defaultDarkTheme } from './defaultTheme';
 
 const authProvider = {
-    login: jest.fn().mockResolvedValueOnce(''),
-    logout: jest.fn().mockResolvedValueOnce(''),
-    checkAuth: jest.fn().mockResolvedValueOnce(''),
-    checkError: jest.fn().mockResolvedValueOnce(''),
-    getPermissions: jest.fn().mockResolvedValueOnce(''),
+    login: vi.fn().mockResolvedValueOnce(''),
+    logout: vi.fn().mockResolvedValueOnce(''),
+    checkAuth: vi.fn().mockResolvedValueOnce(''),
+    checkError: vi.fn().mockResolvedValueOnce(''),
+    getPermissions: vi.fn().mockResolvedValueOnce(''),
 };
 
 const Foo = () => {

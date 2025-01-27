@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 import { Basic } from './RichTextInput.stories';
 

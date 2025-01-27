@@ -11,7 +11,7 @@ describe('ListNoResults', () => {
     it('should display no results found message and a clear filter link when there is a filter', async () => {
         render(<WithFilter />);
         await screen.findByText('No results found with the current filters.');
-        screen.getByText('Clear filters').click();
+        (await screen.findByLabelText('Clear filters')).click();
         await screen.findByText('{"id":1}');
     });
 });

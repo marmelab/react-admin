@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from '../../core/CoreAdminContext';
 import { useResourceContext } from '../../core/useResourceContext';
@@ -15,11 +15,11 @@ describe('<ReferenceFieldBase />', () => {
     };
 
     beforeAll(() => {
-        window.scrollTo = jest.fn();
+        window.scrollTo = vi.fn();
     });
 
     it('should display an error if error is defined', async () => {
-        jest.spyOn(console, 'error')
+        vi.spyOn(console, 'error')
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
 
@@ -30,7 +30,7 @@ describe('<ReferenceFieldBase />', () => {
     });
 
     it('should pass the loading state', async () => {
-        jest.spyOn(console, 'error')
+        vi.spyOn(console, 'error')
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
 
@@ -63,7 +63,7 @@ describe('<ReferenceFieldBase />', () => {
     });
 
     it('should accept meta in queryOptions', async () => {
-        const getMany = jest
+        const getMany = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: [], total: 25 })

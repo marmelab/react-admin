@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { CoreAdminContext } from '../core';
 import { RaRecord } from '../types';
@@ -30,7 +30,7 @@ describe('useUpdate', () => {
     describe('mutate', () => {
         it('returns a callback that can be used with update arguments', async () => {
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1 } } as any)
                 ),
             } as any;
@@ -62,7 +62,7 @@ describe('useUpdate', () => {
 
         it('returns a callback that can be used with no arguments', async () => {
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1 } } as any)
                 ),
             } as any;
@@ -94,7 +94,7 @@ describe('useUpdate', () => {
 
         it('accepts falsy value that are not null nor undefined as the record id', async () => {
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1 } } as any)
                 ),
             } as any;
@@ -126,7 +126,7 @@ describe('useUpdate', () => {
 
         it('replaces hook call time params by and callback time params', async () => {
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1 } } as any)
                 ),
             } as any;
@@ -158,7 +158,7 @@ describe('useUpdate', () => {
 
         it('accepts a meta parameter', async () => {
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1 } } as any)
                 ),
             } as any;
@@ -196,7 +196,7 @@ describe('useUpdate', () => {
                 sku: string;
             }
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1, sku: 'abc' } } as any)
                 ),
             } as any;
@@ -241,7 +241,7 @@ describe('useUpdate', () => {
             });
         });
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCasePessimistic timeout={10} />);
             screen.getByText('Update title').click();
             await waitFor(() => {
@@ -274,7 +274,7 @@ describe('useUpdate', () => {
             });
         });
         it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseOptimistic timeout={10} />);
             screen.getByText('Update title').click();
             await waitFor(() => {
@@ -346,7 +346,7 @@ describe('useUpdate', () => {
             await screen.findByText('Hello');
         });
         it('when undoable, displays result and success side effects right away and reverts on error', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseUndoable />);
             await screen.findByText('Hello');
             screen.getByText('Update title').click();
@@ -377,7 +377,7 @@ describe('useUpdate', () => {
                 total: 1,
             });
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                 ),
             } as any;
@@ -424,7 +424,7 @@ describe('useUpdate', () => {
                 },
             });
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                 ),
             } as any;
@@ -471,7 +471,7 @@ describe('useUpdate', () => {
                 pageParams: [],
             });
             const dataProvider = {
-                update: jest.fn(() =>
+                update: vi.fn(() =>
                     Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                 ),
             } as any;
@@ -518,7 +518,7 @@ describe('useUpdate', () => {
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
-                    update: jest.fn(() =>
+                    update: vi.fn(() =>
                         Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                     ),
                 } as any;
@@ -569,7 +569,7 @@ describe('useUpdate', () => {
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
-                    update: jest.fn(() =>
+                    update: vi.fn(() =>
                         Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                     ),
                 } as any;
@@ -622,7 +622,7 @@ describe('useUpdate', () => {
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
-                    update: jest.fn(() =>
+                    update: vi.fn(() =>
                         Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                     ),
                 } as any;
@@ -677,11 +677,11 @@ describe('useUpdate', () => {
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
-                    update: jest.fn(() =>
+                    update: vi.fn(() =>
                         Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                     ),
                 } as any;
-                const queryClientSpy = jest.spyOn(
+                const queryClientSpy = vi.spyOn(
                     queryClient,
                     'invalidateQueries'
                 );
@@ -743,11 +743,11 @@ describe('useUpdate', () => {
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
-                    update: jest.fn(() =>
+                    update: vi.fn(() =>
                         Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                     ),
                 } as any;
-                const queryClientSpy = jest.spyOn(
+                const queryClientSpy = vi.spyOn(
                     queryClient,
                     'invalidateQueries'
                 );
@@ -811,11 +811,11 @@ describe('useUpdate', () => {
                     { id: 1, bar: 'bar' }
                 );
                 const dataProvider = {
-                    update: jest.fn(() =>
+                    update: vi.fn(() =>
                         Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
                     ),
                 } as any;
-                const queryClientSpy = jest.spyOn(
+                const queryClientSpy = vi.spyOn(
                     queryClient,
                     'invalidateQueries'
                 );
@@ -899,7 +899,7 @@ describe('useUpdate', () => {
         });
 
         it('when pessimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<WithMiddlewaresErrorPessimistic timeout={10} />);
             screen.getByText('Update title').click();
             await waitFor(() => {
@@ -940,7 +940,7 @@ describe('useUpdate', () => {
             });
         });
         it('when optimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<WithMiddlewaresErrorOptimistic timeout={10} />);
             screen.getByText('Update title').click();
             await waitFor(() => {
@@ -1011,7 +1011,7 @@ describe('useUpdate', () => {
             await screen.findByText('Hello');
         });
         it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on error', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<WithMiddlewaresErrorUndoable />);
             await screen.findByText('Hello');
             screen.getByText('Update title').click();
@@ -1039,5 +1039,5 @@ describe('useUpdate', () => {
 });
 
 afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
 });

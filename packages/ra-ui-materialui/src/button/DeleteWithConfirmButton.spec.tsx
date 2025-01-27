@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     CoreAdminContext,
     MutationMode,
@@ -26,7 +26,7 @@ const invalidButtonDomProps = {
 
 describe('<DeleteWithConfirmButton />', () => {
     it('should render a button with no DOM errors', () => {
-        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
@@ -59,7 +59,7 @@ describe('<DeleteWithConfirmButton />', () => {
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-            delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+            delete: vi.fn().mockResolvedValueOnce({ data: { id: 123 } }),
         });
         const EditToolbar = props => (
             <Toolbar {...props}>
@@ -98,7 +98,7 @@ describe('<DeleteWithConfirmButton />', () => {
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-            delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+            delete: vi.fn().mockResolvedValueOnce({ data: { id: 123 } }),
         });
         const EditToolbar = props => (
             <Toolbar {...props}>
@@ -141,9 +141,9 @@ describe('<DeleteWithConfirmButton />', () => {
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-            delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+            delete: vi.fn().mockResolvedValueOnce({ data: { id: 123 } }),
         });
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <DeleteWithConfirmButton mutationOptions={{ onSuccess }} />
@@ -181,16 +181,16 @@ describe('<DeleteWithConfirmButton />', () => {
     });
 
     it('should allow to override the error side effects', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             getOne: () =>
                 // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-            delete: jest.fn().mockRejectedValueOnce(new Error('not good')),
+            delete: vi.fn().mockRejectedValueOnce(new Error('not good')),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <DeleteWithConfirmButton mutationOptions={{ onError }} />
@@ -275,7 +275,7 @@ describe('<DeleteWithConfirmButton />', () => {
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-            delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
+            delete: vi.fn().mockResolvedValueOnce({ data: { id: 123 } }),
         });
         const EditToolbar = props => (
             <Toolbar {...props}>

@@ -1,6 +1,6 @@
 import { chipClasses } from '@mui/material/Chip';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     ListContext,
     ListContextProvider,
@@ -31,15 +31,15 @@ describe('<FilterForm />', () => {
     } as unknown as ListControllerResult;
 
     beforeAll(() => {
-        window.scrollTo = jest.fn();
+        window.scrollTo = vi.fn();
     });
 
     afterAll(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should display correctly passed filters', () => {
-        const setFilters = jest.fn();
+        const setFilters = vi.fn();
         const filters = [
             <TextInput source="title" label="Title" />,
             <TextInput source="customer.name" label="Name" />,
@@ -73,7 +73,7 @@ describe('<FilterForm />', () => {
             throw new Error(message);
         };
 
-        const setFilters = jest.fn();
+        const setFilters = vi.fn();
         const filters = [
             <TextInput source="title" label="Title" key="custom-key" />,
             <TextInput source="title" label="Title2" key="another-key" />,
@@ -106,7 +106,7 @@ describe('<FilterForm />', () => {
         const displayedFilters = {
             title: true,
         };
-        const setFilters = jest.fn();
+        const setFilters = vi.fn();
 
         render(
             <AdminContext>
@@ -140,7 +140,7 @@ describe('<FilterForm />', () => {
         const displayedFilters = {
             title: true,
         };
-        const setFilters = jest.fn();
+        const setFilters = vi.fn();
 
         render(
             <AdminContext>
@@ -167,9 +167,9 @@ describe('<FilterForm />', () => {
         const defaultProps: any = {
             context: 'form',
             resource: 'comments',
-            setFilters: jest.fn(),
-            hideFilter: jest.fn(),
-            showFilter: jest.fn(),
+            setFilters: vi.fn(),
+            hideFilter: vi.fn(),
+            showFilter: vi.fn(),
             displayedFilters: { post_id: true },
         };
         const dataProvider = testDataProvider({
@@ -205,7 +205,7 @@ describe('<FilterForm />', () => {
         const displayedFilters = {
             title: true,
         };
-        const setFilters = jest.fn();
+        const setFilters = vi.fn();
 
         render(
             <AdminContext>

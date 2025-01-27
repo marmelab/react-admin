@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import {
     CoreAdminContext,
@@ -98,8 +98,8 @@ describe('<Show />', () => {
     });
 
     it('should accept queryOptions prop', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const onError = jest.fn();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const onError = vi.fn();
         const dataProvider = {
             getOne: () => Promise.reject('error'),
         } as any;

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import { ValidationError } from './ValidationError';
 import { TestTranslationProvider } from '../../i18n';
 
-const translate = jest.fn(key => {
+const translate = vi.fn(key => {
     return key;
 });
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 
 import { testDataProvider } from '../../dataProvider';
@@ -13,7 +13,7 @@ describe('ShowBase', () => {
     it('should load data immediately if authProvider is not provided', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getOne: jest.fn(() =>
+            getOne: vi.fn(() =>
                 Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });
@@ -34,7 +34,7 @@ describe('ShowBase', () => {
         };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getOne: jest.fn(() =>
+            getOne: vi.fn(() =>
                 Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });
@@ -60,7 +60,7 @@ describe('ShowBase', () => {
                 new Promise<void>(resolve => {
                     resolveAuth = resolve;
                 }),
-            canAccess: jest.fn(
+            canAccess: vi.fn(
                 () =>
                     new Promise<boolean>(resolve => {
                         resolveCanAccess = resolve;
@@ -69,7 +69,7 @@ describe('ShowBase', () => {
         };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getOne: jest.fn(() =>
+            getOne: vi.fn(() =>
                 Promise.resolve({ data: { id: 12, test: 'Hello' } })
             ),
         });

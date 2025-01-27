@@ -3,7 +3,6 @@ import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { useFormState, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import assert from 'assert';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import type { To } from 'react-router';
@@ -50,7 +49,7 @@ describe('Form', () => {
     it('Does not make the form dirty when reinitialized from a record', () => {
         const { rerender } = render(
             <CoreAdminContext>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
                 </Form>
@@ -62,7 +61,7 @@ describe('Form', () => {
 
         rerender(
             <CoreAdminContext>
-                <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
+                <Form onSubmit={vi.fn()} record={{ id: 1, name: 'Foo' }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
                 </Form>
@@ -76,7 +75,7 @@ describe('Form', () => {
     it('Does not make the form dirty when initialized from a record with a missing field and this field has an defaultValue', () => {
         render(
             <CoreAdminContext>
-                <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                <Form onSubmit={vi.fn()} record={{ id: 1 }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
                 </Form>
@@ -90,7 +89,7 @@ describe('Form', () => {
     it('Does not make the form dirty when reinitialized from a different record', () => {
         const { rerender } = render(
             <CoreAdminContext>
-                <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
+                <Form onSubmit={vi.fn()} record={{ id: 1, name: 'Foo' }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
                 </Form>
@@ -103,7 +102,7 @@ describe('Form', () => {
         rerender(
             <CoreAdminContext>
                 <Form
-                    onSubmit={jest.fn()}
+                    onSubmit={vi.fn()}
                     record={{
                         id: 1,
                         name: 'Foo',
@@ -131,7 +130,7 @@ describe('Form', () => {
         };
         render(
             <CoreAdminContext>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <CustomInput source="name" validate={required()} />
                     <button type="submit">Submit</button>
                 </Form>
@@ -141,7 +140,7 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
 
         await waitFor(() => {
-            assert.equal(isSubmitting, true);
+            expect(isSubmitting).toEqual(true);
         });
     });
 
@@ -156,7 +155,7 @@ describe('Form', () => {
         render(
             <CoreAdminContext>
                 <>
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <Input source="name" validate={required()} />
                         <button type="submit">Submit</button>
                     </Form>
@@ -182,7 +181,7 @@ describe('Form', () => {
         render(
             <CoreAdminContext>
                 <>
-                    <Form onSubmit={jest.fn()} disableInvalidFormNotification>
+                    <Form onSubmit={vi.fn()} disableInvalidFormNotification>
                         <Input source="name" validate={required()} />
                         <button type="submit">Submit</button>
                     </Form>
@@ -205,7 +204,7 @@ describe('Form', () => {
             ) : null;
         };
 
-        const onSubmit = jest.fn(() =>
+        const onSubmit = vi.fn(() =>
             Promise.resolve({
                 name: 'This name is already taken',
             })
@@ -230,7 +229,7 @@ describe('Form', () => {
     });
 
     it('should set null or undefined values to null', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
@@ -258,7 +257,7 @@ describe('Form', () => {
     });
 
     it('should set null or undefined deep values to null', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
@@ -287,7 +286,7 @@ describe('Form', () => {
 
     it('should accept string values', async () => {
         const str = 'hello';
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
@@ -312,7 +311,7 @@ describe('Form', () => {
     it('should accept date values', async () => {
         const date = new Date();
 
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
@@ -342,7 +341,7 @@ describe('Form', () => {
     it('should accept array values', async () => {
         const arr = [1, 2, 3];
 
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
@@ -372,7 +371,7 @@ describe('Form', () => {
     it('should accept object values', async () => {
         const obj = { foo: 1 };
 
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
@@ -401,7 +400,7 @@ describe('Form', () => {
     it('should accept deep object values', async () => {
         const obj = { foo: { bar: 1 } };
 
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
@@ -430,7 +429,7 @@ describe('Form', () => {
     it('should accept object values in arrays', async () => {
         const obj = [{ foo: 1 }, { foo: 2 }];
 
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={onSubmit}>
@@ -459,7 +458,7 @@ describe('Form', () => {
     it('should accept adding objects in arrays', async () => {
         const obj = [{ foo: 1, foo2: 2 }, { foo: 3 }, { foo: 4 }];
 
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form
@@ -491,7 +490,7 @@ describe('Form', () => {
     it('should accept removing objects in array of objects', async () => {
         const obj = [{ foo: 1 }, { foo: 4 }];
 
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         render(
             <CoreAdminContext>
                 <Form
@@ -569,7 +568,7 @@ describe('Form', () => {
             const defaultValues = { foo: 'foobar' };
             const values = { foo: { hello: 'world' } };
 
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
             render(
                 <CoreAdminContext>
                     <Form defaultValues={defaultValues} onSubmit={onSubmit}>
@@ -634,7 +633,7 @@ describe('Form', () => {
     });
 
     it('should accept react-hook-form resolvers', async () => {
-        const onSubmit = jest.fn();
+        const onSubmit = vi.fn();
         const schema = yup
             .object({
                 title: yup.string().required(),
@@ -665,14 +664,14 @@ describe('Form', () => {
     });
 
     it('should convert null values to empty strings', () => {
-        jest.spyOn(console, 'error').mockImplementation(message => {
+        vi.spyOn(console, 'error').mockImplementation(message => {
             // not very robust but there are other React warnings due to act()
             // so we must check the exact message
             if (
                 message ===
                 'Warning: `value` prop on `%s` should not be null. Consider using an empty string to clear the component or `undefined` for uncontrolled components.%s'
             ) {
-                fail(message);
+                throw new Error(message);
             }
         });
         render(<NullValue />);
@@ -680,10 +679,10 @@ describe('Form', () => {
     });
 
     it('should only validate inputs on submit', async () => {
-        let validate = jest.fn();
+        let validate = vi.fn();
         render(
             <CoreAdminContext>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <Input source="name" validate={validate} />
                     <button type="submit">Submit</button>
                 </Form>
@@ -708,8 +707,8 @@ describe('Form', () => {
         })
     );
     it('should support validation messages translations at the form level without warnings', async () => {
-        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const translate = jest.spyOn(i18nProvider, 'translate');
+        const mock = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const translate = vi.spyOn(i18nProvider, 'translate');
         render(<FormLevelValidation i18nProvider={i18nProvider} />);
         fireEvent.click(screen.getByText('Submit'));
         await screen.findByText('Required');
@@ -726,8 +725,8 @@ describe('Form', () => {
     });
 
     it('should support validation messages translations at the input level without warnings', async () => {
-        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const translate = jest.spyOn(i18nProvider, 'translate');
+        const mock = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const translate = vi.spyOn(i18nProvider, 'translate');
         render(<InputLevelValidation i18nProvider={i18nProvider} />);
         fireEvent.click(screen.getByText('Submit'));
         await screen.findByText('Required');
@@ -744,8 +743,8 @@ describe('Form', () => {
     });
 
     it('should support validation messages translations when using a custom resolver without warnings', async () => {
-        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
-        const translate = jest.spyOn(i18nProvider, 'translate');
+        const mock = vi.spyOn(console, 'error').mockImplementation(() => {});
+        const translate = vi.spyOn(i18nProvider, 'translate');
         render(<ZodResolver i18nProvider={i18nProvider} />);
         fireEvent.click(screen.getByText('Submit'));
         await screen.findByText('Required');

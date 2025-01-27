@@ -8,8 +8,8 @@ import {
 
 describe('useRegisterMutationMiddleware', () => {
     it('should register and unregister middlewares correctly', async () => {
-        const middleware = jest.fn((next: () => void) => next());
-        const save = jest.fn();
+        const middleware = vi.fn((next: () => void) => next());
+        const save = vi.fn();
         const Middleware = () => {
             useRegisterMutationMiddleware(middleware);
             return null;
@@ -56,8 +56,8 @@ describe('useRegisterMutationMiddleware', () => {
     });
 
     it('should execute middlewares registered even if they have been unregistered as an optimistic side effect', async () => {
-        const middleware = jest.fn((next: () => void) => next());
-        const save = jest.fn();
+        const middleware = vi.fn((next: () => void) => next());
+        const save = vi.fn();
         const Middleware = () => {
             useRegisterMutationMiddleware(middleware);
             return <span>Middleware</span>;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { MutationMode, CoreAdminContext, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -20,7 +20,7 @@ const invalidButtonDomProps = {
 
 describe('<UpdateWithUndoButton />', () => {
     it('should render a button with no DOM errors', () => {
-        const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
@@ -64,7 +64,7 @@ describe('<UpdateWithUndoButton />', () => {
             // @ts-ignore
             update: () => Promise.resolve({ data: { id: 123 } }),
         });
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <UpdateWithUndoButton

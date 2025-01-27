@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
@@ -77,9 +77,7 @@ describe('useReferenceOneFieldController', () => {
 
     it('should call dataProvider.getManyReferences on mount', async () => {
         const dataProvider = testDataProvider({
-            getManyReference: jest
-                .fn()
-                .mockResolvedValue({ data: [], total: 0 }),
+            getManyReference: vi.fn().mockResolvedValue({ data: [], total: 0 }),
         });
 
         render(
@@ -111,7 +109,7 @@ describe('useReferenceOneFieldController', () => {
     });
 
     it('should pass referenceRecord to children function', async () => {
-        const children = jest.fn().mockReturnValue('children');
+        const children = vi.fn().mockReturnValue('children');
         const dataProvider = testDataProvider({
             getManyReference: () =>
                 Promise.resolve({
@@ -144,9 +142,7 @@ describe('useReferenceOneFieldController', () => {
 
     it('should support custom source', async () => {
         const dataProvider = testDataProvider({
-            getManyReference: jest
-                .fn()
-                .mockResolvedValue({ data: [], total: 0 }),
+            getManyReference: vi.fn().mockResolvedValue({ data: [], total: 0 }),
         });
 
         render(
@@ -184,9 +180,7 @@ describe('useReferenceOneFieldController', () => {
 
     it('should call crudGetManyReference when its props changes', async () => {
         const dataProvider = testDataProvider({
-            getManyReference: jest
-                .fn()
-                .mockResolvedValue({ data: [], total: 0 }),
+            getManyReference: vi.fn().mockResolvedValue({ data: [], total: 0 }),
         });
         const ControllerWrapper = ({ record }) => (
             <CoreAdminContext dataProvider={dataProvider}>

@@ -31,7 +31,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             optionText="foobar.name"
@@ -61,7 +61,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             optionText="foobar"
@@ -91,7 +91,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             optionText="foobar.name"
@@ -121,7 +121,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             optionText={choice => choice.foobar}
@@ -152,7 +152,7 @@ describe('<AutocompleteArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <TestTranslationProvider translate={x => `**${x}**`}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <AutocompleteArrayInput
                                 {...defaultProps}
                                 choices={[
@@ -183,7 +183,7 @@ describe('<AutocompleteArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <TestTranslationProvider translate={x => `**${x}**`}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <AutocompleteArrayInput
                                 {...defaultProps}
                                 choices={[
@@ -211,11 +211,11 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should make debounced calls to setFilter', async () => {
-        const setFilter = jest.fn();
+        const setFilter = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[{ id: 't', name: 'Technical' }]}
@@ -243,7 +243,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[{ id: 't', name: 'Technical' }]}
@@ -269,7 +269,7 @@ describe('<AutocompleteArrayInput />', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[{ id: 't', name: 'Technical' }]}
@@ -282,7 +282,7 @@ describe('<AutocompleteArrayInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[{ id: 't', name: 'Technical' }]}
@@ -301,7 +301,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[{ id: 't', name: 'Technical' }]}
@@ -329,7 +329,7 @@ describe('<AutocompleteArrayInput />', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[{ id: 't', name: 'Technical' }]}
@@ -350,7 +350,7 @@ describe('<AutocompleteArrayInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -370,7 +370,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[{ id: 't', name: 'Technical' }]}
@@ -394,11 +394,11 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should resolve value from input value', () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             onChange={onChange}
@@ -424,11 +424,11 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should reset filter when input value changed', async () => {
-        const setFilter = jest.fn();
+        const setFilter = vi.fn();
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()} record={{ tags: ['t'] }}>
+                    <SimpleForm onSubmit={vi.fn()} record={{ tags: ['t'] }}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -450,7 +450,7 @@ describe('<AutocompleteArrayInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()} record={{ tags: ['p'] }}>
+                    <SimpleForm onSubmit={vi.fn()} record={{ tags: ['p'] }}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -470,12 +470,12 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should reset filter only when needed, even if the value is an array of objects (fixes #4454)', async () => {
-        const setFilter = jest.fn();
+        const setFilter = vi.fn();
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         record={{ tags: [{ id: 't' }] }}
                     >
                         <AutocompleteArrayInput
@@ -504,7 +504,7 @@ describe('<AutocompleteArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         record={{ tags: [{ id: 'p' }] }}
                     >
                         <AutocompleteArrayInput
@@ -538,7 +538,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -565,7 +565,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             helperText="Can I help you?"
@@ -584,7 +584,7 @@ describe('<AutocompleteArrayInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn()}>
+                        <SimpleForm onSubmit={vi.fn()}>
                             <AutocompleteArrayInput
                                 {...defaultProps}
                                 choices={[{ id: 1, name: 'hello' }]}
@@ -601,7 +601,7 @@ describe('<AutocompleteArrayInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
+                        <SimpleForm mode="onBlur" onSubmit={vi.fn()}>
                             <AutocompleteArrayInput
                                 {...defaultProps}
                                 choices={[{ id: 1, name: 'hello' }]}
@@ -627,7 +627,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -653,12 +653,12 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('does not automatically select a matched choice if there is only one', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -683,7 +683,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -720,7 +720,7 @@ describe('<AutocompleteArrayInput />', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             source="language"
                             resource="posts"
@@ -742,7 +742,7 @@ describe('<AutocompleteArrayInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             source="language"
                             resource="posts"
@@ -776,7 +776,7 @@ describe('<AutocompleteArrayInput />', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             source="language"
                             resource="posts"
@@ -798,7 +798,7 @@ describe('<AutocompleteArrayInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             source="language"
                             resource="posts"
@@ -853,7 +853,7 @@ describe('<AutocompleteArrayInput />', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             source="language"
                             resource="posts"
@@ -876,7 +876,7 @@ describe('<AutocompleteArrayInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             source="language"
                             resource="posts"
@@ -955,7 +955,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             create={<Create />}
@@ -1000,7 +1000,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             create={<Create />}
@@ -1043,7 +1043,7 @@ describe('<AutocompleteArrayInput />', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             source="language"
                             resource="posts"
@@ -1066,7 +1066,7 @@ describe('<AutocompleteArrayInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             source="language"
                             resource="posts"
@@ -1088,7 +1088,7 @@ describe('<AutocompleteArrayInput />', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -1097,7 +1097,7 @@ describe('<AutocompleteArrayInput />', () => {
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[
@@ -1180,7 +1180,7 @@ describe('<AutocompleteArrayInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                         defaultValues={{ tags: 'programming' }}
                     >
                         <AutocompleteArrayInput
@@ -1202,10 +1202,7 @@ describe('<AutocompleteArrayInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ tags: '' }}
-                    >
+                    <SimpleForm onSubmit={vi.fn()} defaultValues={{ tags: '' }}>
                         <AutocompleteArrayInput
                             choices={[
                                 { id: 'programming', name: 'Programming' },
@@ -1222,7 +1219,7 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should include full records when calling onChange', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         render(<OnChange onChange={onChange} />);
         await screen.findByText('Editor');
         await screen.findByText('Reviewer');
@@ -1250,7 +1247,7 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should include full records when calling onChange inside ReferenceArrayInput', async () => {
-        const onChange = jest.fn();
+        const onChange = vi.fn();
         render(<InsideReferenceArrayInputOnChange onChange={onChange} />);
         (await screen.findByRole('combobox')).focus();
         fireEvent.click(await screen.findByText('Leo Tolstoy'));

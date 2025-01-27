@@ -1,4 +1,4 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render } from '@testing-library/react';
 import * as React from 'react';
 

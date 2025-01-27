@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     render,
     fireEvent,
@@ -32,7 +32,7 @@ describe('useSetLocale', () => {
     });
 
     it('should use the dataProvider.changeLocale function', async () => {
-        const changeLocale = jest.fn().mockResolvedValue();
+        const changeLocale = vi.fn().mockResolvedValue();
         render(
             <StoreContextProvider value={memoryStore()}>
                 <I18nContextProvider

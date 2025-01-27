@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 import {
@@ -29,11 +29,11 @@ describe('<ReferenceInput />', () => {
     };
 
     beforeAll(() => {
-        window.scrollTo = jest.fn();
+        window.scrollTo = vi.fn();
     });
 
     it('should display an error if error is defined', async () => {
-        jest.spyOn(console, 'error')
+        vi.spyOn(console, 'error')
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
 
@@ -49,7 +49,7 @@ describe('<ReferenceInput />', () => {
                 })}
             >
                 <ResourceContextProvider value="comments">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ReferenceInput {...defaultProps} />
                     </SimpleForm>
                 </ResourceContextProvider>
@@ -78,7 +78,7 @@ describe('<ReferenceInput />', () => {
         render(
             <AdminContext dataProvider={dataProvider}>
                 <ResourceContextProvider value="comments">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ReferenceInput {...defaultProps}>
                             <MyComponent />
                         </ReferenceInput>
@@ -104,7 +104,7 @@ describe('<ReferenceInput />', () => {
         render(
             <AdminContext dataProvider={dataProvider}>
                 <ResourceContextProvider value="comments">
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm onSubmit={vi.fn()}>
                         <ReferenceInput {...defaultProps}>
                             <Children />
                         </ReferenceInput>
@@ -118,7 +118,7 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should accept meta in queryOptions', async () => {
-        const getList = jest
+        const getList = vi
             .fn()
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: [], total: 25 })
@@ -146,7 +146,7 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should use meta when fetching current value', async () => {
-        const getMany = jest
+        const getMany = vi
             .fn()
             .mockImplementationOnce(() => Promise.resolve({ data: [] }));
         const dataProvider = testDataProvider({ getMany });
@@ -180,10 +180,10 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should convert empty values to null with AutocompleteInput', async () => {
-        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'log').mockImplementationOnce(() => {});
         const dataProvider = {
             ...dataProviderWithAuthors,
-            update: jest
+            update: vi
                 .fn()
                 .mockImplementation((resource, params) =>
                     Promise.resolve(params)
@@ -218,10 +218,10 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should convert empty values to null with SelectInput', async () => {
-        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'log').mockImplementationOnce(() => {});
         const dataProvider = {
             ...dataProviderWithAuthors,
-            update: jest
+            update: vi
                 .fn()
                 .mockImplementation((resource, params) =>
                     Promise.resolve(params)
@@ -251,8 +251,8 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should not throw an error on save when it is a self reference and the reference is undefined', async () => {
-        jest.spyOn(console, 'log').mockImplementationOnce(() => {});
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'log').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'error').mockImplementationOnce(() => {});
         render(<SelfReference />);
         fireEvent.click(await screen.findByLabelText('Self reference'));
         expect(await screen.findAllByRole('option')).toHaveLength(5);
@@ -265,7 +265,7 @@ describe('<ReferenceInput />', () => {
     });
 
     it('should throw an error when using the validate prop', async () => {
-        jest.spyOn(console, 'error').mockImplementation(jest.fn());
+        vi.spyOn(console, 'error').mockImplementation(vi.fn());
         const dataProvider = testDataProvider({
             getList: async () => ({ data: [], total: 25 }),
         });

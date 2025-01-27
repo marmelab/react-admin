@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect, vi } from 'vitest';
 import { NavigateFunction, Route } from 'react-router-dom';
 
 import { CoreAdminContext } from './CoreAdminContext';
@@ -101,11 +101,11 @@ describe('<CoreAdminRoutes>', () => {
         it('should render resources and custom routes with and without layout when there is an authProvider', async () => {
             let navigate: NavigateFunction | null = null;
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
-                checkAuth: jest.fn().mockResolvedValue(''),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
+                checkAuth: vi.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
             render(
                 <Basic
@@ -134,11 +134,11 @@ describe('<CoreAdminRoutes>', () => {
 
         it('should show the first resource by default when there is an authProvider', async () => {
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
-                checkAuth: jest.fn().mockResolvedValue(''),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
+                checkAuth: vi.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
             render(<Basic authProvider={authProvider} />);
             await screen.findByText('PostList');
@@ -146,12 +146,12 @@ describe('<CoreAdminRoutes>', () => {
 
         it('should show the first resource by default when there is an authProvider that supports canAccess', async () => {
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
-                checkAuth: jest.fn().mockResolvedValue(''),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
-                canAccess: jest.fn().mockResolvedValue(true),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
+                checkAuth: vi.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
+                canAccess: vi.fn().mockResolvedValue(true),
             };
             render(<Basic authProvider={authProvider} />);
             await screen.findByText('PostList');
@@ -159,12 +159,12 @@ describe('<CoreAdminRoutes>', () => {
 
         it('should show the first allowed resource by default when there is an authProvider that supports canAccess', async () => {
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
-                checkAuth: jest.fn().mockResolvedValue(''),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
-                canAccess: jest.fn(({ resource }) =>
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
+                checkAuth: vi.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
+                canAccess: vi.fn(({ resource }) =>
                     Promise.resolve(resource === 'comments')
                 ),
             };
@@ -173,13 +173,12 @@ describe('<CoreAdminRoutes>', () => {
         });
 
         it('should return loading while the function child is not resolved', async () => {
-            jest.useFakeTimers();
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
-                checkAuth: jest.fn().mockResolvedValue(''),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
+                checkAuth: vi.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
             const Custom = () => <>Custom</>;
 
@@ -208,23 +207,21 @@ describe('<CoreAdminRoutes>', () => {
                 </TestMemoryRouter>
             );
             // Timeout needed because we wait for a second before displaying the loading screen
-            jest.advanceTimersByTime(1010);
             navigate!('/posts');
             await screen.findByText('Loading');
             navigate!('/foo');
             await screen.findByText('Custom');
             expect(screen.queryByText('Loading')).toBeNull();
-            jest.useRealTimers();
         });
     });
     describe('anonymous access', () => {
         it('should not wait for the authProvider.checkAuth to return before rendering by default', () => {
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
                 checkAuth: (): Promise<void> => new Promise(() => {}), // never resolves
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
 
             render(
@@ -252,11 +249,11 @@ describe('<CoreAdminRoutes>', () => {
         });
         it('should render custom routes with no layout when the user is not authenticated ', async () => {
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
                 checkAuth: () => Promise.reject('Not authenticated'),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
             let navigate;
 
@@ -300,12 +297,12 @@ describe('<CoreAdminRoutes>', () => {
         it('should wait for the authProvider.checkAuth to return before rendering when requireAuth is true', async () => {
             let resolve;
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
                 checkAuth: (): Promise<void> =>
                     new Promise(res => (resolve = res)),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
 
             render(
@@ -338,12 +335,12 @@ describe('<CoreAdminRoutes>', () => {
         it('should redirect anonymous users to login when requireAuth is true and user accesses a resource page', async () => {
             let reject;
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
                 checkAuth: (): Promise<void> =>
                     new Promise((res, rej) => (reject = rej)),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
 
             render(
@@ -379,12 +376,12 @@ describe('<CoreAdminRoutes>', () => {
         it('should redirect anonymous users to login when requireAuth is true and user accesses a custom route', async () => {
             let reject;
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
                 checkAuth: (): Promise<void> =>
                     new Promise((res, rej) => (reject = rej)),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
 
             render(
@@ -419,12 +416,12 @@ describe('<CoreAdminRoutes>', () => {
         it('should render custom routes with no layout even for anonymous users', async () => {
             let reject;
             const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
+                login: vi.fn().mockResolvedValue(''),
+                logout: vi.fn().mockResolvedValue(''),
                 checkAuth: (): Promise<void> =>
                     new Promise((res, rej) => (reject = rej)),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
+                checkError: vi.fn().mockResolvedValue(''),
+                getPermissions: vi.fn().mockResolvedValue(''),
             };
 
             render(

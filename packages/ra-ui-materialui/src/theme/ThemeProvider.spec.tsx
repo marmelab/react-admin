@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { StoreContextProvider, memoryStore } from 'ra-core';
 import { Button, ThemeOptions } from '@mui/material';
 

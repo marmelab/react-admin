@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ResourceContextProvider, testDataProvider } from 'ra-core';
 
@@ -20,7 +20,7 @@ describe('<NullableBooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: true }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <NullableBooleanInput {...defaultProps} />
                     </SimpleForm>
@@ -53,7 +53,7 @@ describe('<NullableBooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: true }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <NullableBooleanInput source="isPublished" />
                     </SimpleForm>
@@ -84,7 +84,7 @@ describe('<NullableBooleanInput />', () => {
         const { container } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <NullableBooleanInput
                             source="isPublished"
                             defaultValue
@@ -119,7 +119,7 @@ describe('<NullableBooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: false }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <NullableBooleanInput source="isPublished" />
                     </SimpleForm>
@@ -150,7 +150,7 @@ describe('<NullableBooleanInput />', () => {
         const { container } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn}>
+                    <SimpleForm onSubmit={vi.fn}>
                         <NullableBooleanInput
                             source="isPublished"
                             defaultValue={false}
@@ -185,7 +185,7 @@ describe('<NullableBooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: null }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <NullableBooleanInput source="isPublished" />
                     </SimpleForm>
@@ -214,7 +214,7 @@ describe('<NullableBooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <NullableBooleanInput
                             source="isPublished"
@@ -246,7 +246,7 @@ describe('<NullableBooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: null }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <NullableBooleanInput
                             source="isPublished"
@@ -270,7 +270,7 @@ describe('<NullableBooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: null }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <NullableBooleanInput
                             source="isPublished"
@@ -295,7 +295,7 @@ describe('<NullableBooleanInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ isPublished: null }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <NullableBooleanInput
                             source="isPublished"

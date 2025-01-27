@@ -43,8 +43,8 @@ describe('<Datagrid />', () => {
         isLoading: false,
         selectedIds: [],
         sort: { field: 'title', order: 'ASC' },
-        onToggleItem: jest.fn(),
-        onSelect: jest.fn(),
+        onToggleItem: vi.fn(),
+        onSelect: vi.fn(),
     };
 
     afterEach(() => {

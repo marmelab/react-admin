@@ -35,7 +35,7 @@ describe('InfiniteListBase', () => {
     it('should load data immediately if authProvider is not provided', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
             ),
         });
@@ -56,7 +56,7 @@ describe('InfiniteListBase', () => {
         };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
             ),
         });
@@ -82,7 +82,7 @@ describe('InfiniteListBase', () => {
                 new Promise<void>(resolve => {
                     resolveAuth = resolve;
                 }),
-            canAccess: jest.fn(
+            canAccess: vi.fn(
                 () =>
                     new Promise<boolean>(resolve => {
                         resolveCanAccess = resolve;
@@ -91,7 +91,7 @@ describe('InfiniteListBase', () => {
         };
         const dataProvider = testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
             ),
         });

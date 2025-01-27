@@ -1,10 +1,10 @@
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import convertLegacyDataProvider from './convertLegacyDataProvider';
 
 describe('convertLegacyDataProvider', () => {
     it('should return a function allowing old style calls', () => {
-        const legacyProvider = jest.fn();
+        const legacyProvider = vi.fn();
         const convertedProvider = convertLegacyDataProvider(legacyProvider);
         convertedProvider.getList('posts', { filter: { foo: 'bar' } });
         expect(legacyProvider).toHaveBeenCalledWith('GET_LIST', 'posts', {
@@ -12,7 +12,7 @@ describe('convertLegacyDataProvider', () => {
         });
     });
     it('should return an object allowing new style calls', () => {
-        const legacyProvider = jest.fn();
+        const legacyProvider = vi.fn();
         const convertedProvider = convertLegacyDataProvider(legacyProvider);
         convertedProvider.getList('posts', {
             filter: { foo: 'bar' },

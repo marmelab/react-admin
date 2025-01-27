@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
@@ -42,7 +42,7 @@ const authProvider: AuthProvider = {
 
 describe('useHandleAuthCallback', () => {
     afterEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should redirect to the home route by default when the callback was successfully handled', async () => {
@@ -121,10 +121,10 @@ describe('useHandleAuthCallback', () => {
     });
 
     it('should abort the request if the query is canceled', async () => {
-        const abort = jest.fn();
+        const abort = vi.fn();
         const testAuthProvider = {
             ...authProvider,
-            handleCallback: jest.fn(
+            handleCallback: vi.fn(
                 ({ signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {

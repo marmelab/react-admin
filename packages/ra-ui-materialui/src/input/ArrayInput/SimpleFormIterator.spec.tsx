@@ -6,7 +6,7 @@ import {
     waitFor,
     getByLabelText,
 } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import {
     FormDataConsumer,
     ResourceContextProvider,
@@ -24,8 +24,8 @@ describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
     let confirmSpy;
     beforeAll(() => {
-        confirmSpy = jest.spyOn(window, 'confirm');
-        confirmSpy.mockImplementation(jest.fn(() => true));
+        confirmSpy = vi.spyOn(window, 'confirm');
+        confirmSpy.mockImplementation(vi.fn(() => true));
     });
     afterAll(() => confirmSpy.mockRestore());
 
@@ -739,7 +739,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should call the onClick method when the custom add button is clicked', async () => {
-        const onClick = jest.fn().mockImplementation(e => e.preventDefault());
+        const onClick = vi.fn().mockImplementation(e => e.preventDefault());
         render(
             <Wrapper>
                 <SimpleForm>
@@ -762,7 +762,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should call the onClick method when the custom remove button is clicked', async () => {
-        const onClick = jest.fn().mockImplementation(e => e.preventDefault());
+        const onClick = vi.fn().mockImplementation(e => e.preventDefault());
         render(
             <Wrapper>
                 <SimpleForm
@@ -833,7 +833,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should not add an empty property when using FormDataConsumer as child', async () => {
-        const save = jest.fn();
+        const save = vi.fn();
         render(
             <AdminContext>
                 <ResourceContextProvider value="bar">
@@ -873,7 +873,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should empty children values after removing only child and add it back again', async () => {
-        const save = jest.fn();
+        const save = vi.fn();
         render(
             <Wrapper>
                 <SimpleForm

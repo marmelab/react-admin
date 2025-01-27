@@ -4,12 +4,12 @@ import { addRefreshAuthToAuthProvider } from './addRefreshAuthToAuthProvider';
 
 describe('addRefreshAuthToAuthProvider', () => {
     const authProvider: AuthProvider = {
-        login: jest.fn(),
-        logout: jest.fn(),
-        checkAuth: jest.fn(),
-        checkError: jest.fn(),
-        getIdentity: jest.fn(),
-        getPermissions: jest.fn(),
+        login: vi.fn(),
+        logout: vi.fn(),
+        checkAuth: vi.fn(),
+        checkError: vi.fn(),
+        getIdentity: vi.fn(),
+        getPermissions: vi.fn(),
     };
 
     it('should call refreshAuth before calling checkAuth', async () => {
@@ -17,7 +17,7 @@ describe('addRefreshAuthToAuthProvider', () => {
         const refreshAuthPromise = new Promise<void>(resolve => {
             resolvePromise = resolve;
         });
-        const refreshAuth = jest.fn(() => refreshAuthPromise);
+        const refreshAuth = vi.fn(() => refreshAuthPromise);
 
         const wrappedAuthProvider = addRefreshAuthToAuthProvider(
             authProvider,
@@ -37,7 +37,7 @@ describe('addRefreshAuthToAuthProvider', () => {
         const refreshAuthPromise = new Promise<void>(resolve => {
             resolvePromise = resolve;
         });
-        const refreshAuth = jest.fn(() => refreshAuthPromise);
+        const refreshAuth = vi.fn(() => refreshAuthPromise);
 
         const wrappedAuthProvider = addRefreshAuthToAuthProvider(
             authProvider,
@@ -55,14 +55,14 @@ describe('addRefreshAuthToAuthProvider', () => {
 
     it('should not provide getIdentity if getIdentity is not implemented in the authProvider', async () => {
         const authProvider: AuthProvider = {
-            login: jest.fn(),
-            logout: jest.fn(),
-            checkAuth: jest.fn(),
-            checkError: jest.fn(),
-            getPermissions: jest.fn(),
+            login: vi.fn(),
+            logout: vi.fn(),
+            checkAuth: vi.fn(),
+            checkError: vi.fn(),
+            getPermissions: vi.fn(),
         };
 
-        const refreshAuth = jest.fn();
+        const refreshAuth = vi.fn();
         const wrappedAuthProvider = addRefreshAuthToAuthProvider(
             authProvider,
             refreshAuth
@@ -76,7 +76,7 @@ describe('addRefreshAuthToAuthProvider', () => {
         const refreshAuthPromise = new Promise<void>(resolve => {
             resolvePromise = resolve;
         });
-        const refreshAuth = jest.fn(() => refreshAuthPromise);
+        const refreshAuth = vi.fn(() => refreshAuthPromise);
 
         const wrappedAuthProvider = addRefreshAuthToAuthProvider(
             authProvider,
@@ -92,7 +92,7 @@ describe('addRefreshAuthToAuthProvider', () => {
     });
 
     it('should not call refreshAuth before calling login', async () => {
-        const refreshAuth = jest.fn();
+        const refreshAuth = vi.fn();
 
         const wrappedAuthProvider = addRefreshAuthToAuthProvider(
             authProvider,
@@ -104,7 +104,7 @@ describe('addRefreshAuthToAuthProvider', () => {
     });
 
     it('should not call refreshAuth before calling logout', async () => {
-        const refreshAuth = jest.fn();
+        const refreshAuth = vi.fn();
 
         const wrappedAuthProvider = addRefreshAuthToAuthProvider(
             authProvider,
@@ -116,7 +116,7 @@ describe('addRefreshAuthToAuthProvider', () => {
     });
 
     it('should not call refreshAuth before calling checkError', async () => {
-        const refreshAuth = jest.fn();
+        const refreshAuth = vi.fn();
 
         const wrappedAuthProvider = addRefreshAuthToAuthProvider(
             authProvider,

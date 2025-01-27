@@ -18,7 +18,7 @@ describe('<TextInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <TextInput {...defaultProps} />
                     </SimpleForm>
@@ -38,7 +38,7 @@ describe('<TextInput />', () => {
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
+                        onSubmit={vi.fn}
                     >
                         <TextInput {...defaultProps} type="password" />
                     </SimpleForm>
@@ -56,7 +56,7 @@ describe('<TextInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn}>
+                        <SimpleForm onSubmit={vi.fn}>
                             <TextInput
                                 {...defaultProps}
                                 defaultValue=""
@@ -75,7 +75,7 @@ describe('<TextInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm onSubmit={jest.fn}>
+                        <SimpleForm onSubmit={vi.fn}>
                             <TextInput
                                 {...defaultProps}
                                 defaultValue=""
@@ -99,7 +99,7 @@ describe('<TextInput />', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
-                        <SimpleForm mode="onBlur" onSubmit={jest.fn}>
+                        <SimpleForm mode="onBlur" onSubmit={vi.fn}>
                             <TextInput
                                 {...defaultProps}
                                 defaultValue="foo"
@@ -124,7 +124,7 @@ describe('<TextInput />', () => {
     });
 
     it('should keep null values', async () => {
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         render(<ValueNull onSuccess={onSuccess} />);
         const input = (await screen.findByLabelText(
             'resources.posts.fields.title'
@@ -183,7 +183,7 @@ describe('<TextInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             defaultValues={{ title: 'hello' }}
-                            onSubmit={jest.fn}
+                            onSubmit={vi.fn}
                         >
                             <TextInput {...defaultProps} />
                         </SimpleForm>
@@ -200,7 +200,7 @@ describe('<TextInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             defaultValues={{ title: 'hello' }}
-                            onSubmit={jest.fn}
+                            onSubmit={vi.fn}
                         >
                             <TextInput {...defaultProps} label="label" />
                         </SimpleForm>
@@ -217,7 +217,7 @@ describe('<TextInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             defaultValues={{ title: 'hello' }}
-                            onSubmit={jest.fn}
+                            onSubmit={vi.fn}
                         >
                             <TextInput {...defaultProps} label={false} />
                         </SimpleForm>
@@ -234,7 +234,7 @@ describe('<TextInput />', () => {
                     <ResourceContextProvider value="posts">
                         <SimpleForm
                             defaultValues={{ title: 'hello' }}
-                            onSubmit={jest.fn}
+                            onSubmit={vi.fn}
                         >
                             <TextInput {...defaultProps} label="" />
                         </SimpleForm>

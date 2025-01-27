@@ -5,7 +5,7 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -43,7 +43,7 @@ describe('useCreateController', () => {
     it('should call the dataProvider.create() function on save', async () => {
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
-            create: jest
+            create: vi
                 .fn()
                 .mockImplementationOnce((_, { data }) =>
                     Promise.resolve({ data: { id: 123, ...data } })
@@ -111,7 +111,7 @@ describe('useCreateController', () => {
     });
 
     it('should execute default failure side effects on failure', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
@@ -149,7 +149,7 @@ describe('useCreateController', () => {
     });
 
     it('should use the default error message in case no message was provided', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
@@ -187,7 +187,7 @@ describe('useCreateController', () => {
     });
 
     it('should not trigger a notification in case of a validation error (handled by useNotifyIsFormInvalid)', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
@@ -227,7 +227,7 @@ describe('useCreateController', () => {
             create: (_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
 
         let notificationsSpy;
         const Notification = () => {
@@ -265,8 +265,8 @@ describe('useCreateController', () => {
             create: (_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
-        const onSuccess = jest.fn();
-        const onSuccessSave = jest.fn();
+        const onSuccess = vi.fn();
+        const onSuccessSave = vi.fn();
 
         let notificationsSpy;
         const Notification = () => {
@@ -305,13 +305,13 @@ describe('useCreateController', () => {
     });
 
     it('should allow mutationOptions to override the default failure side effects', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create: () => Promise.reject({ message: 'not good' }),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
 
         let notificationsSpy;
         const Notification = () => {
@@ -343,7 +343,7 @@ describe('useCreateController', () => {
 
     it('should accept meta in mutationOptions', async () => {
         let saveCallback;
-        const create = jest
+        const create = vi
             .fn()
             .mockImplementationOnce((_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } })
@@ -375,7 +375,7 @@ describe('useCreateController', () => {
 
     it('should accept meta as a save option', async () => {
         let saveCallback;
-        const create = jest
+        const create = vi
             .fn()
             .mockImplementationOnce((_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } })
@@ -405,14 +405,14 @@ describe('useCreateController', () => {
     });
 
     it('should allow the save onError option to override the failure side effects override', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
+        vi.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create: () => Promise.reject({ message: 'not good' }),
         });
-        const onError = jest.fn();
-        const onErrorSave = jest.fn();
+        const onError = vi.fn();
+        const onErrorSave = vi.fn();
 
         let notificationsSpy;
         const Notification = () => {
@@ -452,7 +452,7 @@ describe('useCreateController', () => {
 
     it('should allow transform to transform the data before calling create', async () => {
         let saveCallback;
-        const create = jest
+        const create = vi
             .fn()
             .mockImplementationOnce((_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } })
@@ -461,7 +461,7 @@ describe('useCreateController', () => {
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create,
         });
-        const transform = jest.fn().mockImplementationOnce(data => ({
+        const transform = vi.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
         }));
@@ -484,7 +484,7 @@ describe('useCreateController', () => {
 
     it('should allow the save transform option to override the controller transform option', async () => {
         let saveCallback;
-        const create = jest
+        const create = vi
             .fn()
             .mockImplementationOnce((_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } })
@@ -493,8 +493,8 @@ describe('useCreateController', () => {
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create,
         });
-        const transform = jest.fn();
-        const transformSave = jest.fn().mockImplementationOnce(data => ({
+        const transform = vi.fn();
+        const transformSave = vi.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
         }));
@@ -525,7 +525,7 @@ describe('useCreateController', () => {
 
     it('should allow to register middlewares', async () => {
         let saveCallback;
-        const create = jest
+        const create = vi
             .fn()
             .mockImplementationOnce((_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } })
@@ -533,7 +533,7 @@ describe('useCreateController', () => {
         const dataProvider = testDataProvider({
             create,
         });
-        const middleware: Middleware<DataProvider['create']> = jest.fn(
+        const middleware: Middleware<DataProvider['create']> = vi.fn(
             (resource, params, next) => {
                 return next(resource, {
                     ...params,
@@ -588,7 +588,7 @@ describe('useCreateController', () => {
     });
 
     it('should return errors from the create call', async () => {
-        const create = jest.fn().mockImplementationOnce(() => {
+        const create = vi.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });
         });
         const dataProvider = {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, waitFor } from '@testing-library/react';
 
 import { CoreAdminContext } from '../core';
@@ -30,7 +30,7 @@ describe('useGetOne', () => {
 
     beforeEach(() => {
         dataProvider = testDataProvider({
-            getOne: jest
+            getOne: vi
                 .fn()
                 .mockResolvedValue({ data: { id: 1, title: 'foo' } }),
         });
@@ -148,10 +148,10 @@ describe('useGetOne', () => {
     });
 
     it('should set the error state when the dataProvider fails', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const hookValue = jest.fn();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const hookValue = vi.fn();
         const dataProvider = testDataProvider({
-            getOne: jest.fn().mockRejectedValue(new Error('failed')),
+            getOne: vi.fn().mockRejectedValue(new Error('failed')),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -181,7 +181,7 @@ describe('useGetOne', () => {
     });
 
     it('should execute success side effects on success', async () => {
-        const onSuccess = jest.fn();
+        const onSuccess = vi.fn();
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetOne resource="posts" id={1} options={{ onSuccess }} />
@@ -194,12 +194,12 @@ describe('useGetOne', () => {
     });
 
     it('should not execute success side effect on error on refetch', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const onSuccess = jest.fn();
-        const onError = jest.fn();
+        vi.spyOn(console, 'error').mockImplementation(() => {});
+        const onSuccess = vi.fn();
+        const onError = vi.fn();
         let index = 0;
         const dataProvider = testDataProvider({
-            getOne: jest.fn().mockImplementation(() => {
+            getOne: vi.fn().mockImplementation(() => {
                 if (index === 0) {
                     index++;
                     return Promise.resolve({ data: { id: 1, title: 'foo' } });
@@ -243,15 +243,15 @@ describe('useGetOne', () => {
             expect(onSuccess).toHaveBeenCalledTimes(1);
             expect(onError).toHaveBeenCalledTimes(1);
         });
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('should execute error side effects on failure', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        vi.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = testDataProvider({
-            getOne: jest.fn().mockRejectedValue(new Error('failed')),
+            getOne: vi.fn().mockRejectedValue(new Error('failed')),
         });
-        const onError = jest.fn();
+        const onError = vi.fn();
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetOne
@@ -268,9 +268,9 @@ describe('useGetOne', () => {
     });
 
     it('should abort the request if the query is canceled', async () => {
-        const abort = jest.fn();
+        const abort = vi.fn();
         const dataProvider = testDataProvider({
-            getOne: jest.fn(
+            getOne: vi.fn(
                 (_resource, { signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {

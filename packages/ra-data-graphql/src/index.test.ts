@@ -71,7 +71,7 @@ describe('GraphQL data provider', () => {
                 ],
             };
             const client = {
-                query: jest.fn(() =>
+                query: vi.fn(() =>
                     Promise.resolve({
                         data: {
                             __schema: schema,

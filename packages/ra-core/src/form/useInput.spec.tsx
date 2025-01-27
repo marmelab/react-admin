@@ -46,7 +46,7 @@ describe('useInput', () => {
         let inputProps;
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <Input
                         defaultValue="A title"
                         source="title"
@@ -74,7 +74,7 @@ describe('useInput', () => {
         let inputProps;
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <Input id="my-title" source="title" resource="posts">
                         {props => {
                             inputProps = props;
@@ -92,12 +92,12 @@ describe('useInput', () => {
     });
 
     it('allows to extend the input event handlers', () => {
-        const handleBlur = jest.fn();
-        const handleChange = jest.fn();
+        const handleBlur = vi.fn();
+        const handleChange = vi.fn();
 
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <Input
                         source="title"
                         resource="posts"
@@ -141,7 +141,7 @@ describe('useInput', () => {
 
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()}>
+                <Form onSubmit={vi.fn()}>
                     <InputWithCustomOnChange
                         source="title"
                         resource="posts"
@@ -172,7 +172,7 @@ describe('useInput', () => {
 
     describe('defaultValue', () => {
         it('applies the defaultValue when input does not have a value', () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={onSubmit}>
@@ -201,7 +201,7 @@ describe('useInput', () => {
         it('does not apply the defaultValue when input has a value of 0', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} record={{ id: 1, views: 0 }}>
+                    <Form onSubmit={vi.fn()} record={{ id: 1, views: 0 }}>
                         <Input
                             source="views"
                             resource="posts"
@@ -252,7 +252,7 @@ describe('useInput', () => {
         it('does not change the value if the field is of type checkbox and has no value', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                    <Form onSubmit={vi.fn()} record={{ id: 1 }}>
                         <BooleanInput source="is_published" />
                     </Form>
                 </CoreAdminContext>
@@ -263,7 +263,7 @@ describe('useInput', () => {
         it('applies the defaultValue true when the field is of type checkbox and has no value', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                    <Form onSubmit={vi.fn()} record={{ id: 1 }}>
                         <BooleanInput
                             source="is_published"
                             defaultValue={true}
@@ -277,7 +277,7 @@ describe('useInput', () => {
         it('applies the defaultValue false when the field is of type checkbox and has no value', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                    <Form onSubmit={vi.fn()} record={{ id: 1 }}>
                         <BooleanInput
                             source="is_published"
                             defaultValue={false}
@@ -293,7 +293,7 @@ describe('useInput', () => {
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form
                         record={{ id: 1, is_published: false }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <BooleanInput
                             source="is_published"
@@ -310,7 +310,7 @@ describe('useInput', () => {
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form
                         record={{ id: 1, is_published: true }}
-                        onSubmit={jest.fn()}
+                        onSubmit={vi.fn()}
                     >
                         <BooleanInput
                             source="is_published"
@@ -328,7 +328,7 @@ describe('useInput', () => {
             let inputProps;
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} record={{ id: 1, views: null }}>
+                    <Form onSubmit={vi.fn()} record={{ id: 1, views: null }}>
                         <Input source="views" resource="posts">
                             {props => {
                                 inputProps = props;
@@ -345,7 +345,7 @@ describe('useInput', () => {
             let inputProps;
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                    <Form onSubmit={vi.fn()} record={{ id: 1 }}>
                         <Input source="views" resource="posts">
                             {props => {
                                 inputProps = props;
@@ -362,7 +362,7 @@ describe('useInput', () => {
             let inputProps;
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <Input
                             source="views"
                             resource="posts"
@@ -382,7 +382,7 @@ describe('useInput', () => {
         it('should apply the provided format function before passing the value to the real input', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <Input
                             format={value => `${value} formatted`}
                             source="test"
@@ -402,7 +402,7 @@ describe('useInput', () => {
         it('should apply the provided parse function before applying the value from the real input', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()}>
+                    <Form onSubmit={vi.fn()}>
                         <Input
                             defaultValue=""
                             parse={value => (value + 1).toString()}
@@ -432,7 +432,7 @@ describe('useInput', () => {
         });
 
         it('should parse empty strings to null by default', async () => {
-            const onSubmit = jest.fn();
+            const onSubmit = vi.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={onSubmit}>
@@ -474,10 +474,10 @@ describe('useInput', () => {
 
     describe('validate', () => {
         it('calls a custom validator with value, allValues, props', async () => {
-            let validator = jest.fn();
+            let validator = vi.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} mode="onChange">
+                    <Form onSubmit={vi.fn()} mode="onChange">
                         <Input
                             defaultValue="A title"
                             source="title"
@@ -521,10 +521,10 @@ describe('useInput', () => {
         });
 
         it('calls a custom validator with the final source in respect to the SourceContext', async () => {
-            let validator = jest.fn();
+            let validator = vi.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} mode="onChange">
+                    <Form onSubmit={vi.fn()} mode="onChange">
                         <SourceContextProvider
                             value={{
                                 getSource: source => `posts.0.${source}`,
@@ -605,7 +605,7 @@ describe('useInput', () => {
 
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={jest.fn()} mode="onChange">
+                    <Form onSubmit={vi.fn()} mode="onChange">
                         <DisabledEnableInput />
                     </Form>
                 </CoreAdminContext>

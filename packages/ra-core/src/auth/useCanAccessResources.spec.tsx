@@ -1,11 +1,11 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { Basic } from './useCanAccessResources.stories';
 
 describe('useCanAccessResources', () => {
     it('should call authProvider.canAccess for every resource', async () => {
-        const canAccess = jest.fn().mockImplementation(async () => true);
+        const canAccess = vi.fn().mockImplementation(async () => true);
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -47,7 +47,7 @@ describe('useCanAccessResources', () => {
     });
 
     it('should grant access to each resource based on canAccess result', async () => {
-        const canAccess = jest
+        const canAccess = vi
             .fn()
             .mockImplementation(
                 async ({ resource }) => resource !== 'posts.id'

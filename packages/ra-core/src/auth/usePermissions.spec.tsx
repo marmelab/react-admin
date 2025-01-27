@@ -1,5 +1,5 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { waitFor, render, screen } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 import {
@@ -77,7 +77,7 @@ describe('usePermissions', () => {
     it('should call logout when the auth.getPermissions call fails and checkError rejects', async () => {
         const authProvider = {
             login: () => Promise.reject('bad method'),
-            logout: jest.fn(() => Promise.resolve()),
+            logout: vi.fn(() => Promise.resolve()),
             checkAuth: () => Promise.reject('bad method'),
             checkError: () => Promise.reject(),
             getPermissions: () => Promise.reject('not good'),
@@ -92,13 +92,13 @@ describe('usePermissions', () => {
     });
 
     it('should abort the request if the query is canceled', async () => {
-        const abort = jest.fn();
+        const abort = vi.fn();
         const authProvider: AuthProvider = {
             login: () => Promise.reject('bad method'),
-            logout: jest.fn(() => Promise.resolve()),
+            logout: vi.fn(() => Promise.resolve()),
             checkAuth: () => Promise.reject('bad method'),
             checkError: () => Promise.reject(),
-            getPermissions: jest.fn(
+            getPermissions: vi.fn(
                 ({ signal }) =>
                     new Promise(() => {
                         signal.addEventListener('abort', () => {

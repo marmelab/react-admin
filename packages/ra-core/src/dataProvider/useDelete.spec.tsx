@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
-import expect from 'expect';
+import { expect } from 'vitest';
 
 import { CoreAdminContext } from '../core';
 import { RaRecord } from '../types';
@@ -24,7 +24,7 @@ import { QueryClient } from '@tanstack/react-query';
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
         const dataProvider = testDataProvider({
-            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            delete: vi.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localDeleteOne;
         const Dummy = () => {
@@ -49,7 +49,7 @@ describe('useDelete', () => {
 
     it('returns a callback that can be used with no arguments', async () => {
         const dataProvider = testDataProvider({
-            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            delete: vi.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localDeleteOne;
         const Dummy = () => {
@@ -77,7 +77,7 @@ describe('useDelete', () => {
 
     it('uses call time params over hook time params', async () => {
         const dataProvider = testDataProvider({
-            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            delete: vi.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localDeleteOne;
         const Dummy = () => {
@@ -108,7 +108,7 @@ describe('useDelete', () => {
 
     it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
-            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            delete: vi.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localDeleteOne;
         const Dummy = () => {
@@ -141,7 +141,7 @@ describe('useDelete', () => {
             sku: string;
         }
         const dataProvider = testDataProvider({
-            delete: jest.fn(() =>
+            delete: vi.fn(() =>
                 Promise.resolve({ data: { id: 1, sku: 'abc' } } as any)
             ),
         });
@@ -170,7 +170,7 @@ describe('useDelete', () => {
 
     it('should delete record even if id is zero', async () => {
         const dataProvider = testDataProvider({
-            delete: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
+            delete: vi.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
         });
         let localDeleteOne;
         const Dummy = () => {
@@ -195,7 +195,7 @@ describe('useDelete', () => {
 
     describe('mutationOptions', () => {
         it('when pessimistic, executes success side effects on success', async () => {
-            const onSuccess = jest.fn();
+            const onSuccess = vi.fn();
             const dataProvider = testDataProvider({
                 delete: () => Promise.resolve({ data: { id: 1 } } as any),
             });
@@ -230,8 +230,8 @@ describe('useDelete', () => {
             });
         });
         it('when pessimistic, executes error side effects on error', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
-            const onError = jest.fn();
+            vi.spyOn(console, 'error').mockImplementation(() => {});
+            const onError = vi.fn();
             const dataProvider = testDataProvider({
                 delete: () => Promise.reject(new Error('not good')),
             });
@@ -269,7 +269,7 @@ describe('useDelete', () => {
 
     describe('mutationMode', () => {
         it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
+            vi.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCasePessimistic />);
             screen.getByText('Delete first post').click();
             await waitFor(() => {
@@ -286,8 +286,8 @@ describe('useDelete', () => {
             expect(screen.queryByText('World')).not.toBeNull();
         });
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'log').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCasePessimistic />);
             screen.getByText('Delete first post').click();
             await waitFor(
@@ -335,7 +335,7 @@ describe('useDelete', () => {
             ).not.toBeNull();
         });
         it('when optimistic, displays result and success side effects right away', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
+            vi.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseOptimistic />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -353,8 +353,8 @@ describe('useDelete', () => {
             });
         });
         it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'log').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseOptimistic />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -375,7 +375,7 @@ describe('useDelete', () => {
             });
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
+            vi.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -403,7 +403,7 @@ describe('useDelete', () => {
             );
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
+            vi.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -421,8 +421,8 @@ describe('useDelete', () => {
             });
         });
         it('when undoable, displays result and success side effects right away and reverts on error', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
-            jest.spyOn(console, 'error').mockImplementation(() => {});
+            vi.spyOn(console, 'log').mockImplementation(() => {});
+            vi.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -462,7 +462,7 @@ describe('useDelete', () => {
                 total: 2,
             });
             const dataProvider = {
-                delete: jest.fn(() =>
+                delete: vi.fn(() =>
                     Promise.resolve({ data: { id: 1 } } as any)
                 ),
             } as any;
@@ -517,7 +517,7 @@ describe('useDelete', () => {
                 },
             });
             const dataProvider = {
-                delete: jest.fn(() =>
+                delete: vi.fn(() =>
                     Promise.resolve({ data: { id: 1 } } as any)
                 ),
             } as any;
@@ -577,7 +577,7 @@ describe('useDelete', () => {
                 pageParams: [],
             });
             const dataProvider = {
-                delete: jest.fn(() =>
+                delete: vi.fn(() =>
                     Promise.resolve({ data: { id: 1 } } as any)
                 ),
             } as any;

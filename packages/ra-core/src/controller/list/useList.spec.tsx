@@ -1,12 +1,12 @@
 import * as React from 'react';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { fireEvent, render, waitFor, screen } from '@testing-library/react';
 
 import { Basic, SelectAll, Sort } from './useList.stories';
 
 describe('<useList />', () => {
     it('should apply sorting correctly', async () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         const data = [
             { id: 1, title: 'hello' },
             { id: 2, title: 'world' },
@@ -55,7 +55,7 @@ describe('<useList />', () => {
     });
 
     it('should apply pagination correctly', async () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         render(<Basic page={2} perPage={5} callback={callback} />);
 
         await waitFor(() => {
@@ -84,7 +84,7 @@ describe('<useList />', () => {
     });
 
     it('should be usable with asynchronously fetched data', () => {
-        const callback = jest.fn();
+        const callback = vi.fn();
         const data = [
             { id: 1, title: 'hello' },
             { id: 2, title: 'world' },
@@ -118,7 +118,7 @@ describe('<useList />', () => {
 
     describe('filter', () => {
         it('should filter string data based on the filter props', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             render(
                 <Basic filter={{ title: 'The Hobbit' }} callback={callback} />
             );
@@ -136,7 +136,7 @@ describe('<useList />', () => {
         });
 
         it('should filter array data based on the filter props', async () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const data = [
                 { id: 1, items: ['one', 'two'] },
                 { id: 2, items: ['three'] },
@@ -171,7 +171,7 @@ describe('<useList />', () => {
         });
 
         it('should filter array data based on the custom filter', async () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const data = [
                 { id: 1, items: ['one', 'two'] },
                 { id: 2, items: ['three'] },
@@ -206,7 +206,7 @@ describe('<useList />', () => {
         });
 
         it('should filter data based on a custom filter with nested objects', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             const data = [
                 { id: 1, title: { name: 'hello' } },
                 { id: 2, title: { name: 'world' } },
@@ -235,7 +235,7 @@ describe('<useList />', () => {
         });
 
         it('should apply the q filter as a full-text filter', () => {
-            const callback = jest.fn();
+            const callback = vi.fn();
             render(<Basic filter={{ q: 'The' }} callback={callback} />);
 
             expect(callback).toHaveBeenCalledWith(

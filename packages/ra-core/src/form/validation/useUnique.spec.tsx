@@ -15,14 +15,14 @@ describe('useUnique', () => {
     const baseDataProvider = (overrides?: Partial<DataProvider>) =>
         testDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [{ id: 1, name: 'John Doe' }],
                     total: 1,
                 })
             ),
             // @ts-ignore
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } })),
+            create: vi.fn(() => Promise.resolve({ data: { id: 1 } })),
             ...overrides,
         });
 
@@ -58,7 +58,7 @@ describe('useUnique', () => {
     it('should not show the error when the field value already exists but only for the current record', async () => {
         const dataProvider = baseDataProvider({
             // @ts-ignore
-            getList: jest.fn((resource, params) =>
+            getList: vi.fn((resource, params) =>
                 params.filter.name === 'John Doe'
                     ? Promise.resolve({
                           data: [{ id: 1, name: 'John Doe' }],
@@ -70,13 +70,13 @@ describe('useUnique', () => {
                       })
             ),
             // @ts-ignore
-            getOne: jest.fn(() =>
+            getOne: vi.fn(() =>
                 Promise.resolve({
                     data: { id: 1, name: 'John Doe' },
                 })
             ),
             // @ts-ignore
-            update: jest.fn(() => Promise.resolve({ data: { id: 1 } })),
+            update: vi.fn(() => Promise.resolve({ data: { id: 1 } })),
         });
         render(<Edit dataProvider={dataProvider} id={1} />);
 
@@ -123,7 +123,7 @@ describe('useUnique', () => {
     it('should not show the default error when the field value does not already exist', async () => {
         const dataProvider = baseDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [],
                     total: 0,
@@ -170,7 +170,7 @@ describe('useUnique', () => {
     it('should not show the custom error when the field value does not already exist and a message is provided', async () => {
         const dataProvider = baseDataProvider({
             // @ts-ignore
-            getList: jest.fn(() =>
+            getList: vi.fn(() =>
                 Promise.resolve({
                     data: [],
                     total: 0,
