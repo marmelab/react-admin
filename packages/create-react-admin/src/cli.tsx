@@ -16,16 +16,21 @@ const cli = meow(
 	  --auth-provider  Set the auth provider to use ("local-auth-provider" or "none")
 	  --resource       Add a resource that will be initialized with guessers (can be used multiple times). Set to "skip" to bypass the interactive resource step.
 	  --install        Set the package manager to use for installing dependencies ("yarn", "npm" or "skip" to bypass the interactive install step)
+      --basic          Skip all the interactive steps and create a basic app with no data provider, no auth provider, no resources and no install step
 
     Examples
 	  $ create-admin-app my-admin
 	  $ create-admin-app my-admin --data-provider ra-data-json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+      $ create-admin-app my-admin --basic
 `,
     {
         flags: {
             help: {
                 type: 'boolean',
                 alias: 'h',
+            },
+            basic: {
+                type: 'boolean',
             },
             dataProvider: {
                 type: 'string',
@@ -49,6 +54,16 @@ const cli = meow(
 
 if (cli.flags.h) {
     cli.showHelp();
+} else if (cli.flags.basic) {
+    render(
+        <App
+            name={cli.input.length > 0 ? cli.input[0] : undefined}
+            dataProvider="none"
+            authProvider="none"
+            resources={[]}
+            install="skip"
+        />
+    );
 } else {
     render(
         <App
