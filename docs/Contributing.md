@@ -9,7 +9,7 @@ If you want to give a hand: Thank you! There are many things you can do to help 
 
 ## How To Contribute
 
-The easiest task is **bug triaging**. Check that new issues on GitHub follow the issue template and give a way to reproduce the issue. If not, comment on the issue to ask precisions. Then, try and reproduce the issue following the description. If you managed to reproduce the issue, add a comment to say it. Otherwise, add a comment to say that something is missing. 
+The easiest task is **bug triaging**. Check that new issues on GitHub follow the issue template and give a way to reproduce the issue. If not, comment on the issue to ask for precisions. Then, try and reproduce the issue following the description. If you managed to reproduce the issue, add a comment to say it. Otherwise, add a comment to say that something is missing. 
 
 The second way to contribute is to **answer support questions on [Discord](https://discord.gg/GeZF9sqh3N) and [StackOverflow](https://stackoverflow.com/questions/tagged/react-admin)**. There are many beginner questions there, so even if you're not super experienced with react-admin, there is someone you can help there. 
 
@@ -29,7 +29,7 @@ Clone this repository and run `make install` to grab the dependencies, then `mak
 
 ### Automated Tests
 
-Automated tests are also crucial in our development process. You can run all the tests (linting, unit and functional tests) by calling:
+Automated tests are also crucial in our development process. You can run all the tests (linting, unit, and functional tests) by calling:
 
 ```sh
 make test
@@ -43,7 +43,7 @@ yarn jest
 
 Besides, tests related to the modified files are run automatically at commit using a git pre-commit hook. This means you won't be able to commit your changes if they break the tests. 
 
-When working on the end-to-end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
+When working on the end-to-end tests, you can leverage the [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
 
 ### Documentation
 
