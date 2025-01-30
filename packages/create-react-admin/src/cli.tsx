@@ -54,30 +54,24 @@ const cli = meow(
 
 if (cli.flags.h) {
     cli.showHelp();
-} else if (cli.flags.basic) {
-    render(
-        <App
-            name={cli.input.length > 0 ? cli.input[0] : undefined}
-            dataProvider="none"
-            authProvider="none"
-            resources={[]}
-            install="skip"
-        />
-    );
 } else {
+    const dataProvider = cli.flags.basic ? 'none' : cli.flags.dataProvider;
+    const authProvider = cli.flags.basic ? 'none' : cli.flags.authProvider;
+    const install = cli.flags.basic ? 'skip' : cli.flags.install;
+    const resources =
+        cli.flags.basic ||
+        cli.flags.resource.includes('skip') ||
+        cli.flags.resource.length === 0
+            ? []
+            : cli.flags.resource;
+
     render(
         <App
             name={cli.input.length > 0 ? cli.input[0] : undefined}
-            dataProvider={cli.flags.dataProvider}
-            authProvider={cli.flags.authProvider}
-            resources={
-                cli.flags.resource.includes('skip')
-                    ? []
-                    : cli.flags.resource.length > 0
-                      ? cli.flags.resource
-                      : undefined
-            }
-            install={cli.flags.install}
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+            resources={resources}
+            install={install}
         />
     );
 }
