@@ -59,8 +59,7 @@ if (cli.flags.h) {
     const authProvider = cli.flags.basic ? 'none' : cli.flags.authProvider;
     const install = cli.flags.basic ? 'skip' : cli.flags.install;
     const resources =
-        cli.flags.basic ||
-        cli.flags.resource.includes('skip')
+        cli.flags.basic || cli.flags.resource.includes('skip')
             ? []
             : cli.flags.resource;
 
