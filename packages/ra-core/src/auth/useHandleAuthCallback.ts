@@ -29,30 +29,14 @@ export const useHandleAuthCallback = (
     const queryResult = useQuery({
         queryKey: ['auth', 'handleCallback'],
         queryFn: ({ signal }) => {
-            console.log('queryFn', handleCallbackPromise);
             if (!handleCallbackPromise) {
-                handleCallbackPromise = new Promise(async (resolve, reject) => {
-                    if (authProvider) {
-                        if (typeof authProvider.handleCallback === 'function') {
-                            try {
-                                const result =
-                                    await authProvider.handleCallback({
-                                        signal,
-                                    });
-                                return resolve(result ?? null);
-                            } catch (error) {
-                                return reject({
-                                    redirectTo: false,
-                                    message: error.message,
-                                });
-                            }
-                        }
-                        return resolve();
-                    }
-                    return reject({
-                        message: 'Failed to handle login callback.',
-                    });
-                });
+                handleCallbackPromise =
+                    authProvider &&
+                    typeof authProvider.handleCallback === 'function'
+                        ? authProvider
+                              .handleCallback({ signal })
+                              .then(result => result ?? null)
+                        : Promise.resolve();
             }
             return handleCallbackPromise;
         },
