@@ -1326,6 +1326,13 @@ export const PostList = () => {
 ```
 {% endraw %}
 
+### Working with Dates
+
+When using `DatagridAG` with dates, [the `ag-grid` documentation](https://www.ag-grid.com/react-data-grid/cell-data-types/#date) states that:
+
+> The default Value Parser and Value Formatter use the ISO string format 'yyyy-mm-dd'.
+> If you wish to use a different date format, then you can [Override the Pre-Defined Cell Data Type Definition](https://www.ag-grid.com/react-data-grid/cell-data-types/#overriding-the-pre-defined-cell-data-type-definitions).
+
 ### Enabling Full Row Edition
 
 By default, editing is enabled on cells, which means you can edit a cell by double-clicking on it, and it will trigger a call to the dataProvider's `update` function.
@@ -2738,6 +2745,13 @@ export const PostList = () => {
 };
 ```
 {% endraw %}
+
+### Working with Dates
+
+When using `DatagridAG` with dates, [the `ag-grid` documentation](https://www.ag-grid.com/react-data-grid/cell-data-types/#date) states that:
+
+> The default Value Parser and Value Formatter use the ISO string format 'yyyy-mm-dd'.
+> If you wish to use a different date format, then you can [Override the Pre-Defined Cell Data Type Definition](https://www.ag-grid.com/react-data-grid/cell-data-types/#overriding-the-pre-defined-cell-data-type-definitions).
 
 ### Enabling Infinite Pagination
 
