@@ -24,15 +24,22 @@ export const useHandleAuthCallback = (
     const nextSearch = locationState && locationState.nextSearch;
     const defaultRedirectUrl = nextPathName ? nextPathName + nextSearch : '/';
     const { onSuccess, onError, onSettled, ...queryOptions } = options ?? {};
+    let handleCallbackPromise: Promise<void> | null;
 
     const queryResult = useQuery({
         queryKey: ['auth', 'handleCallback'],
-        queryFn: ({ signal }) =>
-            authProvider && typeof authProvider.handleCallback === 'function'
-                ? authProvider
-                      .handleCallback({ signal })
-                      .then(result => result ?? null)
-                : Promise.resolve(),
+        queryFn: ({ signal }) => {
+            if (!handleCallbackPromise) {
+                handleCallbackPromise =
+                    authProvider &&
+                    typeof authProvider.handleCallback === 'function'
+                        ? authProvider
+                              .handleCallback({ signal })
+                              .then(result => result ?? null)
+                        : Promise.resolve();
+            }
+            return handleCallbackPromise;
+        },
         retry: false,
         ...queryOptions,
     });

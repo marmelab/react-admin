@@ -160,4 +160,28 @@ describe('useHandleAuthCallback', () => {
             expect(abort).toHaveBeenCalled();
         });
     });
+
+    it('should only call handleCallback once when the component is rendered', async () => {
+        const handleCallback = jest.spyOn(authProvider, 'handleCallback');
+        render(
+            <React.StrictMode>
+                <TestMemoryRouter initialEntries={['/auth-callback']}>
+                    <AuthContext.Provider value={authProvider}>
+                        <QueryClientProvider client={new QueryClient()}>
+                            <Routes>
+                                <Route path="/" element={<div>Home</div>} />
+                                <Route
+                                    path="/auth-callback"
+                                    element={<TestComponent />}
+                                />
+                            </Routes>
+                        </QueryClientProvider>
+                    </AuthContext.Provider>
+                </TestMemoryRouter>
+            </React.StrictMode>
+        );
+
+        await screen.findByText('Home');
+        expect(handleCallback).toHaveBeenCalledTimes(1);
+    });
 });
