@@ -53,7 +53,7 @@ Here, the `<List>` component will call `dataProvider.getList('posts')` to fetch 
 
 ## Page Context
 
-`<List>` and other page component don't just fetch data; they provide a way to update the page settings:
+`<List>` and other page components don't just fetch data; they provide a way to update the page settings:
 
 - Sort field and order
 - Current page & page size
@@ -123,10 +123,12 @@ This is the equivalent of the following react-router configuration:
 
 ```jsx
 <ResourceContextProvider value="posts">
-    <Route path="/posts" element={<PostList />} />
-    <Route path="/posts/:id/show" element={<PostShow />} />
-    <Route path="/posts/:id" element={<PostEdit />} />
-    <Route path="/posts/create" element={<PostCreate />} />
+    <Routes>
+        <Route path="/posts" element={<PostList />} />
+        <Route path="/posts/:id/show" element={<PostShow />} />
+        <Route path="/posts/:id" element={<PostEdit />} />
+        <Route path="/posts/create" element={<PostCreate />} />
+    </Routes>
 </ResourceContextProvider>
 ```
 

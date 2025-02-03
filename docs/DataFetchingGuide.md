@@ -192,14 +192,14 @@ POST /api/user/123/ban
 
 The react-admin way to expose these endpoints to the app components is to add a custom method in the `dataProvider`:
 
-```jsx
+```tsx
 import simpleRestDataProvider from 'ra-data-simple-rest';
 
 const baseDataProvider = simpleRestDataProvider('http://path.to.my.api/');
 
 export const dataProvider = {
     ...baseDataProvider,
-    banUser: (userId) => {
+    banUser: (userId: string) => {
         return fetch(`/api/user/${userId}/ban`, { method: 'POST' })
             .then(response => response.json());
     },
@@ -208,11 +208,11 @@ export const dataProvider = {
 
 Then you can use react-query's `useMutation` hook to call the `dataProvider.banUser()` method:
 
-```jsx
+```tsx
 import { useDataProvider } from 'react-admin';
 import { useMutation } from '@tanstack/react-query';
 
-const BanUserButton = ({ userId }) => {
+const BanUserButton = ({ userId }: { userId: string }) => {
     const dataProvider = useDataProvider();
     const { mutate, isPending } = useMutation({
         mutationFn: () => dataProvider.banUser(userId)
