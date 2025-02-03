@@ -1,10 +1,25 @@
 import * as React from 'react';
-import { FormDataConsumer, required, ResourceContextProvider } from 'ra-core';
+import {
+    FilterLiveForm,
+    FormDataConsumer,
+    required,
+    ResourceContextProvider,
+    useListContext,
+} from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { AdminContext } from '../AdminContext';
-import { AutocompleteInput, ReferenceInput, TextInput } from '../input';
+import {
+    ArrayInput,
+    AutocompleteInput,
+    ReferenceInput,
+    SelectInput,
+    SimpleFormIterator,
+    TextInput,
+} from '../input';
 import { SimpleForm } from './SimpleForm';
 import { Create } from '../detail';
+import { Datagrid, List } from '../list';
+import { TextField } from '../field';
 
 // We keep this test in ra-ui-materialui because we need heavy components to reproduce the issue https://github.com/marmelab/react-admin/issues/10415
 export default { title: 'ra-core/form/FormDataConsumer' };
@@ -45,6 +60,85 @@ export const Basic = () => (
                     <TextInput source="body" multiline rows={5} />
                 </SimpleForm>
             </Create>
+        </ResourceContextProvider>
+    </AdminContext>
+);
+
+const config = {
+    name: {
+        operators: [
+            { id: 'eq', name: 'Equals' },
+            { id: 'ne', name: 'Not equals' },
+        ],
+    },
+    id: {
+        operators: [
+            { id: 'eq', name: 'Equals' },
+            { id: 'ne', name: 'Not equals' },
+        ],
+    },
+};
+
+const StackedFiltersForm = () => (
+    <FilterLiveForm>
+        <ArrayInput source="filters">
+            <SimpleFormIterator inline disableReordering disableClear>
+                <AutocompleteInput
+                    source="source"
+                    choices={[
+                        { id: 'name', name: 'Name' },
+                        { id: 'id', name: 'Id' },
+                    ]}
+                />
+                <FormDataConsumer>
+                    {({ scopedFormData }) => {
+                        if (!scopedFormData) return null;
+                        const source = scopedFormData.source;
+                        const operators = config[source]?.operators ?? [];
+                        return (
+                            <SelectInput
+                                source="operator"
+                                choices={operators}
+                                disabled={!operators.length}
+                            />
+                        );
+                    }}
+                </FormDataConsumer>
+                <FormDataConsumer>
+                    {({ scopedFormData }) => {
+                        if (!scopedFormData) return null;
+                        const source = scopedFormData.source;
+                        const operators = config[source]?.operators ?? [];
+                        return (
+                            <TextInput
+                                helperText={false}
+                                source="value"
+                                disabled={!operators.length}
+                            />
+                        );
+                    }}
+                </FormDataConsumer>
+            </SimpleFormIterator>
+        </ArrayInput>
+    </FilterLiveForm>
+);
+
+const FiltersDebugger = () => {
+    const { filterValues } = useListContext();
+    return <pre>{JSON.stringify(filterValues, null, 2)}</pre>;
+};
+
+export const StackedFilters = () => (
+    <AdminContext dataProvider={dataProvider}>
+        <ResourceContextProvider value="users">
+            <List>
+                <StackedFiltersForm />
+                <FiltersDebugger />
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="name" />
+                </Datagrid>
+            </List>
         </ResourceContextProvider>
     </AdminContext>
 );
