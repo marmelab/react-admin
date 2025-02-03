@@ -360,9 +360,7 @@ const IconAndLabel = ({
     <Stack
         direction="row"
         spacing={1}
-        sx={{
-            alignItems: "center"
-        }}
+        sx={{ alignItems: "center" }}
     >
         {icon}
         <Typography variant="body2">{label}</Typography>
@@ -552,9 +550,7 @@ const MyBreadcrumbCustomHome = () => (
                 <Stack
                     direction="row"
                     spacing={1}
-                    sx={{
-                        alignItems: "center"
-                    }}
+                    sx={{ alignItems: "center" }}
                 >
                     <CabinIcon />
                     <Box sx={visuallyHidden}>Dashboard</Box>

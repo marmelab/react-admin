@@ -29,12 +29,7 @@ import { Alert, AlertTitle, Box, Button } from '@mui/material';
 const PostAside = () => {
     const [doLock, { data, error, isLoading }] = useLockOnCall();
     return (
-        <Box
-            sx={{
-                width: 200,
-                ml: 1
-            }}
-        >
+        <Box sx={{ width: 200, ml: 1 }}>
             {isLoading ? (
                 <Alert severity="info">Locking post...</Alert>
             ) : error ? (

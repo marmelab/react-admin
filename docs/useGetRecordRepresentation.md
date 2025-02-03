@@ -30,11 +30,7 @@ export const PostBreadcrumbs = () => {
                 <Link underline="hover" color="inherit" to="/posts">
                     Posts
                 </Link>
-                <Typography
-                    sx={{
-                        color: "text.primary"
-                    }}
-                >
+                <Typography sx={{ color: "text.primary" }}>
                     {getRecordRepresentation(record)}
                 </Typography>
             </Breadcrumbs>

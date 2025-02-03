@@ -40,12 +40,7 @@ const postFilters = [
 ];
 
 const ListToolbar = () => (
-    <Stack
-        direction="row"
-        sx={{
-            justifyContent: "space-between"
-        }}
-    >
+    <Stack direction="row" sx={{ justifyContent: "space-between" }}>
         <FilterForm filters={postFilters} />
         <div>
             <FilterButton filters={postFilters} />
@@ -75,12 +70,7 @@ By default, the filter button lets users save a group of filters for later reuse
 {% raw %}
 ```jsx
 const ListToolbar = () => (
-    <Stack
-        direction="row"
-        sx={{
-            justifyContent: "space-between"
-        }}
-    >
+    <Stack direction="row" sx={{ justifyContent: "space-between" }}>
         <FilterForm filters={postFilters} />
         <div>
             <FilterButton filters={postFilters} disableSaveQuery />

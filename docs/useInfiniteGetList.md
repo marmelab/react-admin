@@ -234,9 +234,7 @@ const LatestNews = () => {
             <Typography
                 ref={observerElem}
                 variant="body2"
-                sx={{
-                    color: "grey.500"
-                }}
+                sx={{ color: "grey.500" }}
             >
                 {isFetchingNextPage && hasNextPage
                     ? 'Loading...'

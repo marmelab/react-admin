@@ -65,11 +65,7 @@ The inner component reads the preferences using the same `usePreference` hook:
 const TextBlock = ({ title, content }) => {
     const [color] = usePreference('color', '#ffffff');
     return (
-        <Box
-            sx={{
-                bgcolor: color
-            }}
-        >
+        <Box sx={{ bgcolor: color }}>
             <Typography variant="h6">{title}</Typography>
             <Typography>{content}</Typography>
         </Box>
@@ -244,18 +240,10 @@ const MyLayout = ({ children, dashboard }) => (
     >
         <Box
             overflowX="auto"
-            sx={{
-                display: "flex",
-                flexDirection: "column"
-            }}
+            sx={{ display: "flex", flexDirection: "column" }}
         >
             <AppBar />
-            <Box
-                sx={{
-                    display: "flex",
-                    flexGrow: 1
-                }}
-            >
+            <Box sx={{ display: "flex", flexGrow: 1 }}>
                 <Sidebar>
                     <Menu hasDashboard={!!dashboard} />
                 </Sidebar>

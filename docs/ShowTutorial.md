@@ -44,23 +44,13 @@ const BookShow = () => {
             <Card>
                 <Stack spacing={1}>
                     <div>
-                        <Typography
-                            variant="caption"
-                            sx={{
-                                display: "block"
-                            }}
-                        >
+                        <Typography variant="caption" sx={{ display: "block" }}>
                             Title
                         </Typography>
                         <Typography variant="body2">{data.title}</Typography>
                     </div>
                     <div>
-                        <Typography
-                            variant="caption"
-                            sx={{
-                                display: "block"
-                            }}
-                        >
+                        <Typography variant="caption" sx={{ display: "block" }}>
                             Publication Date
                         </Typography>
                         <Typography variant="body2">{new Date(data.published_at).toDateString()}</Typography>

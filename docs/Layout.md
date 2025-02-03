@@ -104,17 +104,9 @@ import Logo from './Logo';
 export const MyAppBar = () => (
     <AppBar color="primary">
         <TitlePortal />
-        <Box
-            sx={{
-                flex: "1"
-            }}
-        />
+        <Box sx={{ flex: "1" }} />
         <Logo />
-        <Box
-            sx={{
-                flex: "1"
-            }}
-        />
+        <Box sx={{ flex: "1" }} />
     </AppBar>
 );
 ```
@@ -489,18 +481,10 @@ const MyLayout = ({ children }) => (
     >
         <Box
             overflowX="auto"
-            sx={{
-                display: "flex",
-                flexDirection: "column"
-            }}
+            sx={{ display: "flex", flexDirection: "column" }}
         >
             <AppBar />
-            <Box
-                sx={{
-                    display: "flex",
-                    flexGrow: 1
-                }}
-            >
+            <Box sx={{ display: "flex", flexGrow: 1 }}>
                 <Sidebar>
                     <Menu />
                 </Sidebar>

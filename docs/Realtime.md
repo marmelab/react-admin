@@ -194,9 +194,7 @@ const LinearProgressWithLabel = props => {
             <Box sx={{ minWidth: 35 }}>
                 <Typography
                     variant="body2"
-                    sx={{
-                        color: "text.secondary"
-                    }}
+                    sx={{ color: "text.secondary" }}
                 >{`${Math.round(props.value)}%`}</Typography>
             </Box>
         </Box>

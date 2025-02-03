@@ -443,25 +443,11 @@ const UserCreate = () => (
             <Typography variant="h6" gutterBottom>
                 Identity
             </Typography>
-            <Box
-                sx={{
-                    display: { xs: "block", sm: "flex", width: "100%" }
-                }}
-            >
-                <Box
-                    sx={{
-                        flex: 1,
-                        mr: { xs: 0, sm: "0.5em" }
-                    }}
-                >
+            <Box sx={{ display: { xs: "block", sm: "flex", width: "100%" } }}>
+                <Box sx={{ flex: 1, mr: { xs: 0, sm: "0.5em" } }}>
                     <TextInput source="first_name" isRequired />
                 </Box>
-                <Box
-                    sx={{
-                        flex: 1,
-                        ml: { xs: 0, sm: "0.5em" }
-                    }}
-                >
+                <Box sx={{ flex: 1, ml: { xs: 0, sm: "0.5em" } }}>
                     <TextInput source="last_name" isRequired />
                 </Box>
             </Box>
@@ -473,32 +459,14 @@ const UserCreate = () => (
                 Address
             </Typography>
             <TextInput source="address" multiline helperText={false} />
-            <Box
-                sx={{
-                    display: { xs: "block", sm: "flex" }
-                }}
-            >
-                <Box
-                    sx={{
-                        flex: 2,
-                        mr: { xs: 0, sm: "0.5em" }
-                    }}
-                >
+            <Box sx={{ display: { xs: "block", sm: "flex" } }}>
+                <Box sx={{ flex: 2, mr: { xs: 0, sm: "0.5em" } }}>
                     <TextInput source="city" helperText={false} />
                 </Box>
-                <Box
-                    sx={{
-                        flex: 1,
-                        mr: { xs: 0, sm: "0.5em" }
-                    }}
-                >
+                <Box sx={{ flex: 1, mr: { xs: 0, sm: "0.5em" } }}>
                     <TextInput source="stateAbbr" helperText={false} />
                 </Box>
-                <Box
-                    sx={{
-                        flex: 2
-                    }}
-                >
+                <Box sx={{ flex: 2 }}>
                     <TextInput source="zipcode" helperText={false} />
                 </Box>
             </Box>
@@ -507,25 +475,11 @@ const UserCreate = () => (
             <Typography variant="h6" gutterBottom>
                 Password
             </Typography>
-            <Box
-                sx={{
-                    display: { xs: "block", sm: "flex" }
-                }}
-            >
-                <Box
-                    sx={{
-                        flex: 1,
-                        mr: { xs: 0, sm: "0.5em" }
-                    }}
-                >
+            <Box sx={{ display: { xs: "block", sm: "flex" } }}>
+                <Box sx={{ flex: 1, mr: { xs: 0, sm: "0.5em" } }}>
                     <PasswordInput source="password" />
                 </Box>
-                <Box
-                    sx={{
-                        flex: 1,
-                        ml: { xs: 0, sm: "0.5em" }
-                    }}
-                >
+                <Box sx={{ flex: 1, ml: { xs: 0, sm: "0.5em" } }}>
                     <PasswordInput source="confirm_password" />
                 </Box>
             </Box>
@@ -533,13 +487,7 @@ const UserCreate = () => (
     </Create>
 );
 
-const Separator = () => (
-    <Box
-        sx={{
-            pt: "1em"
-        }}
-    />
-);
+const Separator = () => <Box sx={{ pt: "1em" }} />;
 ```
 {% endraw %}
 

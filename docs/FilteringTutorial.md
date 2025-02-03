@@ -533,19 +533,8 @@ import { FilterLiveForm, TextInput, NullableBooleanInput } from 'react-admin';
 
 const PostFilterForm = () => (
     <FilterLiveForm>
-        <Box
-            sx={{
-                display: "flex",
-                alignItems: "flex-end",
-                mb: 1
-            }}
-        >
-            <Box
-                component="span"
-                sx={{
-                    mr: 2
-                }}
-            >
+        <Box sx={{ display: "flex", alignItems: "flex-end", mb: 1 }}>
+            <Box component="span" sx={{ mr: 2 }}>
                 {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
                 <TextInput
                     resettable
@@ -561,12 +550,7 @@ const PostFilterForm = () => (
                     }}
                 />
             </Box>
-            <Box
-                component="span"
-                sx={{
-                    mr: 2
-                }}
-            >
+            <Box component="span" sx={{ mr: 2 }}>
                 {/* Commentable filter */}
                 <NullableBooleanInput
                     helperText={false}
@@ -618,19 +602,8 @@ const PostFilterForm = () => {
     return (
         <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "flex-end",
-                        mb: 1
-                    }}
-                >
-                    <Box
-                        component="span"
-                        sx={{
-                            mr: 2
-                        }}
-                    >
+                <Box sx={{ display: "flex", alignItems: "flex-end", mb: 1 }}>
+                    <Box component="span" sx={{ mr: 2 }}>
                         {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
                         <TextInput
                             resettable
@@ -646,39 +619,19 @@ const PostFilterForm = () => {
                             }}
                         />
                     </Box>
-                    <Box
-                        component="span"
-                        sx={{
-                            mr: 2
-                        }}
-                    >
+                    <Box component="span" sx={{ mr: 2 }}>
                         {/* Commentable filter */}
                         <NullableBooleanInput
                             helperText={false}
                             source="commentable"
                         />
                     </Box>
-                    <Box
-                        component="span"
-                        sx={{
-                            mr: 2,
-                            mb: 1.5
-                        }}
-                    >
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            type="submit"
-                        >
+                    <Box component="span" sx={{ mr: 2, mb: 1.5 }}>
+                        <Button variant="outlined" color="primary" type="submit">
                             Filter
                         </Button>
                     </Box>
-                    <Box
-                        component="span"
-                        sx={{
-                            mb: 1.5
-                        }}
-                    >
+                    <Box component="span" sx={{ mb: 1.5 }}>
                         <Button variant="outlined" onClick={resetFilter}>
                             Close
                         </Button>
@@ -701,11 +654,7 @@ import { TopToolbar, ExportButton } from 'react-admin';
 import { Box } from '@mui/material';
 
 const ListActions = () => (
-    <Box
-        sx={{
-            width: "100%"
-        }}
-    >
+    <Box sx={{ width: "100%" }}>
         <TopToolbar>
             <PostFilterButton />
             <ExportButton />
