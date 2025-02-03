@@ -4,6 +4,7 @@ import { useFormContext, FieldValues } from 'react-hook-form';
 import get from 'lodash/get';
 import { useFormValues } from './useFormValues';
 import { useWrappedSource } from '../core';
+import { useEvent } from '../util';
 
 /**
  * Get the current (edited) value of the record from the form and pass it
@@ -67,22 +68,26 @@ export const FormDataConsumerView = <
     props: Props<TFieldValues>
 ) => {
     const { children, formData, source } = props;
-    let result;
+    const [result, setResult] = React.useState<ReactNode>(null);
 
     const finalSource = useWrappedSource(source || '');
+    const render = useEvent(children);
 
-    // Passes an empty string here as we don't have the children sources and we just want to know if we are in an iterator
-    const matches = ArraySourceRegex.exec(finalSource);
+    // Getting the result of the children function in a useEffect allows us to keep a stable reference to is
+    // with useEvent
+    React.useEffect(() => {
+        // Passes an empty string here as we don't have the children sources and we just want to know if we are in an iterator
+        const matches = ArraySourceRegex.exec(finalSource);
+        // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
+        if (matches) {
+            const scopedFormData = get(formData, matches[0]);
+            setResult(render({ formData, scopedFormData }));
+        } else {
+            setResult(render({ formData }));
+        }
+    }, [finalSource, formData, render]);
 
-    // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
-    if (matches) {
-        const scopedFormData = get(formData, matches[0]);
-        result = children({ formData, scopedFormData });
-    } else {
-        result = children({ formData });
-    }
-
-    return result === undefined ? null : result;
+    return result;
 };
 
 const ArraySourceRegex = new RegExp(/.+\.\d+$/);
