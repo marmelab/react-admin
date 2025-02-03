@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.5.3
+
+* Fix `useHandleCallback` compatibility with `React.StrictMode` ([#10486](https://github.com/marmelab/react-admin/pull/10486)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `useList` usage contains incorrect code snippet ([#10491](https://github.com/marmelab/react-admin/pull/10491)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add Working with Dates section to `<DatagridAG>` docs ([#10487](https://github.com/marmelab/react-admin/pull/10487)) ([slax57](https://github.com/slax57))
+* [Demo] Fix vite config in Simple and CRM demos ([#10475](https://github.com/marmelab/react-admin/pull/10475)) ([slax57](https://github.com/slax57))
+* Make the CI fail on `console.error` in tests ([#10480](https://github.com/marmelab/react-admin/pull/10480)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.5.2
 
 * Fix create-react-admin Vite alias and test ([#10472](https://github.com/marmelab/react-admin/pull/10472)) ([slax57](https://github.com/slax57))
