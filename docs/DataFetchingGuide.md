@@ -204,6 +204,10 @@ export const dataProvider = {
             .then(response => response.json());
     },
 }
+
+export interface MyDataProvider extends DataProvider {
+    banUser: (userId: string) => Promise<Record<string, any>>;
+}
 ```
 
 Then you can use react-query's `useMutation` hook to call the `dataProvider.banUser()` method:
@@ -212,8 +216,10 @@ Then you can use react-query's `useMutation` hook to call the `dataProvider.banU
 import { useDataProvider } from 'react-admin';
 import { useMutation } from '@tanstack/react-query';
 
+import type { MyDataProvider } from './dataProvider';
+
 const BanUserButton = ({ userId }: { userId: string }) => {
-    const dataProvider = useDataProvider();
+    const dataProvider = useDataProvider<MyDataProvider>();
     const { mutate, isPending } = useMutation({
         mutationFn: () => dataProvider.banUser(userId)
     });
