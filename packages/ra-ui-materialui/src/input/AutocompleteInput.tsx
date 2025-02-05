@@ -35,6 +35,7 @@ import {
     warning,
     useGetRecordRepresentation,
     useEvent,
+    OptionTextFunc,
 } from 'ra-core';
 import {
     SupportCreateSuggestionOptions,
@@ -163,7 +164,7 @@ export const AutocompleteInput = <
         onChange,
         onCreate,
         openText = 'ra.action.open',
-        optionText,
+        optionText: optionTextProp,
         optionValue,
         parse,
         resource: resourceProp,
@@ -227,6 +228,11 @@ export const AutocompleteInput = <
         readOnly,
         ...rest,
     });
+
+    // Memoize optionText
+    const optionTextEvent = useEvent(optionTextProp as OptionTextFunc);
+    const optionText =
+        typeof optionTextProp === 'function' ? optionTextEvent : optionTextProp;
 
     const finalChoices = useMemo(
         () =>
