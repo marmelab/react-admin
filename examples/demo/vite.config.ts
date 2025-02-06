@@ -6,7 +6,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import preserveDirectives from 'rollup-preserve-directives';
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => {
+export default defineConfig(async ({ mode }) => {
     const packages = fs.readdirSync(path.resolve(__dirname, '../../packages'));
     const aliases: Record<string, string> = {
         'data-generator-retail': path.resolve(
@@ -68,6 +68,21 @@ export default defineConfig(async () => {
                 //     find: 'scheduler/tracing',
                 //     replacement: 'scheduler/tracing-profiling',
                 // },
+                // The 2 next aliases are needed to avoid having multiple react-router instances
+                {
+                    find: 'react-router-dom',
+                    replacement: path.resolve(
+                        __dirname,
+                        `node_modules/react-router/dist/${mode === 'production' ? 'production' : 'development'}/index.mjs`
+                    ),
+                },
+                {
+                    find: 'react-router',
+                    replacement: path.resolve(
+                        __dirname,
+                        `node_modules/react-router/dist/${mode === 'production' ? 'production' : 'development'}/index.mjs`
+                    ),
+                },
                 // The 2 next aliases are needed to avoid having multiple MUI instances
                 {
                     find: '@mui/material',
