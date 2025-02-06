@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     FilterLiveForm,
     FormDataConsumer,
+    ListBase,
     required,
     ResourceContextProvider,
     useListContext,
@@ -18,8 +19,7 @@ import {
 } from '../input';
 import { SimpleForm } from './SimpleForm';
 import { Create } from '../detail';
-import { Datagrid, List } from '../list';
-import { TextField } from '../field';
+import { Paper } from '@mui/material';
 
 // We keep this test in ra-ui-materialui because we need heavy components to reproduce the issue https://github.com/marmelab/react-admin/issues/10415
 export default { title: 'ra-core/form/FormDataConsumer' };
@@ -131,14 +131,12 @@ const FiltersDebugger = () => {
 export const StackedFilters = () => (
     <AdminContext dataProvider={dataProvider}>
         <ResourceContextProvider value="users">
-            <List>
-                <StackedFiltersForm />
-                <FiltersDebugger />
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="name" />
-                </Datagrid>
-            </List>
+            <ListBase>
+                <Paper sx={{ p: 2 }}>
+                    <StackedFiltersForm />
+                    <FiltersDebugger />
+                </Paper>
+            </ListBase>
         </ResourceContextProvider>
     </AdminContext>
 );
