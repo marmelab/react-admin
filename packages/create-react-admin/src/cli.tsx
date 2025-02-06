@@ -57,7 +57,7 @@ if (cli.flags.h) {
 } else {
     const dataProvider = cli.flags.basic ? 'none' : cli.flags.dataProvider;
     const authProvider = cli.flags.basic ? 'none' : cli.flags.authProvider;
-    const install = cli.flags.basic ? 'skip' : cli.flags.install;
+    const install = cli.flags.basic ? 'npm' : cli.flags.install;
     const resources =
         cli.flags.basic || cli.flags.resource.includes('skip')
             ? []
