@@ -185,7 +185,7 @@ const PostList = () => (
         <Datagrid>
             <TextField source="title" />
             {/** renders without an additional request */}
-            <ReferenceField source="author_id" />
+            <ReferenceField source="author_id" reference="authors" />
         </Datagrid>
     </List>
 );
