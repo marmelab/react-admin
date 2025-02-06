@@ -354,8 +354,9 @@ Here is a list of react-admin's [relationship components](./Features.md#relation
 - [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)
 - [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 
+To learn more about relationships, check out this tutorial: [Handling Relationships in React Admin](https://marmelab.com/blog/2025/02/06/handling-relationships-in-react-admin.html).
+
 If a relationship component doesn't fit your specific use case, you can always use a [custom data provider method](#adding-custom-methods) to fetch the required data.
-``
 
 ## Realtime
 

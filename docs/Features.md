@@ -242,7 +242,9 @@ React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **man
 - [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)
 - [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 
-Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins.
+Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins. 
+
+To learn more about relationships, check out this tutorial: [Handling Relationships in React Admin](https://marmelab.com/blog/2025/02/06/handling-relationships-in-react-admin.html).
 
 ## Not Ugly
 
