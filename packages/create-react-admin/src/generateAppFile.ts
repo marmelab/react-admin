@@ -24,24 +24,21 @@ ${
 export const App = () => (
     <Admin
         layout={Layout}
-        ${
-            state.dataProvider !== 'none'
-                ? `dataProvider={dataProvider}\n\t`
-                : ''
-        }${
+        ${state.dataProvider !== 'none' ? `dataProvider={dataProvider}` : ''}${
             state.authProvider !== 'none'
-                ? `\tauthProvider={authProvider}\n\t`
+                ? `\n\tauthProvider={authProvider}`
                 : ''
-        }>
+        }
+    >
         ${state.resources
             .map(
                 resource =>
                     `<Resource name="${resource}" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />`
             )
-            .join('\n\t\t')}
+            .join('\n\t')}
     </Admin>
 );
 
-    `
+`
     );
 };
