@@ -1,9 +1,9 @@
 ---
 layout: default
-title: "Realtime DataProvider Requirements"
+title: "Realtime Setup"
 ---
 
-# Realtime DataProvider Requirements
+# Realtime Setup
 
 `ra-realtime` provides helper functions to add real-time capabilities to an existing data provider if you use the following real-time backends:
 

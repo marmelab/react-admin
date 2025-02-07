@@ -1,12 +1,11 @@
 ---
 layout: default
-title: "Security"
+title: "Auth Provider Setup"
 ---
 
-# Security
+# Auth Provider Setup
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/login.webm" type="video/webm"/>
   <source src="./img/login.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>

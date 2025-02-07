@@ -541,6 +541,12 @@ However since we are in the context of a list, there is no `<RecordContext>` ava
 
 Base component for most react-admin buttons. Responsive (displays only the icon with a tooltip on mobile) and accessible.
 
+```tsx
+<Button label="Ban user" onClick={handleClick}>
+    <BanIcon />
+</Button>
+```
+
 ### Props
 
 | Prop         | Required | Type                           | Default | Description                              |
