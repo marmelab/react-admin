@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback, useRef, ChangeEvent } from 'react';
 import clsx from 'clsx';
@@ -20,6 +21,7 @@ import {
     useChoices,
     RaRecord,
     useGetRecordRepresentation,
+    useTranslate,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 import { FormControlProps } from '@mui/material/FormControl';
@@ -95,6 +97,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         createLabel,
         createValue,
         disableValue = 'disabled',
+        emptyText = '',
         format,
         helperText,
         label,
@@ -119,6 +122,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         readOnly,
         ...rest
     } = props;
+
+    const translate = useTranslate();
 
     const inputLabel = useRef(null);
 
@@ -172,21 +177,29 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
             if (eventOrChoice?.target) {
-                // when used with different IDs types, unselection leads to double selection with both types
-                // instead of the value being removed from the array
-                // e.g. we receive eventOrChoice.target.value = [1, '2', 2] instead of [1] after removing 2
-                // this snippet removes a value if it is present twice
-                eventOrChoice.target.value = eventOrChoice.target.value.reduce(
-                    (acc, value) => {
-                        // eslint-disable-next-line eqeqeq
-                        const index = acc.findIndex(v => v == value);
-                        return index < 0
-                            ? [...acc, value]
-                            : [...acc.slice(0, index), ...acc.slice(index + 1)];
-                    },
-                    []
-                );
-                field.onChange(eventOrChoice);
+                // If the selectedValue is emptyValue, clears the selections
+                const selectedValue = eventOrChoice.target.value;
+
+                if (selectedValue.includes('')) {
+                    field.onChange([]);
+                } else {
+                    // when used with different IDs types, unselection leads to double selection with both types
+                    // instead of the value being removed from the array
+                    // e.g. we receive eventOrChoice.target.value = [1, '2', 2] instead of [1] after removing 2
+                    // this snippet removes a value if it is present twice
+                    eventOrChoice.target.value =
+                        eventOrChoice.target.value.reduce((acc, value) => {
+                            // eslint-disable-next-line eqeqeq
+                            const index = acc.findIndex(v => v == value);
+                            return index < 0
+                                ? [...acc, value]
+                                : [
+                                      ...acc.slice(0, index),
+                                      ...acc.slice(index + 1),
+                                  ];
+                        }, []);
+                    field.onChange(eventOrChoice);
+                }
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
                 field.onChange([
@@ -216,6 +229,14 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         create || onCreate
             ? [...(allChoices || []), createItem]
             : allChoices || [];
+
+    const renderEmptyItemOption = useCallback(() => {
+        return typeof emptyText === 'string'
+            ? emptyText === ''
+                ? ' ' // em space, forces the display of an empty line of normal height
+                : translate(emptyText, { _: emptyText })
+            : emptyText;
+    }, [emptyText, translate]);
 
     const renderMenuItemOption = useCallback(
         choice =>
@@ -351,6 +372,18 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     value={finalValue}
                     {...outlinedInputProps}
                 >
+                    {!isRequired && (
+                        <MenuItem
+                            value={''}
+                            key="null"
+                            aria-label={translate(
+                                'ra.action.clear_input_value'
+                            )}
+                            title={translate('ra.action.clear_input_value')}
+                        >
+                            {renderEmptyItemOption()}
+                        </MenuItem>
+                    )}
                     {finalChoices.map(renderMenuItem)}
                 </Select>
                 {renderHelperText ? (
@@ -373,6 +406,7 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
         options?: SelectProps;
         disableValue?: string;
+        emptyText?: string | ReactElement;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };

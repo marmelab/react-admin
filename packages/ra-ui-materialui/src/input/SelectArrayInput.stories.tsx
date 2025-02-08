@@ -251,6 +251,22 @@ export const DefaultValue = () => (
     </Wrapper>
 );
 
+export const EmptyText = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            emptyText={'Clear'}
+            sx={{ width: 300 }}
+        />
+    </Wrapper>
+);
+
 export const InsideArrayInput = () => (
     <Wrapper>
         <ArrayInput
