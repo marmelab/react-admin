@@ -36,6 +36,11 @@ import { InputHelperText } from './InputHelperText';
  * // The input will display '2021-09-11' whatever the browser timezone.
  *
  * @example
+ * // If you want to manipulate the value from the field (data provider), use value prop
+ * <DateInput source="published_at" value={useRecordContext().published_at.getUTCFullYear()} />
+ * // The input will display the first of Jan, whatever the field value is.
+ *
+ * @example
  * // If you want the returned value to be a Date, you must pass a custom parse method
  * to convert the form value (which is always a date string) back to a Date object.
  * <DateInput source="published_at" parse={val => new Date(val)} />
@@ -43,34 +48,35 @@ import { InputHelperText } from './InputHelperText';
 export const DateInput = ({
     className,
     defaultValue,
+    disabled,
     format = defaultFormat,
-    label,
-    source,
-    resource,
     helperText,
+    label,
     margin,
     onChange,
     onFocus,
-    validate,
-    variant,
-    disabled,
     readOnly,
+    resource,
+    source,
+    validate,
+    value,
+    variant,
     ...rest
 }: DateInputProps) => {
     const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
+        disabled,
+        format,
+        readOnly,
         resource,
         source,
         validate,
-        disabled,
-        readOnly,
-        format,
         ...rest,
     });
     const localInputRef = React.useRef<HTMLInputElement>();
     // DateInput is not a really controlled input to ensure users can start entering a date, go to another input and come back to complete it.
     // This ref stores the value that is passed to the input defaultValue prop to solve this issue.
-    const initialDefaultValueRef = React.useRef(field.value);
+    const initialDefaultValueRef = React.useRef(value ?? field.value);
     // As the defaultValue prop won't trigger a remount of the HTML input, we will force it by changing the key.
     const [inputKey, setInputKey] = React.useState(1);
     // This ref let us track that the last change of the form state value was made by the input itself
@@ -83,6 +89,13 @@ export const DateInput = ({
         if (wasLastChangedByInput.current) {
             // Resets the flag to ensure futures changes are handled
             wasLastChangedByInput.current = false;
+            return;
+        }
+
+        // The value has changed from outside the input,
+        // but a `value` prop has been provided to component,
+        // so that should win because that's what the developer wants to display
+        if (value) {
             return;
         }
 
