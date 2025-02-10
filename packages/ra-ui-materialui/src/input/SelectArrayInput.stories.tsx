@@ -261,7 +261,7 @@ export const EmptyText = () => (
                 { id: 'u002', name: 'Moderator' },
                 { id: 'u003', name: 'Reviewer' },
             ]}
-            emptyText={'Clear'}
+            emptyText='Clear'
             sx={{ width: 300 }}
         />
     </Wrapper>
