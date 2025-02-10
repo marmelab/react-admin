@@ -374,7 +374,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 >
                     {!isRequired && (
                         <MenuItem
-                            value={''}
+                            value=''
                             key="null"
                             aria-label={translate(
                                 'ra.action.clear_input_value'
