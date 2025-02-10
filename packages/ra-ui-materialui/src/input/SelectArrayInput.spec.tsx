@@ -777,7 +777,7 @@ describe('<SelectArrayInput />', () => {
         });
     });
 
-    it('should render the emptyValue option correctly', () => {
+    it('should render the emptyText option correctly', () => {
         const choices = [
             { id: 'programming', name: 'Programming' },
             { id: 'lifestyle', name: 'Lifestyle' },
