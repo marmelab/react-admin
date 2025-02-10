@@ -1,4 +1,4 @@
-# ra-data-localstorage
+# ra-data-local-storage
 
 A dataProvider for [react-admin](https://github.com/marmelab/react-admin) that uses a local database, persisted in localStorage.
 

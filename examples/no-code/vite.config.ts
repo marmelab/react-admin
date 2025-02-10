@@ -19,13 +19,6 @@ export default {
                       ),
                   },
                   {
-                      find: /^ra-data-local-storage$/,
-                      replacement: path.resolve(
-                          __dirname,
-                          '../../packages/ra-data-localstorage/src'
-                      ),
-                  },
-                  {
                       find: /^ra-(.*)$/,
                       replacement: path.resolve(
                           __dirname,
