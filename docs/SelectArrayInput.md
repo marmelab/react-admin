@@ -418,7 +418,7 @@ You can override that label with the `emptyText` prop.
 
 ```jsx
 
-<SelectInput  source="category"  choices={choices}  emptyText="No category selected" />
+<SelectArrayInput  source="category"  choices={choices}  emptyText="No category selected" />
 
 ```
 
@@ -426,7 +426,7 @@ The `emptyText` prop accepts either a string or a React Element.
 And if you want to hide that empty choice, make the input required.
 
 ```jsx
-<SelectInput  source="category"  choices={choices}  validate={required()} />
+<SelectArrayInput  source="category"  choices={choices}  validate={required()} />
 ```
 
 ## Fetching Choices
