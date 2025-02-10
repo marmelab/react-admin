@@ -39,7 +39,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
   </div>
 * ![hasura Logo](./img/backend-logos/github.svg "hasura Logo")**[Hasura](https://github.com/hasura/graphql-engine)**: [hasura/ra-data-hasura](https://github.com/hasura/ra-data-hasura)
 * ![hydra Logo](./img/backend-logos/hydra.png "hydra Logo")**[Hydra](https://www.hydra-cg.com/) / [JSON-LD](https://json-ld.org/)**: [api-platform/admin/hydra](https://github.com/api-platform/admin/blob/master/src/hydra/dataProvider.ts)
-* ![indexedDB Logo](./img/backend-logos/indexedDB.png "indexedDB Logo")**[IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)** (via [LocalForage](https://github.com/localForage/localForage)): [marmelab/ra-data-localforage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localforage)
+* ![indexedDB Logo](./img/backend-logos/indexedDB.png "indexedDB Logo")**[IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)** (via [LocalForage](https://github.com/localForage/localForage)): [marmelab/ra-data-local-forage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-local-forage)
 * ![indexedDB Logo](./img/backend-logos/indexedDB.png "indexedDB Logo")**[IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)**: [tykoth/ra-data-dexie](https://github.com/tykoth/ra-data-dexie)
 * ![jsonApi Logo](./img/backend-logos/jsonApi.jpg "jsonApi Logo")**[JSON API](https://jsonapi.org/)**: [henvo/ra-jsonapi-client](https://github.com/henvo/ra-jsonapi-client)
 * <div class="flex">
@@ -49,7 +49,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![marmelab Logo](./img/backend-logos/marmelab.png "marmelab Logo")**[JSON server](https://github.com/typicode/json-server)**: [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server)
 * ![linuxForHealth Logo](./img/backend-logos/github.svg "linuxForHealth Logo")**[LinuxForHealth FHIR](https://github.com/LinuxForHealth/FHIR)**: [tum-mri-aiim/ra-data-fhir](https://gitlab.com/mri-tum/aiim/libs/ra-data-fhir)
 * ![localStorage Logo](./img/backend-logos/js.png "localStorage Logo")**[LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)**: [marmelab/ra-data-localstorage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localstorage)
-* ![localStorage Logo](./img/backend-logos/js.png "localStorage Logo")**[LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)** (via [LocalForage](https://github.com/localForage/localForage)): [marmelab/ra-data-localforage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localforage)
+* ![localStorage Logo](./img/backend-logos/js.png "localStorage Logo")**[LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)** (via [LocalForage](https://github.com/localForage/localForage)): [marmelab/ra-data-local-forage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-local-forage)
 * ![loopback3 Logo](./img/backend-logos/loopback3.svg "loopback3 Logo")**[Loopback3](https://loopback.io/lb3)**: [darthwesker/react-admin-loopback](https://github.com/darthwesker/react-admin-loopback)
 * ![loopback4 Logo](./img/backend-logos/loopback4.svg "loopback4 Logo")**[Loopback4](https://loopback.io/)**: [elmaistrenko/react-admin-lb4](https://github.com/elmaistrenko/react-admin-lb4)
 * ![loopback4 Logo](./img/backend-logos/loopback4.svg "loopback4 Logo")**[Loopback4 CRUD](https://github.com/loopback4/loopback-component-crud)**: [loopback4/ra-data-lb4](https://github.com/loopback4/ra-data-lb4)
@@ -90,7 +90,7 @@ If you don't know where to start, use any of the following:
 * [marmelab/ra-data-json-server](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-json-server): Similar to the previous one, but requires an API powered by JSONServer.
 * [marmelab/ra-data-simple-rest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest): A basic REST adapter that reflects the structure of many APIs
 * [marmelab/ra-data-localstorage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localstorage): Persists user editions in local storage. This allows local-first apps, and can be useful in tests.
-* [marmelab/ra-data-localforage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-localforage): Uses a local, offline database based on IndexedDB. Falls back to WebSQL or localStorage.
+* [marmelab/ra-data-local-forage](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-local-forage): Uses a local, offline database based on IndexedDB. Falls back to WebSQL or localStorage.
 
 **Tip**: Since dataProviders all present the same interface, you can use one dataProvider during early prototyping / development phases, then switch to the dataProvider that fits your production infrastructure.
 

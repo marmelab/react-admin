@@ -16,7 +16,7 @@
 ## 5.5.1
 
 * Fix TabbedForm and TabbedShowLayout with react-router v7 ([#10469](https://github.com/marmelab/react-admin/pull/10469)) ([slax57](https://github.com/slax57))
-* Simplify ra-data-localforage setup ([#10455](https://github.com/marmelab/react-admin/pull/10455)) ([djhi](https://github.com/djhi))
+* Simplify ra-data-local-forage setup ([#10455](https://github.com/marmelab/react-admin/pull/10455)) ([djhi](https://github.com/djhi))
 * [Doc] Document how to have sourcemaps in production ([#10466](https://github.com/marmelab/react-admin/pull/10466)) ([djhi](https://github.com/djhi))
 * [Doc] Impove `scrollToTop` in buttons doc and document `_scrollToTop` in `useRedirect`  ([#10449](https://github.com/marmelab/react-admin/pull/10449)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 * [Doc] Document live filtering with `ReferenceManyField` and `ReferenceManyToManyField` ([#10467](https://github.com/marmelab/react-admin/pull/10467)) ([erwanMarmelab](https://github.com/erwanMarmelab))
@@ -1629,7 +1629,7 @@ We also released new landing pages for both [React-admin](https://marmelab.com/r
 * Add cache to `usePermissions` ([#8196](https://github.com/marmelab/react-admin/pull/8196)) ([hiaselhans](https://github.com/hiaselhans))
 * Add ability to create independent store configurations for different lists of same resource ([#8073](https://github.com/marmelab/react-admin/pull/8073)) ([septentrion-730n](https://github.com/septentrion-730n))
 * Add `emptyText` translation on Field components ([#8132](https://github.com/marmelab/react-admin/pull/8132)) ([oguhpereira](https://github.com/oguhpereira))
-* Add `ra-data-localforage` data provider ([#7959](https://github.com/marmelab/react-admin/pull/7959)) ([arimet](https://github.com/arimet))
+* Add `ra-data-local-forage` data provider ([#7959](https://github.com/marmelab/react-admin/pull/7959)) ([arimet](https://github.com/arimet))
 * Add `queryOptions` support in `<ReferenceInput>` ([#8192](https://github.com/marmelab/react-admin/pull/8192)) ([WiXSL](https://github.com/WiXSL))
 * Add better UI to `<SimpleFormIterator>` ([#8124](https://github.com/marmelab/react-admin/pull/8124)) ([fzaninotto](https://github.com/fzaninotto))
 * Add expand/collapse all toggle to `<Datagrid>` header ([#8152](https://github.com/marmelab/react-admin/pull/8152)) ([hiaselhans](https://github.com/hiaselhans))
