@@ -20,6 +20,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 
 Use this hook in a toolbar, to let the user lock the record manually.
 
+{% raw %}
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { useLockOnMount } from '@react-admin/ra-realtime';
@@ -28,7 +29,7 @@ import { Alert, AlertTitle, Box, Button } from '@mui/material';
 const PostAside = () => {
     const [doLock, { data, error, isLoading }] = useLockOnCall();
     return (
-        <Box width={200} ml={1}>
+        <Box sx={{ width: 200, ml: 1 }}>
             {isLoading ? (
                 <Alert severity="info">Locking post...</Alert>
             ) : error ? (
@@ -58,6 +59,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ## Parameters
 

@@ -24,6 +24,7 @@ export * from './sanitizeInputRestProps';
 export * from './SearchInput';
 export * from './SelectArrayInput';
 export * from './SelectInput';
+export * from './TextArrayInput';
 export * from './TextInput';
 export * from './TranslatableInputs';
 export * from './TranslatableInputsTabContent';

@@ -1,9 +1,12 @@
-import * as React from 'react';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 
 // thanks Kent C Dodds for the following helpers
 
+/**
+ * @deprecated use `useState` instead, since React no longer
+ * issues warnings when calling setState on unmounted components.
+ */
 export function useSafeSetState<T>(
     initialState?: T | (() => T)
 ): [T | undefined, React.Dispatch<React.SetStateAction<T>>] {
@@ -54,7 +57,7 @@ export function useDeepCompareEffect(callback, inputs) {
  * @returns true if the delay has expired, false otherwise
  */
 export function useTimeout(ms = 0, key = '') {
-    const [ready, setReady] = useSafeSetState(false);
+    const [ready, setReady] = useState(false);
 
     useEffect(() => {
         setReady(false);

@@ -19,6 +19,7 @@ import {
     SelectColumnsButton,
     TextField,
     TopToolbar,
+    useDefaultTitle,
     useListContext,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
@@ -36,6 +37,17 @@ const ListActions = () => (
     </TopToolbar>
 );
 
+const OrdersTitle = () => {
+    const title = useDefaultTitle();
+    const { defaultTitle } = useListContext();
+    return (
+        <>
+            <title>{`${title} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
+        </>
+    );
+};
+
 const OrderList = () => (
     <List
         filterDefaultValues={{ status: 'ordered' }}
@@ -43,6 +55,7 @@ const OrderList = () => (
         perPage={25}
         filters={orderFilters}
         actions={<ListActions />}
+        title={<OrdersTitle />}
     >
         <TabbedDatagrid />
     </List>
@@ -129,6 +142,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
+                            preferenceKey="orders.list1"
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
@@ -180,6 +194,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
+                            preferenceKey="orders.list2"
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
@@ -235,6 +250,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
+                            preferenceKey="orders.list3"
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />

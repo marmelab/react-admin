@@ -5,6 +5,7 @@ export * from './FilterForm';
 export * from './FilterFormInput';
 export * from './FilterList';
 export * from './FilterListItem';
+export * from './FilterListSection';
 export * from './FilterLiveSearch';
 export * from './AddSavedQueryDialog';
 export * from './AddSavedQueryIconButton';

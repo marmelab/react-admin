@@ -66,11 +66,14 @@ const MAX_DATA_LENGTH_TO_CACHE = 100;
  * };
  */
 
-export const useInfiniteGetList = <RecordType extends RaRecord = any>(
+export const useInfiniteGetList = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options: UseInfiniteGetListOptions<RecordType> = {}
-): UseInfiniteGetListHookValue<RecordType> => {
+    options: UseInfiniteGetListOptions<RecordType, ErrorType> = {}
+): UseInfiniteGetListHookValue<RecordType, ErrorType> => {
     const {
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
@@ -91,7 +94,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
 
     const result = useInfiniteQuery<
         GetInfiniteListResult<RecordType>,
-        Error,
+        ErrorType,
         InfiniteData<GetInfiniteListResult<RecordType>>,
         QueryKey,
         number
@@ -228,7 +231,7 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
             : result
     ) as UseInfiniteQueryResult<
         InfiniteData<GetInfiniteListResult<RecordType>>,
-        Error
+        ErrorType
     > & {
         total?: number;
         meta?: any;
@@ -237,10 +240,13 @@ export const useInfiniteGetList = <RecordType extends RaRecord = any>(
 
 const noop = () => undefined;
 
-export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
+export type UseInfiniteGetListOptions<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = Omit<
     UseInfiniteQueryOptions<
         GetInfiniteListResult<RecordType>,
-        Error,
+        ErrorType,
         InfiniteData<GetInfiniteListResult<RecordType>>,
         GetInfiniteListResult<RecordType>,
         QueryKey,
@@ -253,15 +259,20 @@ export type UseInfiniteGetListOptions<RecordType extends RaRecord = any> = Omit<
     | 'initialPageParam'
 > & {
     onSuccess?: (data: InfiniteData<GetInfiniteListResult<RecordType>>) => void;
-    onError?: (error: Error) => void;
+    onError?: (error: ErrorType) => void;
     onSettled?: (
         data?: InfiniteData<GetInfiniteListResult<RecordType>>,
-        error?: Error | null
+        error?: ErrorType | null
     ) => void;
 };
 
-export type UseInfiniteGetListHookValue<RecordType extends RaRecord = any> =
-    UseInfiniteQueryResult<InfiniteData<GetInfiniteListResult<RecordType>>> & {
-        total?: number;
-        pageParam?: number;
-    };
+export type UseInfiniteGetListHookValue<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = UseInfiniteQueryResult<
+    InfiniteData<GetInfiniteListResult<RecordType>>,
+    ErrorType
+> & {
+    total?: number;
+    pageParam?: number;
+};

@@ -49,4 +49,66 @@ describe('GraphQL data provider', () => {
             });
         });
     });
+    describe('getIntrospection', () => {
+        it('returns introspection result', async () => {
+            const schema = {
+                queryType: { name: 'Query' },
+                mutationType: { name: 'Mutation' },
+                types: [
+                    {
+                        name: 'Query',
+                        fields: [{ name: 'allPosts' }, { name: 'Post' }],
+                    },
+                    {
+                        name: 'Mutation',
+                        fields: [
+                            { name: 'createPost' },
+                            { name: 'updatePost' },
+                            { name: 'deletePost' },
+                        ],
+                    },
+                    { name: 'Post' },
+                ],
+            };
+            const client = {
+                query: jest.fn(() =>
+                    Promise.resolve({
+                        data: {
+                            __schema: schema,
+                        },
+                    })
+                ),
+            };
+
+            const dataProvider = buildDataProvider({
+                client: client as unknown as ApolloClient<unknown>,
+                buildQuery: () => () => undefined,
+            });
+
+            const introspection = await dataProvider.getIntrospection();
+            expect(introspection).toEqual({
+                queries: [
+                    { name: 'allPosts' },
+                    { name: 'Post' },
+                    { name: 'createPost' },
+                    { name: 'updatePost' },
+                    { name: 'deletePost' },
+                ],
+                types: [{ name: 'Post' }],
+                resources: [
+                    {
+                        type: { name: 'Post' },
+                        GET_LIST: { name: 'allPosts' },
+                        GET_MANY: { name: 'allPosts' },
+                        GET_MANY_REFERENCE: { name: 'allPosts' },
+                        GET_ONE: { name: 'Post' },
+                        CREATE: { name: 'createPost' },
+                        UPDATE: { name: 'updatePost' },
+                        DELETE: { name: 'deletePost' },
+                    },
+                ],
+                schema,
+            });
+        });
+    });
 });

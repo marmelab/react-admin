@@ -1,10 +1,15 @@
-import { Box, CircularProgress, Stack, Typography } from '@mui/material';
-import Alert from '@mui/material/Alert';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import MuiLink from '@mui/material/Link';
+import {
+    Alert,
+    Box,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Link as MuiLink,
+    Stack,
+    Typography,
+} from '@mui/material';
 import {
     Button,
     FileField,

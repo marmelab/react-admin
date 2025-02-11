@@ -15,7 +15,8 @@ import { ShowControllerResult } from './useShowController';
  */
 export const useShowContext = <
     RecordType extends RaRecord = any,
->(): ShowControllerResult<RecordType> => {
+    ErrorType = Error,
+>(): ShowControllerResult<RecordType, ErrorType> => {
     const context = useContext(ShowContext);
     // Props take precedence over the context
     if (!context) {
@@ -23,5 +24,5 @@ export const useShowContext = <
             'useShowContext must be used inside a ShowContextProvider'
         );
     }
-    return context;
+    return context as ShowControllerResult<RecordType, ErrorType>;
 };

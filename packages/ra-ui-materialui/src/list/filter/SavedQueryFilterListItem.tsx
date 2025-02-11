@@ -63,15 +63,10 @@ export const SavedQueryFilterListItem = memo(
             isSelected ? removeFilter() : addFilter();
 
         return (
-            // @ts-ignore
-            <StyledListItem
-                onClick={toggleFilter}
-                selected={isSelected}
-                className={className}
-                sx={sx}
-                disablePadding
-            >
+            <StyledListItem className={className} sx={sx} disablePadding>
                 <ListItemButton
+                    onClick={toggleFilter}
+                    selected={isSelected}
                     disableGutters
                     className={SavedQueryFilterListItemClasses.listItemButton}
                 >

@@ -321,25 +321,6 @@ const MyComponent = () => (
 );
 ```
 
-## Security
-
-The usual components for the `<Resource>` routes ( `<List>`, `<Create>`, `<Edit>`, `<Show>`) require authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop on the component.
-
-In addition, if your `authProvider` implements [Access Control](./Permissions.md#access-control), these components will only render if the user has the right permission (e.g., `{ action: 'list', resource: 'posts' }` for the `list` page of the `posts` resource).
-
-For instance, given the following resource:
-
-```tsx
-<Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
-```
-
-React-admin will call the `authProvider.canAccess` method when users try to access the pages with the following parameters:
-
-- For the list page: `{ action: "list", resource: "posts" }`
-- For the create page: `{ action: "create", resource: "posts" }`
-- For the edit page: `{ action: "edit", resource: "posts" }`
-- For the show page: `{ action: "show", resource: "posts" }`
-
 ## Nested Resources
 
 React-admin doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of songs for a given artist:
@@ -464,3 +445,29 @@ When users navigate to the `/posts` route, react-admin will display a loading in
 
 ![Loading indicator](./img/lazy-resource.png)
 
+## Anonymous Access
+
+The usual components for the `<Resource>` routes ( `<List>`, `<Create>`, `<Edit>`, `<Show>`) require authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop on the component.
+
+## Access Control
+
+In addition, if your `authProvider` implements [Access Control](./Permissions.md#access-control), these components will only render if the user has the right permission (e.g., `{ action: 'list', resource: 'posts' }` for the `list` page of the `posts` resource).
+
+For instance, given the following resource:
+
+```tsx
+<Resource
+    name="posts"
+    list={PostList}
+    create={PostCreate}
+    edit={PostEdit}
+    show={PostShow}
+/>
+```
+
+React-admin will call the `authProvider.canAccess` method when users try to access the pages with the following parameters:
+
+- For the list page: `{ action: "list", resource: "posts" }`
+- For the create page: `{ action: "create", resource: "posts" }`
+- For the edit page: `{ action: "edit", resource: "posts" }`
+- For the show page: `{ action: "show", resource: "posts" }`

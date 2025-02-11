@@ -7,6 +7,11 @@ title: "Advanced Tutorials"
 
 If you want to learn the best practices of react-admin development by example, you've come to the right place. This page lists the advanced tutorials we've published on [the react-admin blog](https://marmelab.com/en/blog/#react-admin).
 
+* 2025-01: [Handling Relationships in React Admin](https://marmelab.com/blog/2025/02/06/handling-relationships-in-react-admin.html)
+* 2025-01: [How to build a CMS with React-Admin](https://marmelab.com/blog/2025/01/24/how-to-build-a-cms-with-react-admin.html)
+* 2024-11: [Google OAuth in React: A Beginner’s Guide to Authentication](https://marmelab.com/blog/2024/11/18/google-authentication-react.html)
+* 2024-11: [API Platform Admin: The Ultimate Admin Generator For PHP](https://marmelab.com/blog/2024/11/12/api-platform-admin-the-ultimate-admin-generator-for-php.html)
+* 2024-10: [Behind the Code of Atomic CRM](https://marmelab.com/blog/2024/10/28/behind-the-code-of-atomic-crm.html)
 * 2024-06: [Introducing React-Admin V5](https://marmelab.com/blog/2024/06/20/react-admin-v5.html)
 * 2024-06: [Using AI To Autofill Forms With Wikipedia](https://marmelab.com/blog/2024/06/05/ai-form-autocompletion-with-openai-and-wikipedia.html)
 * 2024-05: [Using React-Admin With React Native](https://marmelab.com/blog/2024/05/22/using-react-admin-with-react-native.html)

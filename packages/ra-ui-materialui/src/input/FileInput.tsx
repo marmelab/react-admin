@@ -40,6 +40,7 @@ export const FileInput = (props: FileInputProps) => {
         labelMultiple = 'ra.input.file.upload_several',
         labelSingle = 'ra.input.file.upload_single',
         options = {},
+        onChange: onChangeProp,
         onRemove: onRemoveProp,
         parse,
         placeholder,
@@ -95,6 +96,7 @@ export const FileInput = (props: FileInputProps) => {
         validate,
         disabled,
         readOnly,
+        onChange: onChangeProp,
         ...rest,
     });
     const { error, invalid } = fieldState;

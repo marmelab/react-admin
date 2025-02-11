@@ -8,7 +8,7 @@ import {
     styled,
 } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
-import { useTranslate, RaRecord } from 'ra-core';
+import { useTranslate, RaRecord, useSplatPathBase } from 'ra-core';
 import clsx from 'clsx';
 
 import { Labeled } from '../Labeled';
@@ -66,6 +66,7 @@ export const Tab = ({
     className,
     divider,
     icon,
+    iconPosition,
     label,
     record,
     spacing = 1,
@@ -75,9 +76,14 @@ export const Tab = ({
 }: TabProps) => {
     const translate = useTranslate();
     const location = useLocation();
+    const splatPathBase = useSplatPathBase();
+    const newPathName =
+        value == null || value === ''
+            ? splatPathBase
+            : `${splatPathBase}/${value}`;
     const propsForLink = {
         component: Link,
-        to: { ...location, pathname: value },
+        to: { ...location, pathname: newPathName },
     };
 
     const renderHeader = () => {
@@ -97,6 +103,7 @@ export const Tab = ({
                 label={tabLabel}
                 value={value}
                 icon={icon}
+                iconPosition={iconPosition}
                 className={clsx('show-tab', className)}
                 {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui/material-ui/issues/9106#issuecomment-451270521
                 {...rest}

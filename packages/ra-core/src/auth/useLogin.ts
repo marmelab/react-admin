@@ -5,6 +5,7 @@ import { useNotificationContext } from '../notification';
 import { useBasename } from '../routing';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { removeDoubleSlashes } from '../routing/useCreatePath';
+import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * Get a callback for calling the authProvider.login() method
@@ -31,6 +32,7 @@ import { removeDoubleSlashes } from '../routing/useCreatePath';
  */
 const useLogin = (): Login => {
     const authProvider = useAuthProvider();
+    const queryClient = useQueryClient();
     const location = useLocation();
     const locationState = location.state as any;
     const navigate = useNavigate();
@@ -47,6 +49,9 @@ const useLogin = (): Login => {
             if (authProvider) {
                 return authProvider.login(params).then(ret => {
                     resetNotifications();
+                    queryClient.invalidateQueries({
+                        queryKey: ['auth', 'getPermissions'],
+                    });
                     if (ret && ret.hasOwnProperty('redirectTo')) {
                         if (ret) {
                             navigate(ret.redirectTo);
@@ -67,6 +72,7 @@ const useLogin = (): Login => {
         },
         [
             authProvider,
+            queryClient,
             navigate,
             nextPathName,
             nextSearch,

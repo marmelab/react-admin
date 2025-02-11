@@ -16,6 +16,7 @@ import {
     Collapse,
     Card,
     Stack,
+    ListItemButton,
 } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -75,18 +76,17 @@ const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
     const open = openChildren.includes(root.id);
     return (
         <Fragment>
-            <ListItem
-                onClick={() => hasChildren && toggleNode(root)}
-                style={{ paddingLeft: level * 16 }}
-            >
-                {hasChildren && open && <ExpandLess />}
-                {hasChildren && !open && <ExpandMore />}
-                {!hasChildren && <div style={{ width: 24 }}>&nbsp;</div>}
-                <ListItemText primary={root.name.en} />
+            <ListItem disablePadding style={{ paddingLeft: level * 16 }}>
+                <ListItemButton onClick={() => hasChildren && toggleNode(root)}>
+                    {hasChildren && open && <ExpandLess />}
+                    {hasChildren && !open && <ExpandMore />}
+                    {!hasChildren && <div style={{ width: 24 }}>&nbsp;</div>}
+                    <ListItemText primary={root.name.en} />
 
-                <ListItemSecondaryAction>
-                    <EditButton record={root} />
-                </ListItemSecondaryAction>
+                    <ListItemSecondaryAction>
+                        <EditButton record={root} />
+                    </ListItemSecondaryAction>
+                </ListItemButton>
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>

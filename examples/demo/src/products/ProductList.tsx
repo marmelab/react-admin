@@ -17,18 +17,18 @@ import {
     Title,
     TopToolbar,
     useTranslate,
-    useGetResourceLabel,
+    useDefaultTitle,
+    useListContext,
 } from 'react-admin';
 
 import ImageList from './GridList';
 import Aside from './Aside';
 
 const ProductList = () => {
-    const getResourceLabel = useGetResourceLabel();
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <ListBase perPage={24} sort={{ field: 'reference', order: 'ASC' }}>
-            <Title defaultTitle={getResourceLabel('products', 2)} />
+            <ProductTitle />
             <FilterContext.Provider value={productFilters}>
                 <ListActions isSmall={isSmall} />
                 {isSmall && (
@@ -45,6 +45,18 @@ const ProductList = () => {
                 </Box>
             </Box>
         </ListBase>
+    );
+};
+
+const ProductTitle = () => {
+    const appTitle = useDefaultTitle();
+    const { defaultTitle } = useListContext();
+
+    return (
+        <>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <Title defaultTitle={defaultTitle} />
+        </>
     );
 };
 

@@ -1,6 +1,4 @@
 import { useCallback } from 'react';
-import { parse } from 'query-string';
-import { useLocation, Location } from 'react-router-dom';
 import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
@@ -23,7 +21,6 @@ import {
     useResourceDefinition,
     useGetResourceLabel,
 } from '../../core';
-import _ from 'lodash';
 
 /**
  * Prepare data for the Create view
@@ -79,11 +76,9 @@ export const useCreateController = <
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const finalRedirectTo =
         redirectTo ?? getDefaultRedirectRoute(hasShow, hasEdit);
-    const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
-    const recordToUse = record ?? getRecordFromLocation(location) ?? undefined;
     const { onSuccess, onError, meta, ...otherMutationOptions } =
         mutationOptions;
     const {
@@ -200,8 +195,8 @@ export const useCreateController = <
         saving,
         defaultTitle,
         save,
+        record,
         resource,
-        record: recordToUse,
         redirect: finalRedirectTo,
         registerMutationMiddleware,
         unregisterMutationMiddleware,
@@ -239,39 +234,6 @@ export interface CreateControllerResult<
     resource: string;
     saving: boolean;
 }
-
-/**
- * Get the initial record from the location, whether it comes from the location
- * state or is serialized in the url search part.
- */
-export const getRecordFromLocation = ({ state, search }: Location) => {
-    if (state && (state as StateWithRecord).record) {
-        return (state as StateWithRecord).record;
-    }
-    if (search) {
-        try {
-            const searchParams = parse(search);
-            if (searchParams.source) {
-                if (Array.isArray(searchParams.source)) {
-                    console.error(
-                        `Failed to parse location search parameter '${search}'. To pre-fill some fields in the Create form, pass a stringified source parameter (e.g. '?source={"title":"foo"}')`
-                    );
-                    return;
-                }
-                return JSON.parse(searchParams.source);
-            }
-        } catch (e) {
-            console.error(
-                `Failed to parse location search parameter '${search}'. To pre-fill some fields in the Create form, pass a stringified source parameter (e.g. '?source={"title":"foo"}')`
-            );
-        }
-    }
-    return null;
-};
-
-type StateWithRecord = {
-    record?: Partial<RaRecord>;
-};
 
 const getDefaultRedirectRoute = (hasShow, hasEdit) => {
     if (hasEdit) {

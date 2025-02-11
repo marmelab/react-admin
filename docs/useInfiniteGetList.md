@@ -175,6 +175,7 @@ Additional options are passed to react-query's `useQuery` hook. Check the [react
 
 Combining `useInfiniteGetList` and [the Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), you can implement an infinite scrolling list, where the next page loads automatically when the user scrolls down.
 
+{% raw %}
 ```jsx
 import { useRef, useCallback, useEffect } from 'react';
 import {
@@ -230,7 +231,11 @@ const LatestNews = () => {
                     ));
                 })}
             </List>
-            <Typography ref={observerElem} variant="body2" color="grey.500" >
+            <Typography
+                ref={observerElem}
+                variant="body2"
+                sx={{ color: "grey.500" }}
+            >
                 {isFetchingNextPage && hasNextPage
                     ? 'Loading...'
                     : 'No search left'}
@@ -239,3 +244,4 @@ const LatestNews = () => {
     );
 };
 ```
+{% endraw %}

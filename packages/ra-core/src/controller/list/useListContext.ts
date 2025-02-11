@@ -62,12 +62,13 @@ import { RaRecord } from '../../types';
  */
 export const useListContext = <
     RecordType extends RaRecord = any,
->(): ListControllerResult<RecordType> => {
+    ErrorType = Error,
+>(): ListControllerResult<RecordType, ErrorType> => {
     const context = useContext(ListContext);
     if (!context) {
         throw new Error(
             'useListContext must be used inside a ListContextProvider'
         );
     }
-    return context;
+    return context as ListControllerResult<RecordType, ErrorType>;
 };

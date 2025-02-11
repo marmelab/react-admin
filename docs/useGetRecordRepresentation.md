@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "The useGetRecordRepresentation Component"
+title: "The useGetRecordRepresentation Hook"
 ---
 
 # `useGetRecordRepresentation`
@@ -11,6 +11,7 @@ You can also use the component version: [`<RecordRepresentation>`](./RecordRepre
 
 ## Usage
 
+{% raw %}
 ```tsx
 // in src/posts/PostBreadcrumbs.tsx
 import * as React from 'react';
@@ -29,7 +30,7 @@ export const PostBreadcrumbs = () => {
                 <Link underline="hover" color="inherit" to="/posts">
                     Posts
                 </Link>
-                <Typography color="text.primary">
+                <Typography sx={{ color: "text.primary" }}>
                     {getRecordRepresentation(record)}
                 </Typography>
             </Breadcrumbs>
@@ -52,6 +53,7 @@ const PostEdit = () => (
     </EditBase>
 )
 ```
+{% endraw %}
 
 ## Default Representation
 

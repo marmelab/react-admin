@@ -1,7 +1,10 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { minValue } from 'ra-core';
+import { minValue, useRecordContext } from 'ra-core';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { Box, Button, Typography } from '@mui/material';
+import get from 'lodash/get';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
@@ -48,15 +51,15 @@ export const NonFullWidth = () => (
 
 export const DefaultValue = () => (
     <Wrapper>
-        All the displayed values should be the same: 2021-09-11 displayed in the
-        browser locale
+        All the displayed values should be the same: 2021-09-11 when displayed
+        in the fr-FR browser locale.
         {[
             '2021-09-11',
             '09/11/2021', // US date format
             '2021-09-11T20:46:20.000+02:00',
             '2021-09-11 20:46:20.000+02:00',
-            '2021-09-11T20:46:20.000-04:00',
-            '2021-09-11 20:46:20.000-04:00',
+            '2021-09-10T20:46:20.000-04:00',
+            '2021-09-10 20:46:20.000-04:00',
             '2021-09-11T20:46:20.000Z',
             '2021-09-11 20:46:20.000Z',
             new Date('2021-09-11T20:46:20.000+02:00'),
@@ -100,6 +103,38 @@ export const Parse = ({ simpleFormProps }) => (
     </Wrapper>
 );
 
+export const ExternalChanges = ({
+    dateInputProps = {},
+    simpleFormProps = {
+        defaultValues: { publishedAt: '2021-09-11' },
+    },
+}: {
+    dateInputProps?: Partial<DateInputProps>;
+    simpleFormProps?: Omit<SimpleFormProps, 'children'>;
+}) => (
+    <Wrapper simpleFormProps={simpleFormProps}>
+        <DateInput source="publishedAt" {...dateInputProps} />
+        <DateHelper source="publishedAt" value="2021-10-20" />
+    </Wrapper>
+);
+
+export const ExternalChangesWithParse = ({
+    dateInputProps = {
+        parse: value => new Date(value),
+    },
+    simpleFormProps = {
+        defaultValues: { publishedAt: new Date('2021-09-11') },
+    },
+}: {
+    dateInputProps?: Partial<DateInputProps>;
+    simpleFormProps?: Omit<SimpleFormProps, 'children'>;
+}) => (
+    <Wrapper simpleFormProps={simpleFormProps}>
+        <DateInput source="publishedAt" {...dateInputProps} />
+        <DateHelper source="publishedAt" value={new Date('2021-10-20')} />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({
@@ -118,3 +153,43 @@ const Wrapper = ({
         </Create>
     </AdminContext>
 );
+
+const DateHelper = ({
+    source,
+    value,
+}: {
+    source: string;
+    value: string | Date;
+}) => {
+    const record = useRecordContext();
+    const { resetField, setValue } = useFormContext();
+    const currentValue = useWatch({ name: source });
+
+    return (
+        <Box>
+            <Typography>
+                Record value: {get(record, source)?.toString() ?? '-'}
+            </Typography>
+            <Typography>
+                Current value: <span>{currentValue?.toString() ?? '-'}</span>
+            </Typography>
+            <Button
+                onClick={() => {
+                    setValue(source, value, { shouldDirty: true });
+                }}
+                type="button"
+            >
+                Change value
+            </Button>
+            <Button
+                color="error"
+                onClick={() => {
+                    resetField(source);
+                }}
+                type="button"
+            >
+                Reset
+            </Button>
+        </Box>
+    );
+};

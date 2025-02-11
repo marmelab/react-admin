@@ -5,17 +5,14 @@ title: "Authorization"
 
 # Authorization
 
+<iframe src="https://www.youtube-nocookie.com/embed/2loA65et3JU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;"></iframe>
+
 Once a user is authenticated, your application may need to check if the user has the right to access a specific resource or perform a particular action. React-admin provides two ways to do so:
 
 1. **Access control** relies on `authProvider.canAccess({ resource, action })`, which returns whether the user can access the given resource and action.
 2. **Permissions** rely on `authProvider.getPermissions()`, which returns a list of permissions that your components can inspect.
 
 Depending on your needs, you can implement one or the other or both. We recommend Access Control because it allows you to put the authorization logic in the `authProvider` rather than in the code. 
-
-<video controls autoplay muted loop>
-  <source src="./img/AccessControl.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
 
 ## Access Control
 
@@ -26,6 +23,11 @@ With Access Control, the `authProvider`is responsible for checking if the user c
 - Access Control List (ACL).
 
 Use the `authProvider` to integrate react-admin with popular authorization solutions like Okta, Casbin, Cerbos, and more.
+
+<video controls autoplay muted loop>
+  <source src="./img/AccessControl.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
 
 ### `authProvider.canAccess()`
 
@@ -169,7 +171,7 @@ If the current user tries to access a page they don't have access to, they are r
 
 If the `authProvider.canAccess()` method returns an error, the user is redirected to an "Access Control Error" page. You can customize this page by adding a custom route on the `/accessControlError` path.
 
-The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButtoon>`) also have built-in access control. They are only displayed if the user can access the corresponding action on the resource.
+The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButton>`) also have built-in access control. They are only displayed if the user can access the corresponding action on the resource.
 
 ```tsx
 const MyToolbar = () => (
@@ -187,6 +189,8 @@ const MyToolbar = () => (
     </Toolbar>
 );
 ```
+
+The **list components** (`<Datagrid>`), **show components** (`<SimpleShowLayout>`, `<TabbedShowLayout>`), and **edit components** (`<SimpleForm>`, `<Tabbedform>`) also support access control provided you use the version from the `@react-admin/ra-rbac` Enterprise package. Check the [RBAC documentation](./AuthRBAC.md#components) for more information.
 
 ### `useCanAccess`
 
@@ -253,30 +257,59 @@ const CommentsToolbar = ({ record }) => (
 
 ### Custom Routes
 
-By default, there is no authentication or authorization control on the custom routes. If you need to restrict access to a custom route, you can use the `<CanAccess>` component. Remember to check the authentication status before with `<Authenticated>`:
+By default, there is no authentication or authorization control on custom routes. If you need to restrict access to a custom route, you can use the `<CanAccess>` component. Remember to check the authentication status before with `<Authenticated>`:
 
 ```tsx
-import { Admin, CustomRoutes, Authenticated, CanAccess } from 'react-admin';
+import { Authenticated, CanAccess, AccessDenied } from 'react-admin';
+
+export const LogsPage = () => (
+    <Authenticated>
+        <CanAccess resource="logs" action="read" accessDenied={<AccessDenied />}>
+            ...
+        </CanAccess>
+    </Authenticated>
+);
+```
+
+Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to your admin. 
+
+```tsx
+import { Admin, CustomRoutes, Authenticated, CanAccess, AccessDenied, Layout } from 'react-admin';
 import { Route } from 'react-router-dom';
 
+import { LogsPage } from './LogsPage';
+import { MyMenu } from './MyMenu';
+
+const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
+
 const App = () => (
-    <Admin authProvider={authProvider}>
+    <Admin authProvider={authProvider} layout={MyLayout}>
         <CustomRoutes>
-            <Route path="/restricted" element={
-                <Authenticated>
-                    <CanAccess action="read" resource="restricted">
-                        <RestrictedPage />
-                    </CanAccess>
-                </Authenticated>
-            } />
+            <Route path="/logs" element={<LogsPage />} />
         </CustomRoutes>
     </Admin>
 );
 ```
 
+Remember to also wrap your [custom menu items](./Menu.md) with `<CanAccess>` to hide the menu items if the user doesn't have access to the resource.
+
+```tsx
+import { Menu, CanAccess } from "react-admin";
+import SsidChartIcon from "@mui/icons-material/SsidChart";
+
+export const MyMenu = () => (
+    <Menu>
+        <Menu.ResourceItems />
+        <CanAccess resource="logs" action="read">
+            <Menu.Item primaryText="Logs" to="/logs" leftIcon={<SsidChartIcon />} />
+        </CanAccess>
+    </Menu>
+);
+```
+
 **Note**: You don't need to use `<CanAccess>` on the core react-admin page components (`<List>`, `<Create>`, `<Edit>`, `<Show>`) because they already have built-in access control.
 
-**Note**: You don't need to use `<CanAccess>` on custom pages if your admin uses [`requireAuth`](./Admin.md#requireauth).
+**Note**: You don't need to use `<Authenticated>` on custom pages if your admin uses [`requireAuth`](./Admin.md#requireauth).
 
 ## Permissions
 

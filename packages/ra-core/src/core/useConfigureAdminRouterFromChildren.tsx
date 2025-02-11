@@ -12,7 +12,6 @@ import {
 } from 'react';
 import useLogout from '../auth/useLogout';
 import usePermissions from '../auth/usePermissions';
-import { useSafeSetState } from '../util/hooks';
 import {
     AdminChildren,
     RenderResourcesFunction,
@@ -83,7 +82,7 @@ const useRoutesAndResourcesFromChildren = (
     const [routesAndResources, setRoutesAndResources, mergeRoutesAndResources] =
         useRoutesAndResourcesState(getRoutesAndResourceFromNodes(children));
 
-    const [status, setStatus] = useSafeSetState<AdminRouterStatus>(() =>
+    const [status, setStatus] = useState<AdminRouterStatus>(() =>
         getStatus({
             children,
             ...routesAndResources,

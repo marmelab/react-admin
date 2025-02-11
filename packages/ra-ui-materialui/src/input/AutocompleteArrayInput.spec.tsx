@@ -13,9 +13,12 @@ import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
+    CreateItemLabel,
+    CreateLabel,
     InsideReferenceArrayInput,
     InsideReferenceArrayInputOnChange,
     OnChange,
+    OnCreate,
 } from './AutocompleteArrayInput.stories';
 
 describe('<AutocompleteArrayInput />', () => {
@@ -810,6 +813,26 @@ describe('<AutocompleteArrayInput />', () => {
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
     });
 
+    it('should allow the creation of a new choice by pressing enter', async () => {
+        render(<OnCreate />);
+        const input = (await screen.findByLabelText(
+            'Roles'
+        )) as HTMLInputElement;
+        // Enter an unknown value and submit it with Enter
+        await userEvent.type(input, 'New Value{Enter}');
+        // AutocompleteArrayInput does not have an input with all values.
+        // Instead it adds buttons for each values.
+        await screen.findByText('New Value', { selector: '[role=button] *' });
+        // Clear the input, otherwise the new value won't be shown in the dropdown as it is selected
+        fireEvent.change(input, {
+            target: { value: '' },
+        });
+        // Open the dropdown
+        fireEvent.mouseDown(input);
+        // Check the new value is in the dropdown
+        await screen.findByText('New Value');
+    });
+
     it('should support creation of a new choice through the create element', async () => {
         const choices = [
             { id: 'ang', name: 'Angular' },
@@ -868,6 +891,50 @@ describe('<AutocompleteArrayInput />', () => {
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
     });
 
+    it('should support using a custom createLabel', async () => {
+        render(<CreateLabel />);
+        const input = (await screen.findByLabelText(
+            'Roles'
+        )) as HTMLInputElement;
+        input.focus();
+
+        // Expect the custom create label to be present and disabled
+        const customCreateLabel = await screen.findByText(
+            'Start typing to create a new item'
+        );
+        expect(customCreateLabel.getAttribute('aria-disabled')).toEqual('true');
+
+        // Expect the creation workflow to still work
+        fireEvent.change(input, { target: { value: 'new role' } });
+        fireEvent.click(await screen.findByText('Create new role'));
+        // Expect a dialog to have opened
+        const dialogInput = (await screen.findByLabelText(
+            'Role name'
+        )) as HTMLInputElement;
+        expect(dialogInput.value).toEqual('new role');
+    });
+
+    it('should support using a custom createItemLabel', async () => {
+        render(<CreateItemLabel />);
+        const input = (await screen.findByLabelText(
+            'Roles'
+        )) as HTMLInputElement;
+        input.focus();
+
+        // Expect the create label to be absent
+        expect(screen.queryByText(/Create/)).toBeNull();
+
+        // Expect the creation workflow to still work
+        fireEvent.change(input, { target: { value: 'new role' } });
+        // Expect the custom create item label to be rendered
+        fireEvent.click(await screen.findByText('Add a new role: new role'));
+        // Expect a dialog to have opened
+        const dialogInput = (await screen.findByLabelText(
+            'Role name'
+        )) as HTMLInputElement;
+        expect(dialogInput.value).toEqual('new role');
+    });
+
     it('should use optionText with a function value as text identifier when a create element is passed', () => {
         const choices = [
             { id: 't', foobar: 'Technical' },
@@ -905,7 +972,7 @@ describe('<AutocompleteArrayInput />', () => {
                 selector: 'input',
             })
         );
-        expect(screen.queryAllByRole('option')).toHaveLength(3);
+        expect(screen.queryAllByRole('option')).toHaveLength(2);
         expect(screen.getByText('Technical')).not.toBeNull();
         expect(screen.getByText('Programming')).not.toBeNull();
     });

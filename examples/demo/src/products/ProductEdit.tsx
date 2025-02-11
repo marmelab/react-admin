@@ -11,14 +11,18 @@ import {
     TabbedForm,
     TextField,
     TextInput,
-    useRecordContext,
+    useDefaultTitle,
+    useEditContext,
 } from 'react-admin';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import ReviewIcon from '@mui/icons-material/Comment';
 
 import { ProductEditDetails } from './ProductEditDetails';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
-import { Product } from '../types';
 import CreateRelatedReviewButton from './CreateRelatedReviewButton';
 
 const RichTextInput = React.lazy(() =>
@@ -28,8 +32,14 @@ const RichTextInput = React.lazy(() =>
 );
 
 const ProductTitle = () => {
-    const record = useRecordContext<Product>();
-    return record ? <span>Poster "{record.reference}"</span> : null;
+    const appTitle = useDefaultTitle();
+    const { defaultTitle } = useEditContext();
+    return (
+        <>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
+        </>
+    );
 };
 
 const ProductEdit = () => (
@@ -37,7 +47,9 @@ const ProductEdit = () => (
         <TabbedForm>
             <TabbedForm.Tab
                 label="resources.products.tabs.image"
-                sx={{ maxWidth: '40em' }}
+                sx={{ maxWidth: '40em', minHeight: 48 }}
+                iconPosition="start"
+                icon={<PhotoCameraIcon />}
             >
                 <Poster />
                 <TextInput source="image" validate={req} />
@@ -46,14 +58,18 @@ const ProductEdit = () => (
             <TabbedForm.Tab
                 label="resources.products.tabs.details"
                 path="details"
-                sx={{ maxWidth: '40em' }}
+                sx={{ maxWidth: '40em', minHeight: 48 }}
+                iconPosition="start"
+                icon={<AspectRatioIcon />}
             >
                 <ProductEditDetails />
             </TabbedForm.Tab>
             <TabbedForm.Tab
                 label="resources.products.tabs.description"
                 path="description"
-                sx={{ maxWidth: '40em' }}
+                sx={{ maxWidth: '40em', minHeight: 48 }}
+                iconPosition="start"
+                icon={<EditNoteIcon />}
             >
                 <RichTextInput source="description" label="" validate={req} />
             </TabbedForm.Tab>
@@ -67,6 +83,9 @@ const ProductEdit = () => (
                     />
                 }
                 path="reviews"
+                sx={{ minHeight: 48 }}
+                iconPosition="start"
+                icon={<ReviewIcon />}
             >
                 <ReferenceManyField
                     reference="reviews"

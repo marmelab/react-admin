@@ -93,7 +93,7 @@ For instance, to specify a size for the image:
 
 {% raw %}
 ```jsx
- <ImageField
+<ImageField
     source="thumbnail"
     sx={{ '& img': { maxWidth: 50, maxHeight: 50, objectFit: 'contain' } }}
 />

@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useRef } from 'react';
-import { UseQueryOptions } from '@tanstack/react-query';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import lodashDebounce from 'lodash/debounce';
 
-import { useSafeSetState, removeEmpty } from '../../util';
-import { useGetManyReference } from '../../dataProvider';
+import { removeEmpty, useEvent } from '../../util';
+import { useDataProvider, useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
-import { ListControllerResult } from '../list';
+import type { ListControllerResult, HandleSelectAllParams } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
@@ -44,12 +44,14 @@ import { useResourceContext } from '../../core';
 export const useReferenceManyFieldController = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
 >(
     props: UseReferenceManyFieldControllerParams<
         RecordType,
-        ReferenceRecordType
+        ReferenceRecordType,
+        ErrorType
     >
-): ListControllerResult<ReferenceRecordType> => {
+): ListControllerResult<ReferenceRecordType, ErrorType> => {
     const {
         debounce = 500,
         reference,
@@ -62,11 +64,13 @@ export const useReferenceManyFieldController = <
         sort: initialSort = { field: 'id', order: 'DESC' },
         queryOptions = {} as UseQueryOptions<
             { data: ReferenceRecordType[]; total: number },
-            Error
+            ErrorType
         >,
     } = props;
     const notify = useNotify();
     const resource = useResourceContext(props);
+    const dataProvider = useDataProvider();
+    const queryClient = useQueryClient();
     const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
 
@@ -93,10 +97,10 @@ export const useReferenceManyFieldController = <
 
     // filter logic
     const filterRef = useRef(filter);
-    const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
+    const [displayedFilters, setDisplayedFilters] = useState<{
         [key: string]: boolean;
     }>({});
-    const [filterValues, setFilterValues] = useSafeSetState<{
+    const [filterValues, setFilterValues] = useState<{
         [key: string]: any;
     }>(filter);
     const hideFilter = useCallback(
@@ -154,7 +158,7 @@ export const useReferenceManyFieldController = <
             filterRef.current = filter;
             setFilterValues(filter);
         }
-    });
+    }, [filter]);
 
     const {
         data,
@@ -166,7 +170,7 @@ export const useReferenceManyFieldController = <
         isLoading,
         isPending,
         refetch,
-    } = useGetManyReference<ReferenceRecordType>(
+    } = useGetManyReference<ReferenceRecordType, ErrorType>(
         reference,
         {
             target,
@@ -183,20 +187,75 @@ export const useReferenceManyFieldController = <
                 notify(
                     typeof error === 'string'
                         ? error
-                        : error.message || 'ra.notification.http_error',
+                        : (error as Error)?.message ||
+                              'ra.notification.http_error',
                     {
                         type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : error && error.message
-                                      ? error.message
+                                    : (error as Error)?.message
+                                      ? (error as Error).message
                                       : undefined,
                         },
                     }
                 ),
             ...otherQueryOptions,
+        }
+    );
+
+    const onSelectAll = useEvent(
+        async ({
+            limit = 250,
+            queryOptions = {},
+        }: HandleSelectAllParams = {}) => {
+            const { meta, onSuccess, onError } = queryOptions;
+            try {
+                const results = await queryClient.fetchQuery({
+                    queryKey: [
+                        resource,
+                        'getManyReference',
+                        {
+                            target,
+                            id: get(record, source) as Identifier,
+                            pagination: { page: 1, perPage: limit },
+                            sort,
+                            filter,
+                            meta,
+                        },
+                    ],
+                    queryFn: () =>
+                        dataProvider.getManyReference(reference, {
+                            target,
+                            id: get(record, source) as Identifier,
+                            pagination: { page: 1, perPage: limit },
+                            sort,
+                            filter,
+                            meta,
+                        }),
+                });
+
+                const allIds = results.data?.map(({ id }) => id) || [];
+                selectionModifiers.select(allIds);
+                if (allIds.length === limit) {
+                    notify('ra.message.select_all_limit_reached', {
+                        messageArgs: { max: limit },
+                        type: 'warning',
+                    });
+                }
+
+                if (onSuccess) {
+                    onSuccess(results);
+                }
+
+                return results.data;
+            } catch (error) {
+                if (onError) {
+                    onError(error);
+                }
+                notify('ra.notification.http_error', { type: 'warning' });
+            }
         }
     );
 
@@ -213,6 +272,7 @@ export const useReferenceManyFieldController = <
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page,
@@ -232,12 +292,13 @@ export const useReferenceManyFieldController = <
         setSort,
         showFilter,
         total,
-    } as ListControllerResult<ReferenceRecordType>;
+    } as ListControllerResult<ReferenceRecordType, ErrorType>;
 };
 
 export interface UseReferenceManyFieldControllerParams<
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends Record<string, any> = Record<string, any>,
+    ErrorType = Error,
 > {
     debounce?: number;
     filter?: FilterPayload;
@@ -251,7 +312,10 @@ export interface UseReferenceManyFieldControllerParams<
     storeKey?: string;
     target: string;
     queryOptions?: Omit<
-        UseQueryOptions<{ data: ReferenceRecordType[]; total: number }, Error>,
+        UseQueryOptions<
+            { data: ReferenceRecordType[]; total: number },
+            ErrorType
+        >,
         'queryKey' | 'queryFn'
     >;
 }

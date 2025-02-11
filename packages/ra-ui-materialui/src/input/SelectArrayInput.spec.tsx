@@ -17,6 +17,7 @@ import {
     InsideArrayInput,
     InsideReferenceArrayInput,
     InsideReferenceArrayInputDefaultValue,
+    CreateLabel,
 } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
@@ -583,6 +584,18 @@ describe('<SelectArrayInput />', () => {
             // 2 because there is both the chip for the new selected item and the option (event if hidden)
             expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
         });
+    });
+
+    it('should support using a custom createLabel', async () => {
+        render(<CreateLabel />);
+        const input = (await screen.findByLabelText(
+            'Roles'
+        )) as HTMLInputElement;
+        fireEvent.mouseDown(input);
+        // Expect the custom create label to be displayed
+        fireEvent.click(await screen.findByText('Create a new role'));
+        // Expect a dialog to have opened
+        await screen.findByLabelText('Role name');
     });
 
     it('should receive an event object on change', async () => {

@@ -15,12 +15,13 @@ import { EditControllerResult } from './useEditController';
  */
 export const useEditContext = <
     RecordType extends RaRecord = any,
->(): EditControllerResult<RecordType> => {
+    ErrorType = Error,
+>(): EditControllerResult<RecordType, ErrorType> => {
     const context = useContext(EditContext);
     if (!context) {
         throw new Error(
             'useEditContext must be used inside an EditContextProvider'
         );
     }
-    return context;
+    return context as EditControllerResult<RecordType, ErrorType>;
 };

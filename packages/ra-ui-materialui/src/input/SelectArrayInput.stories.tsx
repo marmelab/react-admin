@@ -324,6 +324,18 @@ export const CreateProp = () => (
     </Wrapper>
 );
 
+export const CreateLabel = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={choices}
+            defaultValue={['u001', 'u003']}
+            create={<CreateRole />}
+            createLabel="Create a new role"
+        />
+    </Wrapper>
+);
+
 export const DifferentIdTypes = () => {
     const fakeData = {
         bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],

@@ -1,12 +1,11 @@
 {
     "name": "react-admin",
-    "version": "5.3.2",
+    "version": "5.5.3",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
         "dist",
-        "src",
-        "docs"
+        "src"
     ],
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -28,6 +27,8 @@
     "devDependencies": {
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
+        "react-router": "^6.28.1",
+        "react-router-dom": "^6.28.1",
         "rimraf": "^3.0.2",
         "typescript": "^5.1.3"
     },
@@ -36,17 +37,17 @@
         "react-dom": "^18.0.0 || ^19.0.0"
     },
     "dependencies": {
-        "@emotion/react": "^11.4.1",
-        "@emotion/styled": "^11.3.0",
-        "@mui/icons-material": "^5.15.20",
-        "@mui/material": "^5.15.20",
-        "ra-core": "^5.3.2",
-        "ra-i18n-polyglot": "^5.3.2",
-        "ra-language-english": "^5.3.2",
-        "ra-ui-materialui": "^5.3.2",
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.0",
+        "@mui/icons-material": "^5.16.12 || ^6.0.0",
+        "@mui/material": "^5.16.12 || ^6.0.0",
+        "ra-core": "^5.5.3",
+        "ra-i18n-polyglot": "^5.5.3",
+        "ra-language-english": "^5.5.3",
+        "ra-ui-materialui": "^5.5.3",
         "react-hook-form": "^7.53.0",
-        "react-router": "^6.22.0",
-        "react-router-dom": "^6.22.0"
+        "react-router": "^6.28.1 || ^7.1.1",
+        "react-router-dom": "^6.28.1 || ^7.1.1"
     },
     "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7"
 }

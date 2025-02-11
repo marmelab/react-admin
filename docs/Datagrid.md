@@ -45,24 +45,24 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 
 ## Props
 
-| Prop                | Required | Type                    | Default               | Description                                                   |
-| ------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------- |
-| `children`          | Required | Element                 | n/a                   | The list of `<Field>` components to render as columns.        |
-| `body`              | Optional | Element                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
-| `bulkActionButtons` | Optional | Element                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
-| `empty`             | Optional | Element                 | `<Empty>`             | The component used to render the empty table.                 |
-| `expand`            | Optional | Element                 |                       | The component used to render the expand panel for each row.   |
-| `expandSingle`      | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
-| `header`            | Optional | Element                 | `<Datagrid Header>`   | The component used to render the table header.                |
-| `hover`             | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
-| `isRowExpandable`   | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
-| `isRowSelectable`   | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
-| `optimized`         | Optional | Boolean                 | `false`               | Whether to optimize the rendering of the table.               |
-| `rowClick`          | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
-| `rowStyle`          | Optional | Function                |                       | A function that returns the style to apply to a row.          |
-| `rowSx`             | Optional | Function                |                       | A function that returns the sx prop to apply to a row.        |
-| `size`              | Optional | `'small'` or `'medium'` | `'small'`             | The size of the table.                                        |
-| `sx`                | Optional | Object                  |                       | The sx prop passed down to the Material UI `<Table>` element. |
+| Prop                 | Required | Type                    | Default               | Description                                                   |
+| -------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------- |
+| `children`           | Required | Element                 | n/a                   | The list of `<Field>` components to render as columns.        |
+| `body`               | Optional | Element                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
+| `bulkActionButtons`  | Optional | Element                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
+| `empty`              | Optional | Element                 | `<Empty>`             | The component used to render the empty table.                 |
+| `expand`             | Optional | Element                 |                       | The component used to render the expand panel for each row.   |
+| `expandSingle`       | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
+| `header`             | Optional | Element                 | `<Datagrid Header>`   | The component used to render the table header.                |
+| `hover`              | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
+| `isRowExpandable`    | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
+| `isRowSelectable`    | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
+| `optimized`          | Optional | Boolean                 | `false`               | Whether to optimize the rendering of the table.               |
+| `rowClick`           | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
+| `rowStyle`           | Optional | Function                |                       | A function that returns the style to apply to a row.          |
+| `rowSx`              | Optional | Function                |                       | A function that returns the sx prop to apply to a row.        |
+| `size`               | Optional | `'small'` or `'medium'` | `'small'`             | The size of the table.                                        |
+| `sx`                 | Optional | Object                  |                       | The sx prop passed down to the Material UI `<Table>` element. |
 
 Additional props are passed down to [the Material UI `<Table>` element](https://mui.com/material-ui/api/table/).
 
@@ -187,7 +187,7 @@ export const PostList = () => (
 ```
 {% endraw %}
 
-<video controls autoplay playsinline muted loop>
+<video controls autoplay playsinline muted loop poster="./img/BulkActionButtons.jpg">
   <source src="./img/bulk-actions-toolbar.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -205,6 +205,10 @@ React-admin provides four components that you can use in `bulkActionButtons`:
   <source src="./img/datagrid-select-range.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+**Tip**: When users select all the records of the current page using the "select all" checkbox in the header, the bulk actions toolbar shows a ["Select All" button](./Buttons.md#selectallbutton) to let them select all the recorfds regardless of pagination.
+
+![SelectAllButton](./img/SelectAllButton.png)
 
 You can write a custom bulk action button components using the [`useListContext`](./useListContext.md) hook to get the following data and callbacks:
 
@@ -1074,48 +1078,6 @@ Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-gr
 
 Check [the `<DatagridAG>` documentation](./DatagridAG.md) for more details.
 
-## Fields And Permissions
-
-You might want to display some fields only to users with specific permissions. Use the `usePermissions` hook to get the user permissions and hide Fields accordingly:
-
-{% raw %}
-```tsx
-import { List, Datagrid, TextField, TextInput, ShowButton, usePermissions } from 'react-admin';
-
-const getUserFilters = (permissions) => ([
-    <TextInput label="user.list.search" source="q" alwaysOn />,
-    <TextInput source="name" />,
-    permissions === 'admin' ? <TextInput source="role" /> : null,
-    ].filter(filter => filter !== null)
-);
-
-export const UserList = ({ permissions, ...props }) => {
-    const { permissions } = usePermissions();
-    return (
-        <List
-            {...props}
-            filters={getUserFilters(permissions)}
-            sort={{ field: 'name', order: 'ASC' }}
-        >
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="name" />
-                {permissions === 'admin' && <TextField source="role" />}
-                {permissions === 'admin' && <EditButton />}
-                <ShowButton />
-            </Datagrid>
-        </List>
-    )
-};
-```
-{% endraw %}
-
-Note how the `permissions` prop is passed down to the custom `filters` component to allow Filter customization, too.
-
-It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component. Check [the authProvider documentation](./Authentication.md) for more information.
-
-**Tip**: The [ra-rbac module](./AuthRBAC.md#datagrid) provides a wrapper for the `<Datagrid>` with built-in permission check for columns.
-
 ## Standalone Usage
 
 You can use the `<Datagrid>` component to display data that you've fetched yourself. You'll need to pass all the props required for its features:
@@ -1386,3 +1348,130 @@ export const PostList = () => (
     </List>
 );
 ```
+
+## Access Control
+
+If you need to hide some columns based on a set of permissions, use the `<Datagrid>` component from the `@react-admin/ra-rbac` package.
+
+```diff
+-import { Datagrid } from 'react-admin';
++import { Datagrid } from '@react-admin/ra-rbac';
+```
+
+This component adds the following [RBAC](./AuthRBAC.md) controls:
+
+-   Users must have the `'read'` permission on a resource column to see it in the export:
+
+```jsx
+{ action: "read", resource: `${resource}.${source}` }.
+// or
+{ action: "read", resource: `${resource}.*` }.
+```
+
+-   Users must have the `'delete'` permission on the resource to see the `<BulkExportButton>`.
+
+- The default `rowClick` depends on the user permissions:
+    -   `"edit"` if the user can access the current resource with the `edit` action
+    -   `"show"` if the user can access the current resource with the `show` action
+    -   empty otherwise
+
+Here is an example of `<Datagrid>` with RBAC:
+
+```tsx
+import { canAccessWithPermissions, List, Datagrid } from '@react-admin/ra-rbac';
+import {
+    ImageField,
+    TextField,
+    ReferenceField,
+    NumberField,
+} from 'react-admin';
+
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: 'list', resource: 'products' },
+                { action: 'read', resource: 'products.thumbnail' },
+                { action: 'read', resource: 'products.reference' },
+                { action: 'read', resource: 'products.category_id' },
+                { action: 'read', resource: 'products.width' },
+                { action: 'read', resource: 'products.height' },
+                { action: 'read', resource: 'products.price' },
+                { action: 'read', resource: 'products.description' },
+                // { action: 'read', resource: 'products.stock' },
+                // { action: 'read', resource: 'products.sales' },
+                // { action: 'delete', resource: 'products' },
+                { action: 'show', resource: 'products' },
+            ],
+            action,
+            record,
+            resource
+        }),
+};
+
+const ProductList = () => (
+    <List>
+        {/* The datagrid has no bulk actions as the user doesn't have the 'delete' permission */}
+        <Datagrid>
+            <ImageField source="thumbnail" />
+            <TextField source="reference" />
+            <ReferenceField source="category_id" reference="categories">
+                <TextField source="name" />
+            </ReferenceField>
+            <NumberField source="width" />
+            <NumberField source="height" />
+            <NumberField source="price" />
+            <TextField source="description" />
+            {/** These two columns are not visible to the user **/}
+            <NumberField source="stock" />
+            <NumberField source="sales" />
+        </Datagrid>
+    </List>
+);
+```
+
+**Tip**: Adding the 'read' permission on the resource itself doesn't grant the 'read' permission on the columns. If you want a user to see all possible columns, add the 'read' permission on columns using a wildcard:
+
+```jsx
+{ action: "read", resource: "products.*" }.
+```
+
+Fow simple cases, you can also use [the `useCanAccess` hook](./useCanAccess.md) to check whether users have access to a field:
+
+{% raw %}
+```tsx
+import { List, Datagrid, TextField, TextInput, ShowButton, useCanAccess } from 'react-admin';
+
+const getUserFilters = (canAccessRole) => ([
+    <TextInput label="user.list.search" source="q" alwaysOn />,
+    <TextInput source="name" />,
+    canAccessRole ? <TextInput source="role" /> : null,
+    ].filter(filter => filter !== null)
+);
+
+export const UserList = ({ permissions, ...props }) => {
+    const { canAccess, error, isPending } = useCanAccess({
+        resource: 'users.role',
+        action: 'read'
+    });
+    return (
+        <List
+            {...props}
+            filters={getUserFilters(canAccess)}
+            sort={{ field: 'name', order: 'ASC' }}
+        >
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+                {canAccess ? <TextField source="role" /> : null}
+                <EditButton />
+                <ShowButton />
+            </Datagrid>
+        </List>
+    )
+};
+```
+{% endraw %}
+
+Note how the `canAccess` value is passed down to the custom `filters` component to allow Filter customization, too.

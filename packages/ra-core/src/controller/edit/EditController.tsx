@@ -4,6 +4,7 @@ import {
     EditControllerProps,
     EditControllerResult,
 } from './useEditController';
+import { RaRecord } from '../../types';
 
 /**
  * Render prop version of the useEditController hook
@@ -18,12 +19,17 @@ import {
  *     </EditController>
  * );
  */
-export const EditController = ({
+export const EditController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>({
     children,
     ...props
 }: {
-    children: (params: EditControllerResult) => ReactNode;
-} & EditControllerProps) => {
-    const controllerProps = useEditController(props);
+    children: (
+        params: EditControllerResult<RecordType, ErrorType>
+    ) => ReactNode;
+} & EditControllerProps<RecordType, ErrorType>) => {
+    const controllerProps = useEditController<RecordType, ErrorType>(props);
     return children(controllerProps);
 };

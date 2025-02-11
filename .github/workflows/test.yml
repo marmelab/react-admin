@@ -18,7 +18,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v4
       with:
-        node-version: '18.x'
+        node-version: '22.x'
         cache: 'yarn'
     - name: Install dependencies
       run: yarn
@@ -44,7 +44,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v4
       with:
-        node-version: '18.x'
+        node-version: '22.x'
         cache: 'yarn'
     - name: Install dependencies
       run: yarn
@@ -56,6 +56,15 @@ jobs:
       run: unzip -o -u packages-build.zip
     - name: Type check simple example
       run: cd examples/simple && yarn type-check
+
+  doc-videos-format-check:
+    runs-on: ubuntu-latest
+    if: github.ref_type != 'tag'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Videos format check
+        run: make check-documentation-videos-format
 
   doc-check:
     runs-on: ubuntu-latest
@@ -74,7 +83,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -91,7 +100,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -110,7 +119,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -145,7 +154,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -173,7 +182,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -202,7 +211,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
@@ -225,7 +234,7 @@ jobs:
         - name: Use Node.js LTS
           uses: actions/setup-node@v3
           with:
-              node-version: '18.x'
+              node-version: '22.x'
         - name: Update Sandbox Repository
           env:
               SSH_SANDBOX_DEPLOY_KEY: ${{ secrets.SSH_SANDBOX_DEPLOY_KEY }}

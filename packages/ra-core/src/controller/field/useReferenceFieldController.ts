@@ -8,9 +8,10 @@ import { useFieldValue } from '../../util';
 
 export const useReferenceFieldController = <
     ReferenceRecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
 >(
-    options: UseReferenceFieldControllerOptions<ReferenceRecordType>
-): UseReferenceFieldControllerResult<ReferenceRecordType> => {
+    options: UseReferenceFieldControllerOptions<ReferenceRecordType, ErrorType>
+): UseReferenceFieldControllerResult<ReferenceRecordType, ErrorType> => {
     const { link, reference, queryOptions } = options;
     if (!reference) {
         throw new Error(
@@ -18,7 +19,7 @@ export const useReferenceFieldController = <
         );
     }
     const id = useFieldValue(options);
-    const referenceRecordQuery = useReference<ReferenceRecordType>({
+    const referenceRecordQuery = useReference<ReferenceRecordType, ErrorType>({
         reference,
         id,
         options: {
@@ -50,12 +51,12 @@ export const useReferenceFieldController = <
 
 export interface UseReferenceFieldControllerOptions<
     ReferenceRecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
 > {
     source: string;
-    queryOptions?: Partial<
-        UseQueryOptions<ReferenceRecordType[], Error> & {
-            meta?: any;
-        }
+    queryOptions?: Omit<
+        UseQueryOptions<ReferenceRecordType[], ErrorType>,
+        'queryFn' | 'queryKey'
     >;
     reference: string;
     link?: LinkToType<ReferenceRecordType>;
@@ -63,6 +64,7 @@ export interface UseReferenceFieldControllerOptions<
 
 export interface UseReferenceFieldControllerResult<
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends UseReferenceResult<ReferenceRecordType> {
+    ErrorType = Error,
+> extends UseReferenceResult<ReferenceRecordType, ErrorType> {
     link?: string | false;
 }

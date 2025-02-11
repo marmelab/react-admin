@@ -199,6 +199,121 @@ The `./schema` file is a `schema.json` in `./src` retrieved with [get-graphql-sc
 
 > Note: Importing the `schema.json` file will significantly increase the bundle size.
 
+## Leveraging Introspection In Custom Methods
+
+If you need to build custom methods based on the introspection, you can leverage the `getIntrospection` method of the `dataProvider`. It returns an object with the following format:
+
+```js
+{
+    // The original schema as returned by the Apollo client
+    schema: {},
+    // An array of object describing the types that are compatible with react-admin resources
+    // and the methods they support. Note that not all methods may be supported.
+    resources: [
+        {
+            type: { name: 'name-of-the-type' }, // e.g. Post
+            GET_LIST: { name: 'name-of-the-query' }, // e.g. allPosts
+            GET_MANY: { name: 'name-of-the-query' }, // e.g. allPosts
+            GET_MANY_REFERENCE: { name: 'name-of-the-query' }, // e.g. allPosts
+            GET_ONE: { name: 'name-of-the-query' }, // e.g. Post
+            CREATE: { name: 'name-of-the-query' }, // e.g. createPost
+            UPDATE: { name: 'name-of-the-query' }, // e.g. updatePost
+            DELETE: { name: 'name-of-the-query' }, // e.g. deletePost
+        },
+    ],
+}
+```
+
+This is useful if you need to support custom dataProvider methods such as those needed for ['@react-admin/ra-realtime'](https://react-admin-ee.marmelab.com/documentation/ra-realtime#dataprovider-requirements):
+
+```tsx
+import { Identifier, GET_LIST, GET_ONE } from 'ra-core';
+import { RealTimeDataProvider } from '@react-admin/ra-realtime';
+import { buildDataProvider, IntrospectedResource } from 'ra-data-graphql';
+
+const subscriptions: {
+    topic: string;
+    subscription: any;
+    subscriptionCallback: any;
+}[];
+
+const baseDataProvider = buildDataProvider(/* */);
+
+export const dataProvider: RealTimeDataProvider = {
+    ...baseDataProvider,
+    subscribe: async (topic, subscriptionCallback) => {
+        const raRealTimeTopic = topic.startsWith('resource/') ? topic.split('/') : null;
+        if (!raRealTimeTopic) throw new Error(`Invalid ra-realtime topic ${topic}`);
+    
+        // Two possible topic patterns
+        //    1. resource/${resource}
+        //    2. resource/${resource}/${id}
+        const [, resourceName, id] = raRealTimeTopic;
+        const introspectionResults = await baseDataProvider.getIntrospection();
+        const resourceIntrospection = introspectionResults.resources.find(
+            resource => resource.type.name === resourceName
+        );
+        if (!resourceIntrospection) throw new Error(`Invalid resource ${resourceName}`);
+
+        const { query, queryName, variables } = buildQuery({ id, resource, resourceIntrospection });
+        const subscription = baseDataProvider.client
+            .subscribe({ query, variables })
+            .subscribe(data =>
+                subscriptionCallback(data.data[queryName].event)
+            );
+
+        subscriptions.push({
+            topic,
+            subscription,
+            subscriptionCallback,
+        });
+
+        return Promise.resolve({ data: null });
+    },
+    unsubscribe: async (topic: string, subscriptionCallback: any) => {
+        const subscriptionIndex = subscriptions.findIndex(
+            subscription =>
+                subscription.topic !== topic ||
+                subscription.subscriptionCallback !== subscriptionCallback
+        );
+
+        if (subscriptionIndex) {
+            subscriptions[subscriptionIndex].unsubscribe();
+            subscriptions = subscriptions.splice(subscriptionIndex, 1);
+        }
+        return Promise.resolve({ data: null });
+    },
+}
+
+const buildQuery = (
+    {
+        id,
+        resource,
+        resourceIntrospection
+    }: {
+        id: Identifier | undefined;
+        resource: string;
+        resourceIntrospection: IntrospectedResource
+    }
+) => {
+    if (!id) {
+        if (!resourceIntrospection[GET_LIST]) throw new Error(`Resource ${resource} does not support the getList method`);
+        return {
+            queryName: resourceIntrospection[GET_LIST],
+            query: gql`subscription ${queryName} { ${queryName}{ topic event } }`,
+            variables: {},
+        }
+    }
+
+    if (!resourceIntrospection[GET_ONE]) throw new Error(`Resource ${resource} does not support the getOne method`);
+    return {
+        queryName: resourceIntrospection[GET_LIST],
+        query: gql`subscription ${queryName}($id: ID!) { ${queryName}(id: $id){ topic event } }`,
+        variables: { id },
+    }
+}
+```
+
 ## Troubleshooting
 
 ## When I create or edit a resource, the list or edit page does not refresh its data

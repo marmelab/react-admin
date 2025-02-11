@@ -1,5 +1,5 @@
 import { isValidElement, useEffect, useMemo } from 'react';
-import {
+import type {
     InfiniteQueryObserverBaseResult,
     InfiniteData,
 } from '@tanstack/react-query';
@@ -7,23 +7,21 @@ import {
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import {
-    UseInfiniteGetListOptions,
-    useInfiniteGetList,
-} from '../../dataProvider';
+import { useInfiniteGetList } from '../../dataProvider';
 import { defaultExporter } from '../../export';
-import {
+import { useResourceContext, useGetResourceLabel } from '../../core';
+import { useRecordSelection } from './useRecordSelection';
+import { useListParams } from './useListParams';
+import { useSelectAll } from './useSelectAll';
+import type { UseInfiniteGetListOptions } from '../../dataProvider';
+import type { ListControllerResult } from './useListController';
+import type {
     RaRecord,
     SortPayload,
     FilterPayload,
     Exporter,
     GetInfiniteListResult,
 } from '../../types';
-import { useResourceContext, useGetResourceLabel } from '../../core';
-import { useRecordSelection } from './useRecordSelection';
-import { useListParams } from './useListParams';
-
-import { ListControllerResult } from './useListController';
 
 /**
  * Prepare data for the InfiniteList view
@@ -42,9 +40,12 @@ import { ListControllerResult } from './useListController';
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-export const useInfiniteListController = <RecordType extends RaRecord = any>(
-    props: InfiniteListControllerProps<RecordType> = {}
-): InfiniteListControllerResult<RecordType> => {
+export const useInfiniteListController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
+    props: InfiniteListControllerProps<RecordType, ErrorType> = {}
+): InfiniteListControllerResult<RecordType, ErrorType> => {
     const {
         debounce = 500,
         disableAuthentication = false,
@@ -111,7 +112,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         fetchPreviousPage,
         isFetchingPreviousPage,
         refetch,
-    } = useInfiniteGetList<RecordType>(
+    } = useInfiniteGetList<RecordType, ErrorType>(
         resource,
         {
             pagination: {
@@ -129,15 +130,24 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
-                notify(error?.message || 'ra.notification.http_error', {
-                    type: 'error',
-                    messageArgs: {
-                        _: error?.message,
-                    },
-                }),
+                notify(
+                    (error as Error)?.message || 'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _: (error as Error)?.message,
+                        },
+                    }
+                ),
             ...otherQueryOptions,
         }
     );
+
+    const onSelectAll = useSelectAll({
+        resource,
+        sort: { field: query.sort, order: query.order },
+        filter: { ...query.filter, ...filter },
+    });
 
     // change page if there is no data
     useEffect(() => {
@@ -194,6 +204,7 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
@@ -213,11 +224,12 @@ export const useInfiniteListController = <RecordType extends RaRecord = any>(
         isFetchingNextPage,
         fetchPreviousPage,
         isFetchingPreviousPage,
-    } as InfiniteListControllerResult<RecordType>;
+    } as InfiniteListControllerResult<RecordType, ErrorType>;
 };
 
 export interface InfiniteListControllerProps<
     RecordType extends RaRecord = any,
+    ErrorType = Error,
 > {
     debounce?: number;
     disableAuthentication?: boolean;
@@ -229,24 +241,30 @@ export interface InfiniteListControllerProps<
     filter?: FilterPayload;
     filterDefaultValues?: object;
     perPage?: number;
-    queryOptions?: UseInfiniteGetListOptions<RecordType>;
+    queryOptions?: UseInfiniteGetListOptions<RecordType, ErrorType>;
     resource?: string;
     sort?: SortPayload;
     storeKey?: string | false;
 }
 
-export type InfiniteListControllerResult<RecordType extends RaRecord = any> =
-    ListControllerResult<RecordType> & {
-        fetchNextPage: InfiniteQueryObserverBaseResult<
-            InfiniteData<GetInfiniteListResult<RecordType>>
-        >['fetchNextPage'];
-        fetchPreviousPage: InfiniteQueryObserverBaseResult<
-            InfiniteData<GetInfiniteListResult<RecordType>>
-        >['fetchPreviousPage'];
-        isFetchingNextPage: InfiniteQueryObserverBaseResult<
-            InfiniteData<GetInfiniteListResult<RecordType>>
-        >['isFetchingNextPage'];
-        isFetchingPreviousPage: InfiniteQueryObserverBaseResult<
-            InfiniteData<GetInfiniteListResult<RecordType>>
-        >['isFetchingPreviousPage'];
-    };
+export type InfiniteListControllerResult<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = ListControllerResult<RecordType> & {
+    fetchNextPage: InfiniteQueryObserverBaseResult<
+        InfiniteData<GetInfiniteListResult<RecordType>>,
+        ErrorType
+    >['fetchNextPage'];
+    fetchPreviousPage: InfiniteQueryObserverBaseResult<
+        InfiniteData<GetInfiniteListResult<RecordType>>,
+        ErrorType
+    >['fetchPreviousPage'];
+    isFetchingNextPage: InfiniteQueryObserverBaseResult<
+        InfiniteData<GetInfiniteListResult<RecordType>>,
+        ErrorType
+    >['isFetchingNextPage'];
+    isFetchingPreviousPage: InfiniteQueryObserverBaseResult<
+        InfiniteData<GetInfiniteListResult<RecordType>>,
+        ErrorType
+    >['isFetchingPreviousPage'];
+};

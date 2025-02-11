@@ -8,7 +8,9 @@ describe('BulkUpdateButton', () => {
         it('should ask confirmation before updating in pessimistic mode', async () => {
             render(<MutationMode />);
             await screen.findByText('War and Peace');
-            const checkbox = await screen.findByLabelText('Select all');
+            const checkbox = await screen.findByRole('checkbox', {
+                name: 'Select all',
+            });
             checkbox.click();
             await screen.getByText('10 items selected');
             const button = screen.getByLabelText('Update Pessimistic');

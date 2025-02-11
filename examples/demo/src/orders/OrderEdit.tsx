@@ -13,10 +13,12 @@ import {
     Toolbar,
     useRecordContext,
     useTranslate,
+    useDefaultTitle,
+    useEditContext,
 } from 'react-admin';
 import { Card, CardContent, Box, Grid, Typography, Link } from '@mui/material';
 
-import { Order, Customer } from '../types';
+import { Customer } from '../types';
 import Basket from './Basket';
 import Totals from './Totals';
 
@@ -27,15 +29,14 @@ const OrderEdit = () => (
 );
 
 const OrderTitle = () => {
-    const translate = useTranslate();
-    const record = useRecordContext<Order>();
-    return record ? (
-        <span>
-            {translate('resources.orders.title', {
-                reference: record.reference,
-            })}
-        </span>
-    ) : null;
+    const appTitle = useDefaultTitle();
+    const { defaultTitle } = useEditContext();
+    return (
+        <>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
+        </>
+    );
 };
 
 const CustomerDetails = () => {

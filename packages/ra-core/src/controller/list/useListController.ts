@@ -8,12 +8,22 @@ import {
     UseGetListHookValue,
     UseGetListOptions,
 } from '../../dataProvider';
-import { defaultExporter } from '../../export';
-import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import { useSelectAll } from './useSelectAll';
+import { defaultExporter } from '../../export';
 import { SORT_ASC } from './queryReducer';
+import type {
+    FilterPayload,
+    SortPayload,
+    RaRecord,
+    Exporter,
+} from '../../types';
+import type {
+    UseReferenceArrayFieldControllerParams,
+    UseReferenceManyFieldControllerParams,
+} from '../field';
 
 /**
  * Prepare data for the List view
@@ -32,9 +42,12 @@ import { SORT_ASC } from './queryReducer';
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-export const useListController = <RecordType extends RaRecord = any>(
-    props: ListControllerProps<RecordType> = {}
-): ListControllerResult<RecordType> => {
+export const useListController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
+    props: ListControllerProps<RecordType, ErrorType> = {}
+): ListControllerResult<RecordType, ErrorType> => {
     const {
         debounce = 500,
         disableAuthentication = false,
@@ -104,7 +117,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         isFetching,
         isPending,
         refetch,
-    } = useGetList<RecordType>(
+    } = useGetList<RecordType, ErrorType>(
         resource,
         {
             pagination: {
@@ -122,12 +135,15 @@ export const useListController = <RecordType extends RaRecord = any>(
             placeholderData: previousData => previousData,
             retry: false,
             onError: error =>
-                notify(error?.message || 'ra.notification.http_error', {
-                    type: 'error',
-                    messageArgs: {
-                        _: error?.message,
-                    },
-                }),
+                notify(
+                    (error as Error)?.message || 'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _: (error as Error)?.message,
+                        },
+                    }
+                ),
             ...otherQueryOptions,
         }
     );
@@ -168,6 +184,12 @@ export const useListController = <RecordType extends RaRecord = any>(
         name: getResourceLabel(resource, 2),
     });
 
+    const onSelectAll = useSelectAll({
+        resource,
+        sort: { field: query.sort, order: query.order },
+        filter: { ...query.filter, ...filter },
+    });
+
     return {
         sort: currentSort,
         data,
@@ -183,6 +205,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         isLoading,
         isPending,
         onSelect: selectionModifiers.select,
+        onSelectAll,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
         page: query.page,
@@ -195,17 +218,20 @@ export const useListController = <RecordType extends RaRecord = any>(
         setPerPage: queryModifiers.setPerPage,
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
-        total: total,
+        total,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
               ? query.page * query.perPage < total
               : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : query.page > 1,
-    } as ListControllerResult<RecordType>;
+    } as ListControllerResult<RecordType, ErrorType>;
 };
 
-export interface ListControllerProps<RecordType extends RaRecord = any> {
+export interface ListControllerProps<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> {
     /**
      * The debounce delay for filter queries in milliseconds. Defaults to 500ms.
      *
@@ -363,7 +389,7 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      *     );
      * }
      */
-    queryOptions?: UseGetListOptions<RecordType>;
+    queryOptions?: UseGetListOptions<RecordType, ErrorType>;
 
     /**
      * The resource name. Defaults to the resource from ResourceContext.
@@ -431,6 +457,7 @@ export const injectedProps = [
     'isLoading',
     'isPending',
     'onSelect',
+    'onSelectAll',
     'onToggleItem',
     'onUnselectItems',
     'page',
@@ -475,6 +502,13 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     filterValues: any;
     hideFilter: (filterName: string) => void;
     onSelect: (ids: RecordType['id'][]) => void;
+    onSelectAll: (options?: {
+        limit?: number;
+        queryOptions?:
+            | UseGetListOptions<RecordType>
+            | UseReferenceArrayFieldControllerParams<RecordType>['queryOptions']
+            | UseReferenceManyFieldControllerParams<RecordType>['queryOptions'];
+    }) => void;
     onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
@@ -534,8 +568,11 @@ export interface ListControllerSuccessResult<RecordType extends RaRecord = any>
     isPending: false;
 }
 
-export type ListControllerResult<RecordType extends RaRecord = any> =
+export type ListControllerResult<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> =
     | ListControllerLoadingResult<RecordType>
-    | ListControllerErrorResult<RecordType>
-    | ListControllerRefetchErrorResult<RecordType>
+    | ListControllerErrorResult<RecordType, ErrorType>
+    | ListControllerRefetchErrorResult<RecordType, ErrorType>
     | ListControllerSuccessResult<RecordType>;

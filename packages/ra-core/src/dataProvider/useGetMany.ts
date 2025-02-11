@@ -4,7 +4,6 @@ import {
     UseQueryOptions,
     UseQueryResult,
     useQueryClient,
-    hashKey,
 } from '@tanstack/react-query';
 
 import { RaRecord, GetManyParams } from '../types';
@@ -51,15 +50,17 @@ import { useEvent } from '../util';
  *     )}</ul>;
  * };
  */
-export const useGetMany = <RecordType extends RaRecord = any>(
+export const useGetMany = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
     resource: string,
     params: Partial<GetManyParams<RecordType>>,
-    options: UseGetManyOptions<RecordType> = {}
-): UseGetManyHookValue<RecordType> => {
+    options: UseGetManyOptions<RecordType, ErrorType> = {}
+): UseGetManyHookValue<RecordType, ErrorType> => {
     const { ids, meta } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const queryCache = queryClient.getQueryCache();
     const {
         onError = noop,
         onSuccess = noop,
@@ -71,7 +72,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     const onErrorEvent = useEvent(onError);
     const onSettledEvent = useEvent(onSettled);
 
-    const result = useQuery<RecordType[], Error, RecordType[]>({
+    const result = useQuery<RecordType[], ErrorType, RecordType[]>({
         queryKey: [
             resource,
             'getMany',
@@ -100,15 +101,13 @@ export const useGetMany = <RecordType extends RaRecord = any>(
             const records =
                 !ids || ids.length === 0
                     ? []
-                    : ids.map(id => {
-                          const queryHash = hashKey([
+                    : ids.map(id =>
+                          queryClient.getQueryData<RecordType>([
                               resource,
                               'getOne',
                               { id: String(id), meta },
-                          ]);
-                          return queryCache.get<RecordType>(queryHash)?.state
-                              ?.data;
-                      });
+                          ])
+                      );
             if (records.some(record => record === undefined)) {
                 return undefined;
             } else {
@@ -180,14 +179,16 @@ export const useGetMany = <RecordType extends RaRecord = any>(
 
 const noop = () => undefined;
 
-export type UseGetManyOptions<RecordType extends RaRecord = any> = Omit<
-    UseQueryOptions<RecordType[], Error>,
-    'queryKey' | 'queryFn'
-> & {
+export type UseGetManyOptions<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = Omit<UseQueryOptions<RecordType[], ErrorType>, 'queryKey' | 'queryFn'> & {
     onSuccess?: (data: RecordType[]) => void;
-    onError?: (error: Error) => void;
-    onSettled?: (data?: RecordType[], error?: Error | null) => void;
+    onError?: (error: ErrorType) => void;
+    onSettled?: (data?: RecordType[], error?: ErrorType | null) => void;
 };
 
-export type UseGetManyHookValue<RecordType extends RaRecord = any> =
-    UseQueryResult<RecordType[], Error>;
+export type UseGetManyHookValue<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> = UseQueryResult<RecordType[], ErrorType>;

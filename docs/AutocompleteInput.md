@@ -14,7 +14,6 @@ It renders using [Material UI's `<Autocomplete>`](https://mui.com/material-ui/re
   Your browser does not support the video tag.
 </video>
 
-
 This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
 
 ## Usage
@@ -60,8 +59,8 @@ The form value for the source must be the selected value, e.g.
 |--------------------------- |----------|---------------------- |---------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `choices`                  | Optional | `Object[]`            | `-`                                                                 | List of items to autosuggest. Required if not inside a ReferenceInput.                                                                                                                                              |
 | `create`                   | Optional | `Element`             | `-`                                                                 | A React Element to render when users want to create a new choice                                                                                                                                                    |
-| `createLabel`              | Optional | `string`              | `ra.action .create`                                                 | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                                                                                                    |
-| `createItemLabel`          | Optional | `string`              | `ra.action .create_item`                                            | The label for the menu item allowing users to create a new choice. Used when the filter is not empty                                                                                                                |
+| `createLabel`              | Optional | `string`              | -                                                                   | The label used as hint to let users know they can create a new choice. Displayed when the filter is empty.                                                                                                                    |
+| `createItemLabel`          | Optional | `string`              | `ra.action .create_item`                                            | The label for the menu item allowing users to create a new choice. Used when the filter is not empty.                                                                                                                |
 | `debounce`                 | Optional | `number`              | `250`                                                               | The delay to wait before calling the setFilter function injected when used in a ReferenceInput.                                                                                                                     |
 | `emptyText`                | Optional | `string`              | `''`                                                                | The text to use for the empty element                                                                                                                                                                               |
 | `emptyValue`               | Optional | `any`                 | `''`                                                                | The value to use for the empty element                                                                                                                                                                              |
@@ -219,6 +218,8 @@ const CreateCategory = () => {
 ```
 {% endraw %}
 
+**Tip**: In development with `React.StrictMode`, you may run into an issue where the `<AutocompleteInput>` menu reopens after clicking the create item when the [`openOnFocus`](https://mui.com/material-ui/api/autocomplete/#autocomplete-prop-openOnFocus) prop is set to `true` which is the default with React-admin. If that bothers you, set the `openOnFocus` prop to `false`.
+
 If you want to customize the label of the "Create XXX" option, use [the `createItemLabel` prop](#createitemlabel).
 
 If you just need to ask users for a single string to create the new option, you can use [the `onCreate` prop](#oncreate) instead.
@@ -226,7 +227,7 @@ If you just need to ask users for a single string to create the new option, you 
 ## `createLabel`
 
 When you set the `create` or `onCreate` prop, `<AutocompleteInput>` lets users create new options.
-You can use the `createLabel` prop to render an additional menu item at the bottom of the list, that will only appear when the input is empty, inviting users to start typing to create a new option.
+You can use the `createLabel` prop to render an additional (disabled) menu item at the bottom of the list, that will only appear when the input is empty, inviting users to start typing to create a new option.
 
 ![Create Label](./img/AutocompleteInput-createLabel.png)
 

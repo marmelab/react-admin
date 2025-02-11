@@ -7,6 +7,7 @@ import { CoreAdminContext } from '../core/CoreAdminContext';
 import useLogin from './useLogin';
 
 import { TestMemoryRouter } from '../routing';
+import { PermissionsState } from './useLogin.stories';
 
 describe('useLogin', () => {
     describe('redirect after login', () => {
@@ -98,5 +99,15 @@ describe('useLogin', () => {
             expect(screen.queryByText('Home')).toBeNull();
             expect(screen.queryByText('Login')).not.toBeNull();
         });
+    });
+
+    it('should invalidate the getPermissions cache', async () => {
+        render(<PermissionsState />);
+        await screen.findByText('PERMISSIONS: guest');
+        fireEvent.click(screen.getByText('Login'));
+        await screen.findByText('PERMISSIONS: admin');
+        fireEvent.click(screen.getByText('Logout'));
+        await screen.findByText('LOADING');
+        await screen.findByText('PERMISSIONS: guest');
     });
 });

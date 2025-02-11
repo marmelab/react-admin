@@ -10,10 +10,23 @@ import {
     useNotify,
     useRedirect,
     getRecordFromLocation,
+    useDefaultTitle,
+    useCreateContext,
 } from 'react-admin';
 import { useLocation } from 'react-router';
 
 import StarRatingInput from './StarRatingInput';
+
+const ReviewTitle = () => {
+    const appTitle = useDefaultTitle();
+    const { defaultTitle } = useCreateContext();
+    return (
+        <>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
+        </>
+    );
+};
 
 const ReviewCreate = () => {
     const notify = useNotify();
@@ -31,7 +44,7 @@ const ReviewCreate = () => {
     };
 
     return (
-        <Create mutationOptions={{ onSuccess }}>
+        <Create mutationOptions={{ onSuccess }} title={<ReviewTitle />}>
             <SimpleForm
                 defaultValues={{ status: 'pending' }}
                 sx={{

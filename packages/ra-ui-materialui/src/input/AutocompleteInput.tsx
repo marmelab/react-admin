@@ -14,6 +14,7 @@ import isEqual from 'lodash/isEqual';
 import clsx from 'clsx';
 import {
     Autocomplete,
+    AutocompleteChangeReason,
     AutocompleteProps,
     Chip,
     TextField,
@@ -115,7 +116,7 @@ const defaultFilterOptions = createFilterOptions();
 export const AutocompleteInput = <
     OptionType extends RaRecord = RaRecord,
     Multiple extends boolean | undefined = false,
-    DisableClearable extends boolean | undefined = false,
+    DisableClearable extends boolean | undefined = boolean | undefined,
     SupportCreate extends boolean | undefined = false,
 >(
     props: AutocompleteInputProps<
@@ -135,6 +136,7 @@ export const AutocompleteInput = <
         createLabel,
         createItemLabel = 'ra.action.create_item',
         createValue,
+        createHintValue,
         debounce: debounceDelay = 250,
         defaultValue,
         emptyText,
@@ -177,6 +179,7 @@ export const AutocompleteInput = <
         onInputChange,
         disabled,
         readOnly,
+        getOptionDisabled: getOptionDisabledProp,
         ...rest
     } = props;
 
@@ -370,16 +373,28 @@ If you provided a React element for the optionText prop, you must also provide t
         handleChange: handleChangeWithCreateSupport,
         createElement,
         createId,
+        getOptionDisabled: getOptionDisabledWithCreateSupport,
     } = useSupportCreateSuggestion({
         create,
         createLabel,
         createItemLabel,
         createValue,
+        createHintValue,
         handleChange,
         filter: filterValue,
         onCreate,
         optionText,
     });
+
+    const getOptionDisabled = useCallback(
+        option => {
+            return (
+                getOptionDisabledWithCreateSupport(option) ||
+                (getOptionDisabledProp && getOptionDisabledProp(option))
+            );
+        },
+        [getOptionDisabledProp, getOptionDisabledWithCreateSupport]
+    );
 
     const getOptionLabel = useCallback(
         (option: any, isListItem: boolean = false) => {
@@ -522,7 +537,11 @@ If you provided a React element for the optionText prop, you must also provide t
             if (inputValue === '' && filterValue === '' && createLabel) {
                 // create option with createLabel
                 filteredOptions = filteredOptions.concat(getCreateItem(''));
-            } else if (!doesQueryMatchSuggestion(filterValue)) {
+            } else if (
+                inputValue &&
+                filterValue &&
+                !doesQueryMatchSuggestion(filterValue)
+            ) {
                 filteredOptions = filteredOptions.concat(
                     // create option with createItemLabel
                     getCreateItem(inputValue)
@@ -534,12 +553,19 @@ If you provided a React element for the optionText prop, you must also provide t
     };
 
     const handleAutocompleteChange = useCallback(
-        (event: any, newValue: any, _reason: string) => {
+        (event: any, newValue: any, reason: AutocompleteChangeReason) => {
+            // This prevents auto-submitting a form inside a dialog passed to the `create` prop
+            event.preventDefault();
+            if (reason === 'createOption') {
+                // When users press the enter key after typing a new value, we can handle it as if they clicked on the create option
+                handleChangeWithCreateSupport(getCreateItem(newValue));
+                return;
+            }
             handleChangeWithCreateSupport(
                 newValue != null ? newValue : emptyValue
             );
         },
-        [emptyValue, handleChangeWithCreateSupport]
+        [emptyValue, getCreateItem, handleChangeWithCreateSupport]
     );
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
@@ -666,7 +692,6 @@ If you provided a React element for the optionText prop, you must also provide t
                 onInputChange={handleInputChange}
                 renderOption={(props, record: RaRecord) => {
                     // We have to extract the key because react 19 does not allow to spread the key prop
-                    // @ts-expect-error The key is indeed inside props but MUI does not provide the correct type
                     const { key: ignoredKey, ...rest } = props;
                     // We don't use MUI key which is generated from the option label because we may have options with the same label but with different values
                     const key = getChoiceValue(record);
@@ -678,6 +703,7 @@ If you provided a React element for the optionText prop, you must also provide t
                         </li>
                     );
                 }}
+                getOptionDisabled={getOptionDisabled}
             />
             {createElement}
         </>

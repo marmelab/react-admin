@@ -46,7 +46,8 @@ describe('<TabbedForm />', () => {
 
         const tabs = await screen.findAllByRole('tab');
         expect(tabs.length).toEqual(2);
-        await screen.findByLabelText('Title');
+        const titleInput = await screen.findByLabelText('Title');
+        expect(titleInput).toBeVisible();
     });
 
     it('should display the tab contents correctly with IDs containing spaces', async () => {

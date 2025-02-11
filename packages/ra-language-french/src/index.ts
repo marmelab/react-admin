@@ -25,6 +25,7 @@ const frenchMessages: TranslationMessages = {
             remove: 'Supprimer',
             save: 'Enregistrer',
             select_all: 'Tout sélectionner',
+            select_all_button: 'Tout sélectionner',
             select_row: 'Sélectionner cette ligne',
             search: 'Rechercher',
             show: 'Afficher',
@@ -89,7 +90,10 @@ const frenchMessages: TranslationMessages = {
         },
         message: {
             about: 'Au sujet de',
+            access_denied: "Vous n'avez pas les droits d'accès à cette page",
             are_you_sure: 'Êtes-vous sûr ?',
+            authentication_error:
+                "Le serveur d'authentification a retourné une erreur et vos autorisations n'ont pas pu être vérifiées.",
             auth_error:
                 "Une erreur est survenue lors de la validation de votre jeton d'authentification.",
             bulk_delete_content:
@@ -107,19 +111,17 @@ const frenchMessages: TranslationMessages = {
             delete_title: 'Supprimer %{name} #%{id}',
             details: 'Détails',
             error: "En raison d'une erreur côté navigateur, votre requête n'a pas pu aboutir.",
-
             invalid_form: "Le formulaire n'est pas valide.",
             loading:
                 'La page est en cours de chargement, merci de bien vouloir patienter.',
             no: 'Non',
             not_found:
                 "L'URL saisie est incorrecte, ou vous avez suivi un mauvais lien.",
-            yes: 'Oui',
+            select_all_limit_reached:
+                "Il y a trop d'éléments pour tous les sélectionner. Seuls les %{max} premiers éléments ont été sélectionnés.",
             unsaved_changes:
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
-            access_denied: "Vous n'avez pas les droits d'accès à cette page",
-            authentication_error:
-                "Le serveur d'authentification a retourné une erreur et vos autorisations n'ont pas pu être vérifiées.",
+            yes: 'Oui',
         },
         navigation: {
             clear_filters: 'Effacer les filtres',
@@ -144,7 +146,7 @@ const frenchMessages: TranslationMessages = {
             skip_nav: 'Aller au contenu',
         },
         sort: {
-            sort_by: 'Trier par %{field} %{order}',
+            sort_by: 'Trier par %{field_lower_first} %{order}',
             ASC: 'croissant',
             DESC: 'décroissant',
         },

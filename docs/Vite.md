@@ -147,6 +147,68 @@ const App = () => (
 export default App;
 ```
 
+## Unit Test Your App with Vitest
+
+Vitest is a fast and efficient unit testing framework designed specifically for the Vite ecosystem. 
+
+To enable it, start by adding the dependencies:
+
+```sh
+yarn add -D vitest @vitest/browser playwright
+```
+
+Then modify and use the following configs:
+
+```diff
+// in vite.config.ts
+
++/// <reference types="vitest" />
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
++ test: {
++   browser: {
++     enabled: true,
++     provider: "playwright",
++     instances: [
++       {
++         browser: "chromium",
++       },
++     ],
++   },
++   globals: true,
++ },
+});
+```
+
+## Sourcemaps in production
+
+By default, Vite won't include the TypeScript sourcemaps in production builds. This means you'll only have the react-admin ESM builds for debugging.
+Should you prefer to have the TypeScript sources, you'll have to configure some Vite aliases:
+
+```tsx
+// in vite.config.ts
+import { defineConfig } from "vite";
+import path from "path";
+import react from "@vitejs/plugin-react";
+
+const alias = [
+  { find: 'react-admin', replacement: path.resolve(__dirname, './node_modules/react-admin/src') },
+  { find: 'ra-core', replacement: path.resolve(__dirname, './node_modules/ra-core/src') },
+  { find: 'ra-ui-materialui', replacement: path.resolve(__dirname, './node_modules/ra-ui-materialui/src') },
+  // add any other react-admin packages you have
+]
+
+export default defineConfig({
+  plugins: [react()],
+  build: { sourcemap: true },
+  resolve: { alias },
+});
+```
+
 ## Troubleshooting
 
 ### Error about `global` Being `undefined`

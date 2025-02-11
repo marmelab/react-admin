@@ -13,6 +13,7 @@ const config: StorybookConfig = {
     ],
     addons: [
         '@storybook/addon-webpack5-compiler-babel',
+        '@storybook/addon-storysource',
         '@storybook/addon-actions',
         '@storybook/addon-controls',
     ],
@@ -52,7 +53,7 @@ const config: StorybookConfig = {
             ],
         };
     },
-    webpackFinal: async (config, { configType }) => {
+    webpackFinal: async config => {
         config.module?.rules?.push({
             test: /\.stories\.tsx?$/,
             use: [
@@ -85,6 +86,9 @@ const config: StorybookConfig = {
         options: {},
     },
     docs: {},
+    core: {
+        disableTelemetry: true,
+    },
 };
 
 export default config;

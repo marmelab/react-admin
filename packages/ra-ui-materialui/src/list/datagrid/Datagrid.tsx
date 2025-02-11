@@ -18,6 +18,8 @@ import {
     OptionalResourceContextProvider,
     RaRecord,
     SortPayload,
+    useCanAccess,
+    useResourceContext,
 } from 'ra-core';
 import { Table, TableProps, SxProps } from '@mui/material';
 import clsx from 'clsx';
@@ -27,7 +29,7 @@ import difference from 'lodash/difference';
 import { DatagridHeader } from './DatagridHeader';
 import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
-import { RowClickFunction } from './DatagridRow';
+import { RowClickFunction } from '../types';
 import DatagridContextProvider from './DatagridContextProvider';
 import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
@@ -42,6 +44,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *
  * Props:
  *  - body
+ *  - bulkActionToolbar
  *  - bulkActionButtons
  *  - children
  *  - empty
@@ -117,6 +120,11 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
 export const Datagrid: React.ForwardRefExoticComponent<
     Omit<DatagridProps, 'ref'> & React.RefAttributes<HTMLTableElement>
 > = React.forwardRef<HTMLTableElement, DatagridProps>((props, ref) => {
+    const resourceFromContext = useResourceContext(props);
+    const { canAccess: canDelete } = useCanAccess({
+        resource: resourceFromContext,
+        action: 'delete',
+    });
     const {
         optimized = false,
         body = optimized ? PureDatagridBody : DatagridBody,
@@ -125,7 +133,8 @@ export const Datagrid: React.ForwardRefExoticComponent<
         className,
         empty = DefaultEmpty,
         expand,
-        bulkActionButtons = defaultBulkActionButtons,
+        bulkActionsToolbar,
+        bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
         hover,
         isRowSelectable,
         isRowExpandable,
@@ -237,13 +246,14 @@ export const Datagrid: React.ForwardRefExoticComponent<
                     sx={sx}
                     className={clsx(DatagridClasses.root, className)}
                 >
-                    {bulkActionButtons !== false ? (
-                        <BulkActionsToolbar>
-                            {isValidElement(bulkActionButtons)
-                                ? bulkActionButtons
-                                : defaultBulkActionButtons}
-                        </BulkActionsToolbar>
-                    ) : null}
+                    {bulkActionsToolbar ??
+                        (bulkActionButtons !== false ? (
+                            <BulkActionsToolbar>
+                                {isValidElement(bulkActionButtons)
+                                    ? bulkActionButtons
+                                    : defaultBulkActionButtons}
+                            </BulkActionsToolbar>
+                        ) : null)}
                     <div className={DatagridClasses.tableWrapper}>
                         <Table
                             ref={ref}
@@ -309,6 +319,28 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      * A class name to apply to the root table element
      */
     className?: string;
+
+    /**
+     * The component used to render the bulk actions toolbar.
+     *
+     * @example
+     * import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
+     *
+     * const PostBulkActionsToolbar = () => (
+     *     <BulkActionsToolbar selectAllButton={<SelectAllButton label="Select all records" />}>
+     *         <BulkDeleteButton />
+     *     </BulkActionsToolbar>
+     * );
+     *
+     * export const PostList = () => (
+     *     <List>
+     *         <Datagrid bulkActionsToolbar={<PostBulkActionsToolbar />}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
+    bulkActionsToolbar?: ReactElement;
 
     /**
      * The component used to render the bulk action buttons. Defaults to <BulkDeleteButton>.

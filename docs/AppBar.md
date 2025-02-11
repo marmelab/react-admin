@@ -118,6 +118,7 @@ export const MyAppBar = () => (
  
 If you omit `<TitlePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
+{% raw %}
 ```jsx
 // in src/MyAppBar.js
 import { AppBar } from 'react-admin';
@@ -128,13 +129,14 @@ import { Logo } from './Logo';
 
 const MyAppBar = () => (
     <AppBar>
-        <Box component="span" flex={1} />
+        <Box component="span" sx={{ flex: 1 }} /> 
         <Logo />
-        <Box component="span" flex={1} />
+        <Box component="span" sx={{ flex: 1 }} />
         <Search />
     </AppBar>
 );
 ```
+{% endraw %}
 
 ## `color`
 
@@ -248,20 +250,26 @@ The content of the user menu depends on the return value of `authProvider.getIde
 
 You can customize the user menu by passing a `userMenu` prop to the `<AppBar>` component.
 
-```jsx
+```tsx
 import * as React from 'react';
-import { AppBar, UserMenu, useUserMenu } from 'react-admin';
+import { AppBar, Logout, UserMenu, useUserMenu } from 'react-admin';
 import { MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Link } from "react-router-dom";
 
 // It's important to pass the ref to allow Material UI to manage the keyboard navigation
-const SettingsMenuItem = React.forwardRef((props, ref) => {
-    // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
-    const { onClose } = useUserMenu();
+const SettingsMenuItem = React.forwardRef<HTMLAnchorElement>((props, ref) => {
+    const userMenuContext = useUserMenu();
+    if (!userMenuContext) {
+        throw new Error("<SettingsMenuItem> should be used inside a <UserMenu>");
+    }
+    const { onClose } = userMenuContext;
     return (
         <MenuItem
             onClick={onClose}
             ref={ref}
+            component={Link}
+            to="/settings"
             // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
         >
@@ -273,7 +281,7 @@ const SettingsMenuItem = React.forwardRef((props, ref) => {
     );
 });
 
-const MyAppBar = () => (
+export const MyAppBar = () => (
     <AppBar
         userMenu={
             <UserMenu>
@@ -444,6 +452,7 @@ export const MyAppbar = () => (
 
 If react-admin's `<AppBar>` component doesn't meet your needs, you can build your own component using Material UI's `<AppBar>`. Here is an example:
 
+{% raw %}
 ```jsx
 // in src/MyAppBar.js
 import { AppBar, Toolbar, Box } from '@mui/material';
@@ -453,12 +462,13 @@ export const MyAppBar = () => (
     <AppBar position="static">
         <Toolbar>
             <TitlePortal />
-            <Box flex="1" />
+            <Box sx={{ flex: "1" }} />
             <RefreshIconButton />
         </Toolbar>
     </AppBar>
 );
 ```
+{% endraw %}
 
 Then, use your custom app bar in a custom `<Layout>` component:
 

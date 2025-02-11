@@ -20,7 +20,7 @@ describe('Authentication', () => {
     it('should not login with incorrect credentials', () => {
         ListPage.navigate();
         ListPage.logout();
-        LoginPage.login('foo', 'bar');
+        LoginPage.login('foo', 'bar', true);
         cy.contains('Authentication failed, please retry');
     });
     it('should login with correct credentials', () => {

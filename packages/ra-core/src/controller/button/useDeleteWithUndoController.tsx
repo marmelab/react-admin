@@ -44,8 +44,11 @@ import { useTranslate } from '../../i18n';
  *     );
  * };
  */
-const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
-    props: UseDeleteWithUndoControllerParams<RecordType>
+const useDeleteWithUndoController = <
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+>(
+    props: UseDeleteWithUndoControllerParams<RecordType, ErrorType>
 ): UseDeleteWithUndoControllerReturn => {
     const {
         record,
@@ -60,7 +63,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
     const translate = useTranslate();
-    const [deleteOne, { isPending }] = useDelete<RecordType>(
+    const [deleteOne, { isPending }] = useDelete<RecordType, ErrorType>(
         resource,
         undefined,
         {
@@ -82,19 +85,20 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                 record && unselect([record.id]);
                 redirect(redirectTo, resource);
             },
-            onError: (error: Error) => {
+            onError: error => {
                 notify(
                     typeof error === 'string'
                         ? error
-                        : error.message || 'ra.notification.http_error',
+                        : (error as Error)?.message ||
+                              'ra.notification.http_error',
                     {
                         type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : error && error.message
-                                      ? error.message
+                                    : (error as Error)?.message
+                                      ? (error as Error).message
                                       : undefined,
                         },
                     }

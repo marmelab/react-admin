@@ -13,13 +13,19 @@ import { MenuItemLink } from './MenuItemLink';
 
 export const ResourceMenuItem = ({ name }: { name: string }) => {
     const resources = useResourceDefinitions();
-    const { canAccess, isPending } = useCanAccess({
+    const { canAccess, error, isPending } = useCanAccess({
         action: 'list',
         resource: name,
     });
     const getResourceLabel = useGetResourceLabel();
     const createPath = useCreatePath();
-    if (!resources || !resources[name] || isPending || canAccess === false)
+    if (
+        !resources ||
+        !resources[name] ||
+        isPending ||
+        canAccess === false ||
+        error != null
+    )
         return null;
     return (
         <MenuItemLink

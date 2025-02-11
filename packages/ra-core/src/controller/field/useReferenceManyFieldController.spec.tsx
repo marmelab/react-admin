@@ -6,6 +6,10 @@ import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
 import { useReferenceManyFieldController } from './useReferenceManyFieldController';
 import { memoryStore } from '../../store';
+import {
+    Basic,
+    defaultDataProvider,
+} from './useReferenceManyFieldController.stories';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;
@@ -410,6 +414,72 @@ describe('useReferenceManyFieldController', () => {
             await screen.findByText(
                 '{"facets":[{"foo":"bar","count":1},{"foo":"baz","count":2}]}'
             );
+        });
+    });
+
+    describe('onSelectAll', () => {
+        it('should select all records', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(await screen.findByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [0,1]'
+                );
+            });
+        });
+
+        it('should select all records even though some records are already selected', async () => {
+            render(<Basic />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(await screen.findByTestId('checkbox-1'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1]'
+                );
+            });
+            fireEvent.click(await screen.findByText('Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [0,1]'
+                );
+            });
+        });
+
+        it('should not select more records than the provided limit', async () => {
+            const dataProvider = defaultDataProvider;
+            const getManyReference = jest.spyOn(
+                dataProvider,
+                'getManyReference'
+            );
+            render(<Basic dataProvider={dataProvider} />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(await screen.findByText('Limited Select All'));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [0]'
+                );
+            });
+            await waitFor(() => {
+                expect(getManyReference).toHaveBeenCalledWith(
+                    'books',
+                    expect.objectContaining({
+                        pagination: { page: 1, perPage: 1 },
+                    })
+                );
+            });
         });
     });
 });

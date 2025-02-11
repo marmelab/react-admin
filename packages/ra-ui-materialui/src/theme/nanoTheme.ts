@@ -56,6 +56,12 @@ const componentsOverrides = (theme: Theme) => ({
                 paddingBottom: theme.spacing(0.2),
             },
         },
+        variants: [
+            {
+                props: { size: 'small' as const },
+                style: { fontSize: '1em' },
+            },
+        ],
     },
     MuiCard: {
         defaultProps: {
@@ -149,9 +155,6 @@ const componentsOverrides = (theme: Theme) => ({
         styleOverrides: {
             elevation1: {
                 boxShadow: theme.shadows[1],
-            },
-            root: {
-                backgroundColor: theme.palette.background.default,
             },
         },
     },
@@ -340,7 +343,7 @@ const lightPalette: PaletteOptions = {
     mode: 'light' as 'light',
     primary: { main: '#00585C' },
     secondary: { main: '#64B4B8' },
-    background: { default: '#f9fafb' },
+    background: { default: '#f4f4f4' },
     text: { primary: '#212b36' },
     ...alert,
 };
@@ -355,13 +358,14 @@ const createNanoTheme = (palette: RaThemeOptions['palette']) => {
         },
         spacing: 8,
         typography: {
-            fontFamily: 'Onest, sans-serif',
+            fontFamily: 'Inter, sans-serif',
             fontSize: 12,
             h1: { fontSize: '7rem' },
             h2: { fontWeight: 400 },
             h3: { fontWeight: 500 },
             h4: { fontWeight: 700 },
             h5: { fontWeight: 700 },
+            button: { textTransform: undefined },
         },
     };
     const theme = createTheme(themeOptions);

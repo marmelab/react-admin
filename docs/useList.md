@@ -7,7 +7,7 @@ title: "useList"
 
 The `useList` hook allows to create a `ListContext` based on local data. `useList` creates callbacks for sorting, paginating, filtering, and selecting records from an array.
 
-Thanks to it, you can display your data inside a [`<Datagrid>`](./Datagrid.md), a [`<SimpleList>`](./SimpleList.md) or an [`<EditableDatagrid>`](./EditableDatagrid.md). 
+Thanks to it, you can display your data inside a [`<Datagrid>`](./Datagrid.md), a [`<SimpleList>`](./SimpleList.md) or an [`<EditableDatagrid>`](./EditableDatagrid.md).
 
 ## Usage
 
@@ -31,7 +31,7 @@ const MyComponent = () => {
     const listContext = useList({ data });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid>
+            <Datagrid resource="actors">
                 <TextField source="id" />
                 <TextField source="name" />
             </Datagrid>
@@ -53,7 +53,7 @@ const MyComponent = () => {
     const listContext = useList({ data, isPending });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid>
+            <Datagrid resource="posts">
                 <TextField source="id" />
                 <TextField source="name" />
             </Datagrid>
@@ -61,6 +61,7 @@ const MyComponent = () => {
     );
 };
 ```
+
 ## Parameters
 
 `useList` expects an object with the following keys:
@@ -69,7 +70,7 @@ const MyComponent = () => {
 * [`filter`](#filter)
 * [`filterCallback`](#filtercallback)
 * [`isFetching`](#isfetching)
-* [`isPending`](#isPending)
+* [`isPending`](#ispending)
 * [`page`](#page)
 * [`perPage`](#perpage)
 * [`sort`](#sort)
@@ -153,7 +154,7 @@ const MyComponent = () => {
     const listContext = useList({ data, isFetching });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid>
+            <Datagrid resource="posts">
                 <TextField source="id" />
                 <TextField source="name" />
             </Datagrid>
@@ -183,7 +184,7 @@ const MyComponent = () => {
     const listContext = useList({ data, isPending });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid>
+            <Datagrid resource="posts">
                 <TextField source="id" />
                 <TextField source="name" />
             </Datagrid>
@@ -256,7 +257,7 @@ const { data } = useList({
 
 ## Return Value
 
-`useList` returns an object with keys matching the shape of the `ListContext`: 
+`useList` returns an object with keys matching the shape of the `ListContext`:
 
 ```jsx
 const {

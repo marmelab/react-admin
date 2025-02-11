@@ -3,6 +3,7 @@ import {
     EditButton,
     List,
     RecordContextProvider,
+    useDefaultTitle,
     useListContext,
 } from 'react-admin';
 import {
@@ -18,6 +19,17 @@ import { humanize } from 'inflection';
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
 
+const CategoriesTitle = () => {
+    const title = useDefaultTitle();
+    const { defaultTitle } = useListContext();
+    return (
+        <>
+            <title>{`${title} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
+        </>
+    );
+};
+
 const CategoryList = () => (
     <List
         sort={{ field: 'name', order: 'ASC' }}
@@ -25,6 +37,7 @@ const CategoryList = () => (
         pagination={false}
         component="div"
         actions={false}
+        title={<CategoriesTitle />}
     >
         <CategoryGrid />
     </List>

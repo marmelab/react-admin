@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { required } from 'ra-core';
+import { required, Resource } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
 
 import { TextInput } from './TextInput';
@@ -9,6 +9,8 @@ import { Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
 import { FormInspector } from './common';
+import { Admin } from 'react-admin';
+import { MemoryRouter } from 'react-router';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 
@@ -174,6 +176,71 @@ export const Error = () => (
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const ServerError = () => (
+    <MemoryRouter initialEntries={['/posts/create']}>
+        <Admin
+            dataProvider={
+                {
+                    create: (resource, { data }) => {
+                        console.log(`reject create on ${resource}: `, data);
+                        return Promise.reject({
+                            data,
+                            message:
+                                'An article with this title already exists. The title must be unique.',
+                        });
+                    },
+                } as any
+            }
+        >
+            <Resource
+                name="posts"
+                create={() => (
+                    <Create resource="posts" record={{ title: 'Lorem ipsum' }}>
+                        <SimpleForm toolbar={AlwaysOnToolbar}>
+                            <TextInput source="title" />
+                            <FormInspector />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </MemoryRouter>
+);
+
+export const ServerValidationError = () => (
+    <MemoryRouter initialEntries={['/posts/create']}>
+        <Admin
+            dataProvider={
+                {
+                    create: (resource, { data }) => {
+                        console.log(`reject create on ${resource}: `, data);
+                        return Promise.reject({
+                            data,
+                            body: {
+                                errors: {
+                                    title: 'An article with this title already exists. The title must be unique.',
+                                },
+                            },
+                        });
+                    },
+                } as any
+            }
+        >
+            <Resource
+                name="posts"
+                create={() => (
+                    <Create resource="posts" record={{ title: 'Lorem ipsum' }}>
+                        <SimpleForm toolbar={AlwaysOnToolbar}>
+                            <TextInput source="title" />
+                            <FormInspector />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </MemoryRouter>
 );
 
 export const Sx = () => (

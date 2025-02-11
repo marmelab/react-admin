@@ -1,16 +1,9 @@
 import * as React from 'react';
-import { ChangeEvent, memo, useMemo } from 'react';
+import { memo } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { SxProps } from '@mui/system';
-import SearchIcon from '@mui/icons-material/Search';
-import {
-    useTranslate,
-    useListFilterContext,
-    SourceContextProvider,
-    useResourceContext,
-    SourceContextValue,
-} from 'ra-core';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FilterLiveForm, useTranslate } from 'ra-core';
 
 import { TextInput, TextInputProps } from '../../input';
 
@@ -30,9 +23,7 @@ import { TextInput, TextInputProps } from '../../input';
  * );
  */
 export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
-    const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
-    const resource = useResourceContext(props);
 
     const {
         source = 'q',
@@ -41,68 +32,27 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
         ...rest
     } = props;
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target) {
-            setFilters(
-                { ...filterValues, [source]: event.target.value },
-                null,
-                true
-            );
-        } else {
-            const { [source]: _, ...filters } = filterValues;
-            setFilters(filters);
-        }
-    };
-
-    const initialValues = useMemo(
-        () => ({
-            [source]: filterValues[source],
-        }),
-        [filterValues, source]
-    );
-
-    const form = useForm({ values: initialValues });
-
-    const onSubmit = e => {
-        e.preventDefault();
-    };
-
-    const sourceContext = React.useMemo<SourceContextValue>(
-        () => ({
-            getSource: (source: string) => source,
-            getLabel: (source: string) =>
-                `resources.${resource}.fields.${source}`,
-        }),
-        [resource]
-    );
-
     return (
-        <FormProvider {...form}>
-            <SourceContextProvider value={sourceContext}>
-                <form onSubmit={onSubmit}>
-                    <TextInput
-                        resettable
-                        helperText={false}
-                        source={source}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <SearchIcon color="disabled" />
-                                </InputAdornment>
-                            ),
-                        }}
-                        onChange={handleChange}
-                        size="small"
-                        label={rest.hiddenLabel ? false : label}
-                        placeholder={
-                            placeholder ??
-                            (rest.hiddenLabel ? label : undefined)
-                        }
-                        {...rest}
-                    />
-                </form>
-            </SourceContextProvider>
-        </FormProvider>
+        <FilterLiveForm>
+            <TextInput
+                resettable
+                helperText={false}
+                source={source}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <SearchIcon color="disabled" />
+                        </InputAdornment>
+                    ),
+                }}
+                size="small"
+                label={rest.hiddenLabel ? false : label}
+                placeholder={
+                    placeholder ?? (rest.hiddenLabel ? label : undefined)
+                }
+                {...rest}
+            />
+        </FilterLiveForm>
     );
 });
 

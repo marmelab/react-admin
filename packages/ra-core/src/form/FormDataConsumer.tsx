@@ -42,7 +42,9 @@ import { useWrappedSource } from '../core';
  *     </Edit>
  * );
  */
-const FormDataConsumer = <TFieldValues extends FieldValues = FieldValues>(
+export const FormDataConsumer = <
+    TFieldValues extends FieldValues = FieldValues,
+>(
     props: ConnectedProps<TFieldValues>
 ) => {
     const form = useFormContext<TFieldValues>();
@@ -65,7 +67,7 @@ export const FormDataConsumerView = <
     props: Props<TFieldValues>
 ) => {
     const { children, formData, source } = props;
-    let ret;
+    let result;
 
     const finalSource = useWrappedSource(source || '');
 
@@ -75,15 +77,13 @@ export const FormDataConsumerView = <
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (matches) {
         const scopedFormData = get(formData, matches[0]);
-        ret = children({ formData, scopedFormData });
+        result = children({ formData, scopedFormData });
     } else {
-        ret = children({ formData });
+        result = children({ formData });
     }
 
-    return ret === undefined ? null : ret;
+    return result === undefined ? null : result;
 };
-
-export default FormDataConsumer;
 
 const ArraySourceRegex = new RegExp(/.+\.\d+$/);
 

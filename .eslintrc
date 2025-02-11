@@ -1,8 +1,7 @@
-
 {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "warnOnUnsupportedTypeScriptVersion": false
+        "warnOnUnsupportedTypeScriptVersion": false,
     },
     "extends": ["react-app", "plugin:prettier/recommended"],
     "plugins": [
@@ -11,7 +10,7 @@
         "jsx-a11y",
         "prettier",
         "react",
-        "react-hooks"
+        "react-hooks",
     ],
     "rules": {
         "no-use-before-define": "off",
@@ -23,10 +22,18 @@
                     {
                         "name": "@mui/material",
                         "importNames": ["makeStyles", "createMuiTheme"],
-                        "message": "Please import from @mui/material/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information"
-                    }
-                ]
-            }
+                        "message": "Please import from @mui/material/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information",
+                    },
+                    {
+                        "name": "@mui/icons-material",
+                        "message": "Named import from @mui/icons-material should be avoided for performance reasons. Use a default import instead. E.g. `import Dashboard from '@mui/icons-material/Dashboard';` instead of `import { Dashboard } from '@mui/icons-material';`.See https://mui.com/material-ui/guides/minimizing-bundle-size/#development-environment for more information.",
+                    },
+                    {
+                        "name": "lodash",
+                        "message": "Named import from lodash should be avoided for performance reasons. Use a default import instead. E.g. `import merge from 'lodash/merge';` instead of `import { merge } from 'lodash';`.",
+                    },
+                ],
+            },
         ],
         "no-redeclare": "off",
         "import/no-anonymous-default-export": "off",
@@ -34,12 +41,12 @@
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": [
             "warn", // or "error"
-            { 
+            {
                 "argsIgnorePattern": "^_",
                 "varsIgnorePattern": "^_",
                 "caughtErrorsIgnorePattern": "^_",
-                "ignoreRestSiblings": true
-            }
-        ]
-    }
+                "ignoreRestSiblings": true,
+            },
+        ],
+    },
 }

@@ -4,9 +4,7 @@ import {
     ResourceContextProvider,
     ListContextProvider,
     CoreAdminContext,
-    testDataProvider,
     useRecordContext,
-    useRecordSelection,
     useGetList,
     useList,
     TestMemoryRouter,
@@ -21,7 +19,11 @@ import { Box, Checkbox, TableCell, TableRow, styled } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { FieldProps, TextField } from '../../field';
-import { BulkDeleteButton, BulkExportButton } from '../../button';
+import {
+    BulkDeleteButton,
+    BulkExportButton,
+    SelectAllButton as RaSelectAllButton,
+} from '../../button';
 import { Datagrid, DatagridProps } from './Datagrid';
 import { ShowGuesser, SimpleShowLayout } from '../../detail';
 import { AdminUI } from '../../AdminUI';
@@ -30,69 +32,70 @@ import { List } from '../List';
 import { EditGuesser } from '../../detail';
 import { DatagridRowProps } from './DatagridRow';
 import DatagridBody, { DatagridBodyProps } from './DatagridBody';
+import { BulkActionsToolbar } from '../BulkActionsToolbar';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
 
-const data = [
-    {
-        id: 1,
-        title: 'War and Peace',
-        author: 'Leo Tolstoy',
-        year: 1869,
-    },
-    {
-        id: 2,
-        title: 'Pride and Predjudice',
-        author: 'Jane Austen',
-        year: 1813,
-    },
-    {
-        id: 3,
-        title: 'The Picture of Dorian Gray',
-        author: 'Oscar Wilde',
-        year: 1890,
-    },
-    {
-        id: 4,
-        title: 'Le Petit Prince',
-        author: 'Antoine de Saint-Exupéry',
-        year: 1943,
-    },
-];
+const data = {
+    books: [
+        {
+            id: 1,
+            title: 'War and Peace',
+            author: 'Leo Tolstoy',
+            year: 1869,
+        },
+        {
+            id: 2,
+            title: 'Pride and Predjudice',
+            author: 'Jane Austen',
+            year: 1813,
+        },
+        {
+            id: 3,
+            title: 'The Picture of Dorian Gray',
+            author: 'Oscar Wilde',
+            year: 1890,
+        },
+        {
+            id: 4,
+            title: 'Le Petit Prince',
+            author: 'Antoine de Saint-Exupéry',
+            year: 1943,
+        },
+        {
+            id: 5,
+            title: 'The Alchemist',
+            author: 'Paulo Coelho',
+            year: 1988,
+        },
+        {
+            id: 6,
+            title: 'Madame Bovary',
+            author: 'Gustave Flaubert',
+            year: 1857,
+        },
+        {
+            id: 7,
+            title: 'The Lord of the Rings',
+            author: 'J. R. R. Tolkien',
+            year: 1954,
+        },
+    ],
+};
+
+const dataProvider = fakeRestDataProvider(data);
 
 const theme = createTheme();
 
-const SubWrapper = ({ children }) => {
-    const [selectedIds, selectionModifiers] = useRecordSelection({
-        resource: 'books',
-    });
-    return (
+const Wrapper = ({ children }) => (
+    <CoreAdminContext dataProvider={dataProvider}>
         <ThemeProvider theme={theme}>
             <ResourceContextProvider value="books">
-                <ListContextProvider
-                    value={
-                        {
-                            data,
-                            total: 4,
-                            isLoading: false,
-                            sort: { field: 'id', order: 'ASC' },
-                            selectedIds,
-                            onSelect: selectionModifiers.select,
-                            onToggleItem: selectionModifiers.toggle,
-                            onUnselectItems: selectionModifiers.clearSelection,
-                        } as any
-                    }
-                >
-                    <Box sx={{ pt: 7, px: 4 }}>{children}</Box>
-                </ListContextProvider>
+                <List perPage={5} sx={{ px: 4 }}>
+                    {children}
+                </List>
             </ResourceContextProvider>
         </ThemeProvider>
-    );
-};
-
-const Wrapper = ({ children }) => (
-    <CoreAdminContext>
-        <SubWrapper>{children}</SubWrapper>
     </CoreAdminContext>
 );
 
@@ -179,6 +182,66 @@ export const RowSx = () => (
             <TextField source="author" />
             <TextField source="year" />
         </Datagrid>
+    </Wrapper>
+);
+
+export const SelectAllButton = ({
+    onlyDisplay,
+}: {
+    onlyDisplay?: 'default' | 'disabled' | 'custom';
+}) => (
+    <Wrapper>
+        <Box sx={{ mt: -7 }}>
+            {(!onlyDisplay || onlyDisplay === 'default') && (
+                <>
+                    <h1>Default</h1>
+                    <Datagrid>
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </Datagrid>
+                </>
+            )}
+            {(!onlyDisplay || onlyDisplay === 'disabled') && (
+                <>
+                    <h1>Disabled</h1>
+                    <Datagrid
+                        bulkActionsToolbar={
+                            <BulkActionsToolbar selectAllButton={false}>
+                                <BulkDeleteButton />
+                            </BulkActionsToolbar>
+                        }
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </Datagrid>
+                </>
+            )}
+            {(!onlyDisplay || onlyDisplay === 'custom') && (
+                <>
+                    <h1>Custom</h1>
+                    <Datagrid
+                        bulkActionsToolbar={
+                            <BulkActionsToolbar
+                                selectAllButton={
+                                    <RaSelectAllButton label="Select all records" />
+                                }
+                            >
+                                <BulkDeleteButton />
+                            </BulkActionsToolbar>
+                        }
+                    >
+                        <TextField source="id" />
+                        <TextField source="title" />
+                        <TextField source="author" />
+                        <TextField source="year" />
+                    </Datagrid>
+                </>
+            )}
+        </Box>
     </Wrapper>
 );
 
@@ -373,11 +436,7 @@ const MyCustomListInteractive = () => {
 
 export const Standalone = () => (
     <ThemeProvider theme={theme}>
-        <CoreAdminContext
-            dataProvider={testDataProvider({
-                getList: () => Promise.resolve({ data, total: 4 }) as any,
-            })}
-        >
+        <CoreAdminContext dataProvider={dataProvider}>
             <ResourceContextProvider value="books">
                 <h1>Static</h1>
                 <MyCustomList />
@@ -469,9 +528,11 @@ export const RowClickFalse = () => (
     </Wrapper>
 );
 
-const dataProvider = fakeRestDataProvider({ books: data });
-
-export const FullApp = () => (
+export const FullApp = ({
+    rowClick,
+}: {
+    rowClick?: DatagridRowProps['rowClick'];
+}) => (
     <AdminContext
         dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
@@ -481,7 +542,10 @@ export const FullApp = () => (
                 name="books"
                 list={() => (
                     <List>
-                        <Datagrid>
+                        <Datagrid
+                            expand={<ExpandDetails />}
+                            rowClick={rowClick}
+                        >
                             <TextField source="id" />
                             <TextField source="title" />
                             <TextField source="author" />
@@ -490,10 +554,58 @@ export const FullApp = () => (
                     </List>
                 )}
                 edit={EditGuesser}
+                show={ShowGuesser}
             />
         </AdminUI>
     </AdminContext>
 );
+
+FullApp.argTypes = {
+    rowClick: {
+        options: [
+            'inferred',
+            'show',
+            'edit',
+            'no-link',
+            'expand',
+            'toggleSelection',
+            'function to expand',
+            'function to toggleSelection',
+        ],
+        mapping: {
+            inferred: undefined,
+            show: 'show',
+            edit: 'edit',
+            'no-link': false,
+            expand: 'expand',
+            toggleSelection: 'toggleSelection',
+            'function to expand': (id, resource, record) => {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('function to expand', id, resource, record);
+                }
+                return 'expand';
+            },
+            'function to toggleSelection': (id, resource, record) => {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log(
+                        'function to toggleSelection',
+                        id,
+                        resource,
+                        record
+                    );
+                }
+                return 'toggleSelection';
+            },
+        },
+        control: { type: 'select' },
+    },
+};
+
+const ExpandDetails = () => {
+    const record = useRecordContext();
+
+    return <div>Expand: {record?.title}</div>;
+};
 
 const MyDatagridRow = ({
     onToggleItem,
@@ -606,7 +718,7 @@ export const AccessControl = ({
             }),
     },
 }: {
-    allowedAction?: 'show' | 'edit' | 'invalid';
+    allowedAction?: 'show' | 'edit' | 'delete' | 'invalid';
     authProvider?: AuthProvider;
 }) => (
     <AdminContext
@@ -636,10 +748,11 @@ export const AccessControl = ({
 
 AccessControl.argTypes = {
     allowedAction: {
-        options: ['show', 'edit', 'none'],
+        options: ['show', 'edit', 'delete', 'none'],
         mapping: {
             show: 'show',
             edit: 'edit',
+            delete: 'delete',
             none: 'invalid',
         },
         control: { type: 'select' },

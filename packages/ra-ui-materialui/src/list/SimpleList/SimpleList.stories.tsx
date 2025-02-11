@@ -1,19 +1,26 @@
 import * as React from 'react';
+import { useState } from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     Resource,
     ListContextProvider,
     TestMemoryRouter,
     ResourceContextProvider,
+    ResourceProps,
+    ResourceDefinitionContextProvider,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import { Alert, Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { Location } from 'react-router';
 
-import { SimpleList } from './SimpleList';
 import { AdminUI } from '../../AdminUI';
-import { AdminContext } from '../../AdminContext';
+import { AdminContext, AdminContextProps } from '../../AdminContext';
 import { EditGuesser } from '../../detail';
-import { List } from '../List';
+import { List, ListProps } from '../List';
+import { RowClickFunction } from '../types';
+import { SimpleList } from './SimpleList';
+import { FunctionLinkType } from './SimpleListItem';
 
 export default { title: 'ra-ui-materialui/list/SimpleList' };
 
@@ -102,20 +109,136 @@ const data = {
 
 export const Basic = () => (
     <TestMemoryRouter>
-        <ResourceContextProvider value="books">
-            <SimpleList
-                data={data.books}
-                primaryText={record => record.title}
-                secondaryText={record => record.author}
-                tertiaryText={record => record.year}
-            />
-        </ResourceContextProvider>
+        <AdminContext>
+            <ResourceContextProvider value="books">
+                <SimpleList
+                    data={data.books}
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                />
+            </ResourceContextProvider>
+        </AdminContext>
     </TestMemoryRouter>
 );
 
-const dataProvider = fakeRestDataProvider(data);
+export const LinkType = ({
+    linkType,
+    locationCallback,
+}: {
+    linkType: string | FunctionLinkType | false;
+    locationCallback?: (l: Location) => void;
+}) => (
+    <TestMemoryRouter locationCallback={locationCallback}>
+        <AdminContext>
+            <ResourceDefinitionContextProvider
+                definitions={{
+                    books: {
+                        name: 'books',
+                        hasList: true,
+                        hasEdit: true,
+                        hasShow: false,
+                    },
+                }}
+            >
+                <ResourceContextProvider value="books">
+                    <Alert color="info">Inferred should target edit</Alert>
+                    <SimpleList
+                        data={data.books}
+                        primaryText={record => record.title}
+                        secondaryText={record => record.author}
+                        tertiaryText={record => record.year}
+                        linkType={linkType}
+                    />
+                </ResourceContextProvider>
+            </ResourceDefinitionContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
 
-export const FullApp = () => (
+LinkType.args = {
+    linkType: 'edit',
+};
+LinkType.argTypes = {
+    linkType: {
+        options: ['inferred', 'edit', 'show', 'no-link', 'function'],
+        mapping: {
+            inferred: undefined,
+            show: 'show',
+            edit: 'edit',
+            'no-link': false,
+            function: (record, id) =>
+                alert(`Clicked on record ${record.title} (#${id})`),
+        },
+        control: { type: 'select' },
+    },
+};
+
+export const RowClick = ({
+    locationCallback,
+    rowClick,
+}: {
+    locationCallback?: (l: Location) => void;
+    rowClick: string | RowClickFunction | false;
+}) => (
+    <TestMemoryRouter locationCallback={locationCallback}>
+        <AdminContext>
+            <ResourceDefinitionContextProvider
+                definitions={{
+                    books: {
+                        name: 'books',
+                        hasList: true,
+                        hasEdit: true,
+                        hasShow: false,
+                    },
+                }}
+            >
+                <ResourceContextProvider value="books">
+                    <Alert color="info">Inferred should target edit</Alert>
+                    <SimpleList
+                        data={data.books}
+                        primaryText={record => record.title}
+                        secondaryText={record => record.author}
+                        tertiaryText={record => record.year}
+                        rowClick={rowClick}
+                    />
+                </ResourceContextProvider>
+            </ResourceDefinitionContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+RowClick.args = {
+    rowClick: 'edit',
+};
+RowClick.argTypes = {
+    rowClick: {
+        options: ['inferred', 'edit', 'show', 'no-link', 'function'],
+        mapping: {
+            inferred: undefined,
+            show: 'show',
+            edit: 'edit',
+            'no-link': false,
+            function: (id, resource, record) =>
+                alert(
+                    `Clicked on record ${record.title} (#${id}) of type ${resource}`
+                ),
+        },
+        control: { type: 'select' },
+    },
+};
+
+const myDataProvider = fakeRestDataProvider(data);
+
+const Wrapper = ({
+    children,
+    dataProvider = myDataProvider,
+    recordRepresentation,
+}: {
+    children: ListProps['children'];
+    dataProvider?: AdminContextProps['dataProvider'];
+    recordRepresentation?: ResourceProps['recordRepresentation'];
+}) => (
     <AdminContext
         dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
@@ -123,107 +246,187 @@ export const FullApp = () => (
         <AdminUI>
             <Resource
                 name="books"
-                list={() => (
-                    <List>
-                        <SimpleList
-                            primaryText={record => record.title}
-                            secondaryText={record => record.author}
-                        />
-                    </List>
-                )}
+                recordRepresentation={recordRepresentation}
+                list={() => <List>{children}</List>}
                 edit={EditGuesser}
             />
         </AdminUI>
     </AdminContext>
 );
 
-export const NoPrimaryText = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
-    >
-        <AdminUI>
-            <Resource
-                name="books"
-                recordRepresentation="title"
-                list={() => (
-                    <List>
-                        <SimpleList />
-                    </List>
-                )}
-                edit={EditGuesser}
+export const FullApp = () => (
+    <Wrapper>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+        />
+    </Wrapper>
+);
+
+export const IconsAvatarsAndLinkType = () => {
+    const [linkType, setLinkType] = useState<false | undefined>(undefined);
+    const [leftIcon, setLeftIcon] = useState(true);
+    const [leftAvatar, setLeftAvatar] = useState(true);
+    const [rightIcon, setRightIcon] = useState(true);
+    const [rightAvatar, setRightAvatar] = useState(true);
+    return (
+        <Wrapper>
+            <FormGroup
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Box>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={leftIcon}
+                                onChange={() => setLeftIcon(!leftIcon)}
+                            />
+                        }
+                        label="Left Icon"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={leftAvatar}
+                                onChange={() => setLeftAvatar(!leftAvatar)}
+                            />
+                        }
+                        label="Left Avatar"
+                    />
+                </Box>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={linkType !== false}
+                            onChange={() =>
+                                setLinkType(
+                                    linkType === false ? undefined : false
+                                )
+                            }
+                        />
+                    }
+                    label="LinkType"
+                />
+                <Box>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={rightAvatar}
+                                onChange={() => setRightAvatar(!rightAvatar)}
+                            />
+                        }
+                        label="Right Avatar"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={rightIcon}
+                                onChange={() => setRightIcon(!rightIcon)}
+                            />
+                        }
+                        label="Right Icon"
+                    />
+                </Box>
+            </FormGroup>
+            <SimpleList
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                linkType={linkType}
+                leftIcon={
+                    leftIcon ? record => <span>{record.id}</span> : undefined
+                }
+                rightIcon={
+                    rightIcon ? record => <span>{record.year}</span> : undefined
+                }
+                leftAvatar={
+                    leftAvatar
+                        ? record => <span>{record.title[0]}</span>
+                        : undefined
+                }
+                rightAvatar={
+                    rightAvatar
+                        ? record => <span>{record.author[0]}</span>
+                        : undefined
+                }
             />
-        </AdminUI>
-    </AdminContext>
+        </Wrapper>
+    );
+};
+
+export const NoPrimaryText = () => (
+    <Wrapper recordRepresentation="title">
+        <SimpleList />
+    </Wrapper>
 );
 
 export const ErrorInFetch = () => (
     <TestMemoryRouter>
-        <ListContextProvider
-            value={
-                {
-                    error: new Error('Error in dataProvider'),
-                } as any
-            }
-        >
-            <SimpleList
-                primaryText={record => record.title}
-                secondaryText={record => record.author}
-                tertiaryText={record => record.year}
-            />
-        </ListContextProvider>
+        <ResourceContextProvider value="books">
+            <ListContextProvider
+                value={
+                    {
+                        error: new Error('Error in dataProvider'),
+                    } as any
+                }
+            >
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                />
+            </ListContextProvider>
+        </ResourceContextProvider>
     </TestMemoryRouter>
 );
 
 export const FullAppInError = () => (
-    <AdminContext
+    <Wrapper
         dataProvider={
             {
                 getList: () =>
                     Promise.reject(new Error('Error in dataProvider')),
             } as any
         }
-        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
     >
-        <AdminUI>
-            <Resource
-                name="books"
-                list={() => (
-                    <List>
-                        <SimpleList
-                            primaryText={record => record.title}
-                            secondaryText={record => record.author}
-                        />
-                    </List>
-                )}
-                edit={EditGuesser}
-            />
-        </AdminUI>
-    </AdminContext>
+        <SimpleList
+            primaryText={record => record.title}
+            secondaryText={record => record.author}
+        />
+    </Wrapper>
 );
 
 export const Standalone = () => (
     <TestMemoryRouter>
-        <SimpleList
-            data={data.books}
-            primaryText={record => record.title}
-            secondaryText={record => record.author}
-            tertiaryText={record => record.year}
-            linkType={false}
-        />
+        <AdminContext>
+            <ResourceContextProvider value="books">
+                <SimpleList
+                    data={data.books}
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                    linkType={false}
+                />
+            </ResourceContextProvider>
+        </AdminContext>
     </TestMemoryRouter>
 );
 
 export const StandaloneEmpty = () => (
     <TestMemoryRouter>
-        <ResourceContextProvider value="books">
-            <SimpleList<any>
-                data={[]}
-                primaryText={record => record.title}
-                secondaryText={record => record.author}
-                tertiaryText={record => record.year}
-                linkType={false}
-            />
-        </ResourceContextProvider>
+        <AdminContext>
+            <ResourceContextProvider value="books">
+                <SimpleList<any>
+                    data={[]}
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                    linkType={false}
+                />
+            </ResourceContextProvider>
+        </AdminContext>
     </TestMemoryRouter>
 );

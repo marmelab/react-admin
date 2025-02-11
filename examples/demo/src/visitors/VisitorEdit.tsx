@@ -7,6 +7,8 @@ import {
     PasswordInput,
     SimpleForm,
     useTranslate,
+    useDefaultTitle,
+    useEditContext,
 } from 'react-admin';
 import { Grid, Box, Typography } from '@mui/material';
 
@@ -113,8 +115,19 @@ const VisitorEdit = () => {
     );
 };
 
-const VisitorTitle = () => (
-    <FullNameField source="last_name" size="32" sx={{ margin: '5px 0' }} />
-);
+const VisitorTitle = () => {
+    const appTitle = useDefaultTitle();
+    const { defaultTitle } = useEditContext();
+    return (
+        <>
+            <title>{`${appTitle} - ${defaultTitle}`}</title>
+            <FullNameField
+                source="last_name"
+                size="32"
+                sx={{ margin: '5px 0' }}
+            />
+        </>
+    );
+};
 
 export default VisitorEdit;

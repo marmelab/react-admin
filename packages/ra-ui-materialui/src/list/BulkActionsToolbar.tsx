@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ReactNode, useCallback } from 'react';
-import { styled } from '@mui/material/styles';
+import { isValidElement, ReactElement, ReactNode, useCallback } from 'react';
+import { alpha, styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -10,12 +10,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
+import { SelectAllButton } from '../button';
+
+const defaultSelectAllButton = <SelectAllButton />;
 
 export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
         label = 'ra.action.bulk_actions',
         children,
         className,
+        selectAllButton,
         ...rest
     } = props;
     const { selectedIds = [], onUnselectItems } = useListContext();
@@ -42,16 +46,27 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                         aria-label={translate('ra.action.unselect')}
                         title={translate('ra.action.unselect')}
                         onClick={handleUnselectAllClick}
+                        color="primary"
                         size="small"
                     >
                         <CloseIcon fontSize="small" />
                     </IconButton>
-                    <Typography color="inherit" variant="subtitle1">
+                    <Typography
+                        sx={{
+                            color: theme => theme.palette.text.primary,
+                        }}
+                        variant="subtitle1"
+                    >
                         {translate(label, {
                             _: label,
                             smart_count: selectedIds.length,
                         })}
                     </Typography>
+                    {selectAllButton !== false
+                        ? isValidElement(selectAllButton)
+                            ? selectAllButton
+                            : defaultSelectAllButton
+                        : null}
                 </div>
                 <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
                     {children}
@@ -65,6 +80,7 @@ export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
     className?: string;
+    selectAllButton?: ReactElement | false;
 }
 
 const PREFIX = 'RaBulkActionsToolbar';
@@ -129,10 +145,13 @@ const Root = styled('div', {
     [`& .${BulkActionsToolbarClasses.title}`]: {
         display: 'flex',
         flex: '0 0 auto',
+        gap: theme.spacing(1),
     },
 
     [`& .${BulkActionsToolbarClasses.icon}`]: {
         marginLeft: '-0.5em',
-        marginRight: '0.5em',
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.primary.main, 0.12),
+        },
     },
 }));

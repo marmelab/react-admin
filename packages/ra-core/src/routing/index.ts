@@ -11,3 +11,4 @@ export * from './useScrollToTop';
 export * from './useRestoreScrollPosition';
 export * from './types';
 export * from './TestMemoryRouter';
+export * from './useSplatPathBase';

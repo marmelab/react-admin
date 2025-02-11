@@ -12,6 +12,8 @@ import {
     SelectColumnsButton,
     ReferenceInput,
     FilterButton,
+    useDefaultTitle,
+    useListContext,
 } from 'react-admin';
 
 import FullNameField from '../visitors/FullNameField';
@@ -33,12 +35,24 @@ const ListActions = () => (
     </TopToolbar>
 );
 
+const InvoicesTitle = () => {
+    const title = useDefaultTitle();
+    const { defaultTitle } = useListContext();
+    return (
+        <>
+            <title>{`${title} - ${defaultTitle}`}</title>
+            <span>{defaultTitle}</span>
+        </>
+    );
+};
+
 const InvoiceList = () => (
     <List
         filters={listFilters}
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
         actions={<ListActions />}
+        title={<InvoicesTitle />}
     >
         <DatagridConfigurable
             rowClick="expand"

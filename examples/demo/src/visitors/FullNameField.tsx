@@ -30,6 +30,8 @@ const FullNameField = (props: Props) => {
                     mr: 1,
                     mt: -0.5,
                     mb: -0.5,
+                    textDecoration: 'underline',
+                    textDecorationColor: '#bdbdbd',
                 }}
             />
             {record.first_name} {record.last_name}

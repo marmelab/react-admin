@@ -1,9 +1,5 @@
 import { useMemo } from 'react';
-import {
-    useQueries,
-    UseQueryOptions,
-    UseQueryResult,
-} from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import { HintedString } from '../types';
 import { useRecordContext } from '../controller';
@@ -50,18 +46,18 @@ export const useCanAccessResources = <
     RecordType extends Record<string, any> = Record<string, any>,
     ErrorType extends Error = Error,
 >(
-    params: UseCanAccessResourcesOptions<RecordType, ErrorType>
+    params: UseCanAccessResourcesOptions<RecordType>
 ): UseCanAccessResourcesResult<ErrorType> => {
     const authProvider = useAuthProvider();
     const record = useRecordContext<RecordType>(params);
 
-    const { action, resources } = params;
+    const { action, resources, ...options } = params;
 
-    const queryResult = useQueries({
-        queries: resources.map(resource => {
-            return {
-                queryKey: ['auth', 'canAccess', resource, action, record],
-                queryFn: async ({ signal }) => {
+    const queryResult = useQuery({
+        queryKey: ['auth', 'canAccess', resources, action, record],
+        queryFn: async ({ signal }) => {
+            const queries = await Promise.all(
+                resources.map(async resource => {
                     if (!authProvider || !authProvider.canAccess) {
                         return { canAccess: true, resource };
                     }
@@ -75,10 +71,20 @@ export const useCanAccessResources = <
                     });
 
                     return { canAccess, resource };
+                })
+            );
+
+            const result = queries.reduce(
+                (acc, { resource, canAccess }) => {
+                    acc[resource] = canAccess;
+                    return acc;
                 },
-            };
-        }),
-        combine: combineSourceAccessResults<ErrorType>,
+                {} as Record<string, boolean>
+            );
+
+            return result;
+        },
+        ...options,
     });
 
     const result = useMemo(() => {
@@ -111,7 +117,10 @@ export const useCanAccessResources = <
 export interface UseCanAccessResourcesOptions<
     RecordType extends Record<string, any> = Record<string, any>,
     ErrorType extends Error = Error,
-> extends Omit<UseQueryOptions<boolean, ErrorType>, 'queryKey' | 'queryFn'> {
+> extends Omit<
+        UseQueryOptions<Record<string, boolean>, ErrorType>,
+        'queryKey' | 'queryFn'
+    > {
     resources: string[];
     action: HintedString<'list' | 'create' | 'edit' | 'show' | 'delete'>;
     record?: RecordType;
@@ -143,39 +152,3 @@ export interface UseCanAccessResourcesSuccessResult {
     error: null;
     isPending: false;
 }
-
-const combineSourceAccessResults = <ErrorType>(
-    results: UseQueryResult<
-        {
-            canAccess: boolean;
-            resource: string;
-        },
-        ErrorType
-    >[]
-): {
-    data?: Record<string, boolean>;
-    isPending: boolean;
-    isError: boolean;
-    error?: ErrorType;
-} => {
-    return {
-        data: results
-            ? results.reduce(
-                  (acc, { data }) => {
-                      if (!data) {
-                          return acc;
-                      }
-                      const { resource, canAccess } = data;
-                      return {
-                          ...acc,
-                          [resource]: canAccess,
-                      };
-                  },
-                  {} as Record<string, boolean>
-              )
-            : undefined,
-        isPending: results.some(result => result.isPending),
-        isError: results.some(result => result.isError),
-        error: results.find(result => result.error)?.error || undefined,
-    };
-};
