@@ -23,10 +23,9 @@ ${
 
 export const App = () => (
     <Admin
-        layout={Layout}
-        ${state.dataProvider !== 'none' ? `dataProvider={dataProvider}` : ''}${
+        layout={Layout}${state.dataProvider !== 'none' ? `\n\t\tdataProvider={dataProvider}` : ''}${
             state.authProvider !== 'none'
-                ? `\n\tauthProvider={authProvider}`
+                ? `\n\t\tauthProvider={authProvider}`
                 : ''
         }
     >
@@ -35,7 +34,7 @@ export const App = () => (
                 resource =>
                     `<Resource name="${resource}" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />`
             )
-            .join('\n\t')}
+            .join('\n\t\t')}
     </Admin>
 );
 
