@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { ProjectConfiguration } from './ProjectState.js';
 
+const tab = '    ';
 export const generateAppFile = (
     projectDirectory: string,
     state: ProjectConfiguration
@@ -23,9 +24,9 @@ ${
 
 export const App = () => (
     <Admin
-        layout={Layout}${state.dataProvider !== 'none' ? `\n\t\tdataProvider={dataProvider}` : ''}${
+        layout={Layout}${state.dataProvider !== 'none' ? `\n${tab}${tab}dataProvider={dataProvider}` : ''}${
             state.authProvider !== 'none'
-                ? `\n\t\tauthProvider={authProvider}`
+                ? `\n${tab}${tab}authProvider={authProvider}`
                 : ''
         }
     >
@@ -34,7 +35,7 @@ export const App = () => (
                 resource =>
                     `<Resource name="${resource}" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />`
             )
-            .join('\n\t\t')}
+            .join(`\n${tab}${tab}`)}
     </Admin>
 );
 
