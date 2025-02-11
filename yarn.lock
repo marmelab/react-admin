@@ -16178,9 +16178,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-local-forage@workspace:packages/ra-data-localforage":
+"ra-data-local-forage@workspace:packages/ra-data-local-forage":
   version: 0.0.0-use.local
-  resolution: "ra-data-local-forage@workspace:packages/ra-data-localforage"
+  resolution: "ra-data-local-forage@workspace:packages/ra-data-local-forage"
   dependencies:
     cross-env: "npm:^5.2.0"
     localforage: "npm:^1.7.1"
@@ -16193,9 +16193,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-local-storage@npm:^5.0.0, ra-data-local-storage@npm:^5.5.3, ra-data-local-storage@workspace:packages/ra-data-localstorage":
+"ra-data-local-storage@npm:^5.0.0, ra-data-local-storage@npm:^5.5.3, ra-data-local-storage@workspace:packages/ra-data-local-storage":
   version: 0.0.0-use.local
-  resolution: "ra-data-local-storage@workspace:packages/ra-data-localstorage"
+  resolution: "ra-data-local-storage@workspace:packages/ra-data-local-storage"
   dependencies:
     cross-env: "npm:^5.2.0"
     lodash: "npm:~4.17.5"
