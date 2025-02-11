@@ -121,7 +121,7 @@ export default function App(props: Props) {
         resources: props.resources?.includes('skip')
             ? []
             : props.dataProvider === 'ra-data-fakerest' &&
-                props.resources == null
+                (props.resources == null || props.resources.length === 0)
               ? ['posts', 'comments']
               : props.resources,
         installer: props.install,
