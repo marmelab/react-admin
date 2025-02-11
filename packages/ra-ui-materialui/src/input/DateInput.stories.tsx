@@ -77,32 +77,6 @@ export const DefaultValue = () => (
         ))}
     </Wrapper>
 );
-
-export const DefaultValueVsFieldValue = () => (
-    <Wrapper
-        simpleFormProps={{
-            defaultValues: { publishedAt: '2021-09-11' },
-        }}
-    >
-        The defaultValue is not displayed, because there is a value from field
-        <DateInput
-            source={`publishedAt`}
-            defaultValue="2025-09-11T20:46:20.000Z"
-        />
-    </Wrapper>
-);
-
-export const ValueVsFieldValue = () => (
-    <Wrapper
-        simpleFormProps={{
-            defaultValues: { publishedAt: '2021-09-11' },
-        }}
-    >
-        The value prop is displayed, and wins over the field value
-        <DateInput source={`publishedAt`} value="2025" />
-    </Wrapper>
-);
-
 export const Disabled = () => (
     <Wrapper>
         <DateInput source="publishedAt" disabled />
