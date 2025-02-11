@@ -20,7 +20,7 @@ import { AdminContext } from '../AdminContext';
 import { TabbedForm } from './TabbedForm';
 import { TabbedFormClasses } from './TabbedFormView';
 import { TextInput } from '../input';
-import { EncodedPaths } from './TabbedForm.stories';
+import { IDWithSpaces, EncodedPaths } from './TabbedForm.stories';
 
 describe('<TabbedForm />', () => {
     it('should display the tabs', () => {
@@ -48,6 +48,14 @@ describe('<TabbedForm />', () => {
         expect(tabs.length).toEqual(2);
         const titleInput = await screen.findByLabelText('Title');
         expect(titleInput).toBeVisible();
+    });
+
+    it('should display the tab contents correctly with IDs containing spaces', async () => {
+        render(<IDWithSpaces />);
+
+        const tabs = await screen.findAllByRole('tab');
+        expect(tabs.length).toEqual(2);
+        await screen.findByLabelText('Title');
     });
 
     it('should set the style of an inactive Tab button with errors', async () => {

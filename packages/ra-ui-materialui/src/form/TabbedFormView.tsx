@@ -96,6 +96,15 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     );
 };
 
+/**
+ * Returns the pathname with each segment decoded and spaces removed
+ */
+const getDecodedPathname = (pathname: string) =>
+    pathname
+        .split('/')
+        .map(segment => decodeURIComponent(segment).replace(/\s+/g, ' '))
+        .join('/');
+
 const DefaultTabs = <TabbedFormTabs />;
 const DefaultComponent = ({ children }) => (
     <CardContent>{children}</CardContent>
