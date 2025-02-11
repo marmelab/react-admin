@@ -253,6 +253,7 @@ const CreateAuthorButton = () => {
 Customize the styles applied to the Material UI `<Dialog>` component:
 
 {% raw %}
+
 ```jsx
 const CreateButton = () => (
   <CreateInDialogButton sx={{ backgroundColor: 'paper' }}>
@@ -260,7 +261,34 @@ const CreateButton = () => (
   </CreateInDialogButton>
 );
 ```
+
 {% endraw %}
+
+## Warn When There Are Unsaved Changes
+
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
+
+In that case, using the `warnWhenUnsavedChanges` prop directly on the form won't work, because this feature relies on the router's location, but both components do not use routing.
+
+Instead, you can use the `<WarnWhenUnsavedChangesInDialog>` component provided by `ra-form-layout`.
+
+You can add this component to your form like so:
+
+```tsx
+import { TextInput, SimpleForm } from 'react-admin';
+import { CreateInDialogButton, WarnWhenUnsavedChangesInDialog } from '@react-admin/ra-form-layout';
+
+const EmployerEditButton = () => (
+    <CreateInDialogButton>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="address" />
+            <TextInput source="city" />
+            <WarnWhenUnsavedChangesInDialog />
+        </SimpleForm>
+    </CreateInDialogButton>
+);
+```
 
 ## Combining With `<EditInDialogButton>`
 
