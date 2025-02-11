@@ -58,6 +58,11 @@ const stepReducer = (
             const newState = {
                 ...state,
                 dataProvider: action.value,
+                resources:
+                    action.value === 'ra-data-fakerest' &&
+                    (state.resources == null || state.resources.length === 0)
+                        ? ['posts', 'comments']
+                        : state.resources,
             };
             return {
                 ...newState,
