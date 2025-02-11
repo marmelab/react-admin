@@ -57,6 +57,7 @@ build-ra-language-french:
 
 build-react-admin:
 	@echo "Transpiling react-admin files...";
+	@rm -rf ./packages/react-admin/docs
 	@cd ./packages/react-admin && yarn build
 
 build-ra-data-fakerest:
