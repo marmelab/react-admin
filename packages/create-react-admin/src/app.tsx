@@ -30,6 +30,10 @@ const getNextStep = (state: ProjectConfiguration) => {
                     }
                     return 'install';
                 }
+
+                if (state.dataProvider === 'ra-supabase') {
+                    return 'install';
+                }
                 return 'resources';
             }
             return 'auth-provider';
@@ -58,6 +62,11 @@ const stepReducer = (
             const newState = {
                 ...state,
                 dataProvider: action.value,
+                authProvider:
+                    action.value === 'ra-supabase'
+                        ? 'none'
+                        : state.authProvider,
+                resources: [],
             };
             return {
                 ...newState,
