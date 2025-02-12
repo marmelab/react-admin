@@ -230,14 +230,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             ? [...(allChoices || []), createItem]
             : allChoices || [];
 
-    const renderEmptyItemOption = useCallback(() => {
-        return typeof emptyText === 'string'
-            ? emptyText === ''
-                ? ' ' // em space, forces the display of an empty line of normal height
-                : translate(emptyText, { _: emptyText })
-            : emptyText;
-    }, [emptyText, translate]);
-
     const renderMenuItemOption = useCallback(
         choice =>
             !!createItem &&
@@ -374,14 +366,18 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 >
                     {!isRequired && (
                         <MenuItem
-                            value=''
+                            value=""
                             key="null"
                             aria-label={translate(
                                 'ra.action.clear_input_value'
                             )}
                             title={translate('ra.action.clear_input_value')}
                         >
-                            {renderEmptyItemOption()}
+                            {typeof emptyText === 'string'
+                                ? emptyText === ''
+                                    ? ' ' // em space, forces the display of an empty line of normal height
+                                    : translate(emptyText, { _: emptyText })
+                                : emptyText}
                         </MenuItem>
                     )}
                     {finalChoices.map(renderMenuItem)}
