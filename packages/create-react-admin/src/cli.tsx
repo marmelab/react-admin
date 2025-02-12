@@ -6,6 +6,35 @@ import App from './app.js';
 import { SupportedDataProviders } from './StepDataProvider.js';
 import { SupportedAuthProviders } from './StepAuthProvider.js';
 
+const getDataProvider = (flags: typeof cli.flags) => {
+    if (flags.dataProvider) return flags.dataProvider;
+    if (flags.interactive) return undefined;
+    return 'none';
+};
+
+const getAuthProvider = (flags: typeof cli.flags) => {
+    if (flags.dataProvider === 'ra-supabase' && flags.authProvider != null) {
+        console.error("Don't provide an auth-provider when using ra-supabase");
+        process.exit(1);
+    }
+    if (flags.authProvider) return flags.authProvider;
+    if (flags.dataProvider === 'ra-supabase') return 'none';
+    if (flags.interactive) return undefined;
+    return 'none';
+};
+
+const getInstall = (flags: typeof cli.flags) => {
+    if (flags.install) return flags.install;
+    if (flags.interactive) return undefined;
+    return 'npm';
+};
+
+const getResources = (flags: typeof cli.flags) => {
+    if (flags.resource.length > 0) return flags.resource;
+    if (flags.interactive) return undefined;
+    return ['skip'];
+};
+
 const cli = meow(
     `
 	Usage
@@ -13,7 +42,7 @@ const cli = meow(
 
     Options
 	  --interactive    Enable the CLI interactive mode
-	  --data-provider  Set the data provider to use ("ra-data-fakerest", "ra-data-simple-rest", "ra-data-json-server" or "none")
+	  --data-provider  Set the data provider to use ("ra-data-fakerest", "ra-data-simple-rest", "ra-data-json-server", "ra-supabase" or "none")
 	  --auth-provider  Set the auth provider to use ("local-auth-provider" or "none")
 	  --resource       Add a resource that will be initialized with guessers (can be used multiple times). Set to "skip" to bypass the interactive resource step.
 	  --install        Set the package manager to use for installing dependencies ("yarn", "npm", "pnpm", "bun" or "skip" to bypass the interactive install step)
@@ -62,18 +91,10 @@ if (cli.flags.h) {
         );
         process.exit(1);
     }
-    const dataProvider =
-        cli.flags.dataProvider ?? (cli.flags.interactive ? undefined : 'none');
-    const authProvider =
-        cli.flags.authProvider ?? (cli.flags.interactive ? undefined : 'none');
-    const install =
-        cli.flags.install ?? (cli.flags.interactive ? undefined : 'npm');
-    const resources =
-        cli.flags.resource.length > 0
-            ? cli.flags.resource
-            : cli.flags.interactive
-              ? undefined
-              : ['skip'];
+    const dataProvider = getDataProvider(cli.flags);
+    const authProvider = getAuthProvider(cli.flags);
+    const install = getInstall(cli.flags);
+    const resources = getResources(cli.flags);
 
     render(
         <App
