@@ -1569,13 +1569,15 @@ describe('<AutocompleteInput />', () => {
         const onBlur = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 0, name: 'foo' }]}
-                        onBlur={onBlur}
-                    />
-                </SimpleForm>
+                <ResourceContextProvider value="users">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[{ id: 0, name: 'foo' }]}
+                            onBlur={onBlur}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
         const input = screen.getByLabelText(

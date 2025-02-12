@@ -171,11 +171,7 @@ export type UseInputValue = {
     isRequired: boolean;
     field: Omit<ControllerRenderProps, 'onBlur'> & {
         onBlur: (
-            event?:
-                | FocusEvent<
-                      HTMLInputElement | HTMLTextAreaElement | HTMLDivElement
-                  >
-                | EditorEvents['blur']
+            event?: FocusEvent<HTMLElement> | EditorEvents['blur']
         ) => void;
     };
     formState: UseFormStateReturn<Record<string, string>>;
