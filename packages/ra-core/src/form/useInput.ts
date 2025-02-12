@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useId } from 'react';
+import { ReactElement, useEffect, useId, FocusEvent } from 'react';
 import {
     ControllerFieldState,
     ControllerRenderProps,
@@ -7,6 +7,7 @@ import {
     UseControllerReturn,
     UseFormStateReturn,
 } from 'react-hook-form';
+import type { EditorEvents } from '@tiptap/react';
 import get from 'lodash/get';
 
 import { useRecordContext } from '../controller';
@@ -72,11 +73,7 @@ export const useInput = <ValueType = any>(
     // This ensures dynamically added inputs have their value set correctly (ArrayInput for example).
     // We don't do this for the form level defaultValues so that it works as it should in react-hook-form
     // (i.e. field level defaultValue override form level defaultValues for this field).
-    const {
-        field: controllerField,
-        fieldState,
-        formState,
-    } = useController({
+    const { field: controllerField, fieldState, formState } = useController({
         name: finalName,
         defaultValue: get(record, finalSource, defaultValue),
         rules: {
@@ -114,11 +111,10 @@ export const useInput = <ValueType = any>(
     });
 
     const onChange = useEvent((...event: any[]) => {
-        const eventOrValue = (
-            props.type === 'checkbox' && event[0]?.target?.value === 'on'
-                ? event[0].target.checked
-                : event[0]?.target?.value ?? event[0]
-        ) as any;
+        const eventOrValue = (props.type === 'checkbox' &&
+        event[0]?.target?.value === 'on'
+            ? event[0].target.checked
+            : event[0]?.target?.value ?? event[0]) as any;
         controllerField.onChange(parse ? parse(eventOrValue) : eventOrValue);
         if (initialOnChange) {
             initialOnChange(...event);
@@ -169,7 +165,11 @@ export type UseInputValue = {
     id: string;
     isRequired: boolean;
     field: Omit<ControllerRenderProps, 'onBlur'> & {
-        onBlur: (...event: any[]) => void;
+        onBlur: (
+            event?:
+                | FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+                | EditorEvents['blur']
+        ) => void;
     };
     formState: UseFormStateReturn<Record<string, string>>;
     fieldState: ControllerFieldState;
