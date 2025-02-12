@@ -218,7 +218,7 @@ jobs:
       - name: Build create-react-admin
         run: make build-create-react-admin install
       - name: Create new project
-        run: ./node_modules/.bin/create-react-admin myadmin --data-provider ra-data-fakerest --auth-provider local-auth-provider --install npm
+        run: ./node_modules/.bin/create-react-admin myadmin --data-provider ra-data-fakerest --auth-provider local-auth-provider --resource posts --resource comments --install npm
       - name: Run the tests
         working-directory: ./myadmin
         run: npm run test
