@@ -31,9 +31,6 @@ const getNextStep = (state: ProjectConfiguration) => {
                     return 'install';
                 }
 
-                if (state.dataProvider === 'ra-supabase') {
-                    return 'install';
-                }
                 return 'resources';
             }
             return 'auth-provider';
