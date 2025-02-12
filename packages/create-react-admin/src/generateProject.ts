@@ -39,7 +39,9 @@ export const generateProject = async (state: ProjectConfiguration) => {
         );
     }
 
-    generateAppFile(projectDirectory, state);
+    if (!hasTemplateAppFile(state.dataProvider)) {
+        generateAppFile(projectDirectory, state);
+    }
     if (
         state.dataProvider === 'ra-data-fakerest' &&
         ['posts', 'comments'].every(resource =>
@@ -131,6 +133,19 @@ const generateEnvFile = (
     if (env) {
         fs.writeFileSync(path.join(projectDirectory, '.env'), env);
     }
+};
+
+const hasTemplateAppFile = (template: string) => {
+    if (template === 'none' || template === '') {
+        return undefined;
+    }
+    const filePath = path.join(
+        __dirname,
+        '../templates',
+        template,
+        'src/App.tsx'
+    );
+    return fs.existsSync(filePath);
 };
 
 const getTemplateEnv = (template: string) => {

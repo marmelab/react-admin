@@ -24,6 +24,12 @@ export const SupportedDataProviders: ChoiceType[] = [
             'A Simple REST data provider (https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)',
     },
     {
+        label: 'Supabase',
+        value: 'ra-supabase',
+        description:
+            'Generate an application using ra-supabase. The auth-provider and resources steps will be skipped.',
+    },
+    {
         label: 'None',
         value: 'none',
         description: "I'll configure the data provider myself.",
