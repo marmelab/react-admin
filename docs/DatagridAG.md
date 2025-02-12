@@ -5,7 +5,7 @@ title: "The DatagridAG Component"
 
 # `<DatagridAG>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component is an alternative datagrid component with advanced features, based on [ag-grid](https://www.ag-grid.com/).
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component is an alternative datagrid component with advanced features, based on [ag-grid](https://www.ag-grid.com/).
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG.mp4" type="video/mp4"/>
@@ -59,7 +59,15 @@ npm install --save @react-admin/ra-datagrid-ag
 yarn add @react-admin/ra-datagrid-ag
 ```
 
-**Tip**: `ra-datagrid-ag` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/)<img class="icon" src="./img/premium.svg" />, and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+**Tip**: `ra-datagrid-ag` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />, and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+
+You will also need to install the ag-grid package containing the themes: `@ag-grid-community/styles`.
+
+```sh
+npm install --save @ag-grid-community/styles
+# or
+yarn add @ag-grid-community/styles
+```
 
 ## Data Fetching
 
