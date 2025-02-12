@@ -6,18 +6,46 @@ import App from './app.js';
 import { SupportedDataProviders } from './StepDataProvider.js';
 import { SupportedAuthProviders } from './StepAuthProvider.js';
 
+const dataProviderShortcuts = {
+    fakerest: 'ra-data-fakerest',
+    'json-server': 'ra-data-json-server',
+    'simple-rest': 'ra-data-simple-rest',
+    supabase: 'ra-supabase',
+};
+
+const getDataProviderName = (dataProvider: string | undefined) => {
+    if (dataProviderShortcuts[dataProvider]) {
+        return dataProviderShortcuts[dataProvider];
+    }
+    return dataProvider;
+};
+
 const getDataProvider = (flags: typeof cli.flags) => {
-    if (flags.dataProvider) return flags.dataProvider;
+    if (flags.dataProvider) return getDataProviderName(flags.dataProvider);
     if (flags.interactive) return undefined;
     return 'none';
 };
 
+const authProviderShortcuts = {
+    local: 'local-auth-provider',
+};
+
+const getAuthProviderName = (authProvider: string | undefined) => {
+    if (authProviderShortcuts[authProvider]) {
+        return authProviderShortcuts[authProvider];
+    }
+    return authProvider;
+};
+
 const getAuthProvider = (flags: typeof cli.flags) => {
-    if (flags.dataProvider === 'ra-supabase' && flags.authProvider != null) {
+    if (
+        getDataProviderName(flags.dataProvider) === 'ra-supabase' &&
+        flags.authProvider != null
+    ) {
         console.error("Don't provide an auth-provider when using ra-supabase");
         process.exit(1);
     }
-    if (flags.authProvider) return flags.authProvider;
+    if (flags.authProvider) return getAuthProviderName(flags.authProvider);
     if (flags.dataProvider === 'ra-supabase') return 'none';
     if (flags.interactive) return undefined;
     return 'none';
