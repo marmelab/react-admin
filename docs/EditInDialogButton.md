@@ -295,6 +295,7 @@ const EditButton = () => (
 If you use `<SimpleForm>` as child of `<EditInDialogButton>`, the default form toolbar includes a `<DeleteButton>`. And upon deletion, this button redirects to the current resource list. This is probably not what you want, so it's common to customize the form toolbar to disable the redirection after deletion:
 
 {% raw %}
+
 ```tsx
 // src/CustomToolbar.tsx
 import { Toolbar, SaveButton, DeleteButton } from 'react-admin';
@@ -330,13 +331,41 @@ const EmployerEdit = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
+
+## Warn When There Are Unsaved Changes
+
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
+
+In that case, using the `warnWhenUnsavedChanges` prop directly on the form won't work, because this feature relies on the router's location, but both components do not use routing.
+
+Instead, you can use the `<WarnWhenUnsavedChangesInDialog>` component provided by `ra-form-layout`.
+
+You can add this component to your form like so:
+
+```tsx
+import { TextInput, SimpleForm } from 'react-admin';
+import { EditInDialogButton, WarnWhenUnsavedChangesInDialog } from '@react-admin/ra-form-layout';
+
+const EmployerEditButton = () => (
+    <EditInDialogButton>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="address" />
+            <TextInput source="city" />
+            <WarnWhenUnsavedChangesInDialog />
+        </SimpleForm>
+    </EditInDialogButton>
+);
+```
 
 ## Combining With `<CreateInDialogButton>`
 
 Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to [`<CreateInDialogButton>`](./CreateInDialogButton.md), `<EditInDialogButton>` and [`<ShowInDialogButton>`](./ShowInDialogButton.md):
 
 {% raw %}
+
 ```jsx
 import {
   Datagrid,
@@ -445,6 +474,5 @@ const EmployerEdit = () => (
   </Edit>
 );
 ```
+
 {% endraw %}
-
-
