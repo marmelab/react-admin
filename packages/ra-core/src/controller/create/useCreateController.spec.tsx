@@ -105,6 +105,7 @@ describe('useCreateController', () => {
                         smart_count: 1,
                         _: 'ra.notification.created',
                     },
+                    undoable: false,
                 },
             },
         ]);
