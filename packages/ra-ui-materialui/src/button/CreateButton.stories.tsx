@@ -50,6 +50,7 @@ const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
     const [resourcesAccesses, setResourcesAccesses] = React.useState({
         'books.list': true,
         'books.create': false,
+        'books.delete': false,
     });
 
     const authProvider: AuthProvider = {

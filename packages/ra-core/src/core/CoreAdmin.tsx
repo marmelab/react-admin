@@ -99,6 +99,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         loading,
         loginPage,
         queryClient,
+        QueryClientProvider,
         ready,
         requireAuth,
         store,
@@ -111,6 +112,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             queryClient={queryClient}
+            QueryClientProvider={QueryClientProvider}
             store={store}
         >
             <CoreAdminUI
