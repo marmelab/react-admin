@@ -859,7 +859,7 @@ describe('<SelectInput />', () => {
             expect(onSuccess).toHaveBeenCalledWith(
                 expect.objectContaining({ gender: null }),
                 expect.anything(),
-                undefined
+                { snapshot: [] }
             );
         });
     });
