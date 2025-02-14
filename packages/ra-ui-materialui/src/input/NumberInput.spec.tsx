@@ -557,7 +557,9 @@ describe('<NumberInput />', () => {
             );
             const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.blur(input);
-            expect(onBlur).toHaveBeenCalled();
+            expect(onBlur).toHaveBeenCalledWith(
+                expect.objectContaining({ type: 'blur' })
+            );
         });
 
         it('should display error message onBlur if required', async () => {

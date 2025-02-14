@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useId } from 'react';
+import { ReactElement, useEffect, useId, FocusEvent } from 'react';
 import {
     ControllerFieldState,
     ControllerRenderProps,
@@ -7,6 +7,7 @@ import {
     UseControllerReturn,
     UseFormStateReturn,
 } from 'react-hook-form';
+import type { EditorEvents } from '@tiptap/react';
 import get from 'lodash/get';
 
 import { useRecordContext } from '../controller';
@@ -168,7 +169,11 @@ export type InputProps<ValueType = any> = Omit<
 export type UseInputValue = {
     id: string;
     isRequired: boolean;
-    field: ControllerRenderProps;
+    field: Omit<ControllerRenderProps, 'onBlur'> & {
+        onBlur: (
+            event?: FocusEvent<HTMLElement> | EditorEvents['blur']
+        ) => void;
+    };
     formState: UseFormStateReturn<Record<string, string>>;
     fieldState: ControllerFieldState;
 };

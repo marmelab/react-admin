@@ -111,9 +111,9 @@ export const NumberInput = ({
         hasFocus.current = true;
     };
 
-    const handleBlur = () => {
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
         if (onBlurFromField) {
-            onBlurFromField();
+            onBlurFromField(event);
         }
         hasFocus.current = false;
         const stringValue = format(field.value);
