@@ -244,6 +244,8 @@ const App = () => (
 );
 ```
 
+![Login with email](./img/LoginWithEmail.jpg)
+
 The default login page component is the `Login` component, which delegates the rendering of the login form to its child, usually a `LoginForm` component. This means you can create a custom login page by adding your own content to the `Login` component.
 
 For instance, to add a "forgot password" link to the login page:
@@ -265,6 +267,8 @@ const MyLogin = () => (
 );
 ```
 
+![Login with content](./img/LoginWithContent.jpg)
+
 By default, the login page displays a gradient background. To change it, use the default Login component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
@@ -275,6 +279,8 @@ const MyLoginPage = () => (
     <Login backgroundImage="https://acme.com/img/background.png" />
 );
 ```
+
+![Custom login page](./img/LoginCustomBackground.jpg)
 
 You can also build your login page from scratch, leveraging the [`useLogin` hook](./useLogin.md) to handle the login form submission.
 
