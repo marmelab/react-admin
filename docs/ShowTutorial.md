@@ -19,6 +19,7 @@ To better understand how to use the various react-admin hooks and components ded
 
 Here is how you could write a simple book show view, leveraging react-admin's [data fetching hooks](./DataProviders.md):
 
+{% raw %}
 ```jsx
 import { useParams } from 'react-router-dom';
 import { useGetOne, useRedirect, Title } from 'react-admin';
@@ -39,15 +40,19 @@ const BookShow = () => {
     if (isPending) { return <Loading />; }
     return (
         <div>
-            <Title title="Book Show"/>
+            <Title title="Book Show" />
             <Card>
                 <Stack spacing={1}>
                     <div>
-                        <Typography variant="caption" display="block">Title</Typography>
+                        <Typography variant="caption" sx={{ display: "block" }}>
+                            Title
+                        </Typography>
                         <Typography variant="body2">{data.title}</Typography>
                     </div>
                     <div>
-                        <Typography variant="caption" display="block">Publication Date</Typography>
+                        <Typography variant="caption" sx={{ display: "block" }}>
+                            Publication Date
+                        </Typography>
                         <Typography variant="body2">{new Date(data.published_at).toDateString()}</Typography>
                     </div>
                 </Stack>
@@ -56,6 +61,7 @@ const BookShow = () => {
     );
 };
 ```
+{% endraw %}
 
 You can pass this `BookShow` component as the `show` prop of the `<Resource name="books" />`, and react-admin will render it on the `/books/:id/show` path.
 

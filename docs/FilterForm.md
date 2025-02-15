@@ -19,6 +19,7 @@ It's an internal component that you should only need if you build a custom List 
 
 `<FilterForm>` expects an array of filter inputs as `filters` prop:
 
+{% raw %}
 ```jsx
 import {
     CreateButton,
@@ -39,7 +40,7 @@ const postFilters = [
 ];
 
 const ListToolbar = () => (
-    <Stack direction="row" justifyContent="space-between">
+    <Stack direction="row" sx={{ justifyContent: "space-between" }}>
         <FilterForm filters={postFilters} />
         <div>
             <FilterButton filters={postFilters} />
@@ -60,3 +61,4 @@ const PostList = () => (
     </ListBase>
 )
 ```
+{% endraw %}

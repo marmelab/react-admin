@@ -37,7 +37,7 @@ The field value must be a string using the pattern `YYYY-MM-DD` (ISO 8601), e.g.
 
 In these cases, `<DateInput>` will automatically convert the value to the `YYYY-MM-DD` format, and will return a `string`, or `null` if the date is invalid.
 
-**Note**: This conversion may change the date because of timezones. For example, the date string `'2022-04-30T00:00:00.000Z'` in Europe may be displayed as `'2022-04-29'` in Honolulu. If this is not what you want, pass your own [`parse`](./Inputs.md#parse) function to `<DateInput>`.
+**Note**: This conversion may change the date because of timezones. For example, the date string `'2022-04-30T00:00:00.000Z'` in Europe may be displayed as `'2022-04-29'` in Honolulu. If this is not what you want, use the [`format`](./Inputs.html#format) prop to convert the date to UTC and return the formatted string as `yyyy-MM-dd` to the input. In this scenario you likely want the outgoing value to stay consistent with UTC too, so provide your own [`parse`](./Inputs.md#parse) function to `<DateInput>` to transform it as needed.
 
 ## Props
 

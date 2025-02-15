@@ -434,3 +434,36 @@ const EmployerEdit = () => (
 ```
 
 {% endraw %}
+
+## Warn When There Are Unsaved Changes
+
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
+
+In that case, you can leverage the [warnWhenUnsavedChanges](./Form.md#warnwhenunsavedchanges) feature provided by React Admin forms.
+
+Add the `warnWhenUnsavedChanges` prop to your Form like so:
+
+```tsx
+import React from 'react';
+import {
+    List,
+    Datagrid,
+    SimpleForm,
+} from 'react-admin';
+import { EditDialog } from '@react-admin/ra-form-layout';
+
+const CustomerList = () => (
+    <>
+        <List hasCreate>
+            <Datagrid rowClick="edit">
+                ...
+            </Datagrid>
+        </List>
+        <EditDialog>
+            <SimpleForm warnWhenUnsavedChanges>
+                ...
+            </SimpleForm>
+        </EditDialog>
+    </>
+);
+```

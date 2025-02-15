@@ -15,6 +15,7 @@ You can also use its hook version: [`useGetRecordRepresentation`](./useGetRecord
 
 The component uses the [`useRecordRepresentation`](./useRecordRepresentation.md) hook and the same [rules](./useRecordRepresentation.md#preferences) are therefore applied.
 
+{% raw %}
 ```tsx
 // in src/posts/PostBreadcrumbs.tsx
 import * as React from 'react';
@@ -31,7 +32,7 @@ export const PostBreadcrumbs = () => {
                 <Link underline="hover" color="inherit" to="/posts">
                     Posts
                 </Link>
-                <Typography color="text.primary">
+                <Typography sx={{ color: "text.primary" }}>
                     <RecordRepresentation />
                 </Typography>
             </Breadcrumbs>
@@ -54,6 +55,7 @@ const PostEdit = () => (
     </EditBase>
 )
 ```
+{% endraw %}
 
 ## Props
 

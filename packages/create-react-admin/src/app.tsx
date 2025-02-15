@@ -59,7 +59,8 @@ const stepReducer = (
                 ...state,
                 dataProvider: action.value,
                 resources:
-                    action.value === 'ra-data-fakerest'
+                    action.value === 'ra-data-fakerest' &&
+                    (state.resources == null || state.resources.length === 0)
                         ? ['posts', 'comments']
                         : state.resources,
             };
@@ -124,7 +125,8 @@ export default function App(props: Props) {
         authProvider: props.authProvider,
         resources: props.resources?.includes('skip')
             ? []
-            : props.dataProvider === 'ra-data-fakerest'
+            : props.dataProvider === 'ra-data-fakerest' &&
+                (props.resources == null || props.resources.length === 0)
               ? ['posts', 'comments']
               : props.resources,
         installer: props.install,
