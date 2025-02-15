@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Box } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Login as RaLogin, LoginForm } from 'react-admin';
 
 const Login = () => (
     <RaLogin sx={{ background: 'none' }}>
-        <Box sx={{ textAlign: 'center', color: 'text.disabled' }}>
+        <Typography color="text.disabled" textAlign="center">
             Hint: demo / demo
-        </Box>
+        </Typography>
         <LoginForm />
     </RaLogin>
 );
