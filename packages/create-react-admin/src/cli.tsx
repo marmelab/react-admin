@@ -42,11 +42,13 @@ const getAuthProvider = (flags: typeof cli.flags) => {
         getDataProviderName(flags.dataProvider) === 'ra-supabase' &&
         flags.authProvider != null
     ) {
-        console.error("Don't provide an auth-provider when using ra-supabase");
-        process.exit(1);
+        console.warn(
+            'Providing an auth-provider when using ra-supabase is not supported. It will be ignored.'
+        );
     }
     if (flags.authProvider) return getAuthProviderName(flags.authProvider);
-    if (flags.dataProvider === 'ra-supabase') return 'none';
+    if (getDataProviderName(flags.dataProvider) === 'ra-supabase')
+        return 'none';
     if (flags.interactive) return undefined;
     return 'none';
 };
@@ -76,8 +78,12 @@ const cli = meow(
 	  --install        Set the package manager to use for installing dependencies ("yarn", "npm", "bun" or "skip" to bypass the interactive install step)
 
     Examples
-	  $ create-admin-app my-admin
-	  $ create-admin-app my-admin --data-provider ra-data-json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+	  $ npx create-react-admin@latest my-admin
+	  $ npx create-react-admin@latest my-admin --data-provider ra-data-json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+	  $ yarn create react-admin@latest my-admin
+	  $ yarn create react-admin@latest my-admin --data-provider ra-data-json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+	  $ bun create react-admin@latest my-admin
+	  $ bun create react-admin@latest my-admin --data-provider ra-data-json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 `,
     {
         flags: {
