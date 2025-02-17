@@ -5,6 +5,7 @@ import {
     GlobalValidation,
     MultipleFilterLiveForm,
     MultipleInput,
+    ParseFormat,
     PerInputValidation,
 } from './FilterLiveForm.stories';
 import React from 'react';
@@ -24,6 +25,28 @@ describe('<FilterLiveForm />', () => {
         fireEvent.change(input, { target: { value: 'foo' } });
         await screen.findByText('{"category":"deals","title":"foo"}');
         fireEvent.change(input, { target: { value: '' } });
+        await screen.findByText('{"category":"deals"}');
+    });
+
+    it.only('should allow to clear a filter value with parse/format', async () => {
+        render(<ParseFormat />);
+        const input = await screen.findByLabelText('document');
+        fireEvent.change(input, { target: { value: '123123123123' } });
+        await screen.findByText(
+            '{"category":"deals","document":"123123123123"}'
+        );
+        fireEvent.change(input, { target: { value: '' } });
+        await screen.findByText('{"category":"deals"}');
+    });
+
+    it.only('should allow to clear a filter value through a clear button with parse/format', async () => {
+        render(<ParseFormat />);
+        const input = await screen.findByLabelText('document');
+        fireEvent.change(input, { target: { value: '123123123123' } });
+        await screen.findByText(
+            '{"category":"deals","document":"123123123123"}'
+        );
+        fireEvent.click(screen.getByText('Clear'));
         await screen.findByText('{"category":"deals"}');
     });
 
