@@ -14,10 +14,6 @@ const choices: ChoiceType[] = [
         value: 'yarn',
     },
     {
-        label: 'Using pnpm',
-        value: 'pnpm',
-    },
-    {
         label: 'Using bun',
         value: 'bun',
     },

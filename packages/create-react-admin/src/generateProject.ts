@@ -267,15 +267,22 @@ const replaceTokens = (content: string, state: ProjectConfiguration) => {
             devCommand = 'npm run dev';
             buildCommand = 'npm run build';
             break;
+        case 'bun':
+            installCommand = 'bun install';
+            devCommand = 'bun run dev';
+            buildCommand = 'bun run build';
+            break;
         case 'yarn':
             installCommand = 'yarn';
             devCommand = 'yarn dev';
             buildCommand = 'yarn build';
             break;
         default:
-            installCommand = 'npm install\n# or\nyarn install';
-            devCommand = 'npm run dev\n# or\nyarn dev';
-            buildCommand = 'npm run build\n# or\nyarn build';
+            installCommand =
+                'npm install\n# or\nyarn install\n# or\nbun install';
+            devCommand = 'npm run dev\n# or\nyarn dev\n# or\bun run dev';
+            buildCommand =
+                'npm run build\n# or\nyarn build\n# or\nbun run build';
     }
 
     return content
