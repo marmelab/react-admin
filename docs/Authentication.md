@@ -269,6 +269,34 @@ const MyLogin = () => (
 
 ![Login with content](./img/LoginWithContent.jpg)
 
+You can also customize the login form fields, by setting the `LoginForm` children:
+
+```jsx
+import { Link as RouterLink } from 'react-router-dom';
+import { Login, LoginForm, TextInput, PasswordInput, required } from 'react-admin';
+
+const MyLogin = () => (
+    <Login>
+        <LoginForm>
+            <TextInput
+                autoFocus
+                source="email"
+                label="Email"
+                autoComplete="email"
+                type="email"
+                validate={required()}
+            />
+            <PasswordInput
+                source="password"
+                label="Password"
+                autoComplete="current-password"
+                validate={required()}
+            />
+        </LoginForm>
+    </Login>
+);
+```
+
 By default, the login page displays a gradient background. To change it, use the default Login component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
