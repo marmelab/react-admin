@@ -28,7 +28,7 @@ describe('<FilterLiveForm />', () => {
         await screen.findByText('{"category":"deals"}');
     });
 
-    it.only('should allow to clear a filter value with parse/format', async () => {
+    it('should allow to clear a filter value with parse/format', async () => {
         render(<ParseFormat />);
         const input = await screen.findByLabelText('document');
         fireEvent.change(input, { target: { value: '123123123123' } });
@@ -39,7 +39,7 @@ describe('<FilterLiveForm />', () => {
         await screen.findByText('{"category":"deals"}');
     });
 
-    it.only('should allow to clear a filter value through a clear button with parse/format', async () => {
+    it('should allow to clear a filter value through a clear button with parse/format', async () => {
         render(<ParseFormat />);
         const input = await screen.findByLabelText('document');
         fireEvent.change(input, { target: { value: '123123123123' } });
