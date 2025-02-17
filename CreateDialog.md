@@ -72,15 +72,16 @@ In the related `<Resource>`, you don't need to declare a `create` component as t
 
 `<CreateDialog>` accepts the following props:
 
-| Prop           | Required | Type              | Default | Description |
-| -------------- | -------- | ----------------- | ------- | ----------- |
-| `children`     | Required | `ReactNode`       |         | The content of the dialog. |
-| `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
-| `maxWidth`     | Optional | `string`          | `sm`    | The max width of the dialog. |
-| `mutation Options` | Optional | `object`       |         | The options to pass to the `useMutation` hook. |
-| `resource`     | Optional | `string`          |         | The resource name, e.g. `posts`
-| `sx`           | Optional | `object`          |         | Override the styles applied to the dialog component. |
-| `transform`    | Optional | `function`        |         | Transform the form data before calling `dataProvider.create()`. |
+| Prop               | Required | Type        | Default | Description                                                     |
+| ------------------ | -------- | ----------- | ------- | --------------------------------------------------------------- |
+| `children`         | Required | `ReactNode` |         | The content of the dialog                                       |
+| `fullWidth`        | Optional | `boolean`   | `false` | If `true`, the dialog stretches to the full width of the screen |
+| `maxWidth`         | Optional | `string`    | `sm`    | The max width of the dialog                                     |
+| `mutation Options` | Optional | `object`    |         | The options to pass to the `useMutation` hook                   |
+| `resource`         | Optional | `string`    |         | The resource name, e.g. `posts`                                 |
+| `sx`               | Optional | `object`    |         | Override the styles applied to the dialog component             |
+| `title`            | Optional | `ReactNode` |         | The title of the dialog                                         |
+| `transform`        | Optional | `function`  |         | Transform the form data before calling `dataProvider.create()`  |
 
 ## `children`
 
@@ -192,6 +193,7 @@ const EditAuthorDialog = () => {
 Customize the styles applied to the Material UI `<Dialog>` component:
 
 {% raw %}
+
 ```jsx
 const MyCreateDialog = () => (
   <CreateDialog sx={{ backgroundColor: 'paper' }}>
@@ -199,7 +201,57 @@ const MyCreateDialog = () => (
   </CreateDialog>
 );
 ```
+
 {% endraw %}
+
+## `title`
+
+Unlike the `<Create>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
+Here is an example:
+
+```tsx
+import React from 'react';
+import {
+    List,
+    Datagrid,
+    SimpleForm,
+    TextInput,
+    DateInput,
+    required,
+} from 'react-admin';
+import {
+    CreateDialog,
+} from '@react-admin/ra-form-layout';
+
+const CustomerList = () => (
+    <>
+        <List hasCreate>
+            <Datagrid>
+                ...
+                <ShowButton />
+            </Datagrid>
+        </List>
+        <ShowDialog title={<CustomerShowTitle />}>
+            <SimpleShowLayout>
+                <TextField source="id" />
+                <TextField source="first_name" />
+                <TextField source="last_name" />
+                <DateField source="date_of_birth" label="born" />
+            </SimpleShowLayout>
+        </ShowDialog>
+    </>
+);
+```
+
+You can also hide the title by passing `null`:
+
+```tsx
+<CreateDialog title={null}>
+    <SimpleForm>
+        ...
+    </SimpleForm>
+</CreateDialog>
+```
 
 ## `transform`
 
@@ -409,3 +461,36 @@ const EmployerEdit = () => (
 ```
 
 {% endraw %}
+
+## Warn When There Are Unsaved Changes
+
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
+
+In that case, you can leverage the [warnWhenUnsavedChanges](./Form.md#warnwhenunsavedchanges) feature provided by React Admin forms.
+
+Add the `warnWhenUnsavedChanges` prop to your Form like so:
+
+```tsx
+import React from 'react';
+import {
+    List,
+    Datagrid,
+    SimpleForm,
+} from 'react-admin';
+import { CreateDialog } from '@react-admin/ra-form-layout';
+
+const CustomerList = () => (
+    <>
+        <List hasCreate>
+            <Datagrid rowClick="edit">
+                ...
+            </Datagrid>
+        </List>
+        <CreateDialog>
+            <SimpleForm warnWhenUnsavedChanges>
+                ...
+            </SimpleForm>
+        </CreateDialog>
+    </>
+);
+```
