@@ -118,6 +118,9 @@ title: "Index"
 * [`<ListLive>`](./ListLive.md)<img class="icon" src="./img/premium.svg" />
 * [`<LocalesMenuButton>`](./LocalesMenuButton.md)
 * [`<LongForm>`](./LongForm.md)<img class="icon" src="./img/premium.svg" />
+* [`<Login>`](./Authentication.md#customizing-the-login-component)
+* [`<LoginForm>`](./Authentication.md#customizing-the-login-component)
+* [`<LoginWithEmail>`](./Authentication.md#customizing-the-login-component)
 * [`<Logout>`](./Authentication.md#customizing-the-logout-component)
 
 **- M -**

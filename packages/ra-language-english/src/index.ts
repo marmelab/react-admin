@@ -150,6 +150,7 @@ const englishMessages: TranslationMessages = {
             user_menu: 'Profile',
             username: 'Username',
             password: 'Password',
+            email: 'Email',
             sign_in: 'Sign in',
             sign_in_error: 'Authentication failed, please retry',
             logout: 'Logout',
