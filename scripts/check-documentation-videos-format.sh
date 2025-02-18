@@ -26,7 +26,6 @@ checkChromaSubsampling() {
     case $2 in
     "mp4") echo "ffmpeg -i ${1} -c:v libx264 -pix_fmt yuv420p -c:a copy ${output_file}" ;;
     "webm") echo "ffmpeg -i ${1} -c:v libvpx-vp9 -pix_fmt yuv420p -c:a libopus -b:a 128k ${output_file}" ;;
-    "gif") echo "ffmpeg -i ${1} -c:v libvpx-vp9 -pix_fmt yuv420p -c:a libopus -b:a 128k ${output_file}" ;;
     esac
 
     echo "\nThen replace the file with:"
@@ -42,7 +41,6 @@ for file in ./docs/img/**; do
   case "$file" in
   *.mp4) checkChromaSubsampling $file "mp4" ;;
   *.webm) checkChromaSubsampling $file "webm" ;;
-  *.gif) checkChromaSubsampling $file "gif" ;;
   esac
 
 done
