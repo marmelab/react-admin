@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { Octokit } from '@octokit/core';
 import fs from 'fs';
 import path from 'path';
+import escapeRegExp from 'lodash/escapeRegExp';
 
 const main = async () => {
     if (process.env.RELEASE_DRY_RUN) {
@@ -54,10 +55,8 @@ const main = async () => {
     const changelogContent = fs.readFileSync(changelogFilePath, 'utf-8');
 
     // Create a regular expression to capture the changelog entries for the specified version
-    const regex = new RegExp(
-        `## ${version.replace(/\./g, '\\.')}\n\n([\\s\\S]*?)\n##`,
-        'g'
-    );
+    const safeVersion = escapeRegExp(version);
+    const regex = new RegExp(`## ${safeVersion}\n\n([\\s\\S]*?)\n##`, 'g');
     const match = regex.exec(changelogContent);
 
     if (!match) {

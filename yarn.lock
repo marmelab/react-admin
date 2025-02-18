@@ -16876,6 +16876,7 @@ __metadata:
     jest-watch-typeahead: "npm:2.2.2"
     lerna: "npm:~7.1.3"
     lint-staged: "npm:^13.0.3"
+    lodash: "npm:^4.17.21"
     lolex: "npm:~2.3.2"
     prettier: "npm:~3.2.5"
     raf: "npm:~3.4.1"
