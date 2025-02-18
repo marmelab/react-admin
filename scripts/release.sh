@@ -38,5 +38,7 @@ read
 if [ -z "$RELEASE_DRY_RUN" ]; then
     step "lerna publish"
     ./node_modules/.bin/lerna publish --force-publish
+else
+    echo "dry mode -- skipping lerna publish"
 fi
 
