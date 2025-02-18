@@ -53,10 +53,16 @@ const getAuthProvider = (flags: typeof cli.flags) => {
     return 'none';
 };
 
-const getInstall = (flags: typeof cli.flags) => {
+const getDefaultInstaller = (processExec: string) => {
+    if (processExec.includes('yarn')) return 'yarn';
+    if (processExec.includes('bun')) return 'bun';
+    return 'npm';
+};
+
+const getInstall = (flags: typeof cli.flags, processExec: string) => {
     if (flags.install) return flags.install;
     if (flags.interactive) return undefined;
-    return 'npm';
+    return getDefaultInstaller(processExec);
 };
 
 const getResources = (flags: typeof cli.flags) => {
@@ -127,7 +133,7 @@ if (cli.flags.h) {
     }
     const dataProvider = getDataProvider(cli.flags);
     const authProvider = getAuthProvider(cli.flags);
-    const install = getInstall(cli.flags);
+    const install = getInstall(cli.flags, process.execPath);
     const resources = getResources(cli.flags);
 
     render(
