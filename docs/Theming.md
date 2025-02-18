@@ -18,7 +18,7 @@ If you need to adjust the style of a single component, you can use [the `sx` pro
 
 The following example shows how to change the color, decoration, width, and font weight of a `<Datagrid>` column:
 
-| Default style | Styled with `sx` | 
+| Default style | Styled with `sx` |
 | --- | --- |
 | [![Default style](./img/datagrid-sx-unstyled.webp)](./img/datagrid-sx-unstyled.webp) | [![Styled with `sx`](./img/datagrid-sx-styled.webp)](./img/datagrid-sx-styled.webp) |
 
@@ -69,7 +69,7 @@ The `sx` prop supports all the CSS features you need to style your components, i
 
 If you need to customize the look and feel of the whole application, you can use the `theme` prop of the `<Admin>` component. It accepts a theme object, which is a plain JavaScript object with a specific structure. You can either create your own theme object, or extend the default theme object provided by react-admin.
 
-| Default style | Styled with `theme` | 
+| Default style | Styled with `theme` |
 | --- | --- |
 | [![Default style](./img/datagrid-theme-unstyled.webp)](./img/datagrid-theme-unstyled.webp) | [![Styled with `theme`](./img/datagrid-theme-styled.webp)](./img/datagrid-theme-styled.webp) |
 
@@ -119,13 +119,13 @@ const App = () => (
 );
 ```
 
-React-admin comes with 4 built-in themes: 
+React-admin comes with 5 built-in themes:
 
-| :---: | :---: |
-| &nbsp;&nbsp; [Default](./AppTheme.md#default) [![Default light theme](./img/defaultLightTheme1.jpg)]((./AppTheme.md#default)) | &nbsp;&nbsp; [Nano](./AppTheme.md#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](./AppTheme.md#nano) |
-| &nbsp;&nbsp; [Radiant](./AppTheme.md#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](./AppTheme.md#radiant) | &nbsp;&nbsp; [House](./AppTheme.md#house) [![House light theme](./img/houseLightTheme1.jpg)](./AppTheme.md#house) |
+| &nbsp;&nbsp; [Default](./AppTheme.md#default) [![Default light theme](./img/defaultLightTheme1.jpg)]((#default)) | &nbsp;&nbsp; [B&W](./AppTheme.md#bw) [![B&W light theme](./img/bwLightTheme1.jpg)](./AppTheme.md#bw) |
+| &nbsp;&nbsp; [Nano](./AppTheme.md#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](./AppTheme.md#nano) | &nbsp;&nbsp; [Radiant](./AppTheme.md#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](./AppTheme.md#radiant) |
+| &nbsp;&nbsp; [House](./AppTheme.md#house) [![House light theme](./img/houseLightTheme1.jpg)](./AppTheme.md#house) |
 
-The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application. 
+The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/demo-themes.mp4" type="video/mp4"/>
