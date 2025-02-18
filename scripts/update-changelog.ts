@@ -4,6 +4,7 @@ import path from 'path';
 import { Octokit } from '@octokit/core';
 import { OctokitResponse } from '@octokit/types';
 import { components } from '@octokit/openapi-types';
+import readline from 'readline';
 
 const prOrder = [
     'feature',
@@ -51,25 +52,7 @@ const sortPrEntries = (
     b: components['schemas']['issue-search-result-item']
 ) => sortPrEntriesByTitle(a.title, b.title);
 
-const main = async () => {
-    if (!process.env.GITHUB_ACCESS_TOKEN) {
-        console.error(
-            'Please provide the GITHUB_ACCESS_TOKEN variable in the .env file'
-        );
-        process.exit(1);
-    }
-
-    const milestone_number = process.argv[2];
-
-    if (
-        !milestone_number ||
-        !milestone_number.match(/^\d{1,2}\.\d{1,2}\.\d{1,2}$/)
-    ) {
-        console.error(`Invalid milestone provided: ${milestone_number}`);
-        console.error('Usage: yarn run update-changelog <milestone>');
-        process.exit(1);
-    }
-
+const fetchMilestonePrs = async (milestone_number: string) => {
     const octokit = new Octokit({
         auth: process.env.GITHUB_ACCESS_TOKEN,
     });
@@ -107,15 +90,23 @@ const main = async () => {
         process.exit(1);
     }
 
-    items.sort(sortPrEntries);
+    return items;
+};
 
+const generateChangelogContent = (
+    milestone_number: string,
+    items: components['schemas']['issue-search-result-item'][]
+) => {
     const changelog_entries = items.map(
         pr =>
             `* ${pr.title} ([#${pr.number}](${pr.html_url})) ([${pr.user.login}](${pr.user.html_url}))`
     );
 
     const changelogContent = `\n## ${milestone_number}\n\n${changelog_entries.join('\n')}`;
+    return changelogContent;
+};
 
+const writeChangelog = (changelogContent: string) => {
     // Read the existing changelog file
     const changelogFilePath = path.join(__dirname, '../CHANGELOG.md');
     const existingContent = fs.readFileSync(changelogFilePath, 'utf-8');
@@ -126,8 +117,55 @@ const main = async () => {
 
     // Write the updated content back to the changelog file
     fs.writeFileSync(changelogFilePath, lines.join('\n'));
+};
+
+const main = async () => {
+    if (!process.env.GITHUB_ACCESS_TOKEN) {
+        console.error(
+            'Please provide the GITHUB_ACCESS_TOKEN variable in the .env file'
+        );
+        process.exit(1);
+    }
+
+    const milestone_number = process.argv[2] || process.env.npm_package_version;
+
+    if (
+        !milestone_number ||
+        !milestone_number.match(/^\d{1,2}\.\d{1,2}\.\d{1,2}$/)
+    ) {
+        console.error(`Invalid milestone provided: ${milestone_number}`);
+        console.error('Usage: yarn run update-changelog <milestone>');
+        console.error(
+            'Alternatively the milestone can be provided via the npm_package_version environment variable.'
+        );
+        process.exit(1);
+    }
+
+    console.log(`Generating changelog for version ${milestone_number}...`);
+
+    const items = await fetchMilestonePrs(milestone_number);
+
+    items.sort(sortPrEntries);
+
+    const changelogContent = generateChangelogContent(milestone_number, items);
+
+    writeChangelog(changelogContent);
 
     console.log('Changelog updated successfully.');
+
+    // Prompt the user to check the changelog
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+
+    console.log(
+        'Please review the ./CHANGELOG.md file and update it if needed.'
+    );
+    rl.question('Press Enter when done: ', () => {
+        console.log('Resuming publish...');
+        rl.close();
+    });
 };
 
 main();
