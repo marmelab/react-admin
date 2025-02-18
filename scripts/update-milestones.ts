@@ -3,6 +3,10 @@ import { Octokit } from '@octokit/core';
 import { addWeeks, addMonths, formatISO } from 'date-fns';
 
 const main = async () => {
+    if (process.env.RELEASE_DRY_RUN) {
+        console.log('Dry run mode is enabled');
+    }
+
     if (!process.env.GITHUB_ACCESS_TOKEN) {
         console.error(
             'Please provide the GITHUB_ACCESS_TOKEN variable in the .env file'
@@ -54,15 +58,29 @@ const main = async () => {
         console.log(`No open milestone for current version ${current_version}`);
     } else {
         console.log(`Closing milestone for current version ${current_version}`);
-        await octokit.request(
-            'PATCH /repos/{owner}/{repo}/milestones/{milestone_number}',
-            {
-                owner: 'marmelab',
-                repo: 'react-admin',
-                milestone_number: current_milestone.number,
-                state: 'closed',
-            }
-        );
+
+        if (process.env.RELEASE_DRY_RUN) {
+            console.log(
+                'Would have called GitHub API with',
+                'PATCH /repos/{owner}/{repo}/milestones/{milestone_number}',
+                {
+                    owner: 'marmelab',
+                    repo: 'react-admin',
+                    milestone_number: current_milestone.number,
+                    state: 'closed',
+                }
+            );
+        } else {
+            await octokit.request(
+                'PATCH /repos/{owner}/{repo}/milestones/{milestone_number}',
+                {
+                    owner: 'marmelab',
+                    repo: 'react-admin',
+                    milestone_number: current_milestone.number,
+                    state: 'closed',
+                }
+            );
+        }
     }
 
     const next_patch_milestone = open_milestones.data.find(
@@ -76,14 +94,30 @@ const main = async () => {
         console.log(
             `Creating milestone for next patch version ${next_patch_version}`
         );
-        await octokit.request('POST /repos/{owner}/{repo}/milestones', {
-            owner: 'marmelab',
-            repo: 'react-admin',
-            title: next_patch_version,
-            state: 'open',
-            due_on: formatISO(addWeeks(new Date(), 1)),
-            description: 'this is a test milestone, do not use',
-        });
+
+        if (process.env.RELEASE_DRY_RUN) {
+            console.log(
+                'Would have called GitHub API with',
+                'POST /repos/{owner}/{repo}/milestones',
+                {
+                    owner: 'marmelab',
+                    repo: 'react-admin',
+                    title: next_patch_version,
+                    state: 'open',
+                    due_on: formatISO(addWeeks(new Date(), 1)),
+                    description: 'this is a test milestone, do not use',
+                }
+            );
+        } else {
+            await octokit.request('POST /repos/{owner}/{repo}/milestones', {
+                owner: 'marmelab',
+                repo: 'react-admin',
+                title: next_patch_version,
+                state: 'open',
+                due_on: formatISO(addWeeks(new Date(), 1)),
+                description: 'this is a test milestone, do not use',
+            });
+        }
     }
 
     const next_minor_milestone = open_milestones.data.find(
@@ -97,14 +131,30 @@ const main = async () => {
         console.log(
             `Creating milestone for next minor version ${next_minor_version}`
         );
-        await octokit.request('POST /repos/{owner}/{repo}/milestones', {
-            owner: 'marmelab',
-            repo: 'react-admin',
-            title: next_minor_version,
-            state: 'open',
-            due_on: formatISO(addMonths(new Date(), 1)),
-            description: 'this is a test milestone, do not use',
-        });
+
+        if (process.env.RELEASE_DRY_RUN) {
+            console.log(
+                'Would have called GitHub API with',
+                'POST /repos/{owner}/{repo}/milestones',
+                {
+                    owner: 'marmelab',
+                    repo: 'react-admin',
+                    title: next_minor_version,
+                    state: 'open',
+                    due_on: formatISO(addMonths(new Date(), 1)),
+                    description: 'this is a test milestone, do not use',
+                }
+            );
+        } else {
+            await octokit.request('POST /repos/{owner}/{repo}/milestones', {
+                owner: 'marmelab',
+                repo: 'react-admin',
+                title: next_minor_version,
+                state: 'open',
+                due_on: formatISO(addMonths(new Date(), 1)),
+                description: 'this is a test milestone, do not use',
+            });
+        }
     }
 };
 

@@ -120,6 +120,10 @@ const writeChangelog = (changelogContent: string) => {
 };
 
 const main = async () => {
+    if (process.env.RELEASE_DRY_RUN) {
+        console.log('Dry run mode is enabled');
+    }
+
     if (!process.env.GITHUB_ACCESS_TOKEN) {
         console.error(
             'Please provide the GITHUB_ACCESS_TOKEN variable in the .env file'
@@ -146,7 +150,12 @@ const main = async () => {
 
     const changelogContent = generateChangelogContent(milestone_number, items);
 
-    writeChangelog(changelogContent);
+    if (process.env.RELEASE_DRY_RUN) {
+        console.log('Would have added the following entries to the changelog');
+        console.log(changelogContent);
+    } else {
+        writeChangelog(changelogContent);
+    }
 
     console.log('Changelog updated successfully.');
 

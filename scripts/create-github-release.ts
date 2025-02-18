@@ -4,6 +4,10 @@ import fs from 'fs';
 import path from 'path';
 
 const main = async () => {
+    if (process.env.RELEASE_DRY_RUN) {
+        console.log('Dry run mode is enabled');
+    }
+
     if (!process.env.GITHUB_ACCESS_TOKEN) {
         console.error(
             'Please provide the GITHUB_ACCESS_TOKEN variable in the .env file'
@@ -67,13 +71,27 @@ const main = async () => {
 
     console.log(`Creating release ${version} from tag ${tag_name}`);
 
-    await octokit.request('POST /repos/{owner}/{repo}/releases', {
-        owner: 'marmelab',
-        repo: 'react-admin',
-        tag_name,
-        name: version,
-        body: changelogEntries,
-    });
+    if (process.env.RELEASE_DRY_RUN) {
+        console.log(
+            'Would have called GitHub API with',
+            'POST /repos/{owner}/{repo}/releases',
+            {
+                owner: 'marmelab',
+                repo: 'react-admin',
+                tag_name,
+                name: version,
+                body: changelogEntries,
+            }
+        );
+    } else {
+        await octokit.request('POST /repos/{owner}/{repo}/releases', {
+            owner: 'marmelab',
+            repo: 'react-admin',
+            tag_name,
+            name: version,
+            body: changelogEntries,
+        });
+    }
 
     console.log(`Release ${version} created successfully.`);
 };
