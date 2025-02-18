@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement, ReactNode, ElementType } from 'react';
-import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
+import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 import clsx from 'clsx';
-import { useListContext, RaRecord } from 'ra-core';
+import { RaRecord, useListContext } from 'ra-core';
+import * as React from 'react';
+import { ElementType, ReactElement, ReactNode } from 'react';
 
 import { Title } from '../layout/Title';
+import { Empty } from './Empty';
+import { ListActions as DefaultActions } from './ListActions';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
-import { ListActions as DefaultActions } from './ListActions';
-import { Empty } from './Empty';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -21,6 +21,7 @@ export const ListView = <RecordType extends RaRecord = any>(
     props: ListViewProps
 ) => {
     const {
+        slots,
         actions = defaultActions,
         aside,
         filters,
@@ -33,6 +34,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty = defaultEmpty,
         ...rest
     } = props;
+
     const {
         defaultTitle,
         data,
@@ -49,22 +51,29 @@ export const ListView = <RecordType extends RaRecord = any>(
         return null;
     }
 
+    const haveFilters = !!(filters || slots?.filters);
+    const haveActions = !!(actions || slots?.actions);
+    const havePagination = !!(pagination || slots?.pagination);
+
     const renderList = () => (
         <div className={ListClasses.main}>
-            {(filters || actions) && (
+            {(haveFilters || haveActions) && (
                 <ListToolbar
                     className={ListClasses.actions}
-                    filters={filters}
-                    actions={actions}
+                    filters={slots?.filters || filters}
+                    actions={slots?.actions || actions}
                 />
             )}
             <Content className={ListClasses.content}>{children}</Content>
-            {!error && pagination !== false && pagination}
+            {(!error && havePagination) ||
+                (slots?.pagination && slots.pagination)}
         </div>
     );
 
     const renderEmpty = () =>
-        empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
+        (empty !== false || slots?.empty) && (
+            <div className={ListClasses.noResults}>{slots?.empty || empty}</div>
+        );
 
     const shouldRenderEmptyPage =
         !error &&
@@ -80,7 +89,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         // the user didn't set any filters
         !Object.keys(filterValues).length &&
         // there is an empty page component
-        empty !== false;
+        (empty !== false || slots?.empty);
 
     return (
         <Root className={clsx('list-page', className)} {...rest}>
@@ -92,7 +101,7 @@ export const ListView = <RecordType extends RaRecord = any>(
                 />
             )}
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
-            {aside}
+            {slots?.aside || aside}
         </Root>
     );
 };
@@ -319,6 +328,31 @@ export interface ListViewProps {
      * );
      */
     sx?: SxProps;
+
+    /**
+     * The slots to fill with components. Available slots are actions, aside, empty, and pagination.
+     *
+     * @example
+     * const PostList = () => (
+     *    <List
+     *       slots={{
+     *         actions: <Box sx={{ backgroundColor: 'info.main' }}> Actions </Box>,
+     *         aside: <Box sx={{ backgroundColor: 'info.main' }}> Aside </Box>,
+     *         empty: <Box sx={{ backgroundColor: 'info.main' }}> Empty </Box>,
+     *         pagination: <Box sx={{ backgroundColor: 'info.main' }}> Pagination </Box>,
+     *         filters: <Box sx={{ backgroundColor: 'info.main' }}> Filters </Box>,
+     *      }}
+     *   >
+     *      ...
+     *  </List>
+     */
+    slots?: {
+        actions?: ReactElement;
+        aside?: ReactElement;
+        empty?: ReactElement;
+        pagination?: ReactElement;
+        filters?: ReactElement;
+    };
 }
 
 const PREFIX = 'RaList';
