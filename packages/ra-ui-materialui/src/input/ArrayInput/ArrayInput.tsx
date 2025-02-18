@@ -91,6 +91,17 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ...rest
     } = props;
 
+    if (disabled) {
+        throw new Error(
+            '<ArrayInput> does not accept a disabled prop. Set the disabled prop on the SimpleFormIterator and its child inputs instead.'
+        );
+    }
+    if (readOnly) {
+        throw new Error(
+            '<ArrayInput> does not accept a readOnly prop. Set the disabled prop on the SimpleFormIterator and make its children inputs readOnly instead.'
+        );
+    }
+
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const parentSourceContext = useSourceContext();
@@ -250,7 +261,14 @@ export interface ArrayInputProps
         Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> {
     className?: string;
     children: ReactElement;
+    /**
+     * @deprecated Set the disabled prop on the SimpleFormIterator and its child inputs instead
+     */
     disabled?: boolean;
+    /**
+     * @deprecated Set the disabled prop on the SimpleFormIterator and its child inputs instead
+     */
+    readOnly?: boolean;
     isFetching?: boolean;
     isLoading?: boolean;
     isPending?: boolean;

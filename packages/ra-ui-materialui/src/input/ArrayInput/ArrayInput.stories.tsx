@@ -117,11 +117,11 @@ export const Disabled = () => (
                         >
                             <SimpleForm>
                                 <TextInput source="title" />
-                                <ArrayInput source="authors" disabled>
-                                    <SimpleFormIterator>
-                                        <TextInput source="name" />
-                                        <TextInput source="role" />
-                                        <TextInput source="surname" />
+                                <ArrayInput source="authors">
+                                    <SimpleFormIterator disabled>
+                                        <TextInput source="name" disabled />
+                                        <TextInput source="role" disabled />
+                                        <TextInput source="surname" disabled />
                                     </SimpleFormIterator>
                                 </ArrayInput>
                             </SimpleForm>
@@ -150,11 +150,11 @@ export const ReadOnly = () => (
                         >
                             <SimpleForm>
                                 <TextInput source="title" />
-                                <ArrayInput source="authors" readOnly>
-                                    <SimpleFormIterator>
-                                        <TextInput source="name" />
-                                        <TextInput source="role" />
-                                        <TextInput source="surname" />
+                                <ArrayInput source="authors">
+                                    <SimpleFormIterator disabled>
+                                        <TextInput source="name" readOnly />
+                                        <TextInput source="role" readOnly />
+                                        <TextInput source="surname" readOnly />
                                     </SimpleFormIterator>
                                 </ArrayInput>
                             </SimpleForm>
