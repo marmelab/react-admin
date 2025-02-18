@@ -1,5 +1,5 @@
 {
     "dependencies": {
-        "ra-supabase": "^3.3.1"
+        "ra-supabase": "^3.4.0"
     }
 }
