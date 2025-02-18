@@ -22,7 +22,8 @@
         "build-crm": "cd examples/crm && yarn build",
         "storybook": "storybook dev -p 9010",
         "build-storybook": "storybook build -c .storybook -o public --quiet",
-        "update-changelog": "tsx scripts/update-changelog.ts"
+        "update-changelog": "tsx scripts/update-changelog.ts",
+        "update-milestones": "tsx scripts/update-milestones.ts"
     },
     "devDependencies": {
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -39,6 +40,7 @@
         "@typescript-eslint/eslint-plugin": "^5.60.0",
         "@typescript-eslint/parser": "^5.60.0",
         "cross-env": "^5.2.0",
+        "date-fns": "^3.6.0",
         "dotenv": "^16.4.7",
         "eslint": "^8.19.0",
         "eslint-config-prettier": "^9.1.0",
