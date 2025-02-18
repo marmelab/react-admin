@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.5.4
+
+* Fix `<FilerLiveForm>` does not allow to clear filters ([#10522](https://github.com/marmelab/react-admin/pull/10522)) ([djhi](https://github.com/djhi))
+* Fix `create-react-admin` with `ra-data-fakerest` ignore custom resources ([#10502](https://github.com/marmelab/react-admin/pull/10502)) ([djhi](https://github.com/djhi))
+* Remove doc from published `react-admin` package ([#10505](https://github.com/marmelab/react-admin/pull/10505)) ([djhi](https://github.com/djhi))
+* [Doc] Backport `<DatagridAG>` and `<DatagridAGClient>` access control's doc ([#10521](https://github.com/marmelab/react-admin/pull/10521)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Backport `title={null}`'s doc on dialog components ([#10520](https://github.com/marmelab/react-admin/pull/10520)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update doc to mention the dependency on `@ag-grid-community/styles` ([#10510](https://github.com/marmelab/react-admin/pull/10510)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update `warnWhenUnsavedChanges`'s doc on dialog forms ([#10509](https://github.com/marmelab/react-admin/pull/10509)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update docs to mention `format` prop for timezone adjustment ([#10506](https://github.com/marmelab/react-admin/pull/10506)) ([ogroppo](https://github.com/ogroppo))
+* [Doc] Add "Guides and Concepts" section ([#10477](https://github.com/marmelab/react-admin/pull/10477)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Deprecate mui v6 system props ([#10463](https://github.com/marmelab/react-admin/pull/10463)) ([smeng9](https://github.com/smeng9))
+* [Demo] Fix build ([#10499](https://github.com/marmelab/react-admin/pull/10499)) ([djhi](https://github.com/djhi))
+* [Chore] Rename directories for local storage data providers ([#10507](https://github.com/marmelab/react-admin/pull/10507)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Chore] Bump serialize-javascript from 6.0.1 to 6.0.2 ([#10508](https://github.com/marmelab/react-admin/pull/10508)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.5.3
 
 * Fix `useHandleCallback` compatibility with `React.StrictMode` ([#10486](https://github.com/marmelab/react-admin/pull/10486)) ([erwanMarmelab](https://github.com/erwanMarmelab))
