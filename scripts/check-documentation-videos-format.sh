@@ -21,10 +21,14 @@ checkChromaSubsampling() {
     # Construct the output file name
     output_file="${1%.*}_420.${1##*.}"
     echo "Invalid ChromaSubsampling for $1"
-    echo "Convert it to yuv420p with:"
+
+    echo "\nConvert it to yuv420p with:"
     echo "ffmpeg -i ${1} -c:v libx264 -pix_fmt yuv420p -c:a copy ${output_file}"
-    echo "rm $1"
-    echo "mv $output_file $1"
+    echo "or"
+    echo "ffmpeg -i ${1} -c:v libvpx-vp9 -pix_fmt yuv420p -c:a libopus -b:a 128k ${output_file}"
+
+    echo "\nThen replace the file with:"
+    echo "rm $1 && mv $output_file $1"
     exit 1
   fi
 
