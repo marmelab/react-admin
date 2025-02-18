@@ -23,7 +23,8 @@
         "storybook": "storybook dev -p 9010",
         "build-storybook": "storybook build -c .storybook -o public --quiet",
         "update-changelog": "tsx scripts/update-changelog.ts",
-        "update-milestones": "tsx scripts/update-milestones.ts"
+        "update-milestones": "tsx scripts/update-milestones.ts",
+        "create-github-release": "tsx scripts/create-github-release.ts"
     },
     "devDependencies": {
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
