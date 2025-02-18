@@ -169,7 +169,7 @@ const main = async () => {
         'Please review the ./CHANGELOG.md file and update it if needed.'
     );
     rl.question('Press Enter when done: ', () => {
-        console.log('Resuming publish...');
+        console.log('Resuming release...');
         rl.close();
     });
 };

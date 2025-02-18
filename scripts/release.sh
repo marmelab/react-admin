@@ -35,5 +35,8 @@ echo "[Minor version only] Update the dependencies to RA packages in the create-
 echo "Press Enter when this is done"
 read
 
-step "lerna publish"
-./node_modules/.bin/lerna publish --force-publish
+if [ -z "$RELEASE_DRY_RUN" ]; then
+    step "lerna publish"
+    ./node_modules/.bin/lerna publish --force-publish
+fi
+
