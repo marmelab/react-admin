@@ -177,5 +177,5 @@ update-sandbox: ## Push the local version of the simple example to the sandbox r
 check-documentation-videos-format: ## Check the documentation format
 	./scripts/check-documentation-videos-format.sh
 
-publish: ## Publish the packages to npm using lerna
-	./node_modules/.bin/lerna publish --force-publish
+release: ## Start the release process and publish the packages to npm using lerna
+	./scripts/release.sh
