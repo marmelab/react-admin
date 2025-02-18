@@ -20,15 +20,17 @@ checkChromaSubsampling() {
   if [ "$imageencode" != "4:2:0" ]; then
     # Construct the output file name
     output_file="${1%.*}_420.${1##*.}"
-    echo "Invalid ChromaSubsampling for $1"
+    echo "\nInvalid ChromaSubsampling for $1"
 
     echo "\nConvert it to yuv420p with:"
-    echo "ffmpeg -i ${1} -c:v libx264 -pix_fmt yuv420p -c:a copy ${output_file}"
-    echo "or"
-    echo "ffmpeg -i ${1} -c:v libvpx-vp9 -pix_fmt yuv420p -c:a libopus -b:a 128k ${output_file}"
+    case $2 in
+    "mp4") echo "ffmpeg -i ${1} -c:v libx264 -pix_fmt yuv420p -c:a copy ${output_file}" ;;
+    "webm") echo "ffmpeg -i ${1} -c:v libvpx-vp9 -pix_fmt yuv420p -c:a libopus -b:a 128k ${output_file}" ;;
+    "gif") echo "ffmpeg -i ${1} -c:v libvpx-vp9 -pix_fmt yuv420p -c:a libopus -b:a 128k ${output_file}" ;;
+    esac
 
     echo "\nThen replace the file with:"
-    echo "rm $1 && mv $output_file $1"
+    echo "rm $1 && mv $output_file $1\n"
     exit 1
   fi
 
@@ -38,9 +40,9 @@ for file in ./docs/img/**; do
   checkCodecId $file
 
   case "$file" in
-  *.mp4) checkChromaSubsampling $file ;;
-  *.webm) checkChromaSubsampling $file ;;
-  *.gif) checkChromaSubsampling $file ;;
+  *.mp4) checkChromaSubsampling $file "mp4" ;;
+  *.webm) checkChromaSubsampling $file "webm" ;;
+  *.gif) checkChromaSubsampling $file "gif" ;;
   esac
 
 done
