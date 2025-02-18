@@ -95,7 +95,7 @@ title: "Index"
 
 **- H -**
 
-* [`<HorizontalMenu>`](./ContainerLayout.md#horizontalmenu)<img class="icon" src="./img/premium.svg" />
+* [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" />
 
 **- I -**
 
