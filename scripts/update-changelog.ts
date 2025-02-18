@@ -127,7 +127,7 @@ const main = async () => {
         process.exit(1);
     }
 
-    const milestone_number = process.argv[2] || process.env.npm_package_version;
+    const milestone_number = process.argv[2];
 
     if (
         !milestone_number ||
@@ -135,9 +135,6 @@ const main = async () => {
     ) {
         console.error(`Invalid milestone provided: ${milestone_number}`);
         console.error('Usage: yarn run update-changelog <milestone>');
-        console.error(
-            'Alternatively the milestone can be provided via the npm_package_version environment variable.'
-        );
         process.exit(1);
     }
 
