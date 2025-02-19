@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.6.0
+
+* Add `<LoginWithEmail>` to facilitate login with email ([#10518](https://github.com/marmelab/react-admin/pull/10518)) ([fzaninotto](https://github.com/fzaninotto))
+* Add B&W Theme ([#10523](https://github.com/marmelab/react-admin/pull/10523)) ([fzaninotto](https://github.com/fzaninotto))
+* Make `create-react-admin` non interactive by default and support `ra-supabase` ([#10511](https://github.com/marmelab/react-admin/pull/10511)) ([djhi](https://github.com/djhi))
+* Support `<ReferenceOneField emptyContent>` ([#10450](https://github.com/marmelab/react-admin/pull/10450)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Update `<ArrayInput>` to throw an error when using outdated `disabled` prop ([#10529](https://github.com/marmelab/react-admin/pull/10529)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `HorizontalMenu` doc ([#10528](https://github.com/marmelab/react-admin/pull/10528)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add `<FormFillerButton>` documentation ([#10527](https://github.com/marmelab/react-admin/pull/10527)) ([djhi](https://github.com/djhi))
+* [chore] Fix CI jobs that run on new tag ([#10525](https://github.com/marmelab/react-admin/pull/10525)) ([slax57](https://github.com/slax57))
+
 ## 5.5.4
 
 * Fix `<FilerLiveForm>` does not allow to clear filters ([#10522](https://github.com/marmelab/react-admin/pull/10522)) ([djhi](https://github.com/djhi))
