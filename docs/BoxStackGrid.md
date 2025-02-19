@@ -37,28 +37,6 @@ const MyComponent = () => (
 ```
 {% endraw %}
 
-`<Box>` supports all the CSS properties as props, so you can write the same component as follows:
-
-{% raw %}
-```jsx
-const MyComponent = () => (
-    <Box
-        width={300}
-        height={300}
-        bgcolor="primary.main"
-        sx={{
-          '&:hover': {
-            backgroundColor: 'primary.dark',
-            opacity: [0.9, 0.8, 0.7],
-          },
-        }}
-    >
-        // ...
-    </Box>
-);
-```
-{% endraw %}
-
 You can render any component with `<Box>`, not only a `<div>`. For instance, to render a `<span>` with custom styles:
 
 {% raw %}

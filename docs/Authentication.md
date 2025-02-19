@@ -1,12 +1,11 @@
 ---
 layout: default
-title: "Security"
+title: "Auth Provider Setup"
 ---
 
-# Security
+# Auth Provider Setup
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/login.webm" type="video/webm"/>
   <source src="./img/login.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
@@ -30,13 +29,15 @@ const App = () => (
 );
 ```
 
+An `authProvider` is an object that handles authentication and authorization logic, similar to a `dataProvider`. It exposes methods that react-admin calls when needed, and you can also call these methods manually through specialized hooks.
+
 Once an admin has an `authProvider`, react-admin will restrict CRUD pages (the `list`, `edit`, `create`, and `show` components of your `Resources`) to authenticated users and redirect anonymous users to the `/login` page, displaying a login form for a username and password.
 
-## Anatomy Of An `authProvider`
+![Login form](./img/login-form.png)
 
-An `authProvider` is an object that handles authentication and authorization logic, similar to a `dataProvider`. It exposes methods that react-admin calls when needed, and you can also call these methods manually through specialized hooks. The `authProvider` methods must return a Promise.
+React-admin offers several built-in `authProvider` implementations for popular authentication services like **Google Identity**, **Microsoft Entra ID**, **AWS Cognito**, **Auth0**, **Keycloak**, and others. Refer to the [List of Available Auth Providers](./AuthProviderList.md) to find one that suits your requirements.
 
-A typical `authProvider` has the following methods:
+If you need to implement a custom authentication strategy, the [Building Your Own Auth Provider](./AuthProviderWriting.md) offers a step-by-step guide. It boils down to implementing a few methods that react-admin calls when needed:
 
 ```js
 const authProvider = {
@@ -54,8 +55,6 @@ const authProvider = {
     async canAccess() {/** ... **/},
 };
 ```
-
-You can use an existing Auth Provider from the [List of Available Auth Providers](./AuthProviderList.md) or write your own by following the [Building Your Own Auth Provider](./AuthProviderWriting.md) instructions.
 
 ## Sending Credentials To The API
 
@@ -230,20 +229,71 @@ const App = () => (
 
 ## Customizing The Login Component
 
-Using an `authProvider` is enough to secure your app if authentication relies on a username and password. But for cases like using an email instead of a username, Single-Sign-On (SSO), or two-factor authentication, you can implement your own `LoginPage` component to be displayed under the `/login` route.
+Using an `authProvider` is enough to secure your app if authentication relies on a username and password. But for cases like using an email instead of a username, Single-Sign-On (SSO), or two-factor authentication, you can use a custom login page by setting the [`<Admin loginPage>`](./Admin.md#loginpage) prop.
 
-Pass this component to the [`<Admin loginPage>`](./Admin.md#loginpage) prop:
+For example, to use an email field instead of a username field, use the `LoginWithEmail` component:
 
-```jsx
-// in src/App.js
-import { Admin } from 'react-admin';
-
-import MyLoginPage from './MyLoginPage';
+```tsx
+import { Admin, LoginWithEmail } from 'react-admin';
+import authProvider from './authProvider';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage} authProvider={authProvider}>
-    ...
+    <Admin loginPage={LoginWithEmail} authProvider={authProvider}>
+        ...
     </Admin>
+);
+```
+
+![Login with email](./img/LoginWithEmail.jpg)
+
+The default login page component is the `Login` component, which delegates the rendering of the login form to its child, usually a `LoginForm` component. This means you can create a custom login page by adding your own content to the `Login` component.
+
+For instance, to add a "forgot password" link to the login page:
+
+```jsx
+import { Box, Link } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { Login, LoginForm } from 'react-admin';
+
+const MyLogin = () => (
+    <Login>
+        <LoginForm />
+        <Box textAlign="center" mb={1}>
+            <Link component={RouterLink} to="/forgot-password">
+                Forgot password?
+            </Link>
+        </Box>
+    </Login>
+);
+```
+
+![Login with content](./img/LoginWithContent.jpg)
+
+You can also customize the login form fields, by setting the `LoginForm` children:
+
+```jsx
+import { Link as RouterLink } from 'react-router-dom';
+import { Login, LoginForm, TextInput, PasswordInput, required } from 'react-admin';
+
+const MyLogin = () => (
+    <Login>
+        <LoginForm>
+            <TextInput
+                autoFocus
+                source="email"
+                label="Email"
+                autoComplete="email"
+                type="email"
+                validate={required()}
+            />
+            <PasswordInput
+                source="password"
+                label="Password"
+                autoComplete="current-password"
+                validate={required()}
+            />
+        </LoginForm>
+    </Login>
 );
 ```
 
@@ -258,7 +308,9 @@ const MyLoginPage = () => (
 );
 ```
 
-To build a Login page from scratch, use the [`useLogin` hook](./useLogin.md).
+![Custom login page](./img/LoginCustomBackground.jpg)
+
+You can also build your login page from scratch, leveraging the [`useLogin` hook](./useLogin.md) to handle the login form submission.
 
 ```jsx
 // in src/MyLoginPage.js
@@ -416,7 +468,7 @@ export const dataProvider = addRefreshAuthToDataProvider(baseDataProvider, refre
 
 ## Authorization
 
-Access control and permissions allow you to restrict certain pages to specific users. React-admin provides powerful primitives for implementing authorization logic. For detailed guidance, check out the [Authorization](./Permissions.md) documentation.
+Access control and permissions allow you to restrict certain pages and features to specific users. React-admin provides powerful primitives for implementing authorization logic. For detailed guidance, check out the [Authorization](./Permissions.md) documentation.
 
 <video controls autoplay muted loop>
   <source src="./img/AccessControl.mp4" type="video/mp4"/>

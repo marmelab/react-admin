@@ -40,7 +40,6 @@ React-admin started as an engine to generate such CRUD interfaces, and it still 
   Your browser does not support the video tag.
 </video>
 
-
 The basic building blocks of a CRUD interface in react-admin are:
 
 - [`<Resource>`](./Resource.md), which defines CRUD routes for given API resource
@@ -161,7 +160,7 @@ const BookList = () => (
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
+            <ReferenceField source="author_id" reference="authors" />
             <TextField source="year" />
         </Datagrid>
     </List>
@@ -206,7 +205,6 @@ const ProductEdit = () => (
   Your browser does not support the video tag.
 </video>
 
-
 Reference Input components are also very useful to filter a view by a related record. For instance, to display the list of books of a given author:
 
 ```jsx
@@ -246,6 +244,8 @@ React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **man
 
 Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins.
 
+To learn more about relationships, check out this tutorial: [Handling Relationships in React Admin](https://marmelab.com/blog/2025/02/06/handling-relationships-in-react-admin.html).
+
 ## Not Ugly
 
 Let's be realistic: Many developers focus on features first and don't have much time to spend polishing the User Interface (UI). We tend to be like that, too! The result is that quite often, admin apps are ugly. Spacing isn't consistent, buttons aren't in the best place, and color schemes hurt the eyes.
@@ -275,7 +275,7 @@ And for mobile users, react-admin renders a different layout with larger margins
 
 React-admin components use Material UI components by default, which lets you scaffold a page in no time. As material UI supports [theming](#theming), you can easily customize the look and feel of your app. But in some cases, this is not enough, and you need to use another UI library.
 
-You can change the UI library you use with react-admin to use [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library. The **headless logic** behind react-admin components is agnostic of the UI library, and is exposed via `...Base` components and controller hooks. 
+You can change the UI library you use with react-admin to use [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library. The **headless logic** behind react-admin components is agnostic of the UI library, and is exposed via `...Base` components and controller hooks.
 
 For instance, here a List view built with [Ant Design](https://ant.design/):
 
@@ -284,6 +284,7 @@ For instance, here a List view built with [Ant Design](https://ant.design/):
 It leverages the `useListController` hook:
 
 {% raw %}
+
 ```jsx
 import { useListController } from 'react-admin'; 
 import { Card, Table, Button } from 'antd';
@@ -349,6 +350,7 @@ const columns = [
 
 export default PostList;
 ```
+
 {% endraw %}
 
 Check the following hooks to learn more about headless controllers:
@@ -421,40 +423,29 @@ In most admin and B2B apps, the most common task is to look for a record. React-
 <table><tbody>
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Filter Button/Form Combo" href="./img/list_filter.mp4">
-            <video controls autoplay playsinline muted loop>
-                <source src="./img/list_filter.mp4" type="video/mp4"/>
-                Your browser does not support the video tag.
-            </video>
+        <a title="Filter Button/Form Combo" href="./FilteringTutorial.html#the-filter-buttonform-combo">
+            <img src="./img/FilterButtonFormCombo.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-filter-buttonform-combo" style="display: block;transform: translateY(-10px);">Filter Button/Form Combo</a>
     </td>
     <td style="width:50%;border:none;text-align:center">
-         <a title="<FilterList> Sidebar" href="./img/filter-sidebar.webm">
-            <video controls autoplay playsinline muted loop>
-                <source src="./img/filter-sidebar.webm" type="video/webm"/>
-                <source src="./img/filter-sidebar.mp4" type="video/mp4"/>
-                Your browser does not support the video tag.
-            </video>
+        <a title="FilterList sidebar" href="./FilteringTutorial.html#the-filterlist-sidebar">
+            <img src="./img/FilterList.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-filterlist-sidebar" style="display: block;transform: translateY(-10px);"><code>&lt;FilterList&gt;</code> Sidebar</a>
     </td>
 </tr>
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
-        <a title="Stacked Filters" href="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4">
-            <video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-            </video>
+        <a title="Stacked Filters" href="./FilteringTutorial.html#the-stackedfilters-component">
+            <img src="./img/StackedFilters.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-stackedfilters-component" style="display: block;transform: translateY(-10px);"><code>&lt;StackedFilters&gt;</code> Dialog</a>
     </td>
     <td style="width:50%;border:none;text-align:center;vertical-align:top;">
-        <a title="<Search> input" href="https://react-admin-ee.marmelab.com/assets/ra-search-overview.mp4"><video controls autoplay playsinline muted loop width="90%" style="margin:1rem;box-shadow:0px 4px 4px 0px rgb(0 0 0 / 24%);">
-                <source src="https://react-admin-ee.marmelab.com/assets/ra-search-overview.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-            </video></a>
+            <a title="<Search> input" href="./FilteringTutorial.html#global-search">
+            <img src="./img/Search.jpg">
+        </a>
         <a href="./FilteringTutorial.html#global-search" style="display: block;transform: translateY(-10px);">Global <code>&lt;Search&gt;</code></a>
     </td>
 </tr>
@@ -491,7 +482,6 @@ Users often apply the same filters over and over again. Saved Queries **let user
   <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 Here is an example `<FilterList>` sidebar with saved queries:
 
@@ -546,6 +536,7 @@ React-admin offers a **rich set of input components and form layouts** to build 
 For instance, here is how to build a tabbed form for editing a blog post:
 
 {% raw %}
+
 ```jsx
 import {
     TabbedForm,
@@ -592,6 +583,7 @@ export const PostEdit = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
 
 <video controls autoplay playsinline muted loop>
@@ -629,7 +621,7 @@ Inside forms, you can use specialize [input components](./Inputs.md), designed f
 | Date                  | `'2022-10-23'`                                               | [`<DateInput>`](./DateInput.md)                                                                                                                                                                      |
 | Time                  | `'14:30:00'`                                                 | [`<TimeInput>`](./TimeInput.md)                                                                                                                                                                      |
 | Date & time           | `'2022-10-24T19:40:28.003Z'`                                 | [`<DateTimeInput>`](./DateTimeInput.md)                                                                                                                                                              |
-| Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](./Inputs.md#source))                                                                                                                                                                |
+| Object                | `{ foo: 'bar' }`                                             | All inputs (see [`source`](./Inputs.md#source))                                                                                                                                                                |
 | Enum                  | `'foo'`                                                      | [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)                                                        |
 | Foreign key           | `42`                                                         | [`<ReferenceInput>`](./ReferenceInput.md)                                                                                                                                                            |
 | Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                    |
@@ -687,10 +679,10 @@ React-admin ships with a powerful and versatile validation engine.
 
 React-admin forms support the most common validation strategies:
 
-* [per field validators](./Validation.md#per-input-validation-built-in-field-validators),
-* [form validation](./Validation.md#global-validation),
-* [validation schema powered by yup or zod](./Validation.md#schema-validation),
-* [server-side validation](./Validation.md#server-side-validation).
+- [per field validators](./Validation.md#per-input-validation-built-in-field-validators),
+- [form validation](./Validation.md#global-validation),
+- [validation schema powered by yup or zod](./Validation.md#schema-validation),
+- [server-side validation](./Validation.md#server-side-validation).
 
 Here is an example of per-field validation:
 
@@ -745,6 +737,7 @@ React-admin lets you build forms saving changes automatically with [`<AutoSave>`
 Finally, you can generate entire **forms based on a JSON schema**, using the [`<JsonSchemaForm>` component](./JsonSchemaForm.md).
 
 {% raw %}
+
 ```jsx
 import { Edit } from "react-admin";
 import { JsonSchemaForm } from "@react-admin/ra-json-schema-form";
@@ -795,6 +788,7 @@ const CustomerEdit = () => (
   </Edit>
 );
 ```
+
 {% endraw %}
 
 ![JsonSchemaForm](https://react-admin-ee.marmelab.com/assets/jsonschemaform.webp)
@@ -836,6 +830,13 @@ You can also use the [`<SmartRichTextInput>`](./SmartRichTextInput.md) component
 
 <video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.png" >
   <source src="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+One last example is [`<FormFillerButton>`](./FormFillerButton.md), which lets user fill the current form based on an image.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/FormFillerButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1068,7 +1069,6 @@ To manage directories, categories, and any other **hierarchical data**, admins o
   Your browser does not support the video tag.
 </video>
 
-
 ```jsx
 import { Create, Edit, SimpleForm, TextInput } from 'react-admin';
 import { CreateNode, EditNode, EditNodeToolbar, TreeWithDetails } from '@react-admin/ra-tree';
@@ -1156,11 +1156,11 @@ useSubscribe(topic, callback);
 
 Check the following low-level hooks for more details:
 
--   [`usePublish`](./usePublish.md)
--   [`useSubscribe`](./useSubscribe.md)
--   [`useSubscribeCallback`](./useSubscribeCallback.md)
--   [`useSubscribeToRecord`](./useSubscribeToRecord.md)
--   [`useSubscribeToRecordList`](./useSubscribeToRecordList.md)
+- [`usePublish`](./usePublish.md)
+- [`useSubscribe`](./useSubscribe.md)
+- [`useSubscribeCallback`](./useSubscribeCallback.md)
+- [`useSubscribeToRecord`](./useSubscribeToRecord.md)
+- [`useSubscribeToRecordList`](./useSubscribeToRecordList.md)
 
 React-admin provides **live updates** via specialized hooks and components. This means that when a user edits a resource, the other users working on the same resource see the changes in real time whether they are in a list, a show view, or an edit view.
 
@@ -1195,17 +1195,16 @@ const PostList = () => (
   Your browser does not support the video tag.
 </video>
 
-
 This feature leverages the following hooks:
 
--   [`useGetListLive`](./useGetListLive.md)
--   [`useGetOneLive`](./useGetOneLive.md)
+- [`useGetListLive`](./useGetListLive.md)
+- [`useGetOneLive`](./useGetOneLive.md)
 
 And the following components:
 
--   [`<ListLive>`](./ListLive.md)
--   [`<EditLive>`](./EditLive.md)
--   [`<ShowLive>`](./ShowLive.md)
+- [`<ListLive>`](./ListLive.md)
+- [`<EditLive>`](./EditLive.md)
+- [`<ShowLive>`](./ShowLive.md)
 
 React-admin also provides **badge notifications in the Menu**, so that users can see that something new happened to a resource list while working on another one.
 
@@ -1235,8 +1234,8 @@ const MyReactAdmin = () => (
 
 This feature leverages the following components:
 
--   [`<MenuLive>`](./MenuLive.md)
--   [`<MenuLiveItemLink>`](./MenuLive.md)
+- [`<MenuLive>`](./MenuLive.md)
+- [`<MenuLiveItemLink>`](./MenuLive.md)
 
 And last but not least, react-admin provides a **lock mechanism** to prevent two users from editing the same resource at the same time.
 
@@ -1245,7 +1244,6 @@ And last but not least, react-admin provides a **lock mechanism** to prevent two
   <source src="./img/locks-demo.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 A user can lock a resource, either by voluntarily asking for a lock or by editing a resource. When a resource is locked, other users can't edit it. When the lock is released, other users can edit the resource again.
 
@@ -1288,14 +1286,14 @@ export const NewMessageForm = () => {
 
 This feature leverages the following hooks:
 
--   [`useLock`](./useLock.md)
--   [`useUnlock`](./useUnlock.md)
--   [`useGetLock`](./useGetLock.md)
--   [`useGetLockLive`](./useGetLockLive.md)
--   [`useGetLocks`](./useGetLocks.md)
--   [`useGetLocksLive`](./useGetLocksLive.md)
--   [`useLockOnCall`](./useLockOnCall.md)
--   [`useLockOnMount`](./useLockOnMount.md)
+- [`useLock`](./useLock.md)
+- [`useUnlock`](./useUnlock.md)
+- [`useGetLock`](./useGetLock.md)
+- [`useGetLockLive`](./useGetLockLive.md)
+- [`useGetLocks`](./useGetLocks.md)
+- [`useGetLocksLive`](./useGetLocksLive.md)
+- [`useLockOnCall`](./useLockOnCall.md)
+- [`useLockOnMount`](./useLockOnMount.md)
 
 ## Preferences
 
@@ -1308,7 +1306,6 @@ For instance, the Saved Queries feature lets users **save a combination of filte
   <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo, but you have to add it yourself in the `<FilterList>` Sidebar.
 
@@ -1349,7 +1346,6 @@ React-admin also **persists the light/dark mode and the language choice** of end
   Your browser does not support the video tag.
 </video>
 
-
 To learn more about the `Store` and how to use it, check the following sections:
 
 - [The `Store`](./Store.md)
@@ -1369,7 +1365,6 @@ An extension of preferences is Configurable components. Because no matter how po
   <source src="./img/DatagridConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 To enable this feature, replace a component (in that example, `<Datagrid>`) with its configurable counterpart:
 
@@ -1439,6 +1434,7 @@ Theming is so powerful that you can even use react-admin to build a [Music Playe
 Use the `sx` prop on almost every react-admin component to override its default style - and the style of its descendants. For instance, here is how to change the width of Datagrid columns:
 
 {% raw %}
+
 ```jsx
 import {
     BooleanField,
@@ -1475,6 +1471,7 @@ export const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 React-admin relies on [Emotion](https://github.com/emotion-js/emotion), a popular CSS-in-JS library, to let you customize not only individual components but also the theme constants (colors, fonts, spacing, etc.).
@@ -1551,7 +1548,6 @@ React-admin is **fully internationalized**.
   <source src="./img/LocalesMenuButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 The default interface messages (for buttons, tooltips, input labels, etc.) are in English. You can translate them to any of [the 30+ languages supported by react-admin](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
 
@@ -1635,6 +1631,7 @@ React-admin provides specific components for mobile screens and gives you the to
 For a given component, the `sx` prop lets you customize its style based on the screen size. For instance, to reduce the width of an element on mobile screens:
 
 {% raw %}
+
 ```jsx
 <Box
     sx={{
@@ -1650,6 +1647,7 @@ For a given component, the `sx` prop lets you customize its style based on the s
     This box has a responsive width.
 </Box>
 ```
+
 {% endraw %}
 
 To make a component responsive, you can also render it conditionally based on the screen size. For instance, to render a `<SimpleList>` on desktop and a `<Datagrid>` on mobile:

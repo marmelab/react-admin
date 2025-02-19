@@ -76,19 +76,37 @@ In the above example, `<CreateInDialogButton>` is used to create a new employee 
 
 `<CreateInDialogButton>` accepts the following props:
 
-| Prop           | Required | Type              | Default | Description |
-| -------------- | -------- | ----------------- | ------- | ----------- |
-| `children`     | Required | `ReactNode`       |         | The content of the dialog. |
-| `ButtonProps`  | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`. |
-| `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
-| `icon`         | Optional | `ReactElement`    |         | Allows to override the default icon. |
-| `inline`       | Optional | `boolean`         |         | Set to true to display only a Material UI `<IconButton>` instead of the full `<Button>`. |
-| `label`        | Optional | `string`          |         | Allows to override the default button label. I18N is supported. |
-| `maxWidth`     | Optional | `string`          | `sm`    | The max width of the dialog. |
-| `mutation Options` | Optional | `object`       |         | The options to pass to the `useMutation` hook. |
-| `resource`     | Optional | `string`          |         | The resource name, e.g. `posts`
-| `sx`           | Optional | `object`          |         | Override the styles applied to the dialog component. |
+| Prop               | Required | Type           | Default | Description                                                                             |
+| ------------------ | -------- | -------------- | ------- | --------------------------------------------------------------------------------------- |
+| `ButtonProps`      | Optional | `object`       |         | Object containing props to pass to Material UI's `<Button>`                             |
+| `children`         | Required | `ReactNode`    |         | The content of the dialog                                                               |
+| `fullWidth`        | Optional | `boolean`      | `false` | If `true`, the dialog stretches to the full width of the screen                         |
+| `icon`             | Optional | `ReactElement` |         | Allows to override the default icon                                                     |
+| `inline`           | Optional | `boolean`      |         | Set to true to display only a Material UI `<IconButton>` instead of the full `<Button>` |
+| `label`            | Optional | `string`       |         | Allows to override the default button label. I18N is supported                          |
+| `maxWidth`         | Optional | `string`       | `sm`    | The max width of the dialog                                                             |
+| `mutation Options` | Optional | `object`       |         | The options to pass to the `useMutation` hook                                           |
+| `resource`         | Optional | `string`       |         | The resource name, e.g. `posts`                                                         |
+| `sx`               | Optional | `object`       |         | Override the styles applied to the dialog component                                     |
+| `title`            | Optional | `ReactNode`    |         | The title of the dialog                                                                 |
 
+## `ButtonProps`
+
+The `ButtonProps` prop allows you to pass props to the MUI `<Button>` component. For instance, to change the color and size of the button:
+
+{% raw %}
+
+```jsx
+const CreateButton = () => (
+  <CreateInDialogButton ButtonProps={{ color: 'primary', fullWidth: true }}>
+      <SimpleForm>
+          ...
+      </SimpleForm>
+  </CreateInDialogButton>
+);
+```
+
+{% endraw %}
 
 ## `children`
 
@@ -123,22 +141,6 @@ const CreateButton = () => (
     </CreateInDialogButton>
 );
 ```
-
-## `ButtonProps`
-
-The `ButtonProps` prop allows you to pass props to the MUI `<Button>` component. For instance, to change the color and size of the button:
-
-{% raw %}
-```jsx
-const CreateButton = () => (
-  <CreateInDialogButton ButtonProps={{ color: 'primary', fullWidth: true }}>
-      <SimpleForm>
-          ...
-      </SimpleForm>
-  </CreateInDialogButton>
-);
-```
-{% endraw %}
 
 ## `fullWidth`
 
@@ -253,6 +255,7 @@ const CreateAuthorButton = () => {
 Customize the styles applied to the Material UI `<Dialog>` component:
 
 {% raw %}
+
 ```jsx
 const CreateButton = () => (
   <CreateInDialogButton sx={{ backgroundColor: 'paper' }}>
@@ -260,7 +263,59 @@ const CreateButton = () => (
   </CreateInDialogButton>
 );
 ```
+
 {% endraw %}
+
+## `title`
+
+Unlike the `<Create>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
+Here is an example:
+
+```tsx
+const CreateButton = () => (
+  <CreateInDialogButton title="Create a new customer">
+      <SimpleForm>
+          ...
+      </SimpleForm>
+  </CreateInDialogButton>
+);
+```
+
+You can also hide the title by passing `null`:
+
+```tsx
+<CreateInDialogButton title={null}>
+    <SimpleForm>
+        ...
+    </SimpleForm>
+</CreateInDialogButton>
+```
+
+## Warn When There Are Unsaved Changes
+
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
+
+In that case, using the `warnWhenUnsavedChanges` prop directly on the form won't work, because this feature relies on the router's location, but both components do not use routing.
+
+Instead, you can use the `<WarnWhenUnsavedChangesInDialog>` component provided by `ra-form-layout`.
+
+You can add this component to your form like so:
+
+```tsx
+import { TextInput, SimpleForm } from 'react-admin';
+import { CreateInDialogButton, WarnWhenUnsavedChangesInDialog } from '@react-admin/ra-form-layout';
+
+const EmployerEditButton = () => (
+    <CreateInDialogButton>
+        <SimpleForm>
+            <TextInput source="name" />
+            <TextInput source="address" />
+            <TextInput source="city" />
+            <WarnWhenUnsavedChangesInDialog />
+        </SimpleForm>
+    </CreateInDialogButton>
+);
+```
 
 ## Combining With `<EditInDialogButton>`
 

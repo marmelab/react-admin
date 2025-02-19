@@ -5,6 +5,18 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/jest-globals';
 
+// Make the CI fail if console.error in tests
+let error = console.error;
+console.error = (...args) => {
+    error.call(console, args);
+    throw new Error(
+        JSON.stringify({
+            message: 'The tests failed due to `console.error` calls',
+            error: args,
+        })
+    );
+};
+
 // Ignore warnings about act()
 // See https://github.com/testing-library/react-testing-library/issues/281,
 // https://github.com/facebook/react/issues/14769

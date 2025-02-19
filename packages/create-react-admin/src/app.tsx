@@ -63,7 +63,11 @@ const stepReducer = (
                     action.value === 'ra-supabase'
                         ? 'none'
                         : state.authProvider,
-                resources: [],
+                resources:
+                    action.value === 'ra-data-fakerest' &&
+                    (state.resources == null || state.resources.length === 0)
+                        ? ['posts', 'comments']
+                        : state.resources,
             };
             return {
                 ...newState,
@@ -124,7 +128,12 @@ export default function App(props: Props) {
         ...InitialProjectConfiguration,
         dataProvider: props.dataProvider,
         authProvider: props.authProvider,
-        resources: props.resources?.includes('skip') ? [] : props.resources,
+        resources: props.resources?.includes('skip')
+            ? []
+            : props.dataProvider === 'ra-data-fakerest' &&
+                (props.resources == null || props.resources.length === 0)
+              ? ['posts', 'comments']
+              : props.resources,
         installer: props.install,
         name: sanitizedName,
     };

@@ -59,8 +59,6 @@ build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/docs
 	@cd ./packages/react-admin && yarn build
-	@mkdir packages/react-admin/docs
-	@cp docs/*.md packages/react-admin/docs
 
 build-ra-data-fakerest:
 	@echo "Transpiling ra-data-fakerest files...";
@@ -70,13 +68,13 @@ build-ra-data-json-server:
 	@echo "Transpiling ra-data-json-server files...";
 	@cd ./packages/ra-data-json-server && yarn build
 
-build-ra-data-localforage:
-	@echo "Transpiling ra-data-localforage files...";
-	@cd ./packages/ra-data-localforage && yarn build
+build-ra-data-local-forage:
+	@echo "Transpiling ra-data-local-forage files...";
+	@cd ./packages/ra-data-local-forage && yarn build
 
-build-ra-data-localstorage:
-	@echo "Transpiling ra-data-localstorage files...";
-	@cd ./packages/ra-data-localstorage && yarn build
+build-ra-data-local-storage:
+	@echo "Transpiling ra-data-local-storage files...";
+	@cd ./packages/ra-data-local-storage && yarn build
 
 build-ra-data-simple-rest:
 	@echo "Transpiling ra-data-simple-rest files...";
@@ -114,7 +112,7 @@ build-create-react-admin:
 	@echo "Transpiling create-react-admin files...";
 	@cd ./packages/create-react-admin && yarn build
 
-build: build-ra-core build-ra-data-fakerest build-ra-ui-materialui build-ra-data-json-server build-ra-data-localforage build-ra-data-localstorage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-ra-i18n-i18next build-react-admin build-ra-no-code build-create-react-admin  ## compile ES6 files to JS
+build: build-ra-core build-ra-data-fakerest build-ra-ui-materialui build-ra-data-json-server build-ra-data-local-forage build-ra-data-local-storage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-i18n-polyglot build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-ra-i18n-i18next build-react-admin build-ra-no-code build-create-react-admin  ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
 	@yarn doc

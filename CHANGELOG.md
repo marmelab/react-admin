@@ -1,5 +1,29 @@
 # Changelog
 
+## 5.5.4
+
+* Fix `<FilerLiveForm>` does not allow to clear filters ([#10522](https://github.com/marmelab/react-admin/pull/10522)) ([djhi](https://github.com/djhi))
+* Fix `create-react-admin` with `ra-data-fakerest` ignore custom resources ([#10502](https://github.com/marmelab/react-admin/pull/10502)) ([djhi](https://github.com/djhi))
+* Remove doc from published `react-admin` package ([#10505](https://github.com/marmelab/react-admin/pull/10505)) ([djhi](https://github.com/djhi))
+* [Doc] Backport `<DatagridAG>` and `<DatagridAGClient>` access control's doc ([#10521](https://github.com/marmelab/react-admin/pull/10521)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Backport `title={null}`'s doc on dialog components ([#10520](https://github.com/marmelab/react-admin/pull/10520)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update doc to mention the dependency on `@ag-grid-community/styles` ([#10510](https://github.com/marmelab/react-admin/pull/10510)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update `warnWhenUnsavedChanges`'s doc on dialog forms ([#10509](https://github.com/marmelab/react-admin/pull/10509)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update docs to mention `format` prop for timezone adjustment ([#10506](https://github.com/marmelab/react-admin/pull/10506)) ([ogroppo](https://github.com/ogroppo))
+* [Doc] Add "Guides and Concepts" section ([#10477](https://github.com/marmelab/react-admin/pull/10477)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Deprecate mui v6 system props ([#10463](https://github.com/marmelab/react-admin/pull/10463)) ([smeng9](https://github.com/smeng9))
+* [Demo] Fix build ([#10499](https://github.com/marmelab/react-admin/pull/10499)) ([djhi](https://github.com/djhi))
+* [Chore] Rename directories for local storage data providers ([#10507](https://github.com/marmelab/react-admin/pull/10507)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Chore] Bump serialize-javascript from 6.0.1 to 6.0.2 ([#10508](https://github.com/marmelab/react-admin/pull/10508)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## 5.5.3
+
+* Fix `useHandleCallback` compatibility with `React.StrictMode` ([#10486](https://github.com/marmelab/react-admin/pull/10486)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `useList` usage contains incorrect code snippet ([#10491](https://github.com/marmelab/react-admin/pull/10491)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add Working with Dates section to `<DatagridAG>` docs ([#10487](https://github.com/marmelab/react-admin/pull/10487)) ([slax57](https://github.com/slax57))
+* [Demo] Fix vite config in Simple and CRM demos ([#10475](https://github.com/marmelab/react-admin/pull/10475)) ([slax57](https://github.com/slax57))
+* Make the CI fail on `console.error` in tests ([#10480](https://github.com/marmelab/react-admin/pull/10480)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.5.2
 
 * Fix create-react-admin Vite alias and test ([#10472](https://github.com/marmelab/react-admin/pull/10472)) ([slax57](https://github.com/slax57))
@@ -8,7 +32,7 @@
 ## 5.5.1
 
 * Fix TabbedForm and TabbedShowLayout with react-router v7 ([#10469](https://github.com/marmelab/react-admin/pull/10469)) ([slax57](https://github.com/slax57))
-* Simplify ra-data-localforage setup ([#10455](https://github.com/marmelab/react-admin/pull/10455)) ([djhi](https://github.com/djhi))
+* Simplify ra-data-local-forage setup ([#10455](https://github.com/marmelab/react-admin/pull/10455)) ([djhi](https://github.com/djhi))
 * [Doc] Document how to have sourcemaps in production ([#10466](https://github.com/marmelab/react-admin/pull/10466)) ([djhi](https://github.com/djhi))
 * [Doc] Impove `scrollToTop` in buttons doc and document `_scrollToTop` in `useRedirect`  ([#10449](https://github.com/marmelab/react-admin/pull/10449)) ([erwanMarmelab](https://github.com/erwanMarmelab))
 * [Doc] Document live filtering with `ReferenceManyField` and `ReferenceManyToManyField` ([#10467](https://github.com/marmelab/react-admin/pull/10467)) ([erwanMarmelab](https://github.com/erwanMarmelab))
@@ -1621,7 +1645,7 @@ We also released new landing pages for both [React-admin](https://marmelab.com/r
 * Add cache to `usePermissions` ([#8196](https://github.com/marmelab/react-admin/pull/8196)) ([hiaselhans](https://github.com/hiaselhans))
 * Add ability to create independent store configurations for different lists of same resource ([#8073](https://github.com/marmelab/react-admin/pull/8073)) ([septentrion-730n](https://github.com/septentrion-730n))
 * Add `emptyText` translation on Field components ([#8132](https://github.com/marmelab/react-admin/pull/8132)) ([oguhpereira](https://github.com/oguhpereira))
-* Add `ra-data-localforage` data provider ([#7959](https://github.com/marmelab/react-admin/pull/7959)) ([arimet](https://github.com/arimet))
+* Add `ra-data-local-forage` data provider ([#7959](https://github.com/marmelab/react-admin/pull/7959)) ([arimet](https://github.com/arimet))
 * Add `queryOptions` support in `<ReferenceInput>` ([#8192](https://github.com/marmelab/react-admin/pull/8192)) ([WiXSL](https://github.com/WiXSL))
 * Add better UI to `<SimpleFormIterator>` ([#8124](https://github.com/marmelab/react-admin/pull/8124)) ([fzaninotto](https://github.com/fzaninotto))
 * Add expand/collapse all toggle to `<Datagrid>` header ([#8152](https://github.com/marmelab/react-admin/pull/8152)) ([hiaselhans](https://github.com/hiaselhans))
@@ -1691,7 +1715,7 @@ We also released new landing pages for both [React-admin](https://marmelab.com/r
 * Fix `useGetList`'s onSuccess side effect overriding internal one ([#8102](https://github.com/marmelab/react-admin/pull/8102)) ([slax57](https://github.com/slax57))
 * [Doc] Fix ambiguity about `<ReferenceInput>` label prop ([#8128](https://github.com/marmelab/react-admin/pull/8128)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc]: Fix `ra-rbac` links ([#8127](https://github.com/marmelab/react-admin/pull/8127)) ([slax57](https://github.com/slax57))
-* [Doc] Fix code error in usage example of `ra-data-localstorage` README ([#8122](https://github.com/marmelab/react-admin/pull/8122)) ([rnllv](https://github.com/rnllv))
+* [Doc] Fix code error in usage example of `ra-data-local-storage` README ([#8122](https://github.com/marmelab/react-admin/pull/8122)) ([rnllv](https://github.com/rnllv))
 * [Doc] Fix outdated link to `ra-data-postgrest` data provider ([#8111](https://github.com/marmelab/react-admin/pull/8111)) ([scheiblr](https://github.com/scheiblr))
 * [Doc] Fix `<ReferenceArrayField>` doc to use a child-less syntax first ([#8117](https://github.com/marmelab/react-admin/pull/8117)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc] Fix package name for `<JsonSchemaForm>` ([#8106](https://github.com/marmelab/react-admin/pull/8106)) ([arimet](https://github.com/arimet))
@@ -3095,7 +3119,7 @@ const App = () => (
 * Fix `<Datagrid>` doesn't support forwarding ref ([5202](https://github.com/marmelab/react-admin/pull/5202)) ([jeiea](https://github.com/jeiea))
 * [BC Break] Rename duplicate `Sort`, `Filter` and `Navigation` types to allow type emission from react-admin ([5257](https://github.com/marmelab/react-admin/pull/5257)) ([fzaninotto](https://github.com/fzaninotto))
 * [Doc] Fix missing link to `<DateTimeInput>` in reference documentation ([5340](https://github.com/marmelab/react-admin/pull/5340)) ([Hettomei](https://github.com/Hettomei))
-* [Doc] Fix a typo in the `ra-data-localstorage` readme ([5333](https://github.com/marmelab/react-admin/pull/5333)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix a typo in the `ra-data-local-storage` readme ([5333](https://github.com/marmelab/react-admin/pull/5333)) ([WiXSL](https://github.com/WiXSL))
 * [Doc] Fix `<UserMenu>` example in theming docs ([5328](https://github.com/marmelab/react-admin/pull/5328)) ([ceracera](https://github.com/ceracera))
 * [Doc] Add link to a new REST data provider, variant of `ra-data-simple-rest`, allowing configurable `id` field ([5290](https://github.com/marmelab/react-admin/pull/5290)) ([zachrybaker](https://github.com/zachrybaker))
 * [Doc] Fix the instructions for customizing the `Toolbar` in `<SaveButton>` ([5285](https://github.com/marmelab/react-admin/pull/5285)) ([Luwangel](https://github.com/Luwangel))

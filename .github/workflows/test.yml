@@ -111,7 +111,6 @@ jobs:
 
   e-commerce:
     runs-on: ubuntu-latest
-    if: github.ref_type != 'tag'
     needs: [typecheck]
     steps:
       - name: Checkout

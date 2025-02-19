@@ -6,6 +6,7 @@ import TitleIcon from '@mui/icons-material/Title';
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import {
     FilterLiveForm,
+    FilterLiveFormProps,
     ListContextProvider,
     required,
     Resource,
@@ -511,3 +512,40 @@ export const AsListActions = () => (
         </AdminUI>
     </AdminContext>
 );
+
+const format = (value: string): string => {
+    if (!value) {
+        return value;
+    }
+    return value.length <= 11 ? value : `${value.slice(0, 11)}...`;
+};
+const parse = input => {
+    if (!input) {
+        return input;
+    }
+    return input.replace(/\D/g, '');
+};
+export const ParseFormat = (props: Partial<FilterLiveFormProps>) => {
+    const listContext = useList({
+        data: [
+            { id: 1, document: 'Hello', has_newsletter: true },
+            { id: 2, document: 'World', has_newsletter: false },
+        ],
+        filter: {
+            category: 'deals',
+        },
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <FilterLiveForm {...props}>
+                <TextInput
+                    source="document"
+                    parse={parse}
+                    format={format}
+                    resettable
+                />
+            </FilterLiveForm>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};

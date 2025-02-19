@@ -106,11 +106,11 @@ const App = () => (
 
 ## Built-In Themes
 
-React-admin comes with 4 built-in themes, each one having a light and a dark variant. You can use them as a starting point for your custom theme, or use them as-is.
+React-admin comes with 5 built-in themes, each one having a light and a dark variant. You can use them as a starting point for your custom theme, or use them as-is.
 
-| :---: | :---: |
-| &nbsp;&nbsp; [Default](#default) [![Default light theme](./img/defaultLightTheme1.jpg)]((#default)) | &nbsp;&nbsp; [Nano](#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](#nano) |
-| &nbsp;&nbsp; [Radiant](#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](#radiant) | &nbsp;&nbsp; [House](#house) [![House light theme](./img/houseLightTheme1.jpg)](#house) |
+| &nbsp;&nbsp; [Default](#default) [![Default light theme](./img/defaultLightTheme1.jpg)]((#default)) | &nbsp;&nbsp; [B&W](#bw) [![B&W light theme](./img/bwLightTheme1.jpg)](#bw) |
+| &nbsp;&nbsp; [Nano](#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](#nano) | &nbsp;&nbsp; [Radiant](#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](#radiant) |
+| &nbsp;&nbsp; [House](#house) [![House light theme](./img/houseLightTheme1.jpg)](#house) |
 
 ### Default
 
@@ -122,6 +122,37 @@ The default theme is a good fit for every application, and works equally well on
 [![Default dark theme](./img/defaultDarkTheme2.jpg)](./img/defaultDarkTheme2.jpg)
 
 You don't need to configure anything to use the default theme - it comes out of the box with react-admin.
+
+### B&W
+
+A high-contrast theme with a black and white palette, ideal for visually impaired users. Its modern-looking style, reminiscent of shadcn, is suitable for desktop apps.
+
+[![B&W light theme](./img/bwLightTheme1.jpg)](./img/bwLightTheme1.jpg)
+[![B&W light theme](./img/bwLightTheme2.jpg)](./img/bwLightTheme2.jpg)
+[![B&W dark theme](./img/bwDarkTheme1.jpg)](./img/bwDarkTheme1.jpg)
+[![B&W dark theme](./img/bwDarkTheme2.jpg)](./img/bwDarkTheme2.jpg)
+
+To use the B&W theme, import the `bwLightTheme` and `bwDarkTheme` objects, and pass them to the `<Admin>` component:
+
+```jsx
+import { Admin, bwLightTheme, bwDarkTheme } from 'react-admin';
+
+export const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={bwLightTheme}
+        darkTheme={bwDarkTheme}
+    >
+        // ...
+    </Admin>
+);
+```
+
+You must also import the Geist font in your `index.html` file:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+```
 
 ### Nano
 

@@ -88,6 +88,7 @@ This element can grab the current record using `useRecordContext`, and the recor
 
 So a custom diff view is usually a layout component with `<FieldDiff>` and `<SmartFieldDiff>` components as children:
 
+{% raw %}
 ```tsx
 import { Stack } from '@mui/material';
 import {
@@ -98,11 +99,11 @@ import {
 import { Edit, NumberField } from 'react-admin';
 
 const ProductDiff = () => (
-    <Stack gap={1}>
+    <Stack sx={{ gap: 1 }}>
         <FieldDiff source="reference" />
         <SmartFieldDiff source="description" />
         <SmartFieldDiff source="image" />
-        <Stack direction="row" gap={2}>
+        <Stack direction="row" sx={{ gap: 2 }}>
             <FieldDiff inline>
                 <NumberField source="width" />
             </FieldDiff>
@@ -110,7 +111,7 @@ const ProductDiff = () => (
                 <NumberField source="height" />
             </FieldDiff>
         </Stack>
-        <Stack direction="row" gap={2}>
+        <Stack direction="row" sx={{ gap: 2 }}>
             <FieldDiff inline>
                 <NumberField source="price" />
             </FieldDiff>
@@ -130,6 +131,7 @@ const ProductEditActions = () => (
     </TopToolbar>
 );
 ```
+{% endraw %}
 
 ## `onSelect`
 
@@ -179,6 +181,7 @@ By default, the `<RevisionsButton>` component only shows the list of revisions w
 
 This component is usually used in an `<Edit aside>`.
 
+{% raw %}
 ```tsx
 import { Edit } from "react-admin";
 import {
@@ -188,7 +191,7 @@ import {
 import { Box, Typography } from "@mui/material";
 
 const ProductAside = () => (
-  <Box width={300} px={2}>
+  <Box sx={{ width: 300, px: 2 }}>
     <Typography variant="h6" gutterBottom>
       Revisions
     </Typography>
@@ -202,5 +205,6 @@ export const ProductEdit = () => (
   </Edit>
 );
 ```
+{% endraw %}
 
 Check the [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog) documentation for more details.

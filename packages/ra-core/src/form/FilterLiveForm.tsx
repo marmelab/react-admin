@@ -2,7 +2,7 @@ import * as React from 'react';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
-import unset from 'lodash/unset';
+import set from 'lodash/set';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import {
@@ -125,7 +125,7 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
             if (name) {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
-                    unset(newValues, name);
+                    set(newValues, name, '');
                     debouncedOnSubmit(newValues);
                 } else {
                     debouncedOnSubmit(values);
