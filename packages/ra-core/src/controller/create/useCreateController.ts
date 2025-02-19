@@ -198,6 +198,7 @@ export const useCreateController = <
         isFetching: false,
         isLoading: false,
         isPending: disableAuthentication ? false : isPendingCanAccess,
+        mutationMode,
         saving,
         defaultTitle,
         save,
