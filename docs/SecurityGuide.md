@@ -59,7 +59,7 @@ Once you set an `<Admin authProvider>`, react-admin enables authentication autom
 ```tsx
 const App = () => (
     <Admin authProvider={authProvider}>
- ...
+        ...
     </Admin>
 );
 ```
@@ -84,7 +84,7 @@ import { Route } from "react-router-dom";
 import { MyCustomPage } from './MyCustomPage';
 
 const App = () => (
-    <Admin>
+    <Admin authProvider={authProvider}>
         ...
         <CustomRoutes>
             <Route path="/my-custom-page" element={
@@ -146,7 +146,7 @@ Page components (`<List>`, `<Create>`, `<Edit>`, `<Show>`) have built-in access 
 />;
 ```
 
-To control access in your own components, use the `useCanAccess()` hook or the `<CanAccess>` component. 
+To control access in your own components, use the `useCanAccess()` hook or the `<CanAccess>` component.
 
 In the following example, only users who can access the `delete` action on the `comments` resource can see the `DeleteCommentButton`:
 
@@ -173,7 +173,22 @@ React-admin displays a login page when the user is not authenticated. The login 
 
 ![Login form](./img/login-form.png)
 
-You can customize the login page by providing your own component via the `<Admin loginPage>` prop. For example, to use an email field instead of a username field, create a custom login page component:
+You can customize the login page by setting the `<Admin loginPage>` prop.
+
+For example, to use an email field instead of a username field, use the `LoginWithEmail` component:
+
+```tsx
+import { Admin, LoginWithEmail } from 'react-admin';
+import authProvider from './authProvider';
+
+const App = () => (
+    <Admin loginPage={LoginWithEmail} authProvider={authProvider}>
+        ...
+    </Admin>
+);
+```
+
+If you need other login options (magic link, Email OTP, OAuth provider, etc), you can pass a custom login component, leveraging the `useLogin` hook to call `authProvider.login()`::
 
 ```tsx
 // in src/MyLoginPage.js
@@ -259,4 +274,3 @@ React-admin provides several ways to call authentication provider methods in you
 - [`useCanAccess`](./useCanAccess.md): Calls the `authProvider.canAccess()` method. Use it to display different UI elements based on the user's permissions.
 - [`<CanAccess>`](./CanAccess.md): Renders its children only of `authProvider.canAccess()` method returns true.
 - [`useAuthProvider`](./useAuthProvider.md): Returns the `authProvider` instance. Use it to call other methods of the `authProvider`.
-

@@ -69,20 +69,21 @@ const CompanyShow = () => (
 
 `<EditInDialogButton>` accepts the following props:
 
-| Prop           | Required | Type              | Default | Description |
-| -------------- | -------- | ----------------- | ------- | ----------- |
-| `children`     | Required | `ReactNode`       |         | The content of the dialog. |
-| `ButtonProps`  | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`. |
-| `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
-| `icon`         | Optional | `ReactElement`    |         | Allows to override the default icon. |
-| `id`           | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context. |
-| `inline`       | Optional | `boolean`         |         | Set to true to display only a Material UI `<IconButton>` instead of the full `<Button>`. |
-| `label`        | Optional | `string`          |         | Allows to override the default button label. I18N is supported. |
-| `maxWidth`     | Optional | `string`          | `sm`    | The max width of the dialog. |
-| `mutation Options` | Optional | `object`       |         | The options to pass to the `useMutation` hook. |
-| `queryOptions` | Optional | `object`          |         | The options to pass to the `useQuery` hook.
-| `resource`     | Optional | `string`          |         | The resource name, e.g. `posts`
-| `sx`           | Optional | `object`          |         | Override the styles applied to the dialog component. |
+| Prop               | Required | Type              | Default | Description                                                                             |
+| ------------------ | -------- | ----------------- | ------- | --------------------------------------------------------------------------------------- |
+| `children`         | Required | `ReactNode`       |         | The content of the dialog                                                               |
+| `ButtonProps`      | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`                             |
+| `fullWidth`        | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen                         |
+| `icon`             | Optional | `ReactElement`    |         | Allows to override the default icon                                                     |
+| `id`               | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context              |
+| `inline`           | Optional | `boolean`         |         | Set to true to display only a Material UI `<IconButton>` instead of the full `<Button>` |
+| `label`            | Optional | `string`          |         | Allows to override the default button label. I18N is supported                          |
+| `maxWidth`         | Optional | `string`          | `sm`    | The max width of the dialog                                                             |
+| `mutation Options` | Optional | `object`          |         | The options to pass to the `useMutation` hook                                           |
+| `queryOptions`     | Optional | `object`          |         | The options to pass to the `useQuery` hook                                              |
+| `resource`         | Optional | `string`          |         | The resource name, e.g. `posts`                                                         |
+| `sx`               | Optional | `object`          |         | Override the styles applied to the dialog component                                     |
+| `title`            | Optional | `ReactNode`       |         | The title of the dialog                                                                 |
 
 ## `children`
 
@@ -123,6 +124,7 @@ const EditButton = () => (
 The `ButtonProps` prop allows you to pass props to the MUI `<Button>` component. For instance, to change the color and size of the button:
 
 {% raw %}
+
 ```jsx
 const EditButton = () => (
   <EditInDialogButton ButtonProps={{ color: 'primary', fullWidth: true }}>
@@ -132,6 +134,7 @@ const EditButton = () => (
   </EditInDialogButton>
 );
 ```
+
 {% endraw %}
 
 ## `fullWidth`
@@ -234,6 +237,7 @@ The `mutationOptions` prop allows you to pass options to the `useMutation` hook.
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
 
 {% raw %}
+
 ```jsx
 const EditButton = () => (
   <EditInDialogButton mutationOptions={{ meta: { fetch: 'author' } }}>
@@ -241,6 +245,7 @@ const EditButton = () => (
   </EditInDialogButton>
 );
 ```
+
 {% endraw %}
 
 ## `queryOptions`
@@ -250,6 +255,7 @@ The `queryOptions` prop allows you to pass options to the `useQuery` hook.
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
 
 {% raw %}
+
 ```jsx
 const EditButton = () => (
   <EditInDialogButton queryOptions={{ meta: { fetch: 'author' } }}>
@@ -257,6 +263,7 @@ const EditButton = () => (
   </EditInDialogButton>
 );
 ```
+
 {% endraw %}
 
 ## `resource`
@@ -281,6 +288,7 @@ const EditAuthorButton = () => {
 Customize the styles applied to the Material UI `<Dialog>` component:
 
 {% raw %}
+
 ```jsx
 const EditButton = () => (
   <EditInDialogButton sx={{ backgroundColor: 'paper' }}>
@@ -288,7 +296,46 @@ const EditButton = () => (
   </EditInDialogButton>
 );
 ```
+
 {% endraw %}
+
+## `title`
+
+Unlike the `<Edit>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
+Still, for `<EditInDialogButton>`, if you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component. That means you can display non-editable details of the current `record` in the title component.
+Here is an example:
+
+```tsx
+import { SimpleForm, useRecordContext } from 'react-admin';
+import { EditInDialogButton } from '@react-admin/ra-form-layout';
+
+const CustomerEditTitle = () => {
+    const record = useRecordContext();
+    return record ? (
+        <span>
+            Edit {record?.last_name} {record?.first_name}
+        </span>
+    ) : null;
+};
+
+const EditButton = () => (
+  <EditInDialogButton title={<CustomerEditTitle />}>
+      <SimpleForm>
+          ...
+      </SimpleForm>
+  </EditInDialogButton>
+);
+```
+
+You can also hide the title by passing `null`:
+
+```tsx
+<EditInDialogButton title={null}>
+    <SimpleForm>
+        ...
+    </SimpleForm>
+</EditInDialogButton>
+```
 
 ## Redirection After Deletion
 

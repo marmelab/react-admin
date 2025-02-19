@@ -24,5 +24,5 @@ export const StepRunInstall = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <Text>Generating your application...</Text>;
+    return <Text>Installing dependencies...</Text>;
 };

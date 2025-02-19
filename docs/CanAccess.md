@@ -58,7 +58,7 @@ export const LogsPage = () => (
 );
 ```
 
-Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to your admin. 
+Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to your admin.
 
 ```tsx
 import { Admin, CustomRoutes, Authenticated, CanAccess, AccessDenied, Layout } from 'react-admin';
@@ -98,3 +98,22 @@ export const MyMenu = () => (
 
 **Note**: You don't need to use `<Authenticated>` on custom pages if your admin uses [`requireAuth`](./Admin.md#requireauth).
 
+## Access Denied Message
+
+By default, `<CanAccess>` renders nothing when the user doesn't have access to the resource.
+
+On custom pages, it's preferable to show an error message instead. Set the `accessDenied` prop to render a custom component in case of access denial:
+
+```tsx
+import { Authenticated, CanAccess, AccessDenied } from 'react-admin';
+
+export const LogsPage = () => (
+    <Authenticated>
+        <CanAccess resource="logs" action="read" accessDenied={<AccessDenied />}>
+            ...
+        </CanAccess>
+    </Authenticated>
+);
+```
+
+![Access Denied](./img/accessDenied.png)

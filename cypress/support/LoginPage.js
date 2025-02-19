@@ -3,7 +3,7 @@ export default url => ({
         appLoader: '.app-loader',
         username: "input[name='username']",
         password: "input[name='password']",
-        submitButton: 'button',
+        submitButton: "button[type='submit']",
         title: '#react-admin-title',
     },
 

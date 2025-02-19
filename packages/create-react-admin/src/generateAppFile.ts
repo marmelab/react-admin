@@ -10,7 +10,11 @@ export const generateAppFile = (
     fs.writeFileSync(
         path.join(projectDirectory, 'src', 'App.tsx'),
         `
-import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';
+${
+    state.resources.length > 0
+        ? `import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';`
+        : `import { Admin } from 'react-admin';`
+}
 import { Layout } from './Layout';
 ${
     state.dataProvider !== 'none'

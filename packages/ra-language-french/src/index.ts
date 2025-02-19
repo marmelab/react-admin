@@ -155,6 +155,7 @@ const frenchMessages: TranslationMessages = {
             user_menu: 'Profil',
             username: 'Identifiant',
             password: 'Mot de passe',
+            email: 'Email',
             sign_in: 'Connexion',
             sign_in_error: "Échec de l'authentification, merci de réessayer",
             logout: 'Déconnexion',
