@@ -109,7 +109,7 @@ An item for the `<HorizontalMenu>` component. Used to define access to a list vi
 
 ```tsx
 <HorizontalMenu>
-    <HorizontalMenu.DashboardItem label="Home" />
+    <HorizontalMenu.DashboardItem label="Home" value="" />
     <HorizontalMenu.Item label="Artists" to="/artists" value="artists" />
     <HorizontalMenu.Item label="Songs" to="/songs" value="songs" />
     <HorizontalMenu.Item label="Labels" to="/labels" value="labels" />
@@ -246,7 +246,7 @@ This component adds a menu item that redirects to the `/` route. It accepts the 
 
 ```jsx
 <HorizontalMenu>
-    <HorizontalMenu.DashboardItem label="Home" />
+    <HorizontalMenu.DashboardItem label="Home" value="" />
     <HorizontalMenu.Item label="artists" to="/artists" value="artists" />
     <HorizontalMenu.Item label="Business" value="business">
         <HorizontalMenu.Item label="Producers" to="/producers" value="producers" />
