@@ -14,6 +14,10 @@ const choices: ChoiceType[] = [
         value: 'yarn',
     },
     {
+        label: 'Using bun',
+        value: 'bun',
+    },
+    {
         label: "Don't install dependencies, I'll do it myself.",
         value: 'skip',
     },
