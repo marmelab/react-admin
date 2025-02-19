@@ -74,7 +74,7 @@ const getResources = (flags: typeof cli.flags) => {
 const cli = meow(
     `
 	Usage
-	  $ create-admin-app <name>
+	  $ create-react-admin <name>
 
     Options
 	  --interactive    Enable the CLI interactive mode
@@ -127,7 +127,7 @@ if (cli.flags.h) {
     const name = cli.input.length > 0 ? cli.input[0].trim() : undefined;
     if (!name && !cli.flags.interactive) {
         console.error(
-            'Please provide a name for your admin application: create-admin-app <name>'
+            'Please provide a name for your admin application: create-react-admin <name>'
         );
         process.exit(1);
     }
