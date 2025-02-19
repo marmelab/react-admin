@@ -10,17 +10,30 @@ import {
     useRecordContext,
     I18nContextProvider,
     TestMemoryRouter,
+    Resource,
 } from 'ra-core';
-
-import { ThemeProvider, Stack } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { ThemeProvider, Stack } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 
-import { TextField } from '../field';
-import { ReferenceOneField } from './ReferenceOneField';
-import { SimpleShowLayout } from '../detail/SimpleShowLayout';
-import { Datagrid } from '../list/datagrid/Datagrid';
+import {
+    ReferenceOneField,
+    ReferenceField,
+    ReferenceInput,
+    AdminContext,
+    AdminUI,
+    CreateButton,
+    Create,
+    List,
+    Show,
+    SimpleShowLayout,
+    SimpleForm,
+    Datagrid,
+    TextField,
+    TextInput,
+} from '..';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceOneField' };
 
@@ -103,16 +116,105 @@ const emptyDataProvider = {
         }),
 } as any;
 
-export const Empty = () => (
-    <Wrapper dataProvider={emptyDataProvider}>
-        <ReferenceOneField
-            reference="book_details"
-            target="book_id"
-            emptyText="no detail"
-        >
-            <TextField source="ISBN" />
-        </ReferenceOneField>
-    </Wrapper>
+const dataProvider = fakeRestDataProvider({
+    book_details: [],
+    books: [
+        {
+            id: 1,
+            title: 'War and Peace',
+            year: 1869,
+            Genre: 'Historical',
+        },
+        {
+            id: 2,
+            title: 'Anna Karenina',
+            year: 1877,
+            Genre: 'Romance',
+        },
+        {
+            id: 3,
+            title: 'The Death of Ivan Ilyich',
+            year: 1886,
+            Genre: 'Philosophical',
+        },
+    ],
+});
+
+export const EmptyText = () => (
+    <TestMemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={() => (
+                        <List>
+                            <Datagrid>
+                                <TextField source="id" />
+                                <TextField source="title" />
+                                <TextField source="year" />
+                                <TextField source="Genre" />
+                                <ReferenceOneField
+                                    reference="book_details"
+                                    target="book_id"
+                                    label="ISBN"
+                                    emptyText="no detail"
+                                >
+                                    <TextField source="ISBN" />
+                                </ReferenceOneField>
+                            </Datagrid>
+                        </List>
+                    )}
+                    show={() => (
+                        <Show>
+                            <SimpleShowLayout>
+                                <TextField source="id" />
+                                <TextField source="title" />
+                                <TextField source="year" />
+                                <TextField source="Genre" />
+                                <ReferenceOneField
+                                    reference="book_details"
+                                    target="book_id"
+                                    label="ISBN"
+                                    emptyText={
+                                        <CreateButton to="/book_details/create" />
+                                    }
+                                >
+                                    <TextField source="ISBN" />
+                                </ReferenceOneField>
+                            </SimpleShowLayout>
+                        </Show>
+                    )}
+                />
+                <Resource
+                    name="book_details"
+                    list={() => (
+                        <List>
+                            <Datagrid>
+                                <TextField source="id" />
+                                <TextField source="ISBN" />
+                                <ReferenceField
+                                    source="book_id"
+                                    reference="books"
+                                />
+                            </Datagrid>
+                        </List>
+                    )}
+                    create={() => (
+                        <Create>
+                            <SimpleForm>
+                                <TextInput source="ISBN" />
+                                <ReferenceInput
+                                    source="book_id"
+                                    reference="books"
+                                    label="Book"
+                                />
+                            </SimpleForm>
+                        </Create>
+                    )}
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 export const EmptyWithTranslate = () => (

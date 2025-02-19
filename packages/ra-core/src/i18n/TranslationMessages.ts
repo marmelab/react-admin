@@ -147,6 +147,7 @@ export interface TranslationMessages extends StringMap {
             user_menu: string;
             username: string;
             password: string;
+            email: string;
             sign_in: string;
             sign_in_error: string;
             logout: string;

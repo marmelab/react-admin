@@ -12,7 +12,7 @@ Once a user is authenticated, your application may need to check if the user has
 1. **Access control** relies on `authProvider.canAccess({ resource, action })`, which returns whether the user can access the given resource and action.
 2. **Permissions** rely on `authProvider.getPermissions()`, which returns a list of permissions that your components can inspect.
 
-Depending on your needs, you can implement one or the other or both. We recommend Access Control because it allows you to put the authorization logic in the `authProvider` rather than in the code. 
+Depending on your needs, you can implement one or the other or both. We recommend Access Control because it allows you to put the authorization logic in the `authProvider` rather than in the code.
 
 ## Access Control
 
@@ -73,7 +73,7 @@ const authProvider = {
 
 ### Access Control Strategies
 
-It's your responsibility to implement the `canAccess` method in the `authProvider`. You can implement any access control strategy you want. 
+It's your responsibility to implement the `canAccess` method in the `authProvider`. You can implement any access control strategy you want.
 
 For example, if the auth backend returns a role at login ('admin', 'user', reader'), you can implement a simple access control strategy as follows:
 
@@ -169,6 +169,8 @@ If the `authProvider` doesn't implement the `canAccess` method, react-admin assu
 
 If the current user tries to access a page they don't have access to, they are redirected to an "Access Denied" page. You can customize this page by adding a custom route on the `/accessDenied` path.
 
+![Access Denied](./img/accessDenied.png)
+
 If the `authProvider.canAccess()` method returns an error, the user is redirected to an "Access Control Error" page. You can customize this page by adding a custom route on the `/accessControlError` path.
 
 The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButton>`) also have built-in access control. They are only displayed if the user can access the corresponding action on the resource.
@@ -194,7 +196,7 @@ The **list components** (`<Datagrid>`), **show components** (`<SimpleShowLayout>
 
 ### `useCanAccess`
 
-If you need to control access on mount in your own components, use the `useCanAccess()` hook. Since `authProvider.canAccess()` is asynchronous, the hook returns an object with an `isPending` property set to `true` until the promise resolves. Make sure you don't use the result until `isPending` is `false`.
+If you need to control access on mount in your own components, use [the `useCanAccess()` hook](./useCanAccess.md). Since `authProvider.canAccess()` is asynchronous, the hook returns an object with an `isPending` property set to `true` until the promise resolves. Make sure you don't use the result until `isPending` is `false`.
 
 ```tsx
 import { useCanAccess, DeleteButton } from 'react-admin';
@@ -234,7 +236,7 @@ const UserList = () => {
 
 ### `<CanAccess>`
 
-As an alternative to the `useCanAccess()` hook, you can use the `<CanAccess>` component. It calls `dataProvider.canAccess()` on mount and renders its children only if the user can access the resource and action.
+As an alternative to the `useCanAccess()` hook, you can use [the `<CanAccess>` component](./CanAccess.md). It calls `dataProvider.canAccess()` on mount and renders its children only if the user can access the resource and action.
 
 ```tsx
 import Stack from '@mui/material/Stack';
@@ -271,7 +273,7 @@ export const LogsPage = () => (
 );
 ```
 
-Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to your admin. 
+Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to your admin.
 
 ```tsx
 import { Admin, CustomRoutes, Authenticated, CanAccess, AccessDenied, Layout } from 'react-admin';
@@ -330,7 +332,7 @@ Permissions can be stored in various formats:
 - an object with fine-grained permissions (e.g. `{ postList: { read: true, write: false, delete: false } }`)
 - or even a function
 
-The permissions format is free because react-admin never actually uses the permissions itself. You can use them in your code to hide or display content, redirect the user to another page, or display warnings. 
+The permissions format is free because react-admin never actually uses the permissions itself. You can use them in your code to hide or display content, redirect the user to another page, or display warnings.
 
 Following is an example where the `authProvider` stores the user's permissions in `localStorage` upon authentication, and returns these permissions when called with `getPermissions`:
 

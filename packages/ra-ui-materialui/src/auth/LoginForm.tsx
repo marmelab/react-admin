@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, SxProps } from '@mui/material/styles';
 import { Button, CardContent, CircularProgress } from '@mui/material';
 import { Form, required, useTranslate, useLogin, useNotify } from 'ra-core';
-import { TextInput } from '../input';
+import { PasswordInput, TextInput } from '../input';
 
 export const LoginForm = (props: LoginFormProps) => {
-    const { redirectTo, className } = props;
+    const { redirectTo, className, sx, children } = props;
     const [loading, setLoading] = React.useState(false);
     const login = useLogin();
     const translate = useTranslate();
@@ -46,22 +46,26 @@ export const LoginForm = (props: LoginFormProps) => {
             mode="onChange"
             noValidate
             className={className}
+            sx={sx}
         >
             <CardContent className={LoginFormClasses.content}>
-                <TextInput
-                    autoFocus
-                    source="username"
-                    label={translate('ra.auth.username')}
-                    autoComplete="username"
-                    validate={required()}
-                />
-                <TextInput
-                    source="password"
-                    label={translate('ra.auth.password')}
-                    type="password"
-                    autoComplete="current-password"
-                    validate={required()}
-                />
+                {children || (
+                    <>
+                        <TextInput
+                            autoFocus
+                            source="username"
+                            label={translate('ra.auth.username')}
+                            autoComplete="username"
+                            validate={required()}
+                        />
+                        <PasswordInput
+                            source="password"
+                            label={translate('ra.auth.password')}
+                            autoComplete="current-password"
+                            validate={required()}
+                        />
+                    </>
+                )}
 
                 <Button
                     variant="contained"
@@ -100,6 +104,7 @@ const StyledForm = styled(Form, {
 })(({ theme }) => ({
     [`& .${LoginFormClasses.content}`]: {
         width: 300,
+        paddingBottom: `${theme.spacing(2)}!important`,
     },
     [`& .${LoginFormClasses.button}`]: {
         marginTop: theme.spacing(2),
@@ -112,6 +117,8 @@ const StyledForm = styled(Form, {
 export interface LoginFormProps {
     redirectTo?: string;
     className?: string;
+    sx?: SxProps;
+    children?: React.ReactNode;
 }
 
 interface FormData {
