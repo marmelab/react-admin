@@ -242,7 +242,7 @@ React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **man
 - [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)
 - [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 
-Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins. 
+Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins.
 
 To learn more about relationships, check out this tutorial: [Handling Relationships in React Admin](https://marmelab.com/blog/2025/02/06/handling-relationships-in-react-admin.html).
 
@@ -830,6 +830,13 @@ You can also use the [`<SmartRichTextInput>`](./SmartRichTextInput.md) component
 
 <video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.png" >
   <source src="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+One last example is [`<FormFillerButton>`](./FormFillerButton.md), which lets user fill the current form based on an image.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/FormFillerButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

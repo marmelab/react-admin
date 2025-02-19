@@ -85,7 +85,9 @@ const MyLayout = ({ children }) => (
 
 ## `menu`
 
-By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop. This element should be [a `<HorizontalMenu>` component](#horizontalmenu) with `<HorizontalMenu.Item>` children. Each child should have a `value` corresponding to the [application location](https://react-admin-ee.marmelab.com/documentation/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
+By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop.
+This element should be [a `<HorizontalMenu>` component](#horizontalmenu) with `<HorizontalMenu.DashboardItem>` or `<HorizontalMenu.Item>` children.
+Each child should have a `value` corresponding to the [application location](https://react-admin-ee.marmelab.com/documentation/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
 
 ```jsx
 import {
@@ -104,10 +106,14 @@ import {
 
 const Menu = () => (
     <HorizontalMenu>
-        <HorizontalMenu.Item label="Dashboard" to="/" value="" />
+        <HorizontalMenu.DashboardItem label="Dashboard" value="" />
         <HorizontalMenu.Item label="Songs" to="/songs" value="songs" />
         <HorizontalMenu.Item label="Artists" to="/artists" value="artists" />
         <HorizontalMenu.Item label="Custom" to="/custom" value="custom" />
+        <HorizontalMenu.Item label="Business" value="business">
+            <HorizontalMenu.Item label="Sales" value="sales" >
+            <HorizontalMenu.Item label="Customers" value="customers" >
+        </HorizontalMenu.Item>
     </HorizontalMenu>
 );
 
@@ -225,7 +231,6 @@ export const MyLayout = ({ children }) => (
 ```
 {% endraw %}
 
-## `<HorizontalMenu>`
 
 This component renders a horizontal menu, to be used in the AppBar of the [`<ContainerLayout>`](#containerLayout).
 

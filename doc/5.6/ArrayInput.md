@@ -84,7 +84,7 @@ Check [the `<SimpleFormIterator>` documentation](./SimpleFormIterator.md) for de
 
 ## Props
 
-`<ArrayInput>` accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
+`<ArrayInput>` accepts the [common input props](./Inputs.md#common-input-props) (except `disabled`, `readOnly`, `format` and `parse`).
 
 ## Global validation
 
@@ -109,3 +109,27 @@ You need to return an errors object shaped like this:
 ```
 
 **Tip:** You can find a sample `validate` function that handles arrays in the [Form Validation documentation](./Validation.md#global-validation).
+
+## Disabling The Input
+
+`<ArrayInput>` does not support the `disabled` and `readOnly` props.
+
+If you need to disable the input, set the `<SimpleFormIterator disabled>` prop, and make the child inputs `readOnly`:
+
+```jsx
+const OrderEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="customer" />
+            <DateInput source="date" />
+            <ArrayInput source="items">
+                <SimpleFormIterator inline disabled>
+                    <TextInput source="name" readOnly/>
+                    <NumberInput source="price" readOnly />
+                    <NumberInput source="quantity" readOnly />
+                </SimpleFormIterator>
+            </ArrayInput>
+        </SimpleForm>
+    </Edit>
+);
+```

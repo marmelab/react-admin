@@ -96,6 +96,19 @@ Use `emptyText` to customize the text displayed when the related record is empty
 </ReferenceOneField>
 ```
 
+`emptyText` also accepts a `ReactElement`.
+
+```jsx
+<ReferenceOneField
+    label="Details"
+    reference="book_details"
+    target="book_id"
+    emptyText={<CreateButton to="/book_details/create" />}
+>
+    <TextField source="genre" /> (<TextField source="ISBN" />)
+</ReferenceOneField>
+```
+
 ## `filter`
 
 You can also use `<ReferenceOneField>` in a one-to-many relationship. In that case, the first record will be displayed. The `filter` prop becomes super useful in that case, as it allows you to select the appropriate record to display.
