@@ -1,27 +1,27 @@
-import * as React from 'react';
-import { Admin, AutocompleteInput } from 'react-admin';
+import { Box, Button, Card, Link as MuiLink, Typography } from '@mui/material';
 import {
     CustomRoutes,
-    Resource,
-    useListContext,
-    TestMemoryRouter,
     DataProvider,
+    Resource,
+    TestMemoryRouter,
+    useListContext,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Box, Card, Typography, Button, Link as MuiLink } from '@mui/material';
+import * as React from 'react';
+import { Admin, AutocompleteInput } from 'react-admin';
 
-import { List } from './List';
-import { SimpleList } from './SimpleList';
-import { ListActions } from './ListActions';
-import { Datagrid } from './datagrid';
-import { TextField } from '../field';
-import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import { BulkDeleteButton, ListButton, SelectAllButton } from '../button';
 import { ShowGuesser } from '../detail';
+import { TextField } from '../field';
+import { SearchInput, TextInput } from '../input';
 import TopToolbar from '../layout/TopToolbar';
 import { BulkActionsToolbar } from './BulkActionsToolbar';
+import { List } from './List';
+import { ListActions } from './ListActions';
+import { SimpleList } from './SimpleList';
+import { Datagrid } from './datagrid';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -797,6 +797,49 @@ export const ResponseMetadata = () => (
                         <BookList />
                     </List>
                 }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const slots = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List
+                        slots={{
+                            actions: (
+                                <Box sx={{ backgroundColor: 'info.main' }}>
+                                    Actions
+                                </Box>
+                            ),
+                            aside: (
+                                <Box sx={{ backgroundColor: 'info.main' }}>
+                                    Aside
+                                </Box>
+                            ),
+                            filters: (
+                                <Box sx={{ backgroundColor: 'info.main' }}>
+                                    Filter
+                                </Box>
+                            ),
+                            pagination: (
+                                <Box sx={{ backgroundColor: 'info.main' }}>
+                                    List
+                                </Box>
+                            ),
+                            empty: (
+                                <Box sx={{ backgroundColor: 'info.main' }}>
+                                    Empty
+                                </Box>
+                            ),
+                        }}
+                    >
+                        <BookList />
+                    </List>
+                )}
             />
         </Admin>
     </TestMemoryRouter>
