@@ -54,7 +54,7 @@ const getAuthProvider = (flags: typeof cli.flags) => {
 };
 
 const getDefaultInstaller = (userAgent: string) => {
-    if (!userAgent) return undefined;
+    if (!userAgent) return 'npm';
     const pkgSpec = userAgent.split(' ')[0];
     const pkgSpecArr = pkgSpec.split('/');
     return pkgSpecArr[0];
