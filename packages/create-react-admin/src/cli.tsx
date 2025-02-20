@@ -45,6 +45,7 @@ const getAuthProvider = (flags: typeof cli.flags) => {
         console.warn(
             'Providing an auth-provider when using ra-supabase is not supported. It will be ignored.'
         );
+        return 'none';
     }
     if (flags.authProvider) return getAuthProviderName(flags.authProvider);
     if (getDataProviderName(flags.dataProvider) === 'ra-supabase')
