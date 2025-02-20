@@ -54,28 +54,27 @@ useSubscribe(topic, callback);
 
 Ra-realtime provides **live updates** via specialized hooks and components. This means that when a user edits a resource, the other users working on the same resource see the changes in real-time whether they are in a list, a show view, or an edit view.
 
-For instance, replace `<List>` with `<ListLive>` to have a list refreshing automatically when an element is added, updated, or deleted:
+For instance, include a `<ListLiveUpdate>` within a `<List>` to have a list refreshing automatically when an element is added, updated, or deleted:
 
 ```diff
 import {
--   List,
+    List,
     Datagrid,
     TextField,
     NumberField,
     Datefield,
 } from 'react-admin';
-+import { ListLive } from '@react-admin/ra-realtime';
++import { ListLiveUpdate } from '@react-admin/ra-realtime';
 
 const PostList = () => (
--   <List>
-+   <ListLive>
+    <List>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />
             <DateField source="published_at" />
         </Datagrid>
--   </List>
-+   </ListLive>
++       <ListLiveUpdate />
+    </List>
 );
 ```
 
@@ -85,7 +84,6 @@ const PostList = () => (
   Your browser does not support the video tag.
 </video>
 
-
 This feature leverages the following hooks:
 
 -   [`useGetListLive`](./useGetListLive.md)
@@ -93,7 +91,7 @@ This feature leverages the following hooks:
 
 And the following components:
 
--   [`<ListLive>`](./ListLive.md)
+-   [`<ListLiveUpdate>`](./ListLiveUpdate.md)
 -   [`<EditLive>`](./EditLive.md)
 -   [`<ShowLive>`](./ShowLive.md)
 

@@ -1085,21 +1085,19 @@ const BookList = () => (
 
 ## Live Updates
 
-If you want to subscribe to live updates on the list of records (topic: `resource/[resource]`), use [the `<ListLive>` component](./ListLive.md) instead.
+If you want to subscribe to live updates on the list of records (topic: `resource/[resource]`), add [the `<ListLiveUpdate>` component](./ListLiveUpdate.md) in your `<List>` children.
 
 ```diff
--import { List, Datagrid, TextField } from 'react-admin';
-+import { Datagrid, TextField } from 'react-admin';
-+import { ListLive } from '@react-admin/ra-realtime';
+import { List, Datagrid, TextField } from 'react-admin';
++import { ListLiveUpdate } from '@react-admin/ra-realtime';
 
 const PostList = () => (
--   <List>
-+   <ListLive>
+    <List>
         <Datagrid>
             <TextField source="title" />
         </Datagrid>
--   </List>
-+   </ListLive>
++       <ListLiveUpdate />
+    </List>
 );
 ```
 
