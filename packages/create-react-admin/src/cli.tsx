@@ -53,16 +53,17 @@ const getAuthProvider = (flags: typeof cli.flags) => {
     return 'none';
 };
 
-const getDefaultInstaller = (processExec: string) => {
-    if (processExec.includes('yarn')) return 'yarn';
-    if (processExec.includes('bun')) return 'bun';
-    return 'npm';
+const getDefaultInstaller = (userAgent: string) => {
+    if (!userAgent) return 'npm';
+    const pkgSpec = userAgent.split(' ')[0];
+    const pkgSpecArr = pkgSpec.split('/');
+    return pkgSpecArr[0];
 };
 
-const getInstall = (flags: typeof cli.flags, processExec: string) => {
+const getInstall = (flags: typeof cli.flags, userAgent: string) => {
     if (flags.install) return flags.install;
     if (flags.interactive) return undefined;
-    return getDefaultInstaller(processExec);
+    return getDefaultInstaller(userAgent);
 };
 
 const getResources = (flags: typeof cli.flags) => {
@@ -133,7 +134,7 @@ if (cli.flags.h) {
     }
     const dataProvider = getDataProvider(cli.flags);
     const authProvider = getAuthProvider(cli.flags);
-    const install = getInstall(cli.flags, process.execPath);
+    const install = getInstall(cli.flags, process.env.npm_config_user_agent);
     const resources = getResources(cli.flags);
 
     render(
