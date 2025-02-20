@@ -170,7 +170,7 @@ jobs:
     runs-on: ubuntu-latest
     name: GreenFrame
     needs: [e-commerce]
-    if: github.event_name == 'push' && github.ref_type == 'tag' && github.ref_name == 'refs/tags/v*' && !contains('beta', github.ref_name) && !contains('alpha', github.ref_name)
+    if: github.event_name == 'push' && github.ref_type == 'tag' && contains(github.ref, 'refs/tags/v') && !contains('beta', github.ref) && !contains('alpha', github.ref)
     steps:
       # To use this repository's private action,
       # you must check out the repository
@@ -225,7 +225,7 @@ jobs:
   update-sandbox-repository:
     runs-on: ubuntu-latest
     # Only run on new tags that target a release (not latest nor next) and avoid alpha and beta tags
-    if: github.event_name == 'push' && github.ref_type == 'tag' && github.ref_name == 'refs/tags/v*' && !contains('beta', github.ref_name) && !contains('alpha', github.ref_name)
+    if: github.event_name == 'push' && github.ref_type == 'tag' && contains(github.ref, 'refs/tags/v') && !contains('beta', github.ref) && !contains('alpha', github.ref)
     needs: [typecheck, simple-example-typecheck, unit-test, e2e-test]
     steps:
         - name: Checkout
