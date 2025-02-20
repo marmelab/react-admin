@@ -210,35 +210,32 @@ Unlike the `<Create>` components, with Dialog components the title will be displ
 Here is an example:
 
 ```tsx
-import React from 'react';
 import {
     List,
+    ListActions,
     Datagrid,
     SimpleForm,
     TextInput,
     DateInput,
+    DateField,
     required,
 } from 'react-admin';
-import {
-    CreateDialog,
-} from '@react-admin/ra-form-layout';
+import { CreateDialog } from '@react-admin/ra-form-layout';
 
 const CustomerList = () => (
     <>
-        <List hasCreate>
+        <List actions={<ListActions hasCreate />}>
             <Datagrid>
                 ...
-                <ShowButton />
             </Datagrid>
         </List>
-        <ShowDialog title={<CustomerShowTitle />}>
-            <SimpleShowLayout>
-                <TextField source="id" />
-                <TextField source="first_name" />
-                <TextField source="last_name" />
-                <DateField source="date_of_birth" label="born" />
-            </SimpleShowLayout>
-        </ShowDialog>
+        <CreateDialog title="Create a new customer">
+            <SimpleForm>
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+                <DateInput source="date_of_birth" />
+            </SimpleForm>
+        </CreateDialog>
     </>
 );
 ```
