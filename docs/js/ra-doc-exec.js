@@ -1,5 +1,43 @@
-/* global Prism, prettier, prettierPlugins */
+/* global Prism */
+import { transpileModule } from 'https://esm.sh/typescript@5.7.3';
+import * as prettier from 'https://esm.sh/prettier@3.5.1/standalone';
+import * as babel from 'https://esm.sh/prettier@3.5.1/plugins/babel';
+import * as estree from 'https://esm.sh/prettier@3.5.1/plugins/estree';
+import { marked } from 'https://esm.sh/marked@15.0.7';
+
 var allMenus, navLinks, versionsLinks;
+
+const showTip = async () => {
+    const tipElement = document.getElementById('tip');
+    if (!tipElement) return;
+
+    const tips = await getContents('/assets/tips.md');
+    const features = await getContents('/assets/features.md');
+    const all = tips.concat(features);
+
+    const content = all[Math.floor(Math.random() * all.length)]
+        .replace('{% raw %}', '')
+        .replace('{% endraw %}', '');
+    tipElement.innerHTML = marked.parse(content);
+    // First highlight the code blocks so that Prism generates the HTML we need for TS transpilation
+    const codeBlock = tipElement.querySelector('pre > code');
+    if (codeBlock) {
+        Prism.highlightElement(codeBlock);
+    }
+};
+
+const getContents = async file => {
+    try {
+        const response = await fetch(file);
+        if (response.ok) {
+            const text = await response.text();
+            return text.split('---');
+        }
+        return [];
+    } catch {
+        return [];
+    }
+};
 
 const applyPreferredLanguage = async () => {
     const preferredLanguage =
@@ -56,18 +94,7 @@ const applyPreferredLanguage = async () => {
 };
 
 const transpileToJS = async tsCode => {
-    // As we load those libs asynchronously, we need to ensure they are loaded
-    // before using them
-    if (
-        window.ts === undefined ||
-        window.prettier === undefined ||
-        window.prettierPlugins === undefined
-    ) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        return transpileToJS(tsCode);
-    }
-
-    const transpilation = window.ts.transpileModule(
+    const transpilation = transpileModule(
         // Ensure blank lines are preserved
         tsCode.replace(/\n\n/g, '\n/** THIS_IS_A_NEWLINE **/'),
         {
@@ -90,7 +117,7 @@ const transpileToJS = async tsCode => {
             '\n\n'
         ),
         {
-            plugins: [prettierPlugins.babel],
+            plugins: [babel, estree],
             parser: 'babel',
             tabWidth: 4,
             printWidth: 120,
@@ -100,8 +127,10 @@ const transpileToJS = async tsCode => {
     return jsCode;
 };
 
-const buildJSCodeBlocksFromTS = async () => {
-    const tsBlocks = document.querySelectorAll('div.language-tsx');
+export const buildJSCodeBlocksFromTS = async (
+    selector = 'div.language-tsx'
+) => {
+    const tsBlocks = document.querySelectorAll(selector);
 
     await Promise.all(
         Array.from(tsBlocks).map(async (block, index) => {
@@ -235,19 +264,21 @@ function buildPageToC() {
 
 function replaceContent(text) {
     var tocContainer = document.querySelector('.toc-container');
-    tocContainer.className =
-        text.trim() !== ''
-            ? 'toc-container col hide-on-small-only m3'
-            : 'toc-container';
+    if (tocContainer) {
+        tocContainer.className =
+            text.trim() !== ''
+                ? 'toc-container col hide-on-small-only m3'
+                : 'toc-container';
 
-    var tmpElement = document.createElement('div');
-    tmpElement.innerHTML = text;
+        var tmpElement = document.createElement('div');
+        tmpElement.innerHTML = text;
+    }
 
-    toggleDockBlocks(false);
-
-    var content = document.querySelector('.DocSearch-content');
-    content.innerHTML =
-        tmpElement.querySelector('.DocSearch-content').innerHTML;
+    var content = document.querySelector('.container');
+    var tmpContent = tmpElement.querySelector('.container');
+    if (content && tmpContent) {
+        content.innerHTML = tmpContent.innerHTML;
+    }
 
     window.scrollTo(0, 0);
 
@@ -259,9 +290,10 @@ function replaceContent(text) {
 function changeSelectedMenu() {
     var activeMenu = document.querySelector(`.sidenav li.active`);
     activeMenu && activeMenu.classList.remove('active');
-    allMenus
-        .find(menuEl => menuEl.href === window.location.href)
-        .parentNode.classList.add('active');
+    const newActiveMenu = allMenus.find(
+        menuEl => menuEl.href === window.location.href
+    );
+    newActiveMenu && newActiveMenu.parentNode.classList.add('active');
 }
 
 function toggleDockBlocks(status) {
@@ -317,10 +349,25 @@ function showNonBeginnerDoc() {
     });
 }
 
+function hideTips() {
+    const tipElement = document.getElementById('tip');
+    const tipContainer = document.getElementById('tip-container');
+
+    if (tipElement) {
+        tipElement.remove();
+    }
+    if (tipContainer) {
+        tipContainer.remove();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const beginnerModeTrigger = document.getElementById(
         'beginner-mode-trigger'
     );
+
+    if (window.location.pathname === '/documentation.html') {
+    }
 
     if (beginnerModeTrigger) {
         beginnerModeTrigger.addEventListener('click', () => {
@@ -374,6 +421,13 @@ document.addEventListener('click', event => {
     fetch(href)
         .then(res => res.text())
         .then(replaceContent)
+        .then(() => {
+            if (href.includes('documentation.html')) {
+                showTip();
+            } else {
+                hideTips();
+            }
+        })
         .then(buildJSCodeBlocksFromTS)
         .then(loadNewsletterScript);
     // change the URL
@@ -388,13 +442,23 @@ window.addEventListener('popstate', () => {
         return;
     }
     if (window.location.pathname === '/documentation.html') {
-        document.querySelector('.DocSearch-content').innerHTML = '';
-        toggleDockBlocks(true);
+        fetch(window.location.pathname)
+            .then(res => res.text())
+            .then(replaceContent)
+            .then(() => {
+                document.querySelector('.DocSearch-content').innerHTML = '';
+                toggleDockBlocks(true);
+                showTip();
+            });
     } else {
         // fetch the new content
         fetch(window.location.pathname)
             .then(res => res.text())
             .then(replaceContent)
+            .then(() => {
+                toggleDockBlocks(false);
+            })
+            .then(hideTips)
             .then(buildJSCodeBlocksFromTS)
             .then(loadNewsletterScript);
     }
@@ -408,6 +472,9 @@ window.addEventListener('DOMContentLoaded', () => {
         .map(link => link.href);
     versionsLinks = Array.from(document.querySelectorAll('#versions > li > a'));
 
+    if (window.location.pathname === '/documentation.html') {
+        showTip();
+    }
     buildPageToC();
 
     navigationFitScroll();
