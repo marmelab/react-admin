@@ -4,7 +4,6 @@ import path from 'path';
 import { Octokit } from '@octokit/core';
 import { OctokitResponse } from '@octokit/types';
 import { components } from '@octokit/openapi-types';
-import readline from 'readline';
 
 const prOrder = [
     'feature',
@@ -158,20 +157,6 @@ const main = async () => {
     }
 
     console.log('Changelog updated successfully.');
-
-    // Prompt the user to check the changelog
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    console.log(
-        'Please review the ./CHANGELOG.md file and update it if needed.'
-    );
-    rl.question('Press Enter when done: ', () => {
-        console.log('Resuming release...');
-        rl.close();
-    });
 };
 
 main();

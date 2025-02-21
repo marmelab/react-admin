@@ -16,6 +16,9 @@ cd ../..
 
 step "update-changelog"
 yarn run update-changelog ${npm_package_version}
+echo "Please review the ./CHANGELOG.md file and update it if needed."
+echo "Press Enter when done:"
+read
 if [ -z "$RELEASE_DRY_RUN" ]; then
     echo "Committing the changelog"
     git add CHANGELOG.md
