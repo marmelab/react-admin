@@ -5,9 +5,12 @@ import * as babel from 'https://esm.sh/prettier@3.5.1/plugins/babel';
 import * as estree from 'https://esm.sh/prettier@3.5.1/plugins/estree';
 import { marked } from 'https://esm.sh/marked@15.0.7';
 
-var tipElement, tipContainer, allMenus, navLinks, versionsLinks;
+var allMenus, navLinks, versionsLinks;
 
 const showTip = async () => {
+    const tipElement = document.getElementById('tip');
+    if (!tipElement) return;
+
     const tips = await getContents('/assets/tips.md');
     const features = await getContents('/assets/features.md');
     const all = tips.concat(features);
@@ -261,19 +264,21 @@ function buildPageToC() {
 
 function replaceContent(text) {
     var tocContainer = document.querySelector('.toc-container');
-    tocContainer.className =
-        text.trim() !== ''
-            ? 'toc-container col hide-on-small-only m3'
-            : 'toc-container';
+    if (tocContainer) {
+        tocContainer.className =
+            text.trim() !== ''
+                ? 'toc-container col hide-on-small-only m3'
+                : 'toc-container';
 
-    var tmpElement = document.createElement('div');
-    tmpElement.innerHTML = text;
+        var tmpElement = document.createElement('div');
+        tmpElement.innerHTML = text;
+    }
 
-    toggleDockBlocks(false);
-
-    var content = document.querySelector('.DocSearch-content');
-    content.innerHTML =
-        tmpElement.querySelector('.DocSearch-content').innerHTML;
+    var content = document.querySelector('.container');
+    var tmpContent = tmpElement.querySelector('.container');
+    if (content && tmpContent) {
+        content.innerHTML = tmpContent.innerHTML;
+    }
 
     window.scrollTo(0, 0);
 
@@ -285,9 +290,10 @@ function replaceContent(text) {
 function changeSelectedMenu() {
     var activeMenu = document.querySelector(`.sidenav li.active`);
     activeMenu && activeMenu.classList.remove('active');
-    allMenus
-        .find(menuEl => menuEl.href === window.location.href)
-        .parentNode.classList.add('active');
+    const newActiveMenu = allMenus.find(
+        menuEl => menuEl.href === window.location.href
+    );
+    newActiveMenu && newActiveMenu.parentNode.classList.add('active');
 }
 
 function toggleDockBlocks(status) {
@@ -343,10 +349,25 @@ function showNonBeginnerDoc() {
     });
 }
 
+function hideTips() {
+    const tipElement = document.getElementById('tip');
+    const tipContainer = document.getElementById('tip-container');
+
+    if (tipElement) {
+        tipElement.remove();
+    }
+    if (tipContainer) {
+        tipContainer.remove();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const beginnerModeTrigger = document.getElementById(
         'beginner-mode-trigger'
     );
+
+    if (window.location.pathname === '/documentation.html') {
+    }
 
     if (beginnerModeTrigger) {
         beginnerModeTrigger.addEventListener('click', () => {
@@ -383,12 +404,6 @@ document.addEventListener('click', event => {
     if (!navLinks.includes(href)) {
         return; // not a navigation link
     }
-    if (tipElement) {
-        tipElement.remove();
-    }
-    if (tipContainer) {
-        tipContainer.remove();
-    }
     window.sessionStorage.setItem(
         'scrollIntoView',
         link.closest('.sidenav') ? 'false' : 'true'
@@ -406,6 +421,13 @@ document.addEventListener('click', event => {
     fetch(href)
         .then(res => res.text())
         .then(replaceContent)
+        .then(() => {
+            if (href.includes('documentation.html')) {
+                showTip();
+            } else {
+                hideTips();
+            }
+        })
         .then(buildJSCodeBlocksFromTS)
         .then(loadNewsletterScript);
     // change the URL
@@ -420,13 +442,23 @@ window.addEventListener('popstate', () => {
         return;
     }
     if (window.location.pathname === '/documentation.html') {
-        document.querySelector('.DocSearch-content').innerHTML = '';
-        toggleDockBlocks(true);
+        fetch(window.location.pathname)
+            .then(res => res.text())
+            .then(replaceContent)
+            .then(() => {
+                document.querySelector('.DocSearch-content').innerHTML = '';
+                toggleDockBlocks(true);
+                showTip();
+            });
     } else {
         // fetch the new content
         fetch(window.location.pathname)
             .then(res => res.text())
             .then(replaceContent)
+            .then(() => {
+                toggleDockBlocks(false);
+            })
+            .then(hideTips)
             .then(buildJSCodeBlocksFromTS)
             .then(loadNewsletterScript);
     }
@@ -434,15 +466,15 @@ window.addEventListener('popstate', () => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-    tipElement = document.getElementById('tip');
-    tipContainer = document.getElementById('tip-container');
     allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
     navLinks = allMenus
         .filter(link => !link.classList.contains('external'))
         .map(link => link.href);
     versionsLinks = Array.from(document.querySelectorAll('#versions > li > a'));
 
-    if (tipElement) showTip();
+    if (window.location.pathname === '/documentation.html') {
+        showTip();
+    }
     buildPageToC();
 
     navigationFitScroll();
