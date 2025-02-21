@@ -5,7 +5,7 @@ import * as babel from 'https://esm.sh/prettier@3.5.1/plugins/babel';
 import * as estree from 'https://esm.sh/prettier@3.5.1/plugins/estree';
 import { marked } from 'https://esm.sh/marked@15.0.7';
 
-var tipElement, allMenus, navLinks, versionsLinks;
+var tipElement, tipContainer, allMenus, navLinks, versionsLinks;
 
 const showTip = async () => {
     const tips = await getContents('/assets/tips.md');
@@ -386,6 +386,9 @@ document.addEventListener('click', event => {
     if (tipElement) {
         tipElement.remove();
     }
+    if (tipContainer) {
+        tipContainer.remove();
+    }
     window.sessionStorage.setItem(
         'scrollIntoView',
         link.closest('.sidenav') ? 'false' : 'true'
@@ -432,6 +435,7 @@ window.addEventListener('popstate', () => {
 
 window.addEventListener('DOMContentLoaded', () => {
     tipElement = document.getElementById('tip');
+    tipContainer = document.getElementById('tip-container');
     allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
     navLinks = allMenus
         .filter(link => !link.classList.contains('external'))
