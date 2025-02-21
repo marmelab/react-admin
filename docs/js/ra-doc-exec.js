@@ -1,5 +1,40 @@
-/* global Prism, prettier, prettierPlugins */
-var allMenus, navLinks, versionsLinks;
+/* global Prism */
+import { transpileModule } from 'https://esm.sh/typescript@5.7.3';
+import * as prettier from 'https://esm.sh/prettier@3.5.1/standalone';
+import * as babel from 'https://esm.sh/prettier@3.5.1/plugins/babel';
+import * as estree from 'https://esm.sh/prettier@3.5.1/plugins/estree';
+import { marked } from 'https://esm.sh/marked@15.0.7';
+
+var tipElement, allMenus, navLinks, versionsLinks;
+
+const showTip = async () => {
+    const tips = await getContents('/assets/tips.md');
+    const features = await getContents('/assets/features.md');
+    const all = tips.concat(features);
+
+    const content = all[Math.floor(Math.random() * all.length)]
+        .replace('{% raw %}', '')
+        .replace('{% endraw %}', '');
+    tipElement.innerHTML = marked.parse(content);
+    // First highlight the code blocks so that Prism generates the HTML we need for TS transpilation
+    const codeBlock = tipElement.querySelector('pre > code');
+    if (codeBlock) {
+        Prism.highlightElement(codeBlock);
+    }
+};
+
+const getContents = async file => {
+    try {
+        const response = await fetch(file);
+        if (response.ok) {
+            const text = await response.text();
+            return text.split('---');
+        }
+        return [];
+    } catch {
+        return [];
+    }
+};
 
 const applyPreferredLanguage = async () => {
     const preferredLanguage =
@@ -56,18 +91,7 @@ const applyPreferredLanguage = async () => {
 };
 
 const transpileToJS = async tsCode => {
-    // As we load those libs asynchronously, we need to ensure they are loaded
-    // before using them
-    if (
-        window.ts === undefined ||
-        window.prettier === undefined ||
-        window.prettierPlugins === undefined
-    ) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        return transpileToJS(tsCode);
-    }
-
-    const transpilation = window.ts.transpileModule(
+    const transpilation = transpileModule(
         // Ensure blank lines are preserved
         tsCode.replace(/\n\n/g, '\n/** THIS_IS_A_NEWLINE **/'),
         {
@@ -90,7 +114,7 @@ const transpileToJS = async tsCode => {
             '\n\n'
         ),
         {
-            plugins: [prettierPlugins.babel],
+            plugins: [babel, estree],
             parser: 'babel',
             tabWidth: 4,
             printWidth: 120,
@@ -100,8 +124,10 @@ const transpileToJS = async tsCode => {
     return jsCode;
 };
 
-const buildJSCodeBlocksFromTS = async () => {
-    const tsBlocks = document.querySelectorAll('div.language-tsx');
+export const buildJSCodeBlocksFromTS = async (
+    selector = 'div.language-tsx'
+) => {
+    const tsBlocks = document.querySelectorAll(selector);
 
     await Promise.all(
         Array.from(tsBlocks).map(async (block, index) => {
@@ -357,6 +383,9 @@ document.addEventListener('click', event => {
     if (!navLinks.includes(href)) {
         return; // not a navigation link
     }
+    if (tipElement) {
+        tipElement.remove();
+    }
     window.sessionStorage.setItem(
         'scrollIntoView',
         link.closest('.sidenav') ? 'false' : 'true'
@@ -402,12 +431,14 @@ window.addEventListener('popstate', () => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
+    tipElement = document.getElementById('tip');
     allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
     navLinks = allMenus
         .filter(link => !link.classList.contains('external'))
         .map(link => link.href);
     versionsLinks = Array.from(document.querySelectorAll('#versions > li > a'));
 
+    if (tipElement) showTip();
     buildPageToC();
 
     navigationFitScroll();
