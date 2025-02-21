@@ -62,16 +62,18 @@ export const ListView = <RecordType extends RaRecord = any>(
                 <ListToolbar
                     className={ListClasses.actions}
                     filters={filters}
-                    actions={getElement(actions)}
+                    actions={getActionsElement(actions)}
                 />
             )}
             <Content className={ListClasses.content}>{children}</Content>
-            {!error && pagination !== false && pagination}
+            {!error && pagination !== false && getElement(pagination)}
         </div>
     );
 
     const renderEmpty = () =>
-        empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
+        empty !== false && (
+            <div className={ListClasses.noResults}>{getElement(empty)}</div>
+        );
 
     const shouldRenderEmptyPage =
         !error &&
@@ -93,34 +95,42 @@ export const ListView = <RecordType extends RaRecord = any>(
         <Root className={clsx('list-page', className)} {...rest}>
             {title !== false && (
                 <Title
-                    title={title}
+                    title={title ? getTitleElement(title) : undefined}
                     defaultTitle={defaultTitle}
                     preferenceKey={`${resource}.list.title`}
                 />
             )}
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
-            {aside}
+            {aside ? getElement(aside) : null}
         </Root>
     );
 };
 
-const getElement = (
-    ElementOrComponent: React.ComponentType<any> | ReactElement | false
-) => {
-    if (ElementOrComponent === false) {
+const getTitleElement = (title: ReactElement | ComponentType | string) => {
+    if (typeof title === 'string') {
+        return title;
+    }
+    return getElement(title);
+};
+
+const getActionsElement = (actions: ListViewProps['actions']) => {
+    if (!actions) {
         return;
     }
+    return getElement(actions);
+};
 
+const getElement = (ElementOrComponent: ComponentType | ReactElement) => {
     if (isValidElement(ElementOrComponent)) {
-        console.log(`We have an element`);
         return ElementOrComponent;
     }
-
     if (isValidElementType(ElementOrComponent)) {
-        console.log(`We have a component`);
-        const Element = ElementOrComponent as ComponentType<any>;
+        const Element = ElementOrComponent as ComponentType;
         return <Element />;
     }
+    throw new Error(
+        'the value prop should be a valid ReactElement or a valid React Component'
+    );
 };
 
 export interface ListViewProps {
@@ -157,7 +167,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    actions?: ReactElement | React.ComponentType | false;
+    actions?: ReactElement | ComponentType | false;
 
     /**
      * The content to render as a sidebar.
@@ -185,7 +195,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    aside?: ReactElement;
+    aside?: ReactElement | ComponentType;
 
     /**
      * A class name to apply to the root div element
@@ -256,7 +266,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    empty?: ReactElement | false;
+    empty?: ReactElement | ComponentType | false;
 
     /**
      * Set to true to return null while the list is loading.
@@ -309,7 +319,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    pagination?: ReactElement | false;
+    pagination?: ReactElement | ComponentType | false;
 
     /**
      * The page title (main title) to display above the data. Defaults to the humanized resource name.
@@ -324,7 +334,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    title?: string | ReactElement | false;
+    title?: string | ReactElement | ComponentType | false;
 
     /**
      * The CSS styles to apply to the component.
