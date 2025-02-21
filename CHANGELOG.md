@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.6.1
+
+* Fix create-react-admin package manager detection ([#10534](https://github.com/marmelab/react-admin/pull/10534)) ([djhi](https://github.com/djhi))
+* Fix create-react-admin does not ignore auth-provider when specified and using supabase ([#10533](https://github.com/marmelab/react-admin/pull/10533)) ([djhi](https://github.com/djhi))
+* Fix `<NumberInput>` and `<AutocompleteInput>` do not forward the event when calling `onBlur` ([#9730](https://github.com/marmelab/react-admin/pull/9730)) ([yanchesky](https://github.com/yanchesky))
+* [Doc] Fix dialogs `title` doc ([#10536](https://github.com/marmelab/react-admin/pull/10536)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `<DatagridAGClient>` access control's doc ([#10535](https://github.com/marmelab/react-admin/pull/10535)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Promote composition with `<ListLiveUpdate>` instead of `<ListLive>` ([#10531](https://github.com/marmelab/react-admin/pull/10531)) ([djhi](https://github.com/djhi))
+* [Doc] Fix some videos do not play in Firefox for MacOS users ([#10524](https://github.com/marmelab/react-admin/pull/10524)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.6.0
 
 * Add `<LoginWithEmail>` to facilitate login with email ([#10518](https://github.com/marmelab/react-admin/pull/10518)) ([fzaninotto](https://github.com/fzaninotto))
