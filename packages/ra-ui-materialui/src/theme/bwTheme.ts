@@ -343,6 +343,7 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                     root: {
                         margin: `0 ${SPACING}px`,
                         paddingRight: 0,
+                        paddingLeft: SPACING,
                         borderRadius: 5,
                         color: isDarkMode ? grey['200'] : common['black'],
                         '&.RaMenuItemLink-active': {
@@ -351,13 +352,16 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                         '& .RaMenuItemLink-icon': {
                             minWidth: 30,
                         },
+                        '.RaMenu-closed &': {
+                            margin: `0 0 0 ${SPACING}px`,
+                        },
                     },
                 },
             },
         },
         sidebar: {
             width: 195,
-            closedWidth: 50,
+            closedWidth: 45,
         },
     };
 };
