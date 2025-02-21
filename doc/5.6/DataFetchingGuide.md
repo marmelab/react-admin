@@ -414,7 +414,7 @@ Once your data provider has enabled realtime features, you can use these hooks a
 - [`useLockOnCall`](./useLockOnCall.md)
 - [`useGetListLive`](./useGetListLive.md)
 - [`useGetOneLive`](./useGetOneLive.md)
-- [`<ListLive>`](./ListLive.md)
+- [`<ListLiveUpdate>`](./ListLiveUpdate.md)
 - [`<EditLive>`](./EditLive.md)
 - [`<ShowLive>`](./ShowLive.md)
 - [`<MenuLive>`](./MenuLive.md)

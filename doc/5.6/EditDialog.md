@@ -236,8 +236,9 @@ const MyEditDialog = () => (
 
 ## `title`
 
-Unlike the `<Create>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
-If you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component. That means you can display non-editable details of the current `record` in the title component.
+Unlike the `<Edit>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
+If you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component.
+That means you can display non-editable details of the current `record` in the title component.
 Here is an example:
 
 ```tsx
@@ -501,9 +502,7 @@ const EmployerEdit = () => (
 
 ## Warn When There Are Unsaved Changes
 
-If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
-
-In that case, you can leverage the [warnWhenUnsavedChanges](./Form.md#warnwhenunsavedchanges) feature provided by React Admin forms.
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, you can leverage the [warnWhenUnsavedChanges](./Form.md#warnwhenunsavedchanges) feature provided by React Admin forms.
 
 Add the `warnWhenUnsavedChanges` prop to your Form like so:
 

@@ -302,7 +302,8 @@ const EditButton = () => (
 ## `title`
 
 Unlike the `<Edit>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
-Still, for `<EditInDialogButton>`, if you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component. That means you can display non-editable details of the current `record` in the title component.
+If you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component.
+That means you can display non-editable details of the current `record` in the title component.
 Here is an example:
 
 ```tsx
@@ -383,9 +384,7 @@ const EmployerEdit = () => (
 
 ## Warn When There Are Unsaved Changes
 
-If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
-
-In that case, using the `warnWhenUnsavedChanges` prop directly on the form won't work, because this feature relies on the router's location, but both components do not use routing.
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, using the `warnWhenUnsavedChanges` prop directly on the form won't work, because this feature relies on the router's location, but both components do not use routing.
 
 Instead, you can use the `<WarnWhenUnsavedChangesInDialog>` component provided by `ra-form-layout`.
 
