@@ -19,13 +19,24 @@ export const generateOrders = (db: Db): Order[] => {
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             [30, 20, 5, 2, 1, 1, 1, 1, 1, 1]
         );
-        const basket = Array.from(Array(nbProducts).keys()).map(() => ({
-            product_id: random.number({ min: 0, max: 10 * 13 - 1 }),
-            quantity: weightedArrayElement(
-                [1, 2, 3, 4, 5],
-                [10, 5, 3, 2, 1]
-            ) as number,
-        }));
+        const productIds = new Set<number>();
+        const basket = Array.from(Array(nbProducts).keys()).map(() => {
+            let product_id;
+            do {
+                product_id = random.number({
+                    min: 0,
+                    max: 10 * 13 - 1,
+                });
+            } while (productIds.has(product_id));
+            productIds.add(product_id);
+            return {
+                product_id,
+                quantity: weightedArrayElement(
+                    [1, 2, 3, 4, 5],
+                    [10, 5, 3, 2, 1]
+                ) as number,
+            };
+        });
 
         const total_ex_taxes = basket.reduce(
             (total, product) =>

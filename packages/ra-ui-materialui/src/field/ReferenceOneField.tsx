@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactElement, ReactNode, useMemo } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
@@ -73,14 +73,20 @@ export const ReferenceOneField = <
         }),
         [controllerProps, path]
     );
-    return !record ||
-        (!controllerProps.isPending &&
-            controllerProps.referenceRecord == null) ? (
-        emptyText ? (
+
+    const empty =
+        typeof emptyText === 'string' ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
-        ) : null
+        ) : emptyText ? (
+            emptyText
+        ) : null;
+
+    return !record ||
+        (!controllerProps.isPending &&
+            controllerProps.referenceRecord == null) ? (
+        empty
     ) : (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
@@ -97,7 +103,7 @@ export const ReferenceOneField = <
 export interface ReferenceOneFieldProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends Omit<FieldProps<RecordType>, 'source'> {
+> extends Omit<FieldProps<RecordType>, 'source' | 'emptyText'> {
     children?: ReactNode;
     reference: string;
     target: string;
@@ -105,6 +111,7 @@ export interface ReferenceOneFieldProps<
     source?: string;
     filter?: any;
     link?: LinkToType<ReferenceRecordType>;
+    emptyText?: string | ReactElement;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];

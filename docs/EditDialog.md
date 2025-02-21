@@ -67,17 +67,18 @@ In the related `<Resource>`, you don't need to declare an `edit` component as th
 
 `<EditDialog>` accepts the following props:
 
-| Prop           | Required | Type              | Default | Description |
-| -------------- | -------- | ----------------- | ------- | ----------- |
-| `children`     | Required | `ReactNode`       |         | The content of the dialog. |
-| `fullWidth`    | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen. |
-| `id`           | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context. |
-| `maxWidth`     | Optional | `string`          | `sm`    | The max width of the dialog. |
-| `mutation Options` | Optional | `object`       |         | The options to pass to the `useMutation` hook. |
-| `queryOptions` | Optional | `object`          |         | The options to pass to the `useQuery` hook.
-| `resource`     | Optional | `string`          |         | The resource name, e.g. `posts`
-| `sx`           | Optional | `object`          |         | Override the styles applied to the dialog component. |
-| `transform`    | Optional | `function`        |         | Transform the form data before calling `dataProvider.update()`. |
+| Prop               | Required | Type              | Default | Description                                                                |
+| ------------------ | -------- | ----------------- | ------- | -------------------------------------------------------------------------- |
+| `children`         | Required | `ReactNode`       |         | The content of the dialog                                                  |
+| `fullWidth`        | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen            |
+| `id`               | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context |
+| `maxWidth`         | Optional | `string`          | `sm`    | The max width of the dialog                                                |
+| `mutation Options` | Optional | `object`          |         | The options to pass to the `useMutation` hook                              |
+| `queryOptions`     | Optional | `object`          |         | The options to pass to the `useQuery` hook                                 |
+| `resource`         | Optional | `string`          |         | The resource name, e.g. `posts`                                            |
+| `sx`               | Optional | `object`          |         | Override the styles applied to the dialog component                        |
+| `transform`        | Optional | `function`        |         | Transform the form data before calling `dataProvider.update()`             |
+| `title`            | Optional | `ReactNode`       |         | The title of the dialog                                                    |
 
 ## `children`
 
@@ -222,6 +223,7 @@ const EditAuthorDialog = () => {
 Customize the styles applied to the Material UI `<Dialog>` component:
 
 {% raw %}
+
 ```jsx
 const MyEditDialog = () => (
   <EditDialog sx={{ backgroundColor: 'paper' }}>
@@ -229,7 +231,70 @@ const MyEditDialog = () => (
   </EditDialog>
 );
 ```
+
 {% endraw %}
+
+## `title`
+
+Unlike the `<Edit>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
+If you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component.
+That means you can display non-editable details of the current `record` in the title component.
+Here is an example:
+
+```tsx
+import React from 'react';
+import {
+    List,
+    Datagrid,
+    SimpleForm,
+    TextInput,
+    DateInput,
+    required,
+    useRecordContext,
+} from 'react-admin';
+import { EditDialog } from '@react-admin/ra-form-layout';
+
+const CustomerEditTitle = () => {
+    const record = useRecordContext();
+    return record ? (
+        <span>
+            Edit {record?.last_name} {record?.first_name}
+        </span>
+    ) : null;
+};
+
+const CustomerList = () => (
+    <>
+        <List hasCreate>
+            <Datagrid rowClick="edit">
+                ...
+            </Datagrid>
+        </List>
+        <EditDialog title={<CustomerEditTitle />}>
+            <SimpleForm>
+                <TextField source="id" />
+                <TextInput source="first_name" validate={required()} />
+                <TextInput source="last_name" validate={required()} />
+                <DateInput
+                    source="date_of_birth"
+                    label="born"
+                    validate={required()}
+                />
+            </SimpleForm>
+        </EditDialog>
+    </>
+);
+```
+
+You can also hide the title by passing `null`:
+
+```tsx
+<EditDialog title={null}>
+    <SimpleForm>
+        ...
+    </SimpleForm>
+</EditDialog>
+```
 
 ## `transform`
 
@@ -437,9 +502,7 @@ const EmployerEdit = () => (
 
 ## Warn When There Are Unsaved Changes
 
-If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
-
-In that case, you can leverage the [warnWhenUnsavedChanges](./Form.md#warnwhenunsavedchanges) feature provided by React Admin forms.
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, you can leverage the [warnWhenUnsavedChanges](./Form.md#warnwhenunsavedchanges) feature provided by React Admin forms.
 
 Add the `warnWhenUnsavedChanges` prop to your Form like so:
 

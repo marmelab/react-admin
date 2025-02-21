@@ -30,6 +30,7 @@ const getNextStep = (state: ProjectConfiguration) => {
                     }
                     return 'install';
                 }
+
                 return 'resources';
             }
             return 'auth-provider';
@@ -58,6 +59,10 @@ const stepReducer = (
             const newState = {
                 ...state,
                 dataProvider: action.value,
+                authProvider:
+                    action.value === 'ra-supabase'
+                        ? 'none'
+                        : state.authProvider,
                 resources:
                     action.value === 'ra-data-fakerest' &&
                     (state.resources == null || state.resources.length === 0)
@@ -165,6 +170,19 @@ export default function App(props: Props) {
     if (state.step === 'run-install') {
         return <StepRunInstall config={state} onCompleted={handleSubmit} />;
     }
+
+    let installerCommand;
+    switch (state.installer) {
+        case 'yarn':
+            installerCommand = 'yarn';
+            break;
+        case 'bun':
+            installerCommand = 'bun run';
+            break;
+        default:
+            installerCommand = 'npm run';
+            break;
+    }
     return (
         <>
             <Box marginBottom={1} marginTop={1}>
@@ -179,10 +197,7 @@ export default function App(props: Props) {
             {state.installer ? (
                 <Text>
                     Start the app in development mode by running{' '}
-                    <Text bold>
-                        {state.installer === 'npm' ? 'npm run' : 'yarn'} dev
-                    </Text>
-                    .
+                    <Text bold>{installerCommand} dev</Text>.
                 </Text>
             ) : (
                 <Box>

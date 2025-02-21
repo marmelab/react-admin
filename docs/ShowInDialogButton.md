@@ -31,6 +31,7 @@ Then, use the `<ShowInDialogButton>` component inside a `RecordContext` (in a `<
 Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to show the detail of each row in a dialog:
 
 {% raw %}
+
 ```jsx
 import {
   Datagrid,
@@ -82,6 +83,7 @@ const EmployerEdit = () => (
   </Edit>
 );
 ```
+
 {% endraw %}
 
 ## Props
@@ -90,8 +92,8 @@ This component accepts the following props:
 
 | Prop           | Required | Type           | Default  | Description               |
 |----------------|----------|----------------|----------|---------------------------|
-| `children`     | Required | `ReactNode`    |          | The content of the dialog |
 | `ButtonProps`  | Optional | `object`       |          | Props to pass to the MUI `<Button>` component |
+| `children`     | Required | `ReactNode`    |          | The content of the dialog |
 | `empty WhileLoading` | Optional | `boolean` |         | Set to `true` to return `null` while the list is loading |
 | `fullWidth`    | Optional | `boolean`      | `false`  | Set to `true` to make the dialog full width |
 | `icon`         | Optional | `ReactElement` |          | The icon of the button |
@@ -102,6 +104,25 @@ This component accepts the following props:
 | `queryOptions` | Optional | `object`       |          | The options to pass to the `useQuery` hook |
 | `resource`     | Optional | `string`       |          | The resource name, e.g. `posts` |
 | `sx`           | Optional | `object`       |          | Override the styles applied to the dialog component |
+| `title`            | Optional | `ReactNode`       |         | The title of the dialog                                                                 |
+
+## `ButtonProps`
+
+The `ButtonProps` prop allows you to pass props to the MUI `<Button>` component. For instance, to change the color of the button, you can use the `color` prop:
+
+{% raw %}
+
+```jsx
+const ShowButton = () => (
+  <ShowInDialogButton ButtonProps={{ color: 'primary' }}>
+      <SimpleShowLayout>
+          ...
+      </SimpleShowLayout>
+  </ShowInDialogButton>
+);
+```
+
+{% endraw %}
 
 ## `children`
 
@@ -132,22 +153,6 @@ const ShowButton = () => (
 ```
 
 You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
-
-## `ButtonProps`
-
-The `ButtonProps` prop allows you to pass props to the MUI `<Button>` component. For instance, to change the color of the button, you can use the `color` prop:
-
-{% raw %}
-```jsx
-const ShowButton = () => (
-  <ShowInDialogButton ButtonProps={{ color: 'primary' }}>
-      <SimpleShowLayout>
-          ...
-      </SimpleShowLayout>
-  </ShowInDialogButton>
-);
-```
-{% endraw %}
 
 ## `emptyWhileLoading`
 
@@ -263,6 +268,7 @@ The `queryOptions` prop allows you to pass options to the [`useQuery`](./Actions
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
 
 {% raw %}
+
 ```jsx
 const ShowButton = () => (
   <ShowInDialogButton queryOptions={{ meta: { fetch: 'author' } }}>
@@ -270,6 +276,7 @@ const ShowButton = () => (
   </ShowInDialogButton>
 );
 ```
+
 {% endraw %}
 
 ## `resource`
@@ -294,6 +301,7 @@ const ShowAuthorButton = () => {
 Customize the styles applied to the Material UI `<Dialog>` component:
 
 {% raw %}
+
 ```jsx
 const ShowButton = () => (
   <ShowInDialogButton sx={{ backgroundColor: 'paper' }}>
@@ -301,4 +309,50 @@ const ShowButton = () => (
   </ShowInDialogButton>
 );
 ```
+
 {% endraw %}
+
+## `title`
+
+Unlike the `<Show>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
+If you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component. That means you can display non-editable details of the current `record` in the title component.
+Here is an example:
+
+```tsx
+import { SimpleForm, useRecordContext } from 'react-admin';
+import { ShowInDialogButton } from '@react-admin/ra-form-layout';
+
+const CustomerShowTitle = () => {
+    const record = useRecordContext();
+    return record ? (
+        <span>
+            Show {record?.last_name} {record?.first_name}
+        </span>
+    ) : null;
+};
+
+const ShowButton = () => (
+  <ShowInDialogButton title={<CustomerEditTitle />}>
+    <SimpleShowLayout>
+      ...
+    </SimpleShowLayout>
+  </ShowInDialogButton>
+);
+
+const CustomersDatagrid = () => (
+  <Datagrid>
+    ...
+    <ShowButton />
+  </Datagrid>
+);
+```
+
+You can also hide the title by passing `null`:
+
+```tsx
+<ShowInDialogButton title={null}>
+    <SimpleForm>
+        ...
+    </SimpleForm>
+</ShowInDialogButton>
+```

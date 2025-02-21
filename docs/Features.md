@@ -242,7 +242,7 @@ React-admin supports **one-to-many**, **many-to-one**, **one-to-one**, and **man
 - [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)
 - [`<ReferenceOneInput>`](./ReferenceOneInput.md)
 
-Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins. 
+Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins.
 
 To learn more about relationships, check out this tutorial: [Handling Relationships in React Admin](https://marmelab.com/blog/2025/02/06/handling-relationships-in-react-admin.html).
 
@@ -833,6 +833,13 @@ You can also use the [`<SmartRichTextInput>`](./SmartRichTextInput.md) component
   Your browser does not support the video tag.
 </video>
 
+One last example is [`<FormFillerButton>`](./FormFillerButton.md), which lets user fill the current form based on an image.
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/FormFillerButton.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
 ## Fast
 
 React-admin takes advantage of the Single-Page-Application architecture, implementing various performance optimizations that make react-admin apps incredibly fast by default.
@@ -1157,28 +1164,27 @@ Check the following low-level hooks for more details:
 
 React-admin provides **live updates** via specialized hooks and components. This means that when a user edits a resource, the other users working on the same resource see the changes in real time whether they are in a list, a show view, or an edit view.
 
-For instance, replace `<List>` with `<ListLive>` to have a list refreshing automatically when an element is added, updated, or deleted:
+For instance, include a `<ListLiveUpdate>` within a `<List>` to have a list refreshing automatically when an element is added, updated, or deleted:
 
 ```diff
 import {
--   List,
+    List,
     Datagrid,
     TextField,
     NumberField,
     Datefield,
 } from 'react-admin';
-+import { ListLive } from '@react-admin/ra-realtime';
++import { ListLiveUpdate } from '@react-admin/ra-realtime';
 
 const PostList = () => (
--   <List>
-+   <ListLive>
+    <List>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />
             <DateField source="published_at" />
         </Datagrid>
--   </List>
-+   </ListLive>
++       <ListLiveUpdate />
+    </List>
 );
 ```
 
@@ -1195,7 +1201,7 @@ This feature leverages the following hooks:
 
 And the following components:
 
-- [`<ListLive>`](./ListLive.md)
+- [`<ListLiveUpdate>`](./ListLiveUpdate.md)
 - [`<EditLive>`](./EditLive.md)
 - [`<ShowLive>`](./ShowLive.md)
 
