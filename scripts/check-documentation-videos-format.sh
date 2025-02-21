@@ -17,7 +17,7 @@ checkCodecId() {
 checkChromaSubsampling() {
   imageencode=$(mediainfo --Inform="Video;%ChromaSubsampling%" "$1")
 
-  if [ "$imageencode" != "4:2:0" ]; then
+  if [ "$imageencode" = "4:4:4" ]; then
     # Construct the output file name
     output_file="${1%.*}_420.${1##*.}"
     echo "\nInvalid ChromaSubsampling for $1"
