@@ -383,9 +383,7 @@ const EmployerEdit = () => (
 
 ## Warn When There Are Unsaved Changes
 
-If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, there are two cases to consider.
-
-In that case, using the `warnWhenUnsavedChanges` prop directly on the form won't work, because this feature relies on the router's location, but both components do not use routing.
+If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, using the `warnWhenUnsavedChanges` prop directly on the form won't work, because this feature relies on the router's location, but both components do not use routing.
 
 Instead, you can use the `<WarnWhenUnsavedChangesInDialog>` component provided by `ra-form-layout`.
 
