@@ -1,16 +1,23 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement, ReactNode, ElementType } from 'react';
-import { SxProps } from '@mui/system';
+import {
+    ComponentType,
+    ElementType,
+    ReactElement,
+    ReactNode,
+    isValidElement,
+} from 'react';
 import Card from '@mui/material/Card';
+import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 import clsx from 'clsx';
-import { useListContext, RaRecord } from 'ra-core';
+import { RaRecord, useListContext } from 'ra-core';
 
 import { Title } from '../layout/Title';
+import { Empty } from './Empty';
+import { ListActions as DefaultActions } from './ListActions';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
-import { ListActions as DefaultActions } from './ListActions';
-import { Empty } from './Empty';
+import { isValidElementType } from 'react-is';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -55,7 +62,7 @@ export const ListView = <RecordType extends RaRecord = any>(
                 <ListToolbar
                     className={ListClasses.actions}
                     filters={filters}
-                    actions={actions}
+                    actions={getElement(actions)}
                 />
             )}
             <Content className={ListClasses.content}>{children}</Content>
@@ -97,6 +104,25 @@ export const ListView = <RecordType extends RaRecord = any>(
     );
 };
 
+const getElement = (
+    ElementOrComponent: React.ComponentType<any> | ReactElement | false
+) => {
+    if (ElementOrComponent === false) {
+        return;
+    }
+
+    if (isValidElement(ElementOrComponent)) {
+        console.log(`We have an element`);
+        return ElementOrComponent;
+    }
+
+    if (isValidElementType(ElementOrComponent)) {
+        console.log(`We have a component`);
+        const Element = ElementOrComponent as ComponentType<any>;
+        return <Element />;
+    }
+};
+
 export interface ListViewProps {
     /**
      * The actions to display in the toolbar. defaults to Filter + Create + Export.
@@ -131,7 +157,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    actions?: ReactElement | false;
+    actions?: ReactElement | React.ComponentType | false;
 
     /**
      * The content to render as a sidebar.

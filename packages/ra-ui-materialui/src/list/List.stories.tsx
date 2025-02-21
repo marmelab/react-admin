@@ -169,7 +169,7 @@ export const Basic = () => (
     </TestMemoryRouter>
 );
 
-export const Actions = () => (
+export const ActionsElement = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={defaultDataProvider}>
             <Resource
@@ -182,6 +182,23 @@ export const Actions = () => (
                             </Box>
                         }
                     >
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const Actions = () => <Box sx={{ backgroundColor: 'info.main' }}>Actions</Box>;
+
+export const ActionsComponent = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List actions={Actions}>
                         <BookList />
                     </List>
                 )}
