@@ -1,16 +1,23 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement, ReactNode, ElementType } from 'react';
-import { SxProps } from '@mui/system';
+import {
+    ComponentType,
+    ElementType,
+    ReactElement,
+    ReactNode,
+    isValidElement,
+} from 'react';
 import Card from '@mui/material/Card';
+import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 import clsx from 'clsx';
-import { useListContext, RaRecord } from 'ra-core';
+import { RaRecord, useListContext } from 'ra-core';
 
 import { Title } from '../layout/Title';
+import { Empty } from './Empty';
+import { ListActions as DefaultActions } from './ListActions';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
-import { ListActions as DefaultActions } from './ListActions';
-import { Empty } from './Empty';
+import { isValidElementType } from 'react-is';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -55,16 +62,18 @@ export const ListView = <RecordType extends RaRecord = any>(
                 <ListToolbar
                     className={ListClasses.actions}
                     filters={filters}
-                    actions={actions}
+                    actions={getActionsElement(actions)}
                 />
             )}
             <Content className={ListClasses.content}>{children}</Content>
-            {!error && pagination !== false && pagination}
+            {!error && pagination !== false && getElement(pagination)}
         </div>
     );
 
     const renderEmpty = () =>
-        empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
+        empty !== false && (
+            <div className={ListClasses.noResults}>{getElement(empty)}</div>
+        );
 
     const shouldRenderEmptyPage =
         !error &&
@@ -86,14 +95,41 @@ export const ListView = <RecordType extends RaRecord = any>(
         <Root className={clsx('list-page', className)} {...rest}>
             {title !== false && (
                 <Title
-                    title={title}
+                    title={title ? getTitleElement(title) : undefined}
                     defaultTitle={defaultTitle}
                     preferenceKey={`${resource}.list.title`}
                 />
             )}
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
-            {aside}
+            {aside ? getElement(aside) : null}
         </Root>
+    );
+};
+
+const getTitleElement = (title: ReactElement | ComponentType | string) => {
+    if (typeof title === 'string') {
+        return title;
+    }
+    return getElement(title);
+};
+
+const getActionsElement = (actions: ListViewProps['actions']) => {
+    if (!actions) {
+        return;
+    }
+    return getElement(actions);
+};
+
+const getElement = (ElementOrComponent: ComponentType | ReactElement) => {
+    if (isValidElement(ElementOrComponent)) {
+        return ElementOrComponent;
+    }
+    if (isValidElementType(ElementOrComponent)) {
+        const Element = ElementOrComponent as ComponentType;
+        return <Element />;
+    }
+    throw new Error(
+        'the value prop should be a valid ReactElement or a valid React Component'
     );
 };
 
@@ -131,7 +167,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    actions?: ReactElement | false;
+    actions?: ReactElement | ComponentType | false;
 
     /**
      * The content to render as a sidebar.
@@ -159,7 +195,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    aside?: ReactElement;
+    aside?: ReactElement | ComponentType;
 
     /**
      * A class name to apply to the root div element
@@ -230,7 +266,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    empty?: ReactElement | false;
+    empty?: ReactElement | ComponentType | false;
 
     /**
      * Set to true to return null while the list is loading.
@@ -283,7 +319,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    pagination?: ReactElement | false;
+    pagination?: ReactElement | ComponentType | false;
 
     /**
      * The page title (main title) to display above the data. Defaults to the humanized resource name.
@@ -298,7 +334,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    title?: string | ReactElement | false;
+    title?: string | ReactElement | ComponentType | false;
 
     /**
      * The CSS styles to apply to the component.

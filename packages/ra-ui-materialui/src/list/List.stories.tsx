@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin, AutocompleteInput } from 'react-admin';
+import { Admin, AutocompleteInput, Pagination } from 'react-admin';
 import {
     CustomRoutes,
     Resource,
@@ -10,6 +10,8 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Box, Card, Typography, Button, Link as MuiLink } from '@mui/material';
 
+import { Empty as DefaultEmpty } from './Empty';
+import { Pagination as DefaultPagination } from './pagination';
 import { List } from './List';
 import { SimpleList } from './SimpleList';
 import { ListActions } from './ListActions';
@@ -169,7 +171,7 @@ export const Basic = () => (
     </TestMemoryRouter>
 );
 
-export const Actions = () => (
+export const ActionsElement = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={defaultDataProvider}>
             <Resource
@@ -182,6 +184,23 @@ export const Actions = () => (
                             </Box>
                         }
                     >
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const Actions = () => <Box sx={{ backgroundColor: 'info.main' }}>Actions</Box>;
+
+export const ActionsComponent = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List actions={Actions}>
                         <BookList />
                     </List>
                 )}
@@ -267,6 +286,23 @@ export const TitleElement = () => (
     </TestMemoryRouter>
 );
 
+const TitleSpan = () => <span>Custom list title</span>;
+
+export const TitleComponent = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List title={TitleSpan}>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 export const TitleFalse = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={defaultDataProvider}>
@@ -297,15 +333,30 @@ export const HasCreate = () => (
     </TestMemoryRouter>
 );
 
-const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
+const AsideBlock = () => <Card sx={{ padding: 2 }}>Aside</Card>;
 
-export const Aside = () => (
+export const AsideElement = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin dataProvider={defaultDataProvider}>
             <Resource
                 name="books"
                 list={() => (
-                    <List aside={<AsideComponent />}>
+                    <List aside={<AsideBlock />}>
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const AsideComponent = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List aside={AsideBlock}>
                         <BookList />
                     </List>
                 )}
@@ -387,6 +438,22 @@ export const Empty = () => (
     </TestMemoryRouter>
 );
 
+export const EmptyComponent = () => (
+    <TestMemoryRouter initialEntries={['/authors']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="authors"
+                list={() => (
+                    <List empty={DefaultEmpty}>
+                        <span />
+                    </List>
+                )}
+                create={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 export const EmptyPartialPagination = () => (
     <TestMemoryRouter initialEntries={['/authors']}>
         <Admin
@@ -410,6 +477,21 @@ export const EmptyPartialPagination = () => (
                     </List>
                 )}
                 create={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const PaginationComponent = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List pagination={DefaultPagination}>
+                        <BookList />
+                    </List>
+                )}
             />
         </Admin>
     </TestMemoryRouter>

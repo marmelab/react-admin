@@ -22,6 +22,9 @@ import {
     PartialPagination,
     Default,
     SelectAllLimit,
+    TitleComponent,
+    ActionsElement,
+    ActionsComponent,
 } from './List.stories';
 
 const theme = createTheme(defaultTheme);
@@ -112,6 +115,25 @@ describe('<List />', () => {
         expect(screen.queryAllByText('Hello')).toHaveLength(1);
     });
 
+    it('should display aside component with ComponentType', () => {
+        const Dummy = () => <div />;
+        const Aside = () => <div id="aside">Hello</div>;
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getList: () => Promise.resolve({ data: [], total: 0 }),
+                })}
+            >
+                <ThemeProvider theme={theme}>
+                    <List resource="posts" aside={Aside}>
+                        <Dummy />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
+        );
+        expect(screen.queryAllByText('Hello')).toHaveLength(1);
+    });
+
     describe('empty', () => {
         it('should render an invite when the list is empty', async () => {
             const Dummy = () => {
@@ -186,6 +208,36 @@ describe('<List />', () => {
                 <CoreAdminContext dataProvider={dataProvider}>
                     <ThemeProvider theme={theme}>
                         <List resource="posts" empty={<CustomEmpty />}>
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(screen.queryByText('resources.posts.empty')).toBeNull();
+                screen.getByText('Custom Empty');
+            });
+        });
+
+        it('should render custom empty component when data is empty with ComponentType', async () => {
+            const Dummy = () => null;
+            const CustomEmpty = () => <div>Custom Empty</div>;
+
+            const dataProvider = {
+                getList: jest.fn(() =>
+                    Promise.resolve({
+                        data: [],
+                        pageInfo: {
+                            hasNextPage: false,
+                            hasPreviousPage: false,
+                        },
+                    })
+                ),
+            } as any;
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List resource="posts" empty={CustomEmpty}>
                             <Dummy />
                         </List>
                     </ThemeProvider>
@@ -332,6 +384,12 @@ describe('<List />', () => {
 
         it('should render custom title element when defined', async () => {
             render(<TitleElement />);
+            await screen.findByText('War and Peace (1869)');
+            screen.getByText('Custom list title');
+        });
+
+        it('should render custom title component when defined', async () => {
+            render(<TitleComponent />);
             await screen.findByText('War and Peace (1869)');
             screen.getByText('Custom list title');
         });
@@ -484,6 +542,18 @@ describe('<List />', () => {
             await screen.findByText(
                 'There are too many elements to select them all. Only the first 11 elements were selected.'
             );
+        });
+    });
+    describe('Custom actions', () => {
+        it('should render custom actions with ReactElement', async () => {
+            render(<ActionsElement />);
+            await screen.findByText('War and Peace (1869)');
+            screen.getByText('Actions');
+        });
+        it('should render custom actions with ComponentType', async () => {
+            render(<ActionsComponent />);
+            await screen.findByText('War and Peace (1869)');
+            screen.getByText('Actions');
         });
     });
 });
