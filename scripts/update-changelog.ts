@@ -13,7 +13,6 @@ const prOrder = [
     '[demo]',
     '[website]',
     '[storybook]',
-    '[demo]',
     '[chore]',
     'bump',
 ];
