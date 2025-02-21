@@ -109,7 +109,7 @@ export const useDataProvider = <
                             .apply(dataProvider, args)
                             .then(response => {
                                 if (
-                                    process.env.NODE_ENV !== 'production' &&
+                                    process.env.NODE_ENV === 'development' &&
                                     reactAdminFetchActions.includes(type)
                                 ) {
                                     validateResponseFormat(response, type);
