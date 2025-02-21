@@ -85,8 +85,6 @@ export const ArrayInput = (props: ArrayInputProps) => {
         source: arraySource,
         validate,
         variant,
-        disabled,
-        readOnly,
         margin = 'dense',
         ...rest
     } = props;
@@ -246,11 +244,13 @@ export const getArrayInputError = error => {
 };
 
 export interface ArrayInputProps
-    extends CommonInputProps,
-        Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> {
+    extends Omit<CommonInputProps, 'disabled' | 'readOnly'>,
+        Omit<
+            FormControlProps,
+            'defaultValue' | 'disabled' | 'readOnly' | 'onBlur' | 'onChange'
+        > {
     className?: string;
     children: ReactElement;
-    disabled?: boolean;
     isFetching?: boolean;
     isLoading?: boolean;
     isPending?: boolean;

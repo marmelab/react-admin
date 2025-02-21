@@ -314,8 +314,8 @@ const ShowButton = () => (
 
 ## `title`
 
-Unlike the `<Create>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
-Still, for `<ShowInDialogButton>`, if you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component. That means you can display non-editable details of the current `record` in the title component.
+Unlike the `<Show>` components, with Dialog components the title will be displayed in the `<Dialog>`, not in the `<AppBar>`.
+If you pass a custom title component, it will render in the same `RecordContext` as the dialog's child component. That means you can display non-editable details of the current `record` in the title component.
 Here is an example:
 
 ```tsx

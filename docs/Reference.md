@@ -96,7 +96,7 @@ title: "Index"
 
 **- H -**
 
-* [`<HorizontalMenu>`](./ContainerLayout.md#horizontalmenu)<img class="icon" src="./img/premium.svg" />
+* [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" />
 
 **- I -**
 
@@ -116,7 +116,7 @@ title: "Index"
 * [`<ListBase>`](./ListBase.md#usage)
 * [`<ListButton>`](./Buttons.md#listbutton)
 * [`<ListGuesser>`](./ListGuesser.md#usage)
-* [`<ListLive>`](./ListLive.md)<img class="icon" src="./img/premium.svg" />
+* [`<ListLiveUpdate>`](./ListLiveUpdate.md)<img class="icon" src="./img/premium.svg" />
 * [`<LocalesMenuButton>`](./LocalesMenuButton.md)
 * [`<LongForm>`](./LongForm.md)<img class="icon" src="./img/premium.svg" />
 * [`<Login>`](./Authentication.md#customizing-the-login-component)

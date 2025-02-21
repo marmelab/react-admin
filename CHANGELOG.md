@@ -1,5 +1,26 @@
 # Changelog
 
+## 5.6.1
+
+* Fix create-react-admin package manager detection ([#10534](https://github.com/marmelab/react-admin/pull/10534)) ([djhi](https://github.com/djhi))
+* Fix create-react-admin does not ignore auth-provider when specified and using supabase ([#10533](https://github.com/marmelab/react-admin/pull/10533)) ([djhi](https://github.com/djhi))
+* Fix `<NumberInput>` and `<AutocompleteInput>` do not forward the event when calling `onBlur` ([#9730](https://github.com/marmelab/react-admin/pull/9730)) ([yanchesky](https://github.com/yanchesky))
+* [Doc] Fix dialogs `title` doc ([#10536](https://github.com/marmelab/react-admin/pull/10536)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `<DatagridAGClient>` access control's doc ([#10535](https://github.com/marmelab/react-admin/pull/10535)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Promote composition with `<ListLiveUpdate>` instead of `<ListLive>` ([#10531](https://github.com/marmelab/react-admin/pull/10531)) ([djhi](https://github.com/djhi))
+* [Doc] Fix some videos do not play in Firefox for MacOS users ([#10524](https://github.com/marmelab/react-admin/pull/10524)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
+## 5.6.0
+
+* Add `<LoginWithEmail>` to facilitate login with email ([#10518](https://github.com/marmelab/react-admin/pull/10518)) ([fzaninotto](https://github.com/fzaninotto))
+* Add B&W Theme ([#10523](https://github.com/marmelab/react-admin/pull/10523)) ([fzaninotto](https://github.com/fzaninotto))
+* Make `create-react-admin` non interactive by default and support `ra-supabase` ([#10511](https://github.com/marmelab/react-admin/pull/10511)) ([djhi](https://github.com/djhi))
+* Support `<ReferenceOneField emptyContent>` ([#10450](https://github.com/marmelab/react-admin/pull/10450)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Update `<ArrayInput>` to throw an error when using outdated `disabled` prop ([#10529](https://github.com/marmelab/react-admin/pull/10529)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add `HorizontalMenu` doc ([#10528](https://github.com/marmelab/react-admin/pull/10528)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add `<FormFillerButton>` documentation ([#10527](https://github.com/marmelab/react-admin/pull/10527)) ([djhi](https://github.com/djhi))
+* [chore] Fix CI jobs that run on new tag ([#10525](https://github.com/marmelab/react-admin/pull/10525)) ([slax57](https://github.com/slax57))
+
 ## 5.5.4
 
 * Fix `<FilerLiveForm>` does not allow to clear filters ([#10522](https://github.com/marmelab/react-admin/pull/10522)) ([djhi](https://github.com/djhi))

@@ -348,6 +348,9 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                         '&.RaMenuItemLink-active': {
                             backgroundColor: GREY,
                         },
+                        '& .RaMenuItemLink-icon': {
+                            minWidth: 30,
+                        },
                     },
                 },
             },

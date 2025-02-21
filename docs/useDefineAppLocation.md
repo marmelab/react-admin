@@ -187,4 +187,4 @@ The following components read the app location context:
 - [`<Breadcrumb>`](./Breadcrumb.md)
 - [`<MultiLevelMenu>`](./MultiLevelMenu.md)
 - [`<IconMenu>`](./IconMenu.md)
-- [`<HorizontalMenu>`](./ContainerLayout.md#horizontalmenu)
+- [`<HorizontalMenu>`](./HorizontalMenu.md)
