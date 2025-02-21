@@ -217,7 +217,6 @@ import {
     SimpleForm,
     TextInput,
     DateInput,
-    DateField,
     required,
 } from 'react-admin';
 import { CreateDialog } from '@react-admin/ra-form-layout';
