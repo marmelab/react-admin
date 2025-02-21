@@ -39,8 +39,8 @@ This adapter subscribes to [Postgres Changes](https://supabase.com/docs/guides/r
 ```jsx
 import { createClient } from '@supabase/supabase-js';
 import { supabaseDataProvider } from 'ra-supabase';
-import { addRealTimeMethodsBasedOnSupabase, ListLive } from '@react-admin/ra-realtime';
-import { Admin, Resource, Datagrid, TextField, EmailField } from 'react-admin';
+import { addRealTimeMethodsBasedOnSupabase, ListLiveUpdate } from '@react-admin/ra-realtime';
+import { Admin, Resource, Datagrid, List, TextField, EmailField } from 'react-admin';
 
 const supabaseClient = createClient(
     process.env.SUPABASE_URL,
@@ -65,14 +65,15 @@ export const App = () => (
 );
 
 const SaleList = () => (
-    <ListLive>
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="first_name" />
             <TextField source="last_name" />
             <EmailField source="email" />
         </Datagrid>
-    </ListLive>
+        <ListLiveUpdate />
+    </List>
 );
 ```
 
@@ -115,7 +116,7 @@ Have a look at the Supabase [Replication Setup](https://supabase.com/docs/guides
 The `ra-realtime` package contains a function augmenting a regular (API-based) `dataProvider` with real-time methods based on the capabilities of [API-Platform](https://api-platform.com/). Use it as follows:
 
 ```jsx
-import { Datagrid, EditButton, ListProps } from 'react-admin';
+import { Datagrid, EditButton, List, ListProps } from 'react-admin';
 import {
     HydraAdmin,
     ResourceGuesser,
@@ -123,7 +124,7 @@ import {
     hydraDataProvider,
 } from '@api-platform/admin';
 import {
-    ListLive,
+    ListLiveUpdate,
     addRealTimeMethodsBasedOnApiPlatform,
 } from '@react-admin/ra-realtime';
 
@@ -151,12 +152,13 @@ const App = () => (
 
 // Example for connecting a list of greetings
 const GreetingsList = () => (
-    <ListLive>
+    <List>
         <Datagrid>
             <FieldGuesser source="name" />
             <EditButton />
         </Datagrid>
-    </ListLive>
+        <ListLiveUpdate />
+    </List>
 );
 ```
 
