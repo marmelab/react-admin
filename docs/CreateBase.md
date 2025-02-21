@@ -46,6 +46,7 @@ You can customize the `<CreateBase>` component using the following props, docume
 
 * `children`: the components that renders the form
 * [`disableAuthentication`](./Create.md#disableauthentication): disable the authentication check
+* [`mutationMode`](./Create.md#mutationmode): Switch to optimistic or undoable mutations (pessimistic by default)
 * [`mutationOptions`](./Create.md#mutationoptions): options for the `dataProvider.create()` call
 * [`record`](./Create.md#record): initialize the form with a record
 * [`redirect`](./Create.md#redirect): change the redirect location after successful creation
