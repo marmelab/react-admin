@@ -118,7 +118,7 @@ export const useCreateController = <
             const validationErrors = (error as HttpError)?.body?.errors;
             const hasValidationErrors =
                 !!validationErrors && Object.keys(validationErrors).length > 0;
-            if (!hasValidationErrors) {
+            if (!hasValidationErrors || mutationMode !== 'pessimistic') {
                 notify(
                     typeof error === 'string'
                         ? error
