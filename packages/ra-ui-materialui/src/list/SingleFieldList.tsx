@@ -57,7 +57,8 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         direction = 'row',
         ...rest
     } = props;
-    const { data, total, isPending } = useListContextWithProps(props);
+    const { data, total, isPaused, isPending, isPlaceholderData } =
+        useListContextWithProps(props);
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
 
@@ -65,7 +66,12 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         return <LinearProgress />;
     }
 
-    if (data == null || data.length === 0 || total === 0) {
+    if (
+        data == null ||
+        data.length === 0 ||
+        total === 0 ||
+        (isPaused && isPlaceholderData)
+    ) {
         if (empty) {
             return empty;
         }

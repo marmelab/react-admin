@@ -192,6 +192,7 @@ export const useUpdateMany = <
         MutationError,
         Partial<UseUpdateManyMutateParams<RecordType>>
     >({
+        mutationKey: [resource, 'updateMany', params],
         mutationFn: ({
             resource: callTimeResource = resource,
             ids: callTimeIds = paramsRef.current.ids,

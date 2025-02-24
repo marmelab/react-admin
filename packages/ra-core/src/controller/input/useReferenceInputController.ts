@@ -118,6 +118,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         reference,
         // @ts-ignore the types of the queryOptions for the getMAny and getList are not compatible
         options: {
+            // @ts-ignore FIXME
             enabled: currentValue != null && currentValue !== '',
             meta,
             ...otherQueryOptions,

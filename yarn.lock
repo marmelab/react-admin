@@ -4542,6 +4542,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-persist-client-core@npm:5.47.0":
+  version: 5.47.0
+  resolution: "@tanstack/query-persist-client-core@npm:5.47.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.47.0"
+  checksum: b82e532bd618fd0f4b57eb653f88f0777d36db872184b5cff8033772778f838960ffbf46174cc902cb2260d7065dda4ce6f9b216e6b5d13f67cabd425a66a884
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-sync-storage-persister@npm:5.47.0":
+  version: 5.47.0
+  resolution: "@tanstack/query-sync-storage-persister@npm:5.47.0"
+  dependencies:
+    "@tanstack/query-core": "npm:5.47.0"
+    "@tanstack/query-persist-client-core": "npm:5.47.0"
+  checksum: f82e1b68db259170711aaa5b76684d23131e9d272ffc78703583370823c21c06fedb8cd5e61f6df5228a369356b5527db8b6d9e467930374f942d1e70e34fea0
+  languageName: node
+  linkType: hard
+
 "@tanstack/react-query-devtools@npm:^5.21.7":
   version: 5.47.0
   resolution: "@tanstack/react-query-devtools@npm:5.47.0"
@@ -4551,6 +4570,18 @@ __metadata:
     "@tanstack/react-query": ^5.47.0
     react: ^18 || ^19
   checksum: 1c2a5916b8ac3c580263114c6ff5bf780f655d777ddd1027187f200f6a29703e28be98fadd0918537eb3f07cbfe283013f4212eafa7facde25116ab42b38d4e9
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-persist-client@npm:5.47.0":
+  version: 5.47.0
+  resolution: "@tanstack/react-query-persist-client@npm:5.47.0"
+  dependencies:
+    "@tanstack/query-persist-client-core": "npm:5.47.0"
+  peerDependencies:
+    "@tanstack/react-query": ^5.47.0
+    react: ^18 || ^19
+  checksum: 0bd0988f03811c5dcdc49c53f40a89495c1c11c9697eb15800d44c48ba626eb22fc421ca9348f84186406ec7652c10e36bde77790eddd14b934a38a90b488af4
   languageName: node
   linkType: hard
 
@@ -18297,8 +18328,10 @@ __metadata:
     "@hookform/devtools": "npm:^4.3.3"
     "@mui/icons-material": "npm:^5.16.12"
     "@mui/material": "npm:^5.16.12"
+    "@tanstack/query-sync-storage-persister": "npm:5.47.0"
     "@tanstack/react-query": "npm:^5.21.7"
     "@tanstack/react-query-devtools": "npm:^5.21.7"
+    "@tanstack/react-query-persist-client": "npm:5.47.0"
     "@vitejs/plugin-react": "npm:^4.2.1"
     jsonexport: "npm:^3.2.0"
     little-state-machine: "npm:^4.8.1"
