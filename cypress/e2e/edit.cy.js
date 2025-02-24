@@ -47,6 +47,7 @@ describe('Edit Page', () => {
         it('should redirect to list page after edit success', () => {
             // For some unknown reason, the click on submit didn't work in cypress
             // so we submit with enter
+            EditPostPage.waitUntilVisible();
             EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum{enter}');
             cy.url().should('match', /\/#\/posts$/);
         });
