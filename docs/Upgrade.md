@@ -975,6 +975,43 @@ const PostEdit = () => (
 );
 ```
 
+If you still need to access the *effective* source of an input inside an `<ArrayInput>`, for example to change the value programmatically using `setValue`, you will need to leverage the [`useSourceContext` hook](./ArrayInput#changing-an-items-value-programmatically).
+
+```tsx
+import { ArrayInput, SimpleFormIterator, TextInput, useSourceContext } from 'react-admin';
+import { useFormContext } from 'react-hook-form';
+import { Button } from '@mui/material';
+
+const MakeAdminButton = () => {
+    const sourceContext = useSourceContext();
+    const { setValue } = useFormContext();
+
+    const onClick = () => {
+        // sourceContext.getSource('role') will for instance return
+        // 'users.0.role'
+        setValue(sourceContext.getSource('role'), 'admin');
+    };
+
+    return (
+        <Button onClick={onClick} size="small" sx={{ minWidth: 120 }}>
+            Make admin
+        </Button>
+    );
+};
+
+const UserArray = () => (
+    <ArrayInput source="users">
+        <SimpleFormIterator inline>
+            <TextInput source="name" helperText={false} />
+            <TextInput source="role" helperText={false} />
+            <MakeAdminButton />
+        </SimpleFormIterator>
+    </ArrayInput>
+);
+```
+
+**Tip:** If you only need the item's index, you can leverage the [`useSimpleFormIteratorItem` hook](./SimpleFormIterator.md#getting-the-element-index) instead.
+
 ### Mutation Middlewares No Longer Receive The Mutation Options
 
 Mutations middlewares no longer receive the mutation options:
