@@ -52,29 +52,29 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 
 ## Props
 
-| Prop                      | Required | Type           | Default        | Description                                                                                  |
-|---------------------------|----------|----------------|----------------|----------------------------------------------------------------------------------------------|
-| `children`                | Required | `ReactNode`    | -              | The components rendering the list of records.                                          |
-| `actions`                 | Optional | `ReactElement` | -              | The actions to display in the toolbar.                                                       |
-| `aside`                   | Optional | `ReactElement` | -              | The component to display on the side of the list.                                            |
-| `component`               | Optional | `Component`    | `Card`         | The component to render as the root element.                                                 |
-| `debounce`                | Optional | `number`       | `500`          | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
-| `disable Authentication`  | Optional | `boolean`      | `false`        | Set to `true` to disable the authentication check.                                           |
-| `disable SyncWithLocation`| Optional | `boolean`      | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.            |
-| `empty`                   | Optional | `ReactElement` | -              | The component to display when the list is empty.                                             |
-| `empty WhileLoading`      | Optional | `boolean`      | `false`        | Set to `true` to return `null` while the list is loading.                                    |
-| `exporter`                | Optional | `function`     | -              | The function to call to export the list.                                                     |
-| `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
-| `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
-| `filter DefaultValues`    | Optional | `object`       | -              | The default filter values.                                                                   |
-| `pagination`              | Optional | `ReactElement` | `<Pagination>` | The pagination component to use.                                                             |
-| `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
-| `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
-| `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
-| `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
-| `storeKey`                | Optional | `string | false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
-| `title`                   | Optional | `string | ReactElement | false` | -              | The title to display in the App Bar.                                                         |
-| `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
+| Prop                      | Required | Type                                   | Default        | Description                                                                                  |
+|---------------------------|----------|----------------------------------------|----------------|-------------------------------------------------------------------------------------------------|
+| `children`                | Required | `ReactNode`                                     | -              | The components rendering the list of records.                                          |
+| `actions`                 | Optional | `ReactElement | ComponentType | false`          | -              | The actions to display in the toolbar.                                                       |
+| `aside`                   | Optional | `ReactElement | ComponentType`                  | -              | The component to display on the side of the list.                                            |
+| `component`               | Optional | `Component`                                     | `Card`         | The component to render as the root element.                                                 |
+| `debounce`                | Optional | `number`                                        | `500`          | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
+| `disable Authentication`  | Optional | `boolean`                                       | `false`        | Set to `true` to disable the authentication check.                                           |
+| `disable SyncWithLocation`| Optional | `boolean`                                       | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `empty`                   | Optional | `ReactElement | ComponentType | false`          | -              | The component to display when the list is empty.                                             |
+| `empty WhileLoading`      | Optional | `boolean`                                       | `false`        | Set to `true` to return `null` while the list is loading.                                    |
+| `exporter`                | Optional | `function`                                      | -              | The function to call to export the list.                                                     |
+| `filters`                 | Optional | `ReactElement`                                  | -              | The filters to display in the toolbar.                                                       |
+| `filter`                  | Optional | `object`                                        | -              | The permanent filter values.                                                                 |
+| `filter DefaultValues`    | Optional | `object`                                        | -              | The default filter values.                                                                   |
+| `pagination`              | Optional | `ReactElement | ComponentType | false`          | `<Pagination>` | The pagination component to use.                                                             |
+| `perPage`                 | Optional | `number`                                        | `10`           | The number of records to fetch per page.                                                     |
+| `queryOptions`            | Optional | `object`                                        | -              | The options to pass to the `useQuery` hook.                                                  |
+| `resource`                | Optional | `string`                                        | -              | The resource name, e.g. `posts`.                                                             |
+| `sort`                    | Optional | `object`                                        | -              | The initial sort parameters.                                                                 |
+| `storeKey`                | Optional | `string | false`                                | -           | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
+| `title`                   | Optional | `string | ReactElement | ComponentType | false` | -              | The title to display in the App Bar.                                                         |
+| `sx`                      | Optional | `object`                                        | -              | The CSS styles to apply to the component.                                                    |
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
 
@@ -139,6 +139,7 @@ export const PostList = () => (
     </List>
 );
 ```
+You can use a `ReactElement` (e.g. `actions={<ListActions/>}`), a `ComponentType` (e.g. `actions={ListActions}`) or false to disable it.
 
 **Tip**: If you are looking for an `<ImportButton>`, check out this third-party package: [benwinding/react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv).
 
@@ -175,7 +176,7 @@ The default `<List>` layout lets you render the component of your choice on the 
 
 ![List with aside](./img/list_aside.webp)
 
-Pass a React element as the `aside` prop for that purpose:
+Pass a React element or ComponentType as the `aside` prop for that purpose:
 
 {% raw %}
 ```jsx
@@ -483,7 +484,7 @@ When there is no result, and there is no active filter, and the resource has a c
 
 ![Empty invite](./img/list-empty.png)
 
-You can use the `empty` prop to replace that page by a custom component:
+You can use the `empty` prop to replace that page by a custom component, passing a ReactElement or ComponentType :
 
 {% raw %}
 ```jsx
@@ -783,7 +784,7 @@ By default, the `<List>` view displays a set of pagination controls at the botto
 
 ![Pagination](./img/list-pagination.webp)
 
-The `pagination` prop allows to replace the default pagination controls by your own.
+The `pagination` prop allows to replace the default pagination controls by your own, either with a ReactElement or a ComponentType.
 
 ```jsx
 // in src/MyPagination.js
@@ -990,7 +991,7 @@ export const PostList = () => (
 );
 ```
 
-The title can be a string, a React element, or `false` to disable the title.
+The title can be a string, a React element, a ComponentType or `false` to disable the title.
 
 ## `sx`: CSS API
 
