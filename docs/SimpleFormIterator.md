@@ -430,3 +430,38 @@ This property accepts the following subclasses:
 | `RaSimpleFormIterator-inline`         | Applied to rows when `inline` is true |
 | `RaSimpleFormIterator-line`           | Applied to each row |
 | `RaSimpleFormIterator-list`           | Applied to the `<ul>` element |
+
+## Getting The Element Index
+
+Inside a `<SimpleFormIterator>`, you can access the index of the current element using the `useSimpleFormIteratorItem` hook.
+
+```tsx
+import { 
+    TextInput,
+    ArrayInput,
+    SimpleFormIterator,
+    useSimpleFormIteratorItem,
+} from 'react-admin';
+import { Typography } from '@mui/material';
+
+const IndexField = () => {
+    const { index } = useSimpleFormIteratorItem();
+    return (
+        <Typography variant="body2" sx={{ alignSelf: 'center' }}>
+            #{index + 1}:
+        </Typography>
+    );
+};
+
+const UserArray = () => (
+    <ArrayInput source="items">
+        <SimpleFormIterator inline>
+            <IndexField />
+            <TextInput source="name" helperText={false} />
+            <TextInput source="role" helperText={false} />
+        </SimpleFormIterator>
+    </ArrayInput>
+);
+```
+
+**Tip:** This hook also returns the total number of elements (`total`).
