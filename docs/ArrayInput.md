@@ -178,3 +178,5 @@ const UserArray = () => (
     </ArrayInput>
 );
 ```
+
+**Tip:** If you only need the item's index, you can leverage the [`useSimpleFormIteratorItem` hook](./SimpleFormIterator.md#getting-the-element-index) instead.

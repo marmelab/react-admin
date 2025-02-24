@@ -465,3 +465,5 @@ const UserArray = () => (
 ```
 
 **Tip:** This hook also returns the total number of elements (`total`).
+
+**Tip:** If you need the index to change the value of an input programmatically, you should use the [`useSourceContext` hook](./ArrayInput.md#changing-an-items-value-programmatically) instead.
