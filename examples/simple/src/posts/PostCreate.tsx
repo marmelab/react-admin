@@ -30,6 +30,13 @@ import {
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Button, Dialog, DialogActions, DialogContent } from '@mui/material';
 
+const mutationMode = 'undoable';
+// Client side id generation. We start from 100 to avoid querying the post list to get the next id as we
+// may be offline and accessing this page directly (without going through the list page first) which would
+// be possible if the app was also a PWA.
+let next_id = 100;
+const getNewId = () => next_id++;
+
 const PostCreateToolbar = () => {
     const notify = useNotify();
     const redirect = useRedirect();
@@ -47,6 +54,7 @@ const PostCreateToolbar = () => {
                         notify('resources.posts.notifications.created', {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
+                            undoable: mutationMode === 'undoable',
                         });
                         redirect('show', 'posts', data.id);
                     },
@@ -64,6 +72,7 @@ const PostCreateToolbar = () => {
                         notify('resources.posts.notifications.created', {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
+                            undoable: mutationMode === 'undoable',
                         });
                     },
                 }}
@@ -77,11 +86,16 @@ const PostCreateToolbar = () => {
                         notify('resources.posts.notifications.created', {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
+                            undoable: mutationMode === 'undoable',
                         });
                         redirect('show', 'posts', data.id);
                     },
                 }}
-                transform={data => ({ ...data, average_note: 10 })}
+                transform={data => ({
+                    ...data,
+                    id: getNewId(),
+                    average_note: 10,
+                })}
                 sx={{ display: { xs: 'none', sm: 'flex' } }}
             />
         </Toolbar>
@@ -94,6 +108,7 @@ const backlinksDefaultValue = [
         url: 'http://google.com',
     },
 ];
+
 const PostCreate = () => {
     const defaultValues = useMemo(
         () => ({
@@ -103,7 +118,11 @@ const PostCreate = () => {
     );
     const dateDefaultValue = useMemo(() => new Date(), []);
     return (
-        <Create redirect="edit">
+        <Create
+            redirect="edit"
+            mutationMode={mutationMode}
+            transform={data => ({ ...data, id: getNewId() })}
+        >
             <SimpleFormConfigurable
                 toolbar={<PostCreateToolbar />}
                 defaultValues={defaultValues}
