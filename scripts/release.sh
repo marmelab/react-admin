@@ -40,7 +40,7 @@ echo "Press Enter when this is done"
 read
 
 step "lerna version"
-./node_modules/.bin/lerna version --force-publish --no-push
+./node_modules/.bin/lerna version --force-publish --no-push --no-git-tag-version
 
 # Get the version from package.json
 npm_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
@@ -54,6 +54,14 @@ if [ -z "$RELEASE_DRY_RUN" ]; then
     echo "Committing the changelog"
     git add CHANGELOG.md
     git commit -m "Update changelog for version ${npm_package_version}"
+fi
+
+step "git tag"
+if [ -z "$RELEASE_DRY_RUN" ]; then
+    echo "Creating git tag v${npm_package_version}"
+    git tag "v${npm_package_version}"
+else
+    echo "dry mode -- skipping git tag"
 fi
 
 step "git push"
