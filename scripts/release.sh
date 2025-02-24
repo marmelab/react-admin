@@ -40,10 +40,21 @@ echo "Press Enter when this is done"
 read
 
 step "lerna version"
-./node_modules/.bin/lerna version --force-publish --no-push --no-git-tag-version
+# Running lerna version
+# This will create a commit and a tag
+./node_modules/.bin/lerna version --force-publish --no-push
 
 # Get the version from package.json
 npm_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
+
+# Remove the tag created by lerna
+echo "Removing tag v${npm_package_version} created by lerna"
+git tag -d "v${npm_package_version}"
+if [ ! -z "$RELEASE_DRY_RUN" ]; then
+    # In dry-run mode, reset the last commit to avoid accidental push
+    echo "dry mode -- Resetting the workspace to the last commit"
+    git reset --soft HEAD~1
+fi
 
 step "update-changelog"
 yarn run update-changelog ${npm_package_version}
@@ -58,7 +69,7 @@ fi
 
 step "git tag"
 if [ -z "$RELEASE_DRY_RUN" ]; then
-    echo "Creating git tag v${npm_package_version}"
+    echo "Creating new tag v${npm_package_version}"
     git tag "v${npm_package_version}"
 else
     echo "dry mode -- skipping git tag"
