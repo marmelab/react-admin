@@ -198,3 +198,49 @@ You can add validators to any of the inputs inside a `TranslatableInputs`. If an
     <RichTextInput source="description" validate={[maxLength(100)]} />
 </TranslatableInputs>
 ```
+
+## Changing The Value Programmatically
+
+You can leverage `react-hook-form`'s [`setValue`](https://react-hook-form.com/docs/useform/setvalue) method to change an input's value programmatically.
+
+However you need to know the `name` under which the input was registered in the form, and this name is dynamically generated depending on the locale.
+
+To get the name of the input for a given locale, you can leverage the `SourceContext` created by react-admin, which can be accessed using the `useSourceContext` hook.
+
+This context provides a `getSource` function that returns the effective `source` for an input in the current context, which you can use as input name for `setValue`.
+
+Here is an example where we leverage `getSource` and `setValue` to pre-fill the 'description' input using the value of the 'title' input when the corresponding button is clicked:
+
+```tsx
+import { TranslatableInputs, TextInput, useSourceContext } from 'react-admin';
+import { useFormContext } from 'react-hook-form';
+import { Button } from '@mui/material';
+
+const PrefillWithTitleButton = () => {
+    const sourceContext = useSourceContext();
+    const { setValue, getValues } = useFormContext();
+
+    const onClick = () => {
+        setValue(
+            // sourceContext.getSource('description') will for instance return
+            // 'description.en'
+            sourceContext.getSource('description'),
+            getValues(sourceContext.getSource('title'))
+        );
+    };
+
+    return (
+        <Button onClick={onClick} size="small" sx={{ maxWidth: 140 }}>
+            Prefill with title
+        </Button>
+    );
+};
+
+const MyInputs = () => (
+    <TranslatableInputs locales={['en', 'fr']}>
+        <TextInput source="title" />
+        <TextInput source="description" helperText={false} />
+        <PrefillWithTitleButton />
+    </TranslatableInputs>
+);
+```
