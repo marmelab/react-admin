@@ -159,15 +159,15 @@ const PostCreate = () => (
 
 The `<Create>` view exposes a Save button, which perform a "mutation" (i.e. it creates the data). React-admin offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
 
-- `pessimistic`: The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed. 
+- `pessimistic` (default): The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed. 
 - `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown. 
-- `undoable` (default): The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
+- `undoable`: The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
 
 By default, pages using `<Create>` use the `pessimistic` mutation mode as the new record identifier is often generated on the backend. However, should you decide to generate this identifier client side, you can change the `mutationMode` to either `optimistic` or `undoable`:
 
 ```jsx
 const PostCreate = () => (
-    <Create mutationMode="optimistic">
+    <Create mutationMode="optimistic" transform={data => ({ id: generateId(), ...data })}>
         // ...
     </Create>
 );
@@ -177,7 +177,7 @@ And to make the record creation undoable:
 
 ```jsx
 const PostCreate = () => (
-    <Create mutationMode="undoable">
+    <Create mutationMode="undoable" transform={data => ({ id: generateId(), ...data })}>
         // ...
     </Create>
 );
