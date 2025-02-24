@@ -10,3 +10,4 @@ scenarios:
     threshold: 0.106
 baseURL: "http://localhost:4173"
 projectName: "react-admin"
+gitBranchName: "master"
