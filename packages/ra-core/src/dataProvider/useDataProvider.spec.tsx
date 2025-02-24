@@ -229,7 +229,8 @@ describe('useDataProvider', () => {
         );
     });
 
-    it('should call getList and show error', async () => {
+    it('should call getList and show error in development environment', async () => {
+        process.env.NODE_ENV = 'development';
         jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const getList = jest.fn(() =>
@@ -251,6 +252,50 @@ describe('useDataProvider', () => {
         expect(queryByTestId('error')?.textContent).toBe(
             'ra.notification.data_provider_error'
         );
+    });
+
+    it('should call getList and not show error in test environment', async () => {
+        process.env.NODE_ENV = 'test';
+
+        const getList = jest.fn(() =>
+            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+        );
+        const dataProvider = { getList };
+        const { queryByTestId } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList />
+            </CoreAdminContext>
+        );
+
+        expect(queryByTestId('loading')).not.toBeNull();
+        await act(async () => {
+            await new Promise(resolve => setTimeout(resolve));
+        });
+        expect(getList).toBeCalledTimes(1);
+        expect(queryByTestId('loading')).toBeNull();
+        expect(queryByTestId('error')).toBeNull();
+    });
+
+    it('should call getList and not show error in production environment', async () => {
+        process.env.NODE_ENV = 'production';
+
+        const getList = jest.fn(() =>
+            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+        );
+        const dataProvider = { getList };
+        const { queryByTestId } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList />
+            </CoreAdminContext>
+        );
+
+        expect(queryByTestId('loading')).not.toBeNull();
+        await act(async () => {
+            await new Promise(resolve => setTimeout(resolve));
+        });
+        expect(getList).toBeCalledTimes(1);
+        expect(queryByTestId('loading')).toBeNull();
+        expect(queryByTestId('error')).toBeNull();
     });
 
     it('should call custom and not show error', async () => {
