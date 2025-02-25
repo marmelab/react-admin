@@ -435,6 +435,8 @@ This property accepts the following subclasses:
 
 Inside a `<SimpleFormIterator>`, you can access the index of the current element using the `useSimpleFormIteratorItem` hook.
 
+{% raw %}
+
 ```tsx
 import { 
     TextInput,
@@ -463,6 +465,8 @@ const UserArray = () => (
     </ArrayInput>
 );
 ```
+
+{% endraw %}
 
 **Tip:** This hook also returns the total number of elements (`total`).
 

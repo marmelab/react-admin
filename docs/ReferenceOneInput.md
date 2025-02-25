@@ -252,6 +252,8 @@ This context provides a `getSource` function that returns the effective `source`
 
 Here is an example where we leverage `getSource` and `setValue` to update some of the book details when the 'Update book details' button is clicked:
 
+{% raw %}
+
 ```tsx
 import { NumberInput, TextInput, useSourceContext } from 'react-admin';
 import { ReferenceOneInput } from '@react-admin/ra-relationships';
@@ -297,3 +299,5 @@ const BookDetails = () => (
     </ReferenceOneInput>
 );
 ```
+
+{% endraw %}

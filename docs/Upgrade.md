@@ -977,6 +977,8 @@ const PostEdit = () => (
 
 If you still need to access the *effective* source of an input inside an `<ArrayInput>`, for example to change the value programmatically using `setValue`, you will need to leverage the [`useSourceContext` hook](./ArrayInput#changing-an-items-value-programmatically).
 
+{% raw %}
+
 ```tsx
 import { ArrayInput, SimpleFormIterator, TextInput, useSourceContext } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
@@ -1009,6 +1011,8 @@ const UserArray = () => (
     </ArrayInput>
 );
 ```
+
+{% endraw %}
 
 **Tip:** If you only need the item's index, you can leverage the [`useSimpleFormIteratorItem` hook](./SimpleFormIterator.md#getting-the-element-index) instead.
 

@@ -313,6 +313,8 @@ This context provides a `getSource` function that returns the effective `source`
 
 Here is an example where we leverage `getSource` and `setValue` to prefill the email input when the 'Prefill email' button is clicked:
 
+{% raw %}
+
 ```tsx
 import { SimpleFormIterator, TextInput, useSourceContext } from 'react-admin';
 import { ReferenceManyInput } from '@react-admin/ra-relationships';
@@ -354,5 +356,7 @@ const StudentsInput = () => (
     </ReferenceManyInput>
 );
 ```
+
+{% endraw %}
 
 **Tip:** If you only need the item's index, you can leverage the [`useSimpleFormIteratorItem` hook](./SimpleFormIterator.md#getting-the-element-index) instead.

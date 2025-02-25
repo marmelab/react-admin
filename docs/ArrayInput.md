@@ -146,6 +146,8 @@ This context provides a `getSource` function that returns the effective `source`
 
 Here is an example where we leverage `getSource` and `setValue` to change the role of an user to 'admin' when the 'Make Admin' button is clicked:
 
+{% raw %}
+
 ```tsx
 import { ArrayInput, SimpleFormIterator, TextInput, useSourceContext } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
@@ -178,5 +180,7 @@ const UserArray = () => (
     </ArrayInput>
 );
 ```
+
+{% endraw %}
 
 **Tip:** If you only need the item's index, you can leverage the [`useSimpleFormIteratorItem` hook](./SimpleFormIterator.md#getting-the-element-index) instead.

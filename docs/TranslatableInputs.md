@@ -211,6 +211,8 @@ This context provides a `getSource` function that returns the effective `source`
 
 Here is an example where we leverage `getSource` and `setValue` to pre-fill the 'description' input using the value of the 'title' input when the corresponding button is clicked:
 
+{% raw %}
+
 ```tsx
 import { TranslatableInputs, TextInput, useSourceContext } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
@@ -244,3 +246,5 @@ const MyInputs = () => (
     </TranslatableInputs>
 );
 ```
+
+{% endraw %}
