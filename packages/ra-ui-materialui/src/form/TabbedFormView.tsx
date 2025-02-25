@@ -37,6 +37,9 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         if (!syncWithLocation) {
             setTabValue(value);
         }
+        if (tabs.props.onChange) {
+            tabs.props.onChange(event, value);
+        }
     };
 
     const renderTabHeaders = () =>
