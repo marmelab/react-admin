@@ -50,6 +50,7 @@ export const BookCreate = () => {
 `useCreateController` accepts an object with the following keys, all optional:
 
 * [`disableAuthentication`](./Create.md#disableauthentication): Disable the authentication check
+* [`mutationMode`](./Create.md#mutationmode): Switch to optimistic or undoable mutations (pessimistic by default)
 * [`mutationOptions`](./Create.md#mutationoptions): Options for the `dataProvider.create()` call
 * [`record`](./Create.md#record): Use the provided record as base instead of fetching it
 * [`redirect`](./Create.md#redirect): Change the redirect location after successful creation
@@ -65,6 +66,7 @@ These fields are documented in [the `<Create>` component](./Create.md) documenta
 ```jsx
 const {
     defaultTitle, // Translated title based on the resource, e.g. 'Create New Post'
+    mutationMode, // Mutation mode argument passed as parameter, or 'pessimistic' if not defined
     record, // Default values of the creation form
     redirect, // Default redirect route. Defaults to 'list'
     resource, // Resource name, deduced from the location. e.g. 'posts'
