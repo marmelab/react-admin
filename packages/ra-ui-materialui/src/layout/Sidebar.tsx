@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 import { ReactElement } from 'react';
 import {
     Drawer,
@@ -40,9 +41,12 @@ export const Sidebar = (props: SidebarProps) => {
             open={open}
             onClose={toggleSidebar}
             classes={SidebarClasses}
-            className={
-                trigger && !appBarAlwaysOn ? SidebarClasses.appBarCollapsed : ''
-            }
+            className={clsx(
+                trigger && !appBarAlwaysOn
+                    ? SidebarClasses.appBarCollapsed
+                    : '',
+                open ? OPEN_CLASS : CLOSED_CLASS
+            )}
             {...rest}
         >
             <div className={SidebarClasses.fixed}>{children}</div>
@@ -74,6 +78,9 @@ export const SidebarClasses = {
     fixed: `${PREFIX}-fixed`,
     appBarCollapsed: `${PREFIX}-appBarCollapsed`,
 };
+
+const OPEN_CLASS = `${PREFIX}-open`;
+const CLOSED_CLASS = `${PREFIX}-closed`;
 
 const StyledDrawer = styled(Drawer, {
     name: PREFIX,
