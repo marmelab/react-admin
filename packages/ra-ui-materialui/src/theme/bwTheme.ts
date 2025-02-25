@@ -1,6 +1,7 @@
 import {
     amber,
     common,
+    deepOrange,
     green,
     grey,
     lightBlue,
@@ -27,16 +28,16 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                 main: isDarkMode ? grey['100'] : grey['800'],
             },
             success: {
-                main: green['900'],
+                main: isDarkMode ? green['500'] : green['900'],
             },
             error: {
-                main: red['900'],
+                main: isDarkMode ? deepOrange['600'] : red['900'],
             },
             info: {
-                main: lightBlue['900'],
+                main: isDarkMode ? lightBlue['500'] : lightBlue['900'],
             },
             warning: {
-                main: amber['900'],
+                main: isDarkMode ? amber['500'] : amber['900'],
             },
             divider: GREY,
             background: {
@@ -171,11 +172,25 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                     root: {
                         textTransform: 'none',
                         boxShadow: 'none',
-                        '&.MuiButton-outlined': {
+                        '&.MuiButton-outlinedPrimary': {
                             '--variant-outlinedBorder': GREY,
                             '&:hover': {
                                 backgroundColor: GREY,
                                 '--variant-outlinedBorder': GREY,
+                            },
+                        },
+                        '&.MuiButton-outlinedError': {
+                            '--variant-outlinedBorder': isDarkMode
+                                ? deepOrange['600']
+                                : red['900'],
+                            '&:hover': {
+                                backgroundColor: isDarkMode
+                                    ? deepOrange['600']
+                                    : red['900'],
+                                color: common['white'],
+                                '--variant-outlinedBorder': isDarkMode
+                                    ? deepOrange['600']
+                                    : red['900'],
                             },
                         },
                     },
