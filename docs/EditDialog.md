@@ -73,7 +73,7 @@ In the related `<Resource>`, you don't need to declare an `edit` component as th
 | `fullWidth`        | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen            |
 | `id`               | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context |
 | `maxWidth`         | Optional | `string`          | `sm`    | The max width of the dialog                                                |
-| `mutationOptions`  | Optional | `object`          |         | The options to pass to the `useMutation` hook                              |
+| `mutation Options` | Optional | `object`          |         | The options to pass to the `useMutation` hook                              |
 | `queryOptions`     | Optional | `object`          |         | The options to pass to the `useQuery` hook                                 |
 | `resource`         | Optional | `string`          |         | The resource name, e.g. `posts`                                            |
 | `sx`               | Optional | `object`          |         | Override the styles applied to the dialog component                        |

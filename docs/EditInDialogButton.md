@@ -79,7 +79,7 @@ const CompanyShow = () => (
 | `inline`           | Optional | `boolean`         |         | Set to true to display only a Material UI `<IconButton>` instead of the full `<Button>` |
 | `label`            | Optional | `string`          |         | Allows to override the default button label. I18N is supported                          |
 | `maxWidth`         | Optional | `string`          | `sm`    | The max width of the dialog                                                             |
-| `mutationOptions`  | Optional | `object`          |         | The options to pass to the `useMutation` hook                                           |
+| `mutation Options` | Optional | `object`          |         | The options to pass to the `useMutation` hook                                           |
 | `queryOptions`     | Optional | `object`          |         | The options to pass to the `useQuery` hook                                              |
 | `resource`         | Optional | `string`          |         | The resource name, e.g. `posts`                                                         |
 | `sx`               | Optional | `object`          |         | Override the styles applied to the dialog component                                     |

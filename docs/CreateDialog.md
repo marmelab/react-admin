@@ -77,7 +77,7 @@ In the related `<Resource>`, you don't need to declare a `create` component as t
 | `children`         | Required | `ReactNode` |         | The content of the dialog                                       |
 | `fullWidth`        | Optional | `boolean`   | `false` | If `true`, the dialog stretches to the full width of the screen |
 | `maxWidth`         | Optional | `string`    | `sm`    | The max width of the dialog                                     |
-| `mutationOptions`  | Optional | `object`    |         | The options to pass to the `useMutation` hook                   |
+| `mutation Options` | Optional | `object`    |         | The options to pass to the `useMutation` hook                   |
 | `resource`         | Optional | `string`    |         | The resource name, e.g. `posts`                                 |
 | `sx`               | Optional | `object`    |         | Override the styles applied to the dialog component             |
 | `title`            | Optional | `ReactNode` |         | The title of the dialog                                         |
