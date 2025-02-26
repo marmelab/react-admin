@@ -300,3 +300,63 @@ const ProductEdit = () => (
 -   `<ReferenceManyInput>` cannot be used with `undoable` mutations in a `<Create>` view.
 -   `<ReferenceManyInput>` cannot have a `<ReferenceOneInput>` or a `<ReferenceManyToManyInput>` as one of its children.
 -   `<ReferenceManyInput>` does not support server side validation.
+
+## Changing An Item's Value Programmatically
+
+You can leverage `react-hook-form`'s [`setValue`](https://react-hook-form.com/docs/useform/setvalue) method to change an item's value programmatically.
+
+However you need to know the `name` under which the input was registered in the form, and this name is dynamically generated depending on the index of the item in the array.
+
+To get the name of the input for a given index, you can leverage the `SourceContext` created by react-admin, which can be accessed using the `useSourceContext` hook.
+
+This context provides a `getSource` function that returns the effective `source` for an input in the current context, which you can use as input name for `setValue`.
+
+Here is an example where we leverage `getSource` and `setValue` to prefill the email input when the 'Prefill email' button is clicked:
+
+{% raw %}
+
+```tsx
+import { SimpleFormIterator, TextInput, useSourceContext } from 'react-admin';
+import { ReferenceManyInput } from '@react-admin/ra-relationships';
+import { useFormContext } from 'react-hook-form';
+import { Button } from '@mui/material';
+
+const PrefillEmail = () => {
+    const sourceContext = useSourceContext();
+    const { setValue, getValues } = useFormContext();
+
+    const onClick = () => {
+        const firstName = getValues(sourceContext.getSource('first_name'));
+        const lastName = getValues(sourceContext.getSource('last_name'));
+        const email = `${
+            firstName ? firstName.toLowerCase() : ''
+        }.${lastName ? lastName.toLowerCase() : ''}@school.com`;
+        setValue(sourceContext.getSource('email'), email);
+    };
+
+    return (
+        <Button onClick={onClick} size="small" sx={{ minWidth: 140 }}>
+            Prefill email
+        </Button>
+    );
+};
+
+const StudentsInput = () => (
+    <ReferenceManyInput
+        reference="students"
+        target="teacher_id"
+        sort={{ field: 'last_name', order: 'ASC' }}
+    >
+        <SimpleFormIterator inline disableReordering>
+            <TextInput source="first_name" helperText={false} />
+            <TextInput source="last_name" helperText={false} />
+            <TextInput source="email" helperText={false} />
+            <PrefillEmail />
+        </SimpleFormIterator>
+    </ReferenceManyInput>
+);
+```
+
+{% endraw %}
+
+**Tip:** If you only need the item's index, you can leverage the [`useSimpleFormIteratorItem` hook](./SimpleFormIterator.md#getting-the-element-index) instead.

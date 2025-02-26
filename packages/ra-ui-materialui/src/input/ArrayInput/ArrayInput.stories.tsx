@@ -6,8 +6,9 @@ import {
     Resource,
     testI18nProvider,
     TestMemoryRouter,
+    useSourceContext,
 } from 'ra-core';
-import { InputAdornment } from '@mui/material';
+import { Button, InputAdornment } from '@mui/material';
 
 import { Edit, Create } from '../../detail';
 import { SimpleForm, TabbedForm } from '../../form';
@@ -881,6 +882,45 @@ export const WithReferenceField = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin dataProvider={dataProviderWithCountries}>
             <Resource name="books" edit={EditWithReferenceField} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const MakeAdminButton = () => {
+    const sourceContext = useSourceContext();
+    const { setValue } = useFormContext();
+
+    const onClick = () => {
+        setValue(sourceContext.getSource('role'), 'admin');
+    };
+
+    return (
+        <Button onClick={onClick} size="small" sx={{ minWidth: 120 }}>
+            Make admin
+        </Button>
+    );
+};
+
+const BookEditSetValue = () => {
+    return (
+        <Edit>
+            <SimpleForm>
+                <ArrayInput source="authors">
+                    <SimpleFormIterator inline>
+                        <TextInput source="name" helperText={false} />
+                        <TextInput source="role" helperText={false} />
+                        <MakeAdminButton />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const SetValue = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="books" edit={BookEditSetValue} />
         </Admin>
     </TestMemoryRouter>
 );
