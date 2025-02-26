@@ -56,7 +56,7 @@ const ProductEdit = () => (
             <NumberInput source="price" />
             <ReferenceInput source="category_id" reference="categories" />
             <ReferenceManyInput reference="variants" target="product_id">
-                <SimpleFormIterator inline>
+                <SimpleFormIterator inline disableReordering>
                     <TextInput source="sku" />
                     <SelectInput source="size" choices={sizes} />
                     <SelectInput source="color" choices={colors} />
@@ -97,7 +97,7 @@ const ProductEdit = () => (
 
 ```jsx
 <ReferenceManyInput reference="variants" target="product_id">
-    <SimpleFormIterator>
+    <SimpleFormIterator disableReordering>
         <TextInput source="sku" />
         <SelectInput source="size" choices={sizes} />
         <SelectInput source="color" choices={colors} />
@@ -125,7 +125,7 @@ You can use the `defaultValue` prop to populate the list of related records in t
         { sku: 'SKU_4', size: 'XL', color: 'black', stock: 0 },
     ]}
 >
-    <SimpleFormIterator>
+    <SimpleFormIterator disableReordering>
         <TextInput source="sku" />
         <SelectInput source="size" choices={sizes} />
         <SelectInput source="color" choices={colors} />
@@ -297,6 +297,7 @@ const ProductEdit = () => (
 ## Limitations
 
 -   `<ReferenceManyInput>` cannot be used inside an `<ArrayInput>` or a `<ReferenceOneInput>`.
+-   `<ReferenceManyInput>` does not support reordering its items so you should set `disableReordering` on `<SimpleFormIterator>` if you use it.
 -   `<ReferenceManyInput>` cannot be used with `undoable` mutations in a `<Create>` view.
 -   `<ReferenceManyInput>` cannot have a `<ReferenceOneInput>` or a `<ReferenceManyToManyInput>` as one of its children.
 -   `<ReferenceManyInput>` does not support server side validation.
