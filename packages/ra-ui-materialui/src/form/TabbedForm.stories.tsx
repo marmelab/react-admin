@@ -71,9 +71,9 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const MultipleTabs = () => (
+export const MultipleTabs = ({ tabs }) => (
     <Wrapper>
-        <TabbedForm>
+        <TabbedForm tabs={tabs}>
             <TabbedForm.Tab label="main">
                 <TextInput source="title" />
                 <TextInput source="author" />
