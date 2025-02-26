@@ -297,7 +297,7 @@ const ProductEdit = () => (
 ## Limitations
 
 -   `<ReferenceManyInput>` cannot be used inside an `<ArrayInput>` or a `<ReferenceOneInput>`.
--   `<ReferenceManyInput>` does not support reordering its items so you should set `disableReordering` on `<SimpleFormIterator>` if you use it.
+-   `<ReferenceManyInput>` does not support reordering its items so you should set the `disableReordering` prop on `<SimpleFormIterator>` if you use it.
 -   `<ReferenceManyInput>` cannot be used with `undoable` mutations in a `<Create>` view.
 -   `<ReferenceManyInput>` cannot have a `<ReferenceOneInput>` or a `<ReferenceManyToManyInput>` as one of its children.
 -   `<ReferenceManyInput>` does not support server side validation.
