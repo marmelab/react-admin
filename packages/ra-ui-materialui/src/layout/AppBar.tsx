@@ -115,7 +115,7 @@ export interface AppBarProps extends MuiAppBarProps {
     alwaysOn?: boolean;
     container?: React.ElementType<any>;
     toolbar?: React.ReactNode;
-    userMenu?: React.ReactNode | boolean;
+    userMenu?: React.ReactNode;
 }
 
 const PREFIX = 'RaAppBar';
