@@ -313,7 +313,7 @@ const myPromptGenerator = ({ name, value, resource, record = {} }) => {
 
 In order to use this component, your Data Provider must expose a `getCompletion()` method to suggest a completion for a prompt.
 
--   input format: `{ prompt, stop, temperature, maxSize, meta }` (only the `prompt` property is required)
+-   input format: `{ prompt, systemPrompt, stop, temperature, maxSize, meta }` (only the `prompt` property is required)
 -   output: `Promise({ data: completionString })`
 
 ```jsx

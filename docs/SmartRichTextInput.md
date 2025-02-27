@@ -261,7 +261,7 @@ const MyRichTextInput = ({ size, ...props }) => (
 
 In order to use the AI-powered components, your Data Provider must expose a `getCompletion()` method to suggest a completion for a prompt.
 
--   input format: `{ prompt, stop, temperature, maxSize, meta }` (only the `prompt` property is required)
+-   input format: `{ prompt, systemPrompt, stop, temperature, maxSize, meta }` (only the `prompt` property is required)
 -   output: `Promise({ data: completionString })`
 
 ```jsx
