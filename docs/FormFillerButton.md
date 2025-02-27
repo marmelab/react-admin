@@ -33,22 +33,22 @@ export const ContactEdit = () => (
 );
 ```
 
-You must define a `dataProvider.getCompletion()` method to fetch the completion suggestions from your API. This method must return a promise that resolves to a `{ data: completionString }` object.
+You must define a `dataProvider.generateContent()` method to fetch the completion suggestions from your API. This method must return a promise that resolves to a `{ data: completionString }` object.
 
 For instance, to use the OpenAI Completion API:
 
 ```jsx
 // in src/dataProvider.js
 import jsonServerProvider from 'ra-data-json-server';
-import { addGetCompletionBasedOnOpenAIAPI } from '@react-admin/ra-ai';
+import { addAIMethodsBasedOnOpenAIAPI } from '@react-admin/ra-ai';
 
 const baseDataProvider = jsonServerProvider(
     import.meta.env.VITE_JSON_SERVER_URL
 );
-export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider),
+export const dataProvider = addAIMethodsBasedOnOpenAIAPI(baseDataProvider),
 ```
 
-`addGetCompletionBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to add the key to the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`)
+`addAIMethodsBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to add the key to the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`)
 
 **Tip**: `<FormFillerButton>` requires a model with Vision capabilities to extract text from images. We recommend using OpenAI's `gpt-4o-mini` or `gpt-4o` models.
 
@@ -110,7 +110,7 @@ Larger dimensions improve the OCR quality but increase the processing time.
 
 ## `meta`
 
-Lets you pass additional parameters to the `getCompletion()` query.
+Lets you pass additional parameters to the `generateContent()` query.
 
 For instance, the OpenAI implementation uses the `meta` parameter as a way to adjust the completion settings:
 
@@ -166,37 +166,37 @@ Props to pass to the Dialog component.
 ```
 {% endraw %}
 
-## `dataProvider.getCompletion()`
+## `dataProvider.generateContent()`
 
-In order to use the AI-powered components, your Data Provider must expose a `getCompletion()` method to suggest a completion for a prompt.
+In order to use the AI-powered components, your Data Provider must expose a `generateContent()` method to generate the form values for a prompt.
 
 -   input format: `{ prompt, stop, temperature, maxSize, meta }` (only the `prompt` property is required)
--   output: `Promise({ data: completionString })`
+-   output: `Promise({ data: content })`
 
 ```jsx
 dataProvider
-    .getCompletion({ prompt: 'Lorem ipsum' })
+    .generateContent({ prompt: 'Lorem ipsum' })
     .then(response => console.log(response.data));
 // ' dolor sit amet, consectetur adipiscing elit.'
 ```
 
-It's your responsibility to implement the `dataProvider.getCompletion()` method. You can rely on an API to fetch the completion, or use a local completion model.
+It's your responsibility to implement the `dataProvider.generateContent()` method. You can rely on an API to fetch the generated content, or use a local completion model.
 
-If you rely on the [OpenAI Completion API](https://platform.openai.com/docs/api-reference/completions), you can use the `addGetCompletionBasedOnOpenAIAPI()` helper:
+If you rely on the [OpenAI Completion API](https://platform.openai.com/docs/api-reference/completions), you can use the `addAIMethodsBasedOnOpenAIAPI()` helper:
 
 ```jsx
 // in src/dataProvider.js
 import jsonServerProvider from 'ra-data-json-server';
-import { addGetCompletionBasedOnOpenAIAPI } from '@react-admin/ra-ai';
+import { addAIMethodsBasedOnOpenAIAPI } from '@react-admin/ra-ai';
 
 const baseDataProvider = jsonServerProvider(
     import.meta.env.VITE_JSON_SERVER_URL
 );
-export const dataProvider = addGetCompletionBasedOnOpenAIAPI(baseDataProvider);
+export const dataProvider = addAIMethodsBasedOnOpenAIAPI(baseDataProvider);
 ```
 
-`addGetCompletionBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to store the key in the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`).
+`addAIMethodsBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to store the key in the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`).
 
-**Tip**: A more secure way of using the OpenAI API is to add a proxy route in your API backend to the OpenAI API. That way, `getCompletion` will use the same credentials as the other data provider methods, and your OpenAI API key will never transit in the browser.
+**Tip**: A more secure way of using the OpenAI API is to add a proxy route in your API backend to the OpenAI API. That way, `generateContent` will use the same credentials as the other data provider methods, and your OpenAI API key will never transit in the browser.
 
 If you rely on another API, you'll need to fetch it yourself.
