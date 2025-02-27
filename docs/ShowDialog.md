@@ -5,10 +5,10 @@ title: "ShowDialog"
 
 # `<ShowDialog>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a replacement to [the `<Show>` component](./Edit.md) allowing users to update records without leaving the context of the list page.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a replacement to [the `<Show>` component](./Show.md) allowing users to visualize a record without leaving the context of the list page.
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/show-dialog.mp4" type="video/mp4" />
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -72,7 +72,6 @@ In the related `<Resource>`, you don't need to declare an `show` component as th
 | `fullWidth`        | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen            |
 | `id`               | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context |
 | `maxWidth`         | Optional | `string`          | `sm`    | The max width of the dialog                                                |
-| `mutationOptions`  | Optional | `object`          |         | The options to pass to the `useMutation` hook                              |
 | `queryOptions`     | Optional | `object`          |         | The options to pass to the `useQuery` hook                                 |
 | `resource`         | Optional | `string`          |         | The resource name, e.g. `posts`                                            |
 | `sx`               | Optional | `object`          |         | Override the styles applied to the dialog component                        |
@@ -80,34 +79,27 @@ In the related `<Resource>`, you don't need to declare an `show` component as th
 
 ## `children`
 
-`<ShowDialog>` doesn't render any field by default - it delegates this to its children, usually a Form component.
+`<ShowDialog>` doesn't render any field by default - it delegates this to its children, usually [a `SimpleShowLayout` component](./SimpleShowLayout.md).
 
-React-admin provides several built-in form layout components:
+React-admin also provides [`TabbedShowLayout`](./TabbedShowLayout.md) another layout components for a tabbed layout.
 
-- [`SimpleForm`](./SimpleForm.md) for a single-column layout
-- [`TabbedForm`](./TabbedForm.md) for a tabbed layout
-- [`AccordionForm`](./AccordionForm.md) for long forms with collapsible sections
-- [`LongForm`](./LongForm.md) for long forms with a navigation sidebar
-- [`WizardForm`](./WizardForm.md) for multi-step forms
-- and [`Form`](./Form.md), a headless component to use as a base for your custom layouts
-
-To use an alternative form layout, switch the `<ShowDialog>` child component:
+To use it, switch the `<ShowDialog>` child component:
 
 ```diff
 const MyShowDialog = () => (
-    <ShowDialog fullWidth maxWidth="md">
--       <SimpleForm>
-+       <TabbedForm>
-+           <TabbedForm.Tab label="Identity">
-                <TextInput source="first_name" fullWidth />
-                <TextInput source="last_name" fullWidth />
-+           </TabbedForm.Tab>
-+           <TabbedForm.Tab label="Informations">
-                <DateInput source="dob" label="born" fullWidth />
-                <SelectInput source="sex" choices={sexChoices} fullWidth />
-+           </TabbedForm.Tab>
--       </SimpleForm>
-+       </TabbedForm>
+    <ShowDialog>
+-       <SimpleShowLayout>
++       <TabbedShowLayout>
++           <TabbedShowLayout.Tab label="Identity">
+                <TextField source="first_name" />
+                <TextField source="last_name" />
++           </TabbedShowLayout.Tab>
++           <TabbedShowLayout.Tab label="Informations">
+                <DateField source="dob" label="born" />
+                <SelectField source="sex" choices={sexChoices} />
++           </TabbedShowLayout.Tab>
+-       </SimpleShowLayout>
++       </TabbedShowLayout>
     </ShowDialog>
 );
 ```
@@ -166,24 +158,6 @@ const MyShowDialog = () => (
   </ShowDialog>
 );
 ```
-
-## `mutationOptions`
-
-The `mutationOptions` prop allows you to pass options to the `useMutation` hook. 
-
-This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
-
-{% raw %}
-
-```jsx
-const MyShowDialog = () => (
-  <ShowDialog mutationOptions={{ meta: { fetch: 'author' } }}>
-      ...
-  </ShowDialog>
-);
-```
-
-{% endraw %}
 
 ## `queryOptions`
 
