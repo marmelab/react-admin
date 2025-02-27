@@ -117,6 +117,8 @@ export const useListController = <
         isFetching,
         isPending,
         refetch,
+        isPaused,
+        isPlaceholderData,
     } = useGetList<RecordType, ErrorType>(
         resource,
         {
@@ -147,6 +149,11 @@ export const useListController = <
             ...otherQueryOptions,
         }
     );
+    useEffect(() => {
+        if (isPaused && isPlaceholderData) {
+            notify('Could not fetch the requested data', { type: 'warning' });
+        }
+    }, [isPaused, isPlaceholderData, notify]);
 
     // change page if there is no data
     useEffect(() => {

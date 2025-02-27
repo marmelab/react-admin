@@ -6,6 +6,7 @@ import { CoreAdminContext } from '../../core';
 import { ListController } from './ListController';
 import type { DataProvider } from '../../types';
 import type { ListControllerResult } from './useListController';
+import { useNotificationContext } from '../../notification';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -99,6 +100,23 @@ export const Basic = ({
     </CoreAdminContext>
 );
 
+const Notifications = () => {
+    const { notifications, takeNotification } = useNotificationContext();
+    return (
+        <div>
+            <p>NOTIFICATIONS</p>
+            <ul>
+                {notifications.map(({ message, type }, id) => (
+                    <li key={id}>
+                        {message} - {type}
+                    </li>
+                ))}
+            </ul>
+            <button onClick={takeNotification}>Take notification</button>
+        </div>
+    );
+};
+
 export const Offline = () => (
     <CoreAdminContext dataProvider={defaultDataProvider}>
         <ListController resource="posts" perPage={3}>
@@ -135,6 +153,7 @@ export const Offline = () => (
                 </div>
             )}
         </ListController>
+        <Notifications />
         <ReactQueryDevtools initialIsOpen />
     </CoreAdminContext>
 );
