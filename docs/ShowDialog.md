@@ -81,7 +81,7 @@ In the related `<Resource>`, you don't need to declare an `show` component as th
 
 `<ShowDialog>` doesn't render any field by default - it delegates this to its children, usually [a `SimpleShowLayout` component](./SimpleShowLayout.md).
 
-React-admin also provides [`TabbedShowLayout`](./TabbedShowLayout.md) another layout components for a tabbed layout.
+React-admin also provides [`TabbedShowLayout`](./TabbedShowLayout.md), another layout component rendering tabs.
 
 To use it, switch the `<ShowDialog>` child component:
 
