@@ -267,4 +267,12 @@ window.addEventListener('DOMContentLoaded', () => {
     buildPageToC();
     navigationFitScroll();
     loadNewsletterScript();
+
+    if (window.location.pathname === '/documentation.html') {
+        import('./ra-doc-exec.js').then(docExecModule => {
+            document.querySelector('.DocSearch-content').innerHTML = '';
+            toggleDockBlocks(true);
+            docExecModule.showTip();
+        });
+    }
 });
