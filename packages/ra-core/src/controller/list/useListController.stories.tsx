@@ -1,5 +1,6 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { CoreAdminContext } from '../../core';
 import { ListController } from './ListController';
@@ -95,5 +96,45 @@ export const Basic = ({
 }) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ListController resource="posts">{children}</ListController>
+    </CoreAdminContext>
+);
+
+export const Offline = () => (
+    <CoreAdminContext dataProvider={defaultDataProvider}>
+        <ListController resource="posts" perPage={3}>
+            {params => (
+                <div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                        }}
+                    >
+                        <button onClick={() => params.setPage(1)}>
+                            Page 1
+                        </button>
+                        <button onClick={() => params.setPage(2)}>
+                            Page 2
+                        </button>
+                        <button onClick={() => params.setPage(3)}>
+                            Page 3
+                        </button>
+                    </div>
+                    <ul
+                        style={{
+                            listStyleType: 'none',
+                        }}
+                    >
+                        {params.data?.map(record => (
+                            <li key={record.id}>
+                                {record.id} - {record.title}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </ListController>
+        <ReactQueryDevtools initialIsOpen />
     </CoreAdminContext>
 );
