@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, memo } from 'react';
+import { memo } from 'react';
 
 import { useTranslateLabel } from '../i18n';
 
@@ -7,7 +7,7 @@ export interface FieldTitleProps {
     isRequired?: boolean;
     resource?: string;
     source?: string;
-    label?: string | ReactElement | boolean;
+    label?: React.ReactNode;
 }
 
 export const FieldTitle = (props: FieldTitleProps) => {

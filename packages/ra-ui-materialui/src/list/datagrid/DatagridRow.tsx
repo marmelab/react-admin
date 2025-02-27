@@ -28,6 +28,7 @@ import ExpandRowButton from './ExpandRowButton';
 import { DatagridClasses } from './useDatagridStyles';
 import { useDatagridContext } from './useDatagridContext';
 import { RowClickFunction } from '../types';
+import { DatagridField } from './types';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -215,14 +216,17 @@ const DatagridRow: React.ForwardRefExoticComponent<
                     isValidElement(field) ? (
                         <DatagridCell
                             key={`${id}-${
-                                (field.props as any).source || index
+                                (field as DatagridField).props.source || index
                             }`}
                             className={clsx(
-                                `column-${(field.props as any).source}`,
+                                `column-${(field as DatagridField).props.source}`,
                                 DatagridClasses.rowCell
                             )}
                             record={record}
-                            {...{ field, resource }}
+                            {...{
+                                field: field as DatagridField,
+                                resource,
+                            }}
                         />
                     ) : null
                 )}

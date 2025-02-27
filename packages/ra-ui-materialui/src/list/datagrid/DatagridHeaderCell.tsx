@@ -11,15 +11,14 @@ import {
     useTranslateLabel,
 } from 'ra-core';
 import type { SortPayload } from 'ra-core';
+import { DatagridField } from './types';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
     ASC: 'DESC',
     DESC: 'ASC',
 };
 
-export const DatagridHeaderCell = (
-    props: DatagridHeaderCellProps
-): JSX.Element => {
+export const DatagridHeaderCell = (props: DatagridHeaderCellProps) => {
     const { className, field, sort, updateSort, isSorting, ...rest } = props;
     const resource = useResourceContext();
 
@@ -107,7 +106,7 @@ export const DatagridHeaderCell = (
 export interface DatagridHeaderCellProps
     extends Omit<TableCellProps, 'classes' | 'resource'> {
     className?: string;
-    field?: JSX.Element;
+    field?: DatagridField;
     isSorting?: boolean;
     sort?: SortPayload;
     updateSort?: (event: any) => void;

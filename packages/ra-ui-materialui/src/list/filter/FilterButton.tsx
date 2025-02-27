@@ -81,7 +81,7 @@ export const FilterButton = (props: FilterButtonProps) => {
     }
 
     const allTogglableFilters = filters.filter(
-        (filterElement: JSX.Element) => !filterElement.props.alwaysOn
+        (filterElement: React.ReactElement) => !filterElement.props.alwaysOn
     );
 
     const handleClickButton = useCallback(
@@ -171,7 +171,7 @@ export const FilterButton = (props: FilterButtonProps) => {
                 onClose={handleRequestClose}
             >
                 {allTogglableFilters.map(
-                    (filterElement: JSX.Element, index) => (
+                    (filterElement: React.ReactElement, index) => (
                         <FilterButtonMenuItem
                             key={filterElement.props.source}
                             filter={filterElement}
