@@ -1,6 +1,15 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { StoreContextProvider, memoryStore } from 'ra-core';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import {
+    Form,
+    I18nContextProvider,
+    StoreContextProvider,
+    TestMemoryRouter,
+    memoryStore,
+} from 'ra-core';
 import {
     defaultLightTheme,
     defaultDarkTheme,
@@ -29,7 +38,24 @@ import {
     ThemeProvider as MuiThemeProvider,
     createTheme,
 } from '@mui/material/styles';
-import { Button } from '../button';
+import {
+    Button,
+    CreateButton,
+    DeleteButton,
+    EditButton,
+    ListButton,
+    ShowButton,
+} from '../button';
+import {
+    TextInput,
+    DateInput,
+    SelectInput,
+    RadioButtonGroupInput,
+    CheckboxGroupInput,
+    BooleanInput,
+    PasswordInput,
+    SearchInput,
+} from '../input';
 
 export default {
     title: 'ra-ui-materialui/theme/ThemeTester',
@@ -54,54 +80,107 @@ const themes: Theme[] = [
 
 const store = memoryStore();
 
-export const ThemeTester = () => {
+const Wrapper = ({ children }) => {
     const [themeName, setThemeName] = useState('Default');
     const lightTheme = themes.find(theme => theme.name === themeName)?.light;
     const darkTheme = themes.find(theme => theme.name === themeName)?.dark;
     return (
-        <StoreContextProvider value={store}>
-            <ThemesContext.Provider value={{ lightTheme, darkTheme }}>
-                <ThemeProvider>
-                    <ThemeSelector
-                        themeName={themeName}
-                        setThemeName={setThemeName}
-                    />
-                    <Card sx={{ m: 2, p: 2 }}>
-                        <Section title="Buttons">
-                            <Typography>Color</Typography>
-                            <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-                                <Button label="Default" />
-                                <Button label="Primary" color="primary" />
-                                <Button label="Secondary" color="secondary" />
-                                <Button label="Error" color="error" />
-                                <Button label="Warning" color="warning" />
-                                <Button label="Success" color="success" />
-                                <Button label="Disabled" disabled />
-                            </Stack>
-                            <Typography>Variant</Typography>
-                            <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-                                <Button label="Default" />
-                                <Button label="Outlined" variant="outlined" />
-                                <Button label="Contained" variant="contained" />
-                                <Button label="Text" variant="text" />
-                            </Stack>
-                            <Typography>Size</Typography>
-                            <Stack
-                                direction="row"
-                                spacing={2}
-                                sx={{ mb: 2, alignItems: 'flex-start' }}
-                            >
-                                <Button label="Small" size="small" />
-                                <Button label="Medium" />
-                                <Button label="Large" size="large" />
-                            </Stack>
-                        </Section>
-                    </Card>
-                </ThemeProvider>
-            </ThemesContext.Provider>
-        </StoreContextProvider>
+        <I18nContextProvider
+            value={polyglotI18nProvider(() => englishMessages)}
+        >
+            <QueryClientProvider client={new QueryClient()}>
+                <TestMemoryRouter>
+                    <StoreContextProvider value={store}>
+                        <ThemesContext.Provider
+                            value={{ lightTheme, darkTheme }}
+                        >
+                            <ThemeProvider>
+                                <ThemeSelector
+                                    themeName={themeName}
+                                    setThemeName={setThemeName}
+                                />
+                                {children}
+                            </ThemeProvider>
+                        </ThemesContext.Provider>
+                    </StoreContextProvider>
+                </TestMemoryRouter>
+            </QueryClientProvider>
+        </I18nContextProvider>
     );
 };
+
+export const ThemeTester = () => (
+    <Wrapper>
+        <Card sx={{ m: 2, p: 2 }}>
+            <Section title="Base Buttons">
+                <Typography>Color</Typography>
+                <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                    <Button label="Default" />
+                    <Button label="Primary" color="primary" />
+                    <Button label="Secondary" color="secondary" />
+                    <Button label="Error" color="error" />
+                    <Button label="Warning" color="warning" />
+                    <Button label="Success" color="success" />
+                    <Button label="Disabled" disabled />
+                </Stack>
+                <Typography>Variant</Typography>
+                <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                    <Button label="Default" />
+                    <Button label="Outlined" variant="outlined" />
+                    <Button label="Contained" variant="contained" />
+                    <Button label="Text" variant="text" />
+                </Stack>
+                <Typography>Size</Typography>
+                <Stack
+                    direction="row"
+                    spacing={2}
+                    sx={{ mb: 2, alignItems: 'flex-start' }}
+                >
+                    <Button label="Small" size="small" />
+                    <Button label="Medium" />
+                    <Button label="Large" size="large" />
+                </Stack>
+            </Section>
+            <Section title="Navigation Buttons" direction="row" spacing={1}>
+                <ListButton resource="posts" />
+                <EditButton resource="posts" record={{ id: 1 }} />
+                <ShowButton resource="posts" record={{ id: 1 }} />
+                <CreateButton resource="posts" />
+                <DeleteButton resource="posts" record={{ id: 1 }} />
+            </Section>
+            <Section title="Form Inputs">
+                <Form>
+                    <TextInput source="text" />
+                    <DateInput source="date" />
+                    <SelectInput
+                        source="select"
+                        choices={[
+                            { id: 1, name: 'One' },
+                            { id: 2, name: 'Two' },
+                        ]}
+                    />
+                    <RadioButtonGroupInput
+                        source="radio"
+                        choices={[
+                            { id: 1, name: 'One' },
+                            { id: 2, name: 'Two' },
+                        ]}
+                    />
+                    <CheckboxGroupInput
+                        source="checkbox"
+                        choices={[
+                            { id: 1, name: 'One' },
+                            { id: 2, name: 'Two' },
+                        ]}
+                    />
+                    <BooleanInput source="boolean" />
+                    <PasswordInput source="password" />
+                    <SearchInput source="search" />
+                </Form>
+            </Section>
+        </Card>
+    </Wrapper>
+);
 
 const ThemeSelector = ({ themeName, setThemeName }) => {
     const handleChange = (_: React.MouseEvent<HTMLElement>, index: number) => {
@@ -185,7 +264,7 @@ interface SectionProps extends Omit<StackProps, 'title'> {
     title: React.ReactNode;
     children: React.ReactNode;
 }
-export const Section = ({ title, children, ...rest }: SectionProps) => (
+const Section = ({ title, children, ...rest }: SectionProps) => (
     <>
         <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
             <Typography sx={{ width: 200 }}>{title}</Typography>
