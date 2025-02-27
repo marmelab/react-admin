@@ -53,6 +53,30 @@ const PostEdit = () => (
 );
 ```
 
+**CVE-2025-26791 ADVISORY**
+
+The version of `dompurify` used by `@toastui/editor` is vulnerable to a cross-site scripting (XSS) attack (see Github security advisory [GHSA-vhxf-7vqr-mrjg](https://github.com/advisories/GHSA-vhxf-7vqr-mrjg)). This vulnerability has been fixed in `dompurify` version 3.2.4. To address this vulnerability, you should use npm's `override` or yarn's `resolutions` feature to force the installation of a fixed version of `dompurify` in your project.
+
+Example for npm:
+
+```json
+{
+    "overrides": {
+        "dompurify": "^3.2.4"
+    }
+}
+```
+
+Example for yarn:
+
+```json
+{
+    "resolutions": {
+        "dompurify": "^3.2.4"
+    }
+}
+```
+
 ## Props
 
 `<MarkdownInput>` accepts the following props:
