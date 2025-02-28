@@ -68,6 +68,37 @@ const AutoSaveToolbar = () => (
 );
 ```
 
+**Tip**: if your `<Edit>` could change without being unmounted, for instance when it includes a [`<PrevNextButton>`](./PrevNextButtons.md#prevnextbuttons), you must ensure the `<Edit key>` changes whenever the record changes:
+
+```tsx
+import { AutoSave } from '@react-admin/ra-form-layout';
+import { Edit, PrevNextButton, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin';
+import { useParams } from 'react-router';
+
+const AutoSaveToolbar = () => (
+    <Toolbar>
+        <PrevNextButton />
+        <SaveButton />
+        <AutoSave />
+    </Toolbar>
+);
+
+const PostEdit = () => {
+    const { id } = useParams<'id'>();
+    return (
+        <Edit key={id} mutationMode="optimistic">
+            <SimpleForm
+                resetOptions={{ keepDirtyValues: true }}
+                toolbar={<AutoSaveToolbar />}
+            >
+                <TextInput source="title" />
+                <TextInput source="teaser" />
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+
 ## Props
 
 | Prop        | Required | Type           | Default | Description                               |
