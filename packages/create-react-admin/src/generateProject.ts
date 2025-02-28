@@ -89,18 +89,26 @@ const generatePackageJson = (
     projectDirectory: string,
     state: ProjectConfiguration
 ) => {
+    let yarnVersion: string;
     const basePackageJson = getTemplatePackageJson('common');
     const dataProviderPackageJson = getTemplatePackageJson(state.dataProvider);
     const authProviderPackageJson = getTemplatePackageJson(state.authProvider);
     const resolutionsPackageJson = getTemplatePackageJson('resolutions');
-    const needResolutions =
-        state.installer === 'yarn' && getYarnVersion().startsWith('1');
+    if (state.installer === 'yarn') {
+        yarnVersion = getYarnVersion();
+    }
+    const needResolutions = yarnVersion && yarnVersion.startsWith('1');
 
     const packageJson = merge(
         basePackageJson,
         dataProviderPackageJson,
         authProviderPackageJson,
         needResolutions ? resolutionsPackageJson : {},
+        yarnVersion
+            ? {
+                  packageManager: `yarn@${yarnVersion}`,
+              }
+            : {},
         {
             name: state.name,
         }
@@ -110,6 +118,13 @@ const generatePackageJson = (
         path.join(projectDirectory, 'package.json'),
         JSON.stringify(packageJson, null, 2)
     );
+
+    if (yarnVersion && !yarnVersion.startsWith('1')) {
+        copyDirectoryFiles(
+            path.join(__dirname, '../templates/yarn'),
+            projectDirectory
+        );
+    }
 };
 
 const generateGitIgnore = (projectDirectory: string) => {
