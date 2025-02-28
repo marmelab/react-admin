@@ -2,6 +2,7 @@ import * as React from 'react';
 import TableCell, { TableCellProps } from '@mui/material/TableCell';
 import clsx from 'clsx';
 import { RaRecord } from 'ra-core';
+import type { DatagridField } from './types';
 
 const DatagridCell = React.forwardRef<HTMLTableCellElement, DatagridCellProps>(
     ({ className, field, record, resource, ...rest }, ref) => (
@@ -18,7 +19,7 @@ const DatagridCell = React.forwardRef<HTMLTableCellElement, DatagridCellProps>(
 
 export interface DatagridCellProps extends TableCellProps {
     className?: string;
-    field: JSX.Element;
+    field: DatagridField;
     record?: RaRecord;
     resource?: string;
 }

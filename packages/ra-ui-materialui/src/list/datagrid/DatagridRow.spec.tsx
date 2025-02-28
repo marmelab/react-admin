@@ -17,7 +17,7 @@ import { AdminContext } from '../../AdminContext';
 import DatagridRow from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
 
-const TitleField = (): JSX.Element => {
+const TitleField = () => {
     const record = useRecordContext();
     return <span>{record?.title}</span>;
 };

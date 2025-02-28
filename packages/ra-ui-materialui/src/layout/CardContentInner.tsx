@@ -10,7 +10,7 @@ import CardContent from '@mui/material/CardContent';
  * padding double the spacing between each CardContent, leading to too much
  * wasted space. Use this component as a CardContent alternative.
  */
-export const CardContentInner = (props: CardContentInnerProps): JSX.Element => {
+export const CardContentInner = (props: CardContentInnerProps) => {
     const { className, children } = props;
 
     return <Root className={className}>{children}</Root>;

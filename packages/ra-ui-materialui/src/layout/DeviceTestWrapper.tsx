@@ -26,7 +26,7 @@ function createMatchMedia(width) {
 export const DeviceTestWrapper = ({
     width = 'md',
     children,
-}: DeviceTestWrapperProps): JSX.Element => {
+}: DeviceTestWrapperProps) => {
     const theme = createTheme();
     // Use https://github.com/ericf/css-mediaquery as polyfill.
     const ssrMatchMedia = createMatchMedia(theme.breakpoints.values[width]);
@@ -52,5 +52,5 @@ export const DeviceTestWrapper = ({
 
 export interface DeviceTestWrapperProps {
     width: 'md' | 'xs' | 'sm' | 'lg' | 'xl';
-    children: JSX.Element;
+    children: React.ReactNode;
 }
