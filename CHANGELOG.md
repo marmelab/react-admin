@@ -1,5 +1,19 @@
 # Changelog
 
+## 5.6.2
+
+* Make `<TabbedForm tabs>` use the `onChange` prop ([#10549](https://github.com/marmelab/react-admin/pull/10549)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix B&W theme buttons in dark mode ([#10557](https://github.com/marmelab/react-admin/pull/10557)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix create-react-admin generated package.json when using yarn ([#10556](https://github.com/marmelab/react-admin/pull/10556)) ([djhi](https://github.com/djhi))
+* Fix collapsed menu in B&W theme ([#10542](https://github.com/marmelab/react-admin/pull/10542)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update `<MarkdownInput>` doc to address vulnerability in `dompurify` ([#10554](https://github.com/marmelab/react-admin/pull/10554)) ([slax57](https://github.com/slax57))
+* [Doc] Update `<ReferenceManyInput>` documentation to mention it cannot reorder its items ([#10551](https://github.com/marmelab/react-admin/pull/10551)) ([djhi](https://github.com/djhi))
+* [Doc] Improve `<FormFillerButton>` documentation by explaining the `dataProvider.getCompletion()` ([#10550](https://github.com/marmelab/react-admin/pull/10550)) ([djhi](https://github.com/djhi))
+* [Doc] Create a `ShowDialog` doc ([#10548](https://github.com/marmelab/react-admin/pull/10548)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Document `useSourceContext` and improve `useSimpleFormIteratorItem` documentation ([#10547](https://github.com/marmelab/react-admin/pull/10547)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<ReferenceInput enableGetChoices>` example ([#10543](https://github.com/marmelab/react-admin/pull/10543)) ([slax57](https://github.com/slax57))
+* [chore] Fix release script does not include the changelog in the tag ([#10544](https://github.com/marmelab/react-admin/pull/10544)) ([slax57](https://github.com/slax57))
+
 ## 5.6.1
 
 * Fix create-react-admin package manager detection ([#10534](https://github.com/marmelab/react-admin/pull/10534)) ([djhi](https://github.com/djhi))
