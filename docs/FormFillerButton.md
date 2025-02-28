@@ -33,6 +33,8 @@ export const ContactEdit = () => (
 );
 ```
 
+You must define a [`dataProvider.generateContent()` method](#dataprovidergeneratecontent) to fetch the generated content from your API.
+
 ## Props
 
 `<FormFillerButton>` accepts the following props:

@@ -43,6 +43,8 @@ export const PostEdit = () => (
 );
 ```
 
+You must define a [`dataProvider.getCompletion()` method](#dataprovidergetcompletion) to fetch the completion suggestions from your API.
+
 ## Props
 
 `<SmartRichTextInput>` accepts the same props as [`<RichTextInput>`](./RichTextInput.md), as well as some additional props:

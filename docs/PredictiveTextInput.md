@@ -38,6 +38,8 @@ const PersonEdit = () => (
 );
 ```
 
+You must define a [`dataProvider.getCompletion()` method](#dataprovidergetcompletion) to fetch the completion suggestions from your API.
+
 ## Props
 
 `<PredictiveTextInput>` accepts the following props:
