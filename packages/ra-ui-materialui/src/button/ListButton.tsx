@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
 import { useResourceContext, useCreatePath, useCanAccess } from 'ra-core';
@@ -78,7 +77,7 @@ const scrollStates = {
 const defaultIcon = <ActionList />;
 
 interface Props {
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     label?: string;
     resource?: string;
     scrollToTop?: boolean;

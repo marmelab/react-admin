@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, memo } from 'react';
+import { memo } from 'react';
 import clsx from 'clsx';
 import {
     Button,
@@ -172,7 +172,7 @@ const arePropsEqual = (prevProps, nextProps) =>
 export interface SortButtonProps {
     className?: string;
     fields: string[];
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     label?: string;
     resource?: string;
     sx?: SxProps;

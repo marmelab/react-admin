@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, ReactEventHandler } from 'react';
+import { ReactNode, ReactEventHandler } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
 import { UseMutationOptions } from '@tanstack/react-query';
@@ -61,7 +61,7 @@ export interface DeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
 > extends ButtonProps {
-    icon?: ReactElement;
+    icon?: ReactNode;
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
         RecordType,

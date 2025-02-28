@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, MouseEvent, useCallback } from 'react';
+import { MouseEvent, useCallback } from 'react';
 import NavigationRefresh from '@mui/icons-material/Refresh';
 import { useRefresh } from 'ra-core';
 
@@ -35,7 +35,7 @@ const defaultIcon = <NavigationRefresh />;
 
 interface Props {
     label?: string;
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     onClick?: (e: MouseEvent) => void;
 }
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import { UseMutationOptions } from '@tanstack/react-query';
 import {
     RaRecord,
@@ -98,7 +97,7 @@ export interface DeleteButtonProps<
     confirmTitle?: React.ReactNode;
     confirmContent?: React.ReactNode;
     confirmColor?: 'primary' | 'warning';
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
         RecordType,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import clsx from 'clsx';
 import { styled } from '@mui/material/styles';
 import ContentCreate from '@mui/icons-material/Create';
@@ -77,7 +77,7 @@ const defaultIcon = <ContentCreate />;
 const stopPropagation = e => e.stopPropagation();
 
 interface Props<RecordType extends RaRecord = any> {
-    icon?: ReactElement;
+    icon?: ReactNode;
     label?: string;
     record?: RecordType;
     resource?: string;

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
 import { alpha, styled } from '@mui/material/styles';
 import {
@@ -117,7 +116,7 @@ export interface BulkUpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
 > extends ButtonProps {
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     data: any;
     onSuccess?: () => void;
     onError?: (error: any) => void;

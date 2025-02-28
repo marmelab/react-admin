@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, ReactElement } from 'react';
+import { useCallback } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import NavigationRefresh from '@mui/icons-material/Refresh';
@@ -45,7 +45,7 @@ const defaultIcon = <NavigationRefresh />;
 
 interface Props {
     className?: string;
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     label?: string;
     onClick?: (e: MouseEvent) => void;
 }
