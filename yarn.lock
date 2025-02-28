@@ -16450,7 +16450,6 @@ __metadata:
   dependencies:
     "@hookform/resolvers": "npm:^3.2.0"
     "@tanstack/react-query": "npm:^5.21.7"
-    "@tanstack/react-query-devtools": "npm:^5.21.7"
     "@testing-library/react": "npm:^15.0.7"
     "@types/jest": "npm:^29.5.2"
     "@types/jscodeshift": "npm:^0.11.11"

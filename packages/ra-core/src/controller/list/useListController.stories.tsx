@@ -1,6 +1,6 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { onlineManager } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../../core';
 import { ListController } from './ListController';
@@ -100,6 +100,35 @@ export const Basic = ({
     </CoreAdminContext>
 );
 
+const OnlineManager = () => {
+    const [online, setOnline] = React.useState(true);
+    React.useEffect(() => {
+        const unsubscribe = onlineManager.subscribe(isOnline => {
+            setOnline(isOnline);
+        });
+        return unsubscribe;
+    }, []);
+    return (
+        <div>
+            <button
+                onClick={() => {
+                    onlineManager.setOnline(true);
+                }}
+            >
+                Go online
+            </button>
+            <button
+                onClick={() => {
+                    onlineManager.setOnline(false);
+                }}
+            >
+                Go offline
+            </button>
+            <p>{online ? 'Online' : 'Offline'}</p>
+        </div>
+    );
+};
+
 const Notifications = () => {
     const { notifications, takeNotification } = useNotificationContext();
     return (
@@ -119,6 +148,7 @@ const Notifications = () => {
 
 export const Offline = () => (
     <CoreAdminContext dataProvider={defaultDataProvider}>
+        <OnlineManager />
         <ListController resource="posts" perPage={3}>
             {params => (
                 <div>
@@ -154,6 +184,5 @@ export const Offline = () => (
             )}
         </ListController>
         <Notifications />
-        <ReactQueryDevtools initialIsOpen />
     </CoreAdminContext>
 );
