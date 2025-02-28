@@ -656,6 +656,7 @@ describe('useListController', () => {
     describe('offline', () => {
         it('should display a warning if showing placeholder data when offline', async () => {
             render(<Offline />);
+            fireEvent.click(await screen.findByText('Go online'));
             await screen.findByText('1 - Morbi suscipit malesuada');
             fireEvent.click(await screen.findByText('Go offline'));
             fireEvent.click(await screen.findByText('Page 2'));
@@ -666,6 +667,7 @@ describe('useListController', () => {
 
         it('should not display a warning if showing stale data when offline', async () => {
             render(<Offline />);
+            fireEvent.click(await screen.findByText('Go online'));
             await screen.findByText('1 - Morbi suscipit malesuada');
             fireEvent.click(await screen.findByText('Page 2'));
             await screen.findByText('4 - Integer commodo est');

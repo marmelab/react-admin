@@ -101,7 +101,7 @@ export const Basic = ({
 );
 
 const OnlineManager = () => {
-    const [online, setOnline] = React.useState(true);
+    const [online, setOnline] = React.useState(onlineManager.isOnline());
     React.useEffect(() => {
         const unsubscribe = onlineManager.subscribe(isOnline => {
             setOnline(isOnline);
