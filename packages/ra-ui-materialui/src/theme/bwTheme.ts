@@ -1,6 +1,5 @@
 import {
     amber,
-    common,
     deepOrange,
     green,
     grey,
@@ -10,8 +9,8 @@ import {
 import { alpha } from '@mui/material/styles';
 import { RaThemeOptions } from './types';
 
-const background = common['black'];
-const bodyBackground = common['black'];
+const commonBlack = '#090909';
+const commonWhite = '#fafafa';
 
 const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
     const isDarkMode = mode === 'dark';
@@ -21,8 +20,8 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
         palette: {
             mode,
             primary: {
-                dark: isDarkMode ? grey['200'] : common['black'],
-                main: isDarkMode ? common['white'] : grey['900'],
+                dark: isDarkMode ? grey['200'] : commonBlack,
+                main: isDarkMode ? commonWhite : grey['900'],
                 light: isDarkMode ? grey['800'] : grey['100'],
             },
             secondary: {
@@ -35,15 +34,15 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                 main: isDarkMode ? deepOrange['600'] : red['900'],
             },
             info: {
-                main: isDarkMode ? lightBlue['500'] : lightBlue['900'],
+                main: isDarkMode ? lightBlue['300'] : lightBlue['900'],
             },
             warning: {
                 main: isDarkMode ? amber['500'] : amber['900'],
             },
             divider: GREY,
             background: {
-                default: isDarkMode ? background : grey[50],
-                paper: isDarkMode ? background : grey[50],
+                default: isDarkMode ? commonBlack : grey[50],
+                paper: isDarkMode ? commonBlack : grey[50],
             },
         },
         shape: {
@@ -137,9 +136,7 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                     },
                     body: {
                         minHeight: '100%',
-                        backgroundColor: isDarkMode
-                            ? bodyBackground
-                            : '#fbfbfb',
+                        backgroundColor: isDarkMode ? commonBlack : '#fbfbfb',
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'top right',
                         backgroundSize: '100%',
@@ -155,9 +152,7 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
             MuiInputBase: {
                 styleOverrides: {
                     root: {
-                        backgroundColor: isDarkMode
-                            ? common['black']
-                            : common['white'],
+                        backgroundColor: isDarkMode ? commonBlack : commonWhite,
                     },
                 },
             },
@@ -225,9 +220,7 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
             MuiDrawer: {
                 styleOverrides: {
                     paper: {
-                        backgroundColor: isDarkMode
-                            ? background
-                            : common['white'],
+                        backgroundColor: isDarkMode ? commonBlack : commonWhite,
                         border: `1px solid ${GREY}`,
                     },
                 },
@@ -243,9 +236,7 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                 styleOverrides: {
                     root: {
                         backgroundImage: 'none',
-                        backgroundColor: isDarkMode
-                            ? '#090909'
-                            : common['white'],
+                        backgroundColor: isDarkMode ? '#090909' : commonWhite,
                         border: `1px solid ${GREY}`,
                     },
                 },
@@ -297,7 +288,7 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                             marginRight: 4,
                         },
                         '&:hover': {
-                            color: isDarkMode ? common['white'] : grey['900'],
+                            color: isDarkMode ? commonWhite : grey['900'],
                         },
                     },
                 },
@@ -331,10 +322,8 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                 },
             },
             MuiChip: {
-                styleOverrides: {
-                    root: {
-                        borderRadius: 4,
-                    },
+                defaultProps: {
+                    variant: 'outlined' as const,
                 },
             },
             RaSimpleFormIterator: {
@@ -351,7 +340,9 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                 styleOverrides: {
                     root: {
                         '& .RaBulkActionsToolbar-toolbar': {
-                            backgroundColor: isDarkMode ? background : grey[50],
+                            backgroundColor: isDarkMode
+                                ? commonBlack
+                                : grey[50],
                             border: `1px solid ${GREY}`,
                             '&.RaBulkActionsToolbar-collapsed': {
                                 border: 'transparent',
@@ -367,7 +358,7 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                         paddingRight: 0,
                         paddingLeft: SPACING,
                         borderRadius: 5,
-                        color: isDarkMode ? grey['200'] : common['black'],
+                        color: isDarkMode ? grey['200'] : commonBlack,
                         '&.RaMenuItemLink-active': {
                             backgroundColor: GREY,
                         },

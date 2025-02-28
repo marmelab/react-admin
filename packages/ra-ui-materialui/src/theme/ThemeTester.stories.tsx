@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -27,9 +26,12 @@ import {
     useTheme,
 } from './';
 import {
+    Alert,
     Box,
     ButtonGroup,
-    Card,
+    Chip,
+    Paper,
+    Snackbar,
     Stack,
     type StackProps,
     Typography,
@@ -80,8 +82,7 @@ const themes: Theme[] = [
 
 const store = memoryStore();
 
-const Wrapper = ({ children }) => {
-    const [themeName, setThemeName] = useState('Default');
+const Wrapper = ({ children, themeName, themeType }) => {
     const lightTheme = themes.find(theme => theme.name === themeName)?.light;
     const darkTheme = themes.find(theme => theme.name === themeName)?.dark;
     return (
@@ -92,15 +93,13 @@ const Wrapper = ({ children }) => {
                 <TestMemoryRouter>
                     <StoreContextProvider value={store}>
                         <ThemesContext.Provider
-                            value={{ lightTheme, darkTheme }}
+                            value={{
+                                lightTheme,
+                                darkTheme,
+                                defaultTheme: themeType,
+                            }}
                         >
-                            <ThemeProvider>
-                                <ThemeSelector
-                                    themeName={themeName}
-                                    setThemeName={setThemeName}
-                                />
-                                {children}
-                            </ThemeProvider>
+                            <ThemeProvider>{children}</ThemeProvider>
                         </ThemesContext.Provider>
                     </StoreContextProvider>
                 </TestMemoryRouter>
@@ -109,10 +108,29 @@ const Wrapper = ({ children }) => {
     );
 };
 
-export const ThemeTester = () => (
-    <Wrapper>
-        <Card sx={{ m: 2, p: 2 }}>
+export const ThemeTester = ({ themeName, themeType }) => (
+    <Wrapper themeName={themeName} themeType={themeType}>
+        <Snackbar
+            open
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+        >
+            <Alert severity="info" variant="outlined">
+                Use the story controls to change the theme
+            </Alert>
+        </Snackbar>
+
+        <Paper sx={{ p: 2 }}>
             <Section title="Base Buttons">
+                <Typography>Variant</Typography>
+                <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+                    <Button label="Default" />
+                    <Button label="Outlined" variant="outlined" />
+                    <Button label="Contained" variant="contained" />
+                    <Button label="Text" variant="text" />
+                </Stack>
                 <Typography>Color</Typography>
                 <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
                     <Button label="Default" />
@@ -121,20 +139,14 @@ export const ThemeTester = () => (
                     <Button label="Error" color="error" />
                     <Button label="Warning" color="warning" />
                     <Button label="Success" color="success" />
+                    <Button label="Info" color="info" />
                     <Button label="Disabled" disabled />
-                </Stack>
-                <Typography>Variant</Typography>
-                <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-                    <Button label="Default" />
-                    <Button label="Outlined" variant="outlined" />
-                    <Button label="Contained" variant="contained" />
-                    <Button label="Text" variant="text" />
                 </Stack>
                 <Typography>Size</Typography>
                 <Stack
                     direction="row"
                     spacing={2}
-                    sx={{ mb: 2, alignItems: 'flex-start' }}
+                    sx={{ alignItems: 'flex-start' }}
                 >
                     <Button label="Default" />
                     <Button label="Small" size="small" />
@@ -179,9 +191,49 @@ export const ThemeTester = () => (
                     <SearchInput source="search" />
                 </Form>
             </Section>
-        </Card>
+            <Section title="Chips">
+                <Typography>Color</Typography>
+                <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                    <Chip label="Default" />
+                    <Chip label="Primary" color="primary" />
+                    <Chip label="Secondary" color="secondary" />
+                    <Chip label="Error" color="error" />
+                    <Chip label="Warning" color="warning" />
+                    <Chip label="Success" color="success" />
+                    <Chip label="Info" color="info" />
+                    <Chip label="Disabled" disabled />
+                </Stack>
+                <Typography>Variant</Typography>
+                <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                    <Chip label="Default" />
+                    <Chip label="Filled" variant="filled" />
+                    <Chip label="Outlined" variant="outlined" />
+                </Stack>
+                <Typography>Size</Typography>
+                <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                    <Chip label="Default" />
+                    <Chip label="Small" size="small" />
+                    <Chip label="Medium" size="medium" />
+                </Stack>
+            </Section>
+        </Paper>
     </Wrapper>
 );
+
+ThemeTester.args = {
+    themeName: 'Default',
+    themeType: 'light',
+};
+ThemeTester.argTypes = {
+    themeName: {
+        control: 'select',
+        options: themes.map(theme => theme.name),
+    },
+    themeType: {
+        control: 'select',
+        options: ['light', 'dark'],
+    },
+};
 
 const ThemeSelector = ({ themeName, setThemeName }) => {
     const handleChange = (_: React.MouseEvent<HTMLElement>, index: number) => {
