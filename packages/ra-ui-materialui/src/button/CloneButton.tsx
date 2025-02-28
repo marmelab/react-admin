@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo, ReactElement } from 'react';
+import { memo, ReactNode } from 'react';
 import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
@@ -56,7 +56,7 @@ const sanitizeRestProps = ({
 
 interface Props {
     record?: any;
-    icon?: ReactElement;
+    icon?: ReactNode;
     scrollToTop?: boolean;
 }
 

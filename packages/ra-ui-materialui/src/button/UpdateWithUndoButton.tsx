@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { alpha, styled } from '@mui/material/styles';
-import { ReactElement } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
 import {
     useRefresh,
@@ -113,7 +112,7 @@ export interface UpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
 > extends ButtonProps {
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     data: any;
     mutationOptions?: UseMutationOptions<
         RecordType,

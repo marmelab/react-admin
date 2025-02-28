@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo, ReactElement } from 'react';
+import { memo } from 'react';
 import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import {
@@ -76,7 +76,7 @@ const defaultIcon = <ImageEye />;
 const stopPropagation = e => e.stopPropagation();
 
 interface Props<RecordType extends RaRecord = any> {
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     label?: string;
     record?: RecordType;
     resource?: string;

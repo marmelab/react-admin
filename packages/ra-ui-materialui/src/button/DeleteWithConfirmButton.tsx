@@ -1,4 +1,4 @@
-import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
+import React, { Fragment, ReactEventHandler } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
 
@@ -104,8 +104,8 @@ export interface DeleteWithConfirmButtonProps<
 > extends ButtonProps {
     confirmTitle?: React.ReactNode;
     confirmContent?: React.ReactNode;
+    icon?: React.ReactNode;
     confirmColor?: 'primary' | 'warning';
-    icon?: ReactElement;
     mutationMode?: MutationMode;
     onClick?: ReactEventHandler<any>;
     // May be injected by Toolbar - sanitized in Button

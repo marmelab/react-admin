@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, ReactElement, useState } from 'react';
+import { Fragment, useState } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 
 import { alpha, styled } from '@mui/material/styles';
@@ -159,7 +159,7 @@ export interface BulkDeleteWithConfirmButtonProps<
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     confirmColor?: 'primary' | 'warning';
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     mutationMode: MutationMode;
     mutationOptions?: UseMutationOptions<
         RecordType,
