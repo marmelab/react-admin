@@ -19,6 +19,7 @@ export * from './DatagridHeader';
 export * from './SelectColumnsButton';
 export * from './useDatagridContext';
 export * from './useDatagridStyles';
+export * from './types';
 
 export {
     DatagridLoading,

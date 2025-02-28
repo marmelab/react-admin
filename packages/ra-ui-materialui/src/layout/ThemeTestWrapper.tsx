@@ -15,7 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 export const ThemeTestWrapper = ({
     mode = 'light',
     children,
-}: ThemeTestWrapperProps): JSX.Element => {
+}: ThemeTestWrapperProps) => {
     const theme = createTheme();
     const ssrMatchMedia = query => ({
         matches:
@@ -47,5 +47,5 @@ export const ThemeTestWrapper = ({
 
 export interface ThemeTestWrapperProps {
     mode: 'light' | 'dark';
-    children: JSX.Element;
+    children: React.ReactNode;
 }

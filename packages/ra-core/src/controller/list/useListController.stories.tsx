@@ -91,7 +91,7 @@ export const Basic = ({
     children = defaultRender,
 }: {
     dataProvider?: DataProvider;
-    children?: (params: ListControllerResult) => JSX.Element;
+    children?: (params: ListControllerResult) => React.ReactNode;
 }) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ListController resource="posts">{children}</ListController>
