@@ -183,7 +183,7 @@ title: "Index"
 * [`<Show>`](./Show.md#show)
 * [`<ShowGuesser`](./ShowGuesser.md#showguesser)
 * [`<ShowButton>`](./Buttons.md#showbutton)
-* [`<ShowDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
+* [`<ShowDialog>`](./ShowDialog.md)<img class="icon" src="./img/premium.svg" />
 * [`<ShowInDialogButton>`](./ShowInDialogButton.md)<img class="icon" src="./img/premium.svg" />
 * [`<ShowLive>`](./ShowLive.md)<img class="icon" src="./img/premium.svg" />
 * [`<Sidebar>`](./Layout.md#sidebar)
