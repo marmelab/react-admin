@@ -122,6 +122,8 @@ const frenchMessages: TranslationMessages = {
             unsaved_changes:
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
             yes: 'Oui',
+            placeholder_data_warning:
+                "Les données demandées n'ont pas pu être chargées",
         },
         navigation: {
             clear_filters: 'Effacer les filtres',

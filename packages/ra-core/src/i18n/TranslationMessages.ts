@@ -115,6 +115,7 @@ export interface TranslationMessages extends StringMap {
             select_all_limit_reached: string;
             unsaved_changes: string;
             yes: string;
+            placeholder_data_warning: string;
         };
         navigation: {
             [key: string]: StringMap | string;
