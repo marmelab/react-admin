@@ -153,7 +153,9 @@ export const useListController = <
         if (isPaused && isPlaceholderData) {
             notify('ra.message.placeholder_data_warning', {
                 type: 'warning',
-                messageArgs: { _: 'Could not fetch the requested data' },
+                messageArgs: {
+                    _: 'Could not fetch: lost connection to server',
+                },
             });
         }
     }, [isPaused, isPlaceholderData, notify]);

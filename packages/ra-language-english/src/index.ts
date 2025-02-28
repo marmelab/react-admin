@@ -118,7 +118,8 @@ const englishMessages: TranslationMessages = {
             unsaved_changes:
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
             yes: 'Yes',
-            placeholder_data_warning: 'Could not fetch the requested data',
+            placeholder_data_warning:
+                'Could not fetch: lost connection to server',
         },
         navigation: {
             clear_filters: 'Clear filters',
