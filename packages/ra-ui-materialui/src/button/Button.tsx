@@ -93,7 +93,7 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
 
 interface Props<RootComponent extends React.ElementType> {
     alignIcon?: 'left' | 'right';
-    children?: React.ReactElement;
+    children?: React.ReactNode;
     className?: string;
     component?: RootComponent;
     to?: LocationDescriptor | To;

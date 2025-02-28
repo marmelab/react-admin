@@ -109,7 +109,7 @@ const defaultIcon = <ContentAdd />;
 
 interface Props {
     resource?: string;
-    icon?: React.ReactElement;
+    icon?: React.ReactNode;
     scrollToTop?: boolean;
     to?: LocationDescriptor | To;
 }

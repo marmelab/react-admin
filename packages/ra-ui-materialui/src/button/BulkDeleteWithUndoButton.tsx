@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 import { alpha, styled } from '@mui/material/styles';
 import {
@@ -110,7 +109,7 @@ export interface BulkDeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
 > extends ButtonProps {
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     mutationOptions?: UseMutationOptions<
         RecordType,
         MutationOptionsError,

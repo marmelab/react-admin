@@ -96,7 +96,7 @@ const sanitizeRestProps = ({
 
 interface Props {
     exporter?: Exporter;
-    icon?: JSX.Element;
+    icon?: React.ReactNode;
     label?: string;
     maxResults?: number;
     onClick?: (e: Event) => void;

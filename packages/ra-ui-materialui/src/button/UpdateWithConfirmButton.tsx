@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, useState, ReactElement } from 'react';
+import { Fragment, useState } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
 
 import { alpha, styled } from '@mui/material/styles';
@@ -157,7 +157,7 @@ export interface UpdateWithConfirmButtonProps<
 > extends ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
-    icon?: ReactElement;
+    icon?: React.ReactNode;
     data: any;
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
