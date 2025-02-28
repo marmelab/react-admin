@@ -23,12 +23,10 @@ import {
     RaThemeOptions,
     ThemeProvider,
     ThemesContext,
-    useTheme,
 } from './';
 import {
     Alert,
     Box,
-    ButtonGroup,
     Chip,
     Paper,
     Snackbar,
@@ -36,10 +34,6 @@ import {
     type StackProps,
     Typography,
 } from '@mui/material';
-import {
-    ThemeProvider as MuiThemeProvider,
-    createTheme,
-} from '@mui/material/styles';
 import {
     Button,
     CreateButton,
@@ -233,71 +227,6 @@ ThemeTester.argTypes = {
         control: 'select',
         options: ['light', 'dark'],
     },
-};
-
-const ThemeSelector = ({ themeName, setThemeName }) => {
-    const handleChange = (_: React.MouseEvent<HTMLElement>, index: number) => {
-        const newTheme = themes[index];
-        setThemeName(newTheme.name);
-    };
-    const [theme, setter] = useTheme();
-
-    return (
-        <MuiThemeProvider theme={createTheme()}>
-            <Stack sx={{ p: 2 }}>
-                <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-                    <Typography sx={{ width: 200 }}>Theme</Typography>
-                    <Stack spacing={2}>
-                        <Stack direction="row" spacing={2}>
-                            <ButtonGroup>
-                                {themes.map((theme, index) => (
-                                    <Button
-                                        key={theme.name}
-                                        label={theme.name}
-                                        variant={
-                                            theme.name === themeName
-                                                ? 'contained'
-                                                : 'outlined'
-                                        }
-                                        onClick={event =>
-                                            handleChange(event, index)
-                                        }
-                                    />
-                                ))}
-                            </ButtonGroup>
-                        </Stack>
-                    </Stack>
-                </Stack>
-                <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-                    <Typography sx={{ width: 200 }}>Type</Typography>
-                    <Stack spacing={2}>
-                        <Stack direction="row" spacing={2}>
-                            <ButtonGroup>
-                                <Button
-                                    label="Light"
-                                    variant={
-                                        theme === 'light'
-                                            ? 'contained'
-                                            : 'outlined'
-                                    }
-                                    onClick={() => setter('light')}
-                                />
-                                <Button
-                                    label="Dark"
-                                    variant={
-                                        theme === 'dark'
-                                            ? 'contained'
-                                            : 'outlined'
-                                    }
-                                    onClick={() => setter('dark')}
-                                />
-                            </ButtonGroup>
-                        </Stack>
-                    </Stack>
-                </Stack>
-            </Stack>
-        </MuiThemeProvider>
-    );
 };
 
 const Separator = () => (
