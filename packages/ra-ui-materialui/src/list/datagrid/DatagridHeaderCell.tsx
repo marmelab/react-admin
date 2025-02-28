@@ -11,7 +11,7 @@ import {
     useTranslateLabel,
 } from 'ra-core';
 import type { SortPayload } from 'ra-core';
-import { DatagridField } from './types';
+import type { DatagridField } from './types';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
     ASC: 'DESC',

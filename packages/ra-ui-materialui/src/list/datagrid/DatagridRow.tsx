@@ -28,7 +28,7 @@ import ExpandRowButton from './ExpandRowButton';
 import { DatagridClasses } from './useDatagridStyles';
 import { useDatagridContext } from './useDatagridContext';
 import { RowClickFunction } from '../types';
-import { DatagridField } from './types';
+import type { DatagridField } from './types';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
