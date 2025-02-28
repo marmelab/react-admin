@@ -151,7 +151,10 @@ export const useListController = <
     );
     useEffect(() => {
         if (isPaused && isPlaceholderData) {
-            notify('Could not fetch the requested data', { type: 'warning' });
+            notify('ra.message.placeholder_data_warning', {
+                type: 'warning',
+                messageArgs: { _: 'Could not fetch the requested data' },
+            });
         }
     }, [isPaused, isPlaceholderData, notify]);
 
