@@ -68,7 +68,7 @@ const AutoSaveToolbar = () => (
 );
 ```
 
-**Tip**: if your `<Edit>` could change without being unmounted, for instance when it includes a [`<PrevNextButton>`](./PrevNextButtons.md#prevnextbuttons), you must ensure the `<Edit key>` changes whenever the record changes:
+**Tip**: If your `<Edit>` could change without being unmounted, for instance when it includes a [`<PrevNextButton>`](./PrevNextButtons.md#prevnextbuttons), you must ensure the `<Edit key>` changes whenever the record changes:
 
 ```tsx
 import { AutoSave } from '@react-admin/ra-form-layout';
