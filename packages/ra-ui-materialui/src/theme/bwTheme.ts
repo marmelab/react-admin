@@ -168,32 +168,32 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                     root: {
                         textTransform: 'none',
                         boxShadow: 'none',
-                        '&.MuiButton-outlinedPrimary': {
+                    },
+                    outlinedPrimary: {
+                        '--variant-outlinedBorder': GREY,
+                        '&:hover': {
+                            backgroundColor: GREY,
                             '--variant-outlinedBorder': GREY,
-                            '&:hover': {
-                                backgroundColor: GREY,
-                                '--variant-outlinedBorder': GREY,
-                            },
                         },
-                        '&.MuiButton-outlinedSuccess': {
+                    },
+                    outlinedSuccess: {
+                        borderColor: isDarkMode
+                            ? alpha(green['500'], 0.7)
+                            : alpha(green['800'], 0.5),
+                        '&:hover': {
                             borderColor: isDarkMode
-                                ? alpha(green['500'], 0.7)
-                                : alpha(green['800'], 0.5),
-                            '&:hover': {
-                                borderColor: isDarkMode
-                                    ? green['500']
-                                    : green['800'],
-                            },
+                                ? green['500']
+                                : green['800'],
                         },
-                        '&.MuiButton-outlinedError': {
+                    },
+                    outlinedError: {
+                        borderColor: isDarkMode
+                            ? alpha(deepOrange['600'], 0.7)
+                            : alpha(red['900'], 0.5),
+                        '&:hover': {
                             borderColor: isDarkMode
-                                ? alpha(deepOrange['600'], 0.7)
-                                : alpha(red['900'], 0.5),
-                            '&:hover': {
-                                borderColor: isDarkMode
-                                    ? deepOrange['600']
-                                    : red['900'],
-                            },
+                                ? deepOrange['600']
+                                : red['900'],
                         },
                     },
                     sizeSmall: {
@@ -204,7 +204,8 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                         padding: '6px 18px',
                     },
                     sizeLarge: {
-                        padding: '10px 24px',
+                        padding: '8px 24px',
+                        fontSize: '1rem',
                     },
                 },
             },
@@ -305,12 +306,12 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                     root: {
                         padding: `${SPACING * 2}px`,
                         borderBottom: `1px solid ${isDarkMode ? grey[900] : grey[300]}`,
-                        '&.MuiTableCell-sizeSmall': {
-                            padding: `${SPACING * 0.75}px ${SPACING * 1.25}px`,
-                        },
-                        '&.MuiTableCell-paddingNone': {
-                            padding: `${SPACING * 0.5}px`,
-                        },
+                    },
+                    sizeSmall: {
+                        padding: `${SPACING * 0.75}px ${SPACING * 1.25}px`,
+                    },
+                    paddingNone: {
+                        padding: `${SPACING * 0.5}px`,
                     },
                 },
             },
