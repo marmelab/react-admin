@@ -43,23 +43,6 @@ export const PostEdit = () => (
 );
 ```
 
-You must define a `dataProvider.getCompletion()` method to fetch the completion suggestions from your API. This method must return a promise that resolves to a `{ data: completionString }` object.
-
-For instance, to use the OpenAI Completion API:
-
-```jsx
-// in src/dataProvider.js
-import jsonServerProvider from 'ra-data-json-server';
-import { addAIMethodsBasedOnOpenAIAPI } from '@react-admin/ra-ai';
-
-const baseDataProvider = jsonServerProvider(
-    import.meta.env.VITE_JSON_SERVER_URL
-);
-export const dataProvider = addAIMethodsBasedOnOpenAIAPI(baseDataProvider),
-```
-
-`addAIMethodsBasedOnOpenAIAPI` expects the OpenAI API key to be stored in the localStorage under the key `ra-ai.openai-api-key`. It's up to you to add the key to the localStorage (e.g. in `authProvider.login()`) and to remove it (e.g. in `authProvider.logout()`)
-
 ## Props
 
 `<SmartRichTextInput>` accepts the same props as [`<RichTextInput>`](./RichTextInput.md), as well as some additional props:
