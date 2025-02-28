@@ -136,8 +136,9 @@ export const ThemeTester = () => (
                     spacing={2}
                     sx={{ mb: 2, alignItems: 'flex-start' }}
                 >
+                    <Button label="Default" />
                     <Button label="Small" size="small" />
-                    <Button label="Medium" />
+                    <Button label="Medium" size="medium" />
                     <Button label="Large" size="large" />
                 </Stack>
             </Section>

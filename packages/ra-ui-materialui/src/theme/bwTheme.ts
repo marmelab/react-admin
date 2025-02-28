@@ -7,6 +7,7 @@ import {
     lightBlue,
     red,
 } from '@mui/material/colors';
+import { alpha } from '@mui/material/styles';
 import { RaThemeOptions } from './types';
 
 const background = common['black'];
@@ -28,7 +29,7 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                 main: isDarkMode ? grey['100'] : grey['800'],
             },
             success: {
-                main: isDarkMode ? green['500'] : green['900'],
+                main: isDarkMode ? green['500'] : green['800'],
             },
             error: {
                 main: isDarkMode ? deepOrange['600'] : red['900'],
@@ -179,16 +180,22 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                                 '--variant-outlinedBorder': GREY,
                             },
                         },
-                        '&.MuiButton-outlinedError': {
-                            '--variant-outlinedBorder': isDarkMode
-                                ? deepOrange['600']
-                                : red['900'],
+                        '&.MuiButton-outlinedSuccess': {
+                            borderColor: isDarkMode
+                                ? alpha(green['500'], 0.7)
+                                : alpha(green['800'], 0.5),
                             '&:hover': {
-                                backgroundColor: isDarkMode
-                                    ? deepOrange['600']
-                                    : red['900'],
-                                color: common['white'],
-                                '--variant-outlinedBorder': isDarkMode
+                                borderColor: isDarkMode
+                                    ? green['500']
+                                    : green['800'],
+                            },
+                        },
+                        '&.MuiButton-outlinedError': {
+                            borderColor: isDarkMode
+                                ? alpha(deepOrange['600'], 0.7)
+                                : alpha(red['900'], 0.5),
+                            '&:hover': {
+                                borderColor: isDarkMode
                                     ? deepOrange['600']
                                     : red['900'],
                             },
