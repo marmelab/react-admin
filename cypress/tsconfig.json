@@ -1,7 +1,0 @@
-{
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "rootDir": "e2e"
-    },
-    "types": ["cypress", "node"]
-}

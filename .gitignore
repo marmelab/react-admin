@@ -1,26 +1,22 @@
-npm-debug.log
-yarn-error.log
-lerna-debug.log
-node_modules
-lib
-esm
-es6
-dist
-docs/_site/
-docs/.jekyll-metadata
-docs/.jekyll-cache
-packages/react-admin/docs
-examples/**/static
-examples/**/dist
-cypress/videos
-cypress/screenshots
-/public
-/storybook-static
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-.env
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.eslintcache
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
