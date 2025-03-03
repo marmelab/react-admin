@@ -259,67 +259,10 @@ const isSaving = useAutoSave({
 
 It accepts the following parameters:
 
-| Parameter                       | Required | Type            | Default  | Description                                   |
-| ------------------------------- | -------- | -------- | --------- | --------------------------------------------------- |
-| `debounce`                      | -        | number   | 3000 (3s) | The interval in milliseconds between two autosaves. |
-| `onSuccess`                     | -        | function |           | A callback to call when the save request succeeds.  |
-| `onError`                       | -        | function |           | A callback to call when the save request fails.     |
-| `transform`                     | -        | function |           | A function to transform the data before saving.    |
-| `disableWarnWhenUnsavedChanges` | -        | boolean  | false     | A boolean indicating whether users should be warned when they close the browser tab or navigate away from the application if they have unsaved changes. |
-
-### `debounce`
-
-The interval in milliseconds between two autosaves. Defaults to 3000 (3s).
-
-```tsx
-const isSaving = useAutoSave({
-    debounce: 5000,
-});
-```
-
-### `onSuccess`
-
-A callback to call when the save request succeeds.
-
-```tsx
-const [lastSave, setLastSave] = useState();
-
-const isSaving = useAutoSave({
-    onSuccess: () => setLastSave(new Date()),
-});
-```
-
-### `onError`
-
-A callback to call when the save request fails.
-
-```tsx
-const [error, setError] = useState();
-
-const isSaving = useAutoSave({
-    onError: error => setError(error),
-});
-```
-
-### `transform`
-
-A function to transform the data before saving.
-
-```tsx
-const isSaving = useAutoSave({
-    transform: data => ({
-        ...data,
-        fullName: `${data.firstName} ${data.lastName}`
-    })
-});
-```
-
-### `disableWarnWhenUnsavedChanges`
-
-A boolean indicating whether users should be warned when they close the browser tab or navigate away from the application if they have unsaved changes.
-
-```tsx
-const isSaving = useAutoSave({
-    disableWarnWhenUnsavedChanges: true
-});
-```
+| Parameter                                                         | Required | Type     | Default  | Description                                          |
+| ----------------------------------------------------------------- | -------- | -------- | --------- | --------------------------------------------------- |
+| [`debounce`](#debounce)                                           | -        | number   | 3000 (3s) | The interval in milliseconds between two autosaves. |
+| [`onSuccess`](#onsuccess)                                         | -        | function |           | A callback to call when the save request succeeds.  |
+| [`onError`](#onerror)                                             | -        | function |           | A callback to call when the save request fails.     |
+| [`transform`](#transform)                                         | -        | function |           | A function to transform the data before saving.     |
+| [`disableWarnWhenUnsavedChanges`](#disablewarnwhenunsavedchanges) | -        | boolean  | false     | A boolean indicating whether users should be warned when they close the browser tab or navigate away from the application if they have unsaved changes. |
