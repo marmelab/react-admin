@@ -88,7 +88,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         resource,
         ...rest
     } = props;
-    const { data, isPending, total } =
+    const { data, isPaused, isPending, isPlaceholderData, total } =
         useListContextWithProps<RecordType>(props);
 
     if (isPending === true) {
@@ -103,7 +103,12 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         );
     }
 
-    if (data == null || data.length === 0 || total === 0) {
+    if (
+        data == null ||
+        data.length === 0 ||
+        total === 0 ||
+        (isPaused && isPlaceholderData)
+    ) {
         if (empty) {
             return empty;
         }

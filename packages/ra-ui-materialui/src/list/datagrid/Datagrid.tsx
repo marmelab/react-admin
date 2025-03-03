@@ -151,7 +151,9 @@ export const Datagrid: React.ForwardRefExoticComponent<
     const {
         sort,
         data,
+        isPaused,
         isPending,
+        isPlaceholderData,
         onSelect,
         onToggleItem,
         selectedIds,
@@ -226,7 +228,12 @@ export const Datagrid: React.ForwardRefExoticComponent<
      * displaying the table header with zero data rows,
      * the Datagrid displays the empty component.
      */
-    if (data == null || data.length === 0 || total === 0) {
+    if (
+        data == null ||
+        data.length === 0 ||
+        total === 0 ||
+        (isPaused && isPlaceholderData)
+    ) {
         if (empty) {
             return empty;
         }

@@ -53,7 +53,7 @@ describe('CreateBase', () => {
                     test: 'test',
                 },
                 { data: { test: 'test' }, resource: 'posts' },
-                undefined
+                { snapshot: [] }
             );
         });
     });
@@ -85,7 +85,7 @@ describe('CreateBase', () => {
                     test: 'test',
                 },
                 { data: { test: 'test' }, resource: 'posts' },
-                undefined
+                { snapshot: [] }
             );
         });
         expect(onSuccess).not.toHaveBeenCalled();
@@ -112,7 +112,7 @@ describe('CreateBase', () => {
             expect(onError).toHaveBeenCalledWith(
                 { message: 'test' },
                 { data: { test: 'test' }, resource: 'posts' },
-                undefined
+                { snapshot: [] }
             );
         });
     });
@@ -139,7 +139,7 @@ describe('CreateBase', () => {
             expect(onErrorOverride).toHaveBeenCalledWith(
                 { message: 'test' },
                 { data: { test: 'test' }, resource: 'posts' },
-                undefined
+                { snapshot: [] }
             );
         });
         expect(onError).not.toHaveBeenCalled();
