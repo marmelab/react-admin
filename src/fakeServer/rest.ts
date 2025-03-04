@@ -1,6 +1,7 @@
 import { FetchMockAdapter, withDelay } from 'fakerest'; 
 import generateData from '../data-generator-retail/src/index';
-import fetchMock from '../fetch-mock/dist/esm/FetchMock';
+// import fetchMock from '../fetch-mock/dist/esm/FetchMock';
+import fetchMock from 'fetch-mock';
 // Setu-Admin\src\fetch-mock\dist\esm\FetchMock.js
 // import fetchMock, { FetchMock } from 'fetch-mock';
 export default () => {
