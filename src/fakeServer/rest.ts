@@ -1,7 +1,8 @@
 import { FetchMockAdapter, withDelay } from 'fakerest'; 
-import fetchMock from 'fetch-mock';
-import generateData from 'data-generator-retail';
-
+import generateData from '../data-generator-retail/src/index';
+import fetchMock from '../fetch-mock/dist/esm/FetchMock';
+// Setu-Admin\src\fetch-mock\dist\esm\FetchMock.js
+// import fetchMock, { FetchMock } from 'fetch-mock';
 export default () => {
     const data = generateData();
     const adapter = new FetchMockAdapter({
@@ -11,10 +12,9 @@ export default () => {
         middlewares: [withDelay(500)],
     });
     if (window) {
-        window.restServer = adapter.server; // give way to update data in the console
+        window.restServer = adapter.server; 
     }
-
     (fetchMock as any).mock('begin:http://localhost:4000', adapter.getHandler());
-
-    return () => (fetchMock as any).reset();
+    return () => (fetchMock as any).reset(); 
+   
 };
