@@ -6,6 +6,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import preserveDirectives from 'rollup-preserve-directives';
 
 // https://vitejs.dev/config/
+
 export default defineConfig(async ({ mode }) => {
     const packages = fs.readdirSync(path.resolve(__dirname, '../../packages'));
     const aliases: Record<string, string> = {
@@ -30,6 +31,7 @@ export default defineConfig(async ({ mode }) => {
         aliases[packageJson.name] = path.resolve(
             __dirname,
             `../../packages/${packageJson.name}/src`
+        
         );
     }
 

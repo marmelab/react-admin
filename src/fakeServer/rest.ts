@@ -1,4 +1,4 @@
-import { FetchMockAdapter, withDelay } from 'fakerest';
+import { FetchMockAdapter, withDelay } from 'fakerest'; 
 import fetchMock from 'fetch-mock';
 import generateData from 'data-generator-retail';
 
@@ -13,6 +13,8 @@ export default () => {
     if (window) {
         window.restServer = adapter.server; // give way to update data in the console
     }
-    fetchMock.mock('begin:http://localhost:4000', adapter.getHandler());
-    return () => fetchMock.restore();
+
+    (fetchMock as any).mock('begin:http://localhost:4000', adapter.getHandler());
+
+    return () => (fetchMock as any).reset();
 };

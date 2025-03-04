@@ -1,6 +1,8 @@
 import JsonGraphqlServer from 'json-graphql-server';
-import generateData from 'data-generator-retail';
 import fetchMock from 'fetch-mock';
+import generateData from 'data-generator-retail';
+
+
 
 export default () => {
     const data = generateData();
@@ -24,6 +26,7 @@ export default () => {
             return res;
         });
 
-    fetchMock.mock('begin:http://localhost:4000', handlerWithLogs);
-    return () => fetchMock.restore();
+        (fetchMock as any).mock('begin:http://localhost:4000', handlerWithLogs);
+        return () => (fetchMock as any).restore();
+        
 };
