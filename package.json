@@ -45,7 +45,7 @@
         "@types/react": "^18.3.3",
         "@types/react-dom": "^18.3.0",
         "@vitejs/plugin-react": "^4.2.1",
-        "fetch-mock": "^12.5.1",
+        "fetch-mock": "^12.5.2",
         "rewire": "^5.0.0",
         "rollup-plugin-visualizer": "^5.12.0",
         "rollup-preserve-directives": "^1.1.1",
