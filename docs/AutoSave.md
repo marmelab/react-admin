@@ -110,12 +110,12 @@ const PostEdit = () => {
 | Prop                            | Required | Type              | Default  | Description                                                                 |
 | ------------------------------- | -------- | ----------------- | --------- | -------------------------------------------------------------------------- |
 | `debounce`                      | -        | `number`          | 3000 (3s) | The interval in milliseconds between two autosaves.                        |
-| `confirmationDuration`          | -        | `number \| false` | 3000 (3s) | The delay in milliseconds before the save confirmation message disappears. |
+| `confirmationDuration`          | -        | `number` &#124; `false` | 3000 (3s) | The delay in milliseconds before the save confirmation message disappears. |
 | `onSuccess`                     | -        | `function`        |           | A callback to call when the save request succeeds.                         |
 | `onError`                       | -        | `function`        |           | A callback to call when the save request fails.                            |
 | `transform`                     | -        | `function`        |           | A function to transform the data before saving.                            |
 | `typographyProps`               | -        | `object`          |           | Additional props to pass to the `<Typography>` component that displays the confirmation and error messages. |
-| `disableWarnWhenUnsavedChanges` | -        | `boolean`         | `false`   | A boolean indicating whether users should be warned when they close the browser tab or navigate away from the application if they have unsaved changes. |
+| `disableWarnWhen UnsavedChanges` | -        | `boolean`         | `false`   | A boolean indicating whether users should be warned when they close the browser tab or navigate away from the application if they have unsaved changes. |
 
 ## `debounce`
 
@@ -197,7 +197,7 @@ If you want an autosave feature with another user interface, you can leverage th
 
 Note that you **must** add the `resetOptions` prop with `{ keepDirtyValues: true }` to avoid having the user changes overridden by the latest update operation result.
 
-**Note**: `useAutoSave` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default. You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges-1).
+**Note**: `useAutoSave` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default. You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
 
 **Note** `useAutoSave` does not currently work with forms that have child routes such as the [`<TabbedForm>`](./TabbedForm.md). If you want to use it in a `<TabbedForm>`, you must set its [`syncWithLocation` prop](./TabbedForm.md#syncwithlocation) to `false`.
 
@@ -265,4 +265,4 @@ It accepts the following parameters:
 | [`onSuccess`](#onsuccess)                                         | -        | function |           | A callback to call when the save request succeeds.  |
 | [`onError`](#onerror)                                             | -        | function |           | A callback to call when the save request fails.     |
 | [`transform`](#transform)                                         | -        | function |           | A function to transform the data before saving.     |
-| [`disableWarnWhenUnsavedChanges`](#disablewarnwhenunsavedchanges) | -        | boolean  | false     | A boolean indicating whether users should be warned when they close the browser tab or navigate away from the application if they have unsaved changes. |
+| [`disableWarnWhen UnsavedChanges`](#disablewarnwhenunsavedchanges) | -        | boolean  | false     | A boolean indicating whether users should be warned when they close the browser tab or navigate away from the application if they have unsaved changes. |
