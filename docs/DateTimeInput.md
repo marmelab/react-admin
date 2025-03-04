@@ -27,7 +27,7 @@ import { DateTimeInput } from 'react-admin';
 
 The input value must be a valid date string, i.e. a string understood by JavasSript's [`Date.parse()` method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse), or a `Date` object. Strings with [the ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) 'yyyy-MM-ddThh:mm' are the most common (e.g. `'2022-04-30T12:30'`). The field value may contain a timezone offset, e.g. `'2022-04-30T12:30+02:00'`. If no timezone is specified, the browser's timezone is used.
 
-After modification by the user, the value is stored as a `Date` object, using the browser's timezone. When transformed to JSON, the date is serialized as a string in the ISO 8601 format ('yyyy-MM-ddThh:mm').
+After modification by the user, the value is stored as a string, using the same ISO 8601  ('yyyy-MM-ddThh:mm').
 
 **Tip**: For a Material UI styled `<DateTimeInput>` component, check out [MUI X Date Pickers](https://mui.com/x/react-date-pickers/)
 
@@ -40,6 +40,17 @@ After modification by the user, the value is stored as a `Date` object, using th
 Internally, `<DateTimeInput>` renders an [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local).
 
 If you need to implement your own `format` and `parse` functions, make sure the **format** function actually formats the input into [a valid local date and time string](https://developer.mozilla.org/en-US/docs/Web/HTML/Date_and_time_formats#local_date_and_time_strings).
+
+## Parsing as `Date` object
+
+By default, `<DateTimeInput>` stores the date as a string in the form state. If you wish to store the date as a `Date` object instead, you can use the `parse` prop.
+
+```tsx
+const parseDateTime = (value: string) =>
+    value ? new Date(value) : value === '' ? null : value;
+
+<DateTimeInput source="published" parse={parseDateTime} />
+```
 
 ## Material UI
 
