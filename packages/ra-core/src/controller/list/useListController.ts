@@ -154,7 +154,7 @@ export const useListController = <
             notify('ra.message.placeholder_data_warning', {
                 type: 'warning',
                 messageArgs: {
-                    _: 'Could not fetch: lost connection to server',
+                    _: 'Network issue: Data refresh failed.',
                 },
             });
         }
