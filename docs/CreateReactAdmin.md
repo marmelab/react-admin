@@ -73,7 +73,7 @@ bun run dev
 - **Supabase:** Generate an application using ra-supabase. The auth-provider and resources steps will be skipped.
 - **None:** You'll configure the data provider myself.
 
-You can set your data provider directly in the command, without using interactivity:
+You can set your data provider directly with the `--data-provider` option:
 
 ```sh
 npm create react-admin@latest your-admin-name --data-provider json-server
@@ -92,7 +92,7 @@ bun create react-admin your-admin-name --data-provider none
 - **Hard coded local username/password.**
 - **None:** No authProvider.
 
-You can set your auth provider directly in the command, without using interactivity:
+You can set your auth provider directly with the `--auth-provider` option:
 
 ```sh
 npm create react-admin@latest your-admin-name --auth-provider local-auth-provider
@@ -106,7 +106,7 @@ bun create react-admin your-admin-name --auth-provider none
 
 ## Resources
 
-`create-react-admin` doesn't provide any resource by default. You can add some on `--interactive` mode or you can set your resources directly in the command, without using interactivity:
+`create-react-admin` doesn't provide any resource by default. You can add some on `--interactive` mode or you can set your resources with the `--resource` option:
 
 ```sh
 npm create react-admin@latest your-admin-name --resource posts
@@ -122,14 +122,14 @@ bun create react-admin your-admin-name --resource posts --resource comments
 
 ## Package Manager
 
-`create-react-admin` currently supports two templates presets to set the application's auth provider which are:
+`create-react-admin` currently supports the following options for package managers:
 
 - **npm**
 - **yarn**
 - **bun**
 - **Don't install dependencies**, you'll do it myself.
 
-You can set your auth provider directly in the command, without using interactivity:
+You can set your package manager with the `--install` option:
 
 ```sh
 npm create react-admin@latest your-admin-name --install npm
