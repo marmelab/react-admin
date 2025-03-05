@@ -327,6 +327,15 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                     variant: 'outlined' as const,
                 },
             },
+            MuiDialog: {
+                styleOverrides: {
+                    backdrop: {
+                        backgroundColor: isDarkMode
+                            ? 'rgb(0,0,0,0.8)'
+                            : 'rgb(0,0,0,0.5)',
+                    },
+                },
+            },
             RaSimpleFormIterator: {
                 defaultProps: {
                     fullWidth: true,
