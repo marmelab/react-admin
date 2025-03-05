@@ -52,7 +52,7 @@ title: "Index"
 
 * [`<DashboardMenuItem>`](./Menu.md#menudashboarditem)
 * [`<Datagrid>`](./Datagrid.md)
-* [`<DatagridAG>`](./DatagridAG.md)
+* [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<DatagridBody>`](./Datagrid.md#body)
 * [`<DatagridRow>`](./Datagrid.md#body)
 * [`<DatagridHeader>`](./Datagrid.md#header)
