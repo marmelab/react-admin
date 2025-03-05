@@ -15,7 +15,7 @@ import {
     useMutationMiddlewares,
 } from '../saveContext';
 import { useTranslate } from '../../i18n';
-import { Identifier, RaRecord, TransformData } from '../../types';
+import { Identifier, MutationMode, RaRecord, TransformData } from '../../types';
 import {
     useResourceContext,
     useResourceDefinition,
@@ -55,6 +55,7 @@ export const useCreateController = <
         record,
         redirect: redirectTo,
         transform,
+        mutationMode = 'pessimistic',
         mutationOptions = {},
     } = props;
 
@@ -96,7 +97,6 @@ export const useCreateController = <
             if (onSuccess) {
                 return onSuccess(data, variables, context);
             }
-
             notify(`resources.${resource}.notifications.created`, {
                 type: 'info',
                 messageArgs: {
@@ -105,6 +105,7 @@ export const useCreateController = <
                         smart_count: 1,
                     }),
                 },
+                undoable: mutationMode === 'undoable',
             });
             redirect(finalRedirectTo, resource, data.id, data);
         },
@@ -117,7 +118,7 @@ export const useCreateController = <
             const validationErrors = (error as HttpError)?.body?.errors;
             const hasValidationErrors =
                 !!validationErrors && Object.keys(validationErrors).length > 0;
-            if (!hasValidationErrors) {
+            if (!hasValidationErrors || mutationMode !== 'pessimistic') {
                 notify(
                     typeof error === 'string'
                         ? error
@@ -142,7 +143,8 @@ export const useCreateController = <
             }
         },
         ...otherMutationOptions,
-        returnPromise: true,
+        mutationMode,
+        returnPromise: mutationMode === 'pessimistic',
         getMutateWithMiddlewares,
     });
 
@@ -150,9 +152,10 @@ export const useCreateController = <
         (
             data: Partial<RecordType>,
             {
+                onSuccess: onSuccessFromSave,
+                onError: onErrorFromSave,
                 transform: transformFromSave,
                 meta: metaFromSave,
-                ...callTimeOptions
             } = {} as SaveHandlerCallbacks
         ) =>
             Promise.resolve(
@@ -166,7 +169,10 @@ export const useCreateController = <
                     await create(
                         resource,
                         { data, meta: metaFromSave ?? meta },
-                        callTimeOptions
+                        {
+                            onError: onErrorFromSave,
+                            onSuccess: onSuccessFromSave,
+                        }
                     );
                 } catch (error) {
                     if (
@@ -192,6 +198,7 @@ export const useCreateController = <
         isFetching: false,
         isLoading: false,
         isPending: disableAuthentication ? false : isPendingCanAccess,
+        mutationMode,
         saving,
         defaultTitle,
         save,
@@ -214,6 +221,7 @@ export interface CreateControllerProps<
     record?: Partial<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
+    mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
         ResultRecordType,
         MutationOptionsError,
