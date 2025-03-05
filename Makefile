@@ -121,8 +121,7 @@ docker-doc: ## run the doc website in a docker container
 	@docker run -it --rm \
 		-p 4000:4000 \
 		-v="${PWD}/docs:/site" \
-		bretfisher/jekyll \
-		serve -H 0.0.0.0
+		bretfisher/jekyll-serve
 
 serve-github-pages: docker-doc ## Serve the doc from a Github Pages docker container
 
