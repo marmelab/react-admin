@@ -5,45 +5,38 @@ title: "The create-react-admin CLI"
 
 # `create-react-admin`
 
-`create-react-admin` is a package that generates a react-admin app scaffolding using [Vite](https://vitejs.dev/). It is designed to work on most setups and produces predictable and consistent results. It's the preferred way to create a new react-admin application.
+Use `create-react-admin` to quickly bootstrap a react-admin project using [Vite](https://vitejs.dev/). It's the preferred way to create a new react-admin application.
 
 <iframe src="https://www.youtube-nocookie.com/embed/i_TbS7quzww" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 ## Usage
 
-Use it by running the following command:
-
-<div><i>With NPM</i></div>
-
-```sh
-npm create react-admin@latest your-admin-name
-```
-
-<div><i>With NPX</i></div>
-
 ```sh
 npx create-react-admin@latest your-admin-name
 ```
 
-<div><i>With Yarn</i></div>
+This will create an empty react-admin application in a directory called `your-admin-name`.
 
-```sh
-yarn create react-admin your-admin-name
-```
+**Tip**: You can replace `npx` with `npm`, `yarn`, or `bun`
 
-<div><i>With Bun</i></div>
+## Options
 
-```sh
-bun create react-admin your-admin-name
-```
+The command accepts the following options:
 
-It will choose every option for you and create your new React-Admin application.
-To select them, you can use the `--interactive` flag and the terminal will then ask you to choose:
+* `--interactive`: Enable the CLI interactive mode
+* `--data-provider`: Set the data provider to use ("data-fakerest", "data-simple-rest", "data-json-server", "supabase" or "none")
+* `--auth-provider`: Set the auth provider to use ("local-auth-provider" or "none")
+* `--resource`: Add a resource that will be initialized with guessers (can be used multiple times). Set to "skip" to bypass the interactive resource step.
+* `--install`: Set the package manager to use for installing dependencies ("yarn", "npm", "bun" or "skip" to bypass the interactive install step)
 
-- a [data provider](#data-provider)
-- an [auth provider](#auth-provider)
-- the names of the [resources](#resources) to add
-- the [package manager](#package-manager) to use to install the dependencies
+## `--interactive`
+
+When using this option, the terminal will ask you to choose:
+
+* a [data provider](#data-provider)
+* an [auth provider](#auth-provider)
+* the names of the [resources](#resources) to add
+* the [package manager](#package-manager) to use to install the dependencies
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/create-react-admin.webm" type="video/webm"/>
@@ -63,80 +56,56 @@ yarn dev
 bun run dev
 ```
 
-## Data Provider
+## `--data-provider`
 
-`create-react-admin` currently supports five templates presets to set the application's data provider which are:
+`create-react-admin` currently supports five presets for the application's data provider:
 
-- **Fakerest:** A client-side, in-memory data provider that use a JSON object as its initial data.
-- **JSON Server:** A data provider based on the JSON Server API (<https://github.com/typicode/json-server>)
-- **Simple REST:** A Simple REST data provider (<https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest>)
-- **Supabase:** Generate an application using ra-supabase. The auth-provider and resources steps will be skipped.
-- **None:** You'll configure the data provider myself.
+* `fakerest`: A client-side data provider that use a JSON object for data, powered by [FakeRest](https://github.com/marmelab/FakeRest).
+* `json-server`: A data provider based on the [JSON Server](https://github.com/typicode/json-server) API
+* `simple-rest`: A data provider for [simple REST APIs](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)
+* `supabase`: A data provider for [Supabase](https://github.com/marmelab/ra-supabase/tree/main/packages/ra-supabase). The auth-provider and resources steps will be skipped.
+* `none` (default): You'll configure the data provider myself.
 
 You can set your data provider directly with the `--data-provider` option:
 
 ```sh
-npm create react-admin@latest your-admin-name --data-provider json-server
-# or
-npx create-react-admin@latest your-admin-name --data-provider simple-rest
-# or
-yarn create react-admin your-admin-name --data-provider supabase
-# or
-bun create react-admin your-admin-name --data-provider none
+npx create-react-admin@latest your-admin-name --data-provider json-server
 ```
 
-## Auth Provider
+## `--auth-provider`
 
-`create-react-admin` currently supports two templates presets to set the application's auth provider which are:
+`create-react-admin` currently supports two presets to set the application's auth provider which are:
 
-- **Hard coded local username/password.**
-- **None:** No authProvider.
+* `local-auth-provider`: Hard coded username/password.
+* `none` (default): No authProvider.
 
 You can set your auth provider directly with the `--auth-provider` option:
 
 ```sh
-npm create react-admin@latest your-admin-name --auth-provider local-auth-provider
-# or
-npx create-react-admin@latest your-admin-name --auth-provider none
-# or
-yarn create react-admin your-admin-name --auth-provider local-auth-provider
-# or
-bun create react-admin your-admin-name --auth-provider none
+npx create-react-admin@latest your-admin-name --auth-provider local-auth-provider
 ```
 
-## Resources
+## `--resource`
 
-`create-react-admin` doesn't provide any resource by default. You can add some on `--interactive` mode or you can set your resources with the `--resource` option:
+`create-react-admin` creates an empty app by default. You can initialize CRUD pages for some resources with the `--resource` option:
 
 ```sh
-npm create react-admin@latest your-admin-name --resource posts
-# or
 npx create-react-admin@latest your-admin-name --resource posts --resource comments
-# or
-yarn create react-admin your-admin-name --resource posts
-# or
-bun create react-admin your-admin-name --resource posts --resource comments
 ```
 
 **Warning:** the `--resource` flag is incompatible with a `--data-provider supabase` due to a specific [`<AdminGuesser>` component](https://github.com/marmelab/ra-supabase/tree/main/packages/ra-supabase#usage) from `ra-supabase`.
 
-## Package Manager
+## `--install`
 
-`create-react-admin` currently supports the following options for package managers:
+`create-react-admin` can install dependencies using any of the following package managers:
 
-- **npm**
-- **yarn**
-- **bun**
-- **Don't install dependencies**, you'll do it myself.
+* `npm` (default)
+* `yarn`
+* `bun`
+* `none` (if you want to install dependencies yourself)
 
-You can set your package manager with the `--install` option:
+You choose an alternative package manager with the `--install` option:
 
 ```sh
-npm create react-admin@latest your-admin-name --install npm
-# or
-yarn create react-admin your-admin-name --install yarn
-# or
-bun create react-admin your-admin-name --install bun
-# or
-npx create-react-admin@latest your-admin-name --install skip
+npx create-react-admin@latest your-admin-name --install bun
 ```
