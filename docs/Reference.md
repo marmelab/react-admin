@@ -100,7 +100,6 @@ title: "Index"
 
 **- I -**
 
-* [`<IfCanAccess>`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<InfiniteList>`](./InfiniteList.md)
 * [`<InfinitePagination>`](./InfiniteList.md)
 * [`<ImageField>`](./ImageField.md)
@@ -143,7 +142,6 @@ title: "Index"
 
 * [`<Pagination>`](./List.md#pagination)
 * [`<PasswordInput>`](./PasswordInput.md)
-* [`<PreferencesSetter>`](https://react-admin-ee.marmelab.com/documentation/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- R -**
 
