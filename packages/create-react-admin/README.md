@@ -7,7 +7,11 @@ A CLI to bootstrap a new react-admin application.
 ```sh
 npm create react-admin@latest my-app
 # or
+npx create react-admin@latest my-app
+# or
 yarn create react-admin my-app
+# or
+bun create react-admin my-app
 ```
 
 You'll be asked to choose a data provider (optional), an auth provider (optional). You may also setup the resources you want initially.
