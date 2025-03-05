@@ -15,7 +15,7 @@ export default () => {
     if (window) {
         window.restServer = adapter.server; 
     }
-    // (fetchMock as any).mock('begin:http://localhost:4000', adapter.getHandler());
-    // return () => (fetchMock as any).reset(); 
+    (fetchMock as any).get('begin:http://localhost:4000', adapter.getHandler());
+    return () => (fetchMock as any).reset(); 
    
 };
