@@ -158,7 +158,7 @@ title: "Index"
 * [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<ReferenceNodeInput>`](./ReferenceNodeInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<ReferenceOneField>`](./ReferenceOneField.md)
-* [`<ReferenceOneInput>`](./ReferenceOneInput.md)
+* [`<ReferenceOneInput>`](./ReferenceOneInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Resource>`](./Resource.md)
 * [`<RevisionsButton>`](./RevisionsButton.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
