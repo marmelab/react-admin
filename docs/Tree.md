@@ -2,7 +2,6 @@
 layout: default
 title: "The Tree Component"
 ---
-<!-- TODO: reference this file in ref.md + navbar -->
 
 # `<Tree>`
 
