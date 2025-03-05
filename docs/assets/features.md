@@ -1,0 +1,350 @@
+If you don't use `<Datagrid>` in a list, you'll need a control to let users choose the sort order. The `<SortButton>` component does just that. #list https://marmelab.com/react-admin/SortButton.html
+
+![SortButton](https://marmelab.com/react-admin/img/sort-button.gif)
+
+---
+
+The filter sidebar is a great way to let users filter a list by selecting possible filter values with the mouse. But for a full-text search, you need a form input with a watch on the value. That's what `<FilterLiveSearch>` does. #list https://marmelab.com/react-admin/FilterLiveSearch.html
+
+![FilterLiveSearch](https://marmelab.com/react-admin/img/filter-live-search.gif)
+
+---
+
+`<ReferenceManyCount>` renders the number of records related to another record via a one-to-many relationship (e.g. the number of comments related to a post). It calls dataProvider.getManyReference() with the pagination parameter set to retrieve no data - only the total number of records. #relationships https://marmelab.com/react-admin/ReferenceManyCount.html
+
+![ReferenceManyCount](https://marmelab.com/react-admin/img/reference_many_count.webp)
+
+---
+
+The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the store. #preferences https://marmelab.com/react-admin/ToggleThemeButton.html
+
+![ToggleThemeButton](https://marmelab.com/react-admin/img/ToggleThemeButton.gif)
+
+---
+
+If you need horizontal space, switch the classic menu for an `<IconMenu>`. It renders a reduced menu bar with a sliding panel for second-level menu items. This menu saves a lot of screen real estate, and allows for sub menus of any level of complexity. #UI https://marmelab.com/react-admin/IconMenu.html
+
+![IconMenu](https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.gif)
+
+---
+
+To let user enter a boolean value, you can use the `<BooleanInput>` to render a switch. But most often, you need the `<NullableBooleanInput>`, which renders a select input with three choices: "Yes", "No" and "" (empty string). It is necessary to distinguish between false and empty values #input https://marmelab.com/react-admin/NullableBooleanInput.html
+
+![NullableBooleanInput](https://marmelab.com/react-admin/img/nullable-boolean-input.gif)
+
+---
+
+The `<Confirm>` component renders a confirmation dialog. It's useful to confirm destructive actions, such as deleting a record. #ui https://marmelab.com/react-admin/Confirm.html
+
+![Confirm dialog](https://marmelab.com/react-admin/img/confirm-dialog.png)
+
+---
+
+`<SelectInput>` has one drawback: users have to click on it to see the choices. `<CheckboxGroupInput>` is a better alternative for a small list of choices, as it shows all the options by default. #input https://marmelab.com/react-admin/CheckboxGroupInput.html
+
+![CheckboxGroupInput](https://marmelab.com/react-admin/img/checkbox-group-input.gif)
+
+---
+
+When a form becomes too complex, organize the inputs in different sections with the `<TabbedForm>`. #form https://marmelab.com/react-admin/TabbedForm.html
+
+![TabbedForm](https://marmelab.com/react-admin/img/tabbed-form.gif)
+
+---
+
+To provide users visibility on their progression through a complex form, use the `<WizardForm>`. #form https://marmelab.com/react-admin/WizardForm.html
+
+![WizardForm](https://react-admin-ee.marmelab.com/assets/ra-wizard-form-overview.gif)
+
+---
+
+If you need nested forms to edit e.g. variants of a product, use the `<ReferenceManyInput>` component. It leverages the `<SimpleFormIterator>` to let you edit record in another table. #form https://marmelab.com/react-admin/ReferenceManyInput.html
+
+![ReferenceManyInput](https://marmelab.com/react-admin/img/reference-many-input.gif)
+
+---
+
+If your app relies heavily on filters, you can offer your users the ability to save their favorite filters. The `<SavedQueriesList>` component lets users save the current filter and sort parameters, and retrieve them later. #list https://marmelab.com/react-admin/FilteringTutorial.html#saved-queries-let-users-save-filter-and-sort
+
+<video controls autoplay muted loop>
+  <source src="https://marmelab.com/react-admin/img/SavedQueriesList.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+You can let end users customize the fields displayed in the `<Datagrid>` by using the `<DatagridConfigurable>` component instead. #list https://marmelab.com/react-admin/Datagrid.html#configurable
+
+<video controls autoplay muted loop>
+  <source src="https://marmelab.com/react-admin/img/DatagridConfigurable.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+If you are working with records that can be edited by only one user at a time, you can use react-admin to put locks on records. The `useLockOnMount` hook will lock the record when the component mounts, while the `useLockOnCall` hook allows you to trigger the lock manually. #realtime https://marmelab.com/react-admin/useLockOnMount.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/useLockOnMount.webm" type="video/webm"/>
+  <source src="https://marmelab.com/react-admin/img/useLockOnMount.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+You can leverage react-admin's realtime abilities to get live updates about the lock status of records. Use `useGetLockLive` to get the live lock status for a specific record, or `useGetLocksLive` to get them all for a specific resource. #realtime https://marmelab.com/react-admin/useGetLockLive.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/locks-demo.webm" type="video/webm"/>
+  <source src="https://marmelab.com/react-admin/img/locks-demo.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+Many end-users prefer an Excel-like experience when browsing a list of records. They want to see the first records, then scroll down to see more, and so on. This is called infinite pagination, and it's supported in react-admin. #list https://marmelab.com/react-admin/InfiniteList.html
+
+<video controls autoplay playsinline muted loop width="100%">
+    <source
+        src="https://marmelab.com/react-admin/img/infinite-book-list.webm"
+        type="video/webm"
+    />
+    Your browser does not support the video tag.
+</video>
+
+---
+
+With your admin getting bigger, or if you have to manage many resources and/or sub-resources, it might be a good idea to add a breadcrumb to your app. The `<Breadcrumb>` component will do just that. #ui https://marmelab.com/react-admin/Breadcrumb.html
+
+<video controls autoplay playsinline muted loop width="100%">
+    <source
+        src="https://react-admin-ee.marmelab.com/assets/breadcumb-nested-resource.mp4"
+        type="video/webm"
+    />
+    Your browser does not support the video tag.
+</video>
+
+---
+
+React-admin ships with a powerful and versatile validation engine. It supports the most common validation strategies:
+
+- per field validation
+- form validation
+- schema validation, e.g. powered by yup or zod
+- server-side validation
+
+\#forms https://marmelab.com/react-admin/Features.html#forms--validation
+
+![Validation example](https://marmelab.com/react-admin/img/validation.png)
+
+---
+
+The `<LocalesMenuButton>` component, also known as the “language switcher”, displays a menu allowing users to select the language of the interface. It leverages the store to persist their selection. #i18n #preferences https://marmelab.com/react-admin/LocalesMenuButton.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/LocalesMenuButton.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+To bootstrap a List view based on a new API route, you can use the `<ListGuesser>` component to generate the JSX for the table columns for you. #list https://marmelab.com/react-admin/ListGuesser.html
+
+![ListGuesser](https://marmelab.com/react-admin/img/guessed-list.png)
+
+---
+
+To bootstrap a new react-admin project, prefer the `create-react-admin` package. It will generate a fully functional React App powered by Vite, complete with a data provider, an auth provider, and a few example resources. #getting-started https://marmelab.com/react-admin/CreateReactAdmin.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/create-react-admin.webm" type="video/webm">
+  <source src="https://marmelab.com/react-admin/img/create-react-admin.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+Edition forms in react-admin have a built-in "Undo" feature, letting end users cancel a form submissions a few seconds after they have submitted it. You can disable this built-in feature by setting `mutationMode` as `pessimistic`. #form https://marmelab.com/react-admin/Features.html#forms--undo
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/tutorial_post_edit_undo.webm" type="video/webm">
+  <source src="https://marmelab.com/react-admin/img/tutorial_post_edit_undo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+`<Edit>` is designed to be a page component, passed to the edit prop of the `<Resource>` component. But you may want to let users edit a record in a dialiog without leaving the context of the list page. If so, you can use the `<EditDialog>` component. #form https://marmelab.com/react-admin/EditDialog.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/edit-dialog.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+If you want to let users edit a record from another page, use the `<EditInDialogButton>` component. #form https://marmelab.com/react-admin/EditInDialogButton.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+The `<AutoSave>` component lets users save a form automatically after a given delay. It's useful to avoid losing data when users navigate away from a form without submitting it. #form https://marmelab.com/react-admin/AutoSave.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/AutoSave.webm" type="video/webm">
+  <source src="https://marmelab.com/react-admin/img/AutoSave.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+Use `<ReferenceOneInput>` in an `<Edit>` or `<Create>` view to edit a record linked to the current record via a one-to-one relationship, e.g. to edit the details of a book in the book edition view. #form https://marmelab.com/react-admin/ReferenceOneInput.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/reference-one-input.webm" type="video/webm">
+  <source src="https://marmelab.com/react-admin/img/reference-one-input.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+The `<Search>` component renders a global search input. It’s designed to be always accessible in the top `<AppBar>`. #ui https://marmelab.com/react-admin/Search.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+The `<Configurable>` component makes another component configurable by the end user. When users enter the configuration mode, they can customize the component’s settings via the inspector. #ui https://marmelab.com/react-admin/Configurable.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/SimpleListConfigurable.webm" type="video/webm">
+  <source src="https://marmelab.com/react-admin/img/SimpleListConfigurable.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+In the case you want keep track of user actions, and get an overview of the activity of your admin, you can display event lists and audit logs with `<TimeLine>`, `<RecordTimeline>` and with `<EventList>` components. #activitylog #timeline #eventlog https://marmelab.com/ra-enterprise/modules/ra-audit-log
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-audit-log/latest/ra-audit-log-event-list.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+To show more data from a resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `<Datagrid expand>` prop. #datagrid https://marmelab.com/react-admin/Datagrid.html#expand
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/datagrid_expand.webm" type="video/webm">
+  <source src="https://marmelab.com/react-admin/img/datagrid_expand.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+With your admin getting bigger, the default sidebar menu might become too crowded. The `SolarLayout` is a beautiful alternative layout that help you organize your pages. #ui
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-solar-layout.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the `<Calendar>` component. #ui https://marmelab.com/react-admin/Calendar.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+`<Datagrid>` allows you to perform bulk actions such as mass deletion or mass edition. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component. #datagrid https://marmelab.com/react-admin/Datagrid.html#bulkactionbuttons
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/bulk-actions-toolbar.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+The `<SearchWithResult>` component renders a search input and the search results directly below the input. It's ideal for dashboards or menu panels. #ui #search https://marmelab.com/ra-enterprise/modules/ra-search#searchwithresult
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-with-result-overview.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+---
+
+All Field components accept a type parameter that describes the record. This lets TypeScript validate that the `source` prop targets an actual field of the record, and will also allow your IDE to provide auto-completion for both the `source` and `sortBy` props. `<FunctionField>` will also allow TypeScript to provide auto-completion for the `record` fields. #typescript https://marmelab.com/react-admin/Fields.html#typescript
+
+![FunctionField TypeScript](https://marmelab.com/static/44d79f8feb06b87c363c301395037081/df77d/typescript-function-field.webp)
+
+---
+
+React Admin supports translation out of the box. It supports features like interpolation, pluralization and default translation. You can customize the translation keys to translate any part of the UI, or you can use the `useTranslate` hook to easily translate custom components. #i18n https://marmelab.com/react-admin/Translation.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/translation.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+The `<PrevNextButtons>` component renders navigation buttons linking to the next or previous record of a resource. It also renders the current index and the total number of records. #ux #navigation https://marmelab.com/react-admin/PrevNextButtons.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/prev-next-buttons.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+`<TreeWithDetails>` offers a replacement for `<List>` when the records form a **tree structure** (like directories, categories, etc.). It allows to render the tree alongside the show/edit views. #list #tree https://marmelab.com/react-admin/TreeWithDetails.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/treewithdetails.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+The `<TreeInput>` component allows to select one or several nodes from a tree. #input #tree https://marmelab.com/react-admin/TreeInput.html
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://marmelab.com/react-admin/img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+React-admin Enterprise Edition proposes alternative components to `<DateInput>`, `<TimeInput>` and `<DateTimeInput>` based on the MUI X Date/Time pickers. They allow for more customization of the UI, and make it easier to work with specific locale and date formats. #input #date https://react-admin-ee.marmelab.com/documentation/ra-form-layout#dateinput-datetimeinput-and-timeinput
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/DatePickers.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+---
+
+When your admin application is a Single Page Application, users who keep a browser tab open at all times might not use the most recent version of the application.
+
+If you include the `<CheckForApplicationUpdate>` component to your layout, React Admin will regularly check whether the application source code has changed and prompts users to reload the page when an update is available. #spa #ux https://marmelab.com/react-admin/CheckForApplicationUpdate.html
+
+![CheckForApplicationUpdate](https://marmelab.com/react-admin/img/CheckForApplicationUpdate.png)
+
+---
+
+If you need to display an enumerated field in a list component like Datagrid, `<SelectField>` allows to easily map the value to a string. #list #datagrid https://marmelab.com/react-admin/SelectField.html
+
+![SelectField](https://marmelab.com/react-admin/img/SelectField.png)
+
