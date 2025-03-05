@@ -2,7 +2,6 @@
 import { transpileModule } from 'https://esm.sh/typescript@5.7.3';
 import * as prettier from 'https://esm.sh/prettier@3.5.1/standalone';
 import * as babel from 'https://esm.sh/prettier@3.5.1/plugins/babel';
-import * as estree from 'https://esm.sh/prettier@3.5.1/plugins/estree';
 import { marked } from 'https://esm.sh/marked@15.0.7';
 
 export const showTip = async () => {
@@ -10,8 +9,10 @@ export const showTip = async () => {
     const tipElement = document.getElementById('tip');
     if (!tipElement) return;
 
-    const tips = await getContents('/assets/tips.md');
-    const features = await getContents('/assets/features.md');
+    const [tips, features] = await Promise.all([
+        getContents('/assets/tips.md'),
+        getContents('/assets/features.md'),
+    ]);
     const all = tips.concat(features);
 
     const content = all[Math.floor(Math.random() * all.length)]
@@ -117,7 +118,7 @@ const transpileToJS = async tsCode => {
             '\n\n'
         ),
         {
-            plugins: [babel, estree],
+            plugins: [babel],
             parser: 'babel',
             tabWidth: 4,
             printWidth: 120,
