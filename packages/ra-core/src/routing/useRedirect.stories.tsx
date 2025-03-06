@@ -111,7 +111,7 @@ const SomePage = () => {
     );
 };
 
-export const useRedirect = () => (
+export const UseRedirect = () => (
     <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
