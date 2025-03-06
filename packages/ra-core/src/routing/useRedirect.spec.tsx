@@ -108,4 +108,27 @@ describe('useRedirect', () => {
         expect(window.location.href).toBe('https://google.com');
         window.location = oldLocation;
     });
+    it.each(['/foo', { pathname: '/foo' }])(
+        'should support functions that returns local absolute URLs with a leading /',
+        async redirect => {
+            render(
+                <TestMemoryRouter>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={
+                                    <Redirect redirectTo={() => redirect} />
+                                }
+                            />
+                            <Route path="foo" element={<Component />} />
+                        </Routes>
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+            await waitFor(() => {
+                expect(screen.queryByDisplayValue('/foo')).not.toBeNull();
+            });
+        }
+    );
 });
