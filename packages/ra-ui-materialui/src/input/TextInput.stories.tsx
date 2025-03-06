@@ -89,16 +89,32 @@ export const DefaultValue = () => (
     </Wrapper>
 );
 
-export const HelperText = () => (
+export const HelperText = ({
+    helperText = 'Number of times the post was read',
+}: {
+    helperText: any;
+}) => (
     <Wrapper>
         <TextInput source="title" />
         <TextInput source="title" helperText={false} />
-        <TextInput
-            source="title"
-            helperText="Number of times the post was read"
-        />
+        <TextInput source="title" helperText={helperText} />
     </Wrapper>
 );
+
+HelperText.argTypes = {
+    helperText: {
+        options: ['text', 'false', 'empty string'],
+        mapping: {
+            text: 'Number of times the post was read',
+            false: false,
+            'empty string': '',
+        },
+        control: { type: 'select' },
+    },
+};
+HelperText.args = {
+    helperText: 'text',
+};
 
 export const Label = () => (
     <Wrapper>
