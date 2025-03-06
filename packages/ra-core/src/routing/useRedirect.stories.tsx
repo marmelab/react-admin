@@ -28,6 +28,11 @@ const Home = () => {
                     </button>
                 </li>
                 <li>
+                    <button onClick={() => redirect(() => '/dashboard')}>
+                        Relative url from a function
+                    </button>
+                </li>
+                <li>
                     <button onClick={() => redirect('list', 'posts')}>
                         View name
                     </button>
