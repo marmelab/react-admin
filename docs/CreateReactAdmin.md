@@ -15,9 +15,16 @@ Use `create-react-admin` to quickly bootstrap a react-admin project using [Vite]
 npx create-react-admin@latest your-admin-name
 ```
 
-This will create an empty react-admin application in a directory called `your-admin-name`.
+This will create an empty react-admin application in a directory called `your-admin-name`, powered by [Vite.js](./Vite.md), and install the dependencies.
 
-**Tip**: You can replace `npx` with `npm`, `yarn`, or `bun`
+You can run the app with:
+
+```sh
+cd your-admin-name
+npm run dev
+```
+
+**Tip**: You can replace `npx` with `npm`, `yarn`, or `bun`.
 
 ## Options
 
@@ -43,18 +50,6 @@ When using this option, the terminal will ask you to choose:
   <source src="./img/create-react-admin.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
-The generated app will be similar to the one installed manually with [Vite.js](./Vite.md).
-
-Once the installation is complete, you can run the app with:
-
-```sh
-npm run dev
-# or
-yarn dev
-# or
-bun run dev
-```
 
 ## `--data-provider`
 
