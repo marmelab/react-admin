@@ -53,8 +53,13 @@ echo "[Minor version only] Update the dependencies to RA packages in the create-
 echo "Press Enter when this is done"
 read
 
+step "manual task: Update the OldVersion.md file"
+echo "[Minor version only] Update the ./docs/OldVersions.md file to add the new minor version and update the previous one && commit"
+echo "Press Enter when this is done"
+read
+
 # Get the current version from package.json
-npm_current_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
+npm_previous_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
 
 step "lerna version"
 # Running lerna version
@@ -62,11 +67,11 @@ step "lerna version"
 ./node_modules/.bin/lerna version --force-publish --no-push
 
 # Get the version from package.json
-npm_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
+npm_current_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
 
 # Remove the tag created by lerna
-echo "Removing tag v${npm_package_version} created by lerna"
-git tag -d "v${npm_package_version}"
+echo "Removing tag v${npm_current_package_version} created by lerna"
+git tag -d "v${npm_current_package_version}"
 if [ ! -z "$RELEASE_DRY_RUN" ]; then
     # In dry-run mode, reset the last commit to avoid accidental push
     echo "dry mode -- Resetting the workspace to the last commit"
@@ -74,20 +79,20 @@ if [ ! -z "$RELEASE_DRY_RUN" ]; then
 fi
 
 step "update-changelog"
-yarn run update-changelog ${npm_package_version}
+yarn run update-changelog ${npm_current_package_version}
 echo "Please review the ./CHANGELOG.md file and update it if needed."
 echo "Press Enter when this is done"
 read
 if [ -z "$RELEASE_DRY_RUN" ]; then
     echo "Committing the changelog"
     git add CHANGELOG.md
-    git commit -m "Update changelog for version ${npm_package_version}"
+    git commit -m "Update changelog for version ${npm_current_package_version}"
 fi
 
 step "git tag"
 if [ -z "$RELEASE_DRY_RUN" ]; then
-    echo "Creating new tag v${npm_package_version}"
-    git tag "v${npm_package_version}"
+    echo "Creating new tag v${npm_current_package_version}"
+    git tag "v${npm_current_package_version}"
 else
     echo "dry mode -- skipping git tag"
 fi
@@ -110,29 +115,30 @@ else
 fi
 
 step "update-milestones"
-yarn run update-milestones ${npm_package_version}
+yarn run update-milestones ${npm_current_package_version}
 
 step "create-github-release"
-yarn run create-github-release ${npm_package_version}
+yarn run create-github-release ${npm_current_package_version}
 
+step "Update the documentation"
 if [ -d $RA_DOC_PATH ]; then
-    step "Update the documentation"
-    # ${npm_package_version%.*} extract the major.minor version
-    RA_DOC_PATH="$RA_DOC_PATH" VERSION="${npm_package_version%.*}" ./scripts/copy-ra-oss-docs.sh
+    # ${npm_current_package_version%.*} extract the major.minor version
+    RA_DOC_PATH="$RA_DOC_PATH" VERSION="${npm_current_package_version%.*}" ./scripts/copy-ra-oss-docs.sh
     # Set the latest version in the versions.yml file
     echo "Update the latest version in the versions.yml file"
-    sed -i "/^\(- latest\).*/s//\1 \($npm_package_version\)/" $RA_DOC_PATH/_data/versions.yml
-    if [ "${npm_current_package_version%.*}" == "${npm_package_version%.*}" ]; then
+    sed -i "/^\(- latest\).*/s//\1 \($npm_current_package_version\)/" $RA_DOC_PATH/_data/versions.yml
+    if [ "${npm_previous_package_version%.*}" == "${npm_current_package_version%.*}" ]; then
         echo "Add the previous minor version to the list of versions in the versions.yml file"
         # Add the previous minor version to the list of versions in the versions.yml file
-        sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_package_version%.*}\"/" $RA_DOC_PATH/_data/versions.yml
+        sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_current_package_version%.*}\"/" $RA_DOC_PATH/_data/versions.yml
     fi
+    ( cd $RA_DOC_PATH && git add . && git commit -m "Update the documentation for version $npm_current_package_version" && git push )
 else
     warn "Cannot find the $RA_DOC_PATH folder in the repository parent directory"
-    step "manual step: Update the documentation"
+    echo "Please update the documentation manually"
     echo "You can use the 'copy-ra-oss-docs.sh' script if you have it"
     echo "Press Enter when this is done"
     read
 fi
 
-step "The ${npm_package_version} release is done! 🎉"
+step "The ${npm_current_package_version} release is done! 🎉"
