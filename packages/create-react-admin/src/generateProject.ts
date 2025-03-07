@@ -43,13 +43,16 @@ export const generateProject = async (state: ProjectConfiguration) => {
     if (!hasTemplateAppFile(state.dataProvider)) {
         generateAppFile(projectDirectory, state);
     }
-    if (
-        state.dataProvider === 'ra-data-fakerest' &&
-        ['posts', 'comments'].every(resource =>
-            state.resources.includes(resource)
-        )
-    ) {
-        generateAppTestFile(projectDirectory, state);
+    if (state.dataProvider === 'ra-data-fakerest') {
+        if (
+            ['posts', 'comments'].every(resource =>
+                state.resources.includes(resource)
+            )
+        ) {
+            generateAppTestFile(projectDirectory, state);
+        } else {
+            generateDataForFakeRest(projectDirectory, state);
+        }
     }
 
     generatePackageJson(projectDirectory, state);
@@ -324,4 +327,18 @@ const getYarnVersion = () => {
     // want to use yarn to install the dependencies.
     const { stdout } = execa.sync('yarn', ['--version'], { stdio: 'pipe' });
     return stdout;
+};
+
+const generateDataForFakeRest = (
+    projectDirectory: string,
+    state: ProjectConfiguration
+) => {
+    const data = state.resources.reduce((acc, resource) => {
+        acc[resource] = [];
+        return acc;
+    }, {});
+    fs.writeFileSync(
+        path.join(projectDirectory, 'src', 'data.json'),
+        JSON.stringify(data, null, 2)
+    );
 };
