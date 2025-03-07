@@ -92,7 +92,7 @@ fi
 step "git tag"
 if [ -z "$RELEASE_DRY_RUN" ]; then
     echo "Creating new tag v${npm_current_package_version}"
-    git tag "v${npm_current_package_version}"
+    git tag "v${npm_current_package_version}" -m "v${npm_current_package_version}"
 else
     echo "dry mode -- skipping git tag"
 fi
