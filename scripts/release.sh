@@ -6,6 +6,10 @@ info() {
     echo -e "\033[1;34m$1\033[0m"
 }
 
+warn() {
+    echo -e "\033[1;33m$1\033[0m"
+}
+
 step() {
     echo ""
     info "$1"
@@ -23,11 +27,18 @@ make install
 step "make build"
 make build
 
-step "manual tests: Run the EE tests"
-echo "Copy the the packages folder content inside the node_modules of ra-enterprise, then run a full build and run the tests"
-echo "Tip: You can use the 'copy-ra-oss-packages-to-ee.sh' script if you have it"
-echo "Press Enter when this is done"
-read
+step "Run the EE tests"
+if [ -d ../ra-enterprise ]; then
+    cp -r packages/* ../ra-enterprise/node_modules
+    # We must remove the @mui directory from the react-admin node_modules to avoid conflicts
+    ( cd ../ra-enterprise && rm -rf node_modules/react-admin/node_modules/@mui && make build && CI=true make test )
+else
+    warn "Cannot find the ra-enterprise folder in the repository parent directory"
+    echo "Copy the the packages folder content inside the node_modules of ra-enterprise, then run a full build and run the tests"
+    echo "Tip: You can use the 'copy-ra-oss-packages-to-ee.sh' script if you have it"
+    echo "Press Enter when this is done"
+    read
+fi
 
 step "manual tests: Run the demos"
 echo "Test the 3 demos (simple, e-commerce, crm): check console & UI"
