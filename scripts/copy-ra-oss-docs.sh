@@ -1,3 +1,12 @@
+if [ -z "$RA_DOC_PATH" ]; then
+    echo "RA_DOC_PATH environment variable is not set"
+    exit 1
+fi
+if [ -z "$VERSION" ]; then
+    echo "VERSION environment variable is not set"
+    exit 1
+fi
+
 #!/bin/bash
 echo "Updating the documentation to version $VERSION"
 echo "Copying to the root folder..."
