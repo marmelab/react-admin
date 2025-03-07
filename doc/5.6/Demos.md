@@ -202,6 +202,21 @@ If you want to see what react-admin is capable of, or if you want to learn from 
             </div>
         </div>
     </div>
+        <div class="card">
+        <a href="#todo-app" class="no-decoration"><img src="./img/todos.jpg" alt="Todo App"></a>
+        <div class="content-card">
+            <a href="#todo-app" class="no-decoration">
+                <p class="title-card"><b>Todo App</b></p>
+                <p  class="description-card">React-admin used in headless mode</p>
+            </a>
+        </div>
+        <div class="card-footer">
+            <div class="links-container">
+                <p><b><a href="https://marmelab.com/react-admin-todo/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/react-admin-todo" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
 </div>
 
 ## E-commerce
@@ -339,6 +354,26 @@ Navidrome is a Spotify clone allowing to manage songs, artists, playlists, and f
 
 * Demo: [https://demo.navidrome.org/app/](https://demo.navidrome.org/app/)
 * Source code: [https://github.com/navidrome/navidrome/](https://github.com/navidrome/navidrome/)
+
+## Todo App
+
+The classic todo app from [TodoMVC](https://todomvc.com/) built with react-admin in headless mode.
+
+[![Todo App](./img/todos.jpg)](https://marmelab.com/react-admin-todo/)
+
+* Demo: [https://marmelab.com/react-admin-todo/](https://marmelab.com/react-admin-todo/)
+* Source code: [https://github.com/marmelab/react-admin-todo](https://github.com/marmelab/react-admin-todo)
+
+The source shows how to implement the following features:
+
+* [Headless admin](https://github.com/marmelab/react-admin-todo/blob/main/src/App.tsx)
+* [Custom Layout](https://github.com/marmelab/react-admin-todo/blob/main/src/Layout.tsx)
+* [Custom List iterator](https://github.com/marmelab/react-admin-todo/blob/main/src/ItemList.tsx)
+* [Edit-in-place](https://github.com/marmelab/react-admin-todo/blob/main/src/Item.tsx)
+* [Inline Create form](https://github.com/marmelab/react-admin-todo/blob/main/src/Header.tsx)
+* [Custom filter UI](https://github.com/marmelab/react-admin-todo/blob/main/src/Footer.tsx)
+
+Shows how to use react-admin without Material UI.
 
 ## Broadcom Layer 7 API Hub
 
