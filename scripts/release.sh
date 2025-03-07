@@ -3,6 +3,7 @@
 set -e
 source ./.env
 RA_ENTERPRISE_PATH="${RA_ENTERPRISE_PATH:-../ra-enterprise}"
+RA_DOC_PATH="${RA_DOC_PATH:-../react-admin-doc}"
 
 info() {
     echo -e "\033[1;34m$1\033[0m"
@@ -114,18 +115,20 @@ yarn run update-milestones ${npm_package_version}
 step "create-github-release"
 yarn run create-github-release ${npm_package_version}
 
-if [ -d ../react-admin-doc ]; then
+if [ -d $RA_DOC_PATH ]; then
     step "Update the documentation"
     # ${npm_package_version%.*} extract the major.minor version
-    VERSION="${npm_package_version%.*}" ./scripts/copy-ra-oss-docs.sh
+    RA_DOC_PATH="$RA_DOC_PATH" VERSION="${npm_package_version%.*}" ./scripts/copy-ra-oss-docs.sh
     # Set the latest version in the versions.yml file
-    sed -i "/^\(- latest\).*/s//\1 \($npm_package_version\)/" ../react-admin-doc/_data/versions.yml
+    echo "Update the latest version in the versions.yml file"
+    sed -i "/^\(- latest\).*/s//\1 \($npm_package_version\)/" $RA_DOC_PATH/_data/versions.yml
     if [ "${npm_current_package_version%.*}" == "${npm_package_version%.*}" ]; then
+        echo "Add the previous minor version to the list of versions in the versions.yml file"
         # Add the previous minor version to the list of versions in the versions.yml file
-        sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_package_version%.*}\"/" ../react-admin-doc/_data/versions.yml
+        sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_package_version%.*}\"/" $RA_DOC_PATH/_data/versions.yml
     fi
 else
-    warn "Cannot find the react-admin-doc folder in the repository parent directory"
+    warn "Cannot find the $RA_DOC_PATH folder in the repository parent directory"
     step "manual step: Update the documentation"
     echo "You can use the 'copy-ra-oss-docs.sh' script if you have it"
     echo "Press Enter when this is done"
