@@ -1,5 +1,23 @@
 # Changelog
 
+## 5.6.3
+
+* Fix `create-react-admin` should correctly generate `data.json` for fakerest ([#10573](https://github.com/marmelab/react-admin/pull/10573)) ([djhi](https://github.com/djhi))
+* Fix `useRedirect` might include two slashes in the final pathname ([#10572](https://github.com/marmelab/react-admin/pull/10572)) ([djhi](https://github.com/djhi))
+* Fix `helperText` has wrong height when passing an empty string ([#10571](https://github.com/marmelab/react-admin/pull/10571)) ([djhi](https://github.com/djhi))
+* Fix offline user experience ([#10555](https://github.com/marmelab/react-admin/pull/10555)) ([slax57](https://github.com/slax57))
+* [Doc] Add Todo app to the list of demos ([#10568](https://github.com/marmelab/react-admin/pull/10568)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Rewrite `create-react-admin` documentation ([#10566](https://github.com/marmelab/react-admin/pull/10566)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add Vycanis Modeler to ecosystem page ([#10565](https://github.com/marmelab/react-admin/pull/10565)) ([alberteije](https://github.com/alberteije))
+* [Doc] Backport `ra-tree` v10 doc ([#10563](https://github.com/marmelab/react-admin/pull/10563)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Document how to return `Date` object with `<DateTimeInput>` ([#10561](https://github.com/marmelab/react-admin/pull/10561)) ([slax57](https://github.com/slax57))
+* [Doc] Improve `AutoSave` and `useAutoSave` ([#10558](https://github.com/marmelab/react-admin/pull/10558)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Typescript] Update `Error` component to accept `sx` prop ([#10559](https://github.com/marmelab/react-admin/pull/10559)) ([smeng9](https://github.com/smeng9))
+* [TypeScript] Remove usage of `JSX.Element` ([#10553](https://github.com/marmelab/react-admin/pull/10553)) ([djhi](https://github.com/djhi))
+* [chore] Skip pushing the documentation changes in release script when in dry mode ([#10576](https://github.com/marmelab/react-admin/pull/10576)) ([djhi](https://github.com/djhi))
+* [chore] Improve release script by automating documentation update ([#10575](https://github.com/marmelab/react-admin/pull/10575)) ([djhi](https://github.com/djhi))
+* [chore] Improve release script by  automating enterprise packages tests ([#10574](https://github.com/marmelab/react-admin/pull/10574)) ([djhi](https://github.com/djhi))
+
 ## 5.6.2
 
 * Make `<TabbedForm tabs>` use the `onChange` prop ([#10549](https://github.com/marmelab/react-admin/pull/10549)) ([erwanMarmelab](https://github.com/erwanMarmelab))
