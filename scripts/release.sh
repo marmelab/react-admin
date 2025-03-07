@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+source ./.env
 RA_ENTERPRISE_PATH="${RA_ENTERPRISE_PATH:-../ra-enterprise}"
 
 info() {
