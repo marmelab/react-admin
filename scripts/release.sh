@@ -132,7 +132,11 @@ if [ -d $RA_DOC_PATH ]; then
         # Add the previous minor version to the list of versions in the versions.yml file
         sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_current_package_version%.*}\"/" $RA_DOC_PATH/_data/versions.yml
     fi
-    ( cd $RA_DOC_PATH && git add . && git commit -m "Update the documentation for version $npm_current_package_version" && git push )
+    if [ -z "$RELEASE_DRY_RUN" ]; then
+        ( cd $RA_DOC_PATH && git add . && git commit -m "Update the documentation for version $npm_current_package_version" && git push )
+    else
+        echo "dry mode -- skipping commit and push of the documentation"
+    fi
 else
     warn "Cannot find the $RA_DOC_PATH folder in the repository parent directory"
     echo "Please update the documentation manually"
