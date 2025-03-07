@@ -116,4 +116,4 @@ echo "You can use the 'copy-ra-oss-docs.sh' script if you have it"
 echo "Press Enter when this is done"
 read
 
-step "The release is done! 🎉"
+step "The ${npm_package_version} release is done! 🎉"
