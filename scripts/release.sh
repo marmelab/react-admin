@@ -52,6 +52,9 @@ echo "[Minor version only] Update the dependencies to RA packages in the create-
 echo "Press Enter when this is done"
 read
 
+# Get the current version from package.json
+npm_current_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
+
 step "lerna version"
 # Running lerna version
 # This will create a commit and a tag
@@ -111,9 +114,22 @@ yarn run update-milestones ${npm_package_version}
 step "create-github-release"
 yarn run create-github-release ${npm_package_version}
 
-step "manual step: Update the documentation"
-echo "You can use the 'copy-ra-oss-docs.sh' script if you have it"
-echo "Press Enter when this is done"
-read
+if [ -d ../react-admin-doc ]; then
+    step "Update the documentation"
+    # ${npm_package_version%.*} extract the major.minor version
+    VERSION="${npm_package_version%.*}" ./scripts/copy-ra-oss-docs.sh
+    # Set the latest version in the versions.yml file
+    sed -i "/^\(- latest\).*/s//\1 \($npm_package_version\)/" ../react-admin-doc/_data/versions.yml
+    if [ "${npm_current_package_version%.*}" == "${npm_package_version%.*}" ]; then
+        # Add the previous minor version to the list of versions in the versions.yml file
+        sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_package_version%.*}\"/" ../react-admin-doc/_data/versions.yml
+    fi
+else
+    warn "Cannot find the react-admin-doc folder in the repository parent directory"
+    step "manual step: Update the documentation"
+    echo "You can use the 'copy-ra-oss-docs.sh' script if you have it"
+    echo "Press Enter when this is done"
+    read
+fi
 
 step "The ${npm_package_version} release is done! 🎉"
