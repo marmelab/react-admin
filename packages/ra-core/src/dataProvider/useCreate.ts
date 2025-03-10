@@ -6,16 +6,12 @@ import {
     useQueryClient,
     MutateOptions,
     QueryKey,
-    UseInfiniteQueryResult,
-    InfiniteData,
 } from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
 import {
     RaRecord,
     CreateParams,
-    GetListResult as OriginalGetListResult,
-    GetInfiniteListResult,
     Identifier,
     DataProvider,
     MutationMode,
@@ -101,6 +97,7 @@ export const useCreate = <
         ...mutationOptions
     } = options;
     const mode = useRef<MutationMode>(mutationMode);
+
     const paramsRef =
         useRef<Partial<CreateParams<Partial<RecordType>>>>(params);
     const snapshot = useRef<Snapshot>([]);
@@ -143,56 +140,9 @@ export const useCreate = <
         // would remove the id from the record, which no real data provider does.
         const clonedData = JSON.parse(JSON.stringify(data));
 
-        const updateColl = (old: RecordType[]) => {
-            if (!old) return old;
-            return [data, ...old];
-        };
-
-        type GetListResult = Omit<OriginalGetListResult, 'data'> & {
-            data?: RecordType[];
-        };
-
         queryClient.setQueryData(
             [resource, 'getOne', { id: String(id), meta }],
             (record: RecordType) => ({ ...record, ...clonedData }),
-            { updatedAt }
-        );
-        queryClient.setQueriesData(
-            { queryKey: [resource, 'getList'] },
-            (res: GetListResult) =>
-                res && res.data ? { ...res, data: updateColl(res.data) } : res,
-            { updatedAt }
-        );
-        queryClient.setQueriesData(
-            { queryKey: [resource, 'getInfiniteList'] },
-            (
-                res: UseInfiniteQueryResult<
-                    InfiniteData<GetInfiniteListResult>
-                >['data']
-            ) =>
-                res && res.pages
-                    ? {
-                          ...res,
-                          pages: res.pages.map(page => ({
-                              ...page,
-                              data: updateColl(page.data),
-                          })),
-                      }
-                    : res,
-            { updatedAt }
-        );
-        queryClient.setQueriesData(
-            { queryKey: [resource, 'getMany'] },
-            (coll: RecordType[]) =>
-                coll && coll.length > 0 ? updateColl(coll) : coll,
-            { updatedAt }
-        );
-        queryClient.setQueriesData(
-            { queryKey: [resource, 'getManyReference'] },
-            (res: GetListResult) =>
-                res && res.data
-                    ? { data: updateColl(res.data), total: res.total }
-                    : res,
             { updatedAt }
         );
     };
