@@ -97,10 +97,10 @@ const LikeButton = () => {
 ```tsx
 const notify = useNotify();
 const redirect = useRedirect();
-const like = { postId: record.id };
+
 const [create, { isPending, error }] = useCreate(
     'likes',
-    { data: like },
+    { data: { id: uuid.v4(), postId: record.id } },
     {
         mutationMode: 'optimistic',
         onSuccess: () => {
@@ -305,17 +305,17 @@ If this is not enough, you can use the `returnPromise` option so that the `creat
 This can be useful if the server changes the record, and you need the newly created data to create/update another record. 
 
 ```jsx
-const [create] = useCreate(
+const [createPost] = useCreate(
     'posts',
     { id: record.id, data: { isPublished: true } },
     { returnPromise: true }
 );
-const [create] = useCreate('auditLogs');
+const [createAuditLog] = useCreate('auditLogs');
 
 const createPost = async () => {
     try {
-        const post = await create();
-        create('auditLogs', { data: { action: 'create', recordId: post.id, date: post.createdAt } });
+        const post = await createPost();
+        createAuditLog('auditLogs', { data: { action: 'create', recordId: post.id, date: post.createdAt } });
     } catch (error) {
         // handle error
     }
