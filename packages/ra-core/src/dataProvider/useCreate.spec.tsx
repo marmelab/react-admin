@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, waitFor, screen, act } from '@testing-library/react';
+import { render, waitFor, screen } from '@testing-library/react';
 import expect from 'expect';
 
 import { RaRecord } from '../types';
@@ -269,17 +269,13 @@ describe('useCreate', () => {
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             render(<SuccessCaseUndoable timeout={10} />);
-            act(() => {
-                screen.getByText('Create post').click();
-            });
+            screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
-            act(() => {
-                screen.getByText('Confirm').click();
-            });
+            screen.getByText('Confirm').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
@@ -297,17 +293,13 @@ describe('useCreate', () => {
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
             render(<SuccessCaseUndoable timeout={10} />);
             await screen.findByText('not found');
-            act(() => {
-                screen.getByText('Create post').click();
-            });
+            screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
-            act(() => {
-                screen.getByText('Cancel').click();
-            });
+            screen.getByText('Cancel').click();
             await waitFor(() => {
                 expect(screen.queryByText('Hello World')).toBeNull();
             });
@@ -424,17 +416,13 @@ describe('useCreate', () => {
 
         it('when undoable, it accepts middlewares and displays result and success side effects right away and fetched on confirm', async () => {
             render(<WithMiddlewaresSuccessUndoable timeout={10} />);
-            act(() => {
-                screen.getByText('Create post').click();
-            });
+            screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
-            act(() => {
-                screen.getByText('Confirm').click();
-            });
+            screen.getByText('Confirm').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
@@ -452,17 +440,13 @@ describe('useCreate', () => {
         it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on cancel', async () => {
             render(<WithMiddlewaresSuccessUndoable timeout={10} />);
             await screen.findByText('not found');
-            act(() => {
-                screen.getByText('Create post').click();
-            });
+            screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
-            act(() => {
-                screen.getByText('Cancel').click();
-            });
+            screen.getByText('Cancel').click();
             await waitFor(() => {
                 expect(screen.queryByText('Hello World')).toBeNull();
             });
