@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import {
-    QueryClientProvider as DefaultQueryClientProvider,
-    QueryClient,
-} from '@tanstack/react-query';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { AdminRouter } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
@@ -143,7 +140,6 @@ export interface CoreAdminContextProps {
      * );
      */
     queryClient?: QueryClient;
-    QueryClientProvider?: React.ComponentType;
 
     /**
      * The internationalization provider for translations
@@ -179,7 +175,6 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         store = defaultStore,
         children,
         queryClient,
-        QueryClientProvider = DefaultQueryClientProvider,
     } = props;
 
     if (!dataProvider) {

@@ -115,7 +115,6 @@ export const Admin = (props: AdminProps) => {
         loginPage,
         notification,
         queryClient,
-        QueryClientProvider,
         ready,
         requireAuth,
         store = defaultStore,
@@ -139,7 +138,6 @@ export const Admin = (props: AdminProps) => {
             i18nProvider={i18nProvider}
             lightTheme={lightTheme}
             queryClient={queryClient}
-            QueryClientProvider={QueryClientProvider}
             store={store}
             theme={theme}
         >
