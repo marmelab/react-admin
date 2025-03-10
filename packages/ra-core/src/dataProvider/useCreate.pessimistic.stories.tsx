@@ -12,8 +12,14 @@ export const SuccessCase = ({ timeout = 1000 }) => {
     const posts: { id: number; title: string; author: string }[] = [];
     const dataProvider = {
         getOne: (resource, params) => {
-            return Promise.resolve({
-                data: posts.find(p => p.id === params.id),
+            return new Promise((resolve, reject) => {
+                const data = posts.find(p => p.id === params.id);
+                setTimeout(() => {
+                    if (!data) {
+                        reject(new Error('nothing yet'));
+                    }
+                    resolve({ data });
+                }, timeout);
             });
         },
         create: (resource, params) => {
@@ -28,7 +34,14 @@ export const SuccessCase = ({ timeout = 1000 }) => {
     } as any;
     return (
         <CoreAdminContext
-            queryClient={new QueryClient()}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: { retry: false },
+                        mutations: { retry: false },
+                    },
+                })
+            }
             dataProvider={dataProvider}
         >
             <SuccessCore />
@@ -39,11 +52,7 @@ export const SuccessCase = ({ timeout = 1000 }) => {
 const SuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
-    const { data, refetch } = useGetOne(
-        'posts',
-        { id: 1 },
-        { enabled: success === 'success' }
-    );
+    const { data, error, refetch } = useGetOne('posts', { id: 1 });
     const [create, { isPending }] = useCreate();
     const handleClick = () => {
         create(
@@ -58,10 +67,14 @@ const SuccessCore = () => {
     };
     return (
         <>
-            <dl>
-                <dt>title</dt>
-                <dd>{data?.title}</dd>
-            </dl>
+            {error ? (
+                <p>{error.message}</p>
+            ) : (
+                <dl>
+                    <dt>title</dt>
+                    <dd>{data?.title}</dd>
+                </dl>
+            )}
             <div>
                 <button onClick={handleClick} disabled={isPending}>
                     Create post
@@ -79,8 +92,14 @@ export const ErrorCase = ({ timeout = 1000 }) => {
     const posts: { id: number; title: string; author: string }[] = [];
     const dataProvider = {
         getOne: (resource, params) => {
-            return Promise.resolve({
-                data: posts.find(p => p.id === params.id),
+            return new Promise((resolve, reject) => {
+                const data = posts.find(p => p.id === params.id);
+                setTimeout(() => {
+                    if (!data) {
+                        reject(new Error('nothing yet'));
+                    }
+                    resolve({ data });
+                }, timeout);
             });
         },
         create: () => {
@@ -93,7 +112,14 @@ export const ErrorCase = ({ timeout = 1000 }) => {
     } as any;
     return (
         <CoreAdminContext
-            queryClient={new QueryClient()}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: { retry: false },
+                        mutations: { retry: false },
+                    },
+                })
+            }
             dataProvider={dataProvider}
         >
             <ErrorCore />
@@ -105,11 +131,7 @@ const ErrorCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
-    const { data, refetch } = useGetOne(
-        'posts',
-        { id: 1 },
-        { enabled: success === 'success' }
-    );
+    const { data, error: getOneError, refetch } = useGetOne('posts', { id: 1 });
     const [create, { isPending }] = useCreate();
     const handleClick = () => {
         setError(undefined);
@@ -126,10 +148,14 @@ const ErrorCore = () => {
     };
     return (
         <>
-            <dl>
-                <dt>title</dt>
-                <dd>{data?.title}</dd>
-            </dl>
+            {getOneError ? (
+                <p>{getOneError.message}</p>
+            ) : (
+                <dl>
+                    <dt>title</dt>
+                    <dd>{data?.title}</dd>
+                </dl>
+            )}
             <div>
                 <button onClick={handleClick} disabled={isPending}>
                     Create post
@@ -148,8 +174,14 @@ export const WithMiddlewaresSuccess = ({ timeout = 1000 }) => {
     const posts: { id: number; title: string; author: string }[] = [];
     const dataProvider = {
         getOne: (resource, params) => {
-            return Promise.resolve({
-                data: posts.find(p => p.id === params.id),
+            return new Promise((resolve, reject) => {
+                const data = posts.find(p => p.id === params.id);
+                setTimeout(() => {
+                    if (!data) {
+                        reject(new Error('nothing yet'));
+                    }
+                    resolve({ data });
+                }, timeout);
             });
         },
         create: (resource, params) => {
@@ -164,7 +196,14 @@ export const WithMiddlewaresSuccess = ({ timeout = 1000 }) => {
     } as any;
     return (
         <CoreAdminContext
-            queryClient={new QueryClient()}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: { retry: false },
+                        mutations: { retry: false },
+                    },
+                })
+            }
             dataProvider={dataProvider}
         >
             <WithMiddlewaresSuccessCore />
@@ -175,11 +214,7 @@ export const WithMiddlewaresSuccess = ({ timeout = 1000 }) => {
 const WithMiddlewaresSuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
-    const { data, refetch } = useGetOne(
-        'posts',
-        { id: 1 },
-        { enabled: success === 'success' }
-    );
+    const { data, error, refetch } = useGetOne('posts', { id: 1 });
     const [create, { isPending }] = useCreate(
         'posts',
         {
@@ -208,10 +243,14 @@ const WithMiddlewaresSuccessCore = () => {
     };
     return (
         <>
-            <dl>
-                <dt>title</dt>
-                <dd>{data?.title}</dd>
-            </dl>
+            {error ? (
+                <p>{error.message}</p>
+            ) : (
+                <dl>
+                    <dt>title</dt>
+                    <dd>{data?.title}</dd>
+                </dl>
+            )}
             <div>
                 <button onClick={handleClick} disabled={isPending}>
                     Create post
@@ -229,8 +268,14 @@ export const WithMiddlewaresError = ({ timeout = 1000 }) => {
     const posts: { id: number; title: string; author: string }[] = [];
     const dataProvider = {
         getOne: (resource, params) => {
-            return Promise.resolve({
-                data: posts.find(p => p.id === params.id),
+            return new Promise((resolve, reject) => {
+                const data = posts.find(p => p.id === params.id);
+                setTimeout(() => {
+                    if (!data) {
+                        reject(new Error('nothing yet'));
+                    }
+                    resolve({ data });
+                }, timeout);
             });
         },
         create: () => {
@@ -243,7 +288,14 @@ export const WithMiddlewaresError = ({ timeout = 1000 }) => {
     } as any;
     return (
         <CoreAdminContext
-            queryClient={new QueryClient()}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: { retry: false },
+                        mutations: { retry: false },
+                    },
+                })
+            }
             dataProvider={dataProvider}
         >
             <WithMiddlewaresErrorCore />
@@ -255,11 +307,7 @@ const WithMiddlewaresErrorCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
-    const { data, refetch } = useGetOne(
-        'posts',
-        { id: 1 },
-        { enabled: success === 'success' }
-    );
+    const { data, error: getOneError, refetch } = useGetOne('posts', { id: 1 });
     const [create, { isPending }] = useCreate(
         'posts',
         {
@@ -290,10 +338,14 @@ const WithMiddlewaresErrorCore = () => {
     };
     return (
         <>
-            <dl>
-                <dt>title</dt>
-                <dd>{data?.title}</dd>
-            </dl>
+            {getOneError ? (
+                <p>{getOneError.message}</p>
+            ) : (
+                <dl>
+                    <dt>title</dt>
+                    <dd>{data?.title}</dd>
+                </dl>
+            )}
             <div>
                 <button onClick={handleClick} disabled={isPending}>
                     Create post

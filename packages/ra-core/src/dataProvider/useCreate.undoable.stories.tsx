@@ -17,7 +17,7 @@ export const SuccessCase = ({ timeout = 1000 }) => {
                 const data = posts.find(p => p.id === params.id);
                 setTimeout(() => {
                     if (!data) {
-                        reject(new Error('not found'));
+                        reject(new Error('nothing yet'));
                     }
                     resolve({ data });
                 }, timeout);
@@ -131,7 +131,7 @@ export const ErrorCase = ({ timeout = 1000 }) => {
                 const data = posts.find(p => p.id === params.id);
                 setTimeout(() => {
                     if (!data) {
-                        reject(new Error('not found'));
+                        reject(new Error('nothing yet'));
                     }
                     resolve({ data });
                 }, timeout);
@@ -249,7 +249,7 @@ export const WithMiddlewaresSuccess = ({ timeout = 1000 }) => {
                 const data = posts.find(p => p.id === params.id);
                 setTimeout(() => {
                     if (!data) {
-                        reject(new Error('not found'));
+                        reject(new Error('nothing yet'));
                     }
                     resolve({ data });
                 }, timeout);
@@ -379,7 +379,7 @@ export const WithMiddlewaresError = ({ timeout = 1000 }) => {
                 const data = posts.find(p => p.id === params.id);
                 setTimeout(() => {
                     if (!data) {
-                        reject(new Error('not found'));
+                        reject(new Error('nothing yet'));
                     }
                     resolve({ data });
                 }, timeout);

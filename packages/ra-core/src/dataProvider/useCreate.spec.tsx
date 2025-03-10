@@ -230,7 +230,7 @@ describe('useCreate', () => {
                 expect(
                     screen.queryByText('something went wrong')
                 ).not.toBeNull();
-                expect(screen.queryByText('not found')).toBeNull();
+                expect(screen.queryByText('nothing yet')).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
         });
@@ -265,7 +265,7 @@ describe('useCreate', () => {
                 expect(screen.queryByText('Hello World')).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
-            await screen.findByText('not found');
+            await screen.findByText('nothing yet');
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             render(<SuccessCaseUndoable timeout={10} />);
@@ -292,7 +292,7 @@ describe('useCreate', () => {
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
             render(<SuccessCaseUndoable timeout={10} />);
-            await screen.findByText('not found');
+            await screen.findByText('nothing yet');
             screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -304,12 +304,14 @@ describe('useCreate', () => {
                 expect(screen.queryByText('Hello World')).toBeNull();
             });
             expect(screen.queryByText('mutating')).toBeNull();
-            await screen.findByText('not found');
+            await screen.findByText('nothing yet');
         });
         it('when undoable, displays result and success side effects right away and reverts on error', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseUndoable />);
-            await screen.findByText('not found', undefined, { timeout: 5000 });
+            await screen.findByText('nothing yet', undefined, {
+                timeout: 5000,
+            });
             screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -322,7 +324,9 @@ describe('useCreate', () => {
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
-            await screen.findByText('not found', undefined, { timeout: 4000 });
+            await screen.findByText('nothing yet', undefined, {
+                timeout: 4000,
+            });
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
                 expect(screen.queryByText('Hello World')).toBeNull();
@@ -411,7 +415,7 @@ describe('useCreate', () => {
                 ).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
-            await screen.findByText('not found');
+            await screen.findByText('nothing yet');
         });
 
         it('when undoable, it accepts middlewares and displays result and success side effects right away and fetched on confirm', async () => {
@@ -439,7 +443,7 @@ describe('useCreate', () => {
         });
         it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on cancel', async () => {
             render(<WithMiddlewaresSuccessUndoable timeout={10} />);
-            await screen.findByText('not found');
+            await screen.findByText('nothing yet');
             screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -451,12 +455,14 @@ describe('useCreate', () => {
                 expect(screen.queryByText('Hello World')).toBeNull();
             });
             expect(screen.queryByText('mutating')).toBeNull();
-            await screen.findByText('not found');
+            await screen.findByText('nothing yet');
         });
         it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on error', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<WithMiddlewaresErrorUndoable />);
-            await screen.findByText('not found', undefined, { timeout: 5000 });
+            await screen.findByText('nothing yet', undefined, {
+                timeout: 5000,
+            });
             screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
