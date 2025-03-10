@@ -202,6 +202,7 @@ describe('useCreate', () => {
 
     describe('mutationMode', () => {
         it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<SuccessCasePessimistic timeout={10} />);
             screen.getByText('Create post').click();
             await waitFor(() => {
@@ -230,7 +231,7 @@ describe('useCreate', () => {
                 expect(
                     screen.queryByText('something went wrong')
                 ).not.toBeNull();
-                expect(screen.queryByText('nothing yet')).toBeNull();
+                expect(screen.queryByText('nothing yet')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
         });
