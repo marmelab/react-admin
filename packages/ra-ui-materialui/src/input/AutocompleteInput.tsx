@@ -562,7 +562,13 @@ If you provided a React element for the optionText prop, you must also provide t
             event.preventDefault();
             if (reason === 'createOption') {
                 // When users press the enter key after typing a new value, we can handle it as if they clicked on the create option
-                handleChangeWithCreateSupport(getCreateItem(newValue));
+                handleChangeWithCreateSupport(
+                    getCreateItem(
+                        Array.isArray(newValue)
+                            ? newValue[newValue.length - 1]
+                            : newValue
+                    )
+                );
                 return;
             }
             handleChangeWithCreateSupport(
