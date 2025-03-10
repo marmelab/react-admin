@@ -48,11 +48,6 @@ echo "Test the 3 demos (simple, e-commerce, crm): check console & UI"
 echo "Press Enter when this is done"
 read
 
-step "manual task: Update the create-react-admin dependencies"
-echo "[Minor version only] Update the dependencies to RA packages in the create-react-admin templates && commit"
-echo "Press Enter when this is done"
-read
-
 step "manual task: Update the OldVersion.md file"
 echo "[Minor version only] Update the ./docs/OldVersions.md file to add the new minor version and update the previous one && commit"
 echo "Press Enter when this is done"
@@ -76,6 +71,16 @@ if [ ! -z "$RELEASE_DRY_RUN" ]; then
     # In dry-run mode, reset the last commit to avoid accidental push
     echo "dry mode -- Resetting the workspace to the last commit"
     git reset --soft HEAD~1
+fi
+
+if [ "${npm_previous_package_version%.*}" != "${npm_current_package_version%.*}" ]; then
+    echo "New minor version - Updating the dependencies to RA packages in the create-react-admin templates"
+    yarn run update-create-react-admin-deps ${npm_current_package_version}
+    if [ -z "$RELEASE_DRY_RUN" ]; then
+        echo "Committing the create-react-admin templates dependencies update"
+        git add .
+        git commit -m "Update create-react-admin templates dependencies for version ${npm_current_package_version}"
+    fi
 fi
 
 step "update-changelog"
@@ -127,7 +132,7 @@ if [ -d $RA_DOC_PATH ]; then
     # Set the latest version in the versions.yml file
     echo "Update the latest version in the versions.yml file"
     sed -i "/^\(- latest\).*/s//\1 \($npm_current_package_version\)/" $RA_DOC_PATH/_data/versions.yml
-    if [ "${npm_previous_package_version%.*}" == "${npm_current_package_version%.*}" ]; then
+    if [ "${npm_previous_package_version%.*}" != "${npm_current_package_version%.*}" ]; then
         echo "Add the previous minor version to the list of versions in the versions.yml file"
         # Add the previous minor version to the list of versions in the versions.yml file
         sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_current_package_version%.*}\"/" $RA_DOC_PATH/_data/versions.yml
