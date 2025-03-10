@@ -20,6 +20,7 @@ import {
     TextField,
     TextFieldProps,
     createFilterOptions,
+    useForkRef,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
@@ -325,7 +326,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const [filterValue, setFilterValue] = useState('');
 
-    const handleChange = (newValue: any) => {
+    const handleChange = useEvent((newValue: any) => {
         if (multiple) {
             if (Array.isArray(newValue)) {
                 field.onChange(newValue.map(getChoiceValue), newValue);
@@ -338,7 +339,7 @@ If you provided a React element for the optionText prop, you must also provide t
         } else {
             field.onChange(getChoiceValue(newValue) ?? emptyValue, newValue);
         }
-    };
+    });
 
     // eslint-disable-next-line
     const debouncedSetFilter = useCallback(
@@ -478,7 +479,7 @@ If you provided a React element for the optionText prop, you must also provide t
         Multiple,
         DisableClearable,
         SupportCreate
-    >['onInputChange'] = (event, newInputValue, reason) => {
+    >['onInputChange'] = useEvent((event, newInputValue, reason) => {
         if (
             event?.type === 'change' ||
             !doesQueryMatchSelection(newInputValue)
@@ -497,7 +498,7 @@ If you provided a React element for the optionText prop, you must also provide t
             debouncedSetFilter('');
         }
         onInputChange?.(event, newInputValue, reason);
-    };
+    });
 
     const doesQueryMatchSelection = useCallback(
         (filter: string) => {
@@ -593,6 +594,7 @@ If you provided a React element for the optionText prop, you must also provide t
     };
     const renderHelperText = !!fetchError || helperText !== false || invalid;
 
+    const handleInputRef = useForkRef(field.ref, TextFieldProps?.inputRef);
     return (
         <>
             <StyledAutocomplete
@@ -641,6 +643,7 @@ If you provided a React element for the optionText prop, you must also provide t
                             {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
                             size={size}
+                            inputRef={handleInputRef}
                         />
                     );
                 }}
