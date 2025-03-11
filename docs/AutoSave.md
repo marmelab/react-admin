@@ -17,65 +17,44 @@ Test it live on [the Enterprise Edition Storybook](https://react-admin.github.io
 
 ## Usage
 
-Put `<AutoSave>` inside a react-admin form ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), [`<LongForm>`](./LongForm.md), etc.), for instance in a custom toolbar. The component renders nothing by default. It will save the current form values 3 seconds after the last change, and render a message when the save succeeds or fails.
-
-Note that you **must** set the `<Form resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
-
-If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](./Edit.md#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
-
-**Note**: `<AutoSave>` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default.
-You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
-
-**Note**: Due to limitations in react-router, this equivalent of `warnWhenUnsavedChanges` only works if you use the default router provided by react-admin, or if you use a [Data Router with react-router v6](https://reactrouter.com/6.22.3/routers/picking-a-router) or [with react-router v7](https://reactrouter.com/7.2.0/start/framework/custom).
-If not, you'll need to use the `disableWarnWhenUnsavedChanges` prop.
-
-**Note**: `<AutoSave>` does not currently work with forms that have child routes such as the [`<TabbedForm>`](https://marmelab.com/react-admin/TabbedForm.html).
-If you want to use it in a `<TabbedForm>`, you must set its [`syncWithLocation` prop](https://marmelab.com/react-admin/TabbedForm.html#syncwithlocation) to `false`.
+Put `<AutoSave>` inside a react-admin form ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), [`<LongForm>`](./LongForm.md), etc.), for instance in a custom toolbar.
 
 {% raw %}
 ```tsx
 import { AutoSave } from '@react-admin/ra-form-layout';
-import { Edit, SimpleForm, TextInput, DateInput, SelectInput, Toolbar } from 'react-admin';
+import { Edit, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin';
 
-const AutoSaveToolbar = () => (
-    <Toolbar>
-        <AutoSave />
-    </Toolbar>
-);
-
-const PersonEdit = () => (
-    <Edit mutationMode="optimistic">
-        <SimpleForm
-            resetOptions={{ keepDirtyValues: true }}
-            toolbar={<AutoSaveToolbar />}
-        >
-            <TextInput source="first_name" />
-            <TextInput source="last_name" />
-            <DateInput source="dob" />
-            <SelectInput source="sex" choices={[
-                { id: 'male', name: 'Male' },
-                { id: 'female', name: 'Female' },
-            ]}/>
-        </SimpleForm>
-    </Edit>
-);
-```
-{% endraw %}
-
-The app will save the current form values after 3 seconds of inactivity.
-
-You can use a toolbar containing both a `<SaveButton>` and an `<AutoSave>` component. The `<SaveButton>` will let the user save the form immediately, while the `<AutoSave>` will save the form after 3 seconds of inactivity.
-
-```tsx
 const AutoSaveToolbar = () => (
     <Toolbar>
         <SaveButton />
         <AutoSave />
     </Toolbar>
 );
-```
 
-**Tip**: If your `<Edit>` could change without being unmounted, for instance when it includes a [`<PrevNextButton>`](./PrevNextButtons.md#prevnextbuttons), you must ensure the `<Edit key>` changes whenever the record changes:
+const PostEdit = () => (
+    <Edit mutationMode="optimistic">
+        <SimpleForm
+            resetOptions={{ keepDirtyValues: true }}
+            toolbar={<AutoSaveToolbar />}
+        >
+            <TextInput source="title" />
+            <TextInput source="teaser" />
+        </SimpleForm>
+    </Edit>
+);
+```
+{% endraw %}
+
+The component renders nothing by default. It will save the current form values 3 seconds after the last change, and render a message when the save succeeds or fails.
+
+`<AutoSave>` imposes a few limitations:
+
+- You must set the `<Form resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
+- In an `<Edit>` page, you must set [`mutationMode`](./Edit.html#mutationmode) to `pessimistic` or `optimistic` (`<AutoSave>` doesn't work with the default `mutationMode="undoable"`).
+- You can't use `<Form warnWhenUnsavedChanges>` with this component. `<AutoSave>` implements its own similar mechanism, and it's enabled by default. You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
+- It requires that you use a Data Router. This is the default for react-admin apps, but if you're using a custom router, you may need to adjust your configuration. Check the react-router documentation about [Using a Data Router with react-router v6](https://reactrouter.com/6.22.3/routers/picking-a-router) or [Using a Data Router with react-router v7](https://reactrouter.com/7.2.0/start/framework/custom).
+- When used in forms that have child routes (e.g., [`<TabbedForm>`](./TabbedForm.html)), you must set the [`syncWithLocation` prop](./TabbedForm.html#syncwithlocation) to `false`.
+- If you want to support navigation between Edit pages of the same resource, for instance using [`<PrevNextButtons>`](./PrevNextButtons.html#prevnextbuttons), you must ensure that the `<Edit key>` changes whenever the record changes:
 
 {% raw %}
 
