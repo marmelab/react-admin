@@ -84,7 +84,7 @@ export const DatagridColumn = React.forwardRef<
         return (
             <TableCell
                 ref={ref}
-                className={clsx(className, headerClassName)}
+                className={clsx(className, headerClassName, `column-${source}`)}
                 variant="head"
                 {...rest}
             >
@@ -148,7 +148,7 @@ export const DatagridColumn = React.forwardRef<
         return (
             <TableCell
                 ref={ref}
-                className={clsx(className, cellClassName)}
+                className={clsx(className, cellClassName, `column-${source}`)}
                 {...rest}
             >
                 {children ??
