@@ -382,7 +382,7 @@ const EmployerEdit = () => (
 
 {% endraw %}
 
-## Warn When There Are Unsaved Changes
+## Warn When Unsaved Changes
 
 If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, using the `warnWhenUnsavedChanges` prop directly on the form won't work, because this feature relies on the router's location, but both components do not use routing.
 
