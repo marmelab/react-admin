@@ -8,10 +8,10 @@ import { NumberField } from '../../field';
 
 import { List } from '../List';
 
-import { Datagrid2 } from './Datagrid2';
+import { DataTable } from './DataTable';
 import { EditButton } from '../../button';
 
-export default { title: 'ra-ui-materialui/list/Datagrid2' };
+export default { title: 'ra-ui-materialui/list/DataTable' };
 
 const data = {
     books: [
@@ -78,15 +78,15 @@ const Wrapper = ({ children }) => (
 
 export const Basic = () => (
     <Wrapper>
-        <Datagrid2
+        <DataTable
             rowSx={record => (record.id === 6 ? { bgcolor: 'lightgray' } : {})}
         >
-            <Datagrid2.Col source="id" label="Id" />
-            <Datagrid2.Col
+            <DataTable.Col source="id" label="Id" />
+            <DataTable.Col
                 source="title"
                 render={record => record.title.toUpperCase()}
             />
-            <Datagrid2.Col
+            <DataTable.Col
                 source="author"
                 sx={{
                     color: 'darkgray',
@@ -96,15 +96,15 @@ export const Basic = () => (
                 sortable={false}
             />
             <CanAccess action="read" resource="books.year">
-                <Datagrid2.Col
+                <DataTable.Col
                     source="year"
                     component={NumberField}
                     align="right"
                 />
             </CanAccess>
-            <Datagrid2.Col sx={{ py: 0 }}>
+            <DataTable.Col sx={{ py: 0 }}>
                 <EditButton />
-            </Datagrid2.Col>
-        </Datagrid2>
+            </DataTable.Col>
+        </DataTable>
     </Wrapper>
 );

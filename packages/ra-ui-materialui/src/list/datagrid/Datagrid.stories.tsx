@@ -34,9 +34,6 @@ import { List } from '../List';
 import { EditGuesser } from '../../detail';
 import { DatagridRowProps } from './DatagridRow';
 import DatagridBody, { DatagridBodyProps } from './DatagridBody';
-import { DatagridBodyModern } from './DatagridBodyModern';
-import { DatagridHeaderModern } from './DatagridHeaderModern';
-import { DatagridColumn } from './DatagridColumn';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
 
 export default { title: 'ra-ui-materialui/list/Datagrid' };
@@ -529,41 +526,6 @@ export const RowClickFalse = () => (
             <TextField source="title" />
             <TextField source="author" />
             <TextField source="year" />
-        </Datagrid>
-    </Wrapper>
-);
-
-export const Modern = () => (
-    <Wrapper>
-        <Datagrid
-            body={DatagridBodyModern}
-            header={DatagridHeaderModern}
-            rowSx={record => (record.id === 6 ? { bgcolor: 'lightgray' } : {})}
-        >
-            <DatagridColumn source="id" align="right" label="Id" />
-            <DatagridColumn
-                source="title"
-                render={record => record.title.toUpperCase()}
-            />
-            <DatagridColumn
-                source="author"
-                sx={{
-                    color: 'darkgray',
-                    '&.MuiTableCell-body': { fontStyle: 'italic' },
-                    '&.MuiTableCell-head': { fontWeight: 'normal' },
-                }}
-                sortable={false}
-            />
-            <CanAccess action="read" resource="books.year">
-                <DatagridColumn
-                    source="year"
-                    component={NumberField}
-                    align="right"
-                />
-            </CanAccess>
-            <DatagridColumn sx={{ py: 0 }}>
-                <EditButton />
-            </DatagridColumn>
         </Datagrid>
     </Wrapper>
 );
