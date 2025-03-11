@@ -23,9 +23,14 @@ Note that you **must** set the `<Form resetOptions>` prop to `{ keepDirtyValues:
 
 If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](./Edit.md#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
 
-**Note**: `<AutoSave>` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default. You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
+**Note**: `<AutoSave>` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default.
+You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
 
-**Note** `<AutoSave>` does not currently work with forms that have child routes such as the [`<TabbedForm>`](./TabbedForm.md). If you want to use it in a `<TabbedForm>`, you must set its [`syncWithLocation` prop](./TabbedForm.md#syncwithlocation) to `false`.
+**Note**: Due to limitations in react-router, this equivalent of `warnWhenUnsavedChanges` only works if you use the default router provided by react-admin, or if you use a [Data Router with react-router v6](https://reactrouter.com/6.22.3/routers/picking-a-router) or [with react-router v7](https://reactrouter.com/7.2.0/start/framework/custom).
+If not, you'll need to use the `disableWarnWhenUnsavedChanges` prop.
+
+**Note**: `<AutoSave>` does not currently work with forms that have child routes such as the [`<TabbedForm>`](https://marmelab.com/react-admin/TabbedForm.html).
+If you want to use it in a `<TabbedForm>`, you must set its [`syncWithLocation` prop](https://marmelab.com/react-admin/TabbedForm.html#syncwithlocation) to `false`.
 
 {% raw %}
 ```tsx
@@ -195,7 +200,16 @@ A boolean indicating whether users should be warned when they close the browser 
 
 If you want an autosave feature with another user interface, you can leverage the `useAutoSave` hook. It's used internally by `<AutoSave>`, and has the same constraints (it works for the `pessimistic` and `optimistic` [`mutationMode`](./Edit.md#mutationmode) but not for the `undoable`).
 
-Note that you **must** add the `resetOptions` prop with `{ keepDirtyValues: true }` to avoid having the user changes overridden by the latest update operation result.
+**Note**: you **must** add the `resetOptions` prop with `{ keepDirtyValues: true }` to avoid having the user changes overridden by the latest update operation result.
+
+**Note**: `useAutoSave` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default.
+You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges-1).
+
+**Note**: Due to limitations in react-router, this equivalent of `warnWhenUnsavedChanges` only works if you use the default router provided by react-admin, or if you use a [Data Router with react-router v6](https://reactrouter.com/6.22.3/routers/picking-a-router) or [with react-router v7](https://reactrouter.com/7.2.0/start/framework/custom).
+If not, you'll need to use the `disableWarnWhenUnsavedChanges` prop.
+
+**Note**: `useAutoSave` does not currently work with forms that have child routes such as the [`<TabbedForm>`](https://marmelab.com/react-admin/TabbedForm.html).
+If you want to use it in a `<TabbedForm>`, you must set its [`syncWithLocation` prop](https://marmelab.com/react-admin/TabbedForm.html#syncwithlocation) to `false`.
 
 **Note**: `useAutoSave` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default. You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
 
