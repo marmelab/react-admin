@@ -84,6 +84,7 @@ const CompanyShow = () => (
 | `resource`         | Optional | `string`          |         | The resource name, e.g. `posts`                                                         |
 | `sx`               | Optional | `object`          |         | Override the styles applied to the dialog component                                     |
 | `title`            | Optional | `ReactNode`       |         | The title of the dialog                                                                 |
+| `emptyWhileLoading`| Optional | `boolean`         | `false` | Set to `true` to return `null` while the list is loading                                |
 
 ## `children`
 
