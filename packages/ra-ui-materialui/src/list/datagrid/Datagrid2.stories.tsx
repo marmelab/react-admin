@@ -81,7 +81,7 @@ export const Basic = () => (
         <Datagrid2
             rowSx={record => (record.id === 6 ? { bgcolor: 'lightgray' } : {})}
         >
-            <Datagrid2.Col source="id" align="right" label="Id" />
+            <Datagrid2.Col source="id" label="Id" />
             <Datagrid2.Col
                 source="title"
                 render={record => record.title.toUpperCase()}
