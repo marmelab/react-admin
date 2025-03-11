@@ -135,7 +135,7 @@ if [ -d $RA_DOC_PATH ]; then
     if [ "${npm_previous_package_version%.*}" != "${npm_current_package_version%.*}" ]; then
         echo "Add the previous minor version to the list of versions in the versions.yml file"
         # Add the previous minor version to the list of versions in the versions.yml file
-        sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_current_package_version%.*}\"/" $RA_DOC_PATH/_data/versions.yml
+        sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_previous_package_version%.*}\"/" $RA_DOC_PATH/_data/versions.yml
     fi
     if [ -z "$RELEASE_DRY_RUN" ]; then
         ( cd $RA_DOC_PATH && git add . && git commit -m "Update the documentation for version $npm_current_package_version" && git push )
