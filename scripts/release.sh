@@ -127,6 +127,7 @@ yarn run create-github-release ${npm_current_package_version}
 
 step "Update the documentation"
 if [ -d $RA_DOC_PATH ]; then
+    ( cd $RA_DOC_PATH && git pull )
     # ${npm_current_package_version%.*} extract the major.minor version
     RA_DOC_PATH="$RA_DOC_PATH" VERSION="${npm_current_package_version%.*}" ./scripts/copy-ra-oss-docs.sh
     # Set the latest version in the versions.yml file
