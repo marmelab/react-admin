@@ -4,18 +4,18 @@ import { useListContextWithProps, useTranslate } from 'ra-core';
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import clsx from 'clsx';
 
-import { DatagridClasses } from './useDatagridStyles';
-import ExpandAllButton from './ExpandAllButton';
-import { useDatagridContext } from './useDatagridContext';
-import { DatagridHeaderProps } from './DatagridHeader';
-import { DatagridHeaderContext } from './DatagridHeaderContext';
+import { DatagridClasses } from '../datagrid/useDatagridStyles';
+import ExpandAllButton from '../datagrid/ExpandAllButton';
+import { useDatagridContext } from '../datagrid/useDatagridContext';
+import { DatagridHeaderProps } from '../datagrid/DatagridHeader';
+import { DataTableHeaderContext } from './DataTableHeaderContext';
 
 /**
  * The default Datagrid Header component.
  *
  * Renders select all checkbox as well as column header buttons used for sorting.
  */
-export const DatagridHeaderModern = (props: DatagridHeaderProps) => {
+export const DataTableHeader = (props: DatagridHeaderProps) => {
     const {
         children,
         className,
@@ -78,7 +78,7 @@ export const DatagridHeaderModern = (props: DatagridHeaderProps) => {
         : [];
 
     return (
-        <DatagridHeaderContext.Provider value={{ sort, updateSort }}>
+        <DataTableHeaderContext.Provider value={{ sort, updateSort }}>
             <TableHead className={clsx(className, DatagridClasses.thead)}>
                 <TableRow
                     className={clsx(
@@ -130,8 +130,8 @@ export const DatagridHeaderModern = (props: DatagridHeaderProps) => {
                     {children}
                 </TableRow>
             </TableHead>
-        </DatagridHeaderContext.Provider>
+        </DataTableHeaderContext.Provider>
     );
 };
 
-DatagridHeaderModern.displayName = 'DatagridHeaderModern';
+DataTableHeader.displayName = 'DatagridHeaderModern';

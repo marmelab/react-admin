@@ -19,10 +19,10 @@ import {
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
-import ExpandRowButton from './ExpandRowButton';
-import { DatagridClasses } from './useDatagridStyles';
-import { useDatagridContext } from './useDatagridContext';
-import { type DatagridRowProps } from './DatagridRow';
+import ExpandRowButton from '../datagrid/ExpandRowButton';
+import { DatagridClasses } from '../datagrid/useDatagridStyles';
+import { useDatagridContext } from '../datagrid/useDatagridContext';
+import { type DatagridRowProps } from '../datagrid/DatagridRow';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -31,7 +31,7 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
-const DatagridRowModern: React.ForwardRefExoticComponent<
+const DataTableRow: React.ForwardRefExoticComponent<
     Omit<DatagridRowProps, 'ref'> & React.RefAttributes<HTMLTableRowElement>
 > = React.forwardRef<HTMLTableRowElement, DatagridRowProps>((props, ref) => {
     const {
@@ -233,11 +233,11 @@ const areEqual = (prevProps, nextProps) => {
     return shallowEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
 };
 
-export const PureDatagridRowModern = memo(DatagridRowModern, areEqual);
+export const PureDatagridRowModern = memo(DataTableRow, areEqual);
 
 PureDatagridRowModern.displayName = 'PureDatagridRowModern';
 
 const isPromise = (value: any): value is Promise<any> =>
     value && typeof value.then === 'function';
 
-export default DatagridRowModern;
+export default DataTableRow;

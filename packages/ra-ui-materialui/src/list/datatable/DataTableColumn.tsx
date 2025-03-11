@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import clsx from 'clsx';
 
-import { DatagridHeaderContext } from './DatagridHeaderContext';
+import { DataTableHeaderContext } from './DataTableHeaderContext';
 import { TextField } from '../../field/TextField';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
@@ -23,7 +23,8 @@ const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
     DESC: 'ASC',
 };
 
-export interface DatagridColumnProps extends Omit<TableCellProps, 'component'> {
+export interface DataTableColumnProps
+    extends Omit<TableCellProps, 'component'> {
     cellClassName?: string;
     headerClassName?: string;
     render?: (record: any) => React.ReactNode;
@@ -35,16 +36,16 @@ export interface DatagridColumnProps extends Omit<TableCellProps, 'component'> {
     sortByOrder?: SortPayload['order'];
 }
 
-export const DatagridColumn = React.forwardRef<
+export const DataTableColumn = React.forwardRef<
     HTMLTableCellElement,
-    DatagridColumnProps
+    DataTableColumnProps
 >((props, ref) => {
     const record = useRecordContext();
     const resource = useResourceContext();
 
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
-    const headerContext = React.useContext(DatagridHeaderContext);
+    const headerContext = React.useContext(DataTableHeaderContext);
     if (headerContext) {
         // header cell
         const { sort, updateSort } = headerContext;
