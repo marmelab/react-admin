@@ -66,6 +66,7 @@ export const Create = <
         record,
         redirect,
         transform,
+        mutationMode,
         mutationOptions,
         disableAuthentication,
         hasEdit,
@@ -79,6 +80,7 @@ export const Create = <
             record={record}
             redirect={redirect}
             transform={transform}
+            mutationMode={mutationMode}
             mutationOptions={mutationOptions}
             disableAuthentication={disableAuthentication}
             hasEdit={hasEdit}

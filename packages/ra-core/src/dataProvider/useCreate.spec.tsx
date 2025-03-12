@@ -8,9 +8,23 @@ import { useCreate } from './useCreate';
 import { useGetList } from './useGetList';
 import { CoreAdminContext } from '../core';
 import {
-    WithMiddlewaresError,
-    WithMiddlewaresSuccess,
-} from './useCreate.stories';
+    ErrorCase as ErrorCasePessimistic,
+    SuccessCase as SuccessCasePessimistic,
+    WithMiddlewaresSuccess as WithMiddlewaresSuccessPessimistic,
+    WithMiddlewaresError as WithMiddlewaresErrorPessimistic,
+} from './useCreate.pessimistic.stories';
+import {
+    ErrorCase as ErrorCaseOptimistic,
+    SuccessCase as SuccessCaseOptimistic,
+    WithMiddlewaresSuccess as WithMiddlewaresSuccessOptimistic,
+    WithMiddlewaresError as WithMiddlewaresErrorOptimistic,
+} from './useCreate.optimistic.stories';
+import {
+    ErrorCase as ErrorCaseUndoable,
+    SuccessCase as SuccessCaseUndoable,
+    WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
+    WithMiddlewaresError as WithMiddlewaresErrorUndoable,
+} from './useCreate.undoable.stories';
 
 describe('useCreate', () => {
     it('returns a callback that can be used with create arguments', async () => {
@@ -186,9 +200,145 @@ describe('useCreate', () => {
         });
     });
 
+    describe('mutationMode', () => {
+        it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<SuccessCasePessimistic timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<ErrorCasePessimistic timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('something went wrong')).toBeNull();
+                expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(screen.queryByText('nothing yet')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when optimistic, displays result and success side effects right away', async () => {
+            render(<SuccessCaseOptimistic timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<ErrorCaseOptimistic timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            await screen.findByText('nothing yet');
+        });
+        it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
+            render(<SuccessCaseUndoable timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello World')).not.toBeNull();
+        });
+        it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
+            render(<SuccessCaseUndoable timeout={10} />);
+            await screen.findByText('nothing yet');
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Cancel').click();
+            await waitFor(() => {
+                expect(screen.queryByText('Hello World')).toBeNull();
+            });
+            expect(screen.queryByText('mutating')).toBeNull();
+            await screen.findByText('nothing yet');
+        });
+        it('when undoable, displays result and success side effects right away and reverts on error', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<ErrorCaseUndoable />);
+            await screen.findByText('nothing yet', undefined, {
+                timeout: 5000,
+            });
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await screen.findByText('nothing yet', undefined, {
+                timeout: 4000,
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+    });
+
     describe('middlewares', () => {
-        it('it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {
-            render(<WithMiddlewaresSuccess timeout={10} />);
+        it('when pessimistic, it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {
+            render(<WithMiddlewaresSuccessPessimistic timeout={10} />);
             screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -206,9 +356,9 @@ describe('useCreate', () => {
             });
         });
 
-        it('it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
+        it('when pessimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            render(<WithMiddlewaresError timeout={10} />);
+            render(<WithMiddlewaresErrorPessimistic timeout={10} />);
             screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -229,5 +379,117 @@ describe('useCreate', () => {
                 expect(screen.queryByText('mutating')).toBeNull();
             });
         });
+
+        it('when optimistic, it accepts middlewares and displays result and success side effects right away', async () => {
+            render(<WithMiddlewaresSuccessOptimistic timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when optimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<WithMiddlewaresErrorOptimistic timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            await screen.findByText('nothing yet');
+        });
+
+        it('when undoable, it accepts middlewares and displays result and success side effects right away and fetched on confirm', async () => {
+            render(<WithMiddlewaresSuccessUndoable timeout={10} />);
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
+            expect(screen.queryByText('success')).not.toBeNull();
+            await screen.findByText('Hello World from middleware');
+        });
+        it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on cancel', async () => {
+            render(<WithMiddlewaresSuccessUndoable timeout={10} />);
+            await screen.findByText('nothing yet');
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Cancel').click();
+            await waitFor(() => {
+                expect(screen.queryByText('Hello World')).toBeNull();
+            });
+            expect(screen.queryByText('mutating')).toBeNull();
+            await screen.findByText('nothing yet');
+        });
+        it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on error', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<WithMiddlewaresErrorUndoable />);
+            await screen.findByText('nothing yet', undefined, {
+                timeout: 5000,
+            });
+            screen.getByText('Create post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await screen.findByText('Hello World', undefined, {
+                timeout: 4000,
+            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('success')).toBeNull();
+                },
+                { timeout: 5000 }
+            );
+
+            expect(
+                screen.queryByText('Hello World from middleware')
+            ).toBeNull();
+            expect(screen.queryByText('mutating')).toBeNull();
+        }, 6000);
     });
 });
