@@ -51,7 +51,6 @@ export const Basic = () => {
 };
 
 export const AsynchronousLocaleChange = () => {
-    const [locale, setLocale] = React.useState('en');
     const getAsyncMessages = locale => {
         if (locale === 'en') {
             // initial call, must return synchronously
@@ -63,7 +62,7 @@ export const AsynchronousLocaleChange = () => {
             }, 1000);
         });
     };
-    const i18nProvider = polyglotI18nProvider(getAsyncMessages, locale, [
+    const i18nProvider = polyglotI18nProvider(getAsyncMessages, 'en', [
         { locale: 'en', name: 'English' },
         { locale: 'fr', name: 'Français' },
     ]);
