@@ -37,7 +37,6 @@ export interface DataTableColumnProps
     source?: string;
     label?: string;
     sortable?: boolean;
-    sortBy?: string;
     sortByOrder?: SortPayload['order'];
 }
 
@@ -45,17 +44,20 @@ export const DataTableColumn = React.forwardRef<
     HTMLTableCellElement,
     DataTableColumnProps
 >((props, ref) => {
-    const record = useRecordContext();
-    const resource = useResourceContext();
     const storeKey = React.useContext(DataTableStoreContext);
     const [hiddenColumns, setHiddenColumns] = useStore<string[]>(storeKey, []);
 
+    const record = useRecordContext();
+    const resource = useResourceContext();
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
+
+    // determine the render context: header, column selector, or data cell
     const headerContext = React.useContext(DataTableHeaderContext);
     const tableSelectorContext = React.useContext(
         DataTableColumnSelectorContext
     );
+
     if (tableSelectorContext) {
         // column selector menu item
         const { source, label } = props;
@@ -96,14 +98,13 @@ export const DataTableColumn = React.forwardRef<
             source,
             label,
             sortable,
-            sortBy,
             sortByOrder,
             ...rest
         } = props;
         const isColumnHidden = hiddenColumns.includes(source!);
         if (isColumnHidden) return null;
         const nextSortOrder =
-            sort && sort.field === (sortBy || source)
+            sort && sort.field === source
                 ? // active sort field, use opposite order
                   oppositeOrder[sort.order]
                 : // non active sort field, use default order
@@ -129,10 +130,7 @@ export const DataTableColumn = React.forwardRef<
                 variant="head"
                 {...rest}
             >
-                {updateSort &&
-                sort &&
-                sortable !== false &&
-                (sortBy || source) ? (
+                {updateSort && sort && sortable !== false && source ? (
                     <Tooltip
                         title={sortLabel}
                         placement={
@@ -143,9 +141,9 @@ export const DataTableColumn = React.forwardRef<
                         enterDelay={300}
                     >
                         <TableSortLabel
-                            active={sort.field === (sortBy || source)}
+                            active={sort.field === source}
                             direction={sort.order === 'ASC' ? 'asc' : 'desc'}
-                            data-field={sortBy || source}
+                            data-field={source}
                             data-order={sortByOrder || 'ASC'}
                             onClick={updateSort}
                         >
@@ -176,7 +174,6 @@ export const DataTableColumn = React.forwardRef<
             component,
             source,
             sortable,
-            sortBy,
             sortByOrder,
             label,
             ...rest
