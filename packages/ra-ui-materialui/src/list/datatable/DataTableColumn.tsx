@@ -84,8 +84,7 @@ export const DataTableColumn = React.forwardRef<
                 {fieldLabel}
             </MenuItem>
         );
-    }
-    if (headerContext) {
+    } else if (headerContext) {
         // header cell
         const { sort, updateSort } = headerContext;
         const {

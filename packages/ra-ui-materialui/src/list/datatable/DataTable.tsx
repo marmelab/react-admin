@@ -6,6 +6,7 @@ import { DataTableBody } from './DataTableBody';
 import { DataTableHeader } from './DataTableHeader';
 import { DataTableColumn } from './DataTableColumn';
 import { DataTableStoreContext } from './DataTableStoreContext';
+import { ColumnsSelector } from './ColumnsSelector';
 
 export const DataTable = (
     props: DatagridProps & { storeKey?: string; resource?: string }
@@ -19,6 +20,7 @@ export const DataTable = (
                 header={DataTableHeader}
                 {...props}
             />
+            <ColumnsSelector>{props.children}</ColumnsSelector>
         </DataTableStoreContext.Provider>
     );
 };

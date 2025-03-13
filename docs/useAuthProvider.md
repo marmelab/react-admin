@@ -7,7 +7,7 @@ title: "useAuthProvider"
 
 React-admin stores the `authProvider` object in a React context, so it's available from anywhere in your application code. The `useAuthProvider` hook reads this context to let you call the `authProvider` directly.
 
-## Usage 
+## Usage
 
 For instance, here is how to call the Auth Provider to get the identity of the current logged-in user:
 
@@ -89,7 +89,7 @@ export const RefreshToken = () => {
     const authProvider = useAuthProvider<CustomAuthProviderMethods>();
 
     useEffect(() => {
-        const interval = useInterval(() => authProvider.refreshToken(), THIRTY_MINUTES);
+        const interval = setInterval(() => authProvider.refreshToken(), THIRTY_MINUTES);
         return () => clearInterval(interval);
     }, [authProvider]);
 
