@@ -89,4 +89,42 @@ describe('<ChipField />', () => {
 
         expect(getByText('Not found')).not.toBeNull();
     });
+
+    it('should return null when value and emptyText are an empty string', () => {
+        const { container } = render(
+            <ChipField
+                className="className"
+                classes={{}}
+                source="name"
+                record={{ id: 123, name: '' }}
+                emptyText=""
+            />
+        );
+        expect(container.firstChild).toBeNull();
+    });
+
+    it('should display the emptyText when value is an empty string', () => {
+        const { getByText } = render(
+            <ChipField
+                className="className"
+                classes={{}}
+                source="name"
+                record={{ id: 123, name: '' }}
+                emptyText="NA"
+            />
+        );
+        expect(getByText('NA')).not.toBeNull();
+    });
+
+    it('should return null when value is an empty string and emptyText is null', () => {
+        const { container } = render(
+            <ChipField
+                className="className"
+                classes={{}}
+                source="name"
+                record={{ id: 123, name: '' }}
+            />
+        );
+        expect(container.firstChild).toBeNull();
+    });
 });
