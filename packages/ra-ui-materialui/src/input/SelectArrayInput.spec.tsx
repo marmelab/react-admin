@@ -84,6 +84,18 @@ describe('<SelectArrayInput />', () => {
         expect(screen.queryByText('Photography')).not.toBeNull();
     });
 
+    it('should clear the options when clicking in emptyOption', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectArrayInput {...defaultProps} />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+    });
+
     it('should use optionValue as value identifier', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -763,5 +775,68 @@ describe('<SelectArrayInput />', () => {
                 );
             });
         });
+    });
+
+    it('should render the emptyText option correctly', () => {
+        const choices = [
+            { id: 'programming', name: 'Programming' },
+            { id: 'lifestyle', name: 'Lifestyle' },
+            { id: 'photography', name: 'Photography' },
+        ];
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectArrayInput
+                            {...defaultProps}
+                            choices={choices}
+                            emptyText="Test Option"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.categories')
+        );
+        expect(screen.getByText('Test Option')).toBeInTheDocument();
+    });
+
+    it('should clear the options when clicking on emptyOption', async () => {
+        const choices = [
+            { id: 'programming', name: 'Programming' },
+            { id: 'lifestyle', name: 'Lifestyle' },
+            { id: 'photography', name: 'Photography' },
+        ];
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectArrayInput
+                            {...defaultProps}
+                            choices={choices}
+                            emptyText="Clear selections"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.categories')
+        );
+        fireEvent.click(screen.getByText('Programming'));
+        fireEvent.click(screen.getByText('Lifestyle'));
+        expect(
+            screen.getByDisplayValue('programming,lifestyle')
+        ).toBeInTheDocument();
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.categories')
+        );
+        fireEvent.click(screen.getByText('Clear selections'));
+        expect(screen.queryByDisplayValue('programming,lifestyle')).toBeNull();
     });
 });
