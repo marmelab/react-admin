@@ -4,10 +4,13 @@ import {
     useTranslate,
     useRecordContext,
     useResourceContext,
+    useStore,
     useTranslateLabel,
     type SortPayload,
 } from 'ra-core';
 import {
+    Checkbox,
+    MenuItem,
     TableCell,
     type TableCellProps,
     TableSortLabel,
@@ -16,6 +19,8 @@ import {
 import clsx from 'clsx';
 
 import { DataTableHeaderContext } from './DataTableHeaderContext';
+import { DataTableColumnSelectorContext } from './DataTableColumnSelectorContext';
+import { DataTableStoreContext } from './DataTableStoreContext';
 import { TextField } from '../../field/TextField';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
@@ -42,10 +47,44 @@ export const DataTableColumn = React.forwardRef<
 >((props, ref) => {
     const record = useRecordContext();
     const resource = useResourceContext();
+    const storeKey = React.useContext(DataTableStoreContext);
+    const [hiddenColumns, setHiddenColumns] = useStore<string[]>(storeKey, []);
 
     const translate = useTranslate();
     const translateLabel = useTranslateLabel();
     const headerContext = React.useContext(DataTableHeaderContext);
+    const tableSelectorContext = React.useContext(
+        DataTableColumnSelectorContext
+    );
+    if (tableSelectorContext) {
+        // column selector menu item
+        const { source, label } = props;
+        if (!source && !label) return null;
+        const fieldLabel = translateLabel({
+            label: typeof label === 'string' ? label : undefined,
+            resource,
+            source,
+        });
+        const isColumnHidden = hiddenColumns.includes(source!);
+        return (
+            <MenuItem
+                onClick={() =>
+                    isColumnHidden
+                        ? setHiddenColumns(
+                              hiddenColumns.filter(column => column !== source!)
+                          )
+                        : setHiddenColumns([...hiddenColumns, source!])
+                }
+            >
+                <Checkbox
+                    sx={{ padding: '0 0.5em 0 0' }}
+                    size="small"
+                    checked={!isColumnHidden}
+                />
+                {fieldLabel}
+            </MenuItem>
+        );
+    }
     if (headerContext) {
         // header cell
         const { sort, updateSort } = headerContext;
@@ -62,6 +101,8 @@ export const DataTableColumn = React.forwardRef<
             sortByOrder,
             ...rest
         } = props;
+        const isColumnHidden = hiddenColumns.includes(source!);
+        if (isColumnHidden) return null;
         const nextSortOrder =
             sort && sort.field === (sortBy || source)
                 ? // active sort field, use opposite order
@@ -71,7 +112,7 @@ export const DataTableColumn = React.forwardRef<
         const fieldLabel = translateLabel({
             label: typeof label === 'string' ? label : undefined,
             resource,
-            source: source,
+            source,
         });
         const sortLabel = translate('ra.sort.sort_by', {
             field: fieldLabel,
@@ -141,6 +182,8 @@ export const DataTableColumn = React.forwardRef<
             label,
             ...rest
         } = props;
+        const isColumnHidden = hiddenColumns.includes(source!);
+        if (isColumnHidden) return null;
         if (!render && !component && !children && !source) {
             throw new Error(
                 'Missing at least one of the following props: render, component, children, or source'
