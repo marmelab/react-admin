@@ -329,14 +329,66 @@ const MyMenu = () => (
 
 In addition to the props of react-router [`<NavLink>`](https://reactrouter.com/web/api/NavLink) and those of material-ui [`<ListItem>`](https://material-ui.com/api/list-item/).
 
-| Prop    | Required | Type        | Default | Description                                                   |
-| ------- | -------- | ----------- | ------- | ------------------------------------------------------------- |
-| `name`  | Required | `string`    |         | The name of the item. Used to manage its open/closed state.   |
-| `icon`  | Optional | `ReactNode` | -       | An icon element to display in front of the item.              |
-| `label` | Optional | `string`    | -       | The label to display for this item. Accepts translation keys. |
-| `sx`    | Optional | `SxProps`   | -       | Style overrides, powered by MUI System.                       |
+| Prop      | Required | Type        | Default | Description                                                   |
+| --------- | -------- | ----------- | ------- | ------------------------------------------------------------- |
+| `children`| Optional | `ReactNode` |         | The sub-menu items to be rendered.                            |
+| `name`    | Required | `string`    |         | The name of the item. Used to manage its open/closed state.   |
+| `icon`    | Optional | `ReactNode` | -       | An icon element to display in front of the item.              |
+| `label`   | Optional | `string`    | -       | The label to display for this item. Accepts translation keys. |
+| `to`      | Required | `string`    | -       | The location to link to.                                      |
+| `sx`      | Optional | `SxProps`   | -       | Style overrides, powered by MUI System.                       |
+
+Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
 
 **Tip:** You can omit the `to` from `<NavLink>` property for `<MultiLevelMenu.Item>` elements that have a child menu item.
+
+### `children`
+
+Pass a children to `<MultiLevelMenu.Item>` to define the sub-menu entries:
+
+```jsx
+import { MultiLevelMenu } from "@react-admin/ra-navigation";
+import PeopleIcon from '@mui/icons-material/People';
+
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.Item
+            name="artists"
+            to={'/artists?filter={}'}
+            label="Artists"
+            icon={<PeopleIcon />}
+        >
+            <MultiLevelMenu.Item
+                name="artists.rock"
+                to={'/artists?filter={"type":"Rock"}'}
+                label="Rock"
+            >
+                <MultiLevelMenu.Item
+                    name="artists.rock.pop"
+                    to={'/artists?filter={"type":"Pop Rock"}'}
+                    label="Pop Rock"
+                />
+                <MultiLevelMenu.Item
+                    name="artists.rock.folk"
+                    to={'/artists?filter={"type":"Folk Rock"}'}
+                    label="Folk Rock"
+                />
+            </MultiLevelMenu.Item>
+            <MultiLevelMenu.Item
+                name="artists.jazz"
+                to={'/artists?filter={"type":"Jazz"}'}
+                label="Jazz"
+            >
+                <MultiLevelMenu.Item
+                    name="artists.jazz.rb"
+                    to={'/artists?filter={"type":"RB"}'}
+                    label="R&B"
+                />
+            </MultiLevelMenu.Item>
+        </MultiLevelMenu.Item>
+    </MultiLevelMenu>
+);
+```
 
 ### `name`
 
@@ -376,6 +428,21 @@ const MyMenu = () => (
     <MultiLevelMenu>
         <MultiLevelMenu.Item name="artists" to={'/artists?filter={}'} label="Artists" />
         <MultiLevelMenu.Item name="settings" to={'/artists?filter={}'} label="myapp.menu.settings" />
+    </MultiLevelMenu>
+);
+```
+
+### `to`
+
+The location to go to for this item. Accepts a [path](./Routing.md#linking-to-a-page).
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.Item name="artists" to="/artists" />
+        <MultiLevelMenu.Item name="settings" to="/settings" />
     </MultiLevelMenu>
 );
 ```
