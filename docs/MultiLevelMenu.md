@@ -22,7 +22,8 @@ Test it live on [the Enterprise Edition Storybook](https://storybook.ra-enterpri
 
 ## Usage
 
-Create a custom Menu component using `<MultiLevelMenu>` as root instead of `<Menu>`. Menu entries should be `<MultiLevelMenu.Item>` components. They are very similar to the default `<MenuItemLink>` from react-admin, except that they accept other `<MultiLevelMenu.Item>` as their children.
+Create a custom Menu component using `<MultiLevelMenu>` as root instead of `<Menu>`. Menu entries should be `<MultiLevelMenu.Item>`, `<MultiLevelMenu.ResourceItem>` or `<MultiLevelMenu.DashboardItem>` components.
+They are very similar to the default `<MenuItemLink>` from react-admin, except that they accept other `<MultiLevelMenu.Item>` (or `<MultiLevelMenu.ResourceItem>` or `<MultiLevelMenu.DashboardItem>`) as their children.
 
 For instance, here is how to create a menu with sub menus for each artist genre. The menu target is actually the same page - the artists list - but with a different filter:
 
@@ -35,10 +36,10 @@ import PeopleIcon from '@mui/icons-material/People';
 
 const MyMenu = () => (
     <MultiLevelMenu>
-        <MultiLevelMenu.Item name="dashboard" to="/" label="Dashboard" icon={<DashboardIcon />} />
-        <MultiLevelMenu.Item name="songs" to="/songs" label="Songs" icon={<MusicIcon />}  />
+        <MultiLevelMenu.DashboardItem />
+        <MultiLevelMenu.ResourceItem resource="songs" icon={<MusicIcon />}  />
         {/* The empty filter is required to avoid falling back to the previously set filter */}
-        <MultiLevelMenu.Item name="artists" to={'/artists?filter={}'} label="Artists" icon={<PeopleIcon />}>
+        <MultiLevelMenu.ResourceItem resource="artists" to={'/artists?filter={}'} icon={<PeopleIcon />}>
             <MultiLevelMenu.Item name="artists.rock" to={'/artists?filter={"type":"Rock"}'} label="Rock">
                 <MultiLevelMenu.Item name="artists.rock.pop" to={'/artists?filter={"type":"Pop Rock"}'} label="Pop Rock" />
                 <MultiLevelMenu.Item name="artists.rock.folk" to={'/artists?filter={"type":"Folk Rock"}'} label="Folk Rock" />
@@ -46,7 +47,7 @@ const MyMenu = () => (
             <MultiLevelMenu.Item name="artists.jazz" to={'/artists?filter={"type":"Jazz"}'} label="Jazz">
                 <MultiLevelMenu.Item name="artists.jazz.rb" to={'/artists?filter={"type":"RB"}'} label="R&B" />
             </MultiLevelMenu.Item>
-        </MultiLevelMenu.Item>
+        </MultiLevelMenu.ResourceItem>
     </MultiLevelMenu>
 );
 ```
@@ -116,33 +117,65 @@ const App = () => (
 
 ## Props
 
-| Prop           | Required | Type        | Default  | Description                                                   |
-| -------------- | -------- | ----------- | -------- | ------------------------------------------------------------- |
-| `children`     | Optional | `ReactNode` | -        | The Menu Items  to be rendered.                               |
-| `initialOpen`  | Optional | `boolean`   | `false`  | Whether the menu is initially open.                           |
-| `openItemList` | Optional | `Array`     | -        | List of names of menu items that should be opened by default. |
-| `sx`           | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                        |
+| Prop           | Required | Type        | Default  | Description                                                                                                      |
+| -------------- | -------- | ----------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| `children`     | Optional | `ReactNode` | -        | The Menu Items to be rendered.                                                                                   |
+| `initialOpen`  | Optional | `boolean`   | `false`  | Whether the menu items with sub menus should be open initially. Has no effect if using the `categories` variant. |
+| `openItemList` | Optional | `string[]`  | -        | List of names of menu items that should be opened by default.                                                    |
+| `sx`           | Optional | `SxProps`   | -        | Style overrides, powered by MUI System                                                                           |
 
 Additional props are passed down to the root `<div>` component.
 
 ## `children`
 
-Pass `<MultiLevelMenu.Item>` children to `<MultiLevelMenu>` to define the main menu entries.
+The menu items to render:
 
 ```jsx
 // in src/MyMenu.js
 import { MultiLevelMenu } from "@react-admin/ra-navigation";
 
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import MusicIcon from '@mui/icons-material/MusicNote';
 import PeopleIcon from '@mui/icons-material/People';
 
 const MyMenu = () => (
-  <MultiLevelMenu>
-    <MultiLevelMenu.Item name="dashboard" to="/" label="Dashboard" icon={<DashboardIcon />} />
-    <MultiLevelMenu.Item name="songs" to="/songs" label="Songs" icon={<MusicIcon />}  />
-    <MultiLevelMenu.Item name="artists" to="/artists" label="Artists" icon={<PeopleIcon />} />
-  </MultiLevelMenu>
+    <MultiLevelMenu>
+        <MultiLevelMenu.DashboardItem />
+        <MultiLevelMenu.ResourceItem resource="songs" icon={<MusicIcon />}  />
+        {/* The empty filter is required to avoid falling back to the previously set filter */}
+        <MultiLevelMenu.ResourceItem
+            resource="artists"
+            to={'/artists?filter={}'}
+            icon={<PeopleIcon />}
+        >
+            <MultiLevelMenu.Item
+                name="artists.rock"
+                to={'/artists?filter={"type":"Rock"}'}
+                label="Rock"
+            >
+                <MultiLevelMenu.Item
+                    name="artists.rock.pop"
+                    to={'/artists?filter={"type":"Pop Rock"}'}
+                    label="Pop Rock"
+                />
+                <MultiLevelMenu.Item
+                    name="artists.rock.folk"
+                    to={'/artists?filter={"type":"Folk Rock"}'}
+                    label="Folk Rock"
+                />
+            </MultiLevelMenu.Item>
+            <MultiLevelMenu.Item
+                name="artists.jazz"
+                to={'/artists?filter={"type":"Jazz"}'}
+                label="Jazz"
+            >
+                <MultiLevelMenu.Item
+                    name="artists.jazz.rb"
+                    to={'/artists?filter={"type":"RB"}'}
+                    label="R&B"
+                />
+            </MultiLevelMenu.Item>
+        </MultiLevelMenu.ResourceItem>
+    </MultiLevelMenu>
 );
 ```
 
@@ -150,7 +183,7 @@ Check [the `<MultiLevelMenu.Item>` section](#multilevelmenuitem) for more inform
 
 ## `initialOpen`
 
-All the items of a `<MultiLevelMenu>` can be opened initially by setting `initialOpen` to `true`.
+Whether the menu items with sub menus should be open initially. Has no effect if using the `categories` variant. Defaults to `false`.
 
 ```jsx
 export const MyMenu = () => (
@@ -160,11 +193,60 @@ export const MyMenu = () => (
 );
 ```
 
+## `openItemList`
+
+List of names of menu items that should be opened by default.
+If the menu item to be opened is nested, you have to fill in the name of all the parent items. Ex: `['artists', 'artists.rock', 'artists.rock.pop']`
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+const MyMenu = () => (
+    <MultiLevelMenu openItemList={['artists', 'artists.rock', 'artists.rock.pop']}>
+        <MultiLevelMenu.DashboardItem />
+        <MultiLevelMenu.ResourceItem resource="songs" />
+        {/* The empty filter is required to avoid falling back to the previously set filter */}
+        <MultiLevelMenu.ResourceItem
+            resource="artists"
+            to={'/artists?filter={}'}
+        >
+            <MultiLevelMenu.Item
+                name="artists.rock"
+                to={'/artists?filter={"type":"Rock"}'}
+                label="Rock"
+            >
+                <MultiLevelMenu.Item
+                    name="artists.rock.pop"
+                    to={'/artists?filter={"type":"Pop Rock"}'}
+                    label="Pop Rock"
+                />
+                <MultiLevelMenu.Item
+                    name="artists.rock.folk"
+                    to={'/artists?filter={"type":"Folk Rock"}'}
+                    label="Folk Rock"
+                />
+            </MultiLevelMenu.Item>
+            <MultiLevelMenu.Item
+                name="artists.jazz"
+                to={'/artists?filter={"type":"Jazz"}'}
+                label="Jazz"
+            >
+                <MultiLevelMenu.Item
+                    name="artists.jazz.rb"
+                    to={'/artists?filter={"type":"RB"}'}
+                    label="R&B"
+                />
+            </MultiLevelMenu.Item>
+        </MultiLevelMenu.ResourceItem>
+    </MultiLevelMenu>
+);
+```
+
 ## `sx`: CSS API
 
 Pass an `sx` prop to customize the style of the main component and the underlying elements.
 
 {% raw %}
+
 ```jsx
 export const MyMenu = () => (
     <MultiLevelMenu sx={{ marginTop: 0 }}>
@@ -172,9 +254,19 @@ export const MyMenu = () => (
     </MultiLevelMenu>
 );
 ```
+
 {% endraw %}
 
 To override the style of `<MultiLevelMenu>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuRoot` key.
+
+Style overrides, powered by MUI System:
+
+| Rule name                               | Description                                                                               |
+| --------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `RaMultiLevelMenu`                      | Applied to the root `div` element                                                         |
+| `& .RaMultiLevelMenu-nav`               | Applied to the `nav` element                                                              |
+| `& .RaMultiLevelMenu-navWithCategories` | Applied to the `nav` element when using the `categories` variant                          |
+| `& .RaMultiLevelMenu-list`              | Applied to the MUI `<List>`                                                               |
 
 ## `<MultiLevelMenu.Item>`
 
@@ -182,26 +274,206 @@ The `<MultiLevelMenu.Item>` component displays a menu item with a label and an i
 
 ```jsx
 <MultiLevelMenu.Item
-    name="dashboard"
-    to="/"
-    label="Dashboard"
-    icon={<DashboardIcon />}
+    name="songs"
+    to="/songs"
+    label="Songs"
+    icon={<MusicIcon />}
 />
 ```
 
-It requires the following props:
+### Usage
 
-- `name`: the name of the location to match. This is used to highlight the current location.
-- `to`: the location to link to.
-- `label`: The menu item label.
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+const MyMenu = () => (
+    <MultiLevelMenu>
+        {/* The empty filter is required to avoid falling back to the previously set filter */}
+        <MultiLevelMenu.Item
+            name="artists"
+            to={'/artists?filter={}'}
+            label="artists"
+        >
+            <MultiLevelMenu.Item
+                name="artists.rock"
+                to={'/artists?filter={"type":"Rock"}'}
+                label="Rock"
+            >
+                <MultiLevelMenu.Item
+                    name="artists.rock.pop"
+                    to={'/artists?filter={"type":"Pop Rock"}'}
+                    label="Pop Rock"
+                />
+                <MultiLevelMenu.Item
+                    name="artists.rock.folk"
+                    to={'/artists?filter={"type":"Folk Rock"}'}
+                    label="Folk Rock"
+                />
+            </MultiLevelMenu.Item>
+            <MultiLevelMenu.Item
+                name="artists.jazz"
+                to={'/artists?filter={"type":"Jazz"}'}
+                label="Jazz"
+            >
+                <MultiLevelMenu.Item
+                    name="artists.jazz.rb"
+                    to={'/artists?filter={"type":"RB"}'}
+                    label="R&B"
+                />
+            </MultiLevelMenu.Item>
+        </MultiLevelMenu.Item>
+    </MultiLevelMenu>
+);
+```
 
-It accepts optional props:
+### Props
 
-- `icon`: the icon to display.
-- `children`: Other `<MultiLevelMenu.Item>` children.
-- `sx`: Style overrides, powered by MUI System
+In addition to the props of react-router [`<NavLink>`](https://reactrouter.com/web/api/NavLink) and those of material-ui [`<ListItem>`](https://material-ui.com/api/list-item/).
 
-Additional props are passed down to [the underling Material UI `<listItem>` component](https://mui.com/api/list-item/#listitem-api).
+| Prop    | Required | Type        | Default | Description                                                   |
+| ------- | -------- | ----------- | ------- | ------------------------------------------------------------- |
+| `name`  | Required | `string`    |         | The name of the item. Used to manage its open/closed state.   |
+| `icon`  | Optional | `ReactNode` | -       | An icon element to display in front of the item.              |
+| `label` | Optional | `string`    | -       | The label to display for this item. Accepts translation keys. |
+| `sx`    | Optional | `SxProps`   | -       | Style overrides, powered by MUI System.                       |
+
+**Tip:** You can omit the `to` from `<NavLink>` property for `<MultiLevelMenu.Item>` elements that have a child menu item.
+
+### `name`
+
+The name of the item. Used to manage its open/closed state.
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.Item name="artists" to={'/artists?filter={}'} />
+    </MultiLevelMenu>
+);
+```
+
+### `icon`
+
+An icon element to display in front of the item.
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+import PeopleIcon from '@mui/icons-material/People';
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.Item name="artists" to={'/artists?filter={}'} icon={<PeopleIcon />} />
+    </MultiLevelMenu>
+);
+```
+
+### `label`
+
+The label to display for this item. Accepts translation keys.
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+import PeopleIcon from '@mui/icons-material/People';
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.Item name="artists" to={'/artists?filter={}'} label="Artists" />
+        <MultiLevelMenu.Item name="settings" to={'/artists?filter={}'} label="myapp.menu.settings" />
+    </MultiLevelMenu>
+);
+```
+
+### `sx`
+
+Style overrides, powered by MUI System:
+
+| Rule name                        | Description                                                                        |
+| -------------------------------- | ---------------------------------------------------------------------------------- |
+| `RaMenuItem`                     | Applied to the root `div` element                                                  |
+| `& .RaMenuItem-container`        | Applied to the MUI `<ListItem>` element                                            |
+| `& .RaMenuItem-link`             | Applied to the text of the `NavLink`                                               |
+| `& .RaMenuItem-active`           | Applied to the text of the `NavLink` when active (this item is the current page)   |
+| `& .RaMenuItem-menuIcon`         | Applied to the MUI `<ListItemIcon>` element                                        |
+| `& .RaMenuItem-icon`             | Applied to the item icon element                                                   |
+| `& .RaMenuItem-button`           | Applied to the MUI `<IconButton>` that open/closes the item children list          |
+| `& .RaMenuItem-nestedList`       | Applied to the MUI `<List>` element that contains the item children                |
+| `& .RaMenuItem-hiddenNestedList` | Applied to the MUI `<List>` element that contains the item children when collapsed |
+| `& .RaMenuItem-itemButton`       | Applied to the MUI `<ListItemButton>`                                              |
+
+{% raw %}
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.Item name="artists" to={'/artists?filter={}'} sx={{ border: 'solid 1px #000' }} />
+    </MultiLevelMenu>
+);
+```
+
+{% endraw %}
+
+## `<MultiLevelMenu.DashboardItem>`
+
+A `<MultiLevelMenu.Item>` for the dashboard.
+
+### Usage
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.DashboardItem />
+    </MultiLevelMenu>
+);
+```
+
+It accepts all props from [`<MultiLevelMenu.Item>`](#multilevelmenuitem)
+
+## `<MultiLevelMenu.ResourceItem>`
+
+A `<MultiLevelMenu.Item>` for resources. It only needs the `resource` name and automatically applies access control if your [`authProvider` implements `canAccess`](./Permissions.md#authprovidercanaccess) by calling it with the following parameters:
+
+```js
+{
+    resource: "posts",
+    action: "list",
+}
+```
+
+### Usage
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.ResourceItem resource="artists" />
+    </MultiLevelMenu>
+);
+```
+
+### Props
+
+In addition to the props of [`<MultiLevelMenu.Item>`](#multilevelmenuitem), it accepts the following props
+
+| Prop       | Required | Type        | Default | Description                       |
+| ---------- | -------- | ----------- | ------- | --------------------------------- |
+| `resource` | Required | `string`    |         | The resource this item refers to. |
+
+**Tip:** Note that the `name` prop from [`<MultiLevelMenu.Item>`](#multilevelmenuitem) is optional for `<MultiLevelMenu.ResourceItem>`.
+
+### `resource`
+
+The resource this item refers to
+
+```tsx
+import { MultiLevelMenu } from '@react-admin/ra-navigation';
+
+const MyMenu = () => (
+    <MultiLevelMenu>
+        <MultiLevelMenu.ResourceItem resource="artists" />
+    </MultiLevelMenu>
+);
+```
 
 ## Creating Menu Items For Resources
 
@@ -220,10 +492,9 @@ export const MyMenu = () => {
     return (
         <MultiLevelMenu>
             {Object.keys(resources).map(name => (
-                <MultiLevelMenu.Item
+                <MultiLevelMenu.ResourceItem
                     key={name}
-                    name={name}
-                    to={`/${name}`}
+                    resource={name}
                     label={resources[name].options && resources[name].options.label || name}
                     icon={createElement(resources[name].icon)}
                 />
