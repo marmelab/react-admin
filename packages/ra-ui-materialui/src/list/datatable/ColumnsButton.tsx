@@ -14,7 +14,7 @@ import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 import { styled } from '@mui/material/styles';
 
 /**
- * Renders a button that lets users show / hide columns in a datatable
+ * Renders a button that lets users show / hide columns in a DataTable
  *
  * @example
  * import { ColumnsButton, DataTable } from 'react-admin';
@@ -86,14 +86,6 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
                 keepMounted
                 anchorEl={anchorEl}
                 onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
             >
                 {/* ColumnsSelector will be rendered here via Portal  */}
                 <span id={`${storeKey}-columnsSelector`} />
@@ -105,12 +97,7 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
 const StyledButton = styled(Button, {
     name: 'RaColumnsButton',
     overridesResolver: (props, styles) => styles.root,
-})({
-    '&.MuiButton-sizeSmall': {
-        // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
-        lineHeight: 1.5,
-    },
-});
+})();
 
 const sanitizeRestProps = ({
     resource,
