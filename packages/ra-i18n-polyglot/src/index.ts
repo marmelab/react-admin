@@ -11,7 +11,8 @@ type GetMessages = (
  *
  * @example
  *
- * import { Admin, Resource, polyglotI18nProvider } from 'react-admin';
+ * import { Admin, Resource } from 'react-admin';
+ * import polyglotI18nProvider from 'ra-i18n-polyglot';
  * import englishMessages from 'ra-language-english';
  * import frenchMessages from 'ra-language-french';
  *
