@@ -71,8 +71,9 @@ const CompanyShow = () => (
 
 | Prop               | Required | Type              | Default | Description                                                                             |
 | ------------------ | -------- | ----------------- | ------- | --------------------------------------------------------------------------------------- |
-| `children`         | Required | `ReactNode`       |         | The content of the dialog                                                               |
 | `ButtonProps`      | Optional | `object`          |         | Object containing props to pass to Material UI's `<Button>`                             |
+| `children`         | Required | `ReactNode`       |         | The content of the dialog                                                               |
+| `emptyWhileLoading`| Optional | `boolean`         | `false` | Set to `true` to return `null` while the list is loading                                |
 | `fullWidth`        | Optional | `boolean`         | `false` | If `true`, the dialog stretches to the full width of the screen                         |
 | `icon`             | Optional | `ReactElement`    |         | Allows to override the default icon                                                     |
 | `id`               | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the record context              |
@@ -84,7 +85,25 @@ const CompanyShow = () => (
 | `resource`         | Optional | `string`          |         | The resource name, e.g. `posts`                                                         |
 | `sx`               | Optional | `object`          |         | Override the styles applied to the dialog component                                     |
 | `title`            | Optional | `ReactNode`       |         | The title of the dialog                                                                 |
-| `emptyWhileLoading`| Optional | `boolean`         | `false` | Set to `true` to return `null` while the list is loading                                |
+
+
+## `ButtonProps`
+
+The `ButtonProps` prop allows you to pass props to the MUI `<Button>` component. For instance, to change the color and size of the button:
+
+{% raw %}
+
+```jsx
+const EditButton = () => (
+  <EditInDialogButton ButtonProps={{ color: 'primary', fullWidth: true }}>
+      <SimpleForm>
+          ...
+      </SimpleForm>
+  </EditInDialogButton>
+);
+```
+
+{% endraw %}
 
 ## `children`
 
@@ -133,24 +152,6 @@ const EditButton = () => (
   </EditInDialogButton>
 );
 ```
-
-## `ButtonProps`
-
-The `ButtonProps` prop allows you to pass props to the MUI `<Button>` component. For instance, to change the color and size of the button:
-
-{% raw %}
-
-```jsx
-const EditButton = () => (
-  <EditInDialogButton ButtonProps={{ color: 'primary', fullWidth: true }}>
-      <SimpleForm>
-          ...
-      </SimpleForm>
-  </EditInDialogButton>
-);
-```
-
-{% endraw %}
 
 ## `fullWidth`
 
