@@ -120,6 +120,20 @@ const EditButton = () => (
 );
 ```
 
+## `emptyWhileLoading`
+
+By default, `<EditInDialogButton>` renders its child component even before the `dataProvider.getOne()` call returns. It can lead to a flash of empty content.
+
+To avoid this, set the `emptyWhileLoading` prop to `true`:
+
+```jsx
+const EditButton = () => (
+  <EditInDialogButton emptyWhileLoading>
+      ...
+  </EditInDialogButton>
+);
+```
+
 ## `ButtonProps`
 
 The `ButtonProps` prop allows you to pass props to the MUI `<Button>` component. For instance, to change the color and size of the button:
