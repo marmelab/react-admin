@@ -9,6 +9,8 @@ import { NumberField } from '../../field';
 import { List } from '../List';
 
 import { DataTable } from './DataTable';
+import { ColumnsButton } from './ColumnsButton';
+import { TopToolbar } from '../../layout';
 import { EditButton } from '../../button';
 
 export default { title: 'ra-ui-materialui/list/DataTable' };
@@ -68,7 +70,15 @@ const Wrapper = ({ children }) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ThemeProvider theme={theme}>
             <ResourceContextProvider value="books">
-                <List perPage={5} sx={{ px: 4 }}>
+                <List
+                    perPage={5}
+                    sx={{ px: 4 }}
+                    actions={
+                        <TopToolbar>
+                            <ColumnsButton />
+                        </TopToolbar>
+                    }
+                >
                     {children}
                 </List>
             </ResourceContextProvider>
