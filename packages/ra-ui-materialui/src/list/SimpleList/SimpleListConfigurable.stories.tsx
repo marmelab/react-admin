@@ -1,17 +1,14 @@
 import * as React from 'react';
-import {
-    PreferencesEditorContextProvider,
-    I18nContextProvider,
-    TestMemoryRouter,
-} from 'ra-core';
+import { PreferencesEditorContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import en from 'ra-language-english';
 import fr from 'ra-language-french';
+import { Box } from '@mui/material';
 
 import { SimpleListConfigurable } from './SimpleListConfigurable';
 import { Inspector, InspectorButton } from '../../preferences';
 import { LocalesMenuButton } from '../../button/LocalesMenuButton';
-import { Box } from '@mui/material';
+import { AdminContext } from '../../AdminContext';
 
 export default { title: 'ra-ui-materialui/list/SimpleListConfigurable' };
 
@@ -46,29 +43,27 @@ const translations = { en, fr };
 const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
 
 export const Basic = () => (
-    <I18nContextProvider value={i18nProvider}>
+    <AdminContext i18nProvider={i18nProvider}>
         <PreferencesEditorContextProvider>
-            <TestMemoryRouter>
-                <Inspector />
-                <Box display="flex" justifyContent="flex-end">
-                    <LocalesMenuButton
-                        languages={[
-                            { locale: 'en', name: 'English' },
-                            { locale: 'fr', name: 'Français' },
-                        ]}
-                    />
-                    <InspectorButton />
-                </Box>
-                <Box p={2}>
-                    <SimpleListConfigurable
-                        resource="books"
-                        data={data}
-                        primaryText={record => record.title}
-                        secondaryText={record => record.author}
-                        tertiaryText={record => record.year}
-                    />
-                </Box>
-            </TestMemoryRouter>
+            <Inspector />
+            <Box display="flex" justifyContent="flex-end">
+                <LocalesMenuButton
+                    languages={[
+                        { locale: 'en', name: 'English' },
+                        { locale: 'fr', name: 'Français' },
+                    ]}
+                />
+                <InspectorButton />
+            </Box>
+            <Box p={2}>
+                <SimpleListConfigurable
+                    resource="books"
+                    data={data}
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                />
+            </Box>
         </PreferencesEditorContextProvider>
-    </I18nContextProvider>
+    </AdminContext>
 );
