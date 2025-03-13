@@ -26,11 +26,17 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
             document.body.contains(container)
         )
             return;
+        // look for the container in the DOM every 100ms
         const interval = setInterval(() => {
             const target = document.getElementById(elementId);
             if (target) setContainer(target);
-        }, 50);
-        return () => clearInterval(interval);
+        }, 100);
+        // stop looking after 500ms
+        const timeout = setTimeout(() => clearInterval(interval), 500);
+        return () => {
+            clearInterval(interval);
+            clearTimeout(timeout);
+        };
     }, [elementId, container]);
 
     if (!container) return null;
