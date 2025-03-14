@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PreferencesEditorContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import en from 'ra-language-english';
 import fr from 'ra-language-french';
