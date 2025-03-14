@@ -19,7 +19,10 @@ const ChipFieldImpl = <
     const translate = useTranslate();
 
     if (!value) {
-        return emptyText && emptyText.length > 0 ? (
+        if (!emptyText || emptyText.length === 0) {
+            return null;
+        }
+        return (
             <Typography
                 component="span"
                 variant="body2"
@@ -28,7 +31,7 @@ const ChipFieldImpl = <
             >
                 {emptyText && translate(emptyText, { _: emptyText })}
             </Typography>
-        ) : null;
+        );
     }
 
     return (
