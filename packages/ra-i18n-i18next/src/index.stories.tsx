@@ -10,8 +10,15 @@ import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { useI18nextProvider } from './index';
-import { convertRaTranslationsToI18next } from './convertRaTranslationsToI18next';
+// TODO: fix this import
+import { Translate } from '../../ra-core/src/i18n/Translate';
+// import { Translate } from 'ra-core';
+import { I18nContextProvider } from 'ra-core';
+import {
+    useI18nextProvider,
+    // convertRaMessagesToI18next,
+    convertRaTranslationsToI18next,
+} from '..';
 
 export default {
     title: 'ra-i18n-i18next',
@@ -170,6 +177,36 @@ export const WithCustomOptions = () => {
                 />
             </Admin>
         </TestMemoryRouter>
+    );
+};
+
+export const TranslateComponent = () => {
+    const i18nProvider = useI18nextProvider({
+        options: {
+            resources: {
+                en: {
+                    translations: convertRaTranslationsToI18next({
+                        ...englishMessages,
+                        custom: {
+                            myKey: 'My Translated Key',
+                            myKeyWithArgs: 'It cost %{price}.00 $',
+                        },
+                    }),
+                },
+            },
+        },
+    });
+
+    if (!i18nProvider) return null;
+
+    return (
+        <I18nContextProvider value={i18nProvider}>
+            <Translate i18nKey="custom.myKey" />
+            <br />
+            <Translate i18nKey="ra.action.add" />
+            <br />
+            <Translate i18nKey="custom.myKeyWithArgs" args={{ price: '6' }} />
+        </I18nContextProvider>
     );
 };
 
