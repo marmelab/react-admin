@@ -5,8 +5,6 @@ import {
     isValidElement,
     ReactElement,
     useContext,
-    useEffect,
-    useMemo,
     useRef,
     useState,
 } from 'react';
@@ -51,28 +49,12 @@ export const useSupportCreateSuggestion = (
     const [renderOnCreate, setRenderOnCreate] = useState(false);
     const filterRef = useRef(filter);
 
-    useEffect(() => {
-        if (filterRef.current !== filter && filter !== '') {
-            filterRef.current = filter;
-        }
-    }, [filter]);
-
-    const context = useMemo(
-        () => ({
-            filter: filterRef.current,
-            onCancel: () => setRenderOnCreate(false),
-            onCreate: item => {
-                setRenderOnCreate(false);
-                handleChange(item);
-            },
-        }),
-        [handleChange]
-    );
-
     return {
         createId: createValue,
         createHintId: createHintValue,
-        getCreateItem: () => {
+        getCreateItem: (filter: string) => {
+            filterRef.current = filter;
+
             return set(
                 {
                     id:
@@ -116,7 +98,16 @@ export const useSupportCreateSuggestion = (
         },
         createElement:
             renderOnCreate && isValidElement(create) ? (
-                <CreateSuggestionContext.Provider value={context}>
+                <CreateSuggestionContext.Provider
+                    value={{
+                        filter: filterRef.current,
+                        onCancel: () => setRenderOnCreate(false),
+                        onCreate: item => {
+                            setRenderOnCreate(false);
+                            handleChange(item);
+                        },
+                    }}
+                >
                     {create}
                 </CreateSuggestionContext.Provider>
             ) : null,
