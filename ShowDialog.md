@@ -56,7 +56,7 @@ const CustomerList = () => (
 );
 ```
 
-In the related `<Resource>`, you don't need to declare an `show` component as the showing UI is part of the `list` component:
+In the related `<Resource>`, you don't need to declare a `show` component as the showing UI is part of the `list` component:
 
 ```jsx
 <Resource name="customers" list={CustomerList} />
@@ -282,7 +282,7 @@ In that case, use [the `<ShowInDialogButton>` component](./ShowInDialogButton.md
   Your browser does not support the video tag.
 </video>
 
-Put `<ShowInDialogButton>` wherever you would put an `<ShowButton>`, and use the same children as you would for an `<Show>` component (e.g. a `<SimpleShowLayout>`):
+Put `<ShowInDialogButton>` wherever you would put a `<ShowButton>`, and use the same children as you would for a `<Show>` component (e.g. a `<SimpleShowLayout>`):
 
 ```jsx
 import {

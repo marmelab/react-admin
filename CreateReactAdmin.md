@@ -59,7 +59,7 @@ When using this option, the terminal will ask you to choose:
 * `json-server`: A data provider based on the [JSON Server](https://github.com/typicode/json-server) API
 * `simple-rest`: A data provider for [simple REST APIs](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)
 * `supabase`: A data provider for [Supabase](https://github.com/marmelab/ra-supabase/tree/main/packages/ra-supabase). The auth-provider and resources steps will be skipped.
-* `none` (default): You'll configure the data provider myself.
+* `none` (default): To configure the data provider yourself
 
 You can set your data provider directly with the `--data-provider` option:
 

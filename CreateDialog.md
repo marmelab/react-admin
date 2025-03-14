@@ -458,7 +458,7 @@ const EmployerEdit = () => (
 
 {% endraw %}
 
-## Warn When There Are Unsaved Changes
+## Warn When Unsaved Changes
 
 If you'd like to trigger a warning when the user tries to close the dialog with unsaved changes, you can leverage the [warnWhenUnsavedChanges](./Form.md#warnwhenunsavedchanges) feature provided by React Admin forms.
 
