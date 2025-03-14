@@ -44,26 +44,24 @@ const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
 
 export const Basic = () => (
     <AdminContext i18nProvider={i18nProvider}>
-        <PreferencesEditorContextProvider>
-            <Inspector />
-            <Box display="flex" justifyContent="flex-end">
-                <LocalesMenuButton
-                    languages={[
-                        { locale: 'en', name: 'English' },
-                        { locale: 'fr', name: 'Français' },
-                    ]}
-                />
-                <InspectorButton />
-            </Box>
-            <Box p={2}>
-                <SimpleListConfigurable
-                    resource="books"
-                    data={data}
-                    primaryText={record => record.title}
-                    secondaryText={record => record.author}
-                    tertiaryText={record => record.year}
-                />
-            </Box>
-        </PreferencesEditorContextProvider>
+        <Inspector />
+        <Box display="flex" justifyContent="flex-end">
+            <LocalesMenuButton
+                languages={[
+                    { locale: 'en', name: 'English' },
+                    { locale: 'fr', name: 'Français' },
+                ]}
+            />
+            <InspectorButton />
+        </Box>
+        <Box p={2}>
+            <SimpleListConfigurable
+                resource="books"
+                data={data}
+                primaryText={record => record.title}
+                secondaryText={record => record.author}
+                tertiaryText={record => record.year}
+            />
+        </Box>
     </AdminContext>
 );
