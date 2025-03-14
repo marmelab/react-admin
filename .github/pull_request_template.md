@@ -12,7 +12,7 @@ _Describe the steps required to test the changes_
 
 ## Additional Checks
 
-- [ ] The PR targets `master` for a bugfix, or `next` for a feature
+- [ ] The PR targets `master` for a bugfix or a documentation fix, or `next` for a feature
 - [ ] The PR includes **unit tests** (if not possible, describe why)
 - [ ] The PR includes one or several **stories** (if not possible, describe why)
 - [ ] The **documentation** is up to date
