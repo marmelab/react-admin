@@ -81,7 +81,13 @@ const ArrayFieldImpl = <
 ) => {
     const { children, resource, perPage, sort, filter } = props;
     const data = useFieldValue(props) || emptyArray;
-    const listContext = useList({ data, resource, perPage, sort, filter });
+    const listContext = useList({
+        data,
+        resource: storeKey || resource, // Prioritize storeKey if provided
+        perPage,
+        sort,
+        filter,
+    });
     return (
         <ListContextProvider value={listContext}>
             {children}
