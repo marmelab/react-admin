@@ -53,7 +53,7 @@ export const TranslateComponent = () => {
     const customMessages = {
         custom: {
             myKey: 'My Translated Key',
-            myKeyWithArgs: 'It cost %{price}.00 $',
+            myKeyWithArgs: 'Hello, %{myWorld}!',
         },
     };
     const messages = {
@@ -74,7 +74,12 @@ export const TranslateComponent = () => {
         <I18nContextProvider value={i18nProvider}>
             <Translate i18nKey="custom.myKey" />
             <br />
-            <Translate i18nKey="custom.myKeyWithArgs" args={{ price: '6' }} />
+            <Translate i18nKey="ra.page.dashboard" />
+            <br />
+            <Translate
+                i18nKey="custom.myKeyWithArgs"
+                args={{ myWorld: 'world' }}
+            />
         </I18nContextProvider>
     );
 };
