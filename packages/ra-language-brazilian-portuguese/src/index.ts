@@ -130,7 +130,7 @@ const brazilianPortugueseMessages: TranslationMessages = {
             skip_nav: 'Ir para o conteúdo',
         },
         sort: {
-            sort_by: 'Ordernar por %{field} %{order}',
+            sort_by: 'Ordenar por %{field} %{order}',
             ASC: 'ascendente',
             DESC: 'descendente',
         },
