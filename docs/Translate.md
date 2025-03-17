@@ -10,12 +10,7 @@ If you need to translate messages in your own components, React-admin provides t
 # Usage
 
 ```tsx
-const MyHelloButton = () => (
-    <Translate 
-        i18nKey="custom.hello_world"
-        component="button"
-    />
-);
+const MyHelloButton = () => <Translate i18nKey="custom.hello_world" />;
 
 export default MyHelloButton;
 ```
@@ -28,7 +23,6 @@ export default MyHelloButton;
 | ----------- | -------- | ----------------------- | ------------------ | ------------------------------------------------------- |
 | `args`      | Optional | `Object`                | -                  | The arguments used for pluralization and interpolation. |
 | `children`  | Optional | `string`                | -                  | The default translation if the translation failed.      |
-| `component` | Optional | `ElementType`           | `div`              | The component to render as the root element.            |
 | `empty`     | Optional | `string` &#124; `false` | `"no translation"` | Message to be displayed if there is no translation.     |
 | `i18nKey`   | Required | `string`                | -                  | The translation key.                                    |
 
@@ -58,19 +52,15 @@ export default messages;
 
 ```tsx
 export const MyHelloButton = () => (
-    <Translate 
-        i18nKey="custom.hello_world"
-        component="button"
-        args={{ my_world: 'world' }}
-    />
+    <button>
+        <Translate i18nKey="custom.hello_world" args={{ my_world: 'world' }} />
+    </button>
 );
 
 export const SelectBeerButton = () => (
-    <Translate 
-        i18nKey="custom.count_beer"
-        component="button"
-        args={{ smart_count: 2 }}
-    />
+    <button>
+        <Translate i18nKey="custom.count_beer" args={{ smart_count: 2 }} />
+    </button>
 );
 ```
 
@@ -81,21 +71,7 @@ export const SelectBeerButton = () => (
 You can provide a `children` to display if the translation function doesn't find a message with your `i18nKey`.
 
 ```tsx
-const LoadingMessage = () => (
-    <Translate i18nKey="ra.page.loading" component="h3">
-        Loading
-    </Translate>
-);
-```
-
-## `component`
-
-The component to render as the root element.
-
-```tsx
-const LoadingMessage = () => <Translate i18nKey="ra.page.loading" component="h3" />;
-const MyHelloButton = () => <Translate i18nKey="custom.hello_world" component="button" />;
-const MarkedMessage = () => <Translate i18nKey="custom.myKey" component="mark" />;
+const LoadingMessage = () => <Translate i18nKey="ra.page.loading">Loading</Translate>;
 ```
 
 ## `empty`

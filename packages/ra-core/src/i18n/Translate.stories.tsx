@@ -53,15 +53,3 @@ export const Args = () => (
         <Translate i18nKey="custom.myKey" args={{ price: '6' }} />
     </TestTranslationProvider>
 );
-
-export const Component = () => (
-    <TestTranslationProvider
-        messages={{
-            custom: {
-                myKey: 'My Translated Key',
-            },
-        }}
-    >
-        <Translate i18nKey="custom.myKey" component="mark" />
-    </TestTranslationProvider>
-);

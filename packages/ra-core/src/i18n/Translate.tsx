@@ -6,19 +6,18 @@ export const Translate = ({
     args,
     children,
     empty = 'no translation',
-    component = 'span',
 }: TranslateProps) => {
     const translate = useTranslate();
     const translatedMessage = translate(i18nKey, args);
 
     if (translatedMessage && translatedMessage !== i18nKey) {
-        return React.createElement(component, {}, translatedMessage);
+        return <>{translatedMessage}</>;
     }
     if (children) {
-        return React.createElement(component, {}, children);
+        return <>{children}</>;
     }
     if (empty) {
-        return React.createElement(component, {}, empty);
+        return <>{empty}</>;
     }
     return null;
 };
@@ -26,7 +25,6 @@ export const Translate = ({
 export interface TranslateProps {
     i18nKey: string;
     children?: string;
-    component?: React.ElementType;
     empty?: string | false;
     args?: Object;
 }

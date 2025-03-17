@@ -4,7 +4,6 @@ import { render } from '@testing-library/react';
 import {
     Args,
     Basic,
-    Component,
     NoTranslation,
     NoTranslationWithChildren,
     NoTranslationWithEmpty,
@@ -51,10 +50,5 @@ describe('<Translate />', () => {
     it('should render the translation with args', () => {
         const { container } = render(<Args />);
         expect(container.innerHTML).toBe('<span>It cost 6.00 $</span>');
-    });
-
-    it('should render the translation with a custom component', () => {
-        const { container } = render(<Component />);
-        expect(container.innerHTML).toBe('<mark>My Translated Key</mark>');
     });
 });
