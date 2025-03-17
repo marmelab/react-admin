@@ -27,12 +27,7 @@ const i18nProvider = polyglotI18nProvider(
 describe('<ChipField />', () => {
     it('should display the record value added as source', () => {
         const { getByText } = render(
-            <ChipField
-                className="className"
-                classes={{}}
-                source="name"
-                record={{ id: 123, name: 'foo' }}
-            />
+            <ChipField source="name" record={{ id: 123, name: 'foo' }} />
         );
         expect(getByText('foo')).not.toBeNull();
     });
@@ -40,7 +35,7 @@ describe('<ChipField />', () => {
     it('should use record from RecordContext', () => {
         const { getByText } = render(
             <RecordContextProvider value={{ id: 123, name: 'foo' }}>
-                <ChipField className="className" classes={{}} source="name" />
+                <ChipField source="name" />
             </RecordContextProvider>
         );
         expect(getByText('foo')).not.toBeNull();
@@ -49,8 +44,6 @@ describe('<ChipField />', () => {
     it('should not display any label added as props', () => {
         const { getByText } = render(
             <ChipField
-                className="className"
-                classes={{}}
                 source="name"
                 record={{ id: 123, name: 'foo' }}
                 label="bar"
@@ -64,8 +57,6 @@ describe('<ChipField />', () => {
         name => {
             const { getByText } = render(
                 <ChipField
-                    className="className"
-                    classes={{}}
                     source="name"
                     record={{ id: 123, name }}
                     emptyText="NA"
@@ -93,8 +84,6 @@ describe('<ChipField />', () => {
     it('should return null when value and emptyText are an empty string', () => {
         const { container } = render(
             <ChipField
-                className="className"
-                classes={{}}
                 source="name"
                 record={{ id: 123, name: '' }}
                 emptyText=""
@@ -106,8 +95,6 @@ describe('<ChipField />', () => {
     it('should display the emptyText when value is an empty string', () => {
         const { getByText } = render(
             <ChipField
-                className="className"
-                classes={{}}
                 source="name"
                 record={{ id: 123, name: '' }}
                 emptyText="NA"
@@ -118,12 +105,7 @@ describe('<ChipField />', () => {
 
     it('should return null when value is an empty string and emptyText is null', () => {
         const { container } = render(
-            <ChipField
-                className="className"
-                classes={{}}
-                source="name"
-                record={{ id: 123, name: '' }}
-            />
+            <ChipField source="name" record={{ id: 123, name: '' }} />
         );
         expect(container.firstChild).toBeNull();
     });
