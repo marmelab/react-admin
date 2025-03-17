@@ -1,7 +1,7 @@
 import * as React from 'react';
 import BookIcon from '@mui/icons-material/Book';
-import { Box, Chip, useMediaQuery } from '@mui/material';
-import { Theme, styled } from '@mui/material/styles';
+import { Chip, useMediaQuery } from '@mui/material';
+import { Theme } from '@mui/material/styles';
 import lodashGet from 'lodash/get';
 import jsonExport from 'jsonexport/dist';
 import {
@@ -9,9 +9,9 @@ import {
     BulkDeleteButton,
     BulkExportButton,
     ChipField,
-    SelectColumnsButton,
+    ColumnsButton,
     CreateButton,
-    DatagridConfigurable,
+    DataTable,
     DateField,
     downloadCSV,
     EditButton,
@@ -26,7 +26,6 @@ import {
     ShowButton,
     SimpleList,
     SingleFieldList,
-    TextField,
     TextInput,
     TopToolbar,
     useRecordContext,
@@ -34,6 +33,7 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import ResetViewsButton from './ResetViewsButton';
+
 export const PostIcon = BookIcon;
 
 const QuickFilter = ({
@@ -92,24 +92,6 @@ const PostListMobile = () => (
     </InfiniteList>
 );
 
-const StyledDatagrid = styled(DatagridConfigurable)(({ theme }) => ({
-    '& .title': {
-        maxWidth: '16em',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
-    '& .hiddenOnSmallScreens': {
-        [theme.breakpoints.down('lg')]: {
-            display: 'none',
-        },
-    },
-    '& .column-tags': {
-        minWidth: '9em',
-    },
-    '& .publishedAt': { fontStyle: 'italic' },
-}));
-
 const postListBulkActions = (
     <>
         <ResetViewsButton />
@@ -120,15 +102,11 @@ const postListBulkActions = (
 
 const postListActions = (
     <TopToolbar>
-        <SelectColumnsButton />
+        <ColumnsButton />
         <FilterButton />
         <CreateButton />
         <ExportButton />
     </TopToolbar>
-);
-
-const PostListActionToolbar = ({ children }) => (
-    <Box sx={{ alignItems: 'center', display: 'flex' }}>{children}</Box>
 );
 
 const rowClick = (_id, _resource, record) => {
@@ -153,50 +131,90 @@ const PostListDesktop = () => (
         exporter={exporter}
         actions={postListActions}
     >
-        <StyledDatagrid
+        <DataTable
             bulkActionButtons={postListBulkActions}
             rowClick={rowClick}
             expand={PostPanel}
-            omit={['average_note']}
+            sx={{
+                '& .hiddenOnSmallScreens': {
+                    display: {
+                        xs: 'none',
+                        lg: 'table-cell',
+                    },
+                },
+            }}
         >
-            <TextField source="id" />
-            <TextField source="title" cellClassName="title" />
-            <DateField
+            <DataTable.Col source="id" />
+            <DataTable.Col
+                source="title"
+                sx={{
+                    maxWidth: '16em',
+                    '&.MuiTableCell-body': {
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                    },
+                }}
+            />
+            <DataTable.Col
                 source="published_at"
                 sortByOrder="DESC"
-                cellClassName="publishedAt"
+                sx={{
+                    '&.MuiTableCell-body': {
+                        fontStyle: 'italic',
+                    },
+                }}
+                component={DateField}
             />
-            <ReferenceManyCount
+            <DataTable.Col
                 label="resources.posts.fields.nb_comments"
-                reference="comments"
-                target="post_id"
-                link
-            />
-            <BooleanField
+                align="right"
+            >
+                <ReferenceManyCount
+                    reference="comments"
+                    target="post_id"
+                    link
+                />
+            </DataTable.Col>
+            <DataTable.Col
                 source="commentable"
                 label="resources.posts.fields.commentable_short"
                 sortable={false}
+                component={BooleanField}
             />
-            <NumberField source="views" sortByOrder="DESC" />
-            <ReferenceArrayField
+            <DataTable.Col
+                source="views"
+                sortByOrder="DESC"
+                component={NumberField}
+                align="right"
+            />
+
+            <DataTable.Col
                 label="Tags"
-                reference="tags"
-                source="tags"
-                sortBy="tags.name"
-                sort={tagSort}
-                cellClassName="hiddenOnSmallScreens"
-                headerClassName="hiddenOnSmallScreens"
+                source="tags.name"
+                className="hiddenOnSmallScreens"
+                sx={{ minWidth: '9em' }}
             >
-                <SingleFieldList>
-                    <ChipField clickable source="name.en" size="small" />
-                </SingleFieldList>
-            </ReferenceArrayField>
-            <NumberField source="average_note" />
-            <PostListActionToolbar>
+                <ReferenceArrayField
+                    source="tags"
+                    reference="tags"
+                    sort={tagSort}
+                >
+                    <SingleFieldList>
+                        <ChipField clickable source="name.en" size="small" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+            </DataTable.Col>
+            <DataTable.Col
+                source="average_note"
+                component={NumberField}
+                align="right"
+            />
+            <DataTable.Col sx={{ textAlign: 'center' }}>
                 <EditButton />
                 <ShowButton />
-            </PostListActionToolbar>
-        </StyledDatagrid>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 
