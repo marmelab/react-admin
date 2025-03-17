@@ -6,16 +6,10 @@ import React, {
     useCallback,
 } from 'react';
 import clsx from 'clsx';
-import {
-    TableCell,
-    TableRow,
-    Checkbox,
-    type TableRowProps,
-} from '@mui/material';
+import { TableCell, TableRow, type TableRowProps } from '@mui/material';
 import {
     useExpanded,
     useResourceContext,
-    useTranslate,
     useRecordContext,
     useGetPathForRecordCallback,
     useResourceDefinition,
@@ -26,6 +20,7 @@ import ExpandRowButton from '../datagrid/ExpandRowButton';
 
 import { DataTableClasses } from './DataTableRoot';
 import { useDataTableContext } from './DataTableContext';
+import { SelectRowTableCell } from './SelectRowTableCell';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -52,14 +47,12 @@ export const DataTableRow = React.forwardRef<
         handleToggleItem,
         isRowExpandable,
         isRowSelectable,
-        selectedIds,
         rowClick,
     } = useDataTableContext();
 
     if (typeof id === 'undefined') {
         throw new Error('DatagridRow expects an id prop');
     }
-    const translate = useTranslate();
     const record = useRecordContext(props);
     if (!record) {
         throw new Error(
@@ -76,7 +69,6 @@ export const DataTableRow = React.forwardRef<
         );
     }
     const selectable = !isRowSelectable || isRowSelectable(record);
-    const selected = selectedIds?.includes(record.id);
     const expandable = (!isRowExpandable || isRowExpandable(record)) && expand;
     const [expanded, toggleExpanded] = useExpanded(resource, id, expandSingle);
     const [nbColumns, setNbColumns] = useState(() =>
@@ -190,20 +182,7 @@ export const DataTableRow = React.forwardRef<
                         )}
                     </TableCell>
                 )}
-                {hasBulkActions && (
-                    <TableCell padding="checkbox">
-                        <Checkbox
-                            aria-label={translate('ra.action.select_row', {
-                                _: 'Select this row',
-                            })}
-                            color="primary"
-                            className={`select-item ${DataTableClasses.checkbox}`}
-                            checked={selectable && selected}
-                            onClick={handleToggleSelection}
-                            disabled={!selectable}
-                        />
-                    </TableCell>
-                )}
+                {hasBulkActions && <SelectRowTableCell />}
                 {children}
             </TableRow>
             {expandable && expanded && (

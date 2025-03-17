@@ -49,3 +49,5 @@ export const DataTableBody = React.forwardRef<
 export interface DataTableBodyProps extends TableBodyProps {
     row?: ComponentType;
 }
+
+DataTableBody.displayName = 'DataTableBody';

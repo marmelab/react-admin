@@ -126,4 +126,4 @@ export interface DataTableHeaderProps {
     size?: 'medium' | 'small';
 }
 
-DataTableHeader.displayName = 'DatagridHeaderModern';
+DataTableHeader.displayName = 'DataTableHeader';
