@@ -56,6 +56,7 @@ export const TranslateComponent = () => {
         custom: {
             myKey: 'My Translated Key',
             myKeyWithArgs: 'Hello, %{myWorld}!',
+            countBeer: 'One beer |||| %{smart_count} beers',
         },
     };
     const messages = {
@@ -82,6 +83,8 @@ export const TranslateComponent = () => {
                 i18nKey="custom.myKeyWithArgs"
                 args={{ myWorld: 'world' }}
             />
+            <br />
+            <Translate i18nKey="custom.countBeer" args={{ smart_count: 2 }} />
         </I18nContextProvider>
     );
 };
