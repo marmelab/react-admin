@@ -7,14 +7,14 @@ Brazilian Portuguese messages for [react-admin](https://github.com/marmelab/reac
 ## Installation
 
 ```sh
-npm install --save ra-language-pt-br
+npm install --save ra-language-brazilian-portuguese
 ```
 
 ## Usage
 
 ```jsx
 import { Admin } from 'react-admin';
-import ptMessages from 'ra-language-pt-br';
+import ptMessages from 'ra-language-brazilian-portuguese';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 const messages = {
