@@ -55,6 +55,10 @@ build-ra-language-french:
 	@echo "Transpiling ra-language-french files...";
 	@cd ./packages/ra-language-french && yarn build
 
+build-ra-language-brazilian-portuguese:
+	@echo "Transpiling ra-language-brazilian-portuguese files...";
+	@cd ./packages/ra-language-brazilian-portuguese && yarn build
+
 build-react-admin:
 	@echo "Transpiling react-admin files...";
 	@rm -rf ./packages/react-admin/docs
