@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { ResourceContextValue } from './ResourceContext';
 import { ResourceContextProvider } from './ResourceContextProvider';
 
@@ -23,7 +23,7 @@ export const OptionalResourceContextProvider = ({
     children,
 }: {
     value?: ResourceContextValue;
-    children: ReactElement;
+    children: ReactNode;
 }) =>
     value ? (
         <ResourceContextProvider value={value}>

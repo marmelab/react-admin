@@ -1,56 +1,35 @@
 import * as React from 'react';
 import { useCallback } from 'react';
-import {
-    useListContextWithProps,
-    useTranslate,
-    type RaRecord,
-    type SortPayload,
-    type Identifier,
-} from 'ra-core';
+import { useTranslate } from 'ra-core';
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import clsx from 'clsx';
 
-import { DatagridClasses } from '../datagrid/useDatagridStyles';
 import ExpandAllButton from '../datagrid/ExpandAllButton';
-import { useDatagridContext } from '../datagrid/useDatagridContext';
+
+import { DataTableClasses } from './DataTableRoot';
 import { DataTableHeaderContext } from './DataTableHeaderContext';
+import { useDataTableContext } from './DataTableContext';
 
 /**
- * The default Datagrid Header component.
+ * The default DataTable Header component.
  *
  * Renders select all checkbox as well as column header buttons used for sorting.
  */
 export const DataTableHeader = (props: DataTableHeaderProps) => {
+    const { children, className } = props;
     const {
-        children,
-        className,
-        hasExpand = false,
+        expand,
+        expandSingle,
         hasBulkActions = false,
         isRowSelectable,
-    } = props;
+        data,
+        onSelect,
+        selectedIds,
+    } = useDataTableContext();
+
+    const hasExpand = !!expand;
 
     const translate = useTranslate();
-    const { sort, data, onSelect, selectedIds, setSort } =
-        useListContextWithProps(props);
-    const { expandSingle } = useDatagridContext();
-
-    const updateSortCallback = useCallback(
-        event => {
-            event.stopPropagation();
-            if (!setSort) return;
-            const newField = event.currentTarget.dataset.field;
-            const newOrder =
-                sort?.field === newField
-                    ? sort?.order === 'ASC'
-                        ? 'DESC'
-                        : 'ASC'
-                    : event.currentTarget.dataset.order;
-            setSort({ field: newField, order: newOrder });
-        },
-        [sort?.field, sort?.order, setSort]
-    );
-
-    const updateSort = setSort ? updateSortCallback : undefined;
 
     const handleSelectAll = useCallback(
         event => {
@@ -84,20 +63,20 @@ export const DataTableHeader = (props: DataTableHeaderProps) => {
         : [];
 
     return (
-        <DataTableHeaderContext.Provider value={{ sort, updateSort }}>
-            <TableHead className={clsx(className, DatagridClasses.thead)}>
+        <DataTableHeaderContext.Provider value={true}>
+            <TableHead className={clsx(className, DataTableClasses.thead)}>
                 <TableRow
                     className={clsx(
-                        DatagridClasses.row,
-                        DatagridClasses.headerRow
+                        DataTableClasses.row,
+                        DataTableClasses.headerRow
                     )}
                 >
                     {hasExpand && (
                         <TableCell
                             padding="none"
                             className={clsx(
-                                DatagridClasses.headerCell,
-                                DatagridClasses.expandHeader
+                                DataTableClasses.headerCell,
+                                DataTableClasses.expandHeader
                             )}
                         >
                             {!expandSingle && data ? (
@@ -110,7 +89,7 @@ export const DataTableHeader = (props: DataTableHeaderProps) => {
                     {hasBulkActions && selectedIds && (
                         <TableCell
                             padding="checkbox"
-                            className={DatagridClasses.headerCell}
+                            className={DataTableClasses.headerCell}
                         >
                             <Checkbox
                                 inputProps={{
@@ -140,21 +119,10 @@ export const DataTableHeader = (props: DataTableHeaderProps) => {
     );
 };
 
-export interface DataTableHeaderProps<RecordType extends RaRecord = any> {
+export interface DataTableHeaderProps {
     children?: React.ReactNode;
     className?: string;
-    hasExpand?: boolean;
-    hasBulkActions?: boolean;
-    isRowSelectable?: (record: RecordType) => boolean;
-    isRowExpandable?: (record: RecordType) => boolean;
     size?: 'medium' | 'small';
-    // can be injected when using the component without context
-    sort?: SortPayload;
-    data?: RecordType[];
-    onSelect?: (ids: Identifier[]) => void;
-    onToggleItem?: (id: Identifier) => void;
-    selectedIds?: Identifier[];
-    setSort?: (sort: SortPayload) => void;
 }
 
 DataTableHeader.displayName = 'DatagridHeaderModern';

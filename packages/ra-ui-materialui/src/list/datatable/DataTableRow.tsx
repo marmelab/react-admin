@@ -4,12 +4,15 @@ import React, {
     useState,
     useEffect,
     useCallback,
-    memo,
 } from 'react';
 import clsx from 'clsx';
-import { TableCell, TableRow, Checkbox } from '@mui/material';
 import {
-    shallowEqual,
+    TableCell,
+    TableRow,
+    Checkbox,
+    type TableRowProps,
+} from '@mui/material';
+import {
     useExpanded,
     useResourceContext,
     useTranslate,
@@ -20,9 +23,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import ExpandRowButton from '../datagrid/ExpandRowButton';
-import { DatagridClasses } from '../datagrid/useDatagridStyles';
-import { useDatagridContext } from '../datagrid/useDatagridContext';
-import { type DatagridRowProps } from '../datagrid/DatagridRow';
+
+import { DataTableClasses } from './DataTableRoot';
+import { useDataTableContext } from './DataTableContext';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -31,29 +34,31 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
-const DataTableRow: React.ForwardRefExoticComponent<
-    Omit<DatagridRowProps, 'ref'> & React.RefAttributes<HTMLTableRowElement>
-> = React.forwardRef<HTMLTableRowElement, DatagridRowProps>((props, ref) => {
+export interface DataTableRowProps
+    extends Omit<TableRowProps, 'id' | 'classes'> {
+    id: string;
+}
+
+export const DataTableRow = React.forwardRef<
+    HTMLTableRowElement,
+    DataTableRowProps
+>((props, ref) => {
+    const { children, className, id, ...rest } = props;
     const {
-        children,
-        className,
         expand,
+        expandSingle,
         hasBulkActions = false,
         hover = true,
-        id,
-        onToggleItem,
-        record: recordOverride,
+        handleToggleItem,
+        isRowExpandable,
+        isRowSelectable,
+        selectedIds,
         rowClick,
-        selected = false,
-        style,
-        selectable = true,
-        ...rest
-    } = props;
+    } = useDataTableContext();
 
     if (typeof id === 'undefined') {
         throw new Error('DatagridRow expects an id prop');
     }
-    const context = useDatagridContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
     if (!record) {
@@ -70,16 +75,10 @@ const DataTableRow: React.ForwardRefExoticComponent<
             'DatagridRow can only be used within a ResourceContext or be passed a resource prop'
         );
     }
-    const expandable =
-        (!context ||
-            !context.isRowExpandable ||
-            context.isRowExpandable(record)) &&
-        expand;
-    const [expanded, toggleExpanded] = useExpanded(
-        resource,
-        id,
-        context && context.expandSingle
-    );
+    const selectable = !isRowSelectable || isRowSelectable(record);
+    const selected = selectedIds?.includes(record.id);
+    const expandable = (!isRowExpandable || isRowExpandable(record)) && expand;
+    const [expanded, toggleExpanded] = useExpanded(resource, id, expandSingle);
     const [nbColumns, setNbColumns] = useState(() =>
         computeNbColumns(expandable, children, hasBulkActions)
     );
@@ -108,11 +107,11 @@ const DataTableRow: React.ForwardRefExoticComponent<
     );
     const handleToggleSelection = useCallback(
         event => {
-            if (!selectable || !onToggleItem) return;
-            onToggleItem(id, event);
+            if (!selectable || !handleToggleItem) return;
+            handleToggleItem(id, event);
             event.stopPropagation();
         },
-        [id, onToggleItem, selectable]
+        [id, handleToggleItem, selectable]
     );
 
     const getPathForRecord = useGetPathForRecordCallback();
@@ -165,12 +164,11 @@ const DataTableRow: React.ForwardRefExoticComponent<
             <TableRow
                 ref={ref}
                 className={clsx(className, {
-                    [DatagridClasses.expandable]: expandable,
-                    [DatagridClasses.selectable]: selectable,
-                    [DatagridClasses.clickableRow]: rowClick ?? hasDetailView,
+                    [DataTableClasses.expandable]: expandable,
+                    [DataTableClasses.selectable]: selectable,
+                    [DataTableClasses.clickableRow]: rowClick ?? hasDetailView,
                 })}
                 key={id}
-                style={style}
                 hover={hover}
                 onClick={handleClick}
                 {...rest}
@@ -178,12 +176,12 @@ const DataTableRow: React.ForwardRefExoticComponent<
                 {expand && (
                     <TableCell
                         padding="none"
-                        className={DatagridClasses.expandIconCell}
+                        className={DataTableClasses.expandIconCell}
                     >
                         {expandable && (
                             <ExpandRowButton
-                                className={clsx(DatagridClasses.expandIcon, {
-                                    [DatagridClasses.expanded]: expanded,
+                                className={clsx(DataTableClasses.expandIcon, {
+                                    [DataTableClasses.expanded]: expanded,
                                 })}
                                 expanded={expanded}
                                 onClick={handleToggleExpand}
@@ -199,7 +197,7 @@ const DataTableRow: React.ForwardRefExoticComponent<
                                 _: 'Select this row',
                             })}
                             color="primary"
-                            className={`select-item ${DatagridClasses.checkbox}`}
+                            className={`select-item ${DataTableClasses.checkbox}`}
                             checked={selectable && selected}
                             onClick={handleToggleSelection}
                             disabled={!selectable}
@@ -212,7 +210,7 @@ const DataTableRow: React.ForwardRefExoticComponent<
                 <TableRow
                     key={`${id}-expand`}
                     id={`${id}-expand`}
-                    className={DatagridClasses.expandedPanel}
+                    className={DataTableClasses.expandedPanel}
                 >
                     <TableCell colSpan={nbColumns}>
                         {isValidElement(expand)
@@ -227,17 +225,7 @@ const DataTableRow: React.ForwardRefExoticComponent<
     );
 });
 
-const areEqual = (prevProps, nextProps) => {
-    const { children: _1, expand: _2, ...prevPropsWithoutChildren } = prevProps;
-    const { children: _3, expand: _4, ...nextPropsWithoutChildren } = nextProps;
-    return shallowEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
-};
-
-export const PureDatagridRowModern = memo(DataTableRow, areEqual);
-
-PureDatagridRowModern.displayName = 'PureDatagridRowModern';
+DataTableRow.displayName = 'DataTableRow';
 
 const isPromise = (value: any): value is Promise<any> =>
     value && typeof value.then === 'function';
-
-export default DataTableRow;

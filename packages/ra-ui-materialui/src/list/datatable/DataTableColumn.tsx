@@ -20,7 +20,7 @@ import clsx from 'clsx';
 
 import { DataTableHeaderContext } from './DataTableHeaderContext';
 import { DataTableColumnSelectorContext } from './DataTableColumnSelectorContext';
-import { DataTableStoreContext } from './DataTableStoreContext';
+import { useDataTableContext } from './DataTableContext';
 import { TextField } from '../../field/TextField';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
@@ -44,7 +44,7 @@ export const DataTableColumn = React.forwardRef<
     HTMLTableCellElement,
     DataTableColumnProps
 >((props, ref) => {
-    const storeKey = React.useContext(DataTableStoreContext);
+    const { storeKey, sort, handleSort } = useDataTableContext();
     const [hiddenColumns, setHiddenColumns] = useStore<string[]>(storeKey, []);
 
     const record = useRecordContext();
@@ -88,7 +88,6 @@ export const DataTableColumn = React.forwardRef<
         );
     } else if (headerContext) {
         // header cell
-        const { sort, updateSort } = headerContext;
         const {
             className,
             cellClassName,
@@ -130,7 +129,7 @@ export const DataTableColumn = React.forwardRef<
                 variant="head"
                 {...rest}
             >
-                {updateSort && sort && sortable !== false && source ? (
+                {handleSort && sort && sortable !== false && source ? (
                     <Tooltip
                         title={sortLabel}
                         placement={
@@ -145,7 +144,7 @@ export const DataTableColumn = React.forwardRef<
                             direction={sort.order === 'ASC' ? 'asc' : 'desc'}
                             data-field={source}
                             data-order={sortByOrder || 'ASC'}
-                            onClick={updateSort}
+                            onClick={handleSort}
                         >
                             <FieldTitle
                                 label={label}

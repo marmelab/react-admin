@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
-import { DataTableStoreContext } from './DataTableStoreContext';
+import { useDataTableContext } from './DataTableContext';
 import { DataTableColumnSelectorContext } from './DataTableColumnSelectorContext';
 
 /**
@@ -9,7 +9,7 @@ import { DataTableColumnSelectorContext } from './DataTableColumnSelectorContext
  * @see ColumnsButton
  */
 export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
-    const storeKey = React.useContext(DataTableStoreContext);
+    const { storeKey } = useDataTableContext();
     const elementId = `${storeKey}-columnsSelector`;
 
     const [container, setContainer] = React.useState<HTMLElement | null>(() =>
