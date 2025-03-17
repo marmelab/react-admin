@@ -11,11 +11,7 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Translate, I18nContextProvider } from 'ra-core';
-import {
-    useI18nextProvider,
-    // convertRaMessagesToI18next,
-    convertRaTranslationsToI18next,
-} from '..';
+import { useI18nextProvider, convertRaTranslationsToI18next } from '..';
 
 export default {
     title: 'ra-i18n-i18next',
@@ -182,7 +178,7 @@ export const TranslateComponent = () => {
         options: {
             resources: {
                 en: {
-                    translations: convertRaTranslationsToI18next({
+                    translation: convertRaTranslationsToI18next({
                         ...englishMessages,
                         custom: {
                             myKey: 'My Translated Key',
