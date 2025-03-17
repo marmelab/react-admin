@@ -97,7 +97,12 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
 const StyledButton = styled(Button, {
     name: 'RaColumnsButton',
     overridesResolver: (props, styles) => styles.root,
-})();
+})({
+    '&.MuiButton-sizeSmall': {
+        // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
+        lineHeight: 1.5,
+    },
+});
 
 const sanitizeRestProps = ({
     resource,

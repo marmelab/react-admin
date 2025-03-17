@@ -49,6 +49,15 @@ const defaultThemeInvariants = {
                 fullWidth: true,
             },
         },
+        MuiTableCell: {
+            styleOverrides: {
+                root: {
+                    '&.MuiTableCell-paddingCheckbox': {
+                        padding: `0 8px 0 8px`,
+                    },
+                },
+            },
+        },
         RaSimpleFormIterator: {
             defaultProps: {
                 fullWidth: true,
