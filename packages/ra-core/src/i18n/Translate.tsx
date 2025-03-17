@@ -1,9 +1,6 @@
 import React from 'react';
 import { useTranslate } from './useTranslate';
 
-// story: test with i18next
-// story: test with polyglot
-
 export const Translate = ({
     i18nKey,
     args,
@@ -21,15 +18,15 @@ export const Translate = ({
         return React.createElement(component, {}, children);
     }
     if (empty) {
-        return <span>{empty}</span>;
+        return React.createElement(component, {}, empty);
     }
     return null;
 };
 
 export interface TranslateProps {
     i18nKey: string;
-    component?: React.ElementType;
     children?: string;
+    component?: React.ElementType;
     empty?: string | false;
-    args?: { [key: string]: string };
+    args?: Object;
 }
