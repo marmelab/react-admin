@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {
     BulkDeleteButton,
-    DatagridConfigurable,
+    DataTable,
     DateField,
     Identifier,
-    TextField,
     useCreatePath,
 } from 'react-admin';
 
@@ -33,7 +32,7 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
     const navigate = useNavigate();
     const createPath = useCreatePath();
     return (
-        <DatagridConfigurable
+        <DataTable
             rowClick={(id, resource) => {
                 // As we display the edit view in a drawer, we don't the default rowClick behavior that will scroll to the top of the page
                 // So we navigate manually without specifying the _scrollToTop state
@@ -63,17 +62,22 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
                 },
             }}
         >
-            <DateField source="date" />
-            <CustomerReferenceField source="customer_id" link={false} />
-            <ProductReferenceField source="product_id" link={false} />
-            <StarRatingField
-                size="small"
-                label="resources.reviews.fields.rating"
+            <DataTable.Col source="date" field={DateField} />
+            <DataTable.Col source="customer_id">
+                <CustomerReferenceField source="customer_id" link={false} />
+            </DataTable.Col>
+            <DataTable.Col source="product_id">
+                <ProductReferenceField source="product_id" link={false} />
+            </DataTable.Col>
+            <DataTable.Col
                 source="rating"
-            />
-            <TextField source="comment" />
-            <TextField source="status" />
-        </DatagridConfigurable>
+                label="resources.reviews.fields.rating"
+            >
+                <StarRatingField />
+            </DataTable.Col>
+            <DataTable.Col source="comment" />
+            <DataTable.Col source="status" />
+        </DataTable>
     );
 };
 

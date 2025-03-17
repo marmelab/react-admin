@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    Datagrid,
+    DataTable,
     DateField,
     Edit,
     EditButton,
@@ -9,7 +9,6 @@ import {
     ReferenceManyCount,
     required,
     TabbedForm,
-    TextField,
     TextInput,
     useDefaultTitle,
     useEditContext,
@@ -92,27 +91,31 @@ const ProductEdit = () => (
                     target="product_id"
                     pagination={<Pagination />}
                 >
-                    <Datagrid
-                        sx={{
-                            width: '100%',
-                            '& .column-comment': {
+                    <DataTable sx={{ width: '100%' }}>
+                        <DataTable.Col source="date" field={DateField} />
+                        <DataTable.Col source="customer_id">
+                            <CustomerReferenceField source="customer_id" />
+                        </DataTable.Col>
+                        <DataTable.Col
+                            label="resources.reviews.fields.rating"
+                            source="rating"
+                        >
+                            <StarRatingField />
+                        </DataTable.Col>
+                        <DataTable.Col
+                            source="comment"
+                            sx={{
                                 maxWidth: '20em',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
-                            },
-                        }}
-                    >
-                        <DateField source="date" />
-                        <CustomerReferenceField source="customer_id" />
-                        <StarRatingField
-                            label="resources.reviews.fields.rating"
-                            source="rating"
+                            }}
                         />
-                        <TextField source="comment" />
-                        <TextField source="status" />
-                        <EditButton />
-                    </Datagrid>
+                        <DataTable.Col source="status" />
+                        <DataTable.Col sx={{ textAlign: 'right' }}>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                     <CreateRelatedReviewButton />
                 </ReferenceManyField>
             </TabbedForm.Tab>
