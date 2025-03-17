@@ -10,10 +10,7 @@ import polyglotI18nProvider from '.';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import fakeRestDataProvider from 'ra-data-fakerest';
-// TODO: fix this import
-import { Translate } from '../../ra-core/src/i18n/Translate';
-// import { Translate } from 'ra-core';
-import { I18nContextProvider } from 'ra-core';
+import { Translate, I18nContextProvider } from 'ra-core';
 
 export default {
     title: 'ra-i18n-polyglot',

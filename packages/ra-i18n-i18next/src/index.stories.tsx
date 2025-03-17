@@ -10,10 +10,7 @@ import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-// TODO: fix this import
-import { Translate } from '../../ra-core/src/i18n/Translate';
-// import { Translate } from 'ra-core';
-import { I18nContextProvider } from 'ra-core';
+import { Translate, I18nContextProvider } from 'ra-core';
 import {
     useI18nextProvider,
     // convertRaMessagesToI18next,
