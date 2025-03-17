@@ -182,7 +182,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
 
         const hasBulkActions = !!bulkActionButtons !== false;
 
-        const storeKey = props.storeKey || `${resourceFromContext}.datagrid`;
+        const storeKey = props.storeKey || `${resourceFromContext}.datatable`;
 
         const handleSort = useEvent((event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation();
@@ -205,7 +205,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
             }
         }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
 
-        // we manage row selection at the datagrid level to allow shift+click to select an array of rows
+        // we manage row selection here instead of in the rows level to allow shift+click to select an array of rows
         const handleToggleItem = useEvent(
             (id: Identifier, event: React.MouseEvent<HTMLInputElement>) => {
                 if (!data) return;
@@ -295,7 +295,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
         /**
          * Once loaded, the data for the list may be empty. Instead of
          * displaying the table header with zero data rows,
-         * the Datagrid displays the empty component.
+         * the DataTable displays the empty component.
          */
         if (data == null || data.length === 0 || total === 0) {
             if (empty) {
@@ -308,7 +308,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
         /**
          * After the initial load, if the data for the list isn't empty,
          * and even if the data is refreshing (e.g. after a filter change),
-         * the datagrid displays the current data.
+         * the DataTable displays the current data.
          */
         return (
             <DataTableStoreContext.Provider value={storeContextValue}>
@@ -390,9 +390,9 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
 export interface DataTableProps<RecordType extends RaRecord = any>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
     /**
-     * The component used to render the body of the table. Defaults to <DatagridBody>.
+     * The component used to render the body of the table. Defaults to <DataTableBody>.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#body
+     * @see https://marmelab.com/react-admin/DataTable.html#body
      */
     body?: ComponentType;
 
@@ -405,7 +405,7 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      * The component used to render the bulk actions toolbar.
      *
      * @example
-     * import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
+     * import { List, DataTable, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
      *
      * const PostBulkActionsToolbar = () => (
      *     <BulkActionsToolbar selectAllButton={<SelectAllButton label="Select all records" />}>
@@ -415,9 +415,9 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      *
      * export const PostList = () => (
      *     <List>
-     *         <Datagrid bulkActionsToolbar={<PostBulkActionsToolbar />}>
+     *         <DataTable bulkActionsToolbar={<PostBulkActionsToolbar />}>
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * );
      */
@@ -426,9 +426,9 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * The component used to render the bulk action buttons. Defaults to <BulkDeleteButton>.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#bulkactionbuttons
+     * @see https://marmelab.com/react-admin/DataTable.html#bulkactionbuttons
      * @example
-     * import { List, Datagrid, BulkDeleteButton } from 'react-admin';
+     * import { List, DataTable, BulkDeleteButton } from 'react-admin';
      * import { Button } from '@mui/material';
      * import ResetViewsButton from './ResetViewsButton';
      *
@@ -441,9 +441,9 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      *
      * export const PostList = () => (
      *     <List>
-     *         <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+     *         <DataTable bulkActionButtons={<PostBulkActionButtons />}>
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * );
      */
@@ -452,9 +452,9 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * The component used to render the expand panel for each row.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#expand
+     * @see https://marmelab.com/react-admin/DataTable.html#expand
      * @example
-     * import { List, Datagrid, useRecordContext } from 'react-admin';
+     * import { List, DataTable, useRecordContext } from 'react-admin';
      *
      * const PostPanel = () => {
      *     const record = useRecordContext();
@@ -465,9 +465,9 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      *
      * const PostList = () => (
      *     <List>
-     *         <Datagrid expand={<PostPanel />}>
+     *         <DataTable expand={<PostPanel />}>
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * )
      */
@@ -482,15 +482,15 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * Whether to allow only one expanded row at a time. Defaults to false.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#expandsingle
+     * @see https://marmelab.com/react-admin/DataTable.html#expandsingle
      * @example
-     * import { List, Datagrid } from 'react-admin';
+     * import { List, DataTable } from 'react-admin';
      *
      * export const PostList = () => (
      *    <List>
-     *       <Datagrid expandSingle>
+     *       <DataTable expandSingle>
      *          ...
-     *      </Datagrid>
+     *      </DataTable>
      *   </List>
      * );
      */
@@ -499,14 +499,14 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * The component used to render the footer row. Defaults en empty component.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#footer
+     * @see https://marmelab.com/react-admin/DataTable.html#footer
      */
     footer?: ComponentType;
 
     /**
-     * The component used to render the header row. Defaults to <DatagridHeader>.
+     * The component used to render the header row. Defaults to <DataTableHeader>.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#header
+     * @see https://marmelab.com/react-admin/DataTable.html#header
      */
     header?: ComponentType;
 
@@ -520,15 +520,15 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * Set to false to disable the hover effect on rows.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#hover
+     * @see https://marmelab.com/react-admin/DataTable.html#hover
      * @example
-     * import { List, Datagrid } from 'react-admin';
+     * import { List, DataTable } from 'react-admin';
      *
      * const PostList = () => (
      *     <List>
-     *         <Datagrid hover={false}>
+     *         <DataTable hover={false}>
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * );
      */
@@ -537,17 +537,17 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * The component used to render the empty table.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#empty
+     * @see https://marmelab.com/react-admin/DataTable.html#empty
      * @example
-     * import { List, Datagrid } from 'react-admin';
+     * import { List, DataTable } from 'react-admin';
      *
      * const CustomEmpty = () => <div>No books found</div>;
      *
      * const PostList = () => (
      *     <List>
-     *         <Datagrid empty={<CustomEmpty />}>
+     *         <DataTable empty={<CustomEmpty />}>
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * );
      */
@@ -556,9 +556,9 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * A function that returns whether the row for a record is expandable.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#isrowexpandable
+     * @see https://marmelab.com/react-admin/DataTable.html#isrowexpandable
      * @example
-     * import { List, Datagrid, useRecordContext } from 'react-admin';
+     * import { List, DataTable, useRecordContext } from 'react-admin';
      *
      * const PostPanel = () => {
      *     const record = useRecordContext();
@@ -569,12 +569,12 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      *
      * const PostList = () => (
      *     <List>
-     *         <Datagrid
+     *         <DataTable
      *             expand={<PostPanel />}
      *             isRowExpandable={row => row.has_detail}
      *         >
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * )
      */
@@ -583,39 +583,32 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * A function that returns whether the row for a record is selectable.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#isrowselectable
+     * @see https://marmelab.com/react-admin/DataTable.html#isrowselectable
      * @example
-     * import { List, Datagrid } from 'react-admin';
+     * import { List, DataTable } from 'react-admin';
      *
      * export const PostList = () => (
      *     <List>
-     *         <Datagrid isRowSelectable={ record => record.id > 300 }>
+     *         <DataTable isRowSelectable={ record => record.id > 300 }>
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * );
      */
     isRowSelectable?: (record: RecordType) => boolean;
 
     /**
-     * Set to true to optimize datagrid rendering if the children never vary.
-     *
-     * @see https://marmelab.com/react-admin/Datagrid.html#optimized
-     */
-    optimized?: boolean;
-
-    /**
      * The action to trigger when the user clicks on a row.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#rowclick
+     * @see https://marmelab.com/react-admin/DataTable.html#rowclick
      * @example
-     * import { List, Datagrid } from 'react-admin';
+     * import { List, DataTable } from 'react-admin';
      *
      * export const PostList = () => (
      *     <List>
-     *         <Datagrid rowClick="edit">
+     *         <DataTable rowClick="edit">
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * );
      */
@@ -624,18 +617,18 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * A function that returns the sx prop to apply to a row.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#rowsx
+     * @see https://marmelab.com/react-admin/DataTable.html#rowsx
      * @example
-     * import { List, Datagrid } from 'react-admin';
+     * import { List, DataTable } from 'react-admin';
      *
      * const postRowSx = (record, index) => ({
      *     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
      * });
      * export const PostList = () => (
      *     <List>
-     *         <Datagrid rowSx={postRowSx}>
+     *         <DataTable rowSx={postRowSx}>
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * );
      */
@@ -644,15 +637,15 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     /**
      * Density setting, can be either 'small' or 'medium'. Defaults to 'small'.
      *
-     * @see https://marmelab.com/react-admin/Datagrid.html#size
+     * @see https://marmelab.com/react-admin/DataTable.html#size
      * @example
-     * import { List, Datagrid } from 'react-admin';
+     * import { List, DataTable } from 'react-admin';
      *
      * export const PostList = () => (
      *     <List>
-     *         <Datagrid size="medium">
+     *         <DataTable size="medium">
      *             ...
-     *         </Datagrid>
+     *         </DataTable>
      *     </List>
      * );
      */

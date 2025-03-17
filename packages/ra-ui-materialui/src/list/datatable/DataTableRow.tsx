@@ -49,12 +49,12 @@ export const DataTableRow = React.memo(
             useDataTableCallbacksContext();
 
         if (typeof id === 'undefined') {
-            throw new Error('DatagridRow expects an id prop');
+            throw new Error('DataTableRow expects an id prop');
         }
         const record = useRecordContext(props);
         if (!record) {
             throw new Error(
-                'DatagridRow can only be used within a RecordContext or be passed a record prop'
+                'DataTableRow can only be used within a RecordContext or be passed a record prop'
             );
         }
         const resource = useResourceContext(props);
@@ -63,7 +63,7 @@ export const DataTableRow = React.memo(
             resourceDefinition.hasShow || resourceDefinition.hasEdit;
         if (!resource) {
             throw new Error(
-                'DatagridRow can only be used within a ResourceContext or be passed a resource prop'
+                'DataTableRow can only be used within a ResourceContext or be passed a resource prop'
             );
         }
         const selectable = !isRowSelectable || isRowSelectable(record);

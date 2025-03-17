@@ -38,7 +38,7 @@ import { styled } from '@mui/material/styles';
  */
 export const ColumnsButton = (props: ColumnsButtonProps) => {
     const resource = useResourceContext(props);
-    const storeKey = props.storeKey || `${resource}.datagrid`;
+    const storeKey = props.storeKey || `${resource}.datatable`;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 

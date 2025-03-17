@@ -26,7 +26,7 @@ export const DataTableBody = React.memo(
                 <TableBody
                     ref={ref}
                     className={clsx(
-                        'datagrid-body',
+                        'datatable-body',
                         className,
                         DataTableClasses.tbody
                     )}
