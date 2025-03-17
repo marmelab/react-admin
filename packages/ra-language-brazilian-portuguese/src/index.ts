@@ -175,7 +175,7 @@ const brazilianPortugueseMessages: TranslationMessages = {
             new_label: 'Salvar consulta atual...',
             new_dialog_title: 'Salvar consulta atual como...',
             remove_label: 'Remover consulta salva',
-            remove_label_with_name: 'Removee consulta "%{name}"',
+            remove_label_with_name: 'Remover consulta "%{name}"',
             remove_dialog_title: 'Remover consulta salva?',
             remove_message: 'Tem certeza de que deseja remover esse item da sua lista de consultas salvas?',
             help: 'Filtre a lista e salve esta consulta para mais tarde',
