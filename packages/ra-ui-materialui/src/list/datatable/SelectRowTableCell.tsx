@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { TableCell, Checkbox } from '@mui/material';
 import { useTranslate, useRecordContext } from 'ra-core';
 
@@ -8,7 +8,7 @@ import {
     useDataTableSelectedIdsContext,
 } from './context';
 
-export const SelectRowTableCell = () => {
+export const SelectRowTableCell = memo(() => {
     const { handleToggleItem, isRowSelectable } =
         useDataTableCallbacksContext();
     const selectedIds = useDataTableSelectedIdsContext();
@@ -46,4 +46,6 @@ export const SelectRowTableCell = () => {
             />
         </TableCell>
     );
-};
+});
+
+SelectRowTableCell.displayName = 'SelectRowTableCell';

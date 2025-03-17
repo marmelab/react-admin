@@ -20,22 +20,23 @@ export interface DataTableColumnProps
     sortByOrder?: SortPayload['order'];
 }
 
-export const DataTableColumn = React.forwardRef<
-    HTMLTableCellElement,
-    DataTableColumnProps
->((props, ref) => {
-    // determine the render context: header, column selector, or data cell
-    const headerContext = React.useContext(DataTableHeaderContext);
-    const tableSelectorContext = React.useContext(
-        DataTableColumnSelectorContext
-    );
-    if (tableSelectorContext) {
-        return <ColumnsSelectorMenuItem {...props} />;
-    } else if (headerContext) {
-        return <DataTableHeaderCell {...props} ref={ref} />;
-    } else {
-        return <DataTableCell {...props} ref={ref} />;
-    }
-});
+export const DataTableColumn = React.memo(
+    React.forwardRef<HTMLTableCellElement, DataTableColumnProps>(
+        (props, ref) => {
+            // determine the render context: header, column selector, or data cell
+            const headerContext = React.useContext(DataTableHeaderContext);
+            const tableSelectorContext = React.useContext(
+                DataTableColumnSelectorContext
+            );
+            if (tableSelectorContext) {
+                return <ColumnsSelectorMenuItem {...props} />;
+            } else if (headerContext) {
+                return <DataTableHeaderCell {...props} ref={ref} />;
+            } else {
+                return <DataTableCell {...props} ref={ref} />;
+            }
+        }
+    )
+);
 
 DataTableColumn.displayName = 'DataTableColumn';

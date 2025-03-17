@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback } from 'react';
+import { useCallback, memo } from 'react';
 import { useTranslate } from 'ra-core';
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import clsx from 'clsx';
@@ -20,7 +20,7 @@ import {
  *
  * Renders select all checkbox as well as column header buttons used for sorting.
  */
-export const DataTableHeader = (props: DataTableHeaderProps) => {
+export const DataTableHeader = memo((props: DataTableHeaderProps) => {
     const { children, className } = props;
     const {
         expand,
@@ -122,7 +122,7 @@ export const DataTableHeader = (props: DataTableHeaderProps) => {
             </TableHead>
         </DataTableHeaderContext.Provider>
     );
-};
+});
 
 export interface DataTableHeaderProps {
     children?: React.ReactNode;
