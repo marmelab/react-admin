@@ -57,10 +57,11 @@ export const DataTableRoot = styled('div', {
     [`& .${DataTableClasses.rowOdd}`]: {},
     [`& .${DataTableClasses.rowCell}`]: {},
     [`& .${DataTableClasses.expandHeader}`]: {
-        padding: 0,
+        paddingRight: 0,
         width: theme.spacing(4),
     },
     [`& .${DataTableClasses.expandIconCell}`]: {
+        paddingRight: 0,
         width: theme.spacing(4),
     },
     [`& .${DataTableClasses.expandIcon}`]: {
