@@ -3,11 +3,15 @@ import { TableCell, Checkbox } from '@mui/material';
 import { useTranslate, useRecordContext } from 'ra-core';
 
 import { DataTableClasses } from './DataTableRoot';
-import { useDataTableContext } from './DataTableContext';
+import {
+    useDataTableCallbacksContext,
+    useDataTableSelectedIdsContext,
+} from './context';
 
 export const SelectRowTableCell = () => {
-    const { handleToggleItem, isRowSelectable, selectedIds } =
-        useDataTableContext();
+    const { handleToggleItem, isRowSelectable } =
+        useDataTableCallbacksContext();
+    const selectedIds = useDataTableSelectedIdsContext();
     const translate = useTranslate();
     const record = useRecordContext();
     if (!record) {

@@ -19,8 +19,9 @@ import { useNavigate } from 'react-router-dom';
 import ExpandRowButton from '../datagrid/ExpandRowButton';
 
 import { DataTableClasses } from './DataTableRoot';
-import { useDataTableContext } from './DataTableContext';
+import { useDataTableConfigContext } from './context/DataTableConfigContext';
 import { SelectRowTableCell } from './SelectRowTableCell';
+import { useDataTableCallbacksContext } from './context';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand
@@ -44,11 +45,10 @@ export const DataTableRow = React.forwardRef<
         expandSingle,
         hasBulkActions = false,
         hover = true,
-        handleToggleItem,
-        isRowExpandable,
-        isRowSelectable,
-        rowClick,
-    } = useDataTableContext();
+    } = useDataTableConfigContext();
+
+    const { handleToggleItem, isRowExpandable, isRowSelectable, rowClick } =
+        useDataTableCallbacksContext();
 
     if (typeof id === 'undefined') {
         throw new Error('DatagridRow expects an id prop');

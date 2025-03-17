@@ -2,15 +2,15 @@ import * as React from 'react';
 import { useResourceContext, useStore, useTranslateLabel } from 'ra-core';
 import { Checkbox, MenuItem } from '@mui/material';
 
-import { useDataTableContext } from './DataTableContext';
 import { DataTableColumnProps } from './DataTableColumn';
+import { useDataTableStoreContext } from './context';
 
 export const ColumnsSelectorMenuItem = ({
     source,
     label,
 }: DataTableColumnProps) => {
     const resource = useResourceContext();
-    const { storeKey } = useDataTableContext();
+    const storeKey = useDataTableStoreContext();
     const [hiddenColumns, setHiddenColumns] = useStore<string[]>(storeKey, []);
     const translateLabel = useTranslateLabel();
     if (!source && !label) return null;

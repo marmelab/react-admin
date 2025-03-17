@@ -8,7 +8,12 @@ import ExpandAllButton from '../datagrid/ExpandAllButton';
 
 import { DataTableClasses } from './DataTableRoot';
 import { DataTableHeaderContext } from './DataTableHeaderContext';
-import { useDataTableContext } from './DataTableContext';
+import { useDataTableConfigContext } from './context/DataTableConfigContext';
+import {
+    useDataTableCallbacksContext,
+    useDataTableDataContext,
+    useDataTableSelectedIdsContext,
+} from './context';
 
 /**
  * The default DataTable Header component.
@@ -21,11 +26,10 @@ export const DataTableHeader = (props: DataTableHeaderProps) => {
         expand,
         expandSingle,
         hasBulkActions = false,
-        isRowSelectable,
-        data,
-        onSelect,
-        selectedIds,
-    } = useDataTableContext();
+    } = useDataTableConfigContext();
+    const data = useDataTableDataContext();
+    const { isRowSelectable, onSelect } = useDataTableCallbacksContext();
+    const selectedIds = useDataTableSelectedIdsContext();
 
     const hasExpand = !!expand;
 

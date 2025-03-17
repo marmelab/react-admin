@@ -6,7 +6,10 @@ import clsx from 'clsx';
 
 import { DataTableClasses } from './DataTableRoot';
 import { DataTableRow } from './DataTableRow';
-import { useDataTableContext } from './DataTableContext';
+import {
+    useDataTableCallbacksContext,
+    useDataTableDataContext,
+} from './context';
 
 export const DataTableBody = React.forwardRef<
     HTMLTableSectionElement,
@@ -18,7 +21,8 @@ export const DataTableBody = React.forwardRef<
         className,
         ...rest
     } = props;
-    const { data, rowSx } = useDataTableContext();
+    const data = useDataTableDataContext();
+    const { rowSx } = useDataTableCallbacksContext();
     return (
         <TableBody
             ref={ref}

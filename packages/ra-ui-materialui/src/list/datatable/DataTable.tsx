@@ -12,6 +12,7 @@ import {
 import {
     OptionalResourceContextProvider,
     useCanAccess,
+    useEvent,
     useListContextWithProps,
     useResourceContext,
     type Identifier,
@@ -33,8 +34,15 @@ import { DataTableLoading } from './DataTableLoading';
 import { DataTableBody } from './DataTableBody';
 import { DataTableHeader } from './DataTableHeader';
 import { DataTableColumn } from './DataTableColumn';
-import { DataTableContext } from './DataTableContext';
+import { DataTableConfigContext } from './context/DataTableConfigContext';
 import { ColumnsSelector } from './ColumnsSelector';
+import {
+    DataTableCallbacksContext,
+    DataTableDataContext,
+    DataTableSelectedIdsContext,
+    DataTableSortContext,
+    DataTableStoreContext,
+} from './context';
 
 interface DataTableComponent
     extends React.ForwardRefExoticComponent<
@@ -175,23 +183,20 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
 
         const storeKey = props.storeKey || `${resourceFromContext}.datagrid`;
 
-        const handleSort = useCallback(
-            event => {
-                event.stopPropagation();
-                if (!setSort) return;
-                const newField = event.currentTarget.dataset.field;
-                const newOrder =
-                    sort?.field === newField
-                        ? sort?.order === 'ASC'
-                            ? 'DESC'
-                            : 'ASC'
-                        : event.currentTarget.dataset.order;
-                setSort({ field: newField, order: newOrder });
-            },
-            [sort?.field, sort?.order, setSort]
-        );
+        const handleSort = useEvent((event: React.MouseEvent<HTMLElement>) => {
+            event.stopPropagation();
+            if (!setSort) return;
+            const newField = event.currentTarget.dataset.field || 'id';
+            const newOrder =
+                sort?.field === newField
+                    ? sort?.order === 'ASC'
+                        ? 'DESC'
+                        : 'ASC'
+                    : (event.currentTarget.dataset.order as 'ASC') || 'ASC';
+            setSort({ field: newField, order: newOrder });
+        });
 
-        const lastSelected = useRef(null);
+        const lastSelected = useRef<Identifier | null>(null);
 
         useEffect(() => {
             if (!selectedIds || selectedIds.length === 0) {
@@ -200,11 +205,12 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
         }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
 
         // we manage row selection at the datagrid level to allow shift+click to select an array of rows
-        const handleToggleItem = useCallback(
-            (id, event) => {
+        const handleToggleItem = useEvent(
+            (id: Identifier, event: React.MouseEvent<HTMLInputElement>) => {
                 if (!data) return;
                 const ids = data.map(record => record.id);
                 const lastSelectedIndex = ids.indexOf(lastSelected.current);
+                // @ts-ignore FIXME useEvent prevents using event.currentTarget
                 lastSelected.current = event.target.checked ? id : null;
 
                 if (event.shiftKey && lastSelectedIndex !== -1) {
@@ -214,6 +220,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
                         Math.max(lastSelectedIndex, index) + 1
                     );
 
+                    // @ts-ignore FIXME useEvent prevents using event.currentTarget
                     const newSelectedIds = event.target.checked
                         ? union(selectedIds, idsBetweenSelections)
                         : difference(selectedIds, idsBetweenSelections);
@@ -230,46 +237,37 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
                 } else {
                     onToggleItem?.(id);
                 }
-            },
-            [data, isRowSelectable, onSelect, onToggleItem, selectedIds]
+            }
         );
 
-        const contextValue = useMemo(
+        const configContextValue = useMemo(
             () => ({
-                data,
                 expand,
                 expandSingle,
-                handleSort,
-                handleToggleItem,
                 hasBulkActions,
                 hover,
+            }),
+            [expand, expandSingle, hasBulkActions, hover]
+        );
+
+        const callbacksContextValue = useMemo(
+            () => ({
+                handleSort,
+                handleToggleItem,
                 isRowExpandable,
                 isRowSelectable,
                 onSelect,
                 rowClick,
                 rowSx,
-                selectedIds,
-                setSort,
-                sort,
-                storeKey,
             }),
             [
-                data,
-                expand,
-                expandSingle,
                 handleSort,
                 handleToggleItem,
-                hasBulkActions,
-                hover,
                 isRowExpandable,
                 isRowSelectable,
                 onSelect,
                 rowClick,
                 rowSx,
-                selectedIds,
-                setSort,
-                sort,
-                storeKey,
             ]
         );
 
@@ -304,36 +302,72 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
          * the datagrid displays the current data.
          */
         return (
-            <DataTableContext.Provider value={contextValue}>
-                <OptionalResourceContextProvider value={resource}>
-                    <DataTableRoot
-                        sx={sx}
-                        className={clsx(DataTableClasses.root, className)}
-                    >
-                        {bulkActionsToolbar ??
-                            (bulkActionButtons !== false && (
-                                <BulkActionsToolbar>
-                                    {isValidElement(bulkActionButtons)
-                                        ? bulkActionButtons
-                                        : defaultBulkActionButtons}
-                                </BulkActionsToolbar>
-                            ))}
-                        <div className={DataTableClasses.tableWrapper}>
-                            <Table
-                                ref={ref}
-                                className={DataTableClasses.table}
-                                size={size}
-                                {...rest}
+            <DataTableStoreContext.Provider value={storeKey}>
+                <DataTableSortContext.Provider value={sort}>
+                    <DataTableSelectedIdsContext.Provider value={selectedIds}>
+                        <DataTableCallbacksContext.Provider
+                            value={callbacksContextValue}
+                        >
+                            <DataTableConfigContext.Provider
+                                value={configContextValue}
                             >
-                                <TableHeader>{children}</TableHeader>
-                                <TableBody>{children}</TableBody>
-                                <TableFooter>{children}</TableFooter>
-                            </Table>
-                        </div>
-                    </DataTableRoot>
-                    <ColumnsSelector>{children}</ColumnsSelector>
-                </OptionalResourceContextProvider>
-            </DataTableContext.Provider>
+                                <OptionalResourceContextProvider
+                                    value={resource}
+                                >
+                                    <DataTableDataContext.Provider value={data}>
+                                        <DataTableRoot
+                                            sx={sx}
+                                            className={clsx(
+                                                DataTableClasses.root,
+                                                className
+                                            )}
+                                        >
+                                            {bulkActionsToolbar ??
+                                                (bulkActionButtons !==
+                                                    false && (
+                                                    <BulkActionsToolbar>
+                                                        {isValidElement(
+                                                            bulkActionButtons
+                                                        )
+                                                            ? bulkActionButtons
+                                                            : defaultBulkActionButtons}
+                                                    </BulkActionsToolbar>
+                                                ))}
+                                            <div
+                                                className={
+                                                    DataTableClasses.tableWrapper
+                                                }
+                                            >
+                                                <Table
+                                                    ref={ref}
+                                                    className={
+                                                        DataTableClasses.table
+                                                    }
+                                                    size={size}
+                                                    {...rest}
+                                                >
+                                                    <TableHeader>
+                                                        {children}
+                                                    </TableHeader>
+                                                    <TableBody>
+                                                        {children}
+                                                    </TableBody>
+                                                    <TableFooter>
+                                                        {children}
+                                                    </TableFooter>
+                                                </Table>
+                                            </div>
+                                        </DataTableRoot>
+                                    </DataTableDataContext.Provider>
+                                    <ColumnsSelector>
+                                        {children}
+                                    </ColumnsSelector>
+                                </OptionalResourceContextProvider>
+                            </DataTableConfigContext.Provider>
+                        </DataTableCallbacksContext.Provider>
+                    </DataTableSelectedIdsContext.Provider>
+                </DataTableSortContext.Provider>
+            </DataTableStoreContext.Provider>
         );
     }
 ) as DataTableComponent;
