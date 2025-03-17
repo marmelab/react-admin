@@ -106,7 +106,7 @@ const brazilianPortugueseMessages: TranslationMessages = {
             no: 'Não',
             not_found: 'Você digitou uma URL errada, ou seguiu um link errado.',
             yes: 'Sim',
-            unsaved_changes: 'Algumas de suas alteracões não foram salvas. Você tem certeza que quer ignorá-las?',
+            unsaved_changes: 'Algumas de suas alterações não foram salvas. Você tem certeza que quer ignorá-las?',
             auth_error: 'Erro na autorização',
             clear_array_input: 'Tem certeza que deseja limpar toda a lista?',
         },
