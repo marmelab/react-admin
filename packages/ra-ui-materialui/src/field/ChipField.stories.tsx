@@ -51,4 +51,5 @@ Basic.argTypes = {
 };
 Basic.args = {
     theme: 'light',
+    value: 'filled',
 };
