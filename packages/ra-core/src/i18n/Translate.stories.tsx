@@ -36,6 +36,12 @@ export const NoTranslationWithEmpty = () => (
     </TestTranslationProvider>
 );
 
+export const NoTranslationWithEmptyAsFalse = () => (
+    <TestTranslationProvider messages={{}}>
+        <Translate i18nKey="custom.myKey" empty={false} />
+    </TestTranslationProvider>
+);
+
 export const Args = () => (
     <TestTranslationProvider
         messages={{

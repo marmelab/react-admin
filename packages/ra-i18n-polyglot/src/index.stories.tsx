@@ -55,7 +55,7 @@ export const TranslateComponent = () => {
     const customMessages = {
         custom: {
             myKey: 'My Translated Key',
-            myKeyWithArgs: 'Hello, %{myWorld}!',
+            helloWorld: 'Hello, %{myWorld}!',
             countBeer: 'One beer |||| %{smart_count} beers',
         },
     };
@@ -80,7 +80,7 @@ export const TranslateComponent = () => {
             <Translate i18nKey="ra.page.dashboard" />
             <br />
             <Translate
-                i18nKey="custom.myKeyWithArgs"
+                i18nKey="custom.helloWorld"
                 args={{ myWorld: 'world' }}
             />
             <br />

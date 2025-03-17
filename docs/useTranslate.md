@@ -14,6 +14,8 @@ const translate = useTranslate();
 const translatedMessage = translate(translationKey, options);
 ```
 
+**Tip:** Instead of working with a hook, you can directly use [the `<Translate>` component](./Translate.md).
+
 ## Usage
 
 ```jsx
