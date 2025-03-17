@@ -11,7 +11,7 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Translate, I18nContextProvider } from 'ra-core';
-import { useI18nextProvider, convertRaTranslationsToI18next } from '..';
+import { useI18nextProvider, convertRaTranslationsToI18next } from './index';
 
 export default {
     title: 'ra-i18n-i18next',
