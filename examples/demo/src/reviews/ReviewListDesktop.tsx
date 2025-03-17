@@ -49,16 +49,10 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
             rowSx={rowSx(selectedRow)}
             bulkActionButtons={<ReviewsBulkActionButtons />}
             sx={{
-                '& .RaDatagrid-thead': {
+                '& .RaDataTable-thead': {
                     borderLeftColor: 'transparent',
                     borderLeftWidth: 5,
                     borderLeftStyle: 'solid',
-                },
-                '& .column-comment': {
-                    maxWidth: '18em',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
                 },
             }}
         >
@@ -75,7 +69,15 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
             >
                 <StarRatingField />
             </DataTable.Col>
-            <DataTable.Col source="comment" />
+            <DataTable.Col
+                source="comment"
+                sx={{
+                    maxWidth: '18em',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                }}
+            />
             <DataTable.Col source="status" />
         </DataTable>
     );
