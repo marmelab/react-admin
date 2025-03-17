@@ -7,13 +7,14 @@ import { DataTableColumnSelectorContext } from './DataTableColumnSelectorContext
 import { DataTableCell } from './DataTableCell';
 import { DataTableHeaderCell } from './DataTableHeaderCell';
 import { ColumnsSelectorMenuItem } from './ColumnsSelectorMenuItem';
+import { NumberField } from '../../field/NumberField';
 
 export interface DataTableColumnProps
     extends Omit<TableCellProps, 'component'> {
     cellClassName?: string;
     headerClassName?: string;
     render?: (record: any) => React.ReactNode;
-    component?: React.ElementType;
+    field?: React.ElementType;
     source?: string;
     label?: string;
     sortable?: boolean;
@@ -40,3 +41,18 @@ export const DataTableColumn = React.memo(
 );
 
 DataTableColumn.displayName = 'DataTableColumn';
+
+export const DataTableNumberColumn = React.memo(
+    React.forwardRef<HTMLTableCellElement, DataTableColumnProps>(
+        (props, ref) => (
+            <DataTableColumn
+                {...props}
+                align="right"
+                field={NumberField}
+                ref={ref}
+            />
+        )
+    )
+);
+
+DataTableNumberColumn.displayName = 'DataTableNumberColumn';

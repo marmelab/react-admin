@@ -32,7 +32,7 @@ import { DataTableClasses, DataTableRoot } from './DataTableRoot';
 import { DataTableLoading } from './DataTableLoading';
 import { DataTableBody } from './DataTableBody';
 import { DataTableHeader } from './DataTableHeader';
-import { DataTableColumn } from './DataTableColumn';
+import { DataTableColumn, DataTableNumberColumn } from './DataTableColumn';
 import { DataTableConfigContext } from './context/DataTableConfigContext';
 import { ColumnsSelector } from './ColumnsSelector';
 import {
@@ -48,6 +48,7 @@ interface DataTableComponent
         DataTableProps & React.RefAttributes<HTMLTableElement>
     > {
     Col: typeof DataTableColumn;
+    NumberCol: typeof DataTableColumn;
 }
 
 const DefaultEmpty = <ListNoResults />;
@@ -372,6 +373,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
 ) as DataTableComponent;
 
 DataTable.Col = DataTableColumn;
+DataTable.NumberCol = DataTableNumberColumn;
 
 const defaultBulkActionButtons = <BulkDeleteButton />;
 
