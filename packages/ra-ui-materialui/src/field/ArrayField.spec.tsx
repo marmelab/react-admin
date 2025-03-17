@@ -14,6 +14,22 @@ import { Datagrid } from '../list';
 import { SimpleList } from '../list';
 import { ListContext, TwoArrayFieldsSelection } from './ArrayField.stories';
 
+beforeAll(() => {
+    jest.spyOn(console, 'error').mockImplementation((message, ...args) => {
+        if (
+            typeof message === 'string' &&
+            message.includes('React will try recreating this component tree')
+        ) {
+            return;
+        }
+        console.warn(message, ...args); // Still log other errors
+    });
+});
+
+afterAll(() => {
+    jest.restoreAllMocks();
+});
+
 describe('<ArrayField />', () => {
     const sort = { field: 'id', order: 'ASC' };
 
@@ -161,7 +177,6 @@ describe('<ArrayField />', () => {
 
     it('should not select the same id in both ArrayFields when selected in one', async () => {
         render(<TwoArrayFieldsSelection />);
-
         await waitFor(() => {
             expect(screen.queryAllByRole('checkbox').length).toBeGreaterThan(2);
         });
@@ -171,22 +186,21 @@ describe('<ArrayField />', () => {
         expect(checkboxes.length).toBeGreaterThan(3);
 
         // Select an item in the memberships list
-        fireEvent.click(checkboxes[1]); // Membership row 1
+        fireEvent.click(checkboxes[1]);
         render(<TwoArrayFieldsSelection />);
 
         await waitFor(() => {
             expect(checkboxes[1]).toBeChecked();
         });
 
-        //Ensure the same id in portfolios is NOT selected
         expect(checkboxes[3]).not.toBeChecked();
 
-        fireEvent.click(checkboxes[3]);
+        fireEvent.click(checkboxes[3]); // Portfolios row 1
         render(<TwoArrayFieldsSelection />);
 
         await waitFor(() => {
             expect(checkboxes[3]).toBeChecked();
-            expect(checkboxes[1]).toBeChecked();
+            expect(checkboxes[1]).toBeChecked(); // Membership remains checked
         });
 
         fireEvent.click(checkboxes[1]);
@@ -194,7 +208,7 @@ describe('<ArrayField />', () => {
 
         await waitFor(() => {
             expect(checkboxes[1]).not.toBeChecked();
-            expect(checkboxes[3]).toBeChecked();
+            expect(checkboxes[3]).toBeChecked(); // Portfolios remain selected
         });
     });
 });

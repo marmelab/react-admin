@@ -219,8 +219,8 @@ export const TwoArrayFieldsSelection = () => (
                                 storeKey="organization_memberships"
                             >
                                 <Datagrid
-                                    bulkActionButtons={true}
                                     rowClick="toggleSelection"
+                                    bulkActionButtons={true}
                                     isRowSelectable={() => true}
                                 >
                                     <TextField source="id" />
@@ -234,8 +234,8 @@ export const TwoArrayFieldsSelection = () => (
                                 storeKey="organization_portfolios"
                             >
                                 <Datagrid
-                                    bulkActionButtons={true}
                                     rowClick="toggleSelection"
+                                    bulkActionButtons={true}
                                     isRowSelectable={() => true}
                                 >
                                     <TextField source="id" />
