@@ -374,7 +374,9 @@ export const WithDatagridAndSelectAllLimit = ({
 }) => (
     <WithDatagrid
         bulkActionsToolbar={
-            <BulkActionsToolbar actions={<SelectAllButton limit={limit} />}>
+            <BulkActionsToolbar
+                selectAllButton={<SelectAllButton limit={limit} />}
+            >
                 <BulkDeleteButton />
             </BulkActionsToolbar>
         }

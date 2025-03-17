@@ -1,27 +1,29 @@
-import * as React from 'react';
+import React from 'react';
 import {
     Admin,
     EditGuesser,
     ListGuesser,
     Resource,
     TestMemoryRouter,
+    TranslationMessages,
 } from 'react-admin';
-import polyglotI18nProvider from '.';
+import { Translate, I18nContextProvider } from 'ra-core';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import fakeRestDataProvider from 'ra-data-fakerest';
-import { Translate, I18nContextProvider } from 'ra-core';
+
+import polyglotI18nProvider from './';
+
+const messages = {
+    fr: frenchMessages,
+    en: englishMessages,
+};
 
 export default {
     title: 'ra-i18n-polyglot',
 };
 
 export const Basic = () => {
-    const messages = {
-        fr: frenchMessages,
-        en: englishMessages,
-    };
-
     const i18nProvider = polyglotI18nProvider(
         locale => messages[locale],
         'en',
@@ -81,6 +83,41 @@ export const TranslateComponent = () => {
                 args={{ myWorld: 'world' }}
             />
         </I18nContextProvider>
+    );
+};
+
+export const AsynchronousLocaleChange = () => {
+    const getAsyncMessages = locale => {
+        if (locale === 'en') {
+            // initial call, must return synchronously
+            return englishMessages;
+        }
+        return new Promise<TranslationMessages>(resolve => {
+            setTimeout(() => {
+                resolve(messages[locale]);
+            }, 1000);
+        });
+    };
+    const i18nProvider = polyglotI18nProvider(getAsyncMessages, 'en', [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]);
+
+    return (
+        <TestMemoryRouter>
+            <Admin i18nProvider={i18nProvider} dataProvider={dataProvider}>
+                <Resource
+                    name="posts"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+                <Resource
+                    name="comments"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+            </Admin>
+        </TestMemoryRouter>
     );
 };
 

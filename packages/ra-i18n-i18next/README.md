@@ -29,7 +29,9 @@ const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
             resources: {
-                translation: convertRaTranslationsToI18next(englishMessages)
+                en: {
+                    translation: convertRaTranslationsToI18next(englishMessages)
+                }
             }
         }
     });
@@ -62,7 +64,9 @@ const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
             resources: {
-                translation: convertRaTranslationsToI18next(englishMessages)
+                en: {
+                    translation: convertRaTranslationsToI18next(englishMessages)
+                }
             }
         }
     });
