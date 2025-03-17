@@ -16,7 +16,7 @@ export const DataTableCell = React.memo(
                 children,
                 className,
                 render,
-                component,
+                field,
                 source,
                 sortable,
                 sortByOrder,
@@ -28,9 +28,9 @@ export const DataTableCell = React.memo(
             const record = useRecordContext();
             const isColumnHidden = hiddenColumns.includes(source!);
             if (isColumnHidden) return null;
-            if (!render && !component && !children && !source) {
+            if (!render && !field && !children && !source) {
                 throw new Error(
-                    'Missing at least one of the following props: render, component, children, or source'
+                    'Missing at least one of the following props: render, field, children, or source'
                 );
             }
             return (
@@ -46,8 +46,8 @@ export const DataTableCell = React.memo(
                     {children ??
                         (render ? (
                             record && render(record)
-                        ) : component ? (
-                            React.createElement(component, { source })
+                        ) : field ? (
+                            React.createElement(field, { source })
                         ) : (
                             <TextField source={source!} />
                         ))}

@@ -19,7 +19,6 @@ import {
     FilterButton,
     List,
     InfiniteList,
-    NumberField,
     ReferenceArrayField,
     ReferenceManyCount,
     SearchInput,
@@ -164,7 +163,7 @@ const PostListDesktop = () => (
                         fontStyle: 'italic',
                     },
                 }}
-                component={DateField}
+                field={DateField}
             />
             <DataTable.Col
                 label="resources.posts.fields.nb_comments"
@@ -180,14 +179,9 @@ const PostListDesktop = () => (
                 source="commentable"
                 label="resources.posts.fields.commentable_short"
                 sortable={false}
-                component={BooleanField}
+                field={BooleanField}
             />
-            <DataTable.Col
-                source="views"
-                sortByOrder="DESC"
-                component={NumberField}
-                align="right"
-            />
+            <DataTable.NumberCol source="views" sortByOrder="DESC" />
 
             <DataTable.Col
                 label="Tags"
@@ -205,10 +199,9 @@ const PostListDesktop = () => (
                     </SingleFieldList>
                 </ReferenceArrayField>
             </DataTable.Col>
-            <DataTable.Col
+            <DataTable.NumberCol
                 source="average_note"
-                component={NumberField}
-                align="right"
+                className="hiddenOnSmallScreens"
             />
             <DataTable.Col sx={{ textAlign: 'center' }}>
                 <EditButton />

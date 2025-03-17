@@ -16,6 +16,7 @@ import {
     useDataTableSortContext,
     useDataTableStoreContext,
 } from './context';
+import { DataTableClasses } from './DataTableRoot';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
     ASC: 'DESC',
@@ -29,7 +30,7 @@ export const DataTableHeaderCell = React.memo(
                 className,
                 cellClassName,
                 headerClassName,
-                component,
+                field,
                 render,
                 source,
                 label,
@@ -69,6 +70,7 @@ export const DataTableHeaderCell = React.memo(
                 <TableCell
                     ref={ref}
                     className={clsx(
+                        DataTableClasses.headerCell,
                         className,
                         headerClassName,
                         `column-${source}`
@@ -103,11 +105,13 @@ export const DataTableHeaderCell = React.memo(
                             </TableSortLabel>
                         </Tooltip>
                     ) : (
-                        <FieldTitle
-                            label={label}
-                            source={source}
-                            resource={resource}
-                        />
+                        <TableSortLabel disabled>
+                            <FieldTitle
+                                label={label}
+                                source={source}
+                                resource={resource}
+                            />
+                        </TableSortLabel>
                     )}
                 </TableCell>
             );

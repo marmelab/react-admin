@@ -108,7 +108,7 @@ export const Basic = () => (
             <CanAccess action="read" resource="books.year">
                 <DataTable.Col
                     source="year"
-                    component={NumberField}
+                    field={NumberField}
                     align="right"
                 />
             </CanAccess>
