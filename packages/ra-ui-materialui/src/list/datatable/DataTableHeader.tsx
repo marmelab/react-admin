@@ -81,6 +81,7 @@ export const DataTableHeader = (props: DataTableHeaderProps) => {
                         >
                             {!expandSingle && data ? (
                                 <ExpandAllButton
+                                    classes={DataTableClasses}
                                     ids={data.map(record => record.id)}
                                 />
                             ) : null}
