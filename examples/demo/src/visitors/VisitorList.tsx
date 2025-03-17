@@ -2,15 +2,14 @@ import * as React from 'react';
 import {
     BooleanField,
     CreateButton,
-    DatagridConfigurable,
+    DataTable,
     DateField,
     DateInput,
     ExportButton,
     List,
     NullableBooleanInput,
-    NumberField,
     SearchInput,
-    SelectColumnsButton,
+    ColumnsButton,
     TopToolbar,
     useDefaultTitle,
     useListContext,
@@ -35,7 +34,7 @@ const visitorFilters = [
 const VisitorListActions = () => (
     <TopToolbar>
         <CreateButton />
-        <SelectColumnsButton />
+        <ColumnsButton />
         <ExportButton />
     </TopToolbar>
 );
@@ -68,7 +67,7 @@ const VisitorList = () => {
             {isXsmall ? (
                 <MobileGrid />
             ) : (
-                <DatagridConfigurable
+                <DataTable
                     rowClick="edit"
                     sx={{
                         '& .column-groups': {
@@ -76,27 +75,36 @@ const VisitorList = () => {
                             lg: { display: 'table-cell' },
                         },
                     }}
-                    omit={['birthday']}
+                    hiddenColumns={['birthday']}
                 >
-                    <CustomerLinkField
+                    <DataTable.Col
                         source="last_name"
                         label="resources.customers.fields.full_name"
-                    />
-                    <DateField source="last_seen" />
-                    <NumberField
+                    >
+                        <CustomerLinkField />
+                    </DataTable.Col>
+                    <DataTable.Col source="last_seen" field={DateField} />
+                    <DataTable.NumberCol
                         source="nb_orders"
                         label="resources.customers.fields.orders"
                     />
-                    <ColoredNumberField
-                        source="total_spent"
-                        options={{ style: 'currency', currency: 'USD' }}
-                        textAlign="right"
-                    />
-                    <DateField source="latest_purchase" showTime />
-                    <BooleanField source="has_newsletter" label="News." />
-                    <SegmentsField source="groups" />
-                    <DateField source="birthday" />
-                </DatagridConfigurable>
+                    <DataTable.Col source="total_spent" align="right">
+                        <ColoredNumberField
+                            source="total_spent"
+                            options={{ style: 'currency', currency: 'USD' }}
+                        />
+                    </DataTable.Col>
+                    <DataTable.Col source="latest_purchase">
+                        <DateField source="latest_purchase" showTime />
+                    </DataTable.Col>
+                    <DataTable.Col source="has_newsletter">
+                        <BooleanField source="has_newsletter" label="News." />
+                    </DataTable.Col>
+                    <DataTable.Col source="groups">
+                        <SegmentsField source="groups" />
+                    </DataTable.Col>
+                    <DataTable.Col source="birthday" field={DateField} />
+                </DataTable>
             )}
         </List>
     );

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Link, FieldProps, useRecordContext } from 'react-admin';
+import { Link, useRecordContext } from 'react-admin';
 
 import FullNameField from './FullNameField';
 import { Customer } from '../types';
 
-const CustomerLinkField = (_: FieldProps<Customer>) => {
+const CustomerLinkField = () => {
     const record = useRecordContext<Customer>();
     if (!record) {
         return null;

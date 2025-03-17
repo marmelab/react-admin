@@ -155,6 +155,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
             expand,
             bulkActionsToolbar,
             bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
+            hiddenColumns = emptyArray,
             hover,
             isRowSelectable,
             isRowExpandable,
@@ -240,6 +241,14 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
             }
         );
 
+        const storeContextValue = useMemo(
+            () => ({
+                storeKey,
+                defaultHiddenColumns: hiddenColumns,
+            }),
+            [storeKey, hiddenColumns]
+        );
+
         const configContextValue = useMemo(
             () => ({
                 expand,
@@ -302,7 +311,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
          * the datagrid displays the current data.
          */
         return (
-            <DataTableStoreContext.Provider value={storeKey}>
+            <DataTableStoreContext.Provider value={storeContextValue}>
                 <DataTableSortContext.Provider value={sort}>
                     <DataTableSelectedIdsContext.Provider value={selectedIds}>
                         <DataTableCallbacksContext.Provider
@@ -375,6 +384,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
 DataTable.Col = DataTableColumn;
 DataTable.NumberCol = DataTableNumberColumn;
 
+const emptyArray = [];
 const defaultBulkActionButtons = <BulkDeleteButton />;
 
 export interface DataTableProps<RecordType extends RaRecord = any>
@@ -470,13 +480,6 @@ export interface DataTableProps<RecordType extends RaRecord = any>
           }>;
 
     /**
-     * The component used to render the header row. Defaults to <DatagridHeader>.
-     *
-     * @see https://marmelab.com/react-admin/Datagrid.html#header
-     */
-    header?: ComponentType;
-
-    /**
      * Whether to allow only one expanded row at a time. Defaults to false.
      *
      * @see https://marmelab.com/react-admin/Datagrid.html#expandsingle
@@ -499,6 +502,20 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      * @see https://marmelab.com/react-admin/Datagrid.html#footer
      */
     footer?: ComponentType;
+
+    /**
+     * The component used to render the header row. Defaults to <DatagridHeader>.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#header
+     */
+    header?: ComponentType;
+
+    /**
+     * A list of columns that should be hidden by default.
+     *
+     * Use the ColumnsButton to allow users to show/hide columns.
+     */
+    hiddenColumns?: string[];
 
     /**
      * Set to false to disable the hover effect on rows.

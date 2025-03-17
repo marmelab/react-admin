@@ -38,10 +38,14 @@ export const DataTableHeaderCell = React.memo(
                 sortByOrder,
                 ...rest
             } = props;
-            const storeKey = useDataTableStoreContext();
+            const { storeKey, defaultHiddenColumns } =
+                useDataTableStoreContext();
             const sort = useDataTableSortContext();
             const { handleSort } = useDataTableCallbacksContext();
-            const [hiddenColumns] = useStore<string[]>(storeKey, []);
+            const [hiddenColumns] = useStore<string[]>(
+                storeKey,
+                defaultHiddenColumns
+            );
             const resource = useResourceContext();
             const translate = useTranslate();
             const translateLabel = useTranslateLabel();

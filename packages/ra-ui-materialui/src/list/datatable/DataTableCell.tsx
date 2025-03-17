@@ -23,8 +23,12 @@ export const DataTableCell = React.memo(
                 label,
                 ...rest
             } = props;
-            const storeKey = useDataTableStoreContext();
-            const [hiddenColumns] = useStore<string[]>(storeKey, []);
+            const { storeKey, defaultHiddenColumns } =
+                useDataTableStoreContext();
+            const [hiddenColumns] = useStore<string[]>(
+                storeKey,
+                defaultHiddenColumns
+            );
             const record = useRecordContext();
             const isColumnHidden = hiddenColumns.includes(source!);
             if (isColumnHidden) return null;

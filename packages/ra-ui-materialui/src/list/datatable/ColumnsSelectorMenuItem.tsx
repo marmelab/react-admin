@@ -10,8 +10,11 @@ export const ColumnsSelectorMenuItem = ({
     label,
 }: DataTableColumnProps) => {
     const resource = useResourceContext();
-    const storeKey = useDataTableStoreContext();
-    const [hiddenColumns, setHiddenColumns] = useStore<string[]>(storeKey, []);
+    const { storeKey, defaultHiddenColumns } = useDataTableStoreContext();
+    const [hiddenColumns, setHiddenColumns] = useStore<string[]>(
+        storeKey,
+        defaultHiddenColumns
+    );
     const translateLabel = useTranslateLabel();
     if (!source && !label) return null;
     const fieldLabel = translateLabel({

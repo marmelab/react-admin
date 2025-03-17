@@ -101,8 +101,8 @@ const postListBulkActions = (
 
 const postListActions = (
     <TopToolbar>
-        <ColumnsButton />
         <FilterButton />
+        <ColumnsButton />
         <CreateButton />
         <ExportButton />
     </TopToolbar>
@@ -134,6 +134,7 @@ const PostListDesktop = () => (
             bulkActionButtons={postListBulkActions}
             rowClick={rowClick}
             expand={PostPanel}
+            hiddenColumns={['average_note']}
             sx={{
                 '& .hiddenOnSmallScreens': {
                     display: {

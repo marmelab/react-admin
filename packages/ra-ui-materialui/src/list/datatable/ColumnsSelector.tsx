@@ -9,7 +9,7 @@ import { useDataTableStoreContext } from './context';
  * @see ColumnsButton
  */
 export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
-    const storeKey = useDataTableStoreContext();
+    const { storeKey } = useDataTableStoreContext();
     const elementId = `${storeKey}-columnsSelector`;
 
     const [container, setContainer] = React.useState<HTMLElement | null>(() =>

@@ -4,7 +4,6 @@ import {
     ColumnsButton,
     DateField,
     ReferenceField,
-    NumberField,
     DateInput,
     TopToolbar,
     ExportButton,
