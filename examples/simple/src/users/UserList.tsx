@@ -4,11 +4,10 @@ import { useMediaQuery, Theme } from '@mui/material';
 import * as React from 'react';
 import {
     BulkDeleteWithConfirmButton,
-    Datagrid,
+    DataTable,
     List,
     SearchInput,
     SimpleList,
-    TextField,
     TextInput,
     useCanAccess,
 } from 'react-admin';
@@ -56,15 +55,15 @@ const UserList = () => {
                     secondaryText={record => (canSeeRole ? record.role : null)}
                 />
             ) : (
-                <Datagrid
+                <DataTable
                     expand={<UserEditEmbedded />}
                     bulkActionButtons={<UserBulkActionButtons />}
                     optimized
                 >
-                    <TextField source="id" />
-                    <TextField source="name" />
-                    {canSeeRole && <TextField source="role" />}
-                </Datagrid>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="name" />
+                    {canSeeRole && <DataTable.Col source="role" />}
+                </DataTable>
             )}
         </List>
     );
