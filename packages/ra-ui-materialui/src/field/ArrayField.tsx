@@ -79,7 +79,7 @@ const ArrayFieldImpl = <
 >(
     props: ArrayFieldProps<RecordType>
 ) => {
-    const { children, resource, perPage, sort, filter } = props;
+    const { children, resource, perPage, sort, filter, storeKey } = props;
     const data = useFieldValue(props) || emptyArray;
     const listContext = useList({
         data,
@@ -105,6 +105,7 @@ export interface ArrayFieldProps<
     perPage?: number;
     sort?: SortPayload;
     filter?: FilterPayload;
+    storeKey?: string | false;
 }
 
 const emptyArray = [];
