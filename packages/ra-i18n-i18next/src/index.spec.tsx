@@ -75,7 +75,7 @@ describe('i18next i18nProvider', () => {
         const { container } = render(<TranslateComponent />);
         await waitFor(() => {
             expect(container.innerHTML).toEqual(
-                'My Translated Key<br>Dashboard<br>Hello, world!'
+                'My Translated Key<br>Dashboard<br>Hello, world!<br>2 beers'
             );
         });
     });

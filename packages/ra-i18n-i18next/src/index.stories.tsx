@@ -182,7 +182,8 @@ export const TranslateComponent = () => {
                         ...englishMessages,
                         custom: {
                             myKey: 'My Translated Key',
-                            myKeyWithArgs: 'Hello, %{myWorld}!',
+                            helloWorld: 'Hello, %{myWorld}!',
+                            countBeer: 'One beer |||| %{smart_count} beers',
                         },
                     }),
                 },
@@ -199,9 +200,11 @@ export const TranslateComponent = () => {
             <Translate i18nKey="ra.page.dashboard" />
             <br />
             <Translate
-                i18nKey="custom.myKeyWithArgs"
+                i18nKey="custom.helloWorld"
                 args={{ myWorld: 'world' }}
             />
+            <br />
+            <Translate i18nKey="custom.countBeer" args={{ smart_count: 2 }} />
         </I18nContextProvider>
     );
 };
