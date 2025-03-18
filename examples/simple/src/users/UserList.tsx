@@ -58,7 +58,6 @@ const UserList = () => {
                 <DataTable
                     expand={<UserEditEmbedded />}
                     bulkActionButtons={<UserBulkActionButtons />}
-                    optimized
                 >
                     <DataTable.Col source="id" />
                     <DataTable.Col source="name" />

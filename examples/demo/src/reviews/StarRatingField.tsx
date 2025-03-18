@@ -6,10 +6,12 @@ import { useRecordContext } from 'react-admin';
 
 interface OwnProps {
     size?: 'large' | 'small';
+    record?: any;
 }
 
-const StarRatingField = ({ size = 'large' }: OwnProps) => {
-    const record = useRecordContext();
+const StarRatingField = (props: OwnProps) => {
+    const { size = 'large' } = props;
+    const record = useRecordContext(props);
     if (!record) return null;
 
     return (
