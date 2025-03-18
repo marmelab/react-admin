@@ -62,14 +62,18 @@ const data = {
     ],
 };
 
-const dataProvider = fakeRestDataProvider(data);
+const booksDataProvider = fakeRestDataProvider(data);
 
 const theme = createTheme();
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({
+    children,
+    dataProvider = booksDataProvider,
+    resource = 'books',
+}) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ThemeProvider theme={theme}>
-            <ResourceContextProvider value="books">
+            <ResourceContextProvider value={resource}>
                 <List
                     perPage={5}
                     sx={{ px: 4 }}
@@ -115,6 +119,37 @@ export const Basic = () => (
             <DataTable.Col sx={{ py: 0 }}>
                 <EditButton />
             </DataTable.Col>
+        </DataTable>
+    </Wrapper>
+);
+
+export const ColumnsSelector = () => (
+    <Wrapper
+        dataProvider={fakeRestDataProvider({
+            test: [
+                {
+                    col0: 'a0',
+                    col1: 'a1',
+                    col2: 'b1',
+                    col3: 'c1',
+                    col4: 'd1',
+                    col5: 'e1',
+                    col6: 'f1',
+                    col7: 'g1',
+                },
+            ],
+        })}
+        resource="test"
+    >
+        <DataTable bulkActionButtons={false}>
+            <DataTable.Col source="col0" label="c_0" />
+            <DataTable.Col source="col1" label="c_1" />
+            <DataTable.Col source="col2" label="c_2" />
+            <DataTable.Col source="col3" label="c_3" />
+            <DataTable.Col source="col4" label="c_4" />
+            <DataTable.Col source="col5" label="c_5" />
+            <DataTable.Col source="col6" label="c_6" />
+            <DataTable.Col source="col7" label="c_7" />
         </DataTable>
     </Wrapper>
 );

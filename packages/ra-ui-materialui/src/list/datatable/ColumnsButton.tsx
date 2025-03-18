@@ -91,8 +91,7 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
                 {/* ColumnsSelector will be rendered here via Portal  */}
                 <Box
                     component="ul"
-                    p={1}
-                    my={0}
+                    sx={{ p: 1, my: 0, minWidth: 200 }}
                     id={`${storeKey}-columnsSelector`}
                 />
             </Menu>

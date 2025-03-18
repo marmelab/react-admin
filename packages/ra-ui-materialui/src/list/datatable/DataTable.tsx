@@ -14,6 +14,7 @@ import {
     useEvent,
     useListContextWithProps,
     useResourceContext,
+    useStore,
     type Identifier,
     type RaRecord,
     type SortPayload,
@@ -241,6 +242,11 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
             }
         );
 
+        const [columnRanks] = useStore<number[]>(`${storeKey}_columnRanks`);
+        const columns = columnRanks
+            ? reorderChildren(children, columnRanks)
+            : children;
+
         const storeContextValue = useMemo(
             () => ({
                 storeKey,
@@ -356,13 +362,13 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
                                                     {...rest}
                                                 >
                                                     <TableHeader>
-                                                        {children}
+                                                        {columns}
                                                     </TableHeader>
                                                     <TableBody>
-                                                        {children}
+                                                        {columns}
                                                     </TableBody>
                                                     <TableFooter>
-                                                        {children}
+                                                        {columns}
                                                     </TableFooter>
                                                 </Table>
                                             </div>
@@ -386,6 +392,24 @@ DataTable.NumberCol = DataTableNumberColumn;
 
 const emptyArray = [];
 const defaultBulkActionButtons = <BulkDeleteButton />;
+
+/**
+ * Reorder children based on columnRanks
+ *
+ * Note that columnRanks may be shorter than the number of children
+ */
+const reorderChildren = (children: ReactNode, columnRanks: number[]) =>
+    React.Children.toArray(children).reduce((acc, child, index) => {
+        const rank = columnRanks.indexOf(index);
+        if (rank === -1) {
+            // if the column is not in columnRanks, keep it at the same index
+            acc[index] = child;
+        } else {
+            // if the column is in columnRanks, move it to the rank index
+            acc[rank] = child;
+        }
+        return acc;
+    }, []);
 
 export interface DataTableProps<RecordType extends RaRecord = any>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {

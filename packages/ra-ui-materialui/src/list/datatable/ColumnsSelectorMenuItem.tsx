@@ -17,8 +17,8 @@ export const ColumnsSelectorMenuItem = ({
         defaultHiddenColumns
     );
     const columnRank = useDataTableColumnRankContext();
-    const [columnRanks, setColumnRanks] = useStore<Record<number, number>>(
-        `${storeKey}.columnRanks`
+    const [columnRanks, setColumnRanks] = useStore<number[]>(
+        `${storeKey}_columnRanks`
     );
     const translateLabel = useTranslateLabel();
     if (!source && !label) return null;
@@ -30,28 +30,47 @@ export const ColumnsSelectorMenuItem = ({
     const isColumnHidden = hiddenColumns.includes(source!);
 
     const handleMove = (index1, index2) => {
-        setColumnRanks((ranks = {}) => {
-            const index1Rank = ranks[index1] ?? index1;
-            const index2Rank = ranks[index2] ?? index2;
-            if (index1Rank === index2Rank) {
-                return ranks;
-            }
-            return {
-                ...ranks,
-                [Number(index2Rank)]: Number(index1),
-                [Number(index1Rank)]: Number(index2),
-            };
-        });
+        const colRanks = !columnRanks
+            ? padRanks([], Math.max(index1, index2) + 1)
+            : Math.max(index1, index2) > columnRanks.length - 1
+              ? padRanks(columnRanks, Math.max(index1, index2) + 1)
+              : columnRanks;
+        const index1Pos = colRanks.findIndex(
+            // eslint-disable-next-line eqeqeq
+            index => index == index1
+        );
+        const index2Pos = colRanks.findIndex(
+            // eslint-disable-next-line eqeqeq
+            index => index == index2
+        );
+        if (index1Pos === -1 || index2Pos === -1) {
+            return;
+        }
+        let newColumnRanks;
+        if (index1Pos > index2Pos) {
+            newColumnRanks = [
+                ...colRanks.slice(0, index2Pos),
+                colRanks[index1Pos],
+                ...colRanks.slice(index2Pos, index1Pos),
+                ...colRanks.slice(index1Pos + 1),
+            ];
+        } else {
+            newColumnRanks = [
+                ...colRanks.slice(0, index1Pos),
+                ...colRanks.slice(index1Pos + 1, index2Pos + 1),
+                colRanks[index1Pos],
+                ...colRanks.slice(index2Pos + 1),
+            ];
+        }
+        setColumnRanks(newColumnRanks);
     };
-
-    console.log(columnRanks);
 
     return (
         <FieldToggle
             key={columnRank}
             source={source}
             label={fieldLabel}
-            index={columnRank}
+            index={String(columnRank)}
             selected={!isColumnHidden}
             onToggle={() =>
                 isColumnHidden
@@ -64,3 +83,11 @@ export const ColumnsSelectorMenuItem = ({
         />
     );
 };
+
+const padRanks = (ranks: number[], length: number) =>
+    ranks.concat(
+        Array.from(
+            { length: length - ranks.length },
+            (_, i) => ranks.length + i
+        )
+    );
