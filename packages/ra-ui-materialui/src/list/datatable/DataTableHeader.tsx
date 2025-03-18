@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import ExpandAllButton from '../datagrid/ExpandAllButton';
 
 import { DataTableClasses } from './DataTableRoot';
-import { DataTableHeaderContext } from './DataTableHeaderContext';
+import { DataTableRenderContext } from './context/DataTableRenderContext';
 import { useDataTableConfigContext } from './context/DataTableConfigContext';
 import {
     useDataTableCallbacksContext,
@@ -67,7 +67,7 @@ export const DataTableHeader = memo((props: DataTableHeaderProps) => {
         : [];
 
     return (
-        <DataTableHeaderContext.Provider value={true}>
+        <DataTableRenderContext.Provider value="header">
             <TableHead className={clsx(className, DataTableClasses.thead)}>
                 <TableRow
                     className={clsx(
@@ -120,7 +120,7 @@ export const DataTableHeader = memo((props: DataTableHeaderProps) => {
                     {children}
                 </TableRow>
             </TableHead>
-        </DataTableHeaderContext.Provider>
+        </DataTableRenderContext.Provider>
     );
 });
 

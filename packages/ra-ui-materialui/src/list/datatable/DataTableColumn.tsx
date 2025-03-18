@@ -2,8 +2,7 @@ import * as React from 'react';
 import { type SortPayload } from 'ra-core';
 import { type TableCellProps } from '@mui/material';
 
-import { DataTableHeaderContext } from './DataTableHeaderContext';
-import { DataTableColumnSelectorContext } from './DataTableColumnSelectorContext';
+import { useDataTableRenderContext } from './context/DataTableRenderContext';
 import { DataTableCell } from './DataTableCell';
 import { DataTableHeaderCell } from './DataTableHeaderCell';
 import { ColumnsSelectorMenuItem } from './ColumnsSelectorMenuItem';
@@ -24,17 +23,14 @@ export interface DataTableColumnProps
 export const DataTableColumn = React.memo(
     React.forwardRef<HTMLTableCellElement, DataTableColumnProps>(
         (props, ref) => {
-            // determine the render context: header, column selector, or data cell
-            const headerContext = React.useContext(DataTableHeaderContext);
-            const tableSelectorContext = React.useContext(
-                DataTableColumnSelectorContext
-            );
-            if (tableSelectorContext) {
-                return <ColumnsSelectorMenuItem {...props} />;
-            } else if (headerContext) {
-                return <DataTableHeaderCell {...props} ref={ref} />;
-            } else {
-                return <DataTableCell {...props} ref={ref} />;
+            const renderContext = useDataTableRenderContext();
+            switch (renderContext) {
+                case 'columnsSelector':
+                    return <ColumnsSelectorMenuItem {...props} />;
+                case 'header':
+                    return <DataTableHeaderCell {...props} ref={ref} />;
+                case 'data':
+                    return <DataTableCell {...props} ref={ref} />;
             }
         }
     )

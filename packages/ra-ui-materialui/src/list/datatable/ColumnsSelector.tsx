@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
-import { DataTableColumnSelectorContext } from './DataTableColumnSelectorContext';
+import { DataTableRenderContext } from './context/DataTableRenderContext';
 import { useDataTableStoreContext } from './context';
 
 /**
@@ -42,9 +42,9 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
     if (!container) return null;
 
     return createPortal(
-        <DataTableColumnSelectorContext.Provider value={true}>
+        <DataTableRenderContext.Provider value="columnsSelector">
             {children}
-        </DataTableColumnSelectorContext.Provider>,
+        </DataTableRenderContext.Provider>,
         container
     );
 };
