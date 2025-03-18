@@ -70,6 +70,12 @@ const Wrapper = ({
     children,
     dataProvider = booksDataProvider,
     resource = 'books',
+    actions = (
+        <TopToolbar>
+            <ColumnsButton />
+        </TopToolbar>
+    ),
+    aside = null,
 }) => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ThemeProvider theme={theme}>
@@ -77,11 +83,8 @@ const Wrapper = ({
                 <List
                     perPage={5}
                     sx={{ px: 4 }}
-                    actions={
-                        <TopToolbar>
-                            <ColumnsButton />
-                        </TopToolbar>
-                    }
+                    actions={actions}
+                    aside={aside}
                 >
                     {children}
                 </List>
@@ -123,32 +126,38 @@ export const Basic = () => (
     </Wrapper>
 );
 
+const HideMe = (_props: { children?: React.ReactNode }) => null;
+
 export const ColumnsSelector = () => (
     <Wrapper
         dataProvider={fakeRestDataProvider({
             test: [
                 {
-                    col0: 'a0',
-                    col1: 'a1',
-                    col2: 'b1',
-                    col3: 'c1',
-                    col4: 'd1',
-                    col5: 'e1',
-                    col6: 'f1',
-                    col7: 'g1',
+                    col0: 'a',
+                    col1: 'b',
+                    col2: 'c',
+                    col3: 'd',
+                    col4: 'e',
+                    col5: 'f',
+                    col6: 'g',
+                    col7: 'h',
                 },
             ],
         })}
         resource="test"
+        actions={null}
+        aside={<ColumnsButton />}
     >
-        <DataTable bulkActionButtons={false}>
+        <DataTable bulkActionButtons={false} hiddenColumns={['col7']}>
             <DataTable.Col source="col0" label="c_0" />
             <DataTable.Col source="col1" label="c_1" />
             <DataTable.Col source="col2" label="c_2" />
             <DataTable.Col source="col3" label="c_3" />
             <DataTable.Col source="col4" label="c_4" />
             <DataTable.Col source="col5" label="c_5" />
-            <DataTable.Col source="col6" label="c_6" />
+            <HideMe>
+                <DataTable.Col source="col6" label="c_6" />
+            </HideMe>
             <DataTable.Col source="col7" label="c_7" />
         </DataTable>
     </Wrapper>
