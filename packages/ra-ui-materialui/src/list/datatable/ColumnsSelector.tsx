@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Children } from 'react';
 import { createPortal } from 'react-dom';
+import { useStore } from 'ra-core';
+import { Box } from '@mui/material';
 import { DataTableRenderContext } from './context/DataTableRenderContext';
 import { DataTableColumnRankContext } from './context/DataTableColumnRankContext';
 import { useDataTableStoreContext } from './context/DataTableStoreContext';
+import { Button } from '../../button';
 
 /**
  * Render DataTable.Col elements in the ColumnsButton selector using a React POrtal.
@@ -11,7 +14,14 @@ import { useDataTableStoreContext } from './context/DataTableStoreContext';
  * @see ColumnsButton
  */
 export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
-    const { storeKey } = useDataTableStoreContext();
+    const { storeKey, defaultHiddenColumns } = useDataTableStoreContext();
+    const [columnRanks, setColumnRanks] = useStore<number[] | undefined>(
+        `${storeKey}_columnRanks`
+    );
+    const [_hiddenColumns, setHiddenColumns] = useStore<string[]>(
+        storeKey,
+        defaultHiddenColumns
+    );
     const elementId = `${storeKey}-columnsSelector`;
 
     const [container, setContainer] = React.useState<HTMLElement | null>(() =>
@@ -43,13 +53,33 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
 
     if (!container) return null;
 
+    const childrenArray = Children.toArray(children);
+    const paddedColumnRanks = padRanks(columnRanks ?? [], childrenArray.length);
+
     return createPortal(
         <DataTableRenderContext.Provider value="columnsSelector">
-            {Children.map(children, (element, index) => (
-                <DataTableColumnRankContext.Provider value={index} key={index}>
-                    {element}
+            {paddedColumnRanks.map((position, index) => (
+                <DataTableColumnRankContext.Provider
+                    value={position}
+                    key={index}
+                >
+                    {childrenArray[position]}
                 </DataTableColumnRankContext.Provider>
             ))}
+            <Box
+                component="li"
+                className="columns-selector-actions"
+                sx={{ textAlign: 'center', mt: 1 }}
+            >
+                <Button
+                    onClick={() => {
+                        setColumnRanks(undefined);
+                        setHiddenColumns(defaultHiddenColumns);
+                    }}
+                >
+                    Reset
+                </Button>
+            </Box>
         </DataTableRenderContext.Provider>,
         container
     );
@@ -58,3 +88,11 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
 interface ColumnsSelectorProps {
     children?: React.ReactNode;
 }
+
+const padRanks = (ranks: number[], length: number) =>
+    ranks.concat(
+        Array.from(
+            { length: length - ranks.length },
+            (_, i) => ranks.length + i
+        )
+    );

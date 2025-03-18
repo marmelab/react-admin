@@ -59,7 +59,7 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
     };
 
     return (
-        <>
+        <Root>
             {isXSmall ? (
                 <Tooltip title={title}>
                     <IconButton
@@ -73,14 +73,14 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                <StyledButton
+                <Button
                     size="small"
                     onClick={handleClick}
                     startIcon={<ViewWeekIcon />}
                     {...sanitizeRestProps(props)}
                 >
                     {title}
-                </StyledButton>
+                </Button>
             )}
             <Menu
                 open={Boolean(anchorEl)}
@@ -91,19 +91,19 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
                 {/* ColumnsSelector will be rendered here via Portal  */}
                 <Box
                     component="ul"
-                    sx={{ p: 1, my: 0, minWidth: 200 }}
+                    sx={{ px: 1, my: 0, minWidth: 200 }}
                     id={`${storeKey}-columnsSelector`}
                 />
             </Menu>
-        </>
+        </Root>
     );
 };
 
-const StyledButton = styled(Button, {
+const Root = styled('span', {
     name: 'RaColumnsButton',
     overridesResolver: (props, styles) => styles.root,
 })({
-    '&.MuiButton-sizeSmall': {
+    '& .MuiButton-sizeSmall': {
         // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
         lineHeight: 1.5,
     },

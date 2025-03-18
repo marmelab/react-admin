@@ -184,6 +184,10 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
         const hasBulkActions = !!bulkActionButtons !== false;
 
         const storeKey = props.storeKey || `${resourceFromContext}.datatable`;
+        const [columnRanks] = useStore<number[]>(`${storeKey}_columnRanks`);
+        const columns = columnRanks
+            ? reorderChildren(children, columnRanks)
+            : children;
 
         const handleSort = useEvent((event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation();
@@ -241,11 +245,6 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
                 }
             }
         );
-
-        const [columnRanks] = useStore<number[]>(`${storeKey}_columnRanks`);
-        const columns = columnRanks
-            ? reorderChildren(children, columnRanks)
-            : children;
 
         const storeContextValue = useMemo(
             () => ({

@@ -6,7 +6,7 @@ import { DataTableColumnProps } from './DataTableColumn';
 import { useDataTableStoreContext } from './context/DataTableStoreContext';
 import { useDataTableColumnRankContext } from './context/DataTableColumnRankContext';
 
-export const ColumnsSelectorMenuItem = ({
+export const ColumnsSelectorItem = ({
     source,
     label,
 }: DataTableColumnProps) => {

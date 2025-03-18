@@ -5,7 +5,7 @@ import { type TableCellProps } from '@mui/material';
 import { useDataTableRenderContext } from './context/DataTableRenderContext';
 import { DataTableCell } from './DataTableCell';
 import { DataTableHeaderCell } from './DataTableHeaderCell';
-import { ColumnsSelectorMenuItem } from './ColumnsSelectorMenuItem';
+import { ColumnsSelectorItem } from './ColumnsSelectorItem';
 import { NumberField } from '../../field/NumberField';
 
 export interface DataTableColumnProps
@@ -26,7 +26,7 @@ export const DataTableColumn = React.memo(
             const renderContext = useDataTableRenderContext();
             switch (renderContext) {
                 case 'columnsSelector':
-                    return <ColumnsSelectorMenuItem {...props} />;
+                    return <ColumnsSelectorItem {...props} />;
                 case 'header':
                     return <DataTableHeaderCell {...props} ref={ref} />;
                 case 'data':
