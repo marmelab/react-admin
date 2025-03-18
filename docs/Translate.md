@@ -10,7 +10,7 @@ If you need to translate messages in your own components, React-admin provides t
 # Usage
 
 ```tsx
-const MyHelloButton = () => <Translate i18nKey="custom.hello_world" />;
+const MyHelloButton = () => <button><Translate i18nKey="custom.hello_world" /></button>;
 
 export default MyHelloButton;
 ```
@@ -22,15 +22,13 @@ export default MyHelloButton;
 | Prop        | Required | Type                    | Default            | Description                                             |
 | ----------- | -------- | ----------------------- | ------------------ | ------------------------------------------------------- |
 | `args`      | Optional | `Object`                | -                  | The arguments used for pluralization and interpolation. |
-| `children`  | Optional | `string`                | -                  | The default translation if the translation failed.      |
-| `empty`     | Optional | `string` &#124; `false` | `"no translation"` | Message to be displayed if there is no translation.     |
+| `children`  | Optional | `string`                | -                  | The default content to display if the translation is not found.      |
+| `empty`     | Optional | `string` &#124; `false` | `"no translation"` | Message to be displayed if the translation is not found and no children is provided.     |
 | `i18nKey`   | Required | `string`                | -                  | The translation key.                                    |
-
-Additional props are passed to the root element.
 
 ## `args`: Pluralization and Interpolation
 
-Polyglot.js provides some nice features such as interpolation and pluralization, that you can use in react-admin.
+If your i18n provider provides some nice features such as interpolation and pluralization (as [Polyglot.js](./Translation.md#ra-i18n-polyglot) and [i18next](./Translation.md#ra-i18n-i18next) did), that you can use in react-admin.
 
 {%raw%}
 
@@ -76,7 +74,7 @@ const LoadingMessage = () => <Translate i18nKey="ra.page.loading">Loading</Trans
 
 ## `empty`
 
-When your translation key doesn't fit with your dictionnary, react-admin displays an empty text.
+When your translation key doesn't fit with your dictionnary and no `children` is provided, react-admin displays an empty text.
 
 ```tsx
 const MyMessage = () => <Translate i18nKey="custom.myKey" empty="translation failed" />;
