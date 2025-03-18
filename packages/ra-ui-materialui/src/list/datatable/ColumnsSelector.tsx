@@ -1,7 +1,9 @@
 import * as React from 'react';
+import { Children } from 'react';
 import { createPortal } from 'react-dom';
 import { DataTableRenderContext } from './context/DataTableRenderContext';
-import { useDataTableStoreContext } from './context';
+import { DataTableColumnRankContext } from './context/DataTableColumnRankContext';
+import { useDataTableStoreContext } from './context/DataTableStoreContext';
 
 /**
  * Render DataTable.Col elements in the ColumnsButton selector using a React POrtal.
@@ -43,7 +45,11 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
 
     return createPortal(
         <DataTableRenderContext.Provider value="columnsSelector">
-            {children}
+            {Children.map(children, (element, index) => (
+                <DataTableColumnRankContext.Provider value={index} key={index}>
+                    {element}
+                </DataTableColumnRankContext.Provider>
+            ))}
         </DataTableRenderContext.Provider>,
         container
     );

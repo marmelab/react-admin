@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useTranslate, useResourceContext } from 'ra-core';
 import {
+    Box,
     Button,
     ButtonProps,
     Menu,
@@ -88,7 +89,12 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
                 onClose={handleClose}
             >
                 {/* ColumnsSelector will be rendered here via Portal  */}
-                <span id={`${storeKey}-columnsSelector`} />
+                <Box
+                    component="ul"
+                    p={1}
+                    my={0}
+                    id={`${storeKey}-columnsSelector`}
+                />
             </Menu>
         </>
     );

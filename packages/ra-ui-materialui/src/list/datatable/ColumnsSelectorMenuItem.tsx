@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { useResourceContext, useStore, useTranslateLabel } from 'ra-core';
-import { Checkbox, MenuItem } from '@mui/material';
 
+import { FieldToggle } from '../../preferences';
 import { DataTableColumnProps } from './DataTableColumn';
-import { useDataTableStoreContext } from './context';
+import { useDataTableStoreContext } from './context/DataTableStoreContext';
+import { useDataTableColumnRankContext } from './context/DataTableColumnRankContext';
 
 export const ColumnsSelectorMenuItem = ({
     source,
@@ -15,6 +16,10 @@ export const ColumnsSelectorMenuItem = ({
         storeKey,
         defaultHiddenColumns
     );
+    const columnRank = useDataTableColumnRankContext();
+    const [columnRanks, setColumnRanks] = useStore<Record<number, number>>(
+        `${storeKey}.columnRanks`
+    );
     const translateLabel = useTranslateLabel();
     if (!source && !label) return null;
     const fieldLabel = translateLabel({
@@ -23,22 +28,39 @@ export const ColumnsSelectorMenuItem = ({
         source,
     });
     const isColumnHidden = hiddenColumns.includes(source!);
+
+    const handleMove = (index1, index2) => {
+        setColumnRanks((ranks = {}) => {
+            const index1Rank = ranks[index1] ?? index1;
+            const index2Rank = ranks[index2] ?? index2;
+            if (index1Rank === index2Rank) {
+                return ranks;
+            }
+            return {
+                ...ranks,
+                [Number(index2Rank)]: Number(index1),
+                [Number(index1Rank)]: Number(index2),
+            };
+        });
+    };
+
+    console.log(columnRanks);
+
     return (
-        <MenuItem
-            onClick={() =>
+        <FieldToggle
+            key={columnRank}
+            source={source}
+            label={fieldLabel}
+            index={columnRank}
+            selected={!isColumnHidden}
+            onToggle={() =>
                 isColumnHidden
                     ? setHiddenColumns(
                           hiddenColumns.filter(column => column !== source!)
                       )
                     : setHiddenColumns([...hiddenColumns, source!])
             }
-        >
-            <Checkbox
-                sx={{ padding: '0 0.5em 0 0' }}
-                size="small"
-                checked={!isColumnHidden}
-            />
-            {fieldLabel}
-        </MenuItem>
+            onMove={handleMove}
+        />
     );
 };
