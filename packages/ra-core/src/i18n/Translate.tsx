@@ -4,8 +4,7 @@ import { useTranslate } from './useTranslate';
 export const Translate = ({
     i18nKey,
     args,
-    children,
-    empty = 'no translation',
+    children = 'no translation',
 }: TranslateProps) => {
     const translate = useTranslate();
     const translatedMessage = translate(i18nKey, args);
@@ -13,18 +12,11 @@ export const Translate = ({
     if (translatedMessage && translatedMessage !== i18nKey) {
         return <>{translatedMessage}</>;
     }
-    if (children) {
-        return <>{children}</>;
-    }
-    if (empty) {
-        return <>{empty}</>;
-    }
-    return null;
+    return <>{children}</>;
 };
 
 export interface TranslateProps {
     i18nKey: string;
     children?: string;
-    empty?: string | false;
     args?: Object;
 }

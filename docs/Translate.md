@@ -19,12 +19,11 @@ export default MyHelloButton;
 
 ## Props
 
-| Prop        | Required | Type                    | Default            | Description                                             |
-| ----------- | -------- | ----------------------- | ------------------ | ------------------------------------------------------- |
-| `args`      | Optional | `Object`                | -                  | The arguments used for pluralization and interpolation. |
-| `children`  | Optional | `string`                | -                  | The default content to display if the translation is not found.      |
-| `empty`     | Optional | `string` &#124; `false` | `"no translation"` | Message to be displayed if the translation is not found and no children is provided.     |
-| `i18nKey`   | Required | `string`                | -                  | The translation key.                                    |
+| Prop       | Required | Type     | Default            | Description                                                     |
+| ---------- | -------- | -------- | ------------------ | --------------------------------------------------------------- |
+| `args`     | Optional | `Object` | -                  | The arguments used for pluralization and interpolation.         |
+| `children` | Optional | `string` | `"no translation"` | The default content to display if the translation is not found. |
+| `i18nKey`  | Required | `string` | -                  | The translation key.                                            |
 
 ## `args`: Pluralization and Interpolation
 
@@ -71,16 +70,6 @@ You can provide a `children` to display if the translation function doesn't find
 ```tsx
 const LoadingMessage = () => <Translate i18nKey="ra.page.loading">Loading</Translate>;
 ```
-
-## `empty`
-
-When your translation key doesn't fit with your dictionnary and no `children` is provided, react-admin displays an empty text.
-
-```tsx
-const MyMessage = () => <Translate i18nKey="custom.myKey" empty="translation failed" />;
-```
-
-**Tip:** You can set `empty` to false to don't render anything in this case.
 
 ## `i18nKey`
 

@@ -26,19 +26,7 @@ export const NoTranslation = () => (
 
 export const NoTranslationWithChildren = () => (
     <TestTranslationProvider messages={{}}>
-        <Translate i18nKey="custom.myKey">My Key</Translate>
-    </TestTranslationProvider>
-);
-
-export const NoTranslationWithEmpty = () => (
-    <TestTranslationProvider messages={{}}>
-        <Translate i18nKey="custom.myKey" empty="translation failed" />
-    </TestTranslationProvider>
-);
-
-export const NoTranslationWithEmptyAsFalse = () => (
-    <TestTranslationProvider messages={{}}>
-        <Translate i18nKey="custom.myKey" empty={false} />
+        <Translate i18nKey="custom.myKey">My Default Translation</Translate>
     </TestTranslationProvider>
 );
 
