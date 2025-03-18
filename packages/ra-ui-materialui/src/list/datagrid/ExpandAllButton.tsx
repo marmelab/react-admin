@@ -8,9 +8,13 @@ import clsx from 'clsx';
 
 interface ExpandAllButtonProps {
     ids: string[] | number[];
+    classes?: Record<string, string>;
 }
 
-const ExpandAllButton = ({ ids }: ExpandAllButtonProps) => {
+const ExpandAllButton = ({
+    ids,
+    classes = DatagridClasses,
+}: ExpandAllButtonProps) => {
     const translate = useTranslate();
     const resource = useResourceContext();
     const [expanded, toggleExpanded] = useExpandAll(resource || '', ids);
@@ -18,8 +22,8 @@ const ExpandAllButton = ({ ids }: ExpandAllButtonProps) => {
     if (!resource) return null;
     return (
         <IconButton
-            className={clsx(DatagridClasses.expandIcon, {
-                [DatagridClasses.expanded]: expanded,
+            className={clsx(classes.expandIcon, {
+                [classes.expanded]: expanded,
             })}
             aria-label={translate(
                 expanded ? 'ra.action.close' : 'ra.action.expand'

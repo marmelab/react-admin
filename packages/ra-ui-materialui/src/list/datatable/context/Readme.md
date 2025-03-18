@@ -1,0 +1,1 @@
+We split the DataTable context into several smaller contexts to optimize performance and avoir redenrteding everything on every change. 

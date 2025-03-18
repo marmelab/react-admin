@@ -10,6 +10,7 @@ import {
     TestMemoryRouter,
     SortPayload,
     AuthProvider,
+    CanAccess,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import defaultMessages from 'ra-language-english';
@@ -18,10 +19,11 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { Box, Checkbox, TableCell, TableRow, styled } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { FieldProps, TextField } from '../../field';
+import { FieldProps, NumberField, TextField } from '../../field';
 import {
     BulkDeleteButton,
     BulkExportButton,
+    EditButton,
     SelectAllButton as RaSelectAllButton,
 } from '../../button';
 import { Datagrid, DatagridProps } from './Datagrid';

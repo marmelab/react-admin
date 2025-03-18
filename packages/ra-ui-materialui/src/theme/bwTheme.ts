@@ -298,6 +298,9 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                         '&.MuiTableCell-paddingNone': {
                             padding: `${SPACING * 0.5}px`,
                         },
+                        '&.MuiTableCell-paddingCheckbox': {
+                            padding: `0 ${SPACING}px`,
+                        },
                     },
                 },
             },

@@ -13,8 +13,8 @@ export default url => ({
         nextPage: "button[aria-label='Go to next page']",
         previousPage: "button[aria-label='Go to previous page']",
         pageNumber: n => `button[aria-label='Go to page ${n}']`,
-        recordRows: '.datagrid-body tr',
-        viewsColumn: '.datagrid-body tr td:nth-child(8)',
+        recordRows: '.datatable-body tr',
+        viewsColumn: '.datatable-body tr td:nth-child(8)',
         datagridHeaders: 'th',
         sortBy: name => `th span[data-field="${name}"]`,
         svg: (name, criteria = '') =>

@@ -115,6 +115,7 @@ const Root = styled('div', {
                 : theme.palette.primary.dark,
         minHeight: theme.spacing(6),
         height: theme.spacing(6),
+        paddingRight: theme.spacing(2),
         transform: `translateY(-${theme.spacing(6)})`,
         transition: `${theme.transitions.create(
             'height'
@@ -126,7 +127,7 @@ const Root = styled('div', {
     },
 
     [`& .${BulkActionsToolbarClasses.topToolbar}`]: {
-        paddingBottom: theme.spacing(1),
+        padding: theme.spacing(0.5),
         minHeight: 'auto',
         [theme.breakpoints.down('sm')]: {
             backgroundColor: 'transparent',
