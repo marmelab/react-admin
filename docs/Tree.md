@@ -29,6 +29,8 @@ const data = [
 export const SimpleTree = () => <Tree data={data} titleField="name" />;
 ```
 
+![Tree screenshot](./img/tree.png)
+
 ## Props
 
 The `<Tree>` component accepts the [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) props but a few of them differ from the original.
