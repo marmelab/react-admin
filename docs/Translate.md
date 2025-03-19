@@ -19,11 +19,11 @@ export default MyHelloButton;
 
 ## Props
 
-| Prop       | Required | Type     | Default            | Description                                                     |
-| ---------- | -------- | -------- | ------------------ | --------------------------------------------------------------- |
-| `args`     | Optional | `Object` | -                  | The arguments used for pluralization and interpolation.         |
-| `children` | Optional | `string` | `"no translation"` | The default content to display if the translation is not found. |
-| `i18nKey`  | Required | `string` | -                  | The translation key.                                            |
+| Prop       | Required | Type     | Default | Description                                                     |
+| ---------- | -------- | -------- | ------- | --------------------------------------------------------------- |
+| `args`     | Optional | `Object` | -       | The arguments used for pluralization and interpolation.         |
+| `children` | Optional | `string` | -       | The default content to display if the translation is not found. |
+| `i18nKey`  | Required | `string` | -       | The translation key.                                            |
 
 ## `args`: Pluralization and Interpolation
 

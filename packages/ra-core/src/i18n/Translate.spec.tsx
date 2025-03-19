@@ -25,15 +25,15 @@ describe('<Translate />', () => {
                     },
                 }}
             >
-                <Translate i18nKey="custom.myKey" />
+                <Translate i18nKey="custom.myKey">Lorem Ipsum</Translate>
             </TestTranslationProvider>
         );
         expect(container.innerHTML).toBe('My Translated Key');
     });
 
-    it('should render the empty prop if no translation available', () => {
+    it('should render anything if no translation available', () => {
         const { container } = render(<NoTranslation />);
-        expect(container.innerHTML).toBe('no translation');
+        expect(container.innerHTML).toBe('');
     });
 
     it('should render the children if no translation available', () => {
