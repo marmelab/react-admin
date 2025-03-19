@@ -101,14 +101,14 @@
             href="{{ '/css/newsletter.css' | relative_url }}"
         />
 
+        <meta name="view-transition" content="same-origin" />
+        <meta name="turbo-refresh-method" content="morph" />
+        <meta name="turbo-refresh-scroll" content="preserve" />
         <script
             type="module"
             src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@latest/dist/turbo.es2017-esm.min.js"
         ></script>
-        <meta name="view-transition" content="same-origin" />
         <script src="{{ 'js/turbo.js' | relative_url }}"></script>
-        <meta name="turbo-refresh-method" content="morph" />
-        <meta name="turbo-refresh-scroll" content="preserve" />
 
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
@@ -138,18 +138,11 @@
             <div class="container sticker-container">
                 <div class="row">
                     <div class="col s12 m9">
-                        <!-- <turbo-frame
-                            id="content-container"
-                            data-turbo-action="advance"
-                            autoscroll
-                            data-autoscroll-block="start"
-                        > -->
                         <div
                             class="markdown-section DocSearch-content toc-content"
                         >
                             {{ content }}
                         </div>
-                        <!-- </turbo-frame> -->
                     </div>
                     <div class="col hide-on-small-only m3 toc-container">
                         <div class="toc"></div>
@@ -160,7 +153,7 @@
 
         <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
         <script defer src="{{ 'js/prism.js' | relative_url }}"></script>
-        
+
         <!-- <script src="{{ 'js/ra-doc-exec.js' | relative_url }}"></script> -->
 
         <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
