@@ -27,6 +27,17 @@ function buildPageToC() {
     }
 }
 
+function refreshPageToC() {
+    var Prism = window.Prism;
+    Prism.highlightAll();
+
+    /* Refresh table of contents */
+    if (document.querySelector('.toc') != null) {
+        var tocbot = window.tocbot;
+        tocbot.refresh();
+    }
+}
+
 const applyPreferredLanguage = async () => {
     const preferredLanguage =
         window.localStorage.getItem('preferred-language') || 'tsx';
@@ -241,10 +252,18 @@ function scrollActiveMenuItemIntoView() {
     }
 }
 
+window.addEventListener('DOMContentLoaded', () => {
+    buildPageToC();
+});
+
 document.addEventListener('turbo:load', function (event) {
     console.log('turbo:load', event);
-    buildPageToC();
     buildJSCodeBlocksFromTS();
     changeSelectedMenu();
     scrollActiveMenuItemIntoView();
+});
+
+document.addEventListener('turbo:render', function (event) {
+    console.log('turbo:render', event);
+    refreshPageToC();
 });
