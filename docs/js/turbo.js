@@ -237,7 +237,7 @@ function isElementInViewport(el) {
 function scrollActiveMenuItemIntoView() {
     var activeMenu = document.querySelector('.sidenav li.active');
     if (activeMenu && !isElementInViewport(activeMenu)) {
-        activeMenu.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        activeMenu.scrollIntoView({ behavior: 'instant', block: 'center' });
     }
 }
 
