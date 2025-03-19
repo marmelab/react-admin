@@ -1,6 +1,6 @@
 /* global Prism, prettier, prettierPlugins */
 
-function buildPageToC() {
+function initPageToC() {
     var M = window.M;
     M.Sidenav.init(document.querySelectorAll('.sidenav'));
     // Initialize version selector
@@ -219,10 +219,10 @@ const buildJSCodeBlocksFromTS = async () => {
         })
     );
 
-    applyPreferredLanguage();
+    return applyPreferredLanguage();
 };
 
-function changeSelectedMenu() {
+function updateSelectedMenu() {
     var activeMenu = document.querySelector(`.sidenav li.active`);
     activeMenu && activeMenu.classList.remove('active');
     const allMenus = Array.from(
@@ -252,18 +252,23 @@ function scrollActiveMenuItemIntoView() {
     }
 }
 
+// called on initial load
 window.addEventListener('DOMContentLoaded', () => {
-    buildPageToC();
+    console.log('DOMContentLoaded');
+    initPageToC();
 });
 
+// called on initial load and subsequent visits
 document.addEventListener('turbo:load', function (event) {
     console.log('turbo:load', event);
-    buildJSCodeBlocksFromTS();
-    changeSelectedMenu();
+    updateSelectedMenu();
     scrollActiveMenuItemIntoView();
+    buildJSCodeBlocksFromTS();
 });
 
+// called after turbo has rendered the page
+// can be called up to 2 times (cached + fresh version)
 document.addEventListener('turbo:render', function (event) {
-    console.log('turbo:render', event);
+    console.log('turbo:render', event.detail.renderMethod, event);
     refreshPageToC();
 });
