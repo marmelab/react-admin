@@ -1,2 +1,4 @@
 liquid:
   error_mode: strict
+plugins:
+  - jekyll-relative-links

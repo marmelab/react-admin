@@ -100,11 +100,60 @@
             rel="stylesheet"
             href="{{ '/css/newsletter.css' | relative_url }}"
         />
+
+        <meta name="view-transition" content="same-origin" />
+        <meta name="turbo-refresh-method" content="morph" />
+        <meta name="turbo-refresh-scroll" content="preserve" />
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@latest/dist/turbo.es2017-esm.min.js"
+        ></script>
+        <script src="{{ 'js/turbo.js' | relative_url }}"></script>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
+            defer
+            integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+
+        <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
+        <script defer src="{{ 'js/prism.js' | relative_url }}"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+
+        <!--
+            React-admin protects your privacy!
+            We use our own self-hosted tracking solution to collect some raw metrics,
+            like page views, device type (mobile, desktop, etc.) or country.
+            We don't track any personal information about our visitors.
+        -->
+        <script
+            async
+            defer
+            data-website-id="ef7f8242-2808-4cbf-9dff-564daa515bbd"
+            src="https://analytics.marmelab.com/umami.js"
+        ></script>
+
+        <script
+            defer
+            src="https://unpkg.com/typescript@5.1.3/lib/typescript.js"
+        ></script>
+        <script
+            defer
+            src="https://unpkg.com/prettier@2.8.8/standalone.js"
+        ></script>
+        <script
+            defer
+            src="https://unpkg.com/prettier@2.8.8/parser-babel.js"
+        ></script>
     </head>
 
     <body>
         <header>
             {% include nav.html %}
+
             <ul id="slide-out" class="sidenav sidenav-fixed">
                 <li class="logo">
                     <a href="{{ site.url }}"
@@ -133,18 +182,11 @@
             </div>
         </main>
 
-        <script src="{{ '/js/materialize.min.js' | relative_url }}"></script>
-        <script src="{{ 'js/prism.js' | relative_url }}"></script>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.min.js"
-            defer
-            integrity="sha512-oD3xGN8YTxenx6tdS4D/RKqO4OtORBQtAb2/FseM17GGMIi6jMwKUBc8duX4A5RwMOGGXoFBZrsqbOk8GpXFgQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-        <script src="{{ 'js/ra-doc-exec.js' | relative_url }}"></script>
+        
+        
 
-        <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+        <!-- <script src="{{ 'js/ra-doc-exec.js' | relative_url }}"></script> -->
+
         {% if page.dir contains "doc" %} {% assign version = page.dir | split:
         '/' | last %} {% else %} {% assign version = "latest" %} {% endif %}
         <script type="text/javascript">
@@ -157,21 +199,18 @@
                     facetFilters: ['version:  {{ version }}'],
                     attributesToHighlight: ['hierarchy.lvl0'],
                 },
+                // Debug - Uncomment the following when testing locally
+                transformItems: items => {
+                    return items.map(item => ({
+                        ...item,
+                        url: item.url.replace(
+                            'https://marmelab.com/react-admin/',
+                            'http://0.0.0.0:4000/'
+                        ),
+                    }));
+                },
             });
         </script>
-
-        <!--
-        React-admin protects your privacy!
-        We use our own self-hosted tracking solution to collect some raw metrics,
-        like page views, device type (mobile, desktop, etc.) or country.
-        We don't track any personal information about our visitors.
-    -->
-        <script
-            async
-            defer
-            data-website-id="ef7f8242-2808-4cbf-9dff-564daa515bbd"
-            src="https://analytics.marmelab.com/umami.js"
-        ></script>
 
         <!-- Newsletter form -->
         <script>
@@ -185,21 +224,5 @@
 
             var AUTOHIDE = Boolean(0);
         </script>
-
-        <script
-            async
-            defer
-            src="https://unpkg.com/typescript@5.1.3/lib/typescript.js"
-        ></script>
-        <script
-            async
-            defer
-            src="https://unpkg.com/prettier@2.8.8/standalone.js"
-        ></script>
-        <script
-            async
-            defer
-            src="https://unpkg.com/prettier@2.8.8/parser-babel.js"
-        ></script>
     </body>
 </html>
