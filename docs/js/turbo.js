@@ -218,8 +218,8 @@ function changeSelectedMenu() {
         document.querySelectorAll(`.sidenav a.nav-link`)
     );
     allMenus
-        .find(menuEl => menuEl.href === window.location.href)
-        .parentNode.classList.add('active');
+        .find(menuEl => menuEl.href === window.location.href.split('#')[0])
+        ?.parentNode.classList.add('active');
 }
 
 function isElementInViewport(el) {
