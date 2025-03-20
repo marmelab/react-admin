@@ -4,6 +4,7 @@ export * from './substituteTokens';
 export * from './TestTranslationProvider';
 export * from './I18nContext';
 export * from './I18nContextProvider';
+export * from './Translate';
 export * from './TranslationMessages';
 export * from './TranslatableContext';
 export * from './TranslatableContextProvider';
