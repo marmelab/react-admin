@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { Translate } from '../types';
+import { TranslateFunction } from '../types';
 import { useI18nProvider } from './useI18nProvider';
 
 /**
@@ -22,7 +22,7 @@ import { useI18nProvider } from './useI18nProvider';
  *     return <MenuItem>{translate('settings')}</MenuItem>;
  * }
  */
-export const useTranslate = (): Translate => {
+export const useTranslate = (): TranslateFunction => {
     const i18nProvider = useI18nProvider();
     const translate = useCallback(
         (key: string, options?: any) =>
