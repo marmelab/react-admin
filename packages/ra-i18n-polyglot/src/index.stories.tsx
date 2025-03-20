@@ -5,6 +5,8 @@ import frenchMessages from 'ra-language-french';
 
 import polyglotI18nProvider from './';
 
+export default { title: 'ra-i18n-polyglot' };
+
 export const TranslateComponent = () => {
     const customMessages = {
         custom: {
