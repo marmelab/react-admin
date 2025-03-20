@@ -218,6 +218,7 @@ title: "Index"
 * [`<TourProvider>`](https://react-admin-ee.marmelab.com/documentation/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`<TranslatableFields>`](./TranslatableFields.md)
 * [`<TranslatableInputs>`](./TranslatableInputs.md)
+* [`<Translate>`](./Translate.md)
 * [`<Tree>`](https://react-admin-ee.marmelab.com/documentation/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
 * [`<TreeInput>`](./TreeInput.md)<img class="icon" src="./img/premium.svg" />
 * [`<TreeWithDetails>`](./TreeWithDetails.md)<img class="icon" src="./img/premium.svg" />

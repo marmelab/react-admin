@@ -10,8 +10,8 @@ import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { useI18nextProvider } from './index';
-import { convertRaTranslationsToI18next } from './convertRaTranslationsToI18next';
+import { Translate, I18nContextProvider } from 'ra-core';
+import { useI18nextProvider, convertRaTranslationsToI18next } from './index';
 
 export default {
     title: 'ra-i18n-i18next',
@@ -170,6 +170,42 @@ export const WithCustomOptions = () => {
                 />
             </Admin>
         </TestMemoryRouter>
+    );
+};
+
+export const TranslateComponent = () => {
+    const i18nProvider = useI18nextProvider({
+        options: {
+            resources: {
+                en: {
+                    translation: convertRaTranslationsToI18next({
+                        ...englishMessages,
+                        custom: {
+                            myKey: 'My Translated Key',
+                            helloWorld: 'Hello, %{myWorld}!',
+                            countBeer: 'One beer |||| %{smart_count} beers',
+                        },
+                    }),
+                },
+            },
+        },
+    });
+
+    if (!i18nProvider) return null;
+
+    return (
+        <I18nContextProvider value={i18nProvider}>
+            <Translate i18nKey="custom.myKey" />
+            <br />
+            <Translate i18nKey="ra.page.dashboard" />
+            <br />
+            <Translate
+                i18nKey="custom.helloWorld"
+                args={{ myWorld: 'world' }}
+            />
+            <br />
+            <Translate i18nKey="custom.countBeer" args={{ smart_count: 2 }} />
+        </I18nContextProvider>
     );
 };
 

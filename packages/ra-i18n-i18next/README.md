@@ -3,13 +3,14 @@
 [i18next](https://www.i18next.com/) adapter for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
 You might prefer this package over `ra-i18n-polyglot` when:
+
 - you already use i18next services such as [locize](https://locize.com/)
 - you want more control on how you organize translations, leveraging [multiple files and namespaces](https://www.i18next.com/principles/namespaces)
 - you want more control on how you [load translations](https://www.i18next.com/how-to/add-or-load-translations)
 - you want to use features not available in Polyglot such as:
-    - [advanced formatting](https://www.i18next.com/translation-function/formatting);
-    - [nested translations](https://www.i18next.com/translation-function/nesting)
-    - [context](https://www.i18next.com/translation-function/context)
+  - [advanced formatting](https://www.i18next.com/translation-function/formatting);
+  - [nested translations](https://www.i18next.com/translation-function/nesting)
+  - [context](https://www.i18next.com/translation-function/context)
 
 ## Installation
 
@@ -28,7 +29,7 @@ const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
             resources: {
-                translations: convertRaMessagesToI18next(englishMessages)
+                translation: convertRaMessagesToI18next(englishMessages)
             }
         }
     });
@@ -61,7 +62,7 @@ const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
             resources: {
-                translations: convertRaMessagesToI18next(englishMessages)
+                translation: convertRaMessagesToI18next(englishMessages)
             }
         }
     });
@@ -194,6 +195,7 @@ const App = () => {
 
 A function that takes translations from a standard react-admin language package and converts them to i18next format.
 It transforms the following:
+
 - interpolations wrappers from `%{foo}` to `{{foo}}` unless a prefix and/or a suffix are provided
 - pluralization messages from a single key containing text like `"key": "foo |||| bar"` to multiple keys `"foo_one": "foo"` and `"foo_other": "bar"`
 
