@@ -60,6 +60,13 @@ export const generateProject = async (state: ProjectConfiguration) => {
     generateEnvFile(projectDirectory, state);
     generateReadme(projectDirectory, state);
 
+    if (state.installer === 'pnpm') {
+        copyDirectoryFiles(
+            path.join(__dirname, '../templates/pnpm'),
+            projectDirectory
+        );
+    }
+
     return getHelpMessages(state);
 };
 
