@@ -11,10 +11,7 @@ export const Translate = ({ i18nKey, args, children }: TranslateProps) => {
     if (translatedMessage) {
         return <>{translatedMessage}</>;
     }
-    if (children) {
-        return <>{children}</>;
-    }
-    return null;
+    return children;
 };
 
 export interface TranslateProps {
