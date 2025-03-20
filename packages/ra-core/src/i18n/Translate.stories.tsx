@@ -24,11 +24,28 @@ export const NoTranslation = () => (
     </TestTranslationProvider>
 );
 
-export const NoTranslationWithChildren = () => (
+export const NoTranslationWithChildren = ({
+    isChildrenANode = false,
+}: {
+    isChildrenANode?: boolean;
+}) => (
     <TestTranslationProvider messages={{}}>
-        <Translate i18nKey="custom.myKey">My Default Translation</Translate>
+        <Translate i18nKey="custom.myKey">
+            {isChildrenANode ? (
+                <div style={{ color: 'red' }}>
+                    <i>My Default Translation</i>
+                </div>
+            ) : (
+                'My Default Translation'
+            )}
+        </Translate>
     </TestTranslationProvider>
 );
+
+NoTranslationWithChildren.args = { isChildrenANode: false };
+NoTranslationWithChildren.argTypes = {
+    isChildrenANode: { control: 'boolean' },
+};
 
 export const Args = () => (
     <TestTranslationProvider

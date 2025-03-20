@@ -36,9 +36,18 @@ describe('<Translate />', () => {
         expect(container.innerHTML).toBe('');
     });
 
-    it('should render the children if no translation available', () => {
+    it('should render the children (string) if no translation available', () => {
         const { container } = render(<NoTranslationWithChildren />);
         expect(container.innerHTML).toBe('My Default Translation');
+    });
+
+    it('should render the children (ReactNode) if no translation available', () => {
+        const { container } = render(
+            <NoTranslationWithChildren isChildrenANode />
+        );
+        expect(container.innerHTML).toBe(
+            '<div style="color: red;"><i>My Default Translation</i></div>'
+        );
     });
 
     it('should render the translation with args', () => {
