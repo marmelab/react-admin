@@ -15,7 +15,7 @@ export interface DataTableColumnProps
     render?: (record: any) => React.ReactNode;
     field?: React.ElementType;
     source?: string;
-    label?: string;
+    label?: React.ReactNode;
     sortable?: boolean;
     sortByOrder?: SortPayload['order'];
 }

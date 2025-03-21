@@ -30,14 +30,11 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
-export interface DataTableRowProps
-    extends Omit<TableRowProps, 'id' | 'classes'> {
-    id: string;
-}
+export interface DataTableRowProps extends Omit<TableRowProps, 'classes'> {}
 
 export const DataTableRow = React.memo(
     React.forwardRef<HTMLTableRowElement, DataTableRowProps>((props, ref) => {
-        const { children, className, id, ...rest } = props;
+        const { children, className, ...rest } = props;
         const {
             expand,
             expandSingle,
@@ -48,9 +45,6 @@ export const DataTableRow = React.memo(
         const { handleToggleItem, isRowExpandable, isRowSelectable, rowClick } =
             useDataTableCallbacksContext();
 
-        if (typeof id === 'undefined') {
-            throw new Error('DataTableRow expects an id prop');
-        }
         const record = useRecordContext(props);
         if (!record) {
             throw new Error(
@@ -71,7 +65,7 @@ export const DataTableRow = React.memo(
             (!isRowExpandable || isRowExpandable(record)) && expand;
         const [expanded, toggleExpanded] = useExpanded(
             resource,
-            id,
+            record.id,
             expandSingle
         );
         const [nbColumns, setNbColumns] = useState(() =>
@@ -103,10 +97,10 @@ export const DataTableRow = React.memo(
         const handleToggleSelection = useCallback(
             event => {
                 if (!selectable || !handleToggleItem) return;
-                handleToggleItem(id, event);
+                handleToggleItem(record.id, event);
                 event.stopPropagation();
             },
-            [id, handleToggleItem, selectable]
+            [record.id, handleToggleItem, selectable]
         );
 
         const getPathForRecord = useGetPathForRecordCallback();
@@ -164,7 +158,7 @@ export const DataTableRow = React.memo(
                         [DataTableClasses.clickableRow]:
                             rowClick ?? hasDetailView,
                     })}
-                    key={id}
+                    key={record.id}
                     hover={hover}
                     onClick={handleClick}
                     {...rest}
@@ -185,7 +179,7 @@ export const DataTableRow = React.memo(
                                     )}
                                     expanded={expanded}
                                     onClick={handleToggleExpand}
-                                    expandContentId={`${id}-expand`}
+                                    expandContentId={`${resource}-${record.id}-expand`}
                                 />
                             )}
                         </TableCell>
@@ -195,8 +189,8 @@ export const DataTableRow = React.memo(
                 </TableRow>
                 {expandable && expanded && (
                     <TableRow
-                        key={`${id}-expand`}
-                        id={`${id}-expand`}
+                        key={`${record.id}-expand`}
+                        id={`${resource}-${record.id}-expand`}
                         className={DataTableClasses.expandedPanel}
                     >
                         <TableCell colSpan={nbColumns}>

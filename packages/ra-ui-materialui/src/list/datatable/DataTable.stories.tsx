@@ -1,17 +1,42 @@
 import * as React from 'react';
-import { ResourceContextProvider, CoreAdminContext, CanAccess } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
+import {
+    Resource,
+    ResourceContextProvider,
+    ListContextProvider,
+    useRecordContext,
+    useGetList,
+    useList,
+    SortPayload,
+    AuthProvider,
+    CanAccess,
+} from 'ra-core';
+import defaultMessages from 'ra-language-english';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
+import { Box, TableRow, styled } from '@mui/material';
 
-import { NumberField } from '../../field';
-
+import { NumberField, TextField } from '../../field';
 import { List } from '../List';
-
-import { DataTable } from './DataTable';
-import { ColumnsButton } from './ColumnsButton';
-import { TopToolbar } from '../../layout';
-import { EditButton } from '../../button';
+import { DataTable, DataTableProps } from './DataTable';
+import { DataTableRowProps } from './DataTableRow';
+import {
+    DataTableBody as BaseDataTableBody,
+    DataTableBodyProps,
+} from './DataTableBody';
+import {
+    BulkDeleteButton,
+    BulkExportButton,
+    EditButton,
+    SelectAllButton as RaSelectAllButton,
+} from '../../button';
+import { ShowGuesser, SimpleShowLayout } from '../../detail';
+import { AdminUI } from '../../AdminUI';
+import { AdminContext } from '../../AdminContext';
+import { EditGuesser } from '../../detail';
+import { BulkActionsToolbar } from '../BulkActionsToolbar';
+import { SelectRowTableCell } from './SelectRowTableCell';
 
 export default { title: 'ra-ui-materialui/list/DataTable' };
 
@@ -62,38 +87,37 @@ const data = {
     ],
 };
 
-const booksDataProvider = fakeRestDataProvider(data);
-
+const dataProvider = fakeRestDataProvider(data);
 const theme = createTheme();
 
 const Wrapper = ({
     children,
-    dataProvider = booksDataProvider,
+    defaultDataProvider = dataProvider,
     resource = 'books',
-    actions = (
-        <TopToolbar>
-            <ColumnsButton />
-        </TopToolbar>
-    ),
+    actions = null,
     aside = null,
 }) => (
-    <CoreAdminContext dataProvider={dataProvider}>
-        <ThemeProvider theme={theme}>
-            <ResourceContextProvider value={resource}>
-                <List
-                    perPage={5}
-                    sx={{ px: 4 }}
-                    actions={actions}
-                    aside={aside}
-                >
-                    {children}
-                </List>
-            </ResourceContextProvider>
-        </ThemeProvider>
-    </CoreAdminContext>
+    <AdminContext dataProvider={defaultDataProvider} theme={theme}>
+        <ResourceContextProvider value={resource}>
+            <List perPage={5} sx={{ p: 4 }} actions={actions} aside={aside}>
+                {children}
+            </List>
+        </ResourceContextProvider>
+    </AdminContext>
 );
 
 export const Basic = () => (
+    <Wrapper>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const Columns = () => (
     <Wrapper>
         <DataTable
             rowSx={record => (record.id === 6 ? { bgcolor: 'lightgray' } : {})}
@@ -126,39 +150,595 @@ export const Basic = () => (
     </Wrapper>
 );
 
-const HideMe = (_props: { children?: React.ReactNode }) => null;
+const CustomEmpty = () => <div>No books found</div>;
 
-export const ColumnsSelector = () => (
-    <Wrapper
-        dataProvider={fakeRestDataProvider({
-            test: [
-                {
-                    col0: 'a',
-                    col1: 'b',
-                    col2: 'c',
-                    col3: 'd',
-                    col4: 'e',
-                    col5: 'f',
-                    col6: 'g',
-                    col7: 'h',
-                },
-            ],
-        })}
-        resource="test"
-        actions={null}
-        aside={<ColumnsButton />}
-    >
-        <DataTable bulkActionButtons={false} hiddenColumns={['col7']}>
-            <DataTable.Col source="col0" label="c_0" />
-            <DataTable.Col source="col1" label="c_1" />
-            <DataTable.Col source="col2" label="c_2" />
-            <DataTable.Col source="col3" label="c_3" />
-            <DataTable.Col source="col4" label="c_4" />
-            <DataTable.Col source="col5" label="c_5" />
-            <HideMe>
-                <DataTable.Col source="col6" label="c_6" />
-            </HideMe>
-            <DataTable.Col source="col7" label="c_7" />
+export const Empty = () => (
+    <Wrapper>
+        <Box sx={{ mt: -7 }}>
+            <h1>Default</h1>
+            <DataTable data={[]} total={0}>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+            <h1>Custom</h1>
+            <DataTable data={[]} total={0} empty={<CustomEmpty />}>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+        </Box>
+    </Wrapper>
+);
+
+export const Hover = () => (
+    <Wrapper>
+        <DataTable hover={false}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
 );
+
+export const Size = () => (
+    <Wrapper>
+        <Box sx={{ mt: -7 }}>
+            <h1>Default (small)</h1>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+            <h1>Medium</h1>
+            <DataTable size="medium">
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+        </Box>
+    </Wrapper>
+);
+
+export const SX = () => (
+    <Wrapper>
+        <DataTable
+            sx={{
+                '& .RaDataTable-rowOdd': {
+                    backgroundColor: '#fee',
+                },
+            }}
+        >
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const RowSx = () => (
+    <Wrapper>
+        <DataTable
+            rowSx={(record: any) => ({
+                backgroundColor: record.id % 2 ? 'white' : '#eee',
+                ...(record.year > 1900 && {
+                    '& td.column-year': { color: 'primary.main' },
+                }),
+            })}
+        >
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+const StyledDataTable = styled(DataTable, {
+    name: 'MyStyledDataTable',
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({
+    table: {
+        width: '70%',
+        backgroundColor: '#ffb',
+    },
+}));
+
+export const StyledComponent = () => (
+    <Wrapper>
+        <StyledDataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </StyledDataTable>
+    </Wrapper>
+);
+
+export const ColumnStyles = () => (
+    <Wrapper>
+        <Box sx={{ mt: -7 }}>
+            <h1>Full column</h1>
+            <DataTable
+                sx={{
+                    '& .column-title': {
+                        backgroundColor: '#fee',
+                    },
+                }}
+            >
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+            <h1>Cells only</h1>
+            <DataTable
+                sx={{
+                    '& td.column-title': {
+                        backgroundColor: '#fee',
+                    },
+                }}
+            >
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+            <h1>Hidden column on small screens</h1>
+            <DataTable
+                sx={{
+                    '& .column-title': {
+                        sm: { display: 'none' },
+                        md: { display: 'table-cell' },
+                    },
+                }}
+            >
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+        </Box>
+    </Wrapper>
+);
+
+const sort = { field: 'id', order: 'DESC' } as SortPayload;
+
+const MyCustomList = () => {
+    const { data, total, isPending } = useGetList('books', {
+        pagination: { page: 1, perPage: 10 },
+        sort: sort,
+    });
+
+    return (
+        <DataTable
+            data={data}
+            total={total}
+            isPending={isPending}
+            sort={sort}
+            bulkActionButtons={false}
+        >
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+        </DataTable>
+    );
+};
+
+const MyCustomListInteractive = () => {
+    const { data: books, isPending: isBooksPending } = useGetList('books');
+    const {
+        data,
+        sort,
+        isPending,
+        onSelect,
+        onToggleItem,
+        setSort,
+        selectedIds,
+        total,
+    } = useList({ data: books, isPending: isBooksPending });
+
+    return (
+        <DataTable
+            data={data}
+            sort={sort}
+            isPending={isPending}
+            onSelect={onSelect}
+            onToggleItem={onToggleItem}
+            setSort={setSort}
+            selectedIds={selectedIds}
+            total={total}
+            // FIXME row selection fails when not in ListContextProvider
+            bulkActionButtons={false}
+        >
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+        </DataTable>
+    );
+};
+
+export const Standalone = () => (
+    <AdminContext dataProvider={dataProvider} theme={theme}>
+        <ResourceContextProvider value="books">
+            <h1>Static</h1>
+            <MyCustomList />
+            <h1>Dynamic (with useList)</h1>
+            <MyCustomListInteractive />
+        </ResourceContextProvider>
+    </AdminContext>
+);
+
+export const ErrorInFetch = () => (
+    <AdminContext>
+        <ListContextProvider
+            value={
+                {
+                    error: new Error('Error in dataProvider'),
+                } as any
+            }
+        >
+            <ResourceContextProvider value="books">
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="author" />
+                    <DataTable.Col source="year" />
+                </DataTable>
+            </ResourceContextProvider>
+        </ListContextProvider>
+    </AdminContext>
+);
+
+export const RowClickFalse = () => (
+    <Wrapper>
+        <DataTable rowClick={false}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+const ExpandPanel = () => {
+    const book = useRecordContext();
+    return (
+        <div data-testid="ExpandPanel">
+            <i>{book?.title}</i>, by {book?.author} ({book?.year})
+        </div>
+    );
+};
+
+export const Expand = () => (
+    <Wrapper>
+        <DataTable expand={<ExpandPanel />}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const ExpandSingle = () => (
+    <Wrapper>
+        <DataTable expand={<ExpandPanel />} expandSingle>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const IsRowExpandable = () => (
+    <Wrapper>
+        <DataTable
+            isRowExpandable={record => Boolean(record.id % 2)}
+            expand={
+                <SimpleShowLayout>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                    <TextField source="author" />
+                    <TextField source="year" />
+                </SimpleShowLayout>
+            }
+        >
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+const CustomBulkActionButtons = () => (
+    <>
+        <BulkExportButton />
+        <BulkDeleteButton />
+    </>
+);
+
+export const BulkActionButtons = () => (
+    <Wrapper>
+        <Box sx={{ mt: -7 }}>
+            <h1>Default</h1>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+            <h1>Disabled</h1>
+            <DataTable bulkActionButtons={false}>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+            <h1>Custom</h1>
+            <DataTable bulkActionButtons={<CustomBulkActionButtons />}>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+            <h1>Unselectable Rows</h1>
+            <DataTable isRowSelectable={record => record.id % 2 === 0}>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
+        </Box>
+    </Wrapper>
+);
+
+export const SelectAllButton = ({
+    onlyDisplay,
+}: {
+    onlyDisplay?: 'default' | 'disabled' | 'custom';
+}) => (
+    <Wrapper>
+        <Box sx={{ mt: -7 }}>
+            {(!onlyDisplay || onlyDisplay === 'default') && (
+                <>
+                    <h1>Default</h1>
+                    <DataTable>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                        <DataTable.Col source="year" />
+                    </DataTable>
+                </>
+            )}
+            {(!onlyDisplay || onlyDisplay === 'disabled') && (
+                <>
+                    <h1>Disabled</h1>
+                    <DataTable
+                        bulkActionsToolbar={
+                            <BulkActionsToolbar selectAllButton={false}>
+                                <BulkDeleteButton />
+                            </BulkActionsToolbar>
+                        }
+                    >
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                        <DataTable.Col source="year" />
+                    </DataTable>
+                </>
+            )}
+            {(!onlyDisplay || onlyDisplay === 'custom') && (
+                <>
+                    <h1>Custom</h1>
+                    <DataTable
+                        bulkActionsToolbar={
+                            <BulkActionsToolbar
+                                selectAllButton={
+                                    <RaSelectAllButton label="Select all records" />
+                                }
+                            >
+                                <BulkDeleteButton />
+                            </BulkActionsToolbar>
+                        }
+                    >
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                        <DataTable.Col source="year" />
+                    </DataTable>
+                </>
+            )}
+        </Box>
+    </Wrapper>
+);
+
+export const IsRowSelectable = () => (
+    <Wrapper>
+        <DataTable isRowSelectable={record => Boolean(record.id % 2)}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+const MyDataTableRow = ({ children }: DataTableRowProps) => {
+    const record = useRecordContext();
+    return record ? (
+        <TableRow
+            sx={{
+                '&:nth-of-type(odd)': {
+                    backgroundColor: theme.palette.action.hover,
+                },
+                '&:last-child td, &:last-child th': {
+                    border: 0,
+                },
+            }}
+        >
+            <SelectRowTableCell />
+            {children}
+        </TableRow>
+    ) : null;
+};
+
+const MyDataTableBody = (props: DataTableBodyProps) => (
+    <BaseDataTableBody {...props} row={MyDataTableRow} />
+);
+
+export const DataTableBody = () => (
+    <Wrapper>
+        <DataTable body={MyDataTableBody}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const FullApp = ({
+    rowClick,
+}: {
+    rowClick: DataTableProps['rowClick'];
+}) => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <DataTable
+                            rowClick={rowClick}
+                            expand={<ExpandDetails />}
+                        >
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="title" />
+                            <DataTable.Col source="author" />
+                            <DataTable.Col source="year" />
+                        </DataTable>
+                    </List>
+                )}
+                edit={EditGuesser}
+                show={ShowGuesser}
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+FullApp.argTypes = {
+    rowClick: {
+        options: [
+            'inferred',
+            'show',
+            'edit',
+            'no-link',
+            'expand',
+            'toggleSelection',
+            'function to expand',
+            'function to toggleSelection',
+        ],
+        mapping: {
+            inferred: undefined,
+            show: 'show',
+            edit: 'edit',
+            'no-link': false,
+            expand: 'expand',
+            toggleSelection: 'toggleSelection',
+            'function to expand': (id, resource, record) => {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log('function to expand', id, resource, record);
+                }
+                return 'expand';
+            },
+            'function to toggleSelection': (id, resource, record) => {
+                if (process.env.NODE_ENV === 'development') {
+                    console.log(
+                        'function to toggleSelection',
+                        id,
+                        resource,
+                        record
+                    );
+                }
+                return 'toggleSelection';
+            },
+        },
+        control: { type: 'select' },
+    },
+};
+
+const ExpandDetails = () => {
+    const record = useRecordContext();
+
+    return <div>Expand: {record?.title}</div>;
+};
+
+export const AccessControl = ({
+    allowedAction = 'show',
+    authProvider = {
+        login: () => Promise.reject(new Error('Not implemented')),
+        logout: () => Promise.reject(new Error('Not implemented')),
+        checkAuth: () => Promise.resolve(),
+        checkError: () => Promise.reject(new Error('Not implemented')),
+        getPermissions: () => Promise.resolve(undefined),
+        canAccess: ({ action }) =>
+            new Promise(resolve => {
+                setTimeout(
+                    resolve,
+                    300,
+                    action === 'list' ||
+                        (allowedAction && action === allowedAction)
+                );
+            }),
+    },
+}: {
+    allowedAction?: 'show' | 'edit' | 'delete' | 'invalid';
+    authProvider?: AuthProvider;
+}) => (
+    <AdminContext
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <DataTable key={allowedAction}>
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="title" />
+                            <DataTable.Col source="author" />
+                            <DataTable.Col source="year" />
+                        </DataTable>
+                    </List>
+                )}
+                show={ShowGuesser}
+                edit={EditGuesser}
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+AccessControl.argTypes = {
+    allowedAction: {
+        options: ['show', 'edit', 'delete', 'none'],
+        mapping: {
+            show: 'show',
+            edit: 'edit',
+            delete: 'delete',
+            none: 'invalid',
+        },
+        control: { type: 'select' },
+    },
+};

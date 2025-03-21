@@ -266,7 +266,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
 
         const callbacksContextValue = useMemo(
             () => ({
-                handleSort,
+                handleSort: setSort ? handleSort : undefined,
                 handleToggleItem,
                 isRowExpandable,
                 isRowSelectable,
@@ -275,6 +275,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
                 rowSx,
             }),
             [
+                setSort,
                 handleSort,
                 handleToggleItem,
                 isRowExpandable,

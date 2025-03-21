@@ -44,7 +44,6 @@ export const DataTableBody = React.memo(
                                     [DataTableClasses.rowOdd]:
                                         rowIndex % 2 !== 0,
                                 })}
-                                id={record.id ?? `row${rowIndex}`}
                                 sx={rowSx?.(record, rowIndex)}
                             >
                                 {children}
