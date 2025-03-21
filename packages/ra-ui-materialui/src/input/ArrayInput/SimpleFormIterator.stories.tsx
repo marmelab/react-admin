@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 
 import { Edit } from '../../detail';
 import { SimpleForm } from '../../form';
@@ -8,6 +8,7 @@ import { SimpleFormIterator } from './SimpleFormIterator';
 import { TextInput } from '../TextInput';
 import { AdminContext } from '../../AdminContext';
 import { defaultTheme } from '../../theme/defaultTheme';
+import { useSimpleFormIteratorItem } from './useSimpleFormIteratorItem';
 
 export default { title: 'ra-ui-materialui/input/SimpleFormIterator' };
 
@@ -210,4 +211,23 @@ export const Theming = () => (
             </SimpleForm>
         </Edit>
     </AdminContext>
+);
+
+const IndexField = () => {
+    const { index } = useSimpleFormIteratorItem();
+    return (
+        <Typography variant="body2" sx={{ alignSelf: 'center' }}>
+            #{index + 1}:
+        </Typography>
+    );
+};
+
+export const UseSimpleFormIteratorItem = () => (
+    <Wrapper>
+        <SimpleFormIterator inline>
+            <IndexField />
+            <TextInput source="name" helperText={false} />
+            <TextInput source="role" helperText={false} />
+        </SimpleFormIterator>
+    </Wrapper>
 );

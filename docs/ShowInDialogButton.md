@@ -94,7 +94,7 @@ This component accepts the following props:
 |----------------|----------|----------------|----------|---------------------------|
 | `ButtonProps`  | Optional | `object`       |          | Props to pass to the MUI `<Button>` component |
 | `children`     | Required | `ReactNode`    |          | The content of the dialog |
-| `empty WhileLoading` | Optional | `boolean` |         | Set to `true` to return `null` while the list is loading |
+| `emptyWhileLoading` | Optional | `boolean` |         | Set to `true` to return `null` while the list is loading |
 | `fullWidth`    | Optional | `boolean`      | `false`  | Set to `true` to make the dialog full width |
 | `icon`         | Optional | `ReactElement` |          | The icon of the button |
 | `id`           | Optional | `string | number` |       | The record id. If not provided, it will be deduced from the record context |

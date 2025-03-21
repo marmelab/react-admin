@@ -1,4 +1,4 @@
-import { useCallback, ReactElement } from 'react';
+import { useCallback, ReactNode } from 'react';
 
 import { useTranslate } from './useTranslate';
 import { getFieldLabelTranslationArgs } from '../util';
@@ -16,7 +16,7 @@ export const useTranslateLabel = () => {
             resource,
         }: {
             source?: string;
-            label?: string | false | ReactElement;
+            label?: ReactNode;
             resource?: string;
         }) => {
             if (label === false || label === '') {

@@ -54,7 +54,7 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
 );
 
 export interface FilterButtonMenuItemProps {
-    filter: JSX.Element;
+    filter: React.ReactElement;
     displayed: boolean;
     onShow: (params: { source: string; defaultValue: any }) => void;
     onHide: (params: { source: string }) => void;

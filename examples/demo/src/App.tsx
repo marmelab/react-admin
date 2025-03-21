@@ -61,6 +61,7 @@ const App = () => {
             lightTheme={lightTheme}
             darkTheme={darkTheme}
             defaultTheme="light"
+            requireAuth
         >
             <CustomRoutes>
                 <Route path="/segments" element={<Segments />} />

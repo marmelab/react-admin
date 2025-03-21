@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "5.6.1",
+    "version": "5.6.4",
     "description": "A GraphQL data provider for react-admin",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -34,6 +34,7 @@
     },
     "dependencies": {
         "@apollo/client": "^3.3.19",
+        "graphql-tag": "^2.12.6",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0"
     },

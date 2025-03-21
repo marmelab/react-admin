@@ -80,18 +80,18 @@ const cli = meow(
 
     Options
 	  --interactive    Enable the CLI interactive mode
-	  --data-provider  Set the data provider to use ("ra-data-fakerest", "ra-data-simple-rest", "ra-data-json-server", "ra-supabase" or "none")
+	  --data-provider  Set the data provider to use ("fakerest", "simple-rest", "json-server", "supabase" or "none")
 	  --auth-provider  Set the auth provider to use ("local-auth-provider" or "none")
 	  --resource       Add a resource that will be initialized with guessers (can be used multiple times). Set to "skip" to bypass the interactive resource step.
-	  --install        Set the package manager to use for installing dependencies ("yarn", "npm", "bun" or "skip" to bypass the interactive install step)
+	  --install        Set the package manager to use for installing dependencies ("yarn", "npm", "bun", "pnpm" or "skip" to bypass the interactive install step)
 
     Examples
 	  $ npx create-react-admin@latest my-admin
-	  $ npx create-react-admin@latest my-admin --data-provider ra-data-json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+	  $ npx create-react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 	  $ yarn create react-admin@latest my-admin
-	  $ yarn create react-admin@latest my-admin --data-provider ra-data-json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+	  $ yarn create react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 	  $ bun create react-admin@latest my-admin
-	  $ bun create react-admin@latest my-admin --data-provider ra-data-json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+	  $ bun create react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 `,
     {
         flags: {
@@ -117,7 +117,7 @@ const cli = meow(
             },
             install: {
                 type: 'string',
-                choices: ['yarn', 'npm', 'bun', 'skip'],
+                choices: ['yarn', 'npm', 'bun', 'pnpm', 'skip'],
             },
         },
     }

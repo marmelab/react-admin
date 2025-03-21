@@ -8,6 +8,7 @@ import {
     AccordionDetails,
     AccordionSummary,
     Typography,
+    SxProps,
 } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -24,6 +25,8 @@ import { Title } from './Title';
 export const Error = (
     props: InternalErrorProps & {
         errorComponent?: ComponentType<ErrorProps>;
+    } & {
+        sx?: SxProps;
     }
 ) => {
     const {
