@@ -102,8 +102,8 @@ export const DateInput = ({
             // Trigger a remount of the HTML input
             setInputKey(r => r + 1);
             // Resets the flag to ensure futures changes are handled
+            wasLastChangedByInput.current = false;
         }
-        wasLastChangedByInput.current = false;
     }, [setInputKey, field.value]);
 
     const { onBlur: onBlurFromField } = field;
