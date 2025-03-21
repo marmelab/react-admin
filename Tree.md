@@ -5,7 +5,15 @@ title: "The Tree Component"
 
 # `<Tree>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component is a wrapper for [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props), with Material Design style. It expects a `data` prop containing a tree of nodes as returned by the dataProvider tree methods.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component renders a tree based on tree data.
+
+![Tree screenshot](./img/tree.png)
+
+It is a wrapper for [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props), with Material Design style.
+
+## Usage
+
+`<Tree>` expects a `data` prop containing a tree of nodes as returned by [the dataProvider tree methods](https://react-admin-ee.marmelab.com/documentation/ra-tree#dataprovider).
 
 ```tsx
 import { Tree } from '@react-admin/ra-tree';
@@ -25,8 +33,7 @@ const data = [
     { id: 11, name: 'Blouses', children: [] },
 ];
 
-// example usage
-export const SimpleTree = () => <Tree data={data} titleField="name" />;
+const SimpleTree = () => <Tree data={data} titleField="name" />;
 ```
 
 ## Props

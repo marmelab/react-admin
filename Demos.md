@@ -202,7 +202,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
             </div>
         </div>
     </div>
-        <div class="card">
+    <div class="card">
         <a href="#todo-app" class="no-decoration"><img src="./img/todos.jpg" alt="Todo App"></a>
         <div class="content-card">
             <a href="#todo-app" class="no-decoration">
@@ -214,6 +214,21 @@ If you want to see what react-admin is capable of, or if you want to learn from 
             <div class="links-container">
                 <p><b><a href="https://marmelab.com/react-admin-todo/" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/marmelab/react-admin-todo" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <a href="#kanban-board" class="no-decoration"><img src="./img/kanban-board.png" alt="Kanban Board"></a>
+        <div class="content-card">
+            <a href="#todo-app" class="no-decoration">
+                <p class="title-card"><b>Kanban Board</b></p>
+                <p  class="description-card">A Kanban board built with React-admin Enterprise Edition</p>
+            </a>
+        </div>
+        <div class="card-footer">
+            <div class="links-container">
+                <p><b><a href="https://djhi.github.io/atomic-pm/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/djhi/atomic-pm" class="source-code link">Source code</a></b></p>
             </div>
         </div>
     </div>
@@ -374,6 +389,30 @@ The source shows how to implement the following features:
 * [Custom filter UI](https://github.com/marmelab/react-admin-todo/blob/main/src/Footer.tsx)
 
 Shows how to use react-admin without Material UI.
+
+## Kanban Board
+
+A Kanban board built with React-admin Enterprise edition.
+
+[![Kanban Board](./img/kanban-board.png)](https://github.com/djhi/atomic-pm/)
+
+* Demo: [https://djhi.github.io/atomic-pm](https://djhi.github.io/atomic-pm)
+* Source code: [https://github.com/djhi/atomic-pm](https://github.com/djhi/atomic-pm)
+
+It leverages the following Enterprise Edition features:
+- [Realtime](https://react-admin-ee.marmelab.com/documentation/ra-realtime)
+- [Navigation](https://react-admin-ee.marmelab.com/documentation/ra-navigation)
+- [Form layout](https://react-admin-ee.marmelab.com/documentation/ra-form-layout)
+- [History](https://react-admin-ee.marmelab.com/documentation/ra-history)
+- [Markdown](https://react-admin-ee.marmelab.com/documentation/ra-markdown)
+
+The source shows how to implement the following features:
+
+- [Custom Layout](https://github.com/djhi/atomic-pm/blob/main/src/layout/Layout.tsx)
+- [Custom UserMenu](https://github.com/djhi/atomic-pm/blob/main/src/layout/UserMenu.tsx)
+- [Custom dataProvider methods](https://github.com/djhi/atomic-pm/blob/main/src/providers/fakerest/dataProvider.ts)
+- [InPlace Edition](https://github.com/djhi/atomic-pm/blob/main/src/ra/EditInPlaceInput.tsx)
+- [Drag & drop](https://github.com/djhi/atomic-pm/blob/main/src/boards/BoardShow.tsx)
 
 ## Broadcom Layer 7 API Hub
 

@@ -97,6 +97,7 @@ npx create-react-admin@latest your-admin-name --resource posts --resource commen
 * `npm` (default)
 * `yarn`
 * `bun`
+* `pnpm`
 * `none` (if you want to install dependencies yourself)
 
 You choose an alternative package manager with the `--install` option:
