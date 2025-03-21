@@ -424,7 +424,7 @@ describe('<ArrayInput />', () => {
         await screen.findAllByLabelText('resources.orders.fields.items.price');
     });
 
-    it.only('should focus the first input of a newly added item', async () => {
+    it('should focus the first input of a newly added item', async () => {
         const { rerender } = render(<Focus input="text" />);
         fireEvent.click(await screen.findByLabelText('Add'));
         await waitFor(() => {

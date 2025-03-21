@@ -94,8 +94,7 @@ export const DateInput = ({
 
         const hasNewValueFromForm =
             localInputRef.current?.value !== field.value &&
-            localInputRef.current?.value !== '' &&
-            field.value != null;
+            !(localInputRef.current?.value === '' && field.value == null);
 
         if (hasNewValueFromForm) {
             // The value has changed from outside the input, we update the input value
@@ -103,8 +102,8 @@ export const DateInput = ({
             // Trigger a remount of the HTML input
             setInputKey(r => r + 1);
             // Resets the flag to ensure futures changes are handled
-            wasLastChangedByInput.current = false;
         }
+        wasLastChangedByInput.current = false;
     }, [setInputKey, field.value]);
 
     const { onBlur: onBlurFromField } = field;

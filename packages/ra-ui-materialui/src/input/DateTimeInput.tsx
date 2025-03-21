@@ -61,8 +61,7 @@ export const DateTimeInput = ({
 
         const hasNewValueFromForm =
             localInputRef.current?.value !== field.value &&
-            localInputRef.current?.value !== '' &&
-            field.value != null;
+            !(localInputRef.current?.value === '' && field.value == null);
 
         if (hasNewValueFromForm) {
             // The value has changed from outside the input, we update the input value
