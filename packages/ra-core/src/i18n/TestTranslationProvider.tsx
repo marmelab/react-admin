@@ -32,7 +32,7 @@ export const testI18nProvider = ({
                       ? typeof message === 'function'
                           ? message(options)
                           : message
-                      : options?._ || key;
+                      : options?._;
               }
             : translate || (key => key),
         changeLocale: () => Promise.resolve(),
