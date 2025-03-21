@@ -81,6 +81,15 @@ export const ExternalChangesWithParse = ({
     </Wrapper>
 );
 
+const parseDateTime = (value: string) =>
+    value ? new Date(value) : value === '' ? null : value;
+
+export const AsDateObject = () => (
+    <Wrapper>
+        <DateTimeInput source="published" parse={parseDateTime} />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({

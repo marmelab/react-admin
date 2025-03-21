@@ -22,6 +22,7 @@ import {
     WithReferenceField,
     NestedInlineNoTranslation,
     Validation,
+    Focus,
 } from './ArrayInput.stories';
 import { useArrayInput } from './useArrayInput';
 
@@ -421,5 +422,39 @@ describe('<ArrayInput />', () => {
         await screen.findByText('resources.orders.fields.items');
         await screen.findAllByText('resources.orders.fields.items.name');
         await screen.findAllByLabelText('resources.orders.fields.items.price');
+    });
+
+    it('should focus the first input of a newly added item', async () => {
+        const { rerender } = render(<Focus input="text" />);
+        fireEvent.click(await screen.findByLabelText('Add'));
+        await waitFor(() => {
+            expect(document.activeElement).toBe(
+                screen.getAllByLabelText('Name')[2]
+            );
+        });
+
+        rerender(<Focus input="date" />);
+        fireEvent.click(await screen.findByLabelText('Add'));
+        await waitFor(() => {
+            expect(document.activeElement).toBe(
+                screen.getAllByLabelText('Added at')[2]
+            );
+        });
+
+        rerender(<Focus input="datetime" />);
+        fireEvent.click(await screen.findByLabelText('Add'));
+        await waitFor(() => {
+            expect(document.activeElement).toBe(
+                screen.getAllByLabelText('Added at')[2]
+            );
+        });
+
+        rerender(<Focus input="autocomplete" />);
+        fireEvent.click(await screen.findByLabelText('Add'));
+        await waitFor(() => {
+            expect(document.activeElement).toBe(
+                screen.getAllByLabelText('Role')[2]
+            );
+        });
     });
 });

@@ -34,7 +34,7 @@ const InfiniteListController = ({
     children,
     ...props
 }: {
-    children: (params: InfiniteListControllerResult) => JSX.Element;
+    children: (params: InfiniteListControllerResult) => React.ReactNode;
 } & InfiniteListControllerProps) => {
     const controllerProps = useInfiniteListController(props);
     return children(controllerProps);

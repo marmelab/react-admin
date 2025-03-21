@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { CoreAdminContext } from '../core';
 
@@ -9,6 +9,7 @@ import { RedirectionSideEffect, useRedirect } from './useRedirect';
 import { testDataProvider } from '../dataProvider';
 import { Identifier, RaRecord } from '../types';
 import { TestMemoryRouter } from './TestMemoryRouter';
+import { UseRedirect } from './useRedirect.stories';
 
 const Redirect = ({
     redirectTo,
@@ -107,5 +108,19 @@ describe('useRedirect', () => {
         );
         expect(window.location.href).toBe('https://google.com');
         window.location = oldLocation;
+    });
+    it('should support functions that returns local absolute URLs with a leading /', async () => {
+        render(
+            <TestMemoryRouter>
+                <UseRedirect />
+            </TestMemoryRouter>
+        );
+        fireEvent.click(await screen.findByText('Relative url'));
+        await screen.findByText('Admin dashboard');
+        fireEvent.click(await screen.findByText('Home'));
+        fireEvent.click(
+            await screen.findByText('Relative url from a function')
+        );
+        await screen.findByText('Admin dashboard');
     });
 });

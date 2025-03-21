@@ -35,7 +35,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     useEffect(() => {
         if (!filters) return;
-        filters.forEach((filter: JSX.Element) => {
+        filters.forEach((filter: React.ReactElement) => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
                     'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
@@ -47,7 +47,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const getShownFilters = () => {
         if (!filters) return [];
         const values = form.getValues();
-        return filters.filter((filterElement: JSX.Element) => {
+        return filters.filter((filterElement: React.ReactElement) => {
             const filterValue = get(values, filterElement.props.source);
             return (
                 filterElement.props.alwaysOn ||
@@ -64,7 +64,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     return (
         <>
-            {getShownFilters().map((filterElement: JSX.Element) => (
+            {getShownFilters().map((filterElement: React.ReactElement) => (
                 <FilterFormInput
                     key={filterElement.key || filterElement.props.source}
                     filterElement={filterElement}

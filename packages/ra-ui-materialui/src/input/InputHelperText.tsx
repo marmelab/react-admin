@@ -18,7 +18,7 @@ export const InputHelperText = (props: InputHelperTextProps) => {
         return helperText;
     }
 
-    if (typeof helperText === 'string') {
+    if (typeof helperText === 'string' && helperText.length > 0) {
         return <>{translate(helperText, { _: helperText })}</>;
     }
 

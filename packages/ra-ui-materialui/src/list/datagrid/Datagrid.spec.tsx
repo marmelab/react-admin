@@ -12,7 +12,7 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
 import { AccessControl, SelectAllButton } from './Datagrid.stories';
 
-const TitleField = (): JSX.Element => {
+const TitleField = () => {
     const record = useRecordContext();
     return <span>{record?.title}</span>;
 };

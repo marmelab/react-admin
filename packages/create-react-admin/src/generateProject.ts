@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import fsExtra from 'fs-extra';
 import url from 'url';
+import execa from 'execa';
 import merge from 'lodash/merge.js';
 import { ProjectConfiguration } from './ProjectState.js';
 import { generateAppFile } from './generateAppFile.js';
@@ -42,19 +43,29 @@ export const generateProject = async (state: ProjectConfiguration) => {
     if (!hasTemplateAppFile(state.dataProvider)) {
         generateAppFile(projectDirectory, state);
     }
-    if (
-        state.dataProvider === 'ra-data-fakerest' &&
-        ['posts', 'comments'].every(resource =>
-            state.resources.includes(resource)
-        )
-    ) {
-        generateAppTestFile(projectDirectory, state);
+    if (state.dataProvider === 'ra-data-fakerest') {
+        if (
+            ['posts', 'comments'].every(resource =>
+                state.resources.includes(resource)
+            )
+        ) {
+            generateAppTestFile(projectDirectory, state);
+        } else {
+            generateDataForFakeRest(projectDirectory, state);
+        }
     }
 
     generatePackageJson(projectDirectory, state);
     generateGitIgnore(projectDirectory);
     generateEnvFile(projectDirectory, state);
     generateReadme(projectDirectory, state);
+
+    if (state.installer === 'pnpm') {
+        copyDirectoryFiles(
+            path.join(__dirname, '../templates/pnpm'),
+            projectDirectory
+        );
+    }
 
     return getHelpMessages(state);
 };
@@ -88,13 +99,26 @@ const generatePackageJson = (
     projectDirectory: string,
     state: ProjectConfiguration
 ) => {
+    let yarnVersion: string;
     const basePackageJson = getTemplatePackageJson('common');
     const dataProviderPackageJson = getTemplatePackageJson(state.dataProvider);
     const authProviderPackageJson = getTemplatePackageJson(state.authProvider);
+    const resolutionsPackageJson = getTemplatePackageJson('resolutions');
+    if (state.installer === 'yarn') {
+        yarnVersion = getYarnVersion();
+    }
+    const needResolutions = yarnVersion && yarnVersion.startsWith('1');
+
     const packageJson = merge(
         basePackageJson,
         dataProviderPackageJson,
         authProviderPackageJson,
+        needResolutions ? resolutionsPackageJson : {},
+        yarnVersion
+            ? {
+                  packageManager: `yarn@${yarnVersion}`,
+              }
+            : {},
         {
             name: state.name,
         }
@@ -104,6 +128,13 @@ const generatePackageJson = (
         path.join(projectDirectory, 'package.json'),
         JSON.stringify(packageJson, null, 2)
     );
+
+    if (yarnVersion && !yarnVersion.startsWith('1')) {
+        copyDirectoryFiles(
+            path.join(__dirname, '../templates/yarn'),
+            projectDirectory
+        );
+    }
 };
 
 const generateGitIgnore = (projectDirectory: string) => {
@@ -296,4 +327,25 @@ const replaceTokensInFile = (filePath: string, state: ProjectConfiguration) => {
     let fileContent = fs.readFileSync(filePath, 'utf-8');
     fileContent = replaceTokens(fileContent, state);
     fs.writeFileSync(filePath, fileContent);
+};
+
+const getYarnVersion = () => {
+    // We can't use process.env.npm_config_user_agent as users may use another package manager than yarn but still
+    // want to use yarn to install the dependencies.
+    const { stdout } = execa.sync('yarn', ['--version'], { stdio: 'pipe' });
+    return stdout;
+};
+
+const generateDataForFakeRest = (
+    projectDirectory: string,
+    state: ProjectConfiguration
+) => {
+    const data = state.resources.reduce((acc, resource) => {
+        acc[resource] = [];
+        return acc;
+    }, {});
+    fs.writeFileSync(
+        path.join(projectDirectory, 'src', 'data.json'),
+        JSON.stringify(data, null, 2)
+    );
 };

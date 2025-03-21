@@ -122,6 +122,8 @@ const frenchMessages: TranslationMessages = {
             unsaved_changes:
                 "Certains changements n'ont pas été enregistrés. Êtes-vous sûr(e) de vouloir quitter cette page ?",
             yes: 'Oui',
+            placeholder_data_warning:
+                'Problème réseau : Impossible de charger les données.',
         },
         navigation: {
             clear_filters: 'Effacer les filtres',

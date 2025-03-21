@@ -20,7 +20,8 @@ import { AdminContext } from '../AdminContext';
 import { TabbedForm } from './TabbedForm';
 import { TabbedFormClasses } from './TabbedFormView';
 import { TextInput } from '../input';
-import { EncodedPaths } from './TabbedForm.stories';
+import { EncodedPaths, MultipleTabs } from './TabbedForm.stories';
+import { TabbedFormTabs } from './TabbedFormTabs';
 
 describe('<TabbedForm />', () => {
     it('should display the tabs', () => {
@@ -312,5 +313,16 @@ describe('<TabbedForm />', () => {
             expect.stringContaining('Invalid prop `toolbar` of type `boolean`'),
             expect.stringContaining(`at ${TabbedForm.name}`)
         );
+    });
+
+    it('should accept a "onChange" prop on the tabs', async () => {
+        const onChange = jest.fn();
+        render(<MultipleTabs tabs={<TabbedFormTabs onChange={onChange} />} />);
+
+        await screen.findByDisplayValue('War and Peace');
+        const tabs = screen.getAllByRole('tab');
+        fireEvent.click(tabs[1]);
+        expect(onChange).toBeCalledTimes(1);
+        expect(onChange).toBeCalledWith(expect.anything(), '1'); // tab index
     });
 });

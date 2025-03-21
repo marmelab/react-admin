@@ -29,13 +29,26 @@ import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
 
-const ListActions = () => (
-    <TopToolbar>
-        <FilterButton />
-        <SelectColumnsButton />
-        <ExportButton />
-    </TopToolbar>
-);
+const preferenceKeys = {
+    ordered: 'orders.list1',
+    delivered: 'orders.list2',
+    cancelled: 'orders.list3',
+};
+
+const ListActions = () => {
+    const { filterValues } = useListContext();
+    const status = (filterValues.status ?? 'ordered') as
+        | 'ordered'
+        | 'delivered'
+        | 'cancelled';
+    return (
+        <TopToolbar>
+            <FilterButton />
+            <SelectColumnsButton preferenceKey={preferenceKeys[status]} />
+            <ExportButton />
+        </TopToolbar>
+    );
+};
 
 const OrdersTitle = () => {
     const title = useDefaultTitle();
@@ -142,7 +155,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey="orders.list1"
+                            preferenceKey={preferenceKeys.ordered}
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
@@ -194,7 +207,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey="orders.list2"
+                            preferenceKey={preferenceKeys.delivered}
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />
@@ -250,7 +263,7 @@ const TabbedDatagrid = () => {
                         <DatagridConfigurable
                             rowClick="edit"
                             omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey="orders.list3"
+                            preferenceKey={preferenceKeys.cancelled}
                         >
                             <DateField source="date" showTime />
                             <TextField source="reference" />

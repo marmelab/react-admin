@@ -8,6 +8,9 @@ import { SimpleForm } from '../form';
 import { TranslatableInputs } from './TranslatableInputs';
 import { FormInspector } from './common';
 import { TextInput } from './TextInput';
+import { useSourceContext } from 'ra-core';
+import { useFormContext } from 'react-hook-form';
+import { Button } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/input/TranslatableInputs' };
 
@@ -69,7 +72,36 @@ const Wrapper = ({ children }) => (
             <SimpleForm>
                 {children}
                 <FormInspector name="title" />
+                <FormInspector name="description" />
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+const PrefillWithTitleButton = () => {
+    const sourceContext = useSourceContext();
+    const { setValue, getValues } = useFormContext();
+
+    const onClick = () => {
+        setValue(
+            sourceContext.getSource('description'),
+            getValues(sourceContext.getSource('title'))
+        );
+    };
+
+    return (
+        <Button onClick={onClick} size="small" sx={{ maxWidth: 140 }}>
+            Prefill with title
+        </Button>
+    );
+};
+
+export const SetValue = () => (
+    <Wrapper>
+        <TranslatableInputs locales={['en', 'fr']}>
+            <TextInput source="title" />
+            <TextInput source="description" helperText={false} />
+            <PrefillWithTitleButton />
+        </TranslatableInputs>
+    </Wrapper>
 );

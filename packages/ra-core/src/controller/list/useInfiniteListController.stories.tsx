@@ -4,7 +4,10 @@ import { QueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { CoreAdmin, CoreAdminContext, CoreAdminUI, Resource } from '../../core';
 import { AuthProvider, DataProvider } from '../../types';
-import { useInfiniteListController } from './useInfiniteListController';
+import {
+    InfiniteListControllerProps,
+    useInfiniteListController,
+} from './useInfiniteListController';
 import { Browser } from '../../storybook/FakeBrowser';
 import { TestMemoryRouter } from '../../routing';
 
@@ -59,7 +62,12 @@ const List = params => {
     );
 };
 
-const Posts = ({ children = List, ...props }) => {
+const Posts = ({
+    children = List,
+    ...props
+}: {
+    children?: (params: any) => React.ReactNode;
+} & Partial<InfiniteListControllerProps>) => {
     const params = useInfiniteListController({
         resource: 'posts',
         ...props,
@@ -140,7 +148,7 @@ export const Basic = ({
     children = ListWithCheckboxes,
 }: {
     dataProvider?: DataProvider;
-    children?: (props) => React.JSX.Element;
+    children?: (props) => React.ReactNode;
 }) => {
     return (
         <TestMemoryRouter>
