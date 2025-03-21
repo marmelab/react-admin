@@ -22,14 +22,16 @@ npm install --save ra-i18n-i18next
 
 ```tsx
 import { Admin } from 'react-admin';
-import { useI18nextProvider, convertRaMessagesToI18next } from 'ra-i18n-i18next';
+import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
 import englishMessages from 'ra-language-english';
 
 const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
             resources: {
-                translation: convertRaMessagesToI18next(englishMessages)
+                en: {
+                    translation: convertRaTranslationsToI18next(englishMessages)
+                }
             }
         }
     });
@@ -55,14 +57,16 @@ You can provide your own i18next instance but don't initialize it, the hook will
 
 ```tsx
 import { Admin } from 'react-admin';
-import { useI18nextProvider, convertRaMessagesToI18next } from 'ra-i18n-i18next';
+import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
 import englishMessages from 'ra-language-english';
 
 const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
             resources: {
-                translation: convertRaMessagesToI18next(englishMessages)
+                en: {
+                    translation: convertRaTranslationsToI18next(englishMessages)
+                }
             }
         }
     });
@@ -191,7 +195,7 @@ const App = () => {
 };
 ```
 
-### `convertRaMessagesToI18next` function
+### `convertRaTranslationsToI18next` function
 
 A function that takes translations from a standard react-admin language package and converts them to i18next format.
 It transforms the following:
@@ -203,9 +207,9 @@ It transforms the following:
 
 ```ts
 import englishMessages from 'ra-language-english';
-import { convertRaMessagesToI18next } from 'ra-i18n-18next';
+import { convertRaTranslationsToI18next } from 'ra-i18n-18next';
 
-const messages = convertRaMessagesToI18next(englishMessages);
+const messages = convertRaTranslationsToI18next(englishMessages);
 ```
 
 #### Parameters
@@ -221,9 +225,9 @@ If you provided interpolation options to your i18next instance, you should provi
 
 ```ts
 import englishMessages from 'ra-language-english';
-import { convertRaMessagesToI18next } from 'ra-i18n-18next';
+import { convertRaTranslationsToI18next } from 'ra-i18n-18next';
 
-const messages = convertRaMessagesToI18next(englishMessages, {
+const messages = convertRaTranslationsToI18next(englishMessages, {
    prefix: '#{',
   suffix: '}#',
 });

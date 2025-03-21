@@ -287,7 +287,9 @@ const Root = styled('div', {
         marginTop: theme.spacing(1),
         [theme.breakpoints.down('md')]: { display: 'none' },
     },
-    [`& .${SimpleFormIteratorClasses.form}`]: {},
+    [`& .${SimpleFormIteratorClasses.form}`]: {
+        minWidth: 0,
+    },
     [`&.fullwidth > ul > li > .${SimpleFormIteratorClasses.form}`]: {
         flex: 2,
     },

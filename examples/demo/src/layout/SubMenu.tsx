@@ -51,6 +51,7 @@ const SubMenu = (props: Props) => {
                     dense={dense}
                     component="div"
                     disablePadding
+                    className="SubMenu"
                     sx={{
                         '& .MuiMenuItem-root': {
                             transition:

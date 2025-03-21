@@ -34,19 +34,28 @@ export const Basic = () => (
     </Wrapper>
 );
 
-const TypeNotification = () => {
+const TypeNotification = ({ type }) => {
     const notify = useNotify();
     React.useEffect(() => {
-        notify('hello, world', { type: 'warning' });
-    }, [notify]);
+        notify('hello, world', { type });
+    }, [notify, type]);
     return null;
 };
 
-export const Type = () => (
+export const Type = ({ type }) => (
     <Wrapper>
-        <TypeNotification />
+        <TypeNotification type={type} />
     </Wrapper>
 );
+Type.args = {
+    type: 'warning',
+};
+Type.argTypes = {
+    type: {
+        control: { type: 'select' },
+        options: ['info', 'warning', 'error', 'success'],
+    },
+};
 
 const MultilineNotification = () => {
     const notify = useNotify();

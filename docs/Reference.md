@@ -11,7 +11,7 @@ title: "Index"
 
 **- A -**
 
-* [`<AccordionForm>`](./AccordionForm.md)<img class="icon" src="./img/premium.svg" />
+* [`<AccordionForm>`](./AccordionForm.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Admin>`](./Admin.md)
 * [`<AppBar>`](./AppBar.md)
 * [`<ArrayField>`](./ArrayField.md)
@@ -19,11 +19,11 @@ title: "Index"
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
-* [`<AutoSave>`](./AutoSave.md)<img class="icon" src="./img/premium.svg" />
+* [`<AutoSave>`](./AutoSave.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- B -**
 
-* [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" />
+* [`<Breadcrumb>`](./Breadcrumb.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<BooleanField>`](./BooleanField.md)
 * [`<BooleanInput>`](./BooleanInput.md)
 * [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton)
@@ -32,52 +32,52 @@ title: "Index"
 
 **- C -**
 
-* [`<Calendar>`](./Calendar.md)<img class="icon" src="./img/premium.svg" />
+* [`<Calendar>`](./Calendar.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<CanAccess>`](./CanAccess.md)
 * [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
 * [`<CheckForApplicationUpdate>`](./CheckForApplicationUpdate.md)
 * [`<ChipField>`](./ChipField.md)
 * [`<CloneButton>`](./Buttons.md#clonebutton)
-* [`<CompleteCalendar>`](https://react-admin-ee.marmelab.com/documentation/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
+* [`<CompleteCalendar>`](https://react-admin-ee.marmelab.com/documentation/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Confirm>`](./Confirm.md)
-* [`<ContainerLayout>`](./ContainerLayout.md)<img class="icon" src="./img/premium.svg" />
+* [`<ContainerLayout>`](./ContainerLayout.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Count>`](./Count.md)
 * [`<Create>`](./Create.md)
 * [`<CreateButton>`](./Buttons.md#createbutton)
-* [`<CreateDialog>`](./CreateDialog.md)<img class="icon" src="./img/premium.svg" />
-* [`<CreateInDialogButton>`](./CreateInDialogButton.md)<img class="icon" src="./img/premium.svg" />
+* [`<CreateDialog>`](./CreateDialog.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<CreateInDialogButton>`](./CreateInDialogButton.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<CustomRoutes>`](./CustomRoutes.md)
 
 **- D -**
 
 * [`<DashboardMenuItem>`](./Menu.md#menudashboarditem)
 * [`<Datagrid>`](./Datagrid.md)
-* [`<DatagridAG>`](./DatagridAG.md)
+* [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<DatagridBody>`](./Datagrid.md#body)
 * [`<DatagridRow>`](./Datagrid.md#body)
 * [`<DatagridHeader>`](./Datagrid.md#header)
 * [`<DateField>`](./DateField.md)
 * [`<DateInput>`](./DateInput.md)
-* [`<DateRangeInput>`](./DateRangeInput.md)<img class="icon" src="./img/premium.svg" />
+* [`<DateRangeInput>`](./DateRangeInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<DateTimeInput>`](./DateTimeInput.md)
 * [`<DeleteButton>`](./Buttons.md#deletebutton)
-* [`<DualListInput>`](./DualListInput.md)<img class="icon" src="./img/premium.svg" />
+* [`<DualListInput>`](./DualListInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- E -**
 
 * [`<Edit>`](./Edit.md)
-* [`<EditLive>`](./EditLive.md)<img class="icon" src="./img/premium.svg" />
-* [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" />
+* [`<EditLive>`](./EditLive.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<EditGuesser>`](./EditGuesser.md)
 * [`<EditButton>`](./Buttons.md#editbutton)
-* [`<EditDialog>`](./EditDialog.md)<img class="icon" src="./img/premium.svg" />
-* [`<EditInDialogButton>`](./EditInDialogButton.md)<img class="icon" src="./img/premium.svg" />
+* [`<EditDialog>`](./EditDialog.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<EditInDialogButton>`](./EditInDialogButton.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<EmailField>`](./EmailField.md)
 * [`<Empty>`](./List.md#empty)
 
 **- F -**
 
-* [`<FieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#fielddiff)<img class="icon" src="./img/premium.svg" />
+* [`<FieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#fielddiff)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<FileField>`](./FileField.md)
 * [`<FileInput>`](./FileInput.md)
 * [`<Filter>`](./List.md#filters-filter-inputs)
@@ -90,17 +90,16 @@ title: "Index"
 * [`<FilterLiveSearch>`](./FilterLiveSearch.md)
 * [`<Form>`](./Form.md)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
-* [`<FormFillerButton>`](./FormFillerButton.md)<img class="icon" src="./img/premium.svg" />
+* [`<FormFillerButton>`](./FormFillerButton.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<FormTab>`](./TabbedForm.md)
 * [`<FunctionField>`](./FunctionField.md)
 
 **- H -**
 
-* [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" />
+* [`<HorizontalMenu>`](./HorizontalMenu.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- I -**
 
-* [`<IfCanAccess>`](https://react-admin-ee.marmelab.com/documentation/ra-rbac#ifcanaccess)<img class="icon" src="./img/premium.svg" />
 * [`<InfiniteList>`](./InfiniteList.md)
 * [`<InfinitePagination>`](./InfiniteList.md)
 * [`<ImageField>`](./ImageField.md)
@@ -116,9 +115,9 @@ title: "Index"
 * [`<ListBase>`](./ListBase.md#usage)
 * [`<ListButton>`](./Buttons.md#listbutton)
 * [`<ListGuesser>`](./ListGuesser.md#usage)
-* [`<ListLiveUpdate>`](./ListLiveUpdate.md)<img class="icon" src="./img/premium.svg" />
+* [`<ListLiveUpdate>`](./ListLiveUpdate.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<LocalesMenuButton>`](./LocalesMenuButton.md)
-* [`<LongForm>`](./LongForm.md)<img class="icon" src="./img/premium.svg" />
+* [`<LongForm>`](./LongForm.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Login>`](./Authentication.md#customizing-the-login-component)
 * [`<LoginForm>`](./Authentication.md#customizing-the-login-component)
 * [`<LoginWithEmail>`](./Authentication.md#customizing-the-login-component)
@@ -126,11 +125,11 @@ title: "Index"
 
 **- M -**
 
-* [`<MarkdownField>`](./MarkdownField.md)<img class="icon" src="./img/premium.svg" />
-* [`<MarkdownInput>`](./MarkdownInput.md)<img class="icon" src="./img/premium.svg" />
+* [`<MarkdownField>`](./MarkdownField.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<MarkdownInput>`](./MarkdownInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Menu>`](./Menu.md)
-* [`<MenuLive>`](./MenuLive.md)<img class="icon" src="./img/premium.svg" />
-* [`<MultiLevelMenu>`](./MultiLevelMenu.md)<img class="icon" src="./img/premium.svg" />
+* [`<MenuLive>`](./MenuLive.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<MultiLevelMenu>`](./MultiLevelMenu.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- N -**
 
@@ -143,7 +142,6 @@ title: "Index"
 
 * [`<Pagination>`](./List.md#pagination)
 * [`<PasswordInput>`](./PasswordInput.md)
-* [`<PreferencesSetter>`](https://react-admin-ee.marmelab.com/documentation/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
 
 **- R -**
 
@@ -155,26 +153,26 @@ title: "Index"
 * [`<ReferenceInput>`](./ReferenceInput.md)
 * [`<ReferenceManyCount>`](./ReferenceManyCount.md)
 * [`<ReferenceManyField>`](./ReferenceManyField.md)
-* [`<ReferenceManyInput>`](./ReferenceManyInput.md)<img class="icon" src="./img/premium.svg" />
-* [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md)<img class="icon" src="./img/premium.svg" />
-* [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)<img class="icon" src="./img/premium.svg" />
-* [`<ReferenceNodeInput>`](./ReferenceNodeInput.md)<img class="icon" src="./img/premium.svg" />
+* [`<ReferenceManyInput>`](./ReferenceManyInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<ReferenceNodeInput>`](./ReferenceNodeInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<ReferenceOneField>`](./ReferenceOneField.md)
-* [`<ReferenceOneInput>`](./ReferenceOneInput.md)
+* [`<ReferenceOneInput>`](./ReferenceOneInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Resource>`](./Resource.md)
-* [`<RevisionsButton>`](./RevisionsButton.md)<img class="icon" src="./img/premium.svg" />
-* [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog)<img class="icon" src="./img/premium.svg" />
+* [`<RevisionsButton>`](./RevisionsButton.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<RevisionListWithDetailsInDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-history#revisionlistwithdetailsindialog)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<RichTextField>`](./RichTextField.md)
 * [`<RichTextInput>`](./RichTextInput.md)
-* [`<RowForm>`](https://react-admin-ee.marmelab.com/documentation/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" />
+* [`<RowForm>`](https://react-admin-ee.marmelab.com/documentation/ra-editable-datagrid#rowform)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- S -**
 
 * [`<SaveButton>`](./SaveButton.md)
 * [`<SavedQueriesList>`](./SavedQueriesList.md)
-* [`<Search>`](./Search.md)<img class="icon" src="./img/premium.svg" />
+* [`<Search>`](./Search.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<SearchInput>`](./SearchInput.md)
-* [`<SearchWithResult>`](./SearchWithResult.md)<img class="icon" src="./img/premium.svg" />
+* [`<SearchWithResult>`](./SearchWithResult.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<SelectAllButton>`](./Buttons.md#selectallbutton)
 * [`<SelectArrayInput>`](./SelectArrayInput.md)
 * [`<SelectColumnsButton>`](./SelectColumnsButton.md)
@@ -183,30 +181,30 @@ title: "Index"
 * [`<Show>`](./Show.md#show)
 * [`<ShowGuesser`](./ShowGuesser.md#showguesser)
 * [`<ShowButton>`](./Buttons.md#showbutton)
-* [`<ShowDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createdialog-editdialog--showdialog)<img class="icon" src="./img/premium.svg" />
-* [`<ShowInDialogButton>`](./ShowInDialogButton.md)<img class="icon" src="./img/premium.svg" />
-* [`<ShowLive>`](./ShowLive.md)<img class="icon" src="./img/premium.svg" />
+* [`<ShowDialog>`](./ShowDialog.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<ShowInDialogButton>`](./ShowInDialogButton.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<ShowLive>`](./ShowLive.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Sidebar>`](./Layout.md#sidebar)
-* [`<SidebarOpenPreferenceSync>`](https://react-admin-ee.marmelab.com/documentation/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
+* [`<SidebarOpenPreferenceSync>`](https://react-admin-ee.marmelab.com/documentation/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<SimpleForm>`](./SimpleForm.md)
 * [`<SimpleFormIterator>`](./SimpleFormIterator.md)
-* [`<SimpleFormWithRevision>`](./SimpleForm.md#versioning)<img class="icon" src="./img/premium.svg" />
+* [`<SimpleFormWithRevision>`](./SimpleForm.md#versioning)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
-* [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#smartfielddiff)<img class="icon" src="./img/premium.svg" />
-* [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" />
-* [`<SolarLayout>`](./SolarLayout.md)<img class="icon" src="./img/premium.svg" />
-* [`<SolarMenu>`](./SolarLayout.md#solarmenu)<img class="icon" src="./img/premium.svg" />
-* [`<SolarAppBar>`](./SolarLayout.md#solarappbar)<img class="icon" src="./img/premium.svg" />
+* [`<SmartFieldDiff>`](https://react-admin-ee.marmelab.com/documentation/ra-history#smartfielddiff)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<SmartRichTextInput>`](./SmartRichTextInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<SolarLayout>`](./SolarLayout.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<SolarMenu>`](./SolarLayout.md#solarmenu)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<SolarAppBar>`](./SolarLayout.md#solarappbar)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<SortButton>`](./SortButton.md)
-* [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" />
+* [`<StackedFilters>`](./StackedFilters.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- T -**
 
 * `<Tab>`
 * [`<TabbedForm>`](./TabbedForm.md)
-* [`<TabbedFormWithRevision>`](./TabbedForm.md#versioning)<img class="icon" src="./img/premium.svg" />
+* [`<TabbedFormWithRevision>`](./TabbedForm.md#versioning)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
 * [`<TextArrayInput>`](./TextArrayInput.md)
 * [`<TextField>`](./TextField.md)
@@ -215,13 +213,13 @@ title: "Index"
 * [`<Title>`](./Title.md)
 * [`<TitlePortal>`](./AppBar.md#children)
 * [`<ToggleThemeButton>`](./ToggleThemeButton.md)
-* [`<TourProvider>`](https://react-admin-ee.marmelab.com/documentation/ra-tour)<img class="icon" src="./img/premium.svg" />
+* [`<TourProvider>`](https://react-admin-ee.marmelab.com/documentation/ra-tour)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<TranslatableFields>`](./TranslatableFields.md)
 * [`<TranslatableInputs>`](./TranslatableInputs.md)
 * [`<Translate>`](./Translate.md)
-* [`<Tree>`](https://react-admin-ee.marmelab.com/documentation/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
-* [`<TreeInput>`](./TreeInput.md)<img class="icon" src="./img/premium.svg" />
-* [`<TreeWithDetails>`](./TreeWithDetails.md)<img class="icon" src="./img/premium.svg" />
+* [`<Tree>`](./Tree.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<TreeInput>`](./TreeInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`<TreeWithDetails>`](./TreeWithDetails.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Toolbar>`](./Toolbar.md)
 
 **- U -**
@@ -235,7 +233,7 @@ title: "Index"
 * [`<WithListContext>`](./WithListContext.md)
 * [`<WithPermissions>`](./WithPermissions.md)
 * [`<WithRecord>`](./WithRecord.md)
-* [`<WizardForm>`](./WizardForm.md)<img class="icon" src="./img/premium.svg" />
+* [`<WizardForm>`](./WizardForm.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<WrapperField>`](./WrapperField.md)
 
 </div>
@@ -248,8 +246,8 @@ title: "Index"
 
 **- A -**
 
-* [`useAppLocationState`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />
-* [`useAppLocationMatcher`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationmatcher)<img class="icon" src="./img/premium.svg" />
+* [`useAppLocationState`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useAppLocationMatcher`](https://react-admin-ee.marmelab.com/documentation/ra-navigation#useapplocationmatcher)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`useAuthenticated`](./useAuthenticated.md)
 * [`useAuthProvider`](./useAuthProvider.md)
 * [`useAuthState`](./useAuthState.md)
@@ -267,7 +265,7 @@ title: "Index"
 **- D -**
 
 * [`useDataProvider`](./useDataProvider.md#usedataprovider)
-* [`useDefineAppLocation`](./useDefineAppLocation.md)<img class="icon" src="./img/premium.svg" />
+* [`useDefineAppLocation`](./useDefineAppLocation.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`useDelete`](./useDelete.md)
 * [`useDeleteMany`](./useDeleteMany.md)
 
@@ -284,16 +282,16 @@ title: "Index"
 
 * [`useGetIdentity`](./useGetIdentity.md)
 * [`useGetList`](./useGetList.md)
-* [`useGetListLive`](./useGetListLive.md)<img class="icon" src="./img/premium.svg" />
-* [`useGetLock`](./useGetLock.md)<img class="icon" src="./img/premium.svg" />
-* [`useGetLockLive`](./useGetLockLive.md)<img class="icon" src="./img/premium.svg" />
-* [`useGetLocks`](./useGetLocks.md)<img class="icon" src="./img/premium.svg" />
-* [`useGetLocksLive`](./useGetLocksLive.md)<img class="icon" src="./img/premium.svg" />
+* [`useGetListLive`](./useGetListLive.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useGetLock`](./useGetLock.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useGetLockLive`](./useGetLockLive.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useGetLocks`](./useGetLocks.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useGetLocksLive`](./useGetLocksLive.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`useGetMany`](./useGetMany.md)
 * [`useGetManyAggregate`](./useGetOne.md#aggregating-getone-calls)
 * [`useGetManyReference`](./useGetManyReference.md)
 * [`useGetOne`](./useGetOne.md)
-* [`useGetOneLive`](./useGetOneLive.md)<img class="icon" src="./img/premium.svg" />
+* [`useGetOneLive`](./useGetOneLive.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`useGetPermissions`](./WithPermissions.md)
 * [`useGetRecordId`](./useGetRecordId.md)
 * [`useGetRecordRepresentation`](./useGetRecordRepresentation.md)
@@ -309,9 +307,9 @@ title: "Index"
 * [`useListContext`](./useListContext.md)
 * [`useListController`](./useListController.md)
 * [`useLocaleState`](./useLocaleState.md)
-* [`useLock`](./useLock.md)<img class="icon" src="./img/premium.svg" />
-* [`useLockOnCall`](./useLockOnCall.md)<img class="icon" src="./img/premium.svg" />
-* [`useLockOnMount`](./useLockOnMount.md)<img class="icon" src="./img/premium.svg" />
+* [`useLock`](./useLock.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useLockOnCall`](./useLockOnCall.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useLockOnMount`](./useLockOnMount.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`useLogin`](./useLogin.md)
 * [`useLogout`](./useLogout.md)
 
@@ -327,7 +325,7 @@ title: "Index"
 
 * [`usePermissions`](./usePermissions.md)
 * [`usePreference`](./Configurable.md#usage)
-* [`usePublish`](./usePublish.md)<img class="icon" src="./img/premium.svg" />
+* [`usePublish`](./usePublish.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- R -**
 
@@ -344,26 +342,26 @@ title: "Index"
 **- S -**
 
 * [`useSaveContext`](./useSaveContext.md)
-* [`useSearch`](https://react-admin-ee.marmelab.com/documentation/ra-search#usesearch)<img class="icon" src="./img/premium.svg" />
+* [`useSearch`](https://react-admin-ee.marmelab.com/documentation/ra-search#usesearch)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`useShowContext`](./useShowContext.md)
 * [`useShowController`](./useShowController.md#useshowcontroller)
 * [`useStore`](./useStore.md)
 * [`useStoreContext`](./useStoreContext.md)
-* [`useSubscribe`](./useSubscribe.md)<img class="icon" src="./img/premium.svg" />
-* [`useSubscribeCallback`](./useSubscribeCallback.md)<img class="icon" src="./img/premium.svg" />
-* [`useSubscribeToRecord`](./useSubscribeToRecord.md)<img class="icon" src="./img/premium.svg" />
-* [`useSubscribeToRecordList`](./useSubscribeToRecordList.md)<img class="icon" src="./img/premium.svg" />
+* [`useSubscribe`](./useSubscribe.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useSubscribeCallback`](./useSubscribeCallback.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useSubscribeToRecord`](./useSubscribeToRecord.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
+* [`useSubscribeToRecordList`](./useSubscribeToRecordList.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- T -**
 
 * [`useTheme`](./useTheme.md)
-* [`useTour`](https://react-admin-ee.marmelab.com/documentation/ra-tour)<img class="icon" src="./img/premium.svg" />
+* [`useTour`](https://react-admin-ee.marmelab.com/documentation/ra-tour)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`useTranslate`](./useTranslate.md)
 
 **- U -**
 
 * [`useUnique`](./useUnique.md)
-* [`useUnlock`](./useUnlock.md)<img class="icon" src="./img/premium.svg" />
+* [`useUnlock`](./useUnlock.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
 * [`useUpdate`](./useUpdate.md)

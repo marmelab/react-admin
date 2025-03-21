@@ -1,6 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ResourceContextProvider, required, testDataProvider } from 'ra-core';
 import { format } from 'date-fns';
 import { useFormState } from 'react-hook-form';
@@ -205,13 +206,16 @@ describe('<DateTimeInput />', () => {
         render(<ExternalChanges />);
         await screen.findByText('"2021-09-11 20:00:00" (string)');
         const input = screen.getByLabelText('Published') as HTMLInputElement;
-        fireEvent.change(input, {
-            target: { value: '2021-10-30 09:00:00' },
-        });
-        fireEvent.blur(input);
-        await screen.findByText('"2021-10-30T09:00" (string)');
         fireEvent.click(screen.getByText('Change value'));
         await screen.findByText('"2021-10-20 10:00:00" (string)');
+        await screen.findByDisplayValue('2021-10-20T10:00');
+        userEvent.type(input, '2021-10-30T09:00');
+        userEvent.tab();
+        await screen.findByText('"2021-10-30T09:00" (string)');
+        await screen.findByDisplayValue('2021-10-30T09:00');
+        fireEvent.click(screen.getByText('Change value'));
+        await screen.findByText('"2021-10-20 10:00:00" (string)');
+        await screen.findByDisplayValue('2021-10-20T10:00');
     });
 
     it('should change its value when the form value has changed with custom parse', async () => {

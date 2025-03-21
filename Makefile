@@ -36,7 +36,7 @@ run-graphql-demo: ## run the ecommerce example with a graphql backend
 run-crm: ## run the crm example
 	@yarn run-crm
 
-build-crm: ## run the crm example
+build-crm: ## build the crm example
 	@yarn build-crm
 
 build-ra-core:

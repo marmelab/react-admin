@@ -1,11 +1,12 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { useInput, FieldTitle, mergeRefs } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { useForkRef } from '@mui/material';
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
@@ -58,12 +59,18 @@ export const DateTimeInput = ({
             return;
         }
 
-        // The value has changed from outside the input, we update the input value
-        initialDefaultValueRef.current = field.value;
-        // Trigger a remount of the HTML input
-        setInputKey(r => r + 1);
-        // Resets the flag to ensure futures changes are handled
-        wasLastChangedByInput.current = false;
+        const hasNewValueFromForm =
+            localInputRef.current?.value !== field.value &&
+            !(localInputRef.current?.value === '' && field.value == null);
+
+        if (hasNewValueFromForm) {
+            // The value has changed from outside the input, we update the input value
+            initialDefaultValueRef.current = field.value;
+            // Trigger a remount of the HTML input
+            setInputKey(r => r + 1);
+            // Resets the flag to ensure futures changes are handled
+            wasLastChangedByInput.current = false;
+        }
     }, [setInputKey, field.value]);
 
     const { onBlur: onBlurFromField } = field;
@@ -128,7 +135,7 @@ export const DateTimeInput = ({
     const { error, invalid } = fieldState;
     const renderHelperText = helperText !== false || invalid;
     const { ref, name } = field;
-    const inputRef = mergeRefs([ref, localInputRef]);
+    const inputRef = useForkRef(ref, localInputRef);
 
     return (
         <TextField

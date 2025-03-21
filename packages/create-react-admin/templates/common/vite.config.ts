@@ -2,7 +2,23 @@ import { defineConfig } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
 
-const alias = [
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => ({
+  plugins: [react()],
+  server: {
+    host: true,
+  },
+  build: {
+    sourcemap: mode === "development",
+  },
+  // This allows to have sourcemaps in production. They are not loaded unless you open the devtools
+  // Remove this line if you don't need to debug react-admin in production
+  resolve: { alias: getAliasesToDebugInProduction() },
+  base: "./",
+}));
+
+function getAliasesToDebugInProduction() {
+  return [
   { find: "react-admin", replacement: path.resolve(__dirname, "./node_modules/react-admin/src") },
   { find: "ra-core", replacement: path.resolve(__dirname, "./node_modules/ra-core/src") },
   {
@@ -31,16 +47,4 @@ const alias = [
   },
   // add any other react-admin packages you have
 ];
-
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  plugins: [react()],
-  server: {
-    host: true,
-  },
-  build: {
-    sourcemap: mode === "developement",
-  },
-  resolve: { alias },
-  base: "./",
-}));
+}
