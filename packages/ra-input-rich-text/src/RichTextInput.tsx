@@ -79,7 +79,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         defaultValue = '',
         disabled = false,
         editorOptions = DefaultEditorOptions,
-        fullWidth,
+        fullWidth = true,
         helperText,
         label,
         readOnly = false,
