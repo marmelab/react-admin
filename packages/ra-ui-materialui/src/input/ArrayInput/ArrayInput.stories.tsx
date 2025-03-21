@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin } from 'react-admin';
+import { Admin, DateTimeInput } from 'react-admin';
 import {
     minLength,
     required,
@@ -924,3 +924,62 @@ export const SetValue = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const Focus = ({
+    input,
+}: {
+    input: 'text' | 'date' | 'datetime' | 'autocomplete';
+}) => (
+    <TestMemoryRouter key={input} initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                edit={
+                    <Edit>
+                        <SimpleForm>
+                            <ArrayInput source="authors">
+                                <SimpleFormIterator inline>
+                                    {input === 'autocomplete' ? (
+                                        <AutocompleteInput
+                                            source="role"
+                                            choices={RolesChoices}
+                                        />
+                                    ) : input === 'date' ? (
+                                        <DateInput source="added_at" />
+                                    ) : input === 'datetime' ? (
+                                        <DateTimeInput source="added_at" />
+                                    ) : null}
+                                    <TextInput
+                                        source="name"
+                                        helperText={false}
+                                    />
+                                    {input !== 'autocomplete' ? (
+                                        <TextInput
+                                            source="role"
+                                            helperText={false}
+                                        />
+                                    ) : null}
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Edit>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+Focus.argTypes = {
+    input: {
+        options: ['text', 'date', 'datetime', 'autocomplete'],
+        control: { type: 'select' },
+    },
+};
+Focus.args = {
+    input: 'text',
+};
+
+const RolesChoices = [
+    { id: 'head_writer', name: 'Head Writer' },
+    { id: 'co_writer', name: 'Co-Writer' },
+];
