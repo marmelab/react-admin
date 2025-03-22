@@ -15,7 +15,14 @@ import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { createTheme } from '@mui/material/styles';
-import { Box, TableCell, TableHead, TableRow, styled } from '@mui/material';
+import {
+    Box,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableRow,
+    styled,
+} from '@mui/material';
 
 import { NumberField, TextField } from '../../field';
 import { List } from '../List';
@@ -25,6 +32,7 @@ import {
     DataTableBody as BaseDataTableBody,
     DataTableBodyProps,
 } from './DataTableBody';
+import { useDataTableDataContext } from './context';
 import {
     BulkDeleteButton,
     BulkExportButton,
@@ -598,7 +606,7 @@ const MyDataTableBody = (props: DataTableBodyProps) => (
     <BaseDataTableBody {...props} row={MyDataTableRow} />
 );
 
-export const DataTableBody = () => (
+export const Body = () => (
     <Wrapper>
         <DataTable body={MyDataTableBody}>
             <DataTable.Col source="id" />
@@ -629,9 +637,41 @@ const MyDataTableHeader = ({ children }: DataTableRowProps) => (
     </TableHead>
 );
 
-export const DataTableHeader = () => (
+export const Header = () => (
     <Wrapper>
         <DataTable header={MyDataTableHeader}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+const MyDataTableFooter = () => {
+    const data = useDataTableDataContext();
+    const oldestBook = data.reduce((oldest, record) =>
+        oldest.year < record.year ? oldest : record
+    );
+    return (
+        <TableFooter>
+            <TableRow>
+                <TableCell
+                    variant="footer"
+                    colSpan={4}
+                    sx={{ textAlign: 'right' }}
+                >
+                    Oldest book
+                </TableCell>
+                <TableCell variant="footer">{oldestBook.year}</TableCell>
+            </TableRow>
+        </TableFooter>
+    );
+};
+
+export const Footer = () => (
+    <Wrapper>
+        <DataTable footer={MyDataTableFooter}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
             <DataTable.Col source="author" />
