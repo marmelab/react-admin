@@ -15,6 +15,7 @@ import { useTimeout, Identifier, RaRecord } from 'ra-core';
 
 import { DatagridClasses } from './useDatagridStyles';
 import { Placeholder } from '../Placeholder';
+import { DatagridProps } from './Datagrid';
 
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
@@ -117,13 +118,7 @@ const DatagridLoading = ({
 
 export interface DatagridLoadingProps {
     className?: string;
-    expand?:
-        | ReactElement
-        | FC<{
-              id: Identifier;
-              record: RaRecord;
-              resource: string;
-          }>;
+    expand?: DatagridProps['expand'];
     hasBulkActions?: boolean;
     nbChildren: number;
     nbFakeLines?: number;
