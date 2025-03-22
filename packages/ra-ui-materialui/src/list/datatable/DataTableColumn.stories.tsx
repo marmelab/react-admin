@@ -13,10 +13,9 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { List } from '../List';
 import { AdminContext } from '../../AdminContext';
 import { TextField, NumberField } from '../../field';
-import { DataTableColumn } from './DataTableColumn';
 import { DataTable } from './DataTable';
 
-export default { title: 'ra-ui-materialui/list/DataTableColumn' };
+export default { title: 'ra-ui-materialui/list/DataTable.Col' };
 
 const data = {
     books: [
@@ -91,10 +90,10 @@ const Wrapper = ({ children }) => (
 export const LabelDefault = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" />
-            <DataTableColumn source="title" />
-            <DataTableColumn source="author" />
-            <DataTableColumn source="year" />
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
 );
@@ -102,10 +101,10 @@ export const LabelDefault = () => (
 export const LabelString = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" label="ID" />
-            <DataTableColumn source="title" label="TITLE" />
-            <DataTableColumn source="author" label="AUTHOR" />
-            <DataTableColumn source="year" label="YEAR" />
+            <DataTable.Col source="id" label="ID" />
+            <DataTable.Col source="title" label="TITLE" />
+            <DataTable.Col source="author" label="AUTHOR" />
+            <DataTable.Col source="year" label="YEAR" />
         </DataTable>
     </Wrapper>
 );
@@ -113,10 +112,10 @@ export const LabelString = () => (
 export const LabelElement = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" label={<del>Id</del>} />
-            <DataTableColumn source="title" label={<em>Title</em>} />
-            <DataTableColumn source="author" label={<code>Author</code>} />
-            <DataTableColumn source="year" label={<small>Year</small>} />
+            <DataTable.Col source="id" label={<del>Id</del>} />
+            <DataTable.Col source="title" label={<em>Title</em>} />
+            <DataTable.Col source="author" label={<code>Author</code>} />
+            <DataTable.Col source="year" label={<small>Year</small>} />
         </DataTable>
     </Wrapper>
 );
@@ -124,10 +123,21 @@ export const LabelElement = () => (
 export const LabelFalse = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" />
-            <DataTableColumn source="title" label={false} />
-            <DataTableColumn source="author" />
-            <DataTableColumn source="year" />
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" label={false} />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const Align = () => (
+    <Wrapper>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" align="left" />
+            <DataTable.Col source="year" align="right" />
         </DataTable>
     </Wrapper>
 );
@@ -135,10 +145,10 @@ export const LabelFalse = () => (
 export const Sortable = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" />
-            <DataTableColumn source="title" sortable={false} />
-            <DataTableColumn source="author" />
-            <DataTableColumn source="year" />
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" sortable={false} />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
 );
@@ -146,10 +156,10 @@ export const Sortable = () => (
 export const SortByOrder = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" />
-            <DataTableColumn source="title" sortByOrder="DESC" />
-            <DataTableColumn source="author" sortByOrder="ASC" />
-            <DataTableColumn source="year" />
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" sortByOrder="DESC" />
+            <DataTable.Col source="author" sortByOrder="ASC" />
+            <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
 );
@@ -162,10 +172,10 @@ const UpperCaseField = ({ source }) => {
 export const Field = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" field={NumberField} />
-            <DataTableColumn source="title" />
-            <DataTableColumn source="author" field={UpperCaseField} />
-            <DataTableColumn source="year" />
+            <DataTable.Col source="id" field={NumberField} />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" field={UpperCaseField} />
+            <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
 );
@@ -173,16 +183,16 @@ export const Field = () => (
 export const Render = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn
+            <DataTable.Col
                 source="id"
                 render={record => String(record.id).padStart(5, '0')}
             />
-            <DataTableColumn
+            <DataTable.Col
                 label="Title"
                 render={record => record.title.substr(0, 10) + '...'}
             />
-            <DataTableColumn label="Author" render={record => record.author} />
-            <DataTableColumn
+            <DataTable.Col label="Author" render={record => record.author} />
+            <DataTable.Col
                 source="year"
                 render={record => record.year + ' A.D.'}
             />
@@ -193,36 +203,47 @@ export const Render = () => (
 export const Children = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id">
+            <DataTable.Col source="id">
                 <span style={{ color: 'red' }}>
                     <NumberField source="id" />
                 </span>
-            </DataTableColumn>
-            <DataTableColumn source="title">
+            </DataTable.Col>
+            <DataTable.Col source="title">
                 <em>
                     <TextField source="title" />
                 </em>
-            </DataTableColumn>
-            <DataTableColumn source="author">
+            </DataTable.Col>
+            <DataTable.Col source="author">
                 <UpperCaseField source="author" />
-            </DataTableColumn>
-            <DataTableColumn source="year">
+            </DataTable.Col>
+            <DataTable.Col source="year">
                 <NumberField source="year" /> <small>A.D.</small>
-            </DataTableColumn>
+            </DataTable.Col>
         </DataTable>
     </Wrapper>
 );
 
-const TitleCol = () => <DataTableColumn source="title" label="Book Title" />;
-const AuthorCol = () => <DataTableColumn source="author" />;
+export const TableCellProps = () => (
+    <Wrapper>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" padding="none" />
+            <DataTable.Col source="author" size="medium" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+const TitleCol = () => <DataTable.Col source="title" label="Book Title" />;
+const AuthorCol = () => <DataTable.Col source="author" />;
 
 export const Wrapped = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" />
+            <DataTable.Col source="id" />
             <TitleCol />
             <AuthorCol />
-            <DataTableColumn source="year" />
+            <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
 );
@@ -230,12 +251,12 @@ export const Wrapped = () => (
 export const WithCanAccess = () => (
     <Wrapper>
         <DataTable>
-            <DataTableColumn source="id" />
-            <DataTableColumn source="title" />
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
             <CanAccess resource="books.author" action="read">
-                <DataTableColumn source="author" />
+                <DataTable.Col source="author" />
             </CanAccess>
-            <DataTableColumn source="year" />
+            <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
 );
@@ -243,10 +264,10 @@ export const WithCanAccess = () => (
 export const ClassName = () => (
     <Wrapper>
         <DataTable sx={{ '& .title': { color: 'red' } }}>
-            <DataTableColumn source="id" className="id" />
-            <DataTableColumn source="title" className="title" />
-            <DataTableColumn source="author" className="author" />
-            <DataTableColumn source="year" className="year" />
+            <DataTable.Col source="id" className="id" />
+            <DataTable.Col source="title" className="title" />
+            <DataTable.Col source="author" className="author" />
+            <DataTable.Col source="year" className="year" />
         </DataTable>
     </Wrapper>
 );
@@ -254,10 +275,10 @@ export const ClassName = () => (
 export const HeaderClassName = () => (
     <Wrapper>
         <DataTable sx={{ '& .title': { color: 'red' } }}>
-            <DataTableColumn source="id" headerClassName="id" />
-            <DataTableColumn source="title" headerClassName="title" />
-            <DataTableColumn source="author" headerClassName="author" />
-            <DataTableColumn source="year" headerClassName="year" />
+            <DataTable.Col source="id" headerClassName="id" />
+            <DataTable.Col source="title" headerClassName="title" />
+            <DataTable.Col source="author" headerClassName="author" />
+            <DataTable.Col source="year" headerClassName="year" />
         </DataTable>
     </Wrapper>
 );
@@ -265,10 +286,10 @@ export const HeaderClassName = () => (
 export const CellClassName = () => (
     <Wrapper>
         <DataTable sx={{ '& .title': { color: 'red' } }}>
-            <DataTableColumn source="id" cellClassName="id" />
-            <DataTableColumn source="title" cellClassName="title" />
-            <DataTableColumn source="author" cellClassName="author" />
-            <DataTableColumn source="year" cellClassName="year" />
+            <DataTable.Col source="id" cellClassName="id" />
+            <DataTable.Col source="title" cellClassName="title" />
+            <DataTable.Col source="author" cellClassName="author" />
+            <DataTable.Col source="year" cellClassName="year" />
         </DataTable>
     </Wrapper>
 );

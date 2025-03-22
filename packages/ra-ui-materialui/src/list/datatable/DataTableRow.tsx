@@ -20,7 +20,7 @@ import ExpandRowButton from '../datagrid/ExpandRowButton';
 
 import { DataTableClasses } from './DataTableRoot';
 import { useDataTableConfigContext } from './context/DataTableConfigContext';
-import { SelectRowTableCell } from './SelectRowTableCell';
+import { SelectRowCheckbox } from './SelectRowCheckbox';
 import { useDataTableCallbacksContext } from './context';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
@@ -184,7 +184,11 @@ export const DataTableRow = React.memo(
                             )}
                         </TableCell>
                     )}
-                    {hasBulkActions && <SelectRowTableCell />}
+                    {hasBulkActions && (
+                        <TableCell padding="checkbox">
+                            <SelectRowCheckbox />
+                        </TableCell>
+                    )}
                     {children}
                 </TableRow>
                 {expandable && expanded && (

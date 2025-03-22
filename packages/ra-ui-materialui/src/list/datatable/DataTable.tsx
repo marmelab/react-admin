@@ -39,6 +39,7 @@ import { ColumnsSelector } from './ColumnsSelector';
 import {
     DataTableCallbacksContext,
     DataTableDataContext,
+    DataTableRenderContext,
     DataTableSelectedIdsContext,
     DataTableSortContext,
     DataTableStoreContext,
@@ -361,22 +362,28 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
                                                     size={size}
                                                     {...rest}
                                                 >
-                                                    <TableHeader>
-                                                        {columns}
-                                                    </TableHeader>
+                                                    <DataTableRenderContext.Provider value="header">
+                                                        <TableHeader>
+                                                            {columns}
+                                                        </TableHeader>
+                                                    </DataTableRenderContext.Provider>
                                                     <TableBody>
                                                         {columns}
                                                     </TableBody>
-                                                    <TableFooter>
-                                                        {columns}
-                                                    </TableFooter>
+                                                    <DataTableRenderContext.Provider value="footer">
+                                                        <TableFooter>
+                                                            {columns}
+                                                        </TableFooter>
+                                                    </DataTableRenderContext.Provider>
                                                 </Table>
                                             </div>
                                         </DataTableRoot>
                                     </DataTableDataContext.Provider>
-                                    <ColumnsSelector>
-                                        {children}
-                                    </ColumnsSelector>
+                                    <DataTableRenderContext.Provider value="columnsSelector">
+                                        <ColumnsSelector>
+                                            {children}
+                                        </ColumnsSelector>
+                                    </DataTableRenderContext.Provider>
                                 </OptionalResourceContextProvider>
                             </DataTableConfigContext.Provider>
                         </DataTableCallbacksContext.Provider>

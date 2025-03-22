@@ -15,7 +15,7 @@ import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { createTheme } from '@mui/material/styles';
-import { Box, TableRow, styled } from '@mui/material';
+import { Box, TableCell, TableHead, TableRow, styled } from '@mui/material';
 
 import { NumberField, TextField } from '../../field';
 import { List } from '../List';
@@ -36,7 +36,10 @@ import { AdminUI } from '../../AdminUI';
 import { AdminContext } from '../../AdminContext';
 import { EditGuesser } from '../../detail';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
-import { SelectRowTableCell } from './SelectRowTableCell';
+import { SelectRowCheckbox } from './SelectRowCheckbox';
+import { SelectPageCheckbox } from './SelectPageCheckbox';
+import { TopToolbar } from '../../layout';
+import { ColumnsButton } from './ColumnsButton';
 
 export default { title: 'ra-ui-materialui/list/DataTable' };
 
@@ -583,7 +586,9 @@ const MyDataTableRow = ({ children }: DataTableRowProps) => {
                 },
             }}
         >
-            <SelectRowTableCell />
+            <TableCell padding="checkbox">
+                <SelectRowCheckbox />
+            </TableCell>
             {children}
         </TableRow>
     ) : null;
@@ -596,6 +601,37 @@ const MyDataTableBody = (props: DataTableBodyProps) => (
 export const DataTableBody = () => (
     <Wrapper>
         <DataTable body={MyDataTableBody}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+const MyDataTableHeader = ({ children }: DataTableRowProps) => (
+    <TableHead>
+        <TableRow>
+            <TableCell variant="head"></TableCell>
+            <TableCell variant="head" colSpan={2} sx={{ textAlign: 'center' }}>
+                Main info
+            </TableCell>
+            <TableCell variant="head" colSpan={2} sx={{ textAlign: 'center' }}>
+                Misc info
+            </TableCell>
+        </TableRow>
+        <TableRow>
+            <TableCell variant="head" padding="checkbox">
+                <SelectPageCheckbox />
+            </TableCell>
+            {children}
+        </TableRow>
+    </TableHead>
+);
+
+export const DataTableHeader = () => (
+    <Wrapper>
+        <DataTable header={MyDataTableHeader}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
             <DataTable.Col source="author" />
@@ -617,7 +653,13 @@ export const FullApp = ({
             <Resource
                 name="books"
                 list={() => (
-                    <List>
+                    <List
+                        actions={
+                            <TopToolbar>
+                                <ColumnsButton />
+                            </TopToolbar>
+                        }
+                    >
                         <DataTable
                             rowClick={rowClick}
                             expand={<ExpandDetails />}

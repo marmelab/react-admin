@@ -7,3 +7,5 @@ export * from './DataTableHeader';
 export * from './DataTableLoading';
 export * from './DataTableRoot';
 export * from './DataTableRow';
+export * from './SelectPageCheckbox';
+export * from './SelectRowCheckbox';

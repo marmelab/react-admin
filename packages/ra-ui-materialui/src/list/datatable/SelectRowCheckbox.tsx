@@ -1,5 +1,5 @@
 import React, { useCallback, memo } from 'react';
-import { TableCell, Checkbox } from '@mui/material';
+import { Checkbox } from '@mui/material';
 import { useTranslate, useRecordContext } from 'ra-core';
 
 import { DataTableClasses } from './DataTableRoot';
@@ -8,7 +8,7 @@ import {
     useDataTableSelectedIdsContext,
 } from './context';
 
-export const SelectRowTableCell = memo(() => {
+export const SelectRowCheckbox = memo(() => {
     const { handleToggleItem, isRowSelectable } =
         useDataTableCallbacksContext();
     const selectedIds = useDataTableSelectedIdsContext();
@@ -33,19 +33,17 @@ export const SelectRowTableCell = memo(() => {
     );
 
     return (
-        <TableCell padding="checkbox">
-            <Checkbox
-                aria-label={translate('ra.action.select_row', {
-                    _: 'Select this row',
-                })}
-                color="primary"
-                className={`select-item ${DataTableClasses.checkbox}`}
-                checked={selectable && selected}
-                onClick={handleToggleSelection}
-                disabled={!selectable}
-            />
-        </TableCell>
+        <Checkbox
+            aria-label={translate('ra.action.select_row', {
+                _: 'Select this row',
+            })}
+            color="primary"
+            className={`select-item ${DataTableClasses.checkbox}`}
+            checked={selectable && selected}
+            onClick={handleToggleSelection}
+            disabled={!selectable}
+        />
     );
 });
 
-SelectRowTableCell.displayName = 'SelectRowTableCell';
+SelectRowCheckbox.displayName = 'SelectRowTableCell';

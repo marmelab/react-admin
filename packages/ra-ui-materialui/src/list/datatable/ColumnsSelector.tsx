@@ -3,13 +3,12 @@ import { Children } from 'react';
 import { createPortal } from 'react-dom';
 import { useStore } from 'ra-core';
 import { Box } from '@mui/material';
-import { DataTableRenderContext } from './context/DataTableRenderContext';
 import { DataTableColumnRankContext } from './context/DataTableColumnRankContext';
 import { useDataTableStoreContext } from './context/DataTableStoreContext';
 import { Button } from '../../button';
 
 /**
- * Render DataTable.Col elements in the ColumnsButton selector using a React POrtal.
+ * Render DataTable.Col elements in the ColumnsButton selector using a React Portal.
  *
  * @see ColumnsButton
  */
@@ -57,7 +56,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
     const paddedColumnRanks = padRanks(columnRanks ?? [], childrenArray.length);
 
     return createPortal(
-        <DataTableRenderContext.Provider value="columnsSelector">
+        <>
             {paddedColumnRanks.map((position, index) => (
                 <DataTableColumnRankContext.Provider
                     value={position}
@@ -80,7 +79,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
                     Reset
                 </Button>
             </Box>
-        </DataTableRenderContext.Provider>,
+        </>,
         container
     );
 };

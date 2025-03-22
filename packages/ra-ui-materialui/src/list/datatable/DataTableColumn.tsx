@@ -31,6 +31,8 @@ export const DataTableColumn = React.memo(
                     return <DataTableHeaderCell {...props} ref={ref} />;
                 case 'data':
                     return <DataTableCell {...props} ref={ref} />;
+                case 'footer':
+                    return null;
             }
         }
     )
