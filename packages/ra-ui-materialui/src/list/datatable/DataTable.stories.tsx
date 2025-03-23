@@ -61,7 +61,7 @@ const data = {
         },
         {
             id: 2,
-            title: 'Pride and Predjudice',
+            title: 'Pride and Prejudice',
             author: 'Jane Austen',
             year: 1813,
         },
@@ -104,11 +104,16 @@ const theme = createTheme();
 const Wrapper = ({
     children,
     defaultDataProvider = dataProvider,
+    i18nProvider = undefined,
     resource = 'books',
     actions = null,
     aside = null,
 }) => (
-    <AdminContext dataProvider={defaultDataProvider} theme={theme}>
+    <AdminContext
+        dataProvider={defaultDataProvider}
+        theme={theme}
+        i18nProvider={i18nProvider}
+    >
         <ResourceContextProvider value={resource}>
             <List perPage={5} sx={{ p: 4 }} actions={actions} aside={aside}>
                 {children}
@@ -118,7 +123,7 @@ const Wrapper = ({
 );
 
 export const Basic = () => (
-    <Wrapper>
+    <Wrapper i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}>
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
@@ -341,6 +346,14 @@ const MyCustomList = () => {
     );
 };
 
+export const StandaloneStatic = () => (
+    <AdminContext dataProvider={dataProvider} theme={theme}>
+        <ResourceContextProvider value="books">
+            <MyCustomList />
+        </ResourceContextProvider>
+    </AdminContext>
+);
+
 const MyCustomListInteractive = () => {
     const { data: books, isPending: isBooksPending } = useGetList('books');
     const {
@@ -373,12 +386,9 @@ const MyCustomListInteractive = () => {
     );
 };
 
-export const Standalone = () => (
+export const StandaloneDynamic = () => (
     <AdminContext dataProvider={dataProvider} theme={theme}>
         <ResourceContextProvider value="books">
-            <h1>Static</h1>
-            <MyCustomList />
-            <h1>Dynamic (with useList)</h1>
             <MyCustomListInteractive />
         </ResourceContextProvider>
     </AdminContext>

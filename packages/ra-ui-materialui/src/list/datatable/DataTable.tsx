@@ -360,7 +360,7 @@ export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
                                                         DataTableClasses.table
                                                     }
                                                     size={size}
-                                                    {...rest}
+                                                    {...sanitizeRestProps(rest)}
                                                 >
                                                     <DataTableRenderContext.Provider value="header">
                                                         <TableHeader>
@@ -700,5 +700,29 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     selectedIds?: Identifier[];
     total?: number;
 }
+
+const sanitizeRestProps = ({
+    sort,
+    data,
+    isLoading,
+    isPending,
+    onSelect,
+    onToggleItem,
+    setSort,
+    selectedIds,
+    total,
+    ...rest
+}: Pick<
+    DataTableProps,
+    | 'sort'
+    | 'data'
+    | 'isLoading'
+    | 'isPending'
+    | 'onSelect'
+    | 'onToggleItem'
+    | 'setSort'
+    | 'selectedIds'
+    | 'total'
+>) => rest;
 
 DataTable.displayName = 'DataTable';
