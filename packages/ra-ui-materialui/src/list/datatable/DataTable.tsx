@@ -67,11 +67,11 @@ const DefaultFooter = (_props: { children: ReactNode }) => null;
  *  - children
  *  - empty
  *  - expand
+ *  - footer
  *  - header
  *  - hover
  *  - isRowExpandable
  *  - isRowSelectable
- *  - optimized
  *  - rowClick
  *  - rowSx
  *  - size
