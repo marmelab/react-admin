@@ -44,13 +44,18 @@ The hook takes no argument and returns a callback. The callback takes 2 argument
 | Name | Required | Type | Default | Description |
 | --- | --- | --- | --- | --- |
 | `message` | Required | `string` | - | The message to display (a string, or a React node) |
-| `options` |  | `string` | - | The options |
-| `options.anchorOrigin` |  | `object` | - | The position of the notification. The default is `{ vertical: 'top', horizontal: 'right' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details. |
-| `options.autoHideDuration` |  | `number | null` | - | Duration (in milliseconds) after which the notification hides. Set it to `null` if the notification should not be dismissible. |
-| `options.messageArgs` |  | `object` | - | options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation. |
-| `options.multiLine` |  | `boolean` | - | Set it to `true` if the notification message should be shown in more than one line. |
-| `options.undoable` |  | `boolean` | - | Set it to `true` if the notification should contain an "undo" button |
-| `options.type` |  | `string` | - | The notification type (`info`, `success`, `error` or `warning` - the default is `info`) |
+| `options` |  | `object` | - | The options |
+
+The `options` is an object that can have the following properties:
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `anchorOrigin` | `object` | - | The position of the notification. The default is `{ vertical: 'top', horizontal: 'right' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details. |
+| `autoHideDuration` | `number | null` | - | Duration (in milliseconds) after which the notification hides. Set it to `null` if the notification should not be dismissible. |
+| `messageArgs` | `object` | - | options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation. |
+| `multiLine` | `boolean` | - | Set it to `true` if the notification message should be shown in more than one line. |
+| `undoable` | `boolean` | - | Set it to `true` if the notification should contain an "undo" button |
+| `type` | `string` | - | The notification type (`info`, `success`, `error` or `warning` - the default is `info`) |
 
 ## `anchorOrigin`
 
@@ -223,7 +228,9 @@ export const ConnectionWatcher = () => {
 
 Note that if you use this ability to pass a React node, the message will not be translated - you'll have to translate it yourself using [`useTranslate`](./useTranslate.md).
 
-If you have custom actions in your notification element, you can leverage the `useCloseNotification` hook to close the notification:
+## Closing The Notification
+
+If you have custom actions in your notification element, you can leverage the `useCloseNotification` hook to close the notification programmatically:
 
 ```tsx
 import { useFormContext } from 'react-hook-form';
@@ -238,15 +245,14 @@ const SetFormValueButton = () => {
         <Button
             onClick={() => {
                 setValue('myfield', 'a value');
-                notify(<SetFormValueNotification />);
+                notify(<SetFormValueNotification reset={() => setValue('myfield', '')} />);
             }}
             label="Set myfield value"
         />
     );
 };
 
-const SetFormValueNotification = () => {
-    const { setValue } = useFormContext();
+const SetFormValueNotification = ({ reset }: { reset:() => void }) => {
     const closeNotification = useCloseNotification();
 
     return (
@@ -255,7 +261,7 @@ const SetFormValueNotification = () => {
             action={
                 <Button
                     onClick={() => {
-                        setValue('myfield', '');
+                        reset();
                         closeNotification();
                     }}
                     label="Reset"
