@@ -175,7 +175,7 @@ export const Large = (props: Partial<SimpleFormProps>) => (
     </AdminContext>
 );
 
-export const FullWidth = (props: Partial<SimpleFormProps>) => (
+export const NotFullWidth = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
         <ResourceContextProvider value="posts">
             <Card>
@@ -188,7 +188,7 @@ export const FullWidth = (props: Partial<SimpleFormProps>) => (
                         toolbar={<RichTextInputToolbar />}
                         label="Body"
                         source="body"
-                        fullWidth
+                        fullWidth={false}
                     />
                     <FormInspector />
                 </SimpleForm>
