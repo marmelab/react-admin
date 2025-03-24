@@ -5,9 +5,16 @@ import {
     useDelete,
     CoreAdminContext,
 } from 'ra-core';
-import { Alert, Button, Stack } from '@mui/material';
+import {
+    Alert,
+    Button,
+    SnackbarContent,
+    SnackbarContentProps,
+    Stack,
+} from '@mui/material';
 
 import { Notification } from './Notification';
+import { useCloseNotification } from './useCloseNotification';
 
 export default {
     title: 'ra-ui-materialui/layout/Notification',
@@ -201,4 +208,38 @@ export const ConsecutiveUndoable = ({
         </Stack>
         <Notification />
     </CoreAdminContext>
+);
+
+// forwardRef is required for Snackbar to work (transitions) in React 18
+const CustomNotificationWithActionContent = React.forwardRef<
+    HTMLDivElement,
+    SnackbarContentProps
+>((props, ref) => {
+    const closeNotification = useCloseNotification();
+    const handleClick = () => {
+        console.log('Custom action');
+        closeNotification();
+    };
+    return (
+        <SnackbarContent
+            message="Applied automatic changes"
+            action={<Button onClick={handleClick}>Cancel</Button>}
+            {...props}
+            ref={ref}
+        />
+    );
+});
+
+const CustomNotificationElementWithAction = () => {
+    const notify = useNotify();
+    React.useEffect(() => {
+        notify(<CustomNotificationWithActionContent />);
+    }, [notify]);
+    return null;
+};
+
+export const CustomNotificationWithAction = () => (
+    <Wrapper>
+        <CustomNotificationElementWithAction />
+    </Wrapper>
 );
