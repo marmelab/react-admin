@@ -37,8 +37,38 @@ const MarkAsUnreadButton = () => {
 | Prop       | Required | Type        | Default | Description                                                     |
 | ---------- | -------- | ----------- | ------- | --------------------------------------------------------------- |
 | `i18nKey`  | Required | `string`    | -       | The translation key.                                            |
-| `options`  | Optional | `Object`    | -       | The options used for pluralization and interpolation.         |
 | `children` | Optional | `ReactNode` | -       | The default content to display if the translation is not found. |
+| `options`  | Optional | `Object`    | -       | The options used for pluralization and interpolation.           |
+
+## `children`
+
+`<Translate>` renders its child node if `translate` doesn't find a translation for the `i18nKey`.
+
+```tsx
+const messages = {};
+
+<Translate i18nKey="ra.page.loading">Loading</Translate>
+// Loading
+```
+
+## `i18nKey`
+
+The translation key, used to look up the translation message.
+
+```tsx
+const messages = {
+    resources: {
+        reviews: {
+            action: {
+                reject: 'Reject review',
+            },
+        },
+    },
+};
+
+<Translate i18nKey="resources.reviews.action.reject" />
+// Reject review
+```
 
 ## `options`
 
@@ -77,33 +107,3 @@ const messages = {
 ```
 
 {% endraw %}
-
-## `children`
-
-`<Translate>` renders its child node if  `translate` doesn't find a translation for the `i18nKey`.
-
-```tsx
-const messages = {};
-
-<Translate i18nKey="ra.page.loading">Loading</Translate>
-// Loading
-```
-
-## `i18nKey`
-
-The translation key, used to look up the translation message.
-
-```tsx
-const messages = {
-    resources: {
-        reviews: {
-            action: {
-                reject: 'Reject review',
-            },
-        },
-    },
-};
-
-<Translate i18nKey="resources.reviews.action.reject" />
-// Reject review
-```
