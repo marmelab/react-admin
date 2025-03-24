@@ -5,13 +5,13 @@ import { Button, Snackbar, SnackbarProps, SnackbarOrigin } from '@mui/material';
 import clsx from 'clsx';
 
 import {
-    useNotificationContext,
-    undoableEventEmitter,
-    useTranslate,
+    CloseNotificationContext,
     NotificationPayload,
+    undoableEventEmitter,
+    useNotificationContext,
     useTakeUndoableMutation,
+    useTranslate,
 } from 'ra-core';
-import { CloseNotificationContext } from './CloseNotificationContext';
 
 const defaultAnchorOrigin: SnackbarOrigin = {
     vertical: 'bottom',
@@ -79,11 +79,6 @@ export const Notification = (props: NotificationProps) => {
         setOpen(false);
     }, [setOpen]);
 
-    const closeNotificationContext = React.useMemo(
-        () => handleRequestClose,
-        [handleRequestClose]
-    );
-
     const handleExited = useCallback(() => {
         if (
             currentNotification &&
@@ -126,7 +121,7 @@ export const Notification = (props: NotificationProps) => {
     } = notificationOptions || {};
 
     return (
-        <CloseNotificationContext.Provider value={closeNotificationContext}>
+        <CloseNotificationContext.Provider value={handleRequestClose}>
             <StyledSnackbar
                 className={className}
                 open={open}

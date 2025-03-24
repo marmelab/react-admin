@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {
-    useNotify,
+    CoreAdminContext,
     NotificationContextProvider,
     useDelete,
-    CoreAdminContext,
+    useNotify,
+    useCloseNotification,
 } from 'ra-core';
 import {
     Alert,
@@ -14,7 +15,6 @@ import {
 } from '@mui/material';
 
 import { Notification } from './Notification';
-import { useCloseNotification } from './useCloseNotification';
 
 export default {
     title: 'ra-ui-materialui/layout/Notification',
