@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
 import { useTranslate } from './useTranslate';
 
-export const Translate = ({ i18nKey, args, children }: TranslateProps) => {
+export const Translate = ({ i18nKey, options, children }: TranslateProps) => {
     const translate = useTranslate();
     const translatedMessage = translate(
         i18nKey,
-        typeof children === 'string' ? { _: children, ...args } : args
+        typeof children === 'string' ? { _: children, ...options } : options
     );
 
     if (translatedMessage) {
@@ -17,5 +17,5 @@ export const Translate = ({ i18nKey, args, children }: TranslateProps) => {
 export interface TranslateProps {
     i18nKey: string;
     children?: ReactNode;
-    args?: Object;
+    options?: Object;
 }

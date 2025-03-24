@@ -37,12 +37,12 @@ const MarkAsUnreadButton = () => {
 | Prop       | Required | Type        | Default | Description                                                     |
 | ---------- | -------- | ----------- | ------- | --------------------------------------------------------------- |
 | `i18nKey`  | Required | `string`    | -       | The translation key.                                            |
-| `args`     | Optional | `Object`    | -       | The options used for pluralization and interpolation.         |
+| `options`  | Optional | `Object`    | -       | The options used for pluralization and interpolation.         |
 | `children` | Optional | `ReactNode` | -       | The default content to display if the translation is not found. |
 
-## `args`
+## `options`
 
-Use the `args` props to pass additional options to the `translate` function, e.g. for [pluralization or interpolation](./TranslationTranslating.md#interpolation-pluralization-and-default-translation).
+Use the `options` props to pass additional options to the `translate` function, e.g. for [pluralization or interpolation](./TranslationTranslating.md#interpolation-pluralization-and-default-translation).
 
 {% raw %}
 
@@ -53,7 +53,7 @@ const messages = {
     },
 };
 
-<Translate i18nKey="custom.hello_world" args={{ name: 'John' }} />
+<Translate i18nKey="custom.hello_world" options={{ name: 'John' }} />
 // Hello, John!
 ```
 
@@ -72,7 +72,7 @@ const messages = {
     },
 };
 
-<Translate i18nKey="ra.notification.deleted" args={{ smart_count: 2 }} />
+<Translate i18nKey="ra.notification.deleted" options={{ smart_count: 2 }} />
 // 2 items deleted
 ```
 

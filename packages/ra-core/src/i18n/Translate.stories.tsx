@@ -40,7 +40,7 @@ export const NoTranslationWithChildrenAsNode = () => (
     </TestTranslationProvider>
 );
 
-export const Args = () => (
+export const Options = () => (
     <TestTranslationProvider
         messages={{
             custom: {
@@ -48,6 +48,6 @@ export const Args = () => (
             },
         }}
     >
-        <Translate i18nKey="custom.myKey" args={{ price: '6' }} />
+        <Translate i18nKey="custom.myKey" options={{ price: '6' }} />
     </TestTranslationProvider>
 );

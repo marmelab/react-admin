@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import {
-    Args,
+    Options,
     Basic,
     NoTranslation,
     NoTranslationWithChildrenAsNode,
@@ -41,8 +41,8 @@ describe('<Translate />', () => {
         );
     });
 
-    it('should render the translation with args', () => {
-        const { container } = render(<Args />);
+    it('should render the translation with options', () => {
+        const { container } = render(<Options />);
         expect(container.innerHTML).toBe('It cost 6.00 $');
     });
 });
