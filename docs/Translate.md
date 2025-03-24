@@ -5,72 +5,105 @@ title: "The Translate Component"
 
 # `<Translate>`
 
-If you need to translate messages in your own components, React-admin provides the `<Translate>` component which displays your translated messages.
+The `<Translate>` component renders a translated message based on a translation key.
 
-# Usage
+## Usage
+
+The component will look up the translation for the `i18nKey` in the `i18nProvider` and render it. If not found, it will render the `children` prop.
 
 ```tsx
-const MyHelloButton = () => <button><Translate i18nKey="custom.hello_world" /></button>;
+import { Translate, useRecord, useUpdate } from 'react-admin';
 
-export default MyHelloButton;
+const MarkAsUnreadButton = () => {
+    const record = useRecord();
+    const update = useUpdate();
+    const handleClick = () => {
+        update('messages', { id: record.id, data: { isRead: false } });
+    };
+    return (
+        <button onClick={handleClick}>
+            <Translate i18nKey="my.messages.actions.mark_as_unread">
+                Mark as Unread
+            </Translate>
+        </button>;
+    );
+}
 ```
 
-**Tip:** You can directly use the translation function with [the `useTranslate` hook](./useTranslate.md).
+**Tip:** You can also use [the `useTranslate` hook](./useTranslate.md) to get a translated message.
 
 ## Props
 
 | Prop       | Required | Type        | Default | Description                                                     |
 | ---------- | -------- | ----------- | ------- | --------------------------------------------------------------- |
-| `args`     | Optional | `Object`    | -       | The arguments used for pluralization and interpolation.         |
-| `children` | Optional | `ReactNode` | -       | The default content to display if the translation is not found. |
 | `i18nKey`  | Required | `string`    | -       | The translation key.                                            |
+| `args`     | Optional | `Object`    | -       | The options used for pluralization and interpolation.         |
+| `children` | Optional | `ReactNode` | -       | The default content to display if the translation is not found. |
 
-## `args`: Pluralization and Interpolation
+## `args`
 
-If your i18n provider provides some nice features such as interpolation and pluralization (as [Polyglot.js](./Translation.md#ra-i18n-polyglot) and [i18next](./Translation.md#ra-i18n-i18next) did), that you can use in react-admin.
+Use the `args` props to pass additional options to the `translate` function, e.g. for [pluralization or interpolation](./TranslationTranslating.md#interpolation-pluralization-and-default-translation).
 
-{%raw%}
+{% raw %}
 
 ```tsx
-// in english.ts
-import englishMessages from 'ra-language-english';
-
 const messages = {
-    ...englishMessages,
     custom: {
-        my_key: 'My Translated Key',
-        hello_world: 'Hello, %{my_world}!',
-        count_beer: 'Select one beer |||| Select %{smart_count} beers',
+        hello_world: 'Hello, %{name}!',
     },
 };
 
-export default messages;
+<Translate i18nKey="custom.hello_world" args={{ name: 'John' }} />
+// Hello, John!
 ```
+
+{% endraw %}
+
+One particular option is `smart_count`, which is used for pluralization.
+
+{% raw %}
 
 ```tsx
-export const MyHelloButton = () => (
-    <button>
-        <Translate i18nKey="custom.hello_world" args={{ my_world: 'world' }} />
-    </button>
-);
+const messages = {
+    ra: {
+        notification: {
+            deleted: '1 item deleted |||| %{smart_count} items deleted',
+        },
+    },
+};
 
-export const SelectBeerButton = () => (
-    <button>
-        <Translate i18nKey="custom.count_beer" args={{ smart_count: 2 }} />
-    </button>
-);
+<Translate i18nKey="ra.notification.deleted" args={{ smart_count: 2 }} />
+// 2 items deleted
 ```
 
-{%endraw%}
+{% endraw %}
 
 ## `children`
 
-You can provide a `children` to display if the translation function doesn't find a message with your `i18nKey`.
+`<Translate>` renders its child node if  `translate` doesn't find a translation for the `i18nKey`.
 
 ```tsx
-const LoadingMessage = () => <Translate i18nKey="ra.page.loading">Loading</Translate>;
+const messages = {};
+
+<Translate i18nKey="ra.page.loading">Loading</Translate>
+// Loading
 ```
 
 ## `i18nKey`
 
-The key used to translate your message with your polyglot disctionnaries like `ra.action.unselect`, `custom.my_key`, etc.
+The translation key, used to look up the translation message.
+
+```tsx
+const messages = {
+    resources: {
+        reviews: {
+            action: {
+                reject: 'Reject review',
+            },
+        },
+    },
+};
+
+<Translate i18nKey="resources.reviews.action.reject" />
+// Reject review
+```
