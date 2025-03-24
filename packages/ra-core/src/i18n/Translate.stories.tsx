@@ -24,8 +24,8 @@ export const NoTranslation = () => (
     </TestTranslationProvider>
 );
 
-export const NoTranslationWithChildrenAsString = () => (
-    <TestTranslationProvider messages={{}}>
+export const NoTranslationWithChildrenAsString = ({ messages = {} }) => (
+    <TestTranslationProvider messages={messages}>
         <Translate i18nKey="custom.myKey">My Default Translation</Translate>
     </TestTranslationProvider>
 );
