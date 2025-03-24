@@ -24,28 +24,21 @@ export const NoTranslation = () => (
     </TestTranslationProvider>
 );
 
-export const NoTranslationWithChildren = ({
-    isChildrenANode = false,
-}: {
-    isChildrenANode?: boolean;
-}) => (
+export const NoTranslationWithChildrenAsString = () => (
     <TestTranslationProvider messages={{}}>
-        <Translate i18nKey="custom.myKey">
-            {isChildrenANode ? (
-                <div style={{ color: 'red' }}>
-                    <i>My Default Translation</i>
-                </div>
-            ) : (
-                'My Default Translation'
-            )}
-        </Translate>
+        <Translate i18nKey="custom.myKey">My Default Translation</Translate>
     </TestTranslationProvider>
 );
 
-NoTranslationWithChildren.args = { isChildrenANode: false };
-NoTranslationWithChildren.argTypes = {
-    isChildrenANode: { control: 'boolean' },
-};
+export const NoTranslationWithChildrenAsNode = () => (
+    <TestTranslationProvider messages={{}}>
+        <Translate i18nKey="custom.myKey">
+            <div style={{ color: 'red' }}>
+                <i>My Default Translation</i>
+            </div>
+        </Translate>
+    </TestTranslationProvider>
+);
 
 export const Args = () => (
     <TestTranslationProvider
