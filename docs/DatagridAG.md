@@ -1629,21 +1629,68 @@ export const CommentListWithAutocompleteWithCreate = () => {
 {% endraw %}
 
 ### Using AG Grid Enterprise
+
 `<DatagridAG>` is also compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/).
 
-You can follow the instructions in the _Getting Started with AG Grid Enterprise_ section of the [Getting Started](https://www.ag-grid.com/react-data-grid/getting-started/) documentation to enable the Enterprise features.
+You can try out AG Grid Enterprise for free. If you don't have a license key installed, AG Grid Enterprise will display a watermark. To remove this watermark, you'll need to purchase a license key from AG Grid.
 
-Below is a short example of what you can achieve.
+To use an [AG Grid Enterprise Module](https://www.ag-grid.com/react-data-grid/modules/#selecting-modules) with `<DatagridAG>`, you simply need to install it and then add it to the list of registered modules via the `modules` prop.
+
+Below is an example of what you can achieve using the following AG Grid Enterprise Modules:
+
+- `ClipboardModule`
+- `ColumnsToolPanelModule`
+- `ExcelExportModule`
+- `FiltersToolPanelModule`
+- `MenuModule`
+- `RowGroupingModule`
+
+First install the modules:
+
+```bash
+npm install @ag-grid-enterprise/clipboard @ag-grid-enterprise/column-tool-panel @ag-grid-enterprise/excel-export @ag-grid-enterprise/filter-tool-panel @ag-grid-enterprise/menu @ag-grid-enterprise/row-grouping
+```
+
+Then register them in `<DatagridAG>` using the `modules` prop:
 
 {% raw %}
+
 ```tsx
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-alpine.css';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-enterprise';
+import { CommunityFeaturesModule } from '@ag-grid-community/core';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { CsvExportModule } from '@ag-grid-community/csv-export';
+import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
+import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
+import { ExcelExportModule } from '@ag-grid-enterprise/excel-export';
+import { FiltersToolPanelModule } from '@ag-grid-enterprise/filter-tool-panel';
+import { MenuModule } from '@ag-grid-enterprise/menu';
+import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 import React from 'react';
 import { List } from 'react-admin';
 import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+
+const getContextMenuItems = () => [
+    'copy',
+    'copyWithHeaders',
+    'copyWithGroupHeaders',
+    'paste',
+    'separator',
+    'export',
+];
+
+const enterpriseModules = [
+    CommunityFeaturesModule,
+    ClientSideRowModelModule,
+    CsvExportModule,
+    ClipboardModule,
+    ColumnsToolPanelModule,
+    ExcelExportModule,
+    FiltersToolPanelModule,
+    MenuModule,
+    RowGroupingModule,
+];
 
 const OlympicWinnersList = () => {
     const columnDefs = [
@@ -1667,33 +1714,34 @@ const OlympicWinnersList = () => {
         { field: 'bronze' },
         { field: 'total' },
     ];
-    const gridRef = React.useRef<AgGridReact>(null);
-    const onFirstDataRendered = React.useCallback(() => {
-        gridRef.current.api.autoSizeAllColumns();
-    }, []);
     const defaultColDef = {
         enableRowGroup: true,
+        menuTabs: ['filterMenuTab', 'generalMenuTab', 'columnsMenuTab'],
     };
+
     return (
         <List>
             <DatagridAG
                 columnDefs={columnDefs}
                 defaultColDef={defaultColDef}
-                ref={gridRef}
-                onFirstDataRendered={onFirstDataRendered}
                 rowGroupPanelShow="always"
                 groupSelectsChildren
+                getContextMenuItems={getContextMenuItems}
+                modules={enterpriseModules}
             />
         </List>
     );
 };
 ```
+
 {% endraw %}
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+**Tip:** `<DatagridAG>` registers the following [modules](https://www.ag-grid.com/react-data-grid/modules/) by default: `ClientSideRowModelModule`, `CommunityFeaturesModule` and `CsvExportModule`. If you add other modules, make sure to have at least the `ClientSideRowModelModule`.
 
 ### Adding An Expandable Panel (Master/Detail)
 
@@ -1704,10 +1752,10 @@ For instance, here's how to show the comments of a post in an expandable panel:
 ![DatagridAG Master Detail](./img/DatagridAG-MasterDetail.png)
 
 {% raw %}
+
 ```tsx
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-alpine.css';
-import { AgGridReact } from 'ag-grid-react';
 import { ColDef, CommunityFeaturesModule } from '@ag-grid-community/core';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { CsvExportModule } from '@ag-grid-community/csv-export';
@@ -1715,6 +1763,13 @@ import { MasterDetailModule } from '@ag-grid-enterprise/master-detail';
 import React from 'react';
 import { List, useDataProvider, useNotify } from 'react-admin';
 import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+
+const modulesWithMasterDetails = [
+    ClientSideRowModelModule,
+    CommunityFeaturesModule,
+    CsvExportModule,
+    MasterDetailModule,
+];
 
 export const PostList = () => {
     const dataProvider = useDataProvider();
@@ -1754,7 +1809,6 @@ export const PostList = () => {
                 })
                 .catch(error => {
                     notify(error.message, { type: 'error' });
-                    params.successCallback([]);
                 });
         },
     };
@@ -1765,18 +1819,16 @@ export const PostList = () => {
                 masterDetail
                 columnDefs={columnDefs}
                 detailCellRendererParams={detailCellRendererParams}
-                modules={[
-                    ClientSideRowModelModule,
-                    CommunityFeaturesModule,
-                    CsvExportModule,
-                    MasterDetailModule,
-                ]}
+                modules={modulesWithMasterDetails}
             />
         </List>
     );
 };
 ```
+
 {% endraw %}
+
+**Tip:** `<DatagridAG>` registers the following [modules](https://www.ag-grid.com/react-data-grid/modules/) by default: `ClientSideRowModelModule`, `CommunityFeaturesModule` and `CsvExportModule`. If you add other modules, make sure to have at least the `ClientSideRowModelModule`.
 
 ## `<DatagridAGClient>`
 
@@ -2916,6 +2968,7 @@ export const PostList = () => {
 Alternatively, you can disable the ability to edit all cells by passing `editable: false` to the `defaultColDef`:
 
 {% raw %}
+
 ```tsx
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-alpine.css';
@@ -2942,25 +2995,72 @@ export const PostList = () => {
     );
 };
 ```
+
 {% endraw %}
 
 ### Using AG Grid Enterprise
 
 `<DatagridAGClient>` is also compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/).
 
-You can follow the instructions in the _Getting Started with AG Grid Enterprise_ section of the [Getting Started](https://www.ag-grid.com/react-data-grid/getting-started/) documentation to enable the Enterprise features.
+You can try out AG Grid Enterprise for free. If you don't have a license key installed, AG Grid Enterprise will display a watermark. To remove this watermark, you'll need to purchase a license key from AG Grid.
 
-Below is a short example of what you can achieve.
+To use an [AG Grid Enterprise Module](https://www.ag-grid.com/react-data-grid/modules/#selecting-modules) with `<DatagridAGClient>`, you simply need to install it and then add it to the list of registered modules via the `modules` prop.
+
+Below is an example of what you can achieve using the following AG Grid Enterprise Modules:
+
+- `ClipboardModule`
+- `ColumnsToolPanelModule`
+- `ExcelExportModule`
+- `FiltersToolPanelModule`
+- `MenuModule`
+- `RowGroupingModule`
+
+First install the modules:
+
+```bash
+npm install @ag-grid-enterprise/clipboard @ag-grid-enterprise/column-tool-panel @ag-grid-enterprise/excel-export @ag-grid-enterprise/filter-tool-panel @ag-grid-enterprise/menu @ag-grid-enterprise/row-grouping
+```
+
+Then register them in `<DatagridAGClient>` using the `modules` prop:
 
 {% raw %}
+
 ```tsx
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-alpine.css';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-enterprise';
+import { CommunityFeaturesModule } from '@ag-grid-community/core';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { CsvExportModule } from '@ag-grid-community/csv-export';
+import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
+import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
+import { ExcelExportModule } from '@ag-grid-enterprise/excel-export';
+import { FiltersToolPanelModule } from '@ag-grid-enterprise/filter-tool-panel';
+import { MenuModule } from '@ag-grid-enterprise/menu';
+import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 import React from 'react';
 import { List } from 'react-admin';
 import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+
+const getContextMenuItems = () => [
+    'copy',
+    'copyWithHeaders',
+    'copyWithGroupHeaders',
+    'paste',
+    'separator',
+    'export',
+];
+
+const enterpriseModules = [
+    CommunityFeaturesModule,
+    ClientSideRowModelModule,
+    CsvExportModule,
+    ClipboardModule,
+    ColumnsToolPanelModule,
+    ExcelExportModule,
+    FiltersToolPanelModule,
+    MenuModule,
+    RowGroupingModule,
+];
 
 const OlympicWinnersList = () => {
     const columnDefs = [
@@ -2984,28 +3084,28 @@ const OlympicWinnersList = () => {
         { field: 'bronze' },
         { field: 'total' },
     ];
-    const gridRef = React.useRef<AgGridReact>(null);
-    const onFirstDataRendered = React.useCallback(() => {
-        gridRef.current.api.autoSizeAllColumns();
-    }, []);
     const defaultColDef = {
         enableRowGroup: true,
+        menuTabs: ['filterMenuTab', 'generalMenuTab', 'columnsMenuTab'],
     };
     return (
         <List perPage={10000} pagination={false}>
             <DatagridAGClient
                 columnDefs={columnDefs}
                 defaultColDef={defaultColDef}
-                ref={gridRef}
-                onFirstDataRendered={onFirstDataRendered}
                 rowGroupPanelShow="always"
                 groupSelectsChildren
+                getContextMenuItems={getContextMenuItems}
+                modules={enterpriseModules}
             />
         </List>
     );
 };
 ```
+
 {% endraw %}
+
+**Tip:** `<DatagridAGClient>` registers the following [modules](https://www.ag-grid.com/react-data-grid/modules/) by default: `ClientSideRowModelModule`, `CommunityFeaturesModule` and `CsvExportModule`. If you add other modules, make sure to have at least the `ClientSideRowModelModule`.
 
 ### Adding An Expandable Panel (Master/Detail)
 
@@ -3016,10 +3116,10 @@ For instance, here's how to show the comments of a post in an expandable panel:
 ![DatagridAGClient Master Detail](./img/DatagridAG-MasterDetail.png)
 
 {% raw %}
+
 ```tsx
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-alpine.css';
-import { AgGridReact } from 'ag-grid-react';
 import { ColDef, CommunityFeaturesModule } from '@ag-grid-community/core';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { CsvExportModule } from '@ag-grid-community/csv-export';
@@ -3027,6 +3127,13 @@ import { MasterDetailModule } from '@ag-grid-enterprise/master-detail';
 import React from 'react';
 import { List, useDataProvider, useNotify } from 'react-admin';
 import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+
+const modulesWithMasterDetails = [
+    ClientSideRowModelModule,
+    CommunityFeaturesModule,
+    CsvExportModule,
+    MasterDetailModule,
+];
 
 export const PostList = () => {
     const dataProvider = useDataProvider();
@@ -3064,27 +3171,23 @@ export const PostList = () => {
                 })
                 .catch(error => {
                     notify(error.message, { type: 'error' });
-                    params.successCallback([]);
                 });
         },
     };
 
     return (
-        <List resource="posts" pagination={false}>
+        <List resource="posts" perPage={10000} pagination={false}>
             <DatagridAGClient
                 masterDetail
                 columnDefs={columnDefs}
                 detailCellRendererParams={detailCellRendererParams}
-                pagination={false}
-                modules={[
-                    ClientSideRowModelModule,
-                    CommunityFeaturesModule,
-                    CsvExportModule,
-                    MasterDetailModule,
-                ]}
+                modules={modulesWithMasterDetails}
             />
         </List>
     );
 };
 ```
+
 {% endraw %}
+
+**Tip:** `<DatagridAGClient>` registers the following [modules](https://www.ag-grid.com/react-data-grid/modules/) by default: `ClientSideRowModelModule`, `CommunityFeaturesModule` and `CsvExportModule`. If you add other modules, make sure to have at least the `ClientSideRowModelModule`.
