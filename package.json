@@ -50,7 +50,6 @@
         "dotenv": "^16.4.7",
         "eslint": "^9.23.0",
         "eslint-config-prettier": "^10.1.1",
-        "eslint-config-react-app": "^7.0.1",
         "eslint-plugin-cypress": "^4.2.0",
         "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -91,9 +90,6 @@
         }
     },
     "resolutions": {
-        "@typescript-eslint/typescript-estree": "^8.28.0",
-        "@typescript-eslint/parser": "^8.28.0",
-        "@typescript-eslint/eslint-plugin": "^8.28.0",
         "minimist": "^1.2.6",
         "ejs": "^3.1.7",
         "@storybook/source-loader@npm:8.4.4": "patch:@storybook/source-loader@npm%3A8.4.4#~/.yarn/patches/@storybook-source-loader-npm-8.4.4-55dafc88e2.patch"

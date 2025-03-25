@@ -32,7 +32,7 @@ export default defineConfig([
     ]),
     {
         extends: fixupConfigRules(
-            compat.extends('react-app', 'plugin:prettier/recommended')
+            compat.extends('plugin:prettier/recommended')
         ),
 
         plugins: {
@@ -98,6 +98,9 @@ export default defineConfig([
             ],
 
             'import/no-extraneous-dependencies': ['error'],
+
+            'react/jsx-uses-vars': 'warn',
+            'react/jsx-uses-react': 'warn',
         },
     },
     {
