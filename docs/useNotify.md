@@ -50,12 +50,12 @@ The `options` is an object that can have the following properties:
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `anchorOrigin` | `object` | - | The position of the notification. The default is `{ vertical: 'top', horizontal: 'right' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details. |
-| `autoHideDuration` | `number | null` | - | Duration (in milliseconds) after which the notification hides. Set it to `null` if the notification should not be dismissible. |
+| `anchorOrigin` | `object` | - | The position of the notification. The default is `{ vertical: 'bottom', horizontal: 'center' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details. |
+| `autoHideDuration` | `number | null` | `4000` | Duration (in milliseconds) after which the notification hides. Set it to `null` if the notification should not be dismissible. |
 | `messageArgs` | `object` | - | options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation. |
 | `multiLine` | `boolean` | - | Set it to `true` if the notification message should be shown in more than one line. |
 | `undoable` | `boolean` | - | Set it to `true` if the notification should contain an "undo" button |
-| `type` | `string` | - | The notification type (`info`, `success`, `error` or `warning` - the default is `info`) |
+| `type` | `string` | `info` | The notification type (`info`, `success`, `error` or `warning` - the default is `info`) |
 
 ## `anchorOrigin`
 
