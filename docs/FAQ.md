@@ -6,7 +6,7 @@ title: "FAQ"
 # FAQ
 
 - [Can I have custom identifiers/primary keys for my resources?](#can-i-have-custom-identifiersprimary-keys-for-my-resources)
-- [I get warning about unique key for child in array](#i-get-a-warning-about-unique-key-for-child-in-array)
+- [I get a warning about unique key for child in array](#i-get-a-warning-about-unique-key-for-child-in-array)
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
 - [UI in production build is empty or broken](#ui-in-production-build-is-empty-or-broken)
 - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
