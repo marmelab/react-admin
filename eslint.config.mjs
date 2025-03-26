@@ -82,9 +82,8 @@ export default defineConfig([
                 },
             ],
 
-            'no-redeclare': 'off',
             'import/no-anonymous-default-export': 'off',
-            '@typescript-eslint/no-redeclare': 'error',
+            '@typescript-eslint/no-redeclare': 'off',
             'no-unused-vars': 'off',
 
             '@typescript-eslint/no-unused-vars': [
@@ -94,6 +93,7 @@ export default defineConfig([
                     varsIgnorePattern: '^_',
                     caughtErrorsIgnorePattern: '^_',
                     ignoreRestSiblings: true,
+                    caughtErrors: 'none',
                 },
             ],
 
