@@ -1531,9 +1531,9 @@ export const CommentListWithAutocompleteWithCreate = () => {
 
 `<DatagridAG>` is also compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/).
 
-To use an [AG Grid Enterprise Module](https://www.ag-grid.com/react-data-grid/modules/#selecting-modules) with `<DatagridAG>`, you simply need to install it and then add it to the list of registered modules via the `modules` prop.
-
 You can try out AG Grid Enterprise for free. If you don't have a license key installed, AG Grid Enterprise will display a watermark. To remove this watermark, you'll need to purchase a license key from AG Grid.
+
+To use an [AG Grid Enterprise Module](https://www.ag-grid.com/react-data-grid/modules/#selecting-modules) with `<DatagridAG>`, you simply need to install it and then add it to the list of registered modules via the `modules` prop.
 
 Below is an example of what you can achieve using the following AG Grid Enterprise Modules:
 
@@ -2842,9 +2842,9 @@ export const PostList = () => {
 
 `<DatagridAGClient>` is also compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/).
 
-To use an [AG Grid Enterprise Module](https://www.ag-grid.com/react-data-grid/modules/#selecting-modules) with `<DatagridAGClient>`, you simply need to install it and then add it to the list of registered modules via the `modules` prop.
-
 You can try out AG Grid Enterprise for free. If you don't have a license key installed, AG Grid Enterprise will display a watermark. To remove this watermark, you'll need to purchase a license key from AG Grid.
+
+To use an [AG Grid Enterprise Module](https://www.ag-grid.com/react-data-grid/modules/#selecting-modules) with `<DatagridAGClient>`, you simply need to install it and then add it to the list of registered modules via the `modules` prop.
 
 Below is an example of what you can achieve using the following AG Grid Enterprise Modules:
 
