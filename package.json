@@ -28,6 +28,8 @@
         "update-create-react-admin-deps": "tsx scripts/update-create-react-admin-deps.ts"
     },
     "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.18.6",
+        "@babel/plugin-proposal-private-methods": "^7.18.6",
         "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
         "@eslint/compat": "^1.2.7",
         "@eslint/eslintrc": "^3.3.1",
