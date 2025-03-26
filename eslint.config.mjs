@@ -28,7 +28,6 @@ export default defineConfig([
         '**/esm',
         '**/prism.js',
         'packages/create-react-admin/templates/**/*',
-        '**/eslintrc.*',
     ]),
     {
         extends: fixupConfigRules(
