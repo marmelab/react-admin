@@ -182,3 +182,70 @@ export const InShowLayout = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const TwoArrayFieldsSelection = () => (
+    <TestMemoryRouter>
+        <AdminContext>
+            <ResourceContextProvider value="organizations">
+                <RecordContextProvider
+                    value={{
+                        id: 1,
+                        name: 'Acme Corp',
+                        memberships: [
+                            { id: 1, userId: 1001, role: 'Admin' },
+                            { id: 2, userId: 1002, role: 'Member' },
+                        ],
+                        portfolios: [
+                            {
+                                id: 1,
+                                name: 'Growth Portfolio',
+                                creatorId: 1001,
+                            },
+                            {
+                                id: 2,
+                                name: 'Tech Innovations',
+                                creatorId: 1002,
+                            },
+                        ],
+                    }}
+                >
+                    <Card sx={{ m: 1, p: 1 }}>
+                        <SimpleShowLayout>
+                            <TextField source="name" />
+
+                            {/* Memberships ArrayField */}
+                            <ArrayField
+                                source="memberships"
+                                storeKey="organization_memberships"
+                            >
+                                <Datagrid
+                                    rowClick="toggleSelection"
+                                    bulkActionButtons={true}
+                                    isRowSelectable={() => true}
+                                >
+                                    <TextField source="id" />
+                                    <TextField source="role" />
+                                </Datagrid>
+                            </ArrayField>
+
+                            {/* Portfolios ArrayField */}
+                            <ArrayField
+                                source="portfolios"
+                                storeKey="organization_portfolios"
+                            >
+                                <Datagrid
+                                    rowClick="toggleSelection"
+                                    bulkActionButtons={true}
+                                    isRowSelectable={() => true}
+                                >
+                                    <TextField source="id" />
+                                    <TextField source="name" />
+                                </Datagrid>
+                            </ArrayField>
+                        </SimpleShowLayout>
+                    </Card>
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
