@@ -27,7 +27,6 @@ export const ResourceConfigurationProvider = ({
             setInternalResources(prevState => {
                 const newState = value(prevState);
 
-                // eslint-disable-next-line
                 if (newState != undefined) {
                     window.localStorage.setItem(
                         storageKey,

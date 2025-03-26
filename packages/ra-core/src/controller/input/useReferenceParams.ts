@@ -86,7 +86,7 @@ export const useReferenceParams = ({
                 page,
                 perPage,
             }),
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        requestSignature
     );
 
     const changeParams = useCallback(action => {
@@ -103,7 +103,7 @@ export const useReferenceParams = ({
             // side effects already scheduled, just change the params
             tempParams.current = queryReducer(tempParams.current, action);
         }
-    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+    }, requestSignature);
 
     const setSort = useCallback(
         (sort: SortPayload) =>
@@ -111,18 +111,18 @@ export const useReferenceParams = ({
                 type: SET_SORT,
                 payload: sort,
             }),
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        requestSignature
     );
 
     const setPage = useCallback(
         (newPage: number) => changeParams({ type: SET_PAGE, payload: newPage }),
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        requestSignature
     );
 
     const setPerPage = useCallback(
         (newPerPage: number) =>
             changeParams({ type: SET_PER_PAGE, payload: newPerPage }),
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        requestSignature
     );
 
     const filterValues = query.filter || emptyObject;
@@ -141,7 +141,6 @@ export const useReferenceParams = ({
     );
     useEffect(() => {
         return () => {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             debouncedSetFilters.current.cancel();
         };
     }, []);
@@ -158,7 +157,7 @@ export const useReferenceParams = ({
                       },
                   });
         },
-        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
+        requestSignature
     );
 
     const hideFilter = useCallback((filterName: string) => {
@@ -166,7 +165,7 @@ export const useReferenceParams = ({
             type: HIDE_FILTER,
             payload: filterName,
         });
-    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+    }, requestSignature);
 
     const showFilter = useCallback((filterName: string, defaultValue: any) => {
         changeParams({
@@ -176,7 +175,7 @@ export const useReferenceParams = ({
                 defaultValue,
             },
         });
-    }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+    }, requestSignature);
     return [
         {
             filterValues,

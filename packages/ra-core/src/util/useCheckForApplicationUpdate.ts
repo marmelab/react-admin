@@ -35,7 +35,6 @@ export const useCheckForApplicationUpdate = (
                 currentHash.current = hash;
             }
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [disabled, url, JSON.stringify(fetchOptions)]);
 
     useEffect(() => {
@@ -56,13 +55,12 @@ export const useCheckForApplicationUpdate = (
                 });
         }, delay);
         return () => clearInterval(interval);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         delay,
         onNewVersionAvailable,
         disabled,
         url,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
         JSON.stringify(fetchOptions),
     ]);
 };

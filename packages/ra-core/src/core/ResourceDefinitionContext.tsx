@@ -71,7 +71,7 @@ export const ResourceDefinitionContextProvider = ({
 
     const contextValue = useMemo(
         () => ({ definitions, register, unregister }),
-        [definitions] // eslint-disable-line react-hooks/exhaustive-deps
+        [definitions]
     );
 
     return (

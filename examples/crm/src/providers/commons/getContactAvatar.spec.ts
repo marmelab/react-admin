@@ -8,7 +8,6 @@
 import { Contact } from '../../types';
 import { getContactAvatar, hash } from './getContactAvatar';
 
-// eslint-disable-next-line no-global-assign
 import { webcrypto } from 'node:crypto';
 
 Object.defineProperty(globalThis, 'crypto', {

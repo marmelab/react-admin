@@ -90,7 +90,6 @@ const dataProviderWithAuthors = {
         }),
     getList: (_resource, params) =>
         new Promise(resolve => {
-            // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
                 setTimeout(
                     () =>

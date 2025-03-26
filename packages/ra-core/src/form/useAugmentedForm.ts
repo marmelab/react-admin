@@ -55,9 +55,8 @@ export const useAugmentedForm = <RecordType = any>(
 
     const defaultValuesIncludingRecord = useMemo(
         () => getFormInitialValues(defaultValues, record),
-        // eslint-disable-next-line
+
         [
-            // eslint-disable-next-line
             JSON.stringify({
                 defaultValues:
                     typeof defaultValues === 'function'

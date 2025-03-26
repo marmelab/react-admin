@@ -128,10 +128,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
 
         const updateColl = (old: RecordType[]) => {
             if (!old) return old;
-            const index = old.findIndex(
-                // eslint-disable-next-line eqeqeq
-                record => record.id == id
-            );
+            const index = old.findIndex(record => record.id == id);
             if (index === -1) {
                 return old;
             }

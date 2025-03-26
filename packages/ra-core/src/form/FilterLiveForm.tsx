@@ -101,7 +101,6 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
         }
         // The reference to the filterValues object is not updated when it changes,
         // so we must stringify it to compare it by value.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(filterValues), getValues, reset]);
 
     const onSubmit = (values: any): void => {

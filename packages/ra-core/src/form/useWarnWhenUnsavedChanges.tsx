@@ -53,7 +53,6 @@ export const useWarnWhenUnsavedChanges = (
             setShouldNotify(true);
         }
         // This effect should only run when the blocker state changes, not when shouldNotBlock changes.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [blocker.state]);
 
     useEffect(() => {
@@ -69,7 +68,6 @@ export const useWarnWhenUnsavedChanges = (
         }
         setShouldNotify(false);
         // Can't use blocker in the dependency array because it is not stable across rerenders
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldNotify, translate]);
 
     // This effect handles document navigation, e.g. closing the tab

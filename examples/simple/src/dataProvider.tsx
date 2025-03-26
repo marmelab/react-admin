@@ -57,7 +57,7 @@ const addTagsSearchSupport = (dataProvider: DataProvider) => ({
                     ...params,
                     filter: item => {
                         const matchPublished =
-                            item.published == params.filter.published; // eslint-disable-line eqeqeq
+                            item.published == params.filter.published;
 
                         const fieldName = matchSearchFilter.replace(
                             /(_q)$/,

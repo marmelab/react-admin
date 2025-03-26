@@ -45,7 +45,6 @@ export const useSuggestions = ({
         translateChoice,
     });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const getSuggestions = useCallback(
         getSuggestionsFactory({
             allowCreate,

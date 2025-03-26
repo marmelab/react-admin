@@ -67,7 +67,6 @@ const dataProviderWithAuthors = {
         }),
     getList: () =>
         new Promise(resolve => {
-            // eslint-disable-next-line eqeqeq
             setTimeout(
                 () =>
                     resolve({

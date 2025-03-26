@@ -21,7 +21,6 @@ export const StepRunInstall = ({
             });
         });
         // Disabled as we want to run this only once
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <Text>Installing dependencies...</Text>;

@@ -109,7 +109,7 @@ const useSortState = (initialSort: SortPayload = defaultSort): SortProps => {
             return;
         }
         dispatch({ type: 'SET_SORT', payload: initialSort });
-    }, [initialSort.field, initialSort.order]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [initialSort.field, initialSort.order]);
 
     return {
         setSort: useCallback(

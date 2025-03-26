@@ -172,7 +172,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         if (!selectedIds || selectedIds.length === 0) {
             lastSelected.current = null;
         }
-    }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(selectedIds)]);
 
     // we manage row selection at the datagrid level to allow shift+click to select an array of rows
     const handleToggleItem = useCallback(

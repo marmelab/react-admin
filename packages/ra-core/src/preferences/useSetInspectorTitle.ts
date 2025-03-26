@@ -18,6 +18,5 @@ export const useSetInspectorTitle = (title: string, options?: any) => {
 
     useEffect(() => {
         setTitle(title, options);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title, JSON.stringify(options), setTitle]);
 };

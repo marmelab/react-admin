@@ -65,7 +65,6 @@ export const AddSavedQueryDialog = ({
             <DialogContent>
                 <form onSubmit={handleFormSubmit}>
                     <TextField
-                        // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus
                         margin="dense"
                         id="name"

@@ -78,7 +78,7 @@ export const usePickPaginationContext = (
                 'total',
                 'resource',
             ]),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
         [
             context.isLoading,
             context.isPending,

@@ -95,11 +95,9 @@ export const SelectColumnsButton = (props: SelectColumnsButtonProps) => {
 
     const handleMove = (index1, index2) => {
         const index1Pos = availableColumns.findIndex(
-            // eslint-disable-next-line eqeqeq
             field => field.index == index1
         );
         const index2Pos = availableColumns.findIndex(
-            // eslint-disable-next-line eqeqeq
             field => field.index == index2
         );
         if (index1Pos === -1 || index2Pos === -1) {
