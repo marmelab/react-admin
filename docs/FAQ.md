@@ -11,6 +11,7 @@ title: "FAQ"
 - [UI in production build is empty or broken](#ui-in-production-build-is-empty-or-broken)
 - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
 - [I get an error about control being null](#i-get-an-error-about-control-being-null)
+- [I get an error about a hook that may be used only in the context of a Router component](#i-get-an-error-about-a-hook-that-may-be-used-only-in-the-context-of-a-router-component)
 
 ## Can I have custom identifiers/primary keys for my resources?
 
@@ -192,3 +193,44 @@ Finally, you can use yarn’s [resolutions](https://yarnpkg.com/configuration/ma
   }
 }
 ```
+
+## I get an error about a hook that may be used only in the context of a Router component
+
+When using custom routing configurations, you may encounter strange error messages like:
+
+> `useLocation()` may be used only in the context of a `<Router>` component
+
+or
+
+> `useNavigate()` may be used only in the context of a `<Router>` component
+
+or 
+
+> `useRoutes()` may be used only in the context of a `<Router>` component
+
+or 
+
+> `useHref()` may be used only in the context of a `<Router>` component.
+
+or
+
+> `<Route>` may be used only in the context of a `<Router>` component
+
+These errors can happen if you added `react-router` and/or `react-router-dom` to your dependencies, and didn't use the same version as react-admin. In that case, your application has two versions of react-router, and the calls you add can't see the react-admin routing context.
+
+You can use the `npm list react-router` and `npm list react-router-dom` commands to check which versions are installed.
+
+If there are duplicates, you need to make sure to use only the same version as react-admin. You can deduplicate them using yarn's [resolutions](https://yarnpkg.com/configuration/manifest#resolutions) or npm’s [overrides](https://docs.npmjs.com/cli/v9/configuring-npm/package-json#overrides).
+
+```js
+// in packages.json
+{
+    // ...
+  "resolutions": {
+    "react-router-dom": "6.7.0",
+    "react-router": "6.7.0"
+  }
+}
+```
+
+This may also happen inside a [Remix](https://remix.run/) application. See [Setting up react-admin for Remix](./Remix.md#setting-up-react-admin-in-remix) for instructions to overcome that problem.
