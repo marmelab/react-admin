@@ -1724,7 +1724,6 @@ export const PostList = () => {
                 columnDefs={columnDefs}
                 detailCellRendererParams={detailCellRendererParams}
                 modules={modulesWithMasterDetails}
-                modules={modulesWithMasterDetails}
             />
         </List>
     );
@@ -3026,7 +3025,6 @@ export const PostList = () => {
                 masterDetail
                 columnDefs={columnDefs}
                 detailCellRendererParams={detailCellRendererParams}
-                modules={modulesWithMasterDetails}
                 modules={modulesWithMasterDetails}
             />
         </List>
