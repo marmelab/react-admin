@@ -37,50 +37,12 @@ const MarkAsUnreadButton = () => {
 | Prop       | Required | Type        | Default | Description                                                     |
 | ---------- | -------- | ----------- | ------- | --------------------------------------------------------------- |
 | `i18nKey`  | Required | `string`    | -       | The translation key.                                            |
-| `args`     | Optional | `Object`    | -       | The options used for pluralization and interpolation.         |
 | `children` | Optional | `ReactNode` | -       | The default content to display if the translation is not found. |
-
-## `args`
-
-Use the `args` props to pass additional options to the `translate` function, e.g. for [pluralization or interpolation](./TranslationTranslating.md#interpolation-pluralization-and-default-translation).
-
-{% raw %}
-
-```tsx
-const messages = {
-    custom: {
-        hello_world: 'Hello, %{name}!',
-    },
-};
-
-<Translate i18nKey="custom.hello_world" args={{ name: 'John' }} />
-// Hello, John!
-```
-
-{% endraw %}
-
-One particular option is `smart_count`, which is used for pluralization.
-
-{% raw %}
-
-```tsx
-const messages = {
-    ra: {
-        notification: {
-            deleted: '1 item deleted |||| %{smart_count} items deleted',
-        },
-    },
-};
-
-<Translate i18nKey="ra.notification.deleted" args={{ smart_count: 2 }} />
-// 2 items deleted
-```
-
-{% endraw %}
+| `options`  | Optional | `Object`    | -       | The options used for pluralization and interpolation.           |
 
 ## `children`
 
-`<Translate>` renders its child node if  `translate` doesn't find a translation for the `i18nKey`.
+`<Translate>` renders its child node if `translate` doesn't find a translation for the `i18nKey`.
 
 ```tsx
 const messages = {};
@@ -107,3 +69,41 @@ const messages = {
 <Translate i18nKey="resources.reviews.action.reject" />
 // Reject review
 ```
+
+## `options`
+
+Use the `options` props to pass additional options to the `translate` function, e.g. for [pluralization or interpolation](./TranslationTranslating.md#interpolation-pluralization-and-default-translation).
+
+{% raw %}
+
+```tsx
+const messages = {
+    custom: {
+        hello_world: 'Hello, %{name}!',
+    },
+};
+
+<Translate i18nKey="custom.hello_world" options={{ name: 'John' }} />
+// Hello, John!
+```
+
+{% endraw %}
+
+One particular option is `smart_count`, which is used for pluralization.
+
+{% raw %}
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            deleted: '1 item deleted |||| %{smart_count} items deleted',
+        },
+    },
+};
+
+<Translate i18nKey="ra.notification.deleted" options={{ smart_count: 2 }} />
+// 2 items deleted
+```
+
+{% endraw %}

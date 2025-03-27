@@ -201,10 +201,13 @@ export const TranslateComponent = () => {
             <br />
             <Translate
                 i18nKey="custom.helloWorld"
-                args={{ myWorld: 'world' }}
+                options={{ myWorld: 'world' }}
             />
             <br />
-            <Translate i18nKey="custom.countBeer" args={{ smart_count: 2 }} />
+            <Translate
+                i18nKey="custom.countBeer"
+                options={{ smart_count: 2 }}
+            />
         </I18nContextProvider>
     );
 };
