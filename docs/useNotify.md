@@ -23,16 +23,6 @@ const NotifyButton = () => {
 };
 ```
 
-The hook takes no argument and returns a callback. The callback takes 2 arguments:
-
-- The message to display (a string, or a React node)
-- an `options` object with the following keys:
-    - `type`: The notification type (`info`, `success`, `error` or `warning` - the default is `info`)
-    - `messageArgs`: options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
-    - `undoable`: Set it to `true` if the notification should contain an "undo" button
-    - `autoHideDuration`: Duration (in milliseconds) after which the notification hides. Set it to `null` if the notification should not be dismissible.
-    - `multiLine`: Set it to `true` if the notification message should be shown in more than one line.
-    - `anchorOrigin`: The position of the notification. The default is `{ vertical: 'top', horizontal: 'right' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details.
 
 Here are more examples of `notify` calls: 
 
@@ -46,6 +36,26 @@ notify('item.created', { type: 'info', messageArgs: { resource: 'post' } });
 // send an undoable notification
 notify('Element updated', { type: 'info', undoable: true });
 ```
+
+## Parameters
+
+The hook takes no argument and returns a callback. The callback takes 2 arguments:
+
+| Name | Required | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `message` | Required | `string` | - | The message to display (a string, or a React node) |
+| `options` |  | `object` | - | The options |
+
+The `options` is an object that can have the following properties:
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `anchorOrigin` | `object` | - | The position of the notification. The default is `{ vertical: 'bottom', horizontal: 'center' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details. |
+| `autoHideDuration` | `number | null` | `4000` | Duration (in milliseconds) after which the notification hides. Set it to `null` if the notification should not be dismissible. |
+| `messageArgs` | `object` | - | options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation. |
+| `multiLine` | `boolean` | - | Set it to `true` if the notification message should be shown in more than one line. |
+| `undoable` | `boolean` | - | Set it to `true` if the notification should contain an "undo" button |
+| `type` | `string` | `info` | The notification type (`info`, `success`, `error` or `warning` - the default is `info`) |
 
 ## `anchorOrigin`
 
@@ -180,7 +190,7 @@ This allows e.g. using [Material UI's `<Alert>` component](https://mui.com/mater
 
 ![useNotify with node](./img/use-notify-node.png)
 
-```jsx
+```tsx
 import { useSubscribe } from "@react-admin/ra-realtime";
 import { useNotify, useDataProvider } from "react-admin";
 import { Alert } from "@mui/material";
@@ -217,3 +227,47 @@ export const ConnectionWatcher = () => {
 ```
 
 Note that if you use this ability to pass a React node, the message will not be translated - you'll have to translate it yourself using [`useTranslate`](./useTranslate.md).
+
+## Closing The Notification
+
+If you have custom actions in your notification element, you can leverage the `useCloseNotification` hook to close the notification programmatically:
+
+```tsx
+import { useFormContext } from 'react-hook-form';
+import { Button, useCloseNotification, useNotify } from 'react-admin';
+import { SnackbarContent } from '@mui/material';
+
+const SetFormValueButton = () => {
+    const { setValue } = useFormContext();
+    const notify = useNotify();
+
+    return (
+        <Button
+            onClick={() => {
+                setValue('myfield', 'a value');
+                notify(<SetFormValueNotification reset={() => setValue('myfield', '')} />);
+            }}
+            label="Set myfield value"
+        />
+    );
+};
+
+const SetFormValueNotification = ({ reset }: { reset:() => void }) => {
+    const closeNotification = useCloseNotification();
+
+    return (
+        <SnackbarContent
+            message="myfield changed"
+            action={
+                <Button
+                    onClick={() => {
+                        reset();
+                        closeNotification();
+                    }}
+                    label="Reset"
+                />
+            }
+        />
+    );
+};
+```
