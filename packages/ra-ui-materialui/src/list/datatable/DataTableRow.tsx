@@ -6,7 +6,12 @@ import React, {
     useCallback,
 } from 'react';
 import clsx from 'clsx';
-import { TableCell, TableRow, type TableRowProps } from '@mui/material';
+import {
+    Collapse,
+    TableCell,
+    TableRow,
+    type TableRowProps,
+} from '@mui/material';
 import {
     useExpanded,
     useResourceContext,
@@ -191,18 +196,27 @@ export const DataTableRow = React.memo(
                     )}
                     {children}
                 </TableRow>
-                {expandable && expanded && (
+                {expandable && (
                     <TableRow
                         key={`${record.id}-expand`}
                         id={`${resource}-${record.id}-expand`}
-                        className={DataTableClasses.expandedPanel}
+                        className={DataTableClasses.expandRow}
                     >
-                        <TableCell colSpan={nbColumns}>
-                            {isValidElement(expand)
-                                ? expand
-                                : createElement(
-                                      expand as React.FunctionComponent<any>
-                                  )}
+                        <TableCell
+                            style={{ paddingBottom: 0, paddingTop: 0 }}
+                            colSpan={nbColumns}
+                        >
+                            <Collapse
+                                in={expanded}
+                                timeout="auto"
+                                unmountOnExit
+                            >
+                                {isValidElement(expand)
+                                    ? expand
+                                    : createElement(
+                                          expand as React.FunctionComponent<any>
+                                      )}
+                            </Collapse>
                         </TableCell>
                     </TableRow>
                 )}

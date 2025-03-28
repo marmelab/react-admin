@@ -22,7 +22,7 @@ export const DataTableClasses = {
     expandIcon: `${PREFIX}-expandIcon`,
     expandable: `${PREFIX}-expandable`,
     expanded: `${PREFIX}-expanded`,
-    expandedPanel: `${PREFIX}-expandedPanel`,
+    expandRow: `${PREFIX}-expandRow`,
 };
 
 export const DataTableRoot = styled('div', {
@@ -56,6 +56,9 @@ export const DataTableRoot = styled('div', {
     [`& .${DataTableClasses.rowEven}`]: {},
     [`& .${DataTableClasses.rowOdd}`]: {},
     [`& .${DataTableClasses.rowCell}`]: {},
+    [`& .${DataTableClasses.expandable} > td`]: {
+        borderBottom: 'unset',
+    },
     [`& .${DataTableClasses.expandHeader}`]: {
         paddingRight: 0,
         width: theme.spacing(4),
@@ -68,11 +71,11 @@ export const DataTableRoot = styled('div', {
         padding: theme.spacing(1),
         transform: 'rotate(-90deg)',
         transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
+            duration: theme.transitions.duration.short,
         }),
     },
     [`& .${DataTableClasses.expandIcon}.${DataTableClasses.expanded}`]: {
         transform: 'rotate(0deg)',
     },
-    [`& .${DataTableClasses.expandedPanel}`]: {},
+    [`& .${DataTableClasses.expandRow}`]: {},
 }));
