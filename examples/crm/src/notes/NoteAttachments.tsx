@@ -22,6 +22,7 @@ export const NoteAttachments = ({ note }: { note: ContactNote | DealNote }) => {
                     {imageAttachments.map(
                         (attachment: AttachmentNote, index: number) => (
                             <ImageListItem key={index}>
+                                {/* eslint-disable-next-line */}
                                 <img
                                     src={attachment.src}
                                     alt={attachment.title}

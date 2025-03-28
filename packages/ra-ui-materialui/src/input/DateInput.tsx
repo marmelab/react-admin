@@ -229,7 +229,7 @@ export type DateInputProps = CommonInputProps &
  */
 const convertDateToString = (value: Date) => {
     if (!(value instanceof Date) || isNaN(value.getDate())) return '';
-    let localDate = new Date(value.getTime());
+    const localDate = new Date(value.getTime());
     const pad = '00';
     const yyyy = localDate.getFullYear().toString();
     const MM = (localDate.getMonth() + 1).toString();

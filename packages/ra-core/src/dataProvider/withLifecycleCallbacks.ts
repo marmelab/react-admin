@@ -506,10 +506,10 @@ export const applyCallbacks = async function <U>({
     const handlersToApply = handlers.filter(
         h => (h.resource === resource || h.resource === '*') && h[name]
     );
-    for (let handler of handlersToApply) {
+    for (const handler of handlersToApply) {
         const callbacksValue: ResourceCallbacksValue<any> = handler[name];
         if (Array.isArray(callbacksValue)) {
-            for (let callback of callbacksValue ?? []) {
+            for (const callback of callbacksValue ?? []) {
                 newParams = await callback(newParams, dataProvider, resource);
             }
         } else {

@@ -16,6 +16,7 @@ import { countries } from '../storybook/data';
 export default { title: 'ra-core/dataProvider/useInfiniteGetList' };
 
 export const Basic = props => {
+    // eslint-disable-next-line prefer-const
     let { dataProvider, ...rest } = props;
 
     if (!dataProvider) {
@@ -100,6 +101,7 @@ const UseInfiniteComponent = ({
 };
 
 export const PageInfo = props => {
+    // eslint-disable-next-line prefer-const
     let { dataProvider, ...rest } = props;
 
     if (!dataProvider) {

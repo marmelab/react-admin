@@ -22,14 +22,14 @@ export async function getActivityLog(
     companyId?: Identifier,
     salesId?: Identifier
 ) {
-    let companyFilter = {} as any;
+    const companyFilter = {} as any;
     if (companyId) {
         companyFilter.id = companyId;
     } else if (salesId) {
         companyFilter['sales_id@in'] = `(${salesId})`;
     }
 
-    let filter = {} as any;
+    const filter = {} as any;
     if (companyId) {
         filter.company_id = companyId;
     } else if (salesId) {
@@ -85,7 +85,7 @@ async function getNewContactsAndNotes(
         sort: { field: 'first_seen', order: 'DESC' },
     });
 
-    let recentContactNotesFilter = {} as any;
+    const recentContactNotesFilter = {} as any;
     if (filter.sales_id) {
         recentContactNotesFilter.sales_id = filter.sales_id;
     }
@@ -135,7 +135,7 @@ async function getNewDealsAndNotes(
         sort: { field: 'created_at', order: 'DESC' },
     });
 
-    let recentDealNotesFilter = {} as any;
+    const recentDealNotesFilter = {} as any;
     if (filter.sales_id) {
         recentDealNotesFilter.sales_id = filter.sales_id;
     }

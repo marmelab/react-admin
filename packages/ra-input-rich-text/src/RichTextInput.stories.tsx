@@ -242,7 +242,6 @@ export const Toolbar = (props: Partial<SimpleFormProps>) => (
 );
 
 export const EditorReference = (props: Partial<SimpleFormProps>) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const editorRef = React.useRef<Editor>(null);
 
     const EditorToolbar = () => (

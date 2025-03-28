@@ -4,7 +4,7 @@ import { weightedBoolean } from './utils';
 export default function (db: Db) {
     // set latest purchase date
     db.orders.forEach(order => {
-        let customer = db.customers[order.customer_id];
+        const customer = db.customers[order.customer_id];
         if (
             !customer.latest_purchase ||
             customer.latest_purchase < order.date
@@ -64,7 +64,7 @@ export default function (db: Db) {
 
     // add 'reviewer' group
     db.reviews.forEach(review => {
-        let customer = db.customers[review.customer_id];
+        const customer = db.customers[review.customer_id];
         if (customer.groups.indexOf('reviewer') === -1) {
             customer.groups.push('reviewer');
         }

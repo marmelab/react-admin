@@ -72,7 +72,7 @@ const OrderedPostList = ({
             <br />
             <button
                 aria-label="incrementPerPage"
-                disabled={params.perPage > params.data?.length ?? false}
+                disabled={!!(params.perPage > params.data?.length)}
                 onClick={() => params.setPerPage(++params.perPage)}
             >
                 Increment perPage

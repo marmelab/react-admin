@@ -28,7 +28,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date string as value', async () => {
-        let onSubmit = jest.fn();
+        const onSubmit = jest.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -54,7 +54,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date time string as value', async () => {
-        let onSubmit = jest.fn();
+        const onSubmit = jest.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -80,7 +80,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date object as value', async () => {
-        let onSubmit = jest.fn();
+        const onSubmit = jest.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -114,7 +114,7 @@ describe('<DateInput />', () => {
             '2021-09-11T20:46:20.000Z',
             '2021-09-11 20:46:20.000Z',
         ])('should accept a value with timezone %s', async publishedAt => {
-            let onSubmit = jest.fn();
+            const onSubmit = jest.fn();
             render(
                 <Basic
                     simpleFormProps={{

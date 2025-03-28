@@ -114,25 +114,21 @@ export const useFormGroup = (name: string): FormGroupState => {
         });
     });
 
-    useEffect(
-        () => {
-            updateGroupState();
-        },
+    useEffect(() => {
+        updateGroupState();
+    }, [
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            JSON.stringify(dirtyFieldsNames),
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            JSON.stringify(errorsNames),
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            JSON.stringify(touchedFieldsNames),
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            JSON.stringify(validatingFieldsNames),
-            updateGroupState,
-            name,
-            formGroups,
-        ]
-    );
+        JSON.stringify(dirtyFieldsNames),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        JSON.stringify(errorsNames),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        JSON.stringify(touchedFieldsNames),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        JSON.stringify(validatingFieldsNames),
+        updateGroupState,
+        name,
+        formGroups,
+    ]);
 
     useEffect(() => {
         if (!formGroups) return;
@@ -158,7 +154,7 @@ export const getFormGroupState = (
 ): FormGroupState => {
     return fieldStates.reduce<FormGroupState>(
         (acc, fieldState) => {
-            let errors = acc.errors || {};
+            const errors = acc.errors || {};
 
             if (fieldState.error) {
                 errors[fieldState.name] = fieldState.error;

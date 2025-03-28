@@ -192,7 +192,7 @@ describe('useInfiniteListController', () => {
     });
 
     describe('setFilters', () => {
-        let childFunction = ({ setFilters, filterValues }) => (
+        const childFunction = ({ setFilters, filterValues }) => (
             <input
                 aria-label="search"
                 type="text"
@@ -353,7 +353,7 @@ describe('useInfiniteListController', () => {
         it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
 
-            let childFunction = ({ showFilter, displayedFilters }) => {
+            const childFunction = ({ showFilter, displayedFilters }) => {
                 currentDisplayedFilters = displayedFilters;
                 return (
                     <>

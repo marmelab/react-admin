@@ -32,7 +32,7 @@ import {
     useCreateSuggestionContext,
     EditActionsProps,
     CanAccess,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from 'react-admin';
 import {
     Box,
     BoxProps,
@@ -90,7 +90,6 @@ const EditActions = ({ hasShow }: EditActionsProps) => (
 );
 
 const SanitizedBox = ({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     fullWidth,
     ...props
 }: BoxProps & { fullWidth?: boolean }) => <Box {...props} />;

@@ -61,7 +61,7 @@ export function useTimeout(ms = 0, key = '') {
 
     useEffect(() => {
         setReady(false);
-        let timer = setTimeout(() => {
+        const timer = setTimeout(() => {
             setReady(true);
         }, ms);
 

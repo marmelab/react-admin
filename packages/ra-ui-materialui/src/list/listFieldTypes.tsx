@@ -19,13 +19,12 @@ export const listFieldTypes = {
     table: {
         component: props => {
             return <Datagrid {...props} />;
-        }, // eslint-disable-line react/display-name
+        },
         representation: (_props, children) => `        <Datagrid>
 ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         </Datagrid>`,
     },
     array: {
-        // eslint-disable-next-line react/display-name
         component: ({ children, ...props }: ArrayFieldProps) => {
             const childrenArray = React.Children.toArray(children);
             return (
@@ -75,7 +74,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ReferenceField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceChild: {
-        component: () => <TextField source="id" />, // eslint-disable-line react/display-name
+        component: () => <TextField source="id" />,
         representation: () => `<TextField source="id" />`,
     },
     referenceArray: {
@@ -88,7 +87,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             <SingleFieldList>
                 <ChipField source="id" />
             </SingleFieldList>
-        ), // eslint-disable-line react/display-name
+        ),
         representation: () =>
             `<SingleFieldList><ChipField source="id" /></SingleFieldList>`,
     },

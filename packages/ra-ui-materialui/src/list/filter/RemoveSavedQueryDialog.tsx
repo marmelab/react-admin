@@ -29,7 +29,7 @@ export const RemoveSavedQueryDialog = ({
     const [savedQueries, setSavedQueries] = useSavedQueries(resource);
 
     const removeQuery = (): void => {
-        let savedQueryToRemove = {
+        const savedQueryToRemove = {
             filter: filterValues,
             sort,
             perPage,
@@ -70,12 +70,7 @@ export const RemoveSavedQueryDialog = ({
                 <Button onClick={onClose}>
                     {translate('ra.action.cancel')}
                 </Button>
-                <Button
-                    onClick={removeQuery}
-                    color="primary"
-                    // eslint-disable-next-line jsx-a11y/no-autofocus
-                    autoFocus
-                >
+                <Button onClick={removeQuery} color="primary" autoFocus>
                     {translate('ra.action.confirm')}
                 </Button>
             </DialogActions>

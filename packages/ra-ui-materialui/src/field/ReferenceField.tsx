@@ -134,7 +134,7 @@ export const ReferenceFieldView = <
         ) : null;
     }
 
-    let child = children || (
+    const child = children || (
         <Typography component="span" variant="body2">
             {getRecordRepresentation(referenceRecord)}
         </Typography>

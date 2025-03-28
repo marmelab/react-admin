@@ -26,13 +26,13 @@ const Header = () => {
     const location = useLocation();
 
     let currentPath: string | boolean = '/';
-    if (!!matchPath('/', location.pathname)) {
+    if (matchPath('/', location.pathname)) {
         currentPath = '/';
-    } else if (!!matchPath('/contacts/*', location.pathname)) {
+    } else if (matchPath('/contacts/*', location.pathname)) {
         currentPath = '/contacts';
-    } else if (!!matchPath('/companies/*', location.pathname)) {
+    } else if (matchPath('/companies/*', location.pathname)) {
         currentPath = '/companies';
-    } else if (!!matchPath('/deals/*', location.pathname)) {
+    } else if (matchPath('/deals/*', location.pathname)) {
         currentPath = '/deals';
     } else {
         currentPath = false;

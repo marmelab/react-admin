@@ -36,7 +36,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
         if (!isFunctionLink) return;
         if (!record) return;
 
-        let link: LinkToType =
+        const link: LinkToType =
             typeof linkType === 'function'
                 ? linkType(record, record.id)
                 : typeof rowClick === 'function'

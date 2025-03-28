@@ -126,7 +126,7 @@ const DatagridRow: React.ForwardRefExoticComponent<
     const handleClick = useCallback(
         async event => {
             event.persist();
-            let temporaryLink =
+            const temporaryLink =
                 typeof rowClick === 'function'
                     ? rowClick(record.id, resource, record)
                     : rowClick;

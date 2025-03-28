@@ -269,7 +269,6 @@ export const AutocompleteInput = <
     });
 
     useEffect(() => {
-        // eslint-disable-next-line eqeqeq
         if (emptyValue == null) {
             throw new Error(
                 `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`
@@ -518,7 +517,7 @@ If you provided a React element for the optionText prop, you must also provide t
     );
     const doesQueryMatchSuggestion = useCallback(
         filter => {
-            const hasOption = !!finalChoices
+            const hasOption = finalChoices
                 ? finalChoices.some(choice => getOptionLabel(choice) === filter)
                 : false;
 

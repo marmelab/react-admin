@@ -1,4 +1,3 @@
-/* eslint-disable default-case */
 import {
     IntrospectionField,
     IntrospectionInputObjectType,
@@ -51,7 +50,7 @@ export default (introspectionResults: IntrospectionResult) =>
                         : {}),
                 };
             case GET_MANY_REFERENCE: {
-                let variables = buildGetListVariables(introspectionResults)(
+                const variables = buildGetListVariables(introspectionResults)(
                     resource,
                     raFetchMethod,
                     preparedParams

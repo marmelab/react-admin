@@ -5,11 +5,7 @@ import {
     fetchActionsWithTotalResponse,
 } from './dataFetchActions';
 
-function validateResponseFormat(
-    response,
-    type,
-    logger = console.error // eslint-disable-line no-console
-) {
+function validateResponseFormat(response, type, logger = console.error) {
     if (!response) {
         logger(`The dataProvider returned an empty response for '${type}'.`);
         throw new Error('ra.notification.data_provider_error');

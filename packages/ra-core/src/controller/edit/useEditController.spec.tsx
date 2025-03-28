@@ -1120,7 +1120,7 @@ describe('useEditController', () => {
     });
 
     it('should return errors from the update call in pessimistic mode', async () => {
-        let post = { id: 12 };
+        const post = { id: 12 };
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const update = jest.fn().mockImplementationOnce(() => {
             return Promise.reject({ body: { errors: { foo: 'invalid' } } });

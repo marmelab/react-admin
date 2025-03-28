@@ -45,7 +45,7 @@ export const DealEdit = ({ open, id }: { open: boolean; id?: string }) => {
                 },
             }}
         >
-            {!!id ? (
+            {id ? (
                 <EditBase
                     id={id}
                     mutationMode="pessimistic"

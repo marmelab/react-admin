@@ -23,7 +23,6 @@ export const SimpleFormConfigurable = ({
         SimpleFormConfigurableColumn[]
     >(`preferences.${finalPreferenceKey}.availableInputs`, EMPTY_ARRAY);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setOmit] = useStore<string[]>(
         `preferences.${finalPreferenceKey}.omit`,
         omit
