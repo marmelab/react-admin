@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { type SortPayload } from 'ra-core';
-import { type TableCellProps } from '@mui/material';
+import { type SxProps, type TableCellProps } from '@mui/material';
 
 import { useDataTableRenderContext } from './context/DataTableRenderContext';
 import { DataTableCell } from './DataTableCell';
@@ -10,6 +10,7 @@ import { NumberField } from '../../field/NumberField';
 
 export interface DataTableColumnProps
     extends Omit<TableCellProps, 'component'> {
+    cellSx?: (record: any) => SxProps;
     cellClassName?: string;
     headerClassName?: string;
     render?: (record: any) => React.ReactNode;
@@ -32,7 +33,7 @@ export const DataTableColumn = React.memo(
                 case 'data':
                     return <DataTableCell {...props} ref={ref} />;
                 case 'footer':
-                    return null;
+                    return <DataTableCell {...props} ref={ref} />;
             }
         }
     )

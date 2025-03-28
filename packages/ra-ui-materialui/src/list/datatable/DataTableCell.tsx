@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useRecordContext, useStore } from 'ra-core';
-import { TableCell } from '@mui/material';
+import { TableCell, type SxProps } from '@mui/material';
 import clsx from 'clsx';
 
 import { TextField } from '../../field/TextField';
@@ -11,6 +11,7 @@ export const DataTableCell = React.memo(
     React.forwardRef<HTMLTableCellElement, DataTableColumnProps>(
         (props, ref) => {
             const {
+                cellSx,
                 cellClassName,
                 headerClassName,
                 children,
@@ -21,6 +22,7 @@ export const DataTableCell = React.memo(
                 sortable,
                 sortByOrder,
                 label,
+                sx,
                 ...rest
             } = props;
             const { storeKey, defaultHiddenColumns } =
@@ -37,6 +39,10 @@ export const DataTableCell = React.memo(
                     'Missing at least one of the following props: render, field, children, or source'
                 );
             }
+            const sxValue = {
+                ...(cellSx && record ? cellSx(record) : {}),
+                ...sx,
+            } as SxProps;
             return (
                 <TableCell
                     ref={ref}
@@ -45,6 +51,7 @@ export const DataTableCell = React.memo(
                         cellClassName,
                         `column-${source}`
                     )}
+                    sx={sxValue}
                     {...rest}
                 >
                     {children ??

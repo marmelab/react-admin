@@ -5,6 +5,7 @@ import {
     DataTable,
     DateField,
     DateInput,
+    NumberField,
     ExportButton,
     List,
     NullableBooleanInput,
@@ -19,7 +20,6 @@ import { useMediaQuery, Theme } from '@mui/material';
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
 import CustomerLinkField from './CustomerLinkField';
-import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
 
@@ -80,16 +80,21 @@ const VisitorList = () => {
                     <DataTable.Col
                         source="last_name"
                         label="resources.customers.fields.full_name"
-                    >
-                        <CustomerLinkField />
-                    </DataTable.Col>
+                        field={CustomerLinkField}
+                    />
                     <DataTable.Col source="last_seen" field={DateField} />
                     <DataTable.NumberCol
                         source="nb_orders"
                         label="resources.customers.fields.orders"
                     />
-                    <DataTable.Col source="total_spent" align="right">
-                        <ColoredNumberField
+                    <DataTable.Col
+                        source="total_spent"
+                        align="right"
+                        cellSx={record =>
+                            record.total_spent > 500 ? { color: 'red' } : {}
+                        }
+                    >
+                        <NumberField
                             source="total_spent"
                             options={{ style: 'currency', currency: 'USD' }}
                         />
@@ -97,12 +102,12 @@ const VisitorList = () => {
                     <DataTable.Col source="latest_purchase">
                         <DateField source="latest_purchase" showTime />
                     </DataTable.Col>
-                    <DataTable.Col source="has_newsletter">
-                        <BooleanField source="has_newsletter" label="News." />
-                    </DataTable.Col>
-                    <DataTable.Col source="groups">
-                        <SegmentsField source="groups" />
-                    </DataTable.Col>
+                    <DataTable.Col
+                        source="has_newsletter"
+                        label="News."
+                        field={BooleanField}
+                    />
+                    <DataTable.Col source="groups" field={SegmentsField} />
                     <DataTable.Col source="birthday" field={DateField} />
                 </DataTable>
             )}

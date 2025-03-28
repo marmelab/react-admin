@@ -27,6 +27,7 @@ export const DataTableHeaderCell = React.memo(
     React.forwardRef<HTMLTableCellElement, DataTableColumnProps>(
         (props, ref) => {
             const {
+                cellSx,
                 className,
                 cellClassName,
                 headerClassName,
