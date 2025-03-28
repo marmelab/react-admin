@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.7.0
+
+* Introduce `useCloseNotification` hook ([#10614](https://github.com/marmelab/react-admin/pull/10614)) ([djhi](https://github.com/djhi))
+* Make `<RichTextInput>` fullWidth by default ([#10608](https://github.com/marmelab/react-admin/pull/10608)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add `<Translate>` component ([#10605](https://github.com/marmelab/react-admin/pull/10605)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Improve empty `emptyText` handling for `<ChipField>` ([#10591](https://github.com/marmelab/react-admin/pull/10591)) ([guilbill](https://github.com/guilbill))
+* Add ability to pass empty `icon` to all Button components ([#10552](https://github.com/marmelab/react-admin/pull/10552)) ([djhi](https://github.com/djhi))
+* Add support for `mutationMode` in `useCreate` ([#10530](https://github.com/marmelab/react-admin/pull/10530)) ([djhi](https://github.com/djhi))
+* Fix `useGetOne` returns a never resolving Promise when `id` is `null` ([#10624](https://github.com/marmelab/react-admin/pull/10624)) ([slax57](https://github.com/slax57))
+* Fix `<EditGuesser>` produces invalid code for arrays of references ([#10619](https://github.com/marmelab/react-admin/pull/10619)) ([djhi](https://github.com/djhi))
+* [Doc] Backport `DatagridAG` doc ([#10618](https://github.com/marmelab/react-admin/pull/10618)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add a FAQ entry for duplicate react-hook-form versions ([#10617](https://github.com/marmelab/react-admin/pull/10617)) ([djhi](https://github.com/djhi))
+* [Doc] fix broken link to useQuery documentation ([#10616](https://github.com/marmelab/react-admin/pull/10616)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Mention that `httpError` triggers a notification ([#10609](https://github.com/marmelab/react-admin/pull/10609)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add a tips section on the home page ([#10541](https://github.com/marmelab/react-admin/pull/10541)) ([djhi](https://github.com/djhi))
+
 ## 5.6.4
 
 * Improve compatibility with some package managers ([#10599](https://github.com/marmelab/react-admin/pull/10599)) ([djhi](https://github.com/djhi))
