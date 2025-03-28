@@ -76,7 +76,7 @@ export const NumberInput = ({
             const stringValue = format(field.value);
             setValue(value => (value !== stringValue ? stringValue : value));
         }
-    }, [field.value, format]);
+    }, [field.value, format]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // update the input text when the user types in the input
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -43,7 +43,7 @@ export const CheckboxGroupInputItem = props => {
                     className={CheckboxGroupInputItemClasses.checkbox}
                     checked={
                         value
-                            ? value.find(v => v == getChoiceValue(choice)) !==
+                            ? value.find(v => v == getChoiceValue(choice)) !== // eslint-disable-line eqeqeq
                               undefined
                             : false
                     }

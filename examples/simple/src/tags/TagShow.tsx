@@ -5,7 +5,7 @@ import {
     TextField,
     TranslatableFields,
     BooleanField,
-} from 'react-admin';
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const TagShow = () => (
     <Show>

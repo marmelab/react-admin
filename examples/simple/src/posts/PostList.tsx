@@ -31,7 +31,7 @@ import {
     TopToolbar,
     useRecordContext,
     useTranslate,
-} from 'react-admin';
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;

@@ -1,6 +1,7 @@
 import { Database } from 'fakerest';
 import { DataProvider } from 'ra-core';
 
+/* eslint-disable no-console */
 function log(type, resource, params, response) {
     // @ts-ignore
     if (console.group) {

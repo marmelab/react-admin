@@ -130,6 +130,7 @@ export const useReferenceManyFieldController = <
         [setDisplayedFilters, setFilterValues]
     );
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSetFilters = useCallback(
         lodashDebounce((filters, displayedFilters) => {
             setFilterValues(removeEmpty(filters));

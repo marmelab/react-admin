@@ -231,6 +231,7 @@ export const AutocompleteInput = <
 
     const finalChoices = useMemo(
         () =>
+            // eslint-disable-next-line eqeqeq
             emptyText == undefined || isRequired || multiple
                 ? allChoices
                 : [
@@ -268,6 +269,7 @@ export const AutocompleteInput = <
     });
 
     useEffect(() => {
+        // eslint-disable-next-line eqeqeq
         if (emptyValue == null) {
             throw new Error(
                 `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`
@@ -276,12 +278,13 @@ export const AutocompleteInput = <
     }, [emptyValue]);
 
     useEffect(() => {
+        // eslint-disable-next-line eqeqeq
         if (isValidElement(optionText) && emptyText != undefined) {
             throw new Error(
                 `optionText of type React element is not supported when setting emptyText`
             );
         }
-
+        // eslint-disable-next-line eqeqeq
         if (isValidElement(optionText) && inputText == undefined) {
             throw new Error(`
 If you provided a React element for the optionText prop, you must also provide the inputText prop (used for the text input)`);
@@ -289,6 +292,7 @@ If you provided a React element for the optionText prop, you must also provide t
         if (
             isValidElement(optionText) &&
             !isFromReference &&
+            // eslint-disable-next-line eqeqeq
             matchSuggestion == undefined
         ) {
             throw new Error(`
@@ -298,9 +302,11 @@ If you provided a React element for the optionText prop, you must also provide t
 
     useEffect(() => {
         warning(
+            /* eslint-disable eqeqeq */
             shouldRenderSuggestions != undefined && noOptionsText == undefined,
             `When providing a shouldRenderSuggestions function, we recommend you also provide the noOptionsText prop and set it to a text explaining users why no options are displayed. It supports translation keys.`
         );
+        /* eslint-enable eqeqeq */
     }, [shouldRenderSuggestions, noOptionsText]);
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
@@ -335,6 +341,7 @@ If you provided a React element for the optionText prop, you must also provide t
         }
     });
 
+    // eslint-disable-next-line
     const debouncedSetFilter = useCallback(
         debounce(filter => {
             if (setFilter) {
@@ -360,7 +367,7 @@ If you provided a React element for the optionText prop, you must also provide t
             currentValue.current = field.value;
             debouncedSetFilter('');
         }
-    }, [field.value]);
+    }, [field.value]); // eslint-disable-line
 
     const {
         getCreateItem,
@@ -392,6 +399,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const getOptionLabel = useCallback(
         (option: any, isListItem: boolean = false) => {
+            // eslint-disable-next-line eqeqeq
             if (option == undefined) {
                 return '';
             }
@@ -678,7 +686,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 handleHomeEndKeys={!!create || !!onCreate}
                 filterOptions={filterOptions}
                 options={
-                    shouldRenderSuggestions == undefined ||
+                    shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
                     shouldRenderSuggestions(filterValue)
                         ? suggestions
                         : []

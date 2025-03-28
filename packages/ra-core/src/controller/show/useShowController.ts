@@ -118,6 +118,7 @@ export const useShowController = <
         }
     );
 
+    // eslint-disable-next-line eqeqeq
     if (record && record.id && record.id != id) {
         throw new Error(
             `useShowController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`

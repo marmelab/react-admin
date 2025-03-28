@@ -79,8 +79,9 @@ export default ({
                 ...filterToQuery(latestValue.current || ''),
             });
         }
-    }, [permanentFilterSignature, permanentFilterProp, filterToQuery]);
+    }, [permanentFilterSignature, permanentFilterProp, filterToQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const setFilter = useCallback(
         debounce((value: string) => {
             setFilterValue({
@@ -89,7 +90,7 @@ export default ({
             });
             latestValue.current = value;
         }, debounceTime),
-        [permanentFilterSignature]
+        [permanentFilterSignature] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     return {

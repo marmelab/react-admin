@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import fakeRestProvider from 'ra-data-fakerest';
 import { DataProvider, RaRecord } from 'ra-core';
 import pullAt from 'lodash/pullAt';

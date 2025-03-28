@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { generateCompanies } from './companies';
 import { generateContactNotes } from './contactNotes';
 import { generateContacts } from './contacts';

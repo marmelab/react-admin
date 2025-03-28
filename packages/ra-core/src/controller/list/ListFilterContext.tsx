@@ -64,7 +64,7 @@ export const usePickFilterContext = (
                 'showFilter',
                 'resource',
             ]),
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             context.displayedFilters,
             context.filterValues,

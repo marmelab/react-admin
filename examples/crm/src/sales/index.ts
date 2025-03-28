@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { Sale } from '../types';
 import { SalesCreate } from './SalesCreate';
 import { SalesEdit } from './SalesEdit';

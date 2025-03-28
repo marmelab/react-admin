@@ -92,7 +92,7 @@ const PureShowButton = memo(
         prevProps.resource === nextProps.resource &&
         (prevProps.record && nextProps.record
             ? prevProps.record.id === nextProps.record.id
-            : prevProps.record == nextProps.record) &&
+            : prevProps.record == nextProps.record) && // eslint-disable-line eqeqeq
         prevProps.label === nextProps.label &&
         prevProps.disabled === nextProps.disabled
 );

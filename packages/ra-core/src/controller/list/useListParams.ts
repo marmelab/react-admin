@@ -120,7 +120,7 @@ export const useListParams = ({
                 sort,
                 perPage,
             }),
-        requestSignature
+        requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     // if the location includes params (for example from a link like
@@ -131,7 +131,7 @@ export const useListParams = ({
         if (Object.keys(queryFromLocation).length > 0) {
             setParams(query);
         }
-    }, [location.search]);
+    }, [location.search]); // eslint-disable-line
 
     const changeParams = useCallback(
         action => {
@@ -181,7 +181,7 @@ export const useListParams = ({
                 tempParams.current = queryReducer(tempParams.current, action);
             }
         },
-        [...requestSignature, navigate]
+        [...requestSignature, navigate] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const setSort = useCallback(
@@ -228,7 +228,7 @@ export const useListParams = ({
                           displayedFilters,
                       },
                   }),
-        [changeParams]
+        [changeParams] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     const hideFilter = useCallback(

@@ -27,7 +27,8 @@ export const useExpanded = (
         []
     );
     const expanded = Array.isArray(expandedIds)
-        ? expandedIds.map(el => el == id).indexOf(true) !== -1
+        ? // eslint-disable-next-line eqeqeq
+          expandedIds.map(el => el == id).indexOf(true) !== -1
         : false;
 
     const toggleExpanded = useCallback(() => {
@@ -35,7 +36,7 @@ export const useExpanded = (
             if (!Array.isArray(ids)) {
                 return [id];
             }
-            const index = ids.findIndex(el => el == id);
+            const index = ids.findIndex(el => el == id); // eslint-disable-line eqeqeq
             return index > -1
                 ? single
                     ? []
@@ -73,11 +74,13 @@ export const useExpandAll = (
     );
 
     const isExpanded = Array.isArray(expandedIds)
-        ? expandedIds.some(id => ids.some(id2 => id2 == id))
+        ? // eslint-disable-next-line eqeqeq
+          expandedIds.some(id => ids.some(id2 => id2 == id))
         : false;
 
     const toggleExpandedAll = useCallback(() => {
         const unaffectedExpandedIds = expandedIds.filter(
+            // eslint-disable-next-line eqeqeq
             expanded_id => !ids.some(id => id == expanded_id)
         );
         setExpandedIds(

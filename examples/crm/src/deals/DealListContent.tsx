@@ -25,6 +25,7 @@ export const DealListContent = () => {
                 setDealsByStage(newDealsByStage);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [unorderedDeals]);
 
     if (isPending) return null;

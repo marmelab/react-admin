@@ -33,7 +33,7 @@ export const NotificationContextProvider = ({ children }) => {
             resetNotifications,
             setNotifications,
         }),
-        [notifications]
+        [notifications] // eslint-disable-line react-hooks/exhaustive-deps
     );
 
     // we separate the addNotification context to avoid rerendering all components

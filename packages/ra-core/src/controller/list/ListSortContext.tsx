@@ -48,7 +48,7 @@ export const usePickSortContext = (
 ): ListSortContextValue =>
     useMemo(
         () => pick(context, ['sort', 'setSort', 'resource']),
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [context.sort, context.setSort]
     );
 

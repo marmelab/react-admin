@@ -39,6 +39,7 @@ export const useRestoreScrollPosition = (
             window.scrollTo(0, position);
         }
         // We only want to run this effect on mount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };
 

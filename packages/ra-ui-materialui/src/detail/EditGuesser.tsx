@@ -96,6 +96,7 @@ const EditViewGuesser = <RecordType extends RaRecord = any>(
                 )
                 .sort();
 
+            // eslint-disable-next-line no-console
             console.log(
                 `Guessed Edit:
 

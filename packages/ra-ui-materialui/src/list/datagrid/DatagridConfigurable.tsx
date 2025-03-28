@@ -50,6 +50,7 @@ export const DatagridConfigurable = ({
         ConfigurableDatagridColumn[]
     >(`preferences.${finalPreferenceKey}.availableColumns`, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setOmit] = useStore<string[] | undefined>(
         `preferences.${finalPreferenceKey}.omit`,
         omit
@@ -78,7 +79,7 @@ export const DatagridConfigurable = ({
             setAvailableColumns(columns);
             setOmit(omit);
         }
-    }, [availableColumns]);
+    }, [availableColumns]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Configurable

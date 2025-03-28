@@ -192,7 +192,7 @@ export const CheckboxGroupInput: FunctionComponent<
             if (isChecked) {
                 formOnChange([...(value || []), ...[newValue]]);
             } else {
-                formOnChange(value.filter(v => v != newValue));
+                formOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
             }
             formOnBlur(); // Ensure field is flagged as touched
         },

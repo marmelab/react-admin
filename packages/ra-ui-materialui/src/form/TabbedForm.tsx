@@ -89,6 +89,7 @@ export const TabbedForm = (props: TabbedFormProps) => {
 
 TabbedForm.Tab = FormTab;
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     criteriaMode,
     defaultValues,
@@ -109,6 +110,7 @@ const sanitizeRestProps = ({
     warnWhenUnsavedChanges,
     ...rest
 }: TabbedFormProps) => rest;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 export interface TabbedFormProps
     extends Omit<FormProps, 'render'>,

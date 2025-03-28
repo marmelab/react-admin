@@ -21,7 +21,7 @@ const Notify = ({
             autoHideDuration,
             multiLine,
         });
-    }, [notify]);
+    }, [notify]); // eslint-disable-line react-hooks/exhaustive-deps
     return null;
 };
 

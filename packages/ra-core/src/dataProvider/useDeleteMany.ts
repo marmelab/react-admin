@@ -110,6 +110,7 @@ export const useDeleteMany = <
             let newCollection = [...old];
             ids.forEach(id => {
                 const index = newCollection.findIndex(
+                    // eslint-disable-next-line eqeqeq
                     record => record.id == id
                 );
                 if (index === -1) {

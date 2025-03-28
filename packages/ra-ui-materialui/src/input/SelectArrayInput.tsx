@@ -178,6 +178,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 // this snippet removes a value if it is present twice
                 eventOrChoice.target.value = eventOrChoice.target.value.reduce(
                     (acc, value) => {
+                        // eslint-disable-next-line eqeqeq
                         const index = acc.findIndex(v => v == value);
                         return index < 0
                             ? [...acc, value]
@@ -325,6 +326,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                             {(Array.isArray(selected) ? selected : [])
                                 .map(item =>
                                     (allChoices || []).find(
+                                        // eslint-disable-next-line eqeqeq
                                         choice => getChoiceValue(choice) == item
                                     )
                                 )

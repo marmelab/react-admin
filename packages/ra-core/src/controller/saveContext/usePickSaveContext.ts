@@ -19,7 +19,7 @@ export const usePickSaveContext = <
                 'registerMutationMiddleware',
                 'unregisterMutationMiddleware',
             ]),
-
+        /* eslint-disable react-hooks/exhaustive-deps */
         [
             context.save,
             context.saving,
@@ -27,6 +27,7 @@ export const usePickSaveContext = <
             context.registerMutationMiddleware,
             context.unregisterMutationMiddleware,
         ]
+        /* eslint-enable react-hooks/exhaustive-deps */
     );
 
     return value;

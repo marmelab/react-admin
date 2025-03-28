@@ -33,7 +33,7 @@ export function useContactImport() {
     // Cache is dependent of dataProvider, so it's safe to use it as a dependency
     const companiesCache = useMemo(
         () => new Map<string, Company>(),
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [dataProvider]
     );
     const getCompanies = useCallback(
@@ -54,7 +54,7 @@ export function useContactImport() {
 
     // Tags cache to avoid creating the same tag multiple times and costly roundtrips
     // Cache is dependent of dataProvider, so it's safe to use it as a dependency
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const tagsCache = useMemo(() => new Map<string, Tag>(), [dataProvider]);
     const getTags = useCallback(
         async (names: string[]) =>

@@ -122,6 +122,7 @@ export const useUpdateMany = <
             if (!old) return old;
             let newCollection = [...old];
             ids.forEach(id => {
+                // eslint-disable-next-line eqeqeq
                 const index = old.findIndex(record => record.id == id);
                 if (index === -1) {
                     return;

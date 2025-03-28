@@ -156,6 +156,7 @@ export default React.memo(CreateButton, (prevProps, nextProps) => {
 });
 
 const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
+    // eslint-disable-next-line
     if (locationDescriptor == undefined) {
         return undefined;
     }

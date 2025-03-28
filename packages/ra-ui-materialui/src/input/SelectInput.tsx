@@ -136,6 +136,7 @@ export const SelectInput = (props: SelectInputProps) => {
     const translate = useTranslate();
 
     useEffect(() => {
+        // eslint-disable-next-line eqeqeq
         if (emptyValue == null) {
             throw new Error(
                 `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`

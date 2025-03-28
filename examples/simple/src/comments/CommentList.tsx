@@ -30,7 +30,7 @@ import {
     useListContext,
     useTranslate,
     Exporter,
-} from 'react-admin';
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 const commentFilters = [
     <SearchInput source="q" alwaysOn />,

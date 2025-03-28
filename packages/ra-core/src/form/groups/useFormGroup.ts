@@ -102,7 +102,7 @@ export const useFormGroup = (name: string): FormGroupState => {
                     isTouched: get(touchedFields, field, false) !== false,
                 };
             })
-            .filter(fieldState => fieldState != undefined);
+            .filter(fieldState => fieldState != undefined); // eslint-disable-line
 
         const newState = getFormGroupState(fieldStates);
         setState(oldState => {
@@ -114,20 +114,25 @@ export const useFormGroup = (name: string): FormGroupState => {
         });
     });
 
-    useEffect(() => {
-        updateGroupState();
-    }, [
-        JSON.stringify(dirtyFieldsNames),
-
-        JSON.stringify(errorsNames),
-
-        JSON.stringify(touchedFieldsNames),
-
-        JSON.stringify(validatingFieldsNames),
-        updateGroupState,
-        name,
-        formGroups,
-    ]);
+    useEffect(
+        () => {
+            updateGroupState();
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(dirtyFieldsNames),
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(errorsNames),
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(touchedFieldsNames),
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(validatingFieldsNames),
+            updateGroupState,
+            name,
+            formGroups,
+        ]
+    );
 
     useEffect(() => {
         if (!formGroups) return;

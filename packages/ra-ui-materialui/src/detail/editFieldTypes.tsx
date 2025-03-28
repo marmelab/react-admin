@@ -27,6 +27,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         </SimpleForm>`,
     },
     array: {
+        // eslint-disable-next-line react/display-name
         component: ({
             children,
             ...props
@@ -78,7 +79,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     referenceArrayChild: {
         component: (
             props: { children: ReactNode } & InputProps
-        ): ReactElement => <SelectInput optionText="id" {...props} />,
+        ): ReactElement => <SelectInput optionText="id" {...props} />, // eslint-disable-line react/display-name
         representation: () => `<SelectInput optionText="id" />`,
     },
     richText: {

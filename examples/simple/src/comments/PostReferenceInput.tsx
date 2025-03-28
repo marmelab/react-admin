@@ -13,7 +13,7 @@ import {
     SelectInput,
     useTranslate,
     required,
-} from 'react-admin';
+} from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import PostQuickCreate from './PostQuickCreate';
 import PostPreview from './PostPreview';

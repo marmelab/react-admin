@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import {
     IntrospectionField,
     IntrospectionInputObjectType,
