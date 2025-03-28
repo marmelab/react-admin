@@ -79,7 +79,7 @@ export const memoryStore = (storage: any = {}): Store => {
 
 // taken from https://stackoverflow.com/a/19101235/1333479
 const flatten = (data: any) => {
-    var result = {};
+    const result = {};
     function doFlatten(current, prop) {
         if (Object(current) !== current) {
             // scalar value
@@ -89,8 +89,8 @@ const flatten = (data: any) => {
             result[prop] = current;
         } else {
             // object
-            var isEmpty = true;
-            for (var p in current) {
+            let isEmpty = true;
+            for (const p in current) {
                 isEmpty = false;
                 doFlatten(current[p], prop ? prop + '.' + p : p);
             }

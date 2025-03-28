@@ -67,7 +67,7 @@ export const UserMenu = (props: UserMenuProps) => {
     );
 
     const {
-        children = !!authProvider ? <Logout /> : null,
+        children = authProvider ? <Logout /> : null,
         className,
         label = 'ra.auth.user_menu',
         icon = defaultIcon,

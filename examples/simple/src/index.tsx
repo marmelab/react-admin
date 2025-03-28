@@ -1,6 +1,6 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import { Admin, Resource, CustomRoutes } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import { Admin, Resource, CustomRoutes } from 'react-admin';
 import { createRoot } from 'react-dom/client';
 import { Route } from 'react-router-dom';
 
