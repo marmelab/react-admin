@@ -71,7 +71,7 @@ export const useGetOne = <RecordType extends RaRecord = any, ErrorType = Error>(
         queryKey: [resource, 'getOne', { id: String(id), meta }],
         queryFn: queryParams =>
             id == null
-                ? new Promise(() => {})
+                ? Promise.reject('useGetOne: id cannot be null')
                 : dataProvider
                       .getOne<RecordType>(resource, {
                           id,
