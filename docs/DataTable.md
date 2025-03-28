@@ -893,7 +893,312 @@ const PostList = () => (
 
 ## `<DataTable.Col>`
 
-TO BE WRITTEN
+`<DataTable.Col>` elements define columns of the data table. They let you set the column title, sort behavior, content, style, etc. 
+
+### Usage
+
+Use `<DataTable.Col>` as a descendant of `<DataTable>`, to define columns.
+
+```tsx
+import { List, DataTable } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Author">
+                <ReferenceField source="author" reference="users" />
+            </DataTable.Col>
+            <DataTable.Col source="published_at">
+                <DateField source="published_at" />
+            </DataTable.Col>
+            <DataTable.Col 
+                label="Summary"
+                render={record => record.summary.substr(0, 10) + '...'} 
+            />
+            <DataTable.Col source="nb_views" align="right" field={NumberField} />
+        </DataTable>
+    </List>
+);
+```
+
+`<DataTable.Col>` lets you define how the data renders in 4 different ways:
+- By passing a `source` prop and no child. 
+- By passing child elements (e.g. `<ReferenceField>`, `<DateField>`, etc.).
+- By passing a `render` prop to define a custom rendering function.
+- By using the `field` prop to specify a field component.
+
+### Props
+
+| Prop                 | Required | Type                    | Default               | Description                                                   |
+| -------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------- |
+| `align`              | Optional       | `"left" \| "right"`    | `"left"`              | The alignment of the column.                                  |
+| `children`           | Optional | ReactNode               | -                     | The content of the column.                                    |
+| `cellClassName`      | Optional | string                  | -                     | The class name of the cells.                                   |
+| `cellSx`          | Optional | function                 | -                     | A function that returns the sx prop to apply to a cell.                             |
+| `className`          | Optional | string                  | -                     | The class name of the column.                                 |
+| `field`              | Optional | Component               | -                     | The field component to use for the column.                    |
+| `headerClassName`    | Optional | string                  | -                     | The class name of the header cell.                            |
+| `label`              | Optional | string                  | -                     | The column label, displayed in the header.                    |
+| `render`             | Optional | (record) => ReactNode | -               | A function to render the column content.                      |
+| `sortable`           | Optional | boolean                 | true                  | Whether the column is sortable.                               |
+| `sortByOrder`        | Optional | "ASC" \| "DESC"         | "ASC"                 | The order to use for sorting the column.                      |
+| `source`             | Optional | string                  | -                     | The source of the column, used for sorting and to read the data from the record when there is no child. |
+| `sx`                | Optional | SxProps                 | -                     | The styles to apply to the column.                            |
+
+Additional props are passed to [the MUI `<TableCell>`](https://mui.com/material-ui/api/table-cell/) component.
+
+### `align`
+
+Table cells are right aligned by default. To left align a column, set the `align` prop to `"left"`. This is useful for numeric columns:
+
+```tsx
+<DataTable.Col 
+    source="nb_views"
+    field={NumberField}
+    align="left" 
+/>
+```
+
+**Tip**: Rendering numeric values in a table is such a common need the react-admin provides `<DataTable.NumberCol>` just for that:
+
+```tsx
+<DataTable.NumberCol source="nb_views" />
+```
+
+### `children`
+
+`<DataTable.Col>` renders its children on each row, in a `RecordContext`. This allows you to use any react-admin [Field component](./Fields.md) as a child of `<DataTable.Col>`, or even a custom component.
+
+This lets you pass custom options to Field elements:
+
+{% raw %}
+```tsx
+<DataTable.Col source="total_spent" align="right">
+    <NumberField
+        source="total_spent"
+        options={{ style: 'currency', currency: 'USD' }}
+    />
+</DataTable.Col>
+```
+{% endraw %}
+
+You can use more than one field as child, for instance to display a first name and last name in the same column:
+
+```tsx
+<DataTable.Col source="lastName">
+    <TextField source="firstName" />{" "}<TextField source="lastName" />
+</DataTable.Col>
+```
+
+And you can use your own Field components, too. They just need to grab the current record from `recordContext`:
+
+{% raw %}
+```tsx
+const FullNameField = (props: Props) => {
+    const record = useRecordContext<Customer>();
+    if (!record) return null;
+    return (
+        <Typography
+            variant="body2"
+            display="flex"
+            flexWrap="nowrap"
+            alignItems="center"
+        >
+            <Avatar
+                src={record.avatar}
+                style={{ width: parseInt(size, 10), height: parseInt(size, 10) }}
+                alt={`${record.first_name} ${record.last_name}`}
+                sx={{
+                    width: 25,
+                    height: 25,
+                    mr: 1,
+                    mt: -0.5,
+                    mb: -0.5,
+                    textDecoration: 'underline',
+                    textDecorationColor: '#bdbdbd',
+                }}
+            />
+            {record.first_name} {record.last_name}
+        </Typography>
+    );
+};
+
+const CustomerList = () => (
+    <List>
+        <DataTable>
+            <DataTable.Col label="Name" source="last_name">
+                <FullNameField />
+            </DataTable.Col>
+            ...
+        </DataTable>
+    </List>
+);
+```
+{% endraw %}
+
+![DataTable Custom Field](./img/DataTableCustomField.png)
+
+### `cellClassName`
+
+You can pass a custom class name to the cells of a column using the `cellClassName` prop. This class name will not be applied to the header cell.
+
+```tsx
+<DataTable.NumberCol source="balance" cellClassName="highlighted" />
+```
+
+### `cellSx`
+
+You can pass a function to the `cellSx` prop to customize the style of the cells of a column based on the record. 
+
+This function receives the current record as argument, and should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/) value.
+
+```tsx
+<DataTable.NumberCol
+    source="total"
+    label="Total spent"
+    cellSx={record => ({
+        color: record.total > 0 ? 'black' : 'red',
+    })}
+/>
+```
+
+![DataTableColumn CellSX](./img/DataTableColumnCellSx.png)
+
+### `field`
+
+B y default, when specifying a source and passing no child, `<DataTable.Col>` uses [the `<TextField>` component](./TextField.md) to render the column. You can override this behavior by passing a `field` prop, which should be a react-admin Field component.
+
+```tsx
+<DataTable.Col source="published_at" field={DateField} />
+```
+
+If you need to pass custom props to the field, you can use the `children` prop instead:
+
+```tsx
+<DataTable.Col source="published_at">
+    <DateField source="published_at" showTime />
+</DataTable.Col>
+```
+
+### `headerClassName`
+
+You can pass a custom class name to the header cell of a column using the `headerClassName` prop. This class name will not be applied to the cells.
+
+```tsx
+<DataTable.Col source="title" headerClassName="dimmed" />
+```
+
+### `label`
+
+
+The default label of a column, displayed in the table header, is the humanized version of the `source` prop. You can override this default label by passing a `label` prop to `<DataTable.Col>`.
+
+```tsx
+<DataTable.Col source="published_at" label="Published on" />
+```
+
+You can use a React element for the label:
+
+```tsx
+<DataTable.Col
+    source="balance"
+    label={
+        <span>
+            Balance <em>in USD</em>
+        </span>
+    }
+/>
+```
+
+### `render`
+
+You can pass a `render` prop to `<DataTable.Col>` to define a custom rendering function. This function receives the current record as an argument and should return a React element.
+
+```tsx
+<DataTable.Col 
+    label="Summary"
+    render={record => record.summary.substr(0, 10) + '...'} 
+/>
+```
+
+**Note**: The `render` prop is ignored if you pass a child to `<DataTable.Col>`.
+
+### `sortable`
+
+By default, a column is sortable if it has a `source`. You can disable sorting by passing `false` to the `sortable` prop. This can be usedful e.g. for reference fields, which are not sortable by default.
+
+```tsx
+<DataTable.Col source="author" sortable={false}>
+    <ReferenceField source="author" reference="users" />
+</DataTable.Col>
+```
+
+**Tip**: Instead of using `sortable={false}`, you can also remove the `source` and define your own `label`.
+
+```tsx
+<DataTable.Col label="Author">
+    <ReferenceField source="author" reference="users" />
+</DataTable.Col>
+```
+
+### `sortByOrder`
+
+By default, when users click on the header of a sortable column, the list is reordered in ascending order. You can change this behavior by passing the `sortByOrder` prop to `<DataTable.Col>`. This prop accepts either `"ASC"` or `"DESC"`.
+
+```tsx
+<DataTable.Col source="published_at" sortByOrder="DESC" />
+```
+
+### `source`
+
+`<DataTable.Col>` uses the `source` prop for three different purposes:
+
+- It defines the field to use for sorting when the user clicks on the column header.
+- It defines the column label, by humanizing the source.
+- It defines the field to use for reading the data from the record when there is no child.
+
+```tsx
+<DataTable.Col source="published_at" />
+```
+
+Yet, this prop is optional: if you want to create a column that is not sortable, has no label and uses children for rendering, you can omit the `source` prop. This is the case e.g. for action columns:
+
+```tsx
+<DataTable.Col>
+    <EditButton />
+    <DeleteButton />
+</DataTable.Col>
+```
+
+### `sx`
+
+You can style a column using the `<DataTable.Col sx>` prop. The style will be applied both to the header and the body cells.
+
+{% raw %}
+```tsx
+<DataTable.Col
+    source="author"
+    sx={{ color: 'darkgray' }}
+/>
+```
+{% endraw %}
+
+If you want to style only the header or the body cells, use the `MuiTableCell-head` and `MuiTableCell-body` classes:
+
+{% raw %}
+```tsx
+<DataTable.Col
+    source="author"
+    sx={{
+        '&.MuiTableCell-body': { color: 'black' },
+        '&.MuiTableCell-head': { color: 'darkgray' },
+    }}
+/>
+```
+{% endraw %}
+
+**Tip**: If you want to apply a conditional style to a column, use [the `cellSx` prop](#cellsx) instead:
 
 ## Header Pinning
 
@@ -1182,6 +1487,22 @@ const PostList = () => (
 );
 ```
 {% endraw %}
+
+## Conditional Formatting
+
+You can use [the `cellSx` prop](#cellsx) to apply conditional styles to a column based on the record. This prop is a function that receives the current record as an argument and should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/) value.
+
+```tsx
+<DataTable.NumberCol
+    source="total"
+    label="Total spent"
+    cellSx={record => ({
+        color: record.total > 0 ? 'black' : 'red',
+    })}
+/>
+```
+
+![DataTableColumn CellSX](./img/DataTableColumnCellSx.png)
 
 ## Customizing Column Sort
 

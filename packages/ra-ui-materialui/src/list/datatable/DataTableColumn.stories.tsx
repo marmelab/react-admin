@@ -166,6 +166,7 @@ export const SortByOrder = () => (
 
 const UpperCaseField = ({ source }) => {
     const record = useRecordContext();
+    if (!record) return null;
     return <span>{record[source].toUpperCase()}</span>;
 };
 
@@ -191,7 +192,7 @@ export const Render = () => (
                 label="Title"
                 render={record => record.title.substr(0, 10) + '...'}
             />
-            <DataTable.Col label="Author" render={record => record.author} />
+            <DataTable.Col source="author" />
             <DataTable.Col
                 source="year"
                 render={record => record.year + ' A.D.'}
@@ -290,6 +291,29 @@ export const CellClassName = () => (
             <DataTable.Col source="title" cellClassName="title" />
             <DataTable.Col source="author" cellClassName="author" />
             <DataTable.Col source="year" cellClassName="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const CellSx = () => (
+    <Wrapper>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col
+                source="year"
+                cellSx={record => ({
+                    color:
+                        record.year < 1850
+                            ? 'lightgrey'
+                            : record.year < 1900
+                              ? 'grey'
+                              : record.year < 1950
+                                ? 'dimgrey'
+                                : 'black',
+                })}
+            />
         </DataTable>
     </Wrapper>
 );
