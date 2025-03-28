@@ -1,15 +1,15 @@
 import * as React from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
+    CanAccess,
+    ListContextProvider,
     Resource,
     ResourceContextProvider,
-    ListContextProvider,
     useRecordContext,
     useGetList,
     useList,
-    SortPayload,
-    AuthProvider,
-    CanAccess,
+    type SortPayload,
+    type AuthProvider,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -24,13 +24,13 @@ import {
     styled,
 } from '@mui/material';
 
-import { NumberField, TextField } from '../../field';
+import { NumberField, ReferenceField, TextField } from '../../field';
 import { List } from '../List';
-import { DataTable, DataTableProps } from './DataTable';
-import { DataTableRowProps } from './DataTableRow';
+import { DataTable, type DataTableProps } from './DataTable';
+import { type DataTableRowProps } from './DataTableRow';
 import {
     DataTableBody as BaseDataTableBody,
-    DataTableBodyProps,
+    type DataTableBodyProps,
 } from './DataTableBody';
 import { useDataTableDataContext } from './context';
 import {
@@ -48,6 +48,7 @@ import { SelectRowCheckbox } from './SelectRowCheckbox';
 import { SelectPageCheckbox } from './SelectPageCheckbox';
 import { TopToolbar } from '../../layout';
 import { ColumnsButton } from './ColumnsButton';
+import { type DataTableHeaderProps } from './DataTableHeader';
 
 export default { title: 'ra-ui-materialui/list/DataTable' };
 
@@ -627,7 +628,7 @@ export const Body = () => (
     </Wrapper>
 );
 
-const MyDataTableHeader = ({ children }: DataTableRowProps) => (
+const MyDataTableHeader = ({ children }: DataTableHeaderProps) => (
     <TableHead>
         <TableRow>
             <TableCell variant="head"></TableCell>
@@ -648,7 +649,7 @@ const MyDataTableHeader = ({ children }: DataTableRowProps) => (
 );
 
 export const Header = () => (
-    <Wrapper>
+    <Wrapper i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}>
         <DataTable header={MyDataTableHeader}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
@@ -660,8 +661,9 @@ export const Header = () => (
 
 const MyDataTableFooter = () => {
     const data = useDataTableDataContext();
-    const oldestBook = data.reduce((oldest, record) =>
-        oldest.year < record.year ? oldest : record
+    const totalSales = data.reduce(
+        (sum, record) => sum + (record.sales ? record.sales : 0),
+        0
     );
     return (
         <TableFooter>
@@ -671,21 +673,84 @@ const MyDataTableFooter = () => {
                     colSpan={4}
                     sx={{ textAlign: 'right' }}
                 >
-                    Oldest book
+                    Total sales
                 </TableCell>
-                <TableCell variant="footer">{oldestBook.year}</TableCell>
+                <TableCell variant="footer" align="right">
+                    {totalSales}
+                </TableCell>
             </TableRow>
         </TableFooter>
     );
 };
 
 export const Footer = () => (
-    <Wrapper>
+    <Wrapper
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+        resource="products"
+        defaultDataProvider={fakeRestDataProvider({
+            products: [
+                {
+                    id: 1,
+                    name: 'Office jeans',
+                    price: 45.99,
+                    category_id: 1,
+                    sales: 234,
+                },
+                {
+                    id: 2,
+                    name: 'Black elegance jeans',
+                    price: 69.99,
+                    category_id: 1,
+                    sales: 150,
+                },
+                {
+                    id: 3,
+                    name: 'Slim fit jeans',
+                    price: 55.99,
+                    category_id: 1,
+                    sales: 12,
+                },
+                {
+                    id: 4,
+                    name: 'Basic T-shirt',
+                    price: 15.99,
+                    category_id: 2,
+                    sales: 376,
+                },
+                {
+                    id: 5,
+                    name: 'Basic cap',
+                    price: 19.99,
+                    category_id: 6,
+                    sales: 54,
+                },
+            ],
+            categories: [
+                { id: 1, name: 'Jeans' },
+                { id: 2, name: 'T-Shirts' },
+                { id: 3, name: 'Jackets' },
+                { id: 4, name: 'Shoes' },
+                { id: 5, name: 'Accessories' },
+                { id: 6, name: 'Hats' },
+                { id: 7, name: 'Socks' },
+                { id: 8, name: 'Shirts' },
+                { id: 9, name: 'Sweaters' },
+                { id: 10, name: 'Trousers' },
+                { id: 11, name: 'Coats' },
+                { id: 12, name: 'Dresses' },
+                { id: 13, name: 'Skirts' },
+                { id: 14, name: 'Swimwear' },
+                { id: 15, name: 'Bags' },
+            ],
+        })}
+    >
         <DataTable footer={MyDataTableFooter}>
-            <DataTable.Col source="id" />
-            <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
-            <DataTable.Col source="year" />
+            <DataTable.Col source="name" />
+            <DataTable.NumberCol source="price" />
+            <DataTable.Col label="Category">
+                <ReferenceField source="category_id" reference="categories" />
+            </DataTable.Col>
+            <DataTable.NumberCol source="sales" />
         </DataTable>
     </Wrapper>
 );
