@@ -1,25 +1,12 @@
+import js from '@eslint/js';
 import { defineConfig, globalIgnores } from 'eslint/config';
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import tseslint from 'typescript-eslint';
 import cypress from 'eslint-plugin-cypress';
-import _import from 'eslint-plugin-import';
-import jsxA11Y from 'eslint-plugin-jsx-a11y';
-import prettier from 'eslint-plugin-prettier';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
-import tsParser from '@typescript-eslint/parser';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
-});
+import globals from 'globals';
 
 export default defineConfig([
     globalIgnores([
@@ -31,33 +18,39 @@ export default defineConfig([
         'packages/create-react-admin/templates/**/*',
     ]),
     {
-        extends: fixupConfigRules(
-            compat.extends('plugin:prettier/recommended')
-        ),
-
+        name: 'eslint-js-recommended-rules',
         plugins: {
-            '@typescript-eslint': typescriptEslint,
-            import: fixupPluginRules(_import),
-            'jsx-a11y': jsxA11Y,
-            prettier: fixupPluginRules(prettier),
-            react,
-            'react-hooks': fixupPluginRules(reactHooks),
+            js,
         },
-
+        extends: ['js/recommended'],
+    },
+    tseslint.configs.recommended.map(conf => ({
+        ...conf,
+        files: ['**/*.ts', '**/*.tsx'],
+    })),
+    {
+        ...jsxA11y.flatConfigs.recommended,
+        ignores: ['**/*.spec.*', '**/*.stories.*'],
+    },
+    eslintPluginPrettierRecommended,
+    {
+        name: 'react',
+        ...react.configs.flat.recommended,
+    },
+    reactHooks.configs['recommended-latest'],
+    {
+        name: 'react-admin-rules',
+        plugins: {
+            '@typescript-eslint': tseslint.plugin,
+        },
         languageOptions: {
-            parser: tsParser,
-            ecmaVersion: 5,
-            sourceType: 'script',
-
-            parserOptions: {
-                warnOnUnsupportedTypeScriptVersion: false,
+            globals: {
+                ...globals.browser,
+                ...globals.node,
             },
         },
-
         rules: {
             'no-use-before-define': 'off',
-            'prettier/prettier': 'error',
-
             'no-restricted-imports': [
                 'error',
                 {
@@ -81,11 +74,7 @@ export default defineConfig([
                     ],
                 },
             ],
-
-            'import/no-anonymous-default-export': 'off',
             '@typescript-eslint/no-redeclare': 'off',
-            'no-unused-vars': 'off',
-
             '@typescript-eslint/no-unused-vars': [
                 'warn',
                 {
@@ -96,21 +85,58 @@ export default defineConfig([
                     caughtErrors: 'none',
                 },
             ],
-
-            'import/no-extraneous-dependencies': ['error'],
-
-            'react/jsx-uses-vars': 'warn',
-            'react/jsx-uses-react': 'warn',
+            '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/prefer-as-const': 'off',
+            '@typescript-eslint/ban-ts-comment': 'off',
+            '@typescript-eslint/no-unused-expressions': [
+                'error',
+                {
+                    allowShortCircuit: true,
+                    allowTernary: true,
+                    allowTaggedTemplates: true,
+                    enforceForJSX: false,
+                },
+            ],
+            '@typescript-eslint/no-wrapper-object-types': 'off',
+            '@typescript-eslint/no-unsafe-function-type': 'off',
+            '@typescript-eslint/no-unsafe-function-types': 'off',
+            '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+            '@typescript-eslint/no-unnecessary-type-constraints': 'off',
+            '@typescript-eslint/no-empty-object-type': 'off',
+            '@typescript-eslint/no-empty-object-types': 'off',
+            'react/prop-types': 'off',
+            'react/display-name': 'off',
+            'react/jsx-key': 'off',
+            'react/no-unescaped-entities': 'off',
+            'react/no-children-prop': 'off',
+            'react/no-children-props': 'off',
+            'react/react-in-jsx-scope': 'off',
+            eqeqeq: ['warn', 'smart'],
+            'no-case-declarations': 'off',
+            'no-prototype-builtins': 'off',
+            'prefer-spread': 'off',
+            'jsx-a11y/no-autofocus': 'off',
+        },
+        settings: {
+            react: {
+                version: 'detect',
+            },
         },
     },
     {
-        files: ['**/*.stories.*', '**/*.spec.*', '**/examples/**'],
-
+        name: 'test-rules',
+        files: ['**/*.spec.*'],
+        languageOptions: {
+            globals: {
+                ...globals.jest,
+            },
+        },
         rules: {
-            'import/no-extraneous-dependencies': ['off'],
+            'react-hooks/rules-of-hooks': 'off',
         },
     },
     {
+        name: 'cypress-rules',
         files: ['cypress/**/*'],
         plugins: {
             cypress,
