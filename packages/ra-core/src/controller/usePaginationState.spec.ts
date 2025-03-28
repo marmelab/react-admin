@@ -16,9 +16,9 @@ describe('usePaginationState', () => {
     });
 
     it('should update perPage state when the perPage props update', () => {
-        let all: any[] = [];
-        let perPage = 50,
-            page = 10;
+        const all: any[] = [];
+        let perPage = 50;
+        const page = 10;
         const { result, rerender } = renderHook(() => {
             const state = usePaginationState({ perPage, page });
             all.push(state);
@@ -37,7 +37,7 @@ describe('usePaginationState', () => {
     });
 
     it('should provide a setPagination function to update the pagination state (page + perPage)', () => {
-        let all: any[] = [];
+        const all: any[] = [];
         const { result } = renderHook(() => {
             const state = usePaginationState();
             all.push(state);
@@ -56,7 +56,7 @@ describe('usePaginationState', () => {
     });
 
     it('should provide setPage function to update the page state', () => {
-        let all: any[] = [];
+        const all: any[] = [];
         const { result } = renderHook(() => {
             const state = usePaginationState();
             all.push(state);
@@ -75,7 +75,7 @@ describe('usePaginationState', () => {
     });
 
     it('should provide a setPerPage function to update the perPage state', () => {
-        let all: any[] = [];
+        const all: any[] = [];
         const { result } = renderHook(() => {
             const state = usePaginationState();
             all.push(state);
@@ -94,7 +94,7 @@ describe('usePaginationState', () => {
     });
 
     it('should reset the current page to 1 when perPage state changes', () => {
-        let all: any[] = [];
+        const all: any[] = [];
         const { result } = renderHook(() => {
             const state = usePaginationState({ page: 2, perPage: 25 });
             all.push(state);

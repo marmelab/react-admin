@@ -474,7 +474,7 @@ describe('useInput', () => {
 
     describe('validate', () => {
         it('calls a custom validator with value, allValues, props', async () => {
-            let validator = jest.fn();
+            const validator = jest.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={jest.fn()} mode="onChange">
@@ -521,7 +521,7 @@ describe('useInput', () => {
         });
 
         it('calls a custom validator with the final source in respect to the SourceContext', async () => {
-            let validator = jest.fn();
+            const validator = jest.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={jest.fn()} mode="onChange">

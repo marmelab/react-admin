@@ -160,7 +160,7 @@ export const Task = ({
                     </ListItemIcon>
                     <ListItemText
                         sx={{
-                            textDecoration: !!task.done_date
+                            textDecoration: task.done_date
                                 ? 'line-through'
                                 : 'none',
                         }}
