@@ -1,6 +1,7 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import cypress from 'eslint-plugin-cypress';
 import _import from 'eslint-plugin-import';
 import jsxA11Y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier';
@@ -107,6 +108,17 @@ export default defineConfig([
 
         rules: {
             'import/no-extraneous-dependencies': ['off'],
+        },
+    },
+    {
+        files: ['cypress/**/*'],
+        plugins: {
+            cypress,
+        },
+        languageOptions: {
+            globals: {
+                ...cypress.environments.globals.globals,
+            },
         },
     },
 ]);

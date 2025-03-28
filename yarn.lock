@@ -9461,7 +9461,6 @@ __metadata:
     cypress: "npm:^10.9.0"
     cypress-plugin-tab: "npm:^1.0.5"
     cypress-vite: "npm:^1.4.0"
-    eslint-plugin-cypress: "npm:^4.2.0"
     express: "npm:^4.20.0"
   languageName: unknown
   linkType: soft
