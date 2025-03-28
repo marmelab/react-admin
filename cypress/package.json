@@ -7,8 +7,6 @@
         "test": "yarn node ./start.js"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3.3.1",
-        "@eslint/js": "^9.23.0",
         "cypress": "^10.9.0",
         "cypress-plugin-tab": "^1.0.5",
         "cypress-vite": "^1.4.0",

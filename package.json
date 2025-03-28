@@ -34,8 +34,6 @@
         "@babel/preset-env": "^7.26.9",
         "@babel/preset-react": "^7.26.3",
         "@babel/preset-typescript": "^7.27.0",
-        "@eslint/compat": "^1.2.7",
-        "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.23.0",
         "@octokit/core": "^6.1.4",
         "@storybook/addon-actions": "^8.4.4",
