@@ -66,9 +66,8 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
             <DataTable.Col
                 source="rating"
                 label="resources.reviews.fields.rating"
-            >
-                <StarRatingField />
-            </DataTable.Col>
+                field={StarRatingField}
+            />
             <DataTable.Col
                 source="comment"
                 sx={{

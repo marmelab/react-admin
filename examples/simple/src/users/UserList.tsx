@@ -4,6 +4,7 @@ import { useMediaQuery, Theme } from '@mui/material';
 import * as React from 'react';
 import {
     BulkDeleteWithConfirmButton,
+    CanAccess,
     DataTable,
     List,
     SearchInput,
@@ -61,7 +62,9 @@ const UserList = () => {
                 >
                     <DataTable.Col source="id" />
                     <DataTable.Col source="name" />
-                    {canSeeRole && <DataTable.Col source="role" />}
+                    <CanAccess resource="users.role" action="show">
+                        <DataTable.Col source="role" />
+                    </CanAccess>
                 </DataTable>
             )}
         </List>

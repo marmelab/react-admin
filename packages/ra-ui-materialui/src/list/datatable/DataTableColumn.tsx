@@ -6,7 +6,6 @@ import { useDataTableRenderContext } from './context/DataTableRenderContext';
 import { DataTableCell } from './DataTableCell';
 import { DataTableHeaderCell } from './DataTableHeaderCell';
 import { ColumnsSelectorItem } from './ColumnsSelectorItem';
-import { NumberField } from '../../field/NumberField';
 
 export interface DataTableColumnProps
     extends Omit<TableCellProps, 'component'> {
@@ -40,18 +39,3 @@ export const DataTableColumn = React.memo(
 );
 
 DataTableColumn.displayName = 'DataTableColumn';
-
-export const DataTableNumberColumn = React.memo(
-    React.forwardRef<HTMLTableCellElement, DataTableColumnProps>(
-        (props, ref) => (
-            <DataTableColumn
-                {...props}
-                align="right"
-                field={NumberField}
-                ref={ref}
-            />
-        )
-    )
-);
-
-DataTableNumberColumn.displayName = 'DataTableNumberColumn';

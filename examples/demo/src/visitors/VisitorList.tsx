@@ -87,18 +87,14 @@ const VisitorList = () => {
                         source="nb_orders"
                         label="resources.customers.fields.orders"
                     />
-                    <DataTable.Col
+                    <DataTable.NumberCol
                         source="total_spent"
                         align="right"
                         cellSx={record =>
                             record.total_spent > 500 ? { color: 'red' } : {}
                         }
-                    >
-                        <NumberField
-                            source="total_spent"
-                            options={{ style: 'currency', currency: 'USD' }}
-                        />
-                    </DataTable.Col>
+                        options={{ style: 'currency', currency: 'USD' }}
+                    />
                     <DataTable.Col source="latest_purchase">
                         <DateField source="latest_purchase" showTime />
                     </DataTable.Col>

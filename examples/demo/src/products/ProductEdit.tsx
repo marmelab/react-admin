@@ -93,15 +93,15 @@ const ProductEdit = () => (
                 >
                     <DataTable sx={{ width: '100%' }}>
                         <DataTable.Col source="date" field={DateField} />
-                        <DataTable.Col source="customer_id">
-                            <CustomerReferenceField source="customer_id" />
-                        </DataTable.Col>
+                        <DataTable.Col
+                            source="customer_id"
+                            field={CustomerReferenceField}
+                        />
                         <DataTable.Col
                             label="resources.reviews.fields.rating"
                             source="rating"
-                        >
-                            <StarRatingField />
-                        </DataTable.Col>
+                            field={StarRatingField}
+                        />
                         <DataTable.Col
                             source="comment"
                             sx={{
@@ -112,7 +112,7 @@ const ProductEdit = () => (
                             }}
                         />
                         <DataTable.Col source="status" />
-                        <DataTable.Col sx={{ textAlign: 'right' }}>
+                        <DataTable.Col align="right">
                             <EditButton />
                         </DataTable.Col>
                     </DataTable>

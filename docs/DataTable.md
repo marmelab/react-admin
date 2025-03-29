@@ -34,7 +34,7 @@ export const PostList = () => (
 
 Each `<DataTable.Col>` defines one column of the table: its `source` (used for sorting), its header `label` (inferred from the `source` when missing), its style, etc. 
 
-`<DataTable.Col>` also defines how to render the cells of the column. When used without child, it renders a `<TextField>` with the same `source`. When used with a child, it renders this child in a `RecordContext`. This means you can use [any `Field` component](./Fields.md) as child. 
+`<DataTable.Col>` also defines how to render the cells of the column. When used without child, it outputs the `record` `source` using `lodash.get`. When used with a child, it renders this child in a `RecordContext`. This means you can use [any `Field` component](./Fields.md) as child. 
 
 `<DataTable>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator components are:
 
@@ -687,9 +687,9 @@ By default, when a user hovers on a row, the background color changes to indicat
 const PostList = () => (
     <List>
         <DataTable hover={false}>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="views" />
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="views" />
         </DataTable>
     </List>
 );
@@ -1067,7 +1067,7 @@ This function receives the current record as argument, and should return a Mater
 
 ### `field`
 
-B y default, when specifying a source and passing no child, `<DataTable.Col>` uses [the `<TextField>` component](./TextField.md) to render the column. You can override this behavior by passing a `field` prop, which should be a react-admin Field component.
+By default, when specifying a source and passing no child, `<DataTable.Col>` renders the value using `lodash.get`. You can override this behavior by passing a `field` prop, which should be a react-admin Field component.
 
 ```tsx
 <DataTable.Col source="published_at" field={DateField} />
@@ -1162,6 +1162,8 @@ By default, when users click on the header of a sortable column, the list is reo
 <DataTable.Col source="published_at" />
 ```
 
+The source can be a path to a nested field, e.g. `customer.lastName`.
+
 Yet, this prop is optional: if you want to create a column that is not sortable, has no label and uses children for rendering, you can omit the `source` prop. This is the case e.g. for action columns:
 
 ```tsx
@@ -1199,6 +1201,53 @@ If you want to style only the header or the body cells, use the `MuiTableCell-he
 {% endraw %}
 
 **Tip**: If you want to apply a conditional style to a column, use [the `cellSx` prop](#cellsx) instead:
+
+## `<DataTable.NumberCol>`
+
+`<DataTable.NumberCol>` lets you define numeric columns, where the label and the value are right aligned, and the value is rendered using the [`<NumberField>`](./NumberField.md) component.
+
+![DataTable NumberCol](./img/DataTableNumberCol.png)
+
+Use it just like `<DataTable.Col>`, as a descendant of `<DataTable>`:
+
+{% raw %}
+```tsx
+import { List, DataTable, NumberField } from 'react-admin';
+
+export const ProductList = () => (
+    <List>
+        <DataTable>
+            <DataTable.Col field={ThumbnailField} />
+            <DataTable.Col source="reference" field={ProductRefField} />
+            <DataTable.NumberCol
+                source="price"
+                options={{ style: 'currency', currency: 'USD' }}
+            />
+            <DataTable.NumberCol
+                source="width"
+                options={{ minimumFractionDigits: 2 }}
+            />
+            <DataTable.NumberCol
+                source="height"
+                options={{ minimumFractionDigits: 2 }}
+            />
+            <DataTable.NumberCol source="stock" />
+            <DataTable.NumberCol source="sales" />
+            <DataTable.Col align="right">
+                <EditButton />
+            </DataTable.Col>
+        </DataTable>
+    </List>
+)
+```
+{% endraw %}
+
+`<DataTable.NumberCol>` accepts [the same props as `<DataTable.Col>`](#datatablecol), plus the following props, passed to `<NumberField>`:
+
+- `options`: An object to customize the number formatting (e.g., style, currency). See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for more details.
+- `locales`: A string or array of strings to specify the locale for number formatting. This is useful for internationalization.
+
+Refer to the [`<NumberField>`](./NumberField.md) documentation for more details.
 
 ## Header Pinning
 

@@ -2,6 +2,7 @@ export * from './ColumnsButton';
 export * from './DataTable';
 export * from './DataTableBody';
 export * from './DataTableColumn';
+export * from './DataTableNumberColumn';
 export * from './context/DataTableConfigContext';
 export * from './DataTableHeader';
 export * from './DataTableLoading';

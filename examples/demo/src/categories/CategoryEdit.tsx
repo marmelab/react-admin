@@ -3,7 +3,6 @@ import {
     DataTable,
     Edit,
     EditButton,
-    NumberField,
     Labeled,
     ReferenceManyField,
     SimpleForm,
@@ -26,33 +25,30 @@ const CategoryEdit = () => (
                     perPage={20}
                 >
                     <DataTable>
-                        <DataTable.Col sx={{ width: 25, padding: 0 }}>
-                            <ThumbnailField source="thumbnail" label="" />
-                        </DataTable.Col>
-                        <DataTable.Col source="reference">
-                            <ProductRefField source="reference" />
-                        </DataTable.Col>
-                        <DataTable.Col source="price" align="right">
-                            <NumberField
-                                source="price"
-                                options={{ style: 'currency', currency: 'USD' }}
-                            />
-                        </DataTable.Col>
-                        <DataTable.Col source="width" align="right">
-                            <NumberField
-                                source="width"
-                                options={{ minimumFractionDigits: 2 }}
-                            />
-                        </DataTable.Col>
-                        <DataTable.Col source="height" align="right">
-                            <NumberField
-                                source="height"
-                                options={{ minimumFractionDigits: 2 }}
-                            />
-                        </DataTable.Col>
+                        <DataTable.Col
+                            sx={{ width: 25, padding: 0 }}
+                            field={ThumbnailField}
+                            label={false}
+                        />
+                        <DataTable.Col
+                            source="reference"
+                            field={ProductRefField}
+                        />
+                        <DataTable.NumberCol
+                            source="price"
+                            options={{ style: 'currency', currency: 'USD' }}
+                        />
+                        <DataTable.NumberCol
+                            source="width"
+                            options={{ minimumFractionDigits: 2 }}
+                        />
+                        <DataTable.NumberCol
+                            source="height"
+                            options={{ minimumFractionDigits: 2 }}
+                        />
                         <DataTable.NumberCol source="stock" />
                         <DataTable.NumberCol source="sales" />
-                        <DataTable.Col sx={{ textAlign: 'right' }}>
+                        <DataTable.Col align="right">
                             <EditButton />
                         </DataTable.Col>
                     </DataTable>

@@ -33,7 +33,8 @@ import { DataTableClasses, DataTableRoot } from './DataTableRoot';
 import { DataTableLoading } from './DataTableLoading';
 import { DataTableBody } from './DataTableBody';
 import { DataTableHeader } from './DataTableHeader';
-import { DataTableColumn, DataTableNumberColumn } from './DataTableColumn';
+import { DataTableColumn } from './DataTableColumn';
+import { DataTableNumberColumn } from './DataTableNumberColumn';
 import { DataTableConfigContext } from './context/DataTableConfigContext';
 import { ColumnsSelector } from './ColumnsSelector';
 import {
@@ -50,7 +51,7 @@ interface DataTableComponent
         DataTableProps & React.RefAttributes<HTMLTableElement>
     > {
     Col: typeof DataTableColumn;
-    NumberCol: typeof DataTableColumn;
+    NumberCol: typeof DataTableNumberColumn;
 }
 
 const DefaultEmpty = <ListNoResults />;

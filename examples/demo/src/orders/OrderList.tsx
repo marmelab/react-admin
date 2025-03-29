@@ -4,20 +4,18 @@ import {
     AutocompleteInput,
     BooleanField,
     Count,
-    DatagridConfigurable,
+    DataTable,
     DateField,
     DateInput,
     ExportButton,
     FilterButton,
     List,
     NullableBooleanInput,
-    NumberField,
     NumberInput,
     ReferenceField,
     ReferenceInput,
     SearchInput,
-    SelectColumnsButton,
-    TextField,
+    ColumnsButton,
     TopToolbar,
     useDefaultTitle,
     useListContext,
@@ -29,13 +27,25 @@ import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
 
-const ListActions = () => (
-    <TopToolbar>
-        <FilterButton />
-        <SelectColumnsButton />
-        <ExportButton />
-    </TopToolbar>
-);
+const storeKeyByStatus = {
+    ordered: 'orders.list1',
+    delivered: 'orders.list2',
+    cancelled: 'orders.list3',
+};
+
+const ListActions = () => {
+    const { filterValues } = useListContext();
+    const status =
+        (filterValues.status as 'ordered' | 'delivered' | 'cancelled') ??
+        'ordered';
+    return (
+        <TopToolbar>
+            <FilterButton />
+            <ColumnsButton storeKey={storeKeyByStatus[status]} />
+            <ExportButton />
+        </TopToolbar>
+    );
+};
 
 const OrdersTitle = () => {
     const title = useDefaultTitle();
@@ -139,48 +149,58 @@ const TabbedDatagrid = () => {
                 <>
                     {(filterValues.status == null ||
                         filterValues.status === 'ordered') && (
-                        <DatagridConfigurable
+                        <DataTable
                             rowClick="edit"
-                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey="orders.list1"
+                            hiddenColumns={[
+                                'total_ex_taxes',
+                                'delivery_fees',
+                                'taxes',
+                            ]}
+                            storeKey={storeKeyByStatus.ordered}
                         >
-                            <DateField source="date" showTime />
-                            <TextField source="reference" />
-                            <CustomerReferenceField source="customer_id" />
-                            <ReferenceField
+                            <DataTable.Col source="date">
+                                <DateField source="date" showTime />
+                            </DataTable.Col>
+                            <DataTable.Col source="reference" />
+                            <DataTable.Col
                                 source="customer_id"
-                                reference="customers"
-                                link={false}
-                                label="resources.orders.fields.address"
-                            >
-                                <AddressField />
-                            </ReferenceField>
-                            <NumberField
+                                field={CustomerReferenceField}
+                            />
+                            <DataTable.Col label="resources.orders.fields.address">
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                >
+                                    <AddressField />
+                                </ReferenceField>
+                            </DataTable.Col>
+                            <DataTable.NumberCol
                                 source="basket.length"
                                 label="resources.orders.fields.nb_items"
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="total_ex_taxes"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="delivery_fees"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="taxes"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="total"
                                 options={{
                                     style: 'currency',
@@ -188,51 +208,61 @@ const TabbedDatagrid = () => {
                                 }}
                                 sx={{ fontWeight: 'bold' }}
                             />
-                        </DatagridConfigurable>
+                        </DataTable>
                     )}
                     {filterValues.status === 'delivered' && (
-                        <DatagridConfigurable
+                        <DataTable
                             rowClick="edit"
-                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey="orders.list2"
+                            hiddenColumns={[
+                                'total_ex_taxes',
+                                'delivery_fees',
+                                'taxes',
+                            ]}
+                            storeKey={storeKeyByStatus.delivered}
                         >
-                            <DateField source="date" showTime />
-                            <TextField source="reference" />
-                            <CustomerReferenceField source="customer_id" />
-                            <ReferenceField
+                            <DataTable.Col source="date">
+                                <DateField source="date" showTime />
+                            </DataTable.Col>
+                            <DataTable.Col source="reference" />
+                            <DataTable.Col
                                 source="customer_id"
-                                reference="customers"
-                                link={false}
-                                label="resources.orders.fields.address"
-                            >
-                                <AddressField />
-                            </ReferenceField>
-                            <NumberField
+                                field={CustomerReferenceField}
+                            />
+                            <DataTable.Col label="resources.orders.fields.address">
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                >
+                                    <AddressField />
+                                </ReferenceField>
+                            </DataTable.Col>
+                            <DataTable.NumberCol
                                 source="basket.length"
                                 label="resources.orders.fields.nb_items"
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="total_ex_taxes"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="delivery_fees"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="taxes"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="total"
                                 options={{
                                     style: 'currency',
@@ -244,51 +274,61 @@ const TabbedDatagrid = () => {
                                 source="returned"
                                 sx={{ mt: -0.5, mb: -0.5 }}
                             />
-                        </DatagridConfigurable>
+                        </DataTable>
                     )}
                     {filterValues.status === 'cancelled' && (
-                        <DatagridConfigurable
+                        <DataTable
                             rowClick="edit"
-                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey="orders.list3"
+                            hiddenColumns={[
+                                'total_ex_taxes',
+                                'delivery_fees',
+                                'taxes',
+                            ]}
+                            storeKey={storeKeyByStatus.cancelled}
                         >
-                            <DateField source="date" showTime />
-                            <TextField source="reference" />
-                            <CustomerReferenceField source="customer_id" />
-                            <ReferenceField
+                            <DataTable.Col source="date">
+                                <DateField source="date" showTime />
+                            </DataTable.Col>
+                            <DataTable.Col source="reference" />
+                            <DataTable.Col
                                 source="customer_id"
-                                reference="customers"
-                                link={false}
-                                label="resources.orders.fields.address"
-                            >
-                                <AddressField />
-                            </ReferenceField>
-                            <NumberField
+                                field={CustomerReferenceField}
+                            />
+                            <DataTable.Col label="resources.orders.fields.address">
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                >
+                                    <AddressField />
+                                </ReferenceField>
+                            </DataTable.Col>
+                            <DataTable.NumberCol
                                 source="basket.length"
                                 label="resources.orders.fields.nb_items"
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="total_ex_taxes"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="delivery_fees"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="taxes"
                                 options={{
                                     style: 'currency',
                                     currency: 'USD',
                                 }}
                             />
-                            <NumberField
+                            <DataTable.NumberCol
                                 source="total"
                                 options={{
                                     style: 'currency',
@@ -296,7 +336,7 @@ const TabbedDatagrid = () => {
                                 }}
                                 sx={{ fontWeight: 'bold' }}
                             />
-                        </DatagridConfigurable>
+                        </DataTable>
                     )}
                 </>
             )}

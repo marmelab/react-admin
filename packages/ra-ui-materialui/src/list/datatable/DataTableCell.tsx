@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useRecordContext, useStore } from 'ra-core';
 import { TableCell, type SxProps } from '@mui/material';
+import get from 'lodash/get';
 import clsx from 'clsx';
 
 import { TextField } from '../../field/TextField';
@@ -55,13 +56,11 @@ export const DataTableCell = React.memo(
                     {...rest}
                 >
                     {children ??
-                        (render ? (
-                            record && render(record)
-                        ) : field ? (
-                            React.createElement(field, { source })
-                        ) : (
-                            <TextField source={source!} />
-                        ))}
+                        (render
+                            ? record && render(record)
+                            : field
+                              ? React.createElement(field, { source })
+                              : get(record, source!))}
                 </TableCell>
             );
         }

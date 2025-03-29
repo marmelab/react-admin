@@ -159,11 +159,7 @@ const PostListDesktop = () => (
             <DataTable.Col
                 source="published_at"
                 sortByOrder="DESC"
-                sx={{
-                    '&.MuiTableCell-body': {
-                        fontStyle: 'italic',
-                    },
-                }}
+                sx={{ '&.MuiTableCell-body': { fontStyle: 'italic' } }}
                 field={DateField}
             />
             <DataTable.Col
@@ -183,7 +179,6 @@ const PostListDesktop = () => (
                 field={BooleanField}
             />
             <DataTable.NumberCol source="views" sortByOrder="DESC" />
-
             <DataTable.Col
                 label="Tags"
                 source="tags.name"
