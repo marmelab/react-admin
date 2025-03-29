@@ -277,3 +277,4 @@ React-admin is licensed under the [MIT License](https://github.com/marmelab/reac
 If you want to give back, please talk about it, [help newcomers](https://stackoverflow.com/questions/tagged/react-admin), [subscribe to the Enterprise Edition](https://react-admin-ee.marmelab.com/), or contribute code.
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmarmelab%2Freact-admin?ref=badge_large)
+## > ✅ Updated docs with improved formatting or extra info.
