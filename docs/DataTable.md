@@ -5,11 +5,11 @@ title: "The DataTable Component"
 
 # `<DataTable>`
 
-The `<DataTable>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, an expand panel, hiding and reordering columns, dynamic row and cell styles, and more.
+The `<DataTable>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, a collapsible panel, hiding and reordering columns, dynamic row and cell styles, and more.
 
 ## Usage
 
-Use `<DataTable>` inside a `ListContext` (e.g. as a descendent of [`<List>`](./List.md#list) or [`<ReferenceManyField>`](./ReferenceManyField.md)). Define the table columns with its children using `<DataTable.Col>` components:
+Use `<DataTable>` inside a `ListContext` (e.g., as a descendent of [`<List>`](./List.md#list) or [`<ReferenceManyField>`](./ReferenceManyField.md)). Define the table columns with its children using `<DataTable.Col>` components:
 
 ```tsx
 import { List, DataTable, ReferenceField, EditButton } from 'react-admin';
@@ -34,7 +34,7 @@ export const PostList = () => (
 
 Each `<DataTable.Col>` defines one column of the table: its `source` (used for sorting), its header `label` (inferred from the `source` when missing), its style, etc. 
 
-`<DataTable.Col>` also defines how to render the cells of the column. When used without child, it outputs the `record` `source` using `lodash.get`. When used with a child, it renders this child in a `RecordContext`. This means you can use [any `Field` component](./Fields.md) as child. 
+`<DataTable.Col>` also defines how to render the cells of the column. When used without a child, it outputs the `record` `source` using `lodash.get`. When used with a child, it renders this child in a `RecordContext`. This means you can use [any `Field` component](./Fields.md) as child. 
 
 `<DataTable>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator components are:
 
@@ -149,7 +149,7 @@ Bulk action buttons appear when users select one or several rows. Clicking on a 
 
 <iframe src="https://www.youtube-nocookie.com/embed/zbr1xLjAXz4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-You disable this feature by setting the `bulkActionButtons` prop to `false`:
+You can disable this feature by setting the `bulkActionButtons` prop to `false`:
 
 ```tsx
 import { DataTable, List } from 'react-admin';
@@ -200,7 +200,7 @@ React-admin provides four bulk action buttons that you can use in data tables:
 - [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton) to immediately update the selection
 - [`<BulkUpdateFormButton>`](./Buttons.md#bulkupdateformbutton) to display a form allowing to update the selection
 
-**Tip**: Users can select a range of rows by pressing the shift key while clicking on a row checkbox.
+**Tip**: Users can select a range of rows by pressing the shift key while clicking a row checkbox.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/Datagrid-select-range.mp4" type="video/mp4"/>
@@ -215,7 +215,7 @@ You can write a custom bulk action button components using the [`useListContext`
 
 * `selectedIds`: the identifiers of the currently selected items.
 * `onUnselectItems`: a callback to empty the selection.
-* `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
+* `resource`: the currently displayed resource (e.g., `posts`, `comments`, etc.)
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 
 Here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
@@ -326,11 +326,11 @@ export default CustomResetViewsButton;
 
 **Tip**: [`<Confirm>`](./Confirm.md) leverages Material UI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
-**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
+**Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when the value is a `string`. Otherwise, it renders the content as a `ReactNode`.
 
 **Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a [SvgIcon](https://mui.com/material-ui/icons/#svgicon) type.
 
-**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `<ResetViewsButton>` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
+**Tip**: React-admin doesn't use the `<Confirm>` component internally because deletes and updates are applied locally immediately and then dispatched to the server after a few seconds unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `<ResetViewsButton>` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
 ```diff
 // in ./CustomResetViewsButton.js
@@ -416,7 +416,7 @@ To render data differently in a column, you can pass children to `<DataTable.Col
 <DataTable.NumberCol source="amount" />
 ```
 
-If none of the react-admin Field components fit your need, you can build your own. For example, to render the first name and last name in a cell:
+You can build your own if none of the react-admin Field components fit your need. For example, to render the first name and last name in a cell:
 
 ```tsx
 import { useRecordContext, List, DataTable } from 'react-admin';
@@ -508,7 +508,7 @@ const BookList = () => (
 );
 ```
 
-**Tip**: `<List>` and other list components usually manage the empty state themselves (e.g. via the [`<List empty>`](./List.md#empty) prop), so the `empty` prop will only be useful if you render a `<DataTable>` manually in a `ListContext`.
+**Tip**: `<List>` and other list components usually manage the empty state themselves (e.g., via the [`<List empty>`](./List.md#empty) prop), so the `empty` prop will only be useful if you render a `<DataTable>` manually in a `ListContext`.
 
 ## `expand`
 
@@ -517,7 +517,7 @@ const BookList = () => (
   Your browser does not support the video tag.
 </video>
 
-To show more data without adding too many columns, `<DataTable>` offers a collapsible panel for each row. Use the `expand` prop to define the panel element, rendered inside a `RecordContext`.
+To show more data without adding too many columns, `<DataTable>` offers a collapsible panel for each row. Use the `expand` prop to define the panel element rendered inside a `RecordContext`.
 
 For instance, this code shows the HTML `body` of a post in an expandable panel:
 
@@ -576,7 +576,7 @@ const PostPanel = () => {
 
 ## `expandSingle`
 
-By default, when using [an `expand` panel](#expand), users can expand as many rows as they want. The `expandSingle` prop changes that behavior: when a user clicks on the expand button of a row, other expanded rows collapse. As a consequence, only a single row can be expanded at a time.
+By default, when using [an `expand` panel](#expand), users can expand as many rows as they want. The `expandSingle` prop changes that behavior: when a user clicks on the expand button of a row, other expanded rows collapse. Consequently, only a single row can be expanded at a time.
 
 ```tsx
 export const PostList = () => (
@@ -590,7 +590,7 @@ export const PostList = () => (
 
 ## `footer`
 
-Use the `footer` prop to add a table footer component, e.g. to display totals or averages.
+Use the `footer` prop to add a table footer component, e.g., to display totals or averages.
 
 ![DataTable Footer](./img/DataTableFooter.png)
 
@@ -635,7 +635,7 @@ const ProductList = () => (
 
 ## `header`
 
-By default, `<DataTable>` renders the table head using `<DataTableHeader>`, an internal react-admin component. You can pass a custom component as the `header` prop to override that default. This can be useful e.g. to add a second header row, or to create headers spanning multiple columns.
+By default, `<DataTable>` renders the table head using `<DataTableHeader>`, an internal react-admin component. To override that default, you can pass a custom component as the `header` prop. This can be useful, e.g., to add a second header row or to create headers spanning multiple columns.
 
 ![DataTable Header](./img/DataTableHeader.png)
 
@@ -681,7 +681,7 @@ const PostList = () => (
 
 ## `hover`
 
-By default, when a user hovers on a row, the background color changes to indicate the row is active. To disable this behavior, set the `hover` prop to `false`.
+By default, when a user hovers over a row, the background color changes to indicate the row is active. Set the `hover` prop to `false` to disable this behavior.
 
 ```tsx
 const PostList = () => (
@@ -697,7 +697,7 @@ const PostList = () => (
 
 ## `isRowExpandable`
 
-You can customize which rows can have a collapsible panel by using the `isRowExpandable` prop. It expects a function that receives the row record and returns a boolean.
+Using the `isRowExpandable` prop, you can customize which rows can have a collapsible panel. It expects a function that receives the row record and returns a boolean.
 
 For instance, this code shows an expand button only for rows that have a detail to show:
 
@@ -727,7 +727,7 @@ const PostList = () => (
 
 You can customize which rows are selectable using the `isRowSelectable` prop. It expects a function that receives the row record and returns a boolean. When the function returns false, the selection checkbox is disabled.
 
-For instance, this code enables a checkbox only for rows with an id greater than 300:
+For instance, this code enables a checkbox only for rows with an ID greater than 300:
 
 ```tsx
 import { List, DataTable } from 'react-admin';
@@ -774,7 +774,7 @@ export const PostList = () => (
 * `false` to do nothing
 * a function `(id, resource, record) => path` that may return any of the above values or a custom path
 
-**Tip**: If you pass a function, it can return `'edit'`, `'show'`, `false` or a router path. This allows to redirect to either the Edit or Show view after checking a condition on the record. For example:
+**Tip**: If you pass a function, it can return `'edit'`, `'show'`, `false` or a router path. This allows redirecting to either the Edit or Show view after checking a condition on the record. For example:
 
 ```tsx
 import type { Identifier, RaRecord } from 'react-admin';
@@ -826,7 +826,7 @@ export const ReviewList = () => (
 
 ## `size`
 
-The `<DataTable>` is designed for a high density of content, so the row padding is low. If you want to add more margin to each cell, set the `size` prop to `medium`.
+The `<DataTable>` is designed for a high content density, so the row padding is low. If you want to add more margin to each cell, set the `size` prop to `medium`.
 
 ```tsx
 export const PostList = () => (
@@ -838,7 +838,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: `size` is actually a prop of [the Material UI `<Table>` component](https://mui.com/material-ui/react-table/). Just like all additional `<DataTable>` props, it is passed down to the `<Table>` component.
+**Tip**: `size` is actually a prop of [the Material UI `<Table>` component](https://mui.com/material-ui/react-table/). Like all additional `<DataTable>` props, it is passed down to the `<Table>` component.
 
 ## `sx`: CSS API
 
@@ -889,7 +889,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: The `DataTable` component `classes` can also be customized for all instances of the component with its global css name `"RaDataTable"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
+**Tip**: The `DataTable` component `classes` can also be customized for all instances of the component with its global CSS name `"RaDataTable"` as described in [the theme override tutorial](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 
 ## `<DataTable.Col>`
 
@@ -950,7 +950,7 @@ Additional props are passed to [the MUI `<TableCell>`](https://mui.com/material-
 
 ### `align`
 
-Table cells are right aligned by default. To left align a column, set the `align` prop to `"left"`. This is useful for numeric columns:
+Table cells are right-aligned by default. To left-align a column, set the `align` prop to `"left"`. This is useful for numeric columns:
 
 ```tsx
 <DataTable.Col 
@@ -968,7 +968,7 @@ Table cells are right aligned by default. To left align a column, set the `align
 
 ### `children`
 
-`<DataTable.Col>` renders its children on each row, in a `RecordContext`. This allows you to use any react-admin [Field component](./Fields.md) as a child of `<DataTable.Col>`, or even a custom component.
+`<DataTable.Col>` renders its children in a `RecordContext` on each row. This allows you to use any react-admin [Field component](./Fields.md) as a child of `<DataTable.Col>`, or even a custom component.
 
 This lets you pass custom options to Field elements:
 
@@ -983,7 +983,7 @@ This lets you pass custom options to Field elements:
 ```
 {% endraw %}
 
-You can use more than one field as child, for instance to display a first name and last name in the same column:
+You can use more than one field as a child, for instance, to display a first name and last name in the same column:
 
 ```tsx
 <DataTable.Col source="lastName">
@@ -991,7 +991,7 @@ You can use more than one field as child, for instance to display a first name a
 </DataTable.Col>
 ```
 
-And you can use your own Field components, too. They just need to grab the current record from `recordContext`:
+You can also use your own field components. They need to grab the current record from `recordContext`:
 
 {% raw %}
 ```tsx
@@ -1051,7 +1051,7 @@ You can pass a custom class name to the cells of a column using the `cellClassNa
 
 You can pass a function to the `cellSx` prop to customize the style of the cells of a column based on the record. 
 
-This function receives the current record as argument, and should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/) value.
+This function receives the current record as an argument and should return a Material UI [`sx`](https://mui.com/system/getting-started/the-sx-prop/) value.
 
 ```tsx
 <DataTable.NumberCol
@@ -1091,7 +1091,6 @@ You can pass a custom class name to the header cell of a column using the `heade
 
 ### `label`
 
-
 The default label of a column, displayed in the table header, is the humanized version of the `source` prop. You can override this default label by passing a `label` prop to `<DataTable.Col>`.
 
 ```tsx
@@ -1113,7 +1112,7 @@ You can use a React element for the label:
 
 ### `render`
 
-You can pass a `render` prop to `<DataTable.Col>` to define a custom rendering function. This function receives the current record as an argument and should return a React element.
+To define a custom rendering function, you can pass a `render` prop to `<DataTable.Col>`. This function receives the current record as an argument and should return a React element.
 
 ```tsx
 <DataTable.Col 
@@ -1126,7 +1125,7 @@ You can pass a `render` prop to `<DataTable.Col>` to define a custom rendering f
 
 ### `sortable`
 
-By default, a column is sortable if it has a `source`. You can disable sorting by passing `false` to the `sortable` prop. This can be usedful e.g. for reference fields, which are not sortable by default.
+By default, a column is sortable if it has a `source`. You can turn off sorting by passing `false` to the `sortable` prop. This can be useful, e.g., for reference fields, which are not sortable by default.
 
 ```tsx
 <DataTable.Col source="author" sortable={false}>
@@ -1162,9 +1161,9 @@ By default, when users click on the header of a sortable column, the list is reo
 <DataTable.Col source="published_at" />
 ```
 
-The source can be a path to a nested field, e.g. `customer.lastName`.
+The source can be a path to a nested field, e.g., `customer.lastName`.
 
-Yet, this prop is optional: if you want to create a column that is not sortable, has no label and uses children for rendering, you can omit the `source` prop. This is the case e.g. for action columns:
+Yet, this prop is optional: if you want to create a column that is not sortable, has no label, and uses children for rendering, you can omit the `source` prop. This is the case e.g., for action columns:
 
 ```tsx
 <DataTable.Col>
@@ -1204,7 +1203,7 @@ If you want to style only the header or the body cells, use the `MuiTableCell-he
 
 ## `<DataTable.NumberCol>`
 
-`<DataTable.NumberCol>` lets you define numeric columns, where the label and the value are right aligned, and the value is rendered using the [`<NumberField>`](./NumberField.md) component.
+`<DataTable.NumberCol>` lets you define numeric columns where the label and the value are right-aligned, and the value is rendered using the [`<NumberField>`](./NumberField.md) component.
 
 ![DataTable NumberCol](./img/DataTableNumberCol.png)
 
@@ -1371,26 +1370,26 @@ The separation between list pages and edit pages is not always relevant. Sometim
 
 `<DatagridAG>` is an advanced DataTable component based on [ag-grid](https://www.ag-grid.com/). Here is a (non-exhaustive) list of [features](https://www.ag-grid.com/react-data-grid/) that `<DatagridAG>` offers:
 
--   In place editing of cells or rows
--   Advanced filtering
--   Columns resizing and reordering
--   Automatic page size
--   Automatic column size
--   Themes
--   Row selection and bulk actions
--   Compatibility with React Admin fields
+- In-place editing of cells or rows
+- Advanced filtering
+- Columns resizing and reordering
+- Automatic page size
+- Automatic column size
+- Themes
+- Row selection and bulk actions
+- Compatibility with React Admin fields
 
 Additionally, `<DatagridAG>` is compatible with the [Enterprise version of ag-grid](https://www.ag-grid.com/react-data-grid/licensing/), which offers even more features:
 
--   Row Grouping
--   Aggregation
--   Tree Data
--   Pivoting
--   More advanced filtering
--   Master Detail views
--   Range Selection
--   Excel Export
--   And more...
+- Row Grouping
+- Aggregation
+- Tree Data
+- Pivoting
+- More advanced filtering
+- Master Detail views
+- Range Selection
+- Excel Export
+- And more...
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/DatagridAG-enterprise.mp4" type="video/mp4"/>
@@ -1401,7 +1400,7 @@ Check [the `<DatagridAG>` documentation](./DatagridAG.md) for more details.
 
 ## Standalone Usage
 
-You can use the `<DataTable>` component to display data that you've fetched yourself. You'll need to pass all the props required for its features:
+You can use the `<DataTable>` component to display data you've fetched. You'll need to pass all the props required for its features:
 
 ```tsx
 import { useGetList, DataTable } from 'react-admin';
@@ -1430,7 +1429,7 @@ const MyCustomList = () => {
 };
 ```
 
-This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with the `<DataTable>`, use [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You will have to put the result in a `<ListContextProvider>` parent component:
+This list is static and has no filtering, sorting, or row selection. If you want to allow users to interact with the `<DataTable>`, use [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You will have to put the result in a `<ListContextProvider>` parent component:
 
 ```tsx
 import {
@@ -1487,7 +1486,7 @@ If you want to style only the header or the body cells, use the `MuiTableCell-he
 ```
 {% endraw %}
 
-You can also style columns using the `<DataTable sx>` prop, by taking advantage of the generated class names per column. Each `<DataTable.Col>` sets the class name of its cells to `column-[source]` by default. 
+You can also style columns using the `<DataTable sx>` prop by taking advantage of the generated class names per column. Each `<DataTable.Col>` sets the class name of its cells to `column-[source]` by default. 
 
 For instance, for `<DataTable.Col source="author" />`, both the column header and the cells will have the class `column-author`.
 
@@ -1511,7 +1510,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-A common practice is to hide certain columns on smaller screens. You can use the same technique:
+A common practice is to hide specific columns on smaller screens. You can use the same technique:
 
 {% raw %}
 ```tsx
@@ -1562,7 +1561,7 @@ You can use [the `cellSx` prop](#cellsx) to apply conditional styles to a column
 </video>
 
 
-The column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
+The column headers are buttons that allow users to change the list sort field and order. This feature requires no configuration and works out of the box. The next sections explain how to disable or modify the field used for sorting a particular column.
 
 ### Disabling Sorting
 
@@ -1589,7 +1588,7 @@ export const PostList = () => (
 
 By default, a column is sorted by the `<DataTable.Col source>` property.
 
-For example, the following column displays the full name of a contact, and is sortable by their last name:
+For example, the following column displays the full name of a contact and is sortable by their last name:
 
 ```tsx
 <DataTable.Col
@@ -1622,7 +1621,7 @@ You can also use a different `source` for the column and its child. This is very
 
 ### Specifying The Sort Order
 
-By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<DataTable.Col>` element:
+By default, when the user clicks on a column header, the list becomes sorted in ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<DataTable.Col>` element:
 
 ```tsx
 <DataTable.Col source="published_at" sortByOrder="DESC"/>
@@ -1674,7 +1673,7 @@ const ProductList = () => (
 
 As this is quite verbose, you may prefer using the `<Datagrid>` component from the `@react-admin/ra-rbac` package, which has several built-in access controls:
 
--   Users must have the `'read'` permission on a resource column to see it in the export:
+- Users must have the `'read'` permission on a resource column to see it in the export:
 
 ```jsx
 { action: "read", resource: `${resource}.${source}` }.
@@ -1682,12 +1681,12 @@ As this is quite verbose, you may prefer using the `<Datagrid>` component from t
 { action: "read", resource: `${resource}.*` }.
 ```
 
--   Users must have the `'delete'` permission on the resource to see the `<BulkExportButton>`.
+- Users must have the `'delete'` permission on the resource to see the `<BulkExportButton>`.
 
 - The default `rowClick` depends on the user permissions:
     -   `"edit"` if the user can access the current resource with the `edit` action
     -   `"show"` if the user can access the current resource with the `show` action
-    -   empty otherwise
+    - empty otherwise
 
 Here is an example of `<Datagrid>` with [RBAC](./AuthRBAC.md):
 
@@ -1745,7 +1744,7 @@ const ProductList = () => (
 );
 ```
 
-**Tip**: Adding the 'read' permission on the resource itself doesn't grant the 'read' permission on the columns. If you want a user to see all possible columns, add the 'read' permission on columns using a wildcard:
+**Tip**: Adding the 'read' permission for the resource itself doesn't grant the 'read' permission on the columns. If you want a user to see all possible columns, add the 'read' permission on columns using a wildcard:
 
 ```jsx
 { action: "read", resource: "products.*" }.
