@@ -76,32 +76,40 @@ export const useReferenceArrayFieldController = <
     const { meta, ...otherQueryOptions } = queryOptions;
     const ids = Array.isArray(value) ? value : emptyArray;
 
-    const { data, error, isLoading, isFetching, isPending, refetch } =
-        useGetManyAggregate<ReferenceRecordType, ErrorType>(
-            reference,
-            { ids, meta },
-            {
-                onError: error =>
-                    notify(
-                        typeof error === 'string'
-                            ? error
-                            : (error as Error)?.message ||
-                                  'ra.notification.http_error',
-                        {
-                            type: 'error',
-                            messageArgs: {
-                                _:
-                                    typeof error === 'string'
-                                        ? error
-                                        : (error as Error)?.message
-                                          ? (error as Error).message
-                                          : undefined,
-                            },
-                        }
-                    ),
-                ...otherQueryOptions,
-            }
-        );
+    const {
+        data,
+        error,
+        isLoading,
+        isFetching,
+        isPaused,
+        isPending,
+        isPlaceholderData,
+        refetch,
+    } = useGetManyAggregate<ReferenceRecordType, ErrorType>(
+        reference,
+        { ids, meta },
+        {
+            onError: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : (error as Error)?.message ||
+                              'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : (error as Error)?.message
+                                      ? (error as Error).message
+                                      : undefined,
+                        },
+                    }
+                ),
+            ...otherQueryOptions,
+        }
+    );
 
     const listProps = useList<ReferenceRecordType, ErrorType>({
         data,
@@ -109,7 +117,9 @@ export const useReferenceArrayFieldController = <
         filter,
         isFetching,
         isLoading,
+        isPaused,
         isPending,
+        isPlaceholderData,
         page,
         perPage,
         sort,
