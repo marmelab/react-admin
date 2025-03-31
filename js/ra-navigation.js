@@ -153,9 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'beginner-mode-trigger'
     );
 
-    if (window.location.pathname === '/documentation.html') {
-    }
-
     if (beginnerModeTrigger) {
         beginnerModeTrigger.addEventListener('click', () => {
             beginnerMode = !beginnerMode;
@@ -230,28 +227,28 @@ window.addEventListener('popstate', () => {
         return;
     }
 
-    if (window.location.pathname === '/documentation.html') {
-        fetch(window.location.pathname)
-            .then(res => res.text())
-            .then(replaceContent)
-            .then(() => import('./ra-doc-exec.js'))
-            .then(docExecModule => {
-                document.querySelector('.DocSearch-content').innerHTML = '';
-                toggleDockBlocks(true);
-                docExecModule.showTip();
-            });
+    if (window.location.pathname.includes("/documentation.html")) {
+      fetch(window.location.pathname)
+        .then((res) => res.text())
+        .then(replaceContent)
+        .then(() => import("./ra-doc-exec.js"))
+        .then((docExecModule) => {
+          document.querySelector(".DocSearch-content").innerHTML = "";
+          toggleDockBlocks(true);
+          docExecModule.showTip();
+        });
     } else {
-        // fetch the new content
-        fetch(window.location.pathname)
-            .then(res => res.text())
-            .then(replaceContent)
-            .then(() => {
-                toggleDockBlocks(false);
-            })
-            .then(hideTips)
-            .then(() => import('./ra-doc-exec.js'))
-            .then(docExecModule => docExecModule.buildJSCodeBlocksFromTS())
-            .then(loadNewsletterScript);
+      // fetch the new content
+      fetch(window.location.pathname)
+        .then((res) => res.text())
+        .then(replaceContent)
+        .then(() => {
+          toggleDockBlocks(false);
+        })
+        .then(hideTips)
+        .then(() => import("./ra-doc-exec.js"))
+        .then((docExecModule) => docExecModule.buildJSCodeBlocksFromTS())
+        .then(loadNewsletterScript);
     }
     changeSelectedMenu();
 });
@@ -268,7 +265,7 @@ window.addEventListener('DOMContentLoaded', () => {
     navigationFitScroll();
     loadNewsletterScript();
 
-    if (window.location.pathname === '/documentation.html') {
+    if (window.location.pathname.includes('/documentation.html')) {
         import('./ra-doc-exec.js').then(docExecModule => {
             document.querySelector('.DocSearch-content').innerHTML = '';
             toggleDockBlocks(true);
