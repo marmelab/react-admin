@@ -1,10 +1,10 @@
-import * as React from 'react';
 import {
-    useResourceContext,
     usePreference,
+    useResourceContext,
     useStore,
     useTranslate,
 } from 'ra-core';
+import * as React from 'react';
 
 import { Configurable } from '../../preferences';
 import { Datagrid, DatagridProps } from './Datagrid';
@@ -50,6 +50,11 @@ export const DatagridConfigurable = ({
         ConfigurableDatagridColumn[]
     >(`preferences.${finalPreferenceKey}.availableColumns`, []);
 
+    const [columns, setColumns] = useStore<string[]>(
+        `preferences.${finalPreferenceKey}.columns`,
+        []
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setOmit] = useStore<string[] | undefined>(
         `preferences.${finalPreferenceKey}.omit`,
@@ -58,7 +63,7 @@ export const DatagridConfigurable = ({
 
     React.useEffect(() => {
         // first render, or the preference have been cleared
-        const columns = React.Children.toArray(props.children)
+        const newAvailableColumns = React.Children.toArray(props.children)
             .filter(child => React.isValidElement(child))
             .map((child: React.ReactElement, index) => ({
                 index: String(index),
@@ -75,8 +80,74 @@ export const DatagridConfigurable = ({
                                 _: `Unlabeled column #%{column}`,
                             }),
             }));
-        if (columns.length !== availableColumns.length) {
-            setAvailableColumns(columns);
+        const hasChanged = newAvailableColumns.some(column => {
+            const availableColumn = availableColumns.find(
+                availableColumn =>
+                    (!!availableColumn.source &&
+                        availableColumn.source === column?.source) ||
+                    (!!availableColumn.label &&
+                        availableColumn.label === column?.label)
+            );
+            return !availableColumn || availableColumn.index !== column.index;
+        });
+        if (hasChanged) {
+            // first we need to update the columns indexes to match the new availableColumns so we keep the same order
+            const newColumnsSortedAsOldColumns = columns.flatMap(column => {
+                const oldColumn = availableColumns.find(
+                    availableColumn => availableColumn.index === column
+                );
+                const newColumn = newAvailableColumns.find(
+                    availableColumn =>
+                        (!!availableColumn.source &&
+                            availableColumn.source === oldColumn?.source) ||
+                        (!!availableColumn.label &&
+                            availableColumn.label === oldColumn?.label)
+                );
+                return newColumn?.index ? [newColumn.index] : [];
+            });
+            setColumns([
+                // we add the old columns in the same order as before
+                ...newColumnsSortedAsOldColumns,
+                // then we add at the new columns which are not omited
+                ...newAvailableColumns
+                    .filter(
+                        c =>
+                            !availableColumns.some(
+                                ac =>
+                                    (!!ac.source && ac.source === c.source) ||
+                                    (!!ac.label && ac.label === c.label)
+                            ) && !omit?.includes(c.source as string)
+                    )
+                    .map(c => c.index),
+            ]);
+
+            // Then we update the available columns to include the new columns while keeping the same order as before
+            const newAvailableColumnsSortedAsBefore = [
+                // First the existing columns, in the same order
+                ...(availableColumns
+                    .map(oldAvailableColumn =>
+                        newAvailableColumns.find(
+                            c =>
+                                (!!c.source &&
+                                    c.source === oldAvailableColumn.source) ||
+                                (!!c.label &&
+                                    c.label === oldAvailableColumn.label)
+                        )
+                    )
+                    .filter(c => !!c) as ConfigurableDatagridColumn[]), // Remove undefined columns
+                // Then the new columns
+                ...newAvailableColumns.filter(
+                    c =>
+                        !availableColumns.some(
+                            oldAvailableColumn =>
+                                (!!oldAvailableColumn.source &&
+                                    oldAvailableColumn.source === c.source) ||
+                                (!!oldAvailableColumn.label &&
+                                    oldAvailableColumn.label === c.label)
+                        )
+                ),
+            ];
+            setAvailableColumns(newAvailableColumnsSortedAsBefore);
             setOmit(omit);
         }
     }, [availableColumns]); // eslint-disable-line react-hooks/exhaustive-deps
