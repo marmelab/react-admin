@@ -220,14 +220,14 @@ If you want to see what react-admin is capable of, or if you want to learn from 
     <div class="card">
         <a href="#kanban-board" class="no-decoration"><img src="./img/kanban-board.png" alt="Kanban Board"></a>
         <div class="content-card">
-            <a href="#todo-app" class="no-decoration">
+            <a href="#kanban-board" class="no-decoration">
                 <p class="title-card"><b>Kanban Board</b></p>
                 <p  class="description-card">A Kanban board built with React-admin Enterprise Edition</p>
             </a>
         </div>
         <div class="card-footer">
             <div class="links-container">
-                <p><b><a href="https://djhi.github.io/atomic-pm/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://djhi.github.io/atomic-pm/#/boards/1" class="demo link">Demo</a></b></p>
                 <p><b><a href="https://github.com/djhi/atomic-pm" class="source-code link">Source code</a></b></p>
             </div>
         </div>
@@ -396,7 +396,7 @@ A Kanban board built with React-admin Enterprise edition.
 
 [![Kanban Board](./img/kanban-board.png)](https://github.com/djhi/atomic-pm/)
 
-* Demo: [https://djhi.github.io/atomic-pm](https://djhi.github.io/atomic-pm)
+* Demo: [https://djhi.github.io/atomic-pm]([https://djhi.github.io/atomic-pm](https://djhi.github.io/atomic-pm/#/boards/1))
 * Source code: [https://github.com/djhi/atomic-pm](https://github.com/djhi/atomic-pm)
 
 It leverages the following Enterprise Edition features:
