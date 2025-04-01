@@ -1752,7 +1752,11 @@ const ProductList = () => (
 
 ## Typescript
 
-`<DataTable.Col>` and `<DataTable.NumberCol>` are generic components. You can pass a type parameter to them to get hints for the `source` prop and type safety for the `record` argument of the `render` and `rowSx` functions.
+`<DataTable.Col>` and `<DataTable.NumberCol>` are generic components, You can pass a type parameter to get hints for the `source` prop and type safety for the `record` argument of the `render` and `rowSx` functions.
+
+![DataTable Column Type Safety](./img/DataTableColumnType.png)
+
+The most convenient way to benefit from this capability is to alias column components for your resource:
 
 ```tsx
 import { List, DataTable, ReferenceField } from 'react-admin';
@@ -1782,4 +1786,23 @@ const ReviewList = () => (
 );
 ```
 
-![DataTable Column Type Safety](./img/DataTableColumnType.png)
+`<DataTable>` is also a generic component. You can pass a type parameter to get autocompletion and type safety for its props.
+
+```tsx
+import { List, DataTable } from 'react-admin';
+import { type Review } from '../types';
+
+const ReviewList = () => (
+    <List>
+        <DataTable<Review>
+            // TypeScript knows that record type is Review
+            rowSx={record => ({
+                backgroundColor: record.status === 'approved' ? 'green' : 'red',
+            })}
+        >
+            ...
+        </DataTable>
+    </List>
+);
+```
+

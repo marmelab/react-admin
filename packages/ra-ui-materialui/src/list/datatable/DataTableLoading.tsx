@@ -115,13 +115,13 @@ export const DataTableLoading = memo(function DataTableLoading({
     );
 });
 
-export interface DataTableLoadingProps {
+export interface DataTableLoadingProps<RecordType extends RaRecord = any> {
     className?: string;
     expand?:
         | ReactNode
         | FC<{
               id: Identifier;
-              record: RaRecord;
+              record: RecordType;
               resource: string;
           }>;
     hasBulkActions?: boolean;

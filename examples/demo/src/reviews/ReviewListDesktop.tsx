@@ -28,13 +28,14 @@ const ReviewsBulkActionButtons = () => (
     </>
 );
 
+const Table = DataTable<Review>;
 const Column = DataTable.Col<Review>;
 
 const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
     const navigate = useNavigate();
     const createPath = useCreatePath();
     return (
-        <DataTable
+        <Table
             rowClick={(id, resource) => {
                 // As we display the edit view in a drawer, we don't the default rowClick behavior that will scroll to the top of the page
                 // So we navigate manually without specifying the _scrollToTop state
@@ -80,7 +81,7 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
                 }}
             />
             <Column source="status" />
-        </DataTable>
+        </Table>
     );
 };
 

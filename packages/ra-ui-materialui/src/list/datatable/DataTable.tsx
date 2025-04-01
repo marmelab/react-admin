@@ -46,14 +46,6 @@ import {
     DataTableStoreContext,
 } from './context';
 
-interface DataTableComponent
-    extends React.ForwardRefExoticComponent<
-        DataTableProps & React.RefAttributes<HTMLTableElement>
-    > {
-    Col: typeof DataTableColumn;
-    NumberCol: typeof DataTableNumberColumn;
-}
-
 const DefaultEmpty = <ListNoResults />;
 const DefaultFooter = (_props: { children: ReactNode }) => null;
 
@@ -140,263 +132,270 @@ const DefaultFooter = (_props: { children: ReactNode }) => null;
  *     );
  * }
  */
-export const DataTable = React.forwardRef<HTMLTableElement, DataTableProps>(
-    (props, ref) => {
-        const resourceFromContext = useResourceContext(props);
-        const { canAccess: canDelete } = useCanAccess({
-            resource: resourceFromContext,
-            action: 'delete',
-        });
+export const DataTable = React.forwardRef(function DataTable<
+    RecordType extends RaRecord = any,
+>(
+    props: DataTableProps<RecordType>,
+    ref: React.ForwardedRef<HTMLTableElement>
+) {
+    const resourceFromContext = useResourceContext(props);
+    const { canAccess: canDelete } = useCanAccess({
+        resource: resourceFromContext,
+        action: 'delete',
+    });
 
-        const {
-            body: TableBody = DataTableBody,
-            header: TableHeader = DataTableHeader,
-            footer: TableFooter = DefaultFooter,
-            children,
-            className,
-            empty = DefaultEmpty,
+    const {
+        body: TableBody = DataTableBody,
+        header: TableHeader = DataTableHeader,
+        footer: TableFooter = DefaultFooter,
+        children,
+        className,
+        empty = DefaultEmpty,
+        expand,
+        bulkActionsToolbar,
+        bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
+        hiddenColumns = emptyArray,
+        hover,
+        isRowSelectable,
+        isRowExpandable,
+        onSelect: onSelectFromProps,
+        resource,
+        rowClick,
+        rowSx,
+        size = 'small',
+        sx,
+        expandSingle = false,
+        ...rest
+    } = props;
+
+    const {
+        sort,
+        data,
+        isPending,
+        onSelect,
+        onToggleItem,
+        selectedIds,
+        setSort,
+        total,
+    } = useListContextWithProps(props);
+
+    const hasBulkActions = !!bulkActionButtons !== false;
+
+    const storeKey = props.storeKey || `${resourceFromContext}.datatable`;
+    const [columnRanks] = useStore<number[]>(`${storeKey}_columnRanks`);
+    const columns = columnRanks
+        ? reorderChildren(children, columnRanks)
+        : children;
+
+    const handleSort = useEvent((event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation();
+        if (!setSort) return;
+        const newField = event.currentTarget.dataset.field || 'id';
+        const newOrder =
+            sort?.field === newField
+                ? sort?.order === 'ASC'
+                    ? 'DESC'
+                    : 'ASC'
+                : (event.currentTarget.dataset.order as 'ASC') || 'ASC';
+        setSort({ field: newField, order: newOrder });
+    });
+
+    const lastSelected = useRef<Identifier | null>(null);
+
+    useEffect(() => {
+        if (!selectedIds || selectedIds.length === 0) {
+            lastSelected.current = null;
+        }
+    }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // we manage row selection here instead of in the rows level to allow shift+click to select an array of rows
+    const handleToggleItem = useEvent(
+        (id: Identifier, event: React.MouseEvent<HTMLInputElement>) => {
+            if (!data) return;
+            const ids = data.map(record => record.id);
+            const lastSelectedIndex = ids.indexOf(lastSelected.current);
+            // @ts-ignore FIXME useEvent prevents using event.currentTarget
+            lastSelected.current = event.target.checked ? id : null;
+
+            if (event.shiftKey && lastSelectedIndex !== -1) {
+                const index = ids.indexOf(id);
+                const idsBetweenSelections = ids.slice(
+                    Math.min(lastSelectedIndex, index),
+                    Math.max(lastSelectedIndex, index) + 1
+                );
+
+                // @ts-ignore FIXME useEvent prevents using event.currentTarget
+                const newSelectedIds = event.target.checked
+                    ? union(selectedIds, idsBetweenSelections)
+                    : difference(selectedIds, idsBetweenSelections);
+
+                onSelect?.(
+                    isRowSelectable
+                        ? newSelectedIds.filter((id: Identifier) =>
+                              isRowSelectable(
+                                  data.find(record => record.id === id)
+                              )
+                          )
+                        : newSelectedIds
+                );
+            } else {
+                onToggleItem?.(id);
+            }
+        }
+    );
+
+    const storeContextValue = useMemo(
+        () => ({
+            storeKey,
+            defaultHiddenColumns: hiddenColumns,
+        }),
+        [storeKey, hiddenColumns]
+    );
+
+    const configContextValue = useMemo(
+        () => ({
             expand,
-            bulkActionsToolbar,
-            bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
-            hiddenColumns = emptyArray,
+            expandSingle,
+            hasBulkActions,
             hover,
-            isRowSelectable,
+        }),
+        [expand, expandSingle, hasBulkActions, hover]
+    );
+
+    const callbacksContextValue = useMemo(
+        () => ({
+            handleSort: setSort ? handleSort : undefined,
+            handleToggleItem,
             isRowExpandable,
-            onSelect: onSelectFromProps,
-            resource,
+            isRowSelectable,
+            onSelect,
             rowClick,
             rowSx,
-            size = 'small',
-            sx,
-            expandSingle = false,
-            ...rest
-        } = props;
-
-        const {
-            sort,
-            data,
-            isPending,
-            onSelect,
-            onToggleItem,
-            selectedIds,
+        }),
+        [
             setSort,
-            total,
-        } = useListContextWithProps(props);
+            handleSort,
+            handleToggleItem,
+            isRowExpandable,
+            isRowSelectable,
+            onSelect,
+            rowClick,
+            rowSx,
+        ]
+    );
 
-        const hasBulkActions = !!bulkActionButtons !== false;
-
-        const storeKey = props.storeKey || `${resourceFromContext}.datatable`;
-        const [columnRanks] = useStore<number[]>(`${storeKey}_columnRanks`);
-        const columns = columnRanks
-            ? reorderChildren(children, columnRanks)
-            : children;
-
-        const handleSort = useEvent((event: React.MouseEvent<HTMLElement>) => {
-            event.stopPropagation();
-            if (!setSort) return;
-            const newField = event.currentTarget.dataset.field || 'id';
-            const newOrder =
-                sort?.field === newField
-                    ? sort?.order === 'ASC'
-                        ? 'DESC'
-                        : 'ASC'
-                    : (event.currentTarget.dataset.order as 'ASC') || 'ASC';
-            setSort({ field: newField, order: newOrder });
-        });
-
-        const lastSelected = useRef<Identifier | null>(null);
-
-        useEffect(() => {
-            if (!selectedIds || selectedIds.length === 0) {
-                lastSelected.current = null;
-            }
-        }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
-
-        // we manage row selection here instead of in the rows level to allow shift+click to select an array of rows
-        const handleToggleItem = useEvent(
-            (id: Identifier, event: React.MouseEvent<HTMLInputElement>) => {
-                if (!data) return;
-                const ids = data.map(record => record.id);
-                const lastSelectedIndex = ids.indexOf(lastSelected.current);
-                // @ts-ignore FIXME useEvent prevents using event.currentTarget
-                lastSelected.current = event.target.checked ? id : null;
-
-                if (event.shiftKey && lastSelectedIndex !== -1) {
-                    const index = ids.indexOf(id);
-                    const idsBetweenSelections = ids.slice(
-                        Math.min(lastSelectedIndex, index),
-                        Math.max(lastSelectedIndex, index) + 1
-                    );
-
-                    // @ts-ignore FIXME useEvent prevents using event.currentTarget
-                    const newSelectedIds = event.target.checked
-                        ? union(selectedIds, idsBetweenSelections)
-                        : difference(selectedIds, idsBetweenSelections);
-
-                    onSelect?.(
-                        isRowSelectable
-                            ? newSelectedIds.filter((id: Identifier) =>
-                                  isRowSelectable(
-                                      data.find(record => record.id === id)
-                                  )
-                              )
-                            : newSelectedIds
-                    );
-                } else {
-                    onToggleItem?.(id);
-                }
-            }
-        );
-
-        const storeContextValue = useMemo(
-            () => ({
-                storeKey,
-                defaultHiddenColumns: hiddenColumns,
-            }),
-            [storeKey, hiddenColumns]
-        );
-
-        const configContextValue = useMemo(
-            () => ({
-                expand,
-                expandSingle,
-                hasBulkActions,
-                hover,
-            }),
-            [expand, expandSingle, hasBulkActions, hover]
-        );
-
-        const callbacksContextValue = useMemo(
-            () => ({
-                handleSort: setSort ? handleSort : undefined,
-                handleToggleItem,
-                isRowExpandable,
-                isRowSelectable,
-                onSelect,
-                rowClick,
-                rowSx,
-            }),
-            [
-                setSort,
-                handleSort,
-                handleToggleItem,
-                isRowExpandable,
-                isRowSelectable,
-                onSelect,
-                rowClick,
-                rowSx,
-            ]
-        );
-
-        if (isPending === true) {
-            return (
-                <DataTableLoading
-                    className={className}
-                    expand={expand}
-                    hasBulkActions={hasBulkActions}
-                    nbChildren={React.Children.count(children)}
-                    size={size}
-                />
-            );
-        }
-
-        /**
-         * Once loaded, the data for the list may be empty. Instead of
-         * displaying the table header with zero data rows,
-         * the DataTable displays the empty component.
-         */
-        if (data == null || data.length === 0 || total === 0) {
-            if (empty) {
-                return empty;
-            }
-
-            return null;
-        }
-
-        /**
-         * After the initial load, if the data for the list isn't empty,
-         * and even if the data is refreshing (e.g. after a filter change),
-         * the DataTable displays the current data.
-         */
+    if (isPending === true) {
         return (
-            <DataTableStoreContext.Provider value={storeContextValue}>
-                <DataTableSortContext.Provider value={sort}>
-                    <DataTableSelectedIdsContext.Provider value={selectedIds}>
-                        <DataTableCallbacksContext.Provider
-                            value={callbacksContextValue}
-                        >
-                            <DataTableConfigContext.Provider
-                                value={configContextValue}
-                            >
-                                <OptionalResourceContextProvider
-                                    value={resource}
-                                >
-                                    <DataTableDataContext.Provider value={data}>
-                                        <DataTableRoot
-                                            sx={sx}
-                                            className={clsx(
-                                                DataTableClasses.root,
-                                                className
-                                            )}
-                                        >
-                                            {bulkActionsToolbar ??
-                                                (bulkActionButtons !==
-                                                    false && (
-                                                    <BulkActionsToolbar>
-                                                        {isValidElement(
-                                                            bulkActionButtons
-                                                        )
-                                                            ? bulkActionButtons
-                                                            : defaultBulkActionButtons}
-                                                    </BulkActionsToolbar>
-                                                ))}
-                                            <div
-                                                className={
-                                                    DataTableClasses.tableWrapper
-                                                }
-                                            >
-                                                <Table
-                                                    ref={ref}
-                                                    className={
-                                                        DataTableClasses.table
-                                                    }
-                                                    size={size}
-                                                    {...sanitizeRestProps(rest)}
-                                                >
-                                                    <DataTableRenderContext.Provider value="header">
-                                                        <TableHeader>
-                                                            {columns}
-                                                        </TableHeader>
-                                                    </DataTableRenderContext.Provider>
-                                                    <TableBody>
-                                                        {columns}
-                                                    </TableBody>
-                                                    <DataTableRenderContext.Provider value="footer">
-                                                        <TableFooter>
-                                                            {columns}
-                                                        </TableFooter>
-                                                    </DataTableRenderContext.Provider>
-                                                </Table>
-                                            </div>
-                                        </DataTableRoot>
-                                    </DataTableDataContext.Provider>
-                                    <DataTableRenderContext.Provider value="columnsSelector">
-                                        <ColumnsSelector>
-                                            {children}
-                                        </ColumnsSelector>
-                                    </DataTableRenderContext.Provider>
-                                </OptionalResourceContextProvider>
-                            </DataTableConfigContext.Provider>
-                        </DataTableCallbacksContext.Provider>
-                    </DataTableSelectedIdsContext.Provider>
-                </DataTableSortContext.Provider>
-            </DataTableStoreContext.Provider>
+            <DataTableLoading
+                className={className}
+                expand={expand}
+                hasBulkActions={hasBulkActions}
+                nbChildren={React.Children.count(children)}
+                size={size}
+            />
         );
     }
-) as DataTableComponent;
+
+    /**
+     * Once loaded, the data for the list may be empty. Instead of
+     * displaying the table header with zero data rows,
+     * the DataTable displays the empty component.
+     */
+    if (data == null || data.length === 0 || total === 0) {
+        if (empty) {
+            return empty;
+        }
+
+        return null;
+    }
+
+    /**
+     * After the initial load, if the data for the list isn't empty,
+     * and even if the data is refreshing (e.g. after a filter change),
+     * the DataTable displays the current data.
+     */
+    return (
+        <DataTableStoreContext.Provider value={storeContextValue}>
+            <DataTableSortContext.Provider value={sort}>
+                <DataTableSelectedIdsContext.Provider value={selectedIds}>
+                    <DataTableCallbacksContext.Provider
+                        value={callbacksContextValue}
+                    >
+                        <DataTableConfigContext.Provider
+                            value={configContextValue}
+                        >
+                            <OptionalResourceContextProvider value={resource}>
+                                <DataTableDataContext.Provider value={data}>
+                                    <DataTableRoot
+                                        sx={sx}
+                                        className={clsx(
+                                            DataTableClasses.root,
+                                            className
+                                        )}
+                                    >
+                                        {bulkActionsToolbar ??
+                                            (bulkActionButtons !== false && (
+                                                <BulkActionsToolbar>
+                                                    {isValidElement(
+                                                        bulkActionButtons
+                                                    )
+                                                        ? bulkActionButtons
+                                                        : defaultBulkActionButtons}
+                                                </BulkActionsToolbar>
+                                            ))}
+                                        <div
+                                            className={
+                                                DataTableClasses.tableWrapper
+                                            }
+                                        >
+                                            <Table
+                                                ref={ref}
+                                                className={
+                                                    DataTableClasses.table
+                                                }
+                                                size={size}
+                                                {...sanitizeRestProps(rest)}
+                                            >
+                                                <DataTableRenderContext.Provider value="header">
+                                                    <TableHeader>
+                                                        {columns}
+                                                    </TableHeader>
+                                                </DataTableRenderContext.Provider>
+                                                <TableBody>{columns}</TableBody>
+                                                <DataTableRenderContext.Provider value="footer">
+                                                    <TableFooter>
+                                                        {columns}
+                                                    </TableFooter>
+                                                </DataTableRenderContext.Provider>
+                                            </Table>
+                                        </div>
+                                    </DataTableRoot>
+                                </DataTableDataContext.Provider>
+                                <DataTableRenderContext.Provider value="columnsSelector">
+                                    <ColumnsSelector>
+                                        {children}
+                                    </ColumnsSelector>
+                                </DataTableRenderContext.Provider>
+                            </OptionalResourceContextProvider>
+                        </DataTableConfigContext.Provider>
+                    </DataTableCallbacksContext.Provider>
+                </DataTableSelectedIdsContext.Provider>
+            </DataTableSortContext.Provider>
+        </DataTableStoreContext.Provider>
+    );
+}) as unknown as (<RecordType extends RaRecord = any>(
+    props: DataTableProps<RecordType> & {
+        ref?: React.ForwardedRef<HTMLTableElement>;
+    }
+) => JSX.Element) & {
+    Col: typeof DataTableColumn;
+    NumberCol: typeof DataTableNumberColumn;
+    displayName: string;
+};
 
 DataTable.Col = DataTableColumn;
 DataTable.NumberCol = DataTableNumberColumn;
+DataTable.displayName = 'DataTable';
 
 const emptyArray = [];
 const defaultBulkActionButtons = <BulkDeleteButton />;
@@ -644,7 +643,7 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      *     </List>
      * );
      */
-    rowClick?: string | RowClickFunction | false;
+    rowClick?: string | RowClickFunction<RecordType> | false;
 
     /**
      * A function that returns the sx prop to apply to a row.
@@ -725,5 +724,3 @@ const sanitizeRestProps = ({
     | 'selectedIds'
     | 'total'
 >) => rest;
-
-DataTable.displayName = 'DataTable';
