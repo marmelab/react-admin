@@ -189,7 +189,7 @@ export const DataTableRow = React.memo(
                             )}
                         </TableCell>
                     )}
-                    {hasBulkActions && (
+                    {hasBulkActions && handleToggleItem && (
                         <TableCell padding="checkbox">
                             <SelectRowCheckbox />
                         </TableCell>

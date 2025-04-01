@@ -10,7 +10,7 @@ import { DataTableClasses } from './DataTableRoot';
 import { useDataTableConfigContext } from './context/DataTableConfigContext';
 import {
     useDataTableDataContext,
-    useDataTableSelectedIdsContext,
+    useDataTableCallbacksContext,
 } from './context';
 
 /**
@@ -26,7 +26,7 @@ export const DataTableHeader = memo((props: DataTableHeaderProps) => {
         hasBulkActions = false,
     } = useDataTableConfigContext();
     const data = useDataTableDataContext();
-    const selectedIds = useDataTableSelectedIdsContext();
+    const { handleToggleItem } = useDataTableCallbacksContext();
 
     const hasExpand = !!expand;
 
@@ -55,7 +55,7 @@ export const DataTableHeader = memo((props: DataTableHeaderProps) => {
                         ) : null}
                     </TableCell>
                 )}
-                {hasBulkActions && selectedIds && (
+                {hasBulkActions && handleToggleItem && (
                     <TableCell
                         padding="checkbox"
                         variant="head"

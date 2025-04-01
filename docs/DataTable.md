@@ -1405,12 +1405,10 @@ You can use the `<DataTable>` component to display data you've fetched. You'll n
 ```tsx
 import { useGetList, DataTable } from 'react-admin';
 
-const sort = { field: 'id', order: 'DESC' };
-
 const MyCustomList = () => {
     const { data, total, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
-        sort,
+        sort: { field: 'id', order: 'DESC' },
     });
 
     return (
@@ -1419,8 +1417,6 @@ const MyCustomList = () => {
             data={data}
             total={total}
             isPending={isPending}
-            sort={sort}
-            bulkActionButtons={false}
         >
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />

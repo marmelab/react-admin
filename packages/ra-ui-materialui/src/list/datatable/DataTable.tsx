@@ -9,6 +9,7 @@ import {
     type ReactNode,
 } from 'react';
 import {
+    ListContextProvider,
     OptionalResourceContextProvider,
     useCanAccess,
     useEvent,
@@ -18,6 +19,7 @@ import {
     type Identifier,
     type RaRecord,
     type SortPayload,
+    type ListControllerResult,
 } from 'ra-core';
 import { Table, type TableProps, type SxProps } from '@mui/material';
 import clsx from 'clsx';
@@ -174,6 +176,8 @@ export const DataTable = React.forwardRef(function DataTable<
         isPending,
         onSelect,
         onToggleItem,
+        onUnselectItems,
+        onSelectAll,
         selectedIds,
         setSort,
         total,
@@ -265,7 +269,7 @@ export const DataTable = React.forwardRef(function DataTable<
     const callbacksContextValue = useMemo(
         () => ({
             handleSort: setSort ? handleSort : undefined,
-            handleToggleItem,
+            handleToggleItem: onToggleItem ? handleToggleItem : undefined,
             isRowExpandable,
             isRowSelectable,
             onSelect,
@@ -279,6 +283,7 @@ export const DataTable = React.forwardRef(function DataTable<
             isRowExpandable,
             isRowSelectable,
             onSelect,
+            onToggleItem,
             rowClick,
             rowSx,
         ]
@@ -333,16 +338,39 @@ export const DataTable = React.forwardRef(function DataTable<
                                             className
                                         )}
                                     >
-                                        {bulkActionsToolbar ??
-                                            (bulkActionButtons !== false && (
-                                                <BulkActionsToolbar>
-                                                    {isValidElement(
-                                                        bulkActionButtons
-                                                    )
-                                                        ? bulkActionButtons
-                                                        : defaultBulkActionButtons}
-                                                </BulkActionsToolbar>
-                                            ))}
+                                        {/* the test on onToggleItem prevents error when Datable is used in standalone mode */}
+                                        {onToggleItem && (
+                                            // FIXME in 6.0: remove the ListContextProvider
+                                            // This ListContextProvider is here because the bulk actions require it.
+                                            // When datagrid is removed, the bulk action toolbar and button should read
+                                            // the data table context instead of the list context.
+                                            // But until then, to maintain backward compatibility, we need this ListContextProvider.
+                                            <ListContextProvider
+                                                value={
+                                                    {
+                                                        data,
+                                                        total,
+                                                        selectedIds,
+                                                        onSelect,
+                                                        onToggleItem,
+                                                        onUnselectItems,
+                                                        onSelectAll,
+                                                    } as any
+                                                }
+                                            >
+                                                {bulkActionsToolbar ??
+                                                    (bulkActionButtons !==
+                                                        false && (
+                                                        <BulkActionsToolbar>
+                                                            {isValidElement(
+                                                                bulkActionButtons
+                                                            )
+                                                                ? bulkActionButtons
+                                                                : defaultBulkActionButtons}
+                                                        </BulkActionsToolbar>
+                                                    ))}
+                                            </ListContextProvider>
+                                        )}
                                         <div
                                             className={
                                                 DataTableClasses.tableWrapper
@@ -694,9 +722,11 @@ export interface DataTableProps<RecordType extends RaRecord = any>
     data?: RecordType[];
     isLoading?: boolean;
     isPending?: boolean;
-    onSelect?: (ids: Identifier[]) => void;
-    onToggleItem?: (id: Identifier) => void;
-    setSort?: (sort: SortPayload) => void;
+    onSelect?: ListControllerResult['onSelect'];
+    onSelectAll?: ListControllerResult['onSelectAll'];
+    onToggleItem?: ListControllerResult['onToggleItem'];
+    onUnselectItems?: ListControllerResult['onUnselectItems'];
+    setSort?: ListControllerResult['setSort'];
     selectedIds?: Identifier[];
     total?: number;
 }

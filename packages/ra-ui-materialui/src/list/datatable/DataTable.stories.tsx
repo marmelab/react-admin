@@ -325,22 +325,14 @@ export const ColumnStyles = () => (
     </Wrapper>
 );
 
-const sort = { field: 'id', order: 'DESC' } as SortPayload;
-
 const MyCustomList = () => {
     const { data, total, isPending } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
-        sort: sort,
+        sort: { field: 'id', order: 'DESC' },
     });
 
     return (
-        <DataTable
-            data={data}
-            total={total}
-            isPending={isPending}
-            sort={sort}
-            bulkActionButtons={false}
-        >
+        <DataTable data={data} total={total} isPending={isPending}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
         </DataTable>
@@ -363,6 +355,8 @@ const MyCustomListInteractive = () => {
         isPending,
         onSelect,
         onToggleItem,
+        onUnselectItems,
+        onSelectAll,
         setSort,
         selectedIds,
         total,
@@ -374,12 +368,13 @@ const MyCustomListInteractive = () => {
             sort={sort}
             isPending={isPending}
             onSelect={onSelect}
+            onUnselectItems={onUnselectItems}
+            onSelectAll={onSelectAll}
             onToggleItem={onToggleItem}
             setSort={setSort}
             selectedIds={selectedIds}
             total={total}
-            // FIXME row selection fails when not in ListContextProvider
-            bulkActionButtons={false}
+            sx={{ mt: 6 }}
         >
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />

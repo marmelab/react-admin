@@ -157,163 +157,124 @@ const TabbedDatagrid = () => {
                 <>
                     {(filterValues.status == null ||
                         filterValues.status === 'ordered') && (
-                        <DataTable
-                            rowClick="edit"
-                            hiddenColumns={[
-                                'total_ex_taxes',
-                                'delivery_fees',
-                                'taxes',
-                            ]}
-                            storeKey={storeKeyByStatus.ordered}
-                        >
-                            <Column source="date">
-                                <DateField source="date" showTime />
-                            </Column>
-                            <Column source="reference" />
-                            <Column
-                                source="customer_id"
-                                field={CustomerReferenceField}
-                            />
-                            <Column label="resources.orders.fields.address">
-                                <ReferenceField
-                                    source="customer_id"
-                                    reference="customers"
-                                    link={false}
-                                >
-                                    <AddressField />
-                                </ReferenceField>
-                            </Column>
-                            <ColumnNumber
-                                source="basket.length"
-                                label="resources.orders.fields.nb_items"
-                            />
-                            <ColumnNumber
-                                source="total_ex_taxes"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="delivery_fees"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="taxes"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="total"
-                                options={currencyStyle}
-                                sx={{ fontWeight: 'bold' }}
-                            />
-                        </DataTable>
+                        <OrderedOrdersTable />
                     )}
                     {filterValues.status === 'delivered' && (
-                        <DataTable
-                            rowClick="edit"
-                            hiddenColumns={[
-                                'total_ex_taxes',
-                                'delivery_fees',
-                                'taxes',
-                            ]}
-                            storeKey={storeKeyByStatus.delivered}
-                        >
-                            <Column source="date">
-                                <DateField source="date" showTime />
-                            </Column>
-                            <Column source="reference" />
-                            <Column
-                                source="customer_id"
-                                field={CustomerReferenceField}
-                            />
-                            <Column label="resources.orders.fields.address">
-                                <ReferenceField
-                                    source="customer_id"
-                                    reference="customers"
-                                    link={false}
-                                >
-                                    <AddressField />
-                                </ReferenceField>
-                            </Column>
-                            <ColumnNumber
-                                source="basket.length"
-                                label="resources.orders.fields.nb_items"
-                            />
-                            <ColumnNumber
-                                source="total_ex_taxes"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="delivery_fees"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="taxes"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="total"
-                                options={currencyStyle}
-                                sx={{ fontWeight: 'bold' }}
-                            />
-                            <BooleanField
-                                source="returned"
-                                sx={{ mt: -0.5, mb: -0.5 }}
-                            />
-                        </DataTable>
+                        <DeliveredOrdersTable />
                     )}
                     {filterValues.status === 'cancelled' && (
-                        <DataTable
-                            rowClick="edit"
-                            hiddenColumns={[
-                                'total_ex_taxes',
-                                'delivery_fees',
-                                'taxes',
-                            ]}
-                            storeKey={storeKeyByStatus.cancelled}
-                        >
-                            <Column source="date">
-                                <DateField source="date" showTime />
-                            </Column>
-                            <Column source="reference" />
-                            <Column
-                                source="customer_id"
-                                field={CustomerReferenceField}
-                            />
-                            <Column label="resources.orders.fields.address">
-                                <ReferenceField
-                                    source="customer_id"
-                                    reference="customers"
-                                    link={false}
-                                >
-                                    <AddressField />
-                                </ReferenceField>
-                            </Column>
-                            <ColumnNumber
-                                source="basket.length"
-                                label="resources.orders.fields.nb_items"
-                            />
-                            <ColumnNumber
-                                source="total_ex_taxes"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="delivery_fees"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="taxes"
-                                options={currencyStyle}
-                            />
-                            <ColumnNumber
-                                source="total"
-                                options={currencyStyle}
-                                sx={{ fontWeight: 'bold' }}
-                            />
-                        </DataTable>
+                        <CancelledOrdersTable />
                     )}
                 </>
             )}
         </Fragment>
     );
 };
+
+const OrderedOrdersTable = React.memo(() => (
+    <DataTable
+        rowClick="edit"
+        hiddenColumns={['total_ex_taxes', 'delivery_fees', 'taxes']}
+        storeKey={storeKeyByStatus.ordered}
+    >
+        <Column source="date">
+            <DateField source="date" showTime />
+        </Column>
+        <Column source="reference" />
+        <Column source="customer_id" field={CustomerReferenceField} />
+        <Column label="resources.orders.fields.address">
+            <ReferenceField
+                source="customer_id"
+                reference="customers"
+                link={false}
+            >
+                <AddressField />
+            </ReferenceField>
+        </Column>
+        <ColumnNumber
+            source="basket.length"
+            label="resources.orders.fields.nb_items"
+        />
+        <ColumnNumber source="total_ex_taxes" options={currencyStyle} />
+        <ColumnNumber source="delivery_fees" options={currencyStyle} />
+        <ColumnNumber source="taxes" options={currencyStyle} />
+        <ColumnNumber
+            source="total"
+            options={currencyStyle}
+            sx={{ fontWeight: 'bold' }}
+        />
+    </DataTable>
+));
+
+const DeliveredOrdersTable = React.memo(() => (
+    <DataTable
+        rowClick="edit"
+        hiddenColumns={['total_ex_taxes', 'delivery_fees', 'taxes']}
+        storeKey={storeKeyByStatus.delivered}
+    >
+        <Column source="date">
+            <DateField source="date" showTime />
+        </Column>
+        <Column source="reference" />
+        <Column source="customer_id" field={CustomerReferenceField} />
+        <Column label="resources.orders.fields.address">
+            <ReferenceField
+                source="customer_id"
+                reference="customers"
+                link={false}
+            >
+                <AddressField />
+            </ReferenceField>
+        </Column>
+        <ColumnNumber
+            source="basket.length"
+            label="resources.orders.fields.nb_items"
+        />
+        <ColumnNumber source="total_ex_taxes" options={currencyStyle} />
+        <ColumnNumber source="delivery_fees" options={currencyStyle} />
+        <ColumnNumber source="taxes" options={currencyStyle} />
+        <ColumnNumber
+            source="total"
+            options={currencyStyle}
+            sx={{ fontWeight: 'bold' }}
+        />
+        <BooleanField source="returned" sx={{ mt: -0.5, mb: -0.5 }} />
+    </DataTable>
+));
+
+const CancelledOrdersTable = React.memo(() => (
+    <DataTable
+        rowClick="edit"
+        hiddenColumns={['total_ex_taxes', 'delivery_fees', 'taxes']}
+        storeKey={storeKeyByStatus.cancelled}
+    >
+        <Column source="date">
+            <DateField source="date" showTime />
+        </Column>
+        <Column source="reference" />
+        <Column source="customer_id" field={CustomerReferenceField} />
+        <Column label="resources.orders.fields.address">
+            <ReferenceField
+                source="customer_id"
+                reference="customers"
+                link={false}
+            >
+                <AddressField />
+            </ReferenceField>
+        </Column>
+        <ColumnNumber
+            source="basket.length"
+            label="resources.orders.fields.nb_items"
+        />
+        <ColumnNumber source="total_ex_taxes" options={currencyStyle} />
+        <ColumnNumber source="delivery_fees" options={currencyStyle} />
+        <ColumnNumber source="taxes" options={currencyStyle} />
+        <ColumnNumber
+            source="total"
+            options={currencyStyle}
+            sx={{ fontWeight: 'bold' }}
+        />
+    </DataTable>
+));
 
 export default OrderList;
