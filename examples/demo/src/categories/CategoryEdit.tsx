@@ -11,8 +11,12 @@ import {
     useEditContext,
 } from 'react-admin';
 
+import { type Product } from '../types';
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
+
+const Column = DataTable.Col<Product>;
+const ColumnNumber = DataTable.NumberCol<Product>;
 
 const CategoryEdit = () => (
     <Edit title={<CategoryTitle />}>
@@ -25,32 +29,29 @@ const CategoryEdit = () => (
                     perPage={20}
                 >
                     <DataTable>
-                        <DataTable.Col
+                        <Column
                             sx={{ width: 25, padding: 0 }}
                             field={ThumbnailField}
                             label={false}
                         />
-                        <DataTable.Col
-                            source="reference"
-                            field={ProductRefField}
-                        />
-                        <DataTable.NumberCol
+                        <Column source="reference" field={ProductRefField} />
+                        <ColumnNumber
                             source="price"
                             options={{ style: 'currency', currency: 'USD' }}
                         />
-                        <DataTable.NumberCol
+                        <ColumnNumber
                             source="width"
                             options={{ minimumFractionDigits: 2 }}
                         />
-                        <DataTable.NumberCol
+                        <ColumnNumber
                             source="height"
                             options={{ minimumFractionDigits: 2 }}
                         />
-                        <DataTable.NumberCol source="stock" />
-                        <DataTable.NumberCol source="sales" />
-                        <DataTable.Col align="right">
+                        <ColumnNumber source="stock" />
+                        <ColumnNumber source="sales" />
+                        <Column align="right">
                             <EditButton />
-                        </DataTable.Col>
+                        </Column>
                     </DataTable>
                 </ReferenceManyField>
             </Labeled>

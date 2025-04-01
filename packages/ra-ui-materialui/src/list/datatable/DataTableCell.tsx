@@ -4,7 +4,6 @@ import { TableCell, type SxProps } from '@mui/material';
 import get from 'lodash/get';
 import clsx from 'clsx';
 
-import { TextField } from '../../field/TextField';
 import { DataTableColumnProps } from './DataTableColumn';
 import { useDataTableStoreContext } from './context';
 

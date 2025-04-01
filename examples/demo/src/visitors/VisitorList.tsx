@@ -5,7 +5,6 @@ import {
     DataTable,
     DateField,
     DateInput,
-    NumberField,
     ExportButton,
     List,
     NullableBooleanInput,
@@ -22,6 +21,7 @@ import SegmentInput from './SegmentInput';
 import CustomerLinkField from './CustomerLinkField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
+import type { Customer } from '../types';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -50,6 +50,9 @@ const VisitorTitle = () => {
     );
 };
 
+const Column = DataTable.Col<Customer>;
+const ColumnNumber = DataTable.NumberCol<Customer>;
+
 const VisitorList = () => {
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
@@ -77,17 +80,17 @@ const VisitorList = () => {
                     }}
                     hiddenColumns={['birthday']}
                 >
-                    <DataTable.Col
+                    <Column
                         source="last_name"
                         label="resources.customers.fields.full_name"
                         field={CustomerLinkField}
                     />
-                    <DataTable.Col source="last_seen" field={DateField} />
-                    <DataTable.NumberCol
+                    <Column source="last_seen" field={DateField} />
+                    <ColumnNumber
                         source="nb_orders"
                         label="resources.customers.fields.orders"
                     />
-                    <DataTable.NumberCol
+                    <ColumnNumber
                         source="total_spent"
                         align="right"
                         cellSx={record =>
@@ -95,16 +98,16 @@ const VisitorList = () => {
                         }
                         options={{ style: 'currency', currency: 'USD' }}
                     />
-                    <DataTable.Col source="latest_purchase">
+                    <Column source="latest_purchase">
                         <DateField source="latest_purchase" showTime />
-                    </DataTable.Col>
-                    <DataTable.Col
+                    </Column>
+                    <Column
                         source="has_newsletter"
                         label="News."
                         field={BooleanField}
                     />
-                    <DataTable.Col source="groups" field={SegmentsField} />
-                    <DataTable.Col source="birthday" field={DateField} />
+                    <Column source="groups" field={SegmentsField} />
+                    <Column source="birthday" field={DateField} />
                 </DataTable>
             )}
         </List>

@@ -25,7 +25,7 @@ import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
-import { Customer } from '../types';
+import { Customer, Order } from '../types';
 
 const storeKeyByStatus = {
     ordered: 'orders.list1',
@@ -57,6 +57,9 @@ const OrdersTitle = () => {
         </>
     );
 };
+
+const Column = DataTable.Col<Order>;
+const ColumnNumber = DataTable.NumberCol<Order>;
 
 const OrderList = () => (
     <List
@@ -94,6 +97,11 @@ const tabs = [
     { id: 'delivered', name: 'delivered' },
     { id: 'cancelled', name: 'cancelled' },
 ];
+
+const currencyStyle = {
+    style: 'currency' as const,
+    currency: 'USD',
+};
 
 const TabbedDatagrid = () => {
     const listContext = useListContext();
@@ -158,15 +166,15 @@ const TabbedDatagrid = () => {
                             ]}
                             storeKey={storeKeyByStatus.ordered}
                         >
-                            <DataTable.Col source="date">
+                            <Column source="date">
                                 <DateField source="date" showTime />
-                            </DataTable.Col>
-                            <DataTable.Col source="reference" />
-                            <DataTable.Col
+                            </Column>
+                            <Column source="reference" />
+                            <Column
                                 source="customer_id"
                                 field={CustomerReferenceField}
                             />
-                            <DataTable.Col label="resources.orders.fields.address">
+                            <Column label="resources.orders.fields.address">
                                 <ReferenceField
                                     source="customer_id"
                                     reference="customers"
@@ -174,38 +182,26 @@ const TabbedDatagrid = () => {
                                 >
                                     <AddressField />
                                 </ReferenceField>
-                            </DataTable.Col>
-                            <DataTable.NumberCol
+                            </Column>
+                            <ColumnNumber
                                 source="basket.length"
                                 label="resources.orders.fields.nb_items"
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="total_ex_taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="delivery_fees"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="total"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                                 sx={{ fontWeight: 'bold' }}
                             />
                         </DataTable>
@@ -220,15 +216,15 @@ const TabbedDatagrid = () => {
                             ]}
                             storeKey={storeKeyByStatus.delivered}
                         >
-                            <DataTable.Col source="date">
+                            <Column source="date">
                                 <DateField source="date" showTime />
-                            </DataTable.Col>
-                            <DataTable.Col source="reference" />
-                            <DataTable.Col
+                            </Column>
+                            <Column source="reference" />
+                            <Column
                                 source="customer_id"
                                 field={CustomerReferenceField}
                             />
-                            <DataTable.Col label="resources.orders.fields.address">
+                            <Column label="resources.orders.fields.address">
                                 <ReferenceField
                                     source="customer_id"
                                     reference="customers"
@@ -236,38 +232,26 @@ const TabbedDatagrid = () => {
                                 >
                                     <AddressField />
                                 </ReferenceField>
-                            </DataTable.Col>
-                            <DataTable.NumberCol
+                            </Column>
+                            <ColumnNumber
                                 source="basket.length"
                                 label="resources.orders.fields.nb_items"
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="total_ex_taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="delivery_fees"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="total"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                                 sx={{ fontWeight: 'bold' }}
                             />
                             <BooleanField
@@ -286,15 +270,15 @@ const TabbedDatagrid = () => {
                             ]}
                             storeKey={storeKeyByStatus.cancelled}
                         >
-                            <DataTable.Col source="date">
+                            <Column source="date">
                                 <DateField source="date" showTime />
-                            </DataTable.Col>
-                            <DataTable.Col source="reference" />
-                            <DataTable.Col
+                            </Column>
+                            <Column source="reference" />
+                            <Column
                                 source="customer_id"
                                 field={CustomerReferenceField}
                             />
-                            <DataTable.Col label="resources.orders.fields.address">
+                            <Column label="resources.orders.fields.address">
                                 <ReferenceField
                                     source="customer_id"
                                     reference="customers"
@@ -302,38 +286,26 @@ const TabbedDatagrid = () => {
                                 >
                                     <AddressField />
                                 </ReferenceField>
-                            </DataTable.Col>
-                            <DataTable.NumberCol
+                            </Column>
+                            <ColumnNumber
                                 source="basket.length"
                                 label="resources.orders.fields.nb_items"
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="total_ex_taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="delivery_fees"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                             />
-                            <DataTable.NumberCol
+                            <ColumnNumber
                                 source="total"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
+                                options={currencyStyle}
                                 sx={{ fontWeight: 'bold' }}
                             />
                         </DataTable>

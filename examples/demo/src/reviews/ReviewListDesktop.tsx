@@ -6,15 +6,15 @@ import {
     Identifier,
     useCreatePath,
 } from 'react-admin';
+import { useNavigate } from 'react-router';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import rowSx from './rowSx';
-
 import BulkAcceptButton from './BulkAcceptButton';
 import BulkRejectButton from './BulkRejectButton';
-import { useNavigate } from 'react-router';
+import { type Review } from '../types';
 
 export interface ReviewListDesktopProps {
     selectedRow?: Identifier;
@@ -27,6 +27,8 @@ const ReviewsBulkActionButtons = () => (
         <BulkDeleteButton />
     </>
 );
+
+const Column = DataTable.Col<Review>;
 
 const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
     const navigate = useNavigate();
@@ -56,19 +58,19 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
                 },
             }}
         >
-            <DataTable.Col source="date" field={DateField} />
-            <DataTable.Col source="customer_id">
+            <Column source="date" field={DateField} />
+            <Column source="customer_id">
                 <CustomerReferenceField source="customer_id" link={false} />
-            </DataTable.Col>
-            <DataTable.Col source="product_id">
+            </Column>
+            <Column source="product_id">
                 <ProductReferenceField source="product_id" link={false} />
-            </DataTable.Col>
-            <DataTable.Col
+            </Column>
+            <Column
                 source="rating"
                 label="resources.reviews.fields.rating"
                 field={StarRatingField}
             />
-            <DataTable.Col
+            <Column
                 source="comment"
                 sx={{
                     maxWidth: '18em',
@@ -77,7 +79,7 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
                     whiteSpace: 'nowrap',
                 }}
             />
-            <DataTable.Col source="status" />
+            <Column source="status" />
         </DataTable>
     );
 };

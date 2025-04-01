@@ -18,6 +18,7 @@ import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import ReviewIcon from '@mui/icons-material/Comment';
 
+import { type Review } from '../types';
 import { ProductEditDetails } from './ProductEditDetails';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
@@ -40,6 +41,8 @@ const ProductTitle = () => {
         </>
     );
 };
+
+const Column = DataTable.Col<Review>;
 
 const ProductEdit = () => (
     <Edit title={<ProductTitle />}>
@@ -92,17 +95,17 @@ const ProductEdit = () => (
                     pagination={<Pagination />}
                 >
                     <DataTable sx={{ width: '100%' }}>
-                        <DataTable.Col source="date" field={DateField} />
-                        <DataTable.Col
+                        <Column source="date" field={DateField} />
+                        <Column
                             source="customer_id"
                             field={CustomerReferenceField}
                         />
-                        <DataTable.Col
+                        <Column
                             label="resources.reviews.fields.rating"
                             source="rating"
                             field={StarRatingField}
                         />
-                        <DataTable.Col
+                        <Column
                             source="comment"
                             sx={{
                                 maxWidth: '20em',
@@ -111,10 +114,10 @@ const ProductEdit = () => (
                                 whiteSpace: 'nowrap',
                             }}
                         />
-                        <DataTable.Col source="status" />
-                        <DataTable.Col align="right">
+                        <Column source="status" />
+                        <Column align="right">
                             <EditButton />
-                        </DataTable.Col>
+                        </Column>
                     </DataTable>
                     <CreateRelatedReviewButton />
                 </ReferenceManyField>

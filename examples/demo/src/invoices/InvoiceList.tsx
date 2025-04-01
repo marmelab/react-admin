@@ -14,6 +14,7 @@ import {
     DataTable,
 } from 'react-admin';
 
+import { type Invoice } from '../types';
 import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
@@ -44,6 +45,9 @@ const InvoicesTitle = () => {
     );
 };
 
+const Column = DataTable.Col<Invoice>;
+const ColumnNumber = DataTable.NumberCol<Invoice>;
+
 const InvoiceList = () => (
     <List
         filters={listFilters}
@@ -61,14 +65,14 @@ const InvoiceList = () => (
                 },
             }}
         >
-            <DataTable.Col source="id" />
-            <DataTable.Col field={DateField} source="date" />
-            <DataTable.Col source="customer_id" className="onlyLarge">
+            <Column source="id" />
+            <Column field={DateField} source="date" />
+            <Column source="customer_id" className="onlyLarge">
                 <ReferenceField source="customer_id" reference="customers">
                     <FullNameField source="last_name" />
                 </ReferenceField>
-            </DataTable.Col>
-            <DataTable.Col
+            </Column>
+            <Column
                 source="address"
                 sortable={false}
                 label="resources.invoices.fields.address"
@@ -80,17 +84,14 @@ const InvoiceList = () => (
                 >
                     <AddressField />
                 </ReferenceField>
-            </DataTable.Col>
-            <DataTable.Col source="order_id">
+            </Column>
+            <Column source="order_id">
                 <ReferenceField source="order_id" reference="orders" />
-            </DataTable.Col>
-            <DataTable.NumberCol
-                source="total_ex_taxes"
-                className="onlyLarge"
-            />
-            <DataTable.NumberCol source="delivery_fees" className="onlyLarge" />
-            <DataTable.NumberCol source="taxes" className="onlyLarge" />
-            <DataTable.NumberCol source="total" />
+            </Column>
+            <ColumnNumber source="total_ex_taxes" className="onlyLarge" />
+            <ColumnNumber source="delivery_fees" className="onlyLarge" />
+            <ColumnNumber source="taxes" className="onlyLarge" />
+            <ColumnNumber source="total" />
         </DataTable>
     </List>
 );
