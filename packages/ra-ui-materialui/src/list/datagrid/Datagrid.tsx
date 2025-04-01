@@ -117,9 +117,16 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *     );
  * }
  */
-export const Datagrid: React.ForwardRefExoticComponent<
-    Omit<DatagridProps, 'ref'> & React.RefAttributes<HTMLTableElement>
-> = React.forwardRef<HTMLTableElement, DatagridProps>((props, ref) => {
+
+const fixedForwardRef = <T, P = {}>(
+    render: (props: P, ref: React.Ref<T>) => React.ReactNode
+): ((props: P & React.RefAttributes<T>) => React.ReactNode) =>
+    React.forwardRef(render) as any;
+
+const WDatagrid = <RecordType extends RaRecord = any>(
+    props: DatagridProps<RecordType>,
+    ref
+) => {
     const resourceFromContext = useResourceContext(props);
     const { canAccess: canDelete } = useCanAccess({
         resource: resourceFromContext,
@@ -299,7 +306,9 @@ export const Datagrid: React.ForwardRefExoticComponent<
             </OptionalResourceContextProvider>
         </DatagridContextProvider>
     );
-});
+};
+
+export const Datagrid = fixedForwardRef(WDatagrid);
 
 const createOrCloneElement = (element, props, children) =>
     isValidElement(element)
@@ -524,7 +533,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      *     </List>
      * );
      */
-    rowClick?: string | RowClickFunction | false;
+    rowClick?: string | RowClickFunction<RecordType> | false;
 
     /**
      * A function that returns the sx prop to apply to a row.
@@ -599,6 +608,6 @@ const sanitizeRestProps = props =>
         )
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
-Datagrid.displayName = 'Datagrid';
+WDatagrid.displayName = 'Datagrid';
 
 const DefaultEmpty = <ListNoResults />;
