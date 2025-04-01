@@ -17,7 +17,7 @@ export default (options?: Partial<ApolloClientOptions<unknown>>) => {
         uri,
         credentials,
         headers,
-        link = !!uri ? new HttpLink({ uri, credentials, headers }) : undefined,
+        link = uri ? new HttpLink({ uri, credentials, headers }) : undefined,
         ...otherOptions
     } = options;
 

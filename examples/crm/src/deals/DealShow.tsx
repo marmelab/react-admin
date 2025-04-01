@@ -54,7 +54,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
             }}
         >
             <DialogContent sx={{ padding: 0 }}>
-                {!!id ? (
+                {id ? (
                     <ShowBase id={id}>
                         <DealShowContent handleClose={handleClose} />
                     </ShowBase>

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 import type { Theme } from '@mui/material';
 import {
     Checkbox,

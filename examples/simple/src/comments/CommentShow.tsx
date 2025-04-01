@@ -5,7 +5,7 @@ import {
     Show,
     SimpleShowLayout,
     TextField,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from 'react-admin';
 
 const CommentShow = () => (
     <Show queryOptions={{ meta: { prefetch: ['post'] } }}>

@@ -87,7 +87,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         component: (
             props: { children: ReactNode } & Omit<InputProps, 'source'> &
                 Partial<Pick<InputProps, 'source'>>
-        ) => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
+        ) => <TextField source="id" {...props} />,
         representation: () => `<TextField source="id" />`,
     },
     richText: {

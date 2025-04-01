@@ -108,7 +108,7 @@ const SelectFieldImpl = <
         ) : null;
     }
 
-    let choiceText = getChoiceText(choice);
+    const choiceText = getChoiceText(choice);
 
     return (
         <Typography

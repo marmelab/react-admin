@@ -91,7 +91,7 @@ export default (introspectionResults: IntrospectionResult) =>
         queryType: IntrospectionField,
         variables: any
     ) => {
-        let { sortField, sortOrder, ...metaVariables } = variables;
+        const { sortField, sortOrder, ...metaVariables } = variables;
 
         const apolloArgs = buildApolloArgs(queryType, variables);
         const args = buildArgs(queryType, variables);
@@ -318,7 +318,7 @@ export const buildArgs = (
     const validVariables = Object.keys(variables).filter(
         k => typeof variables[k] !== 'undefined'
     );
-    let args = query.args
+    const args = query.args
         .filter(a => validVariables.includes(a.name))
         .reduce(
             (acc, arg) => [
@@ -346,7 +346,7 @@ export const buildApolloArgs = (
         k => typeof variables[k] !== 'undefined'
     );
 
-    let args = query.args
+    const args = query.args
         .filter(a => validVariables.includes(a.name))
         .reduce((acc, arg) => {
             return [

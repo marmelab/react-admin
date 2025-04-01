@@ -72,7 +72,6 @@ const ShowViewGuesser = (
                 )
                 .sort();
 
-            // eslint-disable-next-line no-console
             console.log(
                 `Guessed Show:
 
