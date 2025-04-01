@@ -12,6 +12,9 @@ import { DataTableHeaderCell } from './DataTableHeaderCell';
 import { ColumnsSelectorItem } from './ColumnsSelectorItem';
 import { genericMemo } from '../../field/genericMemo';
 
+// FIXME remove custom type when using TypeScript >= 5.4 as it is now native
+type NoInfer<T> = T extends infer U ? U : never;
+
 export interface DataTableColumnProps<
     RecordType extends Record<string, any> = Record<string, any>,
 > extends Omit<TableCellProps, 'component'> {
@@ -20,7 +23,7 @@ export interface DataTableColumnProps<
     headerClassName?: string;
     render?: (record: RecordType) => React.ReactNode;
     field?: React.ElementType;
-    source?: HintedString<ExtractRecordPaths<RecordType>>;
+    source?: NoInfer<HintedString<ExtractRecordPaths<RecordType>>>;
     label?: React.ReactNode;
     sortable?: boolean;
     sortByOrder?: SortPayload['order'];

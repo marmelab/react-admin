@@ -58,9 +58,6 @@ const OrdersTitle = () => {
     );
 };
 
-const Column = DataTable.Col<Order>;
-const ColumnNumber = DataTable.NumberCol<Order>;
-
 const OrderList = () => (
     <List
         filterDefaultValues={{ status: 'ordered' }}
@@ -170,6 +167,9 @@ const TabbedDatagrid = () => {
         </Fragment>
     );
 };
+
+const Column = DataTable.Col<Order>;
+const ColumnNumber = DataTable.NumberCol<Order>;
 
 const OrderedOrdersTable = React.memo(() => (
     <DataTable

@@ -4,10 +4,13 @@ import { NumberField } from '../../field/NumberField';
 import { genericMemo } from '../../field/genericMemo';
 import { DataTableColumn, type DataTableColumnProps } from './DataTableColumn';
 
+// FIXME remove custom type when using TypeScript >= 5.4 as it is now native
+type NoInfer<T> = T extends infer U ? U : never;
+
 export interface DataTableNumberColumnProps<
     RecordType extends Record<string, any> = Record<string, any>,
 > extends DataTableColumnProps<RecordType> {
-    source: HintedString<ExtractRecordPaths<RecordType>>;
+    source: NoInfer<HintedString<ExtractRecordPaths<RecordType>>>;
     locales?: string | string[];
     options?: Intl.NumberFormatOptions;
 }
