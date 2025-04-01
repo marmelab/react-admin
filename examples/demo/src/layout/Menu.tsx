@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Box } from '@mui/material';
 import LabelIcon from '@mui/icons-material/Label';
-
 import {
     useTranslate,
     DashboardMenuItem,
@@ -10,6 +9,7 @@ import {
     MenuProps,
     useSidebarState,
 } from 'react-admin';
+import clsx from 'clsx';
 
 import visitors from '../visitors';
 import orders from '../orders';
@@ -46,6 +46,10 @@ const Menu = ({ dense = false }: MenuProps) => {
                         duration: theme.transitions.duration.leavingScreen,
                     }),
             }}
+            className={clsx({
+                'RaMenu-open': open,
+                'RaMenu-closed': !open,
+            })}
         >
             <DashboardMenuItem />
             <SubMenu

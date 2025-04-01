@@ -5,11 +5,12 @@ import { Button, Snackbar, SnackbarProps, SnackbarOrigin } from '@mui/material';
 import clsx from 'clsx';
 
 import {
-    useNotificationContext,
-    undoableEventEmitter,
-    useTranslate,
+    CloseNotificationContext,
     NotificationPayload,
+    undoableEventEmitter,
+    useNotificationContext,
     useTakeUndoableMutation,
+    useTranslate,
 } from 'ra-core';
 
 const defaultAnchorOrigin: SnackbarOrigin = {
@@ -120,52 +121,57 @@ export const Notification = (props: NotificationProps) => {
     } = notificationOptions || {};
 
     return (
-        <StyledSnackbar
-            className={className}
-            open={open}
-            message={
-                message &&
-                typeof message === 'string' &&
-                translate(message, messageArgs)
-            }
-            autoHideDuration={
-                // Only apply the default autoHideDuration when autoHideDurationFromMessage is undefined
-                // as 0 and null are valid values
-                autoHideDurationFromMessage === undefined
-                    ? autoHideDuration
-                    : autoHideDurationFromMessage ?? undefined
-            }
-            disableWindowBlurListener={undoable}
-            TransitionProps={{ onExited: handleExited }}
-            onClose={handleRequestClose}
-            ContentProps={{
-                className: clsx(NotificationClasses[typeFromMessage || type], {
-                    [NotificationClasses.multiLine]:
-                        multilineFromMessage || multiLine,
-                }),
-            }}
-            action={
-                undoable ? (
-                    <Button
-                        color="primary"
-                        className={NotificationClasses.undo}
-                        size="small"
-                        onClick={handleUndo}
-                    >
-                        <>{translate('ra.action.undo')}</>
-                    </Button>
-                ) : null
-            }
-            anchorOrigin={anchorOrigin}
-            {...rest}
-            {...options}
-        >
-            {message &&
-            typeof message !== 'string' &&
-            React.isValidElement(message)
-                ? message
-                : undefined}
-        </StyledSnackbar>
+        <CloseNotificationContext.Provider value={handleRequestClose}>
+            <StyledSnackbar
+                className={className}
+                open={open}
+                message={
+                    message &&
+                    typeof message === 'string' &&
+                    translate(message, messageArgs)
+                }
+                autoHideDuration={
+                    // Only apply the default autoHideDuration when autoHideDurationFromMessage is undefined
+                    // as 0 and null are valid values
+                    autoHideDurationFromMessage === undefined
+                        ? autoHideDuration
+                        : autoHideDurationFromMessage ?? undefined
+                }
+                disableWindowBlurListener={undoable}
+                TransitionProps={{ onExited: handleExited }}
+                onClose={handleRequestClose}
+                ContentProps={{
+                    className: clsx(
+                        NotificationClasses[typeFromMessage || type],
+                        {
+                            [NotificationClasses.multiLine]:
+                                multilineFromMessage || multiLine,
+                        }
+                    ),
+                }}
+                action={
+                    undoable ? (
+                        <Button
+                            color="primary"
+                            className={NotificationClasses.undo}
+                            size="small"
+                            onClick={handleUndo}
+                        >
+                            <>{translate('ra.action.undo')}</>
+                        </Button>
+                    ) : null
+                }
+                anchorOrigin={anchorOrigin}
+                {...rest}
+                {...options}
+            >
+                {message &&
+                typeof message !== 'string' &&
+                React.isValidElement(message)
+                    ? message
+                    : undefined}
+            </StyledSnackbar>
+        </CloseNotificationContext.Provider>
     );
 };
 

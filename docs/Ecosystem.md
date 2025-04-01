@@ -37,5 +37,6 @@ While most of the react-admin components come from the [marmelab/react-admin](ht
 - [Dev XP demo (YouTube)](https://youtu.be/nHkVxDEnB3g): How to make changes to the core React Admin project locally
 - [react-admin-import-csv](https://github.com/benwinding/react-admin-import-csv): A csv file import button for react-admin.
 - [@bb-tech/ra-components](https://github.com/BigBasket/ra-components): Hierarchical menu structure, JSON field and input, Email, URL and Phone inputs
+- [Vycanis Modeler](https://vycanis.top/modeler/): Quickly generate your React Admin application from your ER diagram (ERD).
 
 If you authored or know another package for react-admin, please open a pull request on the `docs` folder to add the package to this list. 
