@@ -37,6 +37,7 @@ export function SalesInputs() {
                 source="disabled"
                 readOnly={record?.id === identity?.id}
                 helperText={false}
+                value={true}
             />
         </Stack>
     );

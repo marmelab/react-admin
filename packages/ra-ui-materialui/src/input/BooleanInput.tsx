@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import clsx from 'clsx';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -31,6 +31,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         validate,
         options = defaultOptions,
         sx,
+        value: valueProp,
         ...rest
     } = props;
     const {
@@ -52,6 +53,12 @@ export const BooleanInput = (props: BooleanInputProps) => {
         readOnly,
         ...rest,
     });
+
+    useEffect(() => {
+        if (valueProp !== undefined && field.value !== valueProp) {
+            field.onChange(valueProp);
+        }
+    }, [valueProp, field]);
 
     const handleChange = useCallback(
         event => {
@@ -110,6 +117,7 @@ export type BooleanInputProps = CommonInputProps &
     Omit<SwitchProps, 'defaultValue'> &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
         options?: SwitchProps;
+        value?: boolean;
     };
 
 const defaultOptions = {};
