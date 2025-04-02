@@ -175,8 +175,6 @@ export const DataTable = React.forwardRef(function DataTable<
         isPending,
         onSelect,
         onToggleItem,
-        onUnselectItems,
-        onSelectAll,
         selectedIds,
         setSort,
         total,
