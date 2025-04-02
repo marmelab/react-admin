@@ -410,7 +410,7 @@ To render data differently in a column, you can pass children to `<DataTable.Col
 
 `<NumberField>` is a Field component: it reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as children of `<DataTable.Col>` ([`<TextField>`](./TextField.md), [`<NumberField>`](./NumberField.md), [`<DateField>`](./DateField.md), [`<ReferenceField>`](./ReferenceField.md), and many more). Check [the Fields documentation](./Fields.md) for more information.
 
-**Tip**: Rendering numeric values in a table is such a common need the react-admin provides `<DataTable.NumberCol>` just for that:
+**Tip**: Rendering numeric values in a table is such a common need that react-admin provides `<DataTable.NumberCol>` just for that:
 
 ```tsx
 <DataTable.NumberCol source="amount" />
