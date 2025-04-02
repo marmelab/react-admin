@@ -233,38 +233,33 @@ Note that if you use this ability to pass a React node, the message will not be 
 If you have custom actions in your notification element, you can leverage the `useCloseNotification` hook to close the notification programmatically:
 
 ```tsx
-import { useFormContext } from 'react-hook-form';
-import { Button, useCloseNotification, useNotify } from 'react-admin';
+import { useCheckForApplicationUpdate, useCloseNotification, useNotify } from 'react-admin';
 import { SnackbarContent } from '@mui/material';
 
-const SetFormValueButton = () => {
-    const { setValue } = useFormContext();
+export const CheckForApplicationUpdate = () => {
     const notify = useNotify();
 
-    return (
-        <Button
-            onClick={() => {
-                setValue('myfield', 'a value');
-                notify(<SetFormValueNotification reset={() => setValue('myfield', '')} />);
-            }}
-            label="Set myfield value"
-        />
-    );
+    const onNewVersionAvailable = () => {
+        // autoHideDuration is set to 0 to disable the auto hide feature
+        notify(<ApplicationUpdateNotification />, { autoHideDuration: 0 });
+    };
+
+    useCheckForApplicationUpdate({ onNewVersionAvailable, ...rest });
+    return null;
 };
 
-const SetFormValueNotification = ({ reset }: { reset:() => void }) => {
+const ApplicationUpdateNotification = ({ reset }: { reset:() => void }) => {
     const closeNotification = useCloseNotification();
 
     return (
         <SnackbarContent
-            message="myfield changed"
+            message="A new application version is available. Refresh your browser tab to update"
             action={
                 <Button
                     onClick={() => {
-                        reset();
                         closeNotification();
                     }}
-                    label="Reset"
+                    label="Dismiss"
                 />
             }
         />
