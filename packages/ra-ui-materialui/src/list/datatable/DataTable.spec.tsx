@@ -6,6 +6,9 @@ import {
     Empty,
     StandaloneStatic,
     StandaloneDynamic,
+    Expand,
+    ExpandSingle,
+    IsRowExpandable,
 } from './DataTable.stories';
 
 describe('DataTable', () => {
@@ -139,6 +142,66 @@ describe('DataTable', () => {
         it('should accept a custom empty element', async () => {
             render(<Empty />);
             await screen.findByText('No books found');
+        });
+    });
+    describe('expand', () => {
+        it('should show an expand button on each row and in the header', async () => {
+            render(<Expand />);
+            await waitFor(() => {
+                expect(
+                    screen.getAllByLabelText('ra.action.expand')
+                ).toHaveLength(6);
+            });
+        });
+        it('should toggle the panel when clicking on the expand button', async () => {
+            render(<Expand />);
+            const expandButton =
+                await screen.findAllByLabelText('ra.action.expand');
+            expect(screen.queryByTestId('ExpandPanel')).toBeFalsy();
+            fireEvent.click(expandButton[1]);
+            await waitFor(() => {
+                expect(screen.getByTestId('ExpandPanel')).toBeTruthy();
+            });
+            fireEvent.click(expandButton[1]);
+            await waitFor(() => {
+                expect(screen.queryByTestId('ExpandPanel')).toBeFalsy();
+            });
+        });
+        it('should toggle all rows when clicking on the header expand button', async () => {
+            render(<Expand />);
+            const expandButton =
+                await screen.findAllByLabelText('ra.action.expand');
+            fireEvent.click(expandButton[0]);
+            await waitFor(() => {
+                expect(screen.getAllByTestId('ExpandPanel')).toHaveLength(5);
+            });
+            fireEvent.click(expandButton[0]);
+            await waitFor(() => {
+                expect(screen.queryByTestId('ExpandPanel')).toBeFalsy();
+            });
+        });
+    });
+    describe('expandSingle', () => {
+        it('should close other panels when opening one', async () => {
+            render(<ExpandSingle />);
+            const expandButtons =
+                await screen.findAllByLabelText('ra.action.expand');
+            fireEvent.click(expandButtons[1]);
+            expect(screen.queryAllByTestId('ExpandPanel')).toHaveLength(1);
+            fireEvent.click(expandButtons[2]);
+            await waitFor(() => {
+                expect(screen.queryAllByTestId('ExpandPanel')).toHaveLength(1);
+            });
+        });
+    });
+    describe('isRowExpandable', () => {
+        it('should hide the expand button when the row is not expandable', async () => {
+            render(<IsRowExpandable />);
+            await waitFor(() => {
+                expect(
+                    screen.getAllByLabelText('ra.action.expand')
+                ).toHaveLength(4);
+            });
         });
     });
 });

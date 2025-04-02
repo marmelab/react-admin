@@ -3,12 +3,13 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     CanAccess,
     ListContextProvider,
+    memoryStore,
     Resource,
     ResourceContextProvider,
+    TestMemoryRouter,
     useRecordContext,
     useGetList,
     useList,
-    type SortPayload,
     type AuthProvider,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
@@ -110,17 +111,26 @@ const Wrapper = ({
     actions = null,
     aside = null,
 }) => (
-    <AdminContext
-        dataProvider={defaultDataProvider}
-        theme={theme}
-        i18nProvider={i18nProvider}
-    >
-        <ResourceContextProvider value={resource}>
-            <List perPage={5} sx={{ p: 4 }} actions={actions} aside={aside}>
-                {children}
-            </List>
-        </ResourceContextProvider>
-    </AdminContext>
+    <TestMemoryRouter>
+        <AdminContext
+            dataProvider={defaultDataProvider}
+            theme={theme}
+            i18nProvider={i18nProvider}
+            store={memoryStore()}
+        >
+            <ResourceContextProvider value={resource}>
+                <List
+                    perPage={5}
+                    sx={{ p: 4 }}
+                    actions={actions}
+                    aside={aside}
+                    sort={{ field: 'id', order: 'ASC' }}
+                >
+                    {children}
+                </List>
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 export const Basic = () => (
