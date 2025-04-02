@@ -85,18 +85,11 @@ export default defineConfig(async ({ mode }) => {
                 },
                 // The 2 next aliases are needed to avoid having multiple MUI instances
                 {
-                    find: '@mui/material',
-                    replacement: path.resolve(
+                    find: /^@mui\/([a-zA-Z]*)\/(.*)/,
+                    replacement: `${path.resolve(
                         __dirname,
-                        'node_modules/@mui/material'
-                    ),
-                },
-                {
-                    find: '@mui/icons-material',
-                    replacement: path.resolve(
-                        __dirname,
-                        'node_modules/@mui/icons-material'
-                    ),
+                        'node_modules/@mui/$1/esm/$2'
+                    )}`,
                 },
                 // we need to manually follow the symlinks for local packages to allow deep HMR
                 ...Object.keys(aliases).map(packageName => ({
