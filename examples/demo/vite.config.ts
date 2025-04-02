@@ -33,6 +33,7 @@ export default defineConfig(async ({ mode }) => {
         );
     }
 
+    console.log(path.resolve(__dirname, 'node_modules/@mui/$1/esm/$2'));
     return {
         plugins: [
             react(),
@@ -85,7 +86,7 @@ export default defineConfig(async ({ mode }) => {
                 },
                 // The 2 next aliases are needed to avoid having multiple MUI instances
                 {
-                    find: /^@mui\/([a-zA-Z]*)\/(.*)/,
+                    find: /^@mui\/([a-zA-Z0-9-_]+)\/*(.*)$/,
                     replacement: `${path.resolve(
                         __dirname,
                         'node_modules/@mui/$1/esm/$2'
