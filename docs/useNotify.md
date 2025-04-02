@@ -234,7 +234,7 @@ If you have custom actions in your notification element, you can leverage the `u
 
 ```tsx
 import { useCheckForApplicationUpdate, useCloseNotification, useNotify } from 'react-admin';
-import { SnackbarContent } from '@mui/material';
+import { Button, SnackbarContent } from '@mui/material';
 
 export const CheckForApplicationUpdate = () => {
     const notify = useNotify();
