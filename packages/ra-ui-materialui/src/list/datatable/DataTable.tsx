@@ -9,7 +9,6 @@ import {
     type ReactNode,
 } from 'react';
 import {
-    ListContextProvider,
     OptionalResourceContextProvider,
     useCanAccess,
     useEvent,
@@ -339,38 +338,18 @@ export const DataTable = React.forwardRef(function DataTable<
                                         )}
                                     >
                                         {/* the test on onToggleItem prevents error when Datable is used in standalone mode */}
-                                        {onToggleItem && (
-                                            // FIXME in 6.0: remove the ListContextProvider
-                                            // This ListContextProvider is here because the bulk actions require it.
-                                            // When datagrid is removed, the bulk action toolbar and button should read
-                                            // the data table context instead of the list context.
-                                            // But until then, to maintain backward compatibility, we need this ListContextProvider.
-                                            <ListContextProvider
-                                                value={
-                                                    {
-                                                        data,
-                                                        total,
-                                                        selectedIds,
-                                                        onSelect,
-                                                        onToggleItem,
-                                                        onUnselectItems,
-                                                        onSelectAll,
-                                                    } as any
-                                                }
-                                            >
-                                                {bulkActionsToolbar ??
-                                                    (bulkActionButtons !==
-                                                        false && (
-                                                        <BulkActionsToolbar>
-                                                            {isValidElement(
-                                                                bulkActionButtons
-                                                            )
-                                                                ? bulkActionButtons
-                                                                : defaultBulkActionButtons}
-                                                        </BulkActionsToolbar>
-                                                    ))}
-                                            </ListContextProvider>
-                                        )}
+                                        {onToggleItem &&
+                                            (bulkActionsToolbar ??
+                                                (bulkActionButtons !==
+                                                    false && (
+                                                    <BulkActionsToolbar>
+                                                        {isValidElement(
+                                                            bulkActionButtons
+                                                        )
+                                                            ? bulkActionButtons
+                                                            : defaultBulkActionButtons}
+                                                    </BulkActionsToolbar>
+                                                )))}
                                         <div
                                             className={
                                                 DataTableClasses.tableWrapper

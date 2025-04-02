@@ -349,36 +349,18 @@ export const StandaloneStatic = () => (
 
 const MyCustomListInteractive = () => {
     const { data: books, isPending: isBooksPending } = useGetList('books');
-    const {
-        data,
-        sort,
-        isPending,
-        onSelect,
-        onToggleItem,
-        onUnselectItems,
-        onSelectAll,
-        setSort,
-        selectedIds,
-        total,
-    } = useList({ data: books, isPending: isBooksPending });
+    const listContext = useList({
+        data: books,
+        isPending: isBooksPending,
+    });
 
     return (
-        <DataTable
-            data={data}
-            sort={sort}
-            isPending={isPending}
-            onSelect={onSelect}
-            onUnselectItems={onUnselectItems}
-            onSelectAll={onSelectAll}
-            onToggleItem={onToggleItem}
-            setSort={setSort}
-            selectedIds={selectedIds}
-            total={total}
-            sx={{ mt: 6 }}
-        >
-            <DataTable.Col source="id" />
-            <DataTable.Col source="title" />
-        </DataTable>
+        <ListContextProvider value={listContext}>
+            <DataTable sx={{ mt: 6 }}>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+            </DataTable>
+        </ListContextProvider>
     );
 };
 

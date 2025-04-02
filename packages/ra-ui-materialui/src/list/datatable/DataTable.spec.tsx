@@ -117,7 +117,7 @@ describe('DataTable', () => {
             render(<StandaloneDynamic />);
             const titleHeaderColumn = (
                 await screen.findAllByRole('columnheader')
-            )[1].firstChild as HTMLElement;
+            )[2].firstChild as HTMLElement;
             await waitFor(() => {
                 expect(screen.getAllByRole('row')[1].textContent).toEqual(
                     '7The Lord of the Rings'

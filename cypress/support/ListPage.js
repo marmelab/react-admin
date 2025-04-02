@@ -13,7 +13,7 @@ export default url => ({
         nextPage: "button[aria-label='Go to next page']",
         previousPage: "button[aria-label='Go to previous page']",
         pageNumber: n => `button[aria-label='Go to page ${n}']`,
-        recordRows: '.datatable-body tr',
+        recordRows: '.datatable-body tr.RaDataTable-row',
         viewsColumn: '.datatable-body tr td:nth-child(8)',
         datagridHeaders: 'th',
         sortBy: name => `th span[data-field="${name}"]`,
