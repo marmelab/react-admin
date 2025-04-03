@@ -25,7 +25,7 @@ export interface DataTableColumnProps<
     field?: React.ElementType;
     source?: NoInfer<HintedString<ExtractRecordPaths<RecordType>>>;
     label?: React.ReactNode;
-    sortable?: boolean;
+    disableSort?: boolean;
     sortByOrder?: SortPayload['order'];
 }
 

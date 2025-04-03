@@ -74,7 +74,7 @@ const InvoiceList = () => (
             </Column>
             <Column
                 source="address"
-                sortable={false}
+                disableSort
                 label="resources.invoices.fields.address"
             >
                 <ReferenceField

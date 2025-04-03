@@ -30,12 +30,12 @@ export const DataTableHeaderCell = React.memo(
                 cellSx,
                 className,
                 cellClassName,
+                disableSort,
                 headerClassName,
                 field,
                 render,
                 source,
                 label,
-                sortable,
                 sortByOrder,
                 ...rest
             } = props;
@@ -83,7 +83,7 @@ export const DataTableHeaderCell = React.memo(
                     variant="head"
                     {...rest}
                 >
-                    {handleSort && sort && sortable !== false && source ? (
+                    {handleSort && sort && !disableSort && source ? (
                         <Tooltip
                             title={sortLabel}
                             placement={

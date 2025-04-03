@@ -27,8 +27,8 @@ const CustomRouteLayout = ({ title = 'Posts' }) => {
                 bulkActionButtons={false}
                 resource="posts"
             >
-                <DataTable.Col source="id" sortable={false} />
-                <DataTable.Col source="title" sortable={false} />
+                <DataTable.Col source="id" disableSort />
+                <DataTable.Col source="title" disableSort />
             </DataTable>
         </div>
     ) : null;

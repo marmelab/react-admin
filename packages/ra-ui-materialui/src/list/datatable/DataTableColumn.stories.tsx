@@ -142,11 +142,11 @@ export const Align = () => (
     </Wrapper>
 );
 
-export const Sortable = () => (
+export const DisableSort = () => (
     <Wrapper>
         <DataTable>
             <DataTable.Col source="id" />
-            <DataTable.Col source="title" sortable={false} />
+            <DataTable.Col source="title" disableSort />
             <DataTable.Col source="author" />
             <DataTable.Col source="year" />
         </DataTable>

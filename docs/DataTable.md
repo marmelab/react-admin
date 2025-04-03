@@ -937,11 +937,11 @@ export const PostList = () => (
 | `cellClassName`      | Optional | string                  | -                     | The class name of the cells.                                   |
 | `cellSx`          | Optional | function                 | -                     | A function that returns the sx prop to apply to a cell.                             |
 | `className`          | Optional | string                  | -                     | The class name of the column.                                 |
+| `disableSort`        | Optional | boolean                 | false                | Set to true to disable sort.                               |
 | `field`              | Optional | Component               | -                     | The field component to use for the column.                    |
 | `headerClassName`    | Optional | string                  | -                     | The class name of the header cell.                            |
 | `label`              | Optional | string                  | -                     | The column label, displayed in the header.                    |
 | `render`             | Optional | (record) => ReactNode | -               | A function to render the column content.                      |
-| `sortable`           | Optional | boolean                 | true                  | Whether the column is sortable.                               |
 | `sortByOrder`        | Optional | "ASC" \| "DESC"         | "ASC"                 | The order to use for sorting the column.                      |
 | `source`             | Optional | string                  | -                     | The source of the column, used for sorting and to read the data from the record when there is no child. |
 | `sx`                | Optional | SxProps                 | -                     | The styles to apply to the column.                            |
@@ -1065,6 +1065,24 @@ This function receives the current record as an argument and should return a Mat
 
 ![DataTableColumn CellSX](./img/DataTableColumnCellSx.png)
 
+### `disableSort`
+
+By default, a column is sortable if it has a `source`. You can turn off sorting by setting the `disableSort` prop. This can be useful, e.g., for reference fields, which are not sortable by default.
+
+```tsx
+<DataTable.Col source="author" disableSort>
+    <ReferenceField source="author" reference="users" />
+</DataTable.Col>
+```
+
+**Tip**: Instead of using `disableSort`, you can also remove the `source` and define your own `label`.
+
+```tsx
+<DataTable.Col label="Author">
+    <ReferenceField source="author" reference="users" />
+</DataTable.Col>
+```
+
 ### `field`
 
 By default, when specifying a source and passing no child, `<DataTable.Col>` renders the value using `lodash.get`. You can override this behavior by passing a `field` prop, which should be a react-admin Field component.
@@ -1122,24 +1140,6 @@ To define a custom rendering function, you can pass a `render` prop to `<DataTab
 ```
 
 **Note**: The `render` prop is ignored if you pass a child to `<DataTable.Col>`.
-
-### `sortable`
-
-By default, a column is sortable if it has a `source`. You can turn off sorting by passing `false` to the `sortable` prop. This can be useful, e.g., for reference fields, which are not sortable by default.
-
-```tsx
-<DataTable.Col source="author" sortable={false}>
-    <ReferenceField source="author" reference="users" />
-</DataTable.Col>
-```
-
-**Tip**: Instead of using `sortable={false}`, you can also remove the `source` and define your own `label`.
-
-```tsx
-<DataTable.Col label="Author">
-    <ReferenceField source="author" reference="users" />
-</DataTable.Col>
-```
 
 ### `sortByOrder`
 
@@ -1759,7 +1759,6 @@ import { List, DataTable, ReferenceField } from 'react-admin';
 import { type Review } from '../types';
 
 const Column = DataTable.Col<Review>;
-const ColumnNumber = DataTable.NumberCol<Review>;
 
 const ReviewList = () => (
     <List>

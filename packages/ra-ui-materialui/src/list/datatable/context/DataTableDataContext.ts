@@ -1,5 +1,12 @@
 import { createContext, useContext } from 'react';
+import { type RaRecord } from 'ra-core';
 
-export const DataTableDataContext = createContext<any[] | undefined>(undefined);
+export type DataTableDataContextProps<RecordType extends RaRecord = any> =
+    | RecordType[]
+    | undefined;
 
-export const useDataTableDataContext = () => useContext(DataTableDataContext);
+export const DataTableDataContext =
+    createContext<DataTableDataContextProps>(undefined);
+
+export const useDataTableDataContext = <RecordType extends RaRecord = any>() =>
+    useContext(DataTableDataContext) as DataTableDataContextProps<RecordType>;

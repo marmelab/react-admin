@@ -175,7 +175,7 @@ const PostListDesktop = () => (
             <DataTable.Col
                 source="commentable"
                 label="resources.posts.fields.commentable_short"
-                sortable={false}
+                disableSort
                 field={BooleanField}
             />
             <DataTable.NumberCol source="views" sortByOrder="DESC" />

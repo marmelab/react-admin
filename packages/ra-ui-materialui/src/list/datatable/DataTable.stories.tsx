@@ -161,7 +161,7 @@ export const Columns = () => (
                     '&.MuiTableCell-body': { fontStyle: 'italic' },
                     '&.MuiTableCell-head': { fontWeight: 'normal' },
                 }}
-                sortable={false}
+                disableSort
             />
             <CanAccess action="read" resource="books.year">
                 <DataTable.Col
