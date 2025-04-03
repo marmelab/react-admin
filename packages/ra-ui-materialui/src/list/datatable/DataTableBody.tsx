@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { type ComponentType } from 'react';
-import { RecordContextProvider } from 'ra-core';
+import { RecordContextProvider, useDataTableDataContext } from 'ra-core';
 import { TableBody, useThemeProps, type TableBodyProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { DataTableClasses } from './DataTableRoot';
 import { DataTableRow } from './DataTableRow';
-import { useDataTableDataContext, useDataTableRowSxContext } from './context';
+import { useDataTableRowSxContext } from './DataTableRowSxContext';
 
 const PREFIX = 'RaDataTableBody';
 

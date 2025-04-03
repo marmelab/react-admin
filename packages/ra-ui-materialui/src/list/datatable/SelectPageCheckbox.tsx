@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useCallback } from 'react';
-import { useTranslate } from 'ra-core';
-import { Checkbox } from '@mui/material';
 import {
     useDataTableCallbacksContext,
     useDataTableDataContext,
     useDataTableSelectedIdsContext,
-} from './context';
+    useTranslate,
+} from 'ra-core';
+import { Checkbox } from '@mui/material';
 
 export const SelectPageCheckbox = () => {
     const data = useDataTableDataContext();

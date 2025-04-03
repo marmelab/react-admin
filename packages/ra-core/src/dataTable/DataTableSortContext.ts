@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { type SortPayload } from 'ra-core';
+import { type SortPayload } from '../types';
 
 export const DataTableSortContext = createContext<SortPayload | undefined>(
     undefined

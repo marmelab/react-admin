@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { useResourceContext, useStore, useTranslateLabel } from 'ra-core';
+import {
+    useResourceContext,
+    useStore,
+    useTranslateLabel,
+    useDataTableStoreContext,
+    useDataTableColumnRankContext,
+} from 'ra-core';
 
 import { FieldToggle } from '../../preferences';
 import { DataTableColumnProps } from './DataTableColumn';
-import { useDataTableStoreContext } from './context/DataTableStoreContext';
-import { useDataTableColumnRankContext } from './context/DataTableColumnRankContext';
 
 export const ColumnsSelectorItem = ({
     source,

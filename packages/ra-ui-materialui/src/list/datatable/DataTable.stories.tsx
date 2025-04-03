@@ -7,6 +7,7 @@ import {
     Resource,
     ResourceContextProvider,
     TestMemoryRouter,
+    useDataTableDataContext,
     useRecordContext,
     useGetList,
     useList,
@@ -33,7 +34,6 @@ import {
     DataTableBody as BaseDataTableBody,
     type DataTableBodyProps,
 } from './DataTableBody';
-import { useDataTableDataContext } from './context';
 import {
     BulkDeleteButton,
     BulkExportButton,

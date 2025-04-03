@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { type ExtractRecordPaths, type HintedString } from 'ra-core';
+
 import { NumberField } from '../../field/NumberField';
 import { genericMemo } from '../../field/genericMemo';
 import { DataTableColumn, type DataTableColumnProps } from './DataTableColumn';

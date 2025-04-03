@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
+    useDataTableRenderContext,
     type SortPayload,
     type ExtractRecordPaths,
     type HintedString,
 } from 'ra-core';
 import { type SxProps, type TableCellProps } from '@mui/material';
 
-import { useDataTableRenderContext } from './context/DataTableRenderContext';
 import { DataTableCell } from './DataTableCell';
 import { DataTableHeadCell } from './DataTableHeadCell';
 import { ColumnsSelectorItem } from './ColumnsSelectorItem';

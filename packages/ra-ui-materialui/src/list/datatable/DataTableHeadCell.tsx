@@ -2,6 +2,9 @@ import * as React from 'react';
 import {
     FieldTitle,
     useTranslate,
+    useDataTableCallbacksContext,
+    useDataTableSortContext,
+    useDataTableStoreContext,
     useResourceContext,
     useStore,
     useTranslateLabel,
@@ -17,11 +20,6 @@ import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { DataTableColumnProps } from './DataTableColumn';
-import {
-    useDataTableCallbacksContext,
-    useDataTableSortContext,
-    useDataTableStoreContext,
-} from './context';
 import { DataTableClasses } from './DataTableRoot';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { type RaRecord } from 'ra-core';
+import { type RaRecord } from '../types';
 
 export type DataTableDataContextProps<RecordType extends RaRecord = any> =
     | RecordType[]

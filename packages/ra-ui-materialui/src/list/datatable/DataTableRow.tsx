@@ -15,6 +15,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
+    useDataTableCallbacksContext,
+    useDataTableConfigContext,
     useExpanded,
     useResourceContext,
     useRecordContext,
@@ -24,11 +26,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import ExpandRowButton from '../datagrid/ExpandRowButton';
-
 import { DataTableClasses } from './DataTableRoot';
-import { useDataTableConfigContext } from './context/DataTableConfigContext';
 import { SelectRowCheckbox } from './SelectRowCheckbox';
-import { useDataTableCallbacksContext } from './context';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
     expand

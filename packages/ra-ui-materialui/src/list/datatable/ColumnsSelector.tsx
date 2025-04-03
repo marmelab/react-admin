@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { Children } from 'react';
 import { createPortal } from 'react-dom';
-import { useStore } from 'ra-core';
+import {
+    useStore,
+    DataTableColumnRankContext,
+    useDataTableStoreContext,
+} from 'ra-core';
 import { Box } from '@mui/material';
-import { DataTableColumnRankContext } from './context/DataTableColumnRankContext';
-import { useDataTableStoreContext } from './context/DataTableStoreContext';
+
 import { Button } from '../../button';
 
 /**

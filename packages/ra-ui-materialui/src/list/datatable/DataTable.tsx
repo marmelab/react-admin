@@ -6,6 +6,8 @@ import {
     type ReactNode,
 } from 'react';
 import {
+    DataTableBase,
+    DataTableRenderContext,
     useCanAccess,
     useListContextWithProps,
     useResourceContext,
@@ -35,8 +37,7 @@ import { DataTableHead } from './DataTableHead';
 import { DataTableColumn } from './DataTableColumn';
 import { DataTableNumberColumn } from './DataTableNumberColumn';
 import { ColumnsSelector } from './ColumnsSelector';
-import { DataTableRenderContext, DataTableRowSxContext } from './context';
-import { DataTableBase } from './DataTableBase';
+import { DataTableRowSxContext } from './DataTableRowSxContext';
 
 const DefaultEmpty = <ListNoResults />;
 const DefaultFoot = (_props: { children: ReactNode }) => null;
@@ -545,6 +546,7 @@ const sanitizeRestProps = ({
     sort,
     data,
     expandSingle,
+    hiddenColumns,
     hover,
     isLoading,
     isPending,
@@ -564,6 +566,7 @@ const sanitizeRestProps = ({
     | 'sort'
     | 'data'
     | 'expandSingle'
+    | 'hiddenColumns'
     | 'hover'
     | 'isLoading'
     | 'isPending'

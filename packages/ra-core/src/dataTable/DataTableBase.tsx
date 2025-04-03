@@ -1,27 +1,20 @@
 import * as React from 'react';
 import { useEffect, useMemo, useRef, type FC, type ReactNode } from 'react';
-import {
-    OptionalResourceContextProvider,
-    useEvent,
-    useListContextWithProps,
-    useResourceContext,
-    type Identifier,
-    type RaRecord,
-    type SortPayload,
-    type ListControllerResult,
-} from 'ra-core';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
 
-import { type RowClickFunction } from '../types';
-import { DataTableConfigContext } from './context/DataTableConfigContext';
-import {
-    DataTableCallbacksContext,
-    DataTableDataContext,
-    DataTableSelectedIdsContext,
-    DataTableSortContext,
-    DataTableStoreContext,
-} from './context';
+import { OptionalResourceContextProvider, useResourceContext } from '../core';
+import { useEvent } from '../util';
+import { useListContextWithProps } from '../controller/list/useListContextWithProps';
+import { type ListControllerResult } from '../controller/list/useListController';
+import { type RowClickFunctionBase } from './types';
+import { type Identifier, type RaRecord, type SortPayload } from '../types';
+import { DataTableConfigContext } from './DataTableConfigContext';
+import { DataTableCallbacksContext } from './DataTableCallbacksContext';
+import { DataTableDataContext } from './DataTableDataContext';
+import { DataTableSelectedIdsContext } from './DataTableSelectedIdsContext';
+import { DataTableSortContext } from './DataTableSortContext';
+import { DataTableStoreContext } from './DataTableStoreContext';
 
 export const DataTableBase = function DataTable<
     RecordType extends RaRecord = any,
@@ -216,7 +209,7 @@ export interface DataTableBaseProps<RecordType extends RaRecord = any> {
     isRowExpandable?: (record: RecordType) => boolean;
     isRowSelectable?: (record: RecordType) => boolean;
     loading: ReactNode;
-    rowClick?: string | RowClickFunction<RecordType> | false;
+    rowClick?: string | RowClickFunctionBase<RecordType> | false;
     storeKey?: string;
 
     // can be injected when using the component without context

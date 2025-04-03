@@ -3,16 +3,15 @@ import { memo } from 'react';
 import { TableCell, TableHead, TableRow } from '@mui/material';
 import { styled, type SxProps } from '@mui/material/styles';
 import clsx from 'clsx';
+import {
+    useDataTableConfigContext,
+    useDataTableDataContext,
+    useDataTableCallbacksContext,
+} from 'ra-core';
 
 import ExpandAllButton from '../datagrid/ExpandAllButton';
 import { SelectPageCheckbox } from './SelectPageCheckbox';
-
 import { DataTableClasses } from './DataTableRoot';
-import { useDataTableConfigContext } from './context/DataTableConfigContext';
-import {
-    useDataTableDataContext,
-    useDataTableCallbacksContext,
-} from './context';
 
 /**
  * The default DataTable Head component.

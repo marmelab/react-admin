@@ -1,5 +1,5 @@
-import { type Identifier } from 'ra-core';
 import { createContext, useContext, type ReactNode, type FC } from 'react';
+import { type Identifier } from '../types';
 
 export const DataTableConfigContext = createContext<{
     expand?:

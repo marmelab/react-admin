@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { type Identifier } from 'ra-core';
+import { type Identifier } from '../types';
 
 export const DataTableSelectedIdsContext = createContext<
     Identifier[] | undefined

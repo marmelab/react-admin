@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { useRecordContext, useStore } from 'ra-core';
+import { useDataTableStoreContext, useRecordContext, useStore } from 'ra-core';
 import { TableCell, useThemeProps, type SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import get from 'lodash/get';
 import clsx from 'clsx';
 
 import { DataTableColumnProps } from './DataTableColumn';
-import { useDataTableStoreContext } from './context';
 
 const PREFIX = 'RaDataTableCell';
 

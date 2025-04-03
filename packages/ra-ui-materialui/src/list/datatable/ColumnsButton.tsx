@@ -11,7 +11,6 @@ import {
     IconButton,
 } from '@mui/material';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-
 import { styled } from '@mui/material/styles';
 
 /**

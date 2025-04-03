@@ -1,12 +1,13 @@
 import React, { useCallback, memo } from 'react';
 import { Checkbox } from '@mui/material';
-import { useTranslate, useRecordContext } from 'ra-core';
+import {
+    useDataTableSelectedIdsContext,
+    useDataTableCallbacksContext,
+    useTranslate,
+    useRecordContext,
+} from 'ra-core';
 
 import { DataTableClasses } from './DataTableRoot';
-import {
-    useDataTableCallbacksContext,
-    useDataTableSelectedIdsContext,
-} from './context';
 
 export const SelectRowCheckbox = memo(() => {
     const { handleToggleItem, isRowSelectable } =
