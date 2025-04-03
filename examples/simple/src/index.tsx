@@ -28,20 +28,6 @@ root.render(
             queryClient={queryClient}
             title="Example Admin"
             layout={Layout}
-            theme={{
-                components: {
-                    RaDataTableCell: {
-                        defaultProps: {
-                            align: 'right',
-                        },
-                    },
-                    RaDataTableBody: {
-                        defaultProps: {
-                            className: 'foo',
-                        },
-                    },
-                },
-            }}
         >
             <Resource name="posts" {...posts} />
             <Resource name="comments" {...comments} />
