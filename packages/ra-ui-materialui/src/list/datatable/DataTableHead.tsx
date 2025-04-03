@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { memo } from 'react';
 import { TableCell, TableHead, TableRow } from '@mui/material';
+import { styled, type SxProps } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import ExpandAllButton from '../datagrid/ExpandAllButton';
@@ -14,12 +15,12 @@ import {
 } from './context';
 
 /**
- * The default DataTable Header component.
+ * The default DataTable Head component.
  *
- * Renders select all checkbox as well as column header buttons used for sorting.
+ * Renders select all checkbox as well as column head buttons used for sorting.
  */
-export const DataTableHeader = memo((props: DataTableHeaderProps) => {
-    const { children, className } = props;
+export const DataTableHead = memo((props: DataTableHeadProps) => {
+    const { children, className, sx } = props;
     const {
         expand,
         expandSingle,
@@ -31,7 +32,10 @@ export const DataTableHeader = memo((props: DataTableHeaderProps) => {
     const hasExpand = !!expand;
 
     return (
-        <TableHead className={clsx(className, DataTableClasses.thead)}>
+        <TableHeadStyled
+            className={clsx(className, DataTableClasses.thead)}
+            sx={sx}
+        >
             <TableRow
                 className={clsx(
                     DataTableClasses.row,
@@ -66,14 +70,22 @@ export const DataTableHeader = memo((props: DataTableHeaderProps) => {
                 )}
                 {children}
             </TableRow>
-        </TableHead>
+        </TableHeadStyled>
     );
 });
 
-export interface DataTableHeaderProps {
+export interface DataTableHeadProps {
     children?: React.ReactNode;
     className?: string;
     size?: 'medium' | 'small';
+    sx?: SxProps;
 }
 
-DataTableHeader.displayName = 'DataTableHeader';
+DataTableHead.displayName = 'DataTableHead';
+
+const PREFIX = 'RaDataTableHead';
+
+const TableHeadStyled = styled(TableHead, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({}));

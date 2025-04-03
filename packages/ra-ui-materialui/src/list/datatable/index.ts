@@ -4,7 +4,7 @@ export * from './DataTableBody';
 export * from './DataTableColumn';
 export * from './DataTableNumberColumn';
 export * from './context/DataTableConfigContext';
-export * from './DataTableHeader';
+export * from './DataTableHead';
 export * from './DataTableLoading';
 export * from './DataTableRoot';
 export * from './DataTableRow';

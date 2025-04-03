@@ -10,8 +10,10 @@ import {
     Collapse,
     TableCell,
     TableRow,
+    useThemeProps,
     type TableRowProps,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
     useExpanded,
     useResourceContext,
@@ -35,10 +37,16 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
+const PREFIX = 'RaDataTableRow';
+
 export interface DataTableRowProps extends Omit<TableRowProps, 'classes'> {}
 
 export const DataTableRow = React.memo(
-    React.forwardRef<HTMLTableRowElement, DataTableRowProps>((props, ref) => {
+    React.forwardRef<HTMLTableRowElement, DataTableRowProps>((inProps, ref) => {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
         const { children, className, ...rest } = props;
         const {
             expand,
@@ -155,7 +163,7 @@ export const DataTableRow = React.memo(
 
         return (
             <>
-                <TableRow
+                <TableRowStyled
                     ref={ref}
                     className={clsx(className, {
                         [DataTableClasses.expandable]: expandable,
@@ -195,7 +203,7 @@ export const DataTableRow = React.memo(
                         </TableCell>
                     )}
                     {children}
-                </TableRow>
+                </TableRowStyled>
                 {expandable && (
                     <TableRow
                         key={`${record.id}-expand`}
@@ -229,3 +237,8 @@ DataTableRow.displayName = 'DataTableRow';
 
 const isPromise = (value: any): value is Promise<any> =>
     value && typeof value.then === 'function';
+
+const TableRowStyled = styled(TableRow, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({}));

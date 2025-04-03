@@ -8,7 +8,7 @@ import { type SxProps, type TableCellProps } from '@mui/material';
 
 import { useDataTableRenderContext } from './context/DataTableRenderContext';
 import { DataTableCell } from './DataTableCell';
-import { DataTableHeaderCell } from './DataTableHeaderCell';
+import { DataTableHeadCell } from './DataTableHeadCell';
 import { ColumnsSelectorItem } from './ColumnsSelectorItem';
 import { genericMemo } from '../../field/genericMemo';
 
@@ -38,7 +38,7 @@ const DataTableColumnImpl = React.forwardRef<
         case 'columnsSelector':
             return <ColumnsSelectorItem {...props} />;
         case 'header':
-            return <DataTableHeaderCell {...props} ref={ref} />;
+            return <DataTableHeadCell {...props} ref={ref} />;
         case 'data':
             return <DataTableCell {...props} ref={ref} />;
         case 'footer':

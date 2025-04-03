@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { type ComponentType } from 'react';
 import { RecordContextProvider } from 'ra-core';
-import { TableBody, type TableBodyProps } from '@mui/material';
+import { TableBody, useThemeProps, type TableBodyProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { DataTableClasses } from './DataTableRoot';
@@ -11,9 +12,15 @@ import {
     useDataTableDataContext,
 } from './context';
 
+const PREFIX = 'RaDataTableBody';
+
 export const DataTableBody = React.memo(
     React.forwardRef<HTMLTableSectionElement, DataTableBodyProps>(
-        (props, ref) => {
+        (inProps, ref) => {
+            const props = useThemeProps({
+                props: inProps,
+                name: PREFIX,
+            });
             const {
                 children,
                 row: TableRow = DataTableRow,
@@ -23,7 +30,7 @@ export const DataTableBody = React.memo(
             const data = useDataTableDataContext();
             const { rowSx } = useDataTableCallbacksContext();
             return (
-                <TableBody
+                <TableBodyStyled
                     ref={ref}
                     className={clsx(
                         'datatable-body',
@@ -50,7 +57,7 @@ export const DataTableBody = React.memo(
                             </TableRow>
                         </RecordContextProvider>
                     ))}
-                </TableBody>
+                </TableBodyStyled>
             );
         }
     )
@@ -61,3 +68,8 @@ export interface DataTableBodyProps extends TableBodyProps {
 }
 
 DataTableBody.displayName = 'DataTableBody';
+
+const TableBodyStyled = styled(TableBody, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({}));

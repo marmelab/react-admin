@@ -7,7 +7,13 @@ import {
     useTranslateLabel,
     type SortPayload,
 } from 'ra-core';
-import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
+import {
+    TableCell,
+    TableSortLabel,
+    Tooltip,
+    useThemeProps,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { DataTableColumnProps } from './DataTableColumn';
@@ -23,9 +29,15 @@ const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
     DESC: 'ASC',
 };
 
-export const DataTableHeaderCell = React.memo(
+const PREFIX = 'RaDataTableHeadCell';
+
+export const DataTableHeadCell = React.memo(
     React.forwardRef<HTMLTableCellElement, DataTableColumnProps>(
-        (props, ref) => {
+        (inProps, ref) => {
+            const props = useThemeProps({
+                props: inProps,
+                name: PREFIX,
+            });
             const {
                 cellSx,
                 className,
@@ -72,7 +84,7 @@ export const DataTableHeaderCell = React.memo(
                 _: translate('ra.action.sort'),
             });
             return (
-                <TableCell
+                <TableCellStyled
                     ref={ref}
                     className={clsx(
                         DataTableClasses.headerCell,
@@ -118,10 +130,15 @@ export const DataTableHeaderCell = React.memo(
                             />
                         </TableSortLabel>
                     )}
-                </TableCell>
+                </TableCellStyled>
             );
         }
     )
 );
 
-DataTableHeaderCell.displayName = 'DataTableHeaderCell';
+DataTableHeadCell.displayName = 'DataTableHeadCell';
+
+const TableCellStyled = styled(TableCell, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({}));

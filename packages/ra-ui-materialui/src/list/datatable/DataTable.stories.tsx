@@ -49,7 +49,7 @@ import { SelectRowCheckbox } from './SelectRowCheckbox';
 import { SelectPageCheckbox } from './SelectPageCheckbox';
 import { TopToolbar } from '../../layout';
 import { ColumnsButton } from './ColumnsButton';
-import { type DataTableHeaderProps } from './DataTableHeader';
+import { type DataTableHeadProps } from './DataTableHead';
 
 export default { title: 'ra-ui-materialui/list/DataTable' };
 
@@ -615,7 +615,7 @@ export const Body = () => (
     </Wrapper>
 );
 
-const MyDataTableHeader = ({ children }: DataTableHeaderProps) => (
+const MyDataTableHead = ({ children }: DataTableHeadProps) => (
     <TableHead>
         <TableRow>
             <TableCell variant="head"></TableCell>
@@ -635,9 +635,9 @@ const MyDataTableHeader = ({ children }: DataTableHeaderProps) => (
     </TableHead>
 );
 
-export const Header = () => (
+export const Head = () => (
     <Wrapper i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}>
-        <DataTable header={MyDataTableHeader}>
+        <DataTable head={MyDataTableHead}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
             <DataTable.Col source="author" />
@@ -646,7 +646,7 @@ export const Header = () => (
     </Wrapper>
 );
 
-const MyDataTableFooter = () => {
+const MyDataTableFoot = () => {
     const data = useDataTableDataContext();
     const totalSales = data.reduce(
         (sum, record) => sum + (record.sales ? record.sales : 0),
@@ -670,7 +670,7 @@ const MyDataTableFooter = () => {
     );
 };
 
-export const Footer = () => (
+export const Foot = () => (
     <Wrapper
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
         resource="products"
@@ -731,7 +731,7 @@ export const Footer = () => (
             ],
         })}
     >
-        <DataTable footer={MyDataTableFooter}>
+        <DataTable foot={MyDataTableFoot}>
             <DataTable.Col source="name" />
             <DataTable.NumberCol source="price" />
             <DataTable.Col label="Category">

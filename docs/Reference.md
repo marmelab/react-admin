@@ -56,7 +56,7 @@ title: "Index"
 * [`<DataTable>`](./DataTable.md)
 * [`<DataTableBody>`](./DataTable.md#body)
 * [`<DataTableRow>`](./DataTable.md#body)
-* [`<DataTableHeader>`](./DataTable.md#header)
+* [`<DataTableHead>`](./DataTable.md#head)
 * [`<DateField>`](./DateField.md)
 * [`<DateInput>`](./DateInput.md)
 * [`<DateRangeInput>`](./DateRangeInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />

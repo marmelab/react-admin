@@ -53,9 +53,9 @@ Each `<DataTable.Col>` defines one column of the table: its `source` (used for s
 | `empty`              | Optional | Element                 | `<Empty>`             | The component to render when the list is empty.                 |
 | `expand`             | Optional | Element                 |                       | The component rendering the expand panel for each row.   |
 | `expandSingle`       | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
-| `header`             | Optional | Element                 | `<DataTable Header>`   | The component rendering the table header.                |
+| `head`               | Optional | Element                 | `<DataTable Header>`   | The component rendering the table header.                |
 | `hiddenColumns`      | Optional | Array                   | `[]`                  | The list of columns to hide by default.                          |
-| `footer`             | Optional | Element                 |                       | The component rendering the table footer.                |
+| `foot`               | Optional | Element                 |                       | The component rendering the table footer.                |
 | `hover`              | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
 | `isRowExpandable`    | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
 | `isRowSelectable`    | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
@@ -588,9 +588,9 @@ export const PostList = () => (
 );
 ```
 
-## `footer`
+## `foot`
 
-Use the `footer` prop to add a table footer component, e.g., to display totals or averages.
+Use the `foot` prop to add a table footer component, e.g., to display totals or averages.
 
 ![DataTable Footer](./img/DataTableFooter.png)
 
@@ -600,7 +600,7 @@ Use the `useDataTableDataContext` hook to access the data displayed in the table
 import { TableFooter, TableRow, TableCell } from '@mui/material';
 import { DataTable, useDataTableDataContext } from 'react-admin';
 
-const ProductTableFooter = () => {
+const ProductTableFoot = () => {
     const data = useDataTableDataContext();
     const totalSales = data.reduce(
         (sum, record) => sum + (record.sales ? record.sales : 0),
@@ -626,16 +626,16 @@ const ProductTableFooter = () => {
 
 const ProductList = () => (
     <List>
-        <DataTable footer={ProductTableFooter}>
+        <DataTable foot={ProductTableFoot}>
             ...
         </DataTable>
     </List>
 );
 ```
 
-## `header`
+## `head`
 
-By default, `<DataTable>` renders the table head using `<DataTableHeader>`, an internal react-admin component. To override that default, you can pass a custom component as the `header` prop. This can be useful, e.g., to add a second header row or to create headers spanning multiple columns.
+By default, `<DataTable>` renders the table head using `<DataTableHead>`, an internal react-admin component. To override that default, you can pass a custom component as the `head` prop. This can be useful, e.g., to add a second header row or to create headers spanning multiple columns.
 
 ![DataTable Header](./img/DataTableHeader.png)
 
@@ -643,9 +643,9 @@ For instance, here is a simple DataTable header that displays column names with 
 
 ```tsx
 import { TableHead, TableRow, TableCell } from "@mui/material";
-import { DataTable, DataTableHeaderProps, List, SelectPageCheckbox } from "react-admin";
+import { DataTable, DataTableHeadProps, List, SelectPageCheckbox } from "react-admin";
 
-const MyDataTableHeader = ({ children }: DataTableHeaderProps) => (
+const MyDataTableHead = ({ children }: DataTableHeadProps) => (
     <TableHead>
         <TableRow>
             <TableCell variant="head"></TableCell>
@@ -667,7 +667,7 @@ const MyDataTableHeader = ({ children }: DataTableHeaderProps) => (
 
 const PostList = () => (
     <List>
-        <DataTable header={MyDataTableHeader}>
+        <DataTable head={MyDataTableHead}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
             <DataTable.Col source="author" />
@@ -677,7 +677,7 @@ const PostList = () => (
 );
 ```
 
-**Tip**: To handle sorting in your custom DataTable header component, check out the [Building a custom sort control](./ListTutorial.md#building-a-custom-sort-control) section.
+**Tip**: To handle sorting in your custom DataTable head component, check out the [Building a custom sort control](./ListTutorial.md#building-a-custom-sort-control) section.
 
 ## `hover`
 

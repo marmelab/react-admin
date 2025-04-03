@@ -20,7 +20,12 @@ import {
     type SortPayload,
     type ListControllerResult,
 } from 'ra-core';
-import { Table, type TableProps, type SxProps } from '@mui/material';
+import {
+    Table,
+    useThemeProps,
+    type TableProps,
+    type SxProps,
+} from '@mui/material';
 import clsx from 'clsx';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
@@ -33,7 +38,7 @@ import { ListNoResults } from '../ListNoResults';
 import { DataTableClasses, DataTableRoot } from './DataTableRoot';
 import { DataTableLoading } from './DataTableLoading';
 import { DataTableBody } from './DataTableBody';
-import { DataTableHeader } from './DataTableHeader';
+import { DataTableHead } from './DataTableHead';
 import { DataTableColumn } from './DataTableColumn';
 import { DataTableNumberColumn } from './DataTableNumberColumn';
 import { DataTableConfigContext } from './context/DataTableConfigContext';
@@ -48,7 +53,8 @@ import {
 } from './context';
 
 const DefaultEmpty = <ListNoResults />;
-const DefaultFooter = (_props: { children: ReactNode }) => null;
+const DefaultFoot = (_props: { children: ReactNode }) => null;
+const PREFIX = 'RaDataTable';
 
 /**
  * The DataTable component renders a list of records as a table.
@@ -136,9 +142,13 @@ const DefaultFooter = (_props: { children: ReactNode }) => null;
 export const DataTable = React.forwardRef(function DataTable<
     RecordType extends RaRecord = any,
 >(
-    props: DataTableProps<RecordType>,
+    inProps: DataTableProps<RecordType>,
     ref: React.ForwardedRef<HTMLTableElement>
 ) {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const resourceFromContext = useResourceContext(props);
     const { canAccess: canDelete } = useCanAccess({
         resource: resourceFromContext,
@@ -147,8 +157,8 @@ export const DataTable = React.forwardRef(function DataTable<
 
     const {
         body: TableBody = DataTableBody,
-        header: TableHeader = DataTableHeader,
-        footer: TableFooter = DefaultFooter,
+        head: TableHead = DataTableHead,
+        foot: TableFoot = DefaultFoot,
         children,
         className,
         empty = DefaultEmpty,
@@ -362,15 +372,15 @@ export const DataTable = React.forwardRef(function DataTable<
                                                 {...sanitizeRestProps(rest)}
                                             >
                                                 <DataTableRenderContext.Provider value="header">
-                                                    <TableHeader>
+                                                    <TableHead>
                                                         {columns}
-                                                    </TableHeader>
+                                                    </TableHead>
                                                 </DataTableRenderContext.Provider>
                                                 <TableBody>{columns}</TableBody>
                                                 <DataTableRenderContext.Provider value="footer">
-                                                    <TableFooter>
+                                                    <TableFoot>
                                                         {columns}
-                                                    </TableFooter>
+                                                    </TableFoot>
                                                 </DataTableRenderContext.Provider>
                                             </Table>
                                         </div>
@@ -537,14 +547,14 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      *
      * @see https://marmelab.com/react-admin/DataTable.html#footer
      */
-    footer?: ComponentType;
+    foot?: ComponentType;
 
     /**
-     * The component used to render the header row. Defaults to <DataTableHeader>.
+     * The component used to render the header row. Defaults to <DataTableHead>.
      *
      * @see https://marmelab.com/react-admin/DataTable.html#header
      */
-    header?: ComponentType;
+    head?: ComponentType;
 
     /**
      * A list of columns that should be hidden by default.

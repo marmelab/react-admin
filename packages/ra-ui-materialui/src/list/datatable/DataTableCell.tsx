@@ -1,15 +1,22 @@
 import * as React from 'react';
 import { useRecordContext, useStore } from 'ra-core';
-import { TableCell, type SxProps } from '@mui/material';
+import { TableCell, useThemeProps, type SxProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import get from 'lodash/get';
 import clsx from 'clsx';
 
 import { DataTableColumnProps } from './DataTableColumn';
 import { useDataTableStoreContext } from './context';
 
+const PREFIX = 'RaDataTableCell';
+
 export const DataTableCell = React.memo(
     React.forwardRef<HTMLTableCellElement, DataTableColumnProps>(
-        (props, ref) => {
+        (inProps, ref) => {
+            const props = useThemeProps({
+                props: inProps,
+                name: PREFIX,
+            });
             const {
                 cellSx,
                 cellClassName,
@@ -44,7 +51,7 @@ export const DataTableCell = React.memo(
                 ...sx,
             } as SxProps;
             return (
-                <TableCell
+                <TableCellStyled
                     ref={ref}
                     className={clsx(
                         className,
@@ -60,10 +67,15 @@ export const DataTableCell = React.memo(
                             : field
                               ? React.createElement(field, { source })
                               : get(record, source!))}
-                </TableCell>
+                </TableCellStyled>
             );
         }
     )
 );
 
 DataTableCell.displayName = 'DataTableCell';
+
+const TableCellStyled = styled(TableCell, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(() => ({}));
