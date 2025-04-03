@@ -23,6 +23,7 @@ import {
     NestedInlineNoTranslation,
     Validation,
     Focus,
+    Reset,
 } from './ArrayInput.stories';
 import { useArrayInput } from './useArrayInput';
 
@@ -455,6 +456,25 @@ describe('<ArrayInput />', () => {
             expect(document.activeElement).toBe(
                 screen.getAllByLabelText('Role')[2]
             );
+        });
+    });
+
+    it('should empty the input on form reset', async () => {
+        render(<Reset />);
+        fireEvent.click(await screen.findByRole('button', { name: 'Add' }));
+        fireEvent.change(screen.getByLabelText('Name'), {
+            target: { value: 'Leo Tolstoy' },
+        });
+        fireEvent.change(screen.getByLabelText('Role'), {
+            target: { value: 'Writer' },
+        });
+        fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('Leo Tolstoy')).toBeNull();
+            expect(screen.queryByDisplayValue('Writer')).toBeNull();
+            expect(
+                screen.queryByRole('button', { name: 'Clear the list' })
+            ).toBeNull();
         });
     });
 });
