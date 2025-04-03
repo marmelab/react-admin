@@ -7,10 +7,7 @@ import clsx from 'clsx';
 
 import { DataTableClasses } from './DataTableRoot';
 import { DataTableRow } from './DataTableRow';
-import {
-    useDataTableCallbacksContext,
-    useDataTableDataContext,
-} from './context';
+import { useDataTableDataContext, useDataTableRowSxContext } from './context';
 
 const PREFIX = 'RaDataTableBody';
 
@@ -28,7 +25,7 @@ export const DataTableBody = React.memo(
                 ...rest
             } = props;
             const data = useDataTableDataContext();
-            const { rowSx } = useDataTableCallbacksContext();
+            const rowSx = useDataTableRowSxContext();
             return (
                 <TableBodyStyled
                     ref={ref}
