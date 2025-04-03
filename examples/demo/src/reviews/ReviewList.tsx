@@ -5,7 +5,7 @@ import {
     ExportButton,
     FilterButton,
     List,
-    SelectColumnsButton,
+    ColumnsButton,
     TopToolbar,
     useDefaultTitle,
     useListContext,
@@ -22,7 +22,7 @@ const ReviewListActions = () => (
     <TopToolbar>
         <FilterButton />
         <CreateButton />
-        <SelectColumnsButton />
+        <ColumnsButton />
         <ExportButton />
     </TopToolbar>
 );

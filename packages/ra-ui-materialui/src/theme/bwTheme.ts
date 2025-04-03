@@ -306,12 +306,15 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                     root: {
                         padding: `${SPACING * 2}px`,
                         borderBottom: `1px solid ${isDarkMode ? grey[900] : grey[300]}`,
-                    },
-                    sizeSmall: {
-                        padding: `${SPACING * 0.75}px ${SPACING * 1.25}px`,
-                    },
-                    paddingNone: {
-                        padding: `${SPACING * 0.5}px`,
+                        '&.MuiTableCell-sizeSmall': {
+                            padding: `${SPACING * 0.75}px ${SPACING * 1.25}px`,
+                        },
+                        '&.MuiTableCell-paddingNone': {
+                            padding: `${SPACING * 0.5}px`,
+                        },
+                        '&.MuiTableCell-paddingCheckbox': {
+                            padding: `0 ${SPACING}px`,
+                        },
                     },
                 },
             },

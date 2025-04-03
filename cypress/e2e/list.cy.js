@@ -254,7 +254,7 @@ describe('List Page', () => {
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
 
-            cy.get('#13-expand').should(el =>
+            cy.get('#posts-13-expand').should(el =>
                 expect(el).to.contain(
                     'Curabitur eu odio ullamcorper, pretium sem at, blandit libero. Nulla sodales facilisis libero, eu gravida tellus ultrices nec. In ut gravida mi. Vivamus finibus tortor tempus egestas lacinia. Cras eu arcu nisl. Donec pretium dolor ipsum, eget feugiat urna iaculis ut.'
                 )
@@ -269,7 +269,7 @@ describe('List Page', () => {
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
 
-            cy.get('#13-expand').should(el => expect(el).to.exist);
+            cy.get('#posts-13-expand').should(el => expect(el).to.exist);
             cy.wait(500); // Ensure animations are done
 
             cy.get('[aria-label="Expand"]')
@@ -278,7 +278,7 @@ describe('List Page', () => {
                 .should(el => expect(el).to.have.attr('aria-expanded', 'true'))
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
 
-            cy.get('#12-expand').should(el => expect(el).to.exist);
+            cy.get('#posts-12-expand').should(el => expect(el).to.exist);
 
             let all_labels = [13, 12, 11, 10, 9, 8, 7, 6, 4, 2];
 
@@ -294,7 +294,9 @@ describe('List Page', () => {
             cy.get('[aria-label="Expand"]').eq(0).click();
 
             all_labels.forEach(label => {
-                cy.get(`#${label}-expand`).should(el => expect(el).to.exist);
+                cy.get(`#posts-${label}-expand`).should(
+                    el => expect(el).to.exist
+                );
             });
         });
     });

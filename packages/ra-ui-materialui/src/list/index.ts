@@ -1,6 +1,7 @@
 export * from './BulkActionsToolbar';
 export * from './Count';
 export * from './datagrid';
+export * from './datatable';
 export * from './Empty';
 export * from './InfiniteList';
 export * from './filter';

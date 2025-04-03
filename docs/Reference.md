@@ -53,9 +53,10 @@ title: "Index"
 * [`<DashboardMenuItem>`](./Menu.md#menudashboarditem)
 * [`<Datagrid>`](./Datagrid.md)
 * [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
-* [`<DatagridBody>`](./Datagrid.md#body)
-* [`<DatagridRow>`](./Datagrid.md#body)
-* [`<DatagridHeader>`](./Datagrid.md#header)
+* [`<DataTable>`](./DataTable.md)
+* [`<DataTableBody>`](./DataTable.md#body)
+* [`<DataTableRow>`](./DataTable.md#body)
+* [`<DataTableHead>`](./DataTable.md#head)
 * [`<DateField>`](./DateField.md)
 * [`<DateInput>`](./DateInput.md)
 * [`<DateRangeInput>`](./DateRangeInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />

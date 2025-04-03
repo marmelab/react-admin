@@ -4,7 +4,7 @@ import {
     BooleanField,
     CloneButton,
     ChipField,
-    Datagrid,
+    DataTable,
     DateField,
     EditButton,
     NumberField,
@@ -53,10 +53,13 @@ const PostShow = () => {
                                 <TextField source="teaser" />
                             )}
                         <ArrayField source="backlinks">
-                            <Datagrid bulkActionButtons={false}>
-                                <DateField source="date" />
-                                <UrlField source="url" />
-                            </Datagrid>
+                            <DataTable bulkActionButtons={false}>
+                                <DataTable.Col
+                                    field={DateField}
+                                    source="date"
+                                />
+                                <DataTable.Col field={UrlField} source="url" />
+                            </DataTable>
                         </ArrayField>
                     </TabbedShowLayout.Tab>
                     <TabbedShowLayout.Tab label="post.form.body">
@@ -108,12 +111,17 @@ const PostShow = () => {
                             target="post_id"
                             sort={{ field: 'created_at', order: 'DESC' }}
                         >
-                            <Datagrid>
-                                <DateField source="created_at" />
-                                <TextField source="author.name" />
-                                <TextField source="body" />
-                                <EditButton />
-                            </Datagrid>
+                            <DataTable>
+                                <DataTable.Col
+                                    source="created_at"
+                                    field={DateField}
+                                />
+                                <DataTable.Col source="author.name" />
+                                <DataTable.Col source="body" />
+                                <DataTable.Col>
+                                    <EditButton />
+                                </DataTable.Col>
+                            </DataTable>
                         </ReferenceManyField>
                         <CreateRelatedComment />
                     </TabbedShowLayout.Tab>

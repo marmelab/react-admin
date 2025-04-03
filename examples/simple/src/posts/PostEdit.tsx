@@ -6,7 +6,7 @@ import {
     ArrayInput,
     BooleanInput,
     CheckboxGroupInput,
-    Datagrid,
+    DataTable,
     DateField,
     DateInput,
     Edit,
@@ -23,7 +23,6 @@ import {
     SelectInput,
     SimpleFormIterator,
     TabbedForm,
-    TextField,
     TextInput,
     minValue,
     number,
@@ -100,163 +99,153 @@ const categories = [
     { name: 'Lifestyle', id: 'lifestyle' },
 ];
 
-const PostEdit = () => {
-    return (
-        <Edit title={<PostTitle />} actions={<EditActions />}>
-            <TabbedForm
-                defaultValues={{ average_note: 0 }}
-                warnWhenUnsavedChanges
-            >
-                <TabbedForm.Tab label="post.form.summary">
-                    <SanitizedBox
-                        display="flex"
-                        flexDirection="column"
-                        width="100%"
-                        justifyContent="space-between"
-                        fullWidth
-                    >
-                        <TextInput
-                            InputProps={{ disabled: true }}
-                            source="id"
-                        />
-                        <TextInput
-                            source="title"
-                            validate={required()}
-                            resettable
-                        />
-                    </SanitizedBox>
+const PostEdit = () => (
+    <Edit title={<PostTitle />} actions={<EditActions />}>
+        <TabbedForm defaultValues={{ average_note: 0 }} warnWhenUnsavedChanges>
+            <TabbedForm.Tab label="post.form.summary">
+                <SanitizedBox
+                    display="flex"
+                    flexDirection="column"
+                    width="100%"
+                    justifyContent="space-between"
+                    fullWidth
+                >
+                    <TextInput InputProps={{ disabled: true }} source="id" />
                     <TextInput
-                        multiline
-                        source="teaser"
+                        source="title"
                         validate={required()}
                         resettable
                     />
-                    <CheckboxGroupInput
-                        source="notifications"
-                        choices={[
-                            { id: 12, name: 'Ray Hakt' },
-                            { id: 31, name: 'Ann Gullar' },
-                            { id: 42, name: 'Sean Phonee' },
-                        ]}
-                    />
-                    <ImageInput
-                        multiple
-                        source="pictures"
-                        accept={{ 'image/*': ['.jpeg', '.png', '.jpg'] }}
-                        helperText=""
-                    >
-                        <ImageField source="src" title="title" />
-                    </ImageInput>
-                    <CanAccess action="edit" resource="posts.authors">
-                        <ArrayInput source="authors">
-                            <SimpleFormIterator inline>
-                                <ReferenceInput
-                                    source="user_id"
-                                    reference="users"
-                                >
-                                    <AutocompleteInput helperText={false} />
-                                </ReferenceInput>
-                                <FormDataConsumer>
-                                    {({ scopedFormData }) =>
-                                        scopedFormData &&
-                                        scopedFormData.user_id ? (
-                                            <SelectInput
-                                                source="source"
-                                                choices={[
-                                                    {
-                                                        id: 'headwriter',
-                                                        name: 'Head Writer',
-                                                    },
-                                                    {
-                                                        id: 'proofreader',
-                                                        name: 'Proof reader',
-                                                    },
-                                                    {
-                                                        id: 'cowriter',
-                                                        name: 'Co-Writer',
-                                                    },
-                                                ]}
-                                                helperText={false}
-                                            />
-                                        ) : null
-                                    }
-                                </FormDataConsumer>
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    </CanAccess>
-                </TabbedForm.Tab>
-                <TabbedForm.Tab label="post.form.body">
-                    <RichTextInput
-                        source="body"
-                        label={false}
-                        validate={required()}
-                        fullWidth
-                    />
-                </TabbedForm.Tab>
-                <TabbedForm.Tab label="post.form.miscellaneous">
-                    <TagReferenceInput
-                        reference="tags"
-                        source="tags"
-                        label="Tags"
-                    />
-                    <ArrayInput source="backlinks">
-                        <SimpleFormIterator>
-                            <DateInput source="date" />
-                            <TextInput source="url" validate={required()} />
+                </SanitizedBox>
+                <TextInput
+                    multiline
+                    source="teaser"
+                    validate={required()}
+                    resettable
+                />
+                <CheckboxGroupInput
+                    source="notifications"
+                    choices={[
+                        { id: 12, name: 'Ray Hakt' },
+                        { id: 31, name: 'Ann Gullar' },
+                        { id: 42, name: 'Sean Phonee' },
+                    ]}
+                />
+                <ImageInput
+                    multiple
+                    source="pictures"
+                    accept={{ 'image/*': ['.jpeg', '.png', '.jpg'] }}
+                    helperText=""
+                >
+                    <ImageField source="src" title="title" />
+                </ImageInput>
+                <CanAccess action="edit" resource="posts.authors">
+                    <ArrayInput source="authors">
+                        <SimpleFormIterator inline>
+                            <ReferenceInput source="user_id" reference="users">
+                                <AutocompleteInput helperText={false} />
+                            </ReferenceInput>
+                            <FormDataConsumer>
+                                {({ scopedFormData }) =>
+                                    scopedFormData && scopedFormData.user_id ? (
+                                        <SelectInput
+                                            source="source"
+                                            choices={[
+                                                {
+                                                    id: 'headwriter',
+                                                    name: 'Head Writer',
+                                                },
+                                                {
+                                                    id: 'proofreader',
+                                                    name: 'Proof reader',
+                                                },
+                                                {
+                                                    id: 'cowriter',
+                                                    name: 'Co-Writer',
+                                                },
+                                            ]}
+                                            helperText={false}
+                                        />
+                                    ) : null
+                                }
+                            </FormDataConsumer>
                         </SimpleFormIterator>
                     </ArrayInput>
-                    <DateInput source="published_at" />
-                    <SelectInput
-                        create={
-                            <CreateCategory
-                                // Added on the component because we have to update the choices
-                                // ourselves as we don't use a ReferenceInput
-                                onAddChoice={choice => categories.push(choice)}
-                            />
-                        }
-                        resettable
-                        source="category"
-                        choices={categories}
-                    />
-                    <NumberInput
-                        source="average_note"
-                        validate={[required(), number(), minValue(0)]}
-                    />
-                    <BooleanInput source="commentable" defaultValue />
-                    <TextInput InputProps={{ disabled: true }} source="views" />
-                    <ArrayInput source="pictures">
-                        <SimpleFormIterator>
-                            <TextInput source="url" defaultValue="" />
-                            <ArrayInput source="metas.authors">
-                                <SimpleFormIterator>
-                                    <TextInput source="name" defaultValue="" />
-                                </SimpleFormIterator>
-                            </ArrayInput>
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </TabbedForm.Tab>
-                <TabbedForm.Tab
-                    label="post.form.comments"
-                    count={
-                        <ReferenceManyCount
-                            reference="comments"
-                            target="post_id"
-                            sx={{ lineHeight: 'inherit' }}
+                </CanAccess>
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="post.form.body">
+                <RichTextInput
+                    source="body"
+                    label={false}
+                    validate={required()}
+                    fullWidth
+                />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="post.form.miscellaneous">
+                <TagReferenceInput
+                    reference="tags"
+                    source="tags"
+                    label="Tags"
+                />
+                <ArrayInput source="backlinks">
+                    <SimpleFormIterator>
+                        <DateInput source="date" />
+                        <TextInput source="url" validate={required()} />
+                    </SimpleFormIterator>
+                </ArrayInput>
+                <DateInput source="published_at" />
+                <SelectInput
+                    create={
+                        <CreateCategory
+                            // Added on the component because we have to update the choices
+                            // ourselves as we don't use a ReferenceInput
+                            onAddChoice={choice => categories.push(choice)}
                         />
                     }
-                >
-                    <ReferenceManyField reference="comments" target="post_id">
-                        <Datagrid>
-                            <DateField source="created_at" />
-                            <TextField source="author.name" />
-                            <TextField source="body" />
+                    resettable
+                    source="category"
+                    choices={categories}
+                />
+                <NumberInput
+                    source="average_note"
+                    validate={[required(), number(), minValue(0)]}
+                />
+                <BooleanInput source="commentable" defaultValue />
+                <TextInput InputProps={{ disabled: true }} source="views" />
+                <ArrayInput source="pictures">
+                    <SimpleFormIterator>
+                        <TextInput source="url" defaultValue="" />
+                        <ArrayInput source="metas.authors">
+                            <SimpleFormIterator>
+                                <TextInput source="name" defaultValue="" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </TabbedForm.Tab>
+            <TabbedForm.Tab
+                label="post.form.comments"
+                count={
+                    <ReferenceManyCount
+                        reference="comments"
+                        target="post_id"
+                        sx={{ lineHeight: 'inherit' }}
+                    />
+                }
+            >
+                <ReferenceManyField reference="comments" target="post_id">
+                    <DataTable>
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col source="author.name" />
+                        <DataTable.Col source="body" />
+                        <DataTable.Col>
                             <EditButton />
-                        </Datagrid>
-                    </ReferenceManyField>
-                </TabbedForm.Tab>
-            </TabbedForm>
-        </Edit>
-    );
-};
+                        </DataTable.Col>
+                    </DataTable>
+                </ReferenceManyField>
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Edit>
+);
 
 export default PostEdit;

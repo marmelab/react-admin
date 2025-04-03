@@ -174,6 +174,9 @@ const StyledMenuItem = styled(MenuItem, {
     },
 
     [`& .${MenuItemLinkClasses.icon}`]: { minWidth: theme.spacing(5) },
+    [`.MuiList-dense > & > .${MenuItemLinkClasses.icon}`]: {
+        minWidth: theme.spacing(3.5),
+    },
 }));
 
 const LinkRef = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
