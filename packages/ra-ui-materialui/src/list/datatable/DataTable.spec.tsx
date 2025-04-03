@@ -9,6 +9,7 @@ import {
     Expand,
     ExpandSingle,
     IsRowExpandable,
+    IsRowSelectable,
 } from './DataTable.stories';
 
 describe('DataTable', () => {
@@ -202,6 +203,33 @@ describe('DataTable', () => {
                     screen.getAllByLabelText('ra.action.expand')
                 ).toHaveLength(4);
             });
+        });
+    });
+    describe('bulkActionButtons', () => {
+        it('should reveal bulk delete button by default on row selection', async () => {
+            render(<Basic />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[1]);
+            await screen.findByLabelText('Delete');
+            await screen.findByText('1 item selected');
+            fireEvent.click(checkboxes[2]);
+            await screen.findByText('2 items selected');
+        });
+        it('should reveal select all button when selecting the entire page', async () => {
+            render(<Basic />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[0]);
+            const selectAllButton = await screen.findByText('Select all');
+            selectAllButton.click();
+            await screen.findByText('7 items selected');
+        });
+    });
+    describe('isRowSelectable', () => {
+        it('should allow to disable row selection', async () => {
+            render(<IsRowSelectable />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            expect(checkboxes[1].getAttribute('disabled')).toEqual(null);
+            expect(checkboxes[2].getAttribute('disabled')).toEqual('');
         });
     });
 });
