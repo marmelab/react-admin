@@ -166,12 +166,9 @@ Here is an example of a custom error component:
 import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Report';
 import History from '@mui/icons-material/History';
-import { Title, useTranslate, useDefaultTitle, useResetErrorBoundaryOnLocationChange } from 'react-admin';
+import { Title, useTranslate, useDefaultTitle } from 'react-admin';
 
-export const MyError = ({
-    error,
-    ...rest
-}) => {
+export const MyError = ({ error, ...rest }) => {
     const translate = useTranslate();
     const defaultTitle = useDefaultTitle();
     return (
