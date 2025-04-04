@@ -170,11 +170,8 @@ import { Title, useTranslate, useDefaultTitle, useResetErrorBoundaryOnLocationCh
 
 export const MyError = ({
     error,
-    resetErrorBoundary,
     ...rest
 }) => {
-    useResetErrorBoundaryOnLocationChange(resetErrorBoundary);
-
     const translate = useTranslate();
     const defaultTitle = useDefaultTitle();
     return (
