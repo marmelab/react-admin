@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.7.1
+
+* Fix: Apply a default `defaultValue` on `ArrayInput` ([#10636](https://github.com/marmelab/react-admin/pull/10636)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix `<Layout error>` documentation ([#10642](https://github.com/marmelab/react-admin/pull/10642)) ([djhi](https://github.com/djhi))
+* [Doc] Improve `useNotify` custom notification example ([#10638](https://github.com/marmelab/react-admin/pull/10638)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `useCreate` documentation ([#10632](https://github.com/marmelab/react-admin/pull/10632)) ([djhi](https://github.com/djhi))
+* [Doc] Fix tips loading in production ([#10630](https://github.com/marmelab/react-admin/pull/10630)) ([djhi](https://github.com/djhi))
+* [chore] Fix `create-react-admin` pnpm template ([#10631](https://github.com/marmelab/react-admin/pull/10631)) ([djhi](https://github.com/djhi))
+* [chore] Fix npm warnings when creating new app with `create-react-admin` ([#10622](https://github.com/marmelab/react-admin/pull/10622)) ([slax57](https://github.com/slax57))
+* [chore] Fix release script does not update documentation completely ([#10627](https://github.com/marmelab/react-admin/pull/10627)) ([djhi](https://github.com/djhi))
+* Bump vite from 5.4.15 to 5.4.16 ([#10633](https://github.com/marmelab/react-admin/pull/10633)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump vite from 5.4.14 to 5.4.15 ([#10626](https://github.com/marmelab/react-admin/pull/10626)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.7.0
 
 * Introduce `useCloseNotification` hook ([#10614](https://github.com/marmelab/react-admin/pull/10614)) ([djhi](https://github.com/djhi))
