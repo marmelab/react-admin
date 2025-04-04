@@ -48,11 +48,6 @@ echo "Test the 3 demos (simple, e-commerce, crm): check console & UI"
 echo "Press Enter when this is done"
 read
 
-step "manual task: Update the OldVersion.md file"
-echo "[Minor version only] Update the ./docs/OldVersions.md file to add the new minor version and update the previous one && commit"
-echo "Press Enter when this is done"
-read
-
 # Get the current version from package.json
 npm_previous_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
 
@@ -74,6 +69,13 @@ if [ ! -z "$RELEASE_DRY_RUN" ]; then
 fi
 
 if [ "${npm_previous_package_version%.*}" != "${npm_current_package_version%.*}" ]; then
+    echo "New minor version - Updating the OldVersion.md file"
+    npm_previous_package_minor_version=${npm_previous_package_version%.*}
+    npm_current_package_minor_version=${npm_current_package_version%.*}
+    echo $npm_previous_package_minor_version
+    echo $npm_current_package_minor_version
+    sed -i "s/^- \[v$npm_previous_package_minor_version\].*/- [v$npm_current_package_minor_version](https:\/\/github.com\/marmelab\/react-admin\/blob\/master\/docs\/Admin.md)\n- [v$npm_previous_package_minor_version](https:\/\/github\.com\/marmelab\/react\-admin\/blob\/$npm_previous_package_version\/docs\/Admin.md\)/" docs/OldVersions.md
+
     echo "New minor version - Updating the dependencies to RA packages in the create-react-admin templates"
     yarn run update-create-react-admin-deps ${npm_current_package_version}
     if [ -z "$RELEASE_DRY_RUN" ]; then
