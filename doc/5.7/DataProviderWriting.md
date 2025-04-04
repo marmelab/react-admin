@@ -440,7 +440,7 @@ export default {
 };
 ```
 
-**Note**: Throwing an `httpError` in your `dataProvider` will result in a notify popup appearing in your admin UI.
+**Note**: Throwing an `HttpError` in `dataProvider` will result in a notification showing the error message.
 
 ## Handling Authentication
 

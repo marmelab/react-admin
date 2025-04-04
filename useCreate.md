@@ -78,7 +78,8 @@ const LikeButton = () => {
     }
     if (error) { return <p>ERROR</p>; }
     return <button disabled={isPending} onClick={handleClick}>Like</button>;
-};```
+};
+```
 
 `data` the record to create.
 
