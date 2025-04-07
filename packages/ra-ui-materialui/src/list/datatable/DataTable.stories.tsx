@@ -417,9 +417,9 @@ export const RowClickFalse = () => (
 const ExpandPanel = () => {
     const book = useRecordContext();
     return (
-        <div data-testid="ExpandPanel">
+        <Box data-testid="ExpandPanel" p={2}>
             <i>{book?.title}</i>, by {book?.author} ({book?.year})
-        </div>
+        </Box>
     );
 };
 
@@ -824,7 +824,7 @@ FullApp.argTypes = {
 const ExpandDetails = () => {
     const record = useRecordContext();
 
-    return <div>Expand: {record?.title}</div>;
+    return <Box p={2}>Expand: {record?.title}</Box>;
 };
 
 export const AccessControl = ({
