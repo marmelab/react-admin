@@ -643,7 +643,11 @@ If you provided a React element for the optionText prop, you must also provide t
                             }
                             margin={margin}
                             variant={variant}
-                            className={AutocompleteInputClasses.textField}
+                            className={clsx({
+                                [AutocompleteInputClasses.textField]: true,
+                                [AutocompleteInputClasses.emptyLabel]:
+                                    label === false || label === '',
+                            })}
                             {...params}
                             {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
@@ -725,6 +729,7 @@ const PREFIX = 'RaAutocompleteInput';
 
 export const AutocompleteInputClasses = {
     textField: `${PREFIX}-textField`,
+    emptyLabel: `${PREFIX}-emptyLabel`,
 };
 
 const StyledAutocomplete = styled(Autocomplete, {
@@ -734,6 +739,10 @@ const StyledAutocomplete = styled(Autocomplete, {
     [`& .${AutocompleteInputClasses.textField}`]: {
         minWidth: theme.spacing(20),
     },
+    [`& .${AutocompleteInputClasses.emptyLabel} .MuiOutlinedInput-root legend`]:
+        {
+            width: 0,
+        },
 }));
 
 // @ts-ignore
