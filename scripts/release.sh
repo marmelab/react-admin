@@ -72,7 +72,7 @@ if [ ! -z "$RELEASE_DRY_RUN" ]; then
     git reset --soft HEAD~1
 fi
 
-if [ "${npm_previous_package_version%.*}" != "${npm_current_package_version%.*}" ]; then
+if [ "$npm_previous_package_minor_version" != "$npm_current_package_minor_version" ]; then
     echo "New minor version - Updating the OldVersion.md file"
     sed -i "s/^- \[v$npm_previous_package_minor_version\].*/- [v$npm_current_package_minor_version](https:\/\/github.com\/marmelab\/react-admin\/blob\/master\/docs\/Admin.md)\n- [v$npm_previous_package_minor_version](https:\/\/github\.com\/marmelab\/react\-admin\/blob\/v$npm_previous_package_version\/docs\/Admin.md\)/" docs/OldVersions.md
     if [ -z "$RELEASE_DRY_RUN" ]; then
