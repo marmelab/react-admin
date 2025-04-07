@@ -48,13 +48,10 @@ echo "Test the 3 demos (simple, e-commerce, crm): check console & UI"
 echo "Press Enter when this is done"
 read
 
-step "manual task: Update the OldVersion.md file"
-echo "[Minor version only] Update the ./docs/OldVersions.md file to add the new minor version and update the previous one && commit"
-echo "Press Enter when this is done"
-read
-
 # Get the current version from package.json
 npm_previous_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
+# ${npm_previous_package_version%.*} extract the major.minor version
+npm_previous_package_minor_version=${npm_previous_package_version%.*}
 
 step "lerna version"
 # Running lerna version
@@ -63,6 +60,8 @@ step "lerna version"
 
 # Get the version from package.json
 npm_current_package_version=$(jq -r '.version' ./packages/react-admin/package.json)
+# ${npm_current_package_version%.*} extract the major.minor version
+npm_current_package_minor_version=${npm_current_package_version%.*}
 
 # Remove the tag created by lerna
 echo "Removing tag v${npm_current_package_version} created by lerna"
@@ -73,7 +72,15 @@ if [ ! -z "$RELEASE_DRY_RUN" ]; then
     git reset --soft HEAD~1
 fi
 
-if [ "${npm_previous_package_version%.*}" != "${npm_current_package_version%.*}" ]; then
+if [ "$npm_previous_package_minor_version" != "$npm_current_package_minor_version" ]; then
+    echo "New minor version - Updating the OldVersion.md file"
+    sed -i "s/^- \[v$npm_previous_package_minor_version\].*/- [v$npm_current_package_minor_version](https:\/\/github.com\/marmelab\/react-admin\/blob\/master\/docs\/Admin.md)\n- [v$npm_previous_package_minor_version](https:\/\/github\.com\/marmelab\/react\-admin\/blob\/v$npm_previous_package_version\/docs\/Admin.md\)/" docs/OldVersions.md
+    if [ -z "$RELEASE_DRY_RUN" ]; then
+        echo "Committing the OldVersion.md file update"
+        git add .
+        git commit -m "Update docs/OldVersion.md for version ${npm_current_package_version}"
+    fi
+
     echo "New minor version - Updating the dependencies to RA packages in the create-react-admin templates"
     yarn run update-create-react-admin-deps ${npm_current_package_version}
     if [ -z "$RELEASE_DRY_RUN" ]; then
@@ -128,15 +135,14 @@ yarn run create-github-release ${npm_current_package_version}
 step "Update the documentation"
 if [ -d $RA_DOC_PATH ]; then
     ( cd $RA_DOC_PATH && git pull )
-    # ${npm_current_package_version%.*} extract the major.minor version
-    RA_DOC_PATH="$RA_DOC_PATH" VERSION="${npm_current_package_version%.*}" ./scripts/copy-ra-oss-docs.sh
+    RA_DOC_PATH="$RA_DOC_PATH" VERSION="$npm_current_package_minor_version" ./scripts/copy-ra-oss-docs.sh
     # Set the latest version in the versions.yml file
     echo "Update the latest version in the versions.yml file"
     sed -i "/^\(- latest\).*/s//\1 \($npm_current_package_version\)/" $RA_DOC_PATH/_data/versions.yml
-    if [ "${npm_previous_package_version%.*}" != "${npm_current_package_version%.*}" ]; then
+    if [ "$npm_previous_package_minor_version" != "$npm_current_package_minor_version" ]; then
         echo "Add the previous minor version to the list of versions in the versions.yml file"
         # Add the previous minor version to the list of versions in the versions.yml file
-        sed -i "/^\(- latest.*\)/s//\1 \n- \"${npm_previous_package_version%.*}\"/" $RA_DOC_PATH/_data/versions.yml
+        sed -i "/^\(- latest.*\)/s//\1 \n- \"$npm_previous_package_minor_version\"/" $RA_DOC_PATH/_data/versions.yml
     fi
     if [ -z "$RELEASE_DRY_RUN" ]; then
         ( cd $RA_DOC_PATH && git add . && git commit -m "Update the documentation for version $npm_current_package_version" && git push )
