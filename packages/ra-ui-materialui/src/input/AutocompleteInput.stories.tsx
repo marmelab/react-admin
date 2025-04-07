@@ -1329,3 +1329,14 @@ export const WithInputProps = () => (
         />
     </Wrapper>
 );
+
+export const OutlinedNoLabel = () => (
+    <Wrapper onSuccess={console.log}>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            label={false}
+            variant="outlined"
+        />
+    </Wrapper>
+);
