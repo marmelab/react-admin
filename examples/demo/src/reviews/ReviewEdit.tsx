@@ -66,7 +66,7 @@ const ReviewEdit = ({ id, onCancel }: ReviewEditProps) => {
                         </Grid>
                         <Grid item xs={6}>
                             <Labeled label="resources.reviews.fields.rating">
-                                <StarRatingField source="rating" />
+                                <StarRatingField />
                             </Labeled>
                         </Grid>
                     </Grid>

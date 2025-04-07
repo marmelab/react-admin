@@ -8,7 +8,7 @@ import {
     TextInput,
     required,
     List,
-    Datagrid,
+    DataTable,
     ResourceContextProvider,
     EditButton,
     TranslatableInputs,
@@ -33,11 +33,13 @@ const TagEdit = () => {
                     filter={{ tags: [id] }}
                     title=" "
                 >
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="title" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </List>
             </ResourceContextProvider>
         </>
