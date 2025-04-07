@@ -75,6 +75,11 @@ if [ "${npm_previous_package_version%.*}" != "${npm_current_package_version%.*}"
     echo $npm_previous_package_minor_version
     echo $npm_current_package_minor_version
     sed -i "s/^- \[v$npm_previous_package_minor_version\].*/- [v$npm_current_package_minor_version](https:\/\/github.com\/marmelab\/react-admin\/blob\/master\/docs\/Admin.md)\n- [v$npm_previous_package_minor_version](https:\/\/github\.com\/marmelab\/react\-admin\/blob\/$npm_previous_package_version\/docs\/Admin.md\)/" docs/OldVersions.md
+    if [ -z "$RELEASE_DRY_RUN" ]; then
+        echo "Committing the OldVersion.md file update"
+        git add .
+        git commit -m "Update docs/OldVersion.md for version ${npm_current_package_version}"
+    fi
 
     echo "New minor version - Updating the dependencies to RA packages in the create-react-admin templates"
     yarn run update-create-react-admin-deps ${npm_current_package_version}
