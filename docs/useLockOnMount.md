@@ -58,7 +58,7 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-**Note**: If users close their tab/browser when on a page with a locked record, `useLockOnMount` will call your `dataProvider.unlock` method. However, as browsers don't wait for asynchronous calls to finish, make sure your dataProvider executes as fast as possible.
+**Note**: If users close their tab/browser when on a page with a locked record, `useLockOnMount` will block the navigation until the record is unlocked and show a notification.
 
 ## Parameters
 
