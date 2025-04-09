@@ -111,11 +111,11 @@ const Core = styled('div', {
     flexDirection: 'column',
     zIndex: 1,
     minHeight: '100vh',
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: (theme.vars || theme).palette.background.default,
     position: 'relative',
     minWidth: 'fit-content',
     width: '100%',
-    color: theme.palette.getContrastText(theme.palette.background.default),
+    color: (theme.vars || theme).palette.primary.contrastText,
 
     [`& .${LayoutClasses.appFrame}`]: {
         display: 'flex',
@@ -135,7 +135,7 @@ const Core = styled('div', {
         }),
     },
     [`& .${LayoutClasses.content}`]: {
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: (theme.vars || theme).palette.background.default,
         zIndex: 2,
         display: 'flex',
         flexDirection: 'column',

@@ -10,7 +10,6 @@ import {
     DialogTitle,
 } from '@mui/material';
 import {
-    alpha,
     type ComponentsOverrides,
     styled,
     useThemeProps,
@@ -155,13 +154,13 @@ const StyledDialog = styled(Dialog, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${ConfirmClasses.confirmPrimary}`]: {
-        color: theme.palette.primary.main,
+        color: (theme.vars || theme).palette.primary.main,
     },
 
     [`& .${ConfirmClasses.confirmWarning}`]: {
-        color: theme.palette.error.main,
+        color: (theme.vars || theme).palette.error.main,
         '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.error.main}, transparent 12%)`,
             // Reset on mouse devices
             '@media (hover: none)': {
                 backgroundColor: 'transparent',

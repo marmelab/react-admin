@@ -139,7 +139,7 @@ const Root = styled('div', {
         justifyContent: 'center',
     },
     [`& .${LoginClasses.icon}`]: {
-        backgroundColor: theme.palette.secondary[500],
+        backgroundColor: (theme.vars || theme).palette.secondary[500],
     },
 }));
 

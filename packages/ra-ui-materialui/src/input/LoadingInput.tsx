@@ -69,13 +69,10 @@ const StyledResettableTextField = styled(ResettableTextField, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     '& .MuiInputLabel-root.Mui-disabled': {
-        color: theme.palette.text.secondary,
+        color: (theme.vars || theme).palette.text.secondary,
     },
     '& .MuiFilledInput-root.Mui-disabled': {
-        background:
-            theme.palette.mode === 'light'
-                ? 'rgba(0, 0, 0, 0.04)'
-                : 'rgba(255, 255, 255, 0.09)',
+        background: (theme.vars || theme).palette.action.disabledBackground,
     },
     '& .MuiFilledInput-root.Mui-disabled:before': {
         borderBottomStyle: 'solid',

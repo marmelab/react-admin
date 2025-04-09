@@ -31,12 +31,12 @@ const StyledFileInput = styled(FileInput, {
     width: '100%',
 
     [`& .${FileInputClasses.dropZone}`]: {
-        background: theme.palette.background.default,
+        background: (theme.vars || theme).palette.background.default,
         borderRadius: theme.shape.borderRadius,
         fontFamily: theme.typography.fontFamily,
         padding: theme.spacing(1),
         textAlign: 'center',
-        color: theme.palette.getContrastText(theme.palette.background.default),
+        color: (theme.vars || theme).palette.primary.contrastText,
     },
     [`& .${FileInputClasses.removeButton}`]: {
         display: 'inline-block',

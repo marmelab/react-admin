@@ -21,6 +21,9 @@ declare module '@mui/material/styles' {
 }
 
 export interface RaThemeOptions extends MuiThemeOptions {
+    palette?: MuiThemeOptions['palette'] & {
+        bulkActionsToolbarBackgroundColor?: string;
+    };
     sidebar?: {
         width?: number;
         closedWidth?: number;

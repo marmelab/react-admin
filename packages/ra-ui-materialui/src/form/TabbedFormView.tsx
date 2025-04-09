@@ -138,7 +138,7 @@ const Root = styled('div', {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .MuiTab-root.${TabbedFormClasses.errorTabButton}`]: {
-        color: theme.palette.error.main,
+        color: (theme.vars || theme).palette.error.main,
     },
 }));
 

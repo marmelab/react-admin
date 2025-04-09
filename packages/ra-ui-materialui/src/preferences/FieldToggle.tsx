@@ -163,7 +163,7 @@ const Root = styled('li', {
     '&.drag-active': {
         background: 'transparent',
         color: 'transparent',
-        outline: `1px solid ${theme.palette.action.selected}`,
+        outline: `1px solid ${(theme.vars || theme).palette.action.selected}`,
         '& .MuiSwitch-root, & svg': {
             visibility: 'hidden',
         },

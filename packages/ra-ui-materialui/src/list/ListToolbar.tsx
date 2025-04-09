@@ -67,7 +67,7 @@ const Root = styled('div', {
         flexWrap: 'wrap',
     },
     [theme.breakpoints.down('sm')]: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: (theme.vars || theme).palette.background.paper,
         flexWrap: 'inherit',
         flexDirection: 'column-reverse',
     },

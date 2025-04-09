@@ -203,7 +203,7 @@ const Root = styled('span', {
     lineHeight: 'initial',
     [`& .${ReferenceFieldClasses.link}`]: {
         '& > *': {
-            color: theme.palette.primary.main,
+            color: (theme.vars || theme).palette.primary.main,
         },
     },
 }));
