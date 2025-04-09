@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import {
+    screen,
+    render,
+    waitFor,
+    fireEvent,
+    within,
+} from '@testing-library/react';
 import expect from 'expect';
 import {
     CoreAdminContext,
@@ -14,6 +20,10 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
+import {
+    Basic,
+    NoRecordRepresentation,
+} from './DeleteWithConfirmButton.stories';
 
 const theme = createTheme();
 
@@ -328,5 +338,29 @@ describe('<DeleteWithConfirmButton />', () => {
                 },
             ]);
         });
+    });
+
+    it('should use the record representation in the confirmation title', async () => {
+        render(<Basic />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Delete')
+        );
+        await screen.findByText('Delete War and Peace');
+    });
+
+    it('should use the default translation in the confirmation title when no record representation is available', async () => {
+        render(<NoRecordRepresentation />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('Leo Tolstoy')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Delete')
+        );
+        await screen.findByText('Delete #1');
     });
 });

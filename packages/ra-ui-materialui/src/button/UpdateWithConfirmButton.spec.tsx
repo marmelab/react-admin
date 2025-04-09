@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import {
+    screen,
+    render,
+    waitFor,
+    fireEvent,
+    within,
+} from '@testing-library/react';
 import expect from 'expect';
 import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -10,6 +16,10 @@ import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
 import { MutationOptions } from './UpdateButton.stories';
+import {
+    Basic,
+    NoRecordRepresentation,
+} from './UpdateWithConfirmButton.stories';
 
 const theme = createTheme();
 
@@ -252,7 +262,7 @@ describe('<UpdateWithConfirmButton />', () => {
         fireEvent.click(await screen.findByText('Reset views'));
         await screen.findByRole('dialog');
         await screen.findByText(
-            'Are you sure you want to update this post?',
+            'Are you sure you want to update Lorem Ipsum?',
             undefined,
             { timeout: 4000 }
         );
@@ -263,7 +273,34 @@ describe('<UpdateWithConfirmButton />', () => {
         // wait until next tick, as the settled side effect is called after the success side effect
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 300)));
         expect(
-            screen.queryByText('Are you sure you want to update this post?')
+            screen.queryByText('Are you sure you want to update Lorem Ipsum?')
         ).toBeNull();
+    });
+
+    it('should use the record representation in the confirmation title and content', async () => {
+        render(<Basic />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Update')
+        );
+        await screen.findByText('Update War and Peace');
+        await screen.findByText(
+            'Are you sure you want to update War and Peace?'
+        );
+    });
+
+    it('should use the default translation in the confirmation title when no record representation is available', async () => {
+        render(<NoRecordRepresentation />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('Leo Tolstoy')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Update')
+        );
+        await screen.findByText('Update #1');
     });
 });
