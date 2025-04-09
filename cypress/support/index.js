@@ -1,16 +1,24 @@
 import 'cypress-plugin-tab';
+import '../e2e/support/resize-observer-mock';
 
-/*
- * This is a workaround for the ResizeObserver loop error that occurs in Cypress.
- * See https://github.com/cypress-io/cypress/issues/20341
- * See https://github.com/cypress-io/cypress/issues/29277
- */
-Cypress.on('uncaught:exception', err => {
-    if (
-        err.message.includes(
-            'ResizeObserver loop completed with undelivered notifications'
-        )
-    ) {
-        return false;
+// Make the CI fail if console.error in tests
+const originalConsoleError = console.error;
+console.error = (...args) => {
+    originalConsoleError.call(console, args);
+    throw new Error(
+        JSON.stringify({
+            message: 'The tests failed due to `console.error` calls',
+            error: args,
+        })
+    );
+};
+
+// Ignore warnings about act()
+// See https://github.com/testing-library/react-testing-library/issues/281,
+// https://github.com/facebook/react/issues/14769
+jest.spyOn(console, 'error').mockImplementation((...args) => {
+    if (/Warning.*not wrapped in act/.test(args[0])) {
+        return;
     }
+    originalConsoleError.call(console, ...args);
 });
