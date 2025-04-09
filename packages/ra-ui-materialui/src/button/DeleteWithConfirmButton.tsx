@@ -1,4 +1,4 @@
-import React, { Fragment, ReactEventHandler } from 'react';
+import React, { Fragment, isValidElement, ReactEventHandler } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
 
@@ -12,6 +12,7 @@ import {
     useResourceContext,
     useTranslate,
     RedirectionSideEffect,
+    useGetRecordRepresentation,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -23,7 +24,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
 ) => {
     const {
         className,
-        confirmTitle = 'ra.message.delete_title',
+        confirmTitle: confirmTitleProp,
         confirmContent = 'ra.message.delete_content',
         confirmColor = 'primary',
         icon = defaultIcon,
@@ -56,6 +57,24 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         resource,
         successMessage,
     });
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    const recordRepresentation = getRecordRepresentation(record);
+    let confirmNameParam = recordRepresentation;
+    let confirmTitle = 'ra.message.delete_title_record_representation';
+
+    if (isValidElement(recordRepresentation)) {
+        confirmTitle = 'ra.message.delete_title';
+        confirmNameParam = translate(`resources.${resource}.forcedCaseName`, {
+            smart_count: 1,
+            _: humanize(
+                translate(`resources.${resource}.name`, {
+                    smart_count: 1,
+                    _: resource ? singularize(resource) : undefined,
+                }),
+                true
+            ),
+        });
+    }
 
     return (
         <Fragment>
@@ -72,20 +91,11 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             <Confirm
                 isOpen={open}
                 loading={isPending}
-                title={confirmTitle}
+                title={confirmTitleProp ?? confirmTitle}
                 content={confirmContent}
                 confirmColor={confirmColor}
                 translateOptions={{
-                    name: translate(`resources.${resource}.forcedCaseName`, {
-                        smart_count: 1,
-                        _: humanize(
-                            translate(`resources.${resource}.name`, {
-                                smart_count: 1,
-                                _: resource ? singularize(resource) : undefined,
-                            }),
-                            true
-                        ),
-                    }),
+                    name: confirmNameParam,
                     id: record?.id,
                     ...translateOptions,
                 }}

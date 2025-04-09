@@ -6,13 +6,13 @@ import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Alert } from '@mui/material';
 
-import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
+import { UpdateWithConfirmButton } from './UpdateWithConfirmButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
 
-export default { title: 'ra-ui-materialui/button/DeleteWithConfirmButton' };
+export default { title: 'ra-ui-materialui/button/UpdateWithConfirmButton' };
 
 const i18nProvider = polyglotI18nProvider(
     locale =>
@@ -153,7 +153,9 @@ export const Basic = () => (
                     name="books"
                     list={
                         <BookList>
-                            <DeleteWithConfirmButton />
+                            <UpdateWithConfirmButton
+                                data={{ title: 'modified' }}
+                            />
                         </BookList>
                     }
                 />
@@ -170,7 +172,9 @@ export const NoRecordRepresentation = () => (
                     name="authors"
                     list={
                         <AuthorList>
-                            <DeleteWithConfirmButton />
+                            <UpdateWithConfirmButton
+                                data={{ fullName: 'modified' }}
+                            />
                         </AuthorList>
                     }
                 />
@@ -187,19 +191,19 @@ export const WithCustomDialogContent = () => (
                     name="books"
                     list={
                         <BookList>
-                            <DeleteWithConfirmButton
+                            <UpdateWithConfirmButton
+                                data={{ title: 'modified' }}
                                 confirmTitle={
                                     <>
-                                        Delete <strong>Full Name</strong>
+                                        Set <strong>title</strong>
                                     </>
                                 }
                                 confirmContent={
                                     <Alert severity="warning">
-                                        Are you sure you want to delete this
-                                        user?
+                                        Are you sure you want to update this
+                                        book?
                                     </Alert>
                                 }
-                                confirmColor="warning"
                             />
                         </BookList>
                     }

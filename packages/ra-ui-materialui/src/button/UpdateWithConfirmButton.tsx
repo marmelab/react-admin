@@ -12,6 +12,7 @@ import {
     useRecordContext,
     useUpdate,
     UpdateParams,
+    useGetRecordRepresentation,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -30,7 +31,7 @@ export const UpdateWithConfirmButton = (
 
     const {
         confirmTitle = 'ra.message.bulk_update_title',
-        confirmContent = 'ra.message.bulk_update_content',
+        confirmContent: confirmContentProp,
         data,
         icon = defaultIcon,
         label = 'ra.action.update',
@@ -109,6 +110,24 @@ export const UpdateWithConfirmButton = (
         }
     };
 
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    const recordRepresentation = getRecordRepresentation(record);
+    let confirmNameParam = recordRepresentation;
+    let confirmContent = 'ra.message.bulk_update_content_record_representation';
+
+    if (React.isValidElement(recordRepresentation)) {
+        confirmNameParam = translate(`resources.${resource}.forcedCaseName`, {
+            smart_count: 1,
+            _: humanize(
+                translate(`resources.${resource}.name`, {
+                    smart_count: 1,
+                    _: resource ? inflect(resource, 1) : undefined,
+                }),
+                true
+            ),
+        });
+        confirmContent = 'ra.message.bulk_update_content';
+    }
     return (
         <Fragment>
             <StyledButton
@@ -122,19 +141,10 @@ export const UpdateWithConfirmButton = (
                 isOpen={isOpen}
                 loading={isPending}
                 title={confirmTitle}
-                content={confirmContent}
+                content={confirmContentProp ?? confirmContent}
                 translateOptions={{
                     smart_count: 1,
-                    name: translate(`resources.${resource}.forcedCaseName`, {
-                        smart_count: 1,
-                        _: humanize(
-                            translate(`resources.${resource}.name`, {
-                                smart_count: 1,
-                                _: resource ? inflect(resource, 1) : undefined,
-                            }),
-                            true
-                        ),
-                    }),
+                    name: confirmNameParam,
                 }}
                 onConfirm={handleUpdate}
                 onClose={handleDialogClose}
