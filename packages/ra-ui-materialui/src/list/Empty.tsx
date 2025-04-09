@@ -82,12 +82,8 @@ const Root = styled('span', {
     flex: 1,
     [`& .${EmptyClasses.message}`]: {
         textAlign: 'center',
-        opacity: theme.palette.mode === 'light' ? 0.5 : 0.8,
         margin: '0 1em',
-        color:
-            theme.palette.mode === 'light'
-                ? 'inherit'
-                : theme.palette.text.primary,
+        color: (theme.vars || theme).palette.text.disabled,
     },
 
     [`& .${EmptyClasses.icon}`]: {

@@ -6,7 +6,6 @@ import {
     useCallback,
 } from 'react';
 import {
-    alpha,
     type ComponentsOverrides,
     styled,
     useThemeProps,
@@ -67,7 +66,8 @@ export const BulkActionsToolbar = (inProps: BulkActionsToolbarProps) => {
                     </IconButton>
                     <Typography
                         sx={{
-                            color: theme => theme.palette.text.primary,
+                            color: theme =>
+                                (theme.vars || theme).palette.text.primary,
                         }}
                         variant="subtitle1"
                     >
@@ -118,15 +118,13 @@ const Root = styled('div', {
         left: 0,
         right: 0,
         zIndex: 3,
-        color:
-            theme.palette.mode === 'light'
-                ? theme.palette.primary.main
-                : theme.palette.text.primary,
+        color: (theme.vars || theme).palette.primary.contrastText,
         justifyContent: 'space-between',
-        backgroundColor:
-            theme.palette.mode === 'light'
-                ? lighten(theme.palette.primary.light, 0.8)
-                : theme.palette.primary.dark,
+        backgroundColor: theme.vars
+            ? theme.vars.palette.bulkActionsToolbarBackgroundColor
+            : theme.palette.mode === 'light'
+              ? lighten(theme.palette.primary.light, 0.8)
+              : theme.palette.primary.dark,
         minHeight: theme.spacing(6),
         height: theme.spacing(6),
         paddingRight: theme.spacing(2),
@@ -166,7 +164,7 @@ const Root = styled('div', {
     [`& .${BulkActionsToolbarClasses.icon}`]: {
         marginLeft: '-0.5em',
         '&:hover': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.12),
+            backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%) solid 2px`,
         },
     },
 }));

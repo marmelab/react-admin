@@ -8,7 +8,7 @@ import {
     Menu,
     MenuItem,
 } from '@mui/material';
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTranslate } from 'ra-core';
 import clsx from 'clsx';
@@ -213,7 +213,7 @@ const classes = {
 const Root = styled('div')(({ theme }) => ({
     [`&.${classes.list}`]: {
         borderRadius: theme.shape.borderRadius,
-        border: `1px solid ${alpha(theme.palette.action.active, 0.12)}`,
+        border: `1px solid color-mix(in srgb, ${(theme.vars || theme).palette.action.active}, transparent 12%) solid 2px`,
     },
     [`& .${classes.sizeSmall}`]: {
         paddingTop: 1,

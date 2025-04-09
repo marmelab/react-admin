@@ -154,7 +154,7 @@ const StyledDrawer = styled(Drawer, {
             marginTop: 0,
             height: '100vh',
             position: 'inherit',
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: (theme.vars || theme).palette.background.default,
         },
         [theme.breakpoints.up('md')]: {
             border: 'none',

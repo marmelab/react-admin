@@ -63,7 +63,7 @@ const StyledAppBar = styled(AppBar, {
     borderRadius: 0,
     borderTopLeftRadius: theme.shape.borderRadius,
     borderTopRightRadius: theme.shape.borderRadius,
-    border: `1px solid ${theme.palette.divider}`,
+    border: `1px solid ${(theme.vars || theme).palette.divider}`,
 }));
 
 declare module '@mui/material/styles' {

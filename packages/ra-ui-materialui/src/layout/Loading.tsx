@@ -64,7 +64,7 @@ const Root = styled('div', {
     [`& .${LoadingClasses.message}`]: {
         textAlign: 'center',
         fontFamily: 'Roboto, sans-serif',
-        color: theme.palette.text.disabled,
+        color: (theme.vars || theme).palette.text.disabled,
         paddingTop: '1em',
         paddingBottom: '1em',
     },

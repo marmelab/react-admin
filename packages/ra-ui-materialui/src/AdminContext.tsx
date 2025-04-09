@@ -58,7 +58,7 @@ export interface AdminContextProps extends CoreAdminContextProps {
      *     </Admin>
      * );
      */
-    theme?: object;
+    theme?: RaThemeOptions;
 
     /**
      * The material-UI theme to customize the UI. Prefer the theme prop.

@@ -21,11 +21,11 @@ const classes = {
 
 const Root = styled('div')(({ theme }) => ({
     [`& .${classes.root}`]: {
-        color: theme.palette.text.secondary,
+        color: (theme.vars || theme).palette.text.secondary,
     },
 
     [`& .${classes.active}`]: {
-        color: theme.palette.text.primary,
+        color: (theme.vars || theme).palette.text.primary,
     },
 
     [`& .${classes.icon}`]: { minWidth: theme.spacing(5) },

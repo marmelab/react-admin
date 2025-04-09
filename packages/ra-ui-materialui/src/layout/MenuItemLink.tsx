@@ -184,10 +184,10 @@ const StyledMenuItem = styled(MenuItem, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.text.secondary,
+    color: (theme.vars || theme).palette.text.secondary,
 
     [`&.${MenuItemLinkClasses.active}`]: {
-        color: theme.palette.text.primary,
+        color: (theme.vars || theme).palette.text.primary,
     },
 
     [`& .${MenuItemLinkClasses.icon}`]: { minWidth: theme.spacing(5) },

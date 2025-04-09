@@ -30,8 +30,8 @@ const StyledButton = styled(Button, {
 })(({ theme }) => ({
     position: 'fixed',
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.background.default,
-    color: theme.palette.getContrastText(theme.palette.background.default),
+    backgroundColor: (theme.vars || theme).palette.background.default,
+    color: (theme.vars || theme).palette.primary.contrastText,
     transition: theme.transitions.create(['top', 'opacity'], {
         easing: theme.transitions.easing.easeIn,
         duration: theme.transitions.duration.leavingScreen,
@@ -41,7 +41,7 @@ const StyledButton = styled(Button, {
     zIndex: 5000,
     '&:hover': {
         opacity: 0.8,
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: (theme.vars || theme).palette.background.default,
     },
     '&:focus': {
         top: theme.spacing(2),

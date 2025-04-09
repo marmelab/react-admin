@@ -58,7 +58,7 @@ const StyledTab = styled(Tab, { name: PREFIX })(({ theme }) => ({
     },
 
     [`&.${TranslatableInputsTabClasses.error}`]: {
-        color: theme.palette.error.main,
+        color: (theme.vars || theme).palette.error.main,
     },
 }));
 

@@ -66,7 +66,7 @@ const Root = styled('div', {
     [`& .${FileInputPreviewClasses.removeButton}`]: {},
 
     [`& .${FileInputPreviewClasses.removeIcon}`]: {
-        color: theme.palette.error.main,
+        color: (theme.vars || theme).palette.error.main,
     },
 }));
 
