@@ -4,6 +4,22 @@ export type ComponentsTheme = {
     [key: string]: any;
 };
 
+declare module '@mui/material/styles' {
+    interface Theme {
+        sidebar: {
+            width: number;
+            closedWidth: number;
+        };
+    }
+    // allow configuration using `createTheme()`
+    interface ThemeOptions {
+        sidebar?: {
+            width?: number;
+            closedWidth?: number;
+        };
+    }
+}
+
 export interface RaThemeOptions extends MuiThemeOptions {
     sidebar?: {
         width?: number;

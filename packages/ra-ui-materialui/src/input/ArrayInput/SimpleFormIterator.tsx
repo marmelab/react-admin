@@ -1,29 +1,34 @@
 import * as React from 'react';
 import {
     Children,
-    ReactElement,
-    ReactNode,
+    type ReactElement,
+    type ReactNode,
     useCallback,
     useMemo,
     useRef,
     useState,
 } from 'react';
-import { styled, SxProps, useThemeProps } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material';
 import clsx from 'clsx';
 import get from 'lodash/get';
 import {
     FormDataConsumer,
-    RaRecord,
+    type RaRecord,
     useRecordContext,
     useTranslate,
     useWrappedSource,
 } from 'ra-core';
-import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import { type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 
 import { useArrayInput } from './useArrayInput';
 import {
     SimpleFormIteratorClasses,
-    SimpleFormIteratorPrefix,
+    SimpleFormIteratorPrefix as PREFIX,
 } from './useSimpleFormIteratorStyles';
 import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 import {
@@ -37,7 +42,7 @@ import { Confirm } from '../../layout';
 export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     const props = useThemeProps({
         props: inProps,
-        name: 'RaSimpleFormIterator',
+        name: PREFIX,
     });
     const {
         addButton = <DefaultAddItemButton />,
@@ -262,7 +267,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
 }
 
 const Root = styled('div', {
-    name: SimpleFormIteratorPrefix,
+    name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     '& > ul': {
@@ -318,3 +323,32 @@ const Root = styled('div', {
             visibility: 'visible',
         },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSimpleFormIterator:
+            | 'root'
+            | 'action'
+            | 'add'
+            | 'clear'
+            | 'form'
+            | 'index'
+            | 'inline'
+            | 'line'
+            | 'list'
+            | 'buttons';
+    }
+
+    interface ComponentsPropsList {
+        RaSimpleFormIterator: Partial<SimpleFormIteratorProps>;
+    }
+
+    interface Components {
+        RaSimpleFormIterator?: {
+            defaultProps?: ComponentsPropsList['RaSimpleFormIterator'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSimpleFormIterator'];
+        };
+    }
+}

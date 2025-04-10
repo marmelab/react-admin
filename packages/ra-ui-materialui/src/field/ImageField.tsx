@@ -1,23 +1,31 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import get from 'lodash/get';
 import {
-    ExtractRecordPaths,
-    HintedString,
+    type ExtractRecordPaths,
+    type HintedString,
     useFieldValue,
     useTranslate,
 } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps } from './types';
-import { SxProps } from '@mui/system';
+import type { FieldProps } from './types';
 
 export const ImageField = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: ImageFieldProps<RecordType>
+    inProps: ImageFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { className, emptyText, src, title, ...rest } = props;
     const sourceValue = useFieldValue(props);
     const titleValue =
@@ -117,4 +125,23 @@ export interface ImageFieldProps<
     src?: string;
     title?: HintedString<ExtractRecordPaths<RecordType>>;
     sx?: SxProps;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaImageField: 'root' | 'list' | 'image';
+    }
+
+    interface ComponentsPropsList {
+        RaImageField: Partial<ImageFieldProps>;
+    }
+
+    interface Components {
+        RaImageField?: {
+            defaultProps?: ComponentsPropsList['RaImageField'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaImageField'];
+        };
+    }
 }

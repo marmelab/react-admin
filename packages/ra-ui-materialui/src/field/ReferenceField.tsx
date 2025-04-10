@@ -1,23 +1,28 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
-import { Typography, SxProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import type { ReactNode } from 'react';
+import { Typography } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
 import {
-    LinkToType,
+    type LinkToType,
     useGetRecordRepresentation,
     useTranslate,
-    RaRecord,
+    type RaRecord,
     ReferenceFieldBase,
     useReferenceFieldContext,
     useFieldValue,
 } from 'ra-core';
-import { UseQueryOptions } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
 
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
-import { FieldProps } from './types';
+import type { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 import { visuallyHidden } from '@mui/utils';
 
@@ -56,8 +61,12 @@ export const ReferenceField = <
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord,
 >(
-    props: ReferenceFieldProps<RecordType, ReferenceRecordType>
+    inProps: ReferenceFieldProps<RecordType, ReferenceRecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { emptyText } = props;
     const translate = useTranslate();
     const id = useFieldValue(props);
@@ -197,3 +206,22 @@ const Root = styled('span', {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaReferenceField: 'root' | 'link';
+    }
+
+    interface ComponentsPropsList {
+        RaReferenceField: Partial<ReferenceFieldProps>;
+    }
+
+    interface Components {
+        RaReferenceField?: {
+            defaultProps?: ComponentsPropsList['RaReferenceField'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaReferenceField'];
+        };
+    }
+}

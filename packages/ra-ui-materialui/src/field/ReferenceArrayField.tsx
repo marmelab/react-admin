@@ -1,21 +1,25 @@
 import * as React from 'react';
-import { FC, memo, ReactElement, ReactNode } from 'react';
+import { memo, type ReactElement, type ReactNode } from 'react';
 import {
     ListContextProvider,
     useListContext,
-    ListControllerProps,
+    type ListControllerProps,
     useReferenceArrayFieldController,
-    SortPayload,
-    FilterPayload,
+    type SortPayload,
+    type FilterPayload,
     ResourceContextProvider,
     useRecordContext,
-    RaRecord,
+    type RaRecord,
 } from 'ra-core';
-import { styled } from '@mui/material/styles';
-import { SxProps } from '@mui/system';
-import { UseQueryOptions } from '@tanstack/react-query';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material/styles';
+import type { UseQueryOptions } from '@tanstack/react-query';
 
-import { FieldProps } from './types';
+import type { FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
 
@@ -79,8 +83,12 @@ export const ReferenceArrayField = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
 >(
-    props: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
+    inProps: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         filter,
         page = 1,
@@ -136,9 +144,9 @@ export interface ReferenceArrayFieldViewProps
     extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
         Omit<ListControllerProps, 'queryOptions'> {}
 
-export const ReferenceArrayFieldView: FC<
-    ReferenceArrayFieldViewProps
-> = props => {
+export const ReferenceArrayFieldView = (
+    props: ReferenceArrayFieldViewProps
+) => {
     const { children, pagination, className, sx } = props;
     const { isPending, total } = useListContext();
 
@@ -175,3 +183,22 @@ const Root = styled('span', {
 }));
 
 const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaReferenceArrayField: 'root' | 'progress';
+    }
+
+    interface ComponentsPropsList {
+        RaReferenceArrayField: Partial<ReferenceArrayFieldProps>;
+    }
+
+    interface Components {
+        RaReferenceArrayField?: {
+            defaultProps?: ComponentsPropsList['RaReferenceArrayField'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaReferenceArrayField'];
+        };
+    }
+}
