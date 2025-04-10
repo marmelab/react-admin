@@ -409,6 +409,26 @@ In that case, set the `translateChoice` prop to `false`.
 <SelectArrayInput source="roles" choices={choices} translateChoice={false}/>
 ```
 
+## `emptyText`
+
+If the input isn't required (using `validate={required()}`), users can select an empty choice with an empty text `''` as label, when clicking on the empty option, all selected values ​​will be deselected.
+
+You can override that label with the `emptyText` prop.
+ 
+
+```jsx
+
+<SelectArrayInput  source="category"  choices={choices}  emptyText="No category selected" />
+
+```
+
+The `emptyText` prop accepts either a string or a React Element.
+And if you want to hide that empty choice, make the input required.
+
+```jsx
+<SelectArrayInput  source="category"  choices={choices}  validate={required()} />
+```
+
 ## Fetching Choices
 
 If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectArrayInput>` with [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), and leave the `choices` empty:
