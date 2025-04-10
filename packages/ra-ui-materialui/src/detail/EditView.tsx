@@ -1,6 +1,13 @@
 import * as React from 'react';
-import { ReactElement, ElementType } from 'react';
-import { Card, CardContent, styled, SxProps } from '@mui/material';
+import type { ReactElement, ElementType } from 'react';
+import {
+    Card,
+    CardContent,
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material';
 import clsx from 'clsx';
 import { useEditContext, useResourceDefinition } from 'ra-core';
 
@@ -9,7 +16,11 @@ import { Title } from '../layout';
 
 const defaultActions = <EditActions />;
 
-export const EditView = (props: EditViewProps) => {
+export const EditView = (inProps: EditViewProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         actions,
         aside,
@@ -87,3 +98,22 @@ const Root = styled('div', {
         flex: '1 1 auto',
     },
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaEdit: 'root' | 'main' | 'noActions' | 'card';
+    }
+
+    interface ComponentsPropsList {
+        RaEdit: Partial<EditViewProps>;
+    }
+
+    interface Components {
+        RaEdit?: {
+            defaultProps?: ComponentsPropsList['RaEdit'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaEdit'];
+        };
+    }
+}

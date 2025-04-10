@@ -1,12 +1,22 @@
 import * as React from 'react';
-import { ElementType, ReactElement } from 'react';
-import { Card, styled, SxProps } from '@mui/material';
+import type { ElementType, ReactElement } from 'react';
+import {
+    Card,
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material';
 import { useCreateContext } from 'ra-core';
 import clsx from 'clsx';
 
 import { Title } from '../layout';
 
-export const CreateView = (props: CreateViewProps) => {
+export const CreateView = (inProps: CreateViewProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         actions,
         aside,
@@ -76,3 +86,22 @@ const Root = styled('div', {
         flex: '1 1 auto',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaCreate: 'root' | 'main' | 'noActions' | 'card';
+    }
+
+    interface ComponentsPropsList {
+        RaCreate: Partial<CreateViewProps>;
+    }
+
+    interface Components {
+        RaCreate?: {
+            defaultProps?: ComponentsPropsList['RaCreate'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaCreate'];
+        };
+    }
+}

@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { ReactElement, ElementType } from 'react';
-import { Card, styled, SxProps } from '@mui/material';
+import type { ReactElement, ElementType } from 'react';
+import {
+    Card,
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material';
 import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
 import { ShowActions } from './ShowActions';
@@ -8,7 +14,11 @@ import { Title } from '../layout';
 
 const defaultActions = <ShowActions />;
 
-export const ShowView = (props: ShowViewProps) => {
+export const ShowView = (inProps: ShowViewProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         actions,
         aside,
@@ -83,3 +93,22 @@ const Root = styled('div', {
         flex: '1 1 auto',
     },
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaShow: 'root' | 'main' | 'noActions' | 'card';
+    }
+
+    interface ComponentsPropsList {
+        RaShow: Partial<ShowViewProps>;
+    }
+
+    interface Components {
+        RaShow?: {
+            defaultProps?: ComponentsPropsList['RaShow'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaShow'];
+        };
+    }
+}

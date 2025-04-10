@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { Children, isValidElement, ReactNode } from 'react';
-import { styled } from '@mui/material/styles';
-import { Stack, StackProps } from '@mui/material';
-import { SxProps } from '@mui/system';
+import { Children, isValidElement, type ReactNode } from 'react';
+import { type ComponentsOverrides, styled } from '@mui/material/styles';
+import {
+    Stack,
+    type StackProps,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material';
 import clsx from 'clsx';
 import {
-    RaRecord,
+    type RaRecord,
     useRecordContext,
     OptionalRecordContextProvider,
 } from 'ra-core';
@@ -51,7 +55,11 @@ import { Labeled } from '../Labeled';
  * @param {number} props.spacing The spacing to use between each field, passed to `<Stack>`. Defaults to 1.
  * @param {Object} props.sx Custom style object.
  */
-export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
+export const SimpleShowLayout = (inProps: SimpleShowLayoutProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { className, children, spacing = 1, sx, ...rest } = props;
     const record = useRecordContext(props);
     if (!record) {
@@ -120,3 +128,22 @@ const sanitizeRestProps = ({
     translate,
     ...rest
 }: any) => rest;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSimpleShowLayout: 'root' | 'stack' | 'row';
+    }
+
+    interface ComponentsPropsList {
+        RaSimpleShowLayout: Partial<SimpleShowLayoutProps>;
+    }
+
+    interface Components {
+        RaSimpleShowLayout?: {
+            defaultProps?: ComponentsPropsList['RaSimpleShowLayout'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSimpleShowLayout'];
+        };
+    }
+}
