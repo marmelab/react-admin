@@ -3,18 +3,22 @@ import { useStore, useTranslate, useResourceContext } from 'ra-core';
 import {
     Box,
     Button,
-    ButtonProps,
+    type ButtonProps,
     Popover,
     useMediaQuery,
     Theme,
     Tooltip,
     IconButton,
 } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 
 import { FieldToggle } from '../../preferences';
 import { ConfigurableDatagridColumn } from './DatagridConfigurable';
-import { styled } from '@mui/material/styles';
 
 /**
  * Renders a button that lets users show / hide columns in a configurable datagrid
@@ -39,7 +43,11 @@ import { styled } from '@mui/material/styles';
  *   </List>
  * );
  */
-export const SelectColumnsButton = (props: SelectColumnsButtonProps) => {
+export const SelectColumnsButton = (inProps: SelectColumnsButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { preferenceKey } = props;
 
     const resource = useResourceContext(props);
@@ -170,9 +178,9 @@ export const SelectColumnsButton = (props: SelectColumnsButtonProps) => {
                     {availableColumns.map(column => (
                         <FieldToggle
                             key={column.index}
-                            source={column.source}
-                            label={column.label}
-                            index={column.index}
+                            source={column.source!}
+                            label={column.label!}
+                            index={column.index!}
                             selected={columns.includes(column.index)}
                             onToggle={handleToggle}
                             onMove={handleMove}
@@ -183,9 +191,10 @@ export const SelectColumnsButton = (props: SelectColumnsButtonProps) => {
         </>
     );
 };
+const PREFIX = 'RaSelectColumnsButton';
 
 const StyledButton = styled(Button, {
-    name: 'RaSelectColumnsButton',
+    name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
     '&.MuiButton-sizeSmall': {
@@ -203,4 +212,23 @@ const sanitizeRestProps = ({
 export interface SelectColumnsButtonProps extends ButtonProps {
     resource?: string;
     preferenceKey?: string;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSelectColumnsButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaSelectColumnsButton: Partial<SelectColumnsButtonProps>;
+    }
+
+    interface Components {
+        RaSelectColumnsButton?: {
+            defaultProps?: ComponentsPropsList['RaSelectColumnsButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSelectColumnsButton'];
+        };
+    }
 }

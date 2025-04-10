@@ -1,6 +1,16 @@
 import * as React from 'react';
-import { isValidElement, ReactElement, ReactNode, useCallback } from 'react';
-import { alpha, styled } from '@mui/material/styles';
+import {
+    isValidElement,
+    type ReactElement,
+    type ReactNode,
+    useCallback,
+} from 'react';
+import {
+    alpha,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -14,7 +24,11 @@ import { SelectAllButton } from '../button';
 
 const defaultSelectAllButton = <SelectAllButton />;
 
-export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
+export const BulkActionsToolbar = (inProps: BulkActionsToolbarProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         label = 'ra.action.bulk_actions',
         children,
@@ -156,3 +170,29 @@ const Root = styled('div', {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBulkActionsToolbar:
+            | 'root'
+            | 'toolbar'
+            | 'topToolbar'
+            | 'buttons'
+            | 'collapsed'
+            | 'title'
+            | 'icon';
+    }
+
+    interface ComponentsPropsList {
+        RaBulkActionsToolbar: Partial<BulkActionsToolbarProps>;
+    }
+
+    interface Components {
+        RaBulkActionsToolbar?: {
+            defaultProps?: ComponentsPropsList['RaBulkActionsToolbar'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBulkActionsToolbar'];
+        };
+    }
+}

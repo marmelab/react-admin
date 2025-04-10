@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement, ReactNode, ElementType } from 'react';
-import { SxProps } from '@mui/system';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    useThemeProps,
+} from '@mui/material/styles';
+import type { ReactElement, ReactNode, ElementType } from 'react';
 import Card from '@mui/material/Card';
 import clsx from 'clsx';
-import { useListContext, RaRecord } from 'ra-core';
+import { useListContext, type RaRecord } from 'ra-core';
 
 import { Title } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
@@ -18,8 +22,12 @@ const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
 export const ListView = <RecordType extends RaRecord = any>(
-    props: ListViewProps
+    inProps: ListViewProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         actions = defaultActions,
         aside,
@@ -356,3 +364,22 @@ const Root = styled('div', {
         flex: 1,
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaList: 'root' | 'main' | 'content' | 'actions' | 'noResults';
+    }
+
+    interface ComponentsPropsList {
+        RaList: Partial<ListViewProps>;
+    }
+
+    interface Components {
+        RaList?: {
+            defaultProps?: ComponentsPropsList['RaList'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaList'];
+        };
+    }
+}

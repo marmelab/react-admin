@@ -13,7 +13,7 @@ import {
     useThemeProps,
     type TableRowProps,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { type ComponentsOverrides, styled } from '@mui/material/styles';
 import {
     useDataTableCallbacksContext,
     useDataTableConfigContext,
@@ -241,3 +241,22 @@ const TableRowStyled = styled(TableRow, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(() => ({}));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaDataTableRow: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaDataTableRow: Partial<DataTableRowProps>;
+    }
+
+    interface Components {
+        RaDataTableRow?: {
+            defaultProps?: ComponentsPropsList['RaDataTableRow'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaDataTableRow'];
+        };
+    }
+}
