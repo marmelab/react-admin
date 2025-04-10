@@ -8,10 +8,14 @@ import {
     Tooltip,
     IconButton,
     useMediaQuery,
-    Theme,
-    SxProps,
+    type Theme,
+    type SxProps,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import SortIcon from '@mui/icons-material/Sort';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
@@ -46,7 +50,11 @@ import {
  *     </TopToolbar>
  * );
  */
-const SortButton = (props: SortButtonProps) => {
+const SortButton = (inProps: SortButtonProps) => {
+    const props = useThemeProps({
+        name: PREFIX,
+        props: inProps,
+    });
     const {
         fields,
         label = 'ra.sort.sort_by',
@@ -197,3 +205,22 @@ const Root = styled('span', {
 });
 
 export default memo(SortButton, arePropsEqual);
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSortButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaSortButton: Partial<SortButtonProps>;
+    }
+
+    interface Components {
+        RaSortButton?: {
+            defaultProps?: ComponentsPropsList['RaSortButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSortButton'];
+        };
+    }
+}

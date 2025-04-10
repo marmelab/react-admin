@@ -1,14 +1,23 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import { Button } from './Button';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Button, type ButtonProps } from './Button';
 
-export const SkipNavigationButton = () => {
+export const SkipNavigationButton = (inProps: ButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     return (
         <StyledButton
             onClick={skipToContent}
             className={'skip-nav-button'}
             label="ra.navigation.skip_nav"
             variant="contained"
+            {...props}
         />
     );
 };
@@ -62,3 +71,22 @@ const skipToContent = () => {
     element.blur();
     element.removeAttribute('tabIndex');
 };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSkipNavigationButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaSkipNavigationButton: Partial<ButtonProps>;
+    }
+
+    interface Components {
+        RaSkipNavigationButton?: {
+            defaultProps?: ComponentsPropsList['RaSkipNavigationButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSkipNavigationButton'];
+        };
+    }
+}
