@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SxProps, styled } from '@mui/material/styles';
+import { ComponentsOverrides, SxProps, styled } from '@mui/material/styles';
 import { StackProps, useThemeProps } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import {
@@ -139,3 +139,22 @@ const Root = styled('div', {
         width: '100%',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTranslatableInputs: 'root' | 'fullWidth';
+    }
+
+    interface ComponentsPropsList {
+        RaTranslatableInputs: Partial<TranslatableInputsProps>;
+    }
+
+    interface Components {
+        RaTranslatableInputs?: {
+            defaultProps?: ComponentsPropsList['RaTranslatableInputs'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTranslatableInputs'];
+        };
+    }
+}

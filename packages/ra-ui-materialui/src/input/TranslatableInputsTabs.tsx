@@ -1,18 +1,24 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement } from 'react';
-import { AppBar, Tabs, TabsProps } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { AppBar, type AppBarProps, Tabs, type TabsProps } from '@mui/material';
 import { useTranslatableContext } from 'ra-core';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
-import { AppBarProps } from '../layout';
 
 /**
  * Default locale selector for the TranslatableInputs component. Generates a tab for each specified locale.
  * @see TranslatableInputs
  */
 export const TranslatableInputsTabs = (
-    props: TranslatableInputsTabsProps & AppBarProps
-): ReactElement => {
+    inProps: TranslatableInputsTabsProps & AppBarProps
+) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { groupKey, TabsProps: tabsProps } = props;
     const { locales, selectLocale, selectedLocale } = useTranslatableContext();
 
@@ -72,3 +78,22 @@ const StyledAppBar = styled(AppBar, { name: PREFIX })(({ theme }) => ({
         minHeight: theme.spacing(3),
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTranslatableInputsTabs: 'root' | 'tabs';
+    }
+
+    interface ComponentsPropsList {
+        RaTranslatableInputsTabs: Partial<TranslatableInputsTabsProps>;
+    }
+
+    interface Components {
+        RaTranslatableInputsTabs?: {
+            defaultProps?: ComponentsPropsList['RaTranslatableInputsTabs'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTranslatableInputsTabs'];
+        };
+    }
+}
