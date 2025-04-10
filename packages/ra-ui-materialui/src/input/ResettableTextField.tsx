@@ -20,8 +20,12 @@ import { useTranslate } from 'ra-core';
  */
 export const ResettableTextField = forwardRef(
     (inProps: ResettableTextFieldProps, ref) => {
-        const props = useThemeProps({
+        const textFieldProps = useThemeProps({
             props: inProps,
+            name: 'MuiTextField',
+        });
+        const props = useThemeProps({
+            props: textFieldProps,
             name: PREFIX,
         });
         const {
