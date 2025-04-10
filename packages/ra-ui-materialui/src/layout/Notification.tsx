@@ -1,12 +1,22 @@
 import * as React from 'react';
-import { styled, Theme } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
-import { Button, Snackbar, SnackbarProps, SnackbarOrigin } from '@mui/material';
+import {
+    Button,
+    Snackbar,
+    type SnackbarProps,
+    SnackbarOrigin,
+} from '@mui/material';
 import clsx from 'clsx';
 
 import {
     CloseNotificationContext,
-    NotificationPayload,
+    type NotificationPayload,
     undoableEventEmitter,
     useNotificationContext,
     useTakeUndoableMutation,
@@ -30,7 +40,11 @@ const defaultAnchorOrigin: SnackbarOrigin = {
  * @param {number} props.autoHideDuration Duration in milliseconds to wait until hiding a given notification. Defaults to 4000.
  * @param {boolean} props.multiLine Set it to `true` if the notification message should be shown in more than one line.
  */
-export const Notification = (props: NotificationProps) => {
+export const Notification = (inProps: NotificationProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         type = 'info',
@@ -219,4 +233,29 @@ export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;
     autoHideDuration?: number;
     multiLine?: boolean;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaNotification:
+            | 'root'
+            | 'success'
+            | 'error'
+            | 'warning'
+            | 'undo'
+            | 'multiLine';
+    }
+
+    interface ComponentsPropsList {
+        RaNotification: Partial<NotificationProps>;
+    }
+
+    interface Components {
+        RaNotification?: {
+            defaultProps?: ComponentsPropsList['RaNotification'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaNotification'];
+        };
+    }
 }

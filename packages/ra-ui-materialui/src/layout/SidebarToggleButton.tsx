@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { IconButton, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslate } from 'ra-core';
@@ -11,7 +15,11 @@ import { useSidebarState } from './useSidebarState';
  * @param props The component props
  * @param {String} props.className An optional class name to apply to the button
  */
-export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
+export const SidebarToggleButton = (inProps: SidebarToggleButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const translate = useTranslate();
 
     const { className } = props;
@@ -70,3 +78,25 @@ const StyledIconButton = styled(IconButton, {
         transform: 'rotate(180deg)',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSidebarToggleButton:
+            | 'root'
+            | 'menuButtonIconClosed'
+            | 'menuButtonIconOpen';
+    }
+
+    interface ComponentsPropsList {
+        RaSidebarToggleButton: Partial<SidebarToggleButtonProps>;
+    }
+
+    interface Components {
+        RaSidebarToggleButton?: {
+            defaultProps?: ComponentsPropsList['RaSidebarToggleButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSidebarToggleButton'];
+        };
+    }
+}

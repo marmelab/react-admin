@@ -1,10 +1,18 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { Typography, SxProps } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Typography, type SxProps } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTimeout, useTranslate } from 'ra-core';
 
-export const Loading = (props: LoadingProps) => {
+export const Loading = (inProps: LoadingProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         loadingPrimary = 'ra.page.loading',
@@ -64,3 +72,22 @@ const Root = styled('div', {
         height: '9em',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLoading: 'root' | 'icon' | 'message';
+    }
+
+    interface ComponentsPropsList {
+        RaLoading: Partial<LoadingProps>;
+    }
+
+    interface Components {
+        RaLoading?: {
+            defaultProps?: ComponentsPropsList['RaLoading'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLoading'];
+        };
+    }
+}

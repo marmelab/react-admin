@@ -1,14 +1,23 @@
 import * as React from 'react';
-import { ComponentType, ErrorInfo, Fragment, HtmlHTMLAttributes } from 'react';
-import { FallbackProps } from 'react-error-boundary';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentType,
+    type ErrorInfo,
+    Fragment,
+    type HtmlHTMLAttributes,
+} from 'react';
+import type { FallbackProps } from 'react-error-boundary';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     Button,
     Accordion,
     AccordionDetails,
     AccordionSummary,
     Typography,
-    SxProps,
+    type SxProps,
 } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -23,12 +32,16 @@ import type { TitleComponent } from 'ra-core';
 import { Title } from './Title';
 
 export const Error = (
-    props: InternalErrorProps & {
+    inProps: InternalErrorProps & {
         errorComponent?: ComponentType<ErrorProps>;
     } & {
         sx?: SxProps;
     }
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         error,
         errorComponent: ErrorComponent,
@@ -201,4 +214,31 @@ const Root = styled('div', {
 
 function goBack() {
     window.history.go(-1);
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaError:
+            | 'root'
+            | 'title'
+            | 'icon'
+            | 'panel'
+            | 'panelSumary'
+            | 'panelDetails'
+            | 'toolbar'
+            | 'advice';
+    }
+
+    interface ComponentsPropsList {
+        RaError: Partial<ErrorProps>;
+    }
+
+    interface Components {
+        RaError?: {
+            defaultProps?: ComponentsPropsList['RaError'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaError'];
+        };
+    }
 }
