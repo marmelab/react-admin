@@ -2,7 +2,6 @@ import * as React from 'react';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
-import isArray from 'lodash/isArray';
 import mergeWith from 'lodash/mergeWith';
 import set from 'lodash/set';
 import { ReactNode, useEffect } from 'react';
@@ -173,7 +172,7 @@ export interface FilterLiveFormProps
 
 // Lodash merge customizer to merge objects but not arrays
 const mergeCustomizer = (objValue: any, srcValue: any) => {
-    if (isArray(srcValue)) {
+    if (Array.isArray(srcValue)) {
         return srcValue;
     }
 };
