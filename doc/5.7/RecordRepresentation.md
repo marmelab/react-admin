@@ -13,7 +13,7 @@ You can also use its hook version: [`useGetRecordRepresentation`](./useGetRecord
 
 `<RecordRepresentation>` doesn't require any argument. It reads the current record from the parent [`RecordContext`](./useRecordContext.md) and the current resource from the parent `ResourceContext`.
 
-The component uses the [`useRecordRepresentation`](./useRecordRepresentation.md) hook and the same [rules](./useRecordRepresentation.md#preferences) are therefore applied.
+The component uses the [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) hook and the same [rules](./useGetRecordRepresentation.md#default-representation) are therefore applied.
 
 {% raw %}
 ```tsx

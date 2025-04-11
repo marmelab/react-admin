@@ -185,7 +185,7 @@ Some components may have peculiar APIs, often for historical reasons. We priorit
 
 ## Principle of Least Surprise
 
-Because react-admin is designed for [composition](#composition), you should be able to combine react-admin components in various ways and expect them to "just work". If, for any reason, two components aren't compatible, the app should break as soon as possible. In most cases, strong TypeScript types help you detect these incompatibilities at compile time.
+Because react-admin is designed for [composition](./Architecture.md#composition), you should be able to combine react-admin components in various ways and expect them to "just work". If, for any reason, two components aren't compatible, the app should break as soon as possible. In most cases, strong TypeScript types help you detect these incompatibilities at compile time.
 
 To minimize surprises, we avoid using `React.cloneElement()` and refrain from passing props down the tree. We also avoid child inspection.
 

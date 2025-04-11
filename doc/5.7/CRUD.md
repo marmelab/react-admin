@@ -254,7 +254,7 @@ Inside these list layouts, you can use any of react-admin’s Field components t
 - [`<SelectColumnsButton>`](./SelectColumnsButton.md): A button to select the columns to display in a Datagrid
 - [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton): A button to update selected records
 - [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton): A button to delete selected records
-- [`<ListActions>`](./ListActions.md): A toolbar with a create and an export button
+- [`<ListActions>`](./List.md#actions): A toolbar with a create and an export button
 
 ### Misc
 
@@ -266,7 +266,7 @@ Inside these list layouts, you can use any of react-admin’s Field components t
 You can also use specialized alternatives to the `<List>` component, which offer type-specific features:
 
 - [`<TreeWithDetails>`](./TreeWithDetails.md): A tree view with a detail view for each node
-- [`<CompleteCalendar>`](./CompleteCalendar.md): A calendar view for events
+- [`<CompleteCalendar>`](./Calendar.md#completecalendar): A calendar view for events
 - [`<InfiniteList>`](./InfiniteList.md): A list with infinite scrolling
 
 ## The Show Page
@@ -318,7 +318,7 @@ Inside these show layouts, you can use any of react-admin's [Field components](.
 - [`<EditButton>`](./Buttons.md#editbutton): Go to the edit page for a record
 - [`<CreateButton>`](./Buttons.md#createbutton): A button to create a new record
 - [`<ListButton>`](./Buttons.md#listbutton): Go to the list page for a record
-- [`<CloneButton>`](./Buttons.md#clonevutton): Clone a record
+- [`<CloneButton>`](./Buttons.md#clonebutton): Clone a record
 
 ### Misc
 
@@ -391,7 +391,7 @@ Forms are very powerful in react-admin. They support default values, sync and as
 
 - [`<ShowButton>`](./Buttons.md#showbutton): Go to the show page for a record
 - [`<SaveButton>`](./SaveButton.md): The submit button for the form
-- [`<CloneButton>`](./Buttons.md#clonevutton): Clone a record
+- [`<CloneButton>`](./Buttons.md#clonebutton): Clone a record
 
 ### Misc
 

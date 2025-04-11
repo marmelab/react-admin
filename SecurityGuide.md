@@ -165,7 +165,7 @@ const CommentsToolbar = ({ record }) => (
 );
 ```
 
-Check the [Authorization Guide](./Authorization.md) for more details.
+Check the [Authorization Guide](./Permissions.md) for more details.
 
 ## Login Page
 

@@ -396,7 +396,7 @@ A Kanban board built with React-admin Enterprise edition.
 
 [![Kanban Board](./img/kanban-board.png)](https://github.com/djhi/atomic-pm/)
 
-* Demo: [https://djhi.github.io/atomic-pm]([https://djhi.github.io/atomic-pm](https://djhi.github.io/atomic-pm/#/boards/1))
+* Demo: [https://djhi.github.io/atomic-pm](https://djhi.github.io/atomic-pm/#/boards/1)
 * Source code: [https://github.com/djhi/atomic-pm](https://github.com/djhi/atomic-pm)
 
 It leverages the following Enterprise Edition features:

@@ -58,6 +58,8 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
+**Note**: If users close their tab/browser when on a page with a locked record, `useLockOnMount` will block the navigation until the record is unlocked and show a notification.
+
 ## Parameters
 
 `useLockOnMount` accepts a single options parameter, with the following properties (all optional):

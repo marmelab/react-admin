@@ -382,7 +382,7 @@ import { useRecordContext } from "react-admin";
 const MyUrlField = ({ source }: { source: string }) => {
     const record = useRecordContext();
     if (!record) return null;
-    return <a href={`http://${record[source]}`}>{record[source]}</a>;
+    return <a href={`https://${record[source]}`}>{record[source]}</a>;
 };
 
 export default MyUrlField;
@@ -517,7 +517,7 @@ When displaying the posts list, react-admin is smart enough to display the `name
 
 [![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
 
-**Tip**: To customize how to represent a record, set [the `recordRepresentation` prop of the `<Resource>`](/Resource.md#recordrepresentation).
+**Tip**: To customize how to represent a record, set [the `recordRepresentation` prop of the `<Resource>`](./Resource.md#recordrepresentation).
 
 The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its children).
 
