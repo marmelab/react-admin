@@ -713,7 +713,7 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Access Control
 
-`<LongForm>` can use [Access Control](./AccessControl.md) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
+`<LongForm>` can use [Access Control](./Permissions.md#access-control) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
 
 Check the [`enableAccessControl` prop](#enableaccesscontrol) section for more details.
 

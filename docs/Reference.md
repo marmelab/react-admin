@@ -121,7 +121,7 @@ title: "Index"
 * [`<Login>`](./Authentication.md#customizing-the-login-component)
 * [`<LoginForm>`](./Authentication.md#customizing-the-login-component)
 * [`<LoginWithEmail>`](./Authentication.md#customizing-the-login-component)
-* [`<Logout>`](./Authentication.md#customizing-the-logout-component)
+* [`<Logout>`](./AppBar.md#usermenu)
 
 **- M -**
 
