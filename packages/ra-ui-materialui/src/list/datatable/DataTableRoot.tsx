@@ -41,7 +41,7 @@ export const DataTableRoot = styled('div', {
         position: 'sticky',
         top: 0,
         zIndex: 2,
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: (theme.vars || theme).palette.background.paper,
         '&:first-of-type': {
             borderTopLeftRadius: theme.shape.borderRadius,
         },
