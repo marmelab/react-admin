@@ -20,6 +20,7 @@ import { useTranslate } from 'ra-core';
  */
 export const ResettableTextField = forwardRef(
     (inProps: ResettableTextFieldProps, ref) => {
+        // This ensures we inherit the theme props from the TextField component (variant for instance)
         const textFieldProps = useThemeProps({
             props: inProps,
             name: 'MuiTextField',
