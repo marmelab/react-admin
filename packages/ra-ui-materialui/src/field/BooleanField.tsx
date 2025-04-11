@@ -1,18 +1,31 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Tooltip, Typography, TypographyProps, SvgIcon } from '@mui/material';
+import {
+    Tooltip,
+    Typography,
+    type TypographyProps,
+    SvgIcon,
+} from '@mui/material';
 import { useTranslate, useFieldValue } from 'ra-core';
 import { genericMemo } from './genericMemo';
-import { FieldProps } from './types';
+import type { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 const BooleanFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: BooleanFieldProps<RecordType>
+    inProps: BooleanFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         emptyText,
@@ -108,3 +121,22 @@ const StyledTypography = styled(Typography, {
     [`& .${classes.trueIcon}`]: {},
     [`& .${classes.falseIcon}`]: {},
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBooleanField: 'root' | 'trueIcon' | 'falseIcon';
+    }
+
+    interface ComponentsPropsList {
+        RaBooleanField: Partial<BooleanFieldProps>;
+    }
+
+    interface Components {
+        RaBooleanField?: {
+            defaultProps?: ComponentsPropsList['RaBooleanField'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBooleanField'];
+        };
+    }
+}

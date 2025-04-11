@@ -1,7 +1,17 @@
 import * as React from 'react';
-import { HtmlHTMLAttributes, ReactNode, useRef, useEffect } from 'react';
-import { Card, Avatar, SxProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {
+    type HtmlHTMLAttributes,
+    type ReactNode,
+    useRef,
+    useEffect,
+} from 'react';
+import { Card, Avatar, type SxProps } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
 import { useCheckAuth } from 'ra-core';
@@ -26,7 +36,11 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *        </Admin>
  *     );
  */
-export const Login = (props: LoginProps) => {
+export const Login = (inProps: LoginProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         children = defaultLoginForm,
         backgroundImage,
@@ -90,7 +104,7 @@ export interface LoginProps extends HtmlHTMLAttributes<HTMLDivElement> {
     backgroundImage?: string;
     children?: ReactNode;
     className?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaLogin';
@@ -128,3 +142,22 @@ const Root = styled('div', {
         backgroundColor: theme.palette.secondary[500],
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLogin: 'root' | 'card' | 'avatar' | 'icon';
+    }
+
+    interface ComponentsPropsList {
+        RaLogin: Partial<LoginProps>;
+    }
+
+    interface Components {
+        RaLogin?: {
+            defaultProps?: ComponentsPropsList['RaLogin'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLogin'];
+        };
+    }
+}

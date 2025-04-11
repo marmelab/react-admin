@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import clsx from 'clsx';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import ContentCreate from '@mui/icons-material/Create';
 import { Link } from 'react-router-dom';
 import {
-    RaRecord,
+    type RaRecord,
     useResourceContext,
     useRecordContext,
     useCreatePath,
@@ -27,8 +31,12 @@ import { Button, ButtonProps } from './Button';
  * );
  */
 export const EditButton = <RecordType extends RaRecord = any>(
-    props: EditButtonProps<RecordType>
+    inProps: EditButtonProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         icon = defaultIcon,
         label = 'ra.action.edit',
@@ -97,3 +105,22 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (_props, styles) => styles.root,
 })({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaEditButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaEditButton: Partial<EditButtonProps>;
+    }
+
+    interface Components {
+        RaEditButton?: {
+            defaultProps?: ComponentsPropsList['RaEditButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaEditButton'];
+        };
+    }
+}

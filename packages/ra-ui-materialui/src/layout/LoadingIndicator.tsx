@@ -1,14 +1,23 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useTheme,
+    type SxProps,
+    useThemeProps,
+    type Theme,
+} from '@mui/material/styles';
 import clsx from 'clsx';
-import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLoading } from 'ra-core';
 
-import { RefreshIconButton, RefreshIconButtonProps } from '../button';
-import { SxProps } from '@mui/system';
+import { RefreshIconButton, type RefreshIconButtonProps } from '../button';
 
-export const LoadingIndicator = (props: LoadingIndicatorProps) => {
+export const LoadingIndicator = (inProps: LoadingIndicatorProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { className, onClick, sx, ...rest } = props;
     const loading = useLoading();
 
@@ -39,7 +48,7 @@ export const LoadingIndicator = (props: LoadingIndicatorProps) => {
 
 interface Props {
     className?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 type LoadingIndicatorProps = Props & Pick<RefreshIconButtonProps, 'onClick'>;
@@ -68,3 +77,22 @@ const Root = styled('div', {
         left: '30%',
     },
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLoadingIndicator: 'root' | 'loader' | 'loadedLoading' | 'loadedIcon';
+    }
+
+    interface ComponentsPropsList {
+        RaLoadingIndicator: Partial<LoadingIndicatorProps>;
+    }
+
+    interface Components {
+        RaLoadingIndicator?: {
+            defaultProps?: ComponentsPropsList['RaLoadingIndicator'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLoadingIndicator'];
+        };
+    }
+}

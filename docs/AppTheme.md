@@ -425,8 +425,9 @@ A `theme` object can contain the following keys:
 
 ```jsx
 import { lime, purple } from '@mui/material/colors';
+import type { RaThemeOptions } from 'react-admin';
 
-const theme = {
+const theme: RaThemeOptions = {
   palette: {
     primary: {
       main: '#FF5733',
@@ -517,7 +518,7 @@ Here is the default theme:
 import { RaThemeOptions } from './types';
 import { deepmerge } from '@mui/utils';
 
-const defaultThemeInvariants = {
+const defaultThemeInvariants: RaThemeOptions = {
     typography: {
         h6: {
             fontWeight: 400,

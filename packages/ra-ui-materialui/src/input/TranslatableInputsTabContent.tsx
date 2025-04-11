@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { ReactElement, ReactNode, useMemo } from 'react';
-import { styled } from '@mui/material/styles';
-import { Stack, StackProps } from '@mui/material';
+import { type ReactNode, useMemo } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Stack, type StackProps } from '@mui/material';
 import clsx from 'clsx';
 import {
     FormGroupContextProvider,
-    RaRecord,
+    type RaRecord,
     RecordContextProvider,
     SourceContextProvider,
     useRecordContext,
@@ -18,8 +22,12 @@ import {
  * @see TranslatableInputs
  */
 export const TranslatableInputsTabContent = (
-    props: TranslatableInputsTabContentProps
-): ReactElement => {
+    inProps: TranslatableInputsTabContentProps
+) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { children, groupKey = '', locale, ...other } = props;
     const { selectedLocale, getRecordForLocale } = useTranslatableContext();
     const parentSourceContext = useSourceContext();
@@ -112,3 +120,22 @@ const Root = styled(Stack, { name: PREFIX })(({ theme }) => ({
         display: 'none',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTranslatableInputsTabContent: 'root' | 'hidden';
+    }
+
+    interface ComponentsPropsList {
+        RaTranslatableInputsTabContent: Partial<TranslatableInputsTabContentProps>;
+    }
+
+    interface Components {
+        RaTranslatableInputsTabContent?: {
+            defaultProps?: ComponentsPropsList['RaTranslatableInputsTabContent'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTranslatableInputsTabContent'];
+        };
+    }
+}

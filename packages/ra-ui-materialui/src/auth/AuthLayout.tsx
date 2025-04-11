@@ -1,17 +1,25 @@
 import * as React from 'react';
-import { Card, styled, Theme } from '@mui/material';
-import { MUIStyledCommonProps } from '@mui/system';
+import {
+    Card,
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+} from '@mui/material';
+import { useThemeProps, type MUIStyledCommonProps } from '@mui/system';
 import clsx from 'clsx';
 
-export const AuthLayout = ({
-    children,
-    className,
-    ...props
-}: AuthLayoutProps) => (
-    <Root className={clsx(AuthLayoutClasses.root, className)} {...props}>
-        <Card className={AuthLayoutClasses.card}>{children}</Card>
-    </Root>
-);
+export const AuthLayout = (inProps: AuthLayoutProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    const { children, className, ...rest } = props;
+    return (
+        <Root className={clsx(AuthLayoutClasses.root, className)} {...rest}>
+            <Card className={AuthLayoutClasses.card}>{children}</Card>
+        </Root>
+    );
+};
 
 export interface AuthLayoutProps
     extends MUIStyledCommonProps<Theme>,
@@ -46,3 +54,22 @@ const Root = styled('div', {
         marginTop: '6em',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaAuthLayout: 'root' | 'card';
+    }
+
+    interface ComponentsPropsList {
+        RaAuthLayout: Partial<AuthLayoutProps>;
+    }
+
+    interface Components {
+        RaAuthLayout?: {
+            defaultProps?: ComponentsPropsList['RaAuthLayout'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaAuthLayout'];
+        };
+    }
+}

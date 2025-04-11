@@ -1,13 +1,22 @@
-import React, { forwardRef, useCallback, ReactElement, ReactNode } from 'react';
-import { styled } from '@mui/material/styles';
+import React, {
+    forwardRef,
+    useCallback,
+    type ReactElement,
+    type ReactNode,
+} from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import clsx from 'clsx';
-import { Link, LinkProps, useMatch } from 'react-router-dom';
+import { Link, type LinkProps, useMatch } from 'react-router-dom';
 import {
     MenuItem,
-    MenuItemProps,
+    type MenuItemProps,
     ListItemIcon,
     Tooltip,
-    TooltipProps,
+    type TooltipProps,
     useMediaQuery,
     Theme,
 } from '@mui/material';
@@ -68,80 +77,88 @@ import { useTranslate, useBasename } from 'ra-core';
  *     </Admin>
  * );
  */
-export const MenuItemLink = forwardRef<any, MenuItemLinkProps>((props, ref) => {
-    const {
-        className,
-        primaryText,
-        leftIcon,
-        onClick,
-        sidebarIsOpen,
-        tooltipProps,
-        children,
-        ...rest
-    } = props;
+export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
+    (inProps, ref) => {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
+        const {
+            className,
+            primaryText,
+            leftIcon,
+            onClick,
+            sidebarIsOpen,
+            tooltipProps,
+            children,
+            ...rest
+        } = props;
 
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
-    const translate = useTranslate();
-    const basename = useBasename();
-
-    const [open, setOpen] = useSidebarState();
-    const handleMenuTap = useCallback(
-        e => {
-            if (isSmall) {
-                setOpen(false);
-            }
-            onClick && onClick(e);
-        },
-        [setOpen, isSmall, onClick]
-    );
-
-    const to =
-        (typeof props.to === 'string' ? props.to : props.to.pathname) || '';
-    const match = useMatch({ path: to, end: to === `${basename}/` });
-
-    const renderMenuItem = () => {
-        return (
-            <StyledMenuItem
-                className={clsx(className, {
-                    [MenuItemLinkClasses.active]: !!match,
-                })}
-                // @ts-ignore
-                component={LinkRef}
-                ref={ref}
-                tabIndex={0}
-                {...rest}
-                onClick={handleMenuTap}
-            >
-                {leftIcon && (
-                    <ListItemIcon className={MenuItemLinkClasses.icon}>
-                        {leftIcon}
-                    </ListItemIcon>
-                )}
-                {children
-                    ? children
-                    : typeof primaryText === 'string'
-                      ? translate(primaryText, { _: primaryText })
-                      : primaryText}
-            </StyledMenuItem>
+        const isSmall = useMediaQuery<Theme>(theme =>
+            theme.breakpoints.down('md')
         );
-    };
+        const translate = useTranslate();
+        const basename = useBasename();
 
-    return open ? (
-        renderMenuItem()
-    ) : (
-        <Tooltip
-            title={
-                typeof primaryText === 'string'
-                    ? translate(primaryText, { _: primaryText })
-                    : primaryText
-            }
-            placement="right"
-            {...tooltipProps}
-        >
-            {renderMenuItem()}
-        </Tooltip>
-    );
-});
+        const [open, setOpen] = useSidebarState();
+        const handleMenuTap = useCallback(
+            e => {
+                if (isSmall) {
+                    setOpen(false);
+                }
+                onClick && onClick(e);
+            },
+            [setOpen, isSmall, onClick]
+        );
+
+        const to =
+            (typeof props.to === 'string' ? props.to : props.to.pathname) || '';
+        const match = useMatch({ path: to, end: to === `${basename}/` });
+
+        const renderMenuItem = () => {
+            return (
+                <StyledMenuItem
+                    className={clsx(className, {
+                        [MenuItemLinkClasses.active]: !!match,
+                    })}
+                    // @ts-ignore
+                    component={LinkRef}
+                    ref={ref}
+                    tabIndex={0}
+                    {...rest}
+                    onClick={handleMenuTap}
+                >
+                    {leftIcon && (
+                        <ListItemIcon className={MenuItemLinkClasses.icon}>
+                            {leftIcon}
+                        </ListItemIcon>
+                    )}
+                    {children
+                        ? children
+                        : typeof primaryText === 'string'
+                          ? translate(primaryText, { _: primaryText })
+                          : primaryText}
+                </StyledMenuItem>
+            );
+        };
+
+        return open ? (
+            renderMenuItem()
+        ) : (
+            <Tooltip
+                title={
+                    typeof primaryText === 'string'
+                        ? translate(primaryText, { _: primaryText })
+                        : primaryText
+                }
+                placement="right"
+                {...tooltipProps}
+            >
+                {renderMenuItem()}
+            </Tooltip>
+        );
+    }
+);
 
 export type MenuItemLinkProps = Omit<
     LinkProps & MenuItemProps<'li'>,
@@ -182,3 +199,22 @@ const StyledMenuItem = styled(MenuItem, {
 const LinkRef = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
     <Link ref={ref} {...props} />
 ));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaMenuItemLink: 'root' | 'active' | 'icon';
+    }
+
+    interface ComponentsPropsList {
+        RaMenuItemLink: Partial<MenuItemLinkProps>;
+    }
+
+    interface Components {
+        RaMenuItemLink?: {
+            defaultProps?: ComponentsPropsList['RaMenuItemLink'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaMenuItemLink'];
+        };
+    }
+}

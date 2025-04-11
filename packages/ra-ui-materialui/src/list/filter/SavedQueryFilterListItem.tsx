@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { ReactElement, memo } from 'react';
+import { type ReactElement, memo } from 'react';
 import {
     IconButton,
     ListItem,
     ListItemButton,
-    ListItemProps,
+    type ListItemProps,
     ListItemText,
     ListItemSecondaryAction,
     styled,
+    type ComponentsOverrides,
+    useThemeProps,
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import isEqual from 'lodash/isEqual';
@@ -25,7 +27,11 @@ const arePropsEqual = (
     isEqual(prevProps.value, nextProps.value);
 
 export const SavedQueryFilterListItem = memo(
-    (props: SavedQueryFilterListItemProps): ReactElement => {
+    (inProps: SavedQueryFilterListItemProps): ReactElement => {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
         const { className, label, sx, value } = props;
         const { filterValues, sort, perPage, displayedFilters } =
             useListContext();
@@ -110,3 +116,22 @@ const StyledListItem = styled(ListItem, {
 export interface SavedQueryFilterListItemProps
     extends SavedQuery,
         Omit<ListItemProps, 'value'> {}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSavedQueryFilterListItem: 'root' | 'listItemButton' | 'listItemText';
+    }
+
+    interface ComponentsPropsList {
+        RaSavedQueryFilterListItem: Partial<SavedQueryFilterListItemProps>;
+    }
+
+    interface Components {
+        RaSavedQueryFilterListItem?: {
+            defaultProps?: ComponentsPropsList['RaSavedQueryFilterListItem'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSavedQueryFilterListItem'];
+        };
+    }
+}

@@ -1,5 +1,9 @@
-import { createTheme, PaletteOptions, Theme } from '@mui/material';
-import { RaThemeOptions } from './types';
+import {
+    createTheme,
+    PaletteOptions,
+    Theme,
+    ThemeOptions,
+} from '@mui/material';
 
 /**
  * Nano: A dense theme with minimal chrome, ideal for complex apps.
@@ -7,7 +11,7 @@ import { RaThemeOptions } from './types';
  * Uses a small font size, reduced spacing, text buttons, standard variant inputs, pale colors.
  */
 
-const componentsOverrides = (theme: Theme) => ({
+const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
     MuiAlert: {
         defaultProps: {
             variant: 'outlined' as const,
@@ -348,7 +352,7 @@ const lightPalette: PaletteOptions = {
     ...alert,
 };
 
-const createNanoTheme = (palette: RaThemeOptions['palette']) => {
+const createNanoTheme = (palette: PaletteOptions) => {
     const themeOptions = {
         palette,
         shape: { borderRadius: 0 },

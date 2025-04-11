@@ -1,13 +1,17 @@
 import * as React from 'react';
 import { isElement } from 'react-is';
-import { styled } from '@mui/material/styles';
-import { memo, ReactElement } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { memo, type ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
     ListItemButton,
     ListItemIcon,
-    ListItemProps,
+    type ListItemProps,
     ListItemText,
     ListItemSecondaryAction,
 } from '@mui/material';
@@ -147,7 +151,11 @@ const arePropsEqual = (prevProps, nextProps) =>
  *     </Card>
  * );
  */
-export const FilterListItem = memo((props: FilterListItemProps) => {
+export const FilterListItem = memo((inProps: FilterListItemProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         label,
         value,
@@ -259,4 +267,27 @@ export interface FilterListItemProps extends Omit<ListItemProps, 'value'> {
     icon?: ReactElement;
     toggleFilter?: (value: any, filters: any) => any;
     isSelected?: (value: any, filters: any) => boolean;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFilterListItem:
+            | 'root'
+            | 'listItemButton'
+            | 'listItemText'
+            | 'listItemIcon';
+    }
+
+    interface ComponentsPropsList {
+        RaFilterListItem: Partial<FilterListItemProps>;
+    }
+
+    interface Components {
+        RaFilterListItem?: {
+            defaultProps?: ComponentsPropsList['RaFilterListItem'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFilterListItem'];
+        };
+    }
 }

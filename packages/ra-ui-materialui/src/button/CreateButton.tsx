@@ -1,7 +1,11 @@
 import * as React from 'react';
 import ContentAdd from '@mui/icons-material/Add';
-import { Fab, useMediaQuery, Theme } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Fab, useMediaQuery, type Theme } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
@@ -11,9 +15,9 @@ import {
     useCreatePath,
     useCanAccess,
 } from 'ra-core';
-import { Link, To } from 'react-router-dom';
+import { Link, type To } from 'react-router-dom';
 
-import { Button, ButtonProps, LocationDescriptor } from './Button';
+import { Button, type ButtonProps, type LocationDescriptor } from './Button';
 
 /**
  * Opens the Create view of a given resource
@@ -28,7 +32,11 @@ import { Button, ButtonProps, LocationDescriptor } from './Button';
  *     <CreateButton label="Create comment" />
  * );
  */
-const CreateButton = (props: CreateButtonProps) => {
+const CreateButton = (inProps: CreateButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         icon = defaultIcon,
@@ -173,3 +181,22 @@ const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
         state,
     };
 };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaCreateButton: 'root' | 'floating';
+    }
+
+    interface ComponentsPropsList {
+        RaCreateButton: Partial<CreateButtonProps>;
+    }
+
+    interface Components {
+        RaCreateButton?: {
+            defaultProps?: ComponentsPropsList['RaCreateButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaCreateButton'];
+        };
+    }
+}

@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { CircularProgress, InputAdornment } from '@mui/material';
-import { styled, SxProps } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useTimeout } from 'ra-core';
 
 import { ResettableTextField } from './ResettableTextField';
@@ -10,16 +16,21 @@ import { ResettableTextField } from './ResettableTextField';
  *
  * Avoids visual jumps when replaced by a form input
  */
-export const LoadingInput = ({
-    fullWidth,
-    label,
-    helperText,
-    margin,
-    size,
-    sx,
-    timeout = 1000,
-    variant,
-}: LoadingInputProps) => {
+export const LoadingInput = (inProps: LoadingInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    const {
+        fullWidth,
+        label,
+        helperText,
+        margin,
+        size,
+        sx,
+        timeout = 1000,
+        variant,
+    } = props;
     const oneSecondHasPassed = useTimeout(timeout);
 
     return (
@@ -76,8 +87,27 @@ export interface LoadingInputProps {
     helperText?: React.ReactNode;
     margin?: 'normal' | 'none' | 'dense';
     label?: string | React.ReactElement | false;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     size?: 'medium' | 'small';
     timeout?: number;
     variant?: 'standard' | 'filled' | 'outlined';
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLoadingInput: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaLoadingInput: Partial<LoadingInputProps>;
+    }
+
+    interface Components {
+        RaLoadingInput?: {
+            defaultProps?: ComponentsPropsList['RaLoadingInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLoadingInput'];
+        };
+    }
 }

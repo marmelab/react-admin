@@ -1,10 +1,14 @@
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import get from 'lodash/get';
 import { FilterLiveForm, useListContext, useResourceContext } from 'ra-core';
 import * as React from 'react';
 import {
-    HtmlHTMLAttributes,
-    ReactNode,
+    type HtmlHTMLAttributes,
+    type ReactNode,
     useCallback,
     useContext,
     useEffect,
@@ -14,7 +18,11 @@ import { useFormContext } from 'react-hook-form';
 import { FilterContext } from '../FilterContext';
 import { FilterFormInput } from './FilterFormInput';
 
-export const FilterForm = (props: FilterFormProps) => {
+export const FilterForm = (inProps: FilterFormProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { filters: filtersProps, ...rest } = props;
     const filters = useContext(FilterContext) || filtersProps;
 
@@ -139,3 +147,22 @@ const isEmptyValue = (filterValue: unknown) => {
 
     return false;
 };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFilterForm: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaFilterForm: Partial<FilterFormProps>;
+    }
+
+    interface Components {
+        RaFilterForm?: {
+            defaultProps?: ComponentsPropsList['RaFilterForm'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFilterForm'];
+        };
+    }
+}

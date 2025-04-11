@@ -1,6 +1,10 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import Tab, { TabProps } from '@mui/material/Tab';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Tab, type TabProps } from '@mui/material';
 import { useFormGroup, useTranslate } from 'ra-core';
 import { capitalize } from 'inflection';
 import clsx from 'clsx';
@@ -10,8 +14,12 @@ import clsx from 'clsx';
  * @see TranslatableInputs
  */
 export const TranslatableInputsTab = (
-    props: TranslatableInputsTabProps & TabProps
+    inProps: TranslatableInputsTabProps & TabProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { groupKey = '', locale, ...rest } = props;
     const { isValid } = useFormGroup(`${groupKey}${locale}`);
     const translate = useTranslate();
@@ -53,3 +61,22 @@ const StyledTab = styled(Tab, { name: PREFIX })(({ theme }) => ({
         color: theme.palette.error.main,
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTranslatableInputsTab: 'root' | 'error';
+    }
+
+    interface ComponentsPropsList {
+        RaTranslatableInputsTab: Partial<TranslatableInputsTabProps>;
+    }
+
+    interface Components {
+        RaTranslatableInputsTab?: {
+            defaultProps?: ComponentsPropsList['RaTranslatableInputsTab'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTranslatableInputsTab'];
+        };
+    }
+}

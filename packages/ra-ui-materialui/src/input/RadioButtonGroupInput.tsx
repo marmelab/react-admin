@@ -1,24 +1,28 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import clsx from 'clsx';
 import {
     FormControl,
+    type FormControlProps,
     FormHelperText,
     FormLabel,
     RadioGroup,
+    type RadioGroupProps,
 } from '@mui/material';
-import { RadioGroupProps } from '@mui/material/RadioGroup';
-import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
 import {
     useInput,
     FieldTitle,
-    ChoicesProps,
+    type ChoicesProps,
     useChoicesContext,
     useGetRecordRepresentation,
 } from 'ra-core';
 
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { RadioButtonGroupInputItem } from './RadioButtonGroupInputItem';
@@ -85,7 +89,11 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the Material UI <RadioButtonGroup> component
  */
-export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
+export const RadioButtonGroupInput = (inProps: RadioButtonGroupInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         choices: choicesProp,
         className,
@@ -288,3 +296,22 @@ const StyledFormControl = styled(FormControl, {
 }));
 
 const defaultOptions = {};
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaRadioButtonGroupInput: 'root' | 'label';
+    }
+
+    interface ComponentsPropsList {
+        RaRadioButtonGroupInput: Partial<RadioButtonGroupInputProps>;
+    }
+
+    interface Components {
+        RaRadioButtonGroupInput?: {
+            defaultProps?: ComponentsPropsList['RaRadioButtonGroupInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaRadioButtonGroupInput'];
+        };
+    }
+}

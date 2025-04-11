@@ -1,4 +1,5 @@
-import { styled } from '@mui/material';
+import { type ComponentsOverrides, styled } from '@mui/material';
+import type { DataTableProps } from './DataTable';
 
 const PREFIX = 'RaDataTable';
 
@@ -79,3 +80,42 @@ export const DataTableRoot = styled('div', {
     },
     [`& .${DataTableClasses.expandRow}`]: {},
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaDataTable:
+            | 'root'
+            | 'table'
+            | 'tableWrapper'
+            | 'thead'
+            | 'tbody'
+            | 'headerRow'
+            | 'headerCell'
+            | 'checkbox'
+            | 'row'
+            | 'clickableRow'
+            | 'rowEven'
+            | 'rowOdd'
+            | 'rowCell'
+            | 'selectable'
+            | 'expandHeader'
+            | 'expandIconCell'
+            | 'expandIcon'
+            | 'expandable'
+            | 'expanded'
+            | 'expandRow';
+    }
+
+    interface ComponentsPropsList {
+        RaDataTable: Partial<DataTableProps>;
+    }
+
+    interface Components {
+        RaDataTable?: {
+            defaultProps?: ComponentsPropsList['RaDataTable'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaDataTable'];
+        };
+    }
+}

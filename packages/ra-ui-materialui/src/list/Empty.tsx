@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import Inbox from '@mui/icons-material/Inbox';
 import {
@@ -11,7 +15,11 @@ import {
 
 import { CreateButton } from '../button';
 
-export const Empty = (props: EmptyProps) => {
+export const Empty = (inProps: EmptyProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { className } = props;
     const { hasCreate } = useResourceDefinition(props);
     const resource = useResourceContext(props);
@@ -92,3 +100,22 @@ const Root = styled('span', {
         marginTop: '2em',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaEmpty: 'root' | 'message' | 'icon' | 'toolbar';
+    }
+
+    interface ComponentsPropsList {
+        RaEmpty: Partial<EmptyProps>;
+    }
+
+    interface Components {
+        RaEmpty?: {
+            defaultProps?: ComponentsPropsList['RaEmpty'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaEmpty'];
+        };
+    }
+}

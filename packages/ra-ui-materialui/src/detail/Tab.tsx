@@ -2,12 +2,13 @@ import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
+    ComponentsOverrides,
     Tab as MuiTab,
     TabProps as MuiTabProps,
     Stack,
     styled,
 } from '@mui/material';
-import { ResponsiveStyleValue } from '@mui/system';
+import { ResponsiveStyleValue, useThemeProps } from '@mui/system';
 import { useTranslate, RaRecord, useSplatPathBase } from 'ra-core';
 import clsx from 'clsx';
 
@@ -58,22 +59,27 @@ import { Labeled } from '../Labeled';
  *     );
  *     export default App;
  */
-export const Tab = ({
-    children,
-    contentClassName,
-    context,
-    count,
-    className,
-    divider,
-    icon,
-    iconPosition,
-    label,
-    record,
-    spacing = 1,
-    syncWithLocation = true,
-    value,
-    ...rest
-}: TabProps) => {
+export const Tab = (inProps: TabProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    const {
+        children,
+        contentClassName,
+        context,
+        count,
+        className,
+        divider,
+        icon,
+        iconPosition,
+        label,
+        record,
+        spacing = 1,
+        syncWithLocation = true,
+        value,
+        ...rest
+    } = props;
     const translate = useTranslate();
     const location = useLocation();
     const splatPathBase = useSplatPathBase();
@@ -164,4 +170,23 @@ export interface TabProps extends Omit<MuiTabProps, 'children'> {
     spacing?: ResponsiveStyleValue<number | string>;
     syncWithLocation?: boolean;
     value?: string | number;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTab: 'root' | 'row';
+    }
+
+    interface ComponentsPropsList {
+        RaTab: Partial<TabProps>;
+    }
+
+    interface Components {
+        RaTab?: {
+            defaultProps?: ComponentsPropsList['RaTab'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTab'];
+        };
+    }
 }

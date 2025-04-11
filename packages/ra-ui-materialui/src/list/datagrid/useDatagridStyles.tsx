@@ -1,4 +1,5 @@
-import { styled } from '@mui/material';
+import { type ComponentsOverrides, styled } from '@mui/material';
+import type { DatagridProps } from './Datagrid';
 
 const PREFIX = 'RaDatagrid';
 
@@ -75,3 +76,41 @@ export const DatagridRoot = styled('div', {
     },
     [`& .${DatagridClasses.expandedPanel}`]: {},
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaDatagrid:
+            | 'root'
+            | 'table'
+            | 'tableWrapper'
+            | 'thead'
+            | 'tbody'
+            | 'headerRow'
+            | 'headerCell'
+            | 'checkbox'
+            | 'row'
+            | 'clickableRow'
+            | 'rowEven'
+            | 'rowOdd'
+            | 'rowCell'
+            | 'selectable'
+            | 'expandHeader'
+            | 'expandIconCell'
+            | 'expandIcon'
+            | 'expandable'
+            | 'expandedPanel';
+    }
+
+    interface ComponentsPropsList {
+        RaDatagrid: Partial<DatagridProps>;
+    }
+
+    interface Components {
+        RaDatagrid?: {
+            defaultProps?: ComponentsPropsList['RaDatagrid'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaDatagrid'];
+        };
+    }
+}

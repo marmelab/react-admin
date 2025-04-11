@@ -2,7 +2,12 @@ import * as React from 'react';
 import { Fragment, useState } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
 
-import { alpha, styled } from '@mui/material/styles';
+import {
+    alpha,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useListContext,
     useTranslate,
@@ -10,19 +15,23 @@ import {
     useNotify,
     useUnselectAll,
     useResourceContext,
-    MutationMode,
-    RaRecord,
-    UpdateManyParams,
+    type MutationMode,
+    type RaRecord,
+    type UpdateManyParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
-import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
+import { Button, type ButtonProps } from './Button';
+import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, inflect } from 'inflection';
 
 export const BulkUpdateWithConfirmButton = (
-    props: BulkUpdateWithConfirmButtonProps
+    inProps: BulkUpdateWithConfirmButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const notify = useNotify();
     const translate = useTranslate();
     const resource = useResourceContext(props);
@@ -185,3 +194,22 @@ const StyledButton = styled(Button, {
 }));
 
 const defaultIcon = <ActionUpdate />;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBulkUpdateWithConfirmButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaBulkUpdateWithConfirmButton: Partial<BulkUpdateWithConfirmButtonProps>;
+    }
+
+    interface Components {
+        RaBulkUpdateWithConfirmButton?: {
+            defaultProps?: ComponentsPropsList['RaBulkUpdateWithConfirmButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBulkUpdateWithConfirmButton'];
+        };
+    }
+}

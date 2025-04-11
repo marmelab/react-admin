@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { SxProps, styled } from '@mui/material/styles';
+import {
+    ComponentsOverrides,
+    SxProps,
+    type Theme,
+    styled,
+} from '@mui/material/styles';
 import { StackProps, useThemeProps } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import {
@@ -69,7 +74,7 @@ export const TranslatableInputs = (
 ): ReactElement => {
     const props = useThemeProps({
         props: inProps,
-        name: 'RaTranslatableInputs',
+        name: PREFIX,
     });
     const {
         className,
@@ -117,7 +122,7 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
     fullWidth?: boolean;
     groupKey?: string;
     margin?: 'none' | 'normal' | 'dense';
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     StackProps?: StackProps;
 }
 
@@ -139,3 +144,22 @@ const Root = styled('div', {
         width: '100%',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTranslatableInputs: 'root' | 'fullWidth';
+    }
+
+    interface ComponentsPropsList {
+        RaTranslatableInputs: Partial<TranslatableInputsProps>;
+    }
+
+    interface Components {
+        RaTranslatableInputs?: {
+            defaultProps?: ComponentsPropsList['RaTranslatableInputs'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTranslatableInputs'];
+        };
+    }
+}

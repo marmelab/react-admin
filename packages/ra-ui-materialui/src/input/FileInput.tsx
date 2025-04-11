@@ -1,14 +1,21 @@
 import React, {
     Children,
-    FC,
+    type ComponentType,
     isValidElement,
-    ReactElement,
-    ReactNode,
+    type ReactElement,
+    type ReactNode,
 } from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useTheme,
+    type SxProps,
+    useThemeProps,
+    type Theme,
+} from '@mui/material/styles';
 import clsx from 'clsx';
-import { useDropzone, DropzoneOptions } from 'react-dropzone';
-import FormHelperText from '@mui/material/FormHelperText';
+import { useDropzone, type DropzoneOptions } from 'react-dropzone';
+import { FormHelperText, type SvgIconProps } from '@mui/material';
 import {
     useInput,
     useTranslate,
@@ -16,16 +23,17 @@ import {
     RecordContextProvider,
 } from 'ra-core';
 
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 import { Labeled } from '../Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { useTheme } from '@mui/material/styles';
-import { SxProps } from '@mui/system';
-import { SvgIconProps } from '@mui/material';
 
-export const FileInput = (props: FileInputProps) => {
+export const FileInput = (inProps: FileInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         accept,
         children,
@@ -275,8 +283,27 @@ export type FileInputProps = CommonInputProps & {
     options?: DropzoneOptions;
     onRemove?: Function;
     placeholder?: ReactNode;
-    removeIcon?: FC<SvgIconProps>;
+    removeIcon?: ComponentType<SvgIconProps>;
     inputProps?: any;
     validateFileRemoval?(file): boolean | Promise<boolean>;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFileInput: 'root' | 'dropZone' | 'removeButton';
+    }
+
+    interface ComponentsPropsList {
+        RaFileInput: Partial<FileInputProps>;
+    }
+
+    interface Components {
+        RaFileInput?: {
+            defaultProps?: ComponentsPropsList['RaFileInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFileInput'];
+        };
+    }
+}

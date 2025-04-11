@@ -4,8 +4,8 @@ import {
     darken,
     Theme,
     PaletteOptions,
+    ThemeOptions,
 } from '@mui/material';
-import { RaThemeOptions } from './types';
 
 /**
  * House: A young and joyful theme.
@@ -13,7 +13,7 @@ import { RaThemeOptions } from './types';
  * Uses rounded corners, blurry backdrop, large padding, and a bright color palette.
  */
 
-const componentsOverrides = (theme: Theme) => ({
+const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
     MuiBackdrop: {
         styleOverrides: {
             root: {
@@ -189,7 +189,7 @@ const lightPalette: PaletteOptions = {
     mode: 'light' as 'light',
 };
 
-const createHouseTheme = (palette: RaThemeOptions['palette']) => {
+const createHouseTheme = (palette: PaletteOptions) => {
     const themeOptions = {
         palette,
         shape: { borderRadius: 20 },

@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { ElementType, ReactElement } from 'react';
+import type { ElementType, ReactElement } from 'react';
 import {
     Stack,
-    StackProps,
-    Theme,
+    type StackProps,
+    type Theme,
     Typography,
-    TypographyProps,
+    type TypographyProps,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { Property } from 'csstype';
+import { type ComponentsOverrides, styled } from '@mui/material/styles';
+import { type Property } from 'csstype';
 import clsx from 'clsx';
 
 import { FieldTitle } from 'ra-core';
-import { ResponsiveStyleValue } from '@mui/system';
+import { useThemeProps, type ResponsiveStyleValue } from '@mui/system';
 
 /**
  * Wrap a field or an input with a label if necessary.
@@ -26,57 +26,65 @@ import { ResponsiveStyleValue } from '@mui/system';
  *     <FooComponent source="title" />
  * </Labeled>
  */
-export const Labeled = ({
-    children,
-    className = '',
-    color,
-    component = 'span',
-    fullWidth,
-    isRequired,
-    label,
-    resource,
-    source,
-    TypographyProps,
-    ...rest
-}: LabeledProps) => (
-    <Root
-        // @ts-ignore https://github.com/mui/material-ui/issues/29875
-        component={component}
-        className={clsx(className, {
-            [LabeledClasses.fullWidth]: fullWidth,
-        })}
-        {...rest}
-    >
-        {label !== false &&
-        children.props.label !== false &&
-        typeof children.type !== 'string' &&
-        // @ts-ignore
-        children.type?.displayName !== 'Labeled' &&
-        // @ts-ignore
-        children.type?.displayName !== 'Labeled' ? (
-            <Typography
-                sx={
-                    color
-                        ? undefined
-                        : {
-                              color: theme => theme.palette.text.secondary,
-                          }
-                }
-                color={color}
-                className={LabeledClasses.label}
-                {...TypographyProps}
-            >
-                <FieldTitle
-                    label={label || children.props.label}
-                    source={source || children.props.source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
-            </Typography>
-        ) : null}
-        {children}
-    </Root>
-);
+export const Labeled = (inProps: LabeledProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    const {
+        children,
+        className = '',
+        color,
+        component = 'span',
+        fullWidth,
+        isRequired,
+        label,
+        resource,
+        source,
+        TypographyProps,
+        ...rest
+    } = props;
+
+    return (
+        <Root
+            // @ts-ignore https://github.com/mui/material-ui/issues/29875
+            component={component}
+            className={clsx(className, {
+                [LabeledClasses.fullWidth]: fullWidth,
+            })}
+            {...rest}
+        >
+            {label !== false &&
+            children.props.label !== false &&
+            typeof children.type !== 'string' &&
+            // @ts-ignore
+            children.type?.displayName !== 'Labeled' &&
+            // @ts-ignore
+            children.type?.displayName !== 'Labeled' ? (
+                <Typography
+                    sx={
+                        color
+                            ? undefined
+                            : {
+                                  color: theme => theme.palette.text.secondary,
+                              }
+                    }
+                    color={color}
+                    className={LabeledClasses.label}
+                    {...TypographyProps}
+                >
+                    <FieldTitle
+                        label={label || children.props.label}
+                        source={source || children.props.source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                </Typography>
+            ) : null}
+            {children}
+        </Root>
+    );
+};
 
 Labeled.displayName = 'Labeled';
 
@@ -121,3 +129,22 @@ const Root = styled(Stack, {
         marginBottom: '0.2em',
     },
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLabeled: 'root' | 'label' | 'fullWidth';
+    }
+
+    interface ComponentsPropsList {
+        RaLabeled: Partial<LabeledProps>;
+    }
+
+    interface Components {
+        RaLabeled?: {
+            defaultProps?: ComponentsPropsList['RaLabeled'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLabeled'];
+        };
+    }
+}

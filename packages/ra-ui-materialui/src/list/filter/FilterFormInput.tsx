@@ -1,11 +1,19 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { IconButton } from '@mui/material';
 import ActionHide from '@mui/icons-material/RemoveCircleOutline';
 import clsx from 'clsx';
 import { useResourceContext, useTranslate } from 'ra-core';
 
-export const FilterFormInput = props => {
+export const FilterFormInput = (inProps: FilterFormInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { filterElement, handleHide, className } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -43,6 +51,13 @@ export const FilterFormInput = props => {
     );
 };
 
+export interface FilterFormInputProps {
+    filterElement: React.ReactElement;
+    handleHide: (event: React.MouseEvent<HTMLElement>) => void;
+    className?: string;
+    resource?: string;
+}
+
 const PREFIX = 'RaFilterFormInput';
 
 export const FilterFormInputClasses = {
@@ -68,3 +83,22 @@ const Root = styled('div', {
 }));
 
 const emptyRecord = {};
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFilterFormInput: 'root' | 'spacer' | 'hideButton';
+    }
+
+    interface ComponentsPropsList {
+        RaFilterFormInput: Partial<FilterFormInputProps>;
+    }
+
+    interface Components {
+        RaFilterFormInput?: {
+            defaultProps?: ComponentsPropsList['RaFilterFormInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFilterFormInput'];
+        };
+    }
+}
