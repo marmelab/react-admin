@@ -9,6 +9,7 @@ import {
     PerInputValidation,
 } from './FilterLiveForm.stories';
 import React from 'react';
+import { WithFilterListSection } from '../../../ra-ui-materialui/src/list/filter/FilterLiveForm.stories';
 
 describe('<FilterLiveForm />', () => {
     it('should allow to set a filter value', async () => {
@@ -138,6 +139,30 @@ describe('<FilterLiveForm />', () => {
         ).toBeNull();
     });
 
+    it('should not reapply old filter values when they change externally', async () => {
+        render(<WithFilterListSection />);
+        // Click on Yes
+        fireEvent.click(await screen.findByText('Yes'));
+        await screen.findByText('"has_newsletter": true', { exact: false });
+        await new Promise(resolve => setTimeout(resolve, 510));
+        await screen.findByText('"has_newsletter": true', { exact: false });
+        // Click on No
+        fireEvent.click(await screen.findByText('No'));
+        await screen.findByText('"has_newsletter": false', { exact: false });
+        await new Promise(resolve => setTimeout(resolve, 510));
+        await screen.findByText('"has_newsletter": false', { exact: false });
+        // Click on Yes
+        fireEvent.click(await screen.findByText('Yes'));
+        await screen.findByText('"has_newsletter": true', { exact: false });
+        await new Promise(resolve => setTimeout(resolve, 510));
+        await screen.findByText('"has_newsletter": true', { exact: false });
+        // Click on No
+        fireEvent.click(await screen.findByText('No'));
+        await screen.findByText('"has_newsletter": false', { exact: false });
+        await new Promise(resolve => setTimeout(resolve, 510));
+        await screen.findByText('"has_newsletter": false', { exact: false });
+    });
+
     describe('getFilterFormValues', () => {
         it('should correctly get the filter form values from the new filterValues', () => {
             const currentFormValues = {
@@ -154,6 +179,7 @@ describe('<FilterLiveForm />', () => {
                 nestedUpdated: { nestedValue: 'jkl2' },
                 nestedToSet: { nestedValue: 'mno2' },
                 published_at: '2022-01-01T03:00:00.000Z',
+                newIgnoredValue: 'pqr',
             };
 
             expect(

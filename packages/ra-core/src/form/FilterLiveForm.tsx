@@ -2,6 +2,7 @@ import * as React from 'react';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
+import merge from 'lodash/merge';
 import set from 'lodash/set';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
@@ -110,10 +111,7 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
             return;
         }
         formChangesPending.current = true;
-        setFilters({
-            ...filterValues,
-            ...values,
-        });
+        setFilters(merge({}, filterValues, values));
     };
     const debouncedOnSubmit = useDebouncedEvent(onSubmit, debounce || 0);
 
@@ -183,13 +181,10 @@ export const getFilterFormValues = (
     formValues: Record<string, any>,
     filterValues: Record<string, any>
 ) => {
-    return Object.keys(formValues).reduce(
-        (acc, key) => {
-            acc[key] = getInputValue(formValues, key, filterValues);
-            return acc;
-        },
-        cloneDeep(filterValues) ?? {}
-    );
+    return Object.keys(formValues).reduce((acc, key) => {
+        acc[key] = getInputValue(formValues, key, filterValues);
+        return acc;
+    }, {});
 };
 
 const getInputValue = (
