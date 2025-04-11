@@ -1,12 +1,22 @@
 import * as React from 'react';
-import { styled, SxProps } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import WarningAmber from '@mui/icons-material/WarningAmber';
 import clsx from 'clsx';
 import { useDefaultTitle, useTranslate } from 'ra-core';
 import { Title } from './Title';
 
-export const AuthenticationError = (props: AuthenticationErrorProps) => {
+export const AuthenticationError = (inProps: AuthenticationErrorProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         icon = DEFAULT_ICON,
@@ -41,7 +51,7 @@ export interface AuthenticationErrorProps {
     textPrimary?: string;
     textSecondary?: string;
     icon?: React.ReactNode;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaAuthenticationError';
@@ -78,3 +88,22 @@ const Root = styled('div', {
 const DEFAULT_ICON = (
     <WarningAmber className={AuthenticationErrorClasses.icon} />
 );
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaAuthenticationError: 'root' | 'icon' | 'message';
+    }
+
+    interface ComponentsPropsList {
+        RaAuthenticationError: Partial<AuthenticationErrorProps>;
+    }
+
+    interface Components {
+        RaAuthenticationError?: {
+            defaultProps?: ComponentsPropsList['RaAuthenticationError'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaAuthenticationError'];
+        };
+    }
+}

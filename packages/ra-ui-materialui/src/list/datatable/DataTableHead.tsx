@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { memo } from 'react';
 import { TableCell, TableHead, TableRow } from '@mui/material';
-import { styled, type SxProps } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+    type SxProps,
+    type Theme,
+} from '@mui/material/styles';
 import clsx from 'clsx';
 import {
     useDataTableConfigContext,
@@ -18,7 +24,11 @@ import { DataTableClasses } from './DataTableRoot';
  *
  * Renders select all checkbox as well as column head buttons used for sorting.
  */
-export const DataTableHead = memo((props: DataTableHeadProps) => {
+export const DataTableHead = memo((inProps: DataTableHeadProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { children, className, sx } = props;
     const {
         expand,
@@ -77,7 +87,7 @@ export interface DataTableHeadProps {
     children?: React.ReactNode;
     className?: string;
     size?: 'medium' | 'small';
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 DataTableHead.displayName = 'DataTableHead';
@@ -88,3 +98,22 @@ const TableHeadStyled = styled(TableHead, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(() => ({}));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaDataTableHead: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaDataTableHead: Partial<DataTableHeadProps>;
+    }
+
+    interface Components {
+        RaDataTableHead?: {
+            defaultProps?: ComponentsPropsList['RaDataTableHead'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaDataTableHead'];
+        };
+    }
+}

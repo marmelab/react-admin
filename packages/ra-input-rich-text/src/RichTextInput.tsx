@@ -225,11 +225,8 @@ const Root = styled('div', {
     [`& .${classes.editorContent}`]: {
         width: '100%',
         '& .ProseMirror': {
-            backgroundColor: theme.palette.background.default,
-            borderColor:
-                theme.palette.mode === 'light'
-                    ? 'rgba(0, 0, 0, 0.23)'
-                    : 'rgba(255, 255, 255, 0.23)',
+            backgroundColor: (theme.vars || theme).palette.background.default,
+            borderColor: (theme.vars || theme).palette.divider,
             borderRadius: theme.shape.borderRadius,
             borderStyle: 'solid',
             borderWidth: '1px',
@@ -237,14 +234,16 @@ const Root = styled('div', {
 
             '&[contenteditable="false"], &[contenteditable="false"]:hover, &[contenteditable="false"]:focus':
                 {
-                    backgroundColor: theme.palette.action.disabledBackground,
+                    backgroundColor: (theme.vars || theme).palette.action
+                        .disabledBackground,
                 },
 
             '&:hover': {
-                backgroundColor: theme.palette.action.hover,
+                backgroundColor: (theme.vars || theme).palette.action.hover,
             },
             '&:focus': {
-                backgroundColor: theme.palette.background.default,
+                backgroundColor: (theme.vars || theme).palette.background
+                    .default,
             },
             '& p': {
                 margin: '0 0 1em 0',

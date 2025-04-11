@@ -1,7 +1,15 @@
 import * as React from 'react';
-import { MouseEvent, ReactNode, useState } from 'react';
+import { type MouseEvent, type ReactNode, useState } from 'react';
 import { useLocaleState, useLocales } from 'ra-core';
-import { Box, Button, Menu, MenuItem, styled } from '@mui/material';
+import {
+    Box,
+    Button,
+    type ComponentsOverrides,
+    Menu,
+    MenuItem,
+    styled,
+    useThemeProps,
+} from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Translate';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -21,7 +29,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
  *     </AppBar>
  * );
  */
-export const LocalesMenuButton = (props: LocalesMenuButtonProps) => {
+export const LocalesMenuButton = (inProps: LocalesMenuButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { icon = DefaultIcon, languages: languagesProp } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const languages = useLocales({ locales: languagesProp });
@@ -93,4 +105,23 @@ const Root = styled('span', {
 export interface LocalesMenuButtonProps {
     icon?: ReactNode;
     languages?: { locale: string; name: string }[];
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLocalesMenuButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaLocalesMenuButton: Partial<LocalesMenuButtonProps>;
+    }
+
+    interface Components {
+        RaLocalesMenuButton?: {
+            defaultProps?: ComponentsPropsList['RaLocalesMenuButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLocalesMenuButton'];
+        };
+    }
 }

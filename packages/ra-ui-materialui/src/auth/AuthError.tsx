@@ -1,11 +1,21 @@
 import * as React from 'react';
-import { styled, SxProps } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import { useTranslate } from 'ra-core';
 import { Button } from '../button';
 import { Link } from 'react-router-dom';
 
-export const AuthError = (props: AuthErrorProps) => {
+export const AuthError = (inProps: AuthErrorProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         title = 'ra.page.error',
@@ -31,7 +41,7 @@ export interface AuthErrorProps {
     className?: string;
     title?: string;
     message?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaAuthError';
@@ -63,3 +73,22 @@ const Root = styled('div', {
         margin: '0 1em',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaAuthError: 'root' | 'message';
+    }
+
+    interface ComponentsPropsList {
+        RaAuthError: Partial<AuthErrorProps>;
+    }
+
+    interface Components {
+        RaAuthError?: {
+            defaultProps?: ComponentsPropsList['RaAuthError'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaAuthError'];
+        };
+    }
+}

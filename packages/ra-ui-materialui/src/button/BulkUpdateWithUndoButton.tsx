@@ -1,6 +1,10 @@
 import * as React from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
-import { alpha, styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useUpdateMany,
     useRefresh,
@@ -8,17 +12,21 @@ import {
     useUnselectAll,
     useResourceContext,
     useListContext,
-    RaRecord,
-    UpdateManyParams,
+    type RaRecord,
+    type UpdateManyParams,
     useTranslate,
 } from 'ra-core';
-import { UseMutationOptions } from '@tanstack/react-query';
+import type { UseMutationOptions } from '@tanstack/react-query';
 
-import { Button, ButtonProps } from './Button';
+import { Button, type ButtonProps } from './Button';
 
 export const BulkUpdateWithUndoButton = (
-    props: BulkUpdateWithUndoButtonProps
+    inProps: BulkUpdateWithUndoButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { selectedIds } = useListContext();
 
     const notify = useNotify();
@@ -134,12 +142,31 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.primary.main,
+    color: (theme.vars || theme).palette.primary.main,
     '&:hover': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.12),
+        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%)`,
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBulkUpdateWithUndoButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaBulkUpdateWithUndoButton: Partial<BulkUpdateWithUndoButtonProps>;
+    }
+
+    interface Components {
+        RaBulkUpdateWithUndoButton?: {
+            defaultProps?: ComponentsPropsList['RaBulkUpdateWithUndoButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBulkUpdateWithUndoButton'];
+        };
+    }
+}

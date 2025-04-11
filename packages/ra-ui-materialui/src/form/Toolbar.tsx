@@ -1,9 +1,13 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { Children, ReactNode } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Children, type ReactNode } from 'react';
 import {
     Toolbar as MuiToolbar,
-    ToolbarProps as MuiToolbarProps,
+    type ToolbarProps as MuiToolbarProps,
     useMediaQuery,
     Theme,
 } from '@mui/material';
@@ -53,7 +57,11 @@ import { SaveButton, DeleteButton } from '../button';
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
  *
  */
-export const Toolbar = (props: ToolbarProps) => {
+export const Toolbar = (inProps: ToolbarProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { children, className, resource, ...rest } = props;
 
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
@@ -100,10 +108,7 @@ const StyledToolbar = styled(MuiToolbar, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    backgroundColor:
-        theme.palette.mode === 'light'
-            ? theme.palette.grey[100]
-            : theme.palette.grey[900],
+    backgroundColor: (theme.vars || theme).palette.divider,
 
     [`&.${ToolbarClasses.desktopToolbar}`]: {},
 
@@ -125,3 +130,26 @@ const StyledToolbar = styled(MuiToolbar, {
         justifyContent: 'space-between',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaToolbar:
+            | 'root'
+            | 'desktopToolbar'
+            | 'mobileToolbar'
+            | 'defaultToolbar';
+    }
+
+    interface ComponentsPropsList {
+        RaToolbar: Partial<ToolbarProps>;
+    }
+
+    interface Components {
+        RaToolbar?: {
+            defaultProps?: ComponentsPropsList['RaToolbar'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaToolbar'];
+        };
+    }
+}

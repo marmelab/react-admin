@@ -7,9 +7,9 @@ import {
     ListItemText,
     ListProps,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { type ComponentsOverrides, styled } from '@mui/material/styles';
 import {
-    RaRecord,
+    type RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
     useGetRecordRepresentation,
@@ -19,15 +19,15 @@ import {
     useTranslate,
 } from 'ra-core';
 import * as React from 'react';
-import { isValidElement, ReactElement } from 'react';
+import { isValidElement, type ReactElement } from 'react';
 
 import { ListNoResults } from '../ListNoResults';
 import { SimpleListLoading } from './SimpleListLoading';
 import {
     FunctionToElement,
-    SimpleListBaseProps,
+    type SimpleListBaseProps,
     SimpleListItem,
-    SimpleListItemProps,
+    type SimpleListItemProps,
 } from './SimpleListItem';
 
 /**
@@ -276,3 +276,22 @@ const Root = styled(List, {
 });
 
 const DefaultEmpty = <ListNoResults />;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSimpleList: 'root' | 'tertiary';
+    }
+
+    interface ComponentsPropsList {
+        RaSimpleList: Partial<SimpleListProps>;
+    }
+
+    interface Components {
+        RaSimpleList?: {
+            defaultProps?: ComponentsPropsList['RaSimpleList'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSimpleList'];
+        };
+    }
+}

@@ -43,7 +43,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     },
 
     [`& .${classes.title}`]: {
-        color: theme.palette.common.white,
+        color: (theme.vars || theme).palette.common.white,
         marginBottom: theme.spacing(4),
         textAlign: 'center',
     },

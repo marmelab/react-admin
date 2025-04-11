@@ -2,26 +2,34 @@ import * as React from 'react';
 import { Fragment, useState } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
 
-import { alpha, styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useTranslate,
     useNotify,
     useResourceContext,
-    MutationMode,
-    RaRecord,
+    type MutationMode,
+    type RaRecord,
     useRecordContext,
     useUpdate,
-    UpdateParams,
+    type UpdateParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
-import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
+import { Button, type ButtonProps } from './Button';
+import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, inflect } from 'inflection';
 
 export const UpdateWithConfirmButton = (
-    props: UpdateWithConfirmButtonProps
+    inProps: UpdateWithConfirmButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const notify = useNotify();
     const translate = useTranslate();
     const resource = useResourceContext(props);
@@ -173,9 +181,9 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.primary.main,
+    color: (theme.vars || theme).palette.primary.main,
     '&:hover': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.12),
+        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%)`,
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',
@@ -184,3 +192,22 @@ const StyledButton = styled(Button, {
 }));
 
 const defaultIcon = <ActionUpdate />;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaUpdateWithConfirmButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaUpdateWithConfirmButton: Partial<UpdateWithConfirmButtonProps>;
+    }
+
+    interface Components {
+        RaUpdateWithConfirmButton?: {
+            defaultProps?: ComponentsPropsList['RaUpdateWithConfirmButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaUpdateWithConfirmButton'];
+        };
+    }
+}

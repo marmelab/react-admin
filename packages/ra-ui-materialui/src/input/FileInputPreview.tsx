@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { FC, ReactNode, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
+import { type ReactNode, useEffect } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
-import { SvgIconProps } from '@mui/material';
+import { type SvgIconProps } from '@mui/material';
 
-export const FileInputPreview = (props: FileInputPreviewProps) => {
+export const FileInputPreview = (inProps: FileInputPreviewProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         children,
         className,
@@ -58,7 +66,7 @@ const Root = styled('div', {
     [`& .${FileInputPreviewClasses.removeButton}`]: {},
 
     [`& .${FileInputPreviewClasses.removeIcon}`]: {
-        color: theme.palette.error.main,
+        color: (theme.vars || theme).palette.error.main,
     },
 }));
 
@@ -67,5 +75,24 @@ export interface FileInputPreviewProps {
     className?: string;
     onRemove: () => void;
     file: any;
-    removeIcon?: FC<SvgIconProps>;
+    removeIcon?: React.ComponentType<SvgIconProps>;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFileInputPreview: 'root' | 'removeButton' | 'removeIcon';
+    }
+
+    interface ComponentsPropsList {
+        RaFileInputPreview: Partial<FileInputPreviewProps>;
+    }
+
+    interface Components {
+        RaFileInputPreview?: {
+            defaultProps?: ComponentsPropsList['RaFileInputPreview'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFileInputPreview'];
+        };
+    }
 }

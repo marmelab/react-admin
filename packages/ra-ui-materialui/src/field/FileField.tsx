@@ -1,17 +1,22 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
 import {
-    ExtractRecordPaths,
-    HintedString,
+    type ExtractRecordPaths,
+    type HintedString,
     useFieldValue,
     useTranslate,
 } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps } from './types';
-import { SxProps } from '@mui/system';
+import type { FieldProps } from './types';
 import { Link } from '@mui/material';
 
 /**
@@ -30,8 +35,12 @@ import { Link } from '@mui/material';
 export const FileField = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: FileFieldProps<RecordType>
+    inProps: FileFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         emptyText,
@@ -123,7 +132,7 @@ export interface FileFieldProps<
     download?: boolean | string;
     ping?: string;
     rel?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaFileField';
@@ -138,3 +147,22 @@ const Root = styled('div', {
 const StyledList = styled('ul')({
     display: 'inline-block',
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFileField: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaFileField: Partial<FileFieldProps>;
+    }
+
+    interface Components {
+        RaFileField?: {
+            defaultProps?: ComponentsPropsList['RaFileField'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFileField'];
+        };
+    }
+}

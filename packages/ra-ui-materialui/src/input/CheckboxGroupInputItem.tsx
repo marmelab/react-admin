@@ -1,10 +1,24 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { useChoices } from 'ra-core';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import {
+    Checkbox,
+    type CheckboxProps,
+    FormControlLabel,
+    type FormControlLabelProps,
+} from '@mui/material';
+import { type ChoicesProps, useChoices } from 'ra-core';
 
-export const CheckboxGroupInputItem = props => {
+export const CheckboxGroupInputItem = (
+    inProps: CheckboxGroupInputItemProps
+) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         id,
         choice,
@@ -49,14 +63,23 @@ export const CheckboxGroupInputItem = props => {
                     }
                     value={String(getChoiceValue(choice))}
                     {...options}
-                    {...rest}
                 />
             }
             label={choiceName}
             labelPlacement={labelPlacement}
+            {...rest}
         />
     );
 };
+
+export interface CheckboxGroupInputItemProps
+    extends Omit<FormControlLabelProps, 'control' | 'label'>,
+        Pick<ChoicesProps, 'optionValue' | 'optionText' | 'translateChoice'> {
+    choice: any;
+    value: any;
+    fullWidth?: boolean;
+    options?: CheckboxProps;
+}
 
 const PREFIX = 'RaCheckboxGroupInputItem';
 
@@ -72,3 +95,22 @@ const StyledFormControlLabel = styled(FormControlLabel, {
         height: 32,
     },
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaCheckboxGroupInputItem: 'root' | 'checkbox';
+    }
+
+    interface ComponentsPropsList {
+        RaCheckboxGroupInputItem: Partial<CheckboxGroupInputItemProps>;
+    }
+
+    interface Components {
+        RaCheckboxGroupInputItem?: {
+            defaultProps?: ComponentsPropsList['RaCheckboxGroupInputItem'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaCheckboxGroupInputItem'];
+        };
+    }
+}

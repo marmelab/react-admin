@@ -1,19 +1,25 @@
 import * as React from 'react';
 import {
-    ChangeEvent,
+    type ChangeEvent,
     Children,
     cloneElement,
     isValidElement,
-    ReactElement,
-    ReactNode,
+    type ReactElement,
+    type ReactNode,
     useState,
 } from 'react';
-import { ResponsiveStyleValue, SxProps } from '@mui/system';
-import { styled } from '@mui/material/styles';
+import { ResponsiveStyleValue } from '@mui/system';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import { Divider } from '@mui/material';
 import { Outlet, Routes, Route } from 'react-router-dom';
 import {
-    RaRecord,
+    type RaRecord,
     useRecordContext,
     OptionalRecordContextProvider,
 } from 'ra-core';
@@ -74,7 +80,11 @@ import { Tab } from './Tab';
  * @param {boolean} props.syncWithLocation Whether to update the URL when the tab changes. Defaults to true.
  * @param {ElementType} props.tabs A custom component for rendering tabs.
  */
-export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
+export const TabbedShowLayout = (inProps: TabbedShowLayoutProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         children,
         className,
@@ -189,7 +199,7 @@ export interface TabbedShowLayoutProps {
     record?: RaRecord;
     rootPath?: string;
     spacing?: ResponsiveStyleValue<number | string>;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     value?: any;
@@ -222,3 +232,22 @@ const sanitizeRestProps = ({
     tabs,
     ...rest
 }: any) => rest;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTabbedShowLayout: 'root' | 'content';
+    }
+
+    interface ComponentsPropsList {
+        RaTabbedShowLayout: Partial<TabbedShowLayoutProps>;
+    }
+
+    interface Components {
+        RaTabbedShowLayout?: {
+            defaultProps?: ComponentsPropsList['RaTabbedShowLayout'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTabbedShowLayout'];
+        };
+    }
+}

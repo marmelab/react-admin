@@ -1,21 +1,29 @@
 import * as React from 'react';
-import { alpha, styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import ActionUpdate from '@mui/icons-material/Update';
 import {
     useRefresh,
     useNotify,
     useResourceContext,
-    RaRecord,
+    type RaRecord,
     useRecordContext,
     useUpdate,
-    UpdateParams,
+    type UpdateParams,
     useTranslate,
 } from 'ra-core';
-import { UseMutationOptions } from '@tanstack/react-query';
+import type { UseMutationOptions } from '@tanstack/react-query';
 
-import { Button, ButtonProps } from './Button';
+import { Button, type ButtonProps } from './Button';
 
-export const UpdateWithUndoButton = (props: UpdateWithUndoButtonProps) => {
+export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const record = useRecordContext(props);
     const notify = useNotify();
     const resource = useResourceContext(props);
@@ -127,12 +135,31 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.primary.main,
+    color: (theme.vars || theme).palette.primary.main,
     '&:hover': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.12),
+        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%)`,
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaUpdateWithUndoButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaUpdateWithUndoButton: Partial<UpdateWithUndoButtonProps>;
+    }
+
+    interface Components {
+        RaUpdateWithUndoButton?: {
+            defaultProps?: ComponentsPropsList['RaUpdateWithUndoButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaUpdateWithUndoButton'];
+        };
+    }
+}

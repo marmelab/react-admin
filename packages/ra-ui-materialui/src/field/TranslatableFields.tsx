@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement, ReactNode } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import type { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
-    UseTranslatableOptions,
-    RaRecord,
+    type UseTranslatableOptions,
+    type RaRecord,
     useRecordContext,
     useResourceContext,
 } from 'ra-core';
@@ -66,9 +70,11 @@ import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
  * @param {string[]} props.locales An array of the possible locales in the form. For example [{ 'en', 'fr' }].
  * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
-export const TranslatableFields = (
-    props: TranslatableFieldsProps
-): ReactElement => {
+export const TranslatableFields = (inProps: TranslatableFieldsProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         defaultLocale,
         locales,
@@ -131,3 +137,22 @@ const Root = styled('div', {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(0.5),
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTranslatableFields: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaTranslatableFields: Partial<TranslatableFieldsProps>;
+    }
+
+    interface Components {
+        RaTranslatableFields?: {
+            defaultProps?: ComponentsPropsList['RaTranslatableFields'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTranslatableFields'];
+        };
+    }
+}

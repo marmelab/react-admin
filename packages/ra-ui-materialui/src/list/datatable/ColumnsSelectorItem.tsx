@@ -72,7 +72,7 @@ export const ColumnsSelectorItem = ({
     return (
         <FieldToggle
             key={columnRank}
-            source={source}
+            source={source!}
             label={fieldLabel}
             index={String(columnRank)}
             selected={!isColumnHidden}

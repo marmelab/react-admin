@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { memo } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import { InputAdornment } from '@mui/material';
-import { SxProps } from '@mui/system';
+import { InputAdornment, type Theme, type SxProps } from '@mui/material';
 import { FilterLiveForm, useTranslate } from 'ra-core';
 
 import { TextInput, TextInputProps } from '../../input';
@@ -58,7 +57,7 @@ export const FilterLiveSearch = memo((props: FilterLiveSearchProps) => {
 
 export interface FilterLiveSearchProps extends Omit<TextInputProps, 'source'> {
     source?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     label?: string;
     fullWidth?: boolean;
     variant?: 'filled' | 'outlined';
