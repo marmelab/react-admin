@@ -2,7 +2,8 @@ import * as React from 'react';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
-import merge from 'lodash/merge';
+import isArray from 'lodash/isArray';
+import mergeWith from 'lodash/mergeWith';
 import set from 'lodash/set';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
@@ -111,7 +112,7 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
             return;
         }
         formChangesPending.current = true;
-        setFilters(merge({}, filterValues, values));
+        setFilters(mergeObjNotArray(filterValues, values));
     };
     const debouncedOnSubmit = useDebouncedEvent(onSubmit, debounce || 0);
 
@@ -169,6 +170,16 @@ export interface FilterLiveFormProps
         Pick<React.HTMLAttributes<HTMLFormElement>, 'onSubmit'>
     >;
 }
+
+// Lodash merge customizer to merge objects but not arrays
+const mergeCustomizer = (objValue: any, srcValue: any) => {
+    if (isArray(srcValue)) {
+        return srcValue;
+    }
+};
+
+const mergeObjNotArray = (a: any, b: any) =>
+    mergeWith(cloneDeep(a), b, mergeCustomizer);
 
 /**
  * Because we are using controlled inputs with react-hook-form, we must provide a default value
