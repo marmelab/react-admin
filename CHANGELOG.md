@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.7.2
+
+* Fix `<FilterLiveForm>` compatibility with react-hook-form 7.55.0 ([#10657](https://github.com/marmelab/react-admin/pull/10657)) ([slax57](https://github.com/slax57))
+* Fix `<AutocompleteInput>` has hole in the outline when no `label` ([#10646](https://github.com/marmelab/react-admin/pull/10646)) ([slax57](https://github.com/slax57))
+* [Doc] Update `TranslationLocales.md` (Portuguese pt-pt) ([#10653](https://github.com/marmelab/react-admin/pull/10653)) ([PauloCoelhoP5](https://github.com/PauloCoelhoP5))
+* [Doc] Fix links and anchors ([#10658](https://github.com/marmelab/react-admin/pull/10658)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Improve `ra-realtime` doc to unlock record ([#10648](https://github.com/marmelab/react-admin/pull/10648)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Improve `<DatagridAg>` first screenshot ([#10647](https://github.com/marmelab/react-admin/pull/10647)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix documentation build ([#10644](https://github.com/marmelab/react-admin/pull/10644)) ([djhi](https://github.com/djhi))
+* [chore] Improve release script old version doc ([#10643](https://github.com/marmelab/react-admin/pull/10643)) ([djhi](https://github.com/djhi))
+
 ## 5.7.1
 
 * Fix: Apply a default `defaultValue` on `ArrayInput` ([#10636](https://github.com/marmelab/react-admin/pull/10636)) ([erwanMarmelab](https://github.com/erwanMarmelab))
