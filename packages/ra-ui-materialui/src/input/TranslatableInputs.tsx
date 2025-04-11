@@ -69,7 +69,7 @@ export const TranslatableInputs = (
 ): ReactElement => {
     const props = useThemeProps({
         props: inProps,
-        name: 'RaTranslatableInputs',
+        name: PREFIX,
     });
     const {
         className,
