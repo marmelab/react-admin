@@ -2744,7 +2744,7 @@ const CarList = () => {
 
 ### Access Control
 
-`<DatagridAGClient>` has built-in [access control](./Permissions.me#access-control). If the `authProvider` implements the `canAccess` method, users will only be allowed to edit rows of, say, resource `'cars'` if `canAccess({ action: 'edit', resource: 'cars' })` returns `true`.
+`<DatagridAGClient>` has built-in [access control](./Permissions.md#access-control). If the `authProvider` implements the `canAccess` method, users will only be allowed to edit rows of, say, resource `'cars'` if `canAccess({ action: 'edit', resource: 'cars' })` returns `true`.
 
 **Note:** the access control check can only be done at the resource level and not at the record level.
 

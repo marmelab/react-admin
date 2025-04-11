@@ -504,19 +504,19 @@ This component renders a [Material UI `<Accordion>` component](https://mui.com/c
 
 Here are all the props you can set on the `<AccordionForm.Panel>` component:
 
-| Prop              | Required | Type                    | Default | Description                                                                                            |
-| ----------------- | -------- | ----------------------- | ------- | ------------------------------------------------------------------------------------------------       |
-| `authorizationError`  | Optional | `ReactNode`             | `null`  | The content to display when authorization checks fail                    |
-| `children`        | Required | `ReactNode`             | -       | A list of `<Input>` elements                                                                           |
-| `defaultExpanded` | Optional | `boolean`               | `false` | Set to true to have the accordion expanded by default (except if autoClose = true on the parent)       |
-| `disabled`        | Optional | `boolean`               | `false` | If true, the accordion will be displayed in a disabled state.                                          |
-| `enableAccessControl` | Optional | `boolean`               | `false` | Enable checking authorization rights for this panel's inputs            |
-| `id`              | Optional | `string`                | -       | An id for this Accordion to be used in the [`useFormGroup`](./Upgrade.md#useformgroup-hook-returned-state-has-changed) hook and for CSS classes. |
-| `label`           | Required | `string` or `ReactNode` | -       | The main label used as the accordion summary. Appears in red when the accordion has errors             |
-| `loading`             | Optional | `ReactNode`             |         | The content to display when checking authorizations                      |
-| `secondary`       | Optional | `string` or `ReactNode` | -       | The secondary label used as the accordion summary                                                      |
-| `square`          | Optional | `boolean`               | `false` | If true, rounded corners are disabled.                                                                 |
-| `sx`              | Optional | `Object`                | -       | An object containing the MUI style overrides to apply to the root component.                           |
+| Prop              | Required | Type                    | Default | Description                                                                                                       |
+| ----------------- | -------- | ----------------------- | ------- |-------------------------------------------------------------------------------------------------------------------|
+| `authorizationError`  | Optional | `ReactNode`             | `null`  | The content to display when authorization checks fail                                                             |
+| `children`        | Required | `ReactNode`             | -       | A list of `<Input>` elements                                                                                      |
+| `defaultExpanded` | Optional | `boolean`               | `false` | Set to true to have the accordion expanded by default (except if autoClose = true on the parent)                  |
+| `disabled`        | Optional | `boolean`               | `false` | If true, the accordion will be displayed in a disabled state.                                                     |
+| `enableAccessControl` | Optional | `boolean`               | `false` | Enable checking authorization rights for this panel's inputs                                                      |
+| `id`              | Optional | `string`                | -       | An id for this Accordion to be used in the [`useFormGroup`](./Forms.md#grouping-inputs) hook and for CSS classes. |
+| `label`           | Required | `string` or `ReactNode` | -       | The main label used as the accordion summary. Appears in red when the accordion has errors                        |
+| `loading`             | Optional | `ReactNode`             |         | The content to display when checking authorizations                                                               |
+| `secondary`       | Optional | `string` or `ReactNode` | -       | The secondary label used as the accordion summary                                                                 |
+| `square`          | Optional | `boolean`               | `false` | If true, rounded corners are disabled.                                                                            |
+| `sx`              | Optional | `Object`                | -       | An object containing the MUI style overrides to apply to the root component.                                      |
 
 ```tsx
 import {
@@ -838,7 +838,7 @@ Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details
 
 ## Access Control
 
-`<AccordionForm>` can use [Access Control](./AccessControl.md) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
+`<AccordionForm>` can use [Access Control](./Permissions.md#access-control) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
 
 Check the [`enableAccessControl` prop](#enableaccesscontrol) section for more details.
 

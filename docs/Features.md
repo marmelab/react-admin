@@ -1123,7 +1123,7 @@ These building blocks include:
 - A [rich text editor](./RichTextInput.md),
 - A [markdown editor](./MarkdownInput.md)
 - A [clone button](./Buttons.md#clonebutton)
-- Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./ContainerLayout.md#horizontalmenu), etc.)
+- Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./HorizontalMenu.md), etc.)
 - Various [page](./ContainerLayout.md) and [form](https://react-admin-ee.marmelab.com/documentation/ra-form-layout) layouts
 - ...and many more.
 

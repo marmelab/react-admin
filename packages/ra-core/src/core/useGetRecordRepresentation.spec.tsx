@@ -9,7 +9,7 @@ const UseRecordRepresentation = ({ resource, record }) => {
     return <>{getRecordRepresentation(record)}</>;
 };
 
-describe('useRecordRepresentation', () => {
+describe('useGetRecordRepresentation', () => {
     it('should return the record id by default', () => {
         render(
             <UseRecordRepresentation resource="users" record={{ id: 123 }} />

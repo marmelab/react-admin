@@ -86,7 +86,7 @@ const MyLayout = ({ children }) => (
 ## `menu`
 
 By default, `<ContainerLayout>` renders one menu item per resource in the admin. To reorder the menu, omit resources, or add custom pages, pass a custom menu element to the `menu` prop.
-This element should be [a `<HorizontalMenu>` component](#horizontalmenu) with `<HorizontalMenu.DashboardItem>` or `<HorizontalMenu.Item>` children.
+This element should be [a `<HorizontalMenu>` component](./HorizontalMenu.md#horizontalmenu) with `<HorizontalMenu.DashboardItem>` or `<HorizontalMenu.Item>` children.
 Each child should have a `value` corresponding to the [application location](https://react-admin-ee.marmelab.com/documentation/ra-navigation#concepts) of the target, and can have a `to` prop corresponding to the target location if different from the app location.
 
 ```jsx
@@ -111,8 +111,8 @@ const Menu = () => (
         <HorizontalMenu.Item label="Artists" to="/artists" value="artists" />
         <HorizontalMenu.Item label="Custom" to="/custom" value="custom" />
         <HorizontalMenu.Item label="Business" value="business">
-            <HorizontalMenu.Item label="Sales" value="sales" >
-            <HorizontalMenu.Item label="Customers" value="customers" >
+            <HorizontalMenu.Item label="Sales" value="sales" />
+            <HorizontalMenu.Item label="Customers" value="customers" />
         </HorizontalMenu.Item>
     </HorizontalMenu>
 );

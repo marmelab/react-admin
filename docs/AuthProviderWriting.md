@@ -449,7 +449,7 @@ const authProvider = {
 
 Check the [Access Control documentation](./Permissions.md#access-control) for more information on how to use the `canAccess` method.
 
-**Tip**: [The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps leveraging the `canAccess` method. Check [the RBAC documentation](./AuthRBAC.md#authprovider-methods) for more information.
+**Tip**: [The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps leveraging the `canAccess` method. Check [the RBAC documentation](./AuthRBAC.md) for more information.
 
 
 ### `getPermissions`
