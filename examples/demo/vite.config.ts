@@ -7,33 +7,37 @@ import preserveDirectives from 'rollup-preserve-directives';
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
-    const packages = fs.readdirSync(path.resolve(__dirname, '../../packages'));
-    const aliases: Record<string, string> = {
-        'data-generator-retail': path.resolve(
-            __dirname,
-            '../data-generator/src'
-        ),
-    };
-    for (const dirName of packages) {
-        if (dirName === 'create-react-admin') continue;
-        const packageJson = JSON.parse(
-            fs.readFileSync(
-                path.resolve(
-                    __dirname,
-                    '../../packages',
-                    dirName,
-                    'package.json'
-                ),
-                'utf8'
-            )
+    let aliases: Record<string, string> = {};
+    if (fs.existsSync(path.resolve(__dirname, '../../packages'))) {
+        const packages = fs.readdirSync(
+            path.resolve(__dirname, '../../packages')
         );
-        aliases[packageJson.name] = path.resolve(
-            __dirname,
-            `../../packages/${packageJson.name}/src`
-        );
+        aliases = {
+            'data-generator-retail': path.resolve(
+                __dirname,
+                '../data-generator/src'
+            ),
+        };
+        for (const dirName of packages) {
+            if (dirName === 'create-react-admin') continue;
+            const packageJson = JSON.parse(
+                fs.readFileSync(
+                    path.resolve(
+                        __dirname,
+                        '../../packages',
+                        dirName,
+                        'package.json'
+                    ),
+                    'utf8'
+                )
+            );
+            aliases[packageJson.name] = path.resolve(
+                __dirname,
+                `../../packages/${packageJson.name}/src`
+            );
+        }
     }
 
-    console.log(path.resolve(__dirname, 'node_modules/@mui/$1/esm/$2'));
     return {
         plugins: [
             react(),
