@@ -66,7 +66,9 @@ export const Labeled = (inProps: LabeledProps) => {
                         color
                             ? undefined
                             : {
-                                  color: theme => theme.palette.text.secondary,
+                                  color: theme =>
+                                      (theme.vars || theme).palette.text
+                                          .secondary,
                               }
                     }
                     color={color}
