@@ -3,6 +3,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import get from 'lodash/get';
@@ -131,7 +132,7 @@ export interface FileFieldProps<
     download?: boolean | string;
     ping?: string;
     rel?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaFileField';

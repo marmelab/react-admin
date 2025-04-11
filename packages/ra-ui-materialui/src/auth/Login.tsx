@@ -9,6 +9,7 @@ import { Card, Avatar, type SxProps } from '@mui/material';
 import {
     type ComponentsOverrides,
     styled,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
@@ -103,7 +104,7 @@ export interface LoginProps extends HtmlHTMLAttributes<HTMLDivElement> {
     backgroundImage?: string;
     children?: ReactNode;
     className?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaLogin';

@@ -12,6 +12,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material';
 import clsx from 'clsx';
@@ -263,7 +264,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     reOrderButtons?: ReactElement;
     resource?: string;
     source?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const Root = styled('div', {

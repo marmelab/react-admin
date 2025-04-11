@@ -3,6 +3,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import { Typography } from '@mui/material';
@@ -50,7 +51,7 @@ export interface AuthenticationErrorProps {
     textPrimary?: string;
     textSecondary?: string;
     icon?: React.ReactNode;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaAuthenticationError';

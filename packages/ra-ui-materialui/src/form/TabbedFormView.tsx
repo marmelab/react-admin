@@ -16,6 +16,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import { useResourceContext, useSplatPathBase } from 'ra-core';
@@ -123,7 +124,7 @@ export interface TabbedFormViewProps {
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement | false;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaTabbedForm';

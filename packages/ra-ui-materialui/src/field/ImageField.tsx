@@ -3,6 +3,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
@@ -124,7 +125,7 @@ export interface ImageFieldProps<
 > extends FieldProps<RecordType> {
     src?: string;
     title?: HintedString<ExtractRecordPaths<RecordType>>;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 declare module '@mui/material/styles' {

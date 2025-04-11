@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     type ComponentsOverrides,
     styled,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import { Typography, type SxProps } from '@mui/material';
@@ -40,7 +41,7 @@ export interface LoadingProps {
     className?: string;
     loadingPrimary?: string;
     loadingSecondary?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaLoading';

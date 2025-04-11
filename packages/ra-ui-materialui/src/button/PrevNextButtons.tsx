@@ -18,6 +18,7 @@ import {
     styled,
     type ComponentsOverrides,
     useThemeProps,
+    type Theme,
 } from '@mui/material';
 import clsx from 'clsx';
 
@@ -197,7 +198,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
 
 export interface PrevNextButtonProps<RecordType extends RaRecord = any>
     extends UsePrevNextControllerProps<RecordType> {
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaPrevNextButton';

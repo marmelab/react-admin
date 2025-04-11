@@ -5,6 +5,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -100,7 +101,7 @@ export interface ReferenceFieldProps<
     reference: string;
     translateChoice?: Function | boolean;
     link?: LinkToType<ReferenceRecordType>;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 // useful to prevent click bubbling in a datagrid with rowClick
@@ -183,7 +184,7 @@ export interface ReferenceFieldViewProps<
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PureReferenceFieldView = genericMemo(ReferenceFieldView);

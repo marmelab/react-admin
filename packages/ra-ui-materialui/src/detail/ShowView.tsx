@@ -5,6 +5,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material';
 import clsx from 'clsx';
@@ -68,7 +69,7 @@ export interface ShowViewProps
     component?: ElementType;
     emptyWhileLoading?: boolean;
     title?: string | ReactElement | false;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaShow';

@@ -15,6 +15,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import type { UseQueryOptions } from '@tanstack/react-query';
@@ -133,7 +134,7 @@ export interface ReferenceArrayFieldProps<
     perPage?: number;
     reference: string;
     sort?: SortPayload;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     queryOptions?: Omit<
         UseQueryOptions<ReferenceRecordType[], Error>,
         'queryFn' | 'queryKey'

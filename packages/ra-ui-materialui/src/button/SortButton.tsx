@@ -183,7 +183,7 @@ export interface SortButtonProps {
     icon?: React.ReactNode;
     label?: string;
     resource?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaSortButton';

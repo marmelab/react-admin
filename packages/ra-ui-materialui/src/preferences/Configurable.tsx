@@ -16,6 +16,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -189,7 +190,7 @@ export interface ConfigurableProps {
     editor: ReactElement;
     preferenceKey: string;
     openButtonLabel?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaConfigurable';

@@ -9,6 +9,7 @@ import type { FallbackProps } from 'react-error-boundary';
 import {
     type ComponentsOverrides,
     styled,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import {
@@ -35,7 +36,7 @@ export const Error = (
     inProps: InternalErrorProps & {
         errorComponent?: ComponentType<ErrorProps>;
     } & {
-        sx?: SxProps;
+        sx?: SxProps<Theme>;
     }
 ) => {
     const props = useThemeProps({

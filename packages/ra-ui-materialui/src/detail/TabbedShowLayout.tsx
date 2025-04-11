@@ -13,6 +13,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import { Divider } from '@mui/material';
@@ -198,7 +199,7 @@ export interface TabbedShowLayoutProps {
     record?: RaRecord;
     rootPath?: string;
     spacing?: ResponsiveStyleValue<number | string>;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     value?: any;

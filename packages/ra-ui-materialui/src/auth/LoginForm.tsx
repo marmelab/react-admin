@@ -3,6 +3,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import { Button, CardContent, CircularProgress } from '@mui/material';
@@ -126,7 +127,7 @@ const StyledForm = styled(Form, {
 export interface LoginFormProps {
     redirectTo?: string;
     className?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     children?: React.ReactNode;
 }
 

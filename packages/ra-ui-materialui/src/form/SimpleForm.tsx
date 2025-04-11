@@ -10,6 +10,7 @@ import {
 import {
     type ComponentsOverrides,
     styled,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 
@@ -78,7 +79,7 @@ export interface SimpleFormProps
     component?: React.ComponentType<any>;
     defaultValues?: any;
     toolbar?: ReactElement | false;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaSimpleForm';

@@ -4,6 +4,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import { useTimeout } from 'ra-core';
@@ -86,7 +87,7 @@ export interface LoadingInputProps {
     helperText?: React.ReactNode;
     margin?: 'normal' | 'none' | 'dense';
     label?: string | React.ReactElement | false;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     size?: 'medium' | 'small';
     timeout?: number;
     variant?: 'standard' | 'filled' | 'outlined';

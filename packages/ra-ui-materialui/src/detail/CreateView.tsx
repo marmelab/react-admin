@@ -5,6 +5,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material';
 import { useCreateContext } from 'ra-core';
@@ -56,7 +57,7 @@ export interface CreateViewProps
     actions?: ReactElement | false;
     aside?: ReactElement;
     component?: ElementType;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     title?: string | ReactElement | false;
 }
 

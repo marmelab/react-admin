@@ -5,6 +5,7 @@ import {
     useTheme,
     type SxProps,
     useThemeProps,
+    type Theme,
 } from '@mui/material/styles';
 import clsx from 'clsx';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -47,7 +48,7 @@ export const LoadingIndicator = (inProps: LoadingIndicatorProps) => {
 
 interface Props {
     className?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 type LoadingIndicatorProps = Props & Pick<RefreshIconButtonProps, 'onClick'>;

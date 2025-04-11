@@ -3,6 +3,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
@@ -45,7 +46,7 @@ export interface AccessDeniedProps {
     textPrimary?: string;
     textSecondary?: string;
     icon?: React.ReactNode;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaAccessDenied';

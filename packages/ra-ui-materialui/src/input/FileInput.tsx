@@ -11,6 +11,7 @@ import {
     useTheme,
     type SxProps,
     useThemeProps,
+    type Theme,
 } from '@mui/material/styles';
 import clsx from 'clsx';
 import { useDropzone, type DropzoneOptions } from 'react-dropzone';
@@ -285,7 +286,7 @@ export type FileInputProps = CommonInputProps & {
     removeIcon?: ComponentType<SvgIconProps>;
     inputProps?: any;
     validateFileRemoval?(file): boolean | Promise<boolean>;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 };
 
 declare module '@mui/material/styles' {

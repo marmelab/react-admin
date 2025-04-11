@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Children, isValidElement, type ReactNode } from 'react';
-import { type ComponentsOverrides, styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+} from '@mui/material/styles';
 import {
     Stack,
     type StackProps,
@@ -99,7 +103,7 @@ export interface SimpleShowLayoutProps extends StackProps {
     children: ReactNode;
     className?: string;
     record?: RaRecord;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaSimpleShowLayout';

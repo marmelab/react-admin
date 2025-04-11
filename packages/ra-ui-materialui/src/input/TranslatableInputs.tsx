@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { ComponentsOverrides, SxProps, styled } from '@mui/material/styles';
+import {
+    ComponentsOverrides,
+    SxProps,
+    type Theme,
+    styled,
+} from '@mui/material/styles';
 import { StackProps, useThemeProps } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import {
@@ -117,7 +122,7 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
     fullWidth?: boolean;
     groupKey?: string;
     margin?: 'none' | 'normal' | 'dense';
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     StackProps?: StackProps;
 }
 

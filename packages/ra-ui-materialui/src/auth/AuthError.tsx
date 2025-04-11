@@ -3,6 +3,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
@@ -40,7 +41,7 @@ export interface AuthErrorProps {
     className?: string;
     title?: string;
     message?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaAuthError';

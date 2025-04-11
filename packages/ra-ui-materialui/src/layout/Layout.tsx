@@ -10,6 +10,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 
@@ -86,7 +87,7 @@ export interface LayoutProps {
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
     sidebar?: ComponentType<SidebarProps>;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 export interface LayoutState {

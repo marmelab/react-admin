@@ -3,6 +3,7 @@ import {
     type ComponentsOverrides,
     styled,
     type SxProps,
+    type Theme,
     useThemeProps,
 } from '@mui/material/styles';
 import type { ReactElement, ReactNode, ElementType } from 'react';
@@ -326,7 +327,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaList';
