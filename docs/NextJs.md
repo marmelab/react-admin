@@ -79,7 +79,7 @@ const AdminApp = () => (
 export default AdminApp;
 ```
 
-Then create a `src/components/AdminApp.tsx` file with the following:
+Then create a `src/components/Admin.tsx` file with the following:
 
 ```tsx
 "use client";
@@ -106,10 +106,10 @@ The file to modify depends on the router system you chose during setup:
 - Pages Router: `src/pages/index.tsx`.
 
 ```tsx
-import AdminApp from "./components/Admin";
+import Admin from "./components/Admin";
 
 export default function Page() {
-    return <AdminApp />
+    return <Admin />
 };
 ```
 
@@ -131,10 +131,10 @@ This implies the creation of a new page in the Next.js app. Create a new file at
 No matter which system you choose, the file should contain the same code:
 
 ```tsx
-import AdminApp from "../components/Admin";
+import Admin from "../components/Admin";
 
 export default function Page() {
-    return <AdminApp />
+    return <Admin />
 };
 ```
 
