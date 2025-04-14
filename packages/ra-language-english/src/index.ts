@@ -102,13 +102,15 @@ const englishMessages: TranslationMessages = {
             bulk_update_content:
                 'Are you sure you want to update this %{name}? |||| Are you sure you want to update these %{smart_count} items?',
             bulk_update_content_record_representation:
-                'Are you sure you want to update %{name}? |||| Are you sure you want to update these %{smart_count} items?',
+                'Are you sure you want to update %{resource} %{name}? |||| Are you sure you want to update these %{smart_count} items?',
             bulk_update_title:
                 'Update %{name} |||| Update %{smart_count} %{name}',
+            bulk_update_title_record_representation:
+                'Update %{resource} %{name} |||| Update %{smart_count} %{name}',
             clear_array_input: 'Are you sure you want to clear the whole list?',
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
-            delete_title_record_representation: 'Delete %{name}',
+            delete_title_record_representation: 'Delete %{resource} %{name}',
             details: 'Details',
             error: "A client error occurred and your request couldn't be completed.",
             invalid_form: 'The form is not valid. Please check for errors',

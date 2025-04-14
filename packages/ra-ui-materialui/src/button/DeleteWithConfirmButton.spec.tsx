@@ -349,7 +349,7 @@ describe('<DeleteWithConfirmButton />', () => {
                 ) as HTMLElement
             ).getByText('Delete')
         );
-        await screen.findByText('Delete War and Peace');
+        await screen.findByText('Delete book War and Peace');
     });
 
     it('should use the default translation in the confirmation title when no record representation is available', async () => {
@@ -361,6 +361,6 @@ describe('<DeleteWithConfirmButton />', () => {
                 ) as HTMLElement
             ).getByText('Delete')
         );
-        await screen.findByText('Delete #1');
+        await screen.findByText('Delete author #1');
     });
 });

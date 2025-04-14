@@ -262,7 +262,7 @@ describe('<UpdateWithConfirmButton />', () => {
         fireEvent.click(await screen.findByText('Reset views'));
         await screen.findByRole('dialog');
         await screen.findByText(
-            'Are you sure you want to update Lorem Ipsum?',
+            'Are you sure you want to update post Lorem Ipsum?',
             undefined,
             { timeout: 4000 }
         );
@@ -273,7 +273,9 @@ describe('<UpdateWithConfirmButton />', () => {
         // wait until next tick, as the settled side effect is called after the success side effect
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 300)));
         expect(
-            screen.queryByText('Are you sure you want to update Lorem Ipsum?')
+            screen.queryByText(
+                'Are you sure you want to update post Lorem Ipsum?'
+            )
         ).toBeNull();
     });
 
@@ -286,9 +288,9 @@ describe('<UpdateWithConfirmButton />', () => {
                 ) as HTMLElement
             ).getByText('Update')
         );
-        await screen.findByText('Update War and Peace');
+        await screen.findByText('Update book War and Peace');
         await screen.findByText(
-            'Are you sure you want to update War and Peace?'
+            'Are you sure you want to update book War and Peace?'
         );
     });
 
@@ -301,6 +303,6 @@ describe('<UpdateWithConfirmButton />', () => {
                 ) as HTMLElement
             ).getByText('Update')
         );
-        await screen.findByText('Update #1');
+        await screen.findByText('Update author #1');
     });
 });

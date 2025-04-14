@@ -30,7 +30,7 @@ export const UpdateWithConfirmButton = (
     const record = useRecordContext(props);
 
     const {
-        confirmTitle = 'ra.message.bulk_update_title',
+        confirmTitle: confirmTitleProp,
         confirmContent: confirmContentProp,
         data,
         icon = defaultIcon,
@@ -114,18 +114,21 @@ export const UpdateWithConfirmButton = (
     const recordRepresentation = getRecordRepresentation(record);
     let confirmNameParam = recordRepresentation;
     let confirmContent = 'ra.message.bulk_update_content_record_representation';
+    let confirmTitle = 'ra.message.bulk_update_title_record_representation';
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 1,
+        _: humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 1,
+                _: resource ? inflect(resource, 1) : undefined,
+            }),
+            true
+        ),
+    });
 
     if (React.isValidElement(recordRepresentation)) {
-        confirmNameParam = translate(`resources.${resource}.forcedCaseName`, {
-            smart_count: 1,
-            _: humanize(
-                translate(`resources.${resource}.name`, {
-                    smart_count: 1,
-                    _: resource ? inflect(resource, 1) : undefined,
-                }),
-                true
-            ),
-        });
+        confirmNameParam = resourceName;
+        confirmTitle = 'ra.message.bulk_update_title';
         confirmContent = 'ra.message.bulk_update_content';
     }
     return (
@@ -140,11 +143,12 @@ export const UpdateWithConfirmButton = (
             <Confirm
                 isOpen={isOpen}
                 loading={isPending}
-                title={confirmTitle}
+                title={confirmTitleProp ?? confirmTitle}
                 content={confirmContentProp ?? confirmContent}
                 translateOptions={{
                     smart_count: 1,
                     name: confirmNameParam,
+                    resource: resourceName,
                 }}
                 onConfirm={handleUpdate}
                 onClose={handleDialogClose}

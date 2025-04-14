@@ -61,19 +61,20 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     const recordRepresentation = getRecordRepresentation(record);
     let confirmNameParam = recordRepresentation;
     let confirmTitle = 'ra.message.delete_title_record_representation';
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 1,
+        _: humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 1,
+                _: resource ? singularize(resource) : undefined,
+            }),
+            true
+        ),
+    });
 
     if (isValidElement(recordRepresentation)) {
         confirmTitle = 'ra.message.delete_title';
-        confirmNameParam = translate(`resources.${resource}.forcedCaseName`, {
-            smart_count: 1,
-            _: humanize(
-                translate(`resources.${resource}.name`, {
-                    smart_count: 1,
-                    _: resource ? singularize(resource) : undefined,
-                }),
-                true
-            ),
-        });
+        confirmNameParam = resourceName;
     }
 
     return (
@@ -96,6 +97,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                 confirmColor={confirmColor}
                 translateOptions={{
                     name: confirmNameParam,
+                    resource: resourceName,
                     id: record?.id,
                     ...translateOptions,
                 }}
