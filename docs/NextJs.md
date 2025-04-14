@@ -79,6 +79,19 @@ const AdminApp = () => (
 export default AdminApp;
 ```
 
+Then create a `src/components/AdminApp.tsx` file with the following:
+
+```tsx
+"use client";
+import dynamic from "next/dynamic";
+
+const AdminApp = dynamic(() => import("./AdminApp"), {
+  ssr: false, // Required to avoid react-router related errors
+});
+
+export default AdminApp;
+```
+
 This is a minimal configuration to render CRUD pages for users, posts and comments. React-admin will guess the fields to display in the list and edition pages based on the API response. 
 
 ## Exposing The Admin App Component
@@ -93,13 +106,11 @@ The file to modify depends on the router system you chose during setup:
 - Pages Router: `src/pages/index.tsx`.
 
 ```tsx
-import { NextPage } from "next";
-import dynamic from "next/dynamic";
-const AdminApp = dynamic(() => import("@/components/AdminApp"), { ssr: false });
+import AdminApp from "./components/Admin";
 
-const Home: NextPage = () => <AdminApp />;
-
-export default Home;
+export default function Page() {
+    return <AdminApp />
+};
 ```
 
 Now, start the server with `yarn dev`, browse to `http://localhost:3000/`, and you should see the working admin:
@@ -120,15 +131,11 @@ This implies the creation of a new page in the Next.js app. Create a new file at
 No matter which system you choose, the file should contain the same code:
 
 ```tsx
-import { NextPage } from "next";
-import dynamic from "next/dynamic";
-const AdminApp = dynamic(() => import("@/components/AdminApp"), { ssr: false });
+import AdminApp from "../components/Admin";
 
-const Admin: NextPage = () => {
-  return <AdminApp />;
+export default function Page() {
+    return <AdminApp />
 };
-
-export default Admin;
 ```
 
 Now the admin renders at `http://localhost:3000/admin`. You can use the Next.js routing system to add more pages - for instance, a frontend app.
