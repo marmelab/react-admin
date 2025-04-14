@@ -356,6 +356,24 @@ const theme = deepmerge(defaultTheme, {
 });
 ```
 
+This also works with many React Admin components. For instance, here's how to change the icon for all `<SaveButton>`:
+
+```tsx
+import { defaultTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
+import CheckIcon from '@mui/icons-material/Check';
+
+const theme = deepmerge(defaultTheme, {
+    components: {
+        RaSaveButton: {
+            defaultProps: {
+                icon: <CheckIcon />,
+            },
+        },
+    }
+});
+```
+
 ## Customizing The Sidebar Width
 
 You can specify the `Sidebar` width by setting the `width` and `closedWidth` properties on your custom Material UI theme:
@@ -423,11 +441,11 @@ A `theme` object can contain the following keys:
 
 **Tip**: Check [Material UI default theme documentation](https://mui.com/material-ui/customization/default-theme/) to see the default values and meaning for these keys.
 
-```jsx
+```tsx
 import { lime, purple } from '@mui/material/colors';
-import type { RaThemeOptions } from 'react-admin';
+import type { ThemeOptions } from '@mui/material';
 
-const theme: RaThemeOptions = {
+const theme: ThemeOptions = {
   palette: {
     primary: {
       main: '#FF5733',
@@ -515,10 +533,10 @@ const myTheme = deepmerge(defaultTheme, {
 Here is the default theme:
 
 ```tsx
-import { RaThemeOptions } from './types';
+import type { ThemeOptions } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 
-const defaultThemeInvariants: RaThemeOptions = {
+const defaultThemeInvariants: ThemeOptions = {
     typography: {
         h6: {
             fontWeight: 400,
@@ -579,7 +597,7 @@ const defaultThemeInvariants: RaThemeOptions = {
     },
 };
 
-export const defaultLightTheme: RaThemeOptions = deepmerge(
+export const defaultLightTheme: ThemeOptions = deepmerge(
     defaultThemeInvariants,
     {
         palette: {
@@ -608,7 +626,7 @@ export const defaultLightTheme: RaThemeOptions = deepmerge(
     }
 );
 
-export const defaultDarkTheme: RaThemeOptions = deepmerge(
+export const defaultDarkTheme: ThemeOptions = deepmerge(
     defaultThemeInvariants,
     {
         palette: {
@@ -624,5 +642,4 @@ export const defaultDarkTheme: RaThemeOptions = deepmerge(
 );
 
 export const defaultTheme = defaultLightTheme;
-
 ```
