@@ -1,13 +1,18 @@
 import * as React from 'react';
-import { styled, Theme } from '@mui/material/styles';
-import { useCallback, ReactNode } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
+import { useCallback, type ReactNode } from 'react';
 import {
     ListItemIcon,
     ListItemText,
     MenuItem,
+    type MenuItemProps,
     useMediaQuery,
 } from '@mui/material';
-import { MenuItemProps } from '@mui/material/MenuItem';
 
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 import clsx from 'clsx';
@@ -23,7 +28,11 @@ export const Logout: React.ForwardRefExoticComponent<
         React.RefAttributes<HTMLLIElement> &
         LogoutProps
 > = React.forwardRef<HTMLLIElement, LogoutProps & MenuItemProps<'li'>>(
-    function Logout(props, ref) {
+    function Logout(inProps, ref) {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
         const { className, redirectTo, icon, ...rest } = props;
 
         const { authenticated } = useAuthState();
@@ -76,4 +85,23 @@ export interface LogoutProps {
     className?: string;
     redirectTo?: string;
     icon?: ReactNode;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLogout: 'root' | 'icon';
+    }
+
+    interface ComponentsPropsList {
+        RaLogout: Partial<LogoutProps>;
+    }
+
+    interface Components {
+        RaLogout?: {
+            defaultProps?: ComponentsPropsList['RaLogout'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLogout'];
+        };
+    }
 }

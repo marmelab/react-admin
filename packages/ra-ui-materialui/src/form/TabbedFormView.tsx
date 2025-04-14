@@ -1,23 +1,33 @@
 import * as React from 'react';
 import {
-    ChangeEvent,
+    type ChangeEvent,
     Children,
-    ComponentType,
+    type ComponentType,
     cloneElement,
     isValidElement,
-    ReactElement,
-    ReactNode,
+    type ReactElement,
+    type ReactNode,
     useState,
 } from 'react';
 import clsx from 'clsx';
 import { Routes, Route, matchPath, useLocation } from 'react-router-dom';
-import { CardContent, Divider, SxProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { CardContent, Divider } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useResourceContext, useSplatPathBase } from 'ra-core';
 import { Toolbar } from './Toolbar';
 import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
-export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
+export const TabbedFormView = (inProps: TabbedFormViewProps): ReactElement => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         children,
         className,
@@ -114,7 +124,7 @@ export interface TabbedFormViewProps {
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement | false;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaTabbedForm';
@@ -133,3 +143,22 @@ const Root = styled('div', {
 }));
 
 const sanitizeRestProps = ({ record, resource, ...rest }: any) => rest;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTabbedForm: 'root' | 'errorTabButton';
+    }
+
+    interface ComponentsPropsList {
+        RaTabbedForm: Partial<TabbedFormViewProps>;
+    }
+
+    interface Components {
+        RaTabbedForm?: {
+            defaultProps?: ComponentsPropsList['RaTabbedForm'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTabbedForm'];
+        };
+    }
+}

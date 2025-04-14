@@ -6,9 +6,14 @@ import {
     type UseReferenceArrayFieldControllerParams,
     type UseReferenceManyFieldControllerParams,
 } from 'ra-core';
-import { alpha, styled } from '@mui/material/styles';
+import {
+    alpha,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
-import { Button, ButtonProps } from './Button';
+import { Button, type ButtonProps } from './Button';
 
 /**
  * Select all items in the current List context.
@@ -47,7 +52,11 @@ import { Button, ButtonProps } from './Button';
  *     </List>
  * );
  */
-export const SelectAllButton = (props: SelectAllButtonProps) => {
+export const SelectAllButton = (inProps: SelectAllButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         label = 'ra.action.select_all_button',
         limit = 250,
@@ -108,3 +117,22 @@ const StyledButton = styled(Button, {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSelectAllButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaSelectAllButton: Partial<SelectAllButtonProps>;
+    }
+
+    interface Components {
+        RaSelectAllButton?: {
+            defaultProps?: ComponentsPropsList['RaSelectAllButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSelectAllButton'];
+        };
+    }
+}

@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { MenuList } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import lodashGet from 'lodash/get';
 import clsx from 'clsx';
 
@@ -35,7 +39,11 @@ import { useHasDashboard } from 'ra-core';
  *     </Menu>
  * );
  */
-export const Menu = (props: MenuProps) => {
+export const Menu = (inProps: MenuProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { children, className, ...rest } = props;
     const hasDashboard = useHasDashboard();
     const [open] = useSidebarState();
@@ -101,3 +109,22 @@ const Root = styled(MenuList, {
         width: lodashGet(theme, 'sidebar.closedWidth', CLOSED_DRAWER_WIDTH),
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaMenu: 'root' | 'open' | 'closed';
+    }
+
+    interface ComponentsPropsList {
+        RaMenu: Partial<MenuProps>;
+    }
+
+    interface Components {
+        RaMenu?: {
+            defaultProps?: ComponentsPropsList['RaMenu'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaMenu'];
+        };
+    }
+}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { type ComponentType } from 'react';
 import { RecordContextProvider, useDataTableDataContext } from 'ra-core';
 import { TableBody, useThemeProps, type TableBodyProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { type ComponentsOverrides, styled } from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { DataTableClasses } from './DataTableRoot';
@@ -70,3 +70,22 @@ const TableBodyStyled = styled(TableBody, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(() => ({}));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        DataTableBody: 'root';
+    }
+
+    interface ComponentsPropsList {
+        DataTableBody: Partial<DataTableBodyProps>;
+    }
+
+    interface Components {
+        DataTableBody?: {
+            defaultProps?: ComponentsPropsList['DataTableBody'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['DataTableBody'];
+        };
+    }
+}

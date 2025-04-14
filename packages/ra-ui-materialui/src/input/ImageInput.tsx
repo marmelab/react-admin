@@ -1,14 +1,24 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { FileInput, FileInputProps, FileInputClasses } from './FileInput';
 
-export const ImageInput = (props: ImageInputProps) => (
-    <StyledFileInput
-        labelMultiple="ra.input.image.upload_several"
-        labelSingle="ra.input.image.upload_single"
-        {...props}
-    />
-);
+export const ImageInput = (inProps: ImageInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    return (
+        <StyledFileInput
+            labelMultiple="ra.input.image.upload_several"
+            labelSingle="ra.input.image.upload_single"
+            {...props}
+        />
+    );
+};
 
 export type ImageInputProps = FileInputProps;
 
@@ -43,3 +53,22 @@ const StyledFileInput = styled(FileInput, {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaImageInput: 'root' | 'dropZone' | 'removeButton';
+    }
+
+    interface ComponentsPropsList {
+        RaImageInput: Partial<ImageInputProps>;
+    }
+
+    interface Components {
+        RaImageInput?: {
+            defaultProps?: ComponentsPropsList['RaImageInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaImageInput'];
+        };
+    }
+}

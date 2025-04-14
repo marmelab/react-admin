@@ -9,10 +9,14 @@ import {
     Tooltip,
     useMediaQuery,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useAuthProvider, useGetIdentity, useTranslate } from 'ra-core';
 import * as React from 'react';
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import { type ReactNode, useCallback, useMemo, useState } from 'react';
 import { Logout } from '../auth/Logout';
 import { UserMenuContextProvider } from './UserMenuContextProvider';
 
@@ -57,7 +61,11 @@ import { UserMenuContextProvider } from './UserMenuContextProvider';
  * @param {Element} props.icon The icon of the UserMenu button.
  *
  */
-export const UserMenu = (props: UserMenuProps) => {
+export const UserMenu = (inProps: UserMenuProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { isPending, identity } = useGetIdentity();
@@ -180,3 +188,22 @@ const TransformOrigin: PopoverOrigin = {
     vertical: 'top',
     horizontal: 'right',
 };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaUserMenu: 'root' | 'userButton' | 'avatar';
+    }
+
+    interface ComponentsPropsList {
+        RaUserMenu: Partial<UserMenuProps>;
+    }
+
+    interface Components {
+        RaUserMenu?: {
+            defaultProps?: ComponentsPropsList['RaUserMenu'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaUserMenu'];
+        };
+    }
+}

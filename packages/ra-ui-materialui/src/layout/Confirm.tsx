@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { useCallback, MouseEventHandler, ComponentType } from 'react';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import { alpha, styled } from '@mui/material/styles';
+import { useCallback, type MouseEventHandler, type ComponentType } from 'react';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    type DialogProps,
+    DialogTitle,
+} from '@mui/material';
+import {
+    alpha,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import ActionCheck from '@mui/icons-material/CheckCircle';
 import AlertError from '@mui/icons-material/ErrorOutline';
 import clsx from 'clsx';
@@ -29,7 +37,11 @@ import { useTranslate } from 'ra-core';
  *     onClose={() => { // do something }}
  * />
  */
-export const Confirm = (props: ConfirmProps) => {
+export const Confirm = (inProps: ConfirmProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         isOpen = false,
@@ -157,3 +169,22 @@ const StyledDialog = styled(Dialog, {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaConfirm: 'root' | 'confirmPrimary' | 'confirmWarning';
+    }
+
+    interface ComponentsPropsList {
+        RaConfirm: Partial<ConfirmProps>;
+    }
+
+    interface Components {
+        RaConfirm?: {
+            defaultProps?: ComponentsPropsList['RaConfirm'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaConfirm'];
+        };
+    }
+}

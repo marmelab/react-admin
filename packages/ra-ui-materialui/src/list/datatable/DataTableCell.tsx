@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useDataTableStoreContext, useRecordContext, useStore } from 'ra-core';
 import { TableCell, useThemeProps, type SxProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { type ComponentsOverrides, styled } from '@mui/material/styles';
 import get from 'lodash/get';
 import clsx from 'clsx';
 
@@ -78,3 +78,22 @@ const TableCellStyled = styled(TableCell, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(() => ({}));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaDataTableCell: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaDataTableCell: Partial<DataTableColumnProps>;
+    }
+
+    interface Components {
+        RaDataTableCell?: {
+            defaultProps?: ComponentsPropsList['RaDataTableCell'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaDataTableCell'];
+        };
+    }
+}

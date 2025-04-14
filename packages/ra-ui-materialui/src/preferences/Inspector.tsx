@@ -10,7 +10,7 @@ import {
 import { Paper, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/CancelOutlined';
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
-import { useTheme, styled } from '@mui/material/styles';
+import { useTheme, styled, ComponentsOverrides } from '@mui/material/styles';
 
 import { InspectorRoot } from './InspectorRoot';
 
@@ -197,3 +197,17 @@ const StyledPaper = styled(Paper, {
 }));
 
 Inspector.displayName = 'Inspector';
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaInspector: 'root' | 'modal' | 'title' | 'content';
+    }
+
+    interface Components {
+        RaInspector?: {
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaInspector'];
+        };
+    }
+}

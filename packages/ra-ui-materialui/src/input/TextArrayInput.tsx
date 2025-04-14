@@ -3,13 +3,17 @@ import clsx from 'clsx';
 import {
     Chip,
     Autocomplete,
-    AutocompleteProps,
+    type AutocompleteProps,
     TextField,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useInput, FieldTitle } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 
 export type TextArrayInputProps = CommonInputProps &
     Omit<
@@ -24,22 +28,27 @@ export type TextArrayInputProps = CommonInputProps &
         >
     >;
 
-export const TextArrayInput = ({
-    className,
-    disabled,
-    format,
-    helperText,
-    label,
-    margin,
-    parse,
-    readOnly,
-    size,
-    source,
-    sx,
-    validate,
-    variant,
-    ...props
-}: TextArrayInputProps) => {
+export const TextArrayInput = (inProps: TextArrayInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    const {
+        className,
+        disabled,
+        format,
+        helperText,
+        label,
+        margin,
+        parse,
+        readOnly,
+        size,
+        source,
+        sx,
+        validate,
+        variant,
+        ...rest
+    } = props;
     const {
         field,
         fieldState: { error, invalid },
@@ -52,7 +61,7 @@ export const TextArrayInput = ({
         readOnly,
         source,
         validate,
-        ...props,
+        ...rest,
     });
 
     const renderHelperText = helperText !== false || invalid;
@@ -109,7 +118,7 @@ export const TextArrayInput = ({
             {...field}
             value={field.value || emptyArray} // Autocomplete does not accept null or undefined
             onChange={(e, newValue: string[]) => field.onChange(newValue)}
-            {...props}
+            {...rest}
             disabled={disabled || readOnly}
         />
     );
@@ -128,3 +137,22 @@ const StyledAutocomplete = styled(
 )(({ theme }) => ({
     minWidth: theme.spacing(20),
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTextArrayInput: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaTextArrayInput: Partial<TextArrayInputProps>;
+    }
+
+    interface Components {
+        RaTextArrayInput?: {
+            defaultProps?: ComponentsPropsList['RaTextArrayInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTextArrayInput'];
+        };
+    }
+}
