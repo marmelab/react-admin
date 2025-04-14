@@ -1,33 +1,33 @@
 import { type ComponentsOverrides, styled } from '@mui/material';
 import type { DatagridProps } from './Datagrid';
 
-const PREFIX = 'RaDatagrid';
+export const DatagridPrefix = 'RaDatagrid';
 
 export const DatagridClasses = {
-    root: `${PREFIX}-root`,
-    table: `${PREFIX}-table`,
-    tableWrapper: `${PREFIX}-tableWrapper`,
-    thead: `${PREFIX}-thead`,
-    tbody: `${PREFIX}-tbody`,
-    headerRow: `${PREFIX}-headerRow`,
-    headerCell: `${PREFIX}-headerCell`,
-    checkbox: `${PREFIX}-checkbox`,
-    row: `${PREFIX}-row`,
-    clickableRow: `${PREFIX}-clickableRow`,
-    rowEven: `${PREFIX}-rowEven`,
-    rowOdd: `${PREFIX}-rowOdd`,
-    rowCell: `${PREFIX}-rowCell`,
-    selectable: `${PREFIX}-selectable`,
-    expandHeader: `${PREFIX}-expandHeader`,
-    expandIconCell: `${PREFIX}-expandIconCell`,
-    expandIcon: `${PREFIX}-expandIcon`,
-    expandable: `${PREFIX}-expandable`,
-    expanded: `${PREFIX}-expanded`,
-    expandedPanel: `${PREFIX}-expandedPanel`,
+    root: `${DatagridPrefix}-root`,
+    table: `${DatagridPrefix}-table`,
+    tableWrapper: `${DatagridPrefix}-tableWrapper`,
+    thead: `${DatagridPrefix}-thead`,
+    tbody: `${DatagridPrefix}-tbody`,
+    headerRow: `${DatagridPrefix}-headerRow`,
+    headerCell: `${DatagridPrefix}-headerCell`,
+    checkbox: `${DatagridPrefix}-checkbox`,
+    row: `${DatagridPrefix}-row`,
+    clickableRow: `${DatagridPrefix}-clickableRow`,
+    rowEven: `${DatagridPrefix}-rowEven`,
+    rowOdd: `${DatagridPrefix}-rowOdd`,
+    rowCell: `${DatagridPrefix}-rowCell`,
+    selectable: `${DatagridPrefix}-selectable`,
+    expandHeader: `${DatagridPrefix}-expandHeader`,
+    expandIconCell: `${DatagridPrefix}-expandIconCell`,
+    expandIcon: `${DatagridPrefix}-expandIcon`,
+    expandable: `${DatagridPrefix}-expandable`,
+    expanded: `${DatagridPrefix}-expanded`,
+    expandedPanel: `${DatagridPrefix}-expandedPanel`,
 };
 
 export const DatagridRoot = styled('div', {
-    name: PREFIX,
+    name: DatagridPrefix,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${DatagridClasses.table}`]: {
