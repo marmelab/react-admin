@@ -16,10 +16,10 @@ import {
     Tooltip,
     useThemeProps,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { type ComponentsOverrides, styled } from '@mui/material/styles';
 import clsx from 'clsx';
 
-import { DataTableColumnProps } from './DataTableColumn';
+import type { DataTableColumnProps } from './DataTableColumn';
 import { DataTableClasses } from './DataTableRoot';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
@@ -140,3 +140,22 @@ const TableCellStyled = styled(TableCell, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(() => ({}));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaDataTableHeadCell: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaDataTableHeadCell: Partial<DataTableColumnProps>;
+    }
+
+    interface Components {
+        RaDataTableHeadCell?: {
+            defaultProps?: ComponentsPropsList['RaDataTableHeadCell'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaDataTableHeadCell'];
+        };
+    }
+}

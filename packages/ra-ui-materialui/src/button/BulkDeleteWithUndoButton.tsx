@@ -1,23 +1,32 @@
 import * as React from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
-import { alpha, styled } from '@mui/material/styles';
+import {
+    alpha,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useDeleteMany,
     useRefresh,
     useNotify,
     useResourceContext,
     useListContext,
-    RaRecord,
-    DeleteManyParams,
+    type RaRecord,
+    type DeleteManyParams,
     useTranslate,
 } from 'ra-core';
 
-import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
+import { Button, type ButtonProps } from './Button';
+import type { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkDeleteWithUndoButton = (
-    props: BulkDeleteWithUndoButtonProps
+    inProps: BulkDeleteWithUndoButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         label = 'ra.action.delete',
         icon = defaultIcon,
@@ -133,3 +142,22 @@ const StyledButton = styled(Button, {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBulkDeleteWithUndoButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaBulkDeleteWithUndoButton: Partial<BulkDeleteWithUndoButtonProps>;
+    }
+
+    interface Components {
+        RaBulkDeleteWithUndoButton?: {
+            defaultProps?: ComponentsPropsList['RaBulkDeleteWithUndoButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBulkDeleteWithUndoButton'];
+        };
+    }
+}

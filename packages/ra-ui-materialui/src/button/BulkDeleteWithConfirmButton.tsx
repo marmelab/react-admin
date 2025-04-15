@@ -2,27 +2,36 @@ import * as React from 'react';
 import { Fragment, useState } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 
-import { alpha, styled } from '@mui/material/styles';
 import {
-    MutationMode,
+    alpha,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import {
+    type MutationMode,
     useDeleteMany,
     useListContext,
     useNotify,
     useRefresh,
     useResourceContext,
     useTranslate,
-    RaRecord,
-    DeleteManyParams,
+    type RaRecord,
+    type DeleteManyParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
-import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
+import { Button, type ButtonProps } from './Button';
+import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, inflect } from 'inflection';
 
 export const BulkDeleteWithConfirmButton = (
-    props: BulkDeleteWithConfirmButtonProps
+    inProps: BulkDeleteWithConfirmButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         confirmTitle = 'ra.message.bulk_delete_title',
         confirmContent = 'ra.message.bulk_delete_content',
@@ -186,3 +195,22 @@ const StyledButton = styled(Button, {
 }));
 
 const defaultIcon = <ActionDelete />;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBulkDeleteWithConfirmButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaBulkDeleteWithConfirmButton: Partial<BulkDeleteWithConfirmButtonProps>;
+    }
+
+    interface Components {
+        RaBulkDeleteWithConfirmButton?: {
+            defaultProps?: ComponentsPropsList['RaBulkDeleteWithConfirmButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBulkDeleteWithConfirmButton'];
+        };
+    }
+}

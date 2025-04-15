@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import clsx from 'clsx';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import {
     Drawer,
-    DrawerProps,
+    type DrawerProps,
     useMediaQuery,
-    Theme,
+    type Theme,
     useScrollTrigger,
 } from '@mui/material';
 import lodashGet from 'lodash/get';
@@ -14,7 +18,11 @@ import { useLocale } from 'ra-core';
 
 import { useSidebarState } from './useSidebarState';
 
-export const Sidebar = (props: SidebarProps) => {
+export const Sidebar = (inProps: SidebarProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { appBarAlwaysOn, children, closedSize, size, ...rest } = props;
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
@@ -157,3 +165,36 @@ const StyledDrawer = styled(Drawer, {
 
 export const DRAWER_WIDTH = 240;
 export const CLOSED_DRAWER_WIDTH = 55;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSidebar:
+            | 'root'
+            | 'docked'
+            | 'paper'
+            | 'paperAnchorLeft'
+            | 'paperAnchorRight'
+            | 'paperAnchorTop'
+            | 'paperAnchorBottom'
+            | 'paperAnchorDockedLeft'
+            | 'paperAnchorDockedTop'
+            | 'paperAnchorDockedRight'
+            | 'paperAnchorDockedBottom'
+            | 'modal'
+            | 'fixed'
+            | 'appBarCollapsed';
+    }
+
+    interface ComponentsPropsList {
+        RaSidebar: Partial<SidebarProps>;
+    }
+
+    interface Components {
+        RaSidebar?: {
+            defaultProps?: ComponentsPropsList['RaSidebar'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSidebar'];
+        };
+    }
+}

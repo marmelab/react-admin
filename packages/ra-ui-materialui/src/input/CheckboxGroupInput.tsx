@@ -1,22 +1,29 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import clsx from 'clsx';
-import { useCallback, FunctionComponent } from 'react';
+import { useCallback } from 'react';
 import get from 'lodash/get';
-import FormLabel from '@mui/material/FormLabel';
-import FormControl, { FormControlProps } from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
-import FormHelperText from '@mui/material/FormHelperText';
-import { CheckboxProps } from '@mui/material/Checkbox';
+import {
+    type CheckboxProps,
+    FormLabel,
+    FormControl,
+    type FormControlProps,
+    FormGroup,
+    FormHelperText,
+} from '@mui/material';
 import {
     FieldTitle,
     useInput,
-    ChoicesProps,
+    type ChoicesProps,
     useChoicesContext,
     useGetRecordRepresentation,
 } from 'ra-core';
 
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
 import { InputHelperText } from './InputHelperText';
@@ -89,9 +96,11 @@ import { LinearProgress } from '../layout';
  *
  * The object passed as `options` props is passed to the Material UI <Checkbox> components
  */
-export const CheckboxGroupInput: FunctionComponent<
-    CheckboxGroupInputProps
-> = props => {
+export const CheckboxGroupInput = (inProps: CheckboxGroupInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         choices: choicesProp,
         className,
@@ -315,3 +324,22 @@ const StyledFormControl = styled(FormControl, {
         marginRight: 0,
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaCheckboxGroupInput: 'root' | 'label' | 'helperText';
+    }
+
+    interface ComponentsPropsList {
+        RaCheckboxGroupInput: Partial<CheckboxGroupInputProps>;
+    }
+
+    interface Components {
+        RaCheckboxGroupInput?: {
+            defaultProps?: ComponentsPropsList['RaCheckboxGroupInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaCheckboxGroupInput'];
+        };
+    }
+}

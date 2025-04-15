@@ -3,7 +3,7 @@ import { useTranslate, useResourceContext } from 'ra-core';
 import {
     Box,
     Button,
-    ButtonProps,
+    type ButtonProps,
     Menu,
     useMediaQuery,
     Theme,
@@ -11,7 +11,11 @@ import {
     IconButton,
 } from '@mui/material';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 /**
  * Renders a button that lets users show / hide columns in a DataTable
@@ -36,7 +40,11 @@ import { styled } from '@mui/material/styles';
  *   </List>
  * );
  */
-export const ColumnsButton = (props: ColumnsButtonProps) => {
+export const ColumnsButton = (inProps: ColumnsButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const resource = useResourceContext(props);
     const storeKey = props.storeKey || `${resource}.datatable`;
 
@@ -98,8 +106,9 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
     );
 };
 
+const PREFIX = 'RaColumnsButton';
 const Root = styled('span', {
-    name: 'RaColumnsButton',
+    name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
     '& .MuiButton-sizeSmall': {
@@ -117,4 +126,23 @@ const sanitizeRestProps = ({
 export interface ColumnsButtonProps extends ButtonProps {
     resource?: string;
     storeKey?: string;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaColumnsButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaColumnsButton: Partial<ColumnsButtonProps>;
+    }
+
+    interface Components {
+        RaColumnsButton?: {
+            defaultProps?: ComponentsPropsList['RaColumnsButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaColumnsButton'];
+        };
+    }
 }

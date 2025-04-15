@@ -1,6 +1,11 @@
 import * as React from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
-import { alpha, styled } from '@mui/material/styles';
+import {
+    alpha,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useUpdateMany,
     useRefresh,
@@ -8,17 +13,21 @@ import {
     useUnselectAll,
     useResourceContext,
     useListContext,
-    RaRecord,
-    UpdateManyParams,
+    type RaRecord,
+    type UpdateManyParams,
     useTranslate,
 } from 'ra-core';
-import { UseMutationOptions } from '@tanstack/react-query';
+import type { UseMutationOptions } from '@tanstack/react-query';
 
-import { Button, ButtonProps } from './Button';
+import { Button, type ButtonProps } from './Button';
 
 export const BulkUpdateWithUndoButton = (
-    props: BulkUpdateWithUndoButtonProps
+    inProps: BulkUpdateWithUndoButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { selectedIds } = useListContext();
 
     const notify = useNotify();
@@ -143,3 +152,22 @@ const StyledButton = styled(Button, {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBulkUpdateWithUndoButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaBulkUpdateWithUndoButton: Partial<BulkUpdateWithUndoButtonProps>;
+    }
+
+    interface Components {
+        RaBulkUpdateWithUndoButton?: {
+            defaultProps?: ComponentsPropsList['RaBulkUpdateWithUndoButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBulkUpdateWithUndoButton'];
+        };
+    }
+}

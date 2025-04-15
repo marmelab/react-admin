@@ -7,7 +7,11 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import { styled, useThemeProps } from '@mui/material/styles';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useTranslate } from 'ra-core';
 import { Path, To } from 'react-router';
 
@@ -27,7 +31,7 @@ import { Path, To } from 'react-router';
 export const Button = <RootComponent extends React.ElementType = 'button'>(
     inProps: ButtonProps<RootComponent>
 ) => {
-    const props = useThemeProps({ props: inProps, name: 'RaButton' });
+    const props = useThemeProps({ props: inProps, name: PREFIX });
     const {
         alignIcon = 'left',
         children,
@@ -142,3 +146,22 @@ export type LocationDescriptor = Partial<Path> & {
     state?: any;
     replace?: boolean;
 };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaButton: Partial<ButtonProps>;
+    }
+
+    interface Components {
+        RaButton?: {
+            defaultProps?: ComponentsPropsList['RaButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaButton'];
+        };
+    }
+}
