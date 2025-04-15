@@ -213,7 +213,7 @@ const classes = {
 const Root = styled('div')(({ theme }) => ({
     [`&.${classes.list}`]: {
         borderRadius: theme.shape.borderRadius,
-        border: `1px solid color-mix(in srgb, ${(theme.vars || theme).palette.action.active}, transparent 12%) solid 2px`,
+        border: `1px solid color-mix(in srgb, ${(theme.vars || theme).palette.action.active}, transparent 12%)`,
     },
     [`& .${classes.sizeSmall}`]: {
         paddingTop: 1,

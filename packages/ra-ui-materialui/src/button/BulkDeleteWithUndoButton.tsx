@@ -134,7 +134,7 @@ const StyledButton = styled(Button, {
 })(({ theme }) => ({
     color: (theme.vars || theme).palette.error.main,
     '&:hover': {
-        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.error.main}, transparent 12%) solid 2px`,
+        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.error.main}, transparent 12%)`,
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',

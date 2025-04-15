@@ -209,14 +209,14 @@ const Root = styled('span', {
     display: 'inline-block',
     [`&.${ConfigurableClasses.editMode}`]: {
         transition: theme.transitions.create('outline'),
-        outline: `color-mix(in srgb, ${(theme.vars || theme).palette.warning.main}, transparent 50%) solid 2px`,
+        outline: `color-mix(in srgb, ${(theme.vars || theme).palette.warning.main}, transparent 30%) solid 2px`,
     },
     [`&.${ConfigurableClasses.editMode}:hover `]: {
         outline: `color-mix(in srgb, ${(theme.vars || theme).palette.warning.main}, transparent 50%) solid 2px`,
     },
     [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} , &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover `]:
         {
-            outline: `color-mix(in srgb, ${(theme.vars || theme).palette.warning.main}, transparent 50%) solid 2px`,
+            outline: `${(theme.vars || theme).palette.warning.main} solid 2px`,
         },
 }));
 

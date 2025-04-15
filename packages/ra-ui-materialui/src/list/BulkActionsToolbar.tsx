@@ -164,7 +164,7 @@ const Root = styled('div', {
     [`& .${BulkActionsToolbarClasses.icon}`]: {
         marginLeft: '-0.5em',
         '&:hover': {
-            backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%) solid 2px`,
+            backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%)`,
         },
     },
 }));
