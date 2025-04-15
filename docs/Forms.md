@@ -159,6 +159,18 @@ You can add validation rules to your form inputs in several ways:
 
 Form validation deserves a section of its own; check [the Validation chapter](./Validation.md) for more details.
 
+## Empty Values
+
+React-admin Form components initialize the form based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty, the form will be empty.
+If a record property is not `undefined`, it is not considered empty:
+
+- An empty string is a valid value
+- `0` is a valid value
+- `null` is a valid value
+- An empty array is a valid value
+
+In all those cases, the value will not be considered empty and [default values](#default-values) won't be applied.
+
 ## Default Values
 
 React-admin Form components initialize the form based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty, the form will be empty.
