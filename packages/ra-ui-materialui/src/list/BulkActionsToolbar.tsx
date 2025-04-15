@@ -128,7 +128,7 @@ const Root = styled('div', {
         minHeight: theme.spacing(6),
         height: theme.spacing(6),
         paddingRight: theme.spacing(2),
-        transform: `translateY(-${theme.spacing(6)})`,
+        transform: `translateY(${theme.spacing(-6)})`,
         transition: `${theme.transitions.create(
             'height'
         )}, ${theme.transitions.create(
