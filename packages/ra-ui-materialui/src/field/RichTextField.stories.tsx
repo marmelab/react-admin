@@ -154,7 +154,7 @@ Empty.argTypes = {
             undefined: undefined,
             null: null,
             'empty string': '',
-            'foo': 'foo',
+            foo: 'foo',
         },
         control: { type: 'inline-radio' },
     },
