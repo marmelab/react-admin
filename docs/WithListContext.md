@@ -149,6 +149,7 @@ A common use case is to build a chart based on the list data. For instance, the 
 
 ![Chart based on ListContext](./img/WithListContext-chart.png)
 
+{% raw %}
 ```jsx
 import { ListBase, WithListContext } from 'react-admin';
 import * as echarts from 'echarts';
@@ -210,6 +211,7 @@ const LineChart = ({ data }) => {
     return <div ref={chartRef} style={{ height: 300, width: 700 }} />;
 };
 ```
+{% endraw %}
 
 ## Building a Refresh Button
 
