@@ -121,9 +121,9 @@ const App = () => (
 
 React-admin comes with 5 built-in themes:
 
-| &nbsp;&nbsp; [Default](./AppTheme.md#default) [![Default light theme](./img/defaultLightTheme1.jpg)]((#default)) | &nbsp;&nbsp; [B&W](./AppTheme.md#bw) [![B&W light theme](./img/bwLightTheme1.jpg)](./AppTheme.md#bw) |
-| &nbsp;&nbsp; [Nano](./AppTheme.md#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](./AppTheme.md#nano) | &nbsp;&nbsp; [Radiant](./AppTheme.md#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](./AppTheme.md#radiant) |
-| &nbsp;&nbsp; [House](./AppTheme.md#house) [![House light theme](./img/houseLightTheme1.jpg)](./AppTheme.md#house) |
+| &nbsp;&nbsp; [Default](./AppTheme.md#default) [![Default light theme](./img/defaultLightTheme1.jpg)]((AppTheme.html#default)) | &nbsp;&nbsp; [B&W](./AppTheme.md#bw) [![B&W light theme](./img/bwLightTheme1.jpg)](./AppTheme.html#bw) |
+| &nbsp;&nbsp; [Nano](./AppTheme.md#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](./AppTheme.html#nano) | &nbsp;&nbsp; [Radiant](./AppTheme.md#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](./AppTheme.html#radiant) |
+| &nbsp;&nbsp; [House](./AppTheme.md#house) [![House light theme](./img/houseLightTheme1.jpg)](./AppTheme.html#house) |
 
 The [e-commerce demo](https://marmelab.com/react-admin-demo/) contains a theme switcher, so you can test them in a real application.
 
