@@ -170,6 +170,16 @@ const Root = styled('div', {
 }));
 
 declare module '@mui/material/styles' {
+    interface PaletteOptions {
+        bulkActionsToolbarColor?: string;
+        bulkActionsToolbarBackgroundColor?: string;
+    }
+
+    interface Palette {
+        bulkActionsToolbarColor: string;
+        bulkActionsToolbarBackgroundColor: string;
+    }
+
     interface ComponentNameToClassKey {
         RaBulkActionsToolbar:
             | 'root'
