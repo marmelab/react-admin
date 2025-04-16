@@ -149,7 +149,13 @@ Empty.argTypes = {
         control: { type: 'inline-radio' },
     },
     body: {
-        options: [undefined, null, '', 'foo'],
+        options: [undefined, null, 'empty string', 'foo'],
+        mapping: {
+            undefined: undefined,
+            null: null,
+            'empty string': '',
+            'foo': 'foo',
+        },
         control: { type: 'inline-radio' },
     },
 };
