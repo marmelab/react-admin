@@ -28,11 +28,60 @@ const i18nProvider = polyglotI18nProvider(
                               author: 'Auteur',
                               year: 'Année',
                           },
+                          message: {
+                              delete_title:
+                                  'Supprimer le livre "%{recordRepresentation}" ?',
+                              delete_content:
+                                  'Souhaitez-vous vraiment supprimer le livre "%{recordRepresentation}" ?',
+                          },
+                      },
+                  },
+              }
+            : {
+                  ...englishMessages,
+                  resources: {
+                      books: {
+                          message: {
+                              delete_title:
+                                  'Delete the book "%{recordRepresentation}"?',
+                              delete_content:
+                                  'Do you really want to delete the book "%{recordRepresentation}"?',
+                          },
+                      },
+                  },
+              },
+    // Default locale
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
+
+const i18nProviderDefault = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? {
+                  ...frenchMessages,
+                  resources: {
+                      books: {
+                          name: 'Livre |||| Livres',
+                          fields: {
+                              id: 'Id',
+                              title: 'Titre',
+                              author: 'Auteur',
+                              year: 'Année',
+                          },
                       },
                   },
               }
             : englishMessages,
-    'en' // Default locale
+    // Default locale
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
 );
 
 const dataProvider = fakeRestDataProvider({
@@ -148,6 +197,26 @@ const AuthorList = ({ children }) => {
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <DeleteWithConfirmButton />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const WithDefaultTranslation = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProviderDefault}
+        >
             <AdminUI>
                 <Resource
                     name="books"

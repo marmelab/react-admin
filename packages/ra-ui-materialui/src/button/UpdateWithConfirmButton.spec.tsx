@@ -19,6 +19,7 @@ import { MutationOptions } from './UpdateButton.stories';
 import {
     Basic,
     NoRecordRepresentation,
+    WithDefaultTranslation,
 } from './UpdateWithConfirmButton.stories';
 
 const theme = createTheme();
@@ -279,8 +280,22 @@ describe('<UpdateWithConfirmButton />', () => {
         ).toBeNull();
     });
 
-    it('should use the record representation in the confirmation title and content', async () => {
+    it('should use the record representation in the confirmation title and content with a resource specific translation', async () => {
         render(<Basic />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Update')
+        );
+        await screen.findByText('Update the book "War and Peace"?');
+        await screen.findByText(
+            'Do you really want to update the book "War and Peace"?'
+        );
+    });
+    it('should use the record representation in the confirmation title and content without a resource specific translation', async () => {
+        render(<WithDefaultTranslation />);
         fireEvent.click(
             within(
                 (await screen.findByText('War and Peace')).closest(
@@ -291,6 +306,20 @@ describe('<UpdateWithConfirmButton />', () => {
         await screen.findByText('Update book War and Peace');
         await screen.findByText(
             'Are you sure you want to update book War and Peace?'
+        );
+    });
+    it('should use the record representation in the confirmation title and content', async () => {
+        render(<Basic />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Update')
+        );
+        await screen.findByText('Update the book "War and Peace"?');
+        await screen.findByText(
+            'Do you really want to update the book "War and Peace"?'
         );
     });
 
@@ -304,5 +333,6 @@ describe('<UpdateWithConfirmButton />', () => {
             ).getByText('Update')
         );
         await screen.findByText('Update author #1');
+        await screen.findByText('Are you sure you want to update author #1?');
     });
 });

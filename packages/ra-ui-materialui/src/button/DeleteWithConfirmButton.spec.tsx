@@ -23,6 +23,7 @@ import { Notification } from '../layout';
 import {
     Basic,
     NoRecordRepresentation,
+    WithDefaultTranslation,
 } from './DeleteWithConfirmButton.stories';
 
 const theme = createTheme();
@@ -340,7 +341,7 @@ describe('<DeleteWithConfirmButton />', () => {
         });
     });
 
-    it('should use the record representation in the confirmation title', async () => {
+    it('should use the record representation in the confirmation title and content with a resource specific translation', async () => {
         render(<Basic />);
         fireEvent.click(
             within(
@@ -349,10 +350,26 @@ describe('<DeleteWithConfirmButton />', () => {
                 ) as HTMLElement
             ).getByText('Delete')
         );
-        await screen.findByText('Delete book War and Peace');
+        await screen.findByText('Delete the book "War and Peace"?');
+        await screen.findByText(
+            'Do you really want to delete the book "War and Peace"?'
+        );
     });
 
-    it('should use the default translation in the confirmation title when no record representation is available', async () => {
+    it('should use the record representation in the confirmation title and content without a resource specific translation', async () => {
+        render(<WithDefaultTranslation />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Delete')
+        );
+        await screen.findByText('Delete book War and Peace');
+        await screen.findByText('Are you sure you want to delete this book?');
+    });
+
+    it('should use the default record representation in the confirmation title and title when no record representation is available', async () => {
         render(<NoRecordRepresentation />);
         fireEvent.click(
             within(
@@ -362,5 +379,6 @@ describe('<DeleteWithConfirmButton />', () => {
             ).getByText('Delete')
         );
         await screen.findByText('Delete author #1');
+        await screen.findByText('Are you sure you want to delete this author?');
     });
 });

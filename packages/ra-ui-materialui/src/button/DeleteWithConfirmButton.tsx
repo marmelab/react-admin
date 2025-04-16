@@ -25,7 +25,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     const {
         className,
         confirmTitle: confirmTitleProp,
-        confirmContent = 'ra.message.delete_content',
+        confirmContent: confirmContentProp,
         confirmColor = 'primary',
         icon = defaultIcon,
         label = 'ra.action.delete',
@@ -33,6 +33,8 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         onClick,
         redirect = 'list',
         translateOptions = {},
+        titleTranslateOptions = translateOptions,
+        contentTranslateOptions = translateOptions,
         mutationOptions,
         color = 'error',
         successMessage,
@@ -58,9 +60,9 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         successMessage,
     });
     const getRecordRepresentation = useGetRecordRepresentation(resource);
-    const recordRepresentation = getRecordRepresentation(record);
-    let confirmNameParam = recordRepresentation;
-    let confirmTitle = 'ra.message.delete_title_record_representation';
+    let recordRepresentation = getRecordRepresentation(record);
+    let confirmTitle = `resources.${resource}.message.delete_title`;
+    let confirmContent = `resources.${resource}.message.delete_content`;
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
         smart_count: 1,
         _: humanize(
@@ -71,10 +73,9 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             true
         ),
     });
-
+    // We don't support React elements for this
     if (isValidElement(recordRepresentation)) {
-        confirmTitle = 'ra.message.delete_title';
-        confirmNameParam = resourceName;
+        recordRepresentation = `#${record?.id}`;
     }
 
     return (
@@ -93,13 +94,29 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                 isOpen={open}
                 loading={isPending}
                 title={confirmTitleProp ?? confirmTitle}
-                content={confirmContent}
+                content={confirmContentProp ?? confirmContent}
                 confirmColor={confirmColor}
-                translateOptions={{
-                    name: confirmNameParam,
-                    resource: resourceName,
+                titleTranslateOptions={{
+                    recordRepresentation,
+                    name: resourceName,
                     id: record?.id,
-                    ...translateOptions,
+                    _: translate('ra.message.delete_title', {
+                        recordRepresentation,
+                        name: resourceName,
+                        id: record?.id,
+                    }),
+                    ...titleTranslateOptions,
+                }}
+                contentTranslateOptions={{
+                    recordRepresentation,
+                    name: resourceName,
+                    id: record?.id,
+                    _: translate('ra.message.delete_content', {
+                        recordRepresentation,
+                        name: resourceName,
+                        id: record?.id,
+                    }),
+                    ...contentTranslateOptions,
                 }}
                 onConfirm={handleDelete}
                 onClose={handleDialogClose}
@@ -121,7 +138,12 @@ export interface DeleteWithConfirmButtonProps<
     mutationMode?: MutationMode;
     onClick?: ReactEventHandler<any>;
     // May be injected by Toolbar - sanitized in Button
+    /**
+     * @deprecated use `titleTranslateOptions` and `contentTranslateOptions` instead
+     */
     translateOptions?: object;
+    titleTranslateOptions?: object;
+    contentTranslateOptions?: object;
     mutationOptions?: UseMutationOptions<
         RecordType,
         MutationOptionsError,

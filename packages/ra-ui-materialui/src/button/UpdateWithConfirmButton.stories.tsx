@@ -28,11 +28,60 @@ const i18nProvider = polyglotI18nProvider(
                               author: 'Auteur',
                               year: 'Année',
                           },
+                          message: {
+                              bulk_update_title:
+                                  'Mettre à jour le livre "%{recordRepresentation}" ?',
+                              bulk_update_content:
+                                  'Souhaitez-vous vraiment mettre à jour le livre "%{recordRepresentation}" ?',
+                          },
+                      },
+                  },
+              }
+            : {
+                  ...englishMessages,
+                  resources: {
+                      books: {
+                          message: {
+                              bulk_update_title:
+                                  'Update the book "%{recordRepresentation}"?',
+                              bulk_update_content:
+                                  'Do you really want to update the book "%{recordRepresentation}"?',
+                          },
+                      },
+                  },
+              },
+    // Default locale
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
+
+const i18nProviderDefault = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? {
+                  ...frenchMessages,
+                  resources: {
+                      books: {
+                          name: 'Livre |||| Livres',
+                          fields: {
+                              id: 'Id',
+                              title: 'Titre',
+                              author: 'Auteur',
+                              year: 'Année',
+                          },
                       },
                   },
               }
             : englishMessages,
-    'en' // Default locale
+    // Default locale
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
 );
 
 const dataProvider = fakeRestDataProvider({
@@ -148,6 +197,28 @@ const AuthorList = ({ children }) => {
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <UpdateWithConfirmButton
+                                data={{ title: 'modified' }}
+                            />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const WithDefaultTranslation = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProviderDefault}
+        >
             <AdminUI>
                 <Resource
                     name="books"

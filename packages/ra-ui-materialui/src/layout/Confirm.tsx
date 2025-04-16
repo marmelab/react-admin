@@ -56,6 +56,8 @@ export const Confirm = (inProps: ConfirmProps) => {
         onClose,
         onConfirm,
         translateOptions = {},
+        titleTranslateOptions = translateOptions,
+        contentTranslateOptions = translateOptions,
         ...rest
     } = props;
 
@@ -84,7 +86,7 @@ export const Confirm = (inProps: ConfirmProps) => {
         >
             <DialogTitle id="alert-dialog-title">
                 {typeof title === 'string'
-                    ? translate(title, { _: title, ...translateOptions })
+                    ? translate(title, { _: title, ...titleTranslateOptions })
                     : title}
             </DialogTitle>
             <DialogContent>
@@ -92,7 +94,7 @@ export const Confirm = (inProps: ConfirmProps) => {
                     <DialogContentText>
                         {translate(content, {
                             _: content,
-                            ...translateOptions,
+                            ...contentTranslateOptions,
                         })}
                     </DialogContentText>
                 ) : (
@@ -140,7 +142,12 @@ export interface ConfirmProps
     onClose: MouseEventHandler;
     onConfirm: MouseEventHandler;
     title: React.ReactNode;
+    /**
+     * @deprecated use `titleTranslateOptions` and `contentTranslateOptions` instead
+     */
     translateOptions?: object;
+    titleTranslateOptions?: object;
+    contentTranslateOptions?: object;
 }
 
 const PREFIX = 'RaConfirm';

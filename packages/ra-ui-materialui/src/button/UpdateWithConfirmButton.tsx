@@ -120,10 +120,9 @@ export const UpdateWithConfirmButton = (
     };
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
-    const recordRepresentation = getRecordRepresentation(record);
-    let confirmNameParam = recordRepresentation;
-    let confirmContent = 'ra.message.bulk_update_content_record_representation';
-    let confirmTitle = 'ra.message.bulk_update_title_record_representation';
+    let recordRepresentation = getRecordRepresentation(record);
+    let confirmContent = `resources.${resource}.message.bulk_update_content`;
+    let confirmTitle = `resources.${resource}.message.bulk_update_title`;
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
         smart_count: 1,
         _: humanize(
@@ -134,12 +133,11 @@ export const UpdateWithConfirmButton = (
             true
         ),
     });
-
+    // We don't support React elements for this
     if (React.isValidElement(recordRepresentation)) {
-        confirmNameParam = resourceName;
-        confirmTitle = 'ra.message.bulk_update_title';
-        confirmContent = 'ra.message.bulk_update_content';
+        recordRepresentation = `#${record?.id}`;
     }
+
     return (
         <Fragment>
             <StyledButton
@@ -154,10 +152,25 @@ export const UpdateWithConfirmButton = (
                 loading={isPending}
                 title={confirmTitleProp ?? confirmTitle}
                 content={confirmContentProp ?? confirmContent}
-                translateOptions={{
+                titleTranslateOptions={{
                     smart_count: 1,
-                    name: confirmNameParam,
-                    resource: resourceName,
+                    name: resourceName,
+                    recordRepresentation,
+                    _: translate('ra.message.bulk_update_title', {
+                        smart_count: 1,
+                        name: resourceName,
+                        recordRepresentation,
+                    }),
+                }}
+                contentTranslateOptions={{
+                    smart_count: 1,
+                    name: resourceName,
+                    recordRepresentation,
+                    _: translate('ra.message.bulk_update_content', {
+                        smart_count: 1,
+                        name: resourceName,
+                        recordRepresentation,
+                    }),
                 }}
                 onConfirm={handleUpdate}
                 onClose={handleDialogClose}
