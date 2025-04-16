@@ -87,7 +87,7 @@ const OrderChart = (props: { orders?: Order[] }) => {
                                 ]}
                                 tickFormatter={dateFormatter}
                             />
-                            <YAxis dataKey="total" name="Revenue" unit="€" />
+                            <YAxis dataKey="total" name="Revenue" unit="$" />
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip
                                 cursor={{ strokeDasharray: '3 3' }}
