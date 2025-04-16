@@ -44,7 +44,7 @@ export const EditGuesser = <RecordType extends RaRecord = any>(
     );
 };
 
-interface EditGuesserProps<RecordType extends RaRecord = any>
+export interface EditGuesserProps<RecordType extends RaRecord = any>
     extends Omit<EditProps<RecordType>, 'children'> {}
 
 const EditViewGuesser = <RecordType extends RaRecord = any>(
