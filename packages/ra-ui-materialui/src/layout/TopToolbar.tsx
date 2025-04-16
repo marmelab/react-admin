@@ -43,7 +43,7 @@ const StyledToolbar = styled(Toolbar, {
         flex: '0 1 100%',
     },
     [theme.breakpoints.down('sm')]: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: (theme.vars || theme).palette.background.paper,
         padding: 0,
         paddingBottom: 0,
     },

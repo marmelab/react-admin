@@ -283,7 +283,7 @@ const Root = styled('div', {
     [`& .${SimpleFormIteratorClasses.line}`]: {
         display: 'flex',
         listStyleType: 'none',
-        borderBottom: `solid 1px ${theme.palette.divider}`,
+        borderBottom: `solid 1px ${(theme.vars || theme).palette.divider}`,
         [theme.breakpoints.down('sm')]: { display: 'block' },
     },
     [`& .${SimpleFormIteratorClasses.index}`]: {

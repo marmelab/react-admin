@@ -24,7 +24,7 @@ const Root = styled('span', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    backgroundColor: theme.palette.grey[300],
+    backgroundColor: (theme.vars || theme).palette.grey[300],
     display: 'flex',
 }));
 

@@ -131,7 +131,7 @@ const Root = styled(FilterList, {
         position: 'absolute',
         top: '-1.2em',
         right: 3,
-        color: theme.palette.action.disabled,
+        color: (theme.vars || theme).palette.action.disabled,
     },
 }));
 

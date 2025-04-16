@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 import {
-    alpha,
     type ComponentsOverrides,
     styled,
     useThemeProps,
@@ -133,9 +132,9 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.error.main,
+    color: (theme.vars || theme).palette.error.main,
     '&:hover': {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.error.main}, transparent 12%)`,
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',

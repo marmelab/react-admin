@@ -11,7 +11,7 @@ import {
     PreferenceKeyContextProvider,
     useTranslate,
 } from 'ra-core';
-import { alpha, Popover } from '@mui/material';
+import { Popover } from '@mui/material';
 import {
     type ComponentsOverrides,
     styled,
@@ -209,14 +209,14 @@ const Root = styled('span', {
     display: 'inline-block',
     [`&.${ConfigurableClasses.editMode}`]: {
         transition: theme.transitions.create('outline'),
-        outline: `${alpha(theme.palette.warning.main, 0.3)} solid 2px`,
+        outline: `color-mix(in srgb, ${(theme.vars || theme).palette.warning.main}, transparent 30%) solid 2px`,
     },
     [`&.${ConfigurableClasses.editMode}:hover `]: {
-        outline: `${alpha(theme.palette.warning.main, 0.5)} solid 2px`,
+        outline: `color-mix(in srgb, ${(theme.vars || theme).palette.warning.main}, transparent 50%) solid 2px`,
     },
     [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} , &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover `]:
         {
-            outline: `${theme.palette.warning.main} solid 2px`,
+            outline: `${(theme.vars || theme).palette.warning.main} solid 2px`,
         },
 }));
 

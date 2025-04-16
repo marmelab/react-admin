@@ -14,6 +14,7 @@ import {
 
 import { softDarkTheme, softLightTheme } from './softTheme';
 import { chiptuneTheme } from './chiptuneTheme';
+import { cssVariablesTheme } from './cssVariablesTheme';
 
 export type ThemeName =
     | 'soft'
@@ -22,13 +23,15 @@ export type ThemeName =
     | 'nano'
     | 'radiant'
     | 'house'
-    | 'chiptune';
+    | 'chiptune'
+    | 'cssVariables';
 
-export interface Theme {
+export type Theme = {
     name: ThemeName;
-    light: RaThemeOptions;
+    light?: RaThemeOptions;
     dark?: RaThemeOptions;
-}
+    single?: RaThemeOptions;
+};
 
 const BW_SIDEBAR_OVERRIDE = {
     styleOverrides: {
@@ -45,6 +48,10 @@ const BW_SIDEBAR_OVERRIDE = {
 
 export const themes: Theme[] = [
     { name: 'soft', light: softLightTheme, dark: softDarkTheme },
+    {
+        name: 'cssVariables',
+        single: cssVariablesTheme,
+    },
     { name: 'default', light: defaultLightTheme, dark: defaultDarkTheme },
     {
         name: 'B&W',

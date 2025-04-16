@@ -192,12 +192,15 @@ export const FileInput = (inProps: FileInputProps) => {
                         style: {
                             color:
                                 disabled || readOnly
-                                    ? theme.palette.text.disabled
+                                    ? (theme.vars || theme).palette.text
+                                          .disabled
                                     : inputPropsOptions?.color ||
-                                      theme.palette.text.primary,
+                                      (theme.vars || theme).palette.text
+                                          .primary,
                             backgroundColor:
                                 disabled || readOnly
-                                    ? theme.palette.action.disabledBackground
+                                    ? (theme.vars || theme).palette.action
+                                          .disabledBackground
                                     : inputPropsOptions?.backgroundColor,
                         },
                     })}
@@ -261,12 +264,12 @@ const StyledLabeled = styled(Labeled, {
 })(({ theme }) => ({
     width: '100%',
     [`& .${FileInputClasses.dropZone}`]: {
-        background: theme.palette.background.default,
+        background: (theme.vars || theme).palette.background.default,
         borderRadius: theme.shape.borderRadius,
         fontFamily: theme.typography.fontFamily,
         padding: theme.spacing(1),
         textAlign: 'center',
-        color: theme.palette.getContrastText(theme.palette.background.default),
+        color: (theme.vars || theme).palette.primary.contrastText,
     },
     [`& .${FileInputClasses.removeButton}`]: {},
 }));

@@ -49,22 +49,22 @@ const ReviewEdit = ({ id, onCancel }: ReviewEditProps) => {
                     toolbar={<ReviewEditToolbar />}
                 >
                     <Grid container rowSpacing={1} mb={1}>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                             <Labeled source="customer_id">
                                 <CustomerReferenceField source="customer_id" />
                             </Labeled>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                             <Labeled label="resources.reviews.fields.product_id">
                                 <ProductReferenceField />
                             </Labeled>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                             <Labeled>
                                 <DateField source="date" />
                             </Labeled>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={{ xs: 6 }}>
                             <Labeled label="resources.reviews.fields.rating">
                                 <StarRatingField />
                             </Labeled>

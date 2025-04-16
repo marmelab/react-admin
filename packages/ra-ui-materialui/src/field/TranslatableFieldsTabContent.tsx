@@ -125,7 +125,7 @@ const Root = styled('div', {
     borderRadius: 0,
     borderBottomLeftRadius: theme.shape.borderRadius,
     borderBottomRightRadius: theme.shape.borderRadius,
-    border: `1px solid ${theme.palette.divider}`,
+    border: `1px solid ${(theme.vars || theme).palette.divider}`,
     borderTop: 0,
 }));
 

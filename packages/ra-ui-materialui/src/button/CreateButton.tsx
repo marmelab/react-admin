@@ -136,7 +136,7 @@ const StyledFab = styled(Fab, {
     overridesResolver: (_props, styles) => styles.root,
 })(({ theme }) => ({
     [`&.${CreateButtonClasses.floating}`]: {
-        color: theme.palette.getContrastText(theme.palette.primary.main),
+        color: (theme.vars || theme).palette.primary.contrastText,
         margin: 0,
         top: 'auto',
         right: 20,

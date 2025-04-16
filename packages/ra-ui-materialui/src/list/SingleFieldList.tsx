@@ -158,7 +158,7 @@ const Root = styled(Stack, {
     [`& .${SingleFieldListClasses.link}`]: {
         textDecoration: 'none',
         '& > *': {
-            color: theme.palette.primary.main,
+            color: (theme.vars || theme).palette.primary.main,
         },
     },
 }));
