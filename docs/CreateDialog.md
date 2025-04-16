@@ -468,6 +468,7 @@ Add the `warnWhenUnsavedChanges` prop to your Form like so:
 import React from 'react';
 import {
     List,
+    ListActions,
     Datagrid,
     SimpleForm,
 } from 'react-admin';
@@ -475,7 +476,7 @@ import { CreateDialog } from '@react-admin/ra-form-layout';
 
 const CustomerList = () => (
     <>
-        <List hasCreate>
+        <List actions={<ListActions hasCreate />}>
             <Datagrid rowClick="edit">
                 ...
             </Datagrid>
