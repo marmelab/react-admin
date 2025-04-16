@@ -133,3 +133,29 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
         <RichTextField source="body" purifyOptions={{ ADD_ATTR: ['target'] }} />
     </RecordContextProvider>
 );
+
+export const Empty = ({ emptyText, body }) => (
+    <RecordContextProvider value={{ id: 1, body }}>
+        <RichTextField source="body" emptyText={emptyText} />
+    </RecordContextProvider>
+);
+Empty.args = {
+    emptyText: 'empty',
+    body: '',
+};
+Empty.argTypes = {
+    emptyText: {
+        options: [undefined, 'empty'],
+        control: { type: 'inline-radio' },
+    },
+    body: {
+        options: [undefined, null, 'empty string', 'foo'],
+        mapping: {
+            undefined: undefined,
+            null: null,
+            'empty string': '',
+            'foo': 'foo',
+        },
+        control: { type: 'inline-radio' },
+    },
+};
