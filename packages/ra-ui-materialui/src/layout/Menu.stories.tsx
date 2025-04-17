@@ -137,12 +137,7 @@ export const Custom = () => {
 
 const Page = ({ title }) => (
     <>
-        <Typography
-            variant="h5"
-            sx={{
-                mt: 2,
-            }}
-        >
+        <Typography variant="h5" mt={2}>
             {title}
         </Typography>
         <Skeleton height={300} />
@@ -164,12 +159,7 @@ export const MenuItemChild = () => {
                         <Dashboard />
                     </ListItemIcon>
                     <ListItemText>Dashboard</ListItemText>
-                    <Typography
-                        variant="body2"
-                        sx={{
-                            color: 'text.secondary',
-                        }}
-                    >
+                    <Typography variant="body2" color="text.secondary">
                         ⌘D
                     </Typography>
                 </Menu.Item>
