@@ -24,7 +24,7 @@ const FullNameField = (props: Props) => {
                     flexWrap: 'nowrap',
                     alignItems: 'center',
                 },
-                props.sx,
+                ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
             ]}
         >
             <AvatarField
