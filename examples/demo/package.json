@@ -7,11 +7,11 @@
         "@apollo/client": "^3.12.4",
         "@mui/icons-material": "^6.0.0",
         "@mui/material": "^6.0.0",
-        "@types/recharts": "^1.8.10",
         "@vitejs/plugin-react": "^2.2.0",
         "clsx": "^2.1.1",
         "data-generator-retail": "^5.0.0",
         "date-fns": "^3.6.0",
+        "echarts": "^5.6.0",
         "fakerest": "^4.1.1",
         "fetch-mock": "^9.11.0",
         "graphql": "^15.6.0",
@@ -30,8 +30,7 @@
         "react-admin": "^5.0.0",
         "react-dom": "^19.0.0",
         "react-router": "^7.1.1",
-        "react-router-dom": "^7.1.1",
-        "recharts": "^2.15.0"
+        "react-router-dom": "^7.1.1"
     },
     "scripts": {
         "dev": "vite",
