@@ -5,7 +5,7 @@ title: "ContainerLayout"
 
 # `<ContainerLayout>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative to react-admin's `<Layout>` for applications with a limited number of resources. It displays the content in a centered container, has no sidebar, and uses the top bar for navigation.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers an alternative to react-admin's `<Layout>` for applications with a limited number of resources. It displays the content in a centered container, has no sidebar, and uses the top bar for navigation.
 
 ![Container layout](https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/container-layout.png)
 

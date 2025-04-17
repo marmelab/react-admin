@@ -5,7 +5,7 @@ title: "ShowInDialogButton"
 
 # `<ShowInDialogButton>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component renders a button opening a `<Show>` view inside a dialog, hence allowing to show a record without leaving the current view.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component renders a button opening a `<Show>` view inside a dialog, hence allowing to show a record without leaving the current view.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4" />

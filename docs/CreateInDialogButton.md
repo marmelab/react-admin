@@ -5,7 +5,7 @@ title: "CreateInDialogButton"
 
 # `<CreateInDialogButton>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a way to open a `<Create>` view inside a dialog, hence allowing to create a new record without leaving the current view.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers a way to open a `<Create>` view inside a dialog, hence allowing to create a new record without leaving the current view.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/CreateInDialogButton.mp4" type="video/mp4" />
