@@ -75,7 +75,13 @@ const countries = [
 const Wrapper = ({ children }) => (
     <ThemeProvider theme={createTheme(defaultTheme)}>
         <ListContextProvider value={useList({ data: countries })}>
-            <Box m={2}>{children}</Box>
+            <Box
+                sx={{
+                    m: 2,
+                }}
+            >
+                {children}
+            </Box>
         </ListContextProvider>
     </ThemeProvider>
 );

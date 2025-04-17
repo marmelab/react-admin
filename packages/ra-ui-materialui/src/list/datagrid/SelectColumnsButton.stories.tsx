@@ -44,8 +44,16 @@ export const Basic = () => (
         <PreferencesEditorContextProvider>
             <QueryClientProvider client={new QueryClient()}>
                 <TestMemoryRouter>
-                    <Box p={2}>
-                        <Box textAlign="right">
+                    <Box
+                        sx={{
+                            p: 2,
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                textAlign: 'right',
+                            }}
+                        >
                             <SelectColumnsButton resource="books" />
                         </Box>
                         <DatagridConfigurable
@@ -71,8 +79,16 @@ export const WithPreferenceKey = () => (
         <PreferencesEditorContextProvider>
             <QueryClientProvider client={new QueryClient()}>
                 <TestMemoryRouter>
-                    <Box p={2}>
-                        <Box textAlign="right">
+                    <Box
+                        sx={{
+                            p: 2,
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                textAlign: 'right',
+                            }}
+                        >
                             <SelectColumnsButton preferenceKey="just-a-key.to_test_with" />
                         </Box>
                         <DatagridConfigurable

@@ -17,7 +17,12 @@ export const Basic = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <AuthLayout>
             <CardContent>
-                <Stack alignItems="center" gap={2}>
+                <Stack
+                    sx={{
+                        alignItems: 'center',
+                        gap: 2,
+                    }}
+                >
                     <Avatar>
                         <LockIcon color="inherit" />
                     </Avatar>
@@ -56,7 +61,12 @@ export const Sx = () => (
             }}
         >
             <CardContent>
-                <Stack alignItems="center" gap={2}>
+                <Stack
+                    sx={{
+                        alignItems: 'center',
+                        gap: 2,
+                    }}
+                >
                     <Avatar>
                         <LockIcon color="inherit" />
                     </Avatar>

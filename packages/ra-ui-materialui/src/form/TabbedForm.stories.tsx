@@ -91,7 +91,13 @@ export const CustomLayout = () => (
         <TabbedForm>
             <TabbedForm.Tab label="main">
                 <TextInput source="title" />
-                <Stack direction="row" gap={1} width="100%">
+                <Stack
+                    direction="row"
+                    sx={{
+                        gap: 1,
+                        width: '100%',
+                    }}
+                >
                     <TextInput source="author" sx={{ width: '50%' }} />
                     <NumberInput source="year" sx={{ width: '50%' }} />
                 </Stack>

@@ -202,7 +202,13 @@ export const ConsecutiveUndoable = ({
     } as any,
 }) => (
     <CoreAdminContext dataProvider={dataProvider}>
-        <Stack spacing={2} direction="row" m={2}>
+        <Stack
+            spacing={2}
+            direction="row"
+            sx={{
+                m: 2,
+            }}
+        >
             <DeletePost id={1} />
             <DeletePost id={2} />
         </Stack>

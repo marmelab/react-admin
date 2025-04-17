@@ -31,7 +31,12 @@ const Wrapper = ({ children }) => (
                 <TestMemoryRouter>
                     <ResourceContextProvider value="posts">
                         <Inspector />
-                        <Box display="flex" justifyContent="flex-end">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                            }}
+                        >
                             <InspectorButton />
                         </Box>
                         <Paper sx={{ width: 600, m: 2 }}>{children}</Paper>

@@ -466,7 +466,11 @@ export const FullApp = () => (
 );
 
 const ListActions = () => (
-    <Box width="100%">
+    <Box
+        sx={{
+            width: '100%',
+        }}
+    >
         <TopToolbar sx={{ justifyContent: 'space-between' }}>
             <FilterLiveForm>
                 <Stack direction="row" spacing={2} useFlexGap>

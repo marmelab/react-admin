@@ -103,7 +103,12 @@ const Wrapper = ({
         >
             <ResourceContextProvider value="authors">
                 <RecordContextProvider value={record}>
-                    <Box mx={2} mt={7}>
+                    <Box
+                        sx={{
+                            mx: 2,
+                            mt: 7,
+                        }}
+                    >
                         {children}
                     </Box>
                 </RecordContextProvider>

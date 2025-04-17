@@ -58,7 +58,13 @@ const Wrapper = ({
     );
 };
 const Title = ({ children }) => (
-    <Typography ml={1} mt={2} mb={1}>
+    <Typography
+        sx={{
+            ml: 1,
+            mt: 2,
+            mb: 1,
+        }}
+    >
         {children}
     </Typography>
 );

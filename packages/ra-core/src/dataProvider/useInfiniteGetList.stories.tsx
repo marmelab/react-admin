@@ -213,7 +213,13 @@ const UseInfiniteComponentWithIntersectionObserver = () => {
                     ));
                 })}
             </List>
-            <Typography variant="body2" color="grey.500" ref={observerElem}>
+            <Typography
+                variant="body2"
+                ref={observerElem}
+                sx={{
+                    color: 'grey.500',
+                }}
+            >
                 {isFetchingNextPage && hasNextPage
                     ? 'Loading...'
                     : 'End of list'}
