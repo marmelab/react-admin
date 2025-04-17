@@ -103,13 +103,12 @@ const frenchMessages: TranslationMessages = {
             bulk_update_content:
                 'Êtes-vous sûr(e) de vouloir modifier cet élément ? |||| Êtes-vous sûr(e) de vouloir modifier ces %{smart_count} éléments ?',
             bulk_update_title:
-                'Modifier %{name} |||| Modifier %{smart_count} %{name}',
+                'Modifier %{name} %{recordRepresentation} |||| Modifier %{smart_count} %{name}',
             clear_array_input:
                 'Êtes-vous sûr(e) de vouloir supprimer tous les éléments de la liste ?',
             delete_content:
                 'Êtes-vous sûr(e) de vouloir supprimer cet élément ?',
             delete_title: 'Supprimer %{name} %{recordRepresentation}',
-            delete_title_record_representation: 'Supprimer %{name}',
             details: 'Détails',
             error: "En raison d'une erreur côté navigateur, votre requête n'a pas pu aboutir.",
             invalid_form: "Le formulaire n'est pas valide.",
