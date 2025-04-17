@@ -62,12 +62,7 @@ export const NoLabel = () => (
 export const Color = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
-            <Stack
-                sx={{
-                    gap: 1,
-                    m: 1,
-                }}
-            >
+            <Stack gap={1} sx={{ m: 1 }}>
                 <Labeled>
                     <TextField source="title" />
                 </Labeled>
@@ -88,12 +83,7 @@ export const Color = () => (
 export const TypographyProps = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
-            <Stack
-                sx={{
-                    gap: 1,
-                    m: 1,
-                }}
-            >
+            <Stack gap={1} sx={{ m: 1 }}>
                 <Labeled
                     TypographyProps={{
                         sx: { color: theme => theme.palette.secondary.main },
@@ -135,19 +125,11 @@ export const NoDoubleLabel = () => (
 );
 
 export const FullWidth = () => (
-    <Stack
-        sx={{
-            alignItems: 'flex-start',
-        }}
-    >
+    <Stack alignItems="flex-start">
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <Labeled label="title" fullWidth>
-                    <Box
-                        sx={{
-                            border: '1px solid',
-                        }}
-                    >
+                    <Box border="1px solid">
                         <TextField source="title" />
                     </Box>
                 </Labeled>
@@ -157,19 +139,11 @@ export const FullWidth = () => (
 );
 
 export const FullWidthNoLabel = () => (
-    <Stack
-        sx={{
-            alignItems: 'flex-start',
-        }}
-    >
+    <Stack alignItems="flex-start">
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={record}>
                 <Labeled label={false} fullWidth>
-                    <Box
-                        sx={{
-                            border: '1px solid',
-                        }}
-                    >
+                    <Box border="1px solid">
                         <TextField source="title" />
                     </Box>
                 </Labeled>

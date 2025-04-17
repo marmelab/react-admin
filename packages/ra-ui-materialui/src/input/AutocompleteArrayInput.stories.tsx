@@ -714,11 +714,7 @@ const CreateAuthor = () => {
         <Dialog open onClose={onCancel}>
             <form onSubmit={handleSubmit}>
                 <DialogContent>
-                    <Stack
-                        sx={{
-                            gap: 4,
-                        }}
-                    >
+                    <Stack gap={4}>
                         <TextField
                             name="name"
                             label="The author name"

@@ -31,13 +31,11 @@ const TextBlock = ({
 }) => {
     return (
         <Box
-            sx={{
-                border: 'solid 1px lightgrey',
-                borderRadius: 3,
-                p: 1,
-                width: 300,
-                bgcolor: color,
-            }}
+            border="solid 1px lightgrey"
+            borderRadius={3}
+            p={1}
+            width={300}
+            bgcolor={color}
         >
             <Typography variant="h6">Lorem ipsum</Typography>
             <Typography>
@@ -83,40 +81,20 @@ const ConfigurableTextBlock = ({
 
 const SalesBlock = ({ showDate }: { showDate?: boolean }) => (
     <Box
-        sx={{
-            display: 'flex',
-            border: 'solid 1px lightgrey',
-            borderRadius: 3,
-            p: 1,
-            width: 200,
-        }}
+        display="flex"
+        border="solid 1px lightgrey"
+        borderRadius={3}
+        p={1}
+        width={200}
     >
-        <Box
-            sx={{
-                flex: '1',
-                mr: 1,
-            }}
-        >
+        <Box flex="1" mr={1}>
             <Typography variant="h6">Sales</Typography>
             {showDate && <Typography variant="caption">Today</Typography>}
-            <Typography
-                variant="h4"
-                sx={{
-                    textAlign: 'right',
-                    mt: 2,
-                }}
-            >
+            <Typography variant="h4" textAlign="right" mt={2}>
                 $4,452
             </Typography>
         </Box>
-        <Box
-            sx={{
-                bgcolor: 'lightgrey',
-                display: 'flex',
-                alignItems: 'center',
-                p: 1,
-            }}
-        >
+        <Box bgcolor="lightgrey" display="flex" alignItems="center" p={1}>
             <TimelineIcon />
         </Box>
     </Box>
@@ -156,14 +134,7 @@ export const Basic = () => (
             <Inspector />
             <InspectorButton />
             <hr />
-            <Box
-                sx={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '1em',
-                    padding: '1em',
-                }}
-            >
+            <Box display="flex" alignItems="flex-start" gap="1em" padding="1em">
                 <ConfigurableTextBlock />
                 <ConfigurableSalesBlock />
             </Box>
@@ -176,14 +147,7 @@ export const Nested = () => (
         <Inspector />
         <InspectorButton />
         <hr />
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '1em',
-                padding: '1em',
-            }}
-        >
+        <Box display="flex" alignItems="flex-start" gap="1em" padding="1em">
             <ConfigurableTextBlock>
                 <ConfigurableSalesBlock />
             </ConfigurableTextBlock>
@@ -196,14 +160,7 @@ export const MultipleInstances = () => (
         <Inspector />
         <InspectorButton />
         <hr />
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '1em',
-                padding: '1em',
-            }}
-        >
+        <Box display="flex" alignItems="flex-start" gap="1em" padding="1em">
             <ConfigurableTextBlock preferenceKey="foo" />
             <ConfigurableTextBlock preferenceKey="bar" />
         </Box>
@@ -218,22 +175,8 @@ export const Unmount = () => {
             <Inspector />
             <InspectorButton />
             <hr />
-            <Box
-                sx={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '1em',
-                    padding: '1em',
-                }}
-            >
-                <Box
-                    sx={{
-                        flex: '1',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1em',
-                    }}
-                >
+            <Box display="flex" alignItems="flex-start" gap="1em" padding="1em">
+                <Box flex="1" display="flex" flexDirection="column" gap="1em">
                     <button
                         onClick={() => setTextBlockVisible(!isTextBlockVisible)}
                     >
@@ -241,14 +184,7 @@ export const Unmount = () => {
                     </button>
                     {isTextBlockVisible && <ConfigurableTextBlock />}
                 </Box>
-                <Box
-                    sx={{
-                        flex: '1',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '1em',
-                    }}
-                >
+                <Box flex="1" display="flex" flexDirection="column" gap="1em">
                     <button
                         onClick={() =>
                             setSalesBlockVisible(!isSalesBlockVisible)

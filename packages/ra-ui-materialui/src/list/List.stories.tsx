@@ -726,22 +726,14 @@ const Facets = () => {
     const { isPending, error, meta } = useListContext();
     if (isPending || error) return null;
     return (
-        <Box
-            sx={{
-                order: -1,
-                width: 200,
-                mt: 7,
-            }}
-        >
+        <Box order={-1} width={200} mt={7}>
             <Typography variant="subtitle2" gutterBottom>
                 Genres
             </Typography>
             <Typography
                 component="ul"
-                sx={{
-                    p: 0,
-                    listStylePosition: 'inside',
-                }}
+                p={0}
+                sx={{ listStylePosition: 'inside' }}
             >
                 {meta.genres.map(facet => (
                     <li key={facet.value}>
@@ -751,21 +743,13 @@ const Facets = () => {
                     </li>
                 ))}
             </Typography>
-            <Typography
-                variant="subtitle2"
-                gutterBottom
-                sx={{
-                    mt: 2,
-                }}
-            >
+            <Typography variant="subtitle2" gutterBottom mt={2}>
                 Century
             </Typography>
             <Typography
                 component="ul"
-                sx={{
-                    p: 0,
-                    listStylePosition: 'inside',
-                }}
+                p={0}
+                sx={{ listStylePosition: 'inside' }}
             >
                 {meta.centuries.map(facet => (
                     <li key={facet.value}>

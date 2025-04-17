@@ -188,12 +188,7 @@ const LoadMore = () => {
     const { hasNextPage, fetchNextPage, isFetchingNextPage } =
         useInfinitePaginationContext();
     return hasNextPage ? (
-        <Box
-            sx={{
-                mt: 1,
-                textAlign: 'center',
-            }}
-        >
+        <Box mt={1} textAlign="center">
             <Button
                 disabled={isFetchingNextPage}
                 onClick={() => fetchNextPage()}
@@ -227,13 +222,7 @@ const CustomPagination = () => {
         <>
             <InfinitePagination />
             {total && total > 0 && (
-                <Box
-                    sx={{
-                        position: 'sticky',
-                        bottom: 0,
-                        textAlign: 'center',
-                    }}
-                >
+                <Box position="sticky" bottom={0} textAlign="center">
                     <Card
                         elevation={2}
                         sx={{

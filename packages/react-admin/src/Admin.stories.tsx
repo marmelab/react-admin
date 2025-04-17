@@ -202,15 +202,13 @@ const AccessControlAdmin = ({ AdminProps }: { AdminProps?: AdminProps }) => {
         return (
             <div>
                 <Box
-                    sx={{
-                        display: 'flex',
-                        gap: 2,
-                        position: 'absolute',
-                        bottom: 10,
-                        left: '50%',
-                        zIndex: 1000,
-                        transform: 'translate(-50%, 0)',
-                    }}
+                    display="flex"
+                    gap={2}
+                    position="absolute"
+                    bottom={10}
+                    left="50%"
+                    zIndex={1000}
+                    sx={{ transform: 'translate(-50%, 0)' }}
                 >
                     <Button
                         variant="outlined"

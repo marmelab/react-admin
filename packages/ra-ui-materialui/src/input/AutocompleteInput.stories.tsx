@@ -398,11 +398,7 @@ const CreateAuthorLocal = ({ choices, setChoices }) => {
         <Dialog open onClose={onCancel}>
             <form onSubmit={handleSubmit}>
                 <DialogContent>
-                    <Stack
-                        sx={{
-                            gap: 4,
-                        }}
-                    >
+                    <Stack gap={4}>
                         <TextField
                             name="name"
                             label="The author name"
@@ -858,11 +854,7 @@ const CreateAuthor = () => {
         <Dialog open onClose={onCancel}>
             <form onSubmit={handleSubmit}>
                 <DialogContent>
-                    <Stack
-                        sx={{
-                            gap: 4,
-                        }}
-                    >
+                    <Stack gap={4}>
                         <TextField
                             name="name"
                             label="The author name"
@@ -1075,11 +1067,8 @@ const FanList = () => {
                 <RecordContextProvider value={fan} key={fan.id}>
                     <Stack
                         direction="row"
-                        sx={{
-                            alignItems: 'center',
-                            m: 1,
-                            width: '90%',
-                        }}
+                        alignItems="center"
+                        sx={{ m: 1, width: '90%' }}
                     >
                         <Box sx={{ width: '320px' }}>
                             <Typography variant="body1">

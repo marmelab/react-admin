@@ -232,14 +232,9 @@ const EditContent = () => {
 };
 
 const dataProviderWithUpdate = {
-    getOne: async () =>
-        ({
-            data: book,
-        }) as any,
+    getOne: async () => ({ data: book }) as any,
     update: async (_resource, params) =>
-        ({
-            data: { ...book, ...params.data },
-        }) as any,
+        ({ data: { ...book, ...params.data } }) as any,
 } as any;
 
 export const NotificationDefault = () => (

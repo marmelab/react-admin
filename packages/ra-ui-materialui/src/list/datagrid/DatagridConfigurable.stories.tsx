@@ -54,21 +54,10 @@ const Wrapper = ({ children, queryClient = new QueryClient() }) => (
                 <QueryClientProvider client={queryClient}>
                     <TestMemoryRouter>
                         <Inspector />
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                            }}
-                        >
+                        <Box display="flex" justifyContent="flex-end">
                             <InspectorButton />
                         </Box>
-                        <Box
-                            sx={{
-                                p: 2,
-                            }}
-                        >
-                            {children}
-                        </Box>
+                        <Box p={2}>{children}</Box>
                     </TestMemoryRouter>
                 </QueryClientProvider>
             </PreferencesEditorContextProvider>
@@ -112,13 +101,7 @@ export const Omit = () => (
 
 export const PreferenceKey = () => (
     <Wrapper>
-        <Box
-            sx={{
-                p: 2,
-                display: 'flex',
-                justifyContent: 'space-between',
-            }}
-        >
+        <Box p={2} display="flex" justifyContent="space-between">
             <DatagridConfigurable
                 resource="books3"
                 data={data}

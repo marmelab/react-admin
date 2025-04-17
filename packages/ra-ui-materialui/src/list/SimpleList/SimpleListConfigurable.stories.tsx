@@ -44,12 +44,7 @@ const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
 export const Basic = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Inspector />
-        <Box
-            sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-            }}
-        >
+        <Box display="flex" justifyContent="flex-end">
             <LocalesMenuButton
                 languages={[
                     { locale: 'en', name: 'English' },
@@ -58,11 +53,7 @@ export const Basic = () => (
             />
             <InspectorButton />
         </Box>
-        <Box
-            sx={{
-                p: 2,
-            }}
-        >
+        <Box p={2}>
             <SimpleListConfigurable
                 resource="books"
                 data={data}

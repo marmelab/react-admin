@@ -57,13 +57,7 @@ export const AdditionalContent = () => (
     <Wrapper>
         <Login>
             <LoginForm />
-            <Typography
-                variant="body2"
-                sx={{
-                    textAlign: 'center',
-                    mb: 1,
-                }}
-            >
+            <Typography variant="body2" textAlign="center" mb={1}>
                 <Link href="/forgot-password">Forgot password?</Link>
             </Typography>
         </Login>

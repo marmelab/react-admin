@@ -34,12 +34,7 @@ const dataProvider = fakerestDataProvider(
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const PlayerList = () => (
-    <Box
-        sx={{
-            p: 2,
-            bgcolor: '#fafafb',
-        }}
-    >
+    <Box p={2} bgcolor="#fafafb">
         <Typography variant="h5">Players</Typography>
         <List
             exporter={false}

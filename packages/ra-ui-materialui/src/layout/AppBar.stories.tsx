@@ -36,11 +36,7 @@ export default {
 };
 
 const Content = () => (
-    <Box
-        sx={{
-            mt: 7,
-        }}
-    >
+    <Box mt={7}>
         <Skeleton
             variant="text"
             width="auto"
@@ -107,11 +103,7 @@ export const CustomTitle = () => (
 
 export const TitleOverflow = () => (
     <Wrapper>
-        <Box
-            sx={{
-                maxWidth: 300,
-            }}
-        >
+        <Box maxWidth={300}>
             <AppBar position="relative" />
             <Title title="Lorem ipsum sic dolor amet" />
         </Box>
@@ -193,40 +185,14 @@ export const Toolbar = () => (
         <AppBar
             toolbar={
                 <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
                 >
-                    <Box
-                        sx={{
-                            mr: 1,
-                        }}
-                    >
-                        Custom toolbar
-                    </Box>
-                    <Box
-                        sx={{
-                            mr: 1,
-                        }}
-                    >
-                        with
-                    </Box>
-                    <Box
-                        sx={{
-                            mr: 1,
-                        }}
-                    >
-                        multiple
-                    </Box>
-                    <Box
-                        sx={{
-                            mr: 1,
-                        }}
-                    >
-                        elements
-                    </Box>
+                    <Box mr={1}>Custom toolbar</Box>
+                    <Box mr={1}>with</Box>
+                    <Box mr={1}>multiple</Box>
+                    <Box mr={1}>elements</Box>
                 </Box>
             }
         />
