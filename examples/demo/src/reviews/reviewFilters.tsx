@@ -31,13 +31,15 @@ const reviewFilters = [
         optionText={choice => (
             <>
                 <Box
-                    bgcolor={colorMap[choice.id]}
-                    width={8}
-                    height={8}
-                    borderRadius={4}
                     component="span"
-                    mr={1}
-                    display="inline-block"
+                    sx={{
+                        bgcolor: colorMap[choice.id],
+                        width: 8,
+                        height: 8,
+                        borderRadius: 4,
+                        mr: 1,
+                        display: 'inline-block',
+                    }}
                 />
                 {choice.name}
             </>
