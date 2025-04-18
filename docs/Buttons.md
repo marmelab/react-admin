@@ -904,12 +904,12 @@ Delete the current record after a confirm dialog has been accepted. To be used i
 | `confirmTitle`            | Optional | `ReactNode`                                      | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
 | `confirmContent`          | Optional | `ReactNode`                                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
 | `confirmColor`            | Optional | <code>'primary' &#124; 'warning'</code>          | 'primary'                   | The color of the confirm dialog's "Confirm" button                      |
-| `contentTranslateOptions` | Optional | `Object`                                         | {}                          | Custom id, name and record representation to be used in the confirm dialog's title |
+| `contentTranslateOptions` | Optional | `Object`                                         | {}                          | Custom id, name and record representation to be used in the confirm dialog's content |
 | `icon`                    | Optional | `ReactElement`                                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
 | `label`                   | Optional | `string`                                         | 'ra.action.delete'          | label or translation message to use                                     |
 | `mutationOptions`         | Optional |                                                  | null                        | options for react-query `useMutation` hook                              |
 | `redirect`                | Optional | <code>string &#124; false &#124; Function</code> | 'list'                      | Custom redirection after success side effect                            |
-| `titleTranslateOptions`   | Optional | `Object`                                         | {}                          | Custom id, name and record representation to be used in the confirm dialog's content |
+| `titleTranslateOptions`   | Optional | `Object`                                         | {}                          | Custom id, name and record representation to be used in the confirm dialog's title |
 | `successMessage`          | Optional | `string`                                         | 'ra.notification.deleted'   | Lets you customize the success notification message.                    |
 
 {% raw %}
@@ -1368,10 +1368,10 @@ export const PostEdit = () => (
 | `data`                    | Required | `Object`    |                                  | The data used to update the record                       |
 | `confirmTitle`            | Optional | `ReactNode` | `ra.message.bulk_update_title`   | The title of the confirmation dialog when `mutationMode` is not `undoable` |
 | `confirmContent`          | Optional | `ReactNode` | `ra.message.bulk_update_content` | The content of the confirmation dialog when `mutationMode` is not `undoable` |
-| `contentTranslateOptions` | Optional | `Object`    | {}                               | Custom id, name and record representation to be used in the confirm dialog's title   |
+| `contentTranslateOptions` | Optional | `Object`    | {}                               | Custom id, name and record representation to be used in the confirm dialog's content   |
 | `mutationMode`            | Optional | `string`    | `undoable`                       | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`) |
 | `mutationOptions`         | Optional | `Object`    |                                  | The react-query mutation options |
-| `titleTranslateOptions`   | Optional | `Object`    | {}                               | Custom id, name and record representation to be used in the confirm dialog's content |
+| `titleTranslateOptions`   | Optional | `Object`    | {}                               | Custom id, name and record representation to be used in the confirm dialog's title |
 
 `<UpdateButton>` also accepts the [Button props](./Buttons.md#button).
 

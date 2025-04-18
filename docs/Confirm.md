@@ -72,7 +72,7 @@ const BulkResetViewsButton = () => {
 | `ConfirmIcon`      | Optional | `Component`                      | `CheckCircleIcon`      | Icon component of the confirm button                                 |
 | `CancelIcon`       | Optional | `Component`                      | `ErrorOutlineIcon`     | Icon component of the cancel button                                  |
 | `title Translate Options` | Optional | `{ id?: string, name?: string }` | {}                    | Custom id and name to be used in the dialog title                  |
-| `content Translate Options` | Optional | `{ id?: string, name?: string }` | {}                    | Custom id and name to be used in the dialog title                  |
+| `content Translate Options` | Optional | `{ id?: string, name?: string }` | {}                    | Custom id and name to be used in the dialog content                  |
 | `sx`               | Optional | `SxProps`                        | ''                    | Material UI shortcut for defining custom styles with access to the theme   |
 
 Text props such as `title`, `content`, `cancel` and `confirm` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
