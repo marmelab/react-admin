@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
-import { ReactElement } from 'react';
+import { useEffect, useState, ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import { RaRecord, TitleComponent, warning } from 'ra-core';
 

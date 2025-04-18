@@ -5,7 +5,6 @@ import React, {
     ReactElement,
     ReactNode,
 } from 'react';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -21,7 +20,7 @@ import { Labeled } from '../Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import { SvgIconProps } from '@mui/material';
 
