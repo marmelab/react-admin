@@ -19,6 +19,7 @@ describe('<ShowGuesser />', () => {
                         score: 3,
                         body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
                         created_at: new Date('2012-08-02'),
+                        tags_ids: [1, 2],
                     },
                 }),
         };
@@ -34,7 +35,7 @@ describe('<ShowGuesser />', () => {
         });
         expect(logSpy).toHaveBeenCalledWith(`Guessed Show:
 
-import { DateField, NumberField, ReferenceField, Show, SimpleShowLayout, TextField } from 'react-admin';
+import { DateField, NumberField, ReferenceArrayField, ReferenceField, Show, SimpleShowLayout, TextField } from 'react-admin';
 
 export const CommentShow = () => (
     <Show>
@@ -45,6 +46,7 @@ export const CommentShow = () => (
             <NumberField source="score" />
             <TextField source="body" />
             <DateField source="created_at" />
+            <ReferenceArrayField source="tags_ids" reference="tags" />
         </SimpleShowLayout>
     </Show>
 );`);
