@@ -240,8 +240,8 @@ export const CheckForApplicationUpdate = () => {
     const notify = useNotify();
 
     const onNewVersionAvailable = () => {
-        // autoHideDuration is set to 0 to disable the auto hide feature
-        notify(<ApplicationUpdateNotification />, { autoHideDuration: 0 });
+        // autoHideDuration is set to null to disable the auto hide feature
+        notify(<ApplicationUpdateNotification />, { autoHideDuration: null });
     };
 
     useCheckForApplicationUpdate({ onNewVersionAvailable, ...rest });
