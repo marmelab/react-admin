@@ -62,7 +62,12 @@ export const SimpleForm = (inProps: SimpleFormProps) => {
     return (
         <Form {...rest}>
             <Component className={className} sx={sx}>
-                <Stack alignItems="flex-start" {...sanitizeRestProps(props)}>
+                <Stack
+                    {...sanitizeRestProps(props)}
+                    sx={{
+                        alignItems: 'flex-start',
+                    }}
+                >
                     {children}
                 </Stack>
             </Component>

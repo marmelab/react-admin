@@ -35,7 +35,13 @@ export const AuthenticationError = (inProps: AuthenticationErrorProps) => {
             <Title defaultTitle={title} />
             <div className={AuthenticationErrorClasses.message}>
                 {icon}
-                <Typography variant="h5" mt={3} color="text.secondary">
+                <Typography
+                    variant="h5"
+                    sx={{
+                        mt: 3,
+                        color: 'text.secondary',
+                    }}
+                >
                     {translate(textPrimary, { _: textPrimary })}
                 </Typography>
                 <Typography variant="body2">

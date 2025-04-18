@@ -47,8 +47,19 @@ export const FilterListSection = (props: FilterListSectionProps) => {
     const translate = useTranslate();
     return (
         <Box {...rest}>
-            <Box mt={2} display="flex" alignItems="center">
-                <Box mr={1} lineHeight="initial">
+            <Box
+                sx={{
+                    mt: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
+                <Box
+                    sx={{
+                        mr: 1,
+                        lineHeight: 'initial',
+                    }}
+                >
                     {icon}
                 </Box>
                 <Typography variant="overline">

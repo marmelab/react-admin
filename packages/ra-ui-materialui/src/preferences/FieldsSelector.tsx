@@ -86,7 +86,11 @@ export const FieldsSelector = ({
     };
 
     return (
-        <Box pt={0.5}>
+        <Box
+            sx={{
+                pt: 0.5,
+            }}
+        >
             <Box component="ul" sx={{ paddingInlineStart: 0, m: 0 }}>
                 {availableFields.map(field => (
                     <FieldToggle
@@ -102,10 +106,12 @@ export const FieldsSelector = ({
             </Box>
             <Box
                 onDrop={e => e.preventDefault()}
-                display="flex"
-                justifyContent="space-between"
-                mx={-0.5}
-                mt={1}
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    mx: -0.5,
+                    mt: 1,
+                }}
             >
                 <Button size="small" onClick={handleHideAll}>
                     {translate('ra.inspector.hideAll', {

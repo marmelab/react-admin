@@ -17,11 +17,15 @@ const FullNameField = (props: Props) => {
     return record ? (
         <Typography
             variant="body2"
-            display="flex"
-            flexWrap="nowrap"
-            alignItems="center"
             component="div"
-            sx={props.sx}
+            sx={[
+                {
+                    display: 'flex',
+                    flexWrap: 'nowrap',
+                    alignItems: 'center',
+                },
+                ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+            ]}
         >
             <AvatarField
                 record={record}
