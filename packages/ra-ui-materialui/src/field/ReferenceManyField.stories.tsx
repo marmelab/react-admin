@@ -22,9 +22,9 @@ import {
     FilterButton,
     Pagination,
     SingleFieldList,
+    FilterForm,
 } from '../list';
 import { Notification } from '../layout/Notification';
-import { FilterForm } from '../list';
 import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';

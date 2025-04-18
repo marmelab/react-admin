@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { CoreAdminContext, useStore, memoryStore } from 'ra-core';
 import expect from 'expect';
-import { render, screen } from '@testing-library/react';
-import { renderHook } from '@testing-library/react';
+import { render, screen, renderHook } from '@testing-library/react';
 import { useTheme } from './useTheme';
 import { AdminContext } from '../AdminContext';
 import { ThemeTestWrapper } from '../layout/ThemeTestWrapper';

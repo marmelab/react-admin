@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { FC, memo, ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
-import { ReactElement } from 'react';
 import { ToolbarProps } from '@mui/material';
 import { Exporter } from 'ra-core';
 

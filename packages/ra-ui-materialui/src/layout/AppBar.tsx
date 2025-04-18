@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, Children, memo } from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, memo } from 'react';
 import {
     AppBar as MuiAppBar,
     AppBarProps as MuiAppBarProps,

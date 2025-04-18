@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import cypress from 'eslint-plugin-cypress';
+import importPlugin from 'eslint-plugin-import';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
@@ -28,6 +29,22 @@ export default defineConfig([
         ...conf,
         files: ['**/*.ts', '**/*.tsx'],
     })),
+    {
+        name: 'eslint-plugin-import',
+        plugins: { import: importPlugin },
+        rules: {
+            ...importPlugin.configs.recommended.rules,
+            ...importPlugin.configs.typescript.rules,
+        },
+        settings: {
+            'import/resolver': {
+                // You will also need to install and configure the TypeScript resolver
+                // See also https://github.com/import-js/eslint-import-resolver-typescript#configuration
+                typescript: true,
+                node: true,
+            },
+        },
+    },
     {
         ...jsxA11y.flatConfigs.recommended,
         ignores: ['**/*.spec.*', '**/*.stories.*'],
@@ -116,6 +133,10 @@ export default defineConfig([
             'no-prototype-builtins': 'off',
             'prefer-spread': 'off',
             'jsx-a11y/no-autofocus': 'off',
+            'import/no-anonymous-default-export': 'off',
+            'import/no-named-as-default': 'off',
+            'import/no-extraneous-dependencies': 'error',
+            'import/no-unresolved': 'off',
         },
         settings: {
             react: {
@@ -133,6 +154,23 @@ export default defineConfig([
         },
         rules: {
             'react-hooks/rules-of-hooks': 'off',
+            'import/no-unresolved': 'off',
+            'import/no-extraneous-dependencies': 'off',
+        },
+    },
+    {
+        name: 'stories-rules',
+        files: ['**/*.stories.*'],
+        rules: {
+            'import/no-unresolved': 'off',
+            'import/no-extraneous-dependencies': 'off',
+        },
+    },
+    {
+        name: 'examples-rules',
+        files: ['**/examples/**'],
+        rules: {
+            'import/no-extraneous-dependencies': 'off',
         },
     },
     {

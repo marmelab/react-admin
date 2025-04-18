@@ -1,6 +1,11 @@
 import * as React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { renderHook } from '@testing-library/react';
+import {
+    render,
+    screen,
+    fireEvent,
+    waitFor,
+    renderHook,
+} from '@testing-library/react';
 
 import { useStore } from './useStore';
 import { StoreContextProvider } from './StoreContextProvider';

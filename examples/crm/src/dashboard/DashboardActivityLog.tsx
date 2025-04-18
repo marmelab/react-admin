@@ -1,7 +1,6 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { Box, Card, Typography } from '@mui/material';
+import { Box, Card, Typography, Stack } from '@mui/material';
 import { ActivityLog } from '../activity/ActivityLog';
-import { Stack } from '@mui/material';
 
 export function DashboardActivityLog() {
     return (

@@ -4,8 +4,7 @@ import { useFormState, useFormContext } from 'react-hook-form';
 
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
-import { Edit } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
 import { FormInspector } from './common';

@@ -8,7 +8,6 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Box, Typography, Card, CardContent } from '@mui/material';
 import MailIcon from '@mui/icons-material/MailOutline';
-import CategoryIcon from '@mui/icons-material/LocalOffer';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
@@ -56,7 +55,7 @@ export const Basic = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <FilterList label="Category" icon={<CategoryIcon />}>
+                    <FilterList label="Category" icon={<LocalOfferIcon />}>
                         <FilterListItem
                             label="Tests"
                             value={{ category: 'tests' }}
@@ -113,7 +112,7 @@ export const Icon = () => {
                             value={{ has_newsletter: false }}
                         />
                     </FilterList>
-                    <FilterList label="Category" icon={<CategoryIcon />}>
+                    <FilterList label="Category" icon={<LocalOfferIcon />}>
                         <FilterListItem
                             label="Tests"
                             value={{ category: 'tests' }}
@@ -177,7 +176,7 @@ export const Cumulative = () => {
                 }}
             >
                 <CardContent>
-                    <FilterList label="Categories" icon={<CategoryIcon />}>
+                    <FilterList label="Categories" icon={<LocalOfferIcon />}>
                         <FilterListItem
                             label="Tests"
                             value={{ category: 'tests' }}
@@ -298,7 +297,7 @@ const dataProvider = fakeRestDataProvider({
 const BookListAside = () => (
     <Card sx={{ order: -1, mr: 2, mt: 6, width: 200, height: 'fit-content' }}>
         <CardContent>
-            <FilterList label="Century" icon={<CategoryIcon />}>
+            <FilterList label="Century" icon={<LocalOfferIcon />}>
                 <FilterListItem
                     label="21st"
                     value={{ year_gte: 2000, year_lte: undefined }}

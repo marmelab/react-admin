@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import clsx from 'clsx';
-import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLoading } from 'ra-core';
 
