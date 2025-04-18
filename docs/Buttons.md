@@ -925,7 +925,8 @@ const EditToolbar = () => {
         <DeleteWithConfirmButton
             confirmContent="You will not be able to recover this record. Are you sure?"
             confirmColor="warning"
-            translateOptions={{ name: record.name }}
+            contentTranslateOptions={{ name: record.name }}
+            titleTranslateOptions={{ name: record.name }}
         />
     </Toolbar>
 };
