@@ -24,16 +24,16 @@ A frontend Framework for building single-page applications running in the browse
 
 * 👨‍👩‍👧‍👦 Powered by [Material UI](https://mui.com/material-ui/getting-started/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/), [react-query](https://tanstack.com/query/latest/docs/framework/react/overview), [TypeScript](https://www.typescriptlang.org/) and a few more
 
-## Installation
+### Installation (Simplified)
 
-React-admin is available from npm. You can install it (and its required dependencies)
-using:
+You can now install and run the project using a simpler method:
 
-```sh
-npm install react-admin
-#or
-yarn add react-admin
-```
+```bash
+git clone <repo-url>
+yarn install
+cd react-admin
+yarn run-simple
+
 
 ## Documentation
 
