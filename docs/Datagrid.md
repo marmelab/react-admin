@@ -38,8 +38,8 @@ The `<Datagrid>` is an **iterator** component: it gets an array of records from 
 
 **Tip**: If you need more Datagrid features, check out these two alternative components:
 
-- [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" /> lets users edit the content right in the datagrid
-- [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" /> adds suport for column reordering, aggregation, pivoting, row grouping, infinite scroll, etc.
+- [`<EditableDatagrid>`](./EditableDatagrid.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> lets users edit the content right in the datagrid
+- [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> adds suport for column reordering, aggregation, pivoting, row grouping, infinite scroll, etc.
 
 Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 

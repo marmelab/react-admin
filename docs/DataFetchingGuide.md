@@ -367,7 +367,7 @@ If a relationship component doesn't fit your specific use case, you can always u
 
 React-admin offers powerful realtime features to help you build collaborative applications based on the Publish / Subscribe (PubSub) pattern. The [Realtime documentation](./Realtime.md) explains how to use them.
 
-These features are part of the [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" />.
+These features are part of the [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />.
 
 ### Realtime Data Provider
 

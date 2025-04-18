@@ -12,7 +12,7 @@ React-admin provides hooks and UI components for collaborative applications wher
   Your browser does not support the video tag.
 </video>
 
-These features are provided by the `ra-realtime` package, which is part of the [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> 
+These features are provided by the `ra-realtime` package, which is part of the [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> 
 
 ## Backend Agnostic
 

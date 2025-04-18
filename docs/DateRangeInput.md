@@ -5,7 +5,7 @@ title: "The DateRangeInput Component"
 
 # `<DateRangeInput>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component `<DateRangeInput>` is a date range picker, allowing users to pick an interval by selecting a start and an end date. It is ideal for filtering records based on a date range. It is designed to work with various locales and date formats.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component `<DateRangeInput>` is a date range picker, allowing users to pick an interval by selecting a start and an end date. It is ideal for filtering records based on a date range. It is designed to work with various locales and date formats.
 
 ![DateRangeInput](./img/DateRangeInput.png)
 
