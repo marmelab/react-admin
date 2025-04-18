@@ -5,7 +5,7 @@ title: "The SolarLayout Component"
 
 # `<SolarLayout>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component is an alternative application layout without top bar, and using a narrow menu to maximize the usable screen real estate. The menu items can reveal a secondary panel to show sub menus, preference forms, a search engine, etc. Ideal for applications with a large number of resources.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component is an alternative application layout without top bar, and using a narrow menu to maximize the usable screen real estate. The menu items can reveal a secondary panel to show sub menus, preference forms, a search engine, etc. Ideal for applications with a large number of resources.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-solar-layout.mp4" type="video/mp4"/>

@@ -108,7 +108,7 @@ const App = () => (
 
 React-admin comes with 5 built-in themes, each one having a light and a dark variant. You can use them as a starting point for your custom theme, or use them as-is.
 
-| &nbsp;&nbsp; [Default](#default) [![Default light theme](./img/defaultLightTheme1.jpg)]((#default)) | &nbsp;&nbsp; [B&W](#bw) [![B&W light theme](./img/bwLightTheme1.jpg)](#bw) |
+| &nbsp;&nbsp; [Default](#default) [![Default light theme](./img/defaultLightTheme1.jpg)](#default) | &nbsp;&nbsp; [B&W](#bw) [![B&W light theme](./img/bwLightTheme1.jpg)](#bw) |
 | &nbsp;&nbsp; [Nano](#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](#nano) | &nbsp;&nbsp; [Radiant](#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](#radiant) |
 | &nbsp;&nbsp; [House](#house) [![House light theme](./img/houseLightTheme1.jpg)](#house) |
 

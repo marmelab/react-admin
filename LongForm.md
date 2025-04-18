@@ -5,7 +5,7 @@ title: "LongForm"
 
 # `<LongForm>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative form layout, to be used as child of `<Create>` or `<Edit>`. Expects `<LongForm.Section>` elements as children.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers an alternative form layout, to be used as child of `<Create>` or `<Edit>`. Expects `<LongForm.Section>` elements as children.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/ra-longform-overview.webm" type="video/webm"/>
@@ -705,11 +705,39 @@ const PersonEdit = () => (
 ```
 {% endraw %}
 
-Note that you **must** set the `<LongForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
-
-If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](./Edit.md#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
-
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+An alternative to the `<AutoSave>` component is to use [the `<AutoPersistInStore>` component](./AutoPersistInStore.md). This component saves the form values in the local storage of the browser. This way, if the user navigates away without saving, the form values are reapplied when the user comes back to the page. This is useful for long forms where users may spend a lot of time.
+
+To enable this behavior, add the `<AutoPersistInStore>` component inside the form component:
+
+```tsx
+import { LongForm, AutoPersistInStore } from '@react-admin/ra-form-layout';
+import { Create, TextInput, DateInput, SelectInput } from 'react-admin';
+
+const CustomerCreate = () => (
+    <Create>
+        <LongForm>
+            <LongForm.Section label="Identity">
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
+                <DateInput source="born" />
+                <SelectInput source="sex" choices={[
+                    { id: 'male', name: 'Male' },
+                    { id: 'female', name: 'Female' },
+                    { id: 'other', name: 'Other' },
+                ]} />
+            </LongForm.Section>
+            <LongForm.Section label="Work">
+                {/* ... */}
+            </LongForm.Section>
+            <AutoPersistInStore />
+        </LongForm>
+    </Create>
+);
+```
+
+Check [the `<AutoPersistInStore>` component](./AutoPersistInStore.md) documentation for more details.
 
 ## Access Control
 

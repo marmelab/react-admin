@@ -5,7 +5,7 @@ title: "ListLiveUpdate"
 
 # `<ListLiveUpdate>`
 
-`<ListLiveUpdate>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component that refreshes its parent `ListContext` (e.g in a [`<List>`](./List.md)) when a record is created, updated, or deleted.
+`<ListLiveUpdate>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component that refreshes its parent `ListContext` (e.g in a [`<List>`](./List.md)) when a record is created, updated, or deleted.
 
 ![ListLive](./img/ListLive.png)
 

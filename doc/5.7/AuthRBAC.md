@@ -11,7 +11,7 @@ Building up on react-admin's [Access Control features](./Permissions.md#access-c
     <source src="./img/ra-rbac.mp4" type="video/mp4" />
 </video>
 
-The RBAC features are part of [ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> package. Test them live in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-rbac-full-app--full-app).
+The RBAC features are part of [ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> package. Test them live in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-rbac-full-app--full-app).
 
 ## At a Glance
 

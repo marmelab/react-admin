@@ -5,7 +5,7 @@ title: "The TreeInput Component"
 
 # `<TreeInput>` Component
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to select one or several nodes from a tree.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows to select one or several nodes from a tree.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>

@@ -5,7 +5,7 @@ title: "The PredictiveTextInput component"
 
 # `<PredictiveTextInput>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative to [`<TextInput>`](./TextInput.md) that suggests completion for the input value. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers an alternative to [`<TextInput>`](./TextInput.md) that suggests completion for the input value. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/PredictiveTextInput.mp4" type="video/mp4"/>

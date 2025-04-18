@@ -618,11 +618,33 @@ const PersonEdit = () => (
 ```
 {% endraw %}
 
-Note that you **must** set the `<SimpleForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
-
-If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
-
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+An alternative to the `<AutoSave>` component is to use [the `<AutoPersistInStore>` component](./AutoPersistInStore.md). This component saves the form values in the local storage of the browser. This way, if the user navigates away without saving, the form values are reapplied when the user comes back to the page. This is useful for long forms where users may spend a lot of time.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoPersistInStore.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To enable this behavior, add the `<AutoPersistInStore>` component inside the form component:
+
+```tsx
+import { AutoPersistInStore } from '@react-admin/ra-form-layout';
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="teaser" />
+            <AutoPersistInStore />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+Check [the `<AutoPersistInStore>` component](./AutoPersistInStore.md) documentation for more details.
 
 ## Versioning
 

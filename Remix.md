@@ -245,3 +245,28 @@ export default function App() {
 That's it! Now Remix both renders the admin app and serves as a proxy to the Supabase API. You can test the app by visiting `http://localhost:5173/admin/`, and the API Proxy by visiting `http://localhost:5173/admin/api/posts`.
 
 Note that the Supabase credentials never leave the server. It's up to you to add your own authentication to the API proxy.
+
+## Sourcemaps in production
+
+By default, Vite won't include the TypeScript sourcemaps in production builds. This means you'll only have the react-admin ESM builds for debugging.
+Should you prefer to have the TypeScript sources, you'll have to configure some Vite aliases:
+
+```tsx
+// in vite.config.ts
+import { defineConfig } from "vite";
+import path from "path";
+import react from "@vitejs/plugin-react";
+
+const alias = [
+  { find: 'react-admin', replacement: path.resolve(__dirname, './node_modules/react-admin/src') },
+  { find: 'ra-core', replacement: path.resolve(__dirname, './node_modules/ra-core/src') },
+  { find: 'ra-ui-materialui', replacement: path.resolve(__dirname, './node_modules/ra-ui-materialui/src') },
+  // add any other react-admin packages you have
+]
+
+export default defineConfig({
+  plugins: [react()],
+  build: { sourcemap: true },
+  resolve: { alias },
+});
+```
