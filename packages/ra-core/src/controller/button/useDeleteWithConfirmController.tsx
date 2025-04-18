@@ -53,7 +53,11 @@ import { useTranslate } from '../../i18n';
  *                 loading={isPending}
  *                 title="ra.message.delete_title"
  *                 content="ra.message.delete_content"
- *                 translateOptions={{
+ *                 titleTranslateOptions={{
+ *                     name: resource,
+ *                     id: record.id,
+ *                 }}
+ *                 contentTranslateOptions={{
  *                     name: resource,
  *                     id: record.id,
  *                 }}

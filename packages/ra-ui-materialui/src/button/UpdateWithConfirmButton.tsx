@@ -13,9 +13,10 @@ import {
     useResourceContext,
     type MutationMode,
     type RaRecord,
+    type UpdateParams,
     useRecordContext,
     useUpdate,
-    type UpdateParams,
+    useGetRecordRepresentation,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -37,8 +38,8 @@ export const UpdateWithConfirmButton = (
     const record = useRecordContext(props);
 
     const {
-        confirmTitle = 'ra.message.bulk_update_title',
-        confirmContent = 'ra.message.bulk_update_content',
+        confirmTitle: confirmTitleProp,
+        confirmContent: confirmContentProp,
         data,
         icon = defaultIcon,
         label = 'ra.action.update',
@@ -117,6 +118,25 @@ export const UpdateWithConfirmButton = (
         }
     };
 
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    let recordRepresentation = getRecordRepresentation(record);
+    let confirmContent = `resources.${resource}.message.bulk_update_content`;
+    let confirmTitle = `resources.${resource}.message.bulk_update_title`;
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 1,
+        _: humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 1,
+                _: resource ? inflect(resource, 1) : undefined,
+            }),
+            true
+        ),
+    });
+    // We don't support React elements for this
+    if (React.isValidElement(recordRepresentation)) {
+        recordRepresentation = `#${record?.id}`;
+    }
+
     return (
         <Fragment>
             <StyledButton
@@ -129,19 +149,26 @@ export const UpdateWithConfirmButton = (
             <Confirm
                 isOpen={isOpen}
                 loading={isPending}
-                title={confirmTitle}
-                content={confirmContent}
-                translateOptions={{
+                title={confirmTitleProp ?? confirmTitle}
+                content={confirmContentProp ?? confirmContent}
+                titleTranslateOptions={{
                     smart_count: 1,
-                    name: translate(`resources.${resource}.forcedCaseName`, {
+                    name: resourceName,
+                    recordRepresentation,
+                    _: translate('ra.message.bulk_update_title', {
                         smart_count: 1,
-                        _: humanize(
-                            translate(`resources.${resource}.name`, {
-                                smart_count: 1,
-                                _: resource ? inflect(resource, 1) : undefined,
-                            }),
-                            true
-                        ),
+                        name: resourceName,
+                        recordRepresentation,
+                    }),
+                }}
+                contentTranslateOptions={{
+                    smart_count: 1,
+                    name: resourceName,
+                    recordRepresentation,
+                    _: translate('ra.message.bulk_update_content', {
+                        smart_count: 1,
+                        name: resourceName,
+                        recordRepresentation,
                     }),
                 }}
                 onConfirm={handleUpdate}
