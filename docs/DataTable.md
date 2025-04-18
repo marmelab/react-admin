@@ -408,17 +408,21 @@ To render data differently in a column, you can pass a custom `<DataTable.Col fi
 
 If you need to pass props to the custom field, use the `<DataTable.Col children>` instead:
 
+{% raw %}
 ```tsx
 <DataTable.Col source="amount" align="right">
     <NumberField source="amount" options={{ style: 'currency', currency: 'USD' }} />
 </DataTable.Col>
 ```
+{% endraw %}
 
 **Tip**: Rendering numeric values in a table is such a common need that react-admin provides `<DataTable.NumberCol>` just for that:
 
+{% raw %}
 ```tsx
 <DataTable.NumberCol source="amount" options={{ style: 'currency', currency: 'USD' }} />
 ```
+{% endraw %}
 
 `<NumberField>` is a Field component: it reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as `field` or `children` of `<DataTable.Col>` ([`<TextField>`](./TextField.md), [`<NumberField>`](./NumberField.md), [`<DateField>`](./DateField.md), [`<ReferenceField>`](./ReferenceField.md), and many more). Check [the Fields documentation](./Fields.md) for more information.
 
