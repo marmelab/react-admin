@@ -127,7 +127,22 @@ export const BulkUpdateWithConfirmButton = (
                 loading={isPending}
                 title={confirmTitle}
                 content={confirmContent}
-                translateOptions={{
+                titleTranslateOptions={{
+                    smart_count: selectedIds.length,
+                    name: translate(`resources.${resource}.forcedCaseName`, {
+                        smart_count: selectedIds.length,
+                        _: humanize(
+                            translate(`resources.${resource}.name`, {
+                                smart_count: selectedIds.length,
+                                _: resource
+                                    ? inflect(resource, selectedIds.length)
+                                    : undefined,
+                            }),
+                            true
+                        ),
+                    }),
+                }}
+                contentTranslateOptions={{
                     smart_count: selectedIds.length,
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: selectedIds.length,
