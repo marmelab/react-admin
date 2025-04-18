@@ -830,11 +830,39 @@ const PersonEdit = () => (
 ```
 {% endraw %}
 
-Note that you **must** set the `<AccordionForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
-
-If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](./Edit.md#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
-
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+An alternative to the `<AutoSave>` component is to use [the `<AutoPersistInStore>` component](./AutoPersistInStore.md). This component saves the form values in the local storage of the browser. This way, if the user navigates away without saving, the form values are reapplied when the user comes back to the page. This is useful for long forms where users may spend a lot of time.
+
+To enable this behavior, add the `<AutoPersistInStore>` component inside the form component:
+
+```tsx
+import { AccordionForm, AutoPersistInStore } from '@react-admin/ra-form-layout';
+import { Create, TextInput, DateInput, SelectInput } from 'react-admin';
+
+const CustomerCreate = () => (
+    <Create>
+        <AccordionForm>
+            <AccordionForm.Panel label="Identity">
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
+                <DateInput source="born" />
+                <SelectInput source="sex" choices={[
+                    { id: 'male', name: 'Male' },
+                    { id: 'female', name: 'Female' },
+                    { id: 'other', name: 'Other' },
+                ]} />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel label="Work">
+                {/* ... */}
+            </AccordionForm.Panel>
+            <AutoPersistInStore />
+        </AccordionForm>
+    </Create>
+);
+```
+
+Check [the `<AutoPersistInStore>` component](./AutoPersistInStore.md) documentation for more details.
 
 ## Access Control
 

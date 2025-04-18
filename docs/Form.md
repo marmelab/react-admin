@@ -292,6 +292,34 @@ If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `op
 
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
 
+An alternative to the `<AutoSave>` component is to use [the `<AutoPersistInStore>` component](./AutoPersistInStore.md). This component saves the form values in the local storage of the browser. This way, if the user navigates away without saving, the form values are reapplied when the user comes back to the page. This is useful for long forms where users may spend a lot of time.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoPersistInStore.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To enable this behavior, add the `<AutoPersistInStore>` component inside the form component:
+
+```tsx
+import { AutoPersistInStore } from '@react-admin/ra-form-layout';
+import { Edit, Form, TextInput } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+        <Form>
+            <Stack>
+                <TextInput source="title" />
+                <TextInput source="teaser" />
+            </Stack>
+            <AutoPersistInStore />
+        </Form>
+    </Edit>
+);
+```
+
+Check [the `<AutoPersistInStore>` component](./AutoPersistInStore.md) documentation for more details.
+
 ## Linking Two Inputs
 
 <iframe src="https://www.youtube-nocookie.com/embed/YkqjydtmfcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
