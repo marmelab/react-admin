@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.7.3
+
+* Fix `<ShowGuesser>` print incorrect code for reference arrays ([#10682](https://github.com/marmelab/react-admin/pull/10682)) ([djhi](https://github.com/djhi))
+* Fix `<RichTextField>` should render `emptyText` when value is an empty string ([#10670](https://github.com/marmelab/react-admin/pull/10670)) ([slax57](https://github.com/slax57))
+* Fix TS error when using `EditGuesser` in module's default export ([#10669](https://github.com/marmelab/react-admin/pull/10669)) ([slax57](https://github.com/slax57))
+* Fix `useInput` default value overrides `null` ([#10665](https://github.com/marmelab/react-admin/pull/10665)) ([djhi](https://github.com/djhi))
+* [Doc] Fix `useNotify` custom notification with close example ([#10683](https://github.com/marmelab/react-admin/pull/10683)) ([djhi](https://github.com/djhi))
+* [doc] Add `AutoPersistInStore` doc page ([#10681](https://github.com/marmelab/react-admin/pull/10681)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix docs anchors ([#10675](https://github.com/marmelab/react-admin/pull/10675)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Dialog Forms examples regarding `hasCreate` ([#10671](https://github.com/marmelab/react-admin/pull/10671)) ([slax57](https://github.com/slax57))
+* [Doc] Explain how React admin handles empty values ([#10666](https://github.com/marmelab/react-admin/pull/10666)) ([djhi](https://github.com/djhi))
+* [Doc] Update NextJS integration ([#10664](https://github.com/marmelab/react-admin/pull/10664)) ([djhi](https://github.com/djhi))
+* [Doc] Document how to setup Remix for production debugging ([#10663](https://github.com/marmelab/react-admin/pull/10663)) ([djhi](https://github.com/djhi))
+* [Demo] Use Echarts instead of rechart ([#10677](https://github.com/marmelab/react-admin/pull/10677)) ([fzaninotto](https://github.com/fzaninotto))
+* [Demo] Fix order chart currency ([#10668](https://github.com/marmelab/react-admin/pull/10668)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump vite from 5.4.16 to 5.4.17 ([#10659](https://github.com/marmelab/react-admin/pull/10659)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.7.2
 
 * Fix `<FilterLiveForm>` compatibility with react-hook-form 7.55.0 ([#10657](https://github.com/marmelab/react-admin/pull/10657)) ([slax57](https://github.com/slax57))
