@@ -400,21 +400,27 @@ export const OrderList = () => (
 );
 ```
 
-To render data differently in a column, you can pass children to `<DataTable.Col>`. For example, you can use `<NumberField>` to render a numeric field:
+To render data differently in a column, you can pass a custom `<DataTable.Col field>`. For example, you can use [`<NumberField>`](./NumberField.md) to render a numeric field:
+
+```tsx
+<DataTable.Col source="amount" align="right" field={NumberField} />
+```
+
+If you need to pass props to the custom field, use the `<DataTable.Col children>` instead:
 
 ```tsx
 <DataTable.Col source="amount" align="right">
-    <NumberField source="amount" />
+    <NumberField source="amount" options={{ style: 'currency', currency: 'USD' }} />
 </DataTable.Col>
 ```
-
-`<NumberField>` is a Field component: it reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as children of `<DataTable.Col>` ([`<TextField>`](./TextField.md), [`<NumberField>`](./NumberField.md), [`<DateField>`](./DateField.md), [`<ReferenceField>`](./ReferenceField.md), and many more). Check [the Fields documentation](./Fields.md) for more information.
 
 **Tip**: Rendering numeric values in a table is such a common need that react-admin provides `<DataTable.NumberCol>` just for that:
 
 ```tsx
-<DataTable.NumberCol source="amount" />
+<DataTable.NumberCol source="amount" options={{ style: 'currency', currency: 'USD' }} />
 ```
+
+`<NumberField>` is a Field component: it reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as `field` or `children` of `<DataTable.Col>` ([`<TextField>`](./TextField.md), [`<NumberField>`](./NumberField.md), [`<DateField>`](./DateField.md), [`<ReferenceField>`](./ReferenceField.md), and many more). Check [the Fields documentation](./Fields.md) for more information.
 
 You can build your own if none of the react-admin Field components fit your need. For example, to render the first name and last name in a cell:
 
@@ -436,9 +442,11 @@ export const OrderList = () => (
         <DataTable>
             <DataTable.Col source="reference" />
             <DataTable.Col source="date" />
-            <DataTable.Col source="customer.lastName" label="Customer">
-                <CustomerField />
-            </DataTable.Col>
+            <DataTable.Col 
+                source="customer.lastName" 
+                label="Customer"
+                field={CustomerField}
+            />
             <DataTable.NumberCol source="amount" />
             <DataTable.Col source="status" />
         </DataTable>
@@ -909,9 +917,7 @@ export const PostList = () => (
             <DataTable.Col label="Author">
                 <ReferenceField source="author" reference="users" />
             </DataTable.Col>
-            <DataTable.Col source="published_at">
-                <DateField source="published_at" />
-            </DataTable.Col>
+            <DataTable.Col source="published_at" field={DateField} />
             <DataTable.Col 
                 label="Summary"
                 render={record => record.summary.substr(0, 10) + '...'} 
@@ -925,8 +931,8 @@ export const PostList = () => (
 `<DataTable.Col>` lets you define how the data renders in 4 different ways:
 - By passing a `source` prop and no child. 
 - By passing child elements (e.g. `<ReferenceField>`, `<DateField>`, etc.).
-- By passing a `render` prop to define a custom rendering function.
 - By using the `field` prop to specify a field component.
+- By passing a `render` prop to define a custom rendering function.
 
 ### Props
 
@@ -1019,7 +1025,7 @@ const FullNameField = (props: Props) => {
                     textDecorationColor: '#bdbdbd',
                 }}
             />
-            {record.first_name} {record.last_name}
+            {record.firstName} {record.lastName}
         </Typography>
     );
 };
@@ -1027,7 +1033,7 @@ const FullNameField = (props: Props) => {
 const CustomerList = () => (
     <List>
         <DataTable>
-            <DataTable.Col label="Name" source="last_name">
+            <DataTable.Col label="Name" source="lastName">
                 <FullNameField />
             </DataTable.Col>
             ...
@@ -1038,6 +1044,12 @@ const CustomerList = () => (
 {% endraw %}
 
 ![DataTable Custom Field](./img/DataTableCustomField.png)
+
+**Tip**: If you don't need to pass custom props to the field, you can use [the `field` prop](#field) instead:
+
+```tsx
+<DataTable.Col label="Name" source="lastName" field={FullNameField} />
+```
 
 ### `cellClassName`
 
@@ -1632,9 +1644,7 @@ const ProductList = () => (
     <List>
         <DataTable>
             <CanAccess action="read" resource="products.thumbnail">
-                <DataTable.Col source="thumbnail" />
-                    <ImageField source="thumbnail" />
-                </DataTable.Col>
+                <DataTable.Col source="thumbnail" field={ImageField} />
             </CanAccess>
             <CanAccess action="read" resource="products.reference">
                 <DataTable.Col source="reference" />
