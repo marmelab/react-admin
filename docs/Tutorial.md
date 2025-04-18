@@ -26,9 +26,9 @@ The final result is a web application that allows you to list, create, edit, and
 React-admin is built on React. To start, we'll use [create-react-admin](./CreateReactAdmin.md) to bootstrap a new web application:
 
 ```sh
-npm init react-admin test-admin
+npm create react-admin@latest test-admin
 # or
-yarn create react-admin test-admin
+yarn create react-admin@latest test-admin
 ```
 
 When prompted, choose **JSON Server** as the data provider, then **None** as the auth provider. Do not add any resources for now and press **Enter**. Next, choose either `npm` or `yarn` and press **Enter**. Once everything is installed, run the following commands:
