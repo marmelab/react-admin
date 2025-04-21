@@ -141,14 +141,22 @@ export const useEditController = <
 
     const getResourceLabel = useGetResourceLabel();
     const recordRepresentation = getRecordRepresentation(record);
-    const defaultTitle = translate('ra.page.edit', {
-        name: getResourceLabel(resource, 1),
+    const defaultTitle = translate(`resources.${resource}.page.edit`, {
         id,
         record,
         recordRepresentation:
             typeof recordRepresentation === 'string'
                 ? recordRepresentation
                 : '',
+        _: translate('ra.page.edit', {
+            name: getResourceLabel(resource, 1),
+            id,
+            record,
+            recordRepresentation:
+                typeof recordRepresentation === 'string'
+                    ? recordRepresentation
+                    : '',
+        }),
     });
 
     const recordCached = { id, previousData: record };

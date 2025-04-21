@@ -127,14 +127,22 @@ export const useShowController = <
 
     const getResourceLabel = useGetResourceLabel();
     const recordRepresentation = getRecordRepresentation(record);
-    const defaultTitle = translate('ra.page.show', {
-        name: getResourceLabel(resource, 1),
+    const defaultTitle = translate(`resources.${resource}.page.show`, {
         id,
         record,
         recordRepresentation:
             typeof recordRepresentation === 'string'
                 ? recordRepresentation
                 : '',
+        _: translate('ra.page.show', {
+            name: getResourceLabel(resource, 1),
+            id,
+            record,
+            recordRepresentation:
+                typeof recordRepresentation === 'string'
+                    ? recordRepresentation
+                    : '',
+        }),
     });
 
     return {

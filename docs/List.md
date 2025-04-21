@@ -976,11 +976,31 @@ const Admin = () => {
 
 ## `title`
 
-The default title for a list view is the plural name of the resource (e.g. "Posts").
+The default title for a list view is the translation key `ra.page.list` that translates to [the plural name of the resource](./TranslationTranslating.md#translating-resource-and-field-names) (e.g. "Posts").
 
 ![List title](./img/list-title.png)
 
-Use the `title` prop to customize the List view title:
+You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.page.list` (e.g. `resources.posts.page.list`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            page: {
+                list: 'Post list'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this title by specifying a custom `title` prop:
 
 ```jsx
 export const PostList = () => (

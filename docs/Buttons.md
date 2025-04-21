@@ -694,7 +694,7 @@ const CommentList = () => (
 | Prop          | Required | Type            | Default            | Description                                  |
 | ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
 | `resource`    | Optional | `string`        | -                  | Target resource, e.g. 'posts'                |
-| `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
+| `label`       | Optional | `string`        | -                  | label or translation message to use          |
 | `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
 | `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
 
@@ -703,6 +703,39 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
 
 **Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
+
+### `label`
+
+By default, the label for the `<CreateButton>` is the translation key `ra.action.create` that translates to "Create".
+
+You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.action.create` (e.g. `resources.posts.action.create`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                create: 'New post'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
+
+
+```jsx
+export const PostCreateButton = () => (
+    <CreateButton label="New post" />
+);
+```
 
 ### `scrollToTop`
 

@@ -181,8 +181,10 @@ export const useInfiniteListController = <
     );
 
     const getResourceLabel = useGetResourceLabel();
-    const defaultTitle = translate('ra.page.list', {
-        name: getResourceLabel(resource, 2),
+    const defaultTitle = translate(`resources.${resource}.page.list`, {
+        _: translate('ra.page.list', {
+            name: getResourceLabel(resource, 2),
+        }),
     });
 
     const unwrappedData = useMemo(

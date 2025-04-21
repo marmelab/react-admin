@@ -5,6 +5,7 @@ import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import { testDataProvider } from '../../dataProvider';
 import {
     AccessControl,
+    DefaultTitle,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
 } from './CreateBase.stories';
@@ -267,5 +268,19 @@ describe('CreateBase', () => {
         });
         resolveCanAccess!(true);
         await screen.findByText('save');
+    });
+
+    it('should provide a default title', async () => {
+        render(<DefaultTitle translations="default" />);
+        await screen.findByText('Create Post (en)');
+        fireEvent.click(screen.getByText('FR'));
+        await screen.findByText('Créer Article (fr)');
+    });
+
+    it('should allow resource specific default title', async () => {
+        render(<DefaultTitle translations="resource specific" />);
+        await screen.findByText('Create an article (en)');
+        fireEvent.click(screen.getByText('FR'));
+        await screen.findByText('Créer un article (fr)');
     });
 });
