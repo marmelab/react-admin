@@ -708,7 +708,7 @@ It also supports [all the other `<Button>` props](#button).
 
 By default, the label for the `<CreateButton>` is the translation key `ra.action.create` that translates to "Create".
 
-You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.action.create` (e.g. `resources.posts.action.create`):
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.create` (e.g. `resources.posts.action.create`):
 
 ```js
 // in src/i18n/en.js
