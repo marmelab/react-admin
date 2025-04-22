@@ -1,8 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen } from '@testing-library/react';
-import { stringify } from 'query-string';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { stringify, parse } from 'query-string';
 import { CoreAdminContext } from '../../core';
 
 import { testDataProvider } from '../../dataProvider';
@@ -10,7 +9,6 @@ import { useStore } from '../../store/useStore';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
 import { SORT_DESC, SORT_ASC } from './queryReducer';
 import { TestMemoryRouter } from '../../routing';
-import { parse } from 'query-string';
 
 describe('useListParams', () => {
     describe('getQuery', () => {

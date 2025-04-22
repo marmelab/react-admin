@@ -25,11 +25,10 @@ import {
     SelectAllButton as RaSelectAllButton,
 } from '../../button';
 import { Datagrid, DatagridProps } from './Datagrid';
-import { ShowGuesser, SimpleShowLayout } from '../../detail';
+import { ShowGuesser, SimpleShowLayout, EditGuesser } from '../../detail';
 import { AdminUI } from '../../AdminUI';
 import { AdminContext } from '../../AdminContext';
 import { List } from '../List';
-import { EditGuesser } from '../../detail';
 import { DatagridRowProps } from './DatagridRow';
 import DatagridBody, { DatagridBodyProps } from './DatagridBody';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
