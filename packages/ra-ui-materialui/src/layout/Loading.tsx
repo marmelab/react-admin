@@ -18,9 +18,10 @@ export const Loading = (inProps: LoadingProps) => {
         className,
         loadingPrimary = 'ra.page.loading',
         loadingSecondary = 'ra.message.loading',
+        timeout = 1000,
         ...rest
     } = props;
-    const oneSecondHasPassed = useTimeout(1000);
+    const oneSecondHasPassed = useTimeout(timeout);
     const translate = useTranslate();
     return oneSecondHasPassed ? (
         <Root className={className} {...rest}>
@@ -41,6 +42,7 @@ export interface LoadingProps {
     className?: string;
     loadingPrimary?: string;
     loadingSecondary?: string;
+    timeout?: number;
     sx?: SxProps<Theme>;
 }
 
