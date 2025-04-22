@@ -81,14 +81,17 @@ for (let i = 0; i < 5; i++) {
     buildingBlocksULs[0].cloneNode(true) as (typeof buildingBlocksULs)[0]
   );
 
-  for (let j = 0; j < buildingBlocksULs[i]!.childElementCount; j++) {
-    const randomIndex = Math.floor(
-      Math.random() * buildingBlocksULs[i]!.childElementCount
-    );
-    const randomChild = buildingBlocksULs[i]!.children[randomIndex];
-    buildingBlocksULs[i]!.removeChild(randomChild);
-    buildingBlocksULs[i]!.appendChild(randomChild);
+  // Use Fisher-Yates shuffle algorithm for better randomness
+  const children = Array.from(buildingBlocksULs[i]!.children);
+  for (let j = children.length - 1; j > 0; j--) {
+    const randomIndex = Math.floor(Math.random() * (j + 1));
+    // Swap elements
+    [children[j], children[randomIndex]] = [children[randomIndex], children[j]];
   }
+
+  // Replace children with shuffled array
+  buildingBlocksULs[i]!.innerHTML = "";
+  children.forEach((child) => buildingBlocksULs[i]!.appendChild(child));
 
   if (i > 2) {
     buildingBlocksULs[i]!.classList.add("md:hidden");
@@ -106,12 +109,11 @@ for (let i = 0; i < buildingBlocksULs.length; i++) {
     "slide" + (i % 2 === 0 ? "Left" : "Right") + " 90s linear infinite";
 }
 
-
 function hideBanner() {
-const banner = document.getElementById("banner");
-if (banner) {
-  banner.style.display = "none";
-}
+  const banner = document.getElementById("banner");
+  if (banner) {
+    banner.style.display = "none";
+  }
 }
 const closeBanner = document.getElementById("closeBanner");
 if (closeBanner) {
