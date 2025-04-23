@@ -10,6 +10,7 @@ import { Resource } from '../../core/Resource';
 import { AuthProvider, DataProvider } from '../../types';
 import { TestMemoryRouter } from '../../routing';
 import { ShowControllerProps, useShowController } from './useShowController';
+import { useAuthState } from '../..';
 
 export default {
     title: 'ra-core/controller/useShowController',
@@ -36,6 +37,16 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
+const PostList = () => {
+    useAuthState();
+    return (
+        <div style={styles.mainContainer}>
+            <div>List view</div>
+            <Link to="/posts/1/show">Show</Link>
+        </div>
+    );
+};
+
 const Post = (props: Partial<ShowControllerProps>) => {
     const params = useShowController({
         id: 1,
@@ -51,6 +62,7 @@ const Post = (props: Partial<ShowControllerProps>) => {
                     {params.record.title} - {params.record.votes} votes
                 </div>
             )}
+            <Link to="/posts">List</Link>
         </div>
     );
 };
@@ -97,15 +109,32 @@ export const DisableAuthentication = ({
                 dataProvider={dataProvider}
                 authProvider={authProvider}
             >
-                <CoreAdminUI>
+                <CoreAdminUI accessDenied={AccessDenied}>
                     <Resource
                         name="posts"
+                        list={<PostList />}
                         show={<Post disableAuthentication />}
                     />
                 </CoreAdminUI>
             </CoreAdminContext>
         </TestMemoryRouter>
     );
+};
+DisableAuthentication.args = {
+    authProvider: undefined,
+};
+DisableAuthentication.argTypes = {
+    authProvider: {
+        options: ['default', 'canAccess'],
+        mapping: {
+            default: undefined,
+            canAccess: {
+                ...defaultAuthProvider,
+                canAccess: () => Promise.resolve(false),
+            },
+        },
+        control: { type: 'inline-radio' },
+    },
 };
 
 export const CanAccess = ({
