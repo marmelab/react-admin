@@ -96,10 +96,11 @@ export const Complex = () => {
                         display: 'absolute',
                         bgcolor: 'grey.300',
                         mx: -2,
-                        my: -3,
+                        mt: -3,
+                        mb: -5,
                         top: 0,
                         right: 0,
-                        height: 50,
+                        height: 60,
                     }}
                 />
                 <Box
@@ -128,20 +129,20 @@ export const Complex = () => {
                     sx={{
                         display: 'flex',
                         justifyContent: 'center',
-                        gap: 1,
+                        gap: 1.5,
                         my: 1,
                     }}
                 >
-                    <IconButton sx={{ bgcolor: '#e1f2ff' }}>
+                    <IconButton sx={{ bgcolor: '#eff9fd' }} color="inherit">
                         <PhoneOutlinedIcon fontSize="small" />
                     </IconButton>
-                    <IconButton sx={{ bgcolor: '#e1f2ff' }}>
+                    <IconButton sx={{ bgcolor: '#eff9fd' }} color="inherit">
                         <ChatBubbleOutlineOutlinedIcon fontSize="small" />
                     </IconButton>
-                    <IconButton sx={{ bgcolor: '#e1f2ff' }}>
+                    <IconButton sx={{ bgcolor: '#eff9fd' }} color="inherit">
                         <EmailOutlinedIcon fontSize="small" />
                     </IconButton>
-                    <IconButton sx={{ bgcolor: '#e1f2ff' }}>
+                    <IconButton sx={{ bgcolor: '#eff9fd' }} color="inherit">
                         <MoreHorizIcon fontSize="small" />
                     </IconButton>
                 </Box>
@@ -163,9 +164,9 @@ export const Complex = () => {
                             >
                                 <PhoneOutlinedIcon
                                     fontSize="small"
-                                    sx={{ color: 'text.disabled' }}
+                                    sx={{ color: 'text.secondary' }}
                                 />
-                                <Typography color="text.disabled">
+                                <Typography color="text.secondary">
                                     Phone
                                 </Typography>
                             </Box>
@@ -195,9 +196,9 @@ export const Complex = () => {
                             >
                                 <EmailOutlinedIcon
                                     fontSize="small"
-                                    sx={{ color: 'text.disabled' }}
+                                    sx={{ color: 'text.secondary' }}
                                 />
-                                <Typography color="text.disabled">
+                                <Typography color="text.secondary">
                                     Email
                                 </Typography>
                             </Box>
@@ -227,9 +228,9 @@ export const Complex = () => {
                             >
                                 <LocalOfferOutlinedIcon
                                     fontSize="small"
-                                    sx={{ color: 'text.disabled' }}
+                                    sx={{ color: 'text.secondary' }}
                                 />
-                                <Typography color="text.disabled">
+                                <Typography color="text.secondary">
                                     Lead Status
                                 </Typography>
                             </Box>
@@ -277,6 +278,7 @@ export const Complex = () => {
                                             size="small"
                                             variant="outlined"
                                             source="name"
+                                            color="success"
                                         />
                                     }
                                     sx={{
@@ -304,9 +306,9 @@ export const Complex = () => {
                             >
                                 <VisibilityOutlinedIcon
                                     fontSize="small"
-                                    sx={{ color: 'text.disabled' }}
+                                    sx={{ color: 'text.secondary' }}
                                 />
-                                <Typography color="text.disabled">
+                                <Typography color="text.secondary">
                                     Access
                                 </Typography>
                             </Box>
