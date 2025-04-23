@@ -10,6 +10,7 @@ import {
 } from './useInfiniteListController';
 import { Browser } from '../../storybook/FakeBrowser';
 import { TestMemoryRouter } from '../../routing';
+import { useAuthState } from '../..';
 
 export default {
     title: 'ra-core/controller/list/useInfiniteListController',
@@ -58,6 +59,17 @@ const List = params => {
                     </ul>
                 </div>
             )}
+            <Link to="/">Dashboard</Link>
+        </div>
+    );
+};
+
+const Dashboard = () => {
+    useAuthState();
+    return (
+        <div style={styles.mainContainer}>
+            <div>Dashboard view</div>
+            <Link to="/posts">List</Link>
         </div>
     );
 };
@@ -177,7 +189,7 @@ export const Authenticated = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <TestMemoryRouter>
+        <TestMemoryRouter initialEntries={['/posts']}>
             <CoreAdminContext
                 dataProvider={dataProvider}
                 authProvider={authProvider}
@@ -198,12 +210,13 @@ export const DisableAuthentication = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <TestMemoryRouter>
+        <TestMemoryRouter initialEntries={['/posts']}>
             <CoreAdminContext
                 dataProvider={dataProvider}
                 authProvider={authProvider}
+                dashboard={Dashboard}
             >
-                <CoreAdminUI>
+                <CoreAdminUI dashboard={Dashboard} accessDenied={AccessDenied}>
                     <Resource
                         name="posts"
                         list={<Posts disableAuthentication />}
@@ -212,6 +225,22 @@ export const DisableAuthentication = ({
             </CoreAdminContext>
         </TestMemoryRouter>
     );
+};
+DisableAuthentication.args = {
+    authProvider: undefined,
+};
+DisableAuthentication.argTypes = {
+    authProvider: {
+        options: ['default', 'canAccess'],
+        mapping: {
+            default: undefined,
+            canAccess: {
+                ...defaultAuthProvider,
+                canAccess: () => Promise.resolve(false),
+            },
+        },
+        control: { type: 'inline-radio' },
+    },
 };
 
 export const CanAccess = ({
