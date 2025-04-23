@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import {
     CoreAdminContext,
     ResourceContextProvider,
@@ -12,7 +12,23 @@ import { NumberField } from './NumberField';
 import { TextField } from './TextField';
 import { Datagrid } from '../list';
 import { SimpleList } from '../list';
-import { ListContext } from './ArrayField.stories';
+import { ListContext, TwoArrayFieldsSelection } from './ArrayField.stories';
+
+beforeAll(() => {
+    jest.spyOn(console, 'error').mockImplementation((message, ...args) => {
+        if (
+            typeof message === 'string' &&
+            message.includes('React will try recreating this component tree')
+        ) {
+            return;
+        }
+        console.warn(message, ...args); // Still log other errors
+    });
+});
+
+afterAll(() => {
+    jest.restoreAllMocks();
+});
 
 describe('<ArrayField />', () => {
     const sort = { field: 'id', order: 'ASC' };
@@ -156,6 +172,43 @@ describe('<ArrayField />', () => {
                     'MuiChip-colorPrimary'
                 )
             ).toBeTruthy();
+        });
+    });
+
+    it('should not select the same id in both ArrayFields when selected in one', async () => {
+        render(<TwoArrayFieldsSelection />);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('checkbox').length).toBeGreaterThan(2);
+        });
+
+        const checkboxes = screen.queryAllByRole('checkbox');
+
+        expect(checkboxes.length).toBeGreaterThan(3);
+
+        // Select an item in the memberships list
+        fireEvent.click(checkboxes[1]);
+        render(<TwoArrayFieldsSelection />);
+
+        await waitFor(() => {
+            expect(checkboxes[1]).toBeChecked();
+        });
+
+        expect(checkboxes[3]).not.toBeChecked();
+
+        fireEvent.click(checkboxes[3]); // Portfolios row 1
+        render(<TwoArrayFieldsSelection />);
+
+        await waitFor(() => {
+            expect(checkboxes[3]).toBeChecked();
+            expect(checkboxes[1]).toBeChecked(); // Membership remains checked
+        });
+
+        fireEvent.click(checkboxes[1]);
+        render(<TwoArrayFieldsSelection />);
+
+        await waitFor(() => {
+            expect(checkboxes[1]).not.toBeChecked();
+            expect(checkboxes[3]).toBeChecked(); // Portfolios remain selected
         });
     });
 });
