@@ -27,6 +27,7 @@ export interface InPlaceEditorProps {
     mutationMode?: 'optimistic' | 'pessimistic' | 'undoable';
     cancelOnBlur?: boolean;
     notifyOnSuccess?: boolean;
+    showButtons?: boolean;
     children?: React.ReactNode;
     editor?: React.ReactNode;
     sx?: SxProps;
@@ -39,7 +40,7 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
         sx,
         cancelOnBlur,
         children = source ? (
-            <Box sx={{ mb: 0.8 }}>
+            <Box sx={{ marginBottom: '5px' }}>
                 <TextField
                     source={source}
                     variant="body1"
@@ -60,6 +61,7 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
                 InputProps={{ sx }}
             />
         ) : null,
+        showButtons,
         notifyOnSuccess,
     } = props;
 
@@ -150,14 +152,16 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
         dispatch({ type: 'cancel' });
     };
     const handleBlur = (event: React.FocusEvent) => {
+        console.log('here1');
         if (event.relatedTarget) {
+            console.log('here2');
             return;
         }
         if (cancelOnBlur) {
             dispatch({ type: 'cancel' });
         }
         if (state.state === 'editing') {
-            // trigger the submit button click
+            // trigger the parent form submit
             // to save the changes
             (submitButtonRef.current as HTMLButtonElement).click();
         }
@@ -193,21 +197,31 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
                         }}
                     >
                         {editor}
-                        <IconButton
-                            size="small"
-                            type="submit"
-                            ref={submitButtonRef}
-                            aria-label={translate('ra.action.save')}
-                        >
-                            <SaveIcon fontSize="small" />
-                        </IconButton>
-                        <IconButton
-                            size="small"
-                            onClick={handleCancel}
-                            aria-label={translate('ra.action.cancel')}
-                        >
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
+                        {showButtons ? (
+                            <>
+                                <IconButton
+                                    size="small"
+                                    type="submit"
+                                    ref={submitButtonRef}
+                                    aria-label={translate('ra.action.save')}
+                                >
+                                    <SaveIcon fontSize="small" />
+                                </IconButton>
+                                <IconButton
+                                    size="small"
+                                    onClick={handleCancel}
+                                    aria-label={translate('ra.action.cancel')}
+                                >
+                                    <CloseIcon fontSize="small" />
+                                </IconButton>
+                            </>
+                        ) : (
+                            <button
+                                type="submit"
+                                style={{ display: 'none' }}
+                                ref={submitButtonRef}
+                            />
+                        )}
                     </Box>
                 </Form>
             ) : state.state === 'saving' ? (

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { createTheme, ThemeProvider, Typography } from '@mui/material';
+
 import {
     ResourceContextProvider,
     DataProviderContext,
@@ -51,6 +52,7 @@ export const Basic = ({
     updateFails,
     mutationMode,
     notifyOnSuccess,
+    showButtons,
 }) => {
     const dataProvider = fakeRestDataProvider(
         {
@@ -83,6 +85,7 @@ export const Basic = ({
                 source="name"
                 mutationMode={mutationMode}
                 notifyOnSuccess={notifyOnSuccess}
+                showButtons={showButtons}
             />
             <Typography color="secondary">Text below</Typography>
         </Wrapper>
@@ -94,6 +97,7 @@ Basic.args = {
     updateFails: false,
     mutationMode: 'pessimistic',
     notifyOnSuccess: false,
+    showButtons: false,
 };
 Basic.argTypes = {
     delay: { control: { type: 'number' } },
@@ -103,6 +107,7 @@ Basic.argTypes = {
         options: ['optimistic', 'pessimistic', 'undoable'],
     },
     notifyOnSuccess: { control: { type: 'boolean' } },
+    showButtons: { control: { type: 'boolean' } },
 };
 
 export const SX = () => {
@@ -154,6 +159,7 @@ export const Editor = () => {
     );
     return (
         <Wrapper dataProvider={dataProvider}>
+            <Typography color="secondary">Text above</Typography>
             <InPlaceEditor
                 source="type"
                 editor={
@@ -181,10 +187,11 @@ export const Editor = () => {
                         { id: 'customer', name: 'Customer' },
                     ]}
                     variant="body1"
-                    sx={{ marginTop: '1px' }}
+                    sx={{ marginTop: '1px', marginBottom: '5px' }}
                     component="div"
                 />
             </InPlaceEditor>
+            <Typography color="secondary">Text below</Typography>
         </Wrapper>
     );
 };
