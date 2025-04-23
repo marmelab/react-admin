@@ -5,7 +5,7 @@ title: "JsonSchemaForm"
 
 # `<JsonSchemaForm>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to render a form from a JSON Schema description based on [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form).
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows to render a form from a JSON Schema description based on [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form).
 
 ## Usage
 

@@ -11,6 +11,7 @@ import { Resource } from '../../core/Resource';
 import { AuthProvider, DataProvider } from '../../types';
 import { ListControllerProps, useListController } from './useListController';
 import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
+import { useAuthState } from '../..';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -42,6 +43,16 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
+const Dashboard = () => {
+    useAuthState();
+    return (
+        <div style={styles.mainContainer}>
+            <div>Dashboard view</div>
+            <Link to="/posts">List</Link>
+        </div>
+    );
+};
+
 const Posts = (props: Partial<ListControllerProps>) => {
     const params = useListController({
         resource: 'posts',
@@ -62,6 +73,7 @@ const Posts = (props: Partial<ListControllerProps>) => {
                     </ul>
                 </div>
             )}
+            <Link to="/">Dashboard</Link>
         </div>
     );
 };
@@ -82,14 +94,16 @@ export const Authenticated = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <CoreAdminContext
-            dataProvider={dataProvider}
-            authProvider={authProvider}
-        >
-            <CoreAdminUI>
-                <Resource name="posts" list={Posts} />
-            </CoreAdminUI>
-        </CoreAdminContext>
+        <TestMemoryRouter initialEntries={['/posts']}>
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+            >
+                <CoreAdminUI>
+                    <Resource name="posts" list={Posts} />
+                </CoreAdminUI>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
@@ -101,15 +115,37 @@ export const DisableAuthentication = ({
     dataProvider?: DataProvider;
 }) => {
     return (
-        <CoreAdminContext
-            dataProvider={dataProvider}
-            authProvider={authProvider}
-        >
-            <CoreAdminUI>
-                <Resource name="posts" list={<Posts disableAuthentication />} />
-            </CoreAdminUI>
-        </CoreAdminContext>
+        <TestMemoryRouter initialEntries={['/posts']}>
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                authProvider={authProvider}
+                dashboard={Dashboard}
+            >
+                <CoreAdminUI dashboard={Dashboard} accessDenied={AccessDenied}>
+                    <Resource
+                        name="posts"
+                        list={<Posts disableAuthentication />}
+                    />
+                </CoreAdminUI>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
+};
+DisableAuthentication.args = {
+    authProvider: undefined,
+};
+DisableAuthentication.argTypes = {
+    authProvider: {
+        options: ['default', 'canAccess'],
+        mapping: {
+            default: undefined,
+            canAccess: {
+                ...defaultAuthProvider,
+                canAccess: () => Promise.resolve(false),
+            },
+        },
+        control: { type: 'inline-radio' },
+    },
 };
 
 export const CanAccess = ({

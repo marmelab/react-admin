@@ -76,8 +76,7 @@ export const useEditController = <
     const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
         action: 'edit',
         resource,
-        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
-        enabled: !isPendingAuthenticated,
+        enabled: !disableAuthentication && !isPendingAuthenticated,
     });
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);

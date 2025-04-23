@@ -44,7 +44,7 @@ const RichTextFieldImpl = <
             component="span"
             {...sanitizeFieldRestProps(rest)}
         >
-            {value == null && emptyText ? (
+            {(value == null || value === '') && emptyText ? (
                 translate(emptyText, { _: emptyText })
             ) : stripTags ? (
                 removeTags(value)

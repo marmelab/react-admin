@@ -557,6 +557,18 @@ const dateParser = value => {
 
 **Tip**: If you need to do this globally, including for custom input components that do not use [the `useInput` hook](#the-useinput-hook), have a look at [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues).
 
+## Empty Values
+
+React-admin Form components initialize the input based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty or the matching property for this input is empty, the input will be empty.
+If a record property is not `undefined`, it is not considered empty:
+
+- An empty string is a valid value
+- `0` is a valid value
+- `null` is a valid value
+- An empty array is a valid value
+
+In all those cases, the value will not be considered empty and the [default value](#defaultvalue) won't be applied.
+
 ## Marking An Input as Required
 
 By default, react-admin will add an asterisk to the input label if the Input component uses [the `required` validator](./Validation.md#per-input-validation-built-in-field-validators).

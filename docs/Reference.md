@@ -19,6 +19,7 @@ title: "Index"
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
+* [`<AutoPersistInStore>`](./AutoPersistInStore.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<AutoSave>`](./AutoSave.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- B -**

@@ -5,7 +5,7 @@ title: "The Search Component"
 
 # `<Search>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-search`](https://react-admin-ee.marmelab.com/documentation/ra-search), lets user do a site-wide search via a smart Omnibox.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component, part of [`ra-search`](https://react-admin-ee.marmelab.com/documentation/ra-search), lets user do a site-wide search via a smart Omnibox.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.mp4" type="video/mp4" />

@@ -5,7 +5,7 @@ title: "The Breadcrumb Component"
 
 # `<Breadcrumb>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component renders a breadcrumb path that automatically adapts to the page location. It helps users navigate large web applications.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component renders a breadcrumb path that automatically adapts to the page location. It helps users navigate large web applications.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
