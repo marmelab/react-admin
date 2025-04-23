@@ -701,8 +701,7 @@ describe('useInfiniteListController', () => {
             );
             await screen.findByText('A post - 0 votes');
             expect(dataProvider.getList).toHaveBeenCalled();
-            // Only called once by NavigationToFirstResource
-            expect(authProvider.checkAuth).toHaveBeenCalledTimes(1);
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
         });
 
         it('should not call checkAuth nor canAccess when disableAuthentication is true', async () => {
