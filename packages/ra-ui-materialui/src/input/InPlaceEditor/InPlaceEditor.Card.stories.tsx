@@ -76,7 +76,8 @@ export const Complex = () => {
                 },
             ],
         },
-        process.env.NODE_ENV !== 'test'
+        process.env.NODE_ENV !== 'test',
+        500
     );
     return (
         <Wrapper dataProvider={dataProvider}>
@@ -156,7 +157,7 @@ export const Complex = () => {
                             <Box
                                 sx={{
                                     display: 'flex',
-                                    alignItems: 'top',
+                                    alignItems: 'center',
                                     gap: 1,
                                 }}
                             >
@@ -188,7 +189,7 @@ export const Complex = () => {
                             <Box
                                 sx={{
                                     display: 'flex',
-                                    alignItems: 'top',
+                                    alignItems: 'center',
                                     gap: 1,
                                 }}
                             >
@@ -220,7 +221,7 @@ export const Complex = () => {
                             <Box
                                 sx={{
                                     display: 'flex',
-                                    alignItems: 'top',
+                                    alignItems: 'center',
                                     gap: 1,
                                 }}
                             >
@@ -258,6 +259,9 @@ export const Complex = () => {
                                             '& .MuiInput-root': {
                                                 marginTop: 0,
                                             },
+                                            '& .MuiSelect-select': {
+                                                textAlign: 'right',
+                                            },
                                         }}
                                     />
                                 }
@@ -277,7 +281,8 @@ export const Complex = () => {
                                     }
                                     sx={{
                                         display: 'block',
-                                        marginBottom: '5px',
+                                        marginBottom: '3px',
+                                        marginTop: '2px',
                                     }}
                                 />
                             </InPlaceEditor>
@@ -293,7 +298,7 @@ export const Complex = () => {
                             <Box
                                 sx={{
                                     display: 'flex',
-                                    alignItems: 'top',
+                                    alignItems: 'center',
                                     gap: 1,
                                 }}
                             >
@@ -328,6 +333,9 @@ export const Complex = () => {
                                         sx={{
                                             '& .MuiInput-root': {
                                                 marginTop: 0,
+                                            },
+                                            '& .MuiSelect-select': {
+                                                textAlign: 'right',
                                             },
                                         }}
                                     />

@@ -152,9 +152,7 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
         dispatch({ type: 'cancel' });
     };
     const handleBlur = (event: React.FocusEvent) => {
-        console.log('here1');
         if (event.relatedTarget) {
-            console.log('here2');
             return;
         }
         if (cancelOnBlur) {
