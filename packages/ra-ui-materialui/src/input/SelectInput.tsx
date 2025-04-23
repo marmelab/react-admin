@@ -306,15 +306,14 @@ export const SelectInput = (props: SelectInputProps) => {
                 onChange={handleChangeWithCreateSupport}
                 select
                 label={
-                    label !== '' &&
-                    label !== false && (
+                    label !== '' && label !== false ? (
                         <FieldTitle
                             label={label}
                             source={source}
                             resource={resourceProp}
                             isRequired={isRequired}
                         />
-                    )
+                    ) : null
                 }
                 clearAlwaysVisible
                 error={!!fetchError || invalid}
