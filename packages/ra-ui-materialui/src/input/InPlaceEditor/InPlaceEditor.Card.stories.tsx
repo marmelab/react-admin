@@ -32,7 +32,7 @@ import englishMessages from 'ra-language-english';
 
 import { InPlaceEditor } from './InPlaceEditor';
 import { SelectInput } from '../SelectInput';
-import { ChipField, SelectField, TextField } from '../../field';
+import { ChipField, SelectField } from '../../field';
 import { Notification } from '../../layout';
 
 export default {

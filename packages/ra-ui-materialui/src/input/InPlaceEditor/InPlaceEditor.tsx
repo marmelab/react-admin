@@ -14,25 +14,39 @@ import { Box, IconButton, type SxProps } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 
-import {
-    InPlaceEditorContext,
-    type InPlaceEditorValue,
-    type InPlaceEditorAction,
-} from './InPlaceEditorContext';
 import { TextInput } from '../TextInput';
 import { TextField } from '../../field';
+
+export type InPlaceEditorAction =
+    | { type: 'edit' }
+    | { type: 'save'; values: any }
+    | { type: 'cancel' }
+    | { type: 'success' }
+    | { type: 'error'; error: any };
+
+export type InPlaceEditorValue =
+    | { state: 'editing' }
+    | { state: 'saving'; values: any }
+    | { state: 'reading' };
 
 export interface InPlaceEditorProps {
     source?: string;
     mutationMode?: 'optimistic' | 'pessimistic' | 'undoable';
     cancelOnBlur?: boolean;
     notifyOnSuccess?: boolean;
+    resource?: string;
     showButtons?: boolean;
     children?: React.ReactNode;
     editor?: React.ReactNode;
     sx?: SxProps;
 }
 
+/**
+ * Renders a value, and on click it turns into an editable field.
+ *
+ * The editable field is rendered inside a Form component, so InPlaceEditor
+ * cannot be used inside another Form component.
+ */
 export const InPlaceEditor = (props: InPlaceEditorProps) => {
     const {
         source,
@@ -97,10 +111,10 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
     );
 
     const record = useRecordContext();
-    const resource = useResourceContext();
+    const resource = useResourceContext(props);
     const notify = useNotify();
-    const [update] = useUpdate();
     const translate = useTranslate();
+    const [update] = useUpdate();
 
     const handleSave = async values => {
         if (!record) {
@@ -151,6 +165,12 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
     const handleCancel = () => {
         dispatch({ type: 'cancel' });
     };
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            dispatch({ type: 'cancel' });
+        }
+    };
+
     const handleBlur = (event: React.FocusEvent) => {
         if (event.relatedTarget) {
             return;
@@ -165,9 +185,9 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
         }
     };
 
-    return (
-        <InPlaceEditorContext.Provider value={{ state, dispatch }}>
-            {state.state === 'reading' ? (
+    switch (state.state) {
+        case 'reading':
+            return (
                 <Box
                     onClick={handleEdit}
                     sx={{
@@ -179,14 +199,12 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
                 >
                     {children}
                 </Box>
-            ) : state.state === 'editing' ? (
+            );
+        case 'editing':
+            return (
                 <Form onSubmit={handleSave}>
                     <Box
-                        onKeyDown={event => {
-                            if (event.key === 'Escape') {
-                                handleCancel();
-                            }
-                        }}
+                        onKeyDown={handleKeyDown}
                         onBlur={handleBlur}
                         sx={{
                             display: 'flex',
@@ -222,13 +240,16 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
                         )}
                     </Box>
                 </Form>
-            ) : state.state === 'saving' ? (
+            );
+        case 'saving':
+            // set a custom record context with the new values
+            // to avoid flickering
+            return (
                 <RecordContextProvider value={state.values}>
                     <Box sx={{ opacity: 0.5 }}>{children}</Box>
                 </RecordContextProvider>
-            ) : (
-                ''
-            )}
-        </InPlaceEditorContext.Provider>
-    );
+            );
+        default:
+            throw new Error('Unhandled state');
+    }
 };
