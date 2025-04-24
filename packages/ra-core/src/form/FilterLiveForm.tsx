@@ -76,27 +76,16 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
 
     const formContext = useForm({
         mode: 'onChange',
-        defaultValues: filterValues,
         resolver: finalResolver,
         ...rest,
     });
     const { handleSubmit, getValues, reset, watch, formState } = formContext;
     const { isValid } = formState;
 
-    // Ref tracking if there are internal changes pending, i.e. changes that
-    // should not trigger a reset
-    const formChangesPending = React.useRef(false);
-
     // Reapply filterValues when they change externally
     useEffect(() => {
         const newValues = getFilterFormValues(getValues(), filterValues);
         const previousValues = getValues();
-        if (formChangesPending.current) {
-            // The effect was triggered by a form change (i.e. internal change),
-            // so we don't need to reset the form
-            formChangesPending.current = false;
-            return;
-        }
         if (!isEqual(newValues, previousValues)) {
             reset(newValues);
         }
@@ -110,7 +99,6 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
         if (!isValid) {
             return;
         }
-        formChangesPending.current = true;
         setFilters(mergeObjNotArray(filterValues, values));
     };
     const debouncedOnSubmit = useDebouncedEvent(onSubmit, debounce || 0);
