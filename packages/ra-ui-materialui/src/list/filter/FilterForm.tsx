@@ -9,7 +9,6 @@ import {
     useContext,
     useEffect,
 } from 'react';
-import { useFormContext } from 'react-hook-form';
 
 import { FilterContext } from '../FilterContext';
 import { FilterFormInput } from './FilterFormInput';
@@ -30,8 +29,11 @@ export type FilterFormProps = FilterFormBaseProps;
 export const FilterFormBase = (props: FilterFormBaseProps) => {
     const { filters } = props;
     const resource = useResourceContext(props);
-    const form = useFormContext();
-    const { displayedFilters = {}, hideFilter } = useListContext();
+    const {
+        displayedFilters = {},
+        filterValues,
+        hideFilter,
+    } = useListContext();
 
     useEffect(() => {
         if (!filters) return;
@@ -46,7 +48,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     const getShownFilters = () => {
         if (!filters) return [];
-        const values = form.getValues();
+        const values = filterValues;
         return filters.filter((filterElement: React.ReactElement) => {
             const filterValue = get(values, filterElement.props.source);
             return (
