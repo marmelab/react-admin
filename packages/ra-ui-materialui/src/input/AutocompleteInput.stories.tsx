@@ -2,41 +2,45 @@ import * as React from 'react';
 import { Admin, AdminContext } from 'react-admin';
 
 import {
+    CreateBase,
+    ListBase,
+    RecordContextProvider,
     Resource,
+    TestMemoryRouter,
     required,
     useCreate,
-    useRecordContext,
-    ListBase,
     useListContext,
-    RecordContextProvider,
-    TestMemoryRouter,
+    useRecordContext,
 } from 'ra-core';
 
+import AttributionIcon from '@mui/icons-material/Attribution';
+import CloseIcon from '@mui/icons-material/Close';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import {
-    Dialog,
-    DialogContent,
-    DialogActions,
+    Box,
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    InputAdornment,
     Stack,
     TextField,
     Typography,
-    Box,
-    InputAdornment,
 } from '@mui/material';
-import { useFormContext } from 'react-hook-form';
 import fakeRestProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import AttributionIcon from '@mui/icons-material/Attribution';
+import { useFormContext } from 'react-hook-form';
 
+import { useState } from 'react';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { useState } from 'react';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -826,56 +830,42 @@ export const InsideReferenceInputWithError = () => (
 
 const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [name, setName] = React.useState(filter || '');
-    const [language, setLanguage] = React.useState('');
-    const [create] = useCreate();
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-            'authors',
-            {
-                data: {
-                    name,
-                    language,
-                },
-            },
-            {
-                onSuccess: data => {
-                    setName('');
-                    setLanguage('');
-                    onCreate(data);
-                },
-            }
-        );
+    const onAuthorCreate = author => {
+        onCreate(author);
     };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <Stack gap={4}>
-                        <TextField
-                            name="name"
-                            label="The author name"
-                            value={name}
-                            onChange={event => setName(event.target.value)}
-                            autoFocus
-                        />
-                        <TextField
-                            name="language"
-                            label="The author language"
-                            value={language}
-                            onChange={event => setLanguage(event.target.value)}
-                            autoFocus
-                        />
-                    </Stack>
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="author"
+                    mutationOptions={{
+                        onSuccess: author => {
+                            onAuthorCreate(author);
+                        },
+                    }}
+                >
+                    <SimpleForm defaultValues={{ name: filter }}>
+                        <TextInput source="name" helperText={false} />
+                        <TextInput source="language" helperText={false} />
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
         </Dialog>
     );
 };

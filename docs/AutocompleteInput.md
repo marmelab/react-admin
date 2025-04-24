@@ -153,65 +153,71 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 
 {% raw %}
 ```jsx
-import { CreateCategory } from './CreateCategory';
+import { CreateAuthor } from './CreateAuthor';
 
-const PostCreate = () => (
+const BookCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput source="title" />
-            <ReferenceInput source="category_id" reference="categories">
-                <AutocompleteInput create={<CreateCategory />} />
+            <ReferenceInput reference="authors" source="author">
+                <AutocompleteInput
+                    create={<CreateAuthor />}
+                    optionText="name"
+                />
             </ReferenceInput>
         </SimpleForm>
     </Create>
 );
 
-// in ./CreateCategory.js
+// in ./CreateAuthor.js
 import React from 'react';
-import { useCreate, useCreateSuggestionContext } from 'react-admin';
+import { CreateBase, SimpleForm, TextInput, useCreateSuggestionContext } from 'react-admin';
+import CloseIcon from '@mui/icons-material/Close';
 import {
     Button,
     Dialog,
-    DialogActions,
     DialogContent,
-    TextField,
+    DialogTitle,
+    IconButton,
 } from '@mui/material';
 
-const CreateCategory = () => {
+const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [create] = useCreate();
-    const [value, setValue] = React.useState(filter || '');
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-          'categories',
-          { data: { title: value } },
-          {
-              onSuccess: (data) => {
-                  setValue('');
-                  onCreate(data);
-              },
-          }
-        );
+    const onAuthorCreate = author => {
+        onCreate(author);
     };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New category name"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="author"
+                    mutationOptions={{
+                        onSuccess: author => {
+                            onAuthorCreate(author);
+                        },
+                    }}
+                >
+                    <SimpleForm defaultValues={{ name: filter }}>
+                        <TextInput source="name" helperText={false} />
+                        <TextInput source="language" helperText={false} />
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
         </Dialog>
     );
 };
