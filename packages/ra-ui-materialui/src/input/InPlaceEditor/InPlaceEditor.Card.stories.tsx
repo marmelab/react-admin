@@ -87,7 +87,8 @@ export const Complex = () => {
                     flexDirection: 'column',
                     px: 2,
                     py: 3,
-                    m: 2,
+                    my: 2,
+                    mx: 20,
                     width: 300,
                 }}
             >
@@ -118,8 +119,11 @@ export const Complex = () => {
                     <InPlaceEditor
                         source="name"
                         sx={{
-                            fontSize: '1.2rem',
-                            '& input': {
+                            '& .RaInPlaceEditor-reading div, & .RaInPlaceEditor-saving div, & .RaInPlaceEditor-editing input':
+                                {
+                                    fontSize: '1.2rem',
+                                },
+                            '& .RaInPlaceEditor-editing input': {
                                 textAlign: 'center',
                             },
                         }}

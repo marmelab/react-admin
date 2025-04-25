@@ -115,18 +115,31 @@ export const SX = () => {
         {
             users: [{ id: 1, name: 'John Doe', age: 25 }],
         },
-        process.env.NODE_ENV !== 'test'
+        process.env.NODE_ENV !== 'test',
+        500
     );
     return (
         <Wrapper dataProvider={dataProvider}>
             <InPlaceEditor
                 source="name"
                 sx={{
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
-                    color: 'primary.main',
                     marginTop: '1rem',
                     marginLeft: '1rem',
+                    '& .RaInPlaceEditor-reading div': {
+                        fontSize: '1.5rem',
+                        fontWeight: 'bold',
+                        color: 'primary.main',
+                    },
+                    '& .RaInPlaceEditor-saving div': {
+                        fontSize: '1.5rem',
+                        fontWeight: 'bold',
+                        color: 'text.disabled',
+                    },
+                    '& .RaInPlaceEditor-editing input': {
+                        fontSize: '1.5rem',
+                        fontWeight: 'bold',
+                        color: 'primary.main',
+                    },
                 }}
             />
         </Wrapper>

@@ -10,6 +10,7 @@ import {
     RecordContextProvider,
 } from 'ra-core';
 import isEqual from 'lodash/isEqual';
+import { styled } from '@mui/material/styles';
 import { Box, IconButton, type SxProps } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
@@ -54,14 +55,12 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
         sx,
         cancelOnBlur,
         children = source ? (
-            <Box sx={{ marginBottom: '5px' }}>
-                <TextField
-                    source={source}
-                    variant="body1"
-                    sx={sx}
-                    component="div"
-                />
-            </Box>
+            <TextField
+                source={source}
+                variant="body1"
+                component="div"
+                sx={{ marginBottom: '5px' }}
+            />
         ) : null,
         editor = source ? (
             <TextInput
@@ -72,7 +71,6 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
                 variant="standard"
                 autoFocus
                 helperText={false}
-                InputProps={{ sx }}
             />
         ) : null,
         showButtons,
@@ -185,71 +183,96 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
         }
     };
 
-    switch (state.state) {
-        case 'reading':
-            return (
-                <Box
-                    onClick={handleEdit}
-                    sx={{
-                        cursor: 'pointer',
-                        '&:hover': {
-                            backgroundColor: 'action.hover',
-                        },
-                    }}
-                >
-                    {children}
-                </Box>
-            );
-        case 'editing':
-            return (
-                <Form onSubmit={handleSave}>
+    const renderContent = () => {
+        switch (state.state) {
+            case 'reading':
+                return (
                     <Box
-                        onKeyDown={handleKeyDown}
-                        onBlur={handleBlur}
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 1,
-                        }}
+                        onClick={handleEdit}
+                        className={InPlaceEditorClasses.reading}
                     >
-                        {editor}
-                        {showButtons ? (
-                            <>
-                                <IconButton
-                                    size="small"
-                                    type="submit"
-                                    ref={submitButtonRef}
-                                    aria-label={translate('ra.action.save')}
-                                >
-                                    <SaveIcon fontSize="small" />
-                                </IconButton>
-                                <IconButton
-                                    size="small"
-                                    onClick={handleCancel}
-                                    aria-label={translate('ra.action.cancel')}
-                                >
-                                    <CloseIcon fontSize="small" />
-                                </IconButton>
-                            </>
-                        ) : (
-                            <button
-                                type="submit"
-                                style={{ display: 'none' }}
-                                ref={submitButtonRef}
-                            />
-                        )}
+                        {children}
                     </Box>
-                </Form>
-            );
-        case 'saving':
-            // set a custom record context with the new values
-            // to avoid flickering
-            return (
-                <RecordContextProvider value={state.values}>
-                    <Box sx={{ opacity: 0.5 }}>{children}</Box>
-                </RecordContextProvider>
-            );
-        default:
-            throw new Error('Unhandled state');
-    }
+                );
+            case 'editing':
+                return (
+                    <Form onSubmit={handleSave}>
+                        <Box
+                            onKeyDown={handleKeyDown}
+                            onBlur={handleBlur}
+                            className={InPlaceEditorClasses.editing}
+                        >
+                            {editor}
+                            {showButtons ? (
+                                <>
+                                    <IconButton
+                                        size="small"
+                                        type="submit"
+                                        ref={submitButtonRef}
+                                        aria-label={translate('ra.action.save')}
+                                    >
+                                        <SaveIcon fontSize="small" />
+                                    </IconButton>
+                                    <IconButton
+                                        size="small"
+                                        onClick={handleCancel}
+                                        aria-label={translate(
+                                            'ra.action.cancel'
+                                        )}
+                                    >
+                                        <CloseIcon fontSize="small" />
+                                    </IconButton>
+                                </>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    style={{ display: 'none' }}
+                                    ref={submitButtonRef}
+                                />
+                            )}
+                        </Box>
+                    </Form>
+                );
+            case 'saving':
+                // set a custom record context with the new values
+                // to avoid flickering
+                return (
+                    <RecordContextProvider value={state.values}>
+                        <Box className={InPlaceEditorClasses.saving}>
+                            {children}
+                        </Box>
+                    </RecordContextProvider>
+                );
+            default:
+                throw new Error('Unhandled state');
+        }
+    };
+
+    return <Root sx={sx}>{renderContent()}</Root>;
 };
+
+const PREFIX = 'RaInPlaceEditor';
+
+const InPlaceEditorClasses = {
+    reading: `${PREFIX}-reading`,
+    editing: `${PREFIX}-editing`,
+    saving: `${PREFIX}-saving`,
+};
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    [`& .${InPlaceEditorClasses.reading}`]: {
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: 'action.hover',
+        },
+    },
+    [`& .${InPlaceEditorClasses.editing}`]: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+    },
+    [`& .${InPlaceEditorClasses.saving}`]: { opacity: 0.5 },
+});
