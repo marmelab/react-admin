@@ -26,7 +26,14 @@ export default {
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
-const Wrapper = ({ children, dataProvider }) => (
+const Wrapper = ({
+    children,
+    dataProvider = fakeRestDataProvider(
+        { users: [{ id: 1, name: 'John Doe', age: 25, type: 'customer' }] },
+        process.env.NODE_ENV !== 'test',
+        500
+    ),
+}) => (
     <TestMemoryRouter>
         <QueryClientProvider client={new QueryClient()}>
             <DataProviderContext.Provider value={dataProvider}>
@@ -55,12 +62,7 @@ export const Basic = ({
     showButtons,
 }) => {
     const dataProvider = fakeRestDataProvider(
-        {
-            users: [
-                { id: 1, name: 'John Doe', age: 25 },
-                { id: 2, name: 'Jane Doe', age: 30 },
-            ],
-        },
+        { users: [{ id: 1, name: 'John Doe', age: 25, type: 'customer' }] },
         process.env.NODE_ENV !== 'test'
     );
     const sometimesFailsDataProvider = {
@@ -110,101 +112,100 @@ Basic.argTypes = {
     showButtons: { control: { type: 'boolean' } },
 };
 
-export const SX = () => {
-    const dataProvider = fakeRestDataProvider(
-        {
-            users: [{ id: 1, name: 'John Doe', age: 25 }],
-        },
-        process.env.NODE_ENV !== 'test',
-        500
-    );
-    return (
-        <Wrapper dataProvider={dataProvider}>
-            <InPlaceEditor
-                source="name"
-                sx={{
-                    marginTop: '1rem',
-                    marginLeft: '1rem',
-                    '& .RaInPlaceEditor-reading div': {
-                        fontSize: '1.5rem',
-                        fontWeight: 'bold',
-                        color: 'primary.main',
-                    },
-                    '& .RaInPlaceEditor-saving div': {
-                        fontSize: '1.5rem',
-                        fontWeight: 'bold',
-                        color: 'text.disabled',
-                    },
-                    '& .RaInPlaceEditor-editing input': {
-                        fontSize: '1.5rem',
-                        fontWeight: 'bold',
-                        color: 'primary.main',
-                    },
-                }}
-            />
-        </Wrapper>
-    );
-};
+export const Children = () => (
+    <Wrapper>
+        <InPlaceEditor source="age">
+            <TextField source="age" variant="body1" />{' '}
+            <Typography component="span">years old</Typography>
+        </InPlaceEditor>
+    </Wrapper>
+);
 
-export const Children = () => {
-    const dataProvider = fakeRestDataProvider(
-        {
-            users: [{ id: 1, name: 'John Doe', age: 25 }],
-        },
-        process.env.NODE_ENV !== 'test'
-    );
-    return (
-        <Wrapper dataProvider={dataProvider}>
-            <InPlaceEditor source="age">
-                <TextField source="age" variant="body1" />{' '}
-                <Typography component="span">years old</Typography>
-            </InPlaceEditor>
-        </Wrapper>
-    );
-};
-
-export const Editor = () => {
-    const dataProvider = fakeRestDataProvider(
-        {
-            users: [{ id: 1, name: 'John Doe', type: 'prospect' }],
-        },
-        process.env.NODE_ENV !== 'test'
-    );
-    return (
-        <Wrapper dataProvider={dataProvider}>
-            <Typography color="secondary">Text above</Typography>
-            <InPlaceEditor
-                source="type"
-                editor={
-                    <SelectInput
-                        source="type"
-                        choices={[
-                            { id: 'prospect', name: 'Prospect' },
-                            { id: 'customer', name: 'Customer' },
-                        ]}
-                        size="small"
-                        margin="none"
-                        label={false}
-                        variant="standard"
-                        autoFocus
-                        SelectProps={{ defaultOpen: true }}
-                        helperText={false}
-                        sx={{ '& .MuiInput-root': { marginTop: 0 } }}
-                    />
-                }
-            >
-                <SelectField
+export const Editor = () => (
+    <Wrapper>
+        <Typography color="secondary">Text above</Typography>
+        <InPlaceEditor
+            source="type"
+            editor={
+                <SelectInput
                     source="type"
                     choices={[
                         { id: 'prospect', name: 'Prospect' },
                         { id: 'customer', name: 'Customer' },
                     ]}
-                    variant="body1"
-                    sx={{ marginTop: '1px', marginBottom: '5px' }}
-                    component="div"
+                    size="small"
+                    margin="none"
+                    label={false}
+                    variant="standard"
+                    autoFocus
+                    SelectProps={{ defaultOpen: true }}
+                    helperText={false}
+                    sx={{ '& .MuiInput-root': { marginTop: 0 } }}
                 />
-            </InPlaceEditor>
-            <Typography color="secondary">Text below</Typography>
-        </Wrapper>
-    );
-};
+            }
+        >
+            <SelectField
+                source="type"
+                choices={[
+                    { id: 'prospect', name: 'Prospect' },
+                    { id: 'customer', name: 'Customer' },
+                ]}
+                variant="body1"
+                sx={{ marginTop: '1px', marginBottom: '5px' }}
+                component="div"
+            />
+        </InPlaceEditor>
+        <Typography color="secondary">Text below</Typography>
+    </Wrapper>
+);
+
+export const CancelOnBlur = () => (
+    <Wrapper>
+        <InPlaceEditor source="name" cancelOnBlur />
+    </Wrapper>
+);
+
+export const MutationMode = () => (
+    <Wrapper>
+        <InPlaceEditor source="name" mutationMode="optimistic" />
+    </Wrapper>
+);
+
+export const NotifyOnSuccess = () => (
+    <Wrapper>
+        <InPlaceEditor source="name" notifyOnSuccess />
+    </Wrapper>
+);
+
+export const ShowButtons = () => (
+    <Wrapper>
+        <InPlaceEditor source="name" showButtons />
+    </Wrapper>
+);
+
+export const SX = () => (
+    <Wrapper>
+        <InPlaceEditor
+            source="name"
+            sx={{
+                marginTop: '1rem',
+                marginLeft: '1rem',
+                '& .RaInPlaceEditor-reading div': {
+                    fontSize: '1.5rem',
+                    fontWeight: 'bold',
+                    color: 'primary.main',
+                },
+                '& .RaInPlaceEditor-saving div': {
+                    fontSize: '1.5rem',
+                    fontWeight: 'bold',
+                    color: 'text.disabled',
+                },
+                '& .RaInPlaceEditor-editing input': {
+                    fontSize: '1.5rem',
+                    fontWeight: 'bold',
+                    color: 'primary.main',
+                },
+            }}
+        />
+    </Wrapper>
+);

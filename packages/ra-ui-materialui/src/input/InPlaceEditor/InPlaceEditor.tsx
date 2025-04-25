@@ -175,6 +175,7 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
         }
         if (cancelOnBlur) {
             dispatch({ type: 'cancel' });
+            return;
         }
         if (state.state === 'editing') {
             // trigger the parent form submit
