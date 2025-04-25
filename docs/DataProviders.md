@@ -884,3 +884,136 @@ export default App;
 ```
 
 **Tip**: This example uses the function version of `setState` (`setDataProvider(() => dataProvider)`) instead of the more classic version (`setDataProvider(dataProvider)`). This is because some legacy Data Providers are actually functions, and `setState` would call them immediately on mount.
+
+---
+layout: default
+title: "Offline Support"
+---
+
+## Offline Support
+
+React Query supports offline/local-first applications. To enable it in your React Admin application, install the required React Query packages:
+
+```sh
+yarn add @tanstack/react-query-persist-client @tanstack/query-sync-storage-persister
+```
+
+Then, register default functions for React Admin mutations on the `QueryClient` to enable resumable mutations (mutations triggered while offline). React Admin provides the `addOfflineSupportToQueryClient` function for this:
+
+```ts
+// in src/queryClient.ts
+import { addOfflineSupportToQueryClient } from 'react-admin';
+import { QueryClient } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import { dataProvider } from './dataProvider';
+
+export const queryClient = new QueryClient();
+
+addOfflineSupportToQueryClient({
+    queryClient,
+    dataProvider,
+    resources: ['posts', 'comments'],
+});
+```
+
+Then, wrap your `<Admin>` inside a [`<PersistQueryClientProvider>`](https://tanstack.com/query/latest/docs/framework/react/plugins/persistQueryClient#persistqueryclientprovider):
+
+{% raw %}
+```tsx
+// in src/App.tsx
+import { Admin, Resource } from 'react-admin';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import { queryClient } from './queryClient';
+import { dataProvider } from './dataProvider';
+import { posts } from './posts';
+import { comments } from './comments';
+
+const localStoragePersister = createSyncStoragePersister({
+    storage: window.localStorage,
+});
+
+export const App = () => (
+    <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{ persister: localStoragePersister }}
+        onSuccess={() => {
+            // resume mutations after initial restore from localStorage is successful
+            queryClient.resumePausedMutations();
+        }}
+    >
+        <Admin queryClient={queryClient} dataProvider={dataProvider}>
+            <Resource name="posts" {...posts} />
+            <Resource name="comments" {...comments} />
+        </Admin>
+    </PersistQueryClientProvider>
+)
+```
+{% endraw %}
+
+If you have [custom mutations](./Actions.md#calling-custom-methods) on your dataProvider, you can enable offline support for them too. For instance, if your `dataProvider` exposes a `banUser()` method:
+
+```ts
+const dataProvider = {
+    getList: /* ... */,
+    getOne: /* ... */,
+    getMany: /* ... */,
+    getManyReference: /* ... */,
+    create: /* ... */,
+    update: /* ... */,
+    updateMany: /* ... */,
+    delete: /* ... */,
+    deleteMany: /* ... */,
+    banUser: (userId: string) => {
+        return fetch(`/api/user/${userId}/ban`, { method: 'POST' })
+            .then(response => response.json());
+    },
+}
+
+export type MyDataProvider = DataProvider & {
+    banUser: (userId: string) => Promise<{ data: RaRecord }>
+}
+```
+
+First, you must set a `mutationKey` for this mutation:
+
+{% raw %}
+```tsx
+const BanUserButton = ({ userId }: { userId: string }) => {
+    const dataProvider = useDataProvider();
+    const { mutate, isPending } = useMutation({
+        mutationKey: 'banUser'
+        mutationFn: (userId) => dataProvider.banUser(userId)
+    });
+    return <Button label="Ban" onClick={() => mutate(userId)} disabled={isPending} />;
+};
+```
+{% endraw %}
+
+**Tip**: Note that unlike the [_Calling Custom Methods_ example](./Actions.md#calling-custom-methods), we passed `userId` to the `mutate` function. This is necessary so that React Query passes it too to the default function when resuming the mutation.
+
+Then, register a default function for it:
+
+```ts
+// in src/queryClient.ts
+import { addOfflineSupportToQueryClient } from 'react-admin';
+import { QueryClient } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import { dataProvider } from './dataProvider';
+
+export const queryClient = new QueryClient();
+
+addOfflineSupportToQueryClient({
+    queryClient,
+    dataProvider,
+    resources: ['posts', 'comments'],
+});
+
+queryClient.setMutationDefaults('banUser', {
+    mutationFn: async (userId) => {
+        return dataProviderFn.banUser(userId);
+    },
+});
+```
