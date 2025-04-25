@@ -320,34 +320,43 @@ The `data` will automatically update when a new record is created, or an existin
 The `useGetList` hook accepts a generic parameter for the record type:
 
 ```tsx
-import { useGetList } from 'react-admin';
-
-type Post = {
+interface Post {
     id: number;
     title: string;
-};
+    published_at: string;
+    views: number;
+    author: string;
+    category: string;
+}
 
-const LatestNews = () => {
-    const { data: posts, total, isPending, error } = useGetList<Post>(
-        'posts',
-        { 
-            pagination: { page: 1, perPage: 10 },
-            sort: { field: 'published_at', order: 'DESC' }
-        }
-    );
-    if (isPending) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return (
-        <>
-            <h1>Latest news</h1>
-            <ul>
-                {/* TypeScript knows that posts is of type Post[] */}
-                {posts.map(post =>
-                    <li key={post.id}>{post.title}</li>
-                )}
-            </ul>
-            <p>{posts.length} / {total} articles</p>
-        </>
-    );
-};
+const { data, total, isPending, error } = useGetList<Post>(
+    'posts',
+    { 
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'published_at', order: 'DESC' }
+    }
+);
+
+if (isPending) { return <Loading />; }
+if (error) { return <p>ERROR</p>; }
+
+return (
+    <>
+        <h1>Latest news</h1>
+        <ul>
+            {data.map(post =>
+                <li key={post.id}>{post.title}</li>
+            )}
+        </ul>
+        <p>{data.length} / {total} articles</p>
+    </>
+);
 ```
+
+## See Also
+
+* [`useGetListLive`](./useGetListLive.md) - Real-time version of `useGetList`
+* [`useInfiniteGetList`](./useInfiniteGetList.md) - Infinite scrolling version of `useGetList`
+* [`useGetOne`](./useGetOne.md) - Fetch a single record
+* [`useGetMany`](./useGetMany.md) - Fetch multiple records by their ids
+* [`useGetManyReference`](./useGetManyReference.md) - Fetch records related to another record
