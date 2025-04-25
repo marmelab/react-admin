@@ -862,7 +862,11 @@ const CreateAuthor = () => {
                 >
                     <SimpleForm defaultValues={{ name: filter }}>
                         <TextInput source="name" helperText={false} />
-                        <TextInput source="language" helperText={false} />
+                        <TextInput
+                            source="language"
+                            helperText={false}
+                            autoFocus
+                        />
                     </SimpleForm>
                 </CreateBase>
             </DialogContent>
@@ -881,10 +885,7 @@ const BookEditWithReferenceAndCreationSupport = () => (
     >
         <SimpleForm>
             <ReferenceInput reference="authors" source="author">
-                <AutocompleteInput
-                    create={<CreateAuthor />}
-                    optionText="name"
-                />
+                <AutocompleteInput create={<CreateAuthor />} />
             </ReferenceInput>
         </SimpleForm>
     </Edit>
