@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.7.4
+
+* Fix `<FilterLiveForm>` compatibility with react-hook-form 7.55.0, part 2 ([#10697](https://github.com/marmelab/react-admin/pull/10697)) ([slax57](https://github.com/slax57))
+* Fix `<SelectInput>` shows gap in border when using no label with outlined variant ([#10692](https://github.com/marmelab/react-admin/pull/10692)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `canAccess` is called even when `disableAuthentication` is `true` ([#10691](https://github.com/marmelab/react-admin/pull/10691)) ([slax57](https://github.com/slax57))
+* [Doc] improve AutocompleteInput create example ([#10696](https://github.com/marmelab/react-admin/pull/10696)) ([Cimanel](https://github.com/Cimanel))
+* [Demo] Fix unneeded check in CRM demo ([#10694](https://github.com/marmelab/react-admin/pull/10694)) ([afilp](https://github.com/afilp))
+* [chore] ESLint: (re)enable import rules ([#10685](https://github.com/marmelab/react-admin/pull/10685)) ([slax57](https://github.com/slax57))
+
 ## 5.7.3
 
 * Fix `<ShowGuesser>` print incorrect code for reference arrays ([#10682](https://github.com/marmelab/react-admin/pull/10682)) ([djhi](https://github.com/djhi))
