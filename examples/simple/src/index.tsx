@@ -1,6 +1,11 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import { Admin, Resource, CustomRoutes } from 'react-admin'; // eslint-disable-line import/no-unresolved
+import {
+    addOfflineSupportToQueryClient,
+    Admin,
+    Resource,
+    CustomRoutes,
+} from 'react-admin';
 import { createRoot } from 'react-dom/client';
 import { Route } from 'react-router-dom';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
@@ -16,13 +21,12 @@ import posts from './posts';
 import users from './users';
 import tags from './tags';
 import { queryClient } from './queryClient';
-import { getOfflineFirstQueryClient } from './getOfflineFirstQueryClient';
 
 const localStoragePersister = createSyncStoragePersister({
     storage: window.localStorage,
 });
 
-const offlineFirstQueryClient = getOfflineFirstQueryClient({
+addOfflineSupportToQueryClient({
     queryClient,
     dataProvider,
     resources: ['posts', 'comments', 'tags', 'users'],
@@ -34,10 +38,10 @@ const root = createRoot(container);
 root.render(
     <React.StrictMode>
         <PersistQueryClientProvider
-            client={offlineFirstQueryClient}
+            client={queryClient}
             persistOptions={{ persister: localStoragePersister }}
             onSuccess={() => {
-                // resume mutations after initial restore from localStorage was successful
+                // resume mutations after initial restore from localStorage is successful
                 queryClient.resumePausedMutations();
             }}
         >
@@ -45,7 +49,7 @@ root.render(
                 authProvider={authProvider}
                 dataProvider={dataProvider}
                 i18nProvider={i18nProvider}
-                queryClient={offlineFirstQueryClient}
+                queryClient={queryClient}
                 title="Example Admin"
                 layout={Layout}
             >

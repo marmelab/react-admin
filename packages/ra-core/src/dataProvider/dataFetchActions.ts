@@ -8,6 +8,14 @@ export const UPDATE_MANY = 'UPDATE_MANY';
 export const DELETE = 'DELETE';
 export const DELETE_MANY = 'DELETE_MANY';
 
+export const reactAdminMutations = [
+    'create',
+    'delete',
+    'update',
+    'updateMany',
+    'deleteMany',
+];
+
 export const fetchActionsWithRecordResponse = ['getOne', 'create', 'update'];
 export const fetchActionsWithArrayOfIdentifiedRecordsResponse = [
     'getList',
