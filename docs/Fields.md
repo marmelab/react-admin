@@ -482,12 +482,10 @@ Here is a custom field displaying the full name:
 ```jsx
 import { useRecordContext } from 'react-admin';
 
-export const FullNameField = (props) => {
+export const FullNameField = ({ label = 'Name', ...props }) => {
     const record = useRecordContext(props);
     return record ? <span>{record.firstName} {record.lastName}</span> : null;
 }
-
-FullNameField.defaultProps = { label: 'Name' };
 ```
 
 **Tip**: Always check the `record` is defined before inspecting its properties, as react-admin may display the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
