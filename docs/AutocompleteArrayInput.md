@@ -714,6 +714,7 @@ Use the `create` prop when you want a more polished or complex UI. For example a
 import {
     AutocompleteArrayInput,
     Create,
+    CreateBase,
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
@@ -721,13 +722,15 @@ import {
     useCreateSuggestionContext
 } from 'react-admin';
 
+import CloseIcon from '@mui/icons-material/Close';
 import {
     Box,
     BoxProps,
     Button,
     Dialog,
-    DialogActions,
     DialogContent,
+    DialogTitle,
+    IconButton,
     TextField,
 } from '@mui/material';
 
