@@ -853,7 +853,7 @@ const CreateAuthor = () => {
             <DialogContent sx={{ p: 0 }}>
                 <CreateBase
                     redirect={false}
-                    resource="author"
+                    resource="authors"
                     mutationOptions={{
                         onSuccess: author => {
                             onAuthorCreate(author);
