@@ -106,6 +106,7 @@ title: "Index"
 * [`<ImageField>`](./ImageField.md)
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
+* [`<InPlaceEditor>`](./InPlaceEditor.md)
 * [`<InspectorButton>`](./Configurable.md#inspectorbutton)
 
 **- L -**
