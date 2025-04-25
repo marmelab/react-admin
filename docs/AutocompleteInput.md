@@ -927,7 +927,7 @@ const CreateCategory = () => {
                 })}
             >
                 <CloseIcon />
-                </IconButton>>
+            </IconButton>
             <DialogContent sx={{ p: 0 }}>
                 <CreateBase
                     redirect={false}
