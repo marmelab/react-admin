@@ -14,6 +14,22 @@ import {
 import { Category } from '../types';
 import { humanize } from 'inflection';
 
+const categoryTranslations: { [key: string]: string } = {
+    animals: 'Animaux',
+    beard: 'Barbe',
+    business: 'Affaires',
+    cars: 'Voitures',
+    city: 'Ville',
+    flowers: 'Fleurs',
+    food: 'Nourriture',
+    nature: 'Nature',
+    people: 'Personnes',
+    sports: 'Sports',
+    tech: 'Technologie',
+    travel: 'Voyage',
+    water: 'Eau',
+};
+
 const Aside = () => {
     const { data } = useGetList<Category>('categories', {
         pagination: { page: 1, perPage: 100 },
@@ -118,7 +134,11 @@ const Aside = () => {
                     {data &&
                         data.map((record: any) => (
                             <FilterListItem
-                                label={humanize(record.name)}
+                                label={
+                                    categoryTranslations[
+                                        record.name.toLowerCase()
+                                    ] || humanize(record.name)
+                                }
                                 key={record.id}
                                 value={{ category_id: record.id }}
                             />
