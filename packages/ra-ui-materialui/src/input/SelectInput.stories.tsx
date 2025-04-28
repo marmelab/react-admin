@@ -8,11 +8,17 @@ import {
     IconButton,
     TextField,
 } from '@mui/material';
-import { Resource, TestMemoryRouter, required, useGetList } from 'ra-core';
+import {
+    CreateBase,
+    Resource,
+    TestMemoryRouter,
+    required,
+    useGetList,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import * as React from 'react';
-import { Admin, AdminContext, CreateBase } from 'react-admin';
+import { Admin, AdminContext } from 'react-admin';
 
 import { SaveButton } from '../button/SaveButton';
 import { Edit, Create as RaCreate } from '../detail';
