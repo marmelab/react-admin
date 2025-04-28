@@ -682,7 +682,7 @@ const CreateAuthor = () => {
                         },
                     }}
                 >
-                    <SimpleForm defaultValues={{ first_name: filter }}>
+                    <SimpleForm>
                         <TextInput
                             source="first_name"
                             helperText={false}

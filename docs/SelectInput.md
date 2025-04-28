@@ -216,7 +216,7 @@ const CreateAuthor = () => {
                         },
                     }}
                 >
-                    <SimpleForm defaultValues={{ name: filter }}>
+                    <SimpleForm>
                         <TextInput source="name" helperText={false} />
                         <TextInput source="language" helperText={false} autoFocus />
                     </SimpleForm>
@@ -730,7 +730,7 @@ const CreateCategory = () => {
                         },
                     }}
                 >
-                    <SimpleForm defaultValues={{ title: filter }}>
+                    <SimpleForm>
                         <TextInput source="name" helperText={false} autoFocus/>
                     </SimpleForm>
                 </CreateBase>
