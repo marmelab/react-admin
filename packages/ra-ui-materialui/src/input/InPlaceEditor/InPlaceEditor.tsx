@@ -17,7 +17,6 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { TextInput } from '../TextInput';
 import { TextField } from '../../field';
-import { bgcolor } from '@mui/system';
 
 export type InPlaceEditorAction =
     | { type: 'edit' }
