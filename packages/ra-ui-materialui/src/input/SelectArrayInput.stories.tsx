@@ -1,28 +1,31 @@
-import * as React from 'react';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
+import CloseIcon from '@mui/icons-material/Close';
 import {
+    Box,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
+    DialogTitle,
+    IconButton,
     Stack,
-    Box,
     TextField,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import * as React from 'react';
 
+import { CreateBase, Resource, TestMemoryRouter } from 'ra-core';
+import { Admin } from 'react-admin';
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { SelectArrayInput } from './SelectArrayInput';
-import { ReferenceArrayInput } from './ReferenceArrayInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { TextInput } from './TextInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { Resource, TestMemoryRouter } from 'ra-core';
-import { Admin } from 'react-admin';
 import { FormInspector } from './common';
+import { ReferenceArrayInput } from './ReferenceArrayInput';
+import { SelectArrayInput } from './SelectArrayInput';
+import { TextInput } from './TextInput';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
@@ -677,3 +680,96 @@ export const InsideReferenceArrayInputWithError = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+const CreateAuthor = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+
+    const onAuthorCreate = author => {
+        onCreate(author);
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="authors"
+                    mutationOptions={{
+                        onSuccess: author => {
+                            onAuthorCreate(author);
+                        },
+                    }}
+                >
+                    <SimpleForm defaultValues={{ first_name: filter }}>
+                        <TextInput
+                            source="first_name"
+                            helperText={false}
+                            autoFocus
+                        />
+                        <TextInput source="last_name" helperText={false} />
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+export const InsideReferenceArrayInputAndCreationSupport = () => {
+    const optionRenderer = choice => {
+        return choice.first_name && choice.last_name
+            ? `${choice.first_name} ${choice.last_name}`
+            : `${choice.name}`;
+    };
+    return (
+        <TestMemoryRouter initialEntries={['/books/1']}>
+            <Admin dataProvider={dataProviderWithAuthors}>
+                <Resource
+                    name="authors"
+                    recordRepresentation={record =>
+                        `${record.first_name} ${record.last_name}`
+                    }
+                />
+                <Resource
+                    name="books"
+                    edit={() => (
+                        <Edit
+                            mutationMode="pessimistic"
+                            mutationOptions={{
+                                onSuccess: data => {
+                                    console.log(data);
+                                },
+                            }}
+                        >
+                            <SimpleForm>
+                                <ReferenceArrayInput
+                                    reference="authors"
+                                    source="authors"
+                                >
+                                    <SelectArrayInput
+                                        create={<CreateAuthor />}
+                                        createLabel="Create a new Author"
+                                        optionText={optionRenderer}
+                                    />
+                                </ReferenceArrayInput>
+                                <FormInspector name="authors" />
+                            </SimpleForm>
+                        </Edit>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
