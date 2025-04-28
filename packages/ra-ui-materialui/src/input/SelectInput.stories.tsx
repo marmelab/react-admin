@@ -698,7 +698,6 @@ const CreateAuthor = () => {
 
 export const InsideReferenceInputWithCreationSupport = () => {
     const optionRenderer = choice => {
-        console.log(choice);
         return choice.first_name && choice.last_name
             ? `${choice.first_name} ${choice.last_name}`
             : `${choice.name}`;
