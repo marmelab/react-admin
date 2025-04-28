@@ -770,3 +770,39 @@ Users often need to edit data from several resources in the same form. React-adm
   <source src="./img/reference-many-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+## Edit In Place
+
+Instead of asking users to fill a form to edit a record, you can let them edit the record straight from the list or show view. [The `<InPlaceEditor>` component](./InPlaceEditor.md) uses a `<TextField>` in read mode, and a `<TextInput>` in edition mode. It is useful for quick edits without navigating to a separate edit page.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/InPlaceEditor.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+{% raw %}
+```tsx
+import { Show, InPlaceEditor } from 'react-admin';
+import { Stack, Box, Typography } from '@mui/material';
+
+const CustomerShow = () => (
+    <Show>
+        <Stack direction="row" spacing={2}>
+            <AvatarField />
+            <CustomerActions />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography>Phone</Typography>
+                <InPlaceEditor source="phone" />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography>Email</Typography>
+                <InPlaceEditor source="email" />
+            </Box>
+            ...
+        </Stack>
+    </Show>
+);
+```
+{% endraw %}
+
+Check out [the `<InPlaceEditor>` documentation](./InPlaceEditor.md) for more details.
