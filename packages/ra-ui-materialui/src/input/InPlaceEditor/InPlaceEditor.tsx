@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { TextInput } from '../TextInput';
 import { TextField } from '../../field';
+import { bgcolor } from '@mui/system';
 
 export type InPlaceEditorAction =
     | { type: 'edit' }
@@ -263,11 +264,11 @@ const InPlaceEditorClasses = {
 const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})({
+})(({ theme }) => ({
     [`& .${InPlaceEditorClasses.reading}`]: {
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: 'action.hover',
+            backgroundColor: theme.palette.action.hover,
         },
     },
     [`& .${InPlaceEditorClasses.editing}`]: {
@@ -276,4 +277,4 @@ const Root = styled('div', {
         gap: 1,
     },
     [`& .${InPlaceEditorClasses.saving}`]: { opacity: 0.5 },
-});
+}));
