@@ -6,6 +6,7 @@ import {
     ResourceContextProvider,
     DataProviderContext,
     I18nContextProvider,
+    ListBase,
     ShowBase,
     TestMemoryRouter,
     NotificationContextProvider,
@@ -17,8 +18,10 @@ import englishMessages from 'ra-language-english';
 
 import { InPlaceEditor } from './InPlaceEditor';
 import { SelectInput } from '../SelectInput';
-import { SelectField, TextField } from '../../field';
+import { NumberInput } from '../NumberInput';
+import { NumberField, SelectField, TextField } from '../../field';
 import { Notification } from '../../layout';
+import { DataTable } from '../../list/datatable';
 
 export default {
     title: 'ra-ui-materialui/input/InPlaceEditor',
@@ -208,4 +211,156 @@ export const SX = () => (
             }}
         />
     </Wrapper>
+);
+
+export const EditbleDataTable = () => (
+    <TestMemoryRouter>
+        <QueryClientProvider client={new QueryClient()}>
+            <DataProviderContext.Provider
+                value={fakeRestDataProvider(
+                    {
+                        users: [
+                            {
+                                id: 1,
+                                name: 'John Doe',
+                                age: 25,
+                                type: 'customer',
+                            },
+                            {
+                                id: 2,
+                                name: 'James Smith',
+                                age: 30,
+                                type: 'prospect',
+                            },
+                            {
+                                id: 3,
+                                name: 'Bill Dennison',
+                                age: 35,
+                                type: 'customer',
+                            },
+                        ],
+                    },
+                    process.env.NODE_ENV !== 'test',
+                    500
+                )}
+            >
+                <UndoableMutationsContextProvider>
+                    <I18nContextProvider value={i18nProvider}>
+                        <ThemeProvider theme={createTheme()}>
+                            <NotificationContextProvider>
+                                <ResourceContextProvider value="users">
+                                    <ListBase>
+                                        <DataTable>
+                                            <DataTable.Col source="id" />
+                                            <DataTable.Col source="name">
+                                                <InPlaceEditor
+                                                    source="name"
+                                                    sx={{
+                                                        '& .RaInPlaceEditor-reading div':
+                                                            {
+                                                                fontSize: 14,
+                                                            },
+                                                        '& .RaInPlaceEditor-saving div':
+                                                            {
+                                                                fontSize: 14,
+                                                            },
+                                                        '& .RaInPlaceEditor-editing input':
+                                                            {
+                                                                fontSize: 14,
+                                                            },
+                                                    }}
+                                                />
+                                            </DataTable.Col>
+                                            <DataTable.Col source="age">
+                                                <InPlaceEditor
+                                                    source="age"
+                                                    editor={
+                                                        <NumberInput
+                                                            source="age"
+                                                            size="small"
+                                                            margin="none"
+                                                            label={false}
+                                                            variant="standard"
+                                                            autoFocus
+                                                            helperText={false}
+                                                            sx={{
+                                                                width: 50,
+                                                                '& .MuiInputBase-root':
+                                                                    {
+                                                                        marginTop: 0,
+                                                                    },
+                                                                '& input': {
+                                                                    fontSize: 14,
+                                                                },
+                                                            }}
+                                                        />
+                                                    }
+                                                >
+                                                    <NumberField source="age" />
+                                                </InPlaceEditor>
+                                            </DataTable.Col>
+                                            <DataTable.Col source="type">
+                                                <InPlaceEditor
+                                                    source="type"
+                                                    editor={
+                                                        <SelectInput
+                                                            source="type"
+                                                            choices={[
+                                                                {
+                                                                    id: 'prospect',
+                                                                    name: 'Prospect',
+                                                                },
+                                                                {
+                                                                    id: 'customer',
+                                                                    name: 'Customer',
+                                                                },
+                                                            ]}
+                                                            size="small"
+                                                            margin="none"
+                                                            label={false}
+                                                            variant="standard"
+                                                            autoFocus
+                                                            SelectProps={{
+                                                                defaultOpen:
+                                                                    true,
+                                                            }}
+                                                            helperText={false}
+                                                            sx={{
+                                                                width: 50,
+                                                                '& .MuiInputBase-root':
+                                                                    {
+                                                                        marginTop: 0,
+                                                                        fontSize: 14,
+                                                                    },
+                                                            }}
+                                                        />
+                                                    }
+                                                >
+                                                    <SelectField
+                                                        source="type"
+                                                        choices={[
+                                                            {
+                                                                id: 'prospect',
+                                                                name: 'Prospect',
+                                                            },
+                                                            {
+                                                                id: 'customer',
+                                                                name: 'Customer',
+                                                            },
+                                                        ]}
+                                                        component="div"
+                                                    />
+                                                </InPlaceEditor>
+                                            </DataTable.Col>
+                                        </DataTable>
+                                    </ListBase>
+                                    <Notification />
+                                </ResourceContextProvider>
+                            </NotificationContextProvider>
+                        </ThemeProvider>
+                    </I18nContextProvider>
+                </UndoableMutationsContextProvider>
+            </DataProviderContext.Provider>
+        </QueryClientProvider>
+    </TestMemoryRouter>
 );
