@@ -63,6 +63,12 @@ export const Basic = ({
     mutationMode,
     notifyOnSuccess,
     showButtons,
+}: {
+    delay?: number;
+    updateFails?: boolean;
+    mutationMode?: 'optimistic' | 'pessimistic' | 'undoable';
+    notifyOnSuccess?: boolean;
+    showButtons?: boolean;
 }) => {
     const dataProvider = fakeRestDataProvider(
         { users: [{ id: 1, name: 'John Doe', age: 25, type: 'customer' }] },
