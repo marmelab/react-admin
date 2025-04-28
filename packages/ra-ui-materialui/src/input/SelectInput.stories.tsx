@@ -682,13 +682,13 @@ const CreateAuthor = () => {
                         },
                     }}
                 >
-                    <SimpleForm defaultValues={{ name: filter }}>
-                        <TextInput source="name" helperText={false} />
+                    <SimpleForm defaultValues={{ first_name: filter }}>
                         <TextInput
-                            source="language"
+                            source="first_name"
                             helperText={false}
                             autoFocus
                         />
+                        <TextInput source="last_name" helperText={false} />
                     </SimpleForm>
                 </CreateBase>
             </DialogContent>
