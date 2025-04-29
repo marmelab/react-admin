@@ -682,7 +682,7 @@ export const InsideReferenceArrayInputWithError = () => (
 );
 
 const CreateAuthor = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const { onCancel, onCreate } = useCreateSuggestionContext();
 
     const onAuthorCreate = author => {
         onCreate(author);
