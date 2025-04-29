@@ -16,10 +16,7 @@ import {
     useGetList,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import {
-    default as defaultMessages,
-    default as englishMessages,
-} from 'ra-language-english';
+import englishMessages from 'ra-language-english';
 import * as React from 'react';
 
 import { AdminContext } from '../AdminContext';
@@ -505,7 +502,7 @@ export const FetchChoices = () => {
         <TestMemoryRouter initialEntries={['/books/1']}>
             <AdminContext
                 dataProvider={dataProviderWithAuthors}
-                i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+                i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
                 defaultTheme="light"
             >
                 <AdminUI>
@@ -543,7 +540,7 @@ export const InsideReferenceInput = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <AdminContext
             dataProvider={dataProviderWithAuthors}
-            i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+            i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
             defaultTheme="light"
         >
             <AdminUI>
@@ -601,7 +598,7 @@ export const InsideReferenceInputDefaultValue = ({
                         },
                     }),
             }}
-            i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+            i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
             defaultTheme="light"
         >
             <AdminUI>
@@ -646,7 +643,7 @@ export const InsideReferenceInputWithError = () => (
                         new Error('Error while fetching the authors')
                     ),
             }}
-            i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+            i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
             defaultTheme="light"
         >
             <AdminUI>
@@ -740,7 +737,7 @@ export const InsideReferenceInputWithCreationSupport = () => {
         <TestMemoryRouter initialEntries={['/books/1']}>
             <AdminContext
                 dataProvider={dataProviderWithAuthors}
-                i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+                i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
                 defaultTheme="light"
             >
                 <AdminUI>
