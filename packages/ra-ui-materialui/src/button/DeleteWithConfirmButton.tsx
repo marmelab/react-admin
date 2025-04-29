@@ -61,8 +61,8 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     });
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
-    let confirmTitle = `resources.${resource}.message.delete_title`;
-    let confirmContent = `resources.${resource}.message.delete_content`;
+    const confirmTitle = `resources.${resource}.message.delete_title`;
+    const confirmContent = `resources.${resource}.message.delete_content`;
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
         smart_count: 1,
         _: humanize(

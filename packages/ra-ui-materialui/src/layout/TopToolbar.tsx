@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { useMediaQuery, type Theme } from '@mui/material';
+import {
+    useMediaQuery,
+    type Theme,
+    Toolbar,
+    type ToolbarProps,
+} from '@mui/material';
 import {
     type ComponentsOverrides,
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { Toolbar, type ToolbarProps } from '@mui/material';
 
 export const TopToolbar = (inProps: ToolbarProps) => {
     const props = useThemeProps({

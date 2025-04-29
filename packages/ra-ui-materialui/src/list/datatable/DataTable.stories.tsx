@@ -40,10 +40,9 @@ import {
     EditButton,
     SelectAllButton as RaSelectAllButton,
 } from '../../button';
-import { ShowGuesser, SimpleShowLayout } from '../../detail';
+import { ShowGuesser, SimpleShowLayout, EditGuesser } from '../../detail';
 import { AdminUI } from '../../AdminUI';
 import { AdminContext } from '../../AdminContext';
-import { EditGuesser } from '../../detail';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
 import { SelectRowCheckbox } from './SelectRowCheckbox';
 import { SelectPageCheckbox } from './SelectPageCheckbox';

@@ -9,7 +9,6 @@ import {
     type ComponentsOverrides,
     styled,
     useThemeProps,
-    alpha,
     lighten,
 } from '@mui/material/styles';
 import clsx from 'clsx';
