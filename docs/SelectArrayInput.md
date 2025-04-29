@@ -516,7 +516,7 @@ const PostCreate = () => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const { onCancel, onCreate } = useCreateSuggestionContext();
  
  const onTagCreate = (tag) => {
     onCreate(tag);
