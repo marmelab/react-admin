@@ -82,6 +82,11 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
             'InPlaceEditor requires either a source prop or children or editor prop'
         );
     }
+    if (mutationMode === 'undoable' && !notifyOnSuccess) {
+        throw new Error(
+            'InPlaceEditor requires notifyOnSuccess to be true when mutationMode is undoable'
+        );
+    }
 
     const submitButtonRef = useRef<HTMLButtonElement>(null);
 

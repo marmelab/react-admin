@@ -11,6 +11,7 @@ import {
     TestMemoryRouter,
     NotificationContextProvider,
     UndoableMutationsContextProvider,
+    required,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -219,7 +220,7 @@ export const SX = () => (
     </Wrapper>
 );
 
-export const EditbleDataTable = () => (
+export const EditableDataTable = () => (
     <TestMemoryRouter>
         <QueryClientProvider client={new QueryClient()}>
             <DataProviderContext.Provider
@@ -325,6 +326,7 @@ export const EditbleDataTable = () => (
                                                             margin="none"
                                                             label={false}
                                                             variant="standard"
+                                                            validate={required()}
                                                             autoFocus
                                                             SelectProps={{
                                                                 defaultOpen:

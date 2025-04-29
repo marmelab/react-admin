@@ -24,6 +24,7 @@ Use `<InPlaceEditor>` inside a `RecordContext` (e.g., under `<List>` or `<Show>`
 ```tsx
 import { Show, InPlaceEditor } from 'react-admin';
 import { Stack, Box, Typography } from '@mui/material';
+import { AvatarField, CustomerActions } from './components';
 
 const CustomerShow = () => (
     <Show>
@@ -65,7 +66,6 @@ const choices = [
 
 // ...
 <InPlaceEditor
-    source="access"
     editor={
         <SelectInput
             source="access"
@@ -169,7 +169,6 @@ For example, to use a `<SelectInput>` in edit mode, you can use the following co
 {% raw %}
 ```tsx
 <InPlaceEditor
-    source="access"
     editor={
         <SelectInput
             source="access"

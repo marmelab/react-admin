@@ -25,6 +25,7 @@ import {
     TestMemoryRouter,
     NotificationContextProvider,
     UndoableMutationsContextProvider,
+    required,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -336,6 +337,7 @@ export const Complex = () => {
                                         helperText={false}
                                         autoFocus
                                         SelectProps={{ defaultOpen: true }}
+                                        validate={required()}
                                         sx={{
                                             '& .MuiInput-root': {
                                                 marginTop: 0,
