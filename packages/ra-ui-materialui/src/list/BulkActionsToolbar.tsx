@@ -9,11 +9,12 @@ import {
     type ComponentsOverrides,
     styled,
     useThemeProps,
+    alpha,
+    lighten,
 } from '@mui/material/styles';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { lighten } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';

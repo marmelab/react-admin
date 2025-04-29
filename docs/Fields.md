@@ -509,7 +509,7 @@ export const UserList = () => (
 
 **Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
 
-If you build a reusable field accepting a `source` props, you will probably want to support deep field sources (e.g. source values like `author.name`). Use the [`useFieldValue` hook](/useFieldValue.md) to replace the simple object lookup. For instance, for a Text field:
+If you build a reusable field accepting a `source` props, you will probably want to support deep field sources (e.g. source values like `author.name`). Use the [`useFieldValue` hook](./useFieldValue.md) to replace the simple object lookup. For instance, for a Text field:
 
 ```diff
 import * as React from 'react';

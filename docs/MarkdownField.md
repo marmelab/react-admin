@@ -5,7 +5,7 @@ title: "The MarkdownField Component"
 
 # `<MarkdownField>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to render Markdown data as HTML.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows to render Markdown data as HTML.
 
 ![MarkdownField preview](https://react-admin-ee.marmelab.com/assets/ra-markdown/latest/markdown-field-preview.png)
 

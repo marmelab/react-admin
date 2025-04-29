@@ -14,9 +14,11 @@ import {
     RichTextField,
     TextField,
     UrlField,
+    ChipField,
 } from '../field';
 import { SimpleShowLayout, SimpleShowLayoutProps } from './SimpleShowLayout';
 import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
+import { SingleFieldList } from '../list';
 
 export const showFieldTypes: InferredTypeMap = {
     show: {
@@ -81,14 +83,16 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     referenceArray: {
         component: ReferenceArrayField,
         representation: (props: ReferenceArrayFieldProps) =>
-            `<ReferenceArrayField source="${props.source}" reference="${props.reference}"><TextField source="id" /></ReferenceArrayField>`,
+            `<ReferenceArrayField source="${props.source}" reference="${props.reference}" />`,
     },
     referenceArrayChild: {
-        component: (
-            props: { children: ReactNode } & Omit<InputProps, 'source'> &
-                Partial<Pick<InputProps, 'source'>>
-        ) => <TextField source="id" {...props} />, // eslint-disable-line react/display-name
-        representation: () => `<TextField source="id" />`,
+        component: () => (
+            <SingleFieldList>
+                <ChipField source="id" />
+            </SingleFieldList>
+        ),
+        representation: () =>
+            `<SingleFieldList><ChipField source="id" /></SingleFieldList>`,
     },
     richText: {
         component: RichTextField,

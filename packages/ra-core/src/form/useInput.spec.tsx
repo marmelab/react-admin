@@ -7,6 +7,7 @@ import { testDataProvider } from '../dataProvider';
 import { Form } from './Form';
 import { useInput, InputProps, UseInputValue } from './useInput';
 import { required } from './validation/validate';
+import { DefaultValue } from './useInput.stories';
 
 const Input: FunctionComponent<
     {
@@ -172,30 +173,25 @@ describe('useInput', () => {
 
     describe('defaultValue', () => {
         it('applies the defaultValue when input does not have a value', () => {
-            const onSubmit = jest.fn();
-            render(
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form onSubmit={onSubmit}>
-                        <Input
-                            source="title"
-                            resource="posts"
-                            defaultValue="foo"
-                        >
-                            {({ id, field }) => {
-                                return (
-                                    <input
-                                        type="text"
-                                        id={id}
-                                        aria-label="Title"
-                                        {...field}
-                                    />
-                                );
-                            }}
-                        </Input>
-                    </Form>
-                </CoreAdminContext>
-            );
-            expect(screen.queryByDisplayValue('foo')).not.toBeNull();
+            render(<DefaultValue initialValue={undefined} />);
+            expect(screen.queryByDisplayValue('default value')).not.toBeNull();
+        });
+
+        it('does not apply the defaultValue when input has a value', () => {
+            render(<DefaultValue initialValue="initial value" />);
+            expect(screen.queryByDisplayValue('default value')).toBeNull();
+            expect(screen.queryByDisplayValue('initial value')).not.toBeNull();
+        });
+
+        it('does not apply the defaultValue when input has an empty string value', () => {
+            render(<DefaultValue initialValue="" />);
+            expect(screen.queryByDisplayValue('default value')).toBeNull();
+        });
+
+        it('does not apply the defaultValue when input has a null value', () => {
+            render(<DefaultValue initialValue={null} />);
+            expect(screen.queryByDisplayValue('default value')).toBeNull();
+            expect(screen.queryByDisplayValue('')).not.toBeNull();
         });
 
         it('does not apply the defaultValue when input has a value of 0', () => {
@@ -474,7 +470,7 @@ describe('useInput', () => {
 
     describe('validate', () => {
         it('calls a custom validator with value, allValues, props', async () => {
-            let validator = jest.fn();
+            const validator = jest.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={jest.fn()} mode="onChange">
@@ -521,7 +517,7 @@ describe('useInput', () => {
         });
 
         it('calls a custom validator with the final source in respect to the SourceContext', async () => {
-            let validator = jest.fn();
+            const validator = jest.fn();
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form onSubmit={jest.fn()} mode="onChange">

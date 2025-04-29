@@ -12,7 +12,7 @@ This button opens a menu with the list of revisions of the current record. When 
   Your browser does not support the video tag.
 </video>
 
-`<RevisionsButton>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component, part of [`ra-history`](https://react-admin-ee.marmelab.com/documentation/ra-history).
+`<RevisionsButton>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component, part of [`ra-history`](https://react-admin-ee.marmelab.com/documentation/ra-history).
 
 ## Usage
 

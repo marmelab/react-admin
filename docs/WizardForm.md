@@ -5,7 +5,7 @@ title: "WizardForm"
 
 # `<WizardForm>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for large Create forms, allowing users to enter data step-by-step.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers an alternative layout for large Create forms, allowing users to enter data step-by-step.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-wizard-form-overview.mp4" type="video/mp4" />
@@ -154,7 +154,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./forms.md#default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
 
 ## `enableAccessControl`
 
@@ -728,7 +728,7 @@ const PostCreate = () => (
 
 ## Access Control
 
-`<WizardForm>` can use [Access Control](./AccessControl.md) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
+`<WizardForm>` can use [Access Control](./Permissions.md#access-control) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
 
 Check the [`enableAccessControl` prop](#enableaccesscontrol) section for more details.
 

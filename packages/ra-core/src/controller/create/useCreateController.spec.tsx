@@ -10,6 +10,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import {
+    AuthProvider,
     CreateContextProvider,
     DataProvider,
     Form,
@@ -28,7 +29,10 @@ import {
 import { CreateController } from './CreateController';
 
 import { TestMemoryRouter } from '../../routing';
-import { CanAccess } from './useCreateController.security.stories';
+import {
+    CanAccess,
+    DisableAuthentication,
+} from './useCreateController.security.stories';
 
 describe('useCreateController', () => {
     const defaultProps = {
@@ -70,8 +74,8 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
-            // @ts-ignore
             create: (_, { data }) =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
 
@@ -224,8 +228,8 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
-            // @ts-ignore
             create: (_, { data }) =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
         const onSuccess = jest.fn();
@@ -262,8 +266,8 @@ describe('useCreateController', () => {
         let saveCallback;
         const dataProvider = testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 12 } } as any),
-            // @ts-ignore
             create: (_, { data }) =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
         const onSuccess = jest.fn();
@@ -691,6 +695,40 @@ describe('useCreateController', () => {
             fireEvent.click(await screen.findByText('Create'));
             await screen.findByText('Loading...');
             await screen.findByText('Create view');
+        });
+
+        it('should not call checkAuth nor canAccess when disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn().mockResolvedValue(true),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: jest.fn().mockResolvedValue(false),
+            };
+            render(<DisableAuthentication authProvider={authProvider} />);
+            await screen.findByText('Create view');
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
+            expect(authProvider.canAccess).not.toHaveBeenCalled();
+        });
+
+        it('should not call checkAuth nor canAccess when disableAuthentication is true even if useAuthState was called before', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn().mockResolvedValue(true),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: jest.fn().mockResolvedValue(false),
+            };
+            render(<DisableAuthentication authProvider={authProvider} />);
+            await screen.findByText('Create view');
+            fireEvent.click(await screen.findByText('List'));
+            await screen.findByText('List view');
+            fireEvent.click(await screen.findByText('Create'));
+            await screen.findByText('Create view');
+            expect(authProvider.checkAuth).toHaveBeenCalledTimes(1);
+            expect(authProvider.canAccess).not.toHaveBeenCalled();
         });
     });
 });

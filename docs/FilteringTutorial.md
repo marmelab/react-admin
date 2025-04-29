@@ -219,7 +219,7 @@ Finally, a filter sidebar is the ideal place to display the user's favorite filt
         Your browser does not support the video tag.
 </video>
 
-Another alternative filter UI is the Stacked Filters dialog, an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> exclusive. It lets users build complex filters by combining a field, an operator, and a value. It's more powerful than the Filter Button/Form Combo, but requires more setup on the data provider.
+Another alternative filter UI is the Stacked Filters dialog, an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> exclusive. It lets users build complex filters by combining a field, an operator, and a value. It's more powerful than the Filter Button/Form Combo, but requires more setup on the data provider.
 
 Here is an example StackedFilters configuration:
 
@@ -280,7 +280,7 @@ Check the [`<StackedFilters>` documentation](./StackedFilters.md) for more infor
 
 Although list filters allow to make precise queries using per-field criteria, users often prefer simpler interfaces like full-text search. After all, that's what they use every day on search engines, email clients, and in their file explorer.
 
-If you want to display a full-text search allowing to look for any record in the admin using a single form input, check out [the `<Search>` component](./Search.md), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> exclusive.
+If you want to display a full-text search allowing to look for any record in the admin using a single form input, check out [the `<Search>` component](./Search.md), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> exclusive.
 
 `<Search>` can plug to any existing search engine (ElasticSearch, Lucene, or custom search engine), and lets you customize the search results to provide quick navigation to related items, turning the search engine into an "Omnibox":
 

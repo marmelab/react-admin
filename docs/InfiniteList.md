@@ -168,7 +168,7 @@ export const BookList = () => (
 
 `<InfiniteList>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself. 
 
-In that case, use the [`resource`](#resource), [`sort`](#sort), and [`filter`](#filter-permanent-filter) props to set the list parameters.
+In that case, use the [`resource`](./List.md#resource), [`sort`](./List.md#sort), and [`filter`](./List.md#filter-permanent-filter) props to set the list parameters.
 
 {% raw %}
 ```jsx
@@ -296,7 +296,7 @@ const PostList = () => (
 
 `<InfiniteList>` will call `authProvider.canAccess()` using the following parameters:
 
-```jsx
+```js
 { action: "list", resource: "posts" }
 ```
 

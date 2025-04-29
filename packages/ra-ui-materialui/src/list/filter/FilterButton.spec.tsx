@@ -124,6 +124,63 @@ describe('<FilterButton />', () => {
             expect(checkboxes[2].getAttribute('aria-checked')).toBe('false');
         });
 
+        it('should remove the checked state of the menu item when removing its matching filter even when 2 filters were set', async () => {
+            render(<Basic />);
+
+            fireEvent.click(await screen.findByLabelText('Add filter'));
+            fireEvent.click(screen.getAllByRole('menuitemcheckbox')[0]);
+            await screen.findByRole('textbox', {
+                name: 'Title',
+            });
+
+            await screen.findByText('1-1 of 1');
+
+            fireEvent.click(await screen.findByLabelText('Add filter'));
+            fireEvent.click(screen.getAllByRole('menuitemcheckbox')[2]);
+            fireEvent.change(
+                await screen.findByRole('textbox', {
+                    name: 'Body',
+                }),
+                {
+                    target: { value: 'foo' },
+                }
+            );
+            await screen.findByText(
+                'No Posts found using the current filters.'
+            );
+
+            fireEvent.click(screen.getAllByTitle('Remove this filter')[1]);
+            await screen.findByText('1-1 of 1');
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByRole('textbox', {
+                            name: 'Body',
+                        })
+                    ).toBeNull();
+                },
+                { timeout: 2000 }
+            );
+
+            // Wait for a bit
+            await new Promise(resolve => setTimeout(resolve, 510));
+
+            fireEvent.click(screen.getByTitle('Remove this filter'));
+            await screen.findByText('1-10 of 13');
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByRole('textbox', {
+                            name: 'Title',
+                        })
+                    ).toBeNull();
+                },
+                { timeout: 2000 }
+            );
+        }, 10000);
+
         it('should display the filter button if all filters are shown and there is a filter value', () => {
             render(
                 <AdminContext theme={theme}>

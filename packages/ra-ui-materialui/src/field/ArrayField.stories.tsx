@@ -21,7 +21,7 @@ import { Pagination } from '../list/pagination';
 
 export default { title: 'ra-ui-materialui/fields/ArrayField' };
 
-let books = [
+const books = [
     { id: 1, title: 'War and Peace', author_id: 1 },
     { id: 2, title: 'Les Misérables', author_id: 2 },
     { id: 3, title: 'Anna Karenina', author_id: 1 },

@@ -5,7 +5,7 @@ title: "The AutoSave Component"
 
 # `<AutoSave>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" />  component enables autosaving of the form. Alternative to [`<SaveButton>`](./SaveButton.md), it's ideal for long data entry tasks, and reduces the risk of data loss.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />  component enables autosaving of the form. Alternative to [`<SaveButton>`](./SaveButton.md), it's ideal for long data entry tasks, and reduces the risk of data loss.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/AutoSave.webm" type="video/webm"/>
@@ -50,11 +50,11 @@ The component renders nothing by default. It will save the current form values 3
 `<AutoSave>` imposes a few limitations:
 
 - You must set the `<Form resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
-- In an `<Edit>` page, you must set [`mutationMode`](./Edit.html#mutationmode) to `pessimistic` or `optimistic` (`<AutoSave>` doesn't work with the default `mutationMode="undoable"`).
+- In an `<Edit>` page, you must set [`mutationMode`](./Edit.md#mutationmode) to `pessimistic` or `optimistic` (`<AutoSave>` doesn't work with the default `mutationMode="undoable"`).
 - You can't use `<Form warnWhenUnsavedChanges>` with this component. `<AutoSave>` implements its own similar mechanism, and it's enabled by default. You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
 - It requires that you use a Data Router. This is the default for react-admin apps, but if you're using a custom router, you may need to adjust your configuration. Check the react-router documentation about [Using a Data Router with react-router v6](https://reactrouter.com/6.22.3/routers/picking-a-router) or [Using a Data Router with react-router v7](https://reactrouter.com/7.2.0/start/framework/custom).
-- When used in forms that have child routes (e.g., [`<TabbedForm>`](./TabbedForm.html)), you must set the [`syncWithLocation` prop](./TabbedForm.html#syncwithlocation) to `false`.
-- If you want to support navigation between Edit pages of the same resource, for instance using [`<PrevNextButtons>`](./PrevNextButtons.html#prevnextbuttons), you must ensure that the `<Edit key>` changes whenever the record changes:
+- When used in forms that have child routes (e.g., [`<TabbedForm>`](./TabbedForm.md)), you must set the [`syncWithLocation` prop](./TabbedForm.md#syncwithlocation) to `false`.
+- If you want to support navigation between Edit pages of the same resource, for instance using [`<PrevNextButtons>`](./PrevNextButtons.md#prevnextbuttons), you must ensure that the `<Edit key>` changes whenever the record changes:
 
 {% raw %}
 
@@ -182,7 +182,7 @@ If you want an autosave feature with another user interface, you can leverage th
 **Note**: you **must** add the `resetOptions` prop with `{ keepDirtyValues: true }` to avoid having the user changes overridden by the latest update operation result.
 
 **Note**: `useAutoSave` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default.
-You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges-1).
+You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
 
 **Note**: Due to limitations in react-router, this equivalent of `warnWhenUnsavedChanges` only works if you use the default router provided by react-admin, or if you use a [Data Router with react-router v6](https://reactrouter.com/6.22.3/routers/picking-a-router) or [with react-router v7](https://reactrouter.com/7.2.0/start/framework/custom).
 If not, you'll need to use the `disableWarnWhenUnsavedChanges` prop.

@@ -149,7 +149,6 @@ export const SelectInput = (inProps: SelectInputProps) => {
     const translate = useTranslate();
 
     useEffect(() => {
-        // eslint-disable-next-line eqeqeq
         if (emptyValue == null) {
             throw new Error(
                 `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`
@@ -320,15 +319,14 @@ export const SelectInput = (inProps: SelectInputProps) => {
                 onChange={handleChangeWithCreateSupport}
                 select
                 label={
-                    label !== '' &&
-                    label !== false && (
+                    label !== '' && label !== false ? (
                         <FieldTitle
                             label={label}
                             source={source}
                             resource={resourceProp}
                             isRequired={isRequired}
                         />
-                    )
+                    ) : null
                 }
                 clearAlwaysVisible
                 error={!!fetchError || invalid}

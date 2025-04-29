@@ -283,7 +283,7 @@ describe('useReferenceManyFieldController', () => {
     });
 
     it('should take only last change in case of a burst of setFilters calls (case of inputs being currently edited)', async () => {
-        let childFunction = ({ setFilters, filterValues }) => (
+        const childFunction = ({ setFilters, filterValues }) => (
             <input
                 aria-label="search"
                 type="text"

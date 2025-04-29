@@ -19,6 +19,7 @@ title: "Index"
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
+* [`<AutoPersistInStore>`](./AutoPersistInStore.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<AutoSave>`](./AutoSave.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- B -**
@@ -123,7 +124,7 @@ title: "Index"
 * [`<Login>`](./Authentication.md#customizing-the-login-component)
 * [`<LoginForm>`](./Authentication.md#customizing-the-login-component)
 * [`<LoginWithEmail>`](./Authentication.md#customizing-the-login-component)
-* [`<Logout>`](./Authentication.md#customizing-the-logout-component)
+* [`<Logout>`](./AppBar.md#usermenu)
 
 **- M -**
 

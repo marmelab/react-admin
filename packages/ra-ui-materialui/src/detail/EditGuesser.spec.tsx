@@ -19,6 +19,7 @@ describe('<EditGuesser />', () => {
                         score: 3,
                         body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
                         created_at: new Date('2012-08-02'),
+                        tags_ids: [1, 2],
                     },
                 }),
             getMany: () => Promise.resolve({ data: [] }),
@@ -35,7 +36,7 @@ describe('<EditGuesser />', () => {
         });
         expect(logSpy).toHaveBeenCalledWith(`Guessed Edit:
 
-import { DateInput, Edit, NumberInput, ReferenceInput, SimpleForm, TextInput } from 'react-admin';
+import { DateInput, Edit, NumberInput, ReferenceArrayInput, ReferenceInput, SimpleForm, TextInput } from 'react-admin';
 
 export const CommentEdit = () => (
     <Edit>
@@ -46,6 +47,7 @@ export const CommentEdit = () => (
             <NumberInput source="score" />
             <TextInput source="body" />
             <DateInput source="created_at" />
+            <ReferenceArrayInput source="tags_ids" reference="tags" />
         </SimpleForm>
     </Edit>
 );`);
