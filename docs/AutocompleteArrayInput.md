@@ -781,7 +781,7 @@ const CreateTag = () => {
                 >
                     <SimpleForm defaultValues={{ name: filter }}>
                         <TextInput
-                            source="tag"
+                            source="name"
                             helperText={false}
                             autoFocus
                         />
