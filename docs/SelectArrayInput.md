@@ -546,7 +546,7 @@ const CreateTag = () => {
                         },
                     }}
                 >
-                    <SimpleForm >
+                    <SimpleForm>
                         <TextInput source="name" helperText={false} autoFocus/>
                     </SimpleForm>
                 </CreateBase>
