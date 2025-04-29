@@ -31,6 +31,8 @@ import {
     TopToolbar,
     useRecordContext,
     useTranslate,
+    DateInput,
+    useListContext,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import ResetViewsButton from './ResetViewsButton';
@@ -47,6 +49,21 @@ const QuickFilter = ({
     return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
 };
 
+const InstantDateInput = props => {
+    const { setFilters, filterValues } = useListContext();
+    return (
+        <DateInput
+            {...props}
+            onChange={event => {
+                setFilters({
+                    ...filterValues,
+                    [props.source]: event.target.value,
+                });
+            }}
+        />
+    );
+};
+
 const postFilter = [
     <SearchInput source="q" alwaysOn />,
     <TextInput source="title" defaultValue="Qui tempore rerum et voluptates" />,
@@ -55,6 +72,7 @@ const postFilter = [
         source="commentable"
         defaultValue
     />,
+    <InstantDateInput label="Published At" source="published_at" alwaysOn />,
 ];
 
 const exporter = posts => {
