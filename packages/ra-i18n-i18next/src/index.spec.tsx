@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     Basic,
     WithCustomTranslations,
     WithCustomOptions,
     WithLazyLoadedLanguages,
+    TranslateComponent,
 } from './index.stories';
 
 describe('i18next i18nProvider', () => {
@@ -68,5 +69,14 @@ describe('i18next i18nProvider', () => {
         fireEvent.click(await screen.findByText('Lorem Ipsum'));
         // Check singularization
         await screen.findByText('Post Lorem Ipsum');
+    });
+
+    test('should be compatible with the <Translate> component', async () => {
+        const { container } = render(<TranslateComponent />);
+        await waitFor(() => {
+            expect(container.innerHTML).toEqual(
+                'My Translated Key<br>Dashboard<br>Hello, world!<br>2 beers'
+            );
+        });
     });
 });

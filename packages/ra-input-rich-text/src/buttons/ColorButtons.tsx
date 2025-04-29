@@ -111,7 +111,7 @@ const ColorChoiceDialog = ({
                 top: 38,
                 left: colorType === ColorType.FONT ? 0 : '50%',
                 p: 1,
-                border: `1px solid ${theme?.palette?.background?.default}`,
+                border: `1px solid ${(theme.vars || theme)?.palette?.background?.default}`,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 1,

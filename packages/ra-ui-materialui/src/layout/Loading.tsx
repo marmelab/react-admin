@@ -1,17 +1,27 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { Typography, SxProps } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Typography, type SxProps } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTimeout, useTranslate } from 'ra-core';
 
-export const Loading = (props: LoadingProps) => {
+export const Loading = (inProps: LoadingProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         loadingPrimary = 'ra.page.loading',
         loadingSecondary = 'ra.message.loading',
+        timeout = 1000,
         ...rest
     } = props;
-    const oneSecondHasPassed = useTimeout(1000);
+    const oneSecondHasPassed = useTimeout(timeout);
     const translate = useTranslate();
     return oneSecondHasPassed ? (
         <Root className={className} {...rest}>
@@ -32,7 +42,8 @@ export interface LoadingProps {
     className?: string;
     loadingPrimary?: string;
     loadingSecondary?: string;
-    sx?: SxProps;
+    timeout?: number;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaLoading';
@@ -55,7 +66,7 @@ const Root = styled('div', {
     [`& .${LoadingClasses.message}`]: {
         textAlign: 'center',
         fontFamily: 'Roboto, sans-serif',
-        color: theme.palette.text.disabled,
+        color: (theme.vars || theme).palette.text.disabled,
         paddingTop: '1em',
         paddingBottom: '1em',
     },
@@ -64,3 +75,22 @@ const Root = styled('div', {
         height: '9em',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLoading: 'root' | 'icon' | 'message';
+    }
+
+    interface ComponentsPropsList {
+        RaLoading: Partial<LoadingProps>;
+    }
+
+    interface Components {
+        RaLoading?: {
+            defaultProps?: ComponentsPropsList['RaLoading'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLoading'];
+        };
+    }
+}

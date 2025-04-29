@@ -1,10 +1,14 @@
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import get from 'lodash/get';
 import { FilterLiveForm, useListContext, useResourceContext } from 'ra-core';
 import * as React from 'react';
 import {
-    HtmlHTMLAttributes,
-    ReactNode,
+    type HtmlHTMLAttributes,
+    type ReactNode,
     useCallback,
     useContext,
     useEffect,
@@ -14,7 +18,11 @@ import { useFormContext } from 'react-hook-form';
 import { FilterContext } from '../FilterContext';
 import { FilterFormInput } from './FilterFormInput';
 
-export const FilterForm = (props: FilterFormProps) => {
+export const FilterForm = (inProps: FilterFormProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { filters: filtersProps, ...rest } = props;
     const filters = useContext(FilterContext) || filtersProps;
 
@@ -35,7 +43,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     useEffect(() => {
         if (!filters) return;
-        filters.forEach((filter: JSX.Element) => {
+        filters.forEach((filter: React.ReactElement) => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
                     'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
@@ -47,7 +55,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const getShownFilters = () => {
         if (!filters) return [];
         const values = form.getValues();
-        return filters.filter((filterElement: JSX.Element) => {
+        return filters.filter((filterElement: React.ReactElement) => {
             const filterValue = get(values, filterElement.props.source);
             return (
                 filterElement.props.alwaysOn ||
@@ -64,7 +72,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     return (
         <>
-            {getShownFilters().map((filterElement: JSX.Element) => (
+            {getShownFilters().map((filterElement: React.ReactElement) => (
                 <FilterFormInput
                     key={filterElement.key || filterElement.props.source}
                     filterElement={filterElement}
@@ -139,3 +147,22 @@ const isEmptyValue = (filterValue: unknown) => {
 
     return false;
 };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFilterForm: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaFilterForm: Partial<FilterFormProps>;
+    }
+
+    interface Components {
+        RaFilterForm?: {
+            defaultProps?: ComponentsPropsList['RaFilterForm'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFilterForm'];
+        };
+    }
+}

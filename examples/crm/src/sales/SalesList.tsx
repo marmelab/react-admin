@@ -1,11 +1,10 @@
 import { Chip, Stack } from '@mui/material';
 import {
     CreateButton,
-    DatagridConfigurable,
+    DataTable,
     ExportButton,
     List,
     SearchInput,
-    TextField,
     TopToolbar,
     useRecordContext,
 } from 'react-admin';
@@ -44,21 +43,24 @@ const OptionsField = (_props: { label?: string | boolean }) => {
     );
 };
 
-export function SalesList() {
-    return (
-        <Stack gap={4}>
-            <List
-                filters={filters}
-                actions={<SalesListActions />}
-                sort={{ field: 'first_name', order: 'ASC' }}
-            >
-                <DatagridConfigurable rowClick="edit">
-                    <TextField source="first_name" />
-                    <TextField source="last_name" />
-                    <TextField source="email" />
-                    <OptionsField label={false} />
-                </DatagridConfigurable>
-            </List>
-        </Stack>
-    );
-}
+export const SalesList = () => (
+    <Stack gap={4}>
+        <List
+            filters={filters}
+            actions={<SalesListActions />}
+            sort={{ field: 'first_name', order: 'ASC' }}
+        >
+            <DataTable rowClick="edit">
+                <DataTable.Col
+                    source="last_name"
+                    label="Name"
+                    render={record =>
+                        `${record.first_name} ${record.last_name}`
+                    }
+                />
+                <DataTable.Col source="email" />
+                <DataTable.Col field={OptionsField} />
+            </DataTable>
+        </List>
+    </Stack>
+);

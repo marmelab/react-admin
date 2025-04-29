@@ -26,10 +26,17 @@ const messages = {
     en: englishMessages,
 };
 
-const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
+const i18nProvider = polyglotI18nProvider(
+    locale => messages[locale],
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
 
 const App = () => (
-    <Admin locale="en" i18nProvider={i18nProvider}>
+    <Admin i18nProvider={i18nProvider}>
         ...
     </Admin>
 );
@@ -86,7 +93,11 @@ const messagesResolver = locale => {
     return asyncMessages[params.locale]();
 }
 
-const i18nProvider = polyglotI18nProvider(messagesResolver);
+ const i18nProvider = polyglotI18nProvider(messageResolver, "en", [
+    { locale: 'en', name: 'English' },
+    { locale: 'fr', name: 'Français' },
+    { locale: 'it', name: 'Italiano' },
+]);
 ```
 
 ## Using Specific Polyglot Features

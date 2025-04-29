@@ -1,4 +1,4 @@
-import { RaRecord, Translate } from '../../types';
+import { RaRecord, TranslateFunction } from '../../types';
 import { MatchingReferencesError } from './types';
 import { ControllerRenderProps } from 'react-hook-form';
 
@@ -6,7 +6,7 @@ interface GetStatusForInputParams<RecordType extends RaRecord = RaRecord> {
     field: Pick<ControllerRenderProps, 'value'>;
     matchingReferences: RecordType[] | MatchingReferencesError;
     referenceRecord: RecordType;
-    translate: Translate;
+    translate: TranslateFunction;
 }
 
 const isMatchingReferencesError = (
@@ -72,7 +72,7 @@ interface GetStatusForArrayInputParams<RecordType extends RaRecord = any> {
     field: ControllerRenderProps;
     matchingReferences: RecordType[] | MatchingReferencesError;
     referenceRecords: RecordType[];
-    translate: Translate;
+    translate: TranslateFunction;
 }
 
 export const getStatusForArrayInput = <RecordType extends RaRecord = any>({

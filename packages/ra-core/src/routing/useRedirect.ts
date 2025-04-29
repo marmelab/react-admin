@@ -50,9 +50,9 @@ export const useRedirect = () => {
                 const target: To = redirectTo(resource, id, data);
                 const absoluteTarget =
                     typeof target === 'string'
-                        ? `${basename}/${target}`
+                        ? `${basename}${target.startsWith('/') ? '' : '/'}${target}`
                         : {
-                              pathname: `${basename}/${target.pathname}`,
+                              pathname: `${basename}${target.pathname?.startsWith('/') ? '' : '/'}${target.pathname}`,
                               ...target,
                           };
                 navigate(absoluteTarget, {

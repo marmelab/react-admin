@@ -1,6 +1,11 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
-import { styled, Tooltip } from '@mui/material';
+import type { ReactNode } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    Tooltip,
+    useThemeProps,
+} from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import { useListContext, useTranslate } from 'ra-core';
@@ -53,9 +58,12 @@ import { FilterList } from './FilterList';
  * );
  *
  */
-export const SavedQueriesList = ({
-    icon = defaultIcon,
-}: SavedQueriesListProps) => {
+export const SavedQueriesList = (inProps: SavedQueriesListProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    const { icon = defaultIcon } = props;
     const translate = useTranslate();
     const { resource, filterValues, displayedFilters, sort, perPage } =
         useListContext();
@@ -123,7 +131,7 @@ const Root = styled(FilterList, {
         position: 'absolute',
         top: '-1.2em',
         right: 3,
-        color: theme.palette.action.disabled,
+        color: (theme.vars || theme).palette.action.disabled,
     },
 }));
 
@@ -131,4 +139,28 @@ const defaultIcon = <BookmarkIcon />;
 
 export interface SavedQueriesListProps {
     icon?: ReactNode;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSavedQueriesList:
+            | 'root'
+            | 'floatingIcon'
+            | 'floatingTooltip'
+            | 'titleContainer'
+            | 'titleIcon';
+    }
+
+    interface ComponentsPropsList {
+        RaSavedQueriesList: Partial<SavedQueriesListProps>;
+    }
+
+    interface Components {
+        RaSavedQueriesList?: {
+            defaultProps?: ComponentsPropsList['RaSavedQueriesList'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSavedQueriesList'];
+        };
+    }
 }

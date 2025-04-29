@@ -59,6 +59,8 @@ const UseGetCustom = () => {
 };
 
 describe('useDataProvider', () => {
+    const originalEnv = process.env;
+
     it('should return a way to call the dataProvider', async () => {
         const getOne = jest.fn(() =>
             Promise.resolve({ data: { id: 1, title: 'foo' } })
@@ -229,7 +231,13 @@ describe('useDataProvider', () => {
         );
     });
 
-    it('should call getList and show error', async () => {
+    it('should call getList and show error in development environment', async () => {
+        jest.resetModules();
+        process.env = {
+            ...originalEnv,
+            NODE_ENV: 'development',
+        };
+
         jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const getList = jest.fn(() =>
@@ -251,6 +259,63 @@ describe('useDataProvider', () => {
         expect(queryByTestId('error')?.textContent).toBe(
             'ra.notification.data_provider_error'
         );
+
+        process.env = originalEnv;
+    });
+
+    it('should call getList and not show error in test environment', async () => {
+        jest.resetModules();
+        process.env = {
+            ...originalEnv,
+        };
+
+        const getList = jest.fn(() =>
+            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+        );
+        const dataProvider = { getList };
+        const { queryByTestId } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList />
+            </CoreAdminContext>
+        );
+
+        expect(queryByTestId('loading')).not.toBeNull();
+        await act(async () => {
+            await new Promise(resolve => setTimeout(resolve));
+        });
+        expect(getList).toBeCalledTimes(1);
+        expect(queryByTestId('loading')).toBeNull();
+        expect(queryByTestId('error')).toBeNull();
+
+        process.env = originalEnv;
+    });
+
+    it('should call getList and not show error in production environment', async () => {
+        jest.resetModules();
+        process.env = {
+            ...originalEnv,
+            NODE_ENV: 'production',
+        };
+
+        const getList = jest.fn(() =>
+            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
+        );
+        const dataProvider = { getList };
+        const { queryByTestId } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList />
+            </CoreAdminContext>
+        );
+
+        expect(queryByTestId('loading')).not.toBeNull();
+        await act(async () => {
+            await new Promise(resolve => setTimeout(resolve));
+        });
+        expect(getList).toBeCalledTimes(1);
+        expect(queryByTestId('loading')).toBeNull();
+        expect(queryByTestId('error')).toBeNull();
+
+        process.env = originalEnv;
     });
 
     it('should call custom and not show error', async () => {

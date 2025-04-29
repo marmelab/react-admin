@@ -1,25 +1,36 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { memo } from 'react';
 import clsx from 'clsx';
-import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
-import { TableCellProps } from '@mui/material/TableCell';
+import {
+    TableCell,
+    type TableCellProps,
+    TableSortLabel,
+    Tooltip,
+} from '@mui/material';
 import {
     FieldTitle,
+    type SortPayload,
     useTranslate,
     useResourceContext,
     useTranslateLabel,
 } from 'ra-core';
-import type { SortPayload } from 'ra-core';
+import type { DatagridField } from './types';
 
 const oppositeOrder: Record<SortPayload['order'], SortPayload['order']> = {
     ASC: 'DESC',
     DESC: 'ASC',
 };
 
-export const DatagridHeaderCell = (
-    props: DatagridHeaderCellProps
-): JSX.Element => {
+export const DatagridHeaderCell = (inProps: DatagridHeaderCellProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { className, field, sort, updateSort, isSorting, ...rest } = props;
     const resource = useResourceContext();
 
@@ -107,7 +118,7 @@ export const DatagridHeaderCell = (
 export interface DatagridHeaderCellProps
     extends Omit<TableCellProps, 'classes' | 'resource'> {
     className?: string;
-    field?: JSX.Element;
+    field?: DatagridField;
     isSorting?: boolean;
     sort?: SortPayload;
     updateSort?: (event: any) => void;
@@ -140,3 +151,22 @@ const StyledTableCell = styled(TableCell, {
         display: 'inline',
     },
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaDatagridHeaderCell: 'root' | 'icon';
+    }
+
+    interface ComponentsPropsList {
+        RaDatagridHeaderCell: Partial<DatagridHeaderCellProps>;
+    }
+
+    interface Components {
+        RaDatagridHeaderCell?: {
+            defaultProps?: ComponentsPropsList['RaDatagridHeaderCell'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaDatagridHeaderCell'];
+        };
+    }
+}

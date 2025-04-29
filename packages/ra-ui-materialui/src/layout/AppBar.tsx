@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { FC } from 'react';
-import { styled } from '@mui/material/styles';
+import type { FC } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { Children, memo } from 'react';
 import {
     AppBar as MuiAppBar,
-    AppBarProps as MuiAppBarProps,
+    type AppBarProps as MuiAppBarProps,
     Toolbar,
     useMediaQuery,
     Theme,
@@ -42,7 +46,11 @@ import { ToggleThemeButton } from '../button/ToggleThemeButton';
  *
  * const MyAppBar = () => <AppBar userMenu={false} />;
  */
-export const AppBar: FC<AppBarProps> = memo(props => {
+export const AppBar: FC<AppBarProps> = memo(inProps => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         alwaysOn,
         children,
@@ -114,8 +122,8 @@ export interface AppBarProps extends MuiAppBarProps {
      */
     alwaysOn?: boolean;
     container?: React.ElementType<any>;
-    toolbar?: JSX.Element;
-    userMenu?: JSX.Element | boolean;
+    toolbar?: React.ReactNode;
+    userMenu?: React.ReactNode;
 }
 
 const PREFIX = 'RaAppBar';
@@ -144,3 +152,29 @@ const StyledAppBar = styled(MuiAppBar, {
     },
     [`& .${AppBarClasses.title}`]: {},
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaAppBar:
+            | 'root'
+            | 'appBar'
+            | 'toolbar'
+            | 'menuButton'
+            | 'menuButtonIconClosed'
+            | 'menuButtonIconOpen'
+            | 'title';
+    }
+
+    interface ComponentsPropsList {
+        RaAppBar: Partial<AppBarProps>;
+    }
+
+    interface Components {
+        RaAppBar?: {
+            defaultProps?: ComponentsPropsList['RaAppBar'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaAppBar'];
+        };
+    }
+}

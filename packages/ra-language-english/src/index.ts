@@ -100,12 +100,12 @@ const englishMessages: TranslationMessages = {
             bulk_delete_title:
                 'Delete %{name} |||| Delete %{smart_count} %{name}',
             bulk_update_content:
-                'Are you sure you want to update this %{name}? |||| Are you sure you want to update these %{smart_count} items?',
+                'Are you sure you want to update %{name} %{recordRepresentation}? |||| Are you sure you want to update these %{smart_count} items?',
             bulk_update_title:
-                'Update %{name} |||| Update %{smart_count} %{name}',
+                'Update %{name} %{recordRepresentation} |||| Update %{smart_count} %{name}',
             clear_array_input: 'Are you sure you want to clear the whole list?',
-            delete_content: 'Are you sure you want to delete this item?',
-            delete_title: 'Delete %{name} #%{id}',
+            delete_content: 'Are you sure you want to delete this %{name}?',
+            delete_title: 'Delete %{name} %{recordRepresentation}',
             details: 'Details',
             error: "A client error occurred and your request couldn't be completed.",
             invalid_form: 'The form is not valid. Please check for errors',
@@ -118,6 +118,7 @@ const englishMessages: TranslationMessages = {
             unsaved_changes:
                 "Some of your changes weren't saved. Are you sure you want to ignore them?",
             yes: 'Yes',
+            placeholder_data_warning: 'Network issue: Data refresh failed.',
         },
         navigation: {
             clear_filters: 'Clear filters',

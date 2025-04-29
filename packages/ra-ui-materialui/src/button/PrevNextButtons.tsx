@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    RaRecord,
+    type RaRecord,
     useTranslate,
     usePrevNextController,
     UsePrevNextControllerProps,
@@ -14,8 +14,11 @@ import {
     Stack,
     Typography,
     IconButton,
-    SxProps,
+    type SxProps,
     styled,
+    type ComponentsOverrides,
+    useThemeProps,
+    type Theme,
 } from '@mui/material';
 import clsx from 'clsx';
 
@@ -97,8 +100,12 @@ import { LinearProgress } from '../layout/LinearProgress';
  */
 
 export const PrevNextButtons = <RecordType extends RaRecord = any>(
-    props: PrevNextButtonProps<RecordType>
+    inProps: PrevNextButtonProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { sx } = props;
 
     const {
@@ -191,7 +198,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
 
 export interface PrevNextButtonProps<RecordType extends RaRecord = any>
     extends UsePrevNextControllerProps<RecordType> {
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaPrevNextButton';
@@ -208,3 +215,22 @@ const Root = styled(Stack, {
     alignItems: 'center',
     gap: '0.5em',
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaPrevNextButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaPrevNextButton: Partial<PrevNextButtonProps>;
+    }
+
+    interface Components {
+        RaPrevNextButton?: {
+            defaultProps?: ComponentsPropsList['RaPrevNextButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaPrevNextButton'];
+        };
+    }
+}

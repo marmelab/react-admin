@@ -1,10 +1,17 @@
 import * as React from 'react';
-import { Chip, Stack, StackProps, styled } from '@mui/material';
+import {
+    Chip,
+    type ComponentsOverrides,
+    Stack,
+    type StackProps,
+    styled,
+    useThemeProps,
+} from '@mui/material';
 import {
     sanitizeListRestProps,
     useListContextWithProps,
     useResourceContext,
-    RaRecord,
+    type RaRecord,
     RecordContextProvider,
     RecordRepresentation,
     useCreatePath,
@@ -47,7 +54,11 @@ import { Link } from '../Link';
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-export const SingleFieldList = (props: SingleFieldListProps) => {
+export const SingleFieldList = (inProps: SingleFieldListProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         children,
@@ -153,7 +164,7 @@ const Root = styled(Stack, {
     [`& .${SingleFieldListClasses.link}`]: {
         textDecoration: 'none',
         '& > *': {
-            color: theme.palette.primary.main,
+            color: (theme.vars || theme).palette.primary.main,
         },
     },
 }));
@@ -169,3 +180,22 @@ const DefaultChildComponent = ({ clickable }: { clickable?: boolean }) => (
         clickable={clickable}
     />
 );
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSingleFieldList: 'root' | 'link';
+    }
+
+    interface ComponentsPropsList {
+        RaSingleFieldList: Partial<SingleFieldListProps>;
+    }
+
+    interface Components {
+        RaSingleFieldList?: {
+            defaultProps?: ComponentsPropsList['RaSingleFieldList'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSingleFieldList'];
+        };
+    }
+}

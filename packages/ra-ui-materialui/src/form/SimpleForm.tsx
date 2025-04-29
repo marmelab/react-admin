@@ -1,8 +1,18 @@
 import * as React from 'react';
-import { ReactElement, ReactNode } from 'react';
-import { Form, FormProps } from 'ra-core';
-import { Stack, CardContent, SxProps, StackProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import type { ReactElement, ReactNode } from 'react';
+import { Form, type FormProps } from 'ra-core';
+import {
+    Stack,
+    CardContent,
+    type SxProps,
+    type StackProps,
+} from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { Toolbar } from './Toolbar';
 
@@ -36,7 +46,11 @@ import { Toolbar } from './Toolbar';
  *
  * @param {Props} props
  */
-export const SimpleForm = (props: SimpleFormProps) => {
+export const SimpleForm = (inProps: SimpleFormProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         children,
         className,
@@ -65,7 +79,7 @@ export interface SimpleFormProps
     component?: React.ComponentType<any>;
     defaultValues?: any;
     toolbar?: ReactElement | false;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaSimpleForm';
@@ -106,3 +120,22 @@ const sanitizeRestProps = ({
     ...props
 }: SimpleFormProps) => props;
 /* eslint-enable @typescript-eslint/no-unused-vars */
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSimpleForm: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaSimpleForm: Partial<SimpleFormProps>;
+    }
+
+    interface Components {
+        RaSimpleForm?: {
+            defaultProps?: ComponentsPropsList['RaSimpleForm'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSimpleForm'];
+        };
+    }
+}

@@ -1,5 +1,76 @@
 # Changelog
 
+## 5.7.0
+
+* Introduce `useCloseNotification` hook ([#10614](https://github.com/marmelab/react-admin/pull/10614)) ([djhi](https://github.com/djhi))
+* Make `<RichTextInput>` fullWidth by default ([#10608](https://github.com/marmelab/react-admin/pull/10608)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add `<Translate>` component ([#10605](https://github.com/marmelab/react-admin/pull/10605)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Improve empty `emptyText` handling for `<ChipField>` ([#10591](https://github.com/marmelab/react-admin/pull/10591)) ([guilbill](https://github.com/guilbill))
+* Add ability to pass empty `icon` to all Button components ([#10552](https://github.com/marmelab/react-admin/pull/10552)) ([djhi](https://github.com/djhi))
+* Add support for `mutationMode` in `useCreate` ([#10530](https://github.com/marmelab/react-admin/pull/10530)) ([djhi](https://github.com/djhi))
+* Fix `useGetOne` returns a never resolving Promise when `id` is `null` ([#10624](https://github.com/marmelab/react-admin/pull/10624)) ([slax57](https://github.com/slax57))
+* Fix `<EditGuesser>` produces invalid code for arrays of references ([#10619](https://github.com/marmelab/react-admin/pull/10619)) ([djhi](https://github.com/djhi))
+* [Doc] Backport `DatagridAG` doc ([#10618](https://github.com/marmelab/react-admin/pull/10618)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add a FAQ entry for duplicate react-hook-form versions ([#10617](https://github.com/marmelab/react-admin/pull/10617)) ([djhi](https://github.com/djhi))
+* [Doc] fix broken link to useQuery documentation ([#10616](https://github.com/marmelab/react-admin/pull/10616)) ([thibault-barrat](https://github.com/thibault-barrat))
+* [Doc] Mention that `httpError` triggers a notification ([#10609](https://github.com/marmelab/react-admin/pull/10609)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add a tips section on the home page ([#10541](https://github.com/marmelab/react-admin/pull/10541)) ([djhi](https://github.com/djhi))
+
+## 5.6.4
+
+* Improve compatibility with some package managers ([#10599](https://github.com/marmelab/react-admin/pull/10599)) ([djhi](https://github.com/djhi))
+* Fix SimpleFormIterator does not display some components correctly ([#10606](https://github.com/marmelab/react-admin/pull/10606)) ([djhi](https://github.com/djhi))
+* Fix `<AutcompleteInput>`, `<DateInput>` and `<DateTimeInput>` aren't focused when adding a new item in a `<ArrayInput>` ([#10582](https://github.com/marmelab/react-admin/pull/10582)) ([djhi](https://github.com/djhi))
+* Fix `useDataProvider` should only log errors in development mode ([#10515](https://github.com/marmelab/react-admin/pull/10515)) ([vytautassvirskas](https://github.com/vytautassvirskas))
+* [Doc] Add kanban board demo ([#10604](https://github.com/marmelab/react-admin/pull/10604)) ([djhi](https://github.com/djhi))
+* [Doc] Add strapi v5 data provider ([#10593](https://github.com/marmelab/react-admin/pull/10593)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] upgrade multilevelmenu doc ([#10590](https://github.com/marmelab/react-admin/pull/10590)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add a screenshot to the `Tree` doc page ([#10600](https://github.com/marmelab/react-admin/pull/10600)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix ra-i18n-next documentation by using correct function name `convertRaTranslationsToI18next` ([#10588](https://github.com/marmelab/react-admin/pull/10588)) ([guilbill](https://github.com/guilbill))
+* [Doc] Fix ra-18n-polyglot documentation ([#10587](https://github.com/marmelab/react-admin/pull/10587)) ([guilbill](https://github.com/guilbill))
+* [Doc] Add `<EditInDialogButton emptyWhileLoading>` prop documentation ([#10586](https://github.com/marmelab/react-admin/pull/10586)) ([guilbill](https://github.com/guilbill))
+* [Doc] Add documentation for `<AutoSave disableWarnWhenUnsavedChanges>` ([#10585](https://github.com/marmelab/react-admin/pull/10585)) ([guilbill](https://github.com/guilbill))
+* [Doc] Fix typo in `ShowDialog` doc ([#10583](https://github.com/marmelab/react-admin/pull/10583)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [chore] Fix incorrect description for build-crm in Makefile ([#10603](https://github.com/marmelab/react-admin/pull/10603)) ([ghadabezine](https://github.com/ghadabezine))
+* [chore] Fix `<SimpleListConfigurable>` story ([#10592](https://github.com/marmelab/react-admin/pull/10592)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [chore] Fix `<SelectAllButton>` limit story ([#10589](https://github.com/marmelab/react-admin/pull/10589)) ([guilbill](https://github.com/guilbill))
+* [chore] Fix release script add wrong minor in documentation versions list ([#10584](https://github.com/marmelab/react-admin/pull/10584)) ([djhi](https://github.com/djhi))
+* [chore] Automatically update create-react-admin templates when releasing a new minor version ([#10581](https://github.com/marmelab/react-admin/pull/10581)) ([djhi](https://github.com/djhi))
+* [chore] Add the tag message in release script ([#10578](https://github.com/marmelab/react-admin/pull/10578)) ([djhi](https://github.com/djhi))
+* Bump axios from 1.7.4 to 1.8.2 ([#10577](https://github.com/marmelab/react-admin/pull/10577)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## 5.6.3
+
+* Fix `create-react-admin` should correctly generate `data.json` for fakerest ([#10573](https://github.com/marmelab/react-admin/pull/10573)) ([djhi](https://github.com/djhi))
+* Fix `useRedirect` might include two slashes in the final pathname ([#10572](https://github.com/marmelab/react-admin/pull/10572)) ([djhi](https://github.com/djhi))
+* Fix `helperText` has wrong height when passing an empty string ([#10571](https://github.com/marmelab/react-admin/pull/10571)) ([djhi](https://github.com/djhi))
+* Fix offline user experience ([#10555](https://github.com/marmelab/react-admin/pull/10555)) ([slax57](https://github.com/slax57))
+* [Doc] Add Todo app to the list of demos ([#10568](https://github.com/marmelab/react-admin/pull/10568)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Rewrite `create-react-admin` documentation ([#10566](https://github.com/marmelab/react-admin/pull/10566)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add Vycanis Modeler to ecosystem page ([#10565](https://github.com/marmelab/react-admin/pull/10565)) ([alberteije](https://github.com/alberteije))
+* [Doc] Backport `ra-tree` v10 doc ([#10563](https://github.com/marmelab/react-admin/pull/10563)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Document how to return `Date` object with `<DateTimeInput>` ([#10561](https://github.com/marmelab/react-admin/pull/10561)) ([slax57](https://github.com/slax57))
+* [Doc] Improve `AutoSave` and `useAutoSave` ([#10558](https://github.com/marmelab/react-admin/pull/10558)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Typescript] Update `Error` component to accept `sx` prop ([#10559](https://github.com/marmelab/react-admin/pull/10559)) ([smeng9](https://github.com/smeng9))
+* [TypeScript] Remove usage of `JSX.Element` ([#10553](https://github.com/marmelab/react-admin/pull/10553)) ([djhi](https://github.com/djhi))
+* [chore] Skip pushing the documentation changes in release script when in dry mode ([#10576](https://github.com/marmelab/react-admin/pull/10576)) ([djhi](https://github.com/djhi))
+* [chore] Improve release script by automating documentation update ([#10575](https://github.com/marmelab/react-admin/pull/10575)) ([djhi](https://github.com/djhi))
+* [chore] Improve release script by  automating enterprise packages tests ([#10574](https://github.com/marmelab/react-admin/pull/10574)) ([djhi](https://github.com/djhi))
+
+## 5.6.2
+
+* Make `<TabbedForm tabs>` use the `onChange` prop ([#10549](https://github.com/marmelab/react-admin/pull/10549)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix B&W theme buttons in dark mode ([#10557](https://github.com/marmelab/react-admin/pull/10557)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix create-react-admin generated package.json when using yarn ([#10556](https://github.com/marmelab/react-admin/pull/10556)) ([djhi](https://github.com/djhi))
+* Fix collapsed menu in B&W theme ([#10542](https://github.com/marmelab/react-admin/pull/10542)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update `<MarkdownInput>` doc to address vulnerability in `dompurify` ([#10554](https://github.com/marmelab/react-admin/pull/10554)) ([slax57](https://github.com/slax57))
+* [Doc] Update `<ReferenceManyInput>` documentation to mention it cannot reorder its items ([#10551](https://github.com/marmelab/react-admin/pull/10551)) ([djhi](https://github.com/djhi))
+* [Doc] Improve `<FormFillerButton>` documentation by explaining the `dataProvider.getCompletion()` ([#10550](https://github.com/marmelab/react-admin/pull/10550)) ([djhi](https://github.com/djhi))
+* [Doc] Create a `ShowDialog` doc ([#10548](https://github.com/marmelab/react-admin/pull/10548)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Document `useSourceContext` and improve `useSimpleFormIteratorItem` documentation ([#10547](https://github.com/marmelab/react-admin/pull/10547)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<ReferenceInput enableGetChoices>` example ([#10543](https://github.com/marmelab/react-admin/pull/10543)) ([slax57](https://github.com/slax57))
+* [chore] Fix release script does not include the changelog in the tag ([#10544](https://github.com/marmelab/react-admin/pull/10544)) ([slax57](https://github.com/slax57))
+
 ## 5.6.1
 
 * Fix create-react-admin package manager detection ([#10534](https://github.com/marmelab/react-admin/pull/10534)) ([djhi](https://github.com/djhi))

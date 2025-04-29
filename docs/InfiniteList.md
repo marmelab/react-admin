@@ -273,7 +273,7 @@ const ProductList = () => {
 
 ## Security
 
-The `<infiniteList>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop.
+The `<InfiniteList>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop.
 
 If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<InfiniteList>` will only render if the user has the "list" access to the related resource.
 

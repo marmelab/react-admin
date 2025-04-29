@@ -2,26 +2,35 @@ import * as React from 'react';
 import { Fragment, useState } from 'react';
 import ActionUpdate from '@mui/icons-material/Update';
 
-import { alpha, styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useTranslate,
     useNotify,
     useResourceContext,
-    MutationMode,
-    RaRecord,
+    type MutationMode,
+    type RaRecord,
+    type UpdateParams,
     useRecordContext,
     useUpdate,
-    UpdateParams,
+    useGetRecordRepresentation,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
-import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
+import { Button, type ButtonProps } from './Button';
+import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, inflect } from 'inflection';
 
 export const UpdateWithConfirmButton = (
-    props: UpdateWithConfirmButtonProps
+    inProps: UpdateWithConfirmButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const notify = useNotify();
     const translate = useTranslate();
     const resource = useResourceContext(props);
@@ -29,8 +38,8 @@ export const UpdateWithConfirmButton = (
     const record = useRecordContext(props);
 
     const {
-        confirmTitle = 'ra.message.bulk_update_title',
-        confirmContent = 'ra.message.bulk_update_content',
+        confirmTitle: confirmTitleProp,
+        confirmContent: confirmContentProp,
         data,
         icon = defaultIcon,
         label = 'ra.action.update',
@@ -109,6 +118,25 @@ export const UpdateWithConfirmButton = (
         }
     };
 
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    let recordRepresentation = getRecordRepresentation(record);
+    let confirmContent = `resources.${resource}.message.bulk_update_content`;
+    let confirmTitle = `resources.${resource}.message.bulk_update_title`;
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 1,
+        _: humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 1,
+                _: resource ? inflect(resource, 1) : undefined,
+            }),
+            true
+        ),
+    });
+    // We don't support React elements for this
+    if (React.isValidElement(recordRepresentation)) {
+        recordRepresentation = `#${record?.id}`;
+    }
+
     return (
         <Fragment>
             <StyledButton
@@ -121,19 +149,26 @@ export const UpdateWithConfirmButton = (
             <Confirm
                 isOpen={isOpen}
                 loading={isPending}
-                title={confirmTitle}
-                content={confirmContent}
-                translateOptions={{
+                title={confirmTitleProp ?? confirmTitle}
+                content={confirmContentProp ?? confirmContent}
+                titleTranslateOptions={{
                     smart_count: 1,
-                    name: translate(`resources.${resource}.forcedCaseName`, {
+                    name: resourceName,
+                    recordRepresentation,
+                    _: translate('ra.message.bulk_update_title', {
                         smart_count: 1,
-                        _: humanize(
-                            translate(`resources.${resource}.name`, {
-                                smart_count: 1,
-                                _: resource ? inflect(resource, 1) : undefined,
-                            }),
-                            true
-                        ),
+                        name: resourceName,
+                        recordRepresentation,
+                    }),
+                }}
+                contentTranslateOptions={{
+                    smart_count: 1,
+                    name: resourceName,
+                    recordRepresentation,
+                    _: translate('ra.message.bulk_update_content', {
+                        smart_count: 1,
+                        name: resourceName,
+                        recordRepresentation,
                     }),
                 }}
                 onConfirm={handleUpdate}
@@ -173,9 +208,9 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.primary.main,
+    color: (theme.vars || theme).palette.primary.main,
     '&:hover': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.12),
+        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%)`,
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',
@@ -184,3 +219,22 @@ const StyledButton = styled(Button, {
 }));
 
 const defaultIcon = <ActionUpdate />;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaUpdateWithConfirmButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaUpdateWithConfirmButton: Partial<UpdateWithConfirmButtonProps>;
+    }
+
+    interface Components {
+        RaUpdateWithConfirmButton?: {
+            defaultProps?: ComponentsPropsList['RaUpdateWithConfirmButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaUpdateWithConfirmButton'];
+        };
+    }
+}

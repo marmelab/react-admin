@@ -1,7 +1,7 @@
-import { RaThemeOptions } from './types';
+import { ThemeOptions } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 
-const defaultThemeInvariants = {
+const defaultThemeInvariants: ThemeOptions = {
     typography: {
         h6: {
             fontWeight: 400,
@@ -49,6 +49,15 @@ const defaultThemeInvariants = {
                 fullWidth: true,
             },
         },
+        MuiTableCell: {
+            styleOverrides: {
+                root: {
+                    '&.MuiTableCell-paddingCheckbox': {
+                        padding: `0 8px 0 8px`,
+                    },
+                },
+            },
+        },
         RaSimpleFormIterator: {
             defaultProps: {
                 fullWidth: true,
@@ -62,7 +71,7 @@ const defaultThemeInvariants = {
     },
 };
 
-export const defaultLightTheme: RaThemeOptions = deepmerge(
+export const defaultLightTheme: ThemeOptions = deepmerge(
     defaultThemeInvariants,
     {
         palette: {
@@ -91,7 +100,7 @@ export const defaultLightTheme: RaThemeOptions = deepmerge(
     }
 );
 
-export const defaultDarkTheme: RaThemeOptions = deepmerge(
+export const defaultDarkTheme: ThemeOptions = deepmerge(
     defaultThemeInvariants,
     {
         palette: {

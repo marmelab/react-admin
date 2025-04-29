@@ -28,6 +28,11 @@ const Home = () => {
                     </button>
                 </li>
                 <li>
+                    <button onClick={() => redirect(() => '/dashboard')}>
+                        Relative url from a function
+                    </button>
+                </li>
+                <li>
                     <button onClick={() => redirect('list', 'posts')}>
                         View name
                     </button>
@@ -106,7 +111,7 @@ const SomePage = () => {
     );
 };
 
-export const useRedirect = () => (
+export const UseRedirect = () => (
     <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />

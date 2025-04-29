@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactNode } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import type { ReactNode } from 'react';
 import CardContent from '@mui/material/CardContent';
 
 /**
@@ -10,7 +14,11 @@ import CardContent from '@mui/material/CardContent';
  * padding double the spacing between each CardContent, leading to too much
  * wasted space. Use this component as a CardContent alternative.
  */
-export const CardContentInner = (props: CardContentInnerProps): JSX.Element => {
+export const CardContentInner = (inProps: CardContentInnerProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { className, children } = props;
 
     return <Root className={className}>{children}</Root>;
@@ -43,3 +51,22 @@ const Root = styled(CardContent, {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaCardContentInner: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaCardContentInner: Partial<CardContentInnerProps>;
+    }
+
+    interface Components {
+        RaCardContentInner?: {
+            defaultProps?: ComponentsPropsList['RaCardContentInner'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaCardContentInner'];
+        };
+    }
+}

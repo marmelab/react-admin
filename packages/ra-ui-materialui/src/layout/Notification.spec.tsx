@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 
-import { ConsecutiveUndoable } from './Notification.stories';
+import {
+    ConsecutiveUndoable,
+    CustomNotificationWithAction,
+} from './Notification.stories';
 
 describe('<Notification />', () => {
     it('should confirm the first undoable notification when a second one starts', async () => {
@@ -29,5 +32,15 @@ describe('<Notification />', () => {
         screen.getByText('ra.action.undo').click();
         // the second delete hasn't been called
         expect(deleteOne).toHaveBeenCalledTimes(1);
+    });
+    it('allows custom notifications to close themselves', async () => {
+        const consoleLog = jest.spyOn(console, 'log').mockImplementation();
+        render(<CustomNotificationWithAction />);
+        await screen.findByText('Applied automatic changes');
+        screen.getByText('Cancel').click();
+        await waitFor(() => {
+            expect(screen.queryByText('Applied automatic changes')).toBeNull();
+        });
+        expect(consoleLog).toHaveBeenCalledWith('Custom action');
     });
 });

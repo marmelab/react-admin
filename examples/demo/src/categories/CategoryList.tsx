@@ -57,12 +57,7 @@ const CategoryGrid = () => {
                 <RecordContextProvider key={record.id} value={record}>
                     <Grid
                         key={record.id}
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        xl={2}
-                        item
+                        size={{ xs: 12, sm: 6, md: 4, lg: 3, xl: 2 }}
                     >
                         <Card>
                             <CardMedia

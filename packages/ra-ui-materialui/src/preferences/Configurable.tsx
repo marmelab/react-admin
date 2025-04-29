@@ -1,12 +1,24 @@
 import * as React from 'react';
-import { useRef, useEffect, useState, cloneElement, ReactElement } from 'react';
+import {
+    useRef,
+    useEffect,
+    useState,
+    cloneElement,
+    type ReactElement,
+} from 'react';
 import {
     usePreferencesEditor,
     PreferenceKeyContextProvider,
     useTranslate,
 } from 'ra-core';
-import { alpha, Popover } from '@mui/material';
-import { styled, SxProps } from '@mui/material/styles';
+import { Popover } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import SettingsIcon from '@mui/icons-material/Settings';
 import clsx from 'clsx';
 
@@ -26,7 +38,11 @@ import clsx from 'clsx';
  *     </Configurable>
  * );
  */
-export const Configurable = (props: ConfigurableProps) => {
+export const Configurable = (inProps: ConfigurableProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         children,
         editor,
@@ -174,7 +190,7 @@ export interface ConfigurableProps {
     editor: ReactElement;
     preferenceKey: string;
     openButtonLabel?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 const PREFIX = 'RaConfigurable';
@@ -193,13 +209,32 @@ const Root = styled('span', {
     display: 'inline-block',
     [`&.${ConfigurableClasses.editMode}`]: {
         transition: theme.transitions.create('outline'),
-        outline: `${alpha(theme.palette.warning.main, 0.3)} solid 2px`,
+        outline: `color-mix(in srgb, ${(theme.vars || theme).palette.warning.main}, transparent 30%) solid 2px`,
     },
     [`&.${ConfigurableClasses.editMode}:hover `]: {
-        outline: `${alpha(theme.palette.warning.main, 0.5)} solid 2px`,
+        outline: `color-mix(in srgb, ${(theme.vars || theme).palette.warning.main}, transparent 50%) solid 2px`,
     },
     [`&.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive} , &.${ConfigurableClasses.editMode}.${ConfigurableClasses.editorActive}:hover `]:
         {
-            outline: `${theme.palette.warning.main} solid 2px`,
+            outline: `${(theme.vars || theme).palette.warning.main} solid 2px`,
         },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaConfigurable: 'root' | 'editMode' | 'editorActive';
+    }
+
+    interface ComponentsPropsList {
+        RaConfigurable: Partial<ConfigurableProps>;
+    }
+
+    interface Components {
+        RaConfigurable?: {
+            defaultProps?: ComponentsPropsList['RaConfigurable'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaConfigurable'];
+        };
+    }
+}

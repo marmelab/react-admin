@@ -1,15 +1,26 @@
 import * as React from 'react';
-import { styled, Theme } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
-import { Button, Snackbar, SnackbarProps, SnackbarOrigin } from '@mui/material';
+import {
+    Button,
+    Snackbar,
+    type SnackbarProps,
+    SnackbarOrigin,
+} from '@mui/material';
 import clsx from 'clsx';
 
 import {
-    useNotificationContext,
+    CloseNotificationContext,
+    type NotificationPayload,
     undoableEventEmitter,
-    useTranslate,
-    NotificationPayload,
+    useNotificationContext,
     useTakeUndoableMutation,
+    useTranslate,
 } from 'ra-core';
 
 const defaultAnchorOrigin: SnackbarOrigin = {
@@ -29,7 +40,11 @@ const defaultAnchorOrigin: SnackbarOrigin = {
  * @param {number} props.autoHideDuration Duration in milliseconds to wait until hiding a given notification. Defaults to 4000.
  * @param {boolean} props.multiLine Set it to `true` if the notification message should be shown in more than one line.
  */
-export const Notification = (props: NotificationProps) => {
+export const Notification = (inProps: NotificationProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         type = 'info',
@@ -120,52 +135,57 @@ export const Notification = (props: NotificationProps) => {
     } = notificationOptions || {};
 
     return (
-        <StyledSnackbar
-            className={className}
-            open={open}
-            message={
-                message &&
-                typeof message === 'string' &&
-                translate(message, messageArgs)
-            }
-            autoHideDuration={
-                // Only apply the default autoHideDuration when autoHideDurationFromMessage is undefined
-                // as 0 and null are valid values
-                autoHideDurationFromMessage === undefined
-                    ? autoHideDuration
-                    : autoHideDurationFromMessage ?? undefined
-            }
-            disableWindowBlurListener={undoable}
-            TransitionProps={{ onExited: handleExited }}
-            onClose={handleRequestClose}
-            ContentProps={{
-                className: clsx(NotificationClasses[typeFromMessage || type], {
-                    [NotificationClasses.multiLine]:
-                        multilineFromMessage || multiLine,
-                }),
-            }}
-            action={
-                undoable ? (
-                    <Button
-                        color="primary"
-                        className={NotificationClasses.undo}
-                        size="small"
-                        onClick={handleUndo}
-                    >
-                        <>{translate('ra.action.undo')}</>
-                    </Button>
-                ) : null
-            }
-            anchorOrigin={anchorOrigin}
-            {...rest}
-            {...options}
-        >
-            {message &&
-            typeof message !== 'string' &&
-            React.isValidElement(message)
-                ? message
-                : undefined}
-        </StyledSnackbar>
+        <CloseNotificationContext.Provider value={handleRequestClose}>
+            <StyledSnackbar
+                className={className}
+                open={open}
+                message={
+                    message &&
+                    typeof message === 'string' &&
+                    translate(message, messageArgs)
+                }
+                autoHideDuration={
+                    // Only apply the default autoHideDuration when autoHideDurationFromMessage is undefined
+                    // as 0 and null are valid values
+                    autoHideDurationFromMessage === undefined
+                        ? autoHideDuration
+                        : autoHideDurationFromMessage ?? undefined
+                }
+                disableWindowBlurListener={undoable}
+                TransitionProps={{ onExited: handleExited }}
+                onClose={handleRequestClose}
+                ContentProps={{
+                    className: clsx(
+                        NotificationClasses[typeFromMessage || type],
+                        {
+                            [NotificationClasses.multiLine]:
+                                multilineFromMessage || multiLine,
+                        }
+                    ),
+                }}
+                action={
+                    undoable ? (
+                        <Button
+                            color="primary"
+                            className={NotificationClasses.undo}
+                            size="small"
+                            onClick={handleUndo}
+                        >
+                            <>{translate('ra.action.undo')}</>
+                        </Button>
+                    ) : null
+                }
+                anchorOrigin={anchorOrigin}
+                {...rest}
+                {...options}
+            >
+                {message &&
+                typeof message !== 'string' &&
+                React.isValidElement(message)
+                    ? message
+                    : undefined}
+            </StyledSnackbar>
+        </CloseNotificationContext.Provider>
     );
 };
 
@@ -213,4 +233,29 @@ export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;
     autoHideDuration?: number;
     multiLine?: boolean;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaNotification:
+            | 'root'
+            | 'success'
+            | 'error'
+            | 'warning'
+            | 'undo'
+            | 'multiLine';
+    }
+
+    interface ComponentsPropsList {
+        RaNotification: Partial<NotificationProps>;
+    }
+
+    interface Components {
+        RaNotification?: {
+            defaultProps?: ComponentsPropsList['RaNotification'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaNotification'];
+        };
+    }
 }

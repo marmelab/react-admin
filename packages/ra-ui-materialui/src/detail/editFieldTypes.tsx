@@ -74,7 +74,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     referenceArray: {
         component: ReferenceArrayInput,
         representation: (props: ReferenceArrayInputProps) =>
-            `<ReferenceArrayInput source="${props.source}" reference="${props.reference}"><TextInput source="id" /></ReferenceArrayInput>`,
+            `<ReferenceArrayInput source="${props.source}" reference="${props.reference}" />`,
     },
     referenceArrayChild: {
         component: (

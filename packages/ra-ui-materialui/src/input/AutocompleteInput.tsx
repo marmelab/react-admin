@@ -6,7 +6,7 @@ import {
     useMemo,
     useRef,
     useState,
-    ReactNode,
+    type ReactNode,
 } from 'react';
 import debounce from 'lodash/debounce';
 import get from 'lodash/get';
@@ -14,22 +14,27 @@ import isEqual from 'lodash/isEqual';
 import clsx from 'clsx';
 import {
     Autocomplete,
-    AutocompleteChangeReason,
-    AutocompleteProps,
+    type AutocompleteChangeReason,
+    type AutocompleteProps,
     Chip,
     TextField,
-    TextFieldProps,
+    type TextFieldProps,
     createFilterOptions,
+    useForkRef,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import {
-    ChoicesProps,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import {
+    type ChoicesProps,
     FieldTitle,
-    RaRecord,
+    type RaRecord,
     useChoicesContext,
     useInput,
     useSuggestions,
-    UseSuggestionsOptions,
+    type UseSuggestionsOptions,
     useTimeout,
     useTranslate,
     warning,
@@ -37,10 +42,10 @@ import {
     useEvent,
 } from 'ra-core';
 import {
-    SupportCreateSuggestionOptions,
+    type SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
@@ -119,13 +124,17 @@ export const AutocompleteInput = <
     DisableClearable extends boolean | undefined = boolean | undefined,
     SupportCreate extends boolean | undefined = false,
 >(
-    props: AutocompleteInputProps<
+    inProps: AutocompleteInputProps<
         OptionType,
         Multiple,
         DisableClearable,
         SupportCreate
     >
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         choices: choicesProp,
         className,
@@ -325,7 +334,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const [filterValue, setFilterValue] = useState('');
 
-    const handleChange = (newValue: any) => {
+    const handleChange = useEvent((newValue: any) => {
         if (multiple) {
             if (Array.isArray(newValue)) {
                 field.onChange(newValue.map(getChoiceValue), newValue);
@@ -338,7 +347,7 @@ If you provided a React element for the optionText prop, you must also provide t
         } else {
             field.onChange(getChoiceValue(newValue) ?? emptyValue, newValue);
         }
-    };
+    });
 
     // eslint-disable-next-line
     const debouncedSetFilter = useCallback(
@@ -478,7 +487,7 @@ If you provided a React element for the optionText prop, you must also provide t
         Multiple,
         DisableClearable,
         SupportCreate
-    >['onInputChange'] = (event, newInputValue, reason) => {
+    >['onInputChange'] = useEvent((event, newInputValue, reason) => {
         if (
             event?.type === 'change' ||
             !doesQueryMatchSelection(newInputValue)
@@ -497,7 +506,7 @@ If you provided a React element for the optionText prop, you must also provide t
             debouncedSetFilter('');
         }
         onInputChange?.(event, newInputValue, reason);
-    };
+    });
 
     const doesQueryMatchSelection = useCallback(
         (filter: string) => {
@@ -561,7 +570,13 @@ If you provided a React element for the optionText prop, you must also provide t
             event.preventDefault();
             if (reason === 'createOption') {
                 // When users press the enter key after typing a new value, we can handle it as if they clicked on the create option
-                handleChangeWithCreateSupport(getCreateItem(newValue));
+                handleChangeWithCreateSupport(
+                    getCreateItem(
+                        Array.isArray(newValue)
+                            ? newValue[newValue.length - 1]
+                            : newValue
+                    )
+                );
                 return;
             }
             handleChangeWithCreateSupport(
@@ -593,6 +608,7 @@ If you provided a React element for the optionText prop, you must also provide t
     };
     const renderHelperText = !!fetchError || helperText !== false || invalid;
 
+    const handleInputRef = useForkRef(field.ref, TextFieldProps?.inputRef);
     return (
         <>
             <StyledAutocomplete
@@ -641,6 +657,7 @@ If you provided a React element for the optionText prop, you must also provide t
                             {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
                             size={size}
+                            inputRef={handleInputRef}
                         />
                     );
                 }}
@@ -867,3 +884,22 @@ const areSelectedItemsEqual = (
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaAutocompleteInput: 'root' | 'textField';
+    }
+
+    interface ComponentsPropsList {
+        RaAutocompleteInput: Partial<AutocompleteInputProps>;
+    }
+
+    interface Components {
+        RaAutocompleteInput?: {
+            defaultProps?: ComponentsPropsList['RaAutocompleteInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaAutocompleteInput'];
+        };
+    }
+}

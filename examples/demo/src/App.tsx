@@ -43,6 +43,7 @@ const store = localStorageStore(undefined, 'ECommerce');
 
 const App = () => {
     const [themeName] = useStore<ThemeName>('themeName', 'soft');
+    const singleTheme = themes.find(theme => theme.name === themeName)?.single;
     const lightTheme = themes.find(theme => theme.name === themeName)?.light;
     const darkTheme = themes.find(theme => theme.name === themeName)?.dark;
     return (
@@ -58,9 +59,11 @@ const App = () => {
             layout={Layout}
             i18nProvider={i18nProvider}
             disableTelemetry
+            theme={singleTheme}
             lightTheme={lightTheme}
             darkTheme={darkTheme}
             defaultTheme="light"
+            requireAuth
         >
             <CustomRoutes>
                 <Route path="/segments" element={<Segments />} />

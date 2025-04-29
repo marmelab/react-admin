@@ -1,9 +1,13 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     Box,
     LinearProgress as MuiLinearProgress,
-    LinearProgressProps as ProgressProps,
+    type LinearProgressProps as ProgressProps,
 } from '@mui/material';
 import { useTimeout } from 'ra-core';
 
@@ -22,11 +26,12 @@ import { useTimeout } from 'ra-core';
  *
  * @param {Props} props
  */
-export const LinearProgress = ({
-    timeout = 1000,
-    ...props
-}: LinearProgressProps) => {
-    const { className, ...rest } = props;
+export const LinearProgress = (inProps: LinearProgressProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    const { className, timeout = 1000, ...rest } = props;
 
     const oneSecondHasPassed = useTimeout(timeout);
 
@@ -53,3 +58,22 @@ const StyledProgress = styled(MuiLinearProgress, {
     margin: `${theme.spacing(1)} 0`,
     width: theme.spacing(20),
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLinearProgress: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaLinearProgress: Partial<LinearProgressProps>;
+    }
+
+    interface Components {
+        RaLinearProgress?: {
+            defaultProps?: ComponentsPropsList['RaLinearProgress'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLinearProgress'];
+        };
+    }
+}

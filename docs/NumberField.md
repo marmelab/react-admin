@@ -126,7 +126,7 @@ import { NumberField }  from 'react-admin';
 
 ## `transform`
 
-`<NumberField>` excepts the field value to be a number or a string. If the value is a string, `<NumberField>` does an automatic conversion to number (using the `+` operator).
+`<NumberField>` expects the field value to be a number or a string. If the value is a string, `<NumberField>` does an automatic conversion to number (using the `+` operator).
 
 You may want to override that string to number conversion if the value uses a special format, like representing a float as an integer (e.g. 3.14 as 314) to avoid rounding errors. Use the `transform` prop for that. It expects a function that takes the field value as argument and returns the transformed value.
 

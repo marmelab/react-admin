@@ -3,13 +3,14 @@
 [i18next](https://www.i18next.com/) adapter for [react-admin](https://github.com/marmelab/react-admin), the frontend framework for building admin applications on top of REST/GraphQL services.
 
 You might prefer this package over `ra-i18n-polyglot` when:
+
 - you already use i18next services such as [locize](https://locize.com/)
 - you want more control on how you organize translations, leveraging [multiple files and namespaces](https://www.i18next.com/principles/namespaces)
 - you want more control on how you [load translations](https://www.i18next.com/how-to/add-or-load-translations)
 - you want to use features not available in Polyglot such as:
-    - [advanced formatting](https://www.i18next.com/translation-function/formatting);
-    - [nested translations](https://www.i18next.com/translation-function/nesting)
-    - [context](https://www.i18next.com/translation-function/context)
+  - [advanced formatting](https://www.i18next.com/translation-function/formatting);
+  - [nested translations](https://www.i18next.com/translation-function/nesting)
+  - [context](https://www.i18next.com/translation-function/context)
 
 ## Installation
 
@@ -21,14 +22,16 @@ npm install --save ra-i18n-i18next
 
 ```tsx
 import { Admin } from 'react-admin';
-import { useI18nextProvider, convertRaMessagesToI18next } from 'ra-i18n-i18next';
+import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
 import englishMessages from 'ra-language-english';
 
 const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
             resources: {
-                translations: convertRaMessagesToI18next(englishMessages)
+                en: {
+                    translation: convertRaTranslationsToI18next(englishMessages)
+                }
             }
         }
     });
@@ -54,14 +57,16 @@ You can provide your own i18next instance but don't initialize it, the hook will
 
 ```tsx
 import { Admin } from 'react-admin';
-import { useI18nextProvider, convertRaMessagesToI18next } from 'ra-i18n-i18next';
+import { useI18nextProvider, convertRaTranslationsToI18next } from 'ra-i18n-i18next';
 import englishMessages from 'ra-language-english';
 
 const App = () => {
     const i18nProvider = useI18nextProvider({
         options: {
             resources: {
-                translations: convertRaMessagesToI18next(englishMessages)
+                en: {
+                    translation: convertRaTranslationsToI18next(englishMessages)
+                }
             }
         }
     });
@@ -190,10 +195,11 @@ const App = () => {
 };
 ```
 
-### `convertRaMessagesToI18next` function
+### `convertRaTranslationsToI18next` function
 
 A function that takes translations from a standard react-admin language package and converts them to i18next format.
 It transforms the following:
+
 - interpolations wrappers from `%{foo}` to `{{foo}}` unless a prefix and/or a suffix are provided
 - pluralization messages from a single key containing text like `"key": "foo |||| bar"` to multiple keys `"foo_one": "foo"` and `"foo_other": "bar"`
 
@@ -201,9 +207,9 @@ It transforms the following:
 
 ```ts
 import englishMessages from 'ra-language-english';
-import { convertRaMessagesToI18next } from 'ra-i18n-18next';
+import { convertRaTranslationsToI18next } from 'ra-i18n-18next';
 
-const messages = convertRaMessagesToI18next(englishMessages);
+const messages = convertRaTranslationsToI18next(englishMessages);
 ```
 
 #### Parameters
@@ -219,9 +225,9 @@ If you provided interpolation options to your i18next instance, you should provi
 
 ```ts
 import englishMessages from 'ra-language-english';
-import { convertRaMessagesToI18next } from 'ra-i18n-18next';
+import { convertRaTranslationsToI18next } from 'ra-i18n-18next';
 
-const messages = convertRaMessagesToI18next(englishMessages, {
+const messages = convertRaTranslationsToI18next(englishMessages, {
    prefix: '#{',
   suffix: '}#',
 });

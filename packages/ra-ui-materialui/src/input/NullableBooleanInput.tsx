@@ -1,15 +1,22 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import TextField, { TextFieldProps } from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { MenuItem, TextField, type TextFieldProps } from '@mui/material';
 import clsx from 'clsx';
 import { useInput, useTranslate, FieldTitle } from 'ra-core';
 
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
-export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
+export const NullableBooleanInput = (inProps: NullableBooleanInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         format = getStringFromBoolean,
@@ -129,3 +136,22 @@ export type NullableBooleanInputProps = CommonInputProps &
         falseLabel?: string;
         trueLabel?: string;
     };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaNullableBooleanInput: 'root' | 'input';
+    }
+
+    interface ComponentsPropsList {
+        RaNullableBooleanInput: Partial<NullableBooleanInputProps>;
+    }
+
+    interface Components {
+        RaNullableBooleanInput?: {
+            defaultProps?: ComponentsPropsList['RaNullableBooleanInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaNullableBooleanInput'];
+        };
+    }
+}

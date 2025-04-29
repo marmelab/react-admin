@@ -5,14 +5,13 @@ title: "The TreeWithDetails Component"
 
 # `<TreeWithDetails>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a replacement for the `<List>` component when the records form **tree structures** like directories, categories, etc. `<TreeWithDetails>` renders a tree structure and the show view/edition form in the same page.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers a replacement for the `<List>` component when the records form **tree structures** like directories, categories, etc. `<TreeWithDetails>` renders a tree structure and the show view/edition form in the same page.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/treewithdetails.webm" type="video/webm"/>
   <source src="./img/treewithdetails.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-
 
 This component allows users to browse, edit, and rearrange trees.
 
@@ -72,25 +71,26 @@ Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/document
 
 ## Props
 
-| Prop                 | Required | Type                   | Default | Description                                                                                    |
-| -------------------- | -------- | ---------------------- | ------- |----------------------------------------------------------------------------------------------- |
-| `addRootButton`      | Optional | `ReactNode` or `false` | -       | The create button to add a root node                                                           |
-| `allowMultipleRoots` | Optional | `boolean`              | `false` | To allow trees with multiple roots                                                             |
-| `create`             | Required | `ReactNode`            | -       | The create form of your resource                                                               |
-| `draggable`          | Optional | `boolean`              | `false` | To allow user to reorder nodes                                                                 |
-| `edit`               | Required | `ReactNode`            | -       | The edit form of your resource                                                                 |
-| `filter`             | Optional | `object`               | -       | The permanent filter values                                                                    |
-| `hideRootNodes`      | Optional | `boolean`              | `false` | To hide all root nodes                                                                         |
-| `lazy`               | Optional | `boolean`              | `false` | To load children only when they are expanded                                                   |
-| `motion`             | Optional | `boolean`              | `false` | To enable [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) transitions |
-| `nodeActions`        | Optional | `ReactNode`            | -       | To customize the default dropdown action                                                       |
-| `show`               | Required | `ReactNode`            | -       | The show view of your resource                                                                 |
-| `showLine`           | Optional | `boolean`              | `false` | Shows a connecting line                                                                        |
-| `sx`                 | Optional | `SxProps`              | -       | Material UI shortcut for defining custom styles                                                |
-| `title`              | Optional | `string`               | -       | The title to display in the `<AppBar>`                                                         |
-| `titleField`         | Optional | `string`               | `title` | Set the record field to display in the tree                                                    |
+| Prop                 | Required | Type                   | Default    | Description                                                                                      |
+| -------------------- | -------- | ---------------------- | ---------- |------------------------------------------------------------------------------------------------- |
+| `addRootButton`      | Optional | `ReactNode` or `false` | -          | The create button to add a root node                                                             |
+| `allowMultipleRoots` | Optional | `boolean`              | `false`    | To allow trees with multiple roots                                                               |
+| `create`             | Optional | `ReactNode`            | -          | The create form of your resource                                                                 |
+| `draggable`          | Optional | `boolean`              | `false`    | To allow user to reorder nodes                                                                   |
+| `edit`               | Optional | `ReactNode`            | -          | The edit form of your resource                                                                   |
+| `filter`             | Optional | `object`               | -          | The permanent filter values                                                                      |
+| `hideRootNodes`      | Optional | `boolean`              | `false`    | To hide all root nodes                                                                           |
+| `lazy`               | Optional | `boolean`              | `false`    | To load children only when they are expanded                                                     |
+| `motion`             | Optional | `boolean`              | `false`    | To enable [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) transitions   |
+| `mutationMode`       | Optional | `string`               | `undoable` | The `mutationMode` (`undoable`, `optimistic` or `pessimistic`) to use for drag & drop operations |
+| `nodeActions`        | Optional | `ReactNode`            | -          | To customize the default dropdown action                                                         |
+| `show`               | Optional | `ReactNode`            | -          | The show view of your resource                                                                   |
+| `showLine`           | Optional | `boolean`              | `false`    | Shows a connecting line                                                                          |
+| `sx`                 | Optional | `SxProps`              | -          | Material UI shortcut for defining custom styles                                                  |
+| `title`              | Optional | `string`               | -          | The title to display in the `<AppBar>`                                                           |
+| `titleField`         | Optional | `string`               | `title`    | Set the record field to display in the tree                                                      |
 
-`<TreeWithDetails>` also accepts the [rc-tree](https://tree-react-component.vercel.app/) props.
+`<TreeWithDetails>` also accepts the [`<Tree>`](./Tree.md#props) props.
 
 ## `create` / `edit` / `show`
 
@@ -182,6 +182,7 @@ export const MyToolbar = (props: ToolbarProps) => (
 **Tip**: `CreateNode` and `EditNode` components accept a `mutationOptions` prop. So you can override the mutationOptions of the main mutation query.
 
 {% raw %}
+
 ```jsx
 const CategoriesCreate = () => (
     <CreateNode
@@ -201,9 +202,8 @@ const CategoriesCreate = () => (
     </CreateNode>
 );
 ```
+
 {% endraw %}
-
-
 
 ## `allowMultipleRoots`
 
@@ -244,6 +244,8 @@ If you want to allow user to reorder nodes in the tree, simply add the `draggabl
 ```tsx
 export const CategoriesList = () => <TreeWithDetails draggable />;
 ```
+
+**Note**: if you use `undoable` (the default) or `pessimistic` [mutation mode](#mutationmode), note that nodes data might be out of date after a drag & drop operation until the mutation is settled (when it has called your dataProvider). This is because although React-Admin can optimistically re-order the nodes, it cannot apply the required changes on your nodes data that depends on your implementation.
 
 ## `filter`
 
@@ -315,6 +317,16 @@ export const App = () => (
 );
 ```
 
+## `mutationMode`
+
+The `mutationMode` (`undoable`, `optimistic` or `pessimistic`) to use for drag & drop operations:
+
+```tsx
+<TreeWithDetails mutationMode="pessimistic" />
+```
+
+**Note**: if you use `undoable` (the default) or `pessimistic` mode, note that nodes data might be out of date after a drag & drop operation until the mutation is settled (when it has called your dataProvider). This is because although React-Admin can optimistically re-order the nodes, it cannot apply the required changes on your nodes data that depends on your implementation.
+
 ## `motion`
 
 [rc-tree's `<Tree>`](https://github.com/react-component/tree#tree-props) allows to customize the transition effect used when expanding or collapsing a node. However, by default, these transition effects are **disabled** in react-admin, because they are known to cause issues with the expand on click feature.
@@ -328,6 +340,7 @@ export const CategoriesList = () => <TreeWithDetails motion />;
 The `motion` prop also accepts a transition object, allowing you to customize the transition effect:
 
 {% raw %}
+
 ```tsx
 import { TreeWithDetails } from '@react-admin/ra-tree';
 import { CSSProperties } from 'react';
@@ -360,6 +373,7 @@ export const CategoriesList = () => (
     />
 );
 ```
+
 {% endraw %}
 
 ## `nodeActions`
@@ -504,4 +518,3 @@ export const CategoriesList = () => (
 ```
 
 **Note**: `dataProvider.addChildNode()` must support the `position` param for this feature to work. See the [`dataProvider` section](https://react-admin-ee.marmelab.com/documentation/ra-tree#dataprovider) for details.
-

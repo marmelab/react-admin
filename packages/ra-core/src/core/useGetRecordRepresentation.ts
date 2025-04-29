@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import { useResourceDefinition } from './useResourceDefinition';
 
 /**
- * Get default string representation of a record
+ * Get the default representation of a record (either a string or a React node)
  *
  * @example // No customization
  * const getRecordRepresentation = useGetRecordRepresentation('posts');

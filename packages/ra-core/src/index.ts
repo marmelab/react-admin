@@ -3,6 +3,7 @@ export * from './controller';
 export * from './core';
 export * from './preferences';
 export * from './dataProvider';
+export * from './dataTable';
 export * from './export';
 export * from './form';
 export * from './i18n';
