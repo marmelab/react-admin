@@ -119,8 +119,6 @@ export const useListController = <
         isPending,
         isPlaceholderData,
         refetch,
-        isPaused,
-        isPlaceholderData,
     } = useGetList<RecordType, ErrorType>(
         resource,
         {
