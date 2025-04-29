@@ -193,6 +193,15 @@ export const ShowButtons = () => (
     </Wrapper>
 );
 
+export const MutationOptions = () => (
+    <Wrapper>
+        <InPlaceEditor
+            source="name"
+            mutationOptions={{ meta: { foo: 'bar' } }}
+        />
+    </Wrapper>
+);
+
 export const SX = () => (
     <Wrapper>
         <InPlaceEditor

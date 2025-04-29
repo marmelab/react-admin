@@ -8,6 +8,8 @@ import {
     useUpdate,
     Form,
     RecordContextProvider,
+    type UseUpdateOptions,
+    type RaRecord,
 } from 'ra-core';
 import isEqual from 'lodash/isEqual';
 import { styled } from '@mui/material/styles';
@@ -30,9 +32,13 @@ export type InPlaceEditorValue =
     | { state: 'saving'; values: any }
     | { state: 'reading' };
 
-export interface InPlaceEditorProps {
+export interface InPlaceEditorProps<
+    RecordType extends RaRecord = any,
+    ErrorType = Error,
+> {
     source?: string;
     mutationMode?: 'optimistic' | 'pessimistic' | 'undoable';
+    mutationOptions?: UseUpdateOptions<RecordType, ErrorType>;
     cancelOnBlur?: boolean;
     notifyOnSuccess?: boolean;
     resource?: string;
@@ -48,10 +54,16 @@ export interface InPlaceEditorProps {
  * The editable field is rendered inside a Form component, so InPlaceEditor
  * cannot be used inside another Form component.
  */
-export const InPlaceEditor = (props: InPlaceEditorProps) => {
+export const InPlaceEditor = <
+    RecordType extends RaRecord = any,
+    ErrorType extends Error = Error,
+>(
+    props: InPlaceEditorProps<RecordType, ErrorType>
+) => {
     const {
         source,
         mutationMode,
+        mutationOptions = {},
         sx,
         cancelOnBlur,
         children = source ? (
@@ -119,6 +131,32 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
     const translate = useTranslate();
     const [update] = useUpdate();
 
+    const {
+        meta: mutationMeta,
+        onSuccess = () => {
+            dispatch({ type: 'success' });
+            if (mutationMode !== 'undoable' && !notifyOnSuccess) return;
+            notify(`resources.${resource}.notifications.updated`, {
+                type: 'info',
+                messageArgs: {
+                    smart_count: 1,
+                    _: translate('ra.notification.updated', {
+                        smart_count: 1,
+                    }),
+                },
+                undoable: mutationMode === 'undoable',
+            });
+        },
+        onError = error => {
+            notify('ra.notification.http_error', {
+                type: 'error',
+                messageArgs: { _: error.message },
+            });
+            dispatch({ type: 'error', error });
+        },
+        ...otherMutationOptions
+    } = mutationOptions;
+
     const handleSave = async values => {
         if (!record) {
             throw new Error('No record found');
@@ -134,30 +172,13 @@ export const InPlaceEditor = (props: InPlaceEditorProps) => {
                 id: record.id,
                 data: values,
                 previousData: record,
+                meta: mutationMeta,
             },
             {
+                onSuccess,
+                onError,
                 mutationMode,
-                onSuccess: () => {
-                    dispatch({ type: 'success' });
-                    if (mutationMode !== 'undoable' && !notifyOnSuccess) return;
-                    notify(`resources.${resource}.notifications.updated`, {
-                        type: 'info',
-                        messageArgs: {
-                            smart_count: 1,
-                            _: translate('ra.notification.updated', {
-                                smart_count: 1,
-                            }),
-                        },
-                        undoable: mutationMode === 'undoable',
-                    });
-                },
-                onError: error => {
-                    notify('ra.notification.http_error', {
-                        type: 'error',
-                        messageArgs: { _: error.message },
-                    });
-                    dispatch({ type: 'error', error });
-                },
+                ...otherMutationOptions,
             }
         );
     };

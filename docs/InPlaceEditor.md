@@ -102,6 +102,7 @@ const choices = [
 | `children`   | Optional | `ReactNode` |         | The component to render in read mode.                                |
 | `editor`     | Optional | `ReactNode` |         | The component to render in edit mode.                                |
 | `mutationMode` | Optional | `string`  | `pessimistic` | The mutation mode to use when saving the record.                     |
+| `mutationOptions` | Optional | `object`  |         | The options to pass to the `useUpdate` hook.                      |
 | `notifyOnSuccess` | Optional | `boolean` | `false`  | Whether to show a notification on successful save.                  |
 | `resource`   | Optional | `string`  |         | The name of the resource.                                            |
 | `showButtons` | Optional | `boolean` | `false` | Whether to show the save and cancel buttons.                         |
@@ -205,6 +206,21 @@ You can use any of the following values:
 ```tsx
 <InPlaceEditor source="phone" mutationMode="optimistic" />
 ```
+
+## `mutationOptions`
+
+If you need to pass options to the `useUpdate` hook, you can use this prop.
+
+This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
+
+{% raw %}
+```tsx
+<InPlaceEditor
+    source="phone"
+    mutationOptions={{ meta: { foo: 'bar' } }}
+/>
+```
+{% endraw %}
 
 ## `notifyOnSuccess`
 
