@@ -185,7 +185,7 @@ import {
 } from '@mui/material';
 
 const CreateAuthor = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const { onCancel, onCreate } = useCreateSuggestionContext();
 
     const onAuthorCreate = author => {
         onCreate(author);
