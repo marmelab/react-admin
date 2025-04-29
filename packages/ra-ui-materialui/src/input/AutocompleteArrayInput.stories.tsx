@@ -1,36 +1,41 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
+
+import CloseIcon from '@mui/icons-material/Close';
 import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    TextField,
+} from '@mui/material';
+
+import {
+    CreateBase,
     Resource,
-    required,
-    useCreate,
-    useRecordContext,
     TestMemoryRouter,
+    required,
     testDataProvider,
+    useRecordContext,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import {
-    Dialog,
-    DialogContent,
-    TextField,
-    DialogActions,
-    Button,
-    Stack,
-} from '@mui/material';
+
 import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
+import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import {
     AutocompleteArrayInput,
     AutocompleteArrayInputProps,
 } from './AutocompleteArrayInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { TextInput } from './TextInput';
-import { ArrayInput, SimpleFormIterator } from './ArrayInput';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
@@ -686,56 +691,46 @@ export const InsideReferenceArrayInputOnChange = ({
 
 const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [name, setName] = React.useState(filter || '');
-    const [language, setLanguage] = React.useState('');
-    const [create] = useCreate();
 
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-            'authors',
-            {
-                data: {
-                    name,
-                    language,
-                },
-            },
-            {
-                onSuccess: ({ data }) => {
-                    setName('');
-                    setLanguage('');
-                    onCreate(data);
-                },
-            }
-        );
+    const onAuthorCreate = author => {
+        onCreate(author);
     };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <Stack gap={4}>
-                        <TextField
-                            name="name"
-                            label="The author name"
-                            value={name}
-                            onChange={event => setName(event.target.value)}
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="authors"
+                    mutationOptions={{
+                        onSuccess: author => {
+                            onAuthorCreate(author);
+                        },
+                    }}
+                >
+                    <SimpleForm defaultValues={{ name: filter }}>
+                        <TextInput source="name" helperText={false} />
+                        <TextInput
+                            source="language"
+                            helperText={false}
                             autoFocus
                         />
-                        <TextField
-                            name="language"
-                            label="The author language"
-                            value={language}
-                            onChange={event => setLanguage(event.target.value)}
-                            autoFocus
-                        />
-                    </Stack>
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
         </Dialog>
     );
 };
@@ -751,10 +746,7 @@ const BookEditWithReferenceAndCreationSupport = () => (
     >
         <SimpleForm>
             <ReferenceArrayInput reference="authors" source="author">
-                <AutocompleteArrayInput
-                    create={<CreateAuthor />}
-                    optionText="name"
-                />
+                <AutocompleteArrayInput create={<CreateAuthor />} />
             </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
