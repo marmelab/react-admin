@@ -1,5 +1,19 @@
 # Changelog
 
+## 5.8.0
+
+* Add `<InPlaceEditor>` for edit-in-place ([#10690](https://github.com/marmelab/react-admin/pull/10690)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<DataTable>` component ([#10597](https://github.com/marmelab/react-admin/pull/10597)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<AuthLayout>` to share layout of login page with register & forgot password pages ([#10640](https://github.com/marmelab/react-admin/pull/10640)) ([djhi](https://github.com/djhi))
+* Add support for defaultProps override via theme ([#10655](https://github.com/marmelab/react-admin/pull/10655)) ([djhi](https://github.com/djhi))
+* Add support for MUI v7 ([#10639](https://github.com/marmelab/react-admin/pull/10639)) ([djhi](https://github.com/djhi))
+* Add ability to configure `<Loading>` timeout ([#10689](https://github.com/marmelab/react-admin/pull/10689)) ([WiXSL](https://github.com/WiXSL))
+* Improve `<DeleteButton>` and `<UpdateButton>` confirmation wording using record representation ([#10654](https://github.com/marmelab/react-admin/pull/10654)) ([djhi](https://github.com/djhi))
+* [Doc] Rewrite `<AutocompleteArrayInput>` create doc example ([#10700](https://github.com/marmelab/react-admin/pull/10700)) ([Cimanel](https://github.com/Cimanel))
+* [chore] create-react-admin: Remove sourcemaps from production build ([#10693](https://github.com/marmelab/react-admin/pull/10693)) ([slax57](https://github.com/slax57))
+* Bump json-graphql-server to 3.2.0 ([#10713](https://github.com/marmelab/react-admin/pull/10713)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump react-router from 7.1.1 to 7.5.3 ([#10712](https://github.com/marmelab/react-admin/pull/10712)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## 5.7.4
 
 * Fix `<FilterLiveForm>` compatibility with react-hook-form 7.55.0, part 2 ([#10697](https://github.com/marmelab/react-admin/pull/10697)) ([slax57](https://github.com/slax57))
