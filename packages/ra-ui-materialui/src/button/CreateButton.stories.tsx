@@ -25,38 +25,15 @@ import { LocalesMenuButton } from './LocalesMenuButton';
 
 export default { title: 'ra-ui-materialui/button/CreateButton' };
 
-export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
-    <TestMemoryRouter>
-        <AdminContext
-            i18nProvider={polyglotI18nProvider(locale =>
-                locale === 'fr' ? frenchMessages : englishMessages
-            )}
-        >
-            <ResourceContextProvider value="books">
-                <CreateButton {...buttonProps} />
-            </ResourceContextProvider>
-        </AdminContext>
-    </TestMemoryRouter>
-);
-
-export const AccessControl = () => {
-    const queryClient = new QueryClient();
-
-    return (
-        <TestMemoryRouter>
-            <AccessControlAdmin queryClient={queryClient} />
-        </TestMemoryRouter>
+const defaultI18nProvider = () =>
+    polyglotI18nProvider(
+        locale => (locale === 'fr' ? frenchMessages : englishMessages),
+        'en',
+        [
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'Français' },
+        ]
     );
-};
-
-const defaultI18nProvider = polyglotI18nProvider(
-    locale => (locale === 'fr' ? frenchMessages : englishMessages),
-    'en',
-    [
-        { locale: 'en', name: 'English' },
-        { locale: 'fr', name: 'Français' },
-    ]
-);
 
 const customI18nProvider = polyglotI18nProvider(
     locale =>
@@ -86,10 +63,30 @@ const customI18nProvider = polyglotI18nProvider(
     ]
 );
 
+export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
+    <TestMemoryRouter>
+        <AdminContext i18nProvider={defaultI18nProvider()}>
+            <ResourceContextProvider value="books">
+                <CreateButton {...buttonProps} />
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const AccessControl = () => {
+    const queryClient = new QueryClient();
+
+    return (
+        <TestMemoryRouter>
+            <AccessControlAdmin queryClient={queryClient} />
+        </TestMemoryRouter>
+    );
+};
+
 export const Label = ({
     translations = 'default',
     i18nProvider = translations === 'default'
-        ? defaultI18nProvider
+        ? defaultI18nProvider()
         : customI18nProvider,
     label,
 }: {
@@ -146,9 +143,7 @@ const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
         <AdminContext
             dataProvider={dataProvider}
             authProvider={authProvider}
-            i18nProvider={polyglotI18nProvider(locale =>
-                locale === 'fr' ? frenchMessages : englishMessages
-            )}
+            i18nProvider={defaultI18nProvider()}
             queryClient={queryClient}
         >
             <AdminUI
