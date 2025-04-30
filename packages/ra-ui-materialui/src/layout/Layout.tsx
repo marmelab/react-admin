@@ -115,7 +115,6 @@ const Core = styled('div', {
     position: 'relative',
     minWidth: 'fit-content',
     width: '100%',
-    color: (theme.vars || theme).palette.primary.contrastText,
 
     [`& .${LayoutClasses.appFrame}`]: {
         display: 'flex',

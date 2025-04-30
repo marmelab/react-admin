@@ -147,7 +147,6 @@ const buildGraphQLProvider = (options: Options): GraphqlDataProvider => {
         process.env.NODE_ENV === 'production'
     ) {
         console.warn(
-            // eslint-disable-line
             'The override option is deprecated. You should instead wrap the buildQuery function provided by the dataProvider you use.'
         );
     }

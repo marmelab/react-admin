@@ -101,6 +101,45 @@ export const Disabled = () => (
     </Wrapper>
 );
 
+export const Variant = ({ hideLabel }) => (
+    <Wrapper>
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            label={hideLabel ? false : 'default'}
+        />
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            label={hideLabel ? false : 'outlined'}
+            variant="outlined"
+        />
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            label={hideLabel ? false : 'standard'}
+            variant="standard"
+        />
+    </Wrapper>
+);
+Variant.args = {
+    hideLabel: false,
+};
+Variant.argTypes = {
+    hideLabel: {
+        type: 'boolean',
+    },
+};
+
 export const ReadOnly = () => (
     <Wrapper>
         <SelectInput
@@ -372,7 +411,6 @@ const dataProviderWithAuthors = {
         }),
     getList: () =>
         new Promise(resolve => {
-            // eslint-disable-next-line eqeqeq
             setTimeout(
                 () =>
                     resolve({

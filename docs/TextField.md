@@ -58,3 +58,43 @@ import { FunctionField } from 'react-admin';
     render={record => `${record.first_name} ${record.last_name}`}
 />;
 ```
+
+## Edit In Place
+
+In addition to rendering a field value, you may want to allow users to edit that value. You can redirect the user to an `<Edit>` page, or you can use the [`<InPlaceEditor>`](./InPlaceEditor.md) component to edit the value directly in the list or show view. 
+
+
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/InPlaceEditor.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+`<InPlaceEditor>` renders a `<TextField>` by default, and turns into a `<TextInput>` when the user clicks on it. It is useful for quick edits without navigating to a separate edit page.
+
+{% raw %}
+```tsx
+import { Show, InPlaceEditor } from 'react-admin';
+import { Stack, Box, Typography } from '@mui/material';
+
+const CustomerShow = () => (
+    <Show>
+        <Stack direction="row" spacing={2}>
+            <AvatarField />
+            <CustomerActions />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography>Phone</Typography>
+                <InPlaceEditor source="phone" />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography>Email</Typography>
+                <InPlaceEditor source="email" />
+            </Box>
+            ...
+        </Stack>
+    </Show>
+);
+```
+{% endraw %}
+
+Check out [the `<InPlaceEditor>` documentation](./InPlaceEditor.md) for more details.

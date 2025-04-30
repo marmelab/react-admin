@@ -110,7 +110,7 @@ describe('<RichTextField />', () => {
         expect(container.children[0].classList.contains('foo')).toBe(true);
     });
 
-    it.each([null, undefined])(
+    it.each([null, undefined, ''])(
         'should render the emptyText when value is %s and stripTags is set to false',
         body => {
             const { queryByText } = render(
@@ -124,7 +124,7 @@ describe('<RichTextField />', () => {
         }
     );
 
-    it.each([null, undefined])(
+    it.each([null, undefined, ''])(
         'should render the emptyText when value is %s and stripTags is set to true',
         body => {
             const { queryByText } = render(

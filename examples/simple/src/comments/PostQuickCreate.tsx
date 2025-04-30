@@ -15,7 +15,7 @@ import {
     useCreateSuggestionContext,
     useNotify,
     useTranslate,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from 'react-admin';
 
 import CancelButton from './PostQuickCreateCancelButton';
 

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 import { Card, Stack } from '@mui/material';
 import jsonExport from 'jsonexport/dist';
 import type { Exporter } from 'react-admin';

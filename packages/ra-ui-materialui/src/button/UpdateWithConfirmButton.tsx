@@ -120,8 +120,8 @@ export const UpdateWithConfirmButton = (
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
-    let confirmContent = `resources.${resource}.message.bulk_update_content`;
-    let confirmTitle = `resources.${resource}.message.bulk_update_title`;
+    const confirmContent = `resources.${resource}.message.bulk_update_content`;
+    const confirmTitle = `resources.${resource}.message.bulk_update_title`;
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
         smart_count: 1,
         _: humanize(

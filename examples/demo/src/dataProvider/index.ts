@@ -4,7 +4,7 @@ import fakeServerFactory from '../fakeServer';
 export default (type: string) => {
     // The fake servers require to generate data, which can take some time.
     // Here we start the server initialization but we don't wait for it to finish
-    let dataProviderPromise = getDataProvider(type);
+    const dataProviderPromise = getDataProvider(type);
 
     // Instead we return this proxy which may be called immediately by react-admin if the
     // user is already signed-in. In this case, we simply wait for the dataProvider promise

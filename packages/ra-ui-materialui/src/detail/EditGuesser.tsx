@@ -44,7 +44,7 @@ export const EditGuesser = <RecordType extends RaRecord = any>(
     );
 };
 
-interface EditGuesserProps<RecordType extends RaRecord = any>
+export interface EditGuesserProps<RecordType extends RaRecord = any>
     extends Omit<EditProps<RecordType>, 'children'> {}
 
 const EditViewGuesser = <RecordType extends RaRecord = any>(
@@ -96,7 +96,6 @@ const EditViewGuesser = <RecordType extends RaRecord = any>(
                 )
                 .sort();
 
-            // eslint-disable-next-line no-console
             console.log(
                 `Guessed Edit:
 

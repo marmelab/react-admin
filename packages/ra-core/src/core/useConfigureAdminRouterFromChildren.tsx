@@ -127,7 +127,7 @@ const useRoutesAndResourcesFromChildren = (
                 getRoutesAndResourceFromNodes(children);
             setRoutesAndResources(newRoutesAndResources);
             setStatus(
-                !!functionChild
+                functionChild
                     ? 'loading'
                     : newRoutesAndResources.resources.length > 0 ||
                         newRoutesAndResources.customRoutesWithLayout.length >

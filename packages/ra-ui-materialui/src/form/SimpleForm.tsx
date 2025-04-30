@@ -95,7 +95,6 @@ const DefaultComponent = styled(CardContent, {
 
 const DefaultToolbar = <Toolbar />;
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     children,
     className,
@@ -119,7 +118,6 @@ const sanitizeRestProps = ({
     warnWhenUnsavedChanges,
     ...props
 }: SimpleFormProps) => props;
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {

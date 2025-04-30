@@ -680,7 +680,7 @@ describe('Form', () => {
     });
 
     it('should only validate inputs on submit', async () => {
-        let validate = jest.fn();
+        const validate = jest.fn();
         render(
             <CoreAdminContext>
                 <Form onSubmit={jest.fn()}>

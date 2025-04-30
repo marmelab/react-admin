@@ -111,7 +111,7 @@ describe('<DatagridRow />', () => {
         ])(
             "should redirect to edit page if the 'edit' option is $description",
             async ({ rowClick }) => {
-                let spy = jest.fn();
+                const spy = jest.fn();
                 render(
                     <LocationSpy spy={spy}>
                         <RecordContextProvider value={defaultRecord}>
@@ -152,7 +152,7 @@ describe('<DatagridRow />', () => {
         ])(
             "should redirect to show page if the 'show' option is $description",
             async ({ rowClick }) => {
-                let spy = jest.fn();
+                const spy = jest.fn();
                 render(
                     <LocationSpy spy={spy}>
                         <RecordContextProvider value={defaultRecord}>
@@ -293,7 +293,7 @@ describe('<DatagridRow />', () => {
 
         it('should redirect to the custom path if onRowClick is a string', async () => {
             const path = '/foo/bar';
-            let spy = jest.fn();
+            const spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
                     <RecordContextProvider value={defaultRecord}>
@@ -321,7 +321,7 @@ describe('<DatagridRow />', () => {
 
         it('should evaluate the function and redirect to the result of that function if onRowClick is a custom function', async () => {
             const customRowClick = () => '/bar/foo';
-            let spy = jest.fn();
+            const spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
                     <RecordContextProvider value={defaultRecord}>
@@ -352,7 +352,7 @@ describe('<DatagridRow />', () => {
         });
 
         it('should not call push if onRowClick is false', () => {
-            let spy = jest.fn();
+            const spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
                     <RecordContextProvider value={defaultRecord}>
@@ -377,7 +377,7 @@ describe('<DatagridRow />', () => {
         });
 
         it('should not call push if onRowClick is falsy', () => {
-            let spy = jest.fn();
+            const spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
                     <RecordContextProvider value={defaultRecord}>
@@ -402,7 +402,7 @@ describe('<DatagridRow />', () => {
         });
 
         it("should default to 'edit' if the resource has an edit page", async () => {
-            let spy = jest.fn();
+            const spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
                     <ResourceDefinitionContextProvider
@@ -435,7 +435,7 @@ describe('<DatagridRow />', () => {
         });
 
         it("should default to 'show' if the resource has a show page", async () => {
-            let spy = jest.fn();
+            const spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
                     <ResourceDefinitionContextProvider
@@ -468,7 +468,7 @@ describe('<DatagridRow />', () => {
         });
 
         it("should default to 'show' if the resource has both a show and an edit page", async () => {
-            let spy = jest.fn();
+            const spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
                     <ResourceDefinitionContextProvider
@@ -505,7 +505,7 @@ describe('<DatagridRow />', () => {
         });
 
         it('should default to false if the resource has no show nor edit page', () => {
-            let spy = jest.fn();
+            const spy = jest.fn();
             render(
                 <LocationSpy spy={spy}>
                     <ResourceDefinitionContextProvider

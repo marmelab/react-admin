@@ -1,11 +1,10 @@
 import * as React from 'react';
-import type { FC } from 'react';
+import { FC, Children, memo } from 'react';
 import {
     type ComponentsOverrides,
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { Children, memo } from 'react';
 import {
     AppBar as MuiAppBar,
     type AppBarProps as MuiAppBarProps,
