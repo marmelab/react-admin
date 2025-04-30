@@ -486,7 +486,9 @@ export const CreateDialog = () => (
     </Wrapper>
 );
 
-const CreateLabelInput = ({ optionText }) => {
+const CreateLabelInput = ({
+    optionText,
+}: Pick<AutocompleteInputProps, 'optionText'>) => {
     const [choices, setChoices] = useState(choicesForCreationSupport);
     return (
         <AutocompleteInput
@@ -523,7 +525,9 @@ const CreateLabelInput = ({ optionText }) => {
     );
 };
 
-export const CreateLabel = ({ optionText }: any) => (
+export const CreateLabel = ({
+    optionText,
+}: Pick<AutocompleteInputProps, 'optionText'>) => (
     <Wrapper>
         <CreateLabelInput optionText={optionText} />
     </Wrapper>

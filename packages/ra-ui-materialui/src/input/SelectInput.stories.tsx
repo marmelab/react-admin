@@ -13,7 +13,7 @@ import {
 
 import { Create as RaCreate, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { SelectInput } from './SelectInput';
+import { SelectInput, SelectInputProps } from './SelectInput';
 import { TextInput } from './TextInput';
 import { ReferenceInput } from './ReferenceInput';
 import { SaveButton } from '../button/SaveButton';
@@ -321,7 +321,9 @@ export const OnCreate = () => {
     );
 };
 
-export const CreateLabel = ({ optionText }: any) => {
+export const CreateLabel = ({
+    optionText,
+}: Pick<SelectInputProps, 'optionText'>) => {
     const categories: Partial<{
         id: string;
         name: string;
