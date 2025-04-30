@@ -28,11 +28,60 @@ const i18nProvider = polyglotI18nProvider(
                               author: 'Auteur',
                               year: 'Année',
                           },
+                          message: {
+                              delete_title:
+                                  'Supprimer le livre "%{recordRepresentation}" ?',
+                              delete_content:
+                                  'Souhaitez-vous vraiment supprimer le livre "%{recordRepresentation}" ?',
+                          },
+                      },
+                  },
+              }
+            : {
+                  ...englishMessages,
+                  resources: {
+                      books: {
+                          message: {
+                              delete_title:
+                                  'Delete the book "%{recordRepresentation}"?',
+                              delete_content:
+                                  'Do you really want to delete the book "%{recordRepresentation}"?',
+                          },
+                      },
+                  },
+              },
+    // Default locale
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
+
+const i18nProviderDefault = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? {
+                  ...frenchMessages,
+                  resources: {
+                      books: {
+                          name: 'Livre |||| Livres',
+                          fields: {
+                              id: 'Id',
+                              title: 'Titre',
+                              author: 'Auteur',
+                              year: 'Année',
+                          },
                       },
                   },
               }
             : englishMessages,
-    'en' // Default locale
+    // Default locale
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
 );
 
 const dataProvider = fakeRestDataProvider({
@@ -104,7 +153,19 @@ const dataProvider = fakeRestDataProvider({
             year: 1922,
         },
     ],
-    authors: [],
+    authors: [
+        { id: 1, fullName: 'Leo Tolstoy' },
+        { id: 2, fullName: 'Jane Austen' },
+        { id: 3, fullName: 'Oscar Wilde' },
+        { id: 4, fullName: 'Antoine de Saint-Exupéry' },
+        { id: 5, fullName: 'Lewis Carroll' },
+        { id: 6, fullName: 'Gustave Flaubert' },
+        { id: 7, fullName: 'J. R. R. Tolkien' },
+        { id: 8, fullName: 'J. K. Rowling' },
+        { id: 9, fullName: 'Paulo Coelho' },
+        { id: 10, fullName: 'J. D. Salinger' },
+        { id: 11, fullName: 'James Joyce' },
+    ],
 });
 
 const BookList = ({ children }) => {
@@ -121,6 +182,18 @@ const BookList = ({ children }) => {
     );
 };
 
+const AuthorList = ({ children }) => {
+    return (
+        <List>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="fullName" />
+                {children}
+            </Datagrid>
+        </List>
+    );
+};
+
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
@@ -131,6 +204,43 @@ export const Basic = () => (
                         <BookList>
                             <DeleteWithConfirmButton />
                         </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const WithDefaultTranslation = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProviderDefault}
+        >
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <DeleteWithConfirmButton />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const NoRecordRepresentation = () => (
+    <TestMemoryRouter initialEntries={['/authors']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="authors"
+                    list={
+                        <AuthorList>
+                            <DeleteWithConfirmButton />
+                        </AuthorList>
                     }
                 />
             </AdminUI>

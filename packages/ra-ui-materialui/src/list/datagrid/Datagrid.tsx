@@ -21,7 +21,7 @@ import {
     useCanAccess,
     useResourceContext,
 } from 'ra-core';
-import { Table, TableProps, SxProps } from '@mui/material';
+import { Table, TableProps, SxProps, useThemeProps } from '@mui/material';
 import clsx from 'clsx';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
@@ -31,7 +31,11 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import { RowClickFunction } from '../types';
 import DatagridContextProvider from './DatagridContextProvider';
-import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
+import {
+    DatagridClasses,
+    DatagridPrefix,
+    DatagridRoot,
+} from './useDatagridStyles';
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
 import { BulkDeleteButton } from '../../button';
 import { ListNoResults } from '../ListNoResults';
@@ -119,7 +123,11 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  */
 export const Datagrid: React.ForwardRefExoticComponent<
     Omit<DatagridProps, 'ref'> & React.RefAttributes<HTMLTableElement>
-> = React.forwardRef<HTMLTableElement, DatagridProps>((props, ref) => {
+> = React.forwardRef<HTMLTableElement, DatagridProps>((inProps, ref) => {
+    const props = useThemeProps({
+        name: DatagridPrefix,
+        props: inProps,
+    });
     const resourceFromContext = useResourceContext(props);
     const { canAccess: canDelete } = useCanAccess({
         resource: resourceFromContext,

@@ -12,19 +12,19 @@ const InvoiceShow = () => {
         <Card sx={{ width: 600, margin: 'auto' }}>
             <CardContent>
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                         <Typography variant="h6" gutterBottom>
                             Posters Galore
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                         <Typography variant="h6" gutterBottom align="right">
                             Invoice {record.id}
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} container alignContent="flex-end">
+                    <Grid size={{ xs: 12 }} alignContent="flex-end">
                         <ReferenceField
                             reference="customers"
                             source="customer_id"
@@ -36,7 +36,7 @@ const InvoiceShow = () => {
                 </Grid>
                 <Box height={20}>&nbsp;</Box>
                 <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid size={{ xs: 6 }}>
                         <Typography variant="h6" gutterBottom align="center">
                             Date{' '}
                         </Typography>
@@ -45,7 +45,7 @@ const InvoiceShow = () => {
                         </Typography>
                     </Grid>
 
-                    <Grid item xs={5}>
+                    <Grid size={{ xs: 5 }}>
                         <Typography variant="h6" gutterBottom align="center">
                             Order
                         </Typography>

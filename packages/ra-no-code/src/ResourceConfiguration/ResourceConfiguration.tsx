@@ -163,7 +163,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
     },
 
     [`& .${classes.fieldList}`]: {
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: (theme.vars || theme).palette.background.default,
     },
 
     [`& .${classes.fieldTitle}`]: {
@@ -180,6 +180,6 @@ const StyledCard = styled(Card)(({ theme }) => ({
     },
 
     [`& .${classes.actions}`]: {
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: (theme.vars || theme).palette.background.default,
     },
 }));

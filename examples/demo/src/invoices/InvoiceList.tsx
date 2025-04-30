@@ -1,21 +1,20 @@
 import * as React from 'react';
 import {
     List,
-    DatagridConfigurable,
-    TextField,
+    ColumnsButton,
     DateField,
     ReferenceField,
-    NumberField,
     DateInput,
     TopToolbar,
     ExportButton,
-    SelectColumnsButton,
     ReferenceInput,
     FilterButton,
     useDefaultTitle,
     useListContext,
+    DataTable,
 } from 'react-admin';
 
+import { type Invoice } from '../types';
 import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
@@ -30,7 +29,7 @@ const listFilters = [
 const ListActions = () => (
     <TopToolbar>
         <FilterButton />
-        <SelectColumnsButton />
+        <ColumnsButton />
         <ExportButton />
     </TopToolbar>
 );
@@ -46,6 +45,9 @@ const InvoicesTitle = () => {
     );
 };
 
+const Column = DataTable.Col<Invoice>;
+const ColumnNumber = DataTable.NumberCol<Invoice>;
+
 const InvoiceList = () => (
     <List
         filters={listFilters}
@@ -54,45 +56,43 @@ const InvoiceList = () => (
         actions={<ListActions />}
         title={<InvoicesTitle />}
     >
-        <DatagridConfigurable
+        <DataTable
             rowClick="expand"
             expand={<InvoiceShow />}
             sx={{
-                '& .column-customer_id': {
-                    display: { xs: 'none', md: 'table-cell' },
-                },
-                '& .column-total_ex_taxes': {
-                    display: { xs: 'none', md: 'table-cell' },
-                },
-                '& .column-delivery_fees': {
-                    display: { xs: 'none', md: 'table-cell' },
-                },
-                '& .column-taxes': {
-                    display: { xs: 'none', md: 'table-cell' },
+                '& .onlyLarge': {
+                    display: { xs: 'none', lg: 'table-cell' },
                 },
             }}
         >
-            <TextField source="id" />
-            <DateField source="date" />
-            <ReferenceField source="customer_id" reference="customers">
-                <FullNameField source="last_name" />
-            </ReferenceField>
-            <ReferenceField
-                source="customer_id"
-                reference="customers"
-                link={false}
+            <Column source="id" />
+            <Column field={DateField} source="date" />
+            <Column source="customer_id" className="onlyLarge">
+                <ReferenceField source="customer_id" reference="customers">
+                    <FullNameField source="last_name" />
+                </ReferenceField>
+            </Column>
+            <Column
+                source="address"
+                disableSort
                 label="resources.invoices.fields.address"
             >
-                <AddressField />
-            </ReferenceField>
-            <ReferenceField source="order_id" reference="orders">
-                <TextField source="reference" />
-            </ReferenceField>
-            <NumberField source="total_ex_taxes" />
-            <NumberField source="delivery_fees" />
-            <NumberField source="taxes" />
-            <NumberField source="total" />
-        </DatagridConfigurable>
+                <ReferenceField
+                    source="customer_id"
+                    reference="customers"
+                    link={false}
+                >
+                    <AddressField />
+                </ReferenceField>
+            </Column>
+            <Column source="order_id">
+                <ReferenceField source="order_id" reference="orders" />
+            </Column>
+            <ColumnNumber source="total_ex_taxes" className="onlyLarge" />
+            <ColumnNumber source="delivery_fees" className="onlyLarge" />
+            <ColumnNumber source="taxes" className="onlyLarge" />
+            <ColumnNumber source="total" />
+        </DataTable>
     </List>
 );
 

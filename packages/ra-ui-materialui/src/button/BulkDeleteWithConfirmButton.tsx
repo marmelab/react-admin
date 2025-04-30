@@ -2,27 +2,35 @@ import * as React from 'react';
 import { Fragment, useState } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 
-import { alpha, styled } from '@mui/material/styles';
 import {
-    MutationMode,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import {
+    type MutationMode,
     useDeleteMany,
     useListContext,
     useNotify,
     useRefresh,
     useResourceContext,
     useTranslate,
-    RaRecord,
-    DeleteManyParams,
+    type RaRecord,
+    type DeleteManyParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
-import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
+import { Button, type ButtonProps } from './Button';
+import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, inflect } from 'inflection';
 
 export const BulkDeleteWithConfirmButton = (
-    props: BulkDeleteWithConfirmButtonProps
+    inProps: BulkDeleteWithConfirmButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         confirmTitle = 'ra.message.bulk_delete_title',
         confirmContent = 'ra.message.bulk_delete_content',
@@ -121,7 +129,22 @@ export const BulkDeleteWithConfirmButton = (
                 title={confirmTitle}
                 content={confirmContent}
                 confirmColor={confirmColor}
-                translateOptions={{
+                titleTranslateOptions={{
+                    smart_count: selectedIds.length,
+                    name: translate(`resources.${resource}.forcedCaseName`, {
+                        smart_count: selectedIds.length,
+                        _: humanize(
+                            translate(`resources.${resource}.name`, {
+                                smart_count: selectedIds.length,
+                                _: resource
+                                    ? inflect(resource, selectedIds.length)
+                                    : undefined,
+                            }),
+                            true
+                        ),
+                    }),
+                }}
+                contentTranslateOptions={{
                     smart_count: selectedIds.length,
                     name: translate(`resources.${resource}.forcedCaseName`, {
                         smart_count: selectedIds.length,
@@ -175,9 +198,9 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.error.main,
+    color: (theme.vars || theme).palette.error.main,
     '&:hover': {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.error.main}, transparent 12%)`,
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',
@@ -186,3 +209,22 @@ const StyledButton = styled(Button, {
 }));
 
 const defaultIcon = <ActionDelete />;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBulkDeleteWithConfirmButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaBulkDeleteWithConfirmButton: Partial<BulkDeleteWithConfirmButtonProps>;
+    }
+
+    interface Components {
+        RaBulkDeleteWithConfirmButton?: {
+            defaultProps?: ComponentsPropsList['RaBulkDeleteWithConfirmButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBulkDeleteWithConfirmButton'];
+        };
+    }
+}

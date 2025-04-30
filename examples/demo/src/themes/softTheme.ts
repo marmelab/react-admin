@@ -32,7 +32,7 @@ export const softDarkTheme = {
             },
         },
         MuiFilledInput: {
-            styleOverrides: undefined,
+            styleOverrides: {},
         },
         MuiAppBar: {
             styleOverrides: {

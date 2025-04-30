@@ -5,9 +5,10 @@
     "type": "module",
     "dependencies": {
         "@apollo/client": "^3.12.4",
-        "@mui/icons-material": "^6.0.0",
-        "@mui/material": "^6.0.0",
+        "@mui/icons-material": "^7.0.0",
+        "@mui/material": "^7.0.0",
         "@types/recharts": "^1.8.10",
+        "@vitejs/plugin-react": "^2.2.0",
         "clsx": "^2.1.1",
         "data-generator-retail": "^5.0.0",
         "date-fns": "^3.6.0",

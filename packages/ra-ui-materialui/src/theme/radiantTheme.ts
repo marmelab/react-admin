@@ -1,5 +1,10 @@
-import { alpha, createTheme, PaletteOptions, Theme } from '@mui/material';
-import { RaThemeOptions } from './types';
+import {
+    alpha,
+    createTheme,
+    PaletteOptions,
+    Theme,
+    ThemeOptions,
+} from '@mui/material';
 
 /**
  * Radiant: A theme emphasizing clarity and ease of use.
@@ -7,7 +12,7 @@ import { RaThemeOptions } from './types';
  * Uses generous margins, outlined inputs and buttons, no uppercase, and an acid color palette.
  */
 
-const componentsOverrides = (theme: Theme) => {
+const componentsOverrides = (theme: Theme): ThemeOptions['components'] => {
     const shadows = [
         alpha(theme.palette.primary.main, 0.2),
         alpha(theme.palette.primary.main, 0.1),
@@ -169,7 +174,7 @@ const lightPalette: PaletteOptions = {
     mode: 'light' as 'light',
 };
 
-const createRadiantTheme = (palette: RaThemeOptions['palette']) => {
+const createRadiantTheme = (palette: PaletteOptions) => {
     const themeOptions = {
         palette,
         shape: { borderRadius: 6 },

@@ -1,10 +1,18 @@
 import * as React from 'react';
-import { memo, FC } from 'react';
-import { styled } from '@mui/material/styles';
-import { Pagination, PaginationProps } from '@mui/material';
+import { memo, type FC } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Pagination, type PaginationProps } from '@mui/material';
 import { useTranslate } from 'ra-core';
 
-export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
+export const PaginationActions: FC<PaginationActionsProps> = memo(inProps => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         page,
         rowsPerPage,
@@ -80,3 +88,22 @@ const sanitizeRestProps = ({
     slotProps,
     ...rest
 }: any) => rest;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaPaginationActions: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaPaginationActions: Partial<PaginationActionsProps>;
+    }
+
+    interface Components {
+        RaPaginationActions?: {
+            defaultProps?: ComponentsPropsList['RaPaginationActions'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaPaginationActions'];
+        };
+    }
+}

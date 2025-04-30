@@ -1,19 +1,26 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Chip, { ChipProps } from '@mui/material/Chip';
-import Typography from '@mui/material/Typography';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Chip, type ChipProps, Typography } from '@mui/material';
 import clsx from 'clsx';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { FieldProps } from './types';
+import type { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 
 const ChipFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: ChipFieldProps<RecordType>
+    inProps: ChipFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { className, emptyText, ...rest } = props;
     const value = useFieldValue(props);
     const translate = useTranslate();
@@ -68,3 +75,22 @@ const StyledChip = styled(Chip, {
 })({
     [`&.${ChipFieldClasses.chip}`]: { cursor: 'inherit' },
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaChipField: 'root' | 'chip';
+    }
+
+    interface ComponentsPropsList {
+        RaChipField: Partial<ChipFieldProps>;
+    }
+
+    interface Components {
+        RaChipField?: {
+            defaultProps?: ComponentsPropsList['RaChipField'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaChipField'];
+        };
+    }
+}

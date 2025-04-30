@@ -1,12 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { getFilterFormValues } from './FilterLiveForm';
 import {
     Basic,
     GlobalValidation,
     MultipleFilterLiveForm,
+    MultipleFilterLiveFormOverlapping,
     MultipleInput,
     ParseFormat,
     PerInputValidation,
+    WithExternalChanges,
 } from './FilterLiveForm.stories';
 import React from 'react';
 import { WithFilterListSection } from '../../../ra-ui-materialui/src/list/filter/FilterLiveForm.stories';
@@ -161,6 +163,97 @@ describe('<FilterLiveForm />', () => {
         await screen.findByText('"has_newsletter": false', { exact: false });
         await new Promise(resolve => setTimeout(resolve, 510));
         await screen.findByText('"has_newsletter": false', { exact: false });
+    });
+
+    it('should not reapply old externally applied filters after clear', async () => {
+        render(<WithExternalChanges />);
+        // Set filter body: foo
+        fireEvent.change(await screen.findByLabelText('body'), {
+            target: { value: 'foo' },
+        });
+        fireEvent.click(await screen.findByText('Apply filter'));
+        await waitFor(() => {
+            expect(
+                JSON.parse(
+                    screen.queryByTestId('filter-values')?.textContent || ''
+                )
+            ).toEqual({
+                body: 'foo',
+            });
+        });
+        // Unmount
+        fireEvent.click(await screen.findByLabelText('Mount/unmount'));
+        await waitFor(() => {
+            expect(screen.queryByText('External list')).toBeNull();
+        });
+        // Mount
+        fireEvent.click(await screen.findByLabelText('Mount/unmount'));
+        await screen.findByText('External list');
+        expect(
+            JSON.parse(screen.queryByTestId('filter-values')?.textContent || '')
+        ).toEqual({
+            body: 'foo',
+        });
+        // Clear filters
+        fireEvent.click(await screen.findByText('Clear filters'));
+        await waitFor(() => {
+            expect(
+                JSON.parse(
+                    screen.queryByTestId('filter-values')?.textContent || ''
+                )
+            ).toEqual({});
+        });
+        // Wait for a bit
+        await new Promise(resolve => setTimeout(resolve, 510));
+        expect(
+            JSON.parse(screen.queryByTestId('filter-values')?.textContent || '')
+        ).toEqual({});
+    });
+
+    it('should not reapply old filter values when changing another FilterLiveForm', async () => {
+        render(<MultipleFilterLiveFormOverlapping />);
+        // Set first body input to foo
+        fireEvent.change((await screen.findAllByLabelText('body'))[0], {
+            target: { value: 'foo' },
+        });
+        await waitFor(() => {
+            expect(
+                JSON.parse(
+                    screen.queryByTestId('filter-values')?.textContent || ''
+                )
+            ).toEqual({
+                category: 'deals',
+                body: 'foo',
+            });
+        });
+        // Clear first body input
+        fireEvent.change((await screen.findAllByLabelText('body'))[0], {
+            target: { value: '' },
+        });
+        await waitFor(() => {
+            expect(
+                JSON.parse(
+                    screen.queryByTestId('filter-values')?.textContent || ''
+                )
+            ).toEqual({
+                category: 'deals',
+            });
+        });
+        // Change author input
+        fireEvent.change(await screen.findByLabelText('author'), {
+            target: { value: 'bar' },
+        });
+        await waitFor(() => {
+            expect(
+                JSON.parse(
+                    screen.queryByTestId('filter-values')?.textContent || ''
+                )
+            ).toEqual({
+                // body should not reappear
+                category: 'deals',
+                author: 'bar',
+            });
+        });
     });
 
     describe('getFilterFormValues', () => {

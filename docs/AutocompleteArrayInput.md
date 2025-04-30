@@ -714,6 +714,7 @@ Use the `create` prop when you want a more polished or complex UI. For example a
 import {
     AutocompleteArrayInput,
     Create,
+    CreateBase,
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
@@ -721,13 +722,15 @@ import {
     useCreateSuggestionContext
 } from 'react-admin';
 
+import CloseIcon from '@mui/icons-material/Close';
 import {
     Box,
     BoxProps,
     Button,
     Dialog,
-    DialogActions,
     DialogContent,
+    DialogTitle,
+    IconButton,
     TextField,
 } from '@mui/material';
 
@@ -746,43 +749,45 @@ const PostCreate = () => {
 
 const CreateTag = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate();
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-            'tags',
-            {
-                data: {
-                    title: value,
-                },                
-            },
-            {
-                onSuccess: (data) => {
-                    setValue('');
-                    onCreate(data);
-                },
-            }
-        );
+   
+    const onTagCreate = tag => {
+        onCreate(tag);
     };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New tag"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="tags"
+                    mutationOptions={{
+                        onSuccess: tag => {
+                            onTagCreate(tag);
+                        },
+                    }}
+                >
+                    <SimpleForm defaultValues={{ name: filter }}>
+                        <TextInput
+                            source="name"
+                            helperText={false}
+                            autoFocus
+                        />
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
         </Dialog>
     );
 };

@@ -6,13 +6,12 @@ import {
     lightBlue,
     red,
 } from '@mui/material/colors';
-import { alpha } from '@mui/material/styles';
-import { RaThemeOptions } from './types';
+import { alpha, ThemeOptions } from '@mui/material/styles';
 
 const commonBlack = '#090909';
 const commonWhite = '#fafafa';
 
-const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
+const createBWTheme = (mode: 'light' | 'dark'): ThemeOptions => {
     const isDarkMode = mode === 'dark';
     const SPACING = 8;
     const GREY = isDarkMode ? grey[800] : grey[300];
@@ -306,12 +305,15 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
                     root: {
                         padding: `${SPACING * 2}px`,
                         borderBottom: `1px solid ${isDarkMode ? grey[900] : grey[300]}`,
-                    },
-                    sizeSmall: {
-                        padding: `${SPACING * 0.75}px ${SPACING * 1.25}px`,
-                    },
-                    paddingNone: {
-                        padding: `${SPACING * 0.5}px`,
+                        '&.MuiTableCell-sizeSmall': {
+                            padding: `${SPACING * 0.75}px ${SPACING * 1.25}px`,
+                        },
+                        '&.MuiTableCell-paddingNone': {
+                            padding: `${SPACING * 0.5}px`,
+                        },
+                        '&.MuiTableCell-paddingCheckbox': {
+                            padding: `0 ${SPACING}px`,
+                        },
                     },
                 },
             },
@@ -329,10 +331,12 @@ const createBWTheme = (mode: 'light' | 'dark'): RaThemeOptions => {
             },
             MuiDialog: {
                 styleOverrides: {
-                    backdrop: {
-                        backgroundColor: isDarkMode
-                            ? 'rgb(0,0,0,0.8)'
-                            : 'rgb(0,0,0,0.5)',
+                    root: {
+                        '& .MuiBackdrop-root': {
+                            backgroundColor: isDarkMode
+                                ? 'rgb(0,0,0,0.8)'
+                                : 'rgb(0,0,0,0.5)',
+                        },
                     },
                 },
             },

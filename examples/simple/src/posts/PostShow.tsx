@@ -4,9 +4,10 @@ import {
     BooleanField,
     CloneButton,
     ChipField,
-    Datagrid,
+    DataTable,
     DateField,
     EditButton,
+    InPlaceEditor,
     NumberField,
     ReferenceArrayField,
     ReferenceManyField,
@@ -53,10 +54,13 @@ const PostShow = () => {
                                 <TextField source="teaser" />
                             )}
                         <ArrayField source="backlinks">
-                            <Datagrid bulkActionButtons={false}>
-                                <DateField source="date" />
-                                <UrlField source="url" />
-                            </Datagrid>
+                            <DataTable bulkActionButtons={false}>
+                                <DataTable.Col
+                                    field={DateField}
+                                    source="date"
+                                />
+                                <DataTable.Col field={UrlField} source="url" />
+                            </DataTable>
                         </ArrayField>
                     </TabbedShowLayout.Tab>
                     <TabbedShowLayout.Tab label="post.form.body">
@@ -90,7 +94,20 @@ const PostShow = () => {
                         />
                         <NumberField source="average_note" />
                         <BooleanField source="commentable" />
-                        <TextField source="views" />
+                        <InPlaceEditor
+                            source="views"
+                            sx={{
+                                '& .RaInPlaceEditor-reading div': {
+                                    fontSize: 14,
+                                },
+                                '& .RaInPlaceEditor-saving div': {
+                                    fontSize: 14,
+                                },
+                                '& .RaInPlaceEditor-editing input': {
+                                    fontSize: 14,
+                                },
+                            }}
+                        />
                         <CloneButton />
                     </TabbedShowLayout.Tab>
                     <TabbedShowLayout.Tab
@@ -108,12 +125,17 @@ const PostShow = () => {
                             target="post_id"
                             sort={{ field: 'created_at', order: 'DESC' }}
                         >
-                            <Datagrid>
-                                <DateField source="created_at" />
-                                <TextField source="author.name" />
-                                <TextField source="body" />
-                                <EditButton />
-                            </Datagrid>
+                            <DataTable>
+                                <DataTable.Col
+                                    source="created_at"
+                                    field={DateField}
+                                />
+                                <DataTable.Col source="author.name" />
+                                <DataTable.Col source="body" />
+                                <DataTable.Col>
+                                    <EditButton />
+                                </DataTable.Col>
+                            </DataTable>
                         </ReferenceManyField>
                         <CreateRelatedComment />
                     </TabbedShowLayout.Tab>
