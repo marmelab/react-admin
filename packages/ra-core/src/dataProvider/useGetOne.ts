@@ -76,16 +76,14 @@ export const useGetOne = <RecordType extends RaRecord = any, ErrorType = Error>(
         queryFn: queryParams =>
             id == null
                 ? Promise.reject('useGetOne: id cannot be null')
-                : dataProvider
-                      .getOne<RecordType>(resource, {
-                          id,
-                          meta,
-                          signal:
-                              dataProvider.supportAbortSignal === true
-                                  ? queryParams.signal
-                                  : undefined,
-                      })
-                      .then(({ data, meta }) => ({ data, meta })),
+                : dataProvider.getOne<RecordType>(resource, {
+                      id,
+                      meta,
+                      signal:
+                          dataProvider.supportAbortSignal === true
+                              ? queryParams.signal
+                              : undefined,
+                  }),
         enabled: enabled ?? id != null,
         ...queryOptions,
     });
@@ -98,7 +96,7 @@ export const useGetOne = <RecordType extends RaRecord = any, ErrorType = Error>(
         )
             return;
         onSuccessEvent(result.data.data);
-    }, [onSuccessEvent, result.data?.data, result.error, result.isFetching]);
+    }, [onSuccessEvent, result.data, result.error, result.isFetching]);
 
     useEffect(() => {
         if (result.error == null || result.isFetching) return;
@@ -130,7 +128,7 @@ export const useGetOne = <RecordType extends RaRecord = any, ErrorType = Error>(
             result.data
                 ? {
                       ...result,
-                      ...result.data,
+                      data: result.data.data,
                   }
                 : result,
         [result]
