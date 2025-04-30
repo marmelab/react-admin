@@ -885,11 +885,6 @@ export default App;
 
 **Tip**: This example uses the function version of `setState` (`setDataProvider(() => dataProvider)`) instead of the more classic version (`setDataProvider(dataProvider)`). This is because some legacy Data Providers are actually functions, and `setState` would call them immediately on mount.
 
----
-layout: default
-title: "Offline Support"
----
-
 ## Offline Support
 
 React Query supports offline/local-first applications. To enable it in your React Admin application, install the required React Query packages:
