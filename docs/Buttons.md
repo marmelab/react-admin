@@ -1237,11 +1237,41 @@ export const PostShow = () => (
 | Prop          | Required | Type            | Default          | Description                                    |
 | ------------- | -------- | --------------- | ---------------- | ---------------------------------------------- |
 | `resource`    | Optional | `string`        | -                | target resource, e.g. 'posts'                  |
-| `label`       | Optional | `string`        | 'ra.action.list' | label or translation message to use            |
+| `label`       | Optional | `string`        | -                | label or translation message to use            |
 | `icon`        | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`            |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                       |
 
 It also supports [all the other `<Button>` props](#button).
+
+### `label`
+
+By default, the label is `List` in English. In other languages, it's the translation of the `'ra.action.list'` key.
+
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.list` (e.g. `resources.posts.action.list`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                list: 'See all posts'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
+
+```jsx
+<ListButton label="Delete this comment" />
+```
 
 ### `scrollToTop`
 
