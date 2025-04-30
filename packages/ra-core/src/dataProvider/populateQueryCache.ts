@@ -37,6 +37,11 @@ export const populateQueryCache = ({
                 record,
                 { updatedAt }
             );
+            queryClient.setQueryData(
+                [resource, 'getMany', { ids: [String(record.id)] }],
+                [record],
+                { updatedAt }
+            );
         });
         const recordIds = data[resource].map(record => String(record.id));
         queryClient.setQueryData(
