@@ -258,12 +258,48 @@ export const OptionTextElement = () => (
     </Wrapper>
 );
 
-const choicesForCreationSupport = [
-    { id: 1, name: 'Leo Tolstoy' },
-    { id: 2, name: 'Victor Hugo' },
-    { id: 3, name: 'William Shakespeare' },
-    { id: 4, name: 'Charles Baudelaire' },
-    { id: 5, name: 'Marcel Proust' },
+const choicesForCreationSupport: Partial<{
+    id: number;
+    name: string;
+    full_name: string;
+    first_name: string;
+    last_name: string;
+}>[] = [
+    {
+        id: 1,
+        name: 'Leo Tolstoy',
+        full_name: 'Leo Tolstoy',
+        first_name: 'Leo',
+        last_name: 'Tolstoy',
+    },
+    {
+        id: 2,
+        name: 'Victor Hugo',
+        full_name: 'Victor Hugo',
+        first_name: 'Victor',
+        last_name: 'Hugo',
+    },
+    {
+        id: 3,
+        name: 'William Shakespeare',
+        full_name: 'William Shakespeare',
+        first_name: 'William',
+        last_name: 'Shakespeare',
+    },
+    {
+        id: 4,
+        name: 'Charles Baudelaire',
+        full_name: 'Charles Baudelaire',
+        first_name: 'Charles',
+        last_name: 'Baudelaire',
+    },
+    {
+        id: 5,
+        name: 'Marcel Proust',
+        full_name: 'Marcel Proust',
+        first_name: 'Marcel',
+        last_name: 'Proust',
+    },
 ];
 
 const OnCreateInput = () => {
@@ -450,7 +486,7 @@ export const CreateDialog = () => (
     </Wrapper>
 );
 
-const CreateLabelInput = () => {
+const CreateLabelInput = ({ optionText }) => {
     const [choices, setChoices] = useState(choicesForCreationSupport);
     return (
         <AutocompleteInput
@@ -459,25 +495,53 @@ const CreateLabelInput = () => {
             onCreate={async filter => {
                 if (!filter) return;
 
-                const newOption = {
+                const newOption: Partial<{
+                    id: number;
+                    name: string;
+                    full_name: string;
+                    first_name: string;
+                    last_name: string;
+                }> = {
                     id: choices.length + 1,
-                    name: filter,
                 };
+                if (optionText == null) {
+                    newOption.name = filter;
+                } else if (typeof optionText === 'string') {
+                    newOption[optionText] = filter;
+                } else {
+                    newOption.first_name = filter;
+                    newOption.last_name = filter;
+                }
                 setChoices(options => [...options, newOption]);
                 // Wait until next tick to give some time for React to update the state
                 await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
             createLabel="Start typing to create a new item"
+            optionText={optionText}
         />
     );
 };
 
-export const CreateLabel = () => (
+export const CreateLabel = ({ optionText }: any) => (
     <Wrapper>
-        <CreateLabelInput />
+        <CreateLabelInput optionText={optionText} />
     </Wrapper>
 );
+CreateLabel.args = {
+    optionText: undefined,
+};
+CreateLabel.argTypes = {
+    optionText: {
+        options: ['default', 'string', 'function'],
+        mapping: {
+            default: undefined,
+            string: 'full_name',
+            function: choice => `${choice.first_name} ${choice.last_name}`,
+        },
+        control: { type: 'inline-radio' },
+    },
+};
 
 const CreateItemLabelInput = () => {
     const [choices, setChoices] = useState(choicesForCreationSupport);

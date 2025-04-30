@@ -321,10 +321,20 @@ export const OnCreate = () => {
     );
 };
 
-export const CreateLabel = () => {
-    const categories = [
-        { name: 'Tech', id: 'tech' },
-        { name: 'Lifestyle', id: 'lifestyle' },
+export const CreateLabel = ({ optionText }: any) => {
+    const categories: Partial<{
+        id: string;
+        name: string;
+        full_name: string;
+        language: string;
+    }>[] = [
+        { id: 'tech', name: 'Tech', full_name: 'Tech', language: 'en' },
+        {
+            id: 'lifestyle',
+            name: 'Lifestyle',
+            full_name: 'Lifestyle',
+            language: 'en',
+        },
     ];
     return (
         <Wrapper name="category">
@@ -332,19 +342,46 @@ export const CreateLabel = () => {
                 onCreate={() => {
                     const newCategoryName = prompt('Enter a new category');
                     if (!newCategoryName) return;
-                    const newCategory = {
+                    const newCategory: Partial<{
+                        id: string;
+                        name: string;
+                        full_name: string;
+                        language: string;
+                    }> = {
                         id: newCategoryName.toLowerCase(),
-                        name: newCategoryName,
                     };
+                    if (optionText == null) {
+                        newCategory.name = newCategoryName;
+                    } else if (typeof optionText === 'string') {
+                        newCategory[optionText] = newCategoryName;
+                    } else {
+                        newCategory.full_name = newCategoryName;
+                        newCategory.language = 'fr';
+                    }
                     categories.push(newCategory);
                     return newCategory;
                 }}
                 source="category"
                 choices={categories}
                 createLabel="Create a new category"
+                optionText={optionText}
             />
         </Wrapper>
     );
+};
+CreateLabel.args = {
+    optionText: undefined,
+};
+CreateLabel.argTypes = {
+    optionText: {
+        options: ['default', 'string', 'function'],
+        mapping: {
+            default: undefined,
+            string: 'full_name',
+            function: choice => `${choice.full_name} (${choice.language})`,
+        },
+        control: { type: 'inline-radio' },
+    },
 };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
