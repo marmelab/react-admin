@@ -122,6 +122,7 @@ export const SelectInput = (inProps: SelectInputProps) => {
         create,
         createLabel,
         createValue,
+        createHintValue,
         defaultValue,
         disableValue = 'disabled',
         emptyText = '',
@@ -192,6 +193,8 @@ export const SelectInput = (inProps: SelectInputProps) => {
         optionValue,
         disableValue,
         translateChoice: translateChoice ?? !isFromReference,
+        createValue,
+        createHintValue,
     });
     const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
@@ -249,6 +252,7 @@ export const SelectInput = (inProps: SelectInputProps) => {
         create,
         createLabel,
         createValue,
+        createHintValue,
         handleChange,
         onCreate,
         optionText,

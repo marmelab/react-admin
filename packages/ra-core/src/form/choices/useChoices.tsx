@@ -27,6 +27,8 @@ export interface UseChoicesOptions {
     optionText?: OptionText;
     disableValue?: string;
     translateChoice?: boolean;
+    createValue?: string;
+    createHintValue?: string;
 }
 
 /*
@@ -45,11 +47,18 @@ export const useChoices = ({
     optionValue = 'id',
     disableValue = 'disabled',
     translateChoice = true,
+    createValue = '@@ra-create',
+    createHintValue = '@@ra-create-hint',
 }: UseChoicesOptions) => {
     const translate = useTranslate();
 
     const getChoiceText = useCallback(
         choice => {
+            if (choice?.id === createValue || choice?.id === createHintValue) {
+                // For the create choice, we always use the name prop as text
+                return get(choice, 'name');
+            }
+
             if (isValidElement<{ record: any }>(optionText)) {
                 return (
                     <RecordContextProvider value={choice}>
@@ -68,7 +77,7 @@ export const useChoices = ({
                   ? translate(String(choiceName), { _: choiceName })
                   : String(choiceName);
         },
-        [optionText, translate, translateChoice]
+        [createHintValue, createValue, optionText, translate, translateChoice]
     );
 
     const getChoiceValue = useCallback(
