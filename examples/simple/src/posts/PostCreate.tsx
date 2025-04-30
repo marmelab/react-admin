@@ -160,7 +160,7 @@ const PostCreate = () => {
             mutationMode={mutationMode}
             transform={data => ({ ...data, id: getNewId(mutationMode) })}
         >
-            <Alert severity="info">
+            <Alert severity="info" role="presentation">
                 To test offline support, add either{' '}
                 <Link to="/posts/create?mutationMode=optimistic">
                     <code>?mutationMode=optimistic</code>
