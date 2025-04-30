@@ -39,6 +39,7 @@ export const useSupportCreateSuggestion = (
         createItemLabel,
         createValue = '@@ra-create',
         createHintValue = '@@ra-create-hint',
+        optionText = 'name',
         filter,
         handleChange,
         onCreate,
@@ -61,7 +62,7 @@ export const useSupportCreateSuggestion = (
                             ? createHintValue
                             : createValue,
                 },
-                'name',
+                typeof optionText === 'string' ? optionText : 'name',
                 filter && createItemLabel
                     ? translate(createItemLabel, {
                           item: filter,

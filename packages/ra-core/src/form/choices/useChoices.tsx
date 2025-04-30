@@ -55,8 +55,10 @@ export const useChoices = ({
     const getChoiceText = useCallback(
         choice => {
             if (choice?.id === createValue || choice?.id === createHintValue) {
-                // For the create choice, we always use the name prop as text
-                return get(choice, 'name');
+                return get(
+                    choice,
+                    typeof optionText === 'string' ? optionText : 'name'
+                );
             }
 
             if (isValidElement<{ record: any }>(optionText)) {
