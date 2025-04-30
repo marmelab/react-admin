@@ -9,6 +9,7 @@ import {
 import { RaRecord, GetListParams, GetListResult } from '../types';
 import { useDataProvider } from './useDataProvider';
 import { useEvent } from '../util';
+import { populateQueryCache } from './populateQueryCache';
 
 const MAX_DATA_LENGTH_TO_CACHE = 100;
 
@@ -166,6 +167,15 @@ export const useGetList = <
         result.status,
         result.isFetching,
     ]);
+
+    useEffect(() => {
+        if (result.data?.meta?.prefetched) {
+            populateQueryCache({
+                data: result.data?.meta.prefetched,
+                queryClient,
+            });
+        }
+    }, [result.data?.meta, queryClient]);
 
     return useMemo(
         () =>
