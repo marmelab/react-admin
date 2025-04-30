@@ -1008,7 +1008,7 @@ const CommentShow = () => (
 | ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
 | `resource`    | Optional | `string`        | -                | Resource to link to, e.g. 'posts'                |
 | `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
-| `label`       | Optional | `string`        | 'ra.action.edit' | Label or translation message to use              |
+| `label`       | Optional | `string`        | -                | Label or translation message to use              |
 | `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
 
@@ -1019,6 +1019,39 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
 **Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
+### `label`
+
+By default, the label for the `<EditButton>` is the translation key `ra.action.edit` that translates to "Edit".
+
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.edit` (e.g. `resources.posts.action.edit`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                edit: 'Modify %{recordRepresentation}'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
+
+
+```jsx
+export const PostEditButton = () => (
+    <EditButton label="Modify" />
+);
+```
 
 ### `scrollToTop`
 
@@ -1329,7 +1362,7 @@ const CommentEdit = () => (
 | `resource`    | Optional | `string`        | -                | The target resource, e.g. 'posts'                |
 | `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
 | `component`   | Optional | `ReactElement`  | -                | Base path to resource, e.g. '/posts'             |
-| `label`       | Optional | `string`        | 'ra.action.show' | Label or translation message to use              |
+| `label`       | Optional | `string`        | -                | Label or translation message to use              |
 | `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
 
@@ -1338,6 +1371,39 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
+
+### `label`
+
+By default, the label for the `<ShowButton>` is the translation key `ra.action.show` that translates to "Show".
+
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.show` (e.g. `resources.posts.action.show`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                show: 'Display %{recordRepresentation}'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
+
+
+```jsx
+export const PostShowButton = () => (
+    <ShowButton label="Display" />
+);
+```
 
 ### `scrollToTop`
 
