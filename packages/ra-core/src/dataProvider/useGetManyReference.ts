@@ -12,7 +12,6 @@ import {
     GetManyReferenceResult,
 } from '../types';
 import { useDataProvider } from './useDataProvider';
-import { populateQueryCache } from './populateQueryCache';
 import { useEvent } from '../util';
 
 /**
@@ -146,15 +145,6 @@ export const useGetManyReference = <
         if (result.status === 'pending') return;
         onSettledEvent(result.data, result.error);
     }, [onSettledEvent, result.data, result.error, result.status]);
-
-    useEffect(() => {
-        if (result.data?.meta?.prefetched) {
-            populateQueryCache({
-                data: result.data?.meta.prefetched,
-                queryClient,
-            });
-        }
-    }, [result.data?.meta, queryClient]);
 
     return useMemo(
         () =>

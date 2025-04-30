@@ -7,6 +7,7 @@ import validateResponseFormat from './validateResponseFormat';
 import { DataProvider } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 import { reactAdminFetchActions } from './dataFetchActions';
+import { populateQueryCache } from './populateQueryCache';
 
 /**
  * Hook for getting a dataProvider
@@ -113,7 +114,12 @@ export const useDataProvider = <
                                 ) {
                                     validateResponseFormat(response, type);
                                 }
-
+                                if (response?.meta?.prefetched) {
+                                    populateQueryCache({
+                                        data: response?.meta.prefetched,
+                                        queryClient,
+                                    });
+                                }
                                 return response;
                             })
                             .catch(error => {
