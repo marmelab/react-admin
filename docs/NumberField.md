@@ -63,7 +63,7 @@ If Intl is not available, `<NumberField>` outputs numbers as is (and ignores the
 | Prop        | Required | Type               | Default | Description                                                                      |
 | ----------- | -------- | ------------------ | ------- | -------------------------------------------------------------------------------- |
 | `locales`   | Optional | string             | ''      | Locale to use for formatting. Passed as first argument to `Intl.NumberFormat()`. |
-| `options`   | Optional | Object             | -       | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.   |
+| `options`   | Optional | Object             | `{ minimumFractionDigits: 0, maximumFractionDigits: 100 }` | Number formatting options. Passed as second argument to `Intl.NumberFormat()`.   |
 | `textAlign` | Optional | `'left' | 'right'` | `right` | Text alignment in a Datagrid                                                     |
 | `transform` | Optional | Function           | -       | A function to transform the value before display.                                |
 

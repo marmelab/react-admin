@@ -122,6 +122,14 @@ describe('<NumberField />', () => {
         expect(queryByText('2')).not.toBeNull();
     });
 
+    it('should display small decimal numbers correctly with default options', () => {
+        const { queryByText } = render(
+            <NumberField record={{ id: 123, value: 0.0001 }} source="value" />
+        );
+
+        expect(queryByText('0.0001')).not.toBeNull();
+    });
+
     describe('emptyText', () => {
         it.each([null, undefined])(
             'should render the emptyText when value is %s',

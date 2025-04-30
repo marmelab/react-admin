@@ -44,7 +44,7 @@ const NumberFieldImpl = <
         emptyText,
         source,
         locales,
-        options,
+        options = { minimumFractionDigits: 0, maximumFractionDigits: 100 },
         textAlign,
         transform = defaultTransform,
         ...rest
