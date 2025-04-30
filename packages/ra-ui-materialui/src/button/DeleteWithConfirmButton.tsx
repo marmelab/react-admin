@@ -13,6 +13,7 @@ import {
     useTranslate,
     RedirectionSideEffect,
     useGetRecordRepresentation,
+    useGetResourceLabel,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -28,7 +29,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         confirmContent: confirmContentProp,
         confirmColor = 'primary',
         icon = defaultIcon,
-        label = 'ra.action.delete',
+        label: labelProp,
         mutationMode = 'pessimistic',
         onClick,
         redirect = 'list',
@@ -43,6 +44,11 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     const translate = useTranslate();
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<DeleteWithConfirmButton> components should be used inside a <Resource> component or provided with a resource prop. (The <Resource> component set the resource prop for all its children).'
+        );
+    }
 
     const {
         open,
@@ -59,6 +65,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         resource,
         successMessage,
     });
+    const getResourceLabel = useGetResourceLabel();
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
     let confirmTitle = `resources.${resource}.message.delete_title`;
@@ -77,6 +84,15 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     if (isValidElement(recordRepresentation)) {
         recordRepresentation = `#${record?.id}`;
     }
+    const label =
+        labelProp ??
+        translate(`resources.${resource}.action.delete`, {
+            recordRepresentation,
+            _: translate(`ra.action.delete`, {
+                name: getResourceLabel(resource, 1),
+                recordRepresentation,
+            }),
+        });
 
     return (
         <Fragment>

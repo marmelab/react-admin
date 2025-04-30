@@ -49,7 +49,9 @@ describe('<DeleteWithConfirmButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(
-            screen.getByLabelText('ra.action.delete').getAttribute('type')
+            screen
+                .getByLabelText('resources.posts.action.delete')
+                .getAttribute('type')
         ).toEqual('button');
 
         spy.mockRestore();
@@ -92,7 +94,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.comments.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalledWith('comments', {
@@ -134,7 +138,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
@@ -175,7 +181,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
@@ -222,7 +230,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
@@ -274,7 +284,9 @@ describe('<DeleteWithConfirmButton />', () => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
 
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
         expect(screen.queryByDisplayValue('#20061703')).toBeDefined();
     });
 
@@ -322,7 +334,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.comments.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(notificationsSpy).toEqual([

@@ -730,7 +730,6 @@ export const en = {
 
 You can also customize this label by specifying a custom `label` prop:
 
-
 ```jsx
 export const PostCreateButton = () => (
     <CreateButton label="New post" />
@@ -799,7 +798,7 @@ You can also call it with a record and a resource:
 | Prop                | Required | Type                             | Default           | Description                                                             |
 |-------------------- |----------|--------------------------------- |-------------------|-------------------------------------------------------------------------|
 | `className`         | Optional | `string`                         | -                 | Class name to customize the look and feel of the button element itself  |
-| `label`             | Optional | `string`                         | 'Delete'          | label or translation message to use                                     |
+| `label`             | Optional | `string`                         | -                 | label or translation message to use                                     |
 | `icon`              | Optional | `ReactElement`                   | `<DeleteIcon>`    | iconElement, e.g. `<CommentIcon />`                                     |
 | `mutationMode`      | Optional | `string`                         | `'undoable'`      | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)         |
 | `mutation Options`  | Optional |                                  | null              | options for react-query `useMutation` hook                              |
@@ -813,7 +812,27 @@ You can also call it with a record and a resource:
 
 By default, the label is `Delete` in English. In other languages, it's the translation of the `'ra.action.delete'` key.
 
-To customize the `<DeleteButton>` label, you can either change the translation in your i18nProvider, or pass a `label` prop:
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.delete` (e.g. `resources.posts.action.delete`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                delete: 'Destroy %{recordRepresentation}'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
 
 ```jsx
 <DeleteButton label="Delete this comment" />

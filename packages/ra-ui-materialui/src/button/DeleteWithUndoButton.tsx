@@ -10,6 +10,9 @@ import {
     useRecordContext,
     useResourceContext,
     RedirectionSideEffect,
+    useTranslate,
+    useGetResourceLabel,
+    useGetRecordRepresentation,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -18,7 +21,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
     props: DeleteWithUndoButtonProps<RecordType>
 ) => {
     const {
-        label = 'ra.action.delete',
+        label: labelProp,
         className,
         icon = defaultIcon,
         onClick,
@@ -31,6 +34,11 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
 
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<DeleteWithUndoButton> components should be used inside a <Resource> component or provided with a resource prop. (The <Resource> component set the resource prop for all its children).'
+        );
+    }
     const { isPending, handleDelete } = useDeleteWithUndoController({
         record,
         resource,
@@ -39,6 +47,23 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         mutationOptions,
         successMessage,
     });
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const getRecordRepresentation = useGetRecordRepresentation();
+    const recordRepresentationValue = getRecordRepresentation(record);
+    const recordRepresentation =
+        typeof recordRepresentationValue === 'string'
+            ? recordRepresentationValue
+            : recordRepresentationValue?.toString();
+    const label =
+        labelProp ??
+        translate(`resources.${resource}.action.delete`, {
+            recordRepresentation,
+            _: translate(`ra.action.delete`, {
+                name: getResourceLabel(resource, 1),
+                recordRepresentation,
+            }),
+        });
 
     return (
         <Button
