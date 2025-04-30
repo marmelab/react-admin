@@ -478,6 +478,42 @@ describe('<ArrayInput />', () => {
             await waitFor(() => {
                 expect(screen.queryAllByRole('listitem')).toHaveLength(0);
             });
+
+            fireEvent.click(await screen.findByRole('button', { name: 'Add' }));
+            fireEvent.change(screen.getByLabelText('Name'), {
+                target: { value: 'Leo Tolstoy' },
+            });
+            fireEvent.change(screen.getByLabelText('Role'), {
+                target: { value: 'Writer' },
+            });
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+            fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+            await waitFor(() => {
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0); // TODO: fix it
+            });
+        });
+
+        it('should remove an empty line twice', async () => {
+            render(<Reset />);
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+
+            fireEvent.click(await screen.findByRole('button', { name: 'Add' }));
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+            fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+            await waitFor(() => {
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+            });
+
+            fireEvent.click(await screen.findByRole('button', { name: 'Add' }));
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+            fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+            await waitFor(() => {
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0); // TODO: fix it
+            });
         });
     });
 });
