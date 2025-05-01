@@ -44,7 +44,7 @@ const NumberFieldImpl = <
         emptyText,
         source,
         locales,
-        options,
+        options = {},
         textAlign,
         transform = defaultTransform,
         ...rest
@@ -69,6 +69,12 @@ const NumberFieldImpl = <
         value = transform(value);
     }
 
+    // Merge default options with user-provided options
+    const mergedOptions = {
+        maximumFractionDigits: 100,
+        ...options,
+    };
+
     return (
         <Typography
             variant="body2"
@@ -77,7 +83,7 @@ const NumberFieldImpl = <
             {...sanitizeFieldRestProps(rest)}
         >
             {hasNumberFormat && typeof value === 'number'
-                ? value.toLocaleString(locales, options)
+                ? value.toLocaleString(locales, mergedOptions)
                 : value}
         </Typography>
     );

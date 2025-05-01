@@ -164,4 +164,22 @@ describe('<NumberField />', () => {
             expect(queryByText('200')).not.toBeNull();
         });
     });
+
+    it('should display small decimal values correctly', () => {
+        const { queryByText } = render(
+            <NumberField record={{ id: 123, foo: 0.0001 }} source="foo" />
+        );
+        expect(queryByText('0.0001')).not.toBeNull();
+    });
+
+    it('should allow overriding maximumFractionDigits', () => {
+        const { queryByText } = render(
+            <NumberField
+                record={{ id: 123, foo: 0.0001 }}
+                source="foo"
+                options={{ maximumFractionDigits: 2 }}
+            />
+        );
+        expect(queryByText('0')).not.toBeNull();
+    });
 });

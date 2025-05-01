@@ -90,7 +90,8 @@ When not provided, it uses the browser locale.
 
 Options passed to `Intl.NumberFormat()`. See [the Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the `options` prop syntax.
 
-{% raw %}
+By default, `NumberField` sets `maximumFractionDigits` to 100 to ensure small decimal values are displayed correctly. You can override this by passing your own `maximumFractionDigits` value in the options.
+
 ```jsx
 import { NumberField }  from 'react-admin';
 
@@ -110,7 +111,6 @@ import { NumberField }  from 'react-admin';
 // renders the record { id: 1234, volume: 3500 } as
 <span>3,500 L</span>
 ```
-{% endraw %}
 
 **Tip**: If you need more formatting options than what `Intl.NumberFormat()` can provide, build your own field component leveraging a third-party library like [numeral.js](http://numeraljs.com/).
 
