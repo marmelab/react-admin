@@ -728,11 +728,6 @@ const CreateAuthor = () => {
 };
 
 export const InsideReferenceInputWithCreationSupport = () => {
-    const optionRenderer = choice => {
-        return choice.first_name && choice.last_name
-            ? `${choice.first_name} ${choice.last_name}`
-            : `${choice.name}`;
-    };
     return (
         <TestMemoryRouter initialEntries={['/books/1']}>
             <AdminContext
@@ -765,8 +760,6 @@ export const InsideReferenceInputWithCreationSupport = () => {
                                     >
                                         <SelectInput
                                             create={<CreateAuthor />}
-                                            createLabel="Create a new Author"
-                                            optionText={optionRenderer}
                                         />
                                     </ReferenceInput>
                                     <FormInspector name="author" />
