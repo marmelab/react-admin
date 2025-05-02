@@ -156,8 +156,7 @@ test-e2e: ## launch end-to-end tests (ex. BROWSER=firefox make test-e2e)
 		cd examples/simple && BABEL_ENV=cjs yarn build; \
 	fi
 
-	@NODE_ENV=test cd cypress && yarn test
-
+	@cd cypress && NODE_ENV=test yarn test
 
 test-e2e-local: ## launch end-to-end tests for development
 	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
