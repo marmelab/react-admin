@@ -742,11 +742,6 @@ const CreateAuthor = () => {
 };
 
 export const InsideReferenceArrayInputAndCreationSupport = () => {
-    const optionRenderer = choice => {
-        return choice.first_name && choice.last_name
-            ? `${choice.first_name} ${choice.last_name}`
-            : `${choice.name}`;
-    };
     return (
         <TestMemoryRouter initialEntries={['/books/1']}>
             <AdminContext
@@ -780,7 +775,6 @@ export const InsideReferenceArrayInputAndCreationSupport = () => {
                                         <SelectArrayInput
                                             create={<CreateAuthor />}
                                             createLabel="Create a new Author"
-                                            optionText={optionRenderer}
                                         />
                                     </ReferenceArrayInput>
                                     <FormInspector name="authors" />
