@@ -46,8 +46,10 @@ const App = () => {
     const singleTheme = themes.find(theme => theme.name === themeName)?.single;
     const lightTheme = themes.find(theme => theme.name === themeName)?.light;
     const darkTheme = themes.find(theme => theme.name === themeName)?.dark;
+
     return (
         <Admin
+            key={themeName}
             title="Posters Galore Admin"
             dataProvider={dataProviderFactory(
                 process.env.REACT_APP_DATA_PROVIDER || ''
