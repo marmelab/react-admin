@@ -10,8 +10,8 @@ export const showTip = async () => {
     if (!tipElement) return;
 
     const [tips, features] = await Promise.all([
-        getContents('./assets/tips.md'),
-        getContents('./assets/features.md'),
+      getContents("./assets/tips.md_ignore"),
+      getContents("./assets/features.md_ignore"),
     ]);
     const all = tips.concat(features);
 
