@@ -19,6 +19,7 @@ import { MutationOptions } from './UpdateButton.stories';
 import {
     Basic,
     NoRecordRepresentation,
+    WithCustomTitleAndContent,
     WithDefaultTranslation,
 } from './UpdateWithConfirmButton.stories';
 
@@ -278,6 +279,19 @@ describe('<UpdateWithConfirmButton />', () => {
                 'Are you sure you want to update post Lorem Ipsum?'
             )
         ).toBeNull();
+    });
+
+    it('should use the provided strings as the confirmation title and content', async () => {
+        render(<WithCustomTitleAndContent />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Update')
+        );
+        await screen.findByText('Update me?');
+        await screen.findByText('Please confirm the update');
     });
 
     it('should use the record representation in the confirmation title and content with a resource specific translation', async () => {

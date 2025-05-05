@@ -213,6 +213,30 @@ export const Basic = () => (
     </TestMemoryRouter>
 );
 
+export const WithCustomTitleAndContent = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProviderDefault}
+        >
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <UpdateWithConfirmButton
+                                data={{ title: 'modified' }}
+                                confirmTitle="Update me?"
+                                confirmContent="Please confirm the update"
+                            />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
 export const WithDefaultTranslation = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext
