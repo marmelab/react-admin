@@ -518,9 +518,9 @@ const PostCreate = () => {
 const CreateTag = () => {
     const { onCancel, onCreate } = useCreateSuggestionContext();
  
- const onTagCreate = (tag) => {
-    onCreate(tag);
- }
+    const onTagCreate = (tag) => {
+        onCreate(tag);
+    }
     return (
         <Dialog open onClose={onCancel}>
              <DialogTitle sx={{ m: 0, p: 2 }}>Create Tag</DialogTitle>
