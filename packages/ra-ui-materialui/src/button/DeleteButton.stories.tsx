@@ -7,6 +7,11 @@ import { QueryClient } from '@tanstack/react-query';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     AuthProvider,
+    I18nProvider,
+    memoryStore,
+    mergeTranslations,
+    MutationMode,
+    RecordContextProvider,
     Resource,
     ResourceContextProvider,
     TestMemoryRouter,
@@ -18,6 +23,9 @@ import { Datagrid } from '../list/datagrid/Datagrid';
 import { TextField } from '../field/TextField';
 import { AdminUI } from '../AdminUI';
 import { Notification } from '../layout';
+import { LocalesMenuButton } from './LocalesMenuButton';
+
+export default { title: 'ra-ui-materialui/button/DeleteButton' };
 
 const theme = createTheme({
     palette: {
@@ -32,12 +40,43 @@ const theme = createTheme({
     },
 });
 
-const i18nProvider = polyglotI18nProvider(
-    locale => (locale === 'fr' ? frenchMessages : englishMessages),
-    'en'
-);
+const defaultI18nProvider = () =>
+    polyglotI18nProvider(
+        locale => (locale === 'fr' ? frenchMessages : englishMessages),
+        'en',
+        [
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'Français' },
+        ]
+    );
 
-export default { title: 'ra-ui-materialui/button/DeleteButton' };
+const customI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      books: {
+                          action: {
+                              delete: 'Détruire %{recordRepresentation}',
+                          },
+                      },
+                  },
+              })
+            : mergeTranslations(englishMessages, {
+                  resources: {
+                      books: {
+                          action: {
+                              delete: 'Destroy %{recordRepresentation}',
+                          },
+                      },
+                  },
+              }),
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
 
 export const Basic = () => (
     <AdminContext>
@@ -48,7 +87,7 @@ export const Basic = () => (
 );
 
 export const Pessimistic = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={defaultI18nProvider()}>
         <ResourceContextProvider value="posts">
             <DeleteButton
                 mutationMode="pessimistic"
@@ -60,7 +99,7 @@ export const Pessimistic = () => (
 );
 
 export const PessimisticWithCustomDialogContent = () => (
-    <AdminContext i18nProvider={i18nProvider}>
+    <AdminContext i18nProvider={defaultI18nProvider()}>
         <ResourceContextProvider value="posts">
             <DeleteButton
                 mutationMode="pessimistic"
@@ -101,6 +140,53 @@ export const ContainedWithUserDefinedPalette = () => (
         </ResourceContextProvider>
     </AdminContext>
 );
+
+export const Label = ({
+    mutationMode = 'undoable',
+    translations = 'default',
+    i18nProvider = translations === 'default'
+        ? defaultI18nProvider()
+        : customI18nProvider,
+    label,
+}: {
+    mutationMode?: MutationMode;
+    i18nProvider?: I18nProvider;
+    translations?: 'default' | 'resource specific';
+    label?: string;
+}) => (
+    <TestMemoryRouter>
+        <AdminContext i18nProvider={i18nProvider} store={memoryStore()}>
+            <ResourceContextProvider value="books">
+                <RecordContextProvider
+                    value={{ id: 1, title: 'War and Peace' }}
+                >
+                    <div>
+                        <DeleteButton
+                            label={label}
+                            mutationMode={mutationMode}
+                        />
+                    </div>
+                </RecordContextProvider>
+                <LocalesMenuButton />
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+Label.args = {
+    mutationMode: 'undoable',
+    translations: 'default',
+};
+Label.argTypes = {
+    mutationMode: {
+        options: ['undoable', 'optimistic', 'pessimistic'],
+        control: { type: 'select' },
+    },
+    translations: {
+        options: ['default', 'resource specific'],
+        control: { type: 'radio' },
+    },
+};
 
 export const FullApp = () => {
     const queryClient = new QueryClient();
@@ -314,7 +400,10 @@ export const InList = ({ mutationMode }) => {
         process.env.NODE_ENV === 'development' ? 500 : 0
     );
     return (
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={defaultI18nProvider()}
+        >
             <AdminUI>
                 <Resource
                     name="books"
@@ -340,7 +429,10 @@ export const NotificationDefault = () => {
         delete: () => Promise.resolve({ data: { id: 1 } }),
     } as any;
     return (
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={defaultI18nProvider()}
+        >
             <DeleteButton record={{ id: 1 }} resource="books" />
             <Notification />
         </AdminContext>

@@ -571,9 +571,29 @@ To override the style of all instances of `<Edit>` components using the [applica
 
 ## `title`
 
-By default, the title for the Edit view is “Edit [resource_name] [record representation]”. Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
+By default, the title for the Edit view is the translation key `ra.page.edit` that translates to “Edit [resource_name] [record representation]”. Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
 
-You can customize this title by specifying a custom `title` string:
+You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.page.edit` (e.g. `resources.posts.page.edit`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            page: {
+                edit: 'Update post "%{recordRepresentation}"'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this title by specifying a custom `title` string:
 
 ```jsx
 export const PostEdit = () => (

@@ -1,4 +1,7 @@
 import * as React from 'react';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import {
     AuthProvider,
     CoreAdminContext,
@@ -9,10 +12,81 @@ import {
     testDataProvider,
     useSaveContext,
     useRecordContext,
+    I18nProvider,
+    mergeTranslations,
+    useEditContext,
+    useLocaleState,
 } from '../..';
 
 export default {
     title: 'ra-core/controller/EditBase',
+};
+
+const defaultI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      posts: {
+                          name: 'Article |||| Articles',
+                      },
+                  },
+              })
+            : englishMessages,
+    'en'
+);
+
+const customI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      posts: {
+                          page: {
+                              edit: "Modifier l'article %{recordRepresentation}",
+                          },
+                      },
+                  },
+              })
+            : mergeTranslations(englishMessages, {
+                  resources: {
+                      posts: {
+                          page: {
+                              edit: 'Update article %{recordRepresentation}',
+                          },
+                      },
+                  },
+              }),
+    'en'
+);
+
+export const DefaultTitle = ({
+    translations = 'default',
+    i18nProvider = translations === 'default'
+        ? defaultI18nProvider
+        : customI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+    translations?: 'default' | 'resource specific';
+}) => (
+    <CoreAdminContext
+        dataProvider={defaultDataProvider}
+        i18nProvider={i18nProvider}
+    >
+        <EditBase {...defaultProps}>
+            <Title />
+        </EditBase>
+    </CoreAdminContext>
+);
+
+DefaultTitle.args = {
+    translations: 'default',
+};
+DefaultTitle.argTypes = {
+    translations: {
+        options: ['default', 'resource specific'],
+        control: { type: 'radio' },
+    },
 };
 
 export const NoAuthProvider = ({
@@ -76,8 +150,9 @@ export const AccessControl = ({
 );
 
 const defaultDataProvider = testDataProvider({
-    // @ts-ignore
-    getOne: () => Promise.resolve({ data: { id: 12, test: 'Hello' } }),
+    getOne: () =>
+        // @ts-ignore
+        Promise.resolve({ data: { id: 12, test: 'Hello', title: 'Hello' } }),
 });
 
 const defaultProps = {
@@ -103,5 +178,21 @@ const Child = ({
             <p>{record?.test}</p>
             <button onClick={handleClick}>save</button>
         </>
+    );
+};
+
+const Title = () => {
+    const { defaultTitle } = useEditContext();
+    const [locale, setLocale] = useLocaleState();
+    return (
+        <div>
+            <strong>
+                {defaultTitle} ({locale})
+            </strong>
+            <div>
+                <button onClick={() => setLocale('en')}>EN</button>
+                <button onClick={() => setLocale('fr')}>FR</button>
+            </div>
+        </div>
     );
 };

@@ -14,6 +14,7 @@ import {
     useResourceContext,
     useCreatePath,
     useCanAccess,
+    useGetResourceLabel,
 } from 'ra-core';
 import { Link, type To } from 'react-router-dom';
 
@@ -40,7 +41,7 @@ const CreateButton = (inProps: CreateButtonProps) => {
     const {
         className,
         icon = defaultIcon,
-        label = 'ra.action.create',
+        label: labelProp,
         resource: resourceProp,
         scrollToTop = true,
         variant,
@@ -63,6 +64,14 @@ const CreateButton = (inProps: CreateButtonProps) => {
     });
     const createPath = useCreatePath();
     const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const label =
+        labelProp ??
+        translate(`resources.${resource}.action.create`, {
+            _: translate(`ra.action.create`, {
+                name: getResourceLabel(resource, 1),
+            }),
+        });
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
@@ -85,7 +94,7 @@ const CreateButton = (inProps: CreateButtonProps) => {
             // @ts-ignore FabProps ships its own runtime palette `FabPropsColorOverrides` provoking an overlap error with `ButtonProps`
             color="primary"
             className={clsx(CreateButtonClasses.floating, className)}
-            aria-label={label && translate(label)}
+            aria-label={label}
             {...rest}
             {...linkParams}
         >

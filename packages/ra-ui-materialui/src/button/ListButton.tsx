@@ -1,7 +1,13 @@
 import * as React from 'react';
 import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
-import { useResourceContext, useCreatePath, useCanAccess } from 'ra-core';
+import {
+    useResourceContext,
+    useCreatePath,
+    useCanAccess,
+    useTranslate,
+    useGetResourceLabel,
+} from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -34,7 +40,7 @@ import { Button, ButtonProps } from './Button';
 export const ListButton = (props: ListButtonProps) => {
     const {
         icon = defaultIcon,
-        label = 'ra.action.list',
+        label: labelProp,
         resource: resourceProp,
         scrollToTop = true,
         ...rest
@@ -50,10 +56,19 @@ export const ListButton = (props: ListButtonProps) => {
         resource,
     });
     const createPath = useCreatePath();
-
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
     if (!canAccess || isPending) {
         return null;
     }
+
+    const label =
+        labelProp ??
+        translate(`resources.${resource}.action.list`, {
+            _: translate(`ra.action.list`, {
+                name: getResourceLabel(resource, 1),
+            }),
+        });
 
     return (
         <Button

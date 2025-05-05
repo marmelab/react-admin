@@ -8,6 +8,9 @@ import {
     useRecordContext,
     useCreatePath,
     useCanAccess,
+    useTranslate,
+    useGetResourceLabel,
+    useGetRecordRepresentation,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -30,7 +33,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
 ) => {
     const {
         icon = defaultIcon,
-        label = 'ra.action.show',
+        label: labelProp,
         record: recordProp,
         resource: resourceProp,
         scrollToTop = true,
@@ -49,7 +52,27 @@ const ShowButton = <RecordType extends RaRecord = any>(
         resource,
         record,
     });
+    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const getRecordRepresentation = useGetRecordRepresentation();
+    const recordRepresentationValue = getRecordRepresentation(record);
+
     if (!record || !canAccess || isPending) return null;
+
+    const recordRepresentation =
+        typeof recordRepresentationValue === 'string'
+            ? recordRepresentationValue
+            : recordRepresentationValue?.toString();
+    const label =
+        labelProp ??
+        translate(`resources.${resource}.action.show`, {
+            recordRepresentation,
+            _: translate(`ra.action.show`, {
+                name: getResourceLabel(resource, 1),
+                recordRepresentation,
+            }),
+        });
+
     return (
         <Button
             component={Link}
