@@ -1941,3 +1941,110 @@ const App = () => (
 
 export default App;
 ```
+
+---
+
+By using `<DatagridAG>` or `<DatagridAGClient>`, you can easily customize the cell style in the `columnDefs` definition using `cellStyle`:
+
+{% raw %}
+```jsx
+const columnDefs = [
+  // same style for each row
+  {
+    field: 'static',
+    cellStyle: {color: 'red', 'background-color': 'green'}
+  },
+  // different styles for each row
+  {
+    field: 'dynamic',
+    cellStyle: params => {
+      if (params.value === 'Police') {
+        //mark police cells as red
+        return {color: 'red', backgroundColor: 'green'};
+      }
+      return null;
+    }
+  },
+];
+```
+{% endraw %}
+
+https://www.ag-grid.com/react-data-grid/cell-styles/#cell-style
+
+---
+
+Similar to what you can do with `<Datagrid>`, you can also use [the CSS API](https://marmelab.com/react-admin/Datagrid.html#sx-css-api) to style your `<DatagridAG>` or your `<DatagridAGClient>`.
+
+{% raw %}
+```tsx
+<DatagridAG
+  columnDefs={columnDefs}
+  sx={{
+    ".ag-cell.ag-column-first" {
+      backgroundColor: "#2244CC44",
+    }
+    ".ag-cell.ag-column-last" {
+      backgroundColor: "#CC333344",
+    }
+  }}
+/>
+```
+{% endraw %}
+
+https://www.ag-grid.com/react-data-grid/cell-styles/#first--last-columns
+
+---
+
+You can add custom CSS classes to any column or cell in `DatagridAG` or `DatagridAGClient`, using the  `cellClass` or `cellClassRules` keys of `columnDefs`:  
+
+{% raw %}
+```tsx
+const columnDefs = [
+  // return same class for each row
+  {
+    field: 'static',
+    cellClass: 'my-class'
+  },
+  // return same array of classes for each row
+  {
+    field: 'staticArray',
+    cellClass: ['my-class1','my-class2'],
+  },
+  // return class based on function
+  {
+    field: 'function',
+    cellClass: params => {
+      return params.value === 'something' ? 'my-class-1' : 'my-class-2';
+    },
+  },
+  // return array of classes based on function
+  {
+    field: 'functionArray',
+    cellClass: params => ['my-class-1','my-class-2'],
+  },
+  // return array of classes based on many functions with `cellClassRules`
+  {
+    field: 'functionRules',
+    cellClassRules: {
+      // apply green to 2008
+      'rag-green-outer': params => params.value === 2008,
+      // apply blue to 2004
+      'rag-blue-outer': params => params.value === 2004,
+      // apply red to 2000
+      'rag-red-outer': params => params.value === 2000,
+    }
+  }
+  // return array of classes based on many functions with `cellClassRules`
+  {
+    field: 'simplifiedFunctionRules',
+    cellClassRules: {
+      'rag-green': 'x < 20',
+      'rag-blue': 'x >= 20 && x < 25',
+      'rag-red': 'x >= 25',
+    }
+  }
+];
+```
+{% endraw %}
+
+https://www.ag-grid.com/react-data-grid/cell-styles
