@@ -899,8 +899,6 @@ Then, register default functions for React Admin mutations on the `QueryClient` 
 // in src/queryClient.ts
 import { addOfflineSupportToQueryClient } from 'react-admin';
 import { QueryClient } from '@tanstack/react-query';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { dataProvider } from './dataProvider';
 
 export const queryClient = new QueryClient();
