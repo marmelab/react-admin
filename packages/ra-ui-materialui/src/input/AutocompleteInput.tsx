@@ -326,6 +326,8 @@ If you provided a React element for the optionText prop, you must also provide t
             optionText ??
             (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
+        createValue,
+        createHintValue,
         selectedItem: selectedChoice,
         suggestionLimit,
         translateChoice: translateChoice ?? !isFromReference,

@@ -96,7 +96,7 @@ export const UpdateWithConfirmButton = (
         }
     );
 
-    const handleClick = e => {
+    const handleClick = (e: React.MouseEvent) => {
         setOpen(true);
         e.stopPropagation();
     };
@@ -155,21 +155,25 @@ export const UpdateWithConfirmButton = (
                     smart_count: 1,
                     name: resourceName,
                     recordRepresentation,
-                    _: translate('ra.message.bulk_update_title', {
-                        smart_count: 1,
-                        name: resourceName,
-                        recordRepresentation,
-                    }),
+                    _:
+                        confirmTitleProp ??
+                        translate('ra.message.bulk_update_title', {
+                            smart_count: 1,
+                            name: resourceName,
+                            recordRepresentation,
+                        }),
                 }}
                 contentTranslateOptions={{
                     smart_count: 1,
                     name: resourceName,
                     recordRepresentation,
-                    _: translate('ra.message.bulk_update_content', {
-                        smart_count: 1,
-                        name: resourceName,
-                        recordRepresentation,
-                    }),
+                    _:
+                        confirmContentProp ??
+                        translate('ra.message.bulk_update_content', {
+                            smart_count: 1,
+                            name: resourceName,
+                            recordRepresentation,
+                        }),
                 }}
                 onConfirm={handleUpdate}
                 onClose={handleDialogClose}
