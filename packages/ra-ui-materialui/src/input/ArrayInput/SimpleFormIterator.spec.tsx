@@ -456,16 +456,24 @@ describe('<SimpleFormIterator />', () => {
             expect(inputElements.length).toBe(1);
         });
 
-        expect(
-            screen
-                .queryAllByLabelText('Email')
-                .map(inputElement => (inputElement as HTMLInputElement).value)
-        ).toEqual(['']);
-        expect(
-            screen
-                .queryAllByLabelText('Name')
-                .map(inputElement => (inputElement as HTMLInputElement).value)
-        ).toEqual(['']);
+        await waitFor(() => {
+            expect(
+                screen
+                    .queryAllByLabelText('Email')
+                    .map(
+                        inputElement => (inputElement as HTMLInputElement).value
+                    )
+            ).toEqual(['']);
+        });
+        await waitFor(() => {
+            expect(
+                screen
+                    .queryAllByLabelText('Name')
+                    .map(
+                        inputElement => (inputElement as HTMLInputElement).value
+                    )
+            ).toEqual(['']);
+        });
 
         expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
