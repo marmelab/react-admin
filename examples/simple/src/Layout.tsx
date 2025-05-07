@@ -61,7 +61,7 @@ const useIsOnline = () => {
 };
 
 /**
- * When react-query resume persisted mutations through their default functions (provided in the getOfflineFirstQueryClient file) after the browser tab
+ * When react-query resumes persisted mutations through their default functions (provided in the getOfflineFirstQueryClient file) after the browser tab
  * has been closed, it cannot handle their side effects unless we set up some defaults. In order to leverage the react-admin notification system
  * we add a default onSettled function to the mutation defaults here.
  */
