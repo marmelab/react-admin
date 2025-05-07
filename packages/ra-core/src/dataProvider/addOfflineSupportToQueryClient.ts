@@ -1,5 +1,5 @@
 import type { QueryClient } from '@tanstack/react-query';
-import { reactAdminMutations } from './dataFetchActions';
+import { DataProviderMutations } from './dataFetchActions';
 import type { DataProvider } from '../types';
 
 /**
@@ -90,7 +90,7 @@ export const addOfflineSupportToQueryClient = ({
     queryClient: QueryClient;
 }) => {
     resources.forEach(resource => {
-        reactAdminMutations.forEach(mutation => {
+        DataProviderMutations.forEach(mutation => {
             queryClient.setMutationDefaults([resource, mutation], {
                 mutationFn: async params => {
                     const dataProviderFn = dataProvider[mutation] as Function;
@@ -99,4 +99,6 @@ export const addOfflineSupportToQueryClient = ({
             });
         });
     });
+
+    return queryClient;
 };

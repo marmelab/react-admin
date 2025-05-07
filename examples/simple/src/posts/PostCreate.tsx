@@ -46,7 +46,6 @@ import { Link, useSearchParams } from 'react-router-dom';
 let next_id = 100;
 const getNewId = (mutationMode: MutationMode) => {
     const id = mutationMode === 'pessimistic' ? undefined : next_id++;
-    console.log({ mutationMode, id });
     return id;
 };
 

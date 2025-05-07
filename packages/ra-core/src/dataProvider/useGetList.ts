@@ -176,7 +176,7 @@ export const useGetList = <
                   }
                 : result,
         [result]
-    ) as unknown as UseQueryResult<RecordType[], Error> & {
+    ) as UseQueryResult<RecordType[], Error> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;

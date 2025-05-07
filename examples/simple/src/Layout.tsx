@@ -9,7 +9,7 @@ import {
 } from 'react-admin';
 import { onlineManager, useQueryClient } from '@tanstack/react-query';
 import { Stack, Tooltip } from '@mui/material';
-import CircleIcon from '@mui/icons-material/Circle';
+import OfflineIcon from '@mui/icons-material/SignalWifiConnectedNoInternet4';
 import '../assets/app.css';
 
 const MyAppBar = () => {
@@ -18,44 +18,45 @@ const MyAppBar = () => {
         <AppBar>
             <TitlePortal />
             <Stack direction="row" spacing={1}>
-                <Tooltip title={isOnline ? 'Online' : 'Offline'}>
-                    <CircleIcon
-                        sx={{
-                            color: isOnline ? 'success.main' : 'warning.main',
-                            width: 24,
-                            height: 24,
-                        }}
-                    />
-                </Tooltip>
+                {!isOnline ? (
+                    <Tooltip title="Offline">
+                        <OfflineIcon
+                            sx={{
+                                color: 'warning.main',
+                                width: 24,
+                                height: 24,
+                            }}
+                        />
+                    </Tooltip>
+                ) : null}
             </Stack>
             <InspectorButton />
         </AppBar>
     );
 };
 
-export default ({ children }) => {
-    return (
-        <>
-            <Layout appBar={MyAppBar}>
-                {children}
-                <NotificationsFromQueryClient />
-            </Layout>
-            <ReactQueryDevtools
-                initialIsOpen={false}
-                buttonPosition="bottom-left"
-            />
-        </>
-    );
-};
+export const MyLayout = ({ children }) => (
+    <>
+        <Layout appBar={MyAppBar}>
+            {children}
+            <NotificationsFromQueryClient />
+        </Layout>
+        <ReactQueryDevtools
+            initialIsOpen={false}
+            buttonPosition="bottom-left"
+        />
+    </>
+);
 
 const useIsOnline = () => {
     const [isOnline, setIsOnline] = React.useState(onlineManager.isOnline());
+
     React.useEffect(() => {
-        const handleChange = isOnline => {
-            setIsOnline(isOnline);
+        const handleChange = () => {
+            setIsOnline(onlineManager.isOnline());
         };
         return onlineManager.subscribe(handleChange);
-    });
+    }, []);
 
     return isOnline;
 };
@@ -69,12 +70,15 @@ const NotificationsFromQueryClient = () => {
     const queryClient = useQueryClient();
     const notify = useNotify();
 
-    queryClient.setMutationDefaults([], {
-        onSettled(data, error) {
-            if (error) {
-                notify(error.message, { type: 'error' });
-            }
-        },
-    });
+    React.useEffect(() => {
+        queryClient.setMutationDefaults([], {
+            onSettled(data, error) {
+                if (error) {
+                    notify(error.message, { type: 'error' });
+                }
+            },
+        });
+    }, [queryClient, notify]);
+
     return null;
 };

@@ -155,7 +155,7 @@ export const useGetManyReference = <
                   }
                 : result,
         [result]
-    ) as unknown as UseQueryResult<RecordType[], ErrorType> & {
+    ) as UseQueryResult<RecordType[], ErrorType> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;

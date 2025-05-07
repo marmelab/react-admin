@@ -16,7 +16,7 @@ import CustomRouteLayout from './customRouteLayout';
 import CustomRouteNoLayout from './customRouteNoLayout';
 import dataProvider from './dataProvider';
 import i18nProvider from './i18nProvider';
-import Layout from './Layout';
+import { MyLayout } from './Layout';
 import posts from './posts';
 import users from './users';
 import tags from './tags';
@@ -26,7 +26,7 @@ const localStoragePersister = createSyncStoragePersister({
     storage: window.localStorage,
 });
 
-addOfflineSupportToQueryClient({
+const queryClientWithOfflineSupport = addOfflineSupportToQueryClient({
     queryClient,
     dataProvider,
     resources: ['posts', 'comments', 'tags', 'users'],
@@ -38,20 +38,20 @@ const root = createRoot(container);
 root.render(
     <React.StrictMode>
         <PersistQueryClientProvider
-            client={queryClient}
+            client={queryClientWithOfflineSupport}
             persistOptions={{ persister: localStoragePersister }}
             onSuccess={() => {
                 // resume mutations after initial restore from localStorage is successful
-                queryClient.resumePausedMutations();
+                queryClientWithOfflineSupport.resumePausedMutations();
             }}
         >
             <Admin
                 authProvider={authProvider}
                 dataProvider={dataProvider}
                 i18nProvider={i18nProvider}
-                queryClient={queryClient}
+                queryClient={queryClientWithOfflineSupport}
                 title="Example Admin"
-                layout={Layout}
+                layout={MyLayout}
             >
                 <Resource name="posts" {...posts} />
                 <Resource name="comments" {...comments} />

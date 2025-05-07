@@ -8,7 +8,7 @@ export const UPDATE_MANY = 'UPDATE_MANY';
 export const DELETE = 'DELETE';
 export const DELETE_MANY = 'DELETE_MANY';
 
-export const reactAdminMutations = [
+export const DataProviderMutations = [
     'create',
     'delete',
     'update',
