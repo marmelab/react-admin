@@ -67,7 +67,16 @@ export const InfinitePagination = ({
     if (isPending) return null;
 
     return (
-        <Box ref={observerElem} py={2} textAlign="center" sx={sx}>
+        <Box
+            ref={observerElem}
+            sx={[
+                {
+                    py: 2,
+                    textAlign: 'center',
+                },
+                ...(Array.isArray(sx) ? sx : [sx]),
+            ]}
+        >
             {isFetchingNextPage && hasNextPage && (
                 <CircularProgress size="1.5em" />
             )}

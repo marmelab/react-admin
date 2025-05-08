@@ -23,33 +23,71 @@ const VisitorEdit = () => {
         <Edit title={<VisitorTitle />} aside={<Aside />}>
             <SimpleForm validate={validateForm}>
                 <div>
-                    <Grid container width={{ xs: '100%', xl: 800 }} spacing={2}>
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{
+                            width: { xs: '100%', xl: 800 },
+                        }}
+                    >
                         <Grid size={{ xs: 12, md: 8 }}>
                             <Typography variant="h6" gutterBottom>
                                 {translate(
                                     'resources.customers.fieldGroups.identity'
                                 )}
                             </Typography>
-                            <Box display={{ xs: 'block', sm: 'flex' }}>
-                                <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                            <Box
+                                sx={{
+                                    display: { xs: 'block', sm: 'flex' },
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        flex: 1,
+                                        mr: { xs: 0, sm: '0.5em' },
+                                    }}
+                                >
                                     <TextInput source="first_name" isRequired />
                                 </Box>
-                                <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
+                                <Box
+                                    sx={{
+                                        flex: 1,
+                                        ml: { xs: 0, sm: '0.5em' },
+                                    }}
+                                >
                                     <TextInput source="last_name" isRequired />
                                 </Box>
                             </Box>
                             <TextInput type="email" source="email" isRequired />
-                            <Box display={{ xs: 'block', sm: 'flex' }}>
-                                <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                            <Box
+                                sx={{
+                                    display: { xs: 'block', sm: 'flex' },
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        flex: 1,
+                                        mr: { xs: 0, sm: '0.5em' },
+                                    }}
+                                >
                                     <DateInput
                                         source="birthday"
                                         helperText={false}
                                     />
                                 </Box>
-                                <Box flex={2} ml={{ xs: 0, sm: '0.5em' }} />
+                                <Box
+                                    sx={{
+                                        flex: 2,
+                                        ml: { xs: 0, sm: '0.5em' },
+                                    }}
+                                />
                             </Box>
 
-                            <Box mt="1em" />
+                            <Box
+                                sx={{
+                                    mt: '1em',
+                                }}
+                            />
 
                             <Typography variant="h6" gutterBottom>
                                 {translate(
@@ -61,20 +99,38 @@ const VisitorEdit = () => {
                                 multiline
                                 helperText={false}
                             />
-                            <Box display={{ xs: 'block', sm: 'flex' }}>
-                                <Box flex={2} mr={{ xs: 0, sm: '0.5em' }}>
+                            <Box
+                                sx={{
+                                    display: { xs: 'block', sm: 'flex' },
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        flex: 2,
+                                        mr: { xs: 0, sm: '0.5em' },
+                                    }}
+                                >
                                     <TextInput
                                         source="city"
                                         helperText={false}
                                     />
                                 </Box>
-                                <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                                <Box
+                                    sx={{
+                                        flex: 1,
+                                        mr: { xs: 0, sm: '0.5em' },
+                                    }}
+                                >
                                     <TextInput
                                         source="stateAbbr"
                                         helperText={false}
                                     />
                                 </Box>
-                                <Box flex={2}>
+                                <Box
+                                    sx={{
+                                        flex: 2,
+                                    }}
+                                >
                                     <TextInput
                                         source="zipcode"
                                         helperText={false}
@@ -82,18 +138,36 @@ const VisitorEdit = () => {
                                 </Box>
                             </Box>
 
-                            <Box mt="1em" />
+                            <Box
+                                sx={{
+                                    mt: '1em',
+                                }}
+                            />
 
                             <Typography variant="h6" gutterBottom>
                                 {translate(
                                     'resources.customers.fieldGroups.change_password'
                                 )}
                             </Typography>
-                            <Box display={{ xs: 'block', sm: 'flex' }}>
-                                <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                            <Box
+                                sx={{
+                                    display: { xs: 'block', sm: 'flex' },
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        flex: 1,
+                                        mr: { xs: 0, sm: '0.5em' },
+                                    }}
+                                >
                                     <PasswordInput source="password" />
                                 </Box>
-                                <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
+                                <Box
+                                    sx={{
+                                        flex: 1,
+                                        ml: { xs: 0, sm: '0.5em' },
+                                    }}
+                                >
                                     <PasswordInput source="confirm_password" />
                                 </Box>
                             </Box>

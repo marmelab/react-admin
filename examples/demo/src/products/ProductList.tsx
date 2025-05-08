@@ -32,14 +32,26 @@ const ProductList = () => {
             <FilterContext.Provider value={productFilters}>
                 <ListActions isSmall={isSmall} />
                 {isSmall && (
-                    <Box m={1}>
+                    <Box
+                        sx={{
+                            m: 1,
+                        }}
+                    >
                         <FilterForm />
                     </Box>
                 )}
             </FilterContext.Provider>
-            <Box display="flex">
+            <Box
+                sx={{
+                    display: 'flex',
+                }}
+            >
                 <Aside />
-                <Box width={isSmall ? 'auto' : 'calc(100% - 16em)'}>
+                <Box
+                    sx={{
+                        width: isSmall ? 'auto' : 'calc(100% - 16em)',
+                    }}
+                >
                     <ImageList />
                     <Pagination rowsPerPageOptions={[12, 24, 48, 72]} />
                 </Box>

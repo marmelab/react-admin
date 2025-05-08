@@ -52,7 +52,11 @@ const ReviewList = () => {
     const match = matchPath('/reviews/:id', location.pathname);
 
     return (
-        <Box display="flex">
+        <Box
+            sx={{
+                display: 'flex',
+            }}
+        >
             <List
                 sx={{
                     flexGrow: 1,

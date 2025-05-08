@@ -39,7 +39,12 @@ const LoadingGridList = () => {
         <ImageList rowHeight={180} cols={cols} sx={{ m: 0 }}>
             {times(perPage, key => (
                 <ImageListItem key={key}>
-                    <Box bgcolor="grey.300" height="100%" />
+                    <Box
+                        sx={{
+                            bgcolor: 'grey.300',
+                            height: '100%',
+                        }}
+                    />
                 </ImageListItem>
             ))}
         </ImageList>

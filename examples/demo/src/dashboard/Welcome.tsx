@@ -19,12 +19,24 @@ const Welcome = () => {
                 marginBottom: '1em',
             }}
         >
-            <Box display="flex">
-                <Box flex="1">
+            <Box
+                sx={{
+                    display: 'flex',
+                }}
+            >
+                <Box
+                    sx={{
+                        flex: '1',
+                    }}
+                >
                     <Typography variant="h5" component="h2" gutterBottom>
                         {translate('pos.dashboard.welcome.title')}
                     </Typography>
-                    <Box maxWidth="40em">
+                    <Box
+                        sx={{
+                            maxWidth: '40em',
+                        }}
+                    >
                         <Typography variant="body1" component="p" gutterBottom>
                             {translate('pos.dashboard.welcome.subtitle')}
                         </Typography>
@@ -57,14 +69,14 @@ const Welcome = () => {
                     </CardActions>
                 </Box>
                 <Box
-                    display={{ xs: 'none', sm: 'none', md: 'block' }}
                     sx={{
+                        display: { xs: 'none', sm: 'none', md: 'block' },
+                        width: '16em',
+                        height: '9em',
+                        overflow: 'hidden',
                         background: `url(${publishArticleImage}) top right / cover`,
                         marginLeft: 'auto',
                     }}
-                    width="16em"
-                    height="9em"
-                    overflow="hidden"
                 />
             </Box>
         </Card>

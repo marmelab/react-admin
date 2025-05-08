@@ -38,7 +38,14 @@ export const LinearProgress = (inProps: LinearProgressProps) => {
     return oneSecondHasPassed ? (
         <StyledProgress className={className} {...rest} />
     ) : (
-        <Box my={1} height={4} component="span" display="block" />
+        <Box
+            component="span"
+            sx={{
+                my: 1,
+                height: 4,
+                display: 'block',
+            }}
+        />
     );
 };
 
