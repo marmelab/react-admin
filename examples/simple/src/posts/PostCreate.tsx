@@ -30,13 +30,20 @@ import {
 } from 'react-admin';
 import { useFormContext, useWatch } from 'react-hook-form';
 import {
-    Alert,
     Button,
+    ButtonGroup,
+    ClickAwayListener,
     Dialog,
     DialogActions,
     DialogContent,
+    Grow,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper,
+    Stack,
 } from '@mui/material';
-import { Link, useSearchParams } from 'react-router-dom';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 // Client side id generation. We start from 100 to avoid querying the post list to get the next id as we
 // may be offline and accessing this page directly (without going through the list page first) which would
@@ -51,78 +58,86 @@ const getNewId = (mutationMode: MutationMode) => {
 
 const PostCreateToolbar = ({
     mutationMode,
+    setMutationMode,
 }: {
     mutationMode: MutationMode;
+    setMutationMode: (mutationMode: MutationMode) => void;
 }) => {
     const notify = useNotify();
     const redirect = useRedirect();
     const { reset } = useFormContext();
 
     return (
-        <Toolbar>
-            <SaveButton label="post.action.save_and_edit" variant="text" />
-            <SaveButton
-                label="post.action.save_and_show"
-                type="button"
-                variant="text"
-                mutationOptions={{
-                    onSuccess: data => {
-                        notify('resources.posts.notifications.created', {
-                            type: 'info',
-                            messageArgs: { smart_count: 1 },
-                            undoable: mutationMode === 'undoable',
-                        });
-                        redirect('show', 'posts', data.id);
-                    },
-                }}
-                transform={data => ({
-                    ...data,
-                    id: getNewId(mutationMode),
-                    average_note: 10,
-                })}
-                sx={{ display: { xs: 'none', sm: 'flex' } }}
-            />
-            <SaveButton
-                label="post.action.save_and_add"
-                type="button"
-                variant="text"
-                mutationOptions={{
-                    onSuccess: () => {
-                        reset();
-                        window.scrollTo(0, 0);
-                        notify('resources.posts.notifications.created', {
-                            type: 'info',
-                            messageArgs: { smart_count: 1 },
-                            undoable: mutationMode === 'undoable',
-                        });
-                    },
-                }}
-                transform={data => ({
-                    ...data,
-                    id: getNewId(mutationMode),
-                    average_note: 10,
-                })}
-            />
-            <SaveButton
-                label="post.action.save_with_average_note"
-                type="button"
-                variant="text"
-                mutationOptions={{
-                    onSuccess: data => {
-                        notify('resources.posts.notifications.created', {
-                            type: 'info',
-                            messageArgs: { smart_count: 1 },
-                            undoable: mutationMode === 'undoable',
-                        });
-                        redirect('show', 'posts', data.id);
-                    },
-                }}
-                transform={data => ({
-                    ...data,
-                    id: getNewId(mutationMode),
-                    average_note: 10,
-                })}
-                sx={{ display: { xs: 'none', sm: 'flex' } }}
+        <Toolbar sx={{ gap: 1 }}>
+            <Stack direction="row" spacing={1} sx={{ flexGrow: 1 }}>
+                <SaveButton label="post.action.save_and_edit" variant="text" />
+                <SaveButton
+                    label="post.action.save_and_show"
+                    type="button"
+                    variant="text"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            notify('resources.posts.notifications.created', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                                undoable: mutationMode === 'undoable',
+                            });
+                            redirect('show', 'posts', data.id);
+                        },
+                    }}
+                    transform={data => ({
+                        ...data,
+                        id: getNewId(mutationMode),
+                        average_note: 10,
+                    })}
+                    sx={{ display: { xs: 'none', sm: 'flex' } }}
+                />
+                <SaveButton
+                    label="post.action.save_and_add"
+                    type="button"
+                    variant="text"
+                    mutationOptions={{
+                        onSuccess: () => {
+                            reset();
+                            window.scrollTo(0, 0);
+                            notify('resources.posts.notifications.created', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                                undoable: mutationMode === 'undoable',
+                            });
+                        },
+                    }}
+                    transform={data => ({
+                        ...data,
+                        id: getNewId(mutationMode),
+                        average_note: 10,
+                    })}
+                />
+                <SaveButton
+                    label="post.action.save_with_average_note"
+                    type="button"
+                    variant="text"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            notify('resources.posts.notifications.created', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                                undoable: mutationMode === 'undoable',
+                            });
+                            redirect('show', 'posts', data.id);
+                        },
+                    }}
+                    transform={data => ({
+                        ...data,
+                        id: getNewId(mutationMode),
+                        average_note: 10,
+                    })}
+                    sx={{ display: { xs: 'none', sm: 'flex' } }}
+                />
+            </Stack>
+            <MutationModesSelector
+                mutationMode={mutationMode}
+                setMutationMode={setMutationMode}
             />
         </Toolbar>
     );
@@ -135,15 +150,6 @@ const backlinksDefaultValue = [
     },
 ];
 
-const useMutationMode = (): MutationMode => {
-    const [searchParams] = useSearchParams();
-    const mutationMode = searchParams.get('mutationMode') ?? 'pessimistic';
-
-    return ['optimistic', 'undoable', 'pessimistic'].includes(mutationMode)
-        ? (mutationMode as MutationMode)
-        : 'pessimistic';
-};
-
 const PostCreate = () => {
     const defaultValues = useMemo(
         () => ({
@@ -151,7 +157,8 @@ const PostCreate = () => {
         }),
         []
     );
-    const mutationMode = useMutationMode();
+    const [mutationMode, setMutationMode] =
+        React.useState<MutationMode>('pessimistic');
     const dateDefaultValue = useMemo(() => new Date(), []);
     return (
         <Create
@@ -159,19 +166,13 @@ const PostCreate = () => {
             mutationMode={mutationMode}
             transform={data => ({ ...data, id: getNewId(mutationMode) })}
         >
-            <Alert severity="info" role="presentation">
-                To test offline support, add either{' '}
-                <Link to="/posts/create?mutationMode=optimistic">
-                    <code>?mutationMode=optimistic</code>
-                </Link>{' '}
-                or
-                <Link to="/posts/create?mutationMode=undoable">
-                    <code>?mutationMode=undoable</code>
-                </Link>{' '}
-                to the page search parameters.
-            </Alert>
             <SimpleFormConfigurable
-                toolbar={<PostCreateToolbar mutationMode={mutationMode} />}
+                toolbar={
+                    <PostCreateToolbar
+                        mutationMode={mutationMode}
+                        setMutationMode={setMutationMode}
+                    />
+                }
                 defaultValues={defaultValues}
                 sx={{ maxWidth: { md: 'auto', lg: '30em' } }}
             >
@@ -324,5 +325,97 @@ const CreateUser = () => {
                 </DialogActions>
             </form>
         </Dialog>
+    );
+};
+
+const MutationModes = ['pessimistic', 'optimistic', 'undoable'] as const;
+const MutationModesSelector = (props: {
+    mutationMode: MutationMode;
+    setMutationMode: (mode: MutationMode) => void;
+}) => {
+    const { setMutationMode, mutationMode } = props;
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef<HTMLDivElement>(null);
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
+
+    const handleMenuItemClick = (mutationMode: MutationMode) => {
+        setOpen(false);
+        setMutationMode(mutationMode);
+    };
+
+    const handleToggle = () => {
+        setOpen(prevOpen => !prevOpen);
+    };
+
+    const handleClose = (event: Event) => {
+        if (
+            anchorRef.current &&
+            anchorRef.current.contains(event.target as HTMLElement)
+        ) {
+            return;
+        }
+
+        setOpen(false);
+    };
+
+    return (
+        <>
+            <ButtonGroup
+                variant="text"
+                ref={anchorRef}
+                aria-label="Button group with a nested menu"
+            >
+                <Button ref={buttonRef}>{mutationMode}</Button>
+                <Button
+                    size="small"
+                    aria-controls={open ? 'split-button-menu' : undefined}
+                    aria-expanded={open ? 'true' : undefined}
+                    aria-label="select merge strategy"
+                    aria-haspopup="menu"
+                    onClick={handleToggle}
+                >
+                    <ArrowDropDownIcon />
+                </Button>
+            </ButtonGroup>
+            <Popper
+                sx={{ zIndex: 1 }}
+                open={open}
+                anchorEl={anchorRef.current}
+                role={undefined}
+                transition
+                disablePortal
+            >
+                {({ TransitionProps, placement }) => (
+                    <Grow
+                        {...TransitionProps}
+                        style={{
+                            transformOrigin:
+                                placement === 'bottom'
+                                    ? 'center top'
+                                    : 'center bottom',
+                        }}
+                    >
+                        <Paper>
+                            <ClickAwayListener onClickAway={handleClose}>
+                                <MenuList id="split-button-menu" autoFocusItem>
+                                    {MutationModes.map(mutationMode => (
+                                        <MenuItem
+                                            key={mutationMode}
+                                            onClick={() =>
+                                                handleMenuItemClick(
+                                                    mutationMode
+                                                )
+                                            }
+                                        >
+                                            {mutationMode}
+                                        </MenuItem>
+                                    ))}
+                                </MenuList>
+                            </ClickAwayListener>
+                        </Paper>
+                    </Grow>
+                )}
+            </Popper>
+        </>
     );
 };
