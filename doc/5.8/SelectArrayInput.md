@@ -516,44 +516,41 @@ const PostCreate = () => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate();
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-          'tags',
-          {
-              data: {
-                  title: value,
-              },
-          },
-          {
-              onSuccess: (data) => {
-                  setValue('');
-                  onCreate(data);
-              },
-          }
-        );
-    };
-
+    const { onCancel, onCreate } = useCreateSuggestionContext();
+ 
+    const onTagCreate = (tag) => {
+        onCreate(tag);
+    }
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New tag"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+             <DialogTitle sx={{ m: 0, p: 2 }}>Create Tag</DialogTitle>
+             <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="tags"
+                    mutationOptions={{
+                        onSuccess: tag => {
+                            onTagCreate(tag);
+                        },
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="name" helperText={false} autoFocus/>
+                    </SimpleForm>
+                </CreateBase>
+             </DialogContent>
         </Dialog>
     );
 };
