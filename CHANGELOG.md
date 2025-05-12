@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.8.1
+
+* Fix `<Confirm>` ignore simple string `title` and `content` props ([#10723](https://github.com/marmelab/react-admin/pull/10723)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` and `<SelectInput>` renders undefined instead of the `createLabel` when `optionText` is a function or a `recordRepresentation` is set ([#10715](https://github.com/marmelab/react-admin/pull/10715)) ([slax57](https://github.com/slax57))
+* [Doc] Fix documentation build ([#10730](https://github.com/marmelab/react-admin/pull/10730)) ([djhi](https://github.com/djhi))
+* [Doc] Fix documentation deployment for previous versions navigation ([#10725](https://github.com/marmelab/react-admin/pull/10725)) ([djhi](https://github.com/djhi))
+* [DOC] Rewrite select array input create doc ([#10711](https://github.com/marmelab/react-admin/pull/10711)) ([Cimanel](https://github.com/Cimanel))
+* [DOC] selectInput create example + storie ([#10710](https://github.com/marmelab/react-admin/pull/10710)) ([Cimanel](https://github.com/Cimanel))
+* [Demo] Fix theme switching ([#10732](https://github.com/marmelab/react-admin/pull/10732)) ([djhi](https://github.com/djhi))
+* [chore] Upgrade vite ([#10660](https://github.com/marmelab/react-admin/pull/10660)) ([djhi](https://github.com/djhi))
+* Bump vite from 6.2.6 to 6.2.7 ([#10726](https://github.com/marmelab/react-admin/pull/10726)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.8.0
 
 * Add `<InPlaceEditor>` for edit-in-place ([#10690](https://github.com/marmelab/react-admin/pull/10690)) ([fzaninotto](https://github.com/fzaninotto))
