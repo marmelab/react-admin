@@ -388,10 +388,6 @@ export type SelectArrayInputProps = ChoicesProps &
 const sanitizeRestProps = ({
     alwaysOn,
     choices,
-    classNamInputWithOptionsPropse,
-    componenInputWithOptionsPropst,
-    crudGetMInputWithOptionsPropsatching,
-    crudGetOInputWithOptionsPropsne,
     defaultValue,
     disableValue,
     emptyText,
