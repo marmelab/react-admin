@@ -899,10 +899,6 @@ export const InsideReferenceInputWithError = () => (
 const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
 
-    const onAuthorCreate = author => {
-        onCreate(author);
-    };
-
     return (
         <Dialog open onClose={onCancel}>
             <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
@@ -923,9 +919,7 @@ const CreateAuthor = () => {
                     redirect={false}
                     resource="authors"
                     mutationOptions={{
-                        onSuccess: author => {
-                            onAuthorCreate(author);
-                        },
+                        onSuccess: onCreate,
                     }}
                 >
                     <SimpleForm defaultValues={{ name: filter }}>

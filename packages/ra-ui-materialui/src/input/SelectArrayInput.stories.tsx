@@ -17,7 +17,7 @@ import * as React from 'react';
 
 import { CreateBase, Resource, TestMemoryRouter } from 'ra-core';
 import { AdminContext } from '../AdminContext';
-import { AdminUI } from '../AdminUI.tsx';
+import { AdminUI } from '../AdminUI';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
@@ -698,10 +698,6 @@ export const InsideReferenceArrayInputWithError = () => (
 const CreateAuthor = () => {
     const { onCancel, onCreate } = useCreateSuggestionContext();
 
-    const onAuthorCreate = author => {
-        onCreate(author);
-    };
-
     return (
         <Dialog open onClose={onCancel}>
             <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
@@ -722,9 +718,7 @@ const CreateAuthor = () => {
                     redirect={false}
                     resource="authors"
                     mutationOptions={{
-                        onSuccess: author => {
-                            onAuthorCreate(author);
-                        },
+                        onSuccess: onCreate,
                     }}
                 >
                     <SimpleForm>
