@@ -111,7 +111,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                     !Children.only(children).props.source &&
                     // Make sure it's not a FormDataConsumer
                     // @ts-ignore
-                    !Children.only(children).type !== FormDataConsumer
+                    Children.only(children).type !== FormDataConsumer
                 ) {
                     // ArrayInput used for an array of scalar values
                     // (e.g. tags: ['foo', 'bar'])
