@@ -17,6 +17,8 @@ import {
     radiantLightTheme,
     houseDarkTheme,
     houseLightTheme,
+    bwDarkTheme,
+    bwLightTheme,
     useTheme,
 } from '../theme';
 import {
@@ -47,6 +49,7 @@ export default {
 
 const themes = [
     { name: 'default', light: defaultLightTheme, dark: defaultDarkTheme },
+    { name: 'bw', light: bwLightTheme, dark: bwDarkTheme },
     { name: 'nano', light: nanoLightTheme, dark: nanoDarkTheme },
     { name: 'radiant', light: radiantLightTheme, dark: radiantDarkTheme },
     { name: 'house', light: houseLightTheme, dark: houseDarkTheme },
