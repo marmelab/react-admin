@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {
-    Datagrid,
+    DataTable,
     Edit,
     EditButton,
-    NumberField,
     Labeled,
     ReferenceManyField,
     SimpleForm,
@@ -12,8 +11,12 @@ import {
     useEditContext,
 } from 'react-admin';
 
+import { type Product } from '../types';
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
+
+const Column = DataTable.Col<Product>;
+const ColumnNumber = DataTable.NumberCol<Product>;
 
 const CategoryEdit = () => (
     <Edit title={<CategoryTitle />}>
@@ -25,32 +28,31 @@ const CategoryEdit = () => (
                     target="category_id"
                     perPage={20}
                 >
-                    <Datagrid
-                        sx={{
-                            '& .column-thumbnail': {
-                                width: 25,
-                                padding: 0,
-                            },
-                        }}
-                    >
-                        <ThumbnailField source="thumbnail" label="" />
-                        <ProductRefField source="reference" />
-                        <NumberField
+                    <DataTable>
+                        <Column
+                            sx={{ width: 25, padding: 0 }}
+                            field={ThumbnailField}
+                            label={false}
+                        />
+                        <Column source="reference" field={ProductRefField} />
+                        <ColumnNumber
                             source="price"
                             options={{ style: 'currency', currency: 'USD' }}
                         />
-                        <NumberField
+                        <ColumnNumber
                             source="width"
                             options={{ minimumFractionDigits: 2 }}
                         />
-                        <NumberField
+                        <ColumnNumber
                             source="height"
                             options={{ minimumFractionDigits: 2 }}
                         />
-                        <NumberField source="stock" />
-                        <NumberField source="sales" />
-                        <EditButton />
-                    </Datagrid>
+                        <ColumnNumber source="stock" />
+                        <ColumnNumber source="sales" />
+                        <Column align="right">
+                            <EditButton />
+                        </Column>
+                    </DataTable>
                 </ReferenceManyField>
             </Labeled>
         </SimpleForm>

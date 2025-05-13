@@ -1,14 +1,24 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { FileInput, FileInputProps, FileInputClasses } from './FileInput';
 
-export const ImageInput = (props: ImageInputProps) => (
-    <StyledFileInput
-        labelMultiple="ra.input.image.upload_several"
-        labelSingle="ra.input.image.upload_single"
-        {...props}
-    />
-);
+export const ImageInput = (inProps: ImageInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    return (
+        <StyledFileInput
+            labelMultiple="ra.input.image.upload_several"
+            labelSingle="ra.input.image.upload_single"
+            {...props}
+        />
+    );
+};
 
 export type ImageInputProps = FileInputProps;
 
@@ -21,12 +31,12 @@ const StyledFileInput = styled(FileInput, {
     width: '100%',
 
     [`& .${FileInputClasses.dropZone}`]: {
-        background: theme.palette.background.default,
+        background: (theme.vars || theme).palette.background.default,
         borderRadius: theme.shape.borderRadius,
         fontFamily: theme.typography.fontFamily,
         padding: theme.spacing(1),
         textAlign: 'center',
-        color: theme.palette.getContrastText(theme.palette.background.default),
+        color: (theme.vars || theme).palette.primary.contrastText,
     },
     [`& .${FileInputClasses.removeButton}`]: {
         display: 'inline-block',
@@ -43,3 +53,22 @@ const StyledFileInput = styled(FileInput, {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaImageInput: 'root' | 'dropZone' | 'removeButton';
+    }
+
+    interface ComponentsPropsList {
+        RaImageInput: Partial<ImageInputProps>;
+    }
+
+    interface Components {
+        RaImageInput?: {
+            defaultProps?: ComponentsPropsList['RaImageInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaImageInput'];
+        };
+    }
+}

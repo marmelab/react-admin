@@ -4,20 +4,18 @@ import {
     AutocompleteInput,
     BooleanField,
     Count,
-    DatagridConfigurable,
+    DataTable,
     DateField,
     DateInput,
     ExportButton,
     FilterButton,
     List,
     NullableBooleanInput,
-    NumberField,
     NumberInput,
     ReferenceField,
     ReferenceInput,
     SearchInput,
-    SelectColumnsButton,
-    TextField,
+    ColumnsButton,
     TopToolbar,
     useDefaultTitle,
     useListContext,
@@ -27,9 +25,9 @@ import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
-import { Customer } from '../types';
+import { Customer, Order } from '../types';
 
-const preferenceKeys = {
+const storeKeyByStatus = {
     ordered: 'orders.list1',
     delivered: 'orders.list2',
     cancelled: 'orders.list3',
@@ -37,14 +35,13 @@ const preferenceKeys = {
 
 const ListActions = () => {
     const { filterValues } = useListContext();
-    const status = (filterValues.status ?? 'ordered') as
-        | 'ordered'
-        | 'delivered'
-        | 'cancelled';
+    const status =
+        (filterValues.status as 'ordered' | 'delivered' | 'cancelled') ??
+        'ordered';
     return (
         <TopToolbar>
             <FilterButton />
-            <SelectColumnsButton preferenceKey={preferenceKeys[status]} />
+            <ColumnsButton storeKey={storeKeyByStatus[status]} />
             <ExportButton />
         </TopToolbar>
     );
@@ -97,6 +94,11 @@ const tabs = [
     { id: 'delivered', name: 'delivered' },
     { id: 'cancelled', name: 'cancelled' },
 ];
+
+const currencyStyle = {
+    style: 'currency' as const,
+    currency: 'USD',
+};
 
 const TabbedDatagrid = () => {
     const listContext = useListContext();
@@ -152,169 +154,72 @@ const TabbedDatagrid = () => {
                 <>
                     {(filterValues.status == null ||
                         filterValues.status === 'ordered') && (
-                        <DatagridConfigurable
-                            rowClick="edit"
-                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey={preferenceKeys.ordered}
-                        >
-                            <DateField source="date" showTime />
-                            <TextField source="reference" />
-                            <CustomerReferenceField source="customer_id" />
-                            <ReferenceField
-                                source="customer_id"
-                                reference="customers"
-                                link={false}
-                                label="resources.orders.fields.address"
-                            >
-                                <AddressField />
-                            </ReferenceField>
-                            <NumberField
-                                source="basket.length"
-                                label="resources.orders.fields.nb_items"
-                            />
-                            <NumberField
-                                source="total_ex_taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="delivery_fees"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="total"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                                sx={{ fontWeight: 'bold' }}
-                            />
-                        </DatagridConfigurable>
+                        <OrdersTable storeKey={storeKeyByStatus.ordered} />
                     )}
                     {filterValues.status === 'delivered' && (
-                        <DatagridConfigurable
-                            rowClick="edit"
-                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey={preferenceKeys.delivered}
-                        >
-                            <DateField source="date" showTime />
-                            <TextField source="reference" />
-                            <CustomerReferenceField source="customer_id" />
-                            <ReferenceField
-                                source="customer_id"
-                                reference="customers"
-                                link={false}
-                                label="resources.orders.fields.address"
-                            >
-                                <AddressField />
-                            </ReferenceField>
-                            <NumberField
-                                source="basket.length"
-                                label="resources.orders.fields.nb_items"
-                            />
-                            <NumberField
-                                source="total_ex_taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="delivery_fees"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="total"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                                sx={{ fontWeight: 'bold' }}
-                            />
-                            <BooleanField
+                        <OrdersTable storeKey={storeKeyByStatus.delivered}>
+                            <Column
+                                field={BooleanField}
                                 source="returned"
+                                align="right"
                                 sx={{ mt: -0.5, mb: -0.5 }}
                             />
-                        </DatagridConfigurable>
+                        </OrdersTable>
                     )}
                     {filterValues.status === 'cancelled' && (
-                        <DatagridConfigurable
-                            rowClick="edit"
-                            omit={['total_ex_taxes', 'delivery_fees', 'taxes']}
-                            preferenceKey={preferenceKeys.cancelled}
-                        >
-                            <DateField source="date" showTime />
-                            <TextField source="reference" />
-                            <CustomerReferenceField source="customer_id" />
-                            <ReferenceField
-                                source="customer_id"
-                                reference="customers"
-                                link={false}
-                                label="resources.orders.fields.address"
-                            >
-                                <AddressField />
-                            </ReferenceField>
-                            <NumberField
-                                source="basket.length"
-                                label="resources.orders.fields.nb_items"
-                            />
-                            <NumberField
-                                source="total_ex_taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="delivery_fees"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="taxes"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                            />
-                            <NumberField
-                                source="total"
-                                options={{
-                                    style: 'currency',
-                                    currency: 'USD',
-                                }}
-                                sx={{ fontWeight: 'bold' }}
-                            />
-                        </DatagridConfigurable>
+                        <OrdersTable storeKey={storeKeyByStatus.cancelled} />
                     )}
                 </>
             )}
         </Fragment>
     );
 };
+
+const Column = DataTable.Col<Order>;
+const ColumnNumber = DataTable.NumberCol<Order>;
+
+const OrdersTable = React.memo(
+    ({
+        storeKey,
+        children,
+    }: {
+        storeKey: string;
+        children?: React.ReactNode;
+    }) => (
+        <DataTable
+            rowClick="edit"
+            hiddenColumns={['total_ex_taxes', 'delivery_fees', 'taxes']}
+            storeKey={storeKey}
+        >
+            <Column source="date">
+                <DateField source="date" showTime />
+            </Column>
+            <Column source="reference" />
+            <Column source="customer_id" field={CustomerReferenceField} />
+            <Column label="resources.orders.fields.address">
+                <ReferenceField
+                    source="customer_id"
+                    reference="customers"
+                    link={false}
+                >
+                    <AddressField />
+                </ReferenceField>
+            </Column>
+            <ColumnNumber
+                source="basket.length"
+                label="resources.orders.fields.nb_items"
+            />
+            <ColumnNumber source="total_ex_taxes" options={currencyStyle} />
+            <ColumnNumber source="delivery_fees" options={currencyStyle} />
+            <ColumnNumber source="taxes" options={currencyStyle} />
+            <ColumnNumber
+                source="total"
+                options={currencyStyle}
+                sx={{ fontWeight: 'bold' }}
+            />
+            {children}
+        </DataTable>
+    )
+);
 
 export default OrderList;

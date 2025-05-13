@@ -1,14 +1,21 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
-import { styled } from '@mui/material/styles';
-import { ReactElement } from 'react';
-import { ToolbarProps } from '@mui/material';
-import { Exporter } from 'ra-core';
+import { type FC, memo, type ReactElement } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import type { ToolbarProps } from '@mui/material';
+import type { Exporter } from 'ra-core';
 
 import { FilterForm } from './filter';
 import { FilterContext } from './FilterContext';
 
-export const ListToolbar: FC<ListToolbarProps> = memo(props => {
+export const ListToolbar: FC<ListToolbarProps> = memo(inProps => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { filters, actions, className, ...rest } = props;
 
     return Array.isArray(filters) ? (
@@ -60,8 +67,27 @@ const Root = styled('div', {
         flexWrap: 'wrap',
     },
     [theme.breakpoints.down('sm')]: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: (theme.vars || theme).palette.background.paper,
         flexWrap: 'inherit',
         flexDirection: 'column-reverse',
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaListToolbar: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaListToolbar: Partial<ListToolbarProps>;
+    }
+
+    interface Components {
+        RaListToolbar?: {
+            defaultProps?: ComponentsPropsList['RaListToolbar'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaListToolbar'];
+        };
+    }
+}

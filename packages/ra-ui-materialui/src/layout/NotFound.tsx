@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
+import { type MUIStyledCommonProps } from '@mui/system';
 import Button from '@mui/material/Button';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
@@ -8,16 +14,18 @@ import { useAuthenticated, useDefaultTitle, useTranslate } from 'ra-core';
 import { Title } from './Title';
 import { Loading } from './Loading';
 
-export const NotFound = props => {
-    const { className, ...rest } = props;
-
+export const NotFound = (inProps: NotFoundProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const translate = useTranslate();
     const { isPending } = useAuthenticated();
     const title = useDefaultTitle();
 
     if (isPending) return <Loading />;
     return (
-        <Root className={className} {...sanitizeRestProps(rest)}>
+        <Root {...sanitizeRestProps(props)}>
             <Title defaultTitle={title} />
             <div className={NotFoundClasses.message}>
                 <HotTub className={NotFoundClasses.icon} />
@@ -37,13 +45,20 @@ export const NotFound = props => {
     );
 };
 
+export interface NotFoundProps
+    extends React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLDivElement>,
+            HTMLDivElement
+        >,
+        MUIStyledCommonProps<Theme> {}
+
 const sanitizeRestProps = ({
     staticContext,
     history,
     location,
     match,
     ...rest
-}) => rest;
+}: any): NotFoundProps => rest;
 
 const PREFIX = 'RaNotFound';
 
@@ -88,4 +103,23 @@ const Root = styled('div', {
 
 function goBack() {
     window.history.go(-1);
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaNotFound: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaNotFound: Partial<NotFoundProps>;
+    }
+
+    interface Components {
+        RaNotFound?: {
+            defaultProps?: ComponentsPropsList['RaNotFound'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaNotFound'];
+        };
+    }
 }

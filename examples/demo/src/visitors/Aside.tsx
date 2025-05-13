@@ -74,7 +74,7 @@ const EventList = () => {
                         {translate('resources.customers.fieldGroups.history')}
                     </Typography>
                     <Grid container rowSpacing={1} columnSpacing={1}>
-                        <Grid item xs={6} display="flex" gap={1}>
+                        <Grid size={{ xs: 6 }} display="flex" gap={1}>
                             <AccessTimeIcon fontSize="small" color="disabled" />
                             <Box flexGrow={1}>
                                 <Typography variant="body2">
@@ -88,7 +88,7 @@ const EventList = () => {
                                 />
                             </Box>
                         </Grid>
-                        <Grid item xs={6} display="flex" gap={1}>
+                        <Grid size={{ xs: 6 }} display="flex" gap={1}>
                             {totalOrders! > 0 && record && (
                                 <>
                                     <order.icon
@@ -115,7 +115,7 @@ const EventList = () => {
                                 </>
                             )}
                         </Grid>
-                        <Grid item xs={6} display="flex" gap={1}>
+                        <Grid size={{ xs: 6 }} display="flex" gap={1}>
                             <AccessTimeIcon fontSize="small" color="disabled" />
                             <Box flexGrow={1}>
                                 <Typography variant="body2">
@@ -126,7 +126,7 @@ const EventList = () => {
                                 <DateField record={record} source="last_seen" />
                             </Box>
                         </Grid>
-                        <Grid item xs={6} display="flex" gap={1}>
+                        <Grid size={{ xs: 6 }} display="flex" gap={1}>
                             {totalReviews! > 0 && record && (
                                 <>
                                     <review.icon
@@ -327,7 +327,7 @@ const Review = () => {
                 {record.comment}
             </Typography>
             <Typography variant="body2" color="textSecondary">
-                <StarRatingField source="rating" />
+                <StarRatingField />
             </Typography>
         </>
     );

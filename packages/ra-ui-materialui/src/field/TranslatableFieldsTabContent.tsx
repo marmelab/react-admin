@@ -1,15 +1,13 @@
 import * as React from 'react';
+import { Children, isValidElement, type ReactNode, useMemo } from 'react';
 import {
-    Children,
-    isValidElement,
-    ReactElement,
-    ReactNode,
-    useMemo,
-} from 'react';
-import { styled } from '@mui/material/styles';
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useTranslatableContext,
-    RaRecord,
+    type RaRecord,
     RecordContextProvider,
     useOptionalSourceContext,
     SourceContextProvider,
@@ -23,8 +21,12 @@ import { Labeled } from '../Labeled';
  * @see TranslatableFields
  */
 export const TranslatableFieldsTabContent = (
-    props: TranslatableFieldsTabContentProps
-): ReactElement => {
+    inProps: TranslatableFieldsTabContentProps
+) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         children,
         groupKey = '',
@@ -123,6 +125,25 @@ const Root = styled('div', {
     borderRadius: 0,
     borderBottomLeftRadius: theme.shape.borderRadius,
     borderBottomRightRadius: theme.shape.borderRadius,
-    border: `1px solid ${theme.palette.divider}`,
+    border: `1px solid ${(theme.vars || theme).palette.divider}`,
     borderTop: 0,
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTranslatableFieldsTabContent: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaTranslatableFieldsTabContent: Partial<TranslatableFieldsTabContentProps>;
+    }
+
+    interface Components {
+        RaTranslatableFieldsTabContent?: {
+            defaultProps?: ComponentsPropsList['RaTranslatableFieldsTabContent'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTranslatableFieldsTabContent'];
+        };
+    }
+}

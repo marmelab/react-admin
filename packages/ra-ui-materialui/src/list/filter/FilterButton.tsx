@@ -3,8 +3,8 @@ import {
     useState,
     useCallback,
     useRef,
-    ReactNode,
-    HtmlHTMLAttributes,
+    type ReactNode,
+    type HtmlHTMLAttributes,
     useContext,
 } from 'react';
 import {
@@ -13,8 +13,10 @@ import {
     ListItemIcon,
     ListItemText,
     styled,
-    ButtonProps as MuiButtonProps,
+    type ButtonProps as MuiButtonProps,
     Divider,
+    type ComponentsOverrides,
+    useThemeProps,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
@@ -33,7 +35,11 @@ import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
 
-export const FilterButton = (props: FilterButtonProps) => {
+export const FilterButton = (inProps: FilterButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         filters: filtersProp,
         className,
@@ -313,3 +319,22 @@ const Root = styled('div', {
 })({
     display: 'inline-block',
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFilterButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaFilterButton: Partial<FilterButtonProps>;
+    }
+
+    interface Components {
+        RaFilterButton?: {
+            defaultProps?: ComponentsPropsList['RaFilterButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFilterButton'];
+        };
+    }
+}

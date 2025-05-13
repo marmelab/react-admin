@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, useEffect } from 'react';
+import { type ReactElement, useEffect } from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
@@ -10,7 +10,7 @@ import {
     useFormGroupContext,
     useFormGroups,
     SourceContextProvider,
-    SourceContextValue,
+    type SourceContextValue,
     useSourceContext,
     OptionalResourceContextProvider,
 } from 'ra-core';
@@ -19,12 +19,14 @@ import {
     InputLabel,
     FormControl,
     FormHelperText,
-    FormControlProps,
+    type FormControlProps,
     styled,
+    type ComponentsOverrides,
+    useThemeProps,
 } from '@mui/material';
 
 import { LinearProgress } from '../../layout';
-import { CommonInputProps } from '../CommonInputProps';
+import type { CommonInputProps } from '../CommonInputProps';
 import { InputHelperText } from '../InputHelperText';
 import { sanitizeInputRestProps } from '../sanitizeInputRestProps';
 import { Labeled } from '../../Labeled';
@@ -71,7 +73,11 @@ import { ArrayInputContext } from './ArrayInputContext';
  *
  * @see {@link https://react-hook-form.com/docs/usefieldarray}
  */
-export const ArrayInput = (props: ArrayInputProps) => {
+export const ArrayInput = (inProps: ArrayInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         defaultValue = [],
@@ -278,3 +284,22 @@ const Root = styled(FormControl, {
         paddingLeft: theme.spacing(2),
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaArrayInput: 'root' | 'label';
+    }
+
+    interface ComponentsPropsList {
+        RaArrayInput: Partial<ArrayInputProps>;
+    }
+
+    interface Components {
+        RaArrayInput?: {
+            defaultProps?: ComponentsPropsList['RaArrayInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaArrayInput'];
+        };
+    }
+}

@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { forwardRef, useCallback } from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import clsx from 'clsx';
 import {
     InputAdornment,
     IconButton,
     TextField as MuiTextField,
-    TextFieldProps,
+    type TextFieldProps,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslate } from 'ra-core';
@@ -15,7 +19,16 @@ import { useTranslate } from 'ra-core';
  * An override of the default Material UI TextField which is resettable
  */
 export const ResettableTextField = forwardRef(
-    (props: ResettableTextFieldProps, ref) => {
+    (inProps: ResettableTextFieldProps, ref) => {
+        // This ensures we inherit the theme props from the TextField component (variant for instance)
+        const textFieldProps = useThemeProps({
+            props: inProps,
+            name: 'MuiTextField',
+        });
+        const props = useThemeProps({
+            props: textFieldProps,
+            name: PREFIX,
+        });
         const {
             clearAlwaysVisible,
             InputProps,
@@ -214,3 +227,28 @@ const StyledTextField = styled(MuiTextField, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(ResettableTextFieldStyles);
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaResettableTextField:
+            | 'root'
+            | 'clearIcon'
+            | 'visibleClearIcon'
+            | 'clearButton'
+            | 'selectAdornment'
+            | 'inputAdornedEnd';
+    }
+
+    interface ComponentsPropsList {
+        RaResettableTextField: Partial<ResettableTextFieldProps>;
+    }
+
+    interface Components {
+        RaResettableTextField?: {
+            defaultProps?: ComponentsPropsList['RaResettableTextField'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaResettableTextField'];
+        };
+    }
+}

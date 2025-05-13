@@ -5,7 +5,7 @@ title: "The AutoPersistInStore Component"
 
 # `<AutoPersistInStore>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> prevents data loss in forms by automatically saving the form data in the store when users navigate away from the page. When users return to the page, it reapplies the saved data to the form.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component prevents data loss in forms by automatically saving the form data in the store when users navigate away from the page. When users return to the page, it reapplies the saved data to the form.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/AutoPersistInStore.mp4" type="video/mp4"/>

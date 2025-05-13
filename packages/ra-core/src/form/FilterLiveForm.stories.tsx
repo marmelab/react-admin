@@ -13,7 +13,11 @@ import { useListContext } from '../controller/list/useListContext';
 
 export default { title: 'ra-core/form/FilterLiveForm' };
 
-const TextInput = ({ defaultValue = '', ...props }: InputProps) => {
+const TextInput = ({
+    defaultValue = '',
+    style,
+    ...props
+}: InputProps & { style?: React.CSSProperties }) => {
     const { field, fieldState } = useInput({ defaultValue, ...props });
     const { error } = fieldState;
 
@@ -24,12 +28,13 @@ const TextInput = ({ defaultValue = '', ...props }: InputProps) => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '5px',
+                ...style,
             }}
         >
-            <label htmlFor={field.name} id={`id-${field.name}`}>
+            <label htmlFor={`id-${field.name}`}>
                 {props.label || field.name}
             </label>
-            <input {...field} aria-labelledby={`id-${field.name}`} />
+            <input {...field} id={`id-${field.name}`} />
             {error && (
                 <div style={{ color: 'red' }}>
                     {/* @ts-ignore */}
@@ -143,6 +148,31 @@ export const MultipleFilterLiveForm = () => {
     );
 };
 
+export const MultipleFilterLiveFormOverlapping = () => {
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'Hello', has_newsletter: true },
+            { id: 2, title: 'World', has_newsletter: false },
+        ],
+        filter: {
+            category: 'deals',
+        },
+    });
+    return (
+        <ListContextProvider value={listContext}>
+            <FilterLiveForm>
+                <TextInput source="title" />
+                <TextInput source="body" />
+            </FilterLiveForm>
+            <FilterLiveForm>
+                <TextInput source="author" />
+                <TextInput source="body" />
+            </FilterLiveForm>
+            <FilterValue />
+        </ListContextProvider>
+    );
+};
+
 export const PerInputValidation = () => {
     const listContext = useList({
         data: [
@@ -203,6 +233,112 @@ const FilterValue = () => {
             <pre style={{ display: 'none' }} data-testid="filter-values">
                 {JSON.stringify(filterValues)}
             </pre>
+        </div>
+    );
+};
+
+const ExternalList = () => {
+    const [body, setBody] = React.useState<string | undefined>(undefined);
+    const { filterValues, setFilters, data } = useListContext();
+    React.useEffect(() => {
+        setBody(filterValues.body);
+    }, [filterValues]);
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBody(event.target.value);
+    };
+    const onApplyFilter = () => {
+        setFilters({ ...filterValues, body });
+    };
+    return (
+        <div
+            style={{
+                padding: '1em',
+                border: '2px solid gray',
+            }}
+        >
+            <p>External list</p>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '5px',
+                }}
+            >
+                <label htmlFor="id_body">body</label>
+                <input
+                    id="id_body"
+                    type="text"
+                    value={body || ''}
+                    onChange={onChange}
+                />
+                <button type="button" onClick={onApplyFilter}>
+                    Apply filter
+                </button>
+            </div>
+            {data.length ? (
+                <ul>
+                    {data.map(item => (
+                        <li key={item.id}>
+                            {item.id} - {item.title} - {item.body}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No data</p>
+            )}
+        </div>
+    );
+};
+
+const ClearFiltersButton = () => {
+    const { setFilters } = useListContext();
+    return (
+        <div style={{ margin: '1em' }}>
+            <button
+                type="button"
+                onClick={() => {
+                    setFilters({});
+                }}
+            >
+                Clear filters
+            </button>
+        </div>
+    );
+};
+
+export const WithExternalChanges = () => {
+    const [mounted, setMounted] = React.useState(true);
+    const onToggle = () => {
+        setMounted(mounted => !mounted);
+    };
+    const listContext = useList({
+        data: [
+            { id: 1, title: 'hello', body: 'foo' },
+            { id: 2, title: 'world', body: 'bar' },
+        ],
+    });
+    return (
+        <div>
+            <input
+                id="id_mounted"
+                type="checkbox"
+                onChange={onToggle}
+                checked={mounted}
+            />
+            <label htmlFor="id_mounted">Mount/unmount</label>
+            {mounted && (
+                <ListContextProvider value={listContext}>
+                    <FilterLiveForm>
+                        <TextInput
+                            source="title"
+                            style={{ flexDirection: 'row' }}
+                        />
+                        <ClearFiltersButton />
+                    </FilterLiveForm>
+                    <ExternalList />
+                    <FilterValue />
+                </ListContextProvider>
+            )}
         </div>
     );
 };

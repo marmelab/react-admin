@@ -1452,6 +1452,50 @@ describe('<AutocompleteInput />', () => {
             expect(input.value).not.toBe('Create x');
             expect(input.value).toBe('x');
         }, 10000);
+
+        it('should include an option with the custom createLabel when the input is empty and optionText is a string', async () => {
+            render(<CreateLabel optionText="full_name" />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            const customCreateLabel = screen.queryByText(
+                'Start typing to create a new item'
+            );
+            expect(customCreateLabel).not.toBeNull();
+            expect(
+                (customCreateLabel as HTMLElement).getAttribute('aria-disabled')
+            ).toEqual('true');
+            expect(screen.queryByText(/Create/)).toBeNull();
+        });
+
+        it('should include an option with the custom createLabel when the input is empty and optionText is a function', async () => {
+            render(
+                <CreateLabel
+                    optionText={choice =>
+                        `${choice.first_name} ${choice.last_name}`
+                    }
+                />
+            );
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            const customCreateLabel = screen.queryByText(
+                'Start typing to create a new item'
+            );
+            expect(customCreateLabel).not.toBeNull();
+            expect(
+                (customCreateLabel as HTMLElement).getAttribute('aria-disabled')
+            ).toEqual('true');
+            expect(screen.queryByText(/Create/)).toBeNull();
+        });
     });
     describe('create', () => {
         it('should allow the creation of a new choice', async () => {

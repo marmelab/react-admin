@@ -2,41 +2,45 @@ import * as React from 'react';
 import { Admin, AdminContext } from 'react-admin';
 
 import {
+    CreateBase,
+    ListBase,
+    RecordContextProvider,
     Resource,
+    TestMemoryRouter,
     required,
     useCreate,
-    useRecordContext,
-    ListBase,
     useListContext,
-    RecordContextProvider,
-    TestMemoryRouter,
+    useRecordContext,
 } from 'ra-core';
 
+import AttributionIcon from '@mui/icons-material/Attribution';
+import CloseIcon from '@mui/icons-material/Close';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import {
-    Dialog,
-    DialogContent,
-    DialogActions,
+    Box,
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    InputAdornment,
     Stack,
     TextField,
     Typography,
-    Box,
-    InputAdornment,
 } from '@mui/material';
-import { useFormContext } from 'react-hook-form';
 import fakeRestProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import AttributionIcon from '@mui/icons-material/Attribution';
+import { useFormContext } from 'react-hook-form';
 
+import { useState } from 'react';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { useState } from 'react';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -254,12 +258,48 @@ export const OptionTextElement = () => (
     </Wrapper>
 );
 
-const choicesForCreationSupport = [
-    { id: 1, name: 'Leo Tolstoy' },
-    { id: 2, name: 'Victor Hugo' },
-    { id: 3, name: 'William Shakespeare' },
-    { id: 4, name: 'Charles Baudelaire' },
-    { id: 5, name: 'Marcel Proust' },
+const choicesForCreationSupport: Partial<{
+    id: number;
+    name: string;
+    full_name: string;
+    first_name: string;
+    last_name: string;
+}>[] = [
+    {
+        id: 1,
+        name: 'Leo Tolstoy',
+        full_name: 'Leo Tolstoy',
+        first_name: 'Leo',
+        last_name: 'Tolstoy',
+    },
+    {
+        id: 2,
+        name: 'Victor Hugo',
+        full_name: 'Victor Hugo',
+        first_name: 'Victor',
+        last_name: 'Hugo',
+    },
+    {
+        id: 3,
+        name: 'William Shakespeare',
+        full_name: 'William Shakespeare',
+        first_name: 'William',
+        last_name: 'Shakespeare',
+    },
+    {
+        id: 4,
+        name: 'Charles Baudelaire',
+        full_name: 'Charles Baudelaire',
+        first_name: 'Charles',
+        last_name: 'Baudelaire',
+    },
+    {
+        id: 5,
+        name: 'Marcel Proust',
+        full_name: 'Marcel Proust',
+        first_name: 'Marcel',
+        last_name: 'Proust',
+    },
 ];
 
 const OnCreateInput = () => {
@@ -446,7 +486,9 @@ export const CreateDialog = () => (
     </Wrapper>
 );
 
-const CreateLabelInput = () => {
+const CreateLabelInput = ({
+    optionText,
+}: Pick<AutocompleteInputProps, 'optionText'>) => {
     const [choices, setChoices] = useState(choicesForCreationSupport);
     return (
         <AutocompleteInput
@@ -455,25 +497,55 @@ const CreateLabelInput = () => {
             onCreate={async filter => {
                 if (!filter) return;
 
-                const newOption = {
+                const newOption: Partial<{
+                    id: number;
+                    name: string;
+                    full_name: string;
+                    first_name: string;
+                    last_name: string;
+                }> = {
                     id: choices.length + 1,
-                    name: filter,
                 };
+                if (optionText == null) {
+                    newOption.name = filter;
+                } else if (typeof optionText === 'string') {
+                    newOption[optionText] = filter;
+                } else {
+                    newOption.first_name = filter;
+                    newOption.last_name = filter;
+                }
                 setChoices(options => [...options, newOption]);
                 // Wait until next tick to give some time for React to update the state
                 await new Promise(resolve => setTimeout(resolve));
                 return newOption;
             }}
             createLabel="Start typing to create a new item"
+            optionText={optionText}
         />
     );
 };
 
-export const CreateLabel = () => (
+export const CreateLabel = ({
+    optionText,
+}: Pick<AutocompleteInputProps, 'optionText'>) => (
     <Wrapper>
-        <CreateLabelInput />
+        <CreateLabelInput optionText={optionText} />
     </Wrapper>
 );
+CreateLabel.args = {
+    optionText: undefined,
+};
+CreateLabel.argTypes = {
+    optionText: {
+        options: ['default', 'string', 'function'],
+        mapping: {
+            default: undefined,
+            string: 'full_name',
+            function: choice => `${choice.first_name} ${choice.last_name}`,
+        },
+        control: { type: 'inline-radio' },
+    },
+};
 
 const CreateItemLabelInput = () => {
     const [choices, setChoices] = useState(choicesForCreationSupport);
@@ -826,56 +898,40 @@ export const InsideReferenceInputWithError = () => (
 
 const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [name, setName] = React.useState(filter || '');
-    const [language, setLanguage] = React.useState('');
-    const [create] = useCreate();
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-            'authors',
-            {
-                data: {
-                    name,
-                    language,
-                },
-            },
-            {
-                onSuccess: data => {
-                    setName('');
-                    setLanguage('');
-                    onCreate(data);
-                },
-            }
-        );
-    };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <Stack gap={4}>
-                        <TextField
-                            name="name"
-                            label="The author name"
-                            value={name}
-                            onChange={event => setName(event.target.value)}
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="authors"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm defaultValues={{ name: filter }}>
+                        <TextInput source="name" helperText={false} />
+                        <TextInput
+                            source="language"
+                            helperText={false}
                             autoFocus
                         />
-                        <TextField
-                            name="language"
-                            label="The author language"
-                            value={language}
-                            onChange={event => setLanguage(event.target.value)}
-                            autoFocus
-                        />
-                    </Stack>
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
         </Dialog>
     );
 };
@@ -891,10 +947,7 @@ const BookEditWithReferenceAndCreationSupport = () => (
     >
         <SimpleForm>
             <ReferenceInput reference="authors" source="author">
-                <AutocompleteInput
-                    create={<CreateAuthor />}
-                    optionText="name"
-                />
+                <AutocompleteInput create={<CreateAuthor />} />
             </ReferenceInput>
         </SimpleForm>
     </Edit>

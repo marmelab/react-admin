@@ -1,9 +1,13 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import {
     List,
-    ListProps,
+    type ListProps,
     ListItem,
     ListItemAvatar,
     ListItemSecondaryAction,
@@ -13,7 +17,11 @@ import { useTimeout } from 'ra-core';
 
 import { Placeholder } from '../Placeholder';
 
-export const SimpleListLoading = (props: Props & ListProps) => {
+export const SimpleListLoading = (inProps: SimpleListLoadingProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         className,
         hasLeftAvatarOrIcon,
@@ -94,11 +102,30 @@ const StyledList = styled(List, {
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
-interface Props {
+export interface SimpleListLoadingProps extends ListProps {
     className?: string;
     hasLeftAvatarOrIcon?: boolean;
     hasRightAvatarOrIcon?: boolean;
     hasSecondaryText?: boolean;
     hasTertiaryText?: boolean;
     nbFakeLines?: number;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSimpleListLoading: 'root' | 'primary' | 'tertiary';
+    }
+
+    interface ComponentsPropsList {
+        RaSimpleListLoading: Partial<SimpleListLoadingProps>;
+    }
+
+    interface Components {
+        RaSimpleListLoading?: {
+            defaultProps?: ComponentsPropsList['RaSimpleListLoading'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSimpleListLoading'];
+        };
+    }
 }

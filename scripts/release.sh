@@ -73,8 +73,11 @@ if [ ! -z "$RELEASE_DRY_RUN" ]; then
 fi
 
 if [ "$npm_previous_package_minor_version" != "$npm_current_package_minor_version" ]; then
-    echo "New minor version - Updating the OldVersion.md file"
+    echo "New minor version - Updating the docs/OldVersion.md file"
     sed -i "s/^- \[v$npm_previous_package_minor_version\].*/- [v$npm_current_package_minor_version](https:\/\/github.com\/marmelab\/react-admin\/blob\/master\/docs\/Admin.md)\n- [v$npm_previous_package_minor_version](https:\/\/github\.com\/marmelab\/react\-admin\/blob\/v$npm_previous_package_version\/docs\/Admin.md\)/" docs/OldVersions.md
+    echo "Please review the docs/OldVersion.md file and update it if needed."
+    echo "Press Enter when this is done"
+    read
     if [ -z "$RELEASE_DRY_RUN" ]; then
         echo "Committing the OldVersion.md file update"
         git add .

@@ -1,20 +1,27 @@
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import get from 'lodash/get';
 import { FilterLiveForm, useListContext, useResourceContext } from 'ra-core';
 import * as React from 'react';
 import {
-    HtmlHTMLAttributes,
-    ReactNode,
+    type HtmlHTMLAttributes,
+    type ReactNode,
     useCallback,
     useContext,
     useEffect,
 } from 'react';
-import { useFormContext } from 'react-hook-form';
 
 import { FilterContext } from '../FilterContext';
 import { FilterFormInput } from './FilterFormInput';
 
-export const FilterForm = (props: FilterFormProps) => {
+export const FilterForm = (inProps: FilterFormProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { filters: filtersProps, ...rest } = props;
     const filters = useContext(FilterContext) || filtersProps;
 
@@ -30,8 +37,11 @@ export type FilterFormProps = FilterFormBaseProps;
 export const FilterFormBase = (props: FilterFormBaseProps) => {
     const { filters } = props;
     const resource = useResourceContext(props);
-    const form = useFormContext();
-    const { displayedFilters = {}, hideFilter } = useListContext();
+    const {
+        displayedFilters = {},
+        filterValues,
+        hideFilter,
+    } = useListContext();
 
     useEffect(() => {
         if (!filters) return;
@@ -46,7 +56,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     const getShownFilters = () => {
         if (!filters) return [];
-        const values = form.getValues();
+        const values = filterValues;
         return filters.filter((filterElement: React.ReactElement) => {
             const filterValue = get(values, filterElement.props.source);
             return (
@@ -139,3 +149,22 @@ const isEmptyValue = (filterValue: unknown) => {
 
     return false;
 };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFilterForm: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaFilterForm: Partial<FilterFormProps>;
+    }
+
+    interface Components {
+        RaFilterForm?: {
+            defaultProps?: ComponentsPropsList['RaFilterForm'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFilterForm'];
+        };
+    }
+}

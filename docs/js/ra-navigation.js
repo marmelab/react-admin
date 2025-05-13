@@ -254,7 +254,6 @@ window.addEventListener('popstate', () => {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded');
     allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
     navLinks = allMenus
         .filter(link => !link.classList.contains('external'))

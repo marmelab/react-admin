@@ -1,13 +1,21 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
 import { useTranslate } from 'ra-core';
 
-import { CommonInputProps } from './CommonInputProps';
-import { TextInput, TextInputProps } from './TextInput';
+import type { CommonInputProps } from './CommonInputProps';
+import { TextInput, type TextInputProps } from './TextInput';
 
-export const SearchInput = (props: SearchInputProps) => {
+export const SearchInput = (inProps: SearchInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { label, ...rest } = props;
 
     const translate = useTranslate();
@@ -47,3 +55,22 @@ const StyledTextInput = styled(TextInput, {
 })({
     marginTop: 0,
 });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSearchInput: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaSearchInput: Partial<SearchInputProps>;
+    }
+
+    interface Components {
+        RaSearchInput?: {
+            defaultProps?: ComponentsPropsList['RaSearchInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSearchInput'];
+        };
+    }
+}

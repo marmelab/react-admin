@@ -155,65 +155,64 @@ In the create component, use the `useCreateSuggestionContext` hook to add a new 
 
 {% raw %}
 ```jsx
-import { CreateRole } from './CreateRole';
-
-const choices = [
-    { id: 'admin', name: 'Admin' },
-    { id: 'u001', name: 'Editor' },
-    { id: 'u002', name: 'Moderator' },
-    { id: 'u003', name: 'Reviewer' },
-];
+import {
+    Create,
+    CreateBase,
+    SelectArrayInput,
+    ReferenceArrayInput,
+    SimpleForm,
+    TextInput,
+    useCreateSuggestionContext
+} from 'react-admin';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    IconButton,
+} from '@mui/material';
 
 const UserCreate = () => (
     <Create>
         <SimpleForm>
-            <SelectArrayInput
-                source="roles"
-                choices={choices}
-                create={<CreateRole />}
-            />
+            <ReferenceArrayInput source="roles" reference="roles">
+                <SelectArrayInput create={<CreateRole />} />
+            </ReferenceArrayInput>
         </SimpleForm>
     </Create>
 );
 
-// in ./CreateRole.js
-import { useCreateSuggestionContext } from 'react-admin';
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    TextField,
-} from '@mui/material';
-
 const CreateRole = () => {
     const { onCancel, onCreate } = useCreateSuggestionContext();
-    const [value, setValue] = React.useState('');
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        const newOption = { id: value, name: value };
-        choices.push(newOption);
-        setValue('');
-        onCreate(newOption);
-    };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="Role name"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+             <DialogTitle sx={{ m: 0, p: 2 }}>Create Role</DialogTitle>
+             <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="roles"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="name" helperText={false} autoFocus/>
+                    </SimpleForm>
+                </CreateBase>
+             </DialogContent>
         </Dialog>
     );
 };
@@ -483,23 +482,20 @@ Use the `create` prop when you want a more polished or complex UI. For example a
 {% raw %}
 ```jsx
 import {
-    SelectArrayInput,
     Create,
+    CreateBase,
+    SelectArrayInput,
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
-    useCreate,
     useCreateSuggestionContext
 } from 'react-admin';
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
-    Box,
-    BoxProps,
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
-    TextField,
+    IconButton,
 } from '@mui/material';
 
 const PostCreate = () => {
@@ -516,44 +512,36 @@ const PostCreate = () => {
 }
 
 const CreateTag = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate();
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-          'tags',
-          {
-              data: {
-                  title: value,
-              },
-          },
-          {
-              onSuccess: (data) => {
-                  setValue('');
-                  onCreate(data);
-              },
-          }
-        );
-    };
-
+    const { onCancel, onCreate } = useCreateSuggestionContext();
+ 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New tag"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+             <DialogTitle sx={{ m: 0, p: 2 }}>Create Tag</DialogTitle>
+             <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="tags"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="name" helperText={false} autoFocus/>
+                    </SimpleForm>
+                </CreateBase>
+             </DialogContent>
         </Dialog>
     );
 };

@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { screen, render, waitFor, fireEvent } from '@testing-library/react';
+import {
+    screen,
+    render,
+    waitFor,
+    fireEvent,
+    within,
+} from '@testing-library/react';
 import expect from 'expect';
 import {
     CoreAdminContext,
@@ -14,6 +20,12 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
+import {
+    Basic,
+    NoRecordRepresentation,
+    WithCustomTitleAndContent,
+    WithDefaultTranslation,
+} from './DeleteWithConfirmButton.stories';
 
 const theme = createTheme();
 
@@ -328,5 +340,59 @@ describe('<DeleteWithConfirmButton />', () => {
                 },
             ]);
         });
+    });
+
+    it('should use the provided strings as the confirmation title and content', async () => {
+        render(<WithCustomTitleAndContent />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Delete')
+        );
+        await screen.findByText('Delete me?');
+        await screen.findByText('Please confirm the deletion');
+    });
+
+    it('should use the record representation in the confirmation title and content with a resource specific translation', async () => {
+        render(<Basic />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Delete')
+        );
+        await screen.findByText('Delete the book "War and Peace"?');
+        await screen.findByText(
+            'Do you really want to delete the book "War and Peace"?'
+        );
+    });
+
+    it('should use the record representation in the confirmation title and content without a resource specific translation', async () => {
+        render(<WithDefaultTranslation />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Delete')
+        );
+        await screen.findByText('Delete book War and Peace');
+        await screen.findByText('Are you sure you want to delete this book?');
+    });
+
+    it('should use the default record representation in the confirmation title and title when no record representation is available', async () => {
+        render(<NoRecordRepresentation />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('Leo Tolstoy')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Delete')
+        );
+        await screen.findByText('Delete author #1');
+        await screen.findByText('Are you sure you want to delete this author?');
     });
 });

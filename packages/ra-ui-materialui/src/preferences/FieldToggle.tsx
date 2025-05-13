@@ -2,12 +2,12 @@ import * as React from 'react';
 import { FieldTitle, useResourceContext } from 'ra-core';
 import { Switch, Typography } from '@mui/material';
 import DragIcon from '@mui/icons-material/DragIndicator';
-import { styled } from '@mui/material/styles';
+import { ComponentsOverrides, styled } from '@mui/material/styles';
 
 /**
  * UI to enable/disable a field
  */
-export const FieldToggle = props => {
+export const FieldToggle = (props: FieldToggleProps) => {
     const { selected, label, onToggle, onMove, source, index } = props;
     const resource = useResourceContext();
     const dropIndex = React.useRef<number | null>(null);
@@ -85,7 +85,7 @@ export const FieldToggle = props => {
         }
 
         if (dropItem && list === dropItem.closest('ul')) {
-            onMove(selectedItem.dataset.index, dropIndex.current);
+            if (onMove) onMove(selectedItem.dataset.index!, dropIndex.current!);
         } else {
             event.preventDefault();
             event.stopPropagation();
@@ -113,7 +113,7 @@ export const FieldToggle = props => {
                 <Switch
                     checked={selected}
                     onChange={onToggle}
-                    name={index}
+                    name={`${index}`}
                     id={`switch_${index}`}
                     size="small"
                     sx={{ mr: 0.5, ml: -0.5 }}
@@ -137,8 +137,21 @@ export const FieldToggle = props => {
     );
 };
 
+export interface FieldToggleProps {
+    selected: boolean;
+    label: React.ReactNode;
+    onToggle?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onMove?: (
+        dragIndex: string | number,
+        dropIndex: string | number | null
+    ) => void;
+    source: string;
+    index: number | string;
+}
+
+const PREFIX = 'RaFieldToggle';
 const Root = styled('li', {
-    name: 'RaFieldToggle',
+    name: PREFIX,
     overridesResolver: (_props, styles) => styles.root,
 })(({ theme }) => ({
     display: 'flex',
@@ -150,9 +163,28 @@ const Root = styled('li', {
     '&.drag-active': {
         background: 'transparent',
         color: 'transparent',
-        outline: `1px solid ${theme.palette.action.selected}`,
+        outline: `1px solid ${(theme.vars || theme).palette.action.selected}`,
         '& .MuiSwitch-root, & svg': {
             visibility: 'hidden',
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaFieldToggle: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaFieldToggle: Partial<FieldToggleProps>;
+    }
+
+    interface Components {
+        RaFieldToggle?: {
+            defaultProps?: ComponentsPropsList['RaFieldToggle'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaFieldToggle'];
+        };
+    }
+}

@@ -12,7 +12,7 @@ export const OnlyMineInput = (_: { alwaysOn: boolean; source: string }) => {
         if (typeof filterValues.sales_id !== 'undefined') {
             delete newFilterValues.sales_id;
         } else {
-            newFilterValues.sales_id = identity && identity?.id;
+            newFilterValues.sales_id = identity?.id;
         }
         setFilters(newFilterValues, displayedFilters);
     };

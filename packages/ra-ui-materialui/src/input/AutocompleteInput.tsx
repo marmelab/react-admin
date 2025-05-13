@@ -6,7 +6,7 @@ import {
     useMemo,
     useRef,
     useState,
-    ReactNode,
+    type ReactNode,
 } from 'react';
 import debounce from 'lodash/debounce';
 import get from 'lodash/get';
@@ -14,23 +14,27 @@ import isEqual from 'lodash/isEqual';
 import clsx from 'clsx';
 import {
     Autocomplete,
-    AutocompleteChangeReason,
-    AutocompleteProps,
+    type AutocompleteChangeReason,
+    type AutocompleteProps,
     Chip,
     TextField,
-    TextFieldProps,
+    type TextFieldProps,
     createFilterOptions,
     useForkRef,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import {
-    ChoicesProps,
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import {
+    type ChoicesProps,
     FieldTitle,
-    RaRecord,
+    type RaRecord,
     useChoicesContext,
     useInput,
     useSuggestions,
-    UseSuggestionsOptions,
+    type UseSuggestionsOptions,
     useTimeout,
     useTranslate,
     warning,
@@ -38,10 +42,10 @@ import {
     useEvent,
 } from 'ra-core';
 import {
-    SupportCreateSuggestionOptions,
+    type SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
@@ -120,13 +124,17 @@ export const AutocompleteInput = <
     DisableClearable extends boolean | undefined = boolean | undefined,
     SupportCreate extends boolean | undefined = false,
 >(
-    props: AutocompleteInputProps<
+    inProps: AutocompleteInputProps<
         OptionType,
         Multiple,
         DisableClearable,
         SupportCreate
     >
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         choices: choicesProp,
         className,
@@ -318,6 +326,8 @@ If you provided a React element for the optionText prop, you must also provide t
             optionText ??
             (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
+        createValue,
+        createHintValue,
         selectedItem: selectedChoice,
         suggestionLimit,
         translateChoice: translateChoice ?? !isFromReference,
@@ -622,12 +632,14 @@ If you provided a React element for the optionText prop, you must also provide t
                         <TextField
                             name={field.name}
                             label={
-                                <FieldTitle
-                                    label={label}
-                                    source={source}
-                                    resource={resourceProp}
-                                    isRequired={isRequired}
-                                />
+                                label !== '' && label !== false ? (
+                                    <FieldTitle
+                                        label={label}
+                                        source={source}
+                                        resource={resourceProp}
+                                        isRequired={isRequired}
+                                    />
+                                ) : null
                             }
                             error={!!fetchError || invalid}
                             helperText={
@@ -884,3 +896,22 @@ const areSelectedItemsEqual = (
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaAutocompleteInput: 'root' | 'textField';
+    }
+
+    interface ComponentsPropsList {
+        RaAutocompleteInput: Partial<AutocompleteInputProps>;
+    }
+
+    interface Components {
+        RaAutocompleteInput?: {
+            defaultProps?: ComponentsPropsList['RaAutocompleteInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaAutocompleteInput'];
+        };
+    }
+}

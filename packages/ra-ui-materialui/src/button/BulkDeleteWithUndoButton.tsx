@@ -1,23 +1,31 @@
 import * as React from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
-import { alpha, styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useDeleteMany,
     useRefresh,
     useNotify,
     useResourceContext,
     useListContext,
-    RaRecord,
-    DeleteManyParams,
+    type RaRecord,
+    type DeleteManyParams,
     useTranslate,
 } from 'ra-core';
 
-import { Button, ButtonProps } from './Button';
-import { UseMutationOptions } from '@tanstack/react-query';
+import { Button, type ButtonProps } from './Button';
+import type { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkDeleteWithUndoButton = (
-    props: BulkDeleteWithUndoButtonProps
+    inProps: BulkDeleteWithUndoButtonProps
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         label = 'ra.action.delete',
         icon = defaultIcon,
@@ -124,12 +132,31 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.error.main,
+    color: (theme.vars || theme).palette.error.main,
     '&:hover': {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.error.main}, transparent 12%)`,
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaBulkDeleteWithUndoButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaBulkDeleteWithUndoButton: Partial<BulkDeleteWithUndoButtonProps>;
+    }
+
+    interface Components {
+        RaBulkDeleteWithUndoButton?: {
+            defaultProps?: ComponentsPropsList['RaBulkDeleteWithUndoButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaBulkDeleteWithUndoButton'];
+        };
+    }
+}

@@ -30,6 +30,7 @@ export const useSuggestions = ({
     choices,
     createText = 'ra.action.create',
     createValue = '@@create',
+    createHintValue = '@@ra-create-hint',
     limitChoicesToValue,
     matchSuggestion,
     optionText,
@@ -43,6 +44,8 @@ export const useSuggestions = ({
         optionText,
         optionValue,
         translateChoice,
+        createValue,
+        createHintValue,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,7 +96,6 @@ export interface UseSuggestionsOptions extends UseChoicesOptions {
     allowDuplicates?: boolean;
     choices?: any[];
     createText?: string;
-    createValue?: any;
     limitChoicesToValue?: boolean;
     matchSuggestion?: (
         filter: string,

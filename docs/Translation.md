@@ -262,3 +262,82 @@ When building an internationalized app with react-admin, the usual workflow is t
 
 Check [the translation setup documentation](./TranslationSetup.md) to understand how to build your own translation file, the [list of available translations](./TranslationLocales.md) to find a translation for your language, and  [Translating the UI](./TranslationTranslating.md) to understand how to translate react-admin commponents.
 
+## Translating Values
+
+Beyond the UX, you may need to translate values in your data. For instance, you may want to display a translated label for a status field, or a translated name for a category.
+
+This implies that your data model stores the translations in a way that can be used by the UI. The advised solution is to store the translations as a JSON object in the data itself. For example, a Category resource could have a `name` field that contains the translations for each locale:
+
+```json
+{
+    "id": 1,
+    "name": {
+        "en": "Shoes",
+        "fr": "Chaussures"
+    }
+}
+```
+
+If you follow this data structure, you can use special fields and inputs to display and edit the translated values. 
+
+- [`<TranslatableField>`](./TranslatableFields.md) lets you display all the translations for a field in a single component.
+
+    <video controls autoplay playsinline muted loop>
+    <source src="./img/translatable-fields-basic.webm" type="video/webm" />
+    <source src="./img/translatable-fields-basic.webm" type="video/mp4" />
+    Your browser does not support the video tag.
+    </video>
+
+    ```jsx
+    <TranslatableFields locales={['en', 'fr']}>
+        <TextField source="title" />
+        <TextField source="description" />
+    </TranslatableFields>
+    ```
+
+- [`<TranslatableInputs>`](./TranslatableInputs.md) lets you edit all the translations for a field in a single component.
+
+    <video controls autoplay playsinline muted loop>
+    <source src="./img/translatable-input.webm" type="video/webm"/>
+    <source src="./img/translatable-input.mp4" type="video/mp4"/>
+    Your browser does not support the video tag.
+    </video>
+
+    ```jsx
+    <TranslatableInputs locales={['en', 'fr']}>
+        <TextInput source="name" />
+        <RichTextInput source="description" />
+    </TranslatableInputs>
+    ```
+
+Check out the documentation for [Translatable Fields](./TranslatableFields.md) and [Translatable Inputs](./TranslatableInputs.md) for more details.
+
+## Localization
+
+For numeric and temporal values, react-admin benefits from the Single-Page Application architecture. As the application executes in the browser, it uses the browser's locale by default to format numbers and dates.
+
+For instance, the `<DateField>` renders the date in the user's locale, using the `Intl.DateTimeFormat` API. 
+
+```tsx
+<DateField source="published_at" />
+// renders the record { id: 1234, published_at: new Date('2017-04-23') } as
+<span>4/23/2017</span>
+```
+
+You can force a specific locale by passing the `locale` prop to the field:
+
+```tsx
+<DateField source="published_at" locale="fr-FR" />
+// renders the record { id: 1234, published_at: new Date('2017-04-23') } as
+<span>23/04/2017</span>
+```
+
+The following components take advantage of browser localization:
+
+- [`<DateField>`](./DateField.md)
+- [`<DateInput>`](./DateInput.md)
+- [`<DateTimeInput>`](./DateTimeInput.md)
+- [`<DateRangeInput>`](./DateRangeInput.md)
+- [ `<NumberField>`](./NumberField.md)
+- [`<NumberInput>`](./NumberInput.md)
+- [`<TimeInput>`](./TimeInput.md)

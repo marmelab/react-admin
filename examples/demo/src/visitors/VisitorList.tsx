@@ -2,15 +2,14 @@ import * as React from 'react';
 import {
     BooleanField,
     CreateButton,
-    DatagridConfigurable,
+    DataTable,
     DateField,
     DateInput,
     ExportButton,
     List,
     NullableBooleanInput,
-    NumberField,
     SearchInput,
-    SelectColumnsButton,
+    ColumnsButton,
     TopToolbar,
     useDefaultTitle,
     useListContext,
@@ -20,9 +19,9 @@ import { useMediaQuery, Theme } from '@mui/material';
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
 import CustomerLinkField from './CustomerLinkField';
-import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
+import type { Customer } from '../types';
 
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -35,7 +34,7 @@ const visitorFilters = [
 const VisitorListActions = () => (
     <TopToolbar>
         <CreateButton />
-        <SelectColumnsButton />
+        <ColumnsButton />
         <ExportButton />
     </TopToolbar>
 );
@@ -50,6 +49,9 @@ const VisitorTitle = () => {
         </>
     );
 };
+
+const Column = DataTable.Col<Customer>;
+const ColumnNumber = DataTable.NumberCol<Customer>;
 
 const VisitorList = () => {
     const isXsmall = useMediaQuery<Theme>(theme =>
@@ -68,7 +70,7 @@ const VisitorList = () => {
             {isXsmall ? (
                 <MobileGrid />
             ) : (
-                <DatagridConfigurable
+                <DataTable
                     rowClick="edit"
                     sx={{
                         '& .column-groups': {
@@ -76,27 +78,37 @@ const VisitorList = () => {
                             lg: { display: 'table-cell' },
                         },
                     }}
-                    omit={['birthday']}
+                    hiddenColumns={['birthday']}
                 >
-                    <CustomerLinkField
+                    <Column
                         source="last_name"
                         label="resources.customers.fields.full_name"
+                        field={CustomerLinkField}
                     />
-                    <DateField source="last_seen" />
-                    <NumberField
+                    <Column source="last_seen" field={DateField} />
+                    <ColumnNumber
                         source="nb_orders"
                         label="resources.customers.fields.orders"
                     />
-                    <ColoredNumberField
+                    <ColumnNumber
                         source="total_spent"
+                        align="right"
+                        cellSx={record =>
+                            record.total_spent > 500 ? { color: 'red' } : {}
+                        }
                         options={{ style: 'currency', currency: 'USD' }}
-                        textAlign="right"
                     />
-                    <DateField source="latest_purchase" showTime />
-                    <BooleanField source="has_newsletter" label="News." />
-                    <SegmentsField source="groups" />
-                    <DateField source="birthday" />
-                </DatagridConfigurable>
+                    <Column source="latest_purchase">
+                        <DateField source="latest_purchase" showTime />
+                    </Column>
+                    <Column
+                        source="has_newsletter"
+                        label="News."
+                        field={BooleanField}
+                    />
+                    <Column source="groups" field={SegmentsField} />
+                    <Column source="birthday" field={DateField} />
+                </DataTable>
             )}
         </List>
     );
