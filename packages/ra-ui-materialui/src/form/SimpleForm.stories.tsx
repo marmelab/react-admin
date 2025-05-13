@@ -6,7 +6,13 @@ import {
     testDataProvider,
     TestMemoryRouter,
 } from 'ra-core';
-import { Stack, ThemeProvider, createTheme } from '@mui/material';
+import {
+    Stack,
+    Grid,
+    ThemeProvider,
+    createTheme,
+    Typography,
+} from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
@@ -76,6 +82,37 @@ export const StackProps = () => (
             <TextInput source="title" />
             <TextInput source="author" />
             <NumberInput source="year" />
+        </SimpleForm>
+    </Wrapper>
+);
+
+const LabelAndInput = ({ label, input }) => (
+    <Grid container columnSpacing={2}>
+        <Grid item xs={3} textAlign={'right'} alignContent="space-around">
+            <Typography variant="body2" color="text.secondary">
+                {label}
+            </Typography>
+        </Grid>
+        <Grid item xs={9}>
+            {React.cloneElement(input, {
+                label: '',
+                helperText: false,
+                margin: 'none',
+                variant: 'outlined',
+            })}
+        </Grid>
+    </Grid>
+);
+
+export const SideLabel = () => (
+    <Wrapper>
+        <SimpleForm alignItems="center" gap={1}>
+            <LabelAndInput label="Title" input={<TextInput source="title" />} />
+            <LabelAndInput
+                label="Author"
+                input={<TextInput source="author" />}
+            />
+            <LabelAndInput label="Year" input={<NumberInput source="year" />} />
         </SimpleForm>
     </Wrapper>
 );

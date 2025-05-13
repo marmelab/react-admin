@@ -326,6 +326,8 @@ If you provided a React element for the optionText prop, you must also provide t
             optionText ??
             (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
+        createValue,
+        createHintValue,
         selectedItem: selectedChoice,
         suggestionLimit,
         translateChoice: translateChoice ?? !isFromReference,
@@ -630,12 +632,14 @@ If you provided a React element for the optionText prop, you must also provide t
                         <TextField
                             name={field.name}
                             label={
-                                <FieldTitle
-                                    label={label}
-                                    source={source}
-                                    resource={resourceProp}
-                                    isRequired={isRequired}
-                                />
+                                label !== '' && label !== false ? (
+                                    <FieldTitle
+                                        label={label}
+                                        source={source}
+                                        resource={resourceProp}
+                                        isRequired={isRequired}
+                                    />
+                                ) : null
                             }
                             error={!!fetchError || invalid}
                             helperText={

@@ -202,6 +202,12 @@ export const Sx = () => (
     </Wrapper>
 );
 
+export const OutlinedNoLabel = () => (
+    <Wrapper>
+        <NumberInput source="views" label={false} variant="outlined" />
+    </Wrapper>
+);
+
 const FormStateInspector = () => {
     const { touchedFields, isDirty, dirtyFields, isValid, errors } =
         useFormState();

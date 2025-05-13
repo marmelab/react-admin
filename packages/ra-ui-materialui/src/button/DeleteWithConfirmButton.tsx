@@ -100,22 +100,26 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                     recordRepresentation,
                     name: resourceName,
                     id: record?.id,
-                    _: translate('ra.message.delete_title', {
-                        recordRepresentation,
-                        name: resourceName,
-                        id: record?.id,
-                    }),
+                    _:
+                        confirmTitleProp ??
+                        translate('ra.message.delete_title', {
+                            recordRepresentation,
+                            name: resourceName,
+                            id: record?.id,
+                        }),
                     ...titleTranslateOptions,
                 }}
                 contentTranslateOptions={{
                     recordRepresentation,
                     name: resourceName,
                     id: record?.id,
-                    _: translate('ra.message.delete_content', {
-                        recordRepresentation,
-                        name: resourceName,
-                        id: record?.id,
-                    }),
+                    _:
+                        confirmContentProp ??
+                        translate('ra.message.delete_content', {
+                            recordRepresentation,
+                            name: resourceName,
+                            id: record?.id,
+                        }),
                     ...contentTranslateOptions,
                 }}
                 onConfirm={handleDelete}
