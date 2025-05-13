@@ -100,12 +100,14 @@ export const TimeInput = ({
                 ) : null
             }
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' && label !== false ? (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                ) : null
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}

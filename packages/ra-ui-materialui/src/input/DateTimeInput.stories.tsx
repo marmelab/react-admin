@@ -48,6 +48,12 @@ export const ReadOnly = () => (
     </Wrapper>
 );
 
+export const OutlinedNoLabel = () => (
+    <Wrapper>
+        <DateTimeInput source="published" label={false} variant="outlined" />
+    </Wrapper>
+);
+
 export const ExternalChanges = ({
     simpleFormProps = {
         defaultValues: { published: '2021-09-11 20:00:00' },
