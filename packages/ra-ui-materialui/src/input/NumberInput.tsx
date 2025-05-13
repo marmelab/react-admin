@@ -149,12 +149,14 @@ export const NumberInput = ({
                 ) : null
             }
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' && label !== false ? (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                ) : null
             }
             margin={margin}
             inputProps={{ ...inputProps, readOnly }}

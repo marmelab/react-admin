@@ -103,6 +103,12 @@ export const Parse = ({ simpleFormProps }) => (
     </Wrapper>
 );
 
+export const OutlinedNoLabel = () => (
+    <Wrapper>
+        <DateInput source="publishedAt" label={false} variant="outlined" />
+    </Wrapper>
+);
+
 export const ExternalChanges = ({
     dateInputProps = {},
     simpleFormProps = {
