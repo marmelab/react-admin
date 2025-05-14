@@ -30,6 +30,16 @@ export const ReadOnly = () => (
     </Wrapper>
 );
 
+export const outlinedNoLabel = () => (
+    <Wrapper>
+        <NullableBooleanInput
+            source="published"
+            label={false}
+            variant="outlined"
+        />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (

@@ -1,9 +1,21 @@
 import * as React from 'react';
-import { useMediaQuery, Theme } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
+import {
+    useMediaQuery,
+    type Theme,
+    Toolbar,
+    type ToolbarProps,
+} from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
-export const TopToolbar = (props: ToolbarProps) => {
+export const TopToolbar = (inProps: ToolbarProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
@@ -35,10 +47,29 @@ const StyledToolbar = styled(Toolbar, {
         flex: '0 1 100%',
     },
     [theme.breakpoints.down('sm')]: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: (theme.vars || theme).palette.background.paper,
         padding: 0,
         paddingBottom: 0,
     },
 }));
 
 const sanitizeToolbarRestProps = ({ hasCreate, ...props }: any) => props;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaTopToolbar: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaTopToolbar: Partial<ToolbarProps>;
+    }
+
+    interface Components {
+        RaTopToolbar?: {
+            defaultProps?: ComponentsPropsList['RaTopToolbar'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaTopToolbar'];
+        };
+    }
+}

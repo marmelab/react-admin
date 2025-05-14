@@ -1,17 +1,32 @@
-import React, { ComponentType, ErrorInfo, Suspense, useState } from 'react';
+import React, {
+    type ComponentType,
+    type ErrorInfo,
+    Suspense,
+    useState,
+} from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import clsx from 'clsx';
-import { styled, SxProps } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 
-import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
-import { Sidebar as DefaultSidebar, SidebarProps } from './Sidebar';
-import { Menu as DefaultMenu, MenuProps } from './Menu';
-import { Error, ErrorProps } from './Error';
+import { AppBar as DefaultAppBar, type AppBarProps } from './AppBar';
+import { Sidebar as DefaultSidebar, type SidebarProps } from './Sidebar';
+import { Menu as DefaultMenu, type MenuProps } from './Menu';
+import { Error, type ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 import { Inspector } from '../preferences';
 import { Loading } from './Loading';
 
-export const Layout = (props: LayoutProps) => {
+export const Layout = (inProps: LayoutProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         appBar: AppBar = DefaultAppBar,
         appBarAlwaysOn,
@@ -72,7 +87,7 @@ export interface LayoutProps {
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
     sidebar?: ComponentType<SidebarProps>;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
 }
 
 export interface LayoutState {
@@ -96,11 +111,10 @@ const Core = styled('div', {
     flexDirection: 'column',
     zIndex: 1,
     minHeight: '100vh',
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: (theme.vars || theme).palette.background.default,
     position: 'relative',
     minWidth: 'fit-content',
     width: '100%',
-    color: theme.palette.getContrastText(theme.palette.background.default),
 
     [`& .${LayoutClasses.appFrame}`]: {
         display: 'flex',
@@ -120,7 +134,7 @@ const Core = styled('div', {
         }),
     },
     [`& .${LayoutClasses.content}`]: {
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: (theme.vars || theme).palette.background.default,
         zIndex: 2,
         display: 'flex',
         flexDirection: 'column',
@@ -133,3 +147,22 @@ const Core = styled('div', {
         },
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLayout: 'root' | 'appFrame' | 'contentWithSidebar' | 'content';
+    }
+
+    interface ComponentsPropsList {
+        RaLayout: Partial<LayoutProps>;
+    }
+
+    interface Components {
+        RaLayout?: {
+            defaultProps?: ComponentsPropsList['RaLayout'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLayout'];
+        };
+    }
+}

@@ -21,7 +21,7 @@ import { SimpleFormIterator } from './SimpleFormIterator';
 import {
     Basic,
     DefaultValue,
-    DefaultValueWithFormDataConsumer,
+    WithFormDataConsumer,
 } from './SimpleFormIterator.stories';
 
 describe('<SimpleFormIterator />', () => {
@@ -468,7 +468,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should not reapply default values set at form level after removing and then re-adding one row, even with FormDataConsumer', async () => {
-        render(<DefaultValueWithFormDataConsumer />);
+        render(<WithFormDataConsumer />);
 
         const removeFirstButton = getByLabelText(
             // @ts-ignore

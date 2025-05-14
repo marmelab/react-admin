@@ -101,6 +101,42 @@ export const PostEdit = () => (
 
 See [the `<RichTextInput>` documentation](./RichTextInput.md) for more details.
 
+## Edit In Place
+
+Instead of using a `<TextInput>` in a form, you can use an `<InPlaceEditor>` to edit the value directly in the list or the show view. This is useful for quick edits without having to open a form.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/InPlaceEditor.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+{% raw %}
+```tsx
+import { Show, InPlaceEditor } from 'react-admin';
+import { Stack, Box, Typography } from '@mui/material';
+
+const CustomerShow = () => (
+    <Show>
+        <Stack direction="row" spacing={2}>
+            <AvatarField />
+            <CustomerActions />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography>Phone</Typography>
+                <InPlaceEditor source="phone" />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography>Email</Typography>
+                <InPlaceEditor source="email" />
+            </Box>
+            ...
+        </Stack>
+    </Show>
+);
+```
+{% endraw %}
+
+Check out [the `<InPlaceEditor>` documentation](./InPlaceEditor.md) for more details.
+
 ## Predictive Text Input
 
 An alternative to `<TextInput>` is [`<PredictiveTextInput>`](./PredictiveTextInput.md), which suggests completion for the input value, using your favorite AI backend. Users can accept the completion by pressing the `Tab` key. It's like Intellisense or Copilot for your forms.

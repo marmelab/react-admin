@@ -20,6 +20,7 @@ describe('<ListGuesser />', () => {
                             score: 3,
                             body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
                             created_at: new Date('2012-08-02'),
+                            tags_ids: [1, 2],
                         },
                     ],
                     total: 1,
@@ -38,7 +39,7 @@ describe('<ListGuesser />', () => {
         });
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { Datagrid, DateField, List, NumberField, ReferenceField, TextField } from 'react-admin';
+import { Datagrid, DateField, List, NumberField, ReferenceArrayField, ReferenceField, TextField } from 'react-admin';
 
 export const CommentList = () => (
     <List>
@@ -49,6 +50,7 @@ export const CommentList = () => (
             <NumberField source="score" />
             <TextField source="body" />
             <DateField source="created_at" />
+            <ReferenceArrayField source="tags_ids" reference="tags" />
         </Datagrid>
     </List>
 );`);

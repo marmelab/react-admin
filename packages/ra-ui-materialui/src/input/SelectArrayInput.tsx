@@ -1,34 +1,38 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { useCallback, useRef, ChangeEvent } from 'react';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { useCallback, useRef, type ChangeEvent } from 'react';
 import clsx from 'clsx';
 import {
     Select,
-    SelectProps,
+    type SelectProps,
     MenuItem,
     InputLabel,
     FormHelperText,
     FormControl,
+    type FormControlProps,
     Chip,
     OutlinedInput,
 } from '@mui/material';
 import {
-    ChoicesProps,
+    type ChoicesProps,
     FieldTitle,
     useInput,
     useChoicesContext,
     useChoices,
-    RaRecord,
+    type RaRecord,
     useGetRecordRepresentation,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
-import { FormControlProps } from '@mui/material/FormControl';
 
 import { LinearProgress } from '../layout';
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 import { Labeled } from '../Labeled';
 import {
-    SupportCreateSuggestionOptions,
+    type SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
 
@@ -87,7 +91,11 @@ import {
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
  */
-export const SelectArrayInput = (props: SelectArrayInputProps) => {
+export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         choices: choicesProp,
         className,
@@ -380,10 +388,6 @@ export type SelectArrayInputProps = ChoicesProps &
 const sanitizeRestProps = ({
     alwaysOn,
     choices,
-    classNamInputWithOptionsPropse,
-    componenInputWithOptionsPropst,
-    crudGetMInputWithOptionsPropsatching,
-    crudGetOInputWithOptionsPropsne,
     defaultValue,
     disableValue,
     emptyText,
@@ -446,3 +450,22 @@ const StyledFormControl = styled(FormControl, {
 }));
 
 const defaultOptions = {};
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSelectArrayInput: 'root' | 'chips' | 'chip';
+    }
+
+    interface ComponentsPropsList {
+        RaSelectArrayInput: Partial<SelectArrayInputProps>;
+    }
+
+    interface Components {
+        RaSelectArrayInput?: {
+            defaultProps?: ComponentsPropsList['RaSelectArrayInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSelectArrayInput'];
+        };
+    }
+}

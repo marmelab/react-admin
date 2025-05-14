@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Typography } from '@mui/material';
+import { Button, Card, Typography } from '@mui/material';
 
 import { Edit } from '../../detail';
 import { SimpleForm } from '../../form';
@@ -256,31 +256,33 @@ export const DefaultValue = () => (
     </AdminContext>
 );
 
-export const DefaultValueWithFormDataConsumer = () => (
-    <AdminContext dataProvider={testDataProvider()} defaultTheme="light">
+export const WithFormDataConsumer = () => (
+    <AdminContext dataProvider={testDataProvider()}>
         <ResourceContextProvider value="posts">
-            <SimpleForm
-                defaultValues={{
-                    emails: [{ email: 'test@marmelab.com', name: 'test' }],
-                }}
-            >
-                <ArrayInput source="emails">
-                    <SimpleFormIterator>
-                        <FormDataConsumer>
-                            {() => (
-                                <>
-                                    <TextInput
-                                        source="email"
-                                        label="Email"
-                                        defaultValue="default@marmelab.com"
-                                    />
-                                    <TextInput source="name" label="Name" />
-                                </>
-                            )}
-                        </FormDataConsumer>
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
+            <Card>
+                <SimpleForm
+                    defaultValues={{
+                        emails: [{ email: 'test@marmelab.com', name: 'test' }],
+                    }}
+                >
+                    <ArrayInput source="emails">
+                        <SimpleFormIterator>
+                            <FormDataConsumer>
+                                {() => (
+                                    <>
+                                        <TextInput
+                                            source="email"
+                                            label="Email"
+                                            defaultValue="default@marmelab.com"
+                                        />
+                                        <TextInput source="name" label="Name" />
+                                    </>
+                                )}
+                            </FormDataConsumer>
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Card>
         </ResourceContextProvider>
     </AdminContext>
 );

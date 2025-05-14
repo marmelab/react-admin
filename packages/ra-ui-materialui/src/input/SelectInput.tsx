@@ -1,20 +1,29 @@
 import * as React from 'react';
-import { ReactElement, useCallback, useEffect, ChangeEvent } from 'react';
+import {
+    type ReactElement,
+    useCallback,
+    useEffect,
+    type ChangeEvent,
+} from 'react';
 import clsx from 'clsx';
-import { MenuItem, TextFieldProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { MenuItem, type TextFieldProps } from '@mui/material';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     useChoicesContext,
     useInput,
     FieldTitle,
     useTranslate,
-    ChoicesProps,
+    type ChoicesProps,
     useChoices,
-    RaRecord,
+    type RaRecord,
     useGetRecordRepresentation,
 } from 'ra-core';
 
-import { CommonInputProps } from './CommonInputProps';
+import type { CommonInputProps } from './CommonInputProps';
 import {
     ResettableTextField,
     ResettableTextFieldStyles,
@@ -23,7 +32,7 @@ import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import {
     useSupportCreateSuggestion,
-    SupportCreateSuggestionOptions,
+    type SupportCreateSuggestionOptions,
 } from './useSupportCreateSuggestion';
 import { LoadingInput } from './LoadingInput';
 
@@ -102,13 +111,18 @@ import { LoadingInput } from './LoadingInput';
  * <SelectInput source="gender" choices={choices} disableValue="not_available" />
  *
  */
-export const SelectInput = (props: SelectInputProps) => {
+export const SelectInput = (inProps: SelectInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         choices: choicesProp,
         className,
         create,
         createLabel,
         createValue,
+        createHintValue,
         defaultValue,
         disableValue = 'disabled',
         emptyText = '',
@@ -179,6 +193,8 @@ export const SelectInput = (props: SelectInputProps) => {
         optionValue,
         disableValue,
         translateChoice: translateChoice ?? !isFromReference,
+        createValue,
+        createHintValue,
     });
     const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
@@ -236,6 +252,7 @@ export const SelectInput = (props: SelectInputProps) => {
         create,
         createLabel,
         createValue,
+        createHintValue,
         handleChange,
         onCreate,
         optionText,
@@ -306,15 +323,14 @@ export const SelectInput = (props: SelectInputProps) => {
                 onChange={handleChangeWithCreateSupport}
                 select
                 label={
-                    label !== '' &&
-                    label !== false && (
+                    label !== '' && label !== false ? (
                         <FieldTitle
                             label={label}
                             source={source}
                             resource={resourceProp}
                             isRequired={isRequired}
                         />
-                    )
+                    ) : null
                 }
                 clearAlwaysVisible
                 error={!!fetchError || invalid}
@@ -407,3 +423,22 @@ export type SelectInputProps = Omit<CommonInputProps, 'source'> &
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSelectInput: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaSelectInput: Partial<SelectInputProps>;
+    }
+
+    interface Components {
+        RaSelectInput?: {
+            defaultProps?: ComponentsPropsList['RaSelectInput'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSelectInput'];
+        };
+    }
+}

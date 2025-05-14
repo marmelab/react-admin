@@ -10,8 +10,7 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { ArrayField } from './ArrayField';
 import { NumberField } from './NumberField';
 import { TextField } from './TextField';
-import { Datagrid } from '../list';
-import { SimpleList } from '../list';
+import { Datagrid, SimpleList } from '../list';
 import { ListContext } from './ArrayField.stories';
 
 describe('<ArrayField />', () => {

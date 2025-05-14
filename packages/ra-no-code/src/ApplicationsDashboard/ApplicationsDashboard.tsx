@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import {
     Avatar,
@@ -12,7 +11,7 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { defaultTheme as RaDefaultTheme, RaThemeOptions } from 'react-admin';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Application } from './types';
@@ -43,7 +42,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
     },
 
     [`& .${classes.title}`]: {
-        color: theme.palette.common.white,
+        color: (theme.vars || theme).palette.common.white,
         marginBottom: theme.spacing(4),
         textAlign: 'center',
     },

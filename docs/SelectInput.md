@@ -158,66 +158,67 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 
 {% raw %}
 ```jsx
-import { CreateCategory } from './CreateCategory';
+import { 
+    Create, 
+    CreateBase, 
+    SimpleForm, 
+    ReferenceInput,
+    SelectInput,
+    TextInput, 
+    useCreateSuggestionContext 
+} from 'react-admin';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+} from '@mui/material';
 
-const PostCreate = () => (
+const BookCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput source="title" />
-            <ReferenceInput source="category_id" reference="categories">
-                <SelectInput create={<CreateCategory />} />
+            <ReferenceInput reference="authors" source="author">
+                <SelectInput
+                    create={<CreateAuthor />}
+                />
             </ReferenceInput>
         </SimpleForm>
     </Create>
 );
 
-// in ./CreateCategory.js
-import { useCreate, useCreateSuggestionContext } from 'react-admin';
-import {
-    Box,
-    BoxProps,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    TextField,
-} from '@mui/material';
-
-const CreateCategory = () => {
-    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [create] = useCreate();
-    const [value, setValue] = React.useState(filter || '');
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-          'categories',
-          { data: { title: value } },
-          {
-              onSuccess: (data) => {
-                  setValue('');
-                  onCreate(data);
-              },
-          }
-        );
-    };
+const CreateAuthor = () => {
+    const { onCancel, onCreate } = useCreateSuggestionContext();
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New category name"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="authors"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="name" helperText={false} />
+                        <TextInput source="language" helperText={false} autoFocus />
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
         </Dialog>
     );
 };
@@ -661,23 +662,20 @@ Use the `create` prop when you want a more polished or complex UI. For example a
 {% raw %}
 ```jsx
 import {
-    SelectInput,
     Create,
-    ReferenceInput,
+    CreateBase, 
     SimpleForm,
+    ReferenceInput,
+    SelectInput,
     TextInput,
-    useCreate,
     useCreateSuggestionContext
 } from 'react-admin';
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
-    Box,
-    BoxProps,
-    Button,
     Dialog,
-    DialogActions,
+    DialogTitle,
     DialogContent,
-    TextField,
+    IconButton,
 } from '@mui/material';
 
 const PostCreate = () => {
@@ -695,43 +693,35 @@ const PostCreate = () => {
 
 const CreateCategory = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate();
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-          'categories',
-          {
-              data: {
-                  title: value,
-              },
-          },
-          {
-              onSuccess: (data) => {
-                  setValue('');
-                  onCreate(data);
-              },
-          }
-        );
-    };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New category name"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+             <DialogTitle sx={{ m: 0, p: 2 }}>Create Category</DialogTitle>
+             <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="categories"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput source="name" helperText={false} autoFocus/>
+                    </SimpleForm>
+                </CreateBase>
+             </DialogContent>
         </Dialog>
     );
 };

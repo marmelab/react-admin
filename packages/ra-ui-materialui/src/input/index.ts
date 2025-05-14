@@ -10,6 +10,7 @@ export * from './DateTimeInput';
 export * from './TimeInput';
 export * from './FileInput';
 export * from './ImageInput';
+export * from './InPlaceEditor/InPlaceEditor';
 export * from './InputHelperText';
 export * from './LoadingInput';
 export * from './NullableBooleanInput';

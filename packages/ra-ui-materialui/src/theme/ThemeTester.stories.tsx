@@ -3,8 +3,8 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import {
-    Form,
     I18nContextProvider,
+    ResourceContextProvider,
     StoreContextProvider,
     TestMemoryRouter,
     memoryStore,
@@ -52,6 +52,7 @@ import {
     PasswordInput,
     SearchInput,
 } from '../input';
+import { SimpleForm } from '../form';
 
 export default {
     title: 'ra-ui-materialui/theme/ThemeTester',
@@ -156,34 +157,44 @@ export const ThemeTester = ({ themeName, themeType }) => (
                 <DeleteButton resource="posts" record={{ id: 1 }} />
             </Section>
             <Section title="Form Inputs">
-                <Form>
-                    <TextInput source="text" />
-                    <DateInput source="date" />
-                    <SelectInput
-                        source="select"
-                        choices={[
-                            { id: 1, name: 'One' },
-                            { id: 2, name: 'Two' },
-                        ]}
-                    />
-                    <RadioButtonGroupInput
-                        source="radio"
-                        choices={[
-                            { id: 1, name: 'One' },
-                            { id: 2, name: 'Two' },
-                        ]}
-                    />
-                    <CheckboxGroupInput
-                        source="checkbox"
-                        choices={[
-                            { id: 1, name: 'One' },
-                            { id: 2, name: 'Two' },
-                        ]}
-                    />
-                    <BooleanInput source="boolean" />
-                    <PasswordInput source="password" />
-                    <SearchInput source="search" />
-                </Form>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <TextInput source="text" />
+                        <DateInput source="date" />
+                        <SelectInput
+                            source="select"
+                            choices={[
+                                { id: 1, name: 'One' },
+                                { id: 2, name: 'Two' },
+                            ]}
+                        />
+                        <SelectInput
+                            source="select2"
+                            choices={[
+                                { id: 1, name: 'One' },
+                                { id: 2, name: 'Two' },
+                            ]}
+                            isPending
+                        />
+                        <RadioButtonGroupInput
+                            source="radio"
+                            choices={[
+                                { id: 1, name: 'One' },
+                                { id: 2, name: 'Two' },
+                            ]}
+                        />
+                        <CheckboxGroupInput
+                            source="checkbox"
+                            choices={[
+                                { id: 1, name: 'One' },
+                                { id: 2, name: 'Two' },
+                            ]}
+                        />
+                        <BooleanInput source="boolean" />
+                        <PasswordInput source="password" />
+                        <SearchInput source="search" />
+                    </SimpleForm>
+                </ResourceContextProvider>
             </Section>
             <Section title="Chips">
                 <Typography>Color</Typography>

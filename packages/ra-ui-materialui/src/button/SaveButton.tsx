@@ -1,15 +1,19 @@
 import * as React from 'react';
-import { MouseEventHandler, useCallback } from 'react';
-import { UseMutationOptions } from '@tanstack/react-query';
-import { styled } from '@mui/material/styles';
-import { Button, ButtonProps, CircularProgress } from '@mui/material';
+import { type MouseEventHandler, useCallback } from 'react';
+import type { UseMutationOptions } from '@tanstack/react-query';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+import { Button, type ButtonProps, CircularProgress } from '@mui/material';
 import ContentSave from '@mui/icons-material/Save';
 import { useFormContext, useFormState } from 'react-hook-form';
 import {
-    CreateParams,
-    RaRecord,
-    TransformData,
-    UpdateParams,
+    type CreateParams,
+    type RaRecord,
+    type TransformData,
+    type UpdateParams,
     useSaveContext,
     useTranslate,
     warning,
@@ -44,8 +48,12 @@ import {
  * }
  */
 export const SaveButton = <RecordType extends RaRecord = any>(
-    props: SaveButtonProps<RecordType>
+    inProps: SaveButtonProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const {
         color = 'primary',
         icon = defaultIcon,
@@ -194,3 +202,22 @@ const StyledButton = styled(Button, {
 
 const valueOrDefault = (value, defaultValue) =>
     typeof value === 'undefined' ? defaultValue : value;
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaSaveButton: 'root';
+    }
+
+    interface ComponentsPropsList {
+        RaSaveButton: Partial<SaveButtonProps>;
+    }
+
+    interface Components {
+        RaSaveButton?: {
+            defaultProps?: ComponentsPropsList['RaSaveButton'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaSaveButton'];
+        };
+    }
+}

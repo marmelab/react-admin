@@ -1,10 +1,20 @@
 import * as React from 'react';
-import { styled, SxProps } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    type SxProps,
+    type Theme,
+    useThemeProps,
+} from '@mui/material/styles';
 import { Button, CardContent, CircularProgress } from '@mui/material';
 import { Form, required, useTranslate, useLogin, useNotify } from 'ra-core';
 import { PasswordInput, TextInput } from '../input';
 
-export const LoginForm = (props: LoginFormProps) => {
+export const LoginForm = (inProps: LoginFormProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
     const { redirectTo, className, sx, children } = props;
     const [loading, setLoading] = React.useState(false);
     const login = useLogin();
@@ -117,11 +127,30 @@ const StyledForm = styled(Form, {
 export interface LoginFormProps {
     redirectTo?: string;
     className?: string;
-    sx?: SxProps;
+    sx?: SxProps<Theme>;
     children?: React.ReactNode;
 }
 
 interface FormData {
     username: string;
     password: string;
+}
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaLoginForm: 'root' | 'content' | 'button' | 'icon';
+    }
+
+    interface ComponentsPropsList {
+        RaLoginForm: Partial<LoginFormProps>;
+    }
+
+    interface Components {
+        RaLoginForm?: {
+            defaultProps?: ComponentsPropsList['RaLoginForm'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaLoginForm'];
+        };
+    }
 }
