@@ -605,7 +605,7 @@ export const InsideReferenceArrayInputDefaultValue = ({
                             id: 1,
                             title: 'War and Peace',
                             // trigger default value
-                            author: undefined,
+                            authors: undefined,
                             summary:
                                 "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
                             year: 1869,

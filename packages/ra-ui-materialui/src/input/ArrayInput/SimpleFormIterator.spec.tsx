@@ -18,7 +18,7 @@ import { SimpleForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import { TextInput } from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
-import { Basic } from './SimpleFormIterator.stories';
+import { Basic, WithFormDataConsumer } from './SimpleFormIterator.stories';
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
@@ -471,32 +471,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should not reapply default values set at form level after removing and then re-adding one row, even with FormDataConsumer', async () => {
-        render(
-            <Wrapper>
-                <SimpleForm
-                    defaultValues={{
-                        emails: [{ email: 'test@marmelab.com', name: 'test' }],
-                    }}
-                >
-                    <ArrayInput source="emails">
-                        <SimpleFormIterator>
-                            <FormDataConsumer>
-                                {() => (
-                                    <>
-                                        <TextInput
-                                            source="email"
-                                            label="Email"
-                                            defaultValue="default@marmelab.com"
-                                        />
-                                        <TextInput source="name" label="Name" />
-                                    </>
-                                )}
-                            </FormDataConsumer>
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
-            </Wrapper>
-        );
+        render(<WithFormDataConsumer />);
 
         const removeFirstButton = getByLabelText(
             // @ts-ignore
