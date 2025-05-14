@@ -123,7 +123,7 @@ const cli = meow(
     }
 );
 
-if (cli.flags.h) {
+if (cli.flags.h || cli.flags.help) {
     cli.showHelp();
 } else {
     const name = cli.input.length > 0 ? cli.input[0].trim() : undefined;
