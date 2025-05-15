@@ -83,7 +83,7 @@ export const useChoices = ({
     );
 
     const getChoiceValue = useCallback(
-        choice => get(choice, optionValue),
+        choice => get(choice, optionValue, get(choice, 'id')),
         [optionValue]
     );
 
