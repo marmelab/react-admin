@@ -69,40 +69,48 @@ export const useReferenceOneFieldController = <
     const notify = useNotify();
     const { meta, ...otherQueryOptions } = queryOptions;
 
-    const { data, error, isFetching, isLoading, isPending, refetch } =
-        useGetManyReference<RecordType, ErrorType>(
-            reference,
-            {
-                target,
-                id: get(record, source),
-                pagination: { page: 1, perPage: 1 },
-                sort,
-                filter,
-                meta,
-            },
-            {
-                enabled: !!record,
-                onError: error =>
-                    notify(
-                        typeof error === 'string'
-                            ? error
-                            : (error as Error).message ||
-                                  'ra.notification.http_error',
-                        {
-                            type: 'error',
-                            messageArgs: {
-                                _:
-                                    typeof error === 'string'
-                                        ? error
-                                        : (error as Error)?.message
-                                          ? (error as Error).message
-                                          : undefined,
-                            },
-                        }
-                    ),
-                ...otherQueryOptions,
-            }
-        );
+    const {
+        data,
+        error,
+        isFetching,
+        isLoading,
+        isPending,
+        isPaused,
+        isPlaceholderData,
+        refetch,
+    } = useGetManyReference<RecordType, ErrorType>(
+        reference,
+        {
+            target,
+            id: get(record, source),
+            pagination: { page: 1, perPage: 1 },
+            sort,
+            filter,
+            meta,
+        },
+        {
+            enabled: !!record,
+            onError: error =>
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : (error as Error).message ||
+                              'ra.notification.http_error',
+                    {
+                        type: 'error',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : (error as Error)?.message
+                                      ? (error as Error).message
+                                      : undefined,
+                        },
+                    }
+                ),
+            ...otherQueryOptions,
+        }
+    );
 
     return {
         referenceRecord: data ? data[0] : undefined,
@@ -110,6 +118,8 @@ export const useReferenceOneFieldController = <
         isFetching,
         isLoading,
         isPending,
+        isPaused,
+        isPlaceholderData,
         refetch,
     };
 };

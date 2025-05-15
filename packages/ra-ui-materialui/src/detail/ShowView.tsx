@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType } from 'react';
+import type { ReactNode, ElementType } from 'react';
 import {
     Card,
     type ComponentsOverrides,
@@ -12,8 +12,10 @@ import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
+import { Offline } from '../Offline';
 
 const defaultActions = <ShowActions />;
+const defaultOffline = <Offline />;
 
 export const ShowView = (inProps: ShowViewProps) => {
     const props = useThemeProps({
@@ -27,12 +29,29 @@ export const ShowView = (inProps: ShowViewProps) => {
         className,
         component: Content = Card,
         emptyWhileLoading = false,
+        offline = defaultOffline,
         title,
         ...rest
     } = props;
 
-    const { resource, defaultTitle, record } = useShowContext();
+    const { resource, defaultTitle, isPaused, record } = useShowContext();
     const { hasEdit } = useResourceDefinition();
+
+    if (isPaused && offline) {
+        return (
+            <Root className={clsx('show-page', className)} {...rest}>
+                <div
+                    className={clsx(
+                        ShowClasses.main,
+                        ShowClasses.noActions,
+                        ShowClasses.offline
+                    )}
+                >
+                    {offline}
+                </div>
+            </Root>
+        );
+    }
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
@@ -64,11 +83,12 @@ export const ShowView = (inProps: ShowViewProps) => {
 
 export interface ShowViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
+    actions?: ReactNode;
+    aside?: ReactNode;
     component?: ElementType;
     emptyWhileLoading?: boolean;
-    title?: string | ReactElement | false;
+    offline?: ReactNode;
+    title?: ReactNode;
     sx?: SxProps<Theme>;
 }
 
@@ -78,6 +98,7 @@ export const ShowClasses = {
     main: `${PREFIX}-main`,
     noActions: `${PREFIX}-noActions`,
     card: `${PREFIX}-card`,
+    offline: `${PREFIX}-offline`,
 };
 
 const Root = styled('div', {
@@ -89,6 +110,10 @@ const Root = styled('div', {
     },
     [`& .${ShowClasses.noActions}`]: {
         marginTop: '1em',
+    },
+    [`& .${ShowClasses.offline}`]: {
+        flexDirection: 'column',
+        alignItems: 'unset',
     },
     [`& .${ShowClasses.card}`]: {
         flex: '1 1 auto',

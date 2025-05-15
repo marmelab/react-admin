@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType } from 'react';
+import type { ReactNode, ElementType } from 'react';
 import {
     Card,
     CardContent,
@@ -14,8 +14,10 @@ import { useEditContext, useResourceDefinition } from 'ra-core';
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
+import { Offline } from '../Offline';
 
 const defaultActions = <EditActions />;
+const defaultOffline = <Offline />;
 
 export const EditView = (inProps: EditViewProps) => {
     const props = useThemeProps({
@@ -28,13 +30,31 @@ export const EditView = (inProps: EditViewProps) => {
         children,
         className,
         component: Content = Card,
+        offline = defaultOffline,
         emptyWhileLoading = false,
         title,
         ...rest
     } = props;
 
     const { hasShow } = useResourceDefinition();
-    const { resource, defaultTitle, record, isPending } = useEditContext();
+    const { resource, defaultTitle, record, isPending, isPaused } =
+        useEditContext();
+
+    if (isPaused && offline) {
+        return (
+            <Root className={clsx('edit-page', className)} {...rest}>
+                <div
+                    className={clsx(
+                        EditClasses.main,
+                        EditClasses.noActions,
+                        EditClasses.offline
+                    )}
+                >
+                    {offline}
+                </div>
+            </Root>
+        );
+    }
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
@@ -68,11 +88,12 @@ export const EditView = (inProps: EditViewProps) => {
 
 export interface EditViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
+    actions?: ReactNode | false;
+    aside?: ReactNode;
+    offline?: ReactNode;
     component?: ElementType;
     emptyWhileLoading?: boolean;
-    title?: string | ReactElement | false;
+    title?: ReactNode;
     sx?: SxProps<Theme>;
 }
 
@@ -82,6 +103,7 @@ export const EditClasses = {
     main: `${PREFIX}-main`,
     noActions: `${PREFIX}-noActions`,
     card: `${PREFIX}-card`,
+    offline: `${PREFIX}-offline`,
 };
 
 const Root = styled('div', {
@@ -94,6 +116,10 @@ const Root = styled('div', {
     },
     [`& .${EditClasses.noActions}`]: {
         marginTop: '1em',
+    },
+    [`& .${EditClasses.offline}`]: {
+        flexDirection: 'column',
+        alignItems: 'unset',
     },
     [`& .${EditClasses.card}`]: {
         flex: '1 1 auto',
