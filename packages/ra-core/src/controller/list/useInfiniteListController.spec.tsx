@@ -740,4 +740,38 @@ describe('useInfiniteListController', () => {
             expect(authProvider.canAccess).not.toHaveBeenCalled();
         });
     });
+
+    describe('response metadata', () => {
+        it('should return response metadata as meta', async () => {
+            const getList = jest.fn().mockImplementation(() =>
+                Promise.resolve({
+                    data: [],
+                    total: 0,
+                    meta: { foo: 'bar' },
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <InfiniteListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        page: 1,
+                        total: 0,
+                        hasNextPage: false,
+                        hasPreviousPage: false,
+                        meta: { foo: 'bar' },
+                    })
+                );
+            });
+        });
+    });
 });
