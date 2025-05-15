@@ -19,6 +19,9 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Link } from '../Link';
+import { Offline } from '../Offline';
+
+const defaultOffline = <Offline />;
 
 /**
  * Fetch and render the number of records related to the current one
@@ -43,7 +46,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         filter,
         sort,
         link,
-        offline,
+        offline = defaultOffline,
         resource,
         source = 'id',
         timeout = 1000,
@@ -69,13 +72,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     let body: ReactNode = total;
 
     if (isPaused && total == null) {
-        body = offline ?? (
-            <ErrorIcon
-                color="error"
-                fontSize="small"
-                titleAccess="ra.notification.offline"
-            />
-        );
+        body = offline;
     }
 
     if (isPending && !isPaused && oneSecondHasPassed) {

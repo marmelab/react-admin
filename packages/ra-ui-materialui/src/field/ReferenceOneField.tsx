@@ -17,6 +17,9 @@ import {
 
 import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
+import { Offline } from '../Offline';
+
+const defaultOffline = <Offline />;
 
 /**
  * Render the related record in a one-to-one relationship
@@ -40,7 +43,7 @@ export const ReferenceOneField = <
         source = 'id',
         target,
         emptyText,
-        offline: offlineProp = 'ra-references.single_offline',
+        offline = defaultOffline,
         sort,
         filter,
         link,
@@ -82,15 +85,6 @@ export const ReferenceOneField = <
             </Typography>
         ) : emptyText ? (
             emptyText
-        ) : null;
-
-    const offline =
-        typeof offlineProp === 'string' ? (
-            <Typography component="span" variant="body2">
-                {offlineProp && translate(offlineProp, { _: offlineProp })}
-            </Typography>
-        ) : offlineProp ? (
-            offlineProp
         ) : null;
 
     if (

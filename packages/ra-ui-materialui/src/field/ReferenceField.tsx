@@ -25,6 +25,7 @@ import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import type { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
+import { Offline } from '../Offline';
 
 /**
  * Fetch reference record, and render its representation, or delegate rendering to child component.
@@ -104,6 +105,7 @@ export interface ReferenceFieldProps<
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
+const defaultOffline = <Offline />;
 
 export const ReferenceFieldView = <
     RecordType extends Record<string, any> = Record<string, any>,
@@ -115,7 +117,7 @@ export const ReferenceFieldView = <
         children,
         className,
         emptyText,
-        offline = 'ra.notification.offline',
+        offline = defaultOffline,
         reference,
         sx,
     } = props;
@@ -148,32 +150,7 @@ export const ReferenceFieldView = <
     }
     if (!referenceRecord) {
         if (isPaused) {
-            if (typeof offline === 'string') {
-                return (
-                    <Stack direction="row" alignItems="center" gap={1}>
-                        <ErrorIcon
-                            role="presentation"
-                            color="error"
-                            fontSize="small"
-                        />
-                        <Typography
-                            component="span"
-                            variant="body2"
-                            sx={{ color: 'error.main' }}
-                        >
-                            {typeof offline === 'string' ? (
-                                <Translate i18nKey={offline}>
-                                    {offline}
-                                </Translate>
-                            ) : (
-                                offline
-                            )}
-                        </Typography>
-                    </Stack>
-                );
-            }
-            // We either have a ReactNode, a boolean or null|undefined
-            return offline || null;
+            return offline;
         }
         return emptyText ? (
             <Typography component="span" variant="body2">
