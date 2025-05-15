@@ -88,7 +88,7 @@ export const EditView = (inProps: EditViewProps) => {
 
 export interface EditViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
-    actions?: ReactNode | false;
+    actions?: ReactNode;
     aside?: ReactNode;
     offline?: ReactNode;
     component?: ElementType;
