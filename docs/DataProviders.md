@@ -903,7 +903,7 @@ import { dataProvider } from './dataProvider';
 
 export const queryClient = new QueryClient();
 
-addOfflineSupportToQueryClient({
+const queryClientWithOfflineSupport = addOfflineSupportToQueryClient({
     queryClient,
     dataProvider,
     resources: ['posts', 'comments'],
@@ -996,9 +996,9 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { dataProvider } from './dataProvider';
 
-export const queryClient = new QueryClient();
+const baseQueryClient = new QueryClient();
 
-addOfflineSupportToQueryClient({
+export const queryClient = addOfflineSupportToQueryClient({
     queryClient,
     dataProvider,
     resources: ['posts', 'comments'],

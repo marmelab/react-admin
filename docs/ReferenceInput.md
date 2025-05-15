@@ -193,7 +193,7 @@ const filters = [
 
 ## `offline`
 
-`<ReferenceInput>` can display a custom message when data cannot be fetched because of connectivity issues.
+`<ReferenceInput>` displays a message when data cannot be fetched because of connectivity issues.
 You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
 
 ```tsx
