@@ -1,6 +1,6 @@
 import * as React from 'react';
 import fakeRestProvider from 'ra-data-fakerest';
-import { CardContent } from '@mui/material';
+import { CardContent, Typography } from '@mui/material';
 import { ResourceDefinitionContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -26,7 +26,10 @@ const fakeData = {
         { id: 8, name: 'Charlie Watts' },
     ],
 };
-const dataProvider = fakeRestProvider(fakeData, false);
+const dataProvider = fakeRestProvider(
+    fakeData,
+    process.env.NODE_ENV !== 'test'
+);
 
 const resouceDefs = {
     artists: {
@@ -63,6 +66,64 @@ export const Children = () => (
                             <TextField source="name" />
                         </Datagrid>
                     </ReferenceArrayField>
+                </SimpleShowLayout>
+            </Show>
+        </ResourceDefinitionContextProvider>
+    </AdminContext>
+);
+
+const LoadChildrenOnDemand = ({ children }: { children: React.ReactNode }) => {
+    const [showChildren, setShowChildren] = React.useState(false);
+    const handleClick = () => {
+        setShowChildren(true);
+    };
+    return showChildren ? (
+        children
+    ) : (
+        <div>
+            <Typography variant="body2" gutterBottom>
+                Don't forget to go offline first
+            </Typography>
+            <button onClick={handleClick}>Load Children</button>
+        </div>
+    );
+};
+
+export const Offline = () => (
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
+        <ResourceDefinitionContextProvider definitions={resouceDefs}>
+            <Show resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleShowLayout>
+                    <TextField source="name" />
+                    <LoadChildrenOnDemand>
+                        <ReferenceArrayField
+                            source="members"
+                            reference="artists"
+                        />
+                    </LoadChildrenOnDemand>
+                </SimpleShowLayout>
+            </Show>
+        </ResourceDefinitionContextProvider>
+    </AdminContext>
+);
+
+export const OfflineWithChildren = () => (
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
+        <ResourceDefinitionContextProvider definitions={resouceDefs}>
+            <Show resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleShowLayout>
+                    <TextField source="name" />
+                    <LoadChildrenOnDemand>
+                        <ReferenceArrayField
+                            source="members"
+                            reference="artists"
+                        >
+                            <Datagrid bulkActionButtons={false}>
+                                <TextField source="id" />
+                                <TextField source="name" />
+                            </Datagrid>
+                        </ReferenceArrayField>
+                    </LoadChildrenOnDemand>
                 </SimpleShowLayout>
             </Show>
         </ResourceDefinitionContextProvider>

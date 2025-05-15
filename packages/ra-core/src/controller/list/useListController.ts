@@ -114,10 +114,10 @@ export const useListController = <
         error,
         isLoading,
         isFetching,
-        isPending,
-        refetch,
         isPaused,
+        isPending,
         isPlaceholderData,
+        refetch,
     } = useGetList<RecordType, ErrorType>(
         resource,
         {
@@ -214,7 +214,9 @@ export const useListController = <
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
+        isPaused,
         isPending,
+        isPlaceholderData,
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
@@ -540,6 +542,8 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     hasPreviousPage?: boolean;
     isFetching?: boolean;
     isLoading?: boolean;
+    isPaused?: boolean;
+    isPlaceholderData?: boolean;
 }
 
 export interface ListControllerLoadingResult<RecordType extends RaRecord = any>

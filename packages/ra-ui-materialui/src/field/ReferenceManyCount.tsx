@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
     useReferenceManyFieldController,
     useRecordContext,
@@ -6,13 +6,22 @@ import {
     useCreatePath,
     SortPayload,
     RaRecord,
+    Translate,
 } from 'ra-core';
-import { Typography, TypographyProps, CircularProgress } from '@mui/material';
+import {
+    Typography,
+    TypographyProps,
+    CircularProgress,
+    Stack,
+} from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Link } from '../Link';
+import { Offline } from '../Offline';
+
+const defaultOffline = <Offline />;
 
 /**
  * Fetch and render the number of records related to the current one
@@ -37,6 +46,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         filter,
         sort,
         link,
+        offline = defaultOffline,
         resource,
         source = 'id',
         timeout = 1000,
@@ -46,7 +56,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isPending, error, total } =
+    const { isPaused, isPending, error, total } =
         useReferenceManyFieldController<RecordType>({
             filter,
             sort,
@@ -54,23 +64,37 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
             perPage: 1,
             record,
             reference,
-            // @ts-ignore remove when #8491 is released
             resource,
             source,
             target,
         });
 
-    const body = isPending ? (
-        oneSecondHasPassed ? (
-            <CircularProgress size={14} />
-        ) : (
-            ''
-        )
-    ) : error ? (
-        <ErrorIcon color="error" fontSize="small" titleAccess="error" />
-    ) : (
-        total
-    );
+    let body: ReactNode = total;
+
+    if (isPaused && total == null) {
+        body = offline;
+    }
+
+    if (isPending && !isPaused && oneSecondHasPassed) {
+        body = <CircularProgress size={14} />;
+    }
+
+    if (error) {
+        body = (
+            <Stack direction="row" alignItems="center" gap={1}>
+                <ErrorIcon role="presentation" color="error" fontSize="small" />
+                <Typography
+                    component="span"
+                    variant="body2"
+                    sx={{ color: 'error.main' }}
+                >
+                    <Translate i18nKey="ra.notification.http_error">
+                        Server communication error
+                    </Translate>
+                </Typography>
+            </Stack>
+        );
+    }
 
     return link && record ? (
         <Link
@@ -104,6 +128,7 @@ ReferenceManyCount.textAlign = 'right';
 export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     extends Omit<FieldProps<RecordType>, 'source'>,
         Omit<TypographyProps, 'textAlign'> {
+    offline?: ReactNode;
     reference: string;
     source?: string;
     target: string;

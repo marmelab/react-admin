@@ -62,6 +62,8 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         isFetching = false,
         isLoading = false,
         isPending = false,
+        isPaused = false,
+        isPlaceholderData = false,
         page: initialPage = 1,
         perPage: initialPerPage = 1000,
         sort: initialSort,
@@ -289,6 +291,8 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         isFetching: fetchingState,
         isLoading: loadingState,
         isPending: pendingState,
+        isPaused,
+        isPlaceholderData,
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
@@ -317,6 +321,8 @@ export interface UseListOptions<
     isFetching?: boolean;
     isLoading?: boolean;
     isPending?: boolean;
+    isPaused?: boolean;
+    isPlaceholderData?: boolean;
     page?: number;
     perPage?: number;
     sort?: SortPayload;

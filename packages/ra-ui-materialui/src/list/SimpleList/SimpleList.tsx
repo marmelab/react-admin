@@ -19,7 +19,7 @@ import {
     useTranslate,
 } from 'ra-core';
 import * as React from 'react';
-import { isValidElement, type ReactElement } from 'react';
+import { isValidElement, type ReactNode } from 'react';
 
 import { ListNoResults } from '../ListNoResults';
 import { SimpleListLoading } from './SimpleListLoading';
@@ -29,6 +29,7 @@ import {
     SimpleListItem,
     type SimpleListItemProps,
 } from './SimpleListItem';
+import { Offline } from '../../Offline';
 
 /**
  * The <SimpleList> component renders a list of records as a Material UI <List>.
@@ -76,6 +77,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         leftAvatar,
         leftIcon,
         linkType,
+        offline = DefaultOffline,
         rowClick,
         primaryText,
         rightAvatar,
@@ -88,10 +90,10 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         resource,
         ...rest
     } = props;
-    const { data, isPending, total } =
+    const { data, isPaused, isPending, isPlaceholderData, total } =
         useListContextWithProps<RecordType>(props);
 
-    if (isPending === true) {
+    if (isPending === true && !isPaused) {
         return (
             <SimpleListLoading
                 className={className}
@@ -103,7 +105,11 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         );
     }
 
-    if (data == null || data.length === 0 || total === 0) {
+    if (
+        (data == null || data.length === 0 || total === 0) &&
+        !isPaused &&
+        !isPlaceholderData
+    ) {
         if (empty) {
             return empty;
         }
@@ -111,9 +117,17 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         return null;
     }
 
+    if (isPaused && (isPlaceholderData || data == null || !data?.length)) {
+        if (offline) {
+            return offline;
+        }
+
+        return null;
+    }
+
     return (
         <Root className={className} {...sanitizeListRestProps(rest)}>
-            {data.map((record, rowIndex) => (
+            {data?.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>
                     <SimpleListItem
                         key={record.id}
@@ -145,7 +159,8 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     extends SimpleListBaseProps<RecordType>,
         Omit<ListProps, 'classes'> {
     className?: string;
-    empty?: ReactElement;
+    empty?: ReactNode;
+    offline?: ReactNode;
     hasBulkActions?: boolean;
     // can be injected when using the component without context
     resource?: string;
@@ -276,6 +291,7 @@ const Root = styled(List, {
 });
 
 const DefaultEmpty = <ListNoResults />;
+const DefaultOffline = <Offline />;
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {

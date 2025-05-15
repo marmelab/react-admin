@@ -60,22 +60,25 @@ export default App;
 
 You can customize the `<Edit>` component using the following props:
 
-* [`actions`](#actions): override the actions toolbar with a custom component
-* [`aside`](#aside): component to render aside to the main content
-* `children`: the components that renders the form
-* `className`: passed to the root component
-* [`component`](#component): override the root component
-* [`disableAuthentication`](#disableauthentication): disable the authentication check
-* [`emptyWhileLoading`](#emptywhileloading): Set to `true` to return `null` while the edit is loading.
-* [`id`](#id): the id of the record to edit
-* [`mutationMode`](#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
-* [`mutationOptions`](#mutationoptions): options for the `dataProvider.update()` call
-* [`queryOptions`](#queryoptions): options for the `dataProvider.getOne()` call
-* [`redirect`](#redirect): change the redirect location after successful creation
-* [`resource`](#resource): override the name of the resource to create
-* [`sx`](#sx-css-api): Override the styles
-* [`title`](#title): override the page title
-* [`transform`](#transform): transform the form data before calling `dataProvider.update()`
+| Prop                    | Required | Type                                  | Default               | Description                                                   |
+| ----------------------- | -------- | ------------------------------------- | --------------------- | ------------------------------------------------------------- |
+| `actions`               |          | `ReactNode`                           |                       | override the actions toolbar with a custom component |
+| `aside`                 |          | `ReactNode`                           |                       | component to render aside to the main content |
+| `children`              |          | `ReactNode`                           |                       | The components that renders the form |
+| `className`             |          | `string`                              |                       | passed to the root component |
+| `component`             |          | `Component`                           |                       | override the root component |
+| `disableAuthentication` |          | `boolean`                             |                       | disable the authentication check |
+| `emptyWhileLoading`     |          | `boolean`                             |                       | Set to `true` to return `null` while the edit is loading. |
+| `id`                    |          | `string | number`                     |                       | the id of the record to edit |
+| `mutationMode`          |          | `pessimistic | optimistic | undoable` |                       | switch to optimistic or pessimistic mutations (undoable by default) |
+| `mutationOptions`       |          | `object`                              |                       | options for the `dataProvider.update()` call |
+| `offline`               |          | `ReactNode`                           |                       | The content rendered to render when data could not be fetched because of connectivity issues |
+| `queryOptions`          |          | `object`                              |                       | options for the `dataProvider.getOne()` call |
+| `redirect`              |          | `string | Function | false`           |                       | change the redirect location after successful creation |
+| `resource`              |          | `string`                              |                       | override the name of the resource to create |
+| `sx`                    |          | `object`                              |                       | Override the styles |
+| `title`                 |          | `ReactNode`                           |                       | override the page title |
+| `transform`             |          | `Function`                            |                       | transform the form data before calling `dataProvider.update()` |
 
 ## `actions`
 
@@ -488,6 +491,36 @@ The default `onError` function is:
 
 **Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `mutationOptions` prop on the `<SaveButton>` component, too.
 
+## `offline`
+
+It's possible that a `<Edit>` will have no record to display because of connectivity issues. In that case, `<Edit>` will display a message indicating data couldn't be fetched. 
+
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<Edit offline>` prop:
+
+```tsx
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+const BookEdit = () => (
+    <Edit offline={<Offline />}>
+            ...
+    </Edit>
+);
+```
+
 ## `queryOptions`
 
 `<Edit>` calls `dataProvider.getOne()` on mount via react-query's `useQuery` hook. You can customize the options you pass to this hook by setting the `queryOptions` prop.
@@ -498,7 +531,7 @@ This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) t
 ```jsx
 import { Edit, SimpleForm } from 'react-admin';
 
-export const PostShow = () => (
+export const PostEdit = () => (
     <Edit queryOptions={{ meta: { foo: 'bar' } }}>
         <SimpleForm>
             ...

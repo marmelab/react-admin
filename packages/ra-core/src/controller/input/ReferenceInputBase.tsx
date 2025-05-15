@@ -70,6 +70,7 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         reference,
         sort = { field: 'id', order: 'DESC' },
         filter = {},
+        offline = null,
     } = props;
 
     const controllerProps = useReferenceInputController({
@@ -78,7 +79,9 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         filter,
     });
 
-    return (
+    return controllerProps.isPaused ? (
+        offline
+    ) : (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
                 {children}
@@ -91,4 +94,5 @@ export interface ReferenceInputBaseProps
     extends InputProps,
         UseReferenceInputControllerParams {
     children?: ReactNode;
+    offline?: ReactNode;
 }
