@@ -21,7 +21,9 @@ export interface UseReferenceResult<
     ErrorType = Error,
 > {
     isLoading: boolean;
+    isPaused: boolean;
     isPending: boolean;
+    isPlaceholderData: boolean;
     isFetching: boolean;
     referenceRecord?: RecordType;
     error?: ErrorType | null;
@@ -68,12 +70,20 @@ export const useReference = <
     ErrorType
 > => {
     const { meta, ...otherQueryOptions } = options;
-    const { data, error, isLoading, isFetching, isPending, refetch } =
-        useGetManyAggregate<RecordType, ErrorType>(
-            reference,
-            { ids: [id], meta },
-            otherQueryOptions
-        );
+    const {
+        data,
+        error,
+        isLoading,
+        isFetching,
+        isPending,
+        isPaused,
+        isPlaceholderData,
+        refetch,
+    } = useGetManyAggregate<RecordType, ErrorType>(
+        reference,
+        { ids: [id], meta },
+        otherQueryOptions
+    );
     return {
         referenceRecord: error ? undefined : data ? data[0] : undefined,
         refetch,
@@ -81,5 +91,7 @@ export const useReference = <
         isLoading,
         isFetching,
         isPending,
+        isPaused,
+        isPlaceholderData,
     };
 };

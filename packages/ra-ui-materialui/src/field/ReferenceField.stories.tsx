@@ -114,6 +114,18 @@ export const Loading = () => (
     </Wrapper>
 );
 
+const errorDataProvider = {
+    getMany: () => Promise.reject(new Error('Network error')),
+};
+
+export const ErrorWhileFetching = () => (
+    <Wrapper dataProvider={errorDataProvider}>
+        <ReferenceField source="detail_id" reference="book_details">
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
 export const MissingReferenceId = () => (
     <Wrapper record={{ id: 1, title: 'War and Peace' }}>
         <ReferenceField source="detail_id" reference="book_details">

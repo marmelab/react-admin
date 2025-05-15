@@ -80,6 +80,8 @@ const englishMessages: TranslationMessages = {
                     'At least one of the associated references no longer appears to be available.',
                 single_missing:
                     'Associated reference no longer appears to be available.',
+                single_offline:
+                    'The associated reference cannot be fetched as you are offline.',
             },
             password: {
                 toggle_visible: 'Hide password',
@@ -171,6 +173,7 @@ const englishMessages: TranslationMessages = {
             logged_out: 'Your session has ended, please reconnect.',
             not_authorized: "You're not authorized to access this resource.",
             application_update_available: 'A new version is available.',
+            offline: 'No connectivity. Could not fetch data.',
         },
         validation: {
             required: 'Required',

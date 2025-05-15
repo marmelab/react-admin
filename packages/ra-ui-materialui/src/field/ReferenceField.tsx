@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { ReactNode } from 'react';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import {
     type ComponentsOverrides,
     styled,
@@ -25,7 +25,6 @@ import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import type { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
-import { visuallyHidden } from '@mui/utils';
 
 /**
  * Fetch reference record, and render its representation, or delegate rendering to child component.
@@ -113,8 +112,15 @@ export const ReferenceFieldView = <
 >(
     props: ReferenceFieldViewProps<RecordType, ReferenceRecordType>
 ) => {
-    const { children, className, emptyText, reference, sx } = props;
-    const { error, link, isLoading, referenceRecord } =
+    const {
+        children,
+        className,
+        emptyText,
+        offline = 'ra.notification.offline',
+        reference,
+        sx,
+    } = props;
+    const { error, link, isLoading, isPaused, referenceRecord } =
         useReferenceFieldContext();
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
@@ -122,12 +128,18 @@ export const ReferenceFieldView = <
 
     if (error) {
         return (
-            <div>
+            <Stack direction="row" alignItems="center" gap={1}>
                 <ErrorIcon role="presentation" color="error" fontSize="small" />
-                <span style={visuallyHidden}>
-                    {typeof error === 'string' ? error : error?.message}
-                </span>
-            </div>
+                <Typography
+                    component="span"
+                    variant="body2"
+                    sx={{ color: 'error.main' }}
+                >
+                    {translate('ra.notification.http_error', {
+                        _: 'Server communication error',
+                    })}
+                </Typography>
+            </Stack>
         );
     }
     // We explicitly check isLoading here as the record may not have an id for the reference,
@@ -137,6 +149,28 @@ export const ReferenceFieldView = <
         return <LinearProgress />;
     }
     if (!referenceRecord) {
+        if (isPaused) {
+            if (typeof offline === 'string') {
+                return (
+                    <Stack direction="row" alignItems="center" gap={1}>
+                        <ErrorIcon
+                            role="presentation"
+                            color="error"
+                            fontSize="small"
+                        />
+                        <Typography
+                            component="span"
+                            variant="body2"
+                            sx={{ color: 'error.main' }}
+                        >
+                            {offline && translate(offline, { _: offline })}
+                        </Typography>
+                    </Stack>
+                );
+            }
+            // We either have a ReactNode, a boolean or null|undefined
+            return offline || null;
+        }
         return emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText && translate(emptyText, { _: emptyText })}
@@ -181,6 +215,7 @@ export interface ReferenceFieldViewProps<
 > extends FieldProps<RecordType>,
         Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'link'> {
     children?: ReactNode;
+    offline?: ReactNode;
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
