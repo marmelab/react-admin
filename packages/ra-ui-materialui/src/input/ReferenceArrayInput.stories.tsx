@@ -19,6 +19,7 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
+import { Typography } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/input/ReferenceArrayInput' };
 
@@ -66,6 +67,51 @@ export const Basic = () => (
                                 resource="posts"
                                 source="tags_ids"
                             />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const LoadChildrenOnDemand = ({ children }: { children: React.ReactNode }) => {
+    const [showChildren, setShowChildren] = React.useState(false);
+    const handleClick = () => {
+        setShowChildren(true);
+    };
+    return showChildren ? (
+        children
+    ) : (
+        <div>
+            <Typography variant="body2" gutterBottom>
+                Don't forget to go offline first
+            </Typography>
+            <button onClick={handleClick}>Load Children</button>
+        </div>
+    );
+};
+
+export const Offline = () => (
+    <TestMemoryRouter initialEntries={['/posts/create']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource name="tags" recordRepresentation={'name'} />
+            <Resource
+                name="posts"
+                create={() => (
+                    <Create
+                        resource="posts"
+                        record={{ tags_ids: [1, 3] }}
+                        sx={{ width: 600 }}
+                    >
+                        <SimpleForm>
+                            <LoadChildrenOnDemand>
+                                <ReferenceArrayInput
+                                    reference="tags"
+                                    resource="posts"
+                                    source="tags_ids"
+                                />
+                            </LoadChildrenOnDemand>
                         </SimpleForm>
                     </Create>
                 )}

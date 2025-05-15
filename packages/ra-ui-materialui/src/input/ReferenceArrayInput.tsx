@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import type { ReactNode } from 'react';
 import {
     InputProps,
     useReferenceArrayInputController,
@@ -8,6 +8,8 @@ import {
     UseReferenceArrayInputParams,
 } from 'ra-core';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import { Labeled } from '../Labeled';
+import { Offline } from '../Offline';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -82,6 +84,7 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
         reference,
         sort,
         filter = defaultFilter,
+        offline,
     } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
@@ -95,7 +98,13 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
         filter,
     });
 
-    return (
+    return controllerProps.isPaused ? (
+        offline ?? (
+            <Labeled {...props}>
+                <Offline />
+            </Labeled>
+        )
+    ) : (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
                 {children}
@@ -110,7 +119,8 @@ const defaultFilter = {};
 export interface ReferenceArrayInputProps
     extends InputProps,
         UseReferenceArrayInputParams {
-    children?: ReactElement;
+    children?: ReactNode;
     label?: string;
+    offline?: ReactNode;
     [key: string]: any;
 }
