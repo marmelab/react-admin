@@ -12,11 +12,11 @@ import ErrorIcon from '@mui/icons-material/Error';
 import {
     type LinkToType,
     useGetRecordRepresentation,
-    useTranslate,
     type RaRecord,
     ReferenceFieldBase,
     useReferenceFieldContext,
     useFieldValue,
+    Translate,
 } from 'ra-core';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -68,13 +68,12 @@ export const ReferenceField = <
         name: PREFIX,
     });
     const { emptyText } = props;
-    const translate = useTranslate();
     const id = useFieldValue(props);
 
     if (id == null) {
         return emptyText ? (
             <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
+                <Translate i18nKey={emptyText}>{emptyText}</Translate>
             </Typography>
         ) : null;
     }
@@ -124,7 +123,6 @@ export const ReferenceFieldView = <
         useReferenceFieldContext();
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
-    const translate = useTranslate();
 
     if (error) {
         return (
@@ -135,9 +133,9 @@ export const ReferenceFieldView = <
                     variant="body2"
                     sx={{ color: 'error.main' }}
                 >
-                    {translate('ra.notification.http_error', {
-                        _: 'Server communication error',
-                    })}
+                    <Translate i18nKey="ra.notification.http_error">
+                        Server communication error
+                    </Translate>
                 </Typography>
             </Stack>
         );
@@ -163,7 +161,13 @@ export const ReferenceFieldView = <
                             variant="body2"
                             sx={{ color: 'error.main' }}
                         >
-                            {offline && translate(offline, { _: offline })}
+                            {typeof offline === 'string' ? (
+                                <Translate i18nKey={offline}>
+                                    {offline}
+                                </Translate>
+                            ) : (
+                                offline
+                            )}
                         </Typography>
                     </Stack>
                 );
@@ -173,7 +177,7 @@ export const ReferenceFieldView = <
         }
         return emptyText ? (
             <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
+                <Translate i18nKey={emptyText}>{emptyText}</Translate>
             </Typography>
         ) : null;
     }

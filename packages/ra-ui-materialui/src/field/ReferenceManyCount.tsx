@@ -6,8 +6,14 @@ import {
     useCreatePath,
     SortPayload,
     RaRecord,
+    Translate,
 } from 'ra-core';
-import { Typography, TypographyProps, CircularProgress } from '@mui/material';
+import {
+    Typography,
+    TypographyProps,
+    CircularProgress,
+    Stack,
+} from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { FieldProps } from './types';
@@ -78,11 +84,18 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
 
     if (error) {
         body = (
-            <ErrorIcon
-                color="error"
-                fontSize="small"
-                titleAccess={error.message}
-            />
+            <Stack direction="row" alignItems="center" gap={1}>
+                <ErrorIcon role="presentation" color="error" fontSize="small" />
+                <Typography
+                    component="span"
+                    variant="body2"
+                    sx={{ color: 'error.main' }}
+                >
+                    <Translate i18nKey="ra.notification.http_error">
+                        Server communication error
+                    </Translate>
+                </Typography>
+            </Stack>
         );
     }
 

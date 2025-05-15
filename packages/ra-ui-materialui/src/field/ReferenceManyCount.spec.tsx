@@ -17,7 +17,7 @@ describe('<ReferenceManyCount />', () => {
     it('should render an error icon when the request fails', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         render(<ErrorState />);
-        await screen.findByTitle('error');
+        await screen.findByText('Server communication error');
     });
     it('should accept a filter prop', async () => {
         render(<WithFilter />);
