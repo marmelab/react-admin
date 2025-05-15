@@ -7,6 +7,7 @@ import {
     screen,
     act,
 } from '@testing-library/react';
+import { onlineManager } from '@tanstack/react-query';
 import { testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
 import { CoreAdminContext } from '../../core';
@@ -34,6 +35,10 @@ describe('useListController', () => {
         resource: 'posts',
         debounce: 200,
     };
+
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
