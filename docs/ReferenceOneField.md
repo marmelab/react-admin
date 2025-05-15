@@ -55,14 +55,15 @@ const BookShow = () => (
 ## Props
 
 | Prop           | Required | Type               | Default                          | Description                                                                                                  |
-| -------------- | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
-| `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
-| `children`     | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
-| `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
-| `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| -------------- | -------- | ------------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------- |
+| `reference`    | Required | `string`                                    | -                                  | The name of the resource for the referenced records, e.g. 'book_details'            |
+| `target`       | Required | string                                      | -                                  | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
+| `children`     | Optional | `Element`                                   | -                                  | The Field element used to render the referenced record                              |
+| `filter`       | Optional | `Object`                                    | `{}`                               | Used to filter referenced records                                                   |
+| `link`         | Optional | `string | Function`                         | `edit`                             | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `offline `     | Optional | `ReactNode`                                 | -                                  | The content rendered to render when data could not be fetched because of connectivity issues |
 | `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options |
-| `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
+| `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`    | Used to order referenced records                                                    |
 
 `<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -147,6 +148,33 @@ You can also set the `link` prop to a string, which will be used as the link typ
     target="book_id"
     link={record => `/custom/${record.id}`}
 >
+    <TextField source="genre" />
+</ReferenceOneField>
+```
+
+## `offline`
+
+`<ReferenceOneField>` can display a custom message when data cannot be fetched because of connectivity issues.
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<ReferenceOneField offline>` prop:
+
+```jsx
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+<ReferenceOneField target="book_id" reference="book_details" offline={<Offline />}>
     <TextField source="genre" />
 </ReferenceOneField>
 ```

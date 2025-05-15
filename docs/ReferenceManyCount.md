@@ -70,8 +70,9 @@ export const PostList = () => (
 | `target`    | Required | string                                     | -                                 | Name of the field in the related resource that points to the current one. |
 | `filter`    | Optional | Object                                     | -                                 | Filter to apply to the query.                                             |
 | `link`      | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the filtered list view.    |
+| `offline `  | Optional | `ReactNode`                                | -                                 | The content rendered to render when data could not be fetched because of connectivity issues |
 | `resource`  | Optional | string                                     | -                                 | Resource to count. Default to the current `ResourceContext`               |
-| `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getManyReference`                                |
+| `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | The sort option sent to `getManyReference`                                |
 | `timeout`   | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator.   |
 
 `<ReferenceManyCount>` also accepts the [common field props](./Fields.md#common-field-props).
@@ -119,6 +120,32 @@ When used in conjunction to the `filter` prop, the link will point to the list v
 />
 ```
 {% endraw %}
+
+
+## `offline`
+
+`<ReferenceManyCount>` can display a custom message when data cannot be fetched because of connectivity issues.
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<ReferenceManyCount offline>` prop:
+
+```jsx
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+<ReferenceManyCount target="post_id" reference="comments" offline={<Offline />} />
+```
 
 ## `reference`
 

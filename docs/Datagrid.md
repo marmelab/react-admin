@@ -57,6 +57,7 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 | `hover`              | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
 | `isRowExpandable`    | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
 | `isRowSelectable`    | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
+| `offline`            | Optional | Element                 | `<Offline>`           | The content rendered to render when data could not be fetched because of connectivity issues. |
 | `optimized`          | Optional | Boolean                 | `false`               | Whether to optimize the rendering of the table.               |
 | `rowClick`           | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
 | `rowStyle`           | Optional | Function                |                       | A function that returns the style to apply to a row.          |
@@ -639,6 +640,26 @@ export const PostList = () => (
 );
 ```
 {% endraw %}
+
+## `offline`
+
+It's possible that a Datagrid will have no records to display because of connectivity issues. In that case, the Datagrid will display a message indicating data couldn't be fetched. This message is translatable and its key is `ra.notification.offline`.
+
+You can customize the content to display by passing a component to the `offline` prop:
+
+```tsx
+const CustomOffline = () => <div>No network. Data couldn't be fetched.</div>;
+
+const PostList = () => (
+    <List>
+        <Datagrid offline={<CustomOffline />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="views" />
+        </Datagrid>
+    </List>
+);
+```
 
 ## `optimized`
 

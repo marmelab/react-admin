@@ -104,6 +104,7 @@ See the [`children`](#children) section for more details.
 | `enableGet Choices` | Optional | `({q: string}) => boolean`                  | `() => true`                       | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                           |
 | `filter`           | Optional | `Object`                                    | `{}`                               | Permanent filters to use for getting the suggestion list                                                            |
 | `label`            | Optional | `string`                                    | -                                  | Useful only when `ReferenceArrayInput` is in a Filter array, the label is used as the Filter label.                 |
+| `offline `         | Optional | `ReactNode`                                 | -                                  | The content rendered to render when data could not be fetched because of connectivity issues |
 | `page`             | Optional | `number`                                    | 1                                  | The current page number                                                                                             |
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options     |
@@ -214,6 +215,31 @@ const filters = [
         <AutocompleteArrayInput label="Post tags" />
     </ReferenceArrayInput>,
 ];
+```
+
+## `offline`
+
+`<ReferenceArrayInput>` can display a custom message when data cannot be fetched because of connectivity issues.
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<ReferenceArrayInput offline>` prop:
+
+```jsx
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+<ReferenceArrayInput source="tags_ids" reference="tags" offline={<Offline />} />
 ```
 
 ## `parse`

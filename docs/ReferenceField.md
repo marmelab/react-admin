@@ -77,6 +77,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `offline `  | Optional | `ReactNode`         | -        | The content rendered to render when data could not be fetched because of connectivity issues |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
@@ -140,6 +141,31 @@ You can also use a custom `link` function to get a custom path for the children.
     reference="users"
     link={(record, reference) => `/my/path/to/${reference}/${record.id}`}
 />
+```
+
+## `offline`
+
+`<ReferenceField>` can display a custom message when data cannot be fetched because of connectivity issues.
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<ReferenceField offline>` prop:
+
+```jsx
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+<ReferenceField source="user_id" reference="users" offline={<Offline />} />
 ```
 
 ## `queryOptions`
