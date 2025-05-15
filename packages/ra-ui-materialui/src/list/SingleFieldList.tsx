@@ -19,6 +19,7 @@ import {
 
 import { LinearProgress } from '../layout/LinearProgress';
 import { Link } from '../Link';
+import { Offline } from '../Offline';
 
 /**
  * Iterator component to be used to display a list of entities, using a single field
@@ -63,6 +64,7 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
         className,
         children,
         empty,
+        offline = DefaultOffline,
         linkType = 'edit',
         gap = 1,
         direction = 'row',
@@ -73,18 +75,24 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
 
-    if (isPending === true) {
+    if (isPending && !isPaused) {
         return <LinearProgress />;
     }
 
     if (
-        data == null ||
-        data.length === 0 ||
-        total === 0 ||
-        (isPaused && isPlaceholderData)
+        (data == null || data.length === 0 || total === 0) &&
+        !isPaused &&
+        !isPlaceholderData
     ) {
         if (empty) {
             return empty;
+        }
+
+        return null;
+    }
+    if (isPaused && (isPlaceholderData || data == null || !data?.length)) {
+        if (offline) {
+            return offline;
         }
 
         return null;
@@ -97,7 +105,7 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
             className={className}
             {...sanitizeListRestProps(rest)}
         >
-            {data.map((record, rowIndex) => {
+            {data?.map((record, rowIndex) => {
                 const resourceLinkPath = !linkType
                     ? false
                     : createPath({
@@ -141,7 +149,8 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
 export interface SingleFieldListProps<RecordType extends RaRecord = any>
     extends StackProps {
     className?: string;
-    empty?: React.ReactElement;
+    empty?: React.ReactNode;
+    offline?: React.ReactNode;
     linkType?: string | false;
     children?: React.ReactNode;
     // can be injected when using the component without context
@@ -199,3 +208,5 @@ declare module '@mui/material/styles' {
         };
     }
 }
+
+const DefaultOffline = <Offline />;

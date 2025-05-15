@@ -39,6 +39,7 @@ import {
 import { BulkActionsToolbar } from '../BulkActionsToolbar';
 import { BulkDeleteButton } from '../../button';
 import { ListNoResults } from '../ListNoResults';
+import { Offline } from '../../Offline';
 
 const defaultBulkActionButtons = <BulkDeleteButton />;
 
@@ -146,6 +147,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         hover,
         isRowSelectable,
         isRowExpandable,
+        offline = DefaultOffline,
         resource,
         rowClick,
         rowSx,
@@ -219,7 +221,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         [data, isRowSelectable, onSelect, onToggleItem, selectedIds]
     );
 
-    if (isPending === true) {
+    if (isPending && !isPaused) {
         return (
             <DatagridLoading
                 className={className}
@@ -237,13 +239,19 @@ export const Datagrid: React.ForwardRefExoticComponent<
      * the Datagrid displays the empty component.
      */
     if (
-        data == null ||
-        data.length === 0 ||
-        total === 0 ||
-        (isPaused && isPlaceholderData)
+        (data == null || data.length === 0 || total === 0) &&
+        !isPaused &&
+        !isPlaceholderData
     ) {
         if (empty) {
             return empty;
+        }
+
+        return null;
+    }
+    if (isPaused && (isPlaceholderData || data == null || !data?.length)) {
+        if (offline) {
+            return offline;
         }
 
         return null;
@@ -474,6 +482,25 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     empty?: ReactElement;
 
     /**
+     * The component used to render the empty table when user are offline.
+     *
+     * @see https://marmelab.com/react-admin/Datagrid.html#offline
+     * @example
+     * import { List, Datagrid } from 'react-admin';
+     *
+     * const CustomOffline = () => <div>We couldn't fetch book as you are offline</div>;
+     *
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid offline={<CustomOffline />}>
+     *             ...
+     *         </Datagrid>
+     *     </List>
+     * );
+     */
+    offline?: ReactElement;
+
+    /**
      * A function that returns whether the row for a record is expandable.
      *
      * @see https://marmelab.com/react-admin/Datagrid.html#isrowexpandable
@@ -617,3 +644,4 @@ const sanitizeRestProps = props =>
 Datagrid.displayName = 'Datagrid';
 
 const DefaultEmpty = <ListNoResults />;
+const DefaultOffline = <Offline />;
