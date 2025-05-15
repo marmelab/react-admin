@@ -237,6 +237,25 @@ export const UseSimpleFormIteratorItem = () => (
     </Wrapper>
 );
 
+export const DefaultValue = () => (
+    <AdminContext dataProvider={testDataProvider()} defaultTheme="light">
+        <ResourceContextProvider value="posts">
+            <SimpleForm
+                defaultValues={{
+                    emails: [{ email: 'test@marmelab.com', name: 'test' }],
+                }}
+            >
+                <ArrayInput source="emails">
+                    <SimpleFormIterator>
+                        <TextInput source="email" label="Email" />
+                        <TextInput source="name" label="Name" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </ResourceContextProvider>
+    </AdminContext>
+);
+
 export const WithFormDataConsumer = () => (
     <AdminContext dataProvider={testDataProvider()}>
         <ResourceContextProvider value="posts">
