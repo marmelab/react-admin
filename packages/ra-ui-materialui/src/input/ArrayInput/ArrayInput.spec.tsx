@@ -490,7 +490,7 @@ describe('<ArrayInput />', () => {
             expect(screen.queryAllByRole('listitem')).toHaveLength(1);
             fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
             await waitFor(() => {
-                expect(screen.queryAllByRole('listitem')).toHaveLength(0); // TODO: fix it
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0);
             });
         });
 
@@ -512,7 +512,7 @@ describe('<ArrayInput />', () => {
             expect(screen.queryAllByRole('listitem')).toHaveLength(1);
             fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
             await waitFor(() => {
-                expect(screen.queryAllByRole('listitem')).toHaveLength(0); // TODO: fix it
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0);
             });
         });
     });
