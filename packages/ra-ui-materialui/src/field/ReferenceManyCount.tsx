@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
     useReferenceManyFieldController,
     useRecordContext,
@@ -37,6 +37,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         filter,
         sort,
         link,
+        offline,
         resource,
         source = 'id',
         timeout = 1000,
@@ -46,7 +47,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isPending, error, total } =
+    const { isPaused, isPending, error, total } =
         useReferenceManyFieldController<RecordType>({
             filter,
             sort,
@@ -54,23 +55,36 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
             perPage: 1,
             record,
             reference,
-            // @ts-ignore remove when #8491 is released
             resource,
             source,
             target,
         });
 
-    const body = isPending ? (
-        oneSecondHasPassed ? (
-            <CircularProgress size={14} />
-        ) : (
-            ''
-        )
-    ) : error ? (
-        <ErrorIcon color="error" fontSize="small" titleAccess="error" />
-    ) : (
-        total
-    );
+    let body: ReactNode = total;
+
+    if (isPaused && total == null) {
+        body = offline ?? (
+            <ErrorIcon
+                color="error"
+                fontSize="small"
+                titleAccess="ra.notification.offline"
+            />
+        );
+    }
+
+    if (isPending && !isPaused && oneSecondHasPassed) {
+        body = <CircularProgress size={14} />;
+    }
+
+    if (error) {
+        body = (
+            <ErrorIcon
+                color="error"
+                fontSize="small"
+                titleAccess={error.message}
+            />
+        );
+    }
 
     return link && record ? (
         <Link
@@ -104,6 +118,7 @@ ReferenceManyCount.textAlign = 'right';
 export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     extends Omit<FieldProps<RecordType>, 'source'>,
         Omit<TypographyProps, 'textAlign'> {
+    offline?: ReactNode;
     reference: string;
     source?: string;
     target: string;

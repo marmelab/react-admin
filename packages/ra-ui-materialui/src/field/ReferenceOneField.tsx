@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
@@ -40,6 +40,7 @@ export const ReferenceOneField = <
         source = 'id',
         target,
         emptyText,
+        offline: offlineProp = 'ra-references.single_offline',
         sort,
         filter,
         link,
@@ -83,11 +84,32 @@ export const ReferenceOneField = <
             emptyText
         ) : null;
 
-    return !record ||
+    const offline =
+        typeof offlineProp === 'string' ? (
+            <Typography component="span" variant="body2">
+                {offlineProp && translate(offlineProp, { _: offlineProp })}
+            </Typography>
+        ) : offlineProp ? (
+            offlineProp
+        ) : null;
+
+    if (
+        !record ||
         (!controllerProps.isPending &&
-            controllerProps.referenceRecord == null) ? (
-        empty
-    ) : (
+            !controllerProps.isPaused &&
+            controllerProps.referenceRecord == null)
+    ) {
+        return empty;
+    }
+
+    if (
+        !record ||
+        (controllerProps.isPaused && controllerProps.referenceRecord == null)
+    ) {
+        return offline;
+    }
+
+    return (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
                 <RecordContextProvider value={context.referenceRecord}>
@@ -111,7 +133,8 @@ export interface ReferenceOneFieldProps<
     source?: string;
     filter?: any;
     link?: LinkToType<ReferenceRecordType>;
-    emptyText?: string | ReactElement;
+    emptyText?: ReactNode;
+    offline?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];
