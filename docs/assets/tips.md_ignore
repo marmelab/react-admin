@@ -2000,41 +2000,18 @@ You can add custom CSS classes to any column or cell in `DatagridAG` or `Datagri
 {% raw %}
 ```tsx
 const columnDefs = [
-  // return same class for each row
-  {
-    field: 'static',
-    cellClass: 'my-class'
-  },
-  // return same array of classes for each row
-  {
-    field: 'staticArray',
-    cellClass: ['my-class1','my-class2'],
-  },
-  // return class based on function
-  {
-    field: 'function',
-    cellClass: params => {
-      return params.value === 'something' ? 'my-class-1' : 'my-class-2';
-    },
-  },
-  // return array of classes based on function
-  {
-    field: 'functionArray',
-    cellClass: params => ['my-class-1','my-class-2'],
-  },
-  // return array of classes based on many functions with `cellClassRules`
+  { field: 'static', cellClass: 'my-class' },
+  { field: 'staticArray', cellClass: ['my-class1','my-class2'] },
+  { field: 'function', cellClass: params => params.value === 'something' ? 'my-class-1' : 'my-class-2' },
+  { field: 'functionArray', cellClass: params => ['my-class-1','my-class-2'] },
   {
     field: 'functionRules',
     cellClassRules: {
-      // apply green to 2008
       'rag-green-outer': params => params.value === 2008,
-      // apply blue to 2004
       'rag-blue-outer': params => params.value === 2004,
-      // apply red to 2000
       'rag-red-outer': params => params.value === 2000,
     }
   }
-  // return array of classes based on many functions with `cellClassRules`
   {
     field: 'simplifiedFunctionRules',
     cellClassRules: {
