@@ -2011,7 +2011,7 @@ const columnDefs = [
       'rag-blue-outer': params => params.value === 2004,
       'rag-red-outer': params => params.value === 2000,
     }
-  }
+  },
   {
     field: 'simplifiedFunctionRules',
     cellClassRules: {
