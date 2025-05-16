@@ -1,5 +1,19 @@
 # Changelog
 
+## 5.8.2
+
+* Fix `<AutocompleteInput>` with `optionValue` and create raises a React warning ([#10747](https://github.com/marmelab/react-admin/pull/10747)) ([slax57](https://github.com/slax57))
+* Fix `useInfiniteListController` does not return response `meta` ([#10746](https://github.com/marmelab/react-admin/pull/10746)) ([slax57](https://github.com/slax57))
+* Fix `create-react-admin --help` does not show help consistently ([#10744](https://github.com/marmelab/react-admin/pull/10744)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix compatibility of unit tests with react-hook-form 7.56.x ([#10742](https://github.com/marmelab/react-admin/pull/10742)) ([slax57](https://github.com/slax57))
+* Fix outlined inputs when label is false ([#10740](https://github.com/marmelab/react-admin/pull/10740)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SelectArrayInput>` sanitizes unused props ([#10739](https://github.com/marmelab/react-admin/pull/10739)) ([ghadabezine](https://github.com/ghadabezine))
+* Fix `Arrayinput` multiple reset ([#10716](https://github.com/marmelab/react-admin/pull/10716)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix MUI7 compatibility by not using deprecated system props ([#10680](https://github.com/marmelab/react-admin/pull/10680)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix remaining `<AutocompleteArrayInput>` and `<SelectArrayInput>` `create` examples ([#10741](https://github.com/marmelab/react-admin/pull/10741)) ([slax57](https://github.com/slax57))
+* [Doc] Document how to pass extra options to create-react-admin when using npm create ([#10737](https://github.com/marmelab/react-admin/pull/10737)) ([slax57](https://github.com/slax57))
+* [tips] Backport last AgGrid tips ([#10731](https://github.com/marmelab/react-admin/pull/10731)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.8.1
 
 * Fix `<Confirm>` ignore simple string `title` and `content` props ([#10723](https://github.com/marmelab/react-admin/pull/10723)) ([djhi](https://github.com/djhi))
