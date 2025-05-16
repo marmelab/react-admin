@@ -158,7 +158,22 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 
 {% raw %}
 ```jsx
-import { CreateAuthor } from './CreateAuthor';
+import { 
+    Create, 
+    CreateBase, 
+    SimpleForm, 
+    ReferenceInput,
+    SelectInput,
+    TextInput, 
+    useCreateSuggestionContext 
+} from 'react-admin';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+} from '@mui/material';
 
 const BookCreate = () => (
     <Create>
@@ -172,24 +187,8 @@ const BookCreate = () => (
     </Create>
 );
 
-// in ./CreateAuthor.js
-import React from 'react';
-import { CreateBase, SimpleForm, TextInput, useCreateSuggestionContext } from 'react-admin';
-import CloseIcon from '@mui/icons-material/Close';
-import {
-    Button,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-} from '@mui/material';
-
 const CreateAuthor = () => {
     const { onCancel, onCreate } = useCreateSuggestionContext();
-
-    const onAuthorCreate = author => {
-        onCreate(author);
-    };
 
     return (
         <Dialog open onClose={onCancel}>
@@ -211,9 +210,7 @@ const CreateAuthor = () => {
                     redirect={false}
                     resource="authors"
                     mutationOptions={{
-                        onSuccess: author => {
-                            onAuthorCreate(author);
-                        },
+                        onSuccess: onCreate,
                     }}
                 >
                     <SimpleForm>
@@ -665,23 +662,20 @@ Use the `create` prop when you want a more polished or complex UI. For example a
 {% raw %}
 ```jsx
 import {
-    SelectInput,
     Create,
-    ReferenceInput,
+    CreateBase, 
     SimpleForm,
+    ReferenceInput,
+    SelectInput,
     TextInput,
-    useCreate,
     useCreateSuggestionContext
 } from 'react-admin';
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
-    Box,
-    BoxProps,
-    Button,
     Dialog,
-    DialogActions,
+    DialogTitle,
     DialogContent,
-    TextField,
+    IconButton,
 } from '@mui/material';
 
 const PostCreate = () => {
@@ -699,11 +693,6 @@ const PostCreate = () => {
 
 const CreateCategory = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-   
-    const onCategoryCreate = category => {
-        onCreate(category);
-    };
-
 
     return (
         <Dialog open onClose={onCancel}>
@@ -725,9 +714,7 @@ const CreateCategory = () => {
                     redirect={false}
                     resource="categories"
                     mutationOptions={{
-                        onSuccess: category => {
-                            onCategoryCreate(category);
-                        },
+                        onSuccess: onCreate,
                     }}
                 >
                     <SimpleForm>
