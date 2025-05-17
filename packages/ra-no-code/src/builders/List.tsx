@@ -1,3 +1,6 @@
+// Funcionalidad principal: gestiona la obtención y visualización de listas, delegando el renderizado a un hijo configurable.
+// Patrones: Factory (decide el layout de la lista), Strategy (customización de filtros/paginación), Observer (React context/hooks).
+
 import React from 'react';
 import {
     Datagrid as RaDatagrid,

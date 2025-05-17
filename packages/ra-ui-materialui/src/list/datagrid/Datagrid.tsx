@@ -1,5 +1,5 @@
-// Componente Datagrid: muestra registros en una tabla interactiva, ideal para listas y relaciones en React-admin.
-// Permite acciones en masa, expansión de filas y personalización de columnas.
+// Funcionalidad principal: muestra registros en una tabla interactiva con selección, acciones en masa y expansión de filas.
+// Patrones: Strategy (customización de header/body), Observer (React context/hooks para cambios de datos).
 
 import * as React from 'react';
 import {
