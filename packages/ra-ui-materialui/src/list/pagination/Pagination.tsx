@@ -1,3 +1,6 @@
+// Componente Pagination: controla la paginación de listas en React-admin.
+// Permite navegar entre páginas, cambiar el tamaño de página y muestra el total de registros.
+
 import * as React from 'react';
 import { useCallback, useMemo, FC, memo, ReactElement } from 'react';
 import {

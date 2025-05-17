@@ -1,3 +1,6 @@
+// Componente Datagrid: muestra registros en una tabla interactiva, ideal para listas y relaciones en React-admin.
+// Permite acciones en masa, expansión de filas y personalización de columnas.
+
 import * as React from 'react';
 import {
     cloneElement,

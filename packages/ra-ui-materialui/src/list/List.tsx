@@ -1,3 +1,6 @@
+// Componente List: gestiona la obtención y visualización de listas de registros en React-admin.
+// Renderiza el layout general (título, filtros, paginación) y delega la visualización de los datos a su hijo (usualmente Datagrid).
+
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { ListBase, ListBaseProps, RaRecord } from 'ra-core';
