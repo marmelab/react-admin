@@ -5,6 +5,7 @@ import {
     ResourceDefinitionContextProvider,
     useList,
     TestMemoryRouter,
+    ListControllerResult,
 } from 'ra-core';
 import { Typography, Divider as MuiDivider } from '@mui/material';
 
@@ -29,11 +30,14 @@ export default {
 
 const Wrapper = ({
     children,
-    data = [bookGenres[2], bookGenres[4], bookGenres[1]],
+    listContext = {
+        data: [bookGenres[2], bookGenres[4], bookGenres[1]],
+    },
+}: {
+    children: React.ReactNode;
+    listContext?: Partial<ListControllerResult>;
 }) => {
-    const listContextValue = useList({
-        data,
-    });
+    const listContextValue = useList(listContext);
     return (
         <TestMemoryRouter>
             <ResourceDefinitionContextProvider
@@ -106,21 +110,27 @@ export const LinkType = () => (
 );
 
 export const NoData = () => (
-    <Wrapper data={[]}>
+    <Wrapper listContext={{ data: [] }}>
         <SingleFieldList />
     </Wrapper>
 );
 
 export const Empty = ({ listContext = { data: [] } }) => (
-    <ListContextProvider value={listContext as any}>
+    <Wrapper listContext={listContext}>
         <SingleFieldList empty={<div>No genres</div>} />
-    </ListContextProvider>
+    </Wrapper>
 );
 
 export const Loading = () => (
-    <ListContextProvider value={{ isLoading: true } as any}>
+    <Wrapper listContext={{ isPending: true }}>
         <SingleFieldList />
-    </ListContextProvider>
+    </Wrapper>
+);
+
+export const Offline = () => (
+    <Wrapper listContext={{ isPaused: true }}>
+        <SingleFieldList />
+    </Wrapper>
 );
 
 export const Direction = () => (

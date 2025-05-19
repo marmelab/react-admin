@@ -25,6 +25,7 @@ import {
     SXLink,
     SXNoLink,
     SlowAccessControl,
+    ErrorWhileFetching,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -459,29 +460,8 @@ describe('<ReferenceField />', () => {
 
     it('should display an error icon if the dataProvider call fails', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockRejectedValue(new Error('boo')),
-        });
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        const ErrorIcon = screen.queryByRole('presentation', {
-            hidden: true,
-        });
-        expect(ErrorIcon).not.toBeNull();
-        await screen.findByText('boo');
+        render(<ErrorWhileFetching />);
+        await screen.findByText('ra.notification.http_error');
     });
 
     describe('link', () => {

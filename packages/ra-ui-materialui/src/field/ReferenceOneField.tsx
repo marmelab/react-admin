@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
@@ -17,6 +17,9 @@ import {
 
 import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
+import { Offline } from '../Offline';
+
+const defaultOffline = <Offline />;
 
 /**
  * Render the related record in a one-to-one relationship
@@ -40,6 +43,7 @@ export const ReferenceOneField = <
         source = 'id',
         target,
         emptyText,
+        offline = defaultOffline,
         sort,
         filter,
         link,
@@ -83,11 +87,23 @@ export const ReferenceOneField = <
             emptyText
         ) : null;
 
-    return !record ||
+    if (
+        !record ||
         (!controllerProps.isPending &&
-            controllerProps.referenceRecord == null) ? (
-        empty
-    ) : (
+            !controllerProps.isPaused &&
+            controllerProps.referenceRecord == null)
+    ) {
+        return empty;
+    }
+
+    if (
+        !record ||
+        (controllerProps.isPaused && controllerProps.referenceRecord == null)
+    ) {
+        return offline;
+    }
+
+    return (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
                 <RecordContextProvider value={context.referenceRecord}>
@@ -111,7 +127,8 @@ export interface ReferenceOneFieldProps<
     source?: string;
     filter?: any;
     link?: LinkToType<ReferenceRecordType>;
-    emptyText?: string | ReactElement;
+    emptyText?: ReactNode;
+    offline?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];

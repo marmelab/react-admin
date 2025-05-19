@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ReferenceInputBase, ReferenceInputBaseProps } from 'ra-core';
 
 import { AutocompleteInput } from './AutocompleteInput';
+import { Offline } from '../Offline';
+import { Labeled } from '../Labeled';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -64,7 +66,7 @@ import { AutocompleteInput } from './AutocompleteInput';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const { children = defaultChildren, ...rest } = props;
+    const { children = defaultChildren, offline, ...rest } = props;
 
     if (props.validate && process.env.NODE_ENV !== 'production') {
         throw new Error(
@@ -72,7 +74,20 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
         );
     }
 
-    return <ReferenceInputBase {...rest}>{children}</ReferenceInputBase>;
+    return (
+        <ReferenceInputBase
+            {...rest}
+            offline={
+                offline ?? (
+                    <Labeled {...rest}>
+                        <Offline />
+                    </Labeled>
+                )
+            }
+        >
+            {children}
+        </ReferenceInputBase>
+    );
 };
 
 const defaultChildren = <AutocompleteInput />;
@@ -82,5 +97,6 @@ export interface ReferenceInputProps extends ReferenceInputBaseProps {
      * Call validate on the child component instead
      */
     validate?: never;
+    offline?: ReactNode;
     [key: string]: any;
 }

@@ -68,6 +68,7 @@ That's enough to display the post show view above.
 | `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
 | `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the show is loading
 | `id`             | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the URL
+| `offline`        | Optional | `ReactNode`       |         | The content rendered to render when data could not be fetched because of connectivity issues
 | `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 | `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
@@ -275,6 +276,36 @@ export const PostShow = () => (
 ```
 
 **Tip**: Pass both a custom `id` and a custom `resource` prop to use `<Show>` independently of the current URL. This even allows you to use more than one `<Show>` component in the same page.
+
+## `offline`
+
+It's possible that a `<Show>` will have no record to display because of connectivity issues. In that case, `<Show>` will display a message indicating data couldn't be fetched. 
+
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<Show offline>` prop:
+
+```tsx
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+const BookShow = () => (
+    <Show offline={<Offline />}>
+            ...
+    </Show>
+);
+```
 
 ## `queryOptions`
 

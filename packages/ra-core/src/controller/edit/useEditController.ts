@@ -108,6 +108,7 @@ export const useEditController = <
         error,
         isLoading,
         isFetching,
+        isPaused,
         isPending,
         refetch,
     } = useGetOne<RecordType, ErrorType>(
@@ -268,6 +269,7 @@ export const useEditController = <
         error,
         isFetching,
         isLoading,
+        isPaused,
         isPending,
         mutationMode,
         record,
@@ -303,6 +305,7 @@ export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
+    isPaused: boolean;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
