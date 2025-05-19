@@ -887,13 +887,13 @@ export default App;
 
 ## Offline Support
 
-React Query supports offline/local-first applications. To enable it in your React Admin application, install the required React Query packages:
+React-admin supports offline/local-first applications. To enable this feature, install the following react-query packages:
 
 ```sh
 yarn add @tanstack/react-query-persist-client @tanstack/query-sync-storage-persister
 ```
 
-Then, register default functions for React Admin mutations on the `QueryClient` to enable resumable mutations (mutations triggered while offline). React Admin provides the `addOfflineSupportToQueryClient` function for this:
+Then, register default functions for react-admin mutations on the `QueryClient` to enable resumable mutations (mutations triggered while offline). React-admin provides the `addOfflineSupportToQueryClient` function for this:
 
 ```ts
 // in src/queryClient.ts

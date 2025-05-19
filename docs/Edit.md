@@ -493,7 +493,7 @@ The default `onError` function is:
 
 ## `offline`
 
-It's possible that a `<Edit>` will have no record to display because of connectivity issues. In that case, `<Edit>` will display a message indicating data couldn't be fetched. 
+It's possible that an `<Edit>` will have no record to display because of connectivity issues. In that case, `<Edit>` will display a message indicating data couldn't be fetched. 
 
 You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
 
