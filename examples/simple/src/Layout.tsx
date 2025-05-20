@@ -13,12 +13,12 @@ import OfflineIcon from '@mui/icons-material/SignalWifiConnectedNoInternet4';
 import '../assets/app.css';
 
 const MyAppBar = () => {
-    const isOnline = useIsOnline();
+    const isOffline = useIsOffine();
     return (
         <AppBar>
             <TitlePortal />
             <Stack direction="row" spacing={1}>
-                {!isOnline ? (
+                {isOffline ? (
                     <Tooltip title="Offline">
                         <OfflineIcon
                             sx={{
@@ -48,7 +48,7 @@ export const MyLayout = ({ children }) => (
     </>
 );
 
-const useIsOnline = () => {
+const useIsOffine = () => {
     const [isOnline, setIsOnline] = React.useState(onlineManager.isOnline());
 
     React.useEffect(() => {
@@ -58,7 +58,7 @@ const useIsOnline = () => {
         return onlineManager.subscribe(handleChange);
     }, []);
 
-    return isOnline;
+    return !isOnline;
 };
 
 /**
