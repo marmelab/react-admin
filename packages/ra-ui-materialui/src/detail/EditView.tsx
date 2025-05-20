@@ -43,14 +43,8 @@ export const EditView = (inProps: EditViewProps) => {
     if (isPaused && record == null && offline) {
         return (
             <Root className={clsx('edit-page', className)} {...rest}>
-                <div
-                    className={clsx(
-                        EditClasses.main,
-                        EditClasses.noActions,
-                        EditClasses.offline
-                    )}
-                >
-                    {offline}
+                <div className={clsx(EditClasses.main, EditClasses.noActions)}>
+                    <Content className={EditClasses.card}>{offline}</Content>
                 </div>
             </Root>
         );
@@ -116,10 +110,6 @@ const Root = styled('div', {
     },
     [`& .${EditClasses.noActions}`]: {
         marginTop: '1em',
-    },
-    [`& .${EditClasses.offline}`]: {
-        flexDirection: 'column',
-        alignItems: 'unset',
     },
     [`& .${EditClasses.card}`]: {
         flex: '1 1 auto',

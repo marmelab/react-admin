@@ -40,14 +40,8 @@ export const ShowView = (inProps: ShowViewProps) => {
     if (isPaused && record == null && offline) {
         return (
             <Root className={clsx('show-page', className)} {...rest}>
-                <div
-                    className={clsx(
-                        ShowClasses.main,
-                        ShowClasses.noActions,
-                        ShowClasses.offline
-                    )}
-                >
-                    {offline}
+                <div className={clsx(ShowClasses.main, ShowClasses.noActions)}>
+                    <Content className={ShowClasses.card}>{offline}</Content>
                 </div>
             </Root>
         );
@@ -110,10 +104,6 @@ const Root = styled('div', {
     },
     [`& .${ShowClasses.noActions}`]: {
         marginTop: '1em',
-    },
-    [`& .${ShowClasses.offline}`]: {
-        flexDirection: 'column',
-        alignItems: 'unset',
     },
     [`& .${ShowClasses.card}`]: {
         flex: '1 1 auto',
