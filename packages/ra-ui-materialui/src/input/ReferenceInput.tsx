@@ -79,7 +79,11 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
             {...rest}
             offline={
                 offline ?? (
-                    <Labeled {...rest}>
+                    <Labeled
+                        source={rest.source}
+                        label={rest.label}
+                        resource={rest.resource}
+                    >
                         <Offline />
                     </Labeled>
                 )
