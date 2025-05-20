@@ -16,7 +16,6 @@ import {
     useTranslate,
     type ExtractRecordPaths,
     type HintedString,
-    type RaRecord,
 } from 'ra-core';
 import clsx from 'clsx';
 
@@ -47,7 +46,7 @@ export const RecordField = <
         ...rest
     } = props;
     const resource = useResourceContext();
-    const record = useRecordContext<RecordType>();
+    const record = useRecordContext<RecordType>(props);
     const translate = useTranslate();
     if (!source && !label) return null;
     return (
@@ -117,7 +116,7 @@ export interface RecordFieldProps<
     label?: ReactNode;
     render?: (record: RecordType) => React.ReactNode;
     source?: NoInfer<HintedString<ExtractRecordPaths<RecordType>>>;
-    record?: RaRecord;
+    record?: RecordType;
     sx?: SxProps;
     TypographyProps?: TypographyProps;
     variant?: 'default' | 'inline';

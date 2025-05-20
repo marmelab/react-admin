@@ -84,6 +84,7 @@ The `source`, `field`, `children`, and  `render` props are mutually exclusive.
 | `empty`     | Optional | ReactNode               | ''     | Text to display when the field is empty.                                         |
 | `field`     | Optional | ReactElement            | `TextField` | Field component used to render the field. Ignored if `children` or `render` are set. |
 | `label`     | Optional | string                  | ''      | Label to render. Can be a translation key. |
+| `record`    | Optional | object                  | {}      | Record to use. If not set, the record is taken from the context.                 |
 | `render`    | Optional | record => JSX           |         | Function to render the field value. Ignored if `children` is set.  |
 | `source`    | Optional | string                  | ''      | Name of the record field to render. |
 | `sx`        | Optional | object                  | {}      | Styles to apply to the field.                                                  |
@@ -227,6 +228,14 @@ Finally, you can pass `false` to the `label` prop to hide the label:
 ```
 
 Note that using `label={false}` is equivalent to rendering a `<TextField>` directly. 
+
+## `record`
+
+By default, `<RecordField>` uses the record from the current [`RecordContext`](./useRecordContext.md). You can override this behavior by passing a `record` prop:
+
+```jsx
+<RecordField record={record} source="title" />
+```
 
 ## `render`
 
