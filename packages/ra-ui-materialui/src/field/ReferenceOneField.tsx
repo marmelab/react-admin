@@ -88,17 +88,18 @@ export const ReferenceOneField = <
         ) : null;
 
     if (
-        !record ||
-        (!controllerProps.isPending &&
-            !controllerProps.isPaused &&
-            controllerProps.referenceRecord == null)
+        !record &&
+        !controllerProps.isPending &&
+        !controllerProps.isPaused &&
+        controllerProps.referenceRecord == null
     ) {
         return empty;
     }
 
     if (
-        !record ||
-        (controllerProps.isPaused && controllerProps.referenceRecord == null)
+        !record &&
+        controllerProps.isPaused &&
+        controllerProps.referenceRecord == null
     ) {
         return offline;
     }
