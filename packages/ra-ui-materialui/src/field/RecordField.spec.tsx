@@ -6,8 +6,7 @@ import {
     Basic,
     Source,
     Label,
-    DefaultValue,
-    EmptyText,
+    Empty,
     Render,
     Field,
     Children,
@@ -45,31 +44,17 @@ describe('<RecordField />', () => {
             expect(screen.queryByText('Summary')).toBeNull();
         });
     });
-    describe('defaultValue', () => {
-        it('should render the defaultValue when the record is undefined', () => {
-            render(<DefaultValue />);
-            expect(screen.queryByText('N/A')).not.toBeNull();
-        });
-        it('should render the defaultValue when using a render prop', () => {
-            render(<DefaultValue />);
-            expect(screen.queryByText('Unknown')).not.toBeNull();
-        });
-        it('should render the defaultValue when using a field prop', () => {
-            render(<DefaultValue />);
-            expect(screen.queryByText('0')).not.toBeNull();
-        });
-    });
-    describe('emptyText', () => {
-        it('should render the translated emptyText when the record is undefined', () => {
-            render(<EmptyText />);
+    describe('empty', () => {
+        it('should render the translated empty when the record is undefined', () => {
+            render(<Empty />);
             expect(screen.queryByText('No title')).not.toBeNull();
         });
-        it('should render the translated emptyText when using a render prop', () => {
-            render(<EmptyText />);
+        it('should render the translated empty when using a render prop', () => {
+            render(<Empty />);
             expect(screen.queryByText('Unknown author')).not.toBeNull();
         });
-        it('should render the translated emptyText when using a field prop', () => {
-            render(<EmptyText />);
+        it('should render the translated empty when using a field prop', () => {
+            render(<Empty />);
             expect(screen.queryByText('0')).not.toBeNull();
         });
     });

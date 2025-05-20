@@ -59,35 +59,12 @@ export const Field = () => (
     </ResourceContext.Provider>
 );
 
-export const DefaultValue = () => (
-    <ResourceContext.Provider value="books">
-        <RecordContextProvider value={{}}>
-            <Stack>
-                <RecordField source="title" defaultValue="N/A" />
-                <RecordField
-                    source="author"
-                    defaultValue="Unknown"
-                    render={(record, defaultValue) =>
-                        record.author || defaultValue
-                    }
-                />
-                <RecordField
-                    source="year"
-                    field={NumberField}
-                    defaultValue={0}
-                />
-            </Stack>
-        </RecordContextProvider>
-    </ResourceContext.Provider>
-);
-
 const translations = {
     'books.title.missing': 'No title',
-    'books.author.missing': 'Unknown author',
     'books.year.missing': '0',
 };
 
-export const EmptyText = () => (
+export const Empty = () => (
     <I18nContextProvider
         value={{
             getLocale: () => 'en',
@@ -98,21 +75,16 @@ export const EmptyText = () => (
         <ResourceContext.Provider value="books">
             <RecordContextProvider value={{}}>
                 <Stack>
-                    <RecordField
-                        source="title"
-                        emptyText="books.title.missing"
-                    />
+                    <RecordField source="title" empty="books.title.missing" />
                     <RecordField
                         source="author"
-                        emptyText="books.author.missing"
-                        render={(record, defaultValue) =>
-                            record.author || defaultValue
-                        }
+                        empty={<>Unknown author</>}
+                        render={record => record.author}
                     />
                     <RecordField
                         source="year"
                         field={NumberField}
-                        emptyText="books.year.missing"
+                        empty="books.year.missing"
                     />
                 </Stack>
             </RecordContextProvider>
