@@ -33,6 +33,22 @@ export const Basic = () => (
     </ResourceContext.Provider>
 );
 
+export const Source = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider
+            value={{
+                id: 1,
+                'author.name': 'Leo Tolstoy',
+            }}
+        >
+            <Stack>
+                <RecordField source="author.name" />
+                <RecordField source="missing.field" />
+            </Stack>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
 export const Field = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
@@ -43,14 +59,91 @@ export const Field = () => (
     </ResourceContext.Provider>
 );
 
+export const DefaultValue = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider value={{}}>
+            <Stack>
+                <RecordField source="title" defaultValue="N/A" />
+                <RecordField
+                    source="author"
+                    defaultValue="Unknown"
+                    render={(record, defaultValue) =>
+                        record.author || defaultValue
+                    }
+                />
+                <RecordField
+                    source="year"
+                    field={NumberField}
+                    defaultValue={0}
+                />
+            </Stack>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
+const translations = {
+    'books.title.missing': 'No title',
+    'books.author.missing': 'Unknown author',
+    'books.year.missing': '0',
+};
+
+export const EmptyText = () => (
+    <I18nContextProvider
+        value={{
+            getLocale: () => 'en',
+            translate: m => translations[m] || m,
+            changeLocale: async () => {},
+        }}
+    >
+        <ResourceContext.Provider value="books">
+            <RecordContextProvider value={{}}>
+                <Stack>
+                    <RecordField
+                        source="title"
+                        emptyText="books.title.missing"
+                    />
+                    <RecordField
+                        source="author"
+                        emptyText="books.author.missing"
+                        render={(record, defaultValue) =>
+                            record.author || defaultValue
+                        }
+                    />
+                    <RecordField
+                        source="year"
+                        field={NumberField}
+                        emptyText="books.year.missing"
+                    />
+                </Stack>
+            </RecordContextProvider>
+        </ResourceContext.Provider>
+    </I18nContextProvider>
+);
+
 export const Render = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
             <Stack>
                 <RecordField
-                    source="author"
-                    render={record => <span>{record.author}</span>}
+                    label="Title"
+                    render={record => record.title.toUpperCase()}
                 />
+                <RecordField
+                    source="author"
+                    render={record => (
+                        <span>{record.author.toUpperCase()}</span>
+                    )}
+                />
+                <RecordField
+                    label="Missing field"
+                    render={record => record.missingField}
+                />
+                <RecordContextProvider value={undefined}>
+                    <RecordField
+                        label="Summary"
+                        render={record => record.summary}
+                    />
+                </RecordContextProvider>
             </Stack>
         </RecordContextProvider>
     </ResourceContext.Provider>
@@ -60,8 +153,9 @@ export const Children = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
             <Stack>
-                <RecordField source="title">
-                    <TextField source="title" variant="body1" />
+                <RecordField label="Author">
+                    <TextField source="author" variant="body1" />{' '}
+                    <Typography component="span">(DECD)</Typography>
                 </RecordField>
             </Stack>
         </RecordContextProvider>

@@ -12,6 +12,7 @@ import {
     FieldTitle,
     useRecordContext,
     useResourceContext,
+    useTranslate,
     type ExtractRecordPaths,
     type HintedString,
     type RaRecord,
@@ -25,6 +26,8 @@ export const RecordField = <
 >({
     children,
     className,
+    defaultValue,
+    emptyText,
     field,
     label,
     render,
@@ -36,6 +39,7 @@ export const RecordField = <
 }: RecordFieldProps<RecordType>) => {
     const resource = useResourceContext();
     const record = useRecordContext<RecordType>();
+    const translate = useTranslate();
     if (!source && !label) return null;
     return (
         <Root
@@ -58,28 +62,37 @@ export const RecordField = <
                     />
                 </Typography>
             ) : null}
-            {children ??
-                (render ? (
-                    record && (
-                        <Typography
-                            component="span"
-                            variant="body2"
-                            className={RecordFieldClasses.value}
-                        >
-                            {render(record)}
-                        </Typography>
-                    )
-                ) : field ? (
-                    React.createElement(field, {
-                        source,
-                        className: RecordFieldClasses.value,
-                    })
-                ) : source ? (
-                    <TextField
-                        source={source}
+            {children ? (
+                <span className={RecordFieldClasses.value}>{children}</span>
+            ) : render ? (
+                record && (
+                    <Typography
+                        component="span"
+                        variant="body2"
                         className={RecordFieldClasses.value}
-                    />
-                ) : null)}
+                    >
+                        {render(record, defaultValue) ||
+                            (emptyText
+                                ? translate(emptyText, { _: emptyText })
+                                : null)}
+                    </Typography>
+                )
+            ) : field ? (
+                React.createElement(field, {
+                    source,
+                    defaultValue,
+                    emptyText,
+                    className: RecordFieldClasses.value,
+                })
+            ) : source ? (
+                <TextField
+                    source={source}
+                    defaultValue={defaultValue}
+                    emptyText={emptyText}
+                    resource={resource}
+                    className={RecordFieldClasses.value}
+                />
+            ) : null}
         </Root>
     );
 };
@@ -92,9 +105,11 @@ export interface RecordFieldProps<
 > extends StackProps {
     children?: ReactNode;
     className?: string;
+    defaultValue?: any;
+    emptyText?: string;
     field?: ElementType;
     label?: ReactNode;
-    render?: (record: RecordType) => React.ReactNode;
+    render?: (record: RecordType, defaultValue?: any) => React.ReactNode;
     source?: NoInfer<HintedString<ExtractRecordPaths<RecordType>>>;
     record?: RaRecord;
     sx?: SxProps;

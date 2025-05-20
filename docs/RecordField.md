@@ -80,6 +80,9 @@ The `source`, `field`, `children`, and  `render` props are mutually exclusive.
 | Prop        | Required | Type               | Default | Description                                                                      |
 | ----------- | -------- | ------------------ | ------- | -------------------------------------------------------------------------------- |
 | `children`   | Optional | ReactNode             | ''      | Elements rendering the actual field. |
+| `className` | Optional | string             | ''      | CSS class name to apply to the field.                                            |
+| `defaultValue` | Optional | any                | undefined | Default value to display when the field is empty.                       |
+| `emptyText` | Optional | string             | '-'     | Text to display when the field is empty.                                         |
 | `field`   | Optional | ReactElement             | `TextField` | Field component used to render the field. Ignored if `children` or `render` are set. |
 | `label`    | Optional | string             | ''      | Label to render. Can be a translation key. |
 | `render`   | Optional | record => JSX |  | Function to render the field value. Ignored if `children` is set.  |
@@ -123,6 +126,38 @@ import { RecordField, NumberField } from 'react-admin';
     <NumberField source="price" />
 </RecordField>
 ```
+
+## `defaultValue`
+
+When the record contains no value for the `source` prop, `RecordField` renders an empty string. You can use the `defaultValue` prop to specify a default value to display instead.
+
+```jsx
+<RecordField source="rating" defaultValue={0} />
+```
+
+If you're using the `render` prop, the `defaultValue` will be passed to the `render` function as the second argument:
+
+```jsx
+<RecordField
+    label="Rating"
+    defaultValue={0}
+    render={(record, defaultValue) => 
+        record.rating ? `${record.rating} stars` : defaultValue
+    }
+/>
+```
+
+**Tip**: If you need the default value to be translated, use the `emptyText` prop instead.
+
+## `emptyText`
+
+When the record contains no value for the `source` prop, `RecordField` renders an empty string. If you need to render a locale-specific string in this case, you can use the `emptyText` prop to specify a translation key:
+
+```jsx
+<RecordField source="title" emptyText="resources.books.fields.title.missing" />
+```
+
+**Tip**: If you don't need the default value to be translated, use the `defaultValue` prop instead.
 
 ## `field`
 
