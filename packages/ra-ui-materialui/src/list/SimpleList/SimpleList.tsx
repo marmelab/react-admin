@@ -117,7 +117,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         return null;
     }
 
-    if (isPaused && (isPlaceholderData || data == null || !data?.length)) {
+    if (isPaused && (isPlaceholderData || data == null)) {
         if (offline) {
             return offline;
         }

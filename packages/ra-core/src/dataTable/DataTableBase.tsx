@@ -169,7 +169,7 @@ export const DataTableBase = function DataTable<
         return null;
     }
 
-    if (isPaused && (isPlaceholderData || data == null || !data?.length)) {
+    if (isPaused && (isPlaceholderData || data == null)) {
         if (offline) {
             return offline;
         }
