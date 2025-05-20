@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { type ReactNode, type ElementType } from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, type ComponentsOverrides } from '@mui/material/styles';
 import {
     Stack,
     Typography,
+    useThemeProps,
     type StackProps,
     type SxProps,
     type TypographyProps,
@@ -21,21 +22,30 @@ import clsx from 'clsx';
 
 import { TextField } from './TextField';
 
+const PREFIX = 'RaRecordField';
+
 export const RecordField = <
     RecordType extends Record<string, any> = Record<string, any>,
->({
-    children,
-    className,
-    empty,
-    field,
-    label,
-    render,
-    source,
-    sx,
-    TypographyProps,
-    variant,
-    ...rest
-}: RecordFieldProps<RecordType>) => {
+>(
+    inProps: RecordFieldProps<RecordType>
+) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+    const {
+        children,
+        className,
+        empty,
+        field,
+        label,
+        render,
+        source,
+        sx,
+        TypographyProps,
+        variant,
+        ...rest
+    } = props;
     const resource = useResourceContext();
     const record = useRecordContext<RecordType>();
     const translate = useTranslate();
@@ -113,8 +123,6 @@ export interface RecordFieldProps<
     variant?: 'default' | 'inline';
 }
 
-const PREFIX = 'RaRecordField';
-
 export const RecordFieldClasses = {
     label: `${PREFIX}-label`,
     value: `${PREFIX}-value`,
@@ -142,3 +150,22 @@ const Root = styled(Stack, {
         flex: 1,
     },
 }));
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        RaRecordField: 'root' | 'content' | 'button' | 'icon';
+    }
+
+    interface ComponentsPropsList {
+        RaRecordField: Partial<RecordFieldProps>;
+    }
+
+    interface Components {
+        RaRecordField?: {
+            defaultProps?: ComponentsPropsList['RaRecordField'];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >['RaRecordField'];
+        };
+    }
+}

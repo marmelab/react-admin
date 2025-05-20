@@ -142,6 +142,7 @@ When the record contains no value for the `source` prop, `RecordField` renders a
 
 If you use the `render` prop, you can even use a React element as `empty` value.
 
+{% raw %}
 ```jsx
 <RecordField
     source="title"
@@ -149,6 +150,7 @@ If you use the `render` prop, you can even use a React element as `empty` value.
     render={record => record.title}
 />
 ```
+{% endraw %}
 
 Note that `empty` is ignored when you pass a custom field component as child. In this case, it's the child's responsibility to handle the empty value.
 
@@ -351,6 +353,29 @@ But since you generally need to do it for several fields, it's preferable to do 
 </Stack>
 ```
 {% endraw %}
+
+**Tip**: If you want all your fields to be displayed inline, you can define the default variant for `RecordField` [in a custom application Theme](https://marmelab.com/react-admin/AppTheme.html#theming-individual-components):
+
+```jsx
+import { defaultTheme } from 'react-admin';
+import { deepmerge } from '@mui/utils';
+
+const theme = deepmerge(defaultTheme, {
+    components: {
+        RaRecordField: {
+            defaultProps: {
+                variant: 'inline',
+            },
+        },
+    },
+});
+
+const App = () => (
+    <Admin theme={theme}>
+        // ...
+    </Admin>
+);
+```
 
 ## TypeScript
 

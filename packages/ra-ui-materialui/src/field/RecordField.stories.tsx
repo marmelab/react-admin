@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { Stack, Typography } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
     I18nContextProvider,
     RecordContextProvider,
     ResourceContext,
 } from 'ra-core';
+
 import { NumberField, TextField } from '.';
 import { RecordField } from './RecordField';
 
@@ -182,17 +184,40 @@ export const Variant = () => (
                 />
             </Stack>
             <Typography gutterBottom>Custom label width</Typography>
-            <Stack sx={{ '& .RaRecordField-label': { width: 200 } }}>
-                <RecordField variant="inline" source="id" />
-                <RecordField variant="inline" source="title" />
-                <RecordField variant="inline" source="author" />
-                <RecordField variant="inline" source="summary" />
-                <RecordField
-                    variant="inline"
-                    source="year"
-                    field={NumberField}
-                />
-            </Stack>
+            <ThemeProvider
+                theme={createTheme({
+                    components: {
+                        RaRecordField: {
+                            defaultProps: {
+                                variant: 'inline',
+                            },
+                        },
+                    },
+                })}
+            >
+                <Stack sx={{ '& .RaRecordField-label': { width: 200 } }}>
+                    <RecordField variant="inline" source="id" />
+                    <RecordField variant="inline" source="title" />
+                    <RecordField variant="inline" source="author" />
+                    <RecordField variant="inline" source="summary" />
+                    <RecordField
+                        variant="inline"
+                        source="year"
+                        field={NumberField}
+                    />
+                </Stack>
+                <Typography gutterBottom>Default variant via theme</Typography>
+                <Stack>
+                    <RecordField
+                        source="id"
+                        TypographyProps={{ sx: { width: 200 } }}
+                    />
+                    <RecordField source="title" />
+                    <RecordField source="author" />
+                    <RecordField source="summary" />
+                    <RecordField source="year" field={NumberField} />
+                </Stack>
+            </ThemeProvider>
         </RecordContextProvider>
     </ResourceContext.Provider>
 );
