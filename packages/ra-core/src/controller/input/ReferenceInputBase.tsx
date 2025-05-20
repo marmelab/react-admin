@@ -79,7 +79,9 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         filter,
     });
 
-    return controllerProps.isPaused ? (
+    const { isPaused, allChoices } = controllerProps;
+
+    return isPaused && allChoices == null ? (
         offline
     ) : (
         <ResourceContextProvider value={reference}>

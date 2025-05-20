@@ -97,8 +97,9 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
         sort,
         filter,
     });
+    const { isPaused, allChoices } = controllerProps;
 
-    return controllerProps.isPaused ? (
+    return isPaused && allChoices == null ? (
         offline ?? (
             <Labeled {...props}>
                 <Offline />
