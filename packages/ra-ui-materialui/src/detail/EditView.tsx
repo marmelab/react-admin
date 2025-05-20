@@ -40,7 +40,7 @@ export const EditView = (inProps: EditViewProps) => {
     const { resource, defaultTitle, record, isPending, isPaused } =
         useEditContext();
 
-    if (isPaused && offline) {
+    if (isPaused && record == null && offline) {
         return (
             <Root className={clsx('edit-page', className)} {...rest}>
                 <div

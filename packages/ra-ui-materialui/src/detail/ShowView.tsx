@@ -37,7 +37,7 @@ export const ShowView = (inProps: ShowViewProps) => {
     const { resource, defaultTitle, isPaused, record } = useShowContext();
     const { hasEdit } = useResourceDefinition();
 
-    if (isPaused && offline) {
+    if (isPaused && record == null && offline) {
         return (
             <Root className={clsx('show-page', className)} {...rest}>
                 <div
