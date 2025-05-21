@@ -107,7 +107,7 @@ You can render some options as disabled by setting the `disabled` field in some 
 const choices = [
     { id: 'tech', name: 'Tech' },
     { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'people', name: 'People', disable: true },
+    { id: 'people', name: 'People', disabled: true },
 ];
 <SelectInput source="author_id" choices={choices} />
 ```
