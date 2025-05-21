@@ -11,6 +11,7 @@ import {
     ReferenceArrayField,
     UrlField,
     ArrayFieldProps,
+    TextField,
 } from '../field';
 
 export const listFieldTypes = {
@@ -82,8 +83,8 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<DataTable.Col source="${props.source}"><ReferenceField source="${props.source}" reference="${props.reference}" /></DataTable.Col>`,
     },
     referenceChild: {
-        component: () => <DataTable.Col source="id" />,
-        representation: () => `<DataTable.Col source="id" />`,
+        component: () => <TextField source="id" />,
+        representation: () => `<TextField source="id" />`,
     },
     referenceArray: {
         component: props => (
@@ -96,14 +97,12 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     },
     referenceArrayChild: {
         component: () => (
-            <DataTable.Col>
-                <SingleFieldList>
-                    <ChipField source="id" />
-                </SingleFieldList>
-            </DataTable.Col>
+            <SingleFieldList>
+                <ChipField source="id" />
+            </SingleFieldList>
         ),
         representation: () =>
-            `<DataTable.Col><SingleFieldList><ChipField source="id" /></SingleFieldList></DataTable.Col>`,
+            `<SingleFieldList><ChipField source="id" /></SingleFieldList>`,
     },
     richText: undefined, // never display a rich text field in a datagrid
     string: {
