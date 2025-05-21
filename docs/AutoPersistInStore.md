@@ -5,16 +5,16 @@ title: "The AutoPersistInStore Component"
 
 # `<AutoPersistInStore>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component prevents data loss in forms by automatically saving the form data in the store when users navigate away from the page. When users return to the page, it reapplies the saved data to the form.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component prevents data loss in forms by automatically saving the form data in the store when users update it. When users return to the page, it reapplies the saved data to the form.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/AutoPersistInStore.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
-The temporary form data is only saved when the user navigates away from the page, and it is removed when the user submits the form or closes the tab. Users can opt out of the prefilling by clicking the "Cancel" button in the notification.
+The temporary form data is saved on change, and it is removed when the user submits the form or closes the tab. Users can opt out of the prefilling by clicking the "Cancel" button in the notification.
 
-Saved data is not sent to the server. It is only persisted using the [store](./Store.md) and is removed when the user logs out. 
+Saved data is not sent to the server. It is only persisted using the [store](./Store.md) and is removed when the user logs out.
 
 ## Usage
 
@@ -35,15 +35,15 @@ const PostEdit = () => (
 );
 ```
 
-The component will automatically save the form data in the store on unmount and reapply it when the form is mounted again.
+The component will automatically save the form data in the store on change and reapply it when the form is mounted again.
 
 It works both on create and edit forms.
 
 ## Props
 
-| Prop                  | Required | Type       | Default                                                  | Description                                                   |
-| --------------------- | -------- | ---------- | -------------------------------------------------------- | ------------------------------------------------------------- |
-| `getStoreKey`         | -        | `function` | -                                                        | Function to use your own store key.                           |
+| Prop                  | Required | Type       | Default                                                  | Description                                                           |
+| --------------------- | -------- | ---------- | -------------------------------------------------------- | --------------------------------------------------------------------- |
+| `getStoreKey`         | -        | `function` | -                                                        | Function to use your own store key.                                   |
 | `notificationMessage` | -        | `string`   | "Applied previous unsaved changes" | Notification message to inform users that their previously saved changes have been applied. |
 
 ## `getStoreKey`
@@ -68,10 +68,9 @@ You can override this key by passing a custom function as the `getStoreKey` prop
 />
 ```
 
-
 ## `notificationMessage`
 
-When `<AutoPersistInStore>` component applies the changes from the store to a form, react-admin informs users with a notification. 
+When `<AutoPersistInStore>` component applies the changes from the store to a form, react-admin informs users with a notification.
 
 The default notification message is `ra-form-layout.auto_persist_in_store.applied_changes`, which is translated using the i18n provider (the default English translation is `Applied previous unsaved changes`).
 
