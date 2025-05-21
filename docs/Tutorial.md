@@ -28,7 +28,7 @@ React-admin is built on React. To start, we'll use [create-react-admin](./Create
 ```sh
 npm create react-admin@latest test-admin
 # or
-yarn create react-admin@latest test-admin
+yarn create react-admin test-admin
 ```
 
 When prompted, choose **JSON Server** as the data provider, then **None** as the auth provider. Do not add any resources for now and press **Enter**. Next, choose either `npm` or `yarn` and press **Enter**. Once everything is installed, run the following commands:

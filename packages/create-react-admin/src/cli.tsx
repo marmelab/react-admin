@@ -88,8 +88,8 @@ const cli = meow(
     Examples
 	  $ npx create-react-admin@latest my-admin
 	  $ npx create-react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
-	  $ yarn create react-admin@latest my-admin
-	  $ yarn create react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+	  $ yarn create react-admin my-admin
+	  $ yarn create react-admin my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 	  $ bun create react-admin@latest my-admin
 	  $ bun create react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 `,
