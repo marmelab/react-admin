@@ -1,58 +1,63 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
-
-import { ListGuesser } from './ListGuesser';
-import { ThemeProvider } from '../theme/ThemeProvider';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { ManyResources } from './ListGuesser.stories';
 
 describe('<ListGuesser />', () => {
-    it('should log the guessed List view based on the fetched records', async () => {
+    it('should log the guessed List views based on the fetched records', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-        const dataProvider = testDataProvider({
-            // @ts-ignore
-            getList: () =>
-                Promise.resolve({
-                    data: [
-                        {
-                            id: 123,
-                            author: 'john doe',
-                            post_id: 6,
-                            score: 3,
-                            body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
-                            created_at: new Date('2012-08-02'),
-                            tags_ids: [1, 2],
-                        },
-                    ],
-                    total: 1,
-                }),
-            getMany: () => Promise.resolve({ data: [], total: 0 }),
-        });
-        render(
-            <ThemeProvider>
-                <CoreAdminContext dataProvider={dataProvider as any}>
-                    <ListGuesser resource="comments" enableLog />
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() => {
-            screen.getByText('john doe');
-        });
+        render(<ManyResources />);
+        await screen.findAllByText('top seller');
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { Datagrid, DateField, List, NumberField, ReferenceArrayField, ReferenceField, TextField } from 'react-admin';
+import { DataTable, DataTable.Col, DataTable.NumberCol, List, ReferenceArrayField, ReferenceField } from 'react-admin';
 
-export const CommentList = () => (
+export const ProductList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="author" />
-            <ReferenceField source="post_id" reference="posts" />
-            <NumberField source="score" />
-            <TextField source="body" />
-            <DateField source="created_at" />
-            <ReferenceArrayField source="tags_ids" reference="tags" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="name" />
+            <DataTable.NumberCol source="price" />
+            <DataTable.Col source="category_id"><ReferenceField source="category_id" reference="categories" /></DataTable.Col>
+            <DataTable.Col source="tags_ids"><ReferenceArrayField source="tags_ids" reference="tags" /></DataTable.Col>
+            <DataTable.Col source="last_update" field={DateField} />
+            <DataTable.Col source="email" field={EmailField} />
+        </DataTable>
+    </List>
+);`);
+        logSpy.mockClear();
+
+        fireEvent.click(screen.getByText('Categories'));
+        await screen.findByText('Jeans');
+        expect(logSpy).toHaveBeenCalledWith(`Guessed List:
+
+import { ArrayField, ChipField, DataTable, DataTable.Col, List, SingleFieldList } from 'react-admin';
+
+export const CategoryList = () => (
+    <List>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="name" />
+            <DataTable.Col source="alternativeName"><ArrayField source="alternativeName"><SingleFieldList><ChipField source="name" /></SingleFieldList></ArrayField></DataTable.Col>
+            <DataTable.Col source="isVeganProduction" field={BooleanField} />
+        </DataTable>
+    </List>
+);`);
+
+        logSpy.mockClear();
+        fireEvent.click(screen.getByText('Tags'));
+        await screen.findByText('top seller');
+        expect(logSpy).toHaveBeenCalledWith(`Guessed List:
+
+import { DataTable, DataTable.Col, List } from 'react-admin';
+
+export const TagList = () => (
+    <List>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="name" />
+            <DataTable.Col source="url" field={UrlField} />
+        </DataTable>
     </List>
 );`);
     });
