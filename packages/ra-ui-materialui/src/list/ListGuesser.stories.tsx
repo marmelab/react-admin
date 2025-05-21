@@ -21,6 +21,8 @@ const data = {
             price: 45.99,
             category_id: 1,
             tags_ids: [1],
+            last_update: new Date('2023-10-01').toISOString(),
+            email: 'office.jeans@myshop.com',
         },
         {
             id: 2,
@@ -28,6 +30,8 @@ const data = {
             price: 69.99,
             category_id: 1,
             tags_ids: [2, 3],
+            last_update: new Date('2023-11-01').toISOString(),
+            email: 'black.elegance.jeans@myshop.com',
         },
         {
             id: 3,
@@ -35,6 +39,8 @@ const data = {
             price: 55.99,
             category_id: 1,
             tags_ids: [2, 4],
+            last_update: new Date('2023-12-01').toISOString(),
+            email: 'slim.fit.jeans@myshop.com',
         },
         {
             id: 4,
@@ -42,6 +48,8 @@ const data = {
             price: 15.99,
             category_id: 2,
             tags_ids: [1, 4, 3],
+            last_update: new Date('2023-10-15').toISOString(),
+            email: 'basic.t.shirt@myshop.com',
         },
         {
             id: 5,
@@ -49,30 +57,93 @@ const data = {
             price: 19.99,
             category_id: 6,
             tags_ids: [1, 4, 3],
+            last_update: new Date('2023-10-15').toISOString(),
+            email: 'basic.cap@myshop.com',
         },
     ],
     categories: [
-        { id: 1, name: 'Jeans' },
-        { id: 2, name: 'T-Shirts' },
-        { id: 3, name: 'Jackets' },
-        { id: 4, name: 'Shoes' },
-        { id: 5, name: 'Accessories' },
-        { id: 6, name: 'Hats' },
-        { id: 7, name: 'Socks' },
-        { id: 8, name: 'Shirts' },
-        { id: 9, name: 'Sweaters' },
-        { id: 10, name: 'Trousers' },
-        { id: 11, name: 'Coats' },
-        { id: 12, name: 'Dresses' },
-        { id: 13, name: 'Skirts' },
-        { id: 14, name: 'Swimwear' },
-        { id: 15, name: 'Bags' },
+        {
+            id: 1,
+            name: 'Jeans',
+            alternativeName: [{ name: 'denims' }, { name: 'pants' }],
+            isVeganProduction: true,
+        },
+        {
+            id: 2,
+            name: 'T-Shirts',
+            alternativeName: [{ name: 'polo' }, { name: 'tee shirt' }],
+            isVeganProduction: false,
+        },
+        {
+            id: 3,
+            name: 'Jackets',
+            alternativeName: [{ name: 'coat' }, { name: 'blazers' }],
+            isVeganProduction: false,
+        },
+        {
+            id: 4,
+            name: 'Shoes',
+            alternativeName: [{ name: 'sneakers' }, { name: 'moccasins' }],
+            isVeganProduction: false,
+        },
+        {
+            id: 5,
+            name: 'Accessories',
+            alternativeName: [{ name: 'jewelry' }, { name: 'belts' }],
+            isVeganProduction: true,
+        },
+        {
+            id: 6,
+            name: 'Hats',
+            alternativeName: [{ name: 'caps' }, { name: 'headwear' }],
+            isVeganProduction: true,
+        },
+        {
+            id: 7,
+            name: 'Socks',
+            alternativeName: [{ name: 'stockings' }, { name: 'hosiery' }],
+            isVeganProduction: false,
+        },
+        {
+            id: 8,
+            name: 'Bags',
+            alternativeName: [{ name: 'handbags' }, { name: 'purses' }],
+            isVeganProduction: false,
+        },
+        {
+            id: 9,
+            name: 'Dresses',
+            alternativeName: [{ name: 'robes' }, { name: 'gowns' }],
+            isVeganProduction: false,
+        },
+        {
+            id: 10,
+            name: 'Skirts',
+            alternativeName: [{ name: 'tutus' }, { name: 'kilts' }],
+            isVeganProduction: false,
+        },
     ],
     tags: [
-        { id: 1, name: 'top seller' },
-        { id: 2, name: 'new' },
-        { id: 3, name: 'sale' },
-        { id: 4, name: 'promotion' },
+        {
+            id: 1,
+            name: 'top seller',
+            url: 'https://www.myshop.com/tags/top-seller',
+        },
+        {
+            id: 2,
+            name: 'new',
+            url: 'https://www.myshop.com/tags/new',
+        },
+        {
+            id: 3,
+            name: 'sale',
+            url: 'https://www.myshop.com/tags/sale',
+        },
+        {
+            id: 4,
+            name: 'promotion',
+            url: 'https://www.myshop.com/tags/promotion',
+        },
     ],
 };
 
@@ -119,6 +190,8 @@ const delayedDataProvider = fakeRestProvider(
     300
 );
 
+const ListGuesserWithProdLogs = props => <ListGuesser {...props} enableLog />;
+
 export const ManyResources = () => (
     <AdminContext
         dataProvider={delayedDataProvider}
@@ -127,17 +200,17 @@ export const ManyResources = () => (
         <AdminUI>
             <Resource
                 name="products"
-                list={ListGuesser}
+                list={ListGuesserWithProdLogs}
                 recordRepresentation="name"
             />
             <Resource
                 name="categories"
-                list={ListGuesser}
+                list={ListGuesserWithProdLogs}
                 recordRepresentation="name"
             />
             <Resource
                 name="tags"
-                list={ListGuesser}
+                list={ListGuesserWithProdLogs}
                 recordRepresentation="name"
             />
         </AdminUI>
