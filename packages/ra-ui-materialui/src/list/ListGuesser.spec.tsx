@@ -10,6 +10,7 @@ describe('<ListGuesser />', () => {
     it('should log the guessed List view based on the fetched records', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: () =>
                 Promise.resolve({
                     data: [
