@@ -58,7 +58,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </DataTable.Col>
         ),
         representation: props =>
-            `<DataTable.Col source="${props.source}" />
+            `<DataTable.Col source="${props.source}">
                 <BooleanField source="${props.source}" />
             </DataTable.Col>`,
     },
@@ -69,7 +69,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </DataTable.Col>
         ),
         representation: props =>
-            `<DataTable.Col source="${props.source}" />
+            `<DataTable.Col source="${props.source}">
                 <DateField source="${props.source}" />
             </DataTable.Col>`,
     },
@@ -80,7 +80,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </DataTable.Col>
         ),
         representation: props =>
-            `<DataTable.Col source="${props.source}" />
+            `<DataTable.Col source="${props.source}">
                 <EmailField source="${props.source}" />
             </DataTable.Col>`,
     },
@@ -142,7 +142,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </DataTable.Col>
         ),
         representation: props =>
-            `<DataTable.Col source="${props.source}" />
+            `<DataTable.Col source="${props.source}">
                 <UrlField source="${props.source}" />
             </DataTable.Col>`,
     },
