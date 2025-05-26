@@ -10,7 +10,7 @@ describe('<ListGuesser />', () => {
         await screen.findAllByText('top seller', undefined, { timeout: 2000 });
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { DataTable, DataTable.Col, DataTable.NumberCol, DateField, EmailField, List, ReferenceArrayField, ReferenceField } from 'react-admin';
+import { DataTable, DateField, EmailField, List, ReferenceArrayField, ReferenceField } from 'react-admin';
 
 export const ProductList = () => (
     <List>
@@ -39,7 +39,7 @@ export const ProductList = () => (
         await screen.findByText('Jeans');
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { ArrayField, BooleanField, ChipField, DataTable, DataTable.Col, List, SingleFieldList } from 'react-admin';
+import { ArrayField, BooleanField, ChipField, DataTable, List, SingleFieldList } from 'react-admin';
 
 export const CategoryList = () => (
     <List>
@@ -65,7 +65,7 @@ export const CategoryList = () => (
         await screen.findByText('top seller');
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { DataTable, DataTable.Col, List, UrlField } from 'react-admin';
+import { DataTable, List, UrlField } from 'react-admin';
 
 export const TagList = () => (
     <List>
