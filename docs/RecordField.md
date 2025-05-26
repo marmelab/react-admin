@@ -73,7 +73,7 @@ import { RecordField } from 'react-admin';
 />
 ```
 
-The `source`, `field`, `children`, and  `render` props are mutually exclusive.
+The `field`, `children`, and  `render` props are mutually exclusive.
 
 ## Props
 
