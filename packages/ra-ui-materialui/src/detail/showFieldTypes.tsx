@@ -39,9 +39,11 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </ArrayField>
         ),
         representation: (props: InputProps, children: InferredElement[]) =>
-            `<ArrayField source="${props.source}"><Datagrid>${children
-                .map(child => child.getRepresentation())
-                .join('\n')}</Datagrid></ArrayField>`,
+            `<ArrayField source="${props.source}">
+                <Datagrid>
+                    ${children.map(child => child.getRepresentation()).join('\n                    ')}
+                </Datagrid>
+            </ArrayField>`,
     },
     boolean: {
         component: BooleanField,
