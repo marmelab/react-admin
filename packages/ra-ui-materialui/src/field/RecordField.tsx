@@ -152,7 +152,7 @@ const Root = styled(Stack, {
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        RaRecordField: 'root' | 'content' | 'button' | 'icon';
+        RaRecordField: 'root' | 'label' | 'value' | 'inline';
     }
 
     interface ComponentsPropsList {
