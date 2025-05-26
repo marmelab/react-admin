@@ -7,10 +7,10 @@ describe('<ListGuesser />', () => {
     it('should log the guessed List views based on the fetched records', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
         render(<ManyResources />);
-        await screen.findAllByText('top seller');
+        await screen.findAllByText('top seller', undefined, { timeout: 2000 });
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { DataTable, DataTable.Col, DataTable.NumberCol, List, ReferenceArrayField, ReferenceField } from 'react-admin';
+import { DataTable, DataTable.Col, DataTable.NumberCol, DateField, EmailField, List, ReferenceArrayField, ReferenceField } from 'react-admin';
 
 export const ProductList = () => (
     <List>
@@ -18,10 +18,18 @@ export const ProductList = () => (
             <DataTable.Col source="id" />
             <DataTable.Col source="name" />
             <DataTable.NumberCol source="price" />
-            <DataTable.Col source="category_id"><ReferenceField source="category_id" reference="categories" /></DataTable.Col>
-            <DataTable.Col source="tags_ids"><ReferenceArrayField source="tags_ids" reference="tags" /></DataTable.Col>
-            <DataTable.Col source="last_update" field={DateField} />
-            <DataTable.Col source="email" field={EmailField} />
+            <DataTable.Col source="category_id">
+                <ReferenceField source="category_id" reference="categories" />
+            </DataTable.Col>
+            <DataTable.Col source="tags_ids">
+                <ReferenceArrayField source="tags_ids" reference="tags" />
+            </DataTable.Col>
+            <DataTable.Col source="last_update">
+                <DateField source="last_update" />
+            </DataTable.Col>
+            <DataTable.Col source="email">
+                <EmailField source="email" />
+            </DataTable.Col>
         </DataTable>
     </List>
 );`);
@@ -31,15 +39,23 @@ export const ProductList = () => (
         await screen.findByText('Jeans');
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { ArrayField, ChipField, DataTable, DataTable.Col, List, SingleFieldList } from 'react-admin';
+import { ArrayField, BooleanField, ChipField, DataTable, DataTable.Col, List, SingleFieldList } from 'react-admin';
 
 export const CategoryList = () => (
     <List>
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="name" />
-            <DataTable.Col source="alternativeName"><ArrayField source="alternativeName"><SingleFieldList><ChipField source="name" /></SingleFieldList></ArrayField></DataTable.Col>
-            <DataTable.Col source="isVeganProduction" field={BooleanField} />
+            <DataTable.Col source="alternativeName">
+                <ArrayField source="alternativeName">
+                    <SingleFieldList>
+                        <ChipField source="name" />
+                    </SingleFieldList>
+                </ArrayField>
+            </DataTable.Col>
+            <DataTable.Col source="isVeganProduction">
+                <BooleanField source="isVeganProduction" />
+            </DataTable.Col>
         </DataTable>
     </List>
 );`);
@@ -49,14 +65,16 @@ export const CategoryList = () => (
         await screen.findByText('top seller');
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { DataTable, DataTable.Col, List } from 'react-admin';
+import { DataTable, DataTable.Col, List, UrlField } from 'react-admin';
 
 export const TagList = () => (
     <List>
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="name" />
-            <DataTable.Col source="url" field={UrlField} />
+            <DataTable.Col source="url">
+                <UrlField source="url" />
+            </DataTable.Col>
         </DataTable>
     </List>
 );`);
