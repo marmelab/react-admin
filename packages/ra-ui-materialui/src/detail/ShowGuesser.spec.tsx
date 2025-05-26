@@ -11,18 +11,24 @@ describe('<ShowGuesser />', () => {
         await screen.findByText('john doe');
         expect(logSpy).toHaveBeenCalledWith(`Guessed Show:
 
-import { ArrayField, BooleanField, Datagrid, DateField, EmailField, NumberField, ReferenceArrayField, ReferenceField, RichTextField, Show, SimpleShowLayout, TextField, UrlField } from 'react-admin';
+import { ArrayField, BooleanField, DataTable, DateField, EmailField, NumberField, ReferenceArrayField, ReferenceField, RichTextField, Show, SimpleShowLayout, TextField, UrlField } from 'react-admin';
 
 export const BookShow = () => (
     <Show>
         <SimpleShowLayout>
             <TextField source="id" />
             <ArrayField source="authors">
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="name" />
-                    <DateField source="dob" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id">
+                        <TextField source="id" />
+                    </DataTable.Col>
+                    <DataTable.Col source="name">
+                        <TextField source="name" />
+                    </DataTable.Col>
+                    <DataTable.Col source="dob">
+                        <DateField source="dob" />
+                    </DataTable.Col>
+                </DataTable>
             </ArrayField>
             <ReferenceField source="post_id" reference="posts" />
             <NumberField source="score" />
