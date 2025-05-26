@@ -190,7 +190,7 @@ const delayedDataProvider = fakeRestProvider(
     300
 );
 
-const ListGuesserWithProdLogs = props => <ListGuesser {...props} enableLog />;
+const ListGuesserWithProdLogs = () => <ListGuesser enableLog />;
 
 export const ManyResources = () => (
     <AdminContext
