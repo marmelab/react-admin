@@ -32,7 +32,7 @@ npx create-react-admin@latest your-admin-name
 # Using npm
 npm create react-admin@latest your-admin-name
 # Using yarn
-yarn create react-admin@latest your-admin-name
+yarn create react-admin your-admin-name
 # Using bun
 bun create react-admin@latest your-admin-name
 ```

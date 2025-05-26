@@ -1,6 +1,6 @@
 # Atomic CRM
 
-[Atomic CRM](https://marmelab.com/atomic-crm/) is a CRM template built with [react-admin](https://github.com/marmelab/react-admin) and Supabse. You can test it online at https://marmelab.com/react-admin-crm.
+[Atomic CRM](https://marmelab.com/atomic-crm/) is a CRM template built with [react-admin](https://github.com/marmelab/react-admin) and Supabase. You can test it online at https://marmelab.com/react-admin-crm.
 
 https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4
 
