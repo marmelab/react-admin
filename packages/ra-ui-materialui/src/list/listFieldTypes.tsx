@@ -43,26 +43,46 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             );
         },
         representation: (props, children) =>
-            `<DataTable.Col source="${props.source}"><ArrayField source="${
-                props.source
-            }"><SingleFieldList><ChipField source="${
-                children.length > 0 && children[0].getProps().source
-            }" /></SingleFieldList></ArrayField></DataTable.Col>`,
+            `<DataTable.Col source="${props.source}">
+                <ArrayField source="${props.source}">
+                    <SingleFieldList>
+                        <ChipField source="${children.length > 0 && children[0].getProps().source}" />
+                    </SingleFieldList>
+                </ArrayField>
+            </DataTable.Col>`,
     },
     boolean: {
-        component: props => <DataTable.Col {...props} field={BooleanField} />,
+        component: props => (
+            <DataTable.Col {...props}>
+                <BooleanField {...props} />
+            </DataTable.Col>
+        ),
         representation: props =>
-            `<DataTable.Col source="${props.source}" field={BooleanField} />`,
+            `<DataTable.Col source="${props.source}" />
+                <BooleanField source="${props.source}" />
+            </DataTable.Col>`,
     },
     date: {
-        component: props => <DataTable.Col {...props} field={DateField} />,
+        component: props => (
+            <DataTable.Col {...props}>
+                <DateField {...props} />
+            </DataTable.Col>
+        ),
         representation: props =>
-            `<DataTable.Col source="${props.source}" field={DateField} />`,
+            `<DataTable.Col source="${props.source}" />
+                <DateField source="${props.source}" />
+            </DataTable.Col>`,
     },
     email: {
-        component: props => <DataTable.Col {...props} field={EmailField} />,
+        component: props => (
+            <DataTable.Col {...props}>
+                <EmailField {...props} />
+            </DataTable.Col>
+        ),
         representation: props =>
-            `<DataTable.Col source="${props.source}" field={EmailField} />`,
+            `<DataTable.Col source="${props.source}" />
+                <EmailField source="${props.source}" />
+            </DataTable.Col>`,
     },
     id: {
         component: props => <DataTable.Col {...props} />,
@@ -80,7 +100,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </DataTable.Col>
         ),
         representation: props =>
-            `<DataTable.Col source="${props.source}"><ReferenceField source="${props.source}" reference="${props.reference}" /></DataTable.Col>`,
+            `<DataTable.Col source="${props.source}">
+                <ReferenceField source="${props.source}" reference="${props.reference}" />
+            </DataTable.Col>`,
     },
     referenceChild: {
         component: () => <TextField source="id" />,
@@ -93,7 +115,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </DataTable.Col>
         ),
         representation: props =>
-            `<DataTable.Col source="${props.source}"><ReferenceArrayField source="${props.source}" reference="${props.reference}" /></DataTable.Col>`,
+            `<DataTable.Col source="${props.source}">
+                <ReferenceArrayField source="${props.source}" reference="${props.reference}" />
+            </DataTable.Col>`,
     },
     referenceArrayChild: {
         component: () => (
@@ -102,7 +126,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </SingleFieldList>
         ),
         representation: () =>
-            `<SingleFieldList><ChipField source="id" /></SingleFieldList>`,
+            `<SingleFieldList>
+                <ChipField source="id" />
+            </SingleFieldList>`,
     },
     richText: undefined, // never display a rich text field in a datagrid
     string: {
@@ -110,8 +136,14 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         representation: props => `<DataTable.Col source="${props.source}" />`,
     },
     url: {
-        component: props => <DataTable.Col {...props} field={UrlField} />,
+        component: props => (
+            <DataTable.Col {...props}>
+                <UrlField {...props} />
+            </DataTable.Col>
+        ),
         representation: props =>
-            `<DataTable.Col source="${props.source}" field={UrlField} />`,
+            `<DataTable.Col source="${props.source}" />
+                <UrlField source="${props.source}" />
+            </DataTable.Col>`,
     },
 };
