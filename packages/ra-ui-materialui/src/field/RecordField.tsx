@@ -136,7 +136,7 @@ const Root = styled(Stack, {
         flexDirection: 'row',
     },
     [`& .${RecordFieldClasses.label}`]: {
-        fontSize: '0.75em',
+        fontSize: '0.75rem',
         marginBottom: '0.2em',
         color: (theme.vars || theme).palette.text.secondary,
     },
