@@ -33,8 +33,8 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             <ArrayField {...props}>
                 <DataTable>
                     {children && children.length > 0
-                        ? children.map(child => (
-                              <DataTable.Col source={child.props.source}>
+                        ? children.map((child, index) => (
+                              <DataTable.Col key={index} {...child.props}>
                                   {child}
                               </DataTable.Col>
                           ))
