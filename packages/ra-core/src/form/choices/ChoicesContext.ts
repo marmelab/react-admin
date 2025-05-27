@@ -20,6 +20,7 @@ export type ChoicesContextBaseValue<RecordType extends RaRecord = any> = {
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
+    isPaused: boolean;
     page: number;
     perPage: number;
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];

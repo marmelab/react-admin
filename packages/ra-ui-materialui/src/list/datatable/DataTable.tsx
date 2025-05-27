@@ -38,8 +38,10 @@ import { DataTableColumn } from './DataTableColumn';
 import { DataTableNumberColumn } from './DataTableNumberColumn';
 import { ColumnsSelector } from './ColumnsSelector';
 import { DataTableRowSxContext } from './DataTableRowSxContext';
+import { Offline } from '../../Offline';
 
 const DefaultEmpty = <ListNoResults />;
+const DefaultOffline = <Offline />;
 const DefaultFoot = (_props: { children: ReactNode }) => null;
 const PREFIX = 'RaDataTable';
 
@@ -149,6 +151,7 @@ export const DataTable = React.forwardRef(function DataTable<
         children,
         className,
         empty = DefaultEmpty,
+        offline = DefaultOffline,
         expand,
         bulkActionsToolbar,
         bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
@@ -184,6 +187,7 @@ export const DataTable = React.forwardRef(function DataTable<
             hasBulkActions={hasBulkActions}
             loading={loading}
             empty={empty}
+            offline={offline}
         >
             <DataTableRowSxContext.Provider value={rowSx}>
                 <DataTableRoot
@@ -422,6 +426,25 @@ export interface DataTableProps<RecordType extends RaRecord = any>
      * );
      */
     empty?: ReactNode;
+
+    /**
+     * The component used to render the offline table.
+     *
+     * @see https://marmelab.com/react-admin/DataTable.html#offline
+     * @example
+     * import { List, DataTable } from 'react-admin';
+     *
+     * const CustomOffline = () => <div>No books found</div>;
+     *
+     * const PostList = () => (
+     *     <List>
+     *         <DataTable offline={<CustomOffline />}>
+     *             ...
+     *         </DataTable>
+     *     </List>
+     * );
+     */
+    offline?: ReactNode;
 
     /**
      * A function that returns whether the row for a record is expandable.

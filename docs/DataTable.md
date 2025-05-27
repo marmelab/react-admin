@@ -53,12 +53,13 @@ Each `<DataTable.Col>` defines one column of the table: its `source` (used for s
 | `empty`              | Optional | Element                 | `<Empty>`             | The component to render when the list is empty.                 |
 | `expand`             | Optional | Element                 |                       | The component rendering the expand panel for each row.   |
 | `expandSingle`       | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
-| `head`               | Optional | Element                 | `<DataTable Header>`   | The component rendering the table header.                |
+| `head`               | Optional | Element                 | `<DataTable Header>`  | The component rendering the table header.                |
 | `hiddenColumns`      | Optional | Array                   | `[]`                  | The list of columns to hide by default.                          |
 | `foot`               | Optional | Element                 |                       | The component rendering the table footer.                |
 | `hover`              | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
 | `isRowExpandable`    | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
 | `isRowSelectable`    | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
+| `offline`            | Optional | Element                 | `<Offline>`           | The content rendered to render when data could not be fetched because of connectivity issues. |
 | `rowClick`           | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
 | `rowSx`              | Optional | Function                |                       | A function that returns the `sx` prop to apply to a row.        |
 | `size`               | Optional | `'small'` or `'medium'` | `'small'`             | The size of the table.                                        |
@@ -753,6 +754,38 @@ export const PostList = () => (
 );
 ```
 {% endraw %}
+
+## `offline`
+
+It's possible that a `<DataTable>` will have no records to display because of connectivity issues. In that case, `<DataTable>` will display a message indicating data couldn't be fetched. 
+
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<DataTable offline>` prop:
+
+```tsx
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+const BookList = () => (
+    <List>
+        <DataTable offline={<Offline />}>
+            ...
+        </DataTable>
+    </List>
+);
+```
 
 ## `rowClick`
 

@@ -82,6 +82,8 @@ const frenchMessages: TranslationMessages = {
                     'Au moins une des références associées semble ne plus être disponible.',
                 single_missing:
                     'La référence associée ne semble plus disponible.',
+                single_offline:
+                    'La référence associée ne peut être chargée car vous êtes hors ligne.',
             },
             password: {
                 toggle_visible: 'Cacher le mot de passe',
@@ -179,6 +181,7 @@ const frenchMessages: TranslationMessages = {
             not_authorized:
                 "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
             application_update_available: 'Une mise à jour est disponible.',
+            offline: 'Pas de connexion. Impossible de charger les données.',
         },
         validation: {
             required: 'Ce champ est requis',

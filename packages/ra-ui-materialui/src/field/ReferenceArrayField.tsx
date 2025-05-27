@@ -149,11 +149,11 @@ export const ReferenceArrayFieldView = (
     props: ReferenceArrayFieldViewProps
 ) => {
     const { children, pagination, className, sx } = props;
-    const { isPending, total } = useListContext();
+    const { isPending, isPaused, total } = useListContext();
 
     return (
         <Root className={className} sx={sx}>
-            {isPending ? (
+            {isPending && !isPaused ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />

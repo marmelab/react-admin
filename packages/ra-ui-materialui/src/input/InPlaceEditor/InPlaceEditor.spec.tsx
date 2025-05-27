@@ -4,6 +4,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Basic } from './InPlaceEditor.stories';
 
 describe('InPlaceEditor', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
     it('should render the field value on mount', async () => {
         render(<Basic delay={0} />);
         await screen.findByText('John Doe');
@@ -24,6 +27,7 @@ describe('InPlaceEditor', () => {
         await screen.findByText('Jane Doe');
     });
     it('should revert to the previous version on error', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         render(<Basic delay={0} updateFails />);
         const value = await screen.findByText('John Doe');
         value.click();

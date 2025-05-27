@@ -61,6 +61,7 @@ export const useReferenceArrayInputController = <
         error: errorGetMany,
         isLoading: isLoadingGetMany,
         isFetching: isFetchingGetMany,
+        isPaused: isPausedGetMany,
         isPending: isPendingGetMany,
         refetch: refetchGetMany,
     } = useGetManyAggregate<RecordType>(
@@ -99,6 +100,7 @@ export const useReferenceArrayInputController = <
         error: errorGetList,
         isLoading: isLoadingGetList,
         isFetching: isFetchingGetList,
+        isPaused: isPausedGetList,
         isPending: isPendingGetList,
         refetch: refetchGetMatching,
     } = useGetList<RecordType>(
@@ -153,6 +155,7 @@ export const useReferenceArrayInputController = <
         hideFilter: paramsModifiers.hideFilter,
         isFetching: isFetchingGetMany || isFetchingGetList,
         isLoading: isLoadingGetMany || isLoadingGetList,
+        isPaused: isPausedGetMany || isPausedGetList,
         isPending: isPendingGetMany || isPendingGetList,
         page: params.page,
         perPage: params.perPage,

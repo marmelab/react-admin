@@ -11,13 +11,14 @@ export default url => ({
         inputs: `.ra-input`,
         richTextInputError: '.create-page .ra-rich-text-input-error',
         snackbar: 'div[role="alert"]',
-        submitButton: ".create-page div[role='toolbar'] button[type='submit']",
+        submitButton:
+            ".create-page div[role='toolbar'] div:first-child button[type='submit']",
         submitAndShowButton:
-            ".create-page form div[role='toolbar'] button[type='button']:nth-child(2)",
+            ".create-page form div[role='toolbar'] div:first-child button[type='button']:nth-child(2)",
         submitAndAddButton:
-            ".create-page form div[role='toolbar'] button[type='button']:nth-child(3)",
+            ".create-page form div[role='toolbar'] div:first-child button[type='button']:nth-child(3)",
         submitCommentable:
-            ".create-page form div[role='toolbar'] button[type='button']:last-child",
+            ".create-page form div[role='toolbar'] div:first-child button[type='button']:last-child",
         descInput: '.ProseMirror',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
