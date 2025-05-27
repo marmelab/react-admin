@@ -176,7 +176,9 @@ export const UserList = () => (
             <DataTable.Col source="id" />
             <DataTable.Col source="name" />
             <DataTable.Col source="username" />
-            <DataTable.Col source="email" field={EmailField} />
+            <DataTable.Col source="email">
+                <EmailField source="email" />
+            </DataTable.Col>
             <DataTable.Col source="address.street" />
             <DataTable.Col source="phone" />
             <DataTable.Col source="website" />
@@ -218,7 +220,9 @@ export const UserList = () => (
             <DataTable.Col source="id" />
             <DataTable.Col source="name" />
             <DataTable.Col source="username" />
-            <DataTable.Col source="email" field={EmailField} />
+            <DataTable.Col source="email">
+                <EmailField source="email" />
+	    </DataTable.Col>
             <DataTable.Col source="address.street" />
             <DataTable.Col source="phone" />
             <DataTable.Col source="website" />
@@ -297,7 +301,9 @@ export const UserList = () => {
                     <DataTable.Col source="id" />
                     <DataTable.Col source="name" />
                     <DataTable.Col source="username" />
-                    <DataTable.Col source="email" field={EmailField} />
+                    <DataTable.Col source="email">
+                        <EmailField source="email" />
+	            </DataTable.Col>
                     <DataTable.Col source="address.street" />
                     <DataTable.Col source="phone" />
                     <DataTable.Col source="website" />
@@ -334,7 +340,9 @@ That's a bit too much for a usable grid, so let's remove a couple of `<DataTable
     <DataTable.Col source="id" />
     <DataTable.Col source="name" />
 -   <DataTable.Col source="username" />
-    <DataTable.Col source="email" field={EmailField} />
+    <DataTable.Col source="email">
+      <EmailField source="email" />
+    </DataTable.Col>
 -   <DataTable.Col source="address.street" />
     <DataTable.Col source="phone" />
     <DataTable.Col source="website" />
@@ -361,10 +369,14 @@ For instance, instead of displaying the `website` field as plain text, you could
   <DataTable>
     <DataTable.Col source="id" />
     <DataTable.Col source="name" />
-    <DataTable.Col source="email" field={EmailField} />
+    <DataTable.Col source="email">
+      <EmailField source="email" />
+    </DataTable.Col>
     <DataTable.Col source="phone" />
 -   <DataTable.Col source="website" />
-+   <DataTable.Col source="website" field={UrlField} />
++   <DataTable.Col source="website">
++     <UrlField source="website" />
++   </DataTable.Col>
     <DataTable.Col source="company.name" />
   </DataTable>
 ```
