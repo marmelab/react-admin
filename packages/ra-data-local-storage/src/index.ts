@@ -98,6 +98,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
 
         // update methods need to persist changes in localStorage
         update: <RecordType extends RaRecord = any>(resource, params) => {
+            checkResource(resource);
             updateLocalStorage(() => {
                 const index = data[resource]?.findIndex(
                     record => record.id == params.id
@@ -110,9 +111,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             return baseDataProvider.update<RecordType>(resource, params);
         },
         updateMany: (resource, params) => {
-            if (['__proto__', 'constructor', 'prototype'].includes(resource)) {
-                throw new Error(`Invalid resource key: ${resource}`);
-            }
+            checkResource(resource);
             updateLocalStorage(() => {
                 params.ids.forEach(id => {
                     const index = data[resource]?.findIndex(
@@ -130,6 +129,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             resource,
             params
         ) => {
+            checkResource(resource);
             // we need to call the fakerest provider first to get the generated id
             return baseDataProvider
                 .create<RecordType>(resource, params)
@@ -144,9 +144,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                 });
         },
         delete: <RecordType extends RaRecord = any>(resource, params) => {
-            if (['__proto__', 'constructor', 'prototype'].includes(resource)) {
-                throw new Error(`Invalid resource key: ${resource}`);
-            }
+            checkResource(resource);
             updateLocalStorage(() => {
                 const index = data[resource]?.findIndex(
                     record => record.id == params.id
@@ -156,9 +154,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             return baseDataProvider.delete<RecordType>(resource, params);
         },
         deleteMany: (resource, params) => {
-            if (['__proto__', 'constructor', 'prototype'].includes(resource)) {
-                throw new Error(`Invalid resource key: ${resource}`);
-            }
+            checkResource(resource);
             updateLocalStorage(() => {
                 const indexes = params.ids.map(id =>
                     data[resource]?.findIndex(record => record.id == id)
@@ -168,6 +164,13 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             return baseDataProvider.deleteMany(resource, params);
         },
     };
+};
+
+const checkResource = resource => {
+    if (['__proto__', 'constructor', 'prototype'].includes(resource)) {
+        // protection against prototype pollution
+        throw new Error(`Invalid resource key: ${resource}`);
+    }
 };
 
 export interface LocalStorageDataProviderParams {
