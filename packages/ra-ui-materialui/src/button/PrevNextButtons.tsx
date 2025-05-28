@@ -123,7 +123,13 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
 
     if (isPending) {
         return (
-            <Box minHeight={34} display="flex" alignItems="center">
+            <Box
+                sx={{
+                    minHeight: 34,
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
                 <LinearProgress />
             </Box>
         );
@@ -139,7 +145,13 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
         );
     }
     if (!hasPrev && !hasNext) {
-        return <Box minHeight={34} />;
+        return (
+            <Box
+                sx={{
+                    minHeight: 34,
+                }}
+            />
+        );
     }
 
     return (

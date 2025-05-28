@@ -166,6 +166,7 @@ export default (params?: LocalForageDataProviderParams): DataProvider => {
             resource: string,
             params: UpdateParams<any>
         ) => {
+            checkResource(resource);
             await initialize();
             if (!data) {
                 throw new Error('The dataProvider is not initialized.');
@@ -185,6 +186,7 @@ export default (params?: LocalForageDataProviderParams): DataProvider => {
             return baseDataProvider.update<RecordType>(resource, params);
         },
         updateMany: async (resource: string, params: UpdateManyParams<any>) => {
+            checkResource(resource);
             await initialize();
             if (!baseDataProvider) {
                 throw new Error('The dataProvider is not initialized.');
@@ -209,6 +211,7 @@ export default (params?: LocalForageDataProviderParams): DataProvider => {
             resource: string,
             params: CreateParams<any>
         ) => {
+            checkResource(resource);
             await initialize();
             if (!baseDataProvider) {
                 throw new Error('The dataProvider is not initialized.');
@@ -232,6 +235,7 @@ export default (params?: LocalForageDataProviderParams): DataProvider => {
             resource: string,
             params: DeleteParams<RecordType>
         ) => {
+            checkResource(resource);
             await initialize();
             if (!baseDataProvider) {
                 throw new Error('The dataProvider is not initialized.');
@@ -247,6 +251,7 @@ export default (params?: LocalForageDataProviderParams): DataProvider => {
             return baseDataProvider.delete<RecordType>(resource, params);
         },
         deleteMany: async (resource: string, params: DeleteManyParams<any>) => {
+            checkResource(resource);
             await initialize();
             if (!baseDataProvider) {
                 throw new Error('The dataProvider is not initialized.');
@@ -267,6 +272,13 @@ export default (params?: LocalForageDataProviderParams): DataProvider => {
             return baseDataProvider.deleteMany(resource, params);
         },
     };
+};
+
+const checkResource = resource => {
+    if (['__proto__', 'constructor', 'prototype'].includes(resource)) {
+        // protection against prototype pollution
+        throw new Error(`Invalid resource key: ${resource}`);
+    }
 };
 
 export interface LocalForageDataProviderParams {

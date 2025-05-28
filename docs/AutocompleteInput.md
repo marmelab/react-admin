@@ -151,7 +151,22 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 
 {% raw %}
 ```jsx
-import { CreateAuthor } from './CreateAuthor';
+import { 
+    Create, 
+    CreateBase, 
+    SimpleForm, 
+    ReferenceInput, 
+    AutocompleteInput, 
+    TextInput, 
+    useCreateSuggestionContext 
+} from 'react-admin';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+} from '@mui/material';
 
 const BookCreate = () => (
     <Create>
@@ -165,24 +180,8 @@ const BookCreate = () => (
     </Create>
 );
 
-// in ./CreateAuthor.js
-import React from 'react';
-import { CreateBase, SimpleForm, TextInput, useCreateSuggestionContext } from 'react-admin';
-import CloseIcon from '@mui/icons-material/Close';
-import {
-    Button,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-} from '@mui/material';
-
 const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-
-    const onAuthorCreate = author => {
-        onCreate(author);
-    };
 
     return (
         <Dialog open onClose={onCancel}>
@@ -204,9 +203,7 @@ const CreateAuthor = () => {
                     redirect={false}
                     resource="authors"
                     mutationOptions={{
-                        onSuccess: author => {
-                            onAuthorCreate(author);
-                        },
+                        onSuccess: onCreate,
                     }}
                 >
                     <SimpleForm defaultValues={{ name: filter }}>
@@ -571,6 +568,8 @@ const choices = [
 />
 ```
 
+**Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<AutocompleteInput>` inside a `<ReferenceInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
+
 ## `shouldRenderSuggestions`
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain acceptable performance. `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly and might be all you need (depending on your data set).
@@ -878,17 +877,13 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
-    useCreate,
     useCreateSuggestionContext,
 } from 'react-admin';
-
 import CloseIcon from '@mui/icons-material/Close';
 import {
-    Box,
-    BoxProps,
-    Button,
     Dialog,
     DialogContent,
+    DialogTitle,
     IconButton,
 } from '@mui/material';
 
@@ -907,11 +902,6 @@ const PostCreate = () => {
 
 const CreateCategory = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-   
-    const onCategoryCreate = category => {
-        onCreate(category);
-    };
-
 
     return (
         <Dialog open onClose={onCancel}>
@@ -933,9 +923,7 @@ const CreateCategory = () => {
                     redirect={false}
                     resource="categories"
                     mutationOptions={{
-                        onSuccess: category => {
-                            onCategoryCreate(category);
-                        },
+                        onSuccess: onCreate,
                     }}
                 >
                     <SimpleForm defaultValues={{ title: filter }}>

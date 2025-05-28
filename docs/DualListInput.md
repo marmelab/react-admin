@@ -234,6 +234,8 @@ const choices = [
 <DualListInput source="roles" choices={choices} optionValue="_id" />
 ```
 
+**Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<DualListInput>` inside a `<ReferenceArrayInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
+
 ## `sx`: CSS API
 
 The `<DualListInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:

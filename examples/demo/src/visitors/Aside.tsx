@@ -36,7 +36,12 @@ import {
 const Aside = () => {
     const record = useRecordContext<Customer>();
     return (
-        <Box width={400} display={{ xs: 'none', lg: 'block' }}>
+        <Box
+            sx={{
+                width: 400,
+                display: { xs: 'none', lg: 'block' },
+            }}
+        >
             {record && <EventList />}
         </Box>
     );
@@ -67,16 +72,30 @@ const EventList = () => {
     const events = mixOrdersAndReviews(orders, reviews);
 
     return (
-        <Box ml={2}>
+        <Box
+            sx={{
+                ml: 2,
+            }}
+        >
             <Card>
                 <CardContent>
                     <Typography variant="h6" gutterBottom>
                         {translate('resources.customers.fieldGroups.history')}
                     </Typography>
                     <Grid container rowSpacing={1} columnSpacing={1}>
-                        <Grid size={{ xs: 6 }} display="flex" gap={1}>
+                        <Grid
+                            size={{ xs: 6 }}
+                            sx={{
+                                display: 'flex',
+                                gap: 1,
+                            }}
+                        >
                             <AccessTimeIcon fontSize="small" color="disabled" />
-                            <Box flexGrow={1}>
+                            <Box
+                                sx={{
+                                    flexGrow: 1,
+                                }}
+                            >
                                 <Typography variant="body2">
                                     {translate(
                                         'resources.customers.fields.first_seen'
@@ -88,7 +107,13 @@ const EventList = () => {
                                 />
                             </Box>
                         </Grid>
-                        <Grid size={{ xs: 6 }} display="flex" gap={1}>
+                        <Grid
+                            size={{ xs: 6 }}
+                            sx={{
+                                display: 'flex',
+                                gap: 1,
+                            }}
+                        >
                             {totalOrders! > 0 && record && (
                                 <>
                                     <order.icon
@@ -115,9 +140,19 @@ const EventList = () => {
                                 </>
                             )}
                         </Grid>
-                        <Grid size={{ xs: 6 }} display="flex" gap={1}>
+                        <Grid
+                            size={{ xs: 6 }}
+                            sx={{
+                                display: 'flex',
+                                gap: 1,
+                            }}
+                        >
                             <AccessTimeIcon fontSize="small" color="disabled" />
-                            <Box flexGrow={1}>
+                            <Box
+                                sx={{
+                                    flexGrow: 1,
+                                }}
+                            >
                                 <Typography variant="body2">
                                     {translate(
                                         'resources.customers.fields.last_seen'
@@ -126,7 +161,13 @@ const EventList = () => {
                                 <DateField record={record} source="last_seen" />
                             </Box>
                         </Grid>
-                        <Grid size={{ xs: 6 }} display="flex" gap={1}>
+                        <Grid
+                            size={{ xs: 6 }}
+                            sx={{
+                                display: 'flex',
+                                gap: 1,
+                            }}
+                        >
                             {totalReviews! > 0 && record && (
                                 <>
                                     <review.icon
@@ -155,7 +196,6 @@ const EventList = () => {
                     </Grid>
                 </CardContent>
             </Card>
-
             {events && <Timeline events={events} />}
         </Box>
     );

@@ -44,7 +44,6 @@ export const FormTab = (props: FormTabProps) => {
     const renderContent = () => (
         <FormGroupContextProvider name={value.toString()}>
             <Stack
-                alignItems="flex-start"
                 style={hidden ? hiddenStyle : undefined}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
@@ -53,6 +52,12 @@ export const FormTab = (props: FormTabProps) => {
                 // notes that aria-hidden="false" currently behaves inconsistently across browsers.
                 aria-hidden={hidden || undefined}
                 {...rest}
+                sx={[
+                    {
+                        alignItems: 'flex-start',
+                    },
+                    ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+                ]}
             >
                 {children}
             </Stack>

@@ -260,6 +260,7 @@ export const OptionTextElement = () => (
 
 const choicesForCreationSupport: Partial<{
     id: number;
+    _id: number;
     name: string;
     full_name: string;
     first_name: string;
@@ -267,6 +268,7 @@ const choicesForCreationSupport: Partial<{
 }>[] = [
     {
         id: 1,
+        _id: 1,
         name: 'Leo Tolstoy',
         full_name: 'Leo Tolstoy',
         first_name: 'Leo',
@@ -274,6 +276,7 @@ const choicesForCreationSupport: Partial<{
     },
     {
         id: 2,
+        _id: 2,
         name: 'Victor Hugo',
         full_name: 'Victor Hugo',
         first_name: 'Victor',
@@ -281,6 +284,7 @@ const choicesForCreationSupport: Partial<{
     },
     {
         id: 3,
+        _id: 3,
         name: 'William Shakespeare',
         full_name: 'William Shakespeare',
         first_name: 'William',
@@ -288,6 +292,7 @@ const choicesForCreationSupport: Partial<{
     },
     {
         id: 4,
+        _id: 4,
         name: 'Charles Baudelaire',
         full_name: 'Charles Baudelaire',
         first_name: 'Charles',
@@ -295,6 +300,7 @@ const choicesForCreationSupport: Partial<{
     },
     {
         id: 5,
+        _id: 5,
         name: 'Marcel Proust',
         full_name: 'Marcel Proust',
         first_name: 'Marcel',
@@ -302,7 +308,7 @@ const choicesForCreationSupport: Partial<{
     },
 ];
 
-const OnCreateInput = () => {
+const OnCreateInput = (props: Partial<AutocompleteInputProps>) => {
     const [choices, setChoices] = useState(choicesForCreationSupport);
     return (
         <AutocompleteInput
@@ -313,6 +319,7 @@ const OnCreateInput = () => {
 
                 const newOption = {
                     id: choices.length + 1,
+                    _id: choices.length + 1,
                     name: filter,
                 };
                 setChoices(options => [...options, newOption]);
@@ -323,15 +330,29 @@ const OnCreateInput = () => {
             TextFieldProps={{
                 placeholder: 'Start typing to create a new item',
             }}
+            {...props}
         />
     );
 };
 
-export const OnCreate = () => (
+export const OnCreate = (props: Partial<AutocompleteInputProps>) => (
     <Wrapper>
-        <OnCreateInput />
+        <OnCreateInput {...props} />
     </Wrapper>
 );
+OnCreate.args = {
+    optionValue: undefined,
+};
+OnCreate.argTypes = {
+    optionValue: {
+        options: ['default', '_id'],
+        mapping: {
+            default: undefined,
+            _id: '_id',
+        },
+        control: { type: 'inline-radio' },
+    },
+};
 
 const AutocompleteWithCreateInReferenceInput = () => {
     const [create] = useCreate();
@@ -899,10 +920,6 @@ export const InsideReferenceInputWithError = () => (
 const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
 
-    const onAuthorCreate = author => {
-        onCreate(author);
-    };
-
     return (
         <Dialog open onClose={onCancel}>
             <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
@@ -923,9 +940,7 @@ const CreateAuthor = () => {
                     redirect={false}
                     resource="authors"
                     mutationOptions={{
-                        onSuccess: author => {
-                            onAuthorCreate(author);
-                        },
+                        onSuccess: onCreate,
                     }}
                 >
                     <SimpleForm defaultValues={{ name: filter }}>

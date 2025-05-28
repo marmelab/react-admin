@@ -9,7 +9,7 @@ npm create react-admin@latest my-app
 # or
 npx create react-admin@latest my-app
 # or
-yarn create react-admin@latest my-app
+yarn create react-admin my-app
 # or
 bun create react-admin@latest my-app
 ```

@@ -35,6 +35,12 @@ export const ReadOnly = () => (
     </Wrapper>
 );
 
+export const OutlinedNoLabel = () => (
+    <Wrapper>
+        <TimeInput source="published" label={false} variant="outlined" />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({ children }) => (
