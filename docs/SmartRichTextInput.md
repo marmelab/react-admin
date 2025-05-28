@@ -5,7 +5,7 @@ title: "The SmartRichTextInput Component"
 
 # `<SmartRichTextInput>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative to [`<RichTextInput>`](./RichTextInput.md) that allows users to quickly fix, improve, or complete the textarea content using an AI backend.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers an alternative to [`<RichTextInput>`](./RichTextInput.md) that allows users to quickly fix, improve, or complete the textarea content using an AI backend.
 
 <video controls playsinline muted loop poster="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.png" >
   <source src="https://react-admin-ee.marmelab.com/assets/SmartRichTextInput.mp4" type="video/mp4" />

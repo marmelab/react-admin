@@ -7,6 +7,7 @@ import { ListController } from './ListController';
 import type { DataProvider } from '../../types';
 import type { ListControllerResult } from './useListController';
 import { useNotificationContext } from '../../notification';
+import { TestMemoryRouter } from '../..';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -95,9 +96,11 @@ export const Basic = ({
     dataProvider?: DataProvider;
     children?: (params: ListControllerResult) => React.ReactNode;
 }) => (
-    <CoreAdminContext dataProvider={dataProvider}>
-        <ListController resource="posts">{children}</ListController>
-    </CoreAdminContext>
+    <TestMemoryRouter>
+        <CoreAdminContext dataProvider={dataProvider}>
+            <ListController resource="posts">{children}</ListController>
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );
 
 const OnlineManager = () => {
@@ -147,42 +150,44 @@ const Notifications = () => {
 };
 
 export const Offline = () => (
-    <CoreAdminContext dataProvider={defaultDataProvider}>
-        <OnlineManager />
-        <ListController resource="posts" perPage={3}>
-            {params => (
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                        }}
-                    >
-                        <button onClick={() => params.setPage(1)}>
-                            Page 1
-                        </button>
-                        <button onClick={() => params.setPage(2)}>
-                            Page 2
-                        </button>
-                        <button onClick={() => params.setPage(3)}>
-                            Page 3
-                        </button>
+    <TestMemoryRouter>
+        <CoreAdminContext dataProvider={defaultDataProvider}>
+            <OnlineManager />
+            <ListController resource="posts" perPage={3}>
+                {params => (
+                    <div>
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '10px',
+                            }}
+                        >
+                            <button onClick={() => params.setPage(1)}>
+                                Page 1
+                            </button>
+                            <button onClick={() => params.setPage(2)}>
+                                Page 2
+                            </button>
+                            <button onClick={() => params.setPage(3)}>
+                                Page 3
+                            </button>
+                        </div>
+                        <ul
+                            style={{
+                                listStyleType: 'none',
+                            }}
+                        >
+                            {params.data?.map(record => (
+                                <li key={record.id}>
+                                    {record.id} - {record.title}
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                    <ul
-                        style={{
-                            listStyleType: 'none',
-                        }}
-                    >
-                        {params.data?.map(record => (
-                            <li key={record.id}>
-                                {record.id} - {record.title}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </ListController>
-        <Notifications />
-    </CoreAdminContext>
+                )}
+            </ListController>
+            <Notifications />
+        </CoreAdminContext>
+    </TestMemoryRouter>
 );

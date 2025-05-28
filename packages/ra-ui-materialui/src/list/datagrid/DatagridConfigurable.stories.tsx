@@ -155,7 +155,10 @@ export const NullChildren = () => (
             sort={{ field: 'title', order: 'ASC' }}
             bulkActionButtons={false}
         >
-            {false && <TextField source="id" />}
+            {
+                // eslint-disable-next-line no-constant-binary-expression
+                false && <TextField source="id" />
+            }
             <TextField source="title" label="Original title" />
             <TextField source="author" />
             <TextField source="year" />

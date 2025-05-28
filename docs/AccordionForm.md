@@ -5,7 +5,7 @@ title: "AccordionForm"
 
 # `<AccordionForm>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-accordion-form-overview.mp4" type="video/mp4" />
@@ -504,19 +504,19 @@ This component renders a [Material UI `<Accordion>` component](https://mui.com/c
 
 Here are all the props you can set on the `<AccordionForm.Panel>` component:
 
-| Prop              | Required | Type                    | Default | Description                                                                                            |
-| ----------------- | -------- | ----------------------- | ------- | ------------------------------------------------------------------------------------------------       |
-| `authorizationError`  | Optional | `ReactNode`             | `null`  | The content to display when authorization checks fail                    |
-| `children`        | Required | `ReactNode`             | -       | A list of `<Input>` elements                                                                           |
-| `defaultExpanded` | Optional | `boolean`               | `false` | Set to true to have the accordion expanded by default (except if autoClose = true on the parent)       |
-| `disabled`        | Optional | `boolean`               | `false` | If true, the accordion will be displayed in a disabled state.                                          |
-| `enableAccessControl` | Optional | `boolean`               | `false` | Enable checking authorization rights for this panel's inputs            |
-| `id`              | Optional | `string`                | -       | An id for this Accordion to be used in the [`useFormGroup`](./Upgrade.md#useformgroup-hook-returned-state-has-changed) hook and for CSS classes. |
-| `label`           | Required | `string` or `ReactNode` | -       | The main label used as the accordion summary. Appears in red when the accordion has errors             |
-| `loading`             | Optional | `ReactNode`             |         | The content to display when checking authorizations                      |
-| `secondary`       | Optional | `string` or `ReactNode` | -       | The secondary label used as the accordion summary                                                      |
-| `square`          | Optional | `boolean`               | `false` | If true, rounded corners are disabled.                                                                 |
-| `sx`              | Optional | `Object`                | -       | An object containing the MUI style overrides to apply to the root component.                           |
+| Prop              | Required | Type                    | Default | Description                                                                                                       |
+| ----------------- | -------- | ----------------------- | ------- |-------------------------------------------------------------------------------------------------------------------|
+| `authorizationError`  | Optional | `ReactNode`             | `null`  | The content to display when authorization checks fail                                                             |
+| `children`        | Required | `ReactNode`             | -       | A list of `<Input>` elements                                                                                      |
+| `defaultExpanded` | Optional | `boolean`               | `false` | Set to true to have the accordion expanded by default (except if autoClose = true on the parent)                  |
+| `disabled`        | Optional | `boolean`               | `false` | If true, the accordion will be displayed in a disabled state.                                                     |
+| `enableAccessControl` | Optional | `boolean`               | `false` | Enable checking authorization rights for this panel's inputs                                                      |
+| `id`              | Optional | `string`                | -       | An id for this Accordion to be used in the [`useFormGroup`](./Forms.md#grouping-inputs) hook and for CSS classes. |
+| `label`           | Required | `string` or `ReactNode` | -       | The main label used as the accordion summary. Appears in red when the accordion has errors                        |
+| `loading`             | Optional | `ReactNode`             |         | The content to display when checking authorizations                                                               |
+| `secondary`       | Optional | `string` or `ReactNode` | -       | The secondary label used as the accordion summary                                                                 |
+| `square`          | Optional | `boolean`               | `false` | If true, rounded corners are disabled.                                                                            |
+| `sx`              | Optional | `Object`                | -       | An object containing the MUI style overrides to apply to the root component.                                      |
 
 ```tsx
 import {
@@ -830,15 +830,43 @@ const PersonEdit = () => (
 ```
 {% endraw %}
 
-Note that you **must** set the `<AccordionForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
-
-If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](./Edit.md#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
-
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+An alternative to the `<AutoSave>` component is to use [the `<AutoPersistInStore>` component](./AutoPersistInStore.md). This component saves the form values in the local storage of the browser. This way, if the user navigates away without saving, the form values are reapplied when the user comes back to the page. This is useful for long forms where users may spend a lot of time.
+
+To enable this behavior, add the `<AutoPersistInStore>` component inside the form component:
+
+```tsx
+import { AccordionForm, AutoPersistInStore } from '@react-admin/ra-form-layout';
+import { Create, TextInput, DateInput, SelectInput } from 'react-admin';
+
+const CustomerCreate = () => (
+    <Create>
+        <AccordionForm>
+            <AccordionForm.Panel label="Identity">
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
+                <DateInput source="born" />
+                <SelectInput source="sex" choices={[
+                    { id: 'male', name: 'Male' },
+                    { id: 'female', name: 'Female' },
+                    { id: 'other', name: 'Other' },
+                ]} />
+            </AccordionForm.Panel>
+            <AccordionForm.Panel label="Work">
+                {/* ... */}
+            </AccordionForm.Panel>
+            <AutoPersistInStore />
+        </AccordionForm>
+    </Create>
+);
+```
+
+Check [the `<AutoPersistInStore>` component](./AutoPersistInStore.md) documentation for more details.
 
 ## Access Control
 
-`<AccordionForm>` can use [Access Control](./AccessControl.md) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
+`<AccordionForm>` can use [Access Control](./Permissions.md#access-control) to check permissions for each section and input. To enable this feature, set the `enableAccessControl` prop to `true`.
 
 Check the [`enableAccessControl` prop](#enableaccesscontrol) section for more details.
 

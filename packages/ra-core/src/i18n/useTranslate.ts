@@ -28,7 +28,7 @@ export const useTranslate = (): TranslateFunction => {
         (key: string, options?: any) =>
             i18nProvider.translate(key, options) as string,
         // update the hook each time the locale changes
-        [i18nProvider] // eslint-disable-line react-hooks/exhaustive-deps
+        [i18nProvider]
     );
     return i18nProvider ? translate : identity;
 };

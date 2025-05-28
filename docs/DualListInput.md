@@ -5,7 +5,7 @@ title: "The DualListInput Component"
 
 # `<DualListInput>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to edit array values, one-to-many or many-to-many relationships by moving items from one list to another.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows to edit array values, one-to-many or many-to-many relationships by moving items from one list to another.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-relationships-duallistinput.mp4" type="video/mp4" />

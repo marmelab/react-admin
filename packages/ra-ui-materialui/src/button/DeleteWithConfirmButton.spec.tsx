@@ -23,6 +23,7 @@ import { Notification } from '../layout';
 import {
     Basic,
     NoRecordRepresentation,
+    WithCustomTitleAndContent,
     WithDefaultTranslation,
 } from './DeleteWithConfirmButton.stories';
 
@@ -353,6 +354,19 @@ describe('<DeleteWithConfirmButton />', () => {
                 },
             ]);
         });
+    });
+
+    it('should use the provided strings as the confirmation title and content', async () => {
+        render(<WithCustomTitleAndContent />);
+        fireEvent.click(
+            within(
+                (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                ) as HTMLElement
+            ).getByText('Delete')
+        );
+        await screen.findByText('Delete me?');
+        await screen.findByText('Please confirm the deletion');
     });
 
     it('should use the record representation in the confirmation title and content with a resource specific translation', async () => {

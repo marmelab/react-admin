@@ -234,7 +234,7 @@ Alternately, pass a `successMessage` prop:
 
 ## `<BulkUpdateFormButton>`
 
-This component, part of the [enterprise edition](https://react-admin-ee.marmelab.com/documentation/ra-form-layout)<img class="icon" src="./img/premium.svg" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
+This component, part of the [enterprise edition](https://react-admin-ee.marmelab.com/documentation/ra-form-layout)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/BulkUpdateButton-SimpleForm.webm" type="video/webm"/>

@@ -40,9 +40,9 @@ The command accepts the following options:
 
 When using this option, the terminal will ask you to choose:
 
-* a [data provider](#data-provider)
-* an [auth provider](#auth-provider)
-* the names of the [resources](#resources) to add
+* a [data provider](./DataFetchingGuide.md#the-data-provider)
+* an [auth provider](./DataFetchingGuide.md#authentication)
+* the names of the [resources](./Resource.md) to add
 * the [package manager](#package-manager) to use to install the dependencies
 
 <video controls autoplay playsinline muted loop>

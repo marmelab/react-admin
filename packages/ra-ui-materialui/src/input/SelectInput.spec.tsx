@@ -697,6 +697,46 @@ describe('<SelectInput />', () => {
             });
             promptSpy.mockRestore();
         });
+
+        it('should support using a custom createLabel with optionText being a string', async () => {
+            const promptSpy = jest.spyOn(window, 'prompt');
+            promptSpy.mockImplementation(jest.fn(() => 'New Category'));
+            render(<CreateLabel optionText="full_name" />);
+            const input = (await screen.findByLabelText(
+                'Category'
+            )) as HTMLInputElement;
+            fireEvent.mouseDown(input);
+            // Expect the custom create label to be displayed
+            fireEvent.click(await screen.findByText('Create a new category'));
+            // Expect a prompt to have opened
+            await waitFor(() => {
+                expect(promptSpy).toHaveBeenCalled();
+            });
+            promptSpy.mockRestore();
+        });
+
+        it('should support using a custom createLabel with optionText being a function', async () => {
+            const promptSpy = jest.spyOn(window, 'prompt');
+            promptSpy.mockImplementation(jest.fn(() => 'New Category'));
+            render(
+                <CreateLabel
+                    optionText={choice =>
+                        `${choice.full_name} (${choice.language})`
+                    }
+                />
+            );
+            const input = (await screen.findByLabelText(
+                'Category'
+            )) as HTMLInputElement;
+            fireEvent.mouseDown(input);
+            // Expect the custom create label to be displayed
+            fireEvent.click(await screen.findByText('Create a new category'));
+            // Expect a prompt to have opened
+            await waitFor(() => {
+                expect(promptSpy).toHaveBeenCalled();
+            });
+            promptSpy.mockRestore();
+        });
     });
 
     it('should support creation of a new choice through the create element', async () => {

@@ -13,6 +13,7 @@ import {
     CreateControllerProps,
     useCreateController,
 } from './useCreateController';
+import { useAuthState } from '../../auth';
 
 export default {
     title: 'ra-core/controller/useCreateController',
@@ -39,6 +40,16 @@ const defaultDataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
+const PostList = () => {
+    useAuthState();
+    return (
+        <div style={styles.mainContainer}>
+            <div>List view</div>
+            <Link to="/posts/create">Create</Link>
+        </div>
+    );
+};
+
 const CreatePost = (props: Partial<CreateControllerProps>) => {
     const params = useCreateController({
         resource: 'posts',
@@ -47,6 +58,7 @@ const CreatePost = (props: Partial<CreateControllerProps>) => {
     return (
         <div style={styles.mainContainer}>
             {params.isPending ? <p>Loading...</p> : <div>Create view</div>}
+            <Link to="/posts">List</Link>
         </div>
     );
 };
@@ -93,15 +105,32 @@ export const DisableAuthentication = ({
                 dataProvider={dataProvider}
                 authProvider={authProvider}
             >
-                <CoreAdminUI>
+                <CoreAdminUI accessDenied={AccessDenied}>
                     <Resource
                         name="posts"
+                        list={<PostList />}
                         create={<CreatePost disableAuthentication />}
                     />
                 </CoreAdminUI>
             </CoreAdminContext>
         </TestMemoryRouter>
     );
+};
+DisableAuthentication.args = {
+    authProvider: undefined,
+};
+DisableAuthentication.argTypes = {
+    authProvider: {
+        options: ['default', 'canAccess'],
+        mapping: {
+            default: undefined,
+            canAccess: {
+                ...defaultAuthProvider,
+                canAccess: () => Promise.resolve(false),
+            },
+        },
+        control: { type: 'inline-radio' },
+    },
 };
 
 export const CanAccess = ({

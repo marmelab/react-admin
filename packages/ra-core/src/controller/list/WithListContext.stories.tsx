@@ -1,13 +1,6 @@
 import * as React from 'react';
-import {
-    CartesianGrid,
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    Legend,
-    Tooltip,
-} from 'recharts';
+import * as echarts from 'echarts';
+import { useEffect, useRef } from 'react';
 import fakerestDataProvider from 'ra-data-fakerest';
 
 import { ListBase } from './ListBase';
@@ -171,43 +164,60 @@ export const Basic = () => (
     </CoreAdminContext>
 );
 
+const LineChart = ({ data }) => {
+    const chartRef = useRef(null);
+    useEffect(() => {
+        if (!data) return;
+        const chartInstance = echarts.init(chartRef.current);
+
+        const option = {
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: ['Apples', 'Blueberries', 'Carrots'],
+            },
+            xAxis: {
+                type: 'category',
+                data: data.map(fruit => fruit.date),
+            },
+            yAxis: {
+                type: 'value',
+            },
+            series: [
+                {
+                    name: 'Apples',
+                    type: 'line',
+                    data: data.map(fruit => fruit.apples),
+                },
+                {
+                    name: 'Blueberries',
+                    type: 'line',
+                    data: data.map(fruit => fruit.blueberries),
+                },
+                {
+                    name: 'Carrots',
+                    type: 'line',
+                    data: data.map(fruit => fruit.carrots),
+                },
+            ],
+        };
+
+        chartInstance.setOption(option);
+
+        return () => {
+            chartInstance.dispose();
+        };
+    }, [data]);
+
+    return <div ref={chartRef} style={{ height: 300, width: 700 }} />;
+};
+
 export const Chart = () => (
     <CoreAdminContext dataProvider={dataProvider}>
         <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
             <WithListContext<Fruit>
-                render={({ data }) => (
-                    <LineChart width={700} height={300} data={data}>
-                        <XAxis dataKey="date" />
-                        <YAxis />
-                        <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                        <Line
-                            name="Apples"
-                            dataKey="apples"
-                            type="monotone"
-                            stroke="#8884d8"
-                            dot={false}
-                            isAnimationActive={false}
-                        />
-                        <Line
-                            name="Blueberries"
-                            dataKey="blueberries"
-                            type="monotone"
-                            stroke="#82ca9d"
-                            dot={false}
-                            isAnimationActive={false}
-                        />
-                        <Line
-                            name="Carrots"
-                            dataKey="carrots"
-                            type="monotone"
-                            stroke="#ffc658"
-                            dot={false}
-                            isAnimationActive={false}
-                        />
-                        <Legend verticalAlign="top" height={36} />
-                        <Tooltip />
-                    </LineChart>
-                )}
+                render={({ data }) => <LineChart data={data} />}
             />
         </ListBase>
     </CoreAdminContext>

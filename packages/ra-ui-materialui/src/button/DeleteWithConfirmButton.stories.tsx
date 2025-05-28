@@ -231,6 +231,29 @@ export const WithDefaultTranslation = () => (
     </TestMemoryRouter>
 );
 
+export const WithCustomTitleAndContent = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProviderDefault}
+        >
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <DeleteWithConfirmButton
+                                confirmTitle="Delete me?"
+                                confirmContent="Please confirm the deletion"
+                            />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
 export const NoRecordRepresentation = () => (
     <TestMemoryRouter initialEntries={['/authors']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>

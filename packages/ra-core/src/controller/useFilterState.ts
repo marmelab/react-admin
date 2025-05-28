@@ -90,7 +90,7 @@ export default ({
             });
             latestValue.current = value;
         }, debounceTime),
-        [permanentFilterSignature] // eslint-disable-line react-hooks/exhaustive-deps
+        [permanentFilterSignature]
     );
 
     return {

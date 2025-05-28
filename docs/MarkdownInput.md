@@ -5,7 +5,7 @@ title: 'The MarkdownInput Component'
 
 # `<MarkdownInput>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor). To be used in Edit and Create views.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows to edit and preview Markdown data, based on [the Toast UI editor](https://nhn.github.io/tui.editor/latest/ToastUIEditor). To be used in Edit and Create views.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/markdown-input.webm" type="video/webm"/>

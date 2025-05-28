@@ -79,8 +79,7 @@ export const useInfiniteListController = <
     const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
         action: 'list',
         resource,
-        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
-        enabled: !isPendingAuthenticated,
+        enabled: !disableAuthentication && !isPendingAuthenticated,
     });
 
     const translate = useTranslate();

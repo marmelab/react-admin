@@ -46,7 +46,9 @@ export const useApplyInputDefaultValues = ({
         if (
             defaultValue == null ||
             formValue != null ||
-            recordValue != null ||
+            // We check strictly for undefined to avoid setting default value
+            // when the field is null
+            recordValue !== undefined ||
             isDirty
         ) {
             return;

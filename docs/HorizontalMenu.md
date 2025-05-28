@@ -5,7 +5,7 @@ title: "HorizontalMenu"
 
 # `<HorizontalMenu>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> renders a horizontal menu component, alternative to react-admin's `<Menu>`, to be used in the AppBar of the [`<ContainerLayout>`](./ContainerLayout.md).
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> renders a horizontal menu component, alternative to react-admin's `<Menu>`, to be used in the AppBar of the [`<ContainerLayout>`](./ContainerLayout.md).
 
 ![Container layout](./img/container-layout.png)
 

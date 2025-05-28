@@ -9,6 +9,7 @@ export * from './FileField';
 export * from './FunctionField';
 export * from './ImageField';
 export * from './NumberField';
+export * from './RecordField';
 export * from './ReferenceArrayField';
 export * from './ReferenceField';
 export * from './ReferenceManyCount';
