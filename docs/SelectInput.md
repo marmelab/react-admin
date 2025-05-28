@@ -470,6 +470,8 @@ const choices = [
 <SelectInput source="category" choices={choices} optionValue="_id" />
 ```
 
+**Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<SelectInput>` inside a `<ReferenceInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
+
 ## `resettable`
 
 You can make the `SelectInput` component resettable using the `resettable` prop. This will add a reset button which will be displayed only when the field has a value.
