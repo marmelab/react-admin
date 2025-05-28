@@ -24,37 +24,45 @@ export const isHtml = (value: any) => !value || HtmlRegexp.test(value);
 export const valuesAreHtml = (values: any[]) => values.every(isHtml);
 
 const UrlRegexp = /http(s*):\/\/.*/i;
-export const isUrl = (value: any) => !value || UrlRegexp.test(value);
+export const isUrl = (value: any): value is string =>
+    !value || UrlRegexp.test(value);
 export const valuesAreUrl = (values: any[]) => values.every(isUrl);
 
 const ImageUrlRegexp =
     /http(s*):\/\/.*\.(jpeg|jpg|jfif|pjpeg|pjp|png|svg|gif|webp|apng|bmp|ico|cur|tif|tiff)/i;
-export const isImageUrl = (value: any) => !value || ImageUrlRegexp.test(value);
+export const isImageUrl = (value: any): value is string =>
+    !value || ImageUrlRegexp.test(value);
 export const valuesAreImageUrl = (values: any[]) => values.every(isImageUrl);
 
 // This is a very simple regex to find emails
 // It is NOT meant to validate emails as the spec is way more complicated but is
 // enough for our inference needs
 const EmailRegexp = /@{1}/;
-export const isEmail = (value: any) => !value || EmailRegexp.test(value);
+export const isEmail = (value: any): value is string =>
+    !value || EmailRegexp.test(value);
 export const valuesAreEmail = (values: any[]) => values.every(isEmail);
 
-export const isArray = (value: any) => Array.isArray(value);
-export const valuesAreArray = (values: any[]) => values.every(isArray);
+export const isArray = (value: any): value is Array<any> =>
+    Array.isArray(value);
+export const valuesAreArray = (values: any[]): values is Array<any>[] =>
+    values.every(isArray);
 
-export const isDate = (value: any) => !value || value instanceof Date;
-export const valuesAreDate = (values: any[]) => values.every(isDate);
+export const isDate = (value: any): value is Date =>
+    !value || value instanceof Date;
+export const valuesAreDate = (values: any[]): values is Date[] =>
+    values.every(isDate);
 
-export const isDateString = (value: any) =>
+export const isDateString = (value: any): value is string =>
     !value ||
     (typeof value === 'string' &&
         (isMatch(value, 'MM/dd/yyyy') ||
             isMatch(value, 'MM/dd/yy') ||
             isValid(parseISO(value))));
 
-export const valuesAreDateString = (values: any[]) =>
+export const valuesAreDateString = (values: any[]): values is string[] =>
     values.every(isDateString);
 
-export const isObject = (value: any) =>
+export const isObject = (value: any): value is object =>
     Object.prototype.toString.call(value) === '[object Object]';
-export const valuesAreObject = (values: any[]) => values.every(isObject);
+export const valuesAreObject = (values: any[]): values is Array<object> =>
+    values.every(isObject);
