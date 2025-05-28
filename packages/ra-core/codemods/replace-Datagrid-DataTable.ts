@@ -81,10 +81,18 @@ const replaceDatagrid = (root, j) => {
     // Replace Datagrid with DataTable
     datagridComponents.replaceWith(({ node }) => {
         // remove the `optimized` attribute if it exists
-        const attributes = node.openingElement.attributes.filter(
+        const filtredAttributes = node.openingElement.attributes.filter(
             attr =>
                 !(j.JSXAttribute.check(attr) && attr.name.name === 'optimized')
         );
+
+        // rename the `rowStyle` attribute to `rowSx` if it exists
+        const attributes = filtredAttributes.map(attr => {
+            if (j.JSXAttribute.check(attr) && attr.name.name === 'rowStyle') {
+                return j.jsxAttribute(j.jsxIdentifier('rowSx'), attr.value);
+            }
+            return attr;
+        });
 
         const openingElement = j.jsxOpeningElement(
             j.jsxIdentifier('DataTable'),
