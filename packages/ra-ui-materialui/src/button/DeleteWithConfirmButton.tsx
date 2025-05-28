@@ -98,7 +98,10 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         <Fragment>
             <Button
                 onClick={handleDialogOpen}
-                label={label}
+                // avoid double translation
+                label={<>{label}</>}
+                // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+                aria-label={typeof label === 'string' ? label : undefined}
                 className={clsx('ra-delete-button', className)}
                 key="button"
                 color={color}

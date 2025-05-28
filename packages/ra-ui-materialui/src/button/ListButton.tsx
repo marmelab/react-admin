@@ -75,7 +75,10 @@ export const ListButton = (props: ListButtonProps) => {
             component={Link}
             to={createPath({ type: 'list', resource })}
             state={scrollStates[String(scrollToTop)]}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             {...(rest as any)}
         >
             {icon}

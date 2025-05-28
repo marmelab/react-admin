@@ -94,7 +94,8 @@ const CreateButton = (inProps: CreateButtonProps) => {
             // @ts-ignore FabProps ships its own runtime palette `FabPropsColorOverrides` provoking an overlap error with `ButtonProps`
             color="primary"
             className={clsx(CreateButtonClasses.floating, className)}
-            aria-label={label}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             {...rest}
             {...linkParams}
         >
@@ -106,7 +107,10 @@ const CreateButton = (inProps: CreateButtonProps) => {
             to={createPath({ resource, type: 'create' })}
             state={state}
             className={clsx(CreateButtonClasses.root, className)}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             variant={variant}
             {...(rest as any)}
             {...linkParams}

@@ -78,7 +78,10 @@ const ShowButton = <RecordType extends RaRecord = any>(
             component={Link}
             to={createPath({ type: 'show', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             onClick={stopPropagation}
             {...(rest as any)}
         >
