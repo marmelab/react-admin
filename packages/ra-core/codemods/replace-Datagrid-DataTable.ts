@@ -55,9 +55,36 @@ const replaceImport = (root, j) => {
             node.source
         )
     );
+    return true;
 };
 
 const replaceComponent = (root, j) => {
-    // TODO
+    // Find all instances of Datagrid
+    const datagridComponents = root.find(j.JSXElement, {
+        openingElement: {
+            name: {
+                type: 'JSXIdentifier',
+                name: 'Datagrid',
+            },
+        },
+    });
+
+    if (!datagridComponents.length) {
+        return false;
+    }
+
+    // Replace Datagrid with DataTable
+    datagridComponents.replaceWith(({ node }) => {
+        const openingElement = j.jsxOpeningElement(
+            j.jsxIdentifier('DataTable'),
+            node.openingElement.attributes,
+            node.openingElement.selfClosing
+        );
+        const closingElement = j.jsxClosingElement(
+            j.jsxIdentifier('DataTable')
+        );
+        return j.jsxElement(openingElement, closingElement, node.children);
+    });
+
     return true;
 };
