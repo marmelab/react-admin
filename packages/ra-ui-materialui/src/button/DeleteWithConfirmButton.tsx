@@ -13,7 +13,6 @@ import {
     useTranslate,
     RedirectionSideEffect,
     useGetRecordRepresentation,
-    useGetResourceLabel,
     useResourceTranslation,
 } from 'ra-core';
 
@@ -66,7 +65,6 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         resource,
         successMessage,
     });
-    const getResourceLabel = useGetResourceLabel();
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
@@ -87,7 +85,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         resourceI18nKey: `resources.${resource}.action.delete`,
         baseI18nKey: 'ra.action.delete',
         options: {
-            name: getResourceLabel(resource, 1),
+            name: resourceName,
             recordRepresentation,
         },
         userText: labelProp,
