@@ -107,7 +107,7 @@ You can render some options as disabled by setting the `disabled` field in some 
 const choices = [
     { id: 'tech', name: 'Tech' },
     { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'people', name: 'People', disable: true },
+    { id: 'people', name: 'People', disabled: true },
 ];
 <SelectInput source="author_id" choices={choices} />
 ```
@@ -469,6 +469,8 @@ const choices = [
 ];
 <SelectInput source="category" choices={choices} optionValue="_id" />
 ```
+
+**Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<SelectInput>` inside a `<ReferenceInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
 
 ## `resettable`
 

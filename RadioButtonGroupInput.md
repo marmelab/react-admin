@@ -236,6 +236,8 @@ const choices = [
 />
 ```
 
+**Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<RadioButtonGroupInput>` inside a `<ReferenceInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
+
 ## `row`
 
 By default, the radio buttons are displayed in a row. You can change that and let react-admin render one choice per row by setting the `row` prop to `false`:
