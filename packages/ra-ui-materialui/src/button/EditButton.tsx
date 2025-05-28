@@ -14,9 +14,9 @@ import {
     useRecordContext,
     useCreatePath,
     useCanAccess,
-    useTranslate,
     useGetResourceLabel,
     useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -60,26 +60,25 @@ export const EditButton = <RecordType extends RaRecord = any>(
         resource,
         record,
     });
-    const translate = useTranslate();
     const getResourceLabel = useGetResourceLabel();
     const getRecordRepresentation = useGetRecordRepresentation();
     const recordRepresentationValue = getRecordRepresentation(record);
-
-    if (!record || !canAccess || isPending) return null;
 
     const recordRepresentation =
         typeof recordRepresentationValue === 'string'
             ? recordRepresentationValue
             : recordRepresentationValue?.toString();
-    const label =
-        labelProp ??
-        translate(`resources.${resource}.action.edit`, {
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.edit`,
+        baseI18nKey: 'ra.action.edit',
+        options: {
+            name: getResourceLabel(resource, 1),
             recordRepresentation,
-            _: translate(`ra.action.edit`, {
-                name: getResourceLabel(resource, 1),
-                recordRepresentation,
-            }),
-        });
+        },
+        userText: labelProp,
+    });
+
+    if (!record || !canAccess || isPending) return null;
 
     return (
         <StyledButton

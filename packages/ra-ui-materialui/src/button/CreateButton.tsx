@@ -10,11 +10,11 @@ import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
 import {
-    useTranslate,
-    useResourceContext,
     useCreatePath,
     useCanAccess,
     useGetResourceLabel,
+    useResourceContext,
+    useResourceTranslation,
 } from 'ra-core';
 import { Link, type To } from 'react-router-dom';
 
@@ -63,15 +63,15 @@ const CreateButton = (inProps: CreateButtonProps) => {
         resource,
     });
     const createPath = useCreatePath();
-    const translate = useTranslate();
     const getResourceLabel = useGetResourceLabel();
-    const label =
-        labelProp ??
-        translate(`resources.${resource}.action.create`, {
-            _: translate(`ra.action.create`, {
-                name: getResourceLabel(resource, 1),
-            }),
-        });
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.create`,
+        baseI18nKey: 'ra.action.create',
+        options: {
+            name: getResourceLabel(resource, 1),
+        },
+        userText: labelProp,
+    });
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );

@@ -14,6 +14,7 @@ import {
     RedirectionSideEffect,
     useGetRecordRepresentation,
     useGetResourceLabel,
+    useResourceTranslation,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -68,8 +69,6 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     const getResourceLabel = useGetResourceLabel();
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
-    const confirmTitle = `resources.${resource}.message.delete_title`;
-    const confirmContent = `resources.${resource}.message.delete_content`;
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
         smart_count: 1,
         _: humanize(
@@ -84,15 +83,37 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     if (isValidElement(recordRepresentation)) {
         recordRepresentation = `#${record?.id}`;
     }
-    const label =
-        labelProp ??
-        translate(`resources.${resource}.action.delete`, {
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.delete`,
+        baseI18nKey: 'ra.action.delete',
+        options: {
+            name: getResourceLabel(resource, 1),
             recordRepresentation,
-            _: translate(`ra.action.delete`, {
-                name: getResourceLabel(resource, 1),
-                recordRepresentation,
-            }),
-        });
+        },
+        userText: labelProp,
+    });
+    const confirmTitle = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.message.delete_title`,
+        baseI18nKey: 'ra.message.delete_title',
+        options: {
+            recordRepresentation,
+            name: resourceName,
+            id: record?.id,
+            ...titleTranslateOptions,
+        },
+        userText: confirmTitleProp,
+    });
+    const confirmContent = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.message.delete_content`,
+        baseI18nKey: 'ra.message.delete_content',
+        options: {
+            recordRepresentation,
+            name: resourceName,
+            id: record?.id,
+            ...contentTranslateOptions,
+        },
+        userText: confirmContentProp,
+    });
 
     return (
         <Fragment>
@@ -112,35 +133,9 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             <Confirm
                 isOpen={open}
                 loading={isPending}
-                title={confirmTitleProp ?? confirmTitle}
-                content={confirmContentProp ?? confirmContent}
+                title={confirmTitle}
+                content={confirmContent}
                 confirmColor={confirmColor}
-                titleTranslateOptions={{
-                    recordRepresentation,
-                    name: resourceName,
-                    id: record?.id,
-                    _:
-                        confirmTitleProp ??
-                        translate('ra.message.delete_title', {
-                            recordRepresentation,
-                            name: resourceName,
-                            id: record?.id,
-                        }),
-                    ...titleTranslateOptions,
-                }}
-                contentTranslateOptions={{
-                    recordRepresentation,
-                    name: resourceName,
-                    id: record?.id,
-                    _:
-                        confirmContentProp ??
-                        translate('ra.message.delete_content', {
-                            recordRepresentation,
-                            name: resourceName,
-                            id: record?.id,
-                        }),
-                    ...contentTranslateOptions,
-                }}
                 onConfirm={handleDelete}
                 onClose={handleDialogClose}
             />

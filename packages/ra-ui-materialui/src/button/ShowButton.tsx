@@ -3,14 +3,14 @@ import { memo } from 'react';
 import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import {
-    RaRecord,
+    type RaRecord,
     useResourceContext,
     useRecordContext,
     useCreatePath,
     useCanAccess,
-    useTranslate,
     useGetResourceLabel,
     useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -52,26 +52,25 @@ const ShowButton = <RecordType extends RaRecord = any>(
         resource,
         record,
     });
-    const translate = useTranslate();
     const getResourceLabel = useGetResourceLabel();
     const getRecordRepresentation = useGetRecordRepresentation();
     const recordRepresentationValue = getRecordRepresentation(record);
-
-    if (!record || !canAccess || isPending) return null;
 
     const recordRepresentation =
         typeof recordRepresentationValue === 'string'
             ? recordRepresentationValue
             : recordRepresentationValue?.toString();
-    const label =
-        labelProp ??
-        translate(`resources.${resource}.action.show`, {
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.show`,
+        baseI18nKey: 'ra.action.show',
+        options: {
+            name: getResourceLabel(resource, 1),
             recordRepresentation,
-            _: translate(`ra.action.show`, {
-                name: getResourceLabel(resource, 1),
-                recordRepresentation,
-            }),
-        });
+        },
+        userText: labelProp,
+    });
+
+    if (!record || !canAccess || isPending) return null;
 
     return (
         <Button

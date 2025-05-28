@@ -5,11 +5,11 @@ import {
     useResourceContext,
     useCreatePath,
     useCanAccess,
-    useTranslate,
     useGetResourceLabel,
+    useResourceTranslation,
 } from 'ra-core';
 
-import { Button, ButtonProps } from './Button';
+import { Button, type ButtonProps } from './Button';
 
 /**
  * Opens the List view of a given resource
@@ -56,19 +56,19 @@ export const ListButton = (props: ListButtonProps) => {
         resource,
     });
     const createPath = useCreatePath();
-    const translate = useTranslate();
     const getResourceLabel = useGetResourceLabel();
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.list`,
+        baseI18nKey: 'ra.action.list',
+        options: {
+            name: getResourceLabel(resource, 1),
+        },
+        userText: labelProp,
+    });
+
     if (!canAccess || isPending) {
         return null;
     }
-
-    const label =
-        labelProp ??
-        translate(`resources.${resource}.action.list`, {
-            _: translate(`ra.action.list`, {
-                name: getResourceLabel(resource, 1),
-            }),
-        });
 
     return (
         <Button
