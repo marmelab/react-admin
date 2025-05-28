@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.8.3
+
+* Fix potential prototype-polluting assignment in `ra-data-local-storage` ([#10758](https://github.com/marmelab/react-admin/pull/10758)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Document that `optionValue` only works with the `choices` prop ([#10760](https://github.com/marmelab/react-admin/pull/10760)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in `<SelectInput>` disabled choice example ([#10753](https://github.com/marmelab/react-admin/pull/10753)) ([notz](https://github.com/notz))
+* [Doc] Fix create-react-admin instructions when using yarn ([#10752](https://github.com/marmelab/react-admin/pull/10752)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update `<AutoPersistInStore>` implementation explanation ([#10751](https://github.com/marmelab/react-admin/pull/10751)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add a new third-party component `huyanhvn/react-admin-clipboard-field` ([#10736](https://github.com/marmelab/react-admin/pull/10736)) ([huyanhvn](https://github.com/huyanhvn))
+
 ## 5.8.2
 
 * Fix `<AutocompleteInput>` with `optionValue` and create raises a React warning ([#10747](https://github.com/marmelab/react-admin/pull/10747)) ([slax57](https://github.com/slax57))
