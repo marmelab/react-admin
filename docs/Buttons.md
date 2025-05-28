@@ -694,7 +694,7 @@ const CommentList = () => (
 | Prop          | Required | Type            | Default            | Description                                  |
 | ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
 | `resource`    | Optional | `string`        | -                  | Target resource, e.g. 'posts'                |
-| `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
+| `label`       | Optional | `string`        | -                  | label or translation message to use          |
 | `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
 | `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
 
@@ -703,6 +703,38 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: If you want to link to the Create view manually, use the `/{resource}/create` location.
 
 **Tip:** To allow users to create a record without leaving the current view, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) component.
+
+### `label`
+
+By default, the label for the `<CreateButton>` is the translation key `ra.action.create` that translates to "Create".
+
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.create` (e.g. `resources.posts.action.create`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                create: 'New post'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
+
+```jsx
+export const PostCreateButton = () => (
+    <CreateButton label="New post" />
+);
+```
 
 ### `scrollToTop`
 
@@ -766,7 +798,7 @@ You can also call it with a record and a resource:
 | Prop                | Required | Type                             | Default           | Description                                                             |
 |-------------------- |----------|--------------------------------- |-------------------|-------------------------------------------------------------------------|
 | `className`         | Optional | `string`                         | -                 | Class name to customize the look and feel of the button element itself  |
-| `label`             | Optional | `string`                         | 'Delete'          | label or translation message to use                                     |
+| `label`             | Optional | `string`                         | -                 | label or translation message to use                                     |
 | `icon`              | Optional | `ReactElement`                   | `<DeleteIcon>`    | iconElement, e.g. `<CommentIcon />`                                     |
 | `mutationMode`      | Optional | `string`                         | `'undoable'`      | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)         |
 | `mutation Options`  | Optional |                                  | null              | options for react-query `useMutation` hook                              |
@@ -780,7 +812,27 @@ You can also call it with a record and a resource:
 
 By default, the label is `Delete` in English. In other languages, it's the translation of the `'ra.action.delete'` key.
 
-To customize the `<DeleteButton>` label, you can either change the translation in your i18nProvider, or pass a `label` prop:
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.delete` (e.g. `resources.posts.action.delete`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                delete: 'Destroy %{recordRepresentation}'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
 
 ```jsx
 <DeleteButton label="Delete this comment" />
@@ -975,7 +1027,7 @@ const CommentShow = () => (
 | ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
 | `resource`    | Optional | `string`        | -                | Resource to link to, e.g. 'posts'                |
 | `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
-| `label`       | Optional | `string`        | 'ra.action.edit' | Label or translation message to use              |
+| `label`       | Optional | `string`        | -                | Label or translation message to use              |
 | `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
 
@@ -986,6 +1038,39 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
 **Tip:** To allow users to edit a record without leaving the current view, use the [`<EditInDialogButton>`](./EditInDialogButton.md) component.
+
+### `label`
+
+By default, the label for the `<EditButton>` is the translation key `ra.action.edit` that translates to "Edit".
+
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.edit` (e.g. `resources.posts.action.edit`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                edit: 'Modify %{recordRepresentation}'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
+
+
+```jsx
+export const PostEditButton = () => (
+    <EditButton label="Modify" />
+);
+```
 
 ### `scrollToTop`
 
@@ -1152,11 +1237,41 @@ export const PostShow = () => (
 | Prop          | Required | Type            | Default          | Description                                    |
 | ------------- | -------- | --------------- | ---------------- | ---------------------------------------------- |
 | `resource`    | Optional | `string`        | -                | target resource, e.g. 'posts'                  |
-| `label`       | Optional | `string`        | 'ra.action.list' | label or translation message to use            |
+| `label`       | Optional | `string`        | -                | label or translation message to use            |
 | `icon`        | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`            |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                       |
 
 It also supports [all the other `<Button>` props](#button).
+
+### `label`
+
+By default, the label is `List` in English. In other languages, it's the translation of the `'ra.action.list'` key.
+
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.list` (e.g. `resources.posts.action.list`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                list: 'See all posts'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
+
+```jsx
+<ListButton label="Delete this comment" />
+```
 
 ### `scrollToTop`
 
@@ -1296,7 +1411,7 @@ const CommentEdit = () => (
 | `resource`    | Optional | `string`        | -                | The target resource, e.g. 'posts'                |
 | `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
 | `component`   | Optional | `ReactElement`  | -                | Base path to resource, e.g. '/posts'             |
-| `label`       | Optional | `string`        | 'ra.action.show' | Label or translation message to use              |
+| `label`       | Optional | `string`        | -                | Label or translation message to use              |
 | `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
 
@@ -1305,6 +1420,39 @@ It also supports [all the other `<Button>` props](#button).
 **Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
+
+### `label`
+
+By default, the label for the `<ShowButton>` is the translation key `ra.action.show` that translates to "Show".
+
+You can customize this label by providing a resource specific translation with the key `resources.RESOURCE.action.show` (e.g. `resources.posts.action.show`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            action: {
+                show: 'Display %{recordRepresentation}'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this label by specifying a custom `label` prop:
+
+
+```jsx
+export const PostShowButton = () => (
+    <ShowButton label="Display" />
+);
+```
 
 ### `scrollToTop`
 

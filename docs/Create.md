@@ -342,9 +342,29 @@ To override the style of all instances of `<Create>` components using the [appli
 
 ## `title`
 
-By default, the title for the `Create` view is "Create [resource_name]".
+By default, the title for the `Create` view is the translation key `ra.page.create` that translates to "Create [resource_name]" as we also pass the translation of the [resource name](./TranslationTranslating.md#translating-resource-and-field-names) in its singular form.
 
-You can customize this title by specifying a custom `title` prop:
+You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.page.create` (e.g. `resources.posts.page.create`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            page: {
+                create: 'New post'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this title by specifying a custom `title` prop:
 
 ```jsx
 export const PostCreate = () => (

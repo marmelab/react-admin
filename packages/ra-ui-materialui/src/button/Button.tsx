@@ -45,7 +45,12 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
     } = props;
 
     const translate = useTranslate();
-    const translatedLabel = label ? translate(label, { _: label }) : undefined;
+    let translatedLabel = label;
+    if (typeof label === 'string') {
+        translatedLabel = translate(label, {
+            _: label,
+        });
+    }
     const linkParams = getLinkParams(locationDescriptor);
 
     const isXSmall = useMediaQuery((theme: Theme) =>
@@ -56,7 +61,12 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
         label && !disabled ? (
             <Tooltip title={translatedLabel}>
                 <IconButton
-                    aria-label={translatedLabel}
+                    // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+                    aria-label={
+                        typeof translatedLabel === 'string'
+                            ? translatedLabel
+                            : undefined
+                    }
                     className={className}
                     color={color}
                     size="large"
@@ -83,7 +93,12 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
             className={className}
             color={color}
             size={size}
-            aria-label={translatedLabel}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={
+                typeof translatedLabel === 'string'
+                    ? translatedLabel
+                    : undefined
+            }
             disabled={disabled}
             startIcon={alignIcon === 'left' && children ? children : undefined}
             endIcon={alignIcon === 'right' && children ? children : undefined}
@@ -102,7 +117,7 @@ interface Props<RootComponent extends React.ElementType> {
     component?: RootComponent;
     to?: LocationDescriptor | To;
     disabled?: boolean;
-    label?: string;
+    label?: React.ReactNode;
     size?: 'small' | 'medium' | 'large';
     variant?: string;
 }

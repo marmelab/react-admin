@@ -5,6 +5,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { testDataProvider } from '../../dataProvider';
 import {
     AccessControl,
+    DefaultTitle,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
 } from './EditBase.stories';
@@ -360,5 +361,19 @@ describe('EditBase', () => {
         });
         resolveCanAccess!(true);
         await screen.findByText('Hello');
+    });
+
+    it('should provide a default title', async () => {
+        render(<DefaultTitle translations="default" />);
+        await screen.findByText('Post Hello (en)');
+        fireEvent.click(screen.getByText('FR'));
+        await screen.findByText('Article Hello (fr)');
+    });
+
+    it('should allow resource specific default title', async () => {
+        render(<DefaultTitle translations="resource specific" />);
+        await screen.findByText('Update article Hello (en)');
+        fireEvent.click(screen.getByText('FR'));
+        await screen.findByText("Modifier l'article Hello (fr)");
     });
 });
