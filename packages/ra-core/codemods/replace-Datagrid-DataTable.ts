@@ -80,9 +80,15 @@ const replaceDatagrid = (root, j) => {
 
     // Replace Datagrid with DataTable
     datagridComponents.replaceWith(({ node }) => {
+        // remove the `optimized` attribute if it exists
+        const attributes = node.openingElement.attributes.filter(
+            attr =>
+                !(j.JSXAttribute.check(attr) && attr.name.name === 'optimized')
+        );
+
         const openingElement = j.jsxOpeningElement(
             j.jsxIdentifier('DataTable'),
-            node.openingElement.attributes,
+            attributes,
             node.openingElement.selfClosing
         );
         const closingElement = j.jsxClosingElement(
