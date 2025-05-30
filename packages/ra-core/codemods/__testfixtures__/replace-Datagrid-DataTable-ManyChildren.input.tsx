@@ -21,6 +21,11 @@ const PostList = () => (
             <TextField source="id" />
             <EmailField source="email" />
             <NumberField source="nb_vues" />
+            <NumberField
+                source="price"
+                locales="fr-FR"
+                options={{ style: 'currency', currency: 'USD' }}
+            />
             <TextField source="title" />
             <ReferenceField source="userId" reference="users">
                 <TextField source="name" />

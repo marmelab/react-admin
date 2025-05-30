@@ -22,6 +22,12 @@ const PostList = () => (
                 <EmailField source="email" />
             </DataTable.Col>
             <DataTable.NumberCol source="nb_vues" />
+            <DataTable.NumberCol
+                source="price"
+                locales="fr-FR"
+                options={{ style: 'currency', currency: 'USD' }}
+            />
+
             <DataTable.Col source="title" />
             <DataTable.Col source="userId">
                 <ReferenceField source="userId" reference="users">
