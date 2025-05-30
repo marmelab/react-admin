@@ -43,6 +43,15 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const logout = useLogout();
     const notify = useNotify();
     const navigate = useNavigate();
+
+    const handleRedirect = (url: string) => {
+        if (url.startsWith('http')) {
+            window.location.href = url;
+        } else {
+            navigate(url);
+        }
+    };
+
     const logoutIfAccessDenied = useCallback(
         (error?: any) => {
             if (!authProvider) {
@@ -102,16 +111,9 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
 
                     if (logoutUser) {
                         logout({}, redirectTo);
-                    } else {
-                        if (redirectTo.startsWith('http')) {
-                            // absolute link (e.g. https://my.oidc.server/login)
-                            window.location.href = redirectTo;
-                        } else {
-                            // internal location
-                            navigate(redirectTo);
-                        }
+                    } else if (redirectTo) {
+                        handleRedirect();
                     }
-
                     return true;
                 });
         },
