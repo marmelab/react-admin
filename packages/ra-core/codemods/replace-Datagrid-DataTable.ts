@@ -14,10 +14,8 @@ module.exports = (file, api: j.API) => {
         return root.toSource();
     }
 
-    const continueAfterWrap = wrapChildren(root, j);
-    if (!continueAfterWrap) {
-        return root.toSource();
-    }
+    wrapChildren(root, j);
+    cleanImports(root, j);
 
     return root.toSource({ quote: 'single', lineTerminator: '\n' });
 };
@@ -257,4 +255,83 @@ const replaceNumberField = (j, child) => {
             true
         )
     );
+};
+
+const cleanImports = (root, j) => {
+    // Check if there is still a use of TextField in the code
+    const textFieldUsage = root.find(j.JSXElement, {
+        openingElement: {
+            name: {
+                type: 'JSXIdentifier',
+                name: 'TextField',
+            },
+        },
+    });
+    // Check if there is still a use of NumberField in the code
+    const numberFieldUsage = root.find(j.JSXElement, {
+        openingElement: {
+            name: {
+                type: 'JSXIdentifier',
+                name: 'NumberField',
+            },
+        },
+    });
+
+    const imports = root.find(j.ImportDeclaration, {
+        source: {
+            value: 'react-admin',
+        },
+    });
+    // Check if there is an import of TextField from react-admin
+    const textFieldImport = imports.filter(path => {
+        return path.node.specifiers.some(
+            specifier =>
+                j.ImportSpecifier.check(specifier) &&
+                specifier.imported.name === 'TextField'
+        );
+    });
+    const numberFieldImport = imports.filter(path => {
+        return path.node.specifiers.some(
+            specifier =>
+                j.ImportSpecifier.check(specifier) &&
+                specifier.imported.name === 'NumberField'
+        );
+    });
+
+    if (!textFieldUsage.length && textFieldImport.length) {
+        // Remove the import of TextField from react-admin
+        textFieldImport.forEach(path => {
+            path.node.specifiers = path.node.specifiers.filter(
+                specifier =>
+                    !(
+                        j.ImportSpecifier.check(specifier) &&
+                        specifier.imported.name === 'TextField'
+                    )
+            );
+        });
+        // Remove the import declaration if there are no more specifiers
+        root.find(j.ImportDeclaration).forEach(path => {
+            if (path.node.specifiers.length === 0) {
+                j(path).remove();
+            }
+        });
+    }
+    if (!numberFieldUsage.length && numberFieldImport.length) {
+        // Remove the import of NumberField from react-admin
+        numberFieldImport.forEach(path => {
+            path.node.specifiers = path.node.specifiers.filter(
+                specifier =>
+                    !(
+                        j.ImportSpecifier.check(specifier) &&
+                        specifier.imported.name === 'NumberField'
+                    )
+            );
+        });
+        // Remove the import declaration if there are no more specifiers
+        root.find(j.ImportDeclaration).forEach(path => {
+            if (path.node.specifiers.length === 0) {
+                j(path).remove();
+            }
+        });
+    }
 };
