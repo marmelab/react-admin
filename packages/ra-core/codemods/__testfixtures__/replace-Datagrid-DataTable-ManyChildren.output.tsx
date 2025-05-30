@@ -18,7 +18,9 @@ const PostList = () => (
     <List>
         <DataTable>
             <DataTable.Col source="id" />
-            <DataTable.Col source="email" field={EmailField} />
+            <DataTable.Col source="email">
+                <EmailField source="email" />
+            </DataTable.Col>
             <DataTable.NumberCol source="nb_vues" />
             <DataTable.Col source="title" />
             <DataTable.Col source="userId">
@@ -26,10 +28,18 @@ const PostList = () => (
                     <TextField source="name" />
                 </ReferenceField>
             </DataTable.Col>
-            <DataTable.Col source="url" field={UrlField} />
-            <DataTable.Col source="createdAt" field={DateField} />
-            <DataTable.Col source="code" field={MyCustomField} />
-            <EditButton />
+            <DataTable.Col source="url">
+                <UrlField source="url" />
+            </DataTable.Col>
+            <DataTable.Col source="createdAt">
+                <DateField source="createdAt" />
+            </DataTable.Col>
+            <DataTable.Col source="code">
+                <MyCustomField source="code" />
+            </DataTable.Col>
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
         </DataTable>
     </List>
 );
