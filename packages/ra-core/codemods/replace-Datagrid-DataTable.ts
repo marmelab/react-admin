@@ -164,14 +164,60 @@ const wrapChildren = (root, j) => {
             j.JSXElement.check(child)
         );
         children.forEach(child => {
-            wrapChild(root, j, child);
+            transformChild(root, j, child);
         });
     });
 };
 
-const wrapChild = (root, j, child) => {
+const transformChild = (root, j, child) => {
+    let newChild;
+    if (
+        j.JSXElement.check(child) &&
+        child.openingElement.name.type === 'JSXIdentifier' &&
+        child.openingElement.name.name === 'TextField' &&
+        !child.openingElement.attributes.some(
+            attr =>
+                j.JSXAttribute.check(attr) &&
+                !['source', 'label', 'empty'].includes(attr.name.name)
+        )
+    ) {
+        newChild = replaceTextField(j, child);
+    } else if (
+        j.JSXElement.check(child) &&
+        child.openingElement.name.type === 'JSXIdentifier' &&
+        child.openingElement.name.name === 'NumberField' &&
+        !child.openingElement.attributes.some(
+            attr =>
+                j.JSXAttribute.check(attr) &&
+                !['source', 'label', 'empty', 'options', 'locales'].includes(
+                    attr.name.name
+                )
+        )
+    ) {
+        newChild = replaceNumberField(j, child);
+    } else {
+        newChild = wrapChild(j, child);
+    }
+
+    // Replace the original child with the new child
+    root.find(j.JSXElement, {
+        openingElement: {
+            name: {
+                type: 'JSXIdentifier',
+                name: 'DataTable',
+            },
+        },
+    }).forEach(dataTableComponent => {
+        dataTableComponent.value.children =
+            dataTableComponent.value.children.map(c =>
+                c === child ? newChild : c
+            );
+    });
+};
+
+const wrapChild = (j, child) => {
     // Wrap the child in a DataTable.Col component
-    const wrappedChild = j.jsxElement(
+    return j.jsxElement(
         j.jsxOpeningElement(
             j.jsxIdentifier('DataTable.Col'),
             [
@@ -191,19 +237,24 @@ const wrapChild = (root, j, child) => {
         j.jsxClosingElement(j.jsxIdentifier('DataTable.Col')),
         [j.jsxText('\n'), child, j.jsxText('\n')]
     );
+};
 
-    // Replace the original child with the wrapped child
-    root.find(j.JSXElement, {
-        openingElement: {
-            name: {
-                type: 'JSXIdentifier',
-                name: 'DataTable',
-            },
-        },
-    }).forEach(dataTableComponent => {
-        dataTableComponent.value.children =
-            dataTableComponent.value.children.map(c =>
-                c === child ? wrappedChild : c
-            );
-    });
+const replaceTextField = (j, child) => {
+    return j.jsxElement(
+        j.jsxOpeningElement(
+            j.jsxIdentifier('DataTable.Col'),
+            child.openingElement.attributes,
+            true
+        )
+    );
+};
+
+const replaceNumberField = (j, child) => {
+    return j.jsxElement(
+        j.jsxOpeningElement(
+            j.jsxIdentifier('DataTable.NumberCol'),
+            child.openingElement.attributes,
+            true
+        )
+    );
 };
