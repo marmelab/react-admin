@@ -82,7 +82,8 @@ const replaceDatagrid = (root, j) => {
 
         const openingElement = j.jsxOpeningElement(
             j.jsxIdentifier('DataTable'),
-            attributes
+            attributes,
+            false
         );
         const closingElement = j.jsxClosingElement(
             j.jsxIdentifier('DataTable')
@@ -116,24 +117,20 @@ const cleanAttributes = (node, j) => {
         ) {
             const expression = attr.value.expression;
             if (j.ObjectExpression.check(expression)) {
-                const properties = expression.properties.map(prop => {
+                expression.properties.map(prop => {
                     if (
                         j.ObjectProperty.check(prop) &&
                         j.Literal.check(prop.key) &&
                         typeof prop.key.value === 'string'
                     ) {
-                        const newKey = prop.key.value.replace(
+                        prop.key.value = prop.key.value.replace(
                             /RaDatagrid-/g,
                             'RaDataTable-'
                         );
-                        return j.objectProperty(j.literal(newKey), prop.value);
                     }
                     return prop;
                 });
-                return j.jsxAttribute(
-                    j.jsxIdentifier('sx'),
-                    j.jsxExpressionContainer(j.objectExpression(properties))
-                );
+                return attr;
             }
         }
         return attr;
