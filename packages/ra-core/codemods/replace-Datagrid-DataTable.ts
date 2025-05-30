@@ -78,30 +78,28 @@ const replaceDatagrid = (root, j) => {
 
     // Replace Datagrid with DataTable
     datagridComponents.replaceWith(({ node }) => {
-        const attributes = cleanAttributes(node, j);
-
-        const openingElement = j.jsxOpeningElement(
-            j.jsxIdentifier('DataTable'),
-            attributes,
-            false
-        );
-        const closingElement = j.jsxClosingElement(
-            j.jsxIdentifier('DataTable')
-        );
-        return j.jsxElement(openingElement, closingElement, node.children);
+        return {
+            ...node,
+            openingElement: {
+                ...node.openingElement,
+                name: j.jsxIdentifier('DataTable'),
+                attributes: cleanAttributes(node, j),
+            },
+            closingElement: {
+                ...node.closingElement,
+                name: j.jsxIdentifier('DataTable'),
+            },
+        };
     });
 
     return true;
 };
 
 const cleanAttributes = (node, j) => {
-    // remove the `optimized` attribute if it exists
-    const filtredAttributes = node.openingElement.attributes.filter(
-        attr => !(j.JSXAttribute.check(attr) && attr.name.name === 'optimized')
-    );
+    const initialAttributes = node.openingElement.attributes;
 
     // rename the `rowStyle` attribute to `rowSx` if it exists
-    const rowSxRenamedAttributes = filtredAttributes.map(attr => {
+    const rowSxRenamedAttributes = initialAttributes.map(attr => {
         if (j.JSXAttribute.check(attr) && attr.name.name === 'rowStyle') {
             return j.jsxAttribute(j.jsxIdentifier('rowSx'), attr.value);
         }
@@ -136,7 +134,12 @@ const cleanAttributes = (node, j) => {
         return attr;
     });
 
-    return sxRenamedAttributes;
+    // remove the `optimized` attribute if it exists
+    const finalAttributes = sxRenamedAttributes.filter(
+        attr => !(j.JSXAttribute.check(attr) && attr.name.name === 'optimized')
+    );
+
+    return finalAttributes;
 };
 
 const transformChildren = (root, j) => {
