@@ -2,11 +2,11 @@ import { createElement } from 'react';
 import { InferredType } from './types';
 
 class InferredElement {
-    constructor(
-        private type?: InferredType,
-        private props?: any,
-        private children?: any
-    ) {
+    type?: InferredType;
+    props?: any;
+    children?: any;
+
+    constructor(type?: InferredType, props?: any, children?: any) {
         this.type = type;
         this.props = props;
         this.children = children;

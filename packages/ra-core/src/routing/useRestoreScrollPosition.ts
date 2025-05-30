@@ -62,8 +62,11 @@ export const useRestoreScrollPosition = (
  *   );
  * };
  */
-export const useTrackScrollPosition = (storeKey: string, debounceMs = 250) => {
-    const [position, setPosition] = useStore(storeKey);
+export const useTrackScrollPosition = (
+    storeKey: string,
+    debounceMs: number = 250
+): [number | undefined, (value: number | undefined) => void] => {
+    const [position, setPosition] = useStore<number | undefined>(storeKey);
 
     useEffect(() => {
         if (typeof window === 'undefined') {

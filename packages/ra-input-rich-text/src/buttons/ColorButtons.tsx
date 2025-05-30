@@ -21,17 +21,16 @@ import {
     purple,
 } from '@mui/material/colors';
 
-enum ColorType {
-    FONT = 'font',
-    BACKGROUND = 'background',
-}
+const FONT = 'font';
+const BACKGROUND = 'background';
+type ColorType = typeof FONT | typeof BACKGROUND;
 
 export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
     const translate = useTranslate();
     const editor = useTiptapEditor();
     const [showColorChoiceDialog, setShowColorChoiceDialog] =
         React.useState<boolean>(false);
-    const [colorType, setColorType] = React.useState<ColorType>(ColorType.FONT);
+    const [colorType, setColorType] = React.useState<ColorType>(FONT);
 
     const colorLabel = translate('ra.tiptap.color', { _: 'Color' });
     const highlightLabel = translate('ra.tiptap.highlight', { _: 'Highlight' });
@@ -51,7 +50,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                         {...props}
                         disabled={!editor || !editor.isEditable}
                         value="color"
-                        onClick={() => displayColorChoiceDialog(ColorType.FONT)}
+                        onClick={() => displayColorChoiceDialog(FONT)}
                     >
                         <FormatColorTextIcon fontSize="inherit" />
                     </ToggleButton>
@@ -61,9 +60,7 @@ export const ColorButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
                         {...props}
                         disabled={!editor || !editor.isEditable}
                         value="highlight"
-                        onClick={() =>
-                            displayColorChoiceDialog(ColorType.BACKGROUND)
-                        }
+                        onClick={() => displayColorChoiceDialog(BACKGROUND)}
                     >
                         <FontDownloadIcon fontSize="inherit" />
                     </ToggleButton>
@@ -96,7 +93,7 @@ const ColorChoiceDialog = ({
     const shades = [900, 700, 500, 300, 100];
 
     const selectColor = (color: string) => {
-        if (colorType === ColorType.FONT) {
+        if (colorType === FONT) {
             editor.chain().focus().setColor(color).run();
         } else {
             editor.chain().focus().toggleHighlight({ color }).run();
@@ -109,7 +106,7 @@ const ColorChoiceDialog = ({
             sx={{
                 position: 'absolute',
                 top: 38,
-                left: colorType === ColorType.FONT ? 0 : '50%',
+                left: colorType === FONT ? 0 : '50%',
                 p: 1,
                 border: `1px solid ${(theme.vars || theme)?.palette?.background?.default}`,
                 display: 'flex',

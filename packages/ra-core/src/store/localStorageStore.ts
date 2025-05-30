@@ -99,7 +99,7 @@ export const localStorageStore = (
                 window.removeEventListener('storage', onLocalStorageChange);
             }
         },
-        getItem<T = any>(key: string, defaultValue?: T): T {
+        getItem<T = any>(key: string, defaultValue?: T): T | undefined {
             const valueFromStorage = getStorage().getItem(`${prefix}.${key}`);
 
             return valueFromStorage == null

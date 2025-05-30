@@ -79,7 +79,7 @@ const hasType = (type, types) => typeof types[type] !== 'undefined';
  */
 const inferElementFromValues = (
     name,
-    values = [],
+    values: any[] = [],
     types: InferredTypeMap = defaultTypes
 ) => {
     if (name === 'id' && hasType('id', types)) {
