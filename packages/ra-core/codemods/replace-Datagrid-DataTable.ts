@@ -214,22 +214,22 @@ const transformChild = (root, j, child) => {
 };
 
 const wrapChild = (j, child) => {
+    const childSource = child.openingElement.attributes.find(
+        attr => j.JSXAttribute.check(attr) && attr.name.name === 'source'
+    )?.value?.value;
+
     // Wrap the child in a DataTable.Col component
     return j.jsxElement(
         j.jsxOpeningElement(
             j.jsxIdentifier('DataTable.Col'),
-            [
-                j.jsxAttribute(
-                    j.jsxIdentifier('source'),
-                    j.stringLiteral(
-                        child.openingElement.attributes.find(
-                            attr =>
-                                j.JSXAttribute.check(attr) &&
-                                attr.name.name === 'source'
-                        )?.value?.value || ''
-                    )
-                ),
-            ],
+            !childSource
+                ? []
+                : [
+                      j.jsxAttribute(
+                          j.jsxIdentifier('source'),
+                          j.stringLiteral(childSource)
+                      ),
+                  ],
             false
         ),
         j.jsxClosingElement(j.jsxIdentifier('DataTable.Col')),
