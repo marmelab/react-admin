@@ -18,11 +18,11 @@ import { listFieldTypes } from './listFieldTypes';
 import { capitalize, singularize } from 'inflection';
 
 /**
- * List component rendering a <Datagrid> based on the result of the
+ * List component rendering a <DataTable> based on the result of the
  * dataProvider.getList() call.
  *
  * The result (choice and type of columns) isn't configurable, but the
- * <ListGuesser> outputs the <Datagrid> it has guessed to the console so that
+ * <ListGuesser> outputs the <DataTable> it has guessed to the console so that
  * developers can start from there.
  *
  * To be used as the list prop of a <Resource>.
@@ -132,10 +132,16 @@ const ListViewGuesser = (
                 .sort();
 
             if (enableLog) {
+                const importsToLog = components.includes('DataTable')
+                    ? components.filter(
+                          component => !component.startsWith('DataTable.')
+                      )
+                    : components;
+
                 console.log(
                     `Guessed List:
 
-import { ${components.join(', ')} } from 'react-admin';
+import { ${importsToLog.join(', ')} } from 'react-admin';
 
 export const ${capitalize(singularize(resource))}List = () => (
     <List>

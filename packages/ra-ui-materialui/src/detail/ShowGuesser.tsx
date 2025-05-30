@@ -72,10 +72,16 @@ const ShowViewGuesser = (
                 )
                 .sort();
 
+            const importsToLog = components.includes('DataTable')
+                ? components.filter(
+                      component => !component.startsWith('DataTable.')
+                  )
+                : components;
+
             console.log(
                 `Guessed Show:
 
-import { ${components.join(', ')} } from 'react-admin';
+import { ${importsToLog.join(', ')} } from 'react-admin';
 
 export const ${capitalize(singularize(resource))}Show = () => (
     <Show>
