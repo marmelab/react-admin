@@ -20,6 +20,10 @@ const PostList = () => (
         <Datagrid>
             <TextField source="id" />
             <EmailField source="email" />
+            <EmailField
+                source="author_email"
+                label="Email of the author of the post"
+            />
             <NumberField source="nb_vues" />
             <NumberField
                 source="price"

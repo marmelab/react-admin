@@ -14,7 +14,7 @@ module.exports = (file, api: j.API) => {
         return root.toSource();
     }
 
-    wrapChildren(root, j);
+    transformChildren(root, j);
     cleanImports(root, j);
 
     return root.toSource({ quote: 'single', lineTerminator: '\n' });
@@ -139,7 +139,7 @@ const cleanAttributes = (node, j) => {
     return sxRenamedAttributes;
 };
 
-const wrapChildren = (root, j) => {
+const transformChildren = (root, j) => {
     // Find all instances of Datagrid
     const datagridComponents = root.find(j.JSXElement, {
         openingElement: {
@@ -176,7 +176,7 @@ const transformChild = (root, j, child) => {
                 !['source', 'label', 'empty'].includes(attr.name.name)
         )
     ) {
-        newChild = replaceTextField(j, child);
+        child.openingElement.name.name = 'DataTable.Col';
     } else if (
         j.JSXElement.check(child) &&
         child.openingElement.name.type === 'JSXIdentifier' &&
@@ -189,28 +189,31 @@ const transformChild = (root, j, child) => {
                 )
         )
     ) {
-        newChild = replaceNumberField(j, child);
+        child.openingElement.name.name = 'DataTable.NumberCol';
     } else {
         newChild = wrapChild(j, child);
-    }
 
-    // Replace the original child with the new child
-    root.find(j.JSXElement, {
-        openingElement: {
-            name: {
-                type: 'JSXIdentifier',
-                name: 'DataTable',
+        // Replace the original child with the new child
+        root.find(j.JSXElement, {
+            openingElement: {
+                name: {
+                    type: 'JSXIdentifier',
+                    name: 'DataTable',
+                },
             },
-        },
-    }).forEach(dataTableComponent => {
-        dataTableComponent.value.children =
-            dataTableComponent.value.children.map(c =>
-                c === child ? newChild : c
-            );
-    });
+        }).forEach(dataTableComponent => {
+            dataTableComponent.value.children =
+                dataTableComponent.value.children.map(c =>
+                    c === child ? newChild : c
+                );
+        });
+    }
 };
 
 const wrapChild = (j, child) => {
+    const labelAttribute = child.openingElement.attributes.find(
+        attr => j.JSXAttribute.check(attr) && attr.name.name === 'label'
+    );
     const sourceAttribute = child.openingElement.attributes.find(
         attr => j.JSXAttribute.check(attr) && attr.name.name === 'source'
     );
@@ -219,31 +222,15 @@ const wrapChild = (j, child) => {
     return j.jsxElement(
         j.jsxOpeningElement(
             j.jsxIdentifier('DataTable.Col'),
-            !sourceAttribute ? [] : [sourceAttribute],
+            labelAttribute
+                ? [labelAttribute]
+                : sourceAttribute
+                  ? [sourceAttribute]
+                  : [],
             false
         ),
         j.jsxClosingElement(j.jsxIdentifier('DataTable.Col')),
         [j.jsxText('\n'), child, j.jsxText('\n')]
-    );
-};
-
-const replaceTextField = (j, child) => {
-    return j.jsxElement(
-        j.jsxOpeningElement(
-            j.jsxIdentifier('DataTable.Col'),
-            child.openingElement.attributes,
-            true
-        )
-    );
-};
-
-const replaceNumberField = (j, child) => {
-    return j.jsxElement(
-        j.jsxOpeningElement(
-            j.jsxIdentifier('DataTable.NumberCol'),
-            child.openingElement.attributes,
-            true
-        )
     );
 };
 
