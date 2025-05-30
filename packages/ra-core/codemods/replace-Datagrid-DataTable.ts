@@ -84,8 +84,7 @@ const replaceDatagrid = (root, j) => {
 
         const openingElement = j.jsxOpeningElement(
             j.jsxIdentifier('DataTable'),
-            attributes,
-            [node.openingElement.selfClosing]
+            attributes
         );
         const closingElement = j.jsxClosingElement(
             j.jsxIdentifier('DataTable')
