@@ -29,7 +29,7 @@ export const isUrl = (value: any): value is string =>
 export const valuesAreUrl = (values: any[]) => values.every(isUrl);
 
 const ImageUrlRegexp =
-    /http(s*):\/\/.*\.(jpeg|jpg|jfif|pjpeg|pjp|png|svg|gif|webp|apng|bmp|ico|cur|tif|tiff)/i;
+    /^http(s*):\/\/.*\.(jpeg|jpg|jfif|pjpeg|pjp|png|svg|gif|webp|apng|bmp|ico|cur|tif|tiff)/i;
 export const isImageUrl = (value: any): value is string =>
     !value || ImageUrlRegexp.test(value);
 export const valuesAreImageUrl = (values: any[]) => values.every(isImageUrl);
