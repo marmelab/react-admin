@@ -16491,7 +16491,7 @@ __metadata:
     storybook: "npm:^8.6.11"
     ts-jest: "npm:^29.1.0"
     tsx: "npm:^4.19.3"
-    typescript: "npm:^5.1.3"
+    typescript: "npm:^5.8.3"
     typescript-eslint: "npm:^8.28.0"
     whatwg-fetch: "npm:^3.0.0"
   dependenciesMeta:
@@ -19118,23 +19118,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=3 < 6, typescript@npm:^5.1.3":
-  version: 5.1.3
-  resolution: "typescript@npm:5.1.3"
+"typescript@npm:>=3 < 6, typescript@npm:^5.1.3, typescript@npm:^5.8.3":
+  version: 5.8.3
+  resolution: "typescript@npm:5.8.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 1faba8d5ffd4717864ddce767613c5ab77c1c8510c1ce21dc9b112a4c662357b9338dc0a6121615266d3a44ebec699f115ef2dabf18d9d7341ea1675692b9b24
+  checksum: 5f8bb01196e542e64d44db3d16ee0e4063ce4f3e3966df6005f2588e86d91c03e1fb131c2581baf0fb65ee79669eea6e161cd448178986587e9f6844446dbb48
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A>=3 < 6#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.1.3#optional!builtin<compat/typescript>":
-  version: 5.1.3
-  resolution: "typescript@patch:typescript@npm%3A5.1.3#optional!builtin<compat/typescript>::version=5.1.3&hash=5da071"
+"typescript@patch:typescript@npm%3A>=3 < 6#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.1.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>":
+  version: 5.8.3
+  resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 769c5a11a9d5207ae5ce4c84b5c7a72ad92a28877a0061881ccfb326a43a1a1de79c4daff2f9d74720137744cfc9332fddbfbc4c3973c1e859b2f977f5d11b72
+  checksum: 92ea03509e06598948559ddcdd8a4ae5a7ab475766d5589f1b796f5731b3d631a4c7ddfb86a3bd44d58d10102b132cd4b4994dda9b63e6273c66d77d6a271dbd
   languageName: node
   linkType: hard
 

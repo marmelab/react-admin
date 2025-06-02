@@ -271,7 +271,9 @@ const buildGetListVariables =
                     const resourceField = resource.type.fields.find(
                         f => f.name === parts[0]
                     );
-                    const type = getFinalType(resourceField.type);
+                    const type = getFinalType(
+                        resourceField.type
+                    ) as IntrospectionType;
                     return {
                         ...acc,
                         [key]: sanitizeValue(type, params.filter[key]),
@@ -283,7 +285,9 @@ const buildGetListVariables =
                 );
 
                 if (resourceField) {
-                    const type = getFinalType(resourceField.type);
+                    const type = getFinalType(
+                        resourceField.type
+                    ) as IntrospectionType;
                     const isAList = isList(resourceField.type);
 
                     if (isAList) {

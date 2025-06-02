@@ -58,7 +58,7 @@ const PageTitleConfigurableInner = ({ title, defaultTitle, ...props }) => {
     const translate = useTranslate();
     const record = useRecordContext();
 
-    return titleFromPreferences ? (
+    return typeof titleFromPreferences === 'string' ? (
         <span className={props.className} {...props}>
             {translate(titleFromPreferences, {
                 ...record,
