@@ -358,6 +358,7 @@ In react-admin, most configuration is done through components. Instead of using 
 
 So far, you've used [`<DataTable.Col>`](./DataTable.md#datatablecol) directly and [`EmailField`](./EmailField.md) as [a `<DataTable.Col>` child](./DataTable.md#children-1).
 React-admin provides [many more Field components](./Fields.md) to handle different data types—numbers, dates, images, arrays, and more.
+You can directly specify a field in your `DataTable.Col` using [the `field` prop](./DataTable.md#field), which is useful when no custom props are needed for that field.
 
 For instance, instead of displaying the `website` field as plain text, you could make it a clickable link using [`<UrlField>`](./UrlField.md):
 
@@ -374,9 +375,7 @@ For instance, instead of displaying the `website` field as plain text, you could
     </DataTable.Col>
     <DataTable.Col source="phone" />
 -   <DataTable.Col source="website" />
-+   <DataTable.Col source="website">
-+     <UrlField source="website" />
-+   </DataTable.Col>
++   <DataTable.Col source="website" field={UrlField} />
     <DataTable.Col source="company.name" />
   </DataTable>
 ```
@@ -421,10 +420,12 @@ You can use the `<MyUrlField>` component in `<UserList>` instead of react-admin'
   <DataTable>
     <DataTable.Col source="id" />
     <DataTable.Col source="name" />
-    <DataTable.Col source="email" source={EmailField} />
+    <DataTable.Col source="email">
+      <EmailField source="email" />
+    </DataTable.Col>
     <DataTable.Col source="phone" />
--   <DataTable.Col source="website" source={UrlField} />
-+   <DataTable.Col source="website" source={MyUrlField} />
+-   <DataTable.Col source="website" field={UrlField} />
++   <DataTable.Col source="website" field={MyUrlField} />
     <DataTable.Col source="company.name" />
   </DataTable>
 ```
