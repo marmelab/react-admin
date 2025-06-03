@@ -222,7 +222,7 @@ export const UserList = () => (
             <DataTable.Col source="username" />
             <DataTable.Col source="email">
                 <EmailField source="email" />
-	    </DataTable.Col>
+            </DataTable.Col>
             <DataTable.Col source="address.street" />
             <DataTable.Col source="phone" />
             <DataTable.Col source="website" />
@@ -303,7 +303,7 @@ export const UserList = () => {
                     <DataTable.Col source="username" />
                     <DataTable.Col source="email">
                         <EmailField source="email" />
-	            </DataTable.Col>
+                    </DataTable.Col>
                     <DataTable.Col source="address.street" />
                     <DataTable.Col source="phone" />
                     <DataTable.Col source="website" />
@@ -328,7 +328,7 @@ The `<List>` component's child can be anything—even a custom component with it
 ## Selecting Columns
 
 Let's get back to `<DataTable>`.
-It reads the data fetched by `<List>`, then renders a table with one row for each record. `<DataTable>` uses its child components (here, a list of [Field component](./Fields.md)) to render the columns.
+It reads the data fetched by `<List>`, then renders a table with one row for each record. `<DataTable>` uses its child components (a list of `<DataTable.Col>` components) to render the columns.
 Each `<DataTable.Col>` component renders one field of the current record, specified by the `source` prop.
 
 `<ListGuesser>` created one column for every field in the API response.
@@ -356,7 +356,7 @@ In react-admin, most configuration is done through components. Instead of using 
 
 ## Using Field Types
 
-So far, you've used simples [`<DataTable.Col>`](.//DataTable.md#datatablecol) and [`EmailField`](./EmailField.md) as [a `DataTable.Col` `field`](./DataTable.md#field).
+So far, you've used [`<DataTable.Col>`](./DataTable.md#datatablecol) directly and [`EmailField`](./EmailField.md) as [a `<DataTable.Col>` child](./DataTable.md#children-1).
 React-admin provides [many more Field components](./Fields.md) to handle different data types—numbers, dates, images, arrays, and more.
 
 For instance, instead of displaying the `website` field as plain text, you could make it a clickable link using [`<UrlField>`](./UrlField.md):
