@@ -26,9 +26,9 @@ The final result is a web application that allows you to list, create, edit, and
 React-admin is built on React. To start, we'll use [create-react-admin](./CreateReactAdmin.md) to bootstrap a new web application:
 
 ```sh
-npm create react-admin@latest test-admin
+npm create react-admin@latest test-admin -- --interactive
 # or
-yarn create react-admin test-admin
+yarn create react-admin test-admin --interactive
 ```
 
 When prompted, choose **JSON Server** as the data provider, then **None** as the auth provider. Do not add any resources for now and press **Enter**. Next, choose either `npm` or `yarn` and press **Enter**. Once everything is installed, run the following commands:
@@ -168,20 +168,22 @@ Copy this code and create a new `UserList` component in a new file called `users
 
 ```tsx
 // in src/users.tsx
-import { List, Datagrid, TextField, EmailField } from "react-admin";
+import { List, DataTable, EmailField } from "react-admin";
 
 export const UserList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="name" />
-            <TextField source="username" />
-            <EmailField source="email" />
-            <TextField source="address.street" />
-            <TextField source="phone" />
-            <TextField source="website" />
-            <TextField source="company.name" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="name" />
+            <DataTable.Col source="username" />
+            <DataTable.Col source="email">
+                <EmailField source="email" />
+            </DataTable.Col>
+            <DataTable.Col source="address.street" />
+            <DataTable.Col source="phone" />
+            <DataTable.Col source="website" />
+            <DataTable.Col source="company.name" />
+        </DataTable>
     </List>
 );
 ```
@@ -214,16 +216,18 @@ Let's take a closer look at the `<UserList>` component:
 ```tsx
 export const UserList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="name" />
-            <TextField source="username" />
-            <EmailField source="email" />
-            <TextField source="address.street" />
-            <TextField source="phone" />
-            <TextField source="website" />
-            <TextField source="company.name" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="name" />
+            <DataTable.Col source="username" />
+            <DataTable.Col source="email">
+                <EmailField source="email" />
+            </DataTable.Col>
+            <DataTable.Col source="address.street" />
+            <DataTable.Col source="phone" />
+            <DataTable.Col source="website" />
+            <DataTable.Col source="company.name" />
+        </DataTable>
     </List>
 );
 ```
@@ -238,7 +242,7 @@ The root component, [`<List>`](./List.md), reads the query parameters, fetches d
 
 This demonstrates the goal of react-admin: helping developers build sophisticated applications with simple syntax.
 
-In most frameworks, "simple" often implies limited capabilities, making it challenging to extend beyond basic features. React-admin addresses this through *composition*. `<List>` handles data fetching, while rendering is delegated to its child—in this case, [`<Datagrid>`](./Datagrid.md).  Essentially, the code composes the functionalities of `<List>` and `<Datagrid>` functionalities.
+In most frameworks, "simple" often implies limited capabilities, making it challenging to extend beyond basic features. React-admin addresses this through *composition*. `<List>` handles data fetching, while rendering is delegated to its child—in this case, [`<DataTable>`](./DataTable.md).  Essentially, the code composes the functionalities of `<List>` and `<DataTable>` functionalities.
 
 This means we can compose `<List>` with another component - for instance [`<SimpleList>`](./SimpleList.md):
 
@@ -275,12 +279,12 @@ React-admin's layout is responsive by default. Try resizing your browser, and yo
   Your browser does not support the video tag.
 </video>
 
-However, `<SimpleList>` has low information density on desktop. Let's modify `<UserList>` to use `<Datagrid>` on larger screens and `<SimpleList>` on smaller screens. We can achieve this using [Material UI's `useMediaQuery` hook](https://mui.com/material-ui/react-use-media-query/):
+However, `<SimpleList>` has low information density on desktop. Let's modify `<UserList>` to use `<DataTable>` on larger screens and `<SimpleList>` on smaller screens. We can achieve this using [Material UI's `useMediaQuery` hook](https://mui.com/material-ui/react-use-media-query/):
 
 ```tsx
 // in src/users.tsx
 import { useMediaQuery, Theme } from "@mui/material";
-import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
+import { List, SimpleList, DataTable, EmailField } from "react-admin";
 
 export const UserList = () => {
     const isSmall = useMediaQuery<Theme>((theme) => theme.breakpoints.down("sm"));
@@ -293,16 +297,18 @@ export const UserList = () => {
                     tertiaryText={(record) => record.email}
                 />
             ) : (
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="name" />
-                    <TextField source="username" />
-                    <EmailField source="email" />
-                    <TextField source="address.street" />
-                    <TextField source="phone" />
-                    <TextField source="website" />
-                    <TextField source="company.name" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="name" />
+                    <DataTable.Col source="username" />
+                    <DataTable.Col source="email">
+                        <EmailField source="email" />
+                    </DataTable.Col>
+                    <DataTable.Col source="address.street" />
+                    <DataTable.Col source="phone" />
+                    <DataTable.Col source="website" />
+                    <DataTable.Col source="company.name" />
+                </DataTable>
             )}
         </List>
     );
@@ -321,22 +327,27 @@ The `<List>` component's child can be anything—even a custom component with it
 
 ## Selecting Columns
 
-Let's get back to `<Datagrid>`. It reads the data fetched by `<List>`, then renders a table with one row for each record. `<Datagrid>` uses its child components (here, a list of [Field component](./Fields.md)) to render the columns. Each Field component renders one field of the current record, specified by the `source` prop.
+Let's get back to `<DataTable>`.
+It reads the data fetched by `<List>`, then renders a table with one row for each record. `<DataTable>` uses its child components (a list of `<DataTable.Col>` components) to render the columns.
+Each `<DataTable.Col>` component renders one field of the current record, specified by the `source` prop.
 
-`<ListGuesser>` created one column for every field in the API response. That's a bit too much for a usable grid, so let's remove a couple of `<TextField>` components from the Datagrid and see the effect:
+`<ListGuesser>` created one column for every field in the API response.
+That's a bit too much for a usable grid, so let's remove a couple of `<DataTable.Col>` components from the DataTable and see the effect:
 
 ```diff
 // in src/users.tsx
-  <Datagrid>
-    <TextField source="id" />
-    <TextField source="name" />
--   <TextField source="username" />
-    <EmailField source="email" />
--   <TextField source="address.street" />
-    <TextField source="phone" />
-    <TextField source="website" />
-    <TextField source="company.name" />
-  </Datagrid>
+  <DataTable>
+    <DataTable.Col source="id" />
+    <DataTable.Col source="name" />
+-   <DataTable.Col source="username" />
+    <DataTable.Col source="email">
+      <EmailField source="email" />
+    </DataTable.Col>
+-   <DataTable.Col source="address.street" />
+    <DataTable.Col source="phone" />
+    <DataTable.Col source="website" />
+    <DataTable.Col source="company.name" />
+  </DataTable>
 ```
 
 [![Users List](./img/tutorial_users_list_selected_columns.png)](./img/tutorial_users_list_selected_columns.png)
@@ -345,24 +356,28 @@ In react-admin, most configuration is done through components. Instead of using 
 
 ## Using Field Types
 
-So far, you've used [`<TextField>`](./TextField.md) and [`<EmailField>`](./EmailField.md). React-admin provides [many more Field components](./Fields.md) to handle different data types—numbers, dates, images, arrays, and more.
+So far, you've used [`<DataTable.Col>`](./DataTable.md#datatablecol) directly and [`EmailField`](./EmailField.md) as [a `<DataTable.Col>` child](./DataTable.md#children-1).
+React-admin provides [many more Field components](./Fields.md) to handle different data types—numbers, dates, images, arrays, and more.
+You can directly specify a field in your `DataTable.Col` using [the `field` prop](./DataTable.md#field), which is useful when no custom props are needed for that field.
 
 For instance, instead of displaying the `website` field as plain text, you could make it a clickable link using [`<UrlField>`](./UrlField.md):
 
 ```diff
 // in src/users.tsx
--import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
-+import { List, SimpleList, Datagrid, TextField, EmailField, UrlField } from "react-admin";
+-import { List, SimpleList, DataTable, EmailField } from "react-admin";
++import { List, SimpleList, DataTable, EmailField, UrlField } from "react-admin";
 // ...
-  <Datagrid>
-    <TextField source="id" />
-    <TextField source="name" />
-    <EmailField source="email" />
-    <TextField source="phone" />
--   <TextField source="website" />
-+   <UrlField source="website" />
-    <TextField source="company.name" />
-  </Datagrid>
+  <DataTable>
+    <DataTable.Col source="id" />
+    <DataTable.Col source="name" />
+    <DataTable.Col source="email">
+      <EmailField source="email" />
+    </DataTable.Col>
+    <DataTable.Col source="phone" />
+-   <DataTable.Col source="website" />
++   <DataTable.Col source="website" field={UrlField} />
+    <DataTable.Col source="company.name" />
+  </DataTable>
 ```
 
 [![Url Field](./img/tutorial_url_field.png)](./img/tutorial_url_field.png)
@@ -371,9 +386,11 @@ This is typical of the early stages of development with react-admin: use a guess
 
 ## Writing A Custom Field
 
-In react-admin, fields are just React components. When rendered, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) using a custom hook, and use the `source` prop (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
+In react-admin, fields are just React components.
+When rendered, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) using a custom hook, and use the `source` prop (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
 
-That means you can do the same to [write a custom field](./Fields.md#writing-your-own-field-component). For instance, here is a simplified version of the `<UrlField>`:
+That means you can do the same to [write a custom field](./Fields.md#writing-your-own-field-component).
+For instance, here is a simplified version of the `<UrlField>`:
 
 ```tsx
 // in src/MyUrlField.tsx
@@ -388,25 +405,29 @@ const MyUrlField = ({ source }: { source: string }) => {
 export default MyUrlField;
 ```
 
-For each row, `<Datagrid>` creates a `RecordContext` and stores the current record in it. [`useRecordContext`](./useRecordContext.md) allows you to read that record. It's one of the 50+ headless hooks that react-admin exposes to let you build your own components without forcing a particular UI.
+For each row, `<DataTable>` creates a `RecordContext` and stores the current record in it.
+[`useRecordContext`](./useRecordContext.md) allows you to read that record.
+It's one of the 50+ headless hooks that react-admin exposes to let you build your own components without forcing a particular UI.
 
 You can use the `<MyUrlField>` component in `<UserList>` instead of react-admin's `<UrlField>` component, and it will work just the same.
 
 ```diff
 // in src/users.tsx
--import { List, SimpleList, Datagrid, TextField, EmailField, UrlField } from "react-admin";
-+import { List, SimpleList, Datagrid, TextField, EmailField } from "react-admin";
+-import { List, SimpleList, DataTable, EmailField, UrlField } from "react-admin";
++import { List, SimpleList, DataTable, EmailField } from "react-admin";
 +import MyUrlField from './MyUrlField';
 // ...
-  <Datagrid>
-    <TextField source="id" />
-    <TextField source="name" />
-    <EmailField source="email" />
-    <TextField source="phone" />
--   <UrlField source="website" />
-+   <MyUrlField source="website" />
-    <TextField source="company.name" />
-  </Datagrid>
+  <DataTable>
+    <DataTable.Col source="id" />
+    <DataTable.Col source="name" />
+    <DataTable.Col source="email">
+      <EmailField source="email" />
+    </DataTable.Col>
+    <DataTable.Col source="phone" />
+-   <DataTable.Col source="website" field={UrlField} />
++   <DataTable.Col source="website" field={MyUrlField} />
+    <DataTable.Col source="company.name" />
+  </DataTable>
 ```
 
 This means react-admin never blocks you: if one react-admin component doesn't perfectly suit your needs, you can just swap it with your own version.
@@ -478,20 +499,23 @@ export const App = () => (
 
 [![Guessed Post List](./img/tutorial_guessed_post_list.png)](./img/tutorial_guessed_post_list.png)
 
-The `ListGuesser` suggests using a [`<ReferenceField>`](./ReferenceField.md) for the `userId` field. Let's play with this new field by creating the `PostList` component based on the code dumped by the guesser:
+The `ListGuesser` suggests using a [`<ReferenceField>`](./ReferenceField.md) for the `userId` field.
+Let's play with this new field by creating the `PostList` component based on the code dumped by the guesser:
 
 ```tsx
 // in src/posts.tsx
-import { List, Datagrid, TextField, ReferenceField } from "react-admin";
+import { List, DataTable, ReferenceField } from "react-admin";
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <ReferenceField source="userId" reference="users" />
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="userId">
+                <ReferenceField source="userId" reference="users" />
+            </DataTable.Col>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="body" />
+        </DataTable>
     </List>
 );
 ```
@@ -521,26 +545,32 @@ When displaying the posts list, react-admin is smart enough to display the `name
 
 The `<ReferenceField>` component fetches the reference data, creates a `RecordContext` with the result, and renders the record representation (or its children).
 
-**Tip**: Look at the network tab of your browser again: react-admin deduplicates requests for users and aggregates them in order to make only *one* HTTP request to the `/users` endpoint for the whole Datagrid. That's one of many optimizations that keep the UI fast and responsive.
+**Tip**: Look at the network tab of your browser again: react-admin deduplicates requests for users and aggregates them in order to make only *one* HTTP request to the `/users` endpoint for the whole DataTable. That's one of many optimizations that keep the UI fast and responsive.
 
-To finish the post list, place the post `id` field as the first column, and remove the `body` field. From a UX point of view, fields containing large chunks of text should not appear in a Datagrid, only in detail views. Also, to make the Edit action stand out, let's replace the default `rowClick` action with an explicit action button:
+To finish the post list, place the post `id` field as the first column, and remove the `body` field.
+From a UX point of view, fields containing large chunks of text should not appear in a DataTable, only in detail views.
+Also, to make the Edit action stand out, let's replace the default `rowClick` action with an explicit action button:
 
 ```diff
 // in src/posts.tsx
--import { List, Datagrid, TextField, ReferenceField } from "react-admin";
-+import { List, Datagrid, TextField, ReferenceField, EditButton } from "react-admin";
+-import { List, DataTable, ReferenceField } from "react-admin";
++import { List, DataTable, ReferenceField, EditButton } from "react-admin";
 
 export const PostList = () => (
   <List>
--   <Datagrid>
-+   <Datagrid rowClick={false}>
-+     <TextField source="id" />
-      <ReferenceField source="userId" reference="users" />
--     <TextField source="id" />
-      <TextField source="title" />
--     <TextField source="body" />
-+     <EditButton />
-    </Datagrid>
+-   <DataTable>
++   <DataTable rowClick={false}>
++     <DataTable.Col source="id" />
+      <DataTable.Col source="userId">
+        <ReferenceField source="userId" reference="users" />
+      </DataTable.Col source="userId">
+-     <DataTable.Col source="id" />
+      <DataTable.Col source="title" />
+-     <DataTable.Col source="body" />
++     <DataTable.Col>
++       <EditButton />
++     </DataTable.Col>
+    </DataTable>
   </List>
 );
 ```
@@ -583,13 +613,15 @@ Now that the `users` resource has a `show` view, you can also link to it from th
 // in src/posts.tsx
 export const PostList = () => (
     <List>
-        <Datagrid>
--           <ReferenceField source="userId" reference="users" />
-+           <ReferenceField source="userId" reference="users" link="show" />
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col>
+-             <ReferenceField source="userId" reference="users" />
++             <ReferenceField source="userId" reference="users" link="show" />
+            </DataTable.Col>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="body" />
+        </DataTable>
     </List>
 );
 ```
@@ -633,8 +665,7 @@ Copy the `<PostEdit>` code dumped by the guesser in the console to the `posts.ts
 // in src/posts.tsx
 import {
     List,
-    Datagrid,
-    TextField,
+    DataTable,
     ReferenceField,
     EditButton,
     Edit,
@@ -699,7 +730,7 @@ export const PostEdit = () => (
 ```
 {% endraw %}
 
-If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record and displaying the page title. It passes the record down to the [`<SimpleForm>`](./SimpleForm.md) component, which is responsible for the form layout, default values, and validation. Just like `<Datagrid>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects [*input components*](./Inputs.md) as children. [`<TextInput>`](./TextInput.md) and [`<ReferenceInput>`](./ReferenceInput.md) are such inputs.
+If you've understood the `<List>` component, the `<Edit>` component will be no surprise. It's responsible for fetching the record and displaying the page title. It passes the record down to the [`<SimpleForm>`](./SimpleForm.md) component, which is responsible for the form layout, default values, and validation. Just like `<DataTable>`, `<SimpleForm>` uses its children to determine the form inputs to display. It expects [*input components*](./Inputs.md) as children. [`<TextInput>`](./TextInput.md) and [`<ReferenceInput>`](./ReferenceInput.md) are such inputs.
 
 The `<ReferenceInput>` takes the same props as the `<ReferenceField>` (used earlier in the `<PostList>` page). `<ReferenceInput>` uses these props to fetch the API for possible references related to the current record (in this case, possible `users` for the current `post`). It then creates a context with the possible choices and renders an [`<AutocompleteInput>`](./AutocompleteInput.md), which is responsible for displaying the choices and letting the user select one.
 
@@ -711,8 +742,7 @@ Let's allow users to create posts, too. Copy the `<PostEdit>` component into a `
 // in src/posts.tsx
 import {
     List,
-    Datagrid,
-    TextField,
+    DataTable,
     ReferenceField,
     EditButton,
     Edit,

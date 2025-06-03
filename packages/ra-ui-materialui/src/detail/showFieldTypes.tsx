@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { Datagrid } from '../list/datagrid/Datagrid';
+import type { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
 import {
     ArrayField,
     BooleanField,
@@ -17,8 +17,7 @@ import {
     ChipField,
 } from '../field';
 import { SimpleShowLayout, SimpleShowLayoutProps } from './SimpleShowLayout';
-import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
-import { SingleFieldList } from '../list';
+import { DataTable, SingleFieldList } from '../list';
 
 export const showFieldTypes: InferredTypeMap = {
     show: {
@@ -30,18 +29,31 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
         </SimpleShowLayout>`,
     },
     array: {
-        component: ({
-            children,
-            ...props
-        }: { children: ReactNode } & InputProps) => (
+        component: ({ children, ...props }: { children } & InputProps) => (
             <ArrayField {...props}>
-                <Datagrid>{children}</Datagrid>
+                <DataTable>
+                    {children && children.length > 0
+                        ? children.map((child, index) => (
+                              <DataTable.Col key={index} {...child.props}>
+                                  {child}
+                              </DataTable.Col>
+                          ))
+                        : children}
+                </DataTable>
             </ArrayField>
         ),
         representation: (props: InputProps, children: InferredElement[]) =>
-            `<ArrayField source="${props.source}"><Datagrid>${children
-                .map(child => child.getRepresentation())
-                .join('\n')}</Datagrid></ArrayField>`,
+            `<ArrayField source="${props.source}">
+                <DataTable>
+                    ${children
+                        .map(
+                            child => `<DataTable.Col source="${child.getProps().source}">
+                        ${child.getRepresentation()}
+                    </DataTable.Col>`
+                        )
+                        .join('\n                    ')}
+                </DataTable>
+            </ArrayField>`,
     },
     boolean: {
         component: BooleanField,

@@ -70,6 +70,7 @@ const ShowViewGuesser = (
                         )
                     )
                 )
+                .filter(component => !component.match(/[A-Za-z]+\.[A-Za-z]+/i))
                 .sort();
 
             console.log(
