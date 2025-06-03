@@ -129,19 +129,14 @@ const ListViewGuesser = (
                         )
                     )
                 )
+                .filter(component => !component.match(/[A-Za-z]+\.[A-Za-z]+/i))
                 .sort();
 
             if (enableLog) {
-                const importsToLog = components.includes('DataTable')
-                    ? components.filter(
-                          component => !component.startsWith('DataTable.')
-                      )
-                    : components;
-
                 console.log(
                     `Guessed List:
 
-import { ${importsToLog.join(', ')} } from 'react-admin';
+import { ${components.join(', ')} } from 'react-admin';
 
 export const ${capitalize(singularize(resource))}List = () => (
     <List>
