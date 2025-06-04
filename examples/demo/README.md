@@ -22,6 +22,22 @@ make build
 make run-demo
 ```
 
+## Run via Docker
+
+To run the application using Docker:
+
+1. Build the Docker image:
+   ```sh
+   docker build -t react-admin-demo .
+   ```
+
+2. Run the Docker container:
+   ```sh
+   docker run -p 3000:3000 react-admin-demo
+   ```
+
+3. Access the application at [http://localhost:3000](http://localhost:3000).
+
 ## Available Scripts
 
 In the project directory, you can run:
