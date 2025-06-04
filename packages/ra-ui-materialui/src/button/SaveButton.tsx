@@ -82,8 +82,10 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         alwaysEnable === false || alwaysEnable === undefined
             ? undefined
             : !alwaysEnable,
-        (disabledProp || !isDirty || isValidating || isSubmitting) &&
-            recordFromLocation == null
+        disabledProp ||
+            (!isDirty && recordFromLocation == null) ||
+            isValidating ||
+            isSubmitting
     );
 
     warning(
