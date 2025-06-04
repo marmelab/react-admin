@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable import/no-extraneous-dependencies */
 import * as React from 'react';
 import { List, Datagrid, TextField, useRecordContext } from 'react-admin';
@@ -30,8 +31,7 @@ const PostList = () => (
                 '& .RaDatagrid-row:hover': {
                     backgroundColor: '#f5f5f5',
                 },
-            }}
-        >
+            }}>
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="body" />
