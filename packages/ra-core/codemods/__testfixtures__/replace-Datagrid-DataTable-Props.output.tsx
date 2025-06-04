@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable import/no-extraneous-dependencies */
 import * as React from 'react';
 import { List, DataTable, useRecordContext } from 'react-admin';
@@ -29,8 +30,7 @@ const PostList = () => (
                 '& .RaDataTable-row:hover': {
                     backgroundColor: '#f5f5f5',
                 },
-            }}
-        >
+            }}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
             <DataTable.Col source="body" />
