@@ -105,7 +105,7 @@ export interface ReferenceFieldProps<
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
-const defaultOffline = <Offline />;
+const defaultOffline = <Offline variant="inline" />;
 
 export const ReferenceFieldView = <
     RecordType extends Record<string, any> = Record<string, any>,

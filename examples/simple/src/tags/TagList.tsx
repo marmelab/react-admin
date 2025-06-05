@@ -6,6 +6,7 @@ import {
     useListContext,
     EditButton,
     Title,
+    Offline,
 } from 'react-admin';
 import {
     Box,
@@ -25,14 +26,26 @@ const TagList = () => (
     <ListBase perPage={1000}>
         <Stack>
             <ListActions />
-            <Box maxWidth="20em" marginTop="1em">
-                <Card>
-                    <Tree />
-                </Card>
-            </Box>
+            <TagListView />
         </Stack>
     </ListBase>
 );
+
+const TagListView = () => {
+    const { data, isPaused } = useListContext();
+
+    if (isPaused && data == null) {
+        return <Offline sx={{ width: '100%' }} />;
+    }
+
+    return (
+        <Box maxWidth="20em" marginTop="1em">
+            <Card>
+                <Tree />
+            </Card>
+        </Box>
+    );
+};
 
 const Tree = () => {
     const { data, defaultTitle } = useListContext();

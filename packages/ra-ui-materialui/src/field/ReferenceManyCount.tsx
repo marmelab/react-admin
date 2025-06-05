@@ -21,7 +21,7 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Link } from '../Link';
 import { Offline } from '../Offline';
 
-const defaultOffline = <Offline />;
+const defaultOffline = <Offline variant="inline" />;
 
 /**
  * Fetch and render the number of records related to the current one

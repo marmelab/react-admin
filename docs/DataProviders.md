@@ -945,6 +945,10 @@ export const App = () => (
 ```
 {% endraw %}
 
+This is enough to make all the standard react-admin features support offline scenarios.
+
+## Adding Offline Support To Custom Mutations
+
 If you have [custom mutations](./Actions.md#calling-custom-methods) on your dataProvider, you can enable offline support for them too. For instance, if your `dataProvider` exposes a `banUser()` method:
 
 ```ts

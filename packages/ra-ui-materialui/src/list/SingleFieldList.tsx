@@ -209,4 +209,4 @@ declare module '@mui/material/styles' {
     }
 }
 
-const DefaultOffline = <Offline />;
+const DefaultOffline = <Offline variant="inline" />;

@@ -31,6 +31,7 @@ import {
     useCreateSuggestionContext,
     EditActionsProps,
     CanAccess,
+    Translate,
 } from 'react-admin';
 import {
     Box,
@@ -40,7 +41,9 @@ import {
     DialogActions,
     DialogContent,
     TextField as MuiTextField,
+    Tooltip,
 } from '@mui/material';
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
@@ -229,6 +232,22 @@ const PostEdit = () => (
                         reference="comments"
                         target="post_id"
                         sx={{ lineHeight: 'inherit' }}
+                        offline={
+                            <Tooltip
+                                title={
+                                    <Translate i18nKey="ra.notification.offline" />
+                                }
+                            >
+                                <ReportProblemOutlinedIcon
+                                    color="warning"
+                                    sx={{
+                                        marginTop: -2,
+                                        position: 'relative',
+                                        top: theme => theme.spacing(0.5),
+                                    }}
+                                />
+                            </Tooltip>
+                        }
                     />
                 }
             >

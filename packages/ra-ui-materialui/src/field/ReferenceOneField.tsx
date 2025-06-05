@@ -19,7 +19,7 @@ import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 import { Offline } from '../Offline';
 
-const defaultOffline = <Offline />;
+const defaultOffline = <Offline variant="inline" />;
 
 /**
  * Render the related record in a one-to-one relationship

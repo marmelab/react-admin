@@ -101,8 +101,12 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
 
     return isPaused && allChoices == null ? (
         offline ?? (
-            <Labeled {...props}>
-                <Offline />
+            <Labeled
+                source={props.source}
+                label={props.label}
+                resource={props.resource}
+            >
+                <Offline variant="inline" />
             </Labeled>
         )
     ) : (

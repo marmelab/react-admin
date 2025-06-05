@@ -30,6 +30,7 @@ import {
     useListContext,
     useTranslate,
     Exporter,
+    Offline,
 } from 'react-admin';
 
 const commentFilters = [
@@ -63,9 +64,10 @@ const exporter: Exporter = (records, fetchRelatedRecords) =>
     });
 
 const CommentGrid = () => {
-    const { data } = useListContext();
+    const { data, isPaused, isPlaceholderData } = useListContext();
     const translate = useTranslate();
 
+    if (isPaused && (data == null || isPlaceholderData)) return <Offline />;
     if (!data) return null;
     return (
         <Grid spacing={2} container>
