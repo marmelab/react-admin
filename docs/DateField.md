@@ -14,16 +14,16 @@ Displays a date, datetime or time using the browser locale (thanks to `Date.toLo
 In a List or a Show view, use `<DateField>` as any other field component to render a date value:
 
 ```jsx
-import { List, Datagrid, TextField, DateField } from 'react-admin';
+import { List, DataTable, DateField } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" />
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" field={DateField} />
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 )
 ```

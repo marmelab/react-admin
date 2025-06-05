@@ -227,11 +227,9 @@ Here is an example StackedFilters configuration:
 import {
     BooleanField,
     CreateButton,
-    Datagrid,
+    DataTable,
     List,
-    NumberField,
     ReferenceArrayField,
-    TextField,
     TopToolbar,
 } from 'react-admin';
 import {
@@ -259,12 +257,14 @@ const PostListToolbar = () => (
 
 const PostList = () => (
     <List actions={<PostListToolbar />}>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <ReferenceArrayField tags="tags" source="tag_ids" />
-            <BooleanField source="published" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.NumberCol source="views" />
+            <DataTable.Col label="Tags">
+                <ReferenceArrayField tags="tags" source="tag_ids" />
+            </DataTable.Col>
+            <DataTable.Col source="published" field={BooleanField} />
+        </DataTable>
     </List>
 )
 ```
@@ -354,7 +354,7 @@ const LinkToRelatedProducts = () => {
 
 {% endraw %}
 
-You can use this button e.g. as a child of `<Datagrid>`. You can also create a custom Menu button with that technique to link to the unfiltered list by setting the filter value to `{}`.
+You can use this button e.g. as a child of `<DataTable.Col>`. You can also create a custom Menu button with that technique to link to the unfiltered list by setting the filter value to `{}`.
 
 ## Filter Operators
 
@@ -425,7 +425,7 @@ Saved Queries let users save a combination of filters and sort parameters into a
 `<SavedQueriesList>` is a complement to `<FilterList>` sections for the filter sidebar
 
 ```diff
-import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
+import { FilterList, FilterListItem, List, DataTable } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
 
 +import { SavedQueriesList } from 'react-admin';
@@ -446,9 +446,9 @@ const SongFilterSidebar = () => (
 
 const SongList = () => (
     <List aside={<SongFilterSidebar />}>
-        <Datagrid>
+        <DataTable>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -664,4 +664,4 @@ export const PostList = () => (
 
 **Tip**: No need to pass any `filters` to the list anymore, as the `<PostFilterForm>` component will display them.
 
-You can use a similar approach to offer alternative User Experiences for data filtering, e.g. to display the filters as a line in the datagrid headers.
+You can use a similar approach to offer alternative User Experiences for data filtering, e.g. to display the filters as a line in the datatable headers.

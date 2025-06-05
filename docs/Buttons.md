@@ -36,7 +36,7 @@ React-Admin provides button components for all the common uses.
 
 ## `<BulkDeleteButton>`
 
-Deletes the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons) (where it's enabled by default).
+Deletes the selected rows. To be used inside [the `<DataTable bulkActionButtons>` prop](./DataTable.md#bulkactionbuttons) (where it's enabled by default).
 
 ![Bulk Delete button](./img/bulk-delete-button.png)
 
@@ -47,7 +47,7 @@ Deletes the selected rows. To be used inside [the `<Datagrid bulkActionButtons>`
 ```jsx
 import * as React from 'react';
 import { Fragment } from 'react';
-import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+import { BulkDeleteButton, BulkExportButton, DataTable } from 'react-admin';
 
 const PostBulkActionButtons = () => (
     <Fragment>
@@ -58,9 +58,9 @@ const PostBulkActionButtons = () => (
 
 export const PostList = () => (
     <List>
-        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+        <DataTable bulkActionButtons={<PostBulkActionButtons />}>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -114,7 +114,7 @@ Alternately, pass a `successMessage` prop:
 
 ## `<BulkExportButton>`
 
-Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
+Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<DataTable bulkActionButtons>` prop](./DataTable.md#bulkactionbuttons).
 
 ![Bulk Export button](./img/bulk-export-button.png)
 
@@ -123,7 +123,7 @@ Same as `<ExportButton>`, except it only exports the selected rows instead of th
 ```jsx
 import * as React from 'react';
 import { Fragment } from 'react';
-import { BulkDeleteButton, BulkExportButton } from 'react-admin';
+import { BulkDeleteButton, BulkExportButton, DataTable, List } from 'react-admin';
 
 const PostBulkActionButtons = () => (
     <Fragment>
@@ -134,9 +134,9 @@ const PostBulkActionButtons = () => (
 
 export const PostList = () => (
     <List>
-        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+        <DataTable bulkActionButtons={<PostBulkActionButtons />}>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -152,7 +152,7 @@ export const PostList = () => (
 
 ## `<BulkUpdateButton>`
 
-Partially updates the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
+Partially updates the selected rows. To be used inside [the `<DataTable bulkActionButtons>` prop](./DataTable.md#bulkactionbuttons).
 
 ![Bulk Update button](./img/bulk-update-button.png)
 
@@ -162,7 +162,7 @@ Partially updates the selected rows. To be used inside [the `<Datagrid bulkActio
 ```jsx
 import * as React from 'react';
 import { Fragment } from 'react';
-import { BulkDeleteButton, BulkExportButton, BulkUpdateButton } from 'react-admin';
+import { BulkDeleteButton, BulkExportButton, BulkUpdateButton, DataTable, List } from 'react-admin';
 
 const PostBulkActionButtons = () => (
     <Fragment>
@@ -174,9 +174,9 @@ const PostBulkActionButtons = () => (
 
 export const PostList = () => (
     <List>
-        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+        <DataTable bulkActionButtons={<PostBulkActionButtons />}>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -234,7 +234,7 @@ Alternately, pass a `successMessage` prop:
 
 ## `<BulkUpdateFormButton>`
 
-This component, part of the [enterprise edition](https://react-admin-ee.marmelab.com/documentation/ra-form-layout)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />, lets users edit multiple records at once. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
+This component, part of the [enterprise edition](https://react-admin-ee.marmelab.com/documentation/ra-form-layout)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />, lets users edit multiple records at once. To be used inside [the `<DataTable bulkActionButtons>` prop](./DataTable.md#bulkactionbuttons).
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/BulkUpdateButton-SimpleForm.webm" type="video/webm"/>
@@ -246,7 +246,7 @@ The button opens a dialog containing the form passed as children. When the form 
 
 ### Usage
 
-`<BulkUpdateFormButton>` can be used inside `<Datagrid>`'s `bulkActionButtons`.
+`<BulkUpdateFormButton>` can be used inside `<DataTable>`'s `bulkActionButtons`.
 
 ```tsx
 import * as React from 'react';
@@ -254,13 +254,12 @@ import {
     Admin,
     BooleanField,
     BooleanInput,
-    Datagrid,
+    DataTable,
     DateField,
     DateInput,
     List,
     Resource,
     SimpleForm,
-    TextField,
 } from 'react-admin';
 import { BulkUpdateFormButton } from '@react-admin/ra-form-layout';
 
@@ -284,12 +283,12 @@ const PostBulkUpdateButton = () => (
 
 const PostList = () => (
     <List>
-        <Datagrid bulkActionButtons={<PostBulkUpdateButton />}>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <BooleanField source="is_public" />
-        </Datagrid>
+        <DataTable bulkActionButtons={<PostBulkUpdateButton />}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" field={DateField} />
+            <DataTable.Col source="is_public" field={BooleanField} />
+        </DataTable>
     </List>
 );
 ```
@@ -981,7 +980,7 @@ const CommentShow = () => (
 
 It also supports [all the other `<Button>` props](#button).
 
-**Tip**: You can use it as `<Datagrid>` child, too. However, you should use the `<Datagrid rowClick="edit">` prop instead to avoid using one column for the Edit button.
+**Tip**: You can use it as `<DataTable>` child, too. However, you should use the `<DataTable rowClick="edit">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
@@ -1186,12 +1185,12 @@ The `<SelectAllButton>` component allows users to select all items from a resour
 
 ### Usage
 
-By default, react-admin's `<Datagrid>` displays a `<SelectAllButton>` in its `bulkActionsToolbar`. You can customize it by specifying your own `<BulkActionsToolbar selectAllButton>`:
+By default, react-admin's `<DataTable>` displays a `<SelectAllButton>` in its `bulkActionsToolbar`. You can customize it by specifying your own `<BulkActionsToolbar selectAllButton>`:
 
 {% raw %}
 
 ```jsx
-import { List, Datagrid, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
+import { List, DataTable, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
 
 const PostSelectAllButton = () => (
     <SelectAllButton 
@@ -1202,7 +1201,7 @@ const PostSelectAllButton = () => (
 
 export const PostList = () => (
     <List>
-        <Datagrid
+        <DataTable
             bulkActionsToolbar={
                 <BulkActionsToolbar selectAllButton={PostSelectAllButton}>
                     <BulkDeleteButton />
@@ -1210,7 +1209,7 @@ export const PostList = () => (
             }
         >
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -1302,7 +1301,7 @@ const CommentEdit = () => (
 
 It also supports [all the other `<Button>` props](#button).
 
-**Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
+**Tip**: You can use it as `<DataTable>` child with no props too. However, you should use the `<DataTable rowClick="show">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
 
@@ -1643,7 +1642,7 @@ See [The AppBar documentation](./AppBar.md#usermenu) for more details.
 
 ## Performance
 
-The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) when displaying a large number of buttons (e.g. in a large datagrid). It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
+The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) when displaying a large number of buttons (e.g. in a large datatable). It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
 
 It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`.
 

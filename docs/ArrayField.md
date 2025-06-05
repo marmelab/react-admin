@@ -9,7 +9,7 @@ title: "The ArrayField Component"
 
 ![ArrayField](./img/array-field.webp)
 
-`<ArrayField>` creates a [`ListContext`](./useListContext.md) with the field value, and renders its children components - usually iterator components like [`<Datagrid>`](./Datagrid.md) or [`<SingleFieldList>`](./SingleFieldList.md).
+`<ArrayField>` creates a [`ListContext`](./useListContext.md) with the field value, and renders its children components - usually iterator components like [`<DataTable>`](./DataTable.md) or [`<SingleFieldList>`](./SingleFieldList.md).
 
 ## Usage
 
@@ -35,13 +35,13 @@ title: "The ArrayField Component"
 }
 ```
 
-Leverage `<ArrayField>` e.g. in a Show view, to display the `tags` as a `<SingleFieldList>` and the `backlinks` as a `<Datagrid>`:
+Leverage `<ArrayField>` e.g. in a Show view, to display the `tags` as a `<SingleFieldList>` and the `backlinks` as a `<DataTable>`:
 
 ```jsx
 import { 
     ArrayField,
     ChipField,
-    Datagrid,
+    DataTable,
     Show,
     SimpleShowLayout,
     SingleFieldList,
@@ -58,11 +58,11 @@ const PostShow = () => (
                 </SingleFieldList>
             </ArrayField>
             <ArrayField source="backlinks">
-                <Datagrid bulkActionButtons={false}>
-                    <TextField source="uuid" />
-                    <TextField source="date" />
-                    <TextField source="url" />
-                </Datagrid>
+                <DataTable bulkActionButtons={false}>
+                    <DataTable.Col source="uuid" />
+                    <DataTable.Col source="date" />
+                    <DataTable.Col source="url" />
+                </DataTable>
             </ArrayField>
         </SimpleShowLayout>
     </Show>
@@ -84,7 +84,7 @@ const PostShow = () => (
 
 ## `children`
 
-`<ArrayField>` renders its `children` component wrapped in a [`<ListContextProvider>`](./useListContext.md). Commonly used child components are [`<Datagrid>`](./Datagrid.md), [`<SingleFieldList>`](./SingleFieldList.md), and [`<SimpleList>`](./SimpleList.md).
+`<ArrayField>` renders its `children` component wrapped in a [`<ListContextProvider>`](./useListContext.md). Commonly used child components are [`<DataTable>`](./DataTable.md), [`<SingleFieldList>`](./SingleFieldList.md), and [`<SimpleList>`](./SimpleList.md).
 
 ```jsx
 {/* using SingleFieldList as child */}
@@ -94,13 +94,13 @@ const PostShow = () => (
     </SingleFieldList>
 </ArrayField>
 
-{/* using Datagrid as child */}
+{/* using DataTable as child */}
 <ArrayField source="backlinks">
-    <Datagrid>
-        <TextField source="uuid" />
-        <TextField source="date" />
-        <TextField source="url" />
-    </Datagrid>
+    <DataTable>
+        <DataTable.Col source="uuid" />
+        <DataTable.Col source="date" />
+        <DataTable.Col source="url" />
+    </DataTable>
 </ArrayField>
 
 {/* using SimpleList as child */}
@@ -159,11 +159,11 @@ You can use the `filter` prop to display only a subset of the items in the array
 {% raw %}
 ```jsx
 <ArrayField source="backlinks" filter={{ date: '2012-08-10T00:00:00.000Z' }}>
-    <Datagrid>
-        <TextField source="uuid" />
-        <TextField source="date" />
-        <TextField source="url" />
-    </Datagrid>
+    <DataTable>
+        <DataTable.Col source="uuid" />
+        <DataTable.Col source="date" />
+        <DataTable.Col source="url" />
+    </DataTable>
 </ArrayField>
 ```
 {% endraw %}
@@ -179,7 +179,7 @@ As `<ArrayField>` creates a [`ListContext`](./useListContext.md), you can use th
 ```jsx
 import { 
     ArrayField,
-    Datagrid,
+    DataTable,
     Pagination,
     Show,
     SimpleShowLayout,
@@ -191,11 +191,11 @@ const PostShow = () => (
         <SimpleShowLayout>
             <TextField source="title" />
             <ArrayField source="backlinks" perPage={5}>
-                <Datagrid>
-                    <TextField source="uuid" />
-                    <TextField source="date" />
-                    <TextField source="url" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="uuid" />
+                    <DataTable.Col source="date" />
+                    <DataTable.Col source="url" />
+                </DataTable>
                 <Pagination />
             </ArrayField>
         </SimpleShowLayout>

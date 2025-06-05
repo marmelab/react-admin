@@ -144,38 +144,37 @@ If you need to count the number of records related to the current one via a one-
 ```jsx
 import { 
     ChipField,
-    Datagrid,
+    DataTable,
     DateField,
     List,
     NumberField,
     ReferenceArrayField,
     ReferenceManyCount,
     SingleFieldList,
-    TextField,
 } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" sortByOrder="DESC" />
-            <ReferenceManyCount
-                label="Comments"
-                reference="comments"
-                target="post_id"
-            />
-            <NumberField source="views" sortByOrder="DESC" />
-            <ReferenceArrayField
-                label="Tags"
-                reference="tags"
-                source="tags"
-            >
-                <SingleFieldList>
-                    <ChipField source="name.en" size="small" />
-                </SingleFieldList>
-            </ReferenceArrayField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at">
+                <DateField source="published_at" sortByOrder="DESC" />
+            </DataTable.Col>
+            <DataTable.Col label="Comments">
+                <ReferenceManyCount reference="comments" target="post_id" />
+            </DataTable.Col>
+            <DataTable.Col source="views">
+                <NumberField source="views" sortByOrder="DESC" />
+            </DataTable.Col>
+            <DataTable.Col label="Tags">
+                <ReferenceArrayField reference="tags" source="tags">
+                    <SingleFieldList>
+                        <ChipField source="name.en" size="small" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 )
 ```
