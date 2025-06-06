@@ -27,13 +27,13 @@ const isSmall = useMediaQuery('(min-width:600px)');
 
 ## Responsive Layouts
 
-Here is an example for a responsive list of posts, displaying a `SimpleList` on mobile, and a `Datagrid` otherwise:
+Here is an example for a responsive list of posts, displaying a `SimpleList` on mobile, and a `DataTable` otherwise:
 
 ```jsx
 // in src/posts.js
 import * as React from 'react';
 import { useMediaQuery } from '@mui/material';
-import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { List, SimpleList, DataTable, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => {
     const isSmall = useMediaQuery(
@@ -49,15 +49,17 @@ export const PostList = () => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : (
-                <Datagrid>
-                    <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
-                    </ReferenceField>
-                    <TextField source="title" />
-                    <TextField source="body" />
-                    <EditButton />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col label="User" source="userId">
+                        <ReferenceField source="userId" reference="users">
+                            <TextField source="name" />
+                        </ReferenceField>
+                    </DataTable.Col>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="body" />
+                    <DataTable.Col field={EditButton} />
+                </DataTable>
             )}
         </List>
     );

@@ -16,26 +16,28 @@ The most common use case for `<WithListContext>` is to build a custom list view 
 For instance, a list of book tags fetched via [`<ReferenceArrayField>`](./ReferenceArrayField.md): 
 
 ```jsx
-import { List, Datagrid, TextField, ReferenceArrayField, WithListContext } from 'react-admin';
+import { List, DataTable, ReferenceArrayField, WithListContext } from 'react-admin';
 import { Chip, Stack } from '@mui/material';
 
 const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
-                <WithListContext render={({ isPending, data }) => (
-                    !isPending && (
-                        <Stack direction="row" spacing={1}>
-                            {data.map(tag => (
-                                <Chip key={tag.id} label={tag.name} />
-                            ))}
-                        </Stack>
-                    )
-                )} />
-            </ReferenceArrayField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="tag_ids" label="Tags">
+                <ReferenceArrayField reference="tags" source="tag_ids">
+                    <WithListContext render={({ isPending, data }) => (
+                        !isPending && (
+                            <Stack direction="row" spacing={1}>
+                                {data.map(tag => (
+                                    <Chip key={tag.id} label={tag.name} />
+                                ))}
+                            </Stack>
+                        )
+                    )} />
+                </ReferenceArrayField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -45,17 +47,19 @@ const BookList = () => (
 The equivalent with `useListContext` would require an intermediate component:
 
 ```jsx
-import { List, Datagrid, TextField, ReferenceArrayField, WithListContext } from 'react-admin';
+import { List, DataTable, ReferenceArrayField, WithListContext } from 'react-admin';
 
 const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
-                <TagList />
-            </ReferenceArrayField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Tags" source="tag_ids">
+                <ReferenceArrayField reference="tags" source="tag_ids">
+                    <TagList />
+                </ReferenceArrayField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 

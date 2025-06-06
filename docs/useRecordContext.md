@@ -5,7 +5,7 @@ title: "useRecordContext"
 
 # `useRecordContext`
 
-`useRecordContext` grabs the current record. It's available anywhere react-admin manipulates a record, e.g. in a Show page, in a Datagrid row, or in a Reference Field.
+`useRecordContext` grabs the current record. It's available anywhere react-admin manipulates a record, e.g. in a Show page, in a DataTable row, or in a Reference Field.
 
 <iframe src="https://www.youtube-nocookie.com/embed/YLwx-EZfGFk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
@@ -58,7 +58,7 @@ As soon as there is a record available, react-admin puts it in a `RecordContext`
 - in descendants of the `<Show>` and `<ShowBase>` component
 - in descendants of the `<Edit>` and `<EditBase>` component
 - in descendants of the `<Create>` and `<CreateBase>` component
-- in descendants of the `<Datagrid>` component
+- in descendants of the `<DataTable>` component
 - in descendants of the `<SimpleList>` component
 - in descendants of the `<ReferenceField>` component
 
