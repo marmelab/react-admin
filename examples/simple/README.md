@@ -13,6 +13,20 @@ make install
 make run-simple
 ```
 
-And then browse to [http://localhost:8080/](http://localhost:8080/).
+### Run via Docker
+
+To run the application using Docker:
+
+1. Build the Docker image:
+   ```sh
+   docker build -t react-admin-simple .
+   ```
+
+2. Run the Docker container:
+   ```sh
+   docker run -p 8080:8080 react-admin-simple
+   ```
+
+3. Access the application at [http://localhost:8080](http://localhost:8080).
 
 The credentials are **login/password**
