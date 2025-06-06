@@ -111,9 +111,22 @@ const useLogout = (): Logout => {
                         if (redirectToParts[1]) {
                             newLocation.search = redirectToParts[1];
                         }
-                        navigateRef.current(newLocation, newLocationOptions);
-                        resetStore();
-                        queryClient.clear();
+                        navigateRef.current(newLocation, {
+                            ...newLocationOptions,
+                            flushSync: true,
+                        });
+
+                        // We need to reset the store after a litte delay to avoid a race condition
+                        // between the store reset and the navigation.
+                        //
+                        // This would only happen when the `authProvider.getPermissions` method returns
+                        // a resolved promise with no delay: If the store was reset before the navigation,
+                        // the `usePermissions` query would reset, causing the `CoreAdminRoutes` component to
+                        // rerender the `LogoutOnMount` component leading to an infinite loop.
+                        window.requestAnimationFrame(() => {
+                            resetStore();
+                            queryClient.clear();
+                        });
 
                         return redirectToFromProvider;
                     });
