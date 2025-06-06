@@ -12,7 +12,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
   Your browser does not support the video tag.
 </video>
 
-It can be useful in case you want the ability to show a record linked by a reference to the currently edited record, or if you have a nested `<Datagrid>` inside a `<Show>` or an `<Edit>` view. 
+It can be useful in case you want the ability to show a record linked by a reference to the currently edited record, or if you have a nested `<DataTable>` inside a `<Show>` or an `<Edit>` view. 
 
 ## Usage
 
@@ -26,15 +26,15 @@ yarn add @react-admin/ra-form-layout
 
 **Tip**: [`ra-form-layout`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createindialogbutton-editindialogbutton-and-showindialogbutton) is hosted in a private npm registry. You need to subscribe to one of the [Enterprise Edition](https://react-admin-ee.marmelab.com/) plans to access this package.
 
-Then, use the `<ShowInDialogButton>` component inside a `RecordContext` (in a `<Datagrid>`, in a `<Show>` or an `<Edit>` view).
+Then, use the `<ShowInDialogButton>` component inside a `RecordContext` (in a `<DataTable>`, in a `<Show>` or an `<Edit>` view).
 
-Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to show the detail of each row in a dialog:
+Below is an example of an `<Edit>` view, inside which is a nested `<DataTable>`, offering the ability to show the detail of each row in a dialog:
 
 {% raw %}
 
 ```jsx
 import {
-  Datagrid,
+  DataTable,
   DateField,
   ReferenceManyField,
   SelectField,
@@ -59,15 +59,17 @@ const ShowButton = () => (
   </ShowInDialogButton>
 );
 
-const CustomersDatagrid = () => (
-  <Datagrid>
-    <TextField source="id" />
-    <TextField source="first_name" />
-    <TextField source="last_name" />
-    <DateField source="dob" label="born" />
-    <SelectField source="sex" choices={sexChoices} />
-    <ShowButton />
-  </Datagrid>
+const CustomersDataTable = () => (
+  <DataTable>
+    <DataTable.Col source="id" />
+    <DataTable.Col source="first_name" />
+    <DataTable.Col source="last_name" />
+    <DataTable.Col source="dob" label="born" field={DateField} />
+    <DataTable.Col source="sex">
+      <SelectField source="sex" choices={sexChoices} />
+    </DataTable.Col>
+    <DataTable.Col field={ShowButton} />
+  </DataTable>
 );
 
 const EmployerEdit = () => (
@@ -77,7 +79,7 @@ const EmployerEdit = () => (
       <TextInput source="address" validate={required()} />
       <TextInput source="city" validate={required()} />
       <ReferenceManyField label="Customers" reference="customers" target="employer_id">
-        <CustomersDatagrid />
+        <CustomersDataTable />
       </ReferenceManyField>
     </SimpleForm>
   </Edit>
@@ -339,11 +341,11 @@ const ShowButton = () => (
   </ShowInDialogButton>
 );
 
-const CustomersDatagrid = () => (
-  <Datagrid>
+const CustomersDataTable = () => (
+  <DataTable>
     ...
-    <ShowButton />
-  </Datagrid>
+    <DataTable.Col field={ShowButton} />
+  </DataTable>
 );
 ```
 

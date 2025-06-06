@@ -134,18 +134,18 @@ The `BookList` component can grab the `authorId` parameter from the URL using th
 {% raw %}
 ```jsx
 // in src/BookList.jsx
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 import { useParams } from 'react-router-dom';
 
 export const BookList = () => {
     const { authorId } = useParams();
     return (
         <List resource="books" filter={{ authorId }}>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="year" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="year" />
+            </DataTable>
         </List>
     );
 };
@@ -173,12 +173,12 @@ const BooksButton = () => {
 
 export const AuthorList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="firstName" />
-            <TextField source="lastName" />
-            <BooksButton />
-        </Datagrid>
+        <DataTable.Col>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="firstName" />
+            <DataTable.Col source="lastName" />
+            <DataTable.Col field={BooksButton} />
+        </DataTable.Col>
     </List>
 );
 ```
@@ -290,7 +290,7 @@ For instance, the following component displays the name of the current resource:
 
 ```jsx
 import * as React from 'react';
-import { Datagrid, DateField, TextField, List, useResourceContext } from 'react-admin';
+import { DataTable, DateField, List, useResourceContext } from 'react-admin';
 
 const ResourceName = () => {
     const resource = useResourceContext();
@@ -301,10 +301,10 @@ const PostList = () => (
     <List>
         <>
             <ResourceName /> {/* renders 'posts' */}
-            <Datagrid>
-                <TextField source="title" />
-                <DateField source="published_at" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col source="published_at" field={DateField} />
+            </DataTable>
         </>
     </List>
 )
@@ -356,7 +356,7 @@ In order to display a list of songs for the selected artist, `<SongList>` should
 {% raw %}
 ```jsx
 // in src/SongList.jsx
-import { List, Datagrid, TextField, useRecordContext } from 'react-admin';
+import { List, DataTable, useRecordContext, DateField } from 'react-admin';
 import { useParams } from 'react-router-dom';
 import { Button } from '@mui/material';
 
@@ -364,14 +364,14 @@ export const SongList = () => {
     const { id } = useParams();
     return (
         <List resource="songs" filter={{ artistId: id }}>
-            <Datagrid>
-                <TextField source="title" />
-                <DateField source="released" />
-                <TextField source="writer" />
-                <TextField source="producer" />
-                <TextField source="recordCompany" label="Label" />
-                <EditSongButton />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col source="released" field={DateField} />
+                <DataTable.Col source="writer" />
+                <DataTable.Col source="producer" />
+                <DataTable.Col source="recordCompany" label="Label" />
+                <DataTable.Col field={EditSongButton} />
+            </DataTable>
         </List>
     );
 };

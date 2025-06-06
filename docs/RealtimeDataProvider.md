@@ -40,7 +40,7 @@ This adapter subscribes to [Postgres Changes](https://supabase.com/docs/guides/r
 import { createClient } from '@supabase/supabase-js';
 import { supabaseDataProvider } from 'ra-supabase';
 import { addRealTimeMethodsBasedOnSupabase, ListLiveUpdate } from '@react-admin/ra-realtime';
-import { Admin, Resource, Datagrid, List, TextField, EmailField } from 'react-admin';
+import { Admin, Resource, DataTable, List, EmailField } from 'react-admin';
 
 const supabaseClient = createClient(
     process.env.SUPABASE_URL,
@@ -66,12 +66,12 @@ export const App = () => (
 
 const SaleList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="first_name" />
-            <TextField source="last_name" />
-            <EmailField source="email" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="first_name" />
+            <DataTable.Col source="last_name" />
+            <DataTable.Col source="email" field={EmailField} />
+        </DataTable>
         <ListLiveUpdate />
     </List>
 );
@@ -116,7 +116,7 @@ Have a look at the Supabase [Replication Setup](https://supabase.com/docs/guides
 The `ra-realtime` package contains a function augmenting a regular (API-based) `dataProvider` with real-time methods based on the capabilities of [API-Platform](https://api-platform.com/). Use it as follows:
 
 ```jsx
-import { Datagrid, EditButton, List, ListProps } from 'react-admin';
+import { DataTable, EditButton, List, ListProps } from 'react-admin';
 import {
     HydraAdmin,
     ResourceGuesser,
@@ -153,10 +153,12 @@ const App = () => (
 // Example for connecting a list of greetings
 const GreetingsList = () => (
     <List>
-        <Datagrid>
-            <FieldGuesser source="name" />
-            <EditButton />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="name" field={FieldGuesser} />
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
+        </DataTable>
         <ListLiveUpdate />
     </List>
 );

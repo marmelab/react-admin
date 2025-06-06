@@ -29,7 +29,7 @@ Then, add the `<ShowDialog>` component as a sibling to a `<List>` component.
 ```jsx
 import {
     List,
-    Datagrid,
+    DataTable,
     ShowButton,
     SimpleShowLayout,
     TextField,
@@ -40,10 +40,10 @@ import { ShowDialog } from '@react-admin/ra-form-layout';
 const CustomerList = () => (
     <>
         <List>
-            <Datagrid>
+            <DataTable>
                 ...
-                <ShowButton />
-            </Datagrid>
+                <DataTable.Col field={ShowButton} />
+            </DataTable>
         </List>
         <ShowDialog>
             <SimpleShowLayout>
@@ -220,7 +220,7 @@ Here is an example:
 import React from 'react';
 import {
     List,
-    Datagrid,
+    DataTable,
     SimpleShowLayout,
     TextField,
     DateField,
@@ -242,10 +242,10 @@ const CustomerShowTitle = () => {
 const CustomerList = () => (
     <>
         <List>
-            <Datagrid>
+            <DataTable>
                 ...
-                <ShowButton />
-            </Datagrid>
+                <DataTable.Col field={ShowButton} />
+            </DataTable>
         </List>
         <ShowDialog title={<CustomerShowTitle />}>
             <SimpleShowLayout>
@@ -271,7 +271,7 @@ You can also hide the title by passing `null`:
 
 ## Usage Without Routing
 
-By default, `<ShowDialog>` creates a react-router `<Route>` for the displaying path (e.g. `/posts/2/show`), and renders when users go to that location (either by clicking on a datagrid row, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list.
+By default, `<ShowDialog>` creates a react-router `<Route>` for the displaying path (e.g. `/posts/2/show`), and renders when users go to that location (either by clicking on a datatable row, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list.
 
 This may not be what you want if you need to display the show dialog in another page (e.g. to show a related record).
 
@@ -286,7 +286,7 @@ Put `<ShowInDialogButton>` wherever you would put a `<ShowButton>`, and use the 
 
 ```jsx
 import {
-  Datagrid,
+  DataTable,
   ReferenceManyField,
   Show,
   SimpleShowLayout,
@@ -301,16 +301,18 @@ const CompanyShow = () => (
             <TextField source="address" />
             <TextField source="city" />
             <ReferenceManyField target="company_id" reference="employees">
-                <Datagrid>
-                    <TextField source="first_name" />
-                    <TextField source="last_name" />
-                    <ShowInDialogButton>
-                        <SimpleShowLayout>
-                            <TextField source="first_name" />
-                            <TextField source="last_name" />
-                        </SimpleShowLayout>
-                    </ShowInDialogButton>
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="first_name" />
+                    <DataTable.Col source="last_name" />
+                    <DataTable.Col>
+                        <ShowInDialogButton>
+                            <SimpleShowLayout>
+                                <TextField source="first_name" />
+                                <TextField source="last_name" />
+                            </SimpleShowLayout>
+                        </ShowInDialogButton>
+                    </DataTable.Col>
+                </DataTable>
             </ReferenceManyField>
         </SimpleShowLayout>
     </Show>

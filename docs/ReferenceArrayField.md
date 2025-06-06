@@ -46,16 +46,20 @@ A typical `post` record therefore looks like this:
 In that case, use `<ReferenceArrayField>` to display the post tag names as Chips as follows:
 
 ```jsx
-import { List, Datagrid, ReferenceArrayField, TextField } from 'react-admin';
+import { List, DataTable, ReferenceArrayField } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceArrayField reference="tags" source="tag_ids" label="Tags" />
-            <EditButton />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="tag_ids" label="Tags">
+                <ReferenceArrayField reference="tags" source="tag_ids" />
+            </DataTable.Col>
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -72,7 +76,7 @@ Configure the `<Resource recordRepresentation>` to render related records in a m
 <Resource name="tags" list={TagList} recordRepresentation="name" />
 ```
 
-You can change how the list of related records is rendered by passing a custom child reading the `ListContext` (e.g. a [`<Datagrid>`](./Datagrid.md)). See the [`children`](#children) section for details. 
+You can change how the list of related records is rendered by passing a custom child reading the `ListContext` (e.g. a [`<DataTable>`](./DataTable.md)). See the [`children`](#children) section for details.
 
 ## Props
 
@@ -117,16 +121,17 @@ Is equivalent to:
 `<ReferenceArrayField>` creates a [`ListContext`](./useListContext.md), so you can use any child that uses a `ListContext`:
 
 - [`<SingleFieldList>`](./SingleFieldList.md)
+- [`<DataTable>`](./DataTable.md)
 - [`<Datagrid>`](./Datagrid.md)
 - [`<SimpleList>`](./SimpleList.md)
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
 - [`<Calendar>`](./Calendar.md)
 - Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how). 
 
-For instance, use a `<Datagrid>` to render the related records in a table:
+For instance, use a `<DataTable>` to render the related records in a table:
 
 ```jsx
-import { Show, SimpleShowLayout, TextField, ReferenceArrayField, Datagrid, ShowButton } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, ReferenceArrayField, DataTable, ShowButton } from 'react-admin';
 
 export const PostShow = () => (
     <Show>
@@ -134,11 +139,13 @@ export const PostShow = () => (
             <TextField source="id" />
             <TextField source="title" />
             <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="name" />
-                    <ShowButton />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="name" />
+                    <DataTable.Col>
+                        <ShowButton />
+                    </DataTable.Col>
+                </DataTable>
             </ReferenceArrayField>
             <EditButton />
         </SimpleShowLayout>
@@ -190,7 +197,7 @@ For instance, to render only tags that are 'published', you can use the followin
 
 ## `label`
 
-By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer the label of a field based on its `source`. For a `<ReferenceArrayField>`, this may not be what you expect:
+By default, `<SimpleShowLayout>`, `<DataTable>` and other layout components infer the label of a field based on its `source`. For a `<ReferenceArrayField>`, this may not be what you expect:
 
 ```jsx
 {/* default label is 'Tag Ids', or the translation of 'resources.posts.fields.tag_ids' if it exists */}
