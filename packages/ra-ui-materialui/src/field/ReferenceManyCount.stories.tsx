@@ -8,6 +8,12 @@ import {
 } from 'ra-core';
 
 import { ReferenceManyCount } from './ReferenceManyCount';
+import {
+    defaultDarkTheme,
+    defaultLightTheme,
+    ThemeProvider,
+    ThemesContext,
+} from '../theme';
 
 export default {
     title: 'ra-ui-materialui/fields/ReferenceManyCount',
@@ -26,27 +32,37 @@ const comments = [
     { id: 5, post_id: 2, is_published: false },
 ];
 
-export const Wrapper = ({ dataProvider, children }) => (
+export const Wrapper = ({ dataProvider, children, defaultTheme = 'light' }) => (
     <TestMemoryRouter>
-        <DataProviderContext.Provider value={dataProvider}>
-            <QueryClientProvider
-                client={
-                    new QueryClient({
-                        defaultOptions: {
-                            queries: {
-                                retry: false,
-                            },
-                        },
-                    })
-                }
-            >
-                <ResourceContextProvider value="posts">
-                    <RecordContextProvider value={post}>
-                        {children}
-                    </RecordContextProvider>
-                </ResourceContextProvider>
-            </QueryClientProvider>
-        </DataProviderContext.Provider>
+        <ThemesContext.Provider
+            value={{
+                lightTheme: defaultLightTheme,
+                darkTheme: defaultDarkTheme,
+                defaultTheme: defaultTheme as 'dark' | 'light',
+            }}
+        >
+            <ThemeProvider>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <QueryClientProvider
+                        client={
+                            new QueryClient({
+                                defaultOptions: {
+                                    queries: {
+                                        retry: false,
+                                    },
+                                },
+                            })
+                        }
+                    >
+                        <ResourceContextProvider value="posts">
+                            <RecordContextProvider value={post}>
+                                {children}
+                            </RecordContextProvider>
+                        </ResourceContextProvider>
+                    </QueryClientProvider>
+                </DataProviderContext.Provider>
+            </ThemeProvider>
+        </ThemesContext.Provider>
     </TestMemoryRouter>
 );
 
