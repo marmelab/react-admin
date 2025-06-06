@@ -29,10 +29,12 @@ const PostList = () => {
     const { data: locks } = useGetLocksLive();
     return (
         <List>
-            <Datagrid>
-                <TextField source="title" />
-                <LockField locks={locks} />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col>
+                    <LockField locks={locks} />
+                </DataTable.Col>
+            </DataTable>
         </List>
     );
 };

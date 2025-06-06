@@ -45,11 +45,11 @@ export const PostShow = () => (
             </TabbedShowLayout.Tab>
             <TabbedShowLayout.Tab label="comments" path="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="body" />
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col field={EditButton} />
+                    </DataTable>
                 </ReferenceManyField>
             </TabbedShowLayout.Tab>
         </TabbedShowLayout>
@@ -176,11 +176,11 @@ export const PostShow = () => (
             </TabbedShowLayout.Tab>
             <TabbedShowLayout.Tab label="comments" path="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="body" />
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col field={EditButton} />
+                    </DataTable>
                 </ReferenceManyField>
             </TabbedShowLayout.Tab>
         </TabbedShowLayout>

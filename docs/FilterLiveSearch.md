@@ -71,7 +71,7 @@ import { Card, CardContent } from '@mui/material';
 import {
     AutocompleteInput,
     FilterLiveForm,
-    Datagrid,
+    DataTable,
     FilterList,
     FilterListItem,
     FilterListSection,
@@ -117,9 +117,9 @@ const BookListAside = () => (
 
 export const BookList = () => (
     <List aside={<BookListAside />}>
-        <Datagrid>
+        <DataTable>
             {/* ... */}
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```

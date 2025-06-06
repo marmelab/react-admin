@@ -13,15 +13,15 @@ The `sx` prop accepts an object with CSS properties as keys and values, just lik
 
 {% raw %}
 ```jsx
-import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
+import { NumberField, List, DataTable, EditButton } from 'react-admin';
 
 export const ProductList = () => (
     <List>
-        <Datagrid>
-            <TextField source="sku" />
-            <TextField source="price" />
-            <EditButton sx={{ fontWeight: "bold" }}/>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="sku" />
+            <DataTable.Col source="price" />
+            <DataTable.Col field={EditButton} sx={{ fontWeight: "bold" }}/>
+        </DataTable>
     </List>
 );
 ```
@@ -263,18 +263,16 @@ const CustomUserCard = ({ user }) => (
 ```
 {% endraw %}
 
-Here is another example, illustrating the ability to customize the header of a `<Datagrid>`:
+Here is another example, illustrating the ability to customize the header of a `<DataTable>`:
 
 {% raw %}
 ```jsx
 import {
     BooleanField,
-    Datagrid,
+    DataTable,
     DateField,
     EditButton,
     List,
-    NumberField,
-    TextField,
     ShowButton,
 } from 'react-admin';
 import Icon from '@mui/icons-material/Person';
@@ -283,22 +281,28 @@ export const VisitorIcon = Icon;
 
 export const PostList = () => (
     <List>
-        <Datagrid
+        <DataTable
             sx={{
                 backgroundColor: "Lavender",
-                "& .RaDatagrid-headerCell": {
+                "& .RaDataTable-headerCell": {
                     backgroundColor: "MistyRose",
                 },
             }}
         >
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" sortByOrder="DESC" />
-            <BooleanField source="commentable" sortable={false} />
-            <NumberField source="views" sortByOrder="DESC" />
-            <EditButton />
-            <ShowButton />
-        </Datagrid>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at">
+                <DateField source="published_at" sortByOrder="DESC" />
+            </DataTable.Col>
+            <DataTable.Col source="commentable">
+                <BooleanField source="commentable" sortable={false} />
+            </DataTable.Col>
+            <DataTable.Col source="views">
+                <NumberField source="views" sortByOrder="DESC" />
+            </DataTable.Col>
+            <DataTable.Col field={EditButton} />
+            <DataTable.Col field={ShowButton} />
+        </DataTable>
     </List>
 );
 ```
@@ -308,13 +312,13 @@ This example results in:
 
 ![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
 
-To guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser:
+To guess the name of the subclass to use (like `.RaDataTable-headerCell` above) for customizing a component, you can use the developer tools of your browser:
 
 ![Developer tools](./img/sx-class-name.png)
 
-The react-admin documentation for individual components also lists the classes available for styling. For instance, here is the [Datagrid CSS documentation](./Datagrid.md#sx-css-api):
+The react-admin documentation for individual components also lists the classes available for styling. For instance, here is the [DataTable CSS documentation](./DataTable.md#sx-css-api):
 
-![Datagrid CSS documentation](./img/sx-documentation.png)
+![DataTable CSS documentation](./img/sx-documentation.png)
 
 ## Callback Values
 
@@ -367,7 +371,7 @@ The following example shows how to create a new `<ColoredNumberField>` component
 
 {% raw %}
 ```tsx
-import { useRecordContext, NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
+import { useRecordContext, NumberField, List, DataTable, EditButton } from 'react-admin';
 import type { NumberFieldProps } from 'react-admin';
 
 const ColoredNumberField = (props: NumberFieldProps) => {
@@ -385,12 +389,12 @@ ColoredNumberField.defaultProps = NumberField.defaultProps;
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
+        <DataTable>
+            <DataTable.Col source="id" />
             ...
-            <ColoredNumberField source="nb_views" />
-            <EditButton />
-        </Datagrid>
+            <DataTable.Col source="nb_views" field={ColoredNumberField} />
+            <DataTable.Col field={EditButton} />
+        </DataTable>
     </List>
 );
 ```
@@ -402,64 +406,68 @@ export const PostList = () => (
 
 To reuse the same style overrides in different locations across your application, create a reusable component using [the Material UI `styled()` utility](https://mui.com/system/styled/). It's a function that creates a new component based on a source component and custom styles. The basic syntax is `styled(Component)(styles) => Component` (where `styles` follows the same syntax as the `sx` prop).
 
-For instance, to create a custom `<Datagrid>` component with the header style defined in the previous section:
+For instance, to create a custom `<DataTable>` component with the header style defined in the previous section:
 
 ```jsx
-// in src/MyDatagrid.js
+// in src/MyDataTable.js
 import { styled } from '@mui/system';
-import { Datagrid } from 'react-admin';
+import { DataTable } from 'react-admin';
 
-export const MyDatagrid = styled(Datagrid)({
+export const MyDataTable = styled(DataTable)({
     backgroundColor: "Lavender",
-    "& .RaDatagrid-headerCell": {
+    "& .RaDataTable-headerCell": {
         backgroundColor: "MistyRose",
     },
 });
 ```
 
-You can then use this component instead of react-admin's `<Datagrid>` component:
+You can then use this component instead of react-admin's `<DataTable>` component:
 
 {% raw %}
 ```diff
 // in src/post/PostList.js
 import {
     BooleanField,
--   Datagrid,
+-   DataTable,
     DateField,
     EditButton,
     List,
-    NumberField,
-    TextField,
     ShowButton,
 } from 'react-admin';
-+import { MyDatagrid } from '../MyDatagrid';
++import { MyDataTable } from '../MyDataTable';
 
 export const PostList = () => (
     <List>
--       <Datagrid
+-       <DataTable
 -           sx={{
 -               backgroundColor: "Lavender",
--               "& .RaDatagrid-headerCell": {
+-               "& .RaDataTable-headerCell": {
 -                   backgroundColor: "MistyRose",
 -               },
 -           }}
 -       >
-+       <MyDatagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" sortByOrder="DESC" />
-            <BooleanField source="commentable" sortable={false} />
-            <NumberField source="views" sortByOrder="DESC" />
-            <EditButton />
-            <ShowButton />
-+       </MyDatagrid>
--       </Datagrid>
++       <MyDataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at">
+                <DateField source="published_at" sortByOrder="DESC" />
+            </DataTable.Col>
+            <DataTable.Col source="commentable">
+                <BooleanField source="commentable" sortable={false} />
+            </DataTable.Col>
+            <DataTable.Col source="views">
+                <NumberField source="views" sortByOrder="DESC" />
+            </DataTable.Col>
+            <DataTable.Col field={EditButton} />
+            <DataTable.Col field={ShowButton} />
++       </MyDataTable>
+-       </DataTable>
     </List>
 );
 ```
 {% endraw %}
 
-Again, to guess the name of the subclass to use (like `.RaDatagrid-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [Datagrid CSS documentation](./Datagrid.md#sx-css-api)).
+Again, to guess the name of the subclass to use (like `.RaDataTable-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [DataTable CSS documentation](./DataTable.md#sx-css-api)).
 
 ## Going Further
 

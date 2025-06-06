@@ -33,16 +33,16 @@ When one component calls `setValue` on a key, all the components that read the s
 ## Example
 
 ```jsx
-import { List, Datagrid } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 
 const PostList = () => {
     const [density] = useStore('posts.list.density', 'small');
 
     return (
         <List>
-            <Datagrid size={density}>
+            <DataTable size={density}>
                 ...
-            </Datagrid>
+            </DataTable>
         </List>
     );
 }

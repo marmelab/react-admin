@@ -5,7 +5,7 @@ title: "useUnselect"
 
 # `useUnselect`
 
-This hook returns a function that unselects lines in the current `<Datagrid>` that match an array of ids. Pass the name of the resource to the hook as argument.
+This hook returns a function that unselects lines in the current `<DataTable>` that match an array of ids. Pass the name of the resource to the hook as argument.
 
 ```jsx
 import { useListContext, useUnselect } from 'react-admin';

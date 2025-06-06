@@ -102,7 +102,7 @@ test('<MyComponent>', async () => {
 
 ## Resetting The Store
 
-The react-admin Store is persistent. This means that if a test modifies an item in the store, the updated value will be changed in the next test. This will cause seemingly random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. datagrid row selection, sidebar state, language selection).
+The react-admin Store is persistent. This means that if a test modifies an item in the store, the updated value will be changed in the next test. This will cause seemingly random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. datatable row selection, sidebar state, language selection).
 
 To isolate your unit tests, pass a new `memoryStore` at each test:
 

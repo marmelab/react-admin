@@ -153,7 +153,7 @@ const HasOrderedFilter = () => (
 
 ## Placing Filters In A Sidebar
 
-You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left-hand side of the `Datagrid`. You can use the `aside` property for that:
+You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left-hand side of the `DataTable`. You can use the `aside` property for that:
 
 {% raw %}
 ```jsx
@@ -315,7 +315,7 @@ import { Card, CardContent } from '@mui/material';
 import {
     AutocompleteInput,
     FilterLiveForm,
-    Datagrid,
+    DataTable,
     FilterList,
     FilterListItem,
     FilterListSection,
@@ -361,9 +361,9 @@ const BookListAside = () => (
 
 export const BookList = () => (
     <List aside={<BookListAside />}>
-        <Datagrid>
+        <DataTable>
             {/* ... */}
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```

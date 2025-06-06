@@ -364,13 +364,15 @@ For example, this allows you to display data from a related resource without mak
 const PostList = () => (
 -   <List>
 +   <List queryOptions={{ meta: { embed: ["author"] } }}>
-        <Datagrid>
-            <TextField source="title" />
--           <ReferenceField source="author_id" reference="authors>
--               <TextField source="name" />
--           </ReferenceField>
-+           <TextField source="author.name" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+-           <DataTable.Col source="author_id">
+-               <ReferenceField source="author_id" reference="authors>
+-                   <TextField source="name" />
+-               </ReferenceField>
+-           </DataTable.Col>
++           <DataTable.Col source="author.name" />
+        </DataTable>
     </List>
 );
 ```
@@ -415,11 +417,13 @@ For example, you can use prefetching to display the author's name in a post list
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { prefetch: ['author'] }}}>
-        <Datagrid>
-            <TextField source="title" />
-            {/** renders without an additional request */}
-            <ReferenceField source="author_id" reference="authors" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author_id">
+                {/** renders without an additional request */}
+                <ReferenceField source="author_id" reference="authors" />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
