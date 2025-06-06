@@ -198,7 +198,10 @@ export const ReferenceFieldClasses = {
 
 const Root = styled('span', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: (props, styles) => ({
+        ['&']: styles.root,
+        [`& .${ReferenceFieldClasses.link}`]: styles.link,
+    }),
 })(({ theme }) => ({
     lineHeight: 'initial',
     [`& .${ReferenceFieldClasses.link}`]: {
