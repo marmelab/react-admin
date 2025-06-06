@@ -17,8 +17,7 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { ThemeProvider, Stack } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { Stack } from '@mui/material';
 
 import { TextField } from '../field';
 import { ReferenceField } from './ReferenceField';
@@ -27,6 +26,12 @@ import { ReferenceInput } from '../input/ReferenceInput';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
 import { Datagrid } from '../list/datagrid/Datagrid';
 import { AdminUI, AdminContext } from '../';
+import {
+    defaultDarkTheme,
+    defaultLightTheme,
+    ThemeProvider,
+    ThemesContext,
+} from '../theme';
 import { List } from '../list';
 import { EditGuesser, ShowGuesser } from '../detail';
 import { QueryClient } from '@tanstack/react-query';
@@ -72,19 +77,30 @@ const Wrapper = ({
     dataProvider = defaultDataProvider,
     record = defaultRecord,
     resourceDefinitions = defaultResourceDefinitions,
+    defaultTheme = 'light',
 }: any) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
-        <CoreAdminContext dataProvider={dataProvider}>
-            <ResourceDefinitionContextProvider
-                definitions={resourceDefinitions}
-            >
-                <ResourceContextProvider value="books">
-                    <RecordContextProvider value={record}>
-                        {children}
-                    </RecordContextProvider>
-                </ResourceContextProvider>
-            </ResourceDefinitionContextProvider>
-        </CoreAdminContext>
+        <ThemesContext.Provider
+            value={{
+                lightTheme: defaultLightTheme,
+                darkTheme: defaultDarkTheme,
+                defaultTheme: defaultTheme as 'dark' | 'light',
+            }}
+        >
+            <ThemeProvider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={resourceDefinitions}
+                    >
+                        <ResourceContextProvider value="books">
+                            <RecordContextProvider value={record}>
+                                {children}
+                            </RecordContextProvider>
+                        </ResourceContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        </ThemesContext.Provider>
     </TestMemoryRouter>
 );
 
@@ -361,21 +377,19 @@ export const InShowLayout = () => (
 );
 
 const ListWrapper = ({ children }) => (
-    <ThemeProvider theme={createTheme()}>
-        <Wrapper>
-            <ListContextProvider
-                value={
-                    {
-                        total: 1,
-                        data: [{ id: 1, title: 'War and Peace', detail_id: 1 }],
-                        sort: { field: 'title', order: 'ASC' },
-                    } as any
-                }
-            >
-                {children}
-            </ListContextProvider>
-        </Wrapper>
-    </ThemeProvider>
+    <Wrapper>
+        <ListContextProvider
+            value={
+                {
+                    total: 1,
+                    data: [{ id: 1, title: 'War and Peace', detail_id: 1 }],
+                    sort: { field: 'title', order: 'ASC' },
+                } as any
+            }
+        >
+            {children}
+        </ListContextProvider>
+    </Wrapper>
 );
 
 export const InDatagrid = () => (
