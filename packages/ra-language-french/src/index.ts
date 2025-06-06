@@ -182,6 +182,8 @@ const frenchMessages: TranslationMessages = {
                 "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
             application_update_available: 'Une mise à jour est disponible.',
             offline: 'Pas de connexion. Impossible de charger les données.',
+            pending_operations:
+                'Il y a une opération en attente due à un problème de réseau |||| Il y a %{smart_count} opérations en attente dues à un problème de réseau',
         },
         validation: {
             required: 'Ce champ est requis',

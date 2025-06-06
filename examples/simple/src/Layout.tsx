@@ -6,8 +6,9 @@ import {
     InspectorButton,
     TitlePortal,
     useNotify,
+    useIsOffine,
 } from 'react-admin';
-import { onlineManager, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { Stack, Tooltip } from '@mui/material';
 import OfflineIcon from '@mui/icons-material/SignalWifiConnectedNoInternet4';
 import '../assets/app.css';
@@ -47,19 +48,6 @@ export const MyLayout = ({ children }) => (
         />
     </>
 );
-
-const useIsOffine = () => {
-    const [isOnline, setIsOnline] = React.useState(onlineManager.isOnline());
-
-    React.useEffect(() => {
-        const handleChange = () => {
-            setIsOnline(onlineManager.isOnline());
-        };
-        return onlineManager.subscribe(handleChange);
-    }, []);
-
-    return !isOnline;
-};
 
 /**
  * When react-query resumes persisted mutations through their default functions (provided in the getOfflineFirstQueryClient file) after the browser tab

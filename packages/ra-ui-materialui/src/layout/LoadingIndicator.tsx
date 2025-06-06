@@ -9,9 +9,11 @@ import {
 } from '@mui/material/styles';
 import clsx from 'clsx';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useLoading } from 'ra-core';
+import { Translate, useIsOffine, useLoading } from 'ra-core';
 
 import { RefreshIconButton, type RefreshIconButtonProps } from '../button';
+import { Badge, Tooltip } from '@mui/material';
+import { useMutationState } from '@tanstack/react-query';
 
 export const LoadingIndicator = (inProps: LoadingIndicatorProps) => {
     const props = useThemeProps({
@@ -20,6 +22,12 @@ export const LoadingIndicator = (inProps: LoadingIndicatorProps) => {
     });
     const { className, onClick, sx, ...rest } = props;
     const loading = useLoading();
+    const isOffline = useIsOffine();
+    const pendingMutations = useMutationState({
+        filters: {
+            status: 'pending',
+        },
+    });
 
     const theme = useTheme();
     return (
@@ -30,18 +38,51 @@ export const LoadingIndicator = (inProps: LoadingIndicatorProps) => {
                 }`}
                 onClick={onClick}
             />
-            {loading && (
-                <CircularProgress
-                    className={clsx(
-                        'app-loader',
-                        LoadingIndicatorClasses.loader
-                    )}
-                    color="inherit"
-                    size={theme.spacing(2)}
-                    thickness={6}
-                    {...rest}
-                />
-            )}
+            {loading ? (
+                isOffline ? (
+                    <Tooltip
+                        title={
+                            <Translate
+                                i18nKey="ra.notifications.pending_operations"
+                                options={{ smart_count: 1 }}
+                            >
+                                {pendingMutations.length > 1
+                                    ? `There are ${pendingMutations.length} pending
+                                operations due to network not being available`
+                                    : `There is a pending operation due to network not being available`}
+                            </Translate>
+                        }
+                    >
+                        <Badge
+                            className={LoadingIndicatorClasses.loader}
+                            badgeContent={pendingMutations.length}
+                            color="primary"
+                        >
+                            <CircularProgress
+                                className={clsx(
+                                    'app-loader',
+                                    LoadingIndicatorClasses.loadedLoading
+                                )}
+                                color="inherit"
+                                size={theme.spacing(2)}
+                                thickness={6}
+                                {...rest}
+                            />
+                        </Badge>
+                    </Tooltip>
+                ) : (
+                    <CircularProgress
+                        className={clsx(
+                            'app-loader',
+                            LoadingIndicatorClasses.loader
+                        )}
+                        color="inherit"
+                        size={theme.spacing(2)}
+                        thickness={6}
+                        {...rest}
+                    />
+                )
+            ) : null}
         </Root>
     );
 };

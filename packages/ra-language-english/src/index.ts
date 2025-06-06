@@ -174,6 +174,8 @@ const englishMessages: TranslationMessages = {
             not_authorized: "You're not authorized to access this resource.",
             application_update_available: 'A new version is available.',
             offline: 'No connectivity. Could not fetch data.',
+            pending_operations:
+                'There is a pending operation due to network not being available |||| There are %{smart_count} pending operations due to network not being available',
         },
         validation: {
             required: 'Required',
