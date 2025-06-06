@@ -7,6 +7,7 @@ import {
     SortPayload,
     RaRecord,
 } from 'ra-core';
+import clsx from 'clsx';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
 import {
     ComponentsOverrides,
@@ -42,6 +43,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
     });
 
     const {
+        className,
         reference,
         target,
         filter,
@@ -84,12 +86,14 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
 
     return (
         <StyledTypography
+            className={clsx(className, ReferenceManyCountClasses.root)}
             component="span"
             variant="body2"
             {...sanitizeFieldRestProps(rest)}
         >
             {link && record ? (
                 <Link
+                    className={ReferenceManyCountClasses.link}
                     to={{
                         pathname: createPath({
                             resource: reference,
@@ -128,14 +132,22 @@ export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
 
 const PREFIX = 'RaReferenceManyCount';
 
+export const ReferenceManyCountClasses = {
+    root: `${PREFIX}-root`,
+    link: `${PREFIX}-link`,
+};
+
 const StyledTypography = styled(Typography, {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: (props, styles) => ({
+        ['&']: styles.root,
+        [`& .${ReferenceManyCountClasses.link}`]: styles.link,
+    }),
 })({});
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        [PREFIX]: 'root';
+        [PREFIX]: 'root' | 'link';
     }
 
     interface ComponentsPropsList {
