@@ -1,6 +1,11 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import { Link, LinkProps } from '@mui/material';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -10,8 +15,13 @@ import { genericMemo } from './genericMemo';
 const EmailFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: EmailFieldProps<RecordType>
+    inProps: EmailFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const { className, emptyText, ...rest } = props;
     const value = useFieldValue(props);
     const translate = useTranslate();
@@ -30,7 +40,7 @@ const EmailFieldImpl = <
     }
 
     return (
-        <Link
+        <StyledLink
             className={className}
             href={`mailto:${value}`}
             onClick={stopPropagation}
@@ -38,7 +48,7 @@ const EmailFieldImpl = <
             {...sanitizeFieldRestProps(rest)}
         >
             {value}
-        </Link>
+        </StyledLink>
     );
 };
 EmailFieldImpl.displayName = 'EmailFieldImpl';
@@ -52,3 +62,29 @@ export interface EmailFieldProps<
 
 // useful to prevent click bubbling in a Datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
+
+const PREFIX = 'RaEmailField';
+
+const StyledLink = styled(Link, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<EmailFieldProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}
