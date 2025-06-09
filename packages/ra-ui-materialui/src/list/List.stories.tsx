@@ -8,7 +8,14 @@ import {
     DataProvider,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Box, Card, Typography, Button, Link as MuiLink } from '@mui/material';
+import {
+    Box,
+    Card,
+    Typography,
+    Button,
+    Link as MuiLink,
+    ThemeOptions,
+} from '@mui/material';
 
 import { List } from './List';
 import { SimpleList } from './SimpleList';
@@ -22,6 +29,8 @@ import { BulkDeleteButton, ListButton, SelectAllButton } from '../button';
 import { ShowGuesser } from '../detail';
 import TopToolbar from '../layout/TopToolbar';
 import { BulkActionsToolbar } from './BulkActionsToolbar';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme, RaThemeOptions } from '../theme';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -797,6 +806,42 @@ export const ResponseMetadata = () => (
                         <BookList />
                     </List>
                 }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const Themed = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin
+            dataProvider={defaultDataProvider}
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaList: {
+                        defaultProps: {
+                            className: 'custom-class',
+                        },
+                        styleOverrides: {
+                            root: {
+                                background: 'pink',
+
+                                ['& .MuiListItemText-primary']: {
+                                    color: 'hotpink',
+                                    fontWeight: 'bold',
+                                },
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <Resource
+                name="books"
+                list={() => (
+                    <List data-testid={'themed-list'}>
+                        <BookList />
+                    </List>
+                )}
             />
         </Admin>
     </TestMemoryRouter>

@@ -11,7 +11,14 @@ import {
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { Alert, Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import {
+    Alert,
+    Box,
+    FormControlLabel,
+    FormGroup,
+    Switch,
+    ThemeOptions,
+} from '@mui/material';
 import { Location } from 'react-router';
 
 import { AdminUI } from '../../AdminUI';
@@ -21,6 +28,8 @@ import { List, ListProps } from '../List';
 import { RowClickFunction } from '../types';
 import { SimpleList } from './SimpleList';
 import { FunctionLinkType } from './SimpleListItem';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../../theme';
 
 export default { title: 'ra-ui-materialui/list/SimpleList' };
 
@@ -425,6 +434,42 @@ export const StandaloneEmpty = () => (
                     secondaryText={record => record.author}
                     tertiaryText={record => record.year}
                     linkType={false}
+                />
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const Themed = () => (
+    <TestMemoryRouter>
+        <AdminContext
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaSimpleList: {
+                        defaultProps: {
+                            className: 'custom-class',
+                        },
+                        styleOverrides: {
+                            root: {
+                                background: 'pink',
+
+                                ['& .MuiListItemText-primary']: {
+                                    color: 'hotpink',
+                                    fontWeight: 'bold',
+                                },
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <ResourceContextProvider value="books">
+                <SimpleList
+                    data-testid={'themed-list'}
+                    data={data.books}
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
                 />
             </ResourceContextProvider>
         </AdminContext>
