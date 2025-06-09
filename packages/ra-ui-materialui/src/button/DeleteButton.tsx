@@ -101,8 +101,13 @@ export type DeleteButtonProps<
     MutationOptionsError = unknown,
 > = SaveContextValue &
     (
-        | DeleteWithUndoButtonProps<RecordType, MutationOptionsError>
-        | DeleteWithConfirmButtonProps<RecordType, MutationOptionsError>
+        | ({ mutationMode?: 'undoable' } & DeleteWithUndoButtonProps<
+              RecordType,
+              MutationOptionsError
+          >)
+        | ({
+              mutationMode?: 'pessimistic' | 'optimistic';
+          } & DeleteWithConfirmButtonProps<RecordType, MutationOptionsError>)
     );
 
 const PREFIX = 'RaDeleteButton';
