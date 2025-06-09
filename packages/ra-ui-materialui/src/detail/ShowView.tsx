@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
+import { ShowProps } from './Show';
 
 const defaultActions = <ShowActions />;
 
@@ -101,7 +102,7 @@ declare module '@mui/material/styles' {
     }
 
     interface ComponentsPropsList {
-        RaShow: Partial<ShowViewProps>;
+        RaShow: Partial<ShowProps>;
     }
 
     interface Components {
