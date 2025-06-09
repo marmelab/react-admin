@@ -17,6 +17,9 @@ import { NumberField, TextField } from '../field';
 import { Show, SimpleShowLayout } from '../detail';
 import { TopToolbar } from '../layout';
 import { Datagrid, List } from '../list';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
+import { ThemeOptions } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/button/UpdateButton' };
 
@@ -305,6 +308,29 @@ export const SideEffects = () => (
         >
             <AdminUI>
                 <Resource name="posts" show={<PostShowSideEffects />} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const Themed = () => (
+    <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={i18nProvider}
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaUpdateButton: {
+                        defaultProps: {
+                            className: 'custom-class',
+                            'data-testid': 'themed-button',
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <AdminUI>
+                <Resource name="posts" show={<PostShow />} />
             </AdminUI>
         </AdminContext>
     </TestMemoryRouter>

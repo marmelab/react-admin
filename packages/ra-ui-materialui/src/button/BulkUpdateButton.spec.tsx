@@ -1,9 +1,22 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
-import { MutationMode } from './BulkUpdateButton.stories';
+import { MutationMode, Themed } from './BulkUpdateButton.stories';
 
 describe('BulkUpdateButton', () => {
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+
+        const checkbox = await screen.findByRole('checkbox', {
+            name: 'Select all',
+        });
+        checkbox.click();
+
+        const button = screen.queryByTestId('themed-button');
+        expect(button.textContent).toBe('Bulk Update');
+        expect(button.classList).toContain('custom-class');
+    });
+
     describe('mutationMode', () => {
         it('should ask confirmation before updating in pessimistic mode', async () => {
             render(<MutationMode />);

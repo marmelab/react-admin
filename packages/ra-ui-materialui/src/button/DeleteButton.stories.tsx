@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { colors, createTheme, Alert } from '@mui/material';
+import { colors, createTheme, Alert, ThemeOptions } from '@mui/material';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
@@ -18,6 +18,8 @@ import { Datagrid } from '../list/datagrid/Datagrid';
 import { TextField } from '../field/TextField';
 import { AdminUI } from '../AdminUI';
 import { Notification } from '../layout';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
 
 const theme = createTheme({
     palette: {
@@ -385,3 +387,22 @@ export const SuccessMessage = () => {
         </AdminContext>
     );
 };
+
+export const Themed = () => (
+    <AdminContext
+        theme={deepmerge(defaultLightTheme, {
+            components: {
+                RaDeleteButton: {
+                    defaultProps: {
+                        label: 'Delete',
+                        className: 'custom-class',
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <ResourceContextProvider value="posts">
+            <DeleteButton data-testid={'themed-button'} record={{ id: 1 }} />
+        </ResourceContextProvider>
+    </AdminContext>
+);

@@ -19,6 +19,9 @@ import { TextField } from '../field/TextField';
 import ShowButton from './ShowButton';
 import { Show } from '../detail/Show';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
+import { ThemeOptions } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/button/ShowButton' };
 
@@ -248,3 +251,29 @@ const dataProvider = fakeRestDataProvider({
     ],
     authors: [],
 });
+
+export const Themed = ({ buttonProps }: { buttonProps?: any }) => (
+    <TestMemoryRouter>
+        <AdminContext
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaShowButton: {
+                        defaultProps: {
+                            label: 'Show',
+                            className: 'custom-class',
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <ResourceContextProvider value="books">
+                <RecordContextProvider value={{ id: 1 }}>
+                    <ShowButton
+                        data-testid={'themed-button'}
+                        {...buttonProps}
+                    />
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
