@@ -1,6 +1,9 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { deepmerge } from '@mui/utils';
+import { createTheme } from '@mui/material/styles';
+import { ThemeOptions } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
@@ -35,10 +38,30 @@ export const ReadOnly = () => (
     </Wrapper>
 );
 
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaPasswordInput: {
+                    styleOverrides: {
+                        root: {
+                            ['& input']: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <PasswordInput source="password" />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider}>
+const Wrapper = ({ children, theme = undefined }) => (
+    <AdminContext i18nProvider={i18nProvider} theme={theme}>
         <Create resource="posts">
             <SimpleForm>
                 {children}

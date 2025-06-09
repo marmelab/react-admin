@@ -9,6 +9,9 @@ import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { BooleanInput } from './BooleanInput';
 import { TextInput } from './TextInput';
+import { deepmerge } from '@mui/utils';
+import { createTheme } from '@mui/material/styles';
+import { ThemeOptions } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/input/BooleanInput' };
 
@@ -44,10 +47,11 @@ export const Dark = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children, defaultTheme = 'light' }) => (
+const Wrapper = ({ children, defaultTheme = 'light', theme = undefined }) => (
     <AdminContext
         i18nProvider={i18nProvider}
         defaultTheme={defaultTheme as any}
+        theme={theme}
     >
         <Create resource="posts">
             <SimpleForm>{children}</SimpleForm>
@@ -72,4 +76,22 @@ export const SetFocus = () => (
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaBooleanInput: {
+                    styleOverrides: {
+                        root: {
+                            color: 'red',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <BooleanInput source="published" />
+    </Wrapper>
 );

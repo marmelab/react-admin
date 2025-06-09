@@ -3,7 +3,9 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { useRecordContext } from 'ra-core';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, createTheme, Typography } from '@mui/material';
+import { ThemeOptions } from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
 import get from 'lodash/get';
 
 import { AdminContext } from '../AdminContext';
@@ -96,16 +98,42 @@ export const AsDateObject = () => (
     </Wrapper>
 );
 
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaDateTimeInput: {
+                    styleOverrides: {
+                        root: {
+                            ['& input']: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <DateTimeInput source="published" />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({
     children,
     simpleFormProps,
+    theme,
 }: {
     children: React.ReactNode;
     simpleFormProps?: Omit<SimpleFormProps, 'children'>;
+    theme: ThemeOptions;
 }) => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
+    <AdminContext
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+        theme={theme}
+    >
         <Create resource="posts">
             <SimpleForm {...simpleFormProps}>
                 {children}

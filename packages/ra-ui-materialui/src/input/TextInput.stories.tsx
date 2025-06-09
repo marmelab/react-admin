@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { required, Resource } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
+import { deepmerge } from '@mui/utils';
+import { createTheme } from '@mui/material/styles';
+import { ThemeOptions } from '@mui/material';
 
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
@@ -13,8 +16,8 @@ import { MemoryRouter } from 'react-router';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 
-const Wrapper = ({ children }) => (
-    <AdminContext defaultTheme="light">
+const Wrapper = ({ children, theme = undefined }) => (
+    <AdminContext defaultTheme="light" theme={theme}>
         <Create
             resource="posts"
             record={{ id: 123, title: 'Lorem ipsum' }}
@@ -404,4 +407,25 @@ export const Parse = ({ onSuccess = console.log }) => (
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaTextInput: {
+                    styleOverrides: {
+                        root: {
+                            ['& input']: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <TextInput source="title" />
+        <FormInspector />
+    </Wrapper>
 );

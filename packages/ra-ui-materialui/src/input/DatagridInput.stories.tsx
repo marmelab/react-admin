@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
 import { Resource, TestMemoryRouter } from 'ra-core';
+import { deepmerge } from '@mui/utils';
+import { createTheme, ThemeOptions } from '@mui/material/styles';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -154,6 +156,30 @@ export const InsideReferenceInput = () => (
         <Admin dataProvider={dataProviderWithAuthors}>
             <Resource name="authors" />
             <Resource name="books" edit={BookEditWithReference} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const Themed = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={dataProvider}
+            theme={deepmerge(createTheme(), {
+                components: {
+                    RaDatagridInput: {
+                        styleOverrides: {
+                            root: {
+                                ['& .MuiTypography-root']: {
+                                    color: 'red',
+                                    fontWeight: 'bold',
+                                },
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <Resource name="books" edit={BookEdit} />
         </Admin>
     </TestMemoryRouter>
 );

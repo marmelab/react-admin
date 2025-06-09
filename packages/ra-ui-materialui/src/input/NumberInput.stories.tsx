@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { required } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
+import { deepmerge } from '@mui/utils';
+import { createTheme } from '@mui/material/styles';
+import { ThemeOptions } from '@mui/material';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
@@ -11,8 +14,8 @@ import { TextInput } from './TextInput';
 
 export default { title: 'ra-ui-materialui/input/NumberInput' };
 
-const Wrapper = ({ children }) => (
-    <AdminContext defaultTheme="light">
+const Wrapper = ({ children, theme = undefined }) => (
+    <AdminContext defaultTheme="light" theme={theme}>
         <Create
             resource="posts"
             record={{ id: 123, views: 23 }}
@@ -275,5 +278,26 @@ export const SetFocus = () => (
         <TextInput source="title" />
         <NumberInput source="views" />
         <SetFocusButton source="views" />
+    </Wrapper>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaNumberInput: {
+                    styleOverrides: {
+                        root: {
+                            ['& input']: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <NumberInput source="views" />
+        <FormInspector name="views" />
     </Wrapper>
 );
