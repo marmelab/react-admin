@@ -9,13 +9,15 @@ import {
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Box, Card, Stack, Typography } from '@mui/material';
+import { Box, Card, Stack, ThemeOptions, Typography } from '@mui/material';
 
 import { TextInput } from '../input';
 import { SimpleForm } from '../form/SimpleForm';
 import { ShowButton, SaveButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 import { Edit } from './Edit';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/detail/Edit' };
 
@@ -362,3 +364,29 @@ const AsideComponentWithRecord = () => {
         </Typography>
     );
 };
+
+export const Themed = () => (
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
+        <Admin
+            dataProvider={dataProvider}
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaEdit: {
+                        defaultProps: {
+                            className: 'custom-class',
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit data-testid={'themed-view'}>
+                        <BookTitle />
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
