@@ -11,6 +11,7 @@ import {
     useResourceContext,
     useCanAccess,
 } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
 
 import { ButtonProps } from './Button';
 import { DeleteWithUndoButton } from './DeleteWithUndoButton';
@@ -28,7 +29,7 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * @prop {string} variant Material UI variant for the button. Defaults to 'contained'.
  * @prop {ReactElement} icon Override the icon. Defaults to the Delete icon from Material UI.
  *
- * @param {Props} props
+ * @param {Props} inProps
  *
  * @example Usage in the <TopToolbar> of an <Edit> form
  *
@@ -51,8 +52,13 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * };
  */
 export const DeleteButton = <RecordType extends RaRecord = any>(
-    props: DeleteButtonProps<RecordType>
+    inProps: DeleteButtonProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        name: PREFIX,
+        props: inProps,
+    });
+
     const { mutationMode, ...rest } = props;
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
@@ -108,4 +114,18 @@ export interface DeleteButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     successMessage?: string;
+}
+
+const PREFIX = 'RaDeleteButton';
+
+declare module '@mui/material/styles' {
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<DeleteButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+        };
+    }
 }
