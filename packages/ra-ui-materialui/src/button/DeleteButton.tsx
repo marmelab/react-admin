@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { UseMutationOptions } from '@tanstack/react-query';
 import {
     RaRecord,
-    MutationMode,
-    DeleteParams,
     useRecordContext,
     useSaveContext,
     SaveContextValue,
-    RedirectionSideEffect,
     useResourceContext,
     useCanAccess,
 } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
-import { ButtonProps } from './Button';
-import { DeleteWithUndoButton } from './DeleteWithUndoButton';
-import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
+import {
+    DeleteWithUndoButton,
+    DeleteWithUndoButtonProps,
+} from './DeleteWithUndoButton';
+import {
+    DeleteWithConfirmButton,
+    DeleteWithConfirmButtonProps,
+} from './DeleteWithConfirmButton';
 
 /**
  * Button used to delete a single record. Added by default by the <Toolbar> of edit and show views.
@@ -95,26 +96,14 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface DeleteButtonProps<
+export type DeleteButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps,
-        SaveContextValue {
-    confirmTitle?: React.ReactNode;
-    confirmContent?: React.ReactNode;
-    confirmColor?: 'primary' | 'warning';
-    icon?: React.ReactNode;
-    mutationMode?: MutationMode;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        DeleteParams<RecordType>
-    >;
-    record?: RecordType;
-    redirect?: RedirectionSideEffect;
-    resource?: string;
-    successMessage?: string;
-}
+> = SaveContextValue &
+    (
+        | DeleteWithUndoButtonProps<RecordType, MutationOptionsError>
+        | DeleteWithConfirmButtonProps<RecordType, MutationOptionsError>
+    );
 
 const PREFIX = 'RaDeleteButton';
 
