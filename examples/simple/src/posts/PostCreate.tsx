@@ -31,19 +31,14 @@ import {
 import { useFormContext, useWatch } from 'react-hook-form';
 import {
     Button,
-    ButtonGroup,
-    ClickAwayListener,
     Dialog,
     DialogActions,
     DialogContent,
-    Grow,
+    Menu,
     MenuItem,
-    MenuList,
-    Paper,
-    Popper,
     Stack,
 } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import MoreButton from '@mui/icons-material/MoreVert';
 
 // Client side id generation. We start from 100 to avoid querying the post list to get the next id as we
 // may be offline and accessing this page directly (without going through the list page first) which would
@@ -334,88 +329,51 @@ const MutationModesSelector = (props: {
     setMutationMode: (mode: MutationMode) => void;
 }) => {
     const { setMutationMode, mutationMode } = props;
-    const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef<HTMLDivElement>(null);
-    const buttonRef = React.useRef<HTMLButtonElement>(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleMenuItemClick = (mutationMode: MutationMode) => {
-        setOpen(false);
         setMutationMode(mutationMode);
-    };
-
-    const handleToggle = () => {
-        setOpen(prevOpen => !prevOpen);
-    };
-
-    const handleClose = (event: Event) => {
-        if (
-            anchorRef.current &&
-            anchorRef.current.contains(event.target as HTMLElement)
-        ) {
-            return;
-        }
-
-        setOpen(false);
     };
 
     return (
         <>
-            <ButtonGroup
-                variant="text"
-                ref={anchorRef}
-                aria-label="Button group with a nested menu"
+            <Button
+                id="mutation-modes-button"
+                size="small"
+                aria-controls={open ? 'mutation-modes-menu' : undefined}
+                aria-expanded={open ? 'true' : undefined}
+                aria-label="select mutation mode"
+                aria-haspopup="menu"
+                onClick={handleClick}
+                endIcon={<MoreButton />}
             >
-                <Button ref={buttonRef}>{mutationMode}</Button>
-                <Button
-                    size="small"
-                    aria-controls={open ? 'split-button-menu' : undefined}
-                    aria-expanded={open ? 'true' : undefined}
-                    aria-label="select merge strategy"
-                    aria-haspopup="menu"
-                    onClick={handleToggle}
-                >
-                    <ArrowDropDownIcon />
-                </Button>
-            </ButtonGroup>
-            <Popper
-                sx={{ zIndex: 1 }}
+                {mutationMode}
+            </Button>
+            <Menu
+                id="mutation-modes-menu"
+                anchorEl={anchorEl}
                 open={open}
-                anchorEl={anchorRef.current}
-                role={undefined}
-                transition
-                disablePortal
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'mutation-modes-button',
+                }}
             >
-                {({ TransitionProps, placement }) => (
-                    <Grow
-                        {...TransitionProps}
-                        style={{
-                            transformOrigin:
-                                placement === 'bottom'
-                                    ? 'center top'
-                                    : 'center bottom',
-                        }}
+                {MutationModes.map(mutationMode => (
+                    <MenuItem
+                        key={mutationMode}
+                        onClick={() => handleMenuItemClick(mutationMode)}
                     >
-                        <Paper>
-                            <ClickAwayListener onClickAway={handleClose}>
-                                <MenuList id="split-button-menu" autoFocusItem>
-                                    {MutationModes.map(mutationMode => (
-                                        <MenuItem
-                                            key={mutationMode}
-                                            onClick={() =>
-                                                handleMenuItemClick(
-                                                    mutationMode
-                                                )
-                                            }
-                                        >
-                                            {mutationMode}
-                                        </MenuItem>
-                                    ))}
-                                </MenuList>
-                            </ClickAwayListener>
-                        </Paper>
-                    </Grow>
-                )}
-            </Popper>
+                        {mutationMode}
+                    </MenuItem>
+                ))}
+            </Menu>
         </>
     );
 };
