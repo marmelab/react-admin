@@ -757,7 +757,9 @@ export const PostList = () => (
 
 ## `offline`
 
-It's possible that a `<DataTable>` will have no records to display because of connectivity issues. In that case, `<DataTable>` will display a message indicating data couldn't be fetched. 
+It's possible that a `<DataTable>` will have no records to display because of connectivity issues. In that case, `<DataTable>` will display the following message:
+
+> No connectivity. Could not fetch data.
 
 You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
 

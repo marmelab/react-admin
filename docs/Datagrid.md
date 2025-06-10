@@ -643,9 +643,23 @@ export const PostList = () => (
 
 ## `offline`
 
-It's possible that a Datagrid will have no records to display because of connectivity issues. In that case, the Datagrid will display a message indicating data couldn't be fetched. This message is translatable and its key is `ra.notification.offline`.
+It's possible that a `<Datagrid>` will have no records to display because of connectivity issues. In that case, `<Datagrid>` will display the following message:
 
-You can customize the content to display by passing a component to the `offline` prop:
+> No connectivity. Could not fetch data.
+
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<Datagrid offline>` prop:
 
 ```tsx
 const CustomOffline = () => <div>No network. Data couldn't be fetched.</div>;

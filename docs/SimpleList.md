@@ -47,6 +47,7 @@ export const PostList = () => (
 | `rowClick` | Optional |mixed | `"edit"` | The action to trigger when the user clicks on a row. |
 | `leftAvatar` | Optional | function | | A function returning an `<Avatar>` component to display before the primary text. |
 | `leftIcon` | Optional | function | | A function returning an `<Icon>` component to display before the primary text. |
+| `offline`  | Optional | Element | `<Offline>` | The content rendered to render when data could not be fetched because of connectivity issues. |
 | `rightAvatar` | Optional | function | | A function returning an `<Avatar>` component to display after the primary text. |
 | `rightIcon` | Optional | function | | A function returning an `<Icon>` component to display after the primary text. |
 | `rowStyle` | Optional | function | | A function returning a style object to apply to each row. |
@@ -79,6 +80,38 @@ This prop should be a function returning an `<Avatar>` component. When present, 
 ## `leftIcon`
 
 This prop should be a function returning an `<Icon>` component. When present, the `<ListItem>` renders a `<ListIcon>` before the `<ListItemText>`
+
+## `offline`
+
+It's possible that a `<SimpleList>` will have no records to display because of connectivity issues. In that case, `<SimpleList>` will display the following message:
+
+> No connectivity. Could not fetch data.
+
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<SimpleList offline>` prop:
+
+```tsx
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+const BookList = () => (
+    <List>
+        <SimpleList offline={<Offline />} />
+    </List>
+);
+```
 
 ## `primaryText`
 
