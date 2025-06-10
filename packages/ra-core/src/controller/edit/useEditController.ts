@@ -123,7 +123,6 @@ export const useEditController = <
                 (!isPendingAuthenticated && !isPendingCanAccess) ||
                 disableAuthentication,
             onError: () => {
-                console.warn('useEditController: record not found');
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
