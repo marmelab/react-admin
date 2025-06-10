@@ -9,7 +9,7 @@ import {
     UseGetOneOptions,
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useRedirect } from '../../routing';
+import { useCreatePath, useRedirect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useResourceContext,
@@ -80,6 +80,7 @@ export const useShowController = <
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
+    const createPath = useCreatePath();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
@@ -109,7 +110,16 @@ export const useShowController = <
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
-                redirect('list', resource);
+
+                // We need to flushSync to ensure the redirect happens before the refresh
+                // Otherwise this can cause an infinite loop when the record is not found
+                redirect(() => ({
+                    pathname: createPath({
+                        resource,
+                        type: 'list',
+                    }),
+                    flushSync: true,
+                }));
                 refresh();
             },
             retry: false,
