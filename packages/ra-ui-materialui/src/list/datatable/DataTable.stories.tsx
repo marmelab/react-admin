@@ -57,43 +57,43 @@ const data = {
         {
             id: 1,
             title: 'War and Peace',
-            author: 'Leo Tolstoy',
+            author: { name: 'Leo Tolstoy' },
             year: 1869,
         },
         {
             id: 2,
             title: 'Pride and Prejudice',
-            author: 'Jane Austen',
+            author: { name: 'Jane Austen' },
             year: 1813,
         },
         {
             id: 3,
             title: 'The Picture of Dorian Gray',
-            author: 'Oscar Wilde',
+            author: { name: 'Oscar Wilde' },
             year: 1890,
         },
         {
             id: 4,
             title: 'Le Petit Prince',
-            author: 'Antoine de Saint-Exupéry',
+            author: { name: 'Antoine de Saint-Exupéry' },
             year: 1943,
         },
         {
             id: 5,
             title: 'The Alchemist',
-            author: 'Paulo Coelho',
+            author: { name: 'Paulo Coelho' },
             year: 1988,
         },
         {
             id: 6,
             title: 'Madame Bovary',
-            author: 'Gustave Flaubert',
+            author: { name: 'Gustave Flaubert' },
             year: 1857,
         },
         {
             id: 7,
             title: 'The Lord of the Rings',
-            author: 'J. R. R. Tolkien',
+            author: { name: 'J. R. R. Tolkien' },
             year: 1954,
         },
     ],
@@ -137,7 +137,7 @@ export const Basic = () => (
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col label="Author" source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -154,7 +154,7 @@ export const Columns = () => (
                 render={record => record.title.toUpperCase()}
             />
             <DataTable.Col
-                source="author"
+                source="author.name"
                 sx={{
                     color: 'darkgray',
                     '&.MuiTableCell-body': { fontStyle: 'italic' },
@@ -185,14 +185,14 @@ export const Empty = () => (
             <DataTable data={[]} total={0}>
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
             <h1>Custom</h1>
             <DataTable data={[]} total={0} empty={<CustomEmpty />}>
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
         </Box>
@@ -204,7 +204,7 @@ export const Hover = () => (
         <DataTable hover={false}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -217,14 +217,14 @@ export const Size = () => (
             <DataTable>
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
             <h1>Medium</h1>
             <DataTable size="medium">
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
         </Box>
@@ -242,7 +242,7 @@ export const SX = () => (
         >
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -260,7 +260,7 @@ export const RowSx = () => (
         >
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -281,7 +281,7 @@ export const StyledComponent = () => (
         <StyledDataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </StyledDataTable>
     </Wrapper>
@@ -300,7 +300,7 @@ export const ColumnStyles = () => (
             >
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
             <h1>Cells only</h1>
@@ -313,7 +313,7 @@ export const ColumnStyles = () => (
             >
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
             <h1>Hidden column on small screens</h1>
@@ -327,7 +327,7 @@ export const ColumnStyles = () => (
             >
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
         </Box>
@@ -394,7 +394,7 @@ export const ErrorInFetch = () => (
                 <DataTable>
                     <DataTable.Col source="id" />
                     <DataTable.Col source="title" />
-                    <DataTable.Col source="author" />
+                    <DataTable.Col source="author.name" />
                     <DataTable.Col source="year" />
                 </DataTable>
             </ResourceContextProvider>
@@ -407,7 +407,7 @@ export const RowClickFalse = () => (
         <DataTable rowClick={false}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -417,7 +417,7 @@ const ExpandPanel = () => {
     const book = useRecordContext();
     return (
         <Box data-testid="ExpandPanel" p={2}>
-            <i>{book?.title}</i>, by {book?.author} ({book?.year})
+            <i>{book?.title}</i>, by {book?.author.name} ({book?.year})
         </Box>
     );
 };
@@ -427,7 +427,7 @@ export const Expand = () => (
         <DataTable expand={<ExpandPanel />}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -438,7 +438,7 @@ export const ExpandSingle = () => (
         <DataTable expand={<ExpandPanel />} expandSingle>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -452,14 +452,14 @@ export const IsRowExpandable = () => (
                 <SimpleShowLayout>
                     <TextField source="id" />
                     <TextField source="title" />
-                    <TextField source="author" />
+                    <TextField source="author.name" />
                     <TextField source="year" />
                 </SimpleShowLayout>
             }
         >
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -479,28 +479,28 @@ export const BulkActionButtons = () => (
             <DataTable>
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
             <h1>Disabled</h1>
             <DataTable bulkActionButtons={false}>
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
             <h1>Custom</h1>
             <DataTable bulkActionButtons={<CustomBulkActionButtons />}>
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
             <h1>Unselectable Rows</h1>
             <DataTable isRowSelectable={record => record.id % 2 === 0}>
                 <DataTable.Col source="id" />
                 <DataTable.Col source="title" />
-                <DataTable.Col source="author" />
+                <DataTable.Col source="author.name" />
                 <DataTable.Col source="year" />
             </DataTable>
         </Box>
@@ -520,7 +520,7 @@ export const SelectAllButton = ({
                     <DataTable>
                         <DataTable.Col source="id" />
                         <DataTable.Col source="title" />
-                        <DataTable.Col source="author" />
+                        <DataTable.Col source="author.name" />
                         <DataTable.Col source="year" />
                     </DataTable>
                 </>
@@ -537,7 +537,7 @@ export const SelectAllButton = ({
                     >
                         <DataTable.Col source="id" />
                         <DataTable.Col source="title" />
-                        <DataTable.Col source="author" />
+                        <DataTable.Col source="author.name" />
                         <DataTable.Col source="year" />
                     </DataTable>
                 </>
@@ -558,7 +558,7 @@ export const SelectAllButton = ({
                     >
                         <DataTable.Col source="id" />
                         <DataTable.Col source="title" />
-                        <DataTable.Col source="author" />
+                        <DataTable.Col source="author.name" />
                         <DataTable.Col source="year" />
                     </DataTable>
                 </>
@@ -572,7 +572,7 @@ export const IsRowSelectable = () => (
         <DataTable isRowSelectable={record => Boolean(record.id % 2)}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -608,7 +608,7 @@ export const Body = () => (
         <DataTable body={MyDataTableBody}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -639,7 +639,7 @@ export const Head = () => (
         <DataTable head={MyDataTableHead}>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
+            <DataTable.Col source="author.name" />
             <DataTable.Col source="year" />
         </DataTable>
     </Wrapper>
@@ -767,7 +767,7 @@ export const FullApp = ({
                         >
                             <DataTable.Col source="id" />
                             <DataTable.Col source="title" />
-                            <DataTable.Col source="author" />
+                            <DataTable.Col source="author.name" />
                             <DataTable.Col source="year" />
                         </DataTable>
                     </List>
@@ -861,7 +861,7 @@ export const AccessControl = ({
                         <DataTable key={allowedAction}>
                             <DataTable.Col source="id" />
                             <DataTable.Col source="title" />
-                            <DataTable.Col source="author" />
+                            <DataTable.Col source="author.name" />
                             <DataTable.Col source="year" />
                         </DataTable>
                     </List>
@@ -885,3 +885,14 @@ AccessControl.argTypes = {
         control: { type: 'select' },
     },
 };
+
+export const NonPrimitiveData = () => (
+    <Wrapper i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
