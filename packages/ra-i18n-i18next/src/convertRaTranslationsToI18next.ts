@@ -13,16 +13,16 @@ import clone from 'lodash/clone';
  *
  * @example Convert the english translations from ra-language-english to i18next format
  * import englishMessages from 'ra-language-english';
- * import { convertRaMessagesToI18next } from 'ra-i18n-18next';
+ * import { convertRaTranslationsToI18next } from 'ra-i18n-18next';
  *
- * const messages = convertRaMessagesToI18next(englishMessages);
+ * const messages = convertRaTranslationsToI18next(englishMessages);
  *
  * @example Convert the english translations from ra-language-english to i18next format with custom interpolation wrappers
  * import englishMessages from 'ra-language-english';
- * import { convertRaMessagesToI18next } from 'ra-i18n-18next';
+ * import { convertRaTranslationsToI18next } from 'ra-i18n-18next';
  *
- * const messages = convertRaMessagesToI18next(englishMessages, {
- *    prefix: '#{',
+ * const messages = convertRaTranslationsToI18next(englishMessages, {
+ *   prefix: '#{',
  *   suffix: '}#',
  * });
  */
