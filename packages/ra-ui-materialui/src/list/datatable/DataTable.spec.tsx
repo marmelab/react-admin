@@ -10,6 +10,7 @@ import {
     ExpandSingle,
     IsRowExpandable,
     IsRowSelectable,
+    NonPrimitiveData,
 } from './DataTable.stories';
 
 describe('DataTable', () => {
@@ -33,6 +34,17 @@ describe('DataTable', () => {
         screen.getByText('Title');
         screen.getByText('Author');
         screen.getByText('Year');
+    });
+    it('should render non React primitive data without crashing', async () => {
+        render(<NonPrimitiveData />);
+        await waitFor(() => {
+            expect(screen.getAllByRole('row')).toHaveLength(6);
+        });
+        screen.getByText('War and Peace');
+        screen.getByText('Pride and Prejudice');
+        screen.getByText('The Picture of Dorian Gray');
+        screen.getByText('Le Petit Prince');
+        screen.getByText('The Alchemist');
     });
     describe('Sorting', () => {
         it('should show the default sort column with the default sort order', async () => {

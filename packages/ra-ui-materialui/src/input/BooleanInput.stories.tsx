@@ -18,11 +18,34 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const Disabled = () => (
+export const Disabled = ({
+    defaultValue,
+    disabled,
+}: {
+    defaultValue: boolean;
+    disabled: boolean;
+}) => (
     <Wrapper>
-        <BooleanInput source="published" disabled />
+        <BooleanInput
+            source="published"
+            defaultValue={defaultValue}
+            disabled={disabled}
+        />
     </Wrapper>
 );
+
+Disabled.argTypes = {
+    defaultValue: {
+        control: 'boolean',
+    },
+    disabled: {
+        control: 'boolean',
+    },
+};
+Disabled.args = {
+    defaultValue: true,
+    disabled: true,
+};
 
 export const ReadOnly = () => (
     <Wrapper>

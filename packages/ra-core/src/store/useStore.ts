@@ -45,12 +45,17 @@ import { useStoreContext } from './useStoreContext';
  *     );
  * };
  */
-export const useStore = <T = any>(
+function useStore<T>(
     key: string,
-    defaultValue?: T
-): useStoreResult<T> => {
+    defaultValue: T
+): [T, (value: T | ((value: T) => void), defaultValue?: T) => void];
+function useStore<T = undefined>(
+    key: string,
+    defaultValue?: T | undefined
+): [T | undefined, (value: T | ((value: T) => void), defaultValue?: T) => void];
+function useStore<T>(key, defaultValue) {
     const { getItem, setItem, subscribe } = useStoreContext();
-    const [value, setValue] = useState(() => getItem(key, defaultValue));
+    const [value, setValue] = useState<T>(() => getItem(key, defaultValue));
 
     // subscribe to changes on this key, and change the state when they happen
     useEffect(() => {
@@ -80,9 +85,11 @@ export const useStore = <T = any>(
         );
     });
     return [value, set];
-};
+}
 
 export type useStoreResult<T = any> = [
     T,
     (value: T | ((value: T) => void), defaultValue?: T) => void,
 ];
+
+export { useStore };

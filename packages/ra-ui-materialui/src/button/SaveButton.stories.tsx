@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form } from 'ra-core';
+import { Form, TestMemoryRouter } from 'ra-core';
 import { Paper } from '@mui/material';
 
 import { SaveButton } from './SaveButton';
@@ -29,33 +29,55 @@ const MakeFormChange = () => {
 };
 
 export const Dirty = () => (
-    <AdminContext>
-        <Paper>
-            <Form>
-                <MakeFormChange />
-                <SaveButton />
-            </Form>
-        </Paper>
-    </AdminContext>
+    <TestMemoryRouter>
+        <AdminContext>
+            <Paper>
+                <Form>
+                    <MakeFormChange />
+                    <SaveButton />
+                </Form>
+            </Paper>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const EnabledWhenFormIsPrefilled = () => (
+    <TestMemoryRouter
+        initialEntries={[
+            `/posts/create?source=${JSON.stringify({ title: 'foo' })}`,
+        ]}
+    >
+        <AdminContext>
+            <Paper>
+                <Form>
+                    <SaveButton />
+                </Form>
+            </Paper>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 export const AlwaysEnable = () => (
-    <AdminContext>
-        <Paper>
-            <Form>
-                <SaveButton alwaysEnable />
-            </Form>
-        </Paper>
-    </AdminContext>
+    <TestMemoryRouter>
+        <AdminContext>
+            <Paper>
+                <Form>
+                    <SaveButton alwaysEnable />
+                </Form>
+            </Paper>
+        </AdminContext>
+    </TestMemoryRouter>
 );
 
 export const Submitting = () => (
-    <AdminContext>
-        <Paper>
-            <Form onSubmit={() => new Promise(() => {})}>
-                <MakeFormChange />
-                <SaveButton />
-            </Form>
-        </Paper>
-    </AdminContext>
+    <TestMemoryRouter>
+        <AdminContext>
+            <Paper>
+                <Form onSubmit={() => new Promise(() => {})}>
+                    <MakeFormChange />
+                    <SaveButton />
+                </Form>
+            </Paper>
+        </AdminContext>
+    </TestMemoryRouter>
 );
