@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Text } from 'ink';
+import { Box, Text } from 'ink';
+import Spinner from 'ink-spinner';
 import { ProjectConfiguration } from './ProjectState.js';
 import { useInstallDeps } from './useInstallDeps.js';
 import { useRunFormatter } from './useRunFormatter.js';
@@ -24,5 +25,12 @@ export const StepRunInstall = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <Text>Installing dependencies...</Text>;
+    return (
+        <Box gap={1}>
+            <Text color="green">
+                <Spinner type="dots" />
+            </Text>
+            <Text>Installing dependencies...</Text>
+        </Box>
+    );
 };
