@@ -219,9 +219,9 @@ Although this drawback exists, we accept it because the use of composition in re
 
 ## Hooks
 
-When you find that you cannot tweak a react-admin component using props, you can always turn to the lower-level API: hooks. In fact, react-admin is built on top of a headless library called `ra-core`, which primarily consists of hooks. These hooks hide the framework's implementation details, allowing you to focus on your business logic. It's perfectly normal to use react-admin hooks in your own components if the default UI doesn't meet your specific requirements.
+When you find that you cannot tweak a react-admin component using props, you can always turn to the lower-level API: hooks. In fact, the core of react-admin is a headless library called `ra-core`, which primarily consists of hooks. These hooks hide the framework's implementation details, allowing you to focus on your business logic. It's perfectly normal to use react-admin hooks in your own components if the default UI doesn't meet your specific requirements.
 
-For example, the `<DeleteWithConfirmButton>` button renders a confirmation dialog when clicked and then calls the `dataProvider.delete()` method for the current record. If you want the same feature but with a different UI, you can use the `useDeleteWithConfirmController` hook:
+For example, the `<DeleteButton>` button used in `pessimistic` mode renders a confirmation dialog when clicked and then calls the `dataProvider.delete()` method for the current record. If you want the same feature but with a different UI, you can use the `useDeleteWithConfirmController` hook:
 
 {% raw %}
 ```jsx
@@ -269,7 +269,7 @@ The fact that hook names often end with `Controller` is intentional and reflects
 - The view logic is managed by React components (e.g. `<List>`).
 - The model logic is left to the developer, and react-admin simply defines the interface that the model must expose through its Providers.
 
-React-admin exposes [dozens of hooks](./Reference.md#hooks) to assist you in building your own components. You can even construct an entire react-admin application without relying on the Material UI components and use a different UI kit if desired. This flexibility allows you to tailor the application to your specific needs and preferences.
+React-admin exposes [dozens of hooks](./Reference.md#hooks) to assist you in building your own components. You can even construct an entire react-admin application without relying on the Material UI components and use a different UI kit if desired (see for instance [shadcn-admin-kit](https://github.com/marmelab/shadcn-admin-kit), a library for building admin apps with Shadcn UI). This flexibility allows you to tailor the application to your specific needs and preferences.
 
 ## Context: Pull, Don't Push
 
