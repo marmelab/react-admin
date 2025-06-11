@@ -1,10 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { UrlField } from './UrlField';
+import { Themed } from './UrlField.stories';
 
 const url = 'https://en.wikipedia.org/wiki/HAL_9000';
 
@@ -78,5 +79,10 @@ describe('<UrlField />', () => {
         );
 
         expect(getByText('Not found')).not.toBeNull();
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.getByTestId('themed')).toBeDefined();
     });
 });

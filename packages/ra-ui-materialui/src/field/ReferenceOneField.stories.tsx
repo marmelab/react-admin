@@ -15,7 +15,8 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Stack } from '@mui/material';
+import { createTheme, Stack, ThemeOptions } from '@mui/material';
+import { deepmerge } from '@mui/utils';
 
 import {
     ReferenceOneField,
@@ -33,12 +34,7 @@ import {
     TextField,
     TextInput,
 } from '..';
-import {
-    defaultLightTheme,
-    defaultDarkTheme,
-    ThemeProvider,
-    ThemesContext,
-} from '../theme';
+import { defaultLightTheme, ThemeProvider, ThemesContext } from '../theme';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceOneField' };
 
@@ -72,14 +68,12 @@ const defaultDataProvider = {
 const Wrapper = ({
     children,
     dataProvider = defaultDataProvider,
-    defaultTheme = 'light',
+    theme = defaultLightTheme,
 }) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
         <ThemesContext.Provider
             value={{
-                lightTheme: defaultLightTheme,
-                darkTheme: defaultDarkTheme,
-                defaultTheme: defaultTheme as 'dark' | 'light',
+                lightTheme: theme,
             }}
         >
             <ThemeProvider>
@@ -450,6 +444,31 @@ export const QueryOptions = ({ dataProvider = defaultDataProvider }) => (
             target="book_id"
             queryOptions={{ meta: { foo: 'bar' } }}
         >
+            <TextField source="ISBN" />
+        </ReferenceOneField>
+    </Wrapper>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaReferenceOneField: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
+                },
+                RaReferenceField: {
+                    styleOverrides: {
+                        root: {
+                            color: 'hotpink',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <ReferenceOneField reference="book_details" target="book_id">
             <TextField source="ISBN" />
         </ReferenceOneField>
     </Wrapper>

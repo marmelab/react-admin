@@ -1,5 +1,6 @@
-import { Paper, Stack } from '@mui/material';
+import { createTheme, Paper, Stack, ThemeOptions } from '@mui/material';
 import * as React from 'react';
+import { deepmerge } from '@mui/utils';
 
 import { NumberField, NumberFieldProps } from './NumberField';
 import { AdminContext } from '../AdminContext';
@@ -44,4 +45,31 @@ Basic.argTypes = {
 Basic.args = {
     theme: 'light',
     value: 'integer',
+};
+
+export const Themed = () => {
+    return (
+        <AdminContext
+            theme={deepmerge(createTheme(), {
+                components: {
+                    RaNumberField: {
+                        defaultProps: {
+                            'data-testid': 'themed',
+                        },
+                        styleOverrides: {
+                            root: {
+                                color: 'hotpink',
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <Paper sx={{ p: 2 }}>
+                <Stack direction="row">
+                    <NumberField record={{ value: 5 }} source="value" />
+                </Stack>
+            </Paper>
+        </AdminContext>
+    );
 };

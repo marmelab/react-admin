@@ -1,5 +1,6 @@
-import { Paper, Stack } from '@mui/material';
+import { createTheme, Paper, Stack, ThemeOptions } from '@mui/material';
 import * as React from 'react';
+import { deepmerge } from '@mui/utils';
 
 import { UrlField, UrlFieldProps } from './UrlField';
 import { AdminContext } from '../AdminContext';
@@ -40,4 +41,34 @@ Basic.argTypes = {
 Basic.args = {
     theme: 'light',
     value: 'filled',
+};
+
+export const Themed = () => {
+    return (
+        <AdminContext
+            theme={deepmerge(createTheme(), {
+                components: {
+                    RaUrlField: {
+                        defaultProps: {
+                            'data-testid': 'themed',
+                        },
+                        styleOverrides: {
+                            root: {
+                                color: 'hotpink',
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <Paper sx={{ p: 2 }}>
+                <Stack direction="row">
+                    <UrlField
+                        record={{ value: 'https://example.org' }}
+                        source="value"
+                    />
+                </Stack>
+            </Paper>
+        </AdminContext>
+    );
 };

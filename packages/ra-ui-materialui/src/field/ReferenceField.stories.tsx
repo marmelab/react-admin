@@ -17,7 +17,9 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Stack } from '@mui/material';
+import { createTheme, Stack, ThemeOptions } from '@mui/material';
+import { QueryClient } from '@tanstack/react-query';
+import { deepmerge } from '@mui/utils';
 
 import { TextField } from '../field';
 import { ReferenceField } from './ReferenceField';
@@ -26,15 +28,9 @@ import { ReferenceInput } from '../input/ReferenceInput';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
 import { Datagrid } from '../list/datagrid/Datagrid';
 import { AdminUI, AdminContext } from '../';
-import {
-    defaultDarkTheme,
-    defaultLightTheme,
-    ThemeProvider,
-    ThemesContext,
-} from '../theme';
+import { defaultLightTheme, ThemeProvider, ThemesContext } from '../theme';
 import { List } from '../list';
 import { EditGuesser, ShowGuesser } from '../detail';
-import { QueryClient } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceField' };
 
@@ -77,14 +73,12 @@ const Wrapper = ({
     dataProvider = defaultDataProvider,
     record = defaultRecord,
     resourceDefinitions = defaultResourceDefinitions,
-    defaultTheme = 'light',
+    theme = defaultLightTheme,
 }: any) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
         <ThemesContext.Provider
             value={{
-                lightTheme: defaultLightTheme,
-                darkTheme: defaultDarkTheme,
-                defaultTheme: defaultTheme as 'dark' | 'light',
+                lightTheme: theme,
             }}
         >
             <ThemeProvider>
@@ -908,3 +902,30 @@ export const Nested = () => (
         </CoreAdminContext>
     </TestMemoryRouter>
 );
+
+export const Themed = () => {
+    return (
+        <Wrapper
+            theme={deepmerge(createTheme(), {
+                components: {
+                    RaReferenceField: {
+                        defaultProps: {
+                            'data-testid': 'themed',
+                        },
+                        styleOverrides: {
+                            root: {
+                                ['& .MuiLink-root']: {
+                                    background: 'pink',
+                                },
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <ReferenceField source="detail_id" reference="book_details">
+                <TextField source="ISBN" />
+            </ReferenceField>
+        </Wrapper>
+    );
+};

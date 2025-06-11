@@ -7,6 +7,7 @@ import {
     EmptyWithTranslate,
     QueryOptions,
     EmptyText,
+    Themed,
 } from './ReferenceOneField.stories';
 
 describe('ReferenceOneField', () => {
@@ -59,5 +60,10 @@ describe('ReferenceOneField', () => {
         });
         fireEvent.click(screen.getByText('War and Peace'));
         await screen.findByText('Create');
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(await screen.findByTestId('themed')).toBeDefined();
     });
 });

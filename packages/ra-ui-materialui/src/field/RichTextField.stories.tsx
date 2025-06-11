@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { RecordContextProvider, useTimeout } from 'ra-core';
 import dompurify from 'dompurify';
+import { deepmerge } from '@mui/utils';
+import { createTheme, ThemeOptions } from '@mui/material';
 
 import { RichTextField, RichTextFieldProps } from './RichTextField';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
@@ -135,8 +137,13 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
     </Wrapper>
 );
 
-const Wrapper = ({ children, record, defaultTheme = 'light' }) => (
-    <AdminContext defaultTheme={defaultTheme as any}>
+const Wrapper = ({
+    children,
+    record,
+    theme = undefined,
+    defaultTheme = 'light',
+}) => (
+    <AdminContext defaultTheme={defaultTheme as any} theme={theme}>
         <RecordContextProvider value={record}>{children}</RecordContextProvider>
     </AdminContext>
 );
@@ -166,3 +173,25 @@ Empty.argTypes = {
         control: { type: 'inline-radio' },
     },
 };
+
+export const Themed = () => (
+    <Wrapper
+        record={record}
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaRichTextField: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
+                    styleOverrides: {
+                        root: {
+                            color: 'hotpink',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <RichTextField source="body" />
+    </Wrapper>
+);

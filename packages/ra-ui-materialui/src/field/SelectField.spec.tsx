@@ -10,6 +10,7 @@ import {
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { SelectField } from './SelectField';
+import { Themed } from './SelectField.stories';
 
 const i18nProvider = polyglotI18nProvider(
     _locale =>
@@ -197,5 +198,10 @@ describe('<SelectField />', () => {
         );
 
         expect(getByText('Not found')).not.toBeNull();
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.getByTestId('themed')).toBeDefined();
     });
 });

@@ -3,6 +3,8 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import * as React from 'react';
+import { deepmerge } from '@mui/utils';
+import { createTheme, ThemeOptions } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { Labeled } from '../Labeled';
@@ -101,9 +103,37 @@ export const TranslateChoice = () => (
     </Wrapper>
 );
 
-const Wrapper = ({ children, record, defaultTheme = 'light' }) => (
+export const Themed = () => (
+    <Wrapper
+        record={record}
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaSelectField: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
+                    styleOverrides: {
+                        root: {
+                            color: 'hotpink',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <SelectField source="gender" choices={genderChoices} />
+    </Wrapper>
+);
+
+const Wrapper = ({
+    children,
+    record,
+    theme = undefined,
+    defaultTheme = 'light',
+}) => (
     <AdminContext
         i18nProvider={i18nProvider}
+        theme={theme}
         defaultTheme={defaultTheme as any}
     >
         <RecordContextProvider value={record}>{children}</RecordContextProvider>

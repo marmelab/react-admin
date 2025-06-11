@@ -6,14 +6,11 @@ import {
     ResourceContextProvider,
     TestMemoryRouter,
 } from 'ra-core';
+import { deepmerge } from '@mui/utils';
+import { createTheme, ThemeOptions } from '@mui/material';
 
 import { ReferenceManyCount } from './ReferenceManyCount';
-import {
-    defaultDarkTheme,
-    defaultLightTheme,
-    ThemeProvider,
-    ThemesContext,
-} from '../theme';
+import { defaultLightTheme, ThemeProvider, ThemesContext } from '../theme';
 
 export default {
     title: 'ra-ui-materialui/fields/ReferenceManyCount',
@@ -32,13 +29,15 @@ const comments = [
     { id: 5, post_id: 2, is_published: false },
 ];
 
-export const Wrapper = ({ dataProvider, children, defaultTheme = 'light' }) => (
+export const Wrapper = ({
+    dataProvider,
+    children,
+    theme = defaultLightTheme,
+}) => (
     <TestMemoryRouter>
         <ThemesContext.Provider
             value={{
-                lightTheme: defaultLightTheme,
-                darkTheme: defaultDarkTheme,
-                defaultTheme: defaultTheme as 'dark' | 'light',
+                lightTheme: theme,
             }}
         >
             <ThemeProvider>
@@ -207,6 +206,34 @@ export const Slow = () => (
                     )
                 ),
         }}
+    >
+        <ReferenceManyCount reference="comments" target="post_id" />
+    </Wrapper>
+);
+
+export const Themed = () => (
+    <Wrapper
+        dataProvider={{
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [comments.filter(c => c.post_id === 1)[0]],
+                    total: comments.filter(c => c.post_id === 1).length,
+                }),
+        }}
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaReferenceManyCount: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
+                    styleOverrides: {
+                        root: {
+                            color: 'hotpink',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
     >
         <ReferenceManyCount reference="comments" target="post_id" />
     </Wrapper>
