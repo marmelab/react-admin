@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.8.4
+
+* Replace `Datagrid` by `DataTable` in Guessers ([#10754](https://github.com/marmelab/react-admin/pull/10754)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `<DataTable>` crashes when its data is not a React primitive ([#10777](https://github.com/marmelab/react-admin/pull/10777)) ([djhi](https://github.com/djhi))
+* Fix(show/edit): Avoid a redirect loop when useGetOne returns an error in shadcn-admin-kit ([#10776](https://github.com/marmelab/react-admin/pull/10776)) ([jonathanarnault](https://github.com/jonathanarnault))
+* Fix disabled boolean input ([#10773](https://github.com/marmelab/react-admin/pull/10773)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix(logout): avoid an infinite loop when loading the demo apps for the first time ([#10769](https://github.com/marmelab/react-admin/pull/10769)) ([jonathanarnault](https://github.com/jonathanarnault))
+* Fix `<SaveButton>` is not enabled when the form is prefilled (from `<CloneButton>` for instance) ([#10765](https://github.com/marmelab/react-admin/pull/10765)) ([djhi](https://github.com/djhi))
+* [chore] Add spinner while installing dependencies in create-react-admin ([#10778](https://github.com/marmelab/react-admin/pull/10778)) ([djhi](https://github.com/djhi))
+* [Doc] Rename `convertRaMessagesToI18next` to `convertRaTranslationsToI18next` ([#10774](https://github.com/marmelab/react-admin/pull/10774)) ([Madeorsk](https://github.com/Madeorsk))
+* [Doc] Fix videos in `<DataTable>` docs ([#10775](https://github.com/marmelab/react-admin/pull/10775)) ([Madeorsk](https://github.com/Madeorsk))
+
 ## 5.8.3
 
 * Fix potential prototype-polluting assignment in `ra-data-local-storage` ([#10758](https://github.com/marmelab/react-admin/pull/10758)) ([fzaninotto](https://github.com/fzaninotto))
