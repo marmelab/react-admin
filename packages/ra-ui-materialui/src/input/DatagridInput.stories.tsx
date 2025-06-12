@@ -167,6 +167,9 @@ export const Themed = () => (
             theme={deepmerge(createTheme(), {
                 components: {
                     RaDatagridInput: {
+                        defaultProps: {
+                            'data-testid': 'themed',
+                        },
                         styleOverrides: {
                             root: {
                                 ['& .MuiTypography-root']: {

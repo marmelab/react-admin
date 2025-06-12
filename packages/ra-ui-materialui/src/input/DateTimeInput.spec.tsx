@@ -14,6 +14,7 @@ import { SaveButton } from '../button';
 import {
     ExternalChanges,
     ExternalChangesWithParse,
+    Themed,
 } from './DateTimeInput.stories';
 
 describe('<DateTimeInput />', () => {
@@ -327,5 +328,10 @@ describe('<DateTimeInput />', () => {
                 ).not.toBeNull();
             });
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const input = await screen.findByTestId('themed');
     });
 });

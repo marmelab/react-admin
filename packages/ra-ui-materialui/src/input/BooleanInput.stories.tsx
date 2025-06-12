@@ -83,6 +83,9 @@ export const Themed = () => (
         theme={deepmerge(createTheme(), {
             components: {
                 RaBooleanInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
                     styleOverrides: {
                         root: {
                             color: 'red',

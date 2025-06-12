@@ -1,6 +1,9 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import { deepmerge } from '@mui/utils';
+import { createTheme } from '@mui/material/styles';
+import { ThemeOptions } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
@@ -178,8 +181,12 @@ export const Id = () => (
 );
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children }) => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
+const Wrapper = ({ children, theme = undefined }) => (
+    <AdminContext
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+        theme={theme}
+    >
         <Create resource="posts">
             <SimpleForm>
                 {children}
@@ -272,3 +279,24 @@ export const TranslateChoice = () => {
         </AdminContext>
     );
 };
+
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaRadioButtonGroupInputItem: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
+                    styleOverrides: {
+                        root: {
+                            color: 'red',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <RadioButtonGroupInput source="category" choices={choices} />
+    </Wrapper>
+);

@@ -103,6 +103,9 @@ export const Themed = () => (
         theme={deepmerge(createTheme(), {
             components: {
                 RaDateTimeInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
                     styleOverrides: {
                         root: {
                             ['& input']: {

@@ -8,15 +8,22 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 export const RadioButtonGroupInputItem = (
     props: RadioButtonGroupInputItemProps
 ) => {
-    const { choice, optionText, optionValue, source, translateChoice } =
-        useThemeProps({
-            props: props,
-            name: PREFIX,
-        });
+    const {
+        choice,
+        optionText,
+        optionValue,
+        source,
+        translateChoice,
+        ...rest
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
 
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
@@ -34,6 +41,7 @@ export const RadioButtonGroupInputItem = (
             htmlFor={nodeId}
             value={value}
             control={<Radio id={nodeId} color="primary" />}
+            {...sanitizeInputRestProps(rest)}
         />
     );
 };

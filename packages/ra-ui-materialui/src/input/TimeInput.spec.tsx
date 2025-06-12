@@ -10,6 +10,7 @@ import { SimpleForm, Toolbar } from '../form';
 import { TimeInput } from './TimeInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { SaveButton } from '../button';
+import { Themed } from './TimeInput.stories';
 
 describe('<TimeInput />', () => {
     const defaultProps = {
@@ -273,5 +274,10 @@ describe('<TimeInput />', () => {
                 ).not.toBeNull();
             });
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const input = await screen.findByTestId('themed');
     });
 });

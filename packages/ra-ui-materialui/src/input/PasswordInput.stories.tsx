@@ -43,6 +43,9 @@ export const Themed = () => (
         theme={deepmerge(createTheme(), {
             components: {
                 RaPasswordInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
                     styleOverrides: {
                         root: {
                             ['& input']: {

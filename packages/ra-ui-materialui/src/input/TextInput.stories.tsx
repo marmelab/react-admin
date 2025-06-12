@@ -414,6 +414,9 @@ export const Themed = () => (
         theme={deepmerge(createTheme(), {
             components: {
                 RaTextInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
                     styleOverrides: {
                         root: {
                             ['& input']: {

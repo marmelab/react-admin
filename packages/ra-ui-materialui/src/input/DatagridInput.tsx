@@ -25,6 +25,7 @@ import {
     FilterContext,
 } from '../list';
 import { Pagination as DefaultPagination } from '../list/pagination';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 const defaultPagination = <DefaultPagination />;
 
@@ -160,7 +161,7 @@ export const DatagridInput = (inProps: DatagridInputProps) => {
                 ) : null}
                 {!fieldState.error && !fetchError && (
                     <>
-                        <Datagrid {...rest} />
+                        <Datagrid {...sanitizeInputRestProps(rest)} />
                         {pagination !== false && pagination}
                     </>
                 )}

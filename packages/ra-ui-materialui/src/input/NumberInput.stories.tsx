@@ -286,6 +286,9 @@ export const Themed = () => (
         theme={deepmerge(createTheme(), {
             components: {
                 RaNumberInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
                     styleOverrides: {
                         root: {
                             ['& input']: {
