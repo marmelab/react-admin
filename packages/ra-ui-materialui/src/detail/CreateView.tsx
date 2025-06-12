@@ -12,6 +12,7 @@ import { useCreateContext } from 'ra-core';
 import clsx from 'clsx';
 
 import { Title } from '../layout';
+import { CreateProps } from './Create';
 
 export const CreateView = (inProps: CreateViewProps) => {
     const props = useThemeProps({
@@ -94,7 +95,7 @@ declare module '@mui/material/styles' {
     }
 
     interface ComponentsPropsList {
-        RaCreate: Partial<CreateViewProps>;
+        RaCreate: Partial<CreateProps>;
     }
 
     interface Components {

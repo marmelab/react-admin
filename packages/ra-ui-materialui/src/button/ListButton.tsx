@@ -2,6 +2,11 @@ import * as React from 'react';
 import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
 import { useResourceContext, useCreatePath, useCanAccess } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { Button, ButtonProps } from './Button';
 
@@ -31,7 +36,12 @@ import { Button, ButtonProps } from './Button';
  *     </Edit>
  * );
  */
-export const ListButton = (props: ListButtonProps) => {
+export const ListButton = (inProps: ListButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         icon = defaultIcon,
         label = 'ra.action.list',
@@ -56,15 +66,15 @@ export const ListButton = (props: ListButtonProps) => {
     }
 
     return (
-        <Button
+        <StyledButton
             component={Link}
             to={createPath({ type: 'list', resource })}
             state={scrollStates[String(scrollToTop)]}
             label={label}
-            {...(rest as any)}
+            {...rest}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -84,3 +94,29 @@ interface Props {
 }
 
 export type ListButtonProps = Props & ButtonProps;
+
+const PREFIX = 'RaListButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<ListButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

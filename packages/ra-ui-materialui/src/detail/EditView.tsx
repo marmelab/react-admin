@@ -14,6 +14,7 @@ import { useEditContext, useResourceDefinition } from 'ra-core';
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
+import { EditProps } from './Edit';
 
 const defaultActions = <EditActions />;
 
@@ -106,7 +107,7 @@ declare module '@mui/material/styles' {
     }
 
     interface ComponentsPropsList {
-        RaEdit: Partial<EditViewProps>;
+        RaEdit: Partial<EditProps>;
     }
 
     interface Components {

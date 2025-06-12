@@ -1,19 +1,19 @@
-import * as React from 'react';
+import React from 'react';
+import { ThemeOptions } from '@mui/material';
+import { deepmerge } from '@mui/utils';
+import { Resource } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 
-import { BulkUpdateButton } from './BulkUpdateButton';
 import { AdminContext } from '../AdminContext';
-import { AdminUI } from '../AdminUI';
-import { List, Datagrid } from '../list';
-import { TextField, NumberField } from '../field';
-import { deepmerge } from '@mui/utils';
+import { BulkDeleteButton } from './BulkDeleteButton';
 import { defaultLightTheme } from '../theme';
-import { ThemeOptions } from '@mui/material';
+import { Datagrid, List } from '../list';
+import { NumberField, TextField } from '../field';
+import { AdminUI } from '../AdminUI';
 
-export default { title: 'ra-ui-materialui/button/BulkUpdateButton' };
+export default { title: 'ra-ui-materialui/button/BulkDeleteButton' };
 
 const i18nProvider = polyglotI18nProvider(
     () => englishMessages,
@@ -92,19 +92,19 @@ const dataProvider = fakeRestDataProvider({
     authors: [],
 });
 
-const Wrapper = ({ bulkActionButtons, theme = undefined }) => (
-    <TestMemoryRouter initialEntries={['/books']}>
+const Wrapper = ({ children, ...props }) => {
+    return (
         <AdminContext
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
-            theme={theme}
+            {...props}
         >
             <AdminUI>
                 <Resource
                     name="books"
                     list={() => (
                         <List>
-                            <Datagrid bulkActionButtons={bulkActionButtons}>
+                            <Datagrid bulkActionButtons={children}>
                                 <TextField source="id" />
                                 <TextField source="title" />
                                 <TextField source="author" />
@@ -115,73 +115,34 @@ const Wrapper = ({ bulkActionButtons, theme = undefined }) => (
                 />
             </AdminUI>
         </AdminContext>
-    </TestMemoryRouter>
-);
+    );
+};
 
-export const Basic = () => (
-    <Wrapper bulkActionButtons={<BulkUpdateButton data={{ reads: 0 }} />} />
-);
+export const Basic = () => {
+    return (
+        <Wrapper>
+            <BulkDeleteButton />
+        </Wrapper>
+    );
+};
 
-export const Data = () => (
-    <Wrapper
-        bulkActionButtons={
-            <BulkUpdateButton
-                data={{
-                    reads: 666,
-                    title: 'Devil in the White City',
-                    author: 'Erik Larson',
-                }}
-            />
-        }
-    />
-);
-
-export const Label = () => (
-    <Wrapper
-        bulkActionButtons={
-            <BulkUpdateButton data={{ reads: 0 }} label="Reset reads" />
-        }
-    />
-);
-
-export const MutationMode = () => (
-    <Wrapper
-        bulkActionButtons={
-            <>
-                <BulkUpdateButton
-                    label="Update Undoable"
-                    data={{ reads: 0 }}
-                    mutationMode="undoable"
-                />
-                <BulkUpdateButton
-                    label="Update Optimistic"
-                    data={{ reads: 0 }}
-                    mutationMode="optimistic"
-                />
-                <BulkUpdateButton
-                    label="Update Pessimistic"
-                    data={{ reads: 0 }}
-                    mutationMode="pessimistic"
-                />
-            </>
-        }
-    />
-);
-
-export const Themed = () => (
-    <Wrapper
-        bulkActionButtons={<BulkUpdateButton data={{ reads: 0 }} />}
-        theme={deepmerge(defaultLightTheme, {
-            components: {
-                RaBulkUpdateButton: {
-                    defaultProps: {
-                        label: 'Bulk Update',
-                        mutationMode: 'optimistic',
-                        className: 'custom-class',
-                        'data-testid': 'themed-button',
+export const Themed = () => {
+    return (
+        <Wrapper
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaBulkDeleteButton: {
+                        defaultProps: {
+                            label: 'Bulk Delete',
+                            mutationMode: 'optimistic',
+                            className: 'custom-class',
+                            'data-testid': 'themed',
+                        },
                     },
                 },
-            },
-        } as ThemeOptions)}
-    />
-);
+            } as ThemeOptions)}
+        >
+            <BulkDeleteButton />
+        </Wrapper>
+    );
+};

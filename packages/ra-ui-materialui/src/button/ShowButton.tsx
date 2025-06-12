@@ -9,6 +9,11 @@ import {
     useCreatePath,
     useCanAccess,
 } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { Button, ButtonProps } from './Button';
 
@@ -26,8 +31,13 @@ import { Button, ButtonProps } from './Button';
  * };
  */
 const ShowButton = <RecordType extends RaRecord = any>(
-    props: ShowButtonProps<RecordType>
+    inProps: ShowButtonProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         icon = defaultIcon,
         label = 'ra.action.show',
@@ -51,7 +61,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
     });
     if (!record || !canAccess || isPending) return null;
     return (
-        <Button
+        <StyledButton
             component={Link}
             to={createPath({ type: 'show', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
@@ -60,7 +70,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
             {...(rest as any)}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -98,3 +108,29 @@ const PureShowButton = memo(
 );
 
 export default PureShowButton;
+
+const PREFIX = 'RaShowButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<ShowButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

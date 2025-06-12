@@ -11,6 +11,7 @@ import {
     TitleElement,
     NotificationDefault,
     NotificationTranslated,
+    Themed,
 } from './Create.stories';
 
 describe('<Create />', () => {
@@ -47,6 +48,13 @@ describe('<Create />', () => {
         );
         expect(screen.queryAllByText('form')).toHaveLength(1);
         expect(screen.queryAllByText('help')).toHaveLength(1);
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.queryByTestId('themed-view').classList).toContain(
+            'custom-class'
+        );
     });
 
     describe('title', () => {

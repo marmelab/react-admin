@@ -7,6 +7,7 @@ import {
     RaRecord,
     useCheckMinimumRequiredProps,
 } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
 
 import { CreateView, CreateViewProps } from './CreateView';
 import { Loading } from '../layout';
@@ -58,8 +59,13 @@ export const Create = <
     RecordType extends Omit<RaRecord, 'id'> = any,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >(
-    props: CreateProps<RecordType, Error, ResultRecordType>
+    inProps: CreateProps<RecordType, Error, ResultRecordType>
 ): ReactElement => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     useCheckMinimumRequiredProps('Create', ['children'], props);
     const {
         resource,
@@ -100,3 +106,5 @@ export interface CreateProps<
         Omit<CreateViewProps, 'children'> {}
 
 const defaultLoading = <Loading />;
+
+const PREFIX = 'RaCreate'; // Types declared in CreateView.

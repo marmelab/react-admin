@@ -21,6 +21,9 @@ import { TextInput } from '../input/TextInput';
 import { ListButton } from './ListButton';
 import { Edit } from '../detail/Edit';
 import { TopToolbar } from '../layout';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
+import { ThemeOptions } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/button/ListButton' };
 
@@ -234,3 +237,29 @@ const dataProvider = fakeRestDataProvider({
     ],
     authors: [],
 });
+
+export const Themed = ({ buttonProps }: { buttonProps?: any }) => (
+    <TestMemoryRouter>
+        <AdminContext
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaListButton: {
+                        defaultProps: {
+                            label: 'List',
+                            className: 'custom-class',
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <ResourceContextProvider value="books">
+                <RecordContextProvider value={{ id: 1 }}>
+                    <ListButton
+                        data-testid={'themed-button'}
+                        {...buttonProps}
+                    />
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);

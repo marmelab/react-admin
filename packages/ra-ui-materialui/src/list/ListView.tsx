@@ -16,6 +16,7 @@ import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
+import { ListProps } from './List';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -372,7 +373,7 @@ declare module '@mui/material/styles' {
     }
 
     interface ComponentsPropsList {
-        RaList: Partial<ListViewProps>;
+        RaList: Partial<ListProps>;
     }
 
     interface Components {
