@@ -1,10 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { RecordContextProvider, I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { NumberField } from './NumberField';
+import { Themed } from './NumberField.stories';
 
 const i18nProvider = polyglotI18nProvider(
     _locale =>
@@ -163,5 +164,10 @@ describe('<NumberField />', () => {
             );
             expect(queryByText('200')).not.toBeNull();
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.getByTestId('themed')).toBeDefined();
     });
 });

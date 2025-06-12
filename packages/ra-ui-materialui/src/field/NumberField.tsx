@@ -1,5 +1,10 @@
 import * as React from 'react';
 import Typography, { TypographyProps } from '@mui/material/Typography';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -37,8 +42,13 @@ import { genericMemo } from './genericMemo';
 const NumberFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: NumberFieldProps<RecordType>
+    inProps: NumberFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         className,
         emptyText,
@@ -70,7 +80,7 @@ const NumberFieldImpl = <
     }
 
     return (
-        <Typography
+        <StyledTypography
             variant="body2"
             component="span"
             className={className}
@@ -79,7 +89,7 @@ const NumberFieldImpl = <
             {hasNumberFormat && typeof value === 'number'
                 ? value.toLocaleString(locales, options)
                 : value}
-        </Typography>
+        </StyledTypography>
     );
 };
 
@@ -107,3 +117,29 @@ const hasNumberFormat = !!(
     Intl &&
     typeof Intl.NumberFormat === 'function'
 );
+
+const PREFIX = 'RaNumberField';
+
+const StyledTypography = styled(Typography, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<NumberFieldProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

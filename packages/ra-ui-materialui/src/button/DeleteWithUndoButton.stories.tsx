@@ -1,19 +1,18 @@
+import { Resource, TestMemoryRouter } from 'ra-core';
+import { AdminContext } from '../AdminContext';
+import { deepmerge } from '@mui/utils';
+import { createTheme, ThemeOptions } from '@mui/material';
+import { AdminUI } from '../AdminUI';
+import { DeleteWithUndoButton } from './DeleteWithUndoButton';
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { Resource, TestMemoryRouter } from 'ra-core';
+import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Alert, createTheme, ThemeOptions } from '@mui/material';
-
-import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
-import { AdminContext } from '../AdminContext';
-import { AdminUI } from '../AdminUI';
-import { List, Datagrid } from '../list';
+import { Datagrid, List } from '../list';
 import { TextField } from '../field';
-import { deepmerge } from '@mui/utils';
 
-export default { title: 'ra-ui-materialui/button/DeleteWithConfirmButton' };
+export default { title: 'ra-ui-materialui/button/DeleteWithUndoButton' };
 
 const i18nProvider = polyglotI18nProvider(
     locale =>
@@ -51,32 +50,6 @@ const i18nProvider = polyglotI18nProvider(
                       },
                   },
               },
-    // Default locale
-    'en',
-    [
-        { locale: 'en', name: 'English' },
-        { locale: 'fr', name: 'Français' },
-    ]
-);
-
-const i18nProviderDefault = polyglotI18nProvider(
-    locale =>
-        locale === 'fr'
-            ? {
-                  ...frenchMessages,
-                  resources: {
-                      books: {
-                          name: 'Livre |||| Livres',
-                          fields: {
-                              id: 'Id',
-                              title: 'Titre',
-                              author: 'Auteur',
-                              year: 'Année',
-                          },
-                      },
-                  },
-              }
-            : englishMessages,
     // Default locale
     'en',
     [
@@ -183,18 +156,6 @@ const BookList = ({ children }) => {
     );
 };
 
-const AuthorList = ({ children }) => {
-    return (
-        <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="fullName" />
-                {children}
-            </Datagrid>
-        </List>
-    );
-};
-
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
@@ -203,97 +164,7 @@ export const Basic = () => (
                     name="books"
                     list={
                         <BookList>
-                            <DeleteWithConfirmButton />
-                        </BookList>
-                    }
-                />
-            </AdminUI>
-        </AdminContext>
-    </TestMemoryRouter>
-);
-
-export const WithDefaultTranslation = () => (
-    <TestMemoryRouter initialEntries={['/books']}>
-        <AdminContext
-            dataProvider={dataProvider}
-            i18nProvider={i18nProviderDefault}
-        >
-            <AdminUI>
-                <Resource
-                    name="books"
-                    list={
-                        <BookList>
-                            <DeleteWithConfirmButton />
-                        </BookList>
-                    }
-                />
-            </AdminUI>
-        </AdminContext>
-    </TestMemoryRouter>
-);
-
-export const WithCustomTitleAndContent = () => (
-    <TestMemoryRouter initialEntries={['/books']}>
-        <AdminContext
-            dataProvider={dataProvider}
-            i18nProvider={i18nProviderDefault}
-        >
-            <AdminUI>
-                <Resource
-                    name="books"
-                    list={
-                        <BookList>
-                            <DeleteWithConfirmButton
-                                confirmTitle="Delete me?"
-                                confirmContent="Please confirm the deletion"
-                            />
-                        </BookList>
-                    }
-                />
-            </AdminUI>
-        </AdminContext>
-    </TestMemoryRouter>
-);
-
-export const NoRecordRepresentation = () => (
-    <TestMemoryRouter initialEntries={['/authors']}>
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <AdminUI>
-                <Resource
-                    name="authors"
-                    list={
-                        <AuthorList>
-                            <DeleteWithConfirmButton />
-                        </AuthorList>
-                    }
-                />
-            </AdminUI>
-        </AdminContext>
-    </TestMemoryRouter>
-);
-
-export const WithCustomDialogContent = () => (
-    <TestMemoryRouter initialEntries={['/books']}>
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-            <AdminUI>
-                <Resource
-                    name="books"
-                    list={
-                        <BookList>
-                            <DeleteWithConfirmButton
-                                confirmTitle={
-                                    <>
-                                        Delete <strong>Full Name</strong>
-                                    </>
-                                }
-                                confirmContent={
-                                    <Alert severity="warning">
-                                        Are you sure you want to delete this
-                                        user?
-                                    </Alert>
-                                }
-                                confirmColor="warning"
-                            />
+                            <DeleteWithUndoButton />
                         </BookList>
                     }
                 />
@@ -309,7 +180,7 @@ export const Themed = () => (
             i18nProvider={i18nProvider}
             theme={deepmerge(createTheme(), {
                 components: {
-                    RaDeleteWithConfirmButton: {
+                    RaDeleteWithUndoButton: {
                         defaultProps: {
                             variant: 'outlined',
                             'data-testid': 'themed',
@@ -328,7 +199,7 @@ export const Themed = () => (
                     name="books"
                     list={
                         <BookList>
-                            <DeleteWithConfirmButton />
+                            <DeleteWithUndoButton />
                         </BookList>
                     }
                 />

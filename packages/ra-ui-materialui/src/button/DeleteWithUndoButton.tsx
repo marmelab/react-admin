@@ -13,10 +13,20 @@ import {
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
-    props: DeleteWithUndoButtonProps<RecordType>
+    inProps: DeleteWithUndoButtonProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         label = 'ra.action.delete',
         className,
@@ -41,7 +51,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
     });
 
     return (
-        <Button
+        <StyledButton
             onClick={handleDelete}
             disabled={isPending}
             label={label}
@@ -51,7 +61,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
             {...rest}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -72,4 +82,30 @@ export interface DeleteWithUndoButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     successMessage?: string;
+}
+
+const PREFIX = 'RaDeleteWithUndoButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<DeleteWithUndoButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
 }

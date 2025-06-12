@@ -15,8 +15,8 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { ThemeProvider, Stack } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, Stack, ThemeOptions } from '@mui/material';
+import { deepmerge } from '@mui/utils';
 
 import {
     ReferenceOneField,
@@ -34,6 +34,7 @@ import {
     TextField,
     TextInput,
 } from '..';
+import { defaultLightTheme, ThemeProvider, ThemesContext } from '../theme';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceOneField' };
 
@@ -64,17 +65,29 @@ const defaultDataProvider = {
         }),
 } as any;
 
-const Wrapper = ({ children, dataProvider = defaultDataProvider }) => (
+const Wrapper = ({
+    children,
+    dataProvider = defaultDataProvider,
+    theme = defaultLightTheme,
+}) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
-        <CoreAdminContext dataProvider={dataProvider}>
-            <ResourceContextProvider value="books">
-                <RecordContextProvider
-                    value={{ id: 1, title: 'War and Peace' }}
-                >
-                    {children}
-                </RecordContextProvider>
-            </ResourceContextProvider>
-        </CoreAdminContext>
+        <ThemesContext.Provider
+            value={{
+                lightTheme: theme,
+            }}
+        >
+            <ThemeProvider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceContextProvider value="books">
+                        <RecordContextProvider
+                            value={{ id: 1, title: 'War and Peace' }}
+                        >
+                            {children}
+                        </RecordContextProvider>
+                    </ResourceContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        </ThemesContext.Provider>
     </TestMemoryRouter>
 );
 
@@ -308,22 +321,20 @@ export const InShowLayout = () => (
 );
 
 const ListWrapper = ({ children }) => (
-    <ThemeProvider theme={createTheme()}>
-        <Wrapper>
-            <ListContextProvider
-                value={
-                    {
-                        total: 1,
-                        data: [{ id: 1, title: 'War and Peace' }],
-                        sort: { field: 'id', order: 'ASC' },
-                        setSort: () => {},
-                    } as any
-                }
-            >
-                {children}
-            </ListContextProvider>
-        </Wrapper>
-    </ThemeProvider>
+    <Wrapper>
+        <ListContextProvider
+            value={
+                {
+                    total: 1,
+                    data: [{ id: 1, title: 'War and Peace' }],
+                    sort: { field: 'id', order: 'ASC' },
+                    setSort: () => {},
+                } as any
+            }
+        >
+            {children}
+        </ListContextProvider>
+    </Wrapper>
 );
 
 export const InDatagrid = () => (
@@ -433,6 +444,31 @@ export const QueryOptions = ({ dataProvider = defaultDataProvider }) => (
             target="book_id"
             queryOptions={{ meta: { foo: 'bar' } }}
         >
+            <TextField source="ISBN" />
+        </ReferenceOneField>
+    </Wrapper>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaReferenceOneField: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
+                },
+                RaReferenceField: {
+                    styleOverrides: {
+                        root: {
+                            color: 'hotpink',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <ReferenceOneField reference="book_details" target="book_id">
             <TextField source="ISBN" />
         </ReferenceOneField>
     </Wrapper>

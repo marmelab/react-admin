@@ -13,6 +13,7 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { DeleteWithUndoButton } from './DeleteWithUndoButton';
+import { Themed } from './DeleteWithUndoButton.stories';
 
 const theme = createTheme();
 
@@ -160,5 +161,11 @@ describe('<DeleteWithUndoButton />', () => {
                 },
             ]);
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const buttons = await screen.findAllByTestId('themed');
+        expect(buttons[0].classList).toContain('MuiButton-outlined');
     });
 });

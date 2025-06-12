@@ -113,7 +113,11 @@ export const ReferenceFieldView = <
 >(
     props: ReferenceFieldViewProps<RecordType, ReferenceRecordType>
 ) => {
-    const { children, className, emptyText, reference, sx } = props;
+    const { children, className, emptyText, reference, sx, ...rest } =
+        useThemeProps({
+            props: props,
+            name: PREFIX,
+        });
     const { error, link, isLoading, referenceRecord } =
         useReferenceFieldContext();
 
@@ -155,6 +159,7 @@ export const ReferenceFieldView = <
             <Root
                 className={clsx(ReferenceFieldClasses.root, className)}
                 sx={sx}
+                {...rest}
             >
                 <Link
                     to={link}
@@ -169,7 +174,11 @@ export const ReferenceFieldView = <
     }
 
     return (
-        <Root className={clsx(ReferenceFieldClasses.root, className)} sx={sx}>
+        <Root
+            className={clsx(ReferenceFieldClasses.root, className)}
+            sx={sx}
+            {...rest}
+        >
             {child}
         </Root>
     );
@@ -198,7 +207,10 @@ export const ReferenceFieldClasses = {
 
 const Root = styled('span', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: (props, styles) => ({
+        ['&']: styles.root,
+        [`& .${ReferenceFieldClasses.link}`]: styles.link,
+    }),
 })(({ theme }) => ({
     lineHeight: 'initial',
     [`& .${ReferenceFieldClasses.link}`]: {
