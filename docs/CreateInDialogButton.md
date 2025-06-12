@@ -12,7 +12,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
   Your browser does not support the video tag.
 </video>
 
-It can be useful in case you want the ability to create a record linked by a reference to the currently edited record, or if you have a nested `<Datagrid>` inside a `<Show>` or an `<Edit>` view. 
+It can be useful in case you want the ability to create a record linked by a reference to the currently edited record, or if you have a nested `<DataTable>` inside a `<Show>` or an `<Edit>` view.
 
 Note that this component doesn't use routing, so it doesn't change the URL. It's therefore not possible to bookmark the creation dialog, or to link to it from another page. If you need that functionality, use [`<CreateDialog>`](./CreateDialog.md) instead.
 
@@ -33,7 +33,7 @@ Then, put `<CreateInDialogButton>` wherever you would put a `<CreateButton>`, an
 {% raw %}
 ```jsx
 import {
-  Datagrid,
+  DataTable,
   ReferenceManyField,
   Show,
   SimpleForm,
@@ -59,10 +59,10 @@ const CompanyShow = () => (
                         </SimpleForm>
                     </CreateInDialogButton>
                 )} />
-                <Datagrid>
-                    <TextField source="first_name" />
-                    <TextField source="last_name" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="first_name" />
+                    <DataTable.Col source="last_name" />
+                </DataTable>
             </ReferenceManyField>
         </SimpleShowLayout>
     </Show>
@@ -317,13 +317,13 @@ const EmployerEditButton = () => (
 
 ## Combining With `<EditInDialogButton>`
 
-Below is an example of an `<Edit>` view, inside which is a nested `<Datagrid>`, offering the ability to **create**, **edit** and **show** the rows thanks to `<CreateInDialogButton>`, [`<EditInDialogButton>`](./EditInDialogButton.md) and [`<ShowInDialogButton>`](./ShowInDialogButton.md):
+Below is an example of an `<Edit>` view, inside which is a nested `<DataTable>`, offering the ability to **create**, **edit** and **show** the rows thanks to `<CreateInDialogButton>`, [`<EditInDialogButton>`](./EditInDialogButton.md) and [`<ShowInDialogButton>`](./ShowInDialogButton.md):
 
 {% raw %}
 ```jsx
 import React from "react";
 import {
-  Datagrid,
+  DataTable,
   DateField,
   DateInput,
   Edit,
@@ -367,10 +367,10 @@ const CustomerLayout = () => (
 );
 
 // helper component to add actions buttons in a column (children),
-// and also in the header (label) of a Datagrid
-const DatagridActionsColumn = ({ label, children }) => <>{children}</>;
+// and also in the header (label) of a DataTable
+const DataTableActionsColumn = ({ label, children }) => <DataTable.Col label={label}>{children}</DataTable.Col>;
 
-const NestedCustomersDatagrid = () => {
+const NestedCustomersDataTable = () => {
   const record = useRecordContext();
 
   const createButton = (
@@ -402,18 +402,20 @@ const NestedCustomersDatagrid = () => {
       reference="customers"
       target="employer_id"
     >
-      <Datagrid>
-        <TextField source="id" />
-        <TextField source="first_name" />
-        <TextField source="last_name" />
-        <DateField source="dob" label="born" />
-        <SelectField source="sex" choices={sexChoices} />
-        {/* Using a component as label is a trick to render it in the Datagrid header */}
-        <DatagridActionsColumn label={createButton}>
+      <DataTable>
+        <DataTable.Col source="id" />
+        <DataTable.Col source="first_name" />
+        <DataTable.Col source="last_name" />
+        <DataTable.Col source="dob" label="born" field={DateField} />
+        <DataTable.Col source="sex">
+          <SelectField source="sex" choices={sexChoices} />
+        </DataTable.Col>
+        {/* Using a component as label is a trick to render it in the DataTable header */}
+        <DataTableActionsColumn label={createButton}>
           {editButton}
           {showButton}
-        </DatagridActionsColumn>
-      </Datagrid>
+        </DataTableActionsColumn>
+      </DataTable>
     </ReferenceManyField>
   );
 };
@@ -424,7 +426,7 @@ const EmployerEdit = () => (
       <TextInput source="name" validate={required()} />
       <TextInput source="address" validate={required()} />
       <TextInput source="city" validate={required()} />
-      <NestedCustomersDatagrid />
+      <NestedCustomersDataTable />
     </SimpleForm>
   </Edit>
 );

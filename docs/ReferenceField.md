@@ -65,7 +65,7 @@ Alternately, if you pass a child component, `<ReferenceField>` will render it in
 
 This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. 
 
-It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<Datagrid>`), this allows to call the `dataProvider` once instead of once per row. 
+It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row. 
 
 ## Props
 
@@ -78,7 +78,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
-| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
+| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a DataTable |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -172,7 +172,7 @@ For instance, if the `posts` resource has a `user_id` field, set the `reference`
 
 ## `sortBy`
 
-By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceField>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
+By default, when used in a `<DataTable>`, and when the user clicks on the column header of a `<ReferenceField>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
 
 ```jsx
 <ReferenceField source="user_id" reference="users" sortBy="user.name" />
@@ -192,23 +192,27 @@ To override the style of all instances of `<ReferenceField>` using the [applicat
 
 <iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-When used in a `<Datagrid>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
+When used in a `<DataTable>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
 
 ![ReferenceField](./img/reference-field.png)
 
 For instance, with this code:
 
 ```jsx
-import { List, Datagrid, ReferenceField, TextField, EditButton } from 'react-admin';
+import { List, DataTable, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <ReferenceField label="User" source="user_id" reference="users" />
-            <TextField source="title" />
-            <EditButton />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col label="User" source="user_id">
+                <ReferenceField source="user_id" reference="users" />
+            </DataTable.Col>
+            <DataTable.Col source="title" />
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -247,11 +251,13 @@ For example, the following code prefetches the authors referenced by the posts:
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <Datagrid>
-            <TextField source="title" />
-            {/** renders without an additional request */}
-            <ReferenceField source="author_id" reference="authors" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author_id">
+                {/** renders without an additional request */}
+                <ReferenceField source="author_id" reference="authors" />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```

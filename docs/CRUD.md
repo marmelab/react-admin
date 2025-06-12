@@ -36,20 +36,20 @@ Each component reads the parameters from the URL, fetches the data from the data
 For example, to display a list of posts, you would use the `<List>` component:
 
 ```jsx
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 
 const PostList = () => (
     <List resource="posts">
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="body" />
+        </DataTable>
     </List>
 );
 ```
 
-Here, the `<List>` component will call `dataProvider.getList('posts')` to fetch the list of posts and create a `ListContext` to store the data. The `<Datagrid>` component will read the data from that `ListContext` and render a row for each post. That's why there is no need to explicitly pass the data to the `<Datagrid>` component.
+Here, the `<List>` component will call `dataProvider.getList('posts')` to fetch the list of posts and create a `ListContext` to store the data. The `<DataTable>` component will read the data from that `ListContext` and render a row for each post. That's why there is no need to explicitly pass the data to the `<DataTable>` component.
 
 ## Page Context
 
@@ -60,7 +60,7 @@ Here, the `<List>` component will call `dataProvider.getList('posts')` to fetch 
 - Filters
 - Record selection
 
-The [`ListContext`](./useListContext.md) exposes callbacks to update these settings, and `<List>`'s children components like `<Datagrid>` use these callbacks to update the data.
+The [`ListContext`](./useListContext.md) exposes callbacks to update these settings, and `<List>`'s children components like `<DataTable>` use these callbacks to update the data.
 
 ```jsx
 const listContext = useListContext();
@@ -135,16 +135,16 @@ This is the equivalent of the following react-router configuration:
 `<Resource>` defines a `ResourceContext` storing the current resource `name`. This context is used by the `<List>`, `<Edit>`, `<Create>`, and `<Show>` components to determine the resource they should fetch. So when declaring page components with `<Resource>`, you don't need to pass the `resource` prop to them.
 
 ```diff
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 
 const PostList = () => (
 -   <List resource="posts">
 +   <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="body" />
+        </DataTable>
     </List>
 );
 ```
@@ -153,26 +153,26 @@ Check [the `<Resource>` documentation](./Resource.md) to learn more about routin
 
 ## The List Page
 
-To build list pages, developers primarily use the [`<List>`](./List.md) component. It fetches a list of records from the data provider and delegates the rendering to its child component (often a [`<Datagrid>`](./Datagrid.md), as in the example below).
+To build list pages, developers primarily use the [`<List>`](./List.md) component. It fetches a list of records from the data provider and delegates the rendering to its child component (often a [`<DataTable>`](./DataTable.md), as in the example below).
 
 ```jsx
-import { List, Datagrid, TextField, TextInput} from 'react-admin';
+import { List, DataTable, TextInput} from 'react-admin';
 
 const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
 
 const BookList = () => (
     <List filters={filters}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 ```
 
-`<List>` also lets you customize the UI for filters and pagination. As for `<Datagrid>`, it provides tons of customization options, like row expanders, bulk actions, and column chooser. You can learn more in the [List Tutorial](./ListTutorial.md).
+`<List>` also lets you customize the UI for filters and pagination. As for `<DataTable>`, it provides tons of customization options, like row expanders, bulk actions, and column chooser. You can learn more in the [List Tutorial](./ListTutorial.md).
 
 ### List Layouts
 
@@ -181,10 +181,11 @@ You can use any of the following components to build the list page:
 <table><tbody>
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
-        <a title="<Datagrid>" href="./Datagrid.html">
+        <a title="<DataTable>" href="./DataTable.html">
+            <!-- TODO: shoot a new screenshot of Datatable to replace the following one -->
             <img src="./img/Datagrid.jpg">
         </a>
-        <a href="./Datagrid.html" style="display: block;transform: translateY(-10px);"><code>&lt;Datagrid&gt;</code></a>
+        <a href="./DataTable.html" style="display: block;transform: translateY(-10px);"><code>&lt;DataTable&gt;</code></a>
     </td>
     <td style="width:50%;border:none;text-align:center">
          <a title="<DatagridAG>" href="./DatagridAG.html">
@@ -251,7 +252,7 @@ Inside these list layouts, you can use any of react-admin’s Field components t
 - [`<ExportButton>`](./Buttons.md#exportbutton): A button to export the list data
 - [`<CreateButton>`](./Buttons.md#createbutton): A button to create a new record
 - [`<SortButton>`](./SortButton.md): A button to sort the list
-- [`<SelectColumnsButton>`](./SelectColumnsButton.md): A button to select the columns to display in a Datagrid
+- [`<SelectColumnsButton>`](./SelectColumnsButton.md): A button to select the columns to display in a DataTable
 - [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton): A button to update selected records
 - [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton): A button to delete selected records
 - [`<ListActions>`](./List.md#actions): A toolbar with a create and an export button
@@ -427,7 +428,7 @@ Check the following components to learn more about guessers:
 
 ## Headless Variants
 
-`<List>` and other page components render their children (e.g., `<Datagrid>`) in a page layout. This layout contains a page title (e.g., "Posts"), toolbars for action buttons & filters, a footer for pagination, and a side column.
+`<List>` and other page components render their children (e.g., `<DataTable>`) in a page layout. This layout contains a page title (e.g., "Posts"), toolbars for action buttons & filters, a footer for pagination, and a side column.
 
 But sometimes, you want to use the list data in a different layout, without the page title and toolbar, or with a different UI kit. For these use cases, you can use the headless variants of the page components, which come in two flavors:
 
@@ -458,15 +459,15 @@ const MyList = () => {
 If you want to use react-admin components, prefer the Base components, which call the hooks internally and store the values in a context:
 
 ```jsx
-import { ListBase, Datagrid, TextField } from 'react-admin';
+import { ListBase, DataTable } from 'react-admin';
 
 const MyList = () => (
     <ListBase resource="posts">
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="body" />
+        </DataTable>
     </ListBase>
 );
 ```

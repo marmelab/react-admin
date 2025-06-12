@@ -13,7 +13,6 @@ This component makes another component configurable by the end user. When users 
   Your browser does not support the video tag.
 </video>
 
-
 Some react-admin components are already configurable - or rather they have a configurable counterpart:
 
 - [`<DatagridConfigurable>`](./Datagrid.md#configurable)

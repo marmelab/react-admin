@@ -15,7 +15,7 @@ The `ListContext` is available to descendants of:
 - `<ReferenceArrayField>`,
 - `<ReferenceManyField>`
 
-All descendant components can therefore access the list context, using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<FilterForm>`, and `<Pagination>` components all use the `useListContext` hook.
+All descendant components can therefore access the list context, using the `useListContext` hook. As a matter of fact, react-admin's `<DataTable>`, `<FilterForm>`, and `<Pagination>` components all use the `useListContext` hook.
 
 ## Usage
 
@@ -40,16 +40,16 @@ export const Aside = () => {
 };
 
 // in src/posts/PostList.js
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 import Aside from './Aside';
 
 export const PostList = () => (
     <List aside={<Aside />}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="views" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="views" />
+        </DataTable>
     </List>
 );
 ```
@@ -163,7 +163,7 @@ The `useListContext` hook accepts a generic parameter for the record type:
 
 ```tsx
 import { Typography } from '@mui/material';
-import { List, Datagrid, TextField, useListContext } from 'react-admin';
+import { List, DataTable, useListContext } from 'react-admin';
 
 type Post = {
     id: number;
@@ -187,11 +187,11 @@ export const Aside = () => {
 
 export const PostList = () => (
     <List aside={<Aside />}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="views" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="views" />
+        </DataTable>
     </List>
 );
 ```
@@ -208,4 +208,4 @@ You can find many usage examples of `useListContext` in the documentation, inclu
 - [Building a Custom Pagination Control](./ListTutorial.md#building-a-custom-pagination)
 - [Building a Custom Iterator](./ListTutorial.md#building-a-custom-iterator)
 
-**Tip**: [`<ReferenceManyField>`](./ReferenceManyField.md), as well as other relationship-related components, also implement a `ListContext`. That means you can use a `<Datagrid>` of a `<Pagination>` inside these components!
+**Tip**: [`<ReferenceManyField>`](./ReferenceManyField.md), as well as other relationship-related components, also implement a `ListContext`. That means you can use a `<DataTable>` of a `<Pagination>` inside these components!

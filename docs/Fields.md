@@ -22,7 +22,7 @@ const PurpleTextField = ({ source }) => {
 ```
 {% endraw %}
 
-**Tip**: Every time it renders a record, react-admin creates a `RecordContext`. This includes datagrid rows, simple list items, reference fields, show, and edit pages. You can even create a `RecordContext` yourself and use react-admin Fields in custom pages.
+**Tip**: Every time it renders a record, react-admin creates a `RecordContext`. This includes datatable rows, simple list items, reference fields, show, and edit pages. You can even create a `RecordContext` yourself and use react-admin Fields in custom pages.
 
 React-admin Field components also accept a `record` prop. This allows you to use them outside a `RecordContext`, or to use another `record` than the one in the current context.
 
@@ -79,7 +79,7 @@ Will render
 </Typography>
 ```
 
-Field components are generally used in List and Show views, as children of `<Datagrid>`, `<SimpleShowLayout>`, and `<TabbedShowLayout>`. The parent component usually reads their `source` and/or `label` prop to add a title.
+Field components are generally used in List and Show views, as children of `<DataTable>`, `<SimpleShowLayout>`, and `<TabbedShowLayout>`. The parent component usually reads their `source` and/or `label` prop to add a title.
 
 ```jsx
 // in src/posts.js
@@ -122,7 +122,7 @@ All Field components accept the following props:
 | Prop                          | Required | Type                           | Default  | Description                                                                                                                                             |
 |-------------------------------| -------- |--------------------------------| -------- |---------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`source`](#source)           | Required | `string`                       | -        | Name of the property to display                                                                                                                         |
-| [`label`](#label)             | Optional | `string` &#124; `ReactElement` | `source` | Used as a Datagrid column header or in a Show layout                                                                                                    |
+| [`label`](#label)             | Optional | `string` &#124; `ReactElement` | `source` | Used as a DataTable column header or in a Show layout                                                                                                    |
 | [`record`](#record)           | Optional | `Object`                       | -        | Object containing the properties to display, to override the record from the current `RecordContext`                                                    |
 | [`sortable`](#sortable)       | Optional | `boolean`                      | `true`   | When used in a `List`, should the list be sortable using the `source` attribute? Setting it to `false` disables the click handler on the column header. |
 | [`sortBy`](#sortby)           | Optional | `string`                       | `source` | When used in a `List`, specifies the actual `source` to be used for sorting when the user clicks the column header                                      |
@@ -137,7 +137,7 @@ All Field components accept the following props:
 CSS class name passed to the root component. 
 
 ```jsx
-<TextField source="title" className="number" />
+<DataTable.Col source="title" className="number" />
 ```
 
 **Note**: To customize field styles, prefer [the `sx` prop](#sx).
@@ -149,27 +149,27 @@ By default, a Field renders an empty string when the record has no value for tha
 ```jsx
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <TextField source="author" emptyText="missing data" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" emptyText="missing data" />
+        </DataTable>
     </List>
 );
 ```
 
 ## `label`
 
-By default, a Field doesn't render any label - just the value. But when rendering several fields on the same screen, it's necessary to label them. That's why components like `<SimpleShowLayout>` and `<Datagrid>` read the field `source`, and use a humanized version as the label (e.g. `source="title"` gives the label `Title`). 
+By default, a Field doesn't render any label - just the value. But when rendering several fields on the same screen, it's necessary to label them. That's why components like `<SimpleShowLayout>` and `<DataTable>` read the field `source`, and use a humanized version as the label (e.g. `source="title"` gives the label `Title`). 
 
-You can customize this automated label by specifying a `label` prop. `<SimpleShowLayout>` and `<Datagrid>` will then use the `label` prop instead of the `source` prop to label the field.
+You can customize this automated label by specifying a `label` prop. `<SimpleShowLayout>` and `<DataTable>` will then use the `label` prop instead of the `source` prop to label the field.
 
 ```jsx
 // label can be a string
-<TextField source="author.name" label="Author" />
+<DataTable.Col source="author.name" label="Author" />
 // the label is automatically translated, so you can use translation identifiers
-<TextField source="author.name" label="ra.field.author" />
+<DataTable.Col source="author.name" label="ra.field.author" />
 // you can also use a React element
-<TextField source="author.name" label={<FieldTitle label="Author" />} />
+<DataTable.Col source="author.name" label={<FieldTitle label="Author" />} />
 ```
 
 **Tip**: If your admin has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./TranslationTranslating.md#translating-resource-and-field-names) for details.
@@ -181,7 +181,7 @@ You can customize this automated label by specifying a `label` prop. `<SimpleSho
 <TextField source="author.name" label={false} />
 ```
 
-**Note**: This prop has no effect when rendering a field outside a `<Datagrid>`, a `<SimpleShowLayout>`, a `<TabbedShowLayout>`, a `<SimpleForm>`, or a `<TabbedForm>`.
+**Note**: This prop has no effect when rendering a field outside a `<DataTable>`, a `<SimpleShowLayout>`, a `<TabbedShowLayout>`, a `<SimpleForm>`, or a `<TabbedForm>`.
 
 ## `record`
 
@@ -195,69 +195,75 @@ By default, fields use the `record` from the `RecordContext`. But you can overri
 
 ## `sortable`
 
-In a `<Datagrid>`, users can change the sort field and order by clicking on the column headers. You may want to disable this behavior for a given field (e.g. for reference or computed fields). In that case, pass the `sortable` prop to `<Field>` with a `false` value.
+In a `<DataTable>`, users can change the sort field and order by clicking on the column headers. You may want to disable this behavior for a given field (e.g. for reference or computed fields). In that case, pass the `sortable` prop to `<Field>` with a `false` value.
 
 ```jsx
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <ReferenceField source="author_id" sortable={false}>
-                <TextField source="name" />
-            </ReferenceField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Author">
+                <ReferenceField source="author_id" sortable={false}>
+                    <TextField source="name" />
+                </ReferenceField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
 
-**Note**: This prop has no effect when rendering a field outside a `<Datagrid>`.
+**Note**: This prop has no effect when rendering a field outside a `<DataTable>`.
 
 ## `sortBy`
 
-In a `<Datagrid>`, users can change the sort field and order by clicking on the column headers. `<Datagrid>` uses the Field `source`to determine the sort field (e.g. clicking on the column header for the `<TextField source="title" />` field sorts the list according to the `title` field).
+In a `<DataTable>`, users can change the sort field and order by clicking on the column headers. `<DataTable>` uses the Field `source`to determine the sort field (e.g. clicking on the column header for the `<TextField source="title" />` field sorts the list according to the `title` field).
 
 You may want to use a different sort field than the `source`, e.g. for Reference fields. In that case, use the `sortBy` prop to specify the sort field.
 
 ```jsx
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <ReferenceField source="author_id" sortBy="author.name">
-                <TextField source="name" />
-            </ReferenceField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Author">
+                <ReferenceField source="author_id" sortBy="author.name">
+                    <TextField source="name" />
+                </ReferenceField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
 
-**Note**: This prop has no effect when rendering a field outside a `<Datagrid>`.
+**Note**: This prop has no effect when rendering a field outside a `<DataTable>`.
 
 ## `sortByOrder`
 
-By default, when users click on a `<Datagrid>` column header, react-admin reorders the list using the field source, *with an ascending order*. For some fields, it brings unexpected results. For instance, when clicking on a "Last seen at" header, users probably expect to see the users seen more recently. 
+By default, when users click on a `<DataTable>` column header, react-admin reorders the list using the field source, *with an ascending order*. For some fields, it brings unexpected results. For instance, when clicking on a "Last seen at" header, users probably expect to see the users seen more recently. 
 
 You can change the default sort field order by using the `sortByOrder` prop.
 
 ```jsx
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <DateField source="updated_at" sortByOrder="DESC" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Updated at">
+                <DateField source="updated_at" sortByOrder="DESC" />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
 
-**Note**: This prop has no effect when rendering a field outside a `<Datagrid>`.
+**Note**: This prop has no effect when rendering a field outside a `<DataTable>`.
 
 ## `source`
 
 The name of the property to display. Can contain dots for accessing properties of nested objects. 
 
 ```jsx
-<TextField source="author.first_name" />
+<DataTable.Col source="author.first_name" />
 ```
 
 ## `sx`
@@ -266,15 +272,17 @@ Like all react-admin components, you can customize the style of Field components
 
 {% raw %}
 ```jsx
-import { List, Datagrid, WrapperField, TextField } from 'react-admin';
+import { List, DataTable, WrapperField } from 'react-admin';
 
 const UserList = () => (
     <List>
-        <Datagrid>
-            <ImageField source="avatar" sx={{ my: -2 }}/>
-            <TextField source="username" sx={{ color: 'lightgrey' }} />
-            <TextField source="email" sx={{ textOverflow: 'ellipsis' }} />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col label="Avatar">
+                <ImageField source="avatar" sx={{ my: -2 }}/>
+            </DataTable.Col>
+            <DataTable.Col source="username" sx={{ color: 'lightgrey' }} />
+            <DataTable.Col source="email" sx={{ textOverflow: 'ellipsis' }} />
+        </>
     </List>
 );
 ```
@@ -286,19 +294,21 @@ And see [the Material UI system documentation](https://mui.com/system/the-sx-pro
 
 ## `textAlign`
 
-This prop defines the text alignment of the field when rendered inside a `<Datagrid>` cell. By default, datagrid values are left-aligned ; for numeric values, it's often better to right-align them. Set `textAlign` to `right` for that.
+This prop defines the text alignment of the field when rendered inside a `<DataTable>` cell. By default, datatable values are left-aligned ; for numeric values, it's often better to right-align them. Set `textAlign` to `right` for that.
 
 ```jsx
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable, TextField } from 'react-admin';
 
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" textAlign="right" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col label="Year">
+                <TextField source="year" textAlign="right" />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -335,16 +345,16 @@ const { data } = useGetOne('posts', { id: 123, meta: { embed: ['author'] } });
 
 <iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `label` prop to set the table headers or the field labels.
+React-admin Field layout components like [`<DataTable>`](./DataTable.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `label` prop to set the table headers or the field labels.
 
 So inside these components, you can provide a `label` prop to override the default label.
 
 ```jsx
 const BookList = () => (
    <List>
-       <Datagrid>
-            <TextField source="title" label="Post title" />
-      </Datagrid>
+       <DataTable>
+            <DataTable.Col source="title" label="Post title" />
+      </DataTable>
   </List>
 );
 ```
@@ -354,9 +364,9 @@ The label uses [the i18n layer](./Translation.md), so you can use a translation 
 ```jsx
 const BookList = () => (
    <List>
-       <Datagrid>
-            <TextField source="title" label="post.title" />
-      </Datagrid>
+       <DataTable>
+            <DataTable.Col source="title" label="post.title" />
+      </DataTable>
   </List>
 );
 ```
@@ -379,7 +389,7 @@ const BookEdit = () => (
 
 ## Hiding The Field Label
 
-React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `source` prop to set the table headers or the field labels. To opt out of this behavior, pass `false` to the `label` prop.
+React-admin Field layout components like [`<DataTable>`](./DataTable.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `source` prop to set the table headers or the field labels. To opt out of this behavior, pass `false` to the `label` prop.
 
 ```jsx
 // No label will be added in SimpleShowLayout

@@ -157,12 +157,14 @@ For instance, `<ReferenceField>` displays the name of a related record, like the
 ```jsx
 const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceField source="author_id" reference="authors" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author_id">
+                <ReferenceField source="author_id" reference="authors" />
+            </DataTable.Col>
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 ```
@@ -212,12 +214,14 @@ const BookList = () => (
     <List filters={[
         <ReferenceInput source="authorId" reference="authors" alwaysOn />,
     ]}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="authorId">
+                <ReferenceField source="authorId" reference="authors" />
+            </DataTable.Col>
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 ```
@@ -515,7 +519,7 @@ Users often apply the same filters over and over again. Saved Queries **let user
 Here is an example `<FilterList>` sidebar with saved queries:
 
 ```jsx
-import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
+import { FilterList, FilterListItem, List, DataTable } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
 
 import { SavedQueriesList } from 'react-admin';
@@ -536,9 +540,9 @@ const SongFilterSidebar = () => (
 
 const SongList = () => (
     <List aside={<SongFilterSidebar />}>
-        <Datagrid>
+        <DataTable>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -570,8 +574,7 @@ For instance, here is how to build a tabbed form for editing a blog post:
 import {
     TabbedForm,
     Edit,
-    Datagrid,
-    TextField,
+    DataTable,
     DateField,
     TextInput,
     ReferenceManyField,
@@ -601,11 +604,13 @@ export const PostEdit = () => (
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="body" />
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </ReferenceManyField>
             </TabbedForm.Tab>
         </TabbedForm>
@@ -1198,20 +1203,18 @@ For instance, include a `<ListLiveUpdate>` within a `<List>` to have a list refr
 ```diff
 import {
     List,
-    Datagrid,
-    TextField,
-    NumberField,
+    DataTable,
     Datefield,
 } from 'react-admin';
 +import { ListLiveUpdate } from '@react-admin/ra-realtime';
 
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <DateField source="published_at" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.NumberCol source="views" />
+            <DataTable.Col source="published_at" field={DateField} />
+        </DataTable>
 +       <ListLiveUpdate />
     </List>
 );
@@ -1338,7 +1341,7 @@ For instance, the Saved Queries feature lets users **save a combination of filte
 Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo, but you have to add it yourself in the `<FilterList>` Sidebar.
 
 ```diff
-import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
+import { FilterList, FilterListItem, List, DataTable } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
 
 +import { SavedQueriesList } from 'react-admin';
@@ -1359,9 +1362,9 @@ const SongFilterSidebar = () => (
 
 const SongList = () => (
     <List aside={<SongFilterSidebar />}>
-        <Datagrid>
+        <DataTable>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -1459,19 +1462,18 @@ Theming is so powerful that you can even use react-admin to build a [Music Playe
 
 ![Music Player](./img/navidrome.png)
 
-Use the `sx` prop on almost every react-admin component to override its default style - and the style of its descendants. For instance, here is how to change the width of Datagrid columns:
+Use the `sx` prop on almost every react-admin component to override its default style - and the style of its descendants. For instance, here is how to change the width of DataTable columns:
 
 {% raw %}
 
 ```jsx
 import {
     BooleanField,
-    Datagrid,
+    DataTable,
     DateField,
     EditButton,
     List,
     NumberField,
-    TextField,
     ShowButton,
 } from 'react-admin';
 import Icon from '@mui/icons-material/Person';
@@ -1480,22 +1482,28 @@ export const VisitorIcon = Icon;
 
 export const PostList = () => (
     <List>
-        <Datagrid
+        <DataTable
             sx={{
                 backgroundColor: "Lavender",
-                "& .RaDatagrid-headerCell": {
+                "& .RaDataTable-headerCell": {
                     backgroundColor: "MistyRose",
                 },
             }}
         >
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" sortByOrder="DESC" />
-            <BooleanField source="commentable" sortable={false} />
-            <NumberField source="views" sortByOrder="DESC" />
-            <EditButton />
-            <ShowButton />
-        </Datagrid>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Published at">
+                <DateField source="published_at" sortByOrder="DESC" />
+            </DataTable.Col>
+            <DataTable.Col label="Commentable">
+                <BooleanField source="commentable" sortable={false} />
+            </DataTable.Col>
+            <DataTable.Col label="Views">
+                <NumberField source="views" sortByOrder="DESC" />
+            </DataTable.Col>
+            <DataTable.Col EditButton />
+            <DataTable.Col ShowButton />
+        </DataTable>
     </List>
 );
 ```
@@ -1535,11 +1543,11 @@ const theme = {
     ...defaultTheme,
     components: {
         ...defaultTheme.components,
-        RaDatagrid: {
+        RaDataTable: {
             styleOverrides: {
               root: {
                   backgroundColor: "Lavender",
-                  "& .RaDatagrid-headerCell": {
+                  "& .RaDataTable-headerCell": {
                       backgroundColor: "MistyRose",
                   },
               }
@@ -1678,12 +1686,12 @@ For a given component, the `sx` prop lets you customize its style based on the s
 
 {% endraw %}
 
-To make a component responsive, you can also render it conditionally based on the screen size. For instance, to render a `<SimpleList>` on desktop and a `<Datagrid>` on mobile:
+To make a component responsive, you can also render it conditionally based on the screen size. For instance, to render a `<SimpleList>` on desktop and a `<DataTable>` on mobile:
 
 ```jsx
 import * as React from 'react';
 import { useMediaQuery } from '@mui/material';
-import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { List, SimpleList, DataTable, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -1696,15 +1704,19 @@ export const PostList = () => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : (
-                <Datagrid>
-                    <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
-                    </ReferenceField>
-                    <TextField source="title" />
-                    <TextField source="body" />
-                    <EditButton />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col label="User">
+                        <ReferenceField source="userId" reference="users">
+                            <TextField source="name" />
+                        </ReferenceField>
+                    </DataTable.Col>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="body" />
+                    <DataTable.Col>
+                        <EditButton />
+                    </DataTable.Col>
+                </DataTable>
             )}
         </List>
     );

@@ -156,17 +156,17 @@ See the [Success and Error Side Effects](#success-and-error-side-effects) below 
 
 {% raw %}
 ```jsx
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 
 const PostList = () => (
     <List
         queryOptions={{ onSettled: (data, error) => console.log(data, error) }}
     >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="body" />
+        </DataTable>
     </List>
 );
 ```
@@ -319,8 +319,8 @@ To execute some logic after a query or a mutation is complete, use the `onSucces
 - [`useNotify`](./useNotify.md): Return a function to display a notification.
 - [`useRedirect`](./useRedirect.md): Return a function to redirect the user to another page.
 - [`useRefresh`](./useRefresh.md): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
-- [`useUnselect`](./useUnselect.md): Return a function to unselect lines in the current `Datagrid` based on the ids passed to it.
-- [`useUnselectAll`](./useUnselectAll.md): Return a function to unselect all lines in the current `Datagrid`.
+- [`useUnselect`](./useUnselect.md): Return a function to unselect lines in the current `DataTable` based on the ids passed to it.
+- [`useUnselectAll`](./useUnselectAll.md): Return a function to unselect all lines in the current `DataTable`.
 
 ### `onSuccess`
 

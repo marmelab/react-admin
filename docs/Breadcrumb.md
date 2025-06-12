@@ -742,7 +742,7 @@ Let's see how the components for the songs list and detail pages define their ap
 {% raw %}
 ```jsx
 // in src/songs/SongList.js
-import { useGetOne, List, SearchInput, Datagrid, TextField, DateField } from 'react-admin';
+import { useGetOne, List, SearchInput, DataTable, DateField } from 'react-admin';
 import { useDefineAppLocation } from '@react-admin/ra-navigation';
 import { useParams } from 'react-router-dom';
 
@@ -756,14 +756,16 @@ export const SongList = () => {
             filter={{ artist_id: id }}
             filters={[<SearchInput key="q" source="q" alwaysOn />]}
         >
-            <Datagrid>
-                <TextField source="title" />
-                <DateField source="released" />
-                <TextField source="writer" />
-                <TextField source="producer" />
-                <TextField source="recordCompany" label="Label" />
-                <EditSongButton />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col source="released" field={DateField} />
+                <DataTable.Col source="writer" />
+                <DataTable.Col source="producer" />
+                <DataTable.Col source="recordCompany" label="Label" />
+                <DataTable.Col>
+                    <EditSongButton />
+                </DataTable.Col>
+            </DataTable>
         </List>
     );
 };
@@ -857,16 +859,16 @@ To do so, override the [app location](#app-location) of the CRUD pages using the
 {% raw %}
 ```jsx
 // in src/songs/SongList.jsx
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 import { useDefineAppLocation } from '@react-admin/ra-navigation';
 
 export const SongList = () => {
     useDefineAppLocation('music.songs');
     return (
         <List>
-            <Datagrid>
-                <TextField source="title" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+            </DataTable>
         </List>
     );
 };

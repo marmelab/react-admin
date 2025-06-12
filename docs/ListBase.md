@@ -21,7 +21,7 @@ import {
     Title,
     ListToolbar,
     Pagination,
-    Datagrid,
+    DataTable,
 } from 'react-admin';
 import { Card } from '@mui/material';
 
@@ -41,9 +41,9 @@ const MyList = ({ children, actions, filters, title, ...props }) => (
 
 const PostList = () => (
     <MyList title="Post List">
-        <Datagrid>
+        <DataTable>
             ...
-        </Datagrid>
+        </DataTable>
     </MyList>
 );
 ```
@@ -78,16 +78,16 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 For instance, for the `<PostList>` page below:
 
 ```tsx
-import { ListBase, Datagrid, TextField } from 'react-admin';
+import { ListBase, DataTable } from 'react-admin';
 
 // Resource name is "posts"
 const PostList = () => (
     <ListBase>
-        <Datagrid>
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="published_at" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="published_at" />
+        </DataTable>
     </ListBase>
 );
 ```
