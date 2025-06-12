@@ -4,6 +4,9 @@ import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import {
     AuthProvider,
+    I18nProvider,
+    memoryStore,
+    mergeTranslations,
     RecordContextProvider,
     Resource,
     ResourceContextProvider,
@@ -19,15 +22,53 @@ import { TextField } from '../field/TextField';
 import ShowButton from './ShowButton';
 import { Show } from '../detail/Show';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
+import { LocalesMenuButton } from './LocalesMenuButton';
 
 export default { title: 'ra-ui-materialui/button/ShowButton' };
+
+const defaultI18nProvider = () =>
+    polyglotI18nProvider(
+        locale => (locale === 'fr' ? frenchMessages : englishMessages),
+        'en',
+        [
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'Français' },
+        ]
+    );
+
+const customI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      books: {
+                          action: {
+                              show: 'Voir %{recordRepresentation}',
+                          },
+                      },
+                  },
+              })
+            : mergeTranslations(englishMessages, {
+                  resources: {
+                      books: {
+                          action: {
+                              show: 'See %{recordRepresentation}',
+                          },
+                      },
+                  },
+              }),
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
 
 export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
     <TestMemoryRouter>
         <AdminContext
-            i18nProvider={polyglotI18nProvider(locale =>
-                locale === 'fr' ? frenchMessages : englishMessages
-            )}
+            i18nProvider={defaultI18nProvider()}
+            store={memoryStore()}
         >
             <ResourceContextProvider value="books">
                 <RecordContextProvider value={{ id: 1 }}>
@@ -37,6 +78,47 @@ export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const Label = ({
+    translations = 'default',
+    i18nProvider = translations === 'default'
+        ? defaultI18nProvider()
+        : customI18nProvider,
+    label,
+}: {
+    i18nProvider?: I18nProvider;
+    translations?: 'default' | 'resource specific';
+    label?: string;
+}) => (
+    <TestMemoryRouter>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            store={memoryStore()}
+        >
+            <ResourceContextProvider value="books">
+                <RecordContextProvider
+                    value={{ id: 1, title: 'War and Peace' }}
+                >
+                    <div>
+                        <ShowButton label={label} />
+                    </div>
+                </RecordContextProvider>
+                <LocalesMenuButton />
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+Label.args = {
+    translations: 'default',
+};
+Label.argTypes = {
+    translations: {
+        options: ['default', 'resource specific'],
+        control: { type: 'radio' },
+    },
+};
 
 export const AccessControl = () => {
     const queryClient = new QueryClient();
@@ -78,10 +160,9 @@ const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
         <AdminContext
             dataProvider={dataProvider}
             authProvider={authProvider}
-            i18nProvider={polyglotI18nProvider(locale =>
-                locale === 'fr' ? frenchMessages : englishMessages
-            )}
+            i18nProvider={defaultI18nProvider()}
             queryClient={queryClient}
+            store={memoryStore()}
         >
             <AdminUI
                 layout={({ children }) => (

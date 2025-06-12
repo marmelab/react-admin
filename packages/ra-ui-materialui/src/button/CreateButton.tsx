@@ -10,10 +10,11 @@ import clsx from 'clsx';
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
 import {
-    useTranslate,
-    useResourceContext,
     useCreatePath,
     useCanAccess,
+    useGetResourceLabel,
+    useResourceContext,
+    useResourceTranslation,
 } from 'ra-core';
 import { Link, type To } from 'react-router-dom';
 
@@ -40,7 +41,7 @@ const CreateButton = (inProps: CreateButtonProps) => {
     const {
         className,
         icon = defaultIcon,
-        label = 'ra.action.create',
+        label: labelProp,
         resource: resourceProp,
         scrollToTop = true,
         variant,
@@ -62,7 +63,15 @@ const CreateButton = (inProps: CreateButtonProps) => {
         resource,
     });
     const createPath = useCreatePath();
-    const translate = useTranslate();
+    const getResourceLabel = useGetResourceLabel();
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.create`,
+        baseI18nKey: 'ra.action.create',
+        options: {
+            name: getResourceLabel(resource, 1),
+        },
+        userText: labelProp,
+    });
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
@@ -85,7 +94,8 @@ const CreateButton = (inProps: CreateButtonProps) => {
             // @ts-ignore FabProps ships its own runtime palette `FabPropsColorOverrides` provoking an overlap error with `ButtonProps`
             color="primary"
             className={clsx(CreateButtonClasses.floating, className)}
-            aria-label={label && translate(label)}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             {...rest}
             {...linkParams}
         >
@@ -97,7 +107,10 @@ const CreateButton = (inProps: CreateButtonProps) => {
             to={createPath({ resource, type: 'create' })}
             state={state}
             className={clsx(CreateButtonClasses.root, className)}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             variant={variant}
             {...(rest as any)}
             {...linkParams}

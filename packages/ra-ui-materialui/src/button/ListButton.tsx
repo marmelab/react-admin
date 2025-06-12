@@ -1,9 +1,15 @@
 import * as React from 'react';
 import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
-import { useResourceContext, useCreatePath, useCanAccess } from 'ra-core';
+import {
+    useResourceContext,
+    useCreatePath,
+    useCanAccess,
+    useGetResourceLabel,
+    useResourceTranslation,
+} from 'ra-core';
 
-import { Button, ButtonProps } from './Button';
+import { Button, type ButtonProps } from './Button';
 
 /**
  * Opens the List view of a given resource
@@ -34,7 +40,7 @@ import { Button, ButtonProps } from './Button';
 export const ListButton = (props: ListButtonProps) => {
     const {
         icon = defaultIcon,
-        label = 'ra.action.list',
+        label: labelProp,
         resource: resourceProp,
         scrollToTop = true,
         ...rest
@@ -50,6 +56,15 @@ export const ListButton = (props: ListButtonProps) => {
         resource,
     });
     const createPath = useCreatePath();
+    const getResourceLabel = useGetResourceLabel();
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.list`,
+        baseI18nKey: 'ra.action.list',
+        options: {
+            name: getResourceLabel(resource, 1),
+        },
+        userText: labelProp,
+    });
 
     if (!canAccess || isPending) {
         return null;
@@ -60,7 +75,10 @@ export const ListButton = (props: ListButtonProps) => {
             component={Link}
             to={createPath({ type: 'list', resource })}
             state={scrollStates[String(scrollToTop)]}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             {...(rest as any)}
         >
             {icon}

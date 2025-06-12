@@ -4,6 +4,8 @@ import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import {
     AuthProvider,
+    I18nProvider,
+    mergeTranslations,
     Resource,
     ResourceContextProvider,
     TestMemoryRouter,
@@ -19,16 +21,51 @@ import { Create } from '../detail/Create';
 import { SimpleForm } from '../form/SimpleForm';
 import { TextInput } from '../input/TextInput';
 import CreateButton from './CreateButton';
+import { LocalesMenuButton } from './LocalesMenuButton';
 
 export default { title: 'ra-ui-materialui/button/CreateButton' };
 
+const defaultI18nProvider = () =>
+    polyglotI18nProvider(
+        locale => (locale === 'fr' ? frenchMessages : englishMessages),
+        'en',
+        [
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'Français' },
+        ]
+    );
+
+const customI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      books: {
+                          action: {
+                              create: 'Nouveau livre',
+                          },
+                      },
+                  },
+              })
+            : mergeTranslations(englishMessages, {
+                  resources: {
+                      books: {
+                          action: {
+                              create: 'New book',
+                          },
+                      },
+                  },
+              }),
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
+
 export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
     <TestMemoryRouter>
-        <AdminContext
-            i18nProvider={polyglotI18nProvider(locale =>
-                locale === 'fr' ? frenchMessages : englishMessages
-            )}
-        >
+        <AdminContext i18nProvider={defaultI18nProvider()}>
             <ResourceContextProvider value="books">
                 <CreateButton {...buttonProps} />
             </ResourceContextProvider>
@@ -44,6 +81,39 @@ export const AccessControl = () => {
             <AccessControlAdmin queryClient={queryClient} />
         </TestMemoryRouter>
     );
+};
+
+export const Label = ({
+    translations = 'default',
+    i18nProvider = translations === 'default'
+        ? defaultI18nProvider()
+        : customI18nProvider,
+    label,
+}: {
+    i18nProvider?: I18nProvider;
+    translations?: 'default' | 'resource specific';
+    label?: string;
+}) => (
+    <TestMemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <ResourceContextProvider value="books">
+                <div>
+                    <CreateButton label={label} />
+                </div>
+                <LocalesMenuButton />
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+Label.args = {
+    translations: 'default',
+};
+Label.argTypes = {
+    translations: {
+        options: ['default', 'resource specific'],
+        control: { type: 'radio' },
+    },
 };
 
 const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
@@ -73,9 +143,7 @@ const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
         <AdminContext
             dataProvider={dataProvider}
             authProvider={authProvider}
-            i18nProvider={polyglotI18nProvider(locale =>
-                locale === 'fr' ? frenchMessages : englishMessages
-            )}
+            i18nProvider={defaultI18nProvider()}
             queryClient={queryClient}
         >
             <AdminUI

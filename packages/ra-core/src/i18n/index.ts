@@ -12,6 +12,7 @@ export * from './TranslationUtils';
 export * from './useLocaleState';
 export * from './useLocale';
 export * from './useLocales';
+export * from './useResourceTranslation';
 export * from './useSetLocale';
 export * from './useTranslatable';
 export * from './useTranslatableContext';

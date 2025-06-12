@@ -37,7 +37,9 @@ describe('<DeleteWithUndoButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(
-            screen.getByLabelText('ra.action.delete').getAttribute('type')
+            screen
+                .getByLabelText('resources.posts.action.delete')
+                .getAttribute('type')
         ).toEqual('button');
 
         spy.mockRestore();
@@ -87,7 +89,7 @@ describe('<DeleteWithUndoButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByLabelText('resources.posts.action.delete'));
         await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith(
                 { id: 123, title: 'lorem' },
@@ -145,7 +147,9 @@ describe('<DeleteWithUndoButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.comments.action.delete')
+        );
         await waitFor(() => {
             expect(notificationsSpy).toEqual([
                 {
