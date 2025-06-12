@@ -6,10 +6,10 @@ import {
     testDataProvider,
     ListContextProvider,
 } from 'ra-core';
-import { createTheme, ThemeProvider, ThemeOptions } from '@mui/material/styles';
-import { deepmerge } from '@mui/utils';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { BulkExportButton } from './BulkExportButton';
+import { Themed } from './BulkExportButton.stories';
 
 const theme = createTheme();
 
@@ -48,36 +48,10 @@ describe('<BulkExportButton />', () => {
         });
     });
 
-    it('should be customized by a theme', () => {
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <ThemeProvider
-                    theme={deepmerge(theme, {
-                        components: {
-                            RaBulkExportButton: {
-                                defaultProps: {
-                                    label: 'Bulk Export',
-                                    className: 'custom-class',
-                                    'data-testid': 'themed-button',
-                                },
-                            },
-                        },
-                    } as ThemeOptions)}
-                >
-                    <ListContextProvider
-                        value={{ selectedIds: ['selectedId'] }}
-                    >
-                        <BulkExportButton
-                            resource="test"
-                            exporter={exporter}
-                            meta={{ pass: 'meta' }}
-                        />
-                    </ListContextProvider>
-                </ThemeProvider>
-            </CoreAdminContext>
-        );
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
 
-        const button = screen.getByTestId('themed-button');
+        const button = await screen.findByTestId('themed');
         expect(button.textContent).toBe('Bulk Export');
         expect(button.classList).toContain('custom-class');
     });
