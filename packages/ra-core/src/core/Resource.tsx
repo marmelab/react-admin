@@ -1,14 +1,25 @@
 import * as React from 'react';
 import { ComponentType, ReactElement, isValidElement } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation, matchPath } from 'react-router-dom';
 import { isValidElementType } from 'react-is';
 
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
 import { RestoreScrollPosition } from '../routing/RestoreScrollPosition';
+import { useSplatPathBase } from '../routing';
 
 export const Resource = (props: ResourceProps) => {
     const { create, edit, list, name, show } = props;
+    const location = useLocation();
+    const splatPathBase = useSplatPathBase();
+    const matchCreate = matchPath(
+        `${splatPathBase}/create/*`,
+        location.pathname
+    );
+    const matchShow = matchPath(
+        `${splatPathBase}/:id/show/*`,
+        location.pathname
+    );
 
     return (
         <ResourceContextProvider value={name}>
@@ -16,8 +27,12 @@ export const Resource = (props: ResourceProps) => {
                 {create && (
                     <Route path="create/*" element={getElement(create)} />
                 )}
-                {show && <Route path=":id/show/*" element={getElement(show)} />}
-                {edit && <Route path=":id/*" element={getElement(edit)} />}
+                {!matchCreate && show && (
+                    <Route path=":id/show/*" element={getElement(show)} />
+                )}
+                {!matchCreate && !matchShow && edit && (
+                    <Route path=":id/*" element={getElement(edit)} />
+                )}
                 {list && (
                     <Route
                         path="/*"

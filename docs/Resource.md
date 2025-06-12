@@ -359,6 +359,7 @@ In order to display a list of songs for the selected artist, `<SongList>` should
 import { List, Datagrid, TextField, useRecordContext } from 'react-admin';
 import { useParams } from 'react-router-dom';
 import { Button } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 
 export const SongList = () => {
     const { id } = useParams();
