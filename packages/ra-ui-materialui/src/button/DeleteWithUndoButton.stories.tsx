@@ -58,32 +58,6 @@ const i18nProvider = polyglotI18nProvider(
     ]
 );
 
-const i18nProviderDefault = polyglotI18nProvider(
-    locale =>
-        locale === 'fr'
-            ? {
-                  ...frenchMessages,
-                  resources: {
-                      books: {
-                          name: 'Livre |||| Livres',
-                          fields: {
-                              id: 'Id',
-                              title: 'Titre',
-                              author: 'Auteur',
-                              year: 'Année',
-                          },
-                      },
-                  },
-              }
-            : englishMessages,
-    // Default locale
-    'en',
-    [
-        { locale: 'en', name: 'English' },
-        { locale: 'fr', name: 'Français' },
-    ]
-);
-
 const dataProvider = fakeRestDataProvider({
     books: [
         {

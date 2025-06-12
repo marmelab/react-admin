@@ -18,11 +18,7 @@ import {
 import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import {
-    ComponentsOverrides,
-    Theme,
-    useThemeProps,
-} from '@mui/material/styles';
+import { useThemeProps } from '@mui/material/styles';
 
 /**
  * Render the related record in a one-to-one relationship
