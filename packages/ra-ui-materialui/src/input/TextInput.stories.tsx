@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { required, Resource } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
-import { deepmerge } from '@mui/utils';
 import { createTheme } from '@mui/material/styles';
-import { ThemeOptions } from '@mui/material';
 
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
@@ -411,12 +409,12 @@ export const Parse = ({ onSuccess = console.log }) => (
 
 export const Themed = () => (
     <Wrapper
-        theme={deepmerge(createTheme(), {
+        theme={createTheme({
             components: {
                 RaTextInput: {
                     defaultProps: {
                         'data-testid': 'themed',
-                    },
+                    } as any,
                     styleOverrides: {
                         root: {
                             ['& input']: {
@@ -426,7 +424,7 @@ export const Themed = () => (
                     },
                 },
             },
-        } as ThemeOptions)}
+        })}
     >
         <TextInput source="title" />
         <FormInspector />

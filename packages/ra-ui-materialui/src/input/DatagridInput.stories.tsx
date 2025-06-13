@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
 import { Resource, TestMemoryRouter } from 'ra-core';
-import { deepmerge } from '@mui/utils';
-import { createTheme, ThemeOptions } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -164,12 +163,12 @@ export const Themed = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin
             dataProvider={dataProvider}
-            theme={deepmerge(createTheme(), {
+            theme={createTheme({
                 components: {
                     RaDatagridInput: {
                         defaultProps: {
                             'data-testid': 'themed',
-                        },
+                        } as any,
                         styleOverrides: {
                             root: {
                                 ['& .MuiTypography-root']: {
@@ -180,7 +179,7 @@ export const Themed = () => (
                         },
                     },
                 },
-            } as ThemeOptions)}
+            })}
         >
             <Resource name="books" edit={BookEdit} />
         </Admin>

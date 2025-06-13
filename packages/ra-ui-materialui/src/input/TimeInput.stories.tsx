@@ -1,9 +1,7 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { deepmerge } from '@mui/utils';
 import { createTheme } from '@mui/material/styles';
-import { ThemeOptions } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
@@ -46,12 +44,12 @@ export const OutlinedNoLabel = () => (
 
 export const Themed = () => (
     <Wrapper
-        theme={deepmerge(createTheme(), {
+        theme={createTheme({
             components: {
                 RaTimeInput: {
                     defaultProps: {
                         'data-testid': 'themed',
-                    },
+                    } as any,
                     styleOverrides: {
                         root: {
                             ['& input']: {
@@ -61,7 +59,7 @@ export const Themed = () => (
                     },
                 },
             },
-        } as ThemeOptions)}
+        })}
     >
         <TimeInput source="published" />
     </Wrapper>

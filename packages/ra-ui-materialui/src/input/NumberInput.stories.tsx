@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { required } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
-import { deepmerge } from '@mui/utils';
 import { createTheme } from '@mui/material/styles';
-import { ThemeOptions } from '@mui/material';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
@@ -283,12 +281,12 @@ export const SetFocus = () => (
 
 export const Themed = () => (
     <Wrapper
-        theme={deepmerge(createTheme(), {
+        theme={createTheme({
             components: {
                 RaNumberInput: {
                     defaultProps: {
                         'data-testid': 'themed',
-                    },
+                    } as any,
                     styleOverrides: {
                         root: {
                             ['& input']: {
@@ -298,7 +296,7 @@ export const Themed = () => (
                     },
                 },
             },
-        } as ThemeOptions)}
+        })}
     >
         <NumberInput source="views" />
         <FormInspector name="views" />

@@ -248,6 +248,6 @@ describe('<TextInput />', () => {
 
     it('should be customized by a theme', async () => {
         render(<Themed />);
-        const input = await screen.findByTestId('themed');
+        await screen.findByTestId('themed');
     });
 });

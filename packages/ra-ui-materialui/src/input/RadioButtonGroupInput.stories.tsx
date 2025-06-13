@@ -1,9 +1,7 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { deepmerge } from '@mui/utils';
 import { createTheme } from '@mui/material/styles';
-import { ThemeOptions } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
@@ -282,7 +280,7 @@ export const TranslateChoice = () => {
 
 export const Themed = () => (
     <Wrapper
-        theme={deepmerge(createTheme(), {
+        theme={createTheme({
             components: {
                 RaRadioButtonGroupInputItem: {
                     defaultProps: {
@@ -295,7 +293,7 @@ export const Themed = () => (
                     },
                 },
             },
-        } as ThemeOptions)}
+        })}
     >
         <RadioButtonGroupInput source="category" choices={choices} />
     </Wrapper>

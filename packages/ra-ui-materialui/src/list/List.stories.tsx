@@ -30,7 +30,7 @@ import { ShowGuesser } from '../detail';
 import TopToolbar from '../layout/TopToolbar';
 import { BulkActionsToolbar } from './BulkActionsToolbar';
 import { deepmerge } from '@mui/utils';
-import { defaultLightTheme, RaThemeOptions } from '../theme';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/list/List' };
 

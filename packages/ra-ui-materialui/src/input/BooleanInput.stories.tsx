@@ -3,15 +3,13 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { useFormContext } from 'react-hook-form';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { createTheme } from '@mui/material/styles';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { BooleanInput } from './BooleanInput';
 import { TextInput } from './TextInput';
-import { deepmerge } from '@mui/utils';
-import { createTheme } from '@mui/material/styles';
-import { ThemeOptions } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/input/BooleanInput' };
 
@@ -80,12 +78,12 @@ export const SetFocus = () => (
 
 export const Themed = () => (
     <Wrapper
-        theme={deepmerge(createTheme(), {
+        theme={createTheme({
             components: {
                 RaBooleanInput: {
                     defaultProps: {
                         'data-testid': 'themed',
-                    },
+                    } as any,
                     styleOverrides: {
                         root: {
                             color: 'red',
@@ -93,7 +91,7 @@ export const Themed = () => (
                     },
                 },
             },
-        } as ThemeOptions)}
+        })}
     >
         <BooleanInput source="published" />
     </Wrapper>

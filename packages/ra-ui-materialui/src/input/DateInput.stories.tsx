@@ -5,7 +5,6 @@ import { minValue, useRecordContext } from 'ra-core';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Box, Button, createTheme, Typography } from '@mui/material';
 import { ThemeOptions } from '@mui/material/styles';
-import { deepmerge } from '@mui/utils';
 import get from 'lodash/get';
 
 import { AdminContext } from '../AdminContext';
@@ -152,12 +151,12 @@ export const Themed = ({
 }) => (
     <Wrapper
         simpleFormProps={simpleFormProps}
-        theme={deepmerge(createTheme(), {
+        theme={createTheme({
             components: {
                 RaDateInput: {
                     defaultProps: {
                         'data-testid': 'themed',
-                    },
+                    } as any,
                     styleOverrides: {
                         root: {
                             ['& input']: {
@@ -167,7 +166,7 @@ export const Themed = ({
                     },
                 },
             },
-        } as ThemeOptions)}
+        })}
     >
         <DateInput source="publishedAt" {...dateInputProps} />
     </Wrapper>
