@@ -330,6 +330,8 @@ Most inputs accept a `helperText` prop to display a text below the input.
 
 Set `helperText` to `false` to remove the empty line below the input. Beware that the form may "jump" visually when the input contains an error, as the error message will appear below the input.
 
+**Tip:** `helperText` also supports [translation keys](./Translation.md#translation-keys).
+
 **Tip:** It is not possible to set a `helperText` for inputs used inside a [filter](./List.md#filters-filter-inputs).
 
 ## `label`
