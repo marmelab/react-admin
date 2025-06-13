@@ -91,3 +91,98 @@ jobs:
 ```
 
 This workflow will run everytime you push or merge something in the main branch of your repository. You can find the URL of the deployed website in `Settings > Pages` in your GitHub repository.
+
+
+## Deploy With GitHub Actions to Cloudflare
+
+To deploy to [Cloudflare Pages](https://pages.cloudflare.com/), you will need to have a [Cloudflare](https://www.cloudflare.com/) account. First you will need to retrieve your account ID from Cloudflare, the documentation on how to retrieve it is available on the [Cloudflare documentation](https://developers.cloudflare.com/fundamentals/account/find-account-and-zone-ids/)
+
+Then, you will need to create a new API token from your [Cloudflare Profile page](https://dash.cloudflare.com/profile/api-tokens):
+- First click on `Create Token`
+- Then on the `Edit Cloudflare Workers` template
+- Select your organization inside the `Account Resources`
+- Select `All Zones` for `Zone Resources`
+- Then `Continue to Summary`
+- Then `Create Token`.
+
+More information on how to create an API token is available on the [Cloudflare documentation](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/).
+
+To create a new Cloudflare Page App, go to your Cloudflare dashboard, then on `Compute (workers) > Workers & Pages > Create > Pages tab`. Create a new pages from direct upload, enter your project name and then click on `Create Project`, then go back to the `Compute page`.
+
+![Create a New Cloudflare Pages App](./img/Deploy-Cloudflare-Pages.png)
+
+Once you have configured your API token and retrieved your Account ID, you can setup the following secrets in your repository by going to `Settings > Secrets and variables > Actions` on your GitHub repository:
+
+
+```sh
+# Your Cloudlfare API token
+CLOUDFLARE_API_TOKEN=
+
+# Your Cloudlfare Account ID
+CLOUDFLARE_ACCOUNT_ID=
+
+# The Cloudflare Pages 
+CLOUDFLARE_PROJECT_NAME=
+```
+
+Once your project has been configured, initialize a new workflow in your repository `.github/workflows/admin.yml` with the following content:
+```yml
+name: Build and deploy React-admin
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build the admin panel to be deployed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload dist folder as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  deploy:
+    name: Deploy React-admin Application to Cloudflare
+    runs-on: ubuntu-latest
+    needs: build
+
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - name: Download prebuilt admin
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Deploy artifact to Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+```
+
+Now, each time your code will be pushed to your main branch, an action will be started that will automatically deploy your app to your Cloudflare Pages app.
