@@ -2,6 +2,11 @@ import * as React from 'react';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle, useEvent } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -46,23 +51,28 @@ import { useForkRef } from '@mui/material';
  * to convert the form value (which is always a date string) back to a Date object.
  * <DateInput source="published_at" parse={val => new Date(val)} />
  */
-export const DateInput = ({
-    className,
-    defaultValue,
-    format = defaultFormat,
-    label,
-    source,
-    resource,
-    helperText,
-    margin,
-    onChange,
-    onFocus,
-    validate,
-    variant,
-    disabled,
-    readOnly,
-    ...rest
-}: DateInputProps) => {
+export const DateInput = (props: DateInputProps) => {
+    const {
+        className,
+        defaultValue,
+        format = defaultFormat,
+        label,
+        source,
+        resource,
+        helperText,
+        margin,
+        onChange,
+        onFocus,
+        validate,
+        variant,
+        disabled,
+        readOnly,
+        ...rest
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
+
     const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         resource,
@@ -179,7 +189,7 @@ export const DateInput = ({
     const inputRef = useForkRef(ref, localInputRef);
 
     return (
-        <TextField
+        <StyledTextField
             id={id}
             name={name}
             inputRef={inputRef}
@@ -292,3 +302,29 @@ const defaultFormat = (value: string | Date | number) => {
     // other values (e.g., localized date strings, timestamps) need to be converted to Dates first
     return convertDateToString(new Date(value));
 };
+
+const PREFIX = 'RaDateInput';
+
+const StyledTextField = styled(TextField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<DateInputProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

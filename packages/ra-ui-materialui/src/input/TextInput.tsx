@@ -1,6 +1,11 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import { useInput, FieldTitle } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { CommonInputProps } from './CommonInputProps';
 import {
@@ -37,7 +42,11 @@ export const TextInput = (props: TextInputProps) => {
         source,
         validate,
         ...rest
-    } = props;
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
+
     const {
         field,
         fieldState: { error, invalid },
@@ -59,7 +68,7 @@ export const TextInput = (props: TextInputProps) => {
     const renderHelperText = helperText !== false || invalid;
 
     return (
-        <ResettableTextField
+        <StyledResettableTextField
             id={id}
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
@@ -89,3 +98,29 @@ export const TextInput = (props: TextInputProps) => {
 
 export type TextInputProps = CommonInputProps &
     Omit<ResettableTextFieldProps, 'label' | 'helperText'>;
+
+const PREFIX = 'RaTextInput';
+
+const StyledResettableTextField = styled(ResettableTextField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<TextInputProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

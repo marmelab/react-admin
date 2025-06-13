@@ -6,6 +6,11 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
 import Switch, { SwitchProps } from '@mui/material/Switch';
 import { FieldTitle, useInput } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -32,7 +37,10 @@ export const BooleanInput = (props: BooleanInputProps) => {
         options = defaultOptions,
         sx,
         ...rest
-    } = props;
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
     const {
         id,
         field,
@@ -65,7 +73,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
     const renderHelperText = helperText !== false || invalid;
 
     return (
-        <FormGroup
+        <StyledFormGroup
             className={clsx('ra-input', `ra-input-${source}`, className)}
             row={row}
             sx={sx}
@@ -102,7 +110,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                     />
                 </FormHelperText>
             ) : null}
-        </FormGroup>
+        </StyledFormGroup>
     );
 };
 
@@ -113,3 +121,29 @@ export type BooleanInputProps = CommonInputProps &
     };
 
 const defaultOptions = {};
+
+const PREFIX = 'RaBooleanInput';
+
+const StyledFormGroup = styled(FormGroup, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<BooleanInputProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

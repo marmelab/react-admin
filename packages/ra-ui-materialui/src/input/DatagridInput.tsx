@@ -8,13 +8,24 @@ import {
     useChoicesContext,
     useInput,
 } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
+
 import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { SupportCreateSuggestionOptions } from './useSupportCreateSuggestion';
-import { Datagrid, DatagridProps } from '../list/datagrid';
-import { FilterButton, FilterForm } from '../list/filter';
-import { FilterContext } from '../list/FilterContext';
+import {
+    Datagrid,
+    DatagridProps,
+    FilterButton,
+    FilterForm,
+    FilterContext,
+} from '../list';
 import { Pagination as DefaultPagination } from '../list/pagination';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 const defaultPagination = <DefaultPagination />;
 
@@ -49,7 +60,12 @@ const defaultPagination = <DefaultPagination />;
  *    </Edit>
  * );
  */
-export const DatagridInput = (props: DatagridInputProps) => {
+export const DatagridInput = (inProps: DatagridInputProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         choices,
         className,
@@ -121,7 +137,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
         ]
     );
     return (
-        <div className={clsx('ra-input', `ra-input-${source}`, className)}>
+        <Root className={clsx('ra-input', `ra-input-${source}`, className)}>
             {/* @ts-ignore FIXME cannot find another way to fix this error: "Types of property 'isPending' are incompatible: Type 'boolean' is not assignable to type 'false'." */}
             <ListContextProvider value={listContext}>
                 {filters ? (
@@ -145,7 +161,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
                 ) : null}
                 {!fieldState.error && !fetchError && (
                     <>
-                        <Datagrid {...rest} />
+                        <Datagrid {...sanitizeInputRestProps(rest)} />
                         {pagination !== false && pagination}
                     </>
                 )}
@@ -153,7 +169,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
                     error={fieldState.error?.message || fetchError?.message}
                 />
             </ListContextProvider>
-        </div>
+        </Root>
     );
 };
 
@@ -169,3 +185,29 @@ export type DatagridInputProps = Omit<
         filters?: ReactElement | ReactElement[];
         pagination?: ReactElement | false;
     };
+
+const PREFIX = 'RaDatagridInput';
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<DatagridInputProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

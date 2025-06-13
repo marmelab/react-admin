@@ -14,6 +14,7 @@ import {
     ExternalChanges,
     ExternalChangesWithParse,
     Parse,
+    Themed,
 } from './DateInput.stories';
 
 describe('<DateInput />', () => {
@@ -318,5 +319,10 @@ describe('<DateInput />', () => {
             fireEvent.blur(input);
             await screen.findByText('Required');
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        await screen.findByTestId('themed');
     });
 });
