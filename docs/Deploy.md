@@ -1,21 +1,31 @@
 ---
 layout: default
-title: "Deploy React-admin"
+title: "Deployment"
 ---
 
-# Deploy React-admin
+# Deployment
 
-You have created an awesome React-admin application. Well done! But now, you want to deploy your application in production so users can actually use it.
+You can use react-admin with Vite.js, Next.js, Remix, or any other React platform. Each of these platforms has its own way to deploy your application:
 
-## Single Page Application
+- [Vite deployment guide](https://vite.dev/guide/static-deploy.html)
+- [Next.js deployment guide](https://nextjs.org/docs/pages/getting-started/deploying)
+- [Remix deployment guide](https://remix.run/docs/en/main/guides/deployment)
 
-React-admin is a framework to build [Single Page Applications](https://developer.mozilla.org/en-US/docs/Glossary/SPA). It means that your app can be served by a simple static web server.
+The general principles are the same. This tutorial explains how to deploy your React-admin application with [`create-react-admin`](./CreateReactAdmin.md) (powered by Vite.js).
 
-**Warning**: If you chose Next.js or Remix, you **have to use a dynamic web server** (e.g. CloudFlare pages, Vercel, etc.).
+## Building The Single Page Application
 
-With the default configuration of React-admin, that you can have using [`create-react-admin`](./CreateReactAdmin.md), you can run `yarn build` or `npm run build` to compile your application with [`vite`](https://vite.dev).
+React-admin uses the [Single Page Applications](./Architecture.md#single-page-application) architecture. It means that your app can be bundled as a single JavaScript file and served by a simple static web server.
 
-This builds your application in the `dist` directory at the application root. Let's have a look to what's in there:
+In an application initialized with `create-react-admin`, you can run the `build` command to compile your application:
+
+```sh
+npm run build
+# or
+yarn build
+```
+
+This creates a few files in the `dist` directory. Let's have a look to what's in there:
 
 ```tree
 dist/
@@ -26,18 +36,22 @@ dist/
   └ manifest.json
 ```
 
-As you can see, your app is contained in a single Javascript file, used in a simple `index.html`. To deploy your application, you just need to serve this directory with all URLs handled by `index.html`.
+The entry point is `index.html`. It contains a `<script>` tag that loads the app from the `assets` directory. 
 
-There are multiple ways to deploy your app automatically to various hosts which does not require you to setup a web server manually. Some of these are addressed in this page.
+To deploy your application, you just need to serve this `dist` directory with all URLs handled by `index.html`.
 
-## Deploy With GitHub Actions And GitHub Pages
+There are multiple ways to do so, let's see a few of them.
 
-You can deploy your application with [GitHub Pages](https://pages.github.com) by setting up a [GitHub Actions](https://github.com/features/actions) workflow. To set it up, you need to [configure the source of your GitHub Pages to GitHub Actions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow).
+## Deploying To GitHub Pages
 
-Then, initialize a new workflow in `.github/workflows/admin.yml` with the following content:
+[GitHub Pages](https://pages.github.com) can serve static assets from a GitHub repository. You can automate the build step by setting up a [GitHub Actions](https://github.com/features/actions) workflow.
+
+First, [configure the source of your GitHub Pages to GitHub Actions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow).
+
+Then, initialize a new workflow in `.github/workflows/deploy.yml` with the following content:
 
 ```yaml
-name: Build and deploy React-admin
+name: Build and deploy
 
 on:
   push:
@@ -46,7 +60,7 @@ on:
 
 jobs:
   build:
-    name: Build the admin panel to be deployed
+    name: Build the single-page application
     runs-on: ubuntu-latest
     environment: github-pages
     steps:
@@ -71,7 +85,7 @@ jobs:
           path: dist/
 
   deploy:
-    name: Deploy React-admin application to GitHub Pages
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     needs: build
       
@@ -90,14 +104,14 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-This workflow will run everytime you push or merge something in the main branch of your repository. You can find the URL of the deployed website in `Settings > Pages` in your GitHub repository.
+This workflow will run every time you push or merge something in the main branch of your repository. You can find the URL of the deployed website in `Settings > Pages` in your GitHub repository.
 
-
-## Deploy With GitHub Actions to Cloudflare
+## Deploying to Cloudflare
 
 To deploy to [Cloudflare Pages](https://pages.cloudflare.com/), you need to have a [Cloudflare](https://www.cloudflare.com/) account. First, retrieve your account ID from Cloudflare, the documentation on how to retrieve it is available on the [Cloudflare documentation](https://developers.cloudflare.com/fundamentals/account/find-account-and-zone-ids/)
 
 Then, create a new API token from your [Cloudflare Profile page](https://dash.cloudflare.com/profile/api-tokens):
+
 - First click on `Create Token`
 - Then on the `Edit Cloudflare Workers` template
 - Select your organization inside the `Account Resources`
@@ -113,21 +127,21 @@ To create a new Cloudflare Page App, go to your Cloudflare dashboard, then on `C
 
 Once you have configured your API token and retrieved your Account ID, you can setup the following secrets in your repository by going to `Settings > Secrets and variables > Actions` on your GitHub repository:
 
-
 ```sh
-# Your Cloudlfare API token
+# Your Cloudflare API token
 CLOUDFLARE_API_TOKEN=
 
-# Your Cloudlfare Account ID
+# Your Cloudflare Account ID
 CLOUDFLARE_ACCOUNT_ID=
 
-# The Cloudflare Pages 
+# The Cloudflare Pages project name
 CLOUDFLARE_PROJECT_NAME=
 ```
 
-Once your project has been configured, initialize a new workflow in your repository `.github/workflows/admin.yml` with the following content:
+Once your project has been configured, initialize a new workflow in your repository `.github/workflows/deploy.yml` with the following content:
+
 ```yml
-name: Build and deploy React-admin
+name: Build and deploy
 
 on:
   push:
@@ -136,7 +150,7 @@ on:
 
 jobs:
   build:
-    name: Build the admin panel to be deployed
+    name: Build the single-page application
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -158,7 +172,7 @@ jobs:
           path: dist
 
   deploy:
-    name: Deploy React-admin Application to Cloudflare
+    name: Deploy to Cloudflare
     runs-on: ubuntu-latest
     needs: build
 
@@ -185,4 +199,4 @@ jobs:
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-Now, each time your code will be pushed to your main branch, an action will be started that will automatically deploy your app to your Cloudflare Pages app.
+Now, each time your code is pushed to the `main` branch, GitHub will automatically deploy your app to your Cloudflare Pages.
