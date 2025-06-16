@@ -114,6 +114,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                     } else if (redirectTo) {
                         handleRedirect(redirectTo);
                     }
+
                     return true;
                 });
         },
