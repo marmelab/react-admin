@@ -20,7 +20,9 @@ export const ProductList = () => (
         <DataTable>
             <DataTable.Col source="sku" />
             <DataTable.Col source="price" />
-            <DataTable.Col field={EditButton} sx={{ fontWeight: "bold" }}/>
+            <DataTable.Col>
+                <EditButton sx={{ fontWeight: "bold" }}/>
+            </DataTable.Col>
         </DataTable>
     </List>
 );
@@ -291,17 +293,13 @@ export const PostList = () => (
         >
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="published_at">
-                <DateField source="published_at" sortByOrder="DESC" />
+            <DataTable.Col source="published_at" sortByOrder="DESC" field={DateField} />
+            <DataTable.Col source="commentable" sortable={false} field={BooleanField} />
+            <DataTable.NumberCol source="views" sortByOrder="DESC">
+            <DataTable.Col>
+                <EditButton />
+                <ShowButton />
             </DataTable.Col>
-            <DataTable.Col source="commentable">
-                <BooleanField source="commentable" sortable={false} />
-            </DataTable.Col>
-            <DataTable.Col source="views">
-                <NumberField source="views" sortByOrder="DESC" />
-            </DataTable.Col>
-            <DataTable.Col field={EditButton} />
-            <DataTable.Col field={ShowButton} />
         </DataTable>
     </List>
 );
@@ -393,7 +391,9 @@ export const PostList = () => (
             <DataTable.Col source="id" />
             ...
             <DataTable.Col source="nb_views" field={ColoredNumberField} />
-            <DataTable.Col field={EditButton} />
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
         </DataTable>
     </List>
 );
@@ -449,17 +449,13 @@ export const PostList = () => (
 +       <MyDataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="published_at">
-                <DateField source="published_at" sortByOrder="DESC" />
+            <DataTable.Col source="published_at" sortByOrder="DESC" field={DateField} />
+            <DataTable.Col source="commentable" sortable={false} field={BooleanField} />
+            <DataTable.NumberCol source="views" sortByOrder="DESC">
+            <DataTable.Col>
+                <EditButton />
+                <ShowButton />
             </DataTable.Col>
-            <DataTable.Col source="commentable">
-                <BooleanField source="commentable" sortable={false} />
-            </DataTable.Col>
-            <DataTable.Col source="views">
-                <NumberField source="views" sortByOrder="DESC" />
-            </DataTable.Col>
-            <DataTable.Col field={EditButton} />
-            <DataTable.Col field={ShowButton} />
 +       </MyDataTable>
 -       </DataTable>
     </List>

@@ -182,7 +182,6 @@ You can use any of the following components to build the list page:
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
         <a title="<DataTable>" href="./DataTable.html">
-            <!-- TODO: shoot a new screenshot of Datatable to replace the following one -->
             <img src="./img/Datagrid.jpg">
         </a>
         <a href="./DataTable.html" style="display: block;transform: translateY(-10px);"><code>&lt;DataTable&gt;</code></a>

@@ -192,7 +192,7 @@ const MyToolbar = () => (
 );
 ```
 
-The **list components** (`<DataTable>`, `<Datagrid>`), **show components** (`<SimpleShowLayout>`, `<TabbedShowLayout>`), and **edit components** (`<SimpleForm>`, `<Tabbedform>`) also support access control provided you use the version from the `@react-admin/ra-rbac` Enterprise package. Check the [RBAC documentation](./AuthRBAC.md#components) for more information.
+The **list components** (`<Datagrid>`), **show components** (`<SimpleShowLayout>`, `<TabbedShowLayout>`), and **edit components** (`<SimpleForm>`, `<Tabbedform>`) also support access control provided you use the version from the `@react-admin/ra-rbac` Enterprise package. Check the [RBAC documentation](./AuthRBAC.md#components) for more information.
 
 ### `useCanAccess`
 

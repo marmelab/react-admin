@@ -179,12 +179,12 @@ const BookList = () => (
         <DataTable>
             <DataTable.Col source="title" />
             <DataTable.Col source="published_at" field={DateField} />
-            <DataTable.Col label="Author">
+            <DataTable.Col source="author_id" label="Author">
                 <ReferenceField source="author_id" reference="authors">
                     <FunctionField render={record => `${record.first_name} ${record.last_name}`} />
                 </ReferenceField>
             </DataTable.Col>
-            <DataTable.Col label="Author DOB">
+            <DataTable.Col source="author_id" label="Author DOB">
                 <ReferenceField source="author_id" reference="authors">
                     <DateField source="date_of_birth" />
                 </ReferenceField>
@@ -294,7 +294,7 @@ const AuthorList = () => (
             <DataTable.Col source="first_name" />
             <DataTable.Col source="last_name" />
             <DataTable.Col source="date_of_birth" field={DateField} />
-            <DataTable.Col label="Books">
+            <DataTable.Col label="Books" source="book_ids">
                 <ReferenceArrayField reference="books" source="book_ids">
                     <SingleFieldList>
                         <TextField source="title" />
@@ -362,11 +362,10 @@ const BookShow = props => (
                 using="book_id,author_id"
             >
                 <DataTable>
-                    <DataTable.Col label="Author">
-                        <FunctionField
-                            render={record => `${record.first_name} ${record.last_name}`}
-                        />
-                    </DataTable.Col>
+                    <DataTable.Col
+                        label="Author"
+                        render={record => `${record.first_name} ${record.last_name}`}
+                    />
                     <DataTable.Col source="date_of_birth" field={DateField} />
                 </DataTable>
             </ReferenceManyToManyField>

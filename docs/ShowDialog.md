@@ -42,7 +42,9 @@ const CustomerList = () => (
         <List>
             <DataTable>
                 ...
-                <DataTable.Col field={ShowButton} />
+                <DataTable.Col>
+                    <ShowButton />
+                </DataTable.Col>
             </DataTable>
         </List>
         <ShowDialog>
@@ -244,7 +246,9 @@ const CustomerList = () => (
         <List>
             <DataTable>
                 ...
-                <DataTable.Col field={ShowButton} />
+                <DataTable.Col>
+                    <ShowButton />
+                </DataTable.Col>
             </DataTable>
         </List>
         <ShowDialog title={<CustomerShowTitle />}>

@@ -477,10 +477,6 @@ const CustomerLayout = () => (
   </SimpleShowLayout>
 );
 
-// helper component to add actions buttons in a column (children),
-// and also in the header (label) of a DataTable
-const DataTableActionsColumn = ({ label, children }) => <DataTable.Col label={label}>{children}</DataTable.Col>;
-
 const NestedCustomersDataTable = () => {
   const record = useRecordContext();
 
@@ -522,10 +518,10 @@ const NestedCustomersDataTable = () => {
           <SelectField source="sex" choices={sexChoices} />
         </DataTable.Col>
         {/* Using a component as label is a trick to render it in the DataTable header */}
-        <DataTableActionsColumn label={createButton}>
+        <DataTable.Col label={createButton}>
           {editButton}
           {showButton}
-        </DataTableActionsColumn>
+        </DataTable.Col>
       </DataTable>
     </ReferenceManyField>
   );

@@ -147,7 +147,6 @@ import {
     DataTable,
     DateField,
     List,
-    NumberField,
     ReferenceArrayField,
     ReferenceManyCount,
     SingleFieldList,
@@ -158,15 +157,11 @@ export const PostList = () => (
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="published_at">
-                <DateField source="published_at" sortByOrder="DESC" />
-            </DataTable.Col>
+            <DataTable.Col source="published_at" sortByOrder="DESC" field={DateField} />
             <DataTable.Col label="Comments">
                 <ReferenceManyCount reference="comments" target="post_id" />
             </DataTable.Col>
-            <DataTable.Col source="views">
-                <NumberField source="views" sortByOrder="DESC" />
-            </DataTable.Col>
+            <DataTable.NumberCol source="views" sortByOrder="DESC" />
             <DataTable.Col label="Tags">
                 <ReferenceArrayField reference="tags" source="tags">
                     <SingleFieldList>

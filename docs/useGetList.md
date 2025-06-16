@@ -122,7 +122,7 @@ const LatestNews = () => {
             <DataTable>
                 <DataTable.Col source="title" />
                 <DataTable.Col source="published_at" field={DateField} />
-                <DataTable.NunberCol source="views" />
+                <DataTable.NumberCol source="views" />
             </DataTable>
             <Pagination />
         </ListContextProvider>

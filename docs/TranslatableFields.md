@@ -164,13 +164,12 @@ const PostList = () => {
         <List>
             <DataTable>
                 <DataTable.Col source={`name.${locale}`} />
-                <DataTable.Col source="tags" label="Tags">
-                    <ReferenceArrayField
-                        reference="tags"
-                        source="tags"
-                        sortBy="tags.name"
-                        sort={{ field: `name.${locale}`, order: 'ASC' }}
-                    >
+                <DataTable.Col 
+                    label="Tags"
+                    sortBy="tags.name"
+                    sort={{ field: `name.${locale}`, order: 'ASC' }}
+                >
+                    <ReferenceArrayField reference="tags" source="tags">
                         <SingleFieldList>
                             <ChipField source={`name.${locale}`} size="small" />
                         </SingleFieldList>
@@ -183,6 +182,6 @@ const PostList = () => {
 ```
 {% endraw %}
 
-Note that you can't have an [optimized](https://marmelab.com/react-admin/List.html#performance) DataTable when doing so, as changing the locale wouldn't trigger a render of its children.
+Note that you can't have an [optimized](./Datagrid.md#optimized) Datagrid when doing so, as changing the locale wouldn't trigger a render of its children.
 
 The same pattern applies to show views when you don't want to display all translations: get the locale from the `useLocale` hook and dynamically set the `source` prop of the translatable fields.

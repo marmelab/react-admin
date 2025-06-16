@@ -48,7 +48,9 @@ export const PostShow = () => (
                     <DataTable>
                         <DataTable.Col source="body" />
                         <DataTable.Col source="created_at" field={DateField} />
-                        <DataTable.Col field={EditButton} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
                     </DataTable>
                 </ReferenceManyField>
             </TabbedShowLayout.Tab>
@@ -179,7 +181,9 @@ export const PostShow = () => (
                     <DataTable>
                         <DataTable.Col source="body" />
                         <DataTable.Col source="created_at" field={DateField} />
-                        <DataTable.Col field={EditButton} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
                     </DataTable>
                 </ReferenceManyField>
             </TabbedShowLayout.Tab>

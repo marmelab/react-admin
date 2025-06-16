@@ -260,7 +260,7 @@ const PostList = () => (
         <DataTable>
             <DataTable.Col source="title" />
             <DataTable.NumberCol source="views" />
-            <DataTable.Col label="Tags">
+            <DataTable.Col label="Tags" source="tag_ids">
                 <ReferenceArrayField tags="tags" source="tag_ids" />
             </DataTable.Col>
             <DataTable.Col source="published" field={BooleanField} />

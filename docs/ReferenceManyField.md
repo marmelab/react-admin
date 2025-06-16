@@ -64,15 +64,17 @@ export const PostList = () => (
     <List>
         <DataTable>
             <DataTable.Col source="id" />
-            <DataTable.Col source="title" type="email" />
+            <DataTable.Col source="title" />
             <DataTable.Col label="Comments by">
-              <ReferenceManyField reference="comments" target="post_id">
-                  <SingleFieldList>
-                      <ChipField source="author.name" />
-                  </SingleFieldList>
-              </ReferenceManyField>
+                <ReferenceManyField reference="comments" target="post_id">
+                    <SingleFieldList>
+                        <ChipField source="author.name" />
+                    </SingleFieldList>
+                </ReferenceManyField>
             </DataTable.Col>
-            <DataTable.Col field={EditButton}/>
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
         </DataTable>
     </List>
 );
@@ -461,20 +463,18 @@ const EmployerEdit = () => (
               <DataTable>
                   <DataTable.Col source="first_name" />
                   <DataTable.Col source="last_name" />
-                  <DataTable.Col>
-                    <WithRecord
+                  <DataTable.Col
                       render={record => (
-                        <EditInDialogButton>
-                            <SimpleForm
-                              record={{ employer_id: record.id }}
-                            >
-                              <TextInput source="first_name" />
-                              <TextInput source="last_name" />
-                            </SimpleForm>
+                          <EditInDialogButton>
+                              <SimpleForm
+                                record={{ employer_id: record.id }}
+                              >
+                                  <TextInput source="first_name" />
+                                  <TextInput source="last_name" />
+                              </SimpleForm>
                           </EditInDialogButton>
-                        )}
-                    />
-                </DataTable.Col>
+                      )}
+                  />
               </DataTable>
           </ReferenceManyField>
       </SimpleForm>

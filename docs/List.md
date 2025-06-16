@@ -281,7 +281,7 @@ export const BookList = () => (
                 <ReferenceManyCount reference="comments" target="post_id" link />
             </DataTable.Col>
             <DataTable.Col source="commentable" label="Com." field={BooleanField} />
-            <DataTable.Col source="nb_views" label="Views" />
+            <DataTable.NumberCol source="nb_views" label="Views" />
             <DataTable.Col>
                 <EditButton />
                 <ShowButton />
@@ -321,7 +321,7 @@ export const PostList = () => {
             ) : (
                 <DataTable>
                     <DataTable.Col source="id" />
-                    <DataTable.Col label="User">
+                    <DataTable.Col label="User" source="userId">
                         <ReferenceField source="userId" reference="users">
                             <TextField source="name" />
                         </ReferenceField>

@@ -68,7 +68,9 @@ const CustomersDataTable = () => (
     <DataTable.Col source="sex">
       <SelectField source="sex" choices={sexChoices} />
     </DataTable.Col>
-    <DataTable.Col field={ShowButton} />
+    <DataTable.Col>
+      <ShowButton />
+    </DataTable.Col>
   </DataTable>
 );
 
@@ -344,7 +346,9 @@ const ShowButton = () => (
 const CustomersDataTable = () => (
   <DataTable>
     ...
-    <DataTable.Col field={ShowButton} />
+    <DataTable.Col>
+      <ShowButton />
+    </DataTable.Col>
   </DataTable>
 );
 ```

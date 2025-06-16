@@ -78,7 +78,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
-| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a DataTable |
+| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -109,6 +109,8 @@ That's why you often need to set an explicit `label` on a `<ReferenceField>`:
 ```jsx
 <ReferenceField label="Author name" source="user_id" reference="users" />
 ```
+
+**Tip**: Having to specify the `label` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
 
 React-admin uses [the i18n system](./Translation.md) to translate the label, so you can use translation keys to have one label for each language supported by the interface:
 
@@ -172,11 +174,13 @@ For instance, if the `posts` resource has a `user_id` field, set the `reference`
 
 ## `sortBy`
 
-By default, when used in a `<DataTable>`, and when the user clicks on the column header of a `<ReferenceField>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
+By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceField>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
 
 ```jsx
 <ReferenceField source="user_id" reference="users" sortBy="user.name" />
 ```
+
+**Tip**: Having to specify the `sortBy` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
 
 ## `sx`: CSS API
 

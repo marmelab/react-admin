@@ -428,7 +428,7 @@ Check the following components to learn more about guessers:
 
 Most admins need to display a list of records, letting users sort, filter, and paginate them. React-admin provides a set of components to build such lists, called "Datagrid components".
 
-The basic [`<Datagrid>` component](./Datagrid.md) displays a list of records in a table, with a row for each record and a column for each field. It alsosupports an expand panel, a row selection checkbox, and a bulk action toolbar.
+The [`<DataTable>` component](./DataTable.md) (successor of the [`<Datagrid>` component](./Datagrid.md)) displays a list of records in a table, with a row for each record and a column for each field. It alsosupports an expand panel, a row selection checkbox, and a bulk action toolbar.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/datagrid.mp4" type="video/mp4"/>
@@ -1473,7 +1473,6 @@ import {
     DateField,
     EditButton,
     List,
-    NumberField,
     ShowButton,
 } from 'react-admin';
 import Icon from '@mui/icons-material/Person';
@@ -1492,17 +1491,11 @@ export const PostList = () => (
         >
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col label="Published at">
-                <DateField source="published_at" sortByOrder="DESC" />
-            </DataTable.Col>
-            <DataTable.Col label="Commentable">
-                <BooleanField source="commentable" sortable={false} />
-            </DataTable.Col>
-            <DataTable.Col label="Views">
-                <NumberField source="views" sortByOrder="DESC" />
-            </DataTable.Col>
-            <DataTable.Col EditButton />
-            <DataTable.Col ShowButton />
+            <DataTable.Col source="published_at" sortByOrder="DESC" field={DateField} />
+            <DataTable.Col source="commentable" sortable={false} field={BooleanField} />
+            <DataTable.NumberCol source="views" sortByOrder="DESC" />
+            <DataTable.Col field={EditButton} />
+            <DataTable.Col field={ShowButton} />
         </DataTable>
     </List>
 );
@@ -1706,7 +1699,7 @@ export const PostList = () => {
             ) : (
                 <DataTable>
                     <DataTable.Col source="id" />
-                    <DataTable.Col label="User">
+                    <DataTable.Col source="userId" label="User">
                         <ReferenceField source="userId" reference="users">
                             <TextField source="name" />
                         </ReferenceField>

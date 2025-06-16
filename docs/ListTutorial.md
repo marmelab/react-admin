@@ -102,7 +102,7 @@ This list is a bit rough in the edges (for instance, typing in the search input 
 
 ### `<DataTable>` Displays Fields In A Table
 
-Table layouts usually require a lot of code to define the table head, row, columns, etc. React-admin `<DataTable>` component, together with Field components, can help remove that boilerplate:
+Table layouts usually require a lot of code to define the table head, row, columns, etc. React-admin `<DataTable>` component can help remove that boilerplate:
 
 {% raw %}
 ```diff
@@ -539,7 +539,7 @@ export const PostList = () => {
             ) : (
                 <DataTable>
                     <DataTable.Col source="id" />
-                    <DataTable.Col source="userId">
+                    <DataTable.Col label="User" source="userId">
                         <ReferenceField source="userId" reference="users">
                             <TextField source="name" />
                         </ReferenceField>

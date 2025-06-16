@@ -59,7 +59,9 @@ export const PostEdit = () => (
                     <DataTable>
                         <DataTable.Col source="body" />
                         <DataTable.Col source="created_at" field={DateField} />
-                        <DataTable.Col field={EditButton} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
                     </DataTable>
                 </ReferenceManyField>
             </TabbedForm.Tab>
@@ -295,7 +297,9 @@ export const PostEdit = () => (
                     <DataTable>
                         <DataTable.Col source="body" />
                         <DataTable.Col source="created_at" field={DateField} />
-                        <DataTable.Col field={EditButton} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
                     </DataTable>
                 </ReferenceManyField>
             </TabbedForm.Tab>
@@ -744,7 +748,9 @@ const ProductEdit = () => (
                         <DataTable.Col field={StarRatingField} />
                         <DataTable.Col source="comment" />
                         <DataTable.Col source="status" />
-                        <DataTable.Col field={EditButton} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
                     </DataTable>
                 </ReferenceManyField>
             </ReviewsFormTab>

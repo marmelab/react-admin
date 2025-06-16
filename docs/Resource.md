@@ -177,7 +177,9 @@ export const AuthorList = () => (
             <DataTable.Col source="id" />
             <DataTable.Col source="firstName" />
             <DataTable.Col source="lastName" />
-            <DataTable.Col field={BooksButton} />
+            <DataTable.Col>
+                <BooksButton />
+            </DataTable.Col>
         </DataTable.Col>
     </List>
 );
@@ -370,7 +372,9 @@ export const SongList = () => {
                 <DataTable.Col source="writer" />
                 <DataTable.Col source="producer" />
                 <DataTable.Col source="recordCompany" label="Label" />
-                <DataTable.Col field={EditSongButton} />
+                <DataTable.Col>
+                    <EditSongButton />
+                </DataTable.Col>
             </DataTable>
         </List>
     );

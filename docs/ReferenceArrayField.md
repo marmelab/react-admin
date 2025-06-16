@@ -197,7 +197,7 @@ For instance, to render only tags that are 'published', you can use the followin
 
 ## `label`
 
-By default, `<SimpleShowLayout>`, `<DataTable>` and other layout components infer the label of a field based on its `source`. For a `<ReferenceArrayField>`, this may not be what you expect:
+By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer the label of a field based on its `source`. For a `<ReferenceArrayField>`, this may not be what you expect:
 
 ```jsx
 {/* default label is 'Tag Ids', or the translation of 'resources.posts.fields.tag_ids' if it exists */}
@@ -209,6 +209,8 @@ That's why you often need to set an explicit `label` on a `<ReferenceField>`:
 ```jsx
 <ReferenceArrayField label="Tags" source="tag_ids" reference="tags" />
 ```
+
+**Tip**: Having to specify the `label` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
 
 React-admin uses [the i18n system](./Translation.md) to translate the label, so you can use translation keys to have one label for each language supported by the interface:
 

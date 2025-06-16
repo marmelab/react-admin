@@ -77,7 +77,7 @@ export const BookList = () => (
     <List aside={<BookListAside />}>
         <DataTable>
             <DataTable.Col source="title" />
-            <DataTable.Col label="Autor">
+            <DataTable.Col label="Autor" source="authorId">
                 <ReferenceField source="authorId" reference="authors" />
             </DataTable.Col>
             <DataTable.Col source="year" />

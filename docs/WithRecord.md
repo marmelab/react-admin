@@ -37,24 +37,24 @@ As soon as there is a record available, react-admin puts it in a `RecordContext`
 - in descendants of the `<SimpleList>` component
 - in descendants of the `<ReferenceField>` component
 
-## Using in a DataTable
+## Using in a Datagrid
 
-When using `<WithRecord>` in a [`<DataTable>`](./DataTable.md), you must specify the `label` prop to let react-admin know which field to display in the column header. 
+When using `<WithRecord>` in a [`<Datagrid>`](./Datagrid.md), you must specify the `label` prop to let react-admin know which field to display in the column header.
 
 ```jsx
-import { DataTable, WithRecord } from 'react-admin';
+import { Datagrid, TextField, WithRecord } from 'react-admin';
 
 const PostList = () => (
     <List>
-        <DataTable>
-            <DataTable.Col source="title" />
-            <DataTable.Col label="author">
-                <WithRecord render={record => <span>{record.author}</span>} />
-            </DataTable.Col>
-        </DataTable>
+        <Datagrid>
+            <TextField source="title" />
+            <WithRecord label="author" render={record => <span>{record.author}</span>} />
+        </Datagrid>
     </List>
 );
 ```
+
+**Tip:** You don't need to use `<WithRecord>` if you are using [`<DataTable>`](./DataTable.md), as the [`<DataTable.Col>`](./DataTable.md#datatablecol) component directly provides a [`render`](./DataTable.md#render) prop that works similarly to `<WithRecord>`.
 
 ## TypeScript
 

@@ -25,16 +25,11 @@ const MyPostGrid = () => {
     return (
         <DataTable
             bulkActionButtons={false}
-            sx={{
-                '& .MuiTableCell-root:last-child': {
-                    textAlign: 'right',
-                },
-            }}
         >
             <DataTable.Col label="Title">
                 <MyPostTitle locks={locks} />
             </DataTable.Col>
-            <DataTable.Col label="Actions">
+            <DataTable.Col label="Actions" align="right">
                 <MyPostActions locks={locks} />
             </DataTable.Col>
         </DataTable>

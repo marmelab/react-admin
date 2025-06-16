@@ -58,7 +58,9 @@ export const PostList = () => {
                     </DataTable.Col>
                     <DataTable.Col source="title" />
                     <DataTable.Col source="body" />
-                    <DataTable.Col field={EditButton} />
+                    <DataTable.Col>
+                        <EditButton />
+                    </DataTable.Col>
                 </DataTable>
             )}
         </List>

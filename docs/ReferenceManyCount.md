@@ -34,9 +34,7 @@ export const PostList = () => (
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="published_at">
-                <DateField source="published_at" sortByOrder="DESC" />
-            </DataTable.Col>
+            <DataTable.Col source="published_at" sortByOrder="DESC" field={DateField} />
             <DataTable.Col label="Nb comments">
                 <ReferenceManyCount
                     reference="comments"
@@ -44,9 +42,7 @@ export const PostList = () => (
                     link
                 />
             </DataTable.Col>
-            <DataTable.Col source="views">
-                <NumberField source="views" sortByOrder="DESC" />
-            </DataTable.Col>
+            <DataTable.Col source="views" sortByOrder="DESC" field={NumberField} />
             <DataTable.Col source="tags" label="Tags">
                 <ReferenceArrayField reference="tags" source="tags">
                     <SingleFieldList>

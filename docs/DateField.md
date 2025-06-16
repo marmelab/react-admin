@@ -21,7 +21,9 @@ export const PostList = () => (
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
-            <DataTable.Col source="published_at" field={DateField} />
+            <DataTable.Col source="published_at">
+                <DateField source="published_at" />
+            </DataTable.Col>
             ...
         </DataTable>
     </List>
