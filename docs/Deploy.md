@@ -13,9 +13,9 @@ React-admin is a framework to build [Single Page Applications](https://developer
 
 **Warning**: If you chose Next.js or Remix, you **have to use a dynamic web server** (e.g. CloudFlare pages, Vercel, etc.).
 
-With the default configuration of React-admin, that you can have using [`create-react-admin`](./CreateReactAdmin.md), you are already configured to run `yarn build` or `npm run build` to compile your application with [`vite`](https://vite.dev).
+With the default configuration of React-admin, that you can have using [`create-react-admin`](./CreateReactAdmin.md), you can run `yarn build` or `npm run build` to compile your application with [`vite`](https://vite.dev).
 
-This builds your application in the `dist` directory in application root. Let's have a look to what's in there:
+This builds your application in the `dist` directory at the application root. Let's have a look to what's in there:
 
 ```tree
 dist/
@@ -28,7 +28,7 @@ dist/
 
 As you can see, your app is contained in a single Javascript file, used in a simple `index.html`. To deploy your application, you just need to serve this directory with all URLs handled by `index.html`.
 
-There are multiple easy ways to deploy your app automatically to various hosts which does not require you to setup a web server manually. Some of these are addressed in this page.
+There are multiple ways to deploy your app automatically to various hosts which does not require you to setup a web server manually. Some of these are addressed in this page.
 
 ## Deploy With GitHub Actions And GitHub Pages
 
@@ -95,9 +95,9 @@ This workflow will run everytime you push or merge something in the main branch 
 
 ## Deploy With GitHub Actions to Cloudflare
 
-To deploy to [Cloudflare Pages](https://pages.cloudflare.com/), you will need to have a [Cloudflare](https://www.cloudflare.com/) account. First you will need to retrieve your account ID from Cloudflare, the documentation on how to retrieve it is available on the [Cloudflare documentation](https://developers.cloudflare.com/fundamentals/account/find-account-and-zone-ids/)
+To deploy to [Cloudflare Pages](https://pages.cloudflare.com/), you need to have a [Cloudflare](https://www.cloudflare.com/) account. First, retrieve your account ID from Cloudflare, the documentation on how to retrieve it is available on the [Cloudflare documentation](https://developers.cloudflare.com/fundamentals/account/find-account-and-zone-ids/)
 
-Then, you will need to create a new API token from your [Cloudflare Profile page](https://dash.cloudflare.com/profile/api-tokens):
+Then, create a new API token from your [Cloudflare Profile page](https://dash.cloudflare.com/profile/api-tokens):
 - First click on `Create Token`
 - Then on the `Edit Cloudflare Workers` template
 - Select your organization inside the `Account Resources`
