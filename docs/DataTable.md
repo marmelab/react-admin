@@ -1816,14 +1816,14 @@ const ReviewList = () => (
 ```
 
 
-## Migrating From `<DataGrid>` To `<DataTable>`
+## Migrating From `<Datagrid>` To `<DataTable>`
 
-To help you migrate from `<DataGrid>` to `<DataTable>`, we've created a codemod.
+To help you migrate from `<Datagrid>` to `<DataTable>`, we've created a codemod.
 
 > **DISCLAIMER**
 > Please review the generated changes thoroughly!
 >
-> Applying the codemod might break your code formatting, so don't forget to your formatter (prettier, eslint, biome, etc.) after you've applied the codemod!
+> Applying the codemod might break your code formatting, so don't forget to run your formatter (prettier, eslint, biome, etc.) after you've applied the codemod!
 
 For `.js` or `.jsx` files:
 
