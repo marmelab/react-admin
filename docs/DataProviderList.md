@@ -10,7 +10,7 @@ Thanks to the Data Provider architecture, react-admin supports a lot of API back
 If you can't find a Data Provider for your backend below, no worries! [Writing a Data Provider](./DataProviderWriting.md) takes a couple of hours, and won't prevent you from using react-admin.
 
 <div class="providers-list" markdown="1">
-* ![AppWrite Logo](./img/backend-logos/appwrite.svg "AppWrite Logo")**[AppWrite](https://appwrite.io/)**: [marmelab/ra-appwrite](https://github.com/marmelab/ra-appwrite)
+* ![Appwrite Logo](./img/backend-logos/appwrite.svg "Appwrite Logo")**[Appwrite](https://appwrite.io/)**: [marmelab/ra-appwrite](https://github.com/marmelab/ra-appwrite)
 * ![AWS Amplify Logo](./img/backend-logos/amplify.svg "AWS Amplify Logo")**[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 * ![blitz Logo](./img/backend-logos/blitz.svg "blitz Logo")**[Blitz-js](https://blitzjs.com/docs)**: [theapexlab/ra-data-blitz](https://github.com/theapexlab/ra-data-blitz)
 * <div class="flex">
