@@ -1830,7 +1830,7 @@ For `.js` or `.jsx` files:
 ```sh
 npx jscodeshift ./path/to/src/ \
     --extensions=js,jsx \
-    --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
+    --transform=./node_modules/ra-core/codemods/replace-Datagrid-DataTable.ts
 ```
 
 For `.ts` or `.tsx` files:
@@ -1839,5 +1839,5 @@ For `.ts` or `.tsx` files:
 npx jscodeshift ./path/to/src/ \
     --extensions=ts,tsx \
     --parser=tsx \
-    --transform=./node_modules/ra-core/codemods/replace-Admin-history.ts
+    --transform=./node_modules/ra-core/codemods/replace-Datagrid-DataTable.ts
 ```
