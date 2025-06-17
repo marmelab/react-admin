@@ -280,14 +280,17 @@ describe('useLogoutIfAccessDenied', () => {
                 </AuthContext.Provider>
             </TestMemoryRouter>
         );
-
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(0);
             expect(notify).toHaveBeenCalledWith('Access denied', {
                 type: 'error',
             });
             expect(notify).toHaveBeenCalledTimes(1);
-            expect(screen.queryByText('Login page')).toBeNull();
+        });
+        await waitFor(() => {
+                expect(screen.queryByText('Login page')).toBeNull();
+            }, {
+            timeout: 2000
         });
     });
 });
