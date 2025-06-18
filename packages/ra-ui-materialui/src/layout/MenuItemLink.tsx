@@ -1,6 +1,5 @@
 import React, {
     forwardRef,
-    lazy,
     useCallback,
     useRef,
     type ReactElement,
@@ -26,13 +25,8 @@ import {
 import { useTranslate, useBasename, useEvent } from 'ra-core';
 import type { Keys } from 'react-hotkeys-hook';
 import { useSidebarState } from './useSidebarState';
+import { KeyboardShortcut } from '../KeyboardShortcut';
 import { getKeyboardShortcutLabel } from '../getKeyboardShortcutLabel';
-
-const KeyboardShortcut = lazy(() =>
-    import('../KeyboardShortcut').then(module => ({
-        default: module.KeyboardShortcut,
-    }))
-);
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
