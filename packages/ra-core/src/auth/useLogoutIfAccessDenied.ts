@@ -44,13 +44,13 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const notify = useNotify();
     const navigate = useNavigate();
 
-    const handleRedirect = (url: string) => {
+    const handleRedirect = useCallback((url: string) => {
         if (url.startsWith('http')) {
             window.location.href = url;
         } else {
             navigate(url);
         }
-    };
+    }, []);
 
     const logoutIfAccessDenied = useCallback(
         (error?: any) => {
@@ -118,7 +118,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                     return true;
                 });
         },
-        [authProvider, logout, notify, navigate]
+        [authProvider, logout, notify, handleRedirect]
     );
     return logoutIfAccessDenied;
 };
