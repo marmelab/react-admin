@@ -1,6 +1,8 @@
 import React, {
     forwardRef,
+    lazy,
     useCallback,
+    useRef,
     type ReactElement,
     type ReactNode,
 } from 'react';
@@ -19,10 +21,18 @@ import {
     type TooltipProps,
     useMediaQuery,
     Theme,
+    useForkRef,
 } from '@mui/material';
-
+import { useTranslate, useBasename, useEvent } from 'ra-core';
+import type { Keys } from 'react-hotkeys-hook';
 import { useSidebarState } from './useSidebarState';
-import { useTranslate, useBasename } from 'ra-core';
+import { getKeyboardShortcutLabel } from '../getKeyboardShortcutLabel';
+
+const KeyboardShortcut = lazy(() =>
+    import('../KeyboardShortcut').then(module => ({
+        default: module.KeyboardShortcut,
+    }))
+);
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -91,6 +101,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
             sidebarIsOpen,
             tooltipProps,
             children,
+            keyboardShortcut,
             ...rest
         } = props;
 
@@ -115,6 +126,10 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
             (typeof props.to === 'string' ? props.to : props.to.pathname) || '';
         const match = useMatch({ path: to, end: to === `${basename}/` });
 
+        const itemRef = useRef<HTMLLIElement>(null);
+        const forkedRef = useForkRef(itemRef, ref);
+        const handleShortcut = useEvent(() => itemRef.current?.click());
+
         const renderMenuItem = () => {
             return (
                 <StyledMenuItem
@@ -123,11 +138,17 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
                     })}
                     // @ts-ignore
                     component={LinkRef}
-                    ref={ref}
+                    ref={forkedRef}
                     tabIndex={0}
                     {...rest}
                     onClick={handleMenuTap}
                 >
+                    {keyboardShortcut ? (
+                        <KeyboardShortcut
+                            keys={keyboardShortcut}
+                            callback={handleShortcut}
+                        />
+                    ) : null}
                     {leftIcon && (
                         <ListItemIcon className={MenuItemLinkClasses.icon}>
                             {leftIcon}
@@ -141,10 +162,23 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
                 </StyledMenuItem>
             );
         };
+        if (open && keyboardShortcut == null) {
+            return renderMenuItem();
+        }
 
-        return open ? (
-            renderMenuItem()
-        ) : (
+        if (open && keyboardShortcut != null) {
+            return (
+                <Tooltip
+                    title={getKeyboardShortcutLabel(keyboardShortcut)}
+                    placement="right"
+                    {...tooltipProps}
+                >
+                    {renderMenuItem()}
+                </Tooltip>
+            );
+        }
+
+        return (
             <Tooltip
                 title={
                     typeof primaryText === 'string'
@@ -171,6 +205,7 @@ export type MenuItemLinkProps = Omit<
      */
     sidebarIsOpen?: boolean;
     tooltipProps?: TooltipProps;
+    keyboardShortcut?: Keys;
 };
 
 const PREFIX = 'RaMenuItemLink';

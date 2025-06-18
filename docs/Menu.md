@@ -183,16 +183,34 @@ export const MyMenu = () => (
 );
 ```
 
-| Prop          | Required | Type                 | Default | Description                              |
-| ------------- | -------- | -------------------- | ------- | ---------------------------------------- |
-| `to`          | Required | `string | location`  | -       | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. |
-| `primaryText` | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
-| `leftIcon`    | Optional | `ReactNode`          | -       | The menu icon |
+| Prop               | Required | Type                 | Default | Description                              |
+| ------------------ | -------- | -------------------- | ------- | ---------------------------------------- |
+| `to`               | Required | `string | location`  | -       | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. |
+| `primaryText`      | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
+| `keyboardShortcut` | Optional | `string | string[]`  | -       | The keyboard shortcut(s) to activate this menu item |
+| `leftIcon`         | Optional | `ReactNode`          | -       | The menu icon |
+| `sx`               | Optional | `SxProp`             | -       | Style overrides, powered by MUI System |
 
 Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
 
+### `to`
 
-The `primaryText` prop accepts a string, that react-admin passes through the [translation utility](./Translation.md). Alternately, you can set the menu item content using the `children`, e.g. to display a badge on top of the menu item:
+The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component.
+
+```tsx
+// in src/MyMenu.js
+import { Menu } from 'react-admin';
+
+export const MyMenu = () => (
+    <Menu>
+        <Menu.Item to="/custom-route" primaryText="Miscellaneous" />
+    </Menu>
+);
+```
+
+### `primaryText`
+
+The menu content, displayed when the menu isn't minimized. It accepts a string, that react-admin passes through the [translation utility](./Translation.md). Alternately, you can set the menu item content using the `children`, e.g. to display a badge on top of the menu item:
 
 ```jsx
 import Badge from '@mui/material/Badge';
@@ -211,6 +229,24 @@ export const MyMenu = () => (
 ```
 
 Note that if you use the `children` prop, you'll have to translate the menu item content yourself using [`useTranslate`](./useTranslate.md). You'll also need to provide a `primaryText` either way, because it will be rendered in the tooltip when the side menu is collapsed.
+
+### `keyboardShortcut`
+
+The keyboard shortcut(s) to activate this menu item. Pass a string or an array of string that defines the supported keyboard shortcuts:
+
+```tsx
+export const MyMenu = () => (
+    <Menu>
+        <Menu.Item
+            to="/sales"
+            primaryText="Sales"
+            keyboardShortcut="ctrl+alt+S"
+        />
+    </Menu>
+);
+```
+
+### `leftIcon`
 
 The `letfIcon` prop allows setting the menu left icon.
 
@@ -231,7 +267,16 @@ export const MyMenu = () => (
 );
 ```
 
-Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
+### `sx`
+
+You can use the `sx` prop to customize the style of the component.
+
+| Rule name                   | Description                                                         |
+|-----------------------------|---------------------------------------------------------------------|
+| `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
+| `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
+
+To override the style of all instances of `<MenuItemLink>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuItemLink` key.
 
 **Tip**: The `<Menu.Item>` component makes use of the React Router [NavLink](https://reactrouter.com/docs/en/v6/components/nav-link) component, hence allowing to customize the active menu style. For instance, here is how to use a custom theme to show a left border for the active menu:
 
@@ -259,15 +304,6 @@ export const theme = {
     },
 };
 ```
-
-You can use the `sx` prop to customize the style of the component.
-
-| Rule name                   | Description                                                         |
-|-----------------------------|---------------------------------------------------------------------|
-| `&.RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
-| `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
-
-To override the style of all instances of `<MenuItemLink>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaMenuItemLink` key.
 
 ## `<Menu.DashboardItem>`
 
