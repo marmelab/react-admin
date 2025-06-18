@@ -10,6 +10,7 @@ import {
     styled,
     useThemeProps,
     lighten,
+    darken,
 } from '@mui/material/styles';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
@@ -124,7 +125,7 @@ const Root = styled('div', {
             ? theme.vars.palette.bulkActionsToolbarBackgroundColor
             : theme.palette.mode === 'light'
               ? lighten(theme.palette.primary.light, 0.8)
-              : theme.palette.primary.dark,
+              : darken(theme.palette.primary.dark, 0.5),
         minHeight: theme.spacing(6),
         height: theme.spacing(6),
         paddingRight: theme.spacing(2),
