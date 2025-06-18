@@ -70,7 +70,7 @@ export const BulkActionsToolbar = (inProps: BulkActionsToolbarProps) => {
                             color: theme =>
                                 (theme.vars || theme).palette.text.primary,
                         }}
-                        variant="subtitle1"
+                        variant="body1"
                     >
                         {translate(label, {
                             _: label,
@@ -159,6 +159,7 @@ const Root = styled('div', {
     [`& .${BulkActionsToolbarClasses.title}`]: {
         display: 'flex',
         flex: '0 0 auto',
+        alignItems: 'center',
         gap: theme.spacing(1),
     },
 
