@@ -144,6 +144,13 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => {
                 fullWidth: true,
             },
         },
+        RaBulkActionsToolbar: {
+            styleOverrides: {
+                toolbar: {
+                    zIndex: 10,
+                },
+            },
+        },
     };
 };
 
