@@ -235,6 +235,17 @@ export const TableCellProps = () => (
     </Wrapper>
 );
 
+export const Width = () => (
+    <Wrapper>
+        <DataTable>
+            <DataTable.Col source="id" sx={{ width: 50 }} />
+            <DataTable.Col source="title" sx={{ width: 500 }} />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
 const TitleCol = () => <DataTable.Col source="title" label="Book Title" />;
 const AuthorCol = () => <DataTable.Col source="author" />;
 
