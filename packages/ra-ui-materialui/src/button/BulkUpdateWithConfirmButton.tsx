@@ -195,16 +195,7 @@ const PREFIX = 'RaBulkUpdateWithConfirmButton';
 const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    color: (theme.vars || theme).palette.primary.main,
-    '&:hover': {
-        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%)`,
-        // Reset on mouse devices
-        '@media (hover: none)': {
-            backgroundColor: 'transparent',
-        },
-    },
-}));
+})(() => ({}));
 
 const defaultIcon = <ActionUpdate />;
 
