@@ -12,5 +12,3 @@ export * from './list';
 export * from './preferences';
 export * from './AdminUI';
 export * from './AdminContext';
-export * from './KeyboardShortcut';
-export * from './getKeyboardShortcutLabel';

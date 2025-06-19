@@ -22,11 +22,15 @@ import {
     Theme,
     useForkRef,
 } from '@mui/material';
-import { useTranslate, useBasename, useEvent } from 'ra-core';
+import {
+    getKeyboardShortcutLabel,
+    KeyboardShortcut,
+    useTranslate,
+    useBasename,
+    useEvent,
+} from 'ra-core';
 import type { Keys } from 'react-hotkeys-hook';
 import { useSidebarState } from './useSidebarState';
-import { KeyboardShortcut } from '../KeyboardShortcut';
-import { getKeyboardShortcutLabel } from '../getKeyboardShortcutLabel';
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
