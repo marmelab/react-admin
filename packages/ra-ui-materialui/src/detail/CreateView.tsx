@@ -6,7 +6,6 @@ import {
     styled,
     type SxProps,
     type Theme,
-    useThemeProps,
 } from '@mui/material';
 import { useCreateContext } from 'ra-core';
 import clsx from 'clsx';
@@ -14,11 +13,7 @@ import clsx from 'clsx';
 import { Title } from '../layout';
 import { CreateProps } from './Create';
 
-export const CreateView = (inProps: CreateViewProps) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
+export const CreateView = (props: CreateViewProps) => {
     const {
         actions,
         aside,
