@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import {
+    ConsecutiveNotifications,
     ConsecutiveUndoable,
     CustomNotificationWithAction,
 } from './Notification.stories';
@@ -42,5 +43,14 @@ describe('<Notification />', () => {
             expect(screen.queryByText('Applied automatic changes')).toBeNull();
         });
         expect(consoleLog).toHaveBeenCalledWith('Custom action');
+    });
+    it('should display consecutive notifications', async () => {
+        const { container } = render(<ConsecutiveNotifications />);
+        await screen.findByText('hello, world');
+        // This line ensures the test fails without the fix
+        await new Promise(resolve => setTimeout(resolve, 200));
+        expect(screen.queryByText('goodbye, world')).toBeNull();
+        fireEvent.click(container);
+        await screen.findByText('goodbye, world');
     });
 });
