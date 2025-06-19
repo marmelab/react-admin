@@ -6,7 +6,6 @@ import {
     styled,
     type SxProps,
     type Theme,
-    useThemeProps,
 } from '@mui/material';
 import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
@@ -16,11 +15,7 @@ import { ShowProps } from './Show';
 
 const defaultActions = <ShowActions />;
 
-export const ShowView = (inProps: ShowViewProps) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
+export const ShowView = (props: ShowViewProps) => {
     const {
         actions,
         aside,

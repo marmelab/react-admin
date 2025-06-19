@@ -7,7 +7,6 @@ import {
     styled,
     type SxProps,
     type Theme,
-    useThemeProps,
 } from '@mui/material';
 import clsx from 'clsx';
 import { useEditContext, useResourceDefinition } from 'ra-core';
@@ -18,11 +17,7 @@ import { EditProps } from './Edit';
 
 const defaultActions = <EditActions />;
 
-export const EditView = (inProps: EditViewProps) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
+export const EditView = (props: EditViewProps) => {
     const {
         actions,
         aside,

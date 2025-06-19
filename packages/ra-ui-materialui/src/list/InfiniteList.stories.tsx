@@ -452,6 +452,18 @@ export const Themed = () => (
                         perPage: 5,
                     },
                 },
+                RaList: {
+                    styleOverrides: {
+                        root: {
+                            background: 'pink',
+
+                            ['& .MuiListItemText-primary']: {
+                                color: 'hotpink',
+                                fontWeight: 'bold',
+                            },
+                        },
+                    },
+                },
             },
         } as ThemeOptions)}
     >

@@ -258,6 +258,13 @@ export const Themed = () => (
                         defaultProps: {
                             className: 'custom-class',
                         },
+                        styleOverrides: {
+                            root: {
+                                ['& .RaShow-card']: {
+                                    color: 'red',
+                                },
+                            },
+                        },
                     },
                 },
             } as ThemeOptions)}
