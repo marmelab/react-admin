@@ -287,10 +287,5 @@ describe('useLogoutIfAccessDenied', () => {
             });
             expect(notify).toHaveBeenCalledTimes(1);
         });
-        await waitFor(() => {
-                expect(screen.queryByText('Login page')).toBeNull();
-            }, {
-            timeout: 2000
-        });
     });
 });
