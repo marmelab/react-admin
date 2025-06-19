@@ -44,13 +44,16 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const notify = useNotify();
     const navigate = useNavigate();
 
-    const handleRedirect = useCallback((url: string) => {
-        if (url.startsWith('http')) {
-            window.location.href = url;
-        } else {
-            navigate(url);
-        }
-    }, []);
+    const handleRedirect = useCallback(
+        (url: string) => {
+            if (url.startsWith('http')) {
+                window.location.href = url;
+            } else {
+                navigate(url);
+            }
+        },
+        [navigate]
+    );
 
     const logoutIfAccessDenied = useCallback(
         (error?: any) => {
