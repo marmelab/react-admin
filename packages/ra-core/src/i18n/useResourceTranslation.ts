@@ -7,7 +7,7 @@ export const useResourceTranslation = (
     const { resourceI18nKey, baseI18nKey, userText, options } = params;
     const translate = useTranslate();
 
-    if (userText) {
+    if (userText !== undefined) {
         if (typeof userText !== 'string') {
             return userText;
         }
