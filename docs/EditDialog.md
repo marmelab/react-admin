@@ -337,7 +337,7 @@ export const UserEdit = () => {
 
 ## Usage Without Routing
 
-By default, `<EditDialog>` creates a react-router `<Route>` for the edition path (e.g. `/posts/2`), and renders when users go to that location (either by clicking on a datatable row, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list.
+By default, `<EditDialog>` creates a react-router `<Route>` for the edition path (e.g. `/posts/2`), and renders when users go to that location (either by clicking on a `<DataTable>` row, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list.
 
 This may not be what you want if you need to display the edit dialog in another page (e.g. to edit a related record).
 
