@@ -470,7 +470,7 @@ By encapsulating common CRUD logic, react-admin reduces the amount of code you n
 
 Sometimes typing `<DataTable>` and a few `<Field>` components is too much - for instance if you want to prototype an admin for many resources, or search data through an API without worrying about the actual data structure.
 
-For these cases, react-admin provides a `<ListGuesser>` component that will guess the datatable columns from the data. It's a bit like the `<List>` component, but it doesn't require any configuration.
+For these cases, react-admin provides a `<ListGuesser>` component that will guess the `<DataTable>` columns from the data. It's a bit like the `<List>` component, but it doesn't require any configuration.
 
 ```tsx
 import { Admin, Resource, ListGuesser } from 'react-admin';
