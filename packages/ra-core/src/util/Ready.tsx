@@ -42,6 +42,8 @@ const styles = {
         opacity: 1,
     },
     image: {
+        display: 'block',
+        margin: 'auto',
         width: 50,
     },
     logo: {

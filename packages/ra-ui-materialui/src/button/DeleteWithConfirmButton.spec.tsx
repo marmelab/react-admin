@@ -23,6 +23,7 @@ import { Notification } from '../layout';
 import {
     Basic,
     NoRecordRepresentation,
+    Themed,
     WithCustomTitleAndContent,
     WithDefaultTranslation,
 } from './DeleteWithConfirmButton.stories';
@@ -435,5 +436,11 @@ describe('<DeleteWithConfirmButton />', () => {
         );
         await screen.findByText('Delete author #1');
         await screen.findByText('Are you sure you want to delete this author?');
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const buttons = await screen.findAllByTestId('themed');
+        expect(buttons[0].classList).toContain('MuiButton-outlined');
     });
 });

@@ -25,6 +25,7 @@ import {
     SXLink,
     SXNoLink,
     SlowAccessControl,
+    Themed,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -701,5 +702,10 @@ describe('<ReferenceField />', () => {
                 getComputedStyle(root).getPropertyValue('background-color')
             ).toBe('red');
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(await screen.findByTestId('themed')).toBeDefined();
     });
 });

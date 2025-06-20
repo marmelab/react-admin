@@ -1,5 +1,52 @@
 # Changelog
 
+## 5.8.4
+
+* Replace `Datagrid` by `DataTable` in Guessers ([#10754](https://github.com/marmelab/react-admin/pull/10754)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `<DataTable>` crashes when its data is not a React primitive ([#10777](https://github.com/marmelab/react-admin/pull/10777)) ([djhi](https://github.com/djhi))
+* Fix(show/edit): Avoid a redirect loop when `useGetOne` returns an error in `shadcn-admin-kit` ([#10776](https://github.com/marmelab/react-admin/pull/10776)) ([jonathanarnault](https://github.com/jonathanarnault))
+* Fix disabled `<BooleanInput>` ([#10773](https://github.com/marmelab/react-admin/pull/10773)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix: avoid an infinite loop when loading the demo apps for the first time ([#10769](https://github.com/marmelab/react-admin/pull/10769)) ([jonathanarnault](https://github.com/jonathanarnault))
+* Fix `<SaveButton>` is not enabled when the form is prefilled (from `<CloneButton>` for instance) ([#10765](https://github.com/marmelab/react-admin/pull/10765)) ([djhi](https://github.com/djhi))
+* [chore] Add spinner while installing dependencies in `create-react-admin` ([#10778](https://github.com/marmelab/react-admin/pull/10778)) ([djhi](https://github.com/djhi))
+* [Doc] Rename `convertRaMessagesToI18next` to `convertRaTranslationsToI18next` ([#10774](https://github.com/marmelab/react-admin/pull/10774)) ([Madeorsk](https://github.com/Madeorsk))
+* [Doc] Fix videos in `<DataTable>` docs ([#10775](https://github.com/marmelab/react-admin/pull/10775)) ([Madeorsk](https://github.com/Madeorsk))
+
+## 5.8.3
+
+* Fix potential prototype-polluting assignment in `ra-data-local-storage` ([#10758](https://github.com/marmelab/react-admin/pull/10758)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Document that `optionValue` only works with the `choices` prop ([#10760](https://github.com/marmelab/react-admin/pull/10760)) ([slax57](https://github.com/slax57))
+* [Doc] Fix typo in `<SelectInput>` disabled choice example ([#10753](https://github.com/marmelab/react-admin/pull/10753)) ([notz](https://github.com/notz))
+* [Doc] Fix create-react-admin instructions when using yarn ([#10752](https://github.com/marmelab/react-admin/pull/10752)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update `<AutoPersistInStore>` implementation explanation ([#10751](https://github.com/marmelab/react-admin/pull/10751)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add a new third-party component `huyanhvn/react-admin-clipboard-field` ([#10736](https://github.com/marmelab/react-admin/pull/10736)) ([huyanhvn](https://github.com/huyanhvn))
+
+## 5.8.2
+
+* Fix `<AutocompleteInput>` with `optionValue` and create raises a React warning ([#10747](https://github.com/marmelab/react-admin/pull/10747)) ([slax57](https://github.com/slax57))
+* Fix `useInfiniteListController` does not return response `meta` ([#10746](https://github.com/marmelab/react-admin/pull/10746)) ([slax57](https://github.com/slax57))
+* Fix `create-react-admin --help` does not show help consistently ([#10744](https://github.com/marmelab/react-admin/pull/10744)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix compatibility of unit tests with react-hook-form 7.56.x ([#10742](https://github.com/marmelab/react-admin/pull/10742)) ([slax57](https://github.com/slax57))
+* Fix outlined inputs when label is false ([#10740](https://github.com/marmelab/react-admin/pull/10740)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<SelectArrayInput>` sanitizes unused props ([#10739](https://github.com/marmelab/react-admin/pull/10739)) ([ghadabezine](https://github.com/ghadabezine))
+* Fix `Arrayinput` multiple reset ([#10716](https://github.com/marmelab/react-admin/pull/10716)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix MUI7 compatibility by not using deprecated system props ([#10680](https://github.com/marmelab/react-admin/pull/10680)) ([smeng9](https://github.com/smeng9))
+* [Doc] Fix remaining `<AutocompleteArrayInput>` and `<SelectArrayInput>` `create` examples ([#10741](https://github.com/marmelab/react-admin/pull/10741)) ([slax57](https://github.com/slax57))
+* [Doc] Document how to pass extra options to create-react-admin when using npm create ([#10737](https://github.com/marmelab/react-admin/pull/10737)) ([slax57](https://github.com/slax57))
+* [tips] Backport last AgGrid tips ([#10731](https://github.com/marmelab/react-admin/pull/10731)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
+## 5.8.1
+
+* Fix `<Confirm>` ignore simple string `title` and `content` props ([#10723](https://github.com/marmelab/react-admin/pull/10723)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` and `<SelectInput>` renders undefined instead of the `createLabel` when `optionText` is a function or a `recordRepresentation` is set ([#10715](https://github.com/marmelab/react-admin/pull/10715)) ([slax57](https://github.com/slax57))
+* [Doc] Fix documentation build ([#10730](https://github.com/marmelab/react-admin/pull/10730)) ([djhi](https://github.com/djhi))
+* [Doc] Fix documentation deployment for previous versions navigation ([#10725](https://github.com/marmelab/react-admin/pull/10725)) ([djhi](https://github.com/djhi))
+* [DOC] Rewrite select array input create doc ([#10711](https://github.com/marmelab/react-admin/pull/10711)) ([Cimanel](https://github.com/Cimanel))
+* [DOC] selectInput create example + storie ([#10710](https://github.com/marmelab/react-admin/pull/10710)) ([Cimanel](https://github.com/Cimanel))
+* [Demo] Fix theme switching ([#10732](https://github.com/marmelab/react-admin/pull/10732)) ([djhi](https://github.com/djhi))
+* [chore] Upgrade vite ([#10660](https://github.com/marmelab/react-admin/pull/10660)) ([djhi](https://github.com/djhi))
+* Bump vite from 6.2.6 to 6.2.7 ([#10726](https://github.com/marmelab/react-admin/pull/10726)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.8.0
 
 * Add `<InPlaceEditor>` for edit-in-place ([#10690](https://github.com/marmelab/react-admin/pull/10690)) ([fzaninotto](https://github.com/fzaninotto))

@@ -13,6 +13,8 @@ import {
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { QueryClient } from '@tanstack/react-query';
+import { deepmerge } from '@mui/utils';
+import { ThemeOptions } from '@mui/material';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List } from '../list/List';
@@ -24,6 +26,7 @@ import { ListButton } from './ListButton';
 import { Edit } from '../detail/Edit';
 import { TopToolbar } from '../layout';
 import { LocalesMenuButton } from './LocalesMenuButton';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/button/ListButton' };
 
@@ -302,3 +305,29 @@ const dataProvider = fakeRestDataProvider({
     ],
     authors: [],
 });
+
+export const Themed = ({ buttonProps }: { buttonProps?: any }) => (
+    <TestMemoryRouter>
+        <AdminContext
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaListButton: {
+                        defaultProps: {
+                            label: 'List',
+                            className: 'custom-class',
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <ResourceContextProvider value="books">
+                <RecordContextProvider value={{ id: 1 }}>
+                    <ListButton
+                        data-testid={'themed-button'}
+                        {...buttonProps}
+                    />
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);

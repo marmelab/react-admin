@@ -67,13 +67,25 @@ const CustomerAddress = () => {
     );
 };
 
-const Spacer = () => <Box mb={1}>&nbsp;</Box>;
+const Spacer = () => (
+    <Box
+        sx={{
+            mb: 1,
+        }}
+    >
+        &nbsp;
+    </Box>
+);
 
 const OrderForm = () => {
     const translate = useTranslate();
     return (
         <Form>
-            <Box maxWidth="50em">
+            <Box
+                sx={{
+                    maxWidth: '50em',
+                }}
+            >
                 <PrevNextButtons
                     filterDefaultValues={{ status: 'ordered' }}
                     sort={{ field: 'date', order: 'DESC' }}
@@ -126,7 +138,11 @@ const OrderForm = () => {
                                         />
                                     </Grid>
                                     <Grid size={{ xs: 12, sm: 12, md: 6 }}>
-                                        <Box mt={2}>
+                                        <Box
+                                            sx={{
+                                                mt: 2,
+                                            }}
+                                        >
                                             <BooleanInput
                                                 row={true}
                                                 source="returned"

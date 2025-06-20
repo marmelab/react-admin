@@ -5,6 +5,7 @@ import { RecordContextProvider, I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { TextField } from './TextField';
+import { Themed } from './TextField.stories';
 
 describe('<TextField />', () => {
     it('should display record specific value as plain text', () => {
@@ -123,5 +124,10 @@ describe('<TextField />', () => {
             <TextField record={record} source="type" />
         );
         expect(queryByText('Rock,Folk Rock')).not.toBeNull();
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.getByTestId('themed')).toBeDefined();
     });
 });

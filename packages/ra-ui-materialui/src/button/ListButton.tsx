@@ -8,6 +8,11 @@ import {
     useGetResourceLabel,
     useResourceTranslation,
 } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { Button, type ButtonProps } from './Button';
 
@@ -37,7 +42,12 @@ import { Button, type ButtonProps } from './Button';
  *     </Edit>
  * );
  */
-export const ListButton = (props: ListButtonProps) => {
+export const ListButton = (inProps: ListButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         icon = defaultIcon,
         label: labelProp,
@@ -71,7 +81,7 @@ export const ListButton = (props: ListButtonProps) => {
     }
 
     return (
-        <Button
+        <StyledButton
             component={Link}
             to={createPath({ type: 'list', resource })}
             state={scrollStates[String(scrollToTop)]}
@@ -79,10 +89,10 @@ export const ListButton = (props: ListButtonProps) => {
             label={<>{label}</>}
             // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
             aria-label={typeof label === 'string' ? label : undefined}
-            {...(rest as any)}
+            {...rest}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -102,3 +112,29 @@ interface Props {
 }
 
 export type ListButtonProps = Props & ButtonProps;
+
+const PREFIX = 'RaListButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<ListButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

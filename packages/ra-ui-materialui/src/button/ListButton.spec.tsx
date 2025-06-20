@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import expect from 'expect';
-import { Basic, AccessControl, Label } from './ListButton.stories';
+import { Basic, AccessControl, Label, Themed } from './ListButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -45,5 +45,12 @@ describe('<ListButton />', () => {
         expect(screen.queryByLabelText('List')).toBeNull();
         fireEvent.click(screen.getByLabelText('Allow accessing books'));
         await screen.findByLabelText('List');
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const button = screen.queryByTestId('themed-button');
+        expect(button.classList).toContain('custom-class');
+        expect(button.textContent).toBe('List');
     });
 });

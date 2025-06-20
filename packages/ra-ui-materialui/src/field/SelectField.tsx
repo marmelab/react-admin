@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { ChoicesProps, useChoices, useFieldValue, useTranslate } from 'ra-core';
 import { Typography, TypographyProps } from '@mui/material';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
@@ -71,8 +76,13 @@ import { genericMemo } from './genericMemo';
 const SelectFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: SelectFieldProps<RecordType>
+    inProps: SelectFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         className,
         emptyText,
@@ -111,14 +121,14 @@ const SelectFieldImpl = <
     const choiceText = getChoiceText(choice);
 
     return (
-        <Typography
+        <StyledTypography
             component="span"
             variant="body2"
             className={className}
             {...sanitizeFieldRestProps(rest)}
         >
             {choiceText}
-        </Typography>
+        </StyledTypography>
     );
 };
 
@@ -131,3 +141,29 @@ export interface SelectFieldProps<
 > extends ChoicesProps,
         FieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {}
+
+const PREFIX = 'RaSelectField';
+
+const StyledTypography = styled(Typography, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<SelectFieldProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

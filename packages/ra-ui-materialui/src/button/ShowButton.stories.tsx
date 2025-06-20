@@ -14,6 +14,8 @@ import {
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { QueryClient } from '@tanstack/react-query';
+import { ThemeOptions } from '@mui/material';
+import { deepmerge } from '@mui/utils';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List } from '../list/List';
@@ -23,6 +25,7 @@ import ShowButton from './ShowButton';
 import { Show } from '../detail/Show';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
 import { LocalesMenuButton } from './LocalesMenuButton';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/button/ShowButton' };
 
@@ -329,3 +332,29 @@ const dataProvider = fakeRestDataProvider({
     ],
     authors: [],
 });
+
+export const Themed = ({ buttonProps }: { buttonProps?: any }) => (
+    <TestMemoryRouter>
+        <AdminContext
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaShowButton: {
+                        defaultProps: {
+                            label: 'Show',
+                            className: 'custom-class',
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <ResourceContextProvider value="books">
+                <RecordContextProvider value={{ id: 1 }}>
+                    <ShowButton
+                        data-testid={'themed-button'}
+                        {...buttonProps}
+                    />
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);

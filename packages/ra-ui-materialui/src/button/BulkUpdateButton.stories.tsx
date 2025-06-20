@@ -9,6 +9,9 @@ import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List, Datagrid } from '../list';
 import { TextField, NumberField } from '../field';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
+import { ThemeOptions } from '@mui/material';
 
 export default { title: 'ra-ui-materialui/button/BulkUpdateButton' };
 
@@ -89,9 +92,13 @@ const dataProvider = fakeRestDataProvider({
     authors: [],
 });
 
-const Wrapper = ({ bulkActionButtons }) => (
+const Wrapper = ({ bulkActionButtons, theme = undefined }) => (
     <TestMemoryRouter initialEntries={['/books']}>
-        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            theme={theme}
+        >
             <AdminUI>
                 <Resource
                     name="books"
@@ -158,5 +165,23 @@ export const MutationMode = () => (
                 />
             </>
         }
+    />
+);
+
+export const Themed = () => (
+    <Wrapper
+        bulkActionButtons={<BulkUpdateButton data={{ reads: 0 }} />}
+        theme={deepmerge(defaultLightTheme, {
+            components: {
+                RaBulkUpdateButton: {
+                    defaultProps: {
+                        label: 'Bulk Update',
+                        mutationMode: 'optimistic',
+                        className: 'custom-class',
+                        'data-testid': 'themed-button',
+                    },
+                },
+            },
+        } as ThemeOptions)}
     />
 );

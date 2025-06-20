@@ -1,5 +1,10 @@
 import React, { Fragment, isValidElement, ReactEventHandler } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import clsx from 'clsx';
 
 import { UseMutationOptions } from '@tanstack/react-query';
@@ -21,8 +26,13 @@ import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 
 export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
-    props: DeleteWithConfirmButtonProps<RecordType>
+    inProps: DeleteWithConfirmButtonProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         className,
         confirmTitle: confirmTitleProp,
@@ -115,7 +125,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
 
     return (
         <Fragment>
-            <Button
+            <StyledButton
                 onClick={handleDialogOpen}
                 // avoid double translation
                 label={<>{label}</>}
@@ -127,7 +137,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                 {...rest}
             >
                 {icon}
-            </Button>
+            </StyledButton>
             <Confirm
                 isOpen={open}
                 loading={isPending}
@@ -169,4 +179,30 @@ export interface DeleteWithConfirmButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     successMessage?: string;
+}
+
+const PREFIX = 'RaDeleteWithConfirmButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<DeleteWithConfirmButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
 }

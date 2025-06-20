@@ -4,13 +4,14 @@ import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Alert } from '@mui/material';
+import { Alert, createTheme, ThemeOptions } from '@mui/material';
 
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
+import { deepmerge } from '@mui/utils';
 
 export default { title: 'ra-ui-materialui/button/DeleteWithConfirmButton' };
 
@@ -293,6 +294,41 @@ export const WithCustomDialogContent = () => (
                                 }
                                 confirmColor="warning"
                             />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const Themed = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            theme={deepmerge(createTheme(), {
+                components: {
+                    RaDeleteWithConfirmButton: {
+                        defaultProps: {
+                            variant: 'outlined',
+                            'data-testid': 'themed',
+                        },
+                        styleOverrides: {
+                            root: {
+                                color: 'hotpink',
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <DeleteWithConfirmButton />
                         </BookList>
                     }
                 />

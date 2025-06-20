@@ -6,6 +6,7 @@ import {
     NotificationTranslated,
     FullApp,
     Label,
+    Themed,
 } from './DeleteButton.stories';
 
 describe('<DeleteButton />', () => {
@@ -37,6 +38,14 @@ describe('<DeleteButton />', () => {
             expect(screen.queryAllByLabelText('Delete')).toHaveLength(1);
         });
     });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const button = screen.queryByTestId('themed-button');
+        expect(button.classList).toContain('custom-class');
+        expect(button.textContent).toBe('Delete');
+    });
+
     describe('success notification', () => {
         it('should use a generic success message by default', async () => {
             render(<NotificationDefault />);

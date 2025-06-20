@@ -275,4 +275,5 @@ export type UseInfiniteGetListHookValue<
 > & {
     total?: number;
     pageParam?: number;
+    meta?: any;
 };

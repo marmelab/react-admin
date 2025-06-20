@@ -12,7 +12,6 @@ import {
     Resource,
     testI18nProvider,
     TestMemoryRouter,
-    useCreatePath,
     useSourceContext,
 } from 'ra-core';
 import { Button, InputAdornment, Stack } from '@mui/material';
@@ -970,10 +969,8 @@ const BookCreateReset = () => {
 };
 
 export const Reset = () => {
-    const createPath = useCreatePath();
-    const initialEntrie = createPath({ resource: 'books', type: 'create' });
     return (
-        <TestMemoryRouter initialEntries={[initialEntrie]}>
+        <TestMemoryRouter initialEntries={['/books/create']}>
             <Admin dataProvider={dataProvider}>
                 <Resource name="books" create={BookCreateReset} />
             </Admin>

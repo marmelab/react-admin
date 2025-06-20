@@ -64,14 +64,13 @@ export const Labeled = (inProps: LabeledProps) => {
                 <Typography
                     sx={
                         color
-                            ? undefined
+                            ? { color }
                             : {
                                   color: theme =>
                                       (theme.vars || theme).palette.text
                                           .secondary,
                               }
                     }
-                    color={color}
                     className={LabeledClasses.label}
                     {...TypographyProps}
                 >

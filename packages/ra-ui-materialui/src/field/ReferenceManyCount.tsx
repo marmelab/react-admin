@@ -7,7 +7,13 @@ import {
     SortPayload,
     RaRecord,
 } from 'ra-core';
+import clsx from 'clsx';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { FieldProps } from './types';
@@ -29,9 +35,15 @@ import { Link } from '../Link';
  * <ReferenceManyCount reference="comments" target="post_id" variant="h1" />
  */
 export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
-    props: ReferenceManyCountProps<RecordType>
+    inProps: ReferenceManyCountProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
+        className,
         reference,
         target,
         filter,
@@ -72,29 +84,34 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         total
     );
 
-    return link && record ? (
-        <Link
-            to={{
-                pathname: createPath({ resource: reference, type: 'list' }),
-                search: `filter=${JSON.stringify({
-                    ...(filter || {}),
-                    [target]: record[source],
-                })}`,
-            }}
-            variant="body2"
-            onClick={e => e.stopPropagation()}
-            {...sanitizeFieldRestProps(rest)}
-        >
-            {body}
-        </Link>
-    ) : (
-        <Typography
+    return (
+        <StyledTypography
+            className={clsx(className, ReferenceManyCountClasses.root)}
             component="span"
             variant="body2"
             {...sanitizeFieldRestProps(rest)}
         >
-            {body}
-        </Typography>
+            {link && record ? (
+                <Link
+                    className={ReferenceManyCountClasses.link}
+                    to={{
+                        pathname: createPath({
+                            resource: reference,
+                            type: 'list',
+                        }),
+                        search: `filter=${JSON.stringify({
+                            ...(filter || {}),
+                            [target]: record[source],
+                        })}`,
+                    }}
+                    onClick={e => e.stopPropagation()}
+                >
+                    {body}
+                </Link>
+            ) : (
+                body
+            )}
+        </StyledTypography>
     );
 };
 
@@ -111,4 +128,38 @@ export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     filter?: any;
     link?: boolean;
     timeout?: number;
+}
+
+const PREFIX = 'RaReferenceManyCount';
+
+export const ReferenceManyCountClasses = {
+    root: `${PREFIX}-root`,
+    link: `${PREFIX}-link`,
+};
+
+const StyledTypography = styled(Typography, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => ({
+        ['&']: styles.root,
+        [`& .${ReferenceManyCountClasses.link}`]: styles.link,
+    }),
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root' | 'link';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<ReferenceManyCountProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
 }

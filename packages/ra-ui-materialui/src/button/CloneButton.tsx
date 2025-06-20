@@ -4,10 +4,20 @@ import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
 import { useResourceContext, useRecordContext, useCreatePath } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { Button, ButtonProps } from './Button';
 
-export const CloneButton = (props: CloneButtonProps) => {
+export const CloneButton = (inProps: CloneButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         label = 'ra.action.clone',
         scrollToTop = true,
@@ -19,7 +29,7 @@ export const CloneButton = (props: CloneButtonProps) => {
     const createPath = useCreatePath();
     const pathname = createPath({ resource, type: 'create' });
     return (
-        <Button
+        <StyledButton
             component={Link}
             to={
                 record
@@ -37,7 +47,7 @@ export const CloneButton = (props: CloneButtonProps) => {
             {...sanitizeRestProps(rest)}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -63,3 +73,29 @@ interface Props {
 export type CloneButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
 
 export default memo(CloneButton);
+
+const PREFIX = 'RaCloneButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<CloneButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

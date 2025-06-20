@@ -129,9 +129,11 @@ export const Inspector = () => {
                     id="inspector-dialog-title"
                     variant="overline"
                     component="div"
-                    py={1}
-                    px={2}
-                    flex="1"
+                    sx={{
+                        py: 1,
+                        px: 2,
+                        flex: '1',
+                    }}
                 >
                     {title && translate(title, titleOptions)}
                 </Typography>

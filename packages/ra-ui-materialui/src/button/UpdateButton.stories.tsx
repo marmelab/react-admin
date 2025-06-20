@@ -15,7 +15,8 @@ import {
     RecordContextProvider,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-
+import { deepmerge } from '@mui/utils';
+import { ThemeOptions } from '@mui/material';
 import { UpdateButton } from './UpdateButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
@@ -24,6 +25,7 @@ import { Show, SimpleShowLayout } from '../detail';
 import { TopToolbar } from '../layout';
 import { Datagrid, List } from '../list';
 import { LocalesMenuButton } from './LocalesMenuButton';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/button/UpdateButton' };
 
@@ -409,3 +411,26 @@ Label.argTypes = {
         control: { type: 'radio' },
     },
 };
+
+export const Themed = () => (
+    <TestMemoryRouter initialEntries={['/posts/1/show']}>
+        <AdminContext
+            dataProvider={getDataProvider()}
+            i18nProvider={defaultI18nProvider}
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaUpdateButton: {
+                        defaultProps: {
+                            className: 'custom-class',
+                            'data-testid': 'themed-button',
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <AdminUI>
+                <Resource name="posts" show={<PostShow />} />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);

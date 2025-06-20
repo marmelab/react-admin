@@ -13,6 +13,7 @@ import { SimpleForm } from '../form';
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 import {
     InsideReferenceArrayInput,
+    Themed,
     TranslateChoice,
 } from './RadioButtonGroupInput.stories';
 
@@ -308,6 +309,12 @@ describe('<RadioButtonGroupInput />', () => {
             </AdminContext>
         );
         expect(screen.queryByText('Mastercard')).not.toBeNull();
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const inputs = await screen.findAllByTestId('themed');
+        expect(inputs).toHaveLength(3);
     });
 
     describe('translateChoice', () => {

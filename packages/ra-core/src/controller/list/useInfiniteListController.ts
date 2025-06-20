@@ -111,6 +111,7 @@ export const useInfiniteListController = <
         fetchPreviousPage,
         isFetchingPreviousPage,
         refetch,
+        meta: responseMeta,
     } = useInfiniteGetList<RecordType, ErrorType>(
         resource,
         {
@@ -225,6 +226,7 @@ export const useInfiniteListController = <
         isFetchingNextPage,
         fetchPreviousPage,
         isFetchingPreviousPage,
+        meta: responseMeta,
     } as InfiniteListControllerResult<RecordType, ErrorType>;
 };
 

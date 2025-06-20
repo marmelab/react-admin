@@ -69,6 +69,8 @@ describe('<FilterButton />', () => {
             expect(checkboxes[1].getAttribute('aria-checked')).toBe('false');
             expect(checkboxes[2].getAttribute('aria-checked')).toBe('false');
 
+            // wait for a bit before clicking the checkbox again
+            await new Promise(resolve => setTimeout(resolve, 510));
             fireEvent.click(checkboxes[0]);
 
             await waitFor(
@@ -103,6 +105,8 @@ describe('<FilterButton />', () => {
                 name: 'Title',
             });
 
+            // wait for a bit before removing the filter
+            await new Promise(resolve => setTimeout(resolve, 510));
             fireEvent.click(screen.getByTitle('Remove this filter'));
 
             await waitFor(
@@ -135,6 +139,8 @@ describe('<FilterButton />', () => {
 
             await screen.findByText('1-1 of 1');
 
+            // wait for a bit before changing the filters again
+            await new Promise(resolve => setTimeout(resolve, 510));
             fireEvent.click(await screen.findByLabelText('Add filter'));
             fireEvent.click(screen.getAllByRole('menuitemcheckbox')[2]);
             fireEvent.change(
@@ -149,6 +155,8 @@ describe('<FilterButton />', () => {
                 'No Posts found using the current filters.'
             );
 
+            // wait for a bit before changing the filters again
+            await new Promise(resolve => setTimeout(resolve, 510));
             fireEvent.click(screen.getAllByTitle('Remove this filter')[1]);
             await screen.findByText('1-1 of 1');
 
@@ -163,9 +171,8 @@ describe('<FilterButton />', () => {
                 { timeout: 2000 }
             );
 
-            // Wait for a bit
+            // wait for a bit before changing the filters again
             await new Promise(resolve => setTimeout(resolve, 510));
-
             fireEvent.click(screen.getByTitle('Remove this filter'));
             await screen.findByText('1-10 of 13');
 

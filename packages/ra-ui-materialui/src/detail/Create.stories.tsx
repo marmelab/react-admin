@@ -9,13 +9,15 @@ import {
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Box, Card, Stack } from '@mui/material';
+import { Box, Card, Stack, ThemeOptions } from '@mui/material';
 
 import { TextInput } from '../input';
 import { SimpleForm } from '../form/SimpleForm';
 import { ListButton, SaveButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 import { Create } from './Create';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/detail/Create' };
 
@@ -266,6 +268,39 @@ export const Default = () => (
                     </Create>
                 )}
                 show={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const Themed = () => (
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin
+            dataProvider={dataProvider}
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaCreate: {
+                        defaultProps: {
+                            className: 'custom-class',
+                        },
+                        styleOverrides: {
+                            root: {
+                                ['& .RaCreate-card']: {
+                                    color: 'red',
+                                },
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <Resource
+                name="books"
+                create={() => (
+                    <Create data-testid={'themed-view'}>
+                        <Content />
+                    </Create>
+                )}
             />
         </Admin>
     </TestMemoryRouter>

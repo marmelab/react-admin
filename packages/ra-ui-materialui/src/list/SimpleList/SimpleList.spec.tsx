@@ -22,6 +22,7 @@ import {
     RowClick,
     Standalone,
     StandaloneEmpty,
+    Themed,
 } from './SimpleList.stories';
 import { Basic } from '../filter/FilterButton.stories';
 
@@ -257,6 +258,13 @@ describe('<SimpleList />', () => {
     it('should fall back to record representation when no primaryText is provided', async () => {
         render(<NoPrimaryText />);
         await screen.findByText('War and Peace');
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.queryByTestId('themed-list').classList).toContain(
+            'custom-class'
+        );
     });
 
     describe('standalone', () => {

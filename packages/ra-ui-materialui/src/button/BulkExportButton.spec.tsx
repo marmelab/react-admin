@@ -9,16 +9,17 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { BulkExportButton } from './BulkExportButton';
+import { Themed } from './BulkExportButton.stories';
 
 const theme = createTheme();
 
 describe('<BulkExportButton />', () => {
-    it('should invoke dataProvider with meta', async () => {
-        const exporter = jest.fn().mockName('exporter');
-        const dataProvider = testDataProvider({
-            getMany: jest.fn().mockResolvedValueOnce({ data: [], total: 0 }),
-        });
+    const exporter = jest.fn().mockName('exporter');
+    const dataProvider = testDataProvider({
+        getMany: jest.fn().mockResolvedValueOnce({ data: [], total: 0 }),
+    });
 
+    it('should invoke dataProvider with meta', async () => {
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ThemeProvider theme={theme}>
@@ -45,5 +46,13 @@ describe('<BulkExportButton />', () => {
 
             expect(exporter).toHaveBeenCalled();
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+
+        const button = await screen.findByTestId('themed');
+        expect(button.textContent).toBe('Bulk Export');
+        expect(button.classList).toContain('custom-class');
     });
 });

@@ -9,7 +9,7 @@ import {
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { defaultTheme } from '../theme/defaultTheme';
+import { defaultTheme } from '../theme';
 import { List } from './List';
 import { Filter } from './filter';
 import { TextInput } from '../input';
@@ -22,6 +22,7 @@ import {
     PartialPagination,
     Default,
     SelectAllLimit,
+    Themed,
 } from './List.stories';
 
 const theme = createTheme(defaultTheme);
@@ -110,6 +111,13 @@ describe('<List />', () => {
             </CoreAdminContext>
         );
         expect(screen.queryAllByText('Hello')).toHaveLength(1);
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.queryByTestId('themed-list').classList).toContain(
+            'custom-class'
+        );
     });
 
     describe('empty', () => {

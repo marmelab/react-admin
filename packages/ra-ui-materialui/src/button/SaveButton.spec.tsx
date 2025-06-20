@@ -20,6 +20,11 @@ import {
     NumberInput,
 } from '../input';
 import { AdminContext } from '../AdminContext';
+import {
+    AlwaysEnable,
+    Basic,
+    EnabledWhenFormIsPrefilled,
+} from './SaveButton.stories';
 
 const invalidButtonDomProps = {
     disabled: true,
@@ -64,13 +69,7 @@ describe('<SaveButton />', () => {
     });
 
     it('should render as submit type by default', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <Form>
-                    <SaveButton />
-                </Form>
-            </AdminContext>
-        );
+        render(<Basic />);
         await waitFor(() =>
             expect(
                 screen.getByLabelText('ra.action.save').getAttribute('type')
@@ -388,13 +387,16 @@ describe('<SaveButton />', () => {
     });
 
     it('should render enabled if alwaysEnable is true', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <Form>
-                    <SaveButton alwaysEnable={true} />
-                </Form>
-            </AdminContext>
+        render(<AlwaysEnable />);
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                false
+            )
         );
+    });
+
+    it('should render enabled if the form is prefilled', async () => {
+        render(<EnabledWhenFormIsPrefilled />);
         await waitFor(() =>
             expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
                 false

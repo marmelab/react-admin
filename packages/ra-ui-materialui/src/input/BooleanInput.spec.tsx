@@ -5,6 +5,7 @@ import { ResourceContextProvider, testDataProvider } from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { BooleanInput } from './BooleanInput';
+import { Themed } from './BooleanInput.stories';
 
 describe('<BooleanInput />', () => {
     const defaultProps = {
@@ -184,5 +185,10 @@ describe('<BooleanInput />', () => {
         await waitFor(() => {
             expect(screen.queryByText('ra.validation.error')).not.toBeNull();
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        await screen.findByTestId('themed');
     });
 });

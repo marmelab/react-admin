@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { Basic, AccessControl, Label } from './ShowButton.stories';
+import { Basic, AccessControl, Label, Themed } from './ShowButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -58,5 +58,12 @@ describe('<ShowButton />', () => {
         await waitFor(() => {
             expect(screen.queryAllByLabelText('Show')).toHaveLength(1);
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const button = screen.queryByTestId('themed-button');
+        expect(button.classList).toContain('custom-class');
+        expect(button.textContent).toBe('Show');
     });
 });

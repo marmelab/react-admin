@@ -4,7 +4,6 @@ import {
     styled,
     type SxProps,
     type Theme,
-    useThemeProps,
 } from '@mui/material/styles';
 import type { ReactElement, ReactNode, ElementType } from 'react';
 import Card from '@mui/material/Card';
@@ -16,6 +15,7 @@ import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
+import { ListProps } from './List';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -23,12 +23,8 @@ const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
 export const ListView = <RecordType extends RaRecord = any>(
-    inProps: ListViewProps
+    props: ListViewProps
 ) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
     const {
         actions = defaultActions,
         aside,
@@ -372,7 +368,7 @@ declare module '@mui/material/styles' {
     }
 
     interface ComponentsPropsList {
-        RaList: Partial<ListViewProps>;
+        RaList: Partial<ListProps>;
     }
 
     interface Components {

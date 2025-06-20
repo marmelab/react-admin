@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { colors, createTheme, Alert } from '@mui/material';
+import { colors, createTheme, Alert, ThemeOptions } from '@mui/material';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
@@ -16,6 +16,7 @@ import {
     ResourceContextProvider,
     TestMemoryRouter,
 } from 'ra-core';
+import { deepmerge } from '@mui/utils';
 import { AdminContext } from '../AdminContext';
 import { DeleteButton } from './DeleteButton';
 import { List } from '../list/List';
@@ -24,6 +25,7 @@ import { TextField } from '../field/TextField';
 import { AdminUI } from '../AdminUI';
 import { Notification } from '../layout';
 import { LocalesMenuButton } from './LocalesMenuButton';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/button/DeleteButton' };
 
@@ -489,3 +491,22 @@ export const SuccessMessage = () => {
         </AdminContext>
     );
 };
+
+export const Themed = () => (
+    <AdminContext
+        theme={deepmerge(defaultLightTheme, {
+            components: {
+                RaDeleteButton: {
+                    defaultProps: {
+                        label: 'Delete',
+                        className: 'custom-class',
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <ResourceContextProvider value="posts">
+            <DeleteButton data-testid={'themed-button'} record={{ id: 1 }} />
+        </ResourceContextProvider>
+    </AdminContext>
+);
