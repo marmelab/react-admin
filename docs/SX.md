@@ -463,7 +463,7 @@ export const PostList = () => (
 ```
 {% endraw %}
 
-Again, to guess the name of the subclass to use (like `.RaDataTable-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [DataTable CSS documentation](./DataTable.md#sx-css-api)).
+Again, to guess the name of the subclass to use (like `.RaDataTable-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [`<DataTable>` CSS documentation](./DataTable.md#sx-css-api)).
 
 ## Going Further
 
