@@ -9,9 +9,9 @@ import {
     useCanAccess,
 } from 'ra-core';
 
-import { MenuItemLink } from './MenuItemLink';
+import { MenuItemLink, MenuItemLinkProps } from './MenuItemLink';
 
-export const ResourceMenuItem = ({ name }: { name: string }) => {
+export const ResourceMenuItem = ({ name, ...rest }: ResourceMenuItemProps) => {
     const resources = useResourceDefinitions();
     const { canAccess, error, isPending } = useCanAccess({
         action: 'list',
@@ -42,6 +42,13 @@ export const ResourceMenuItem = ({ name }: { name: string }) => {
                     <DefaultIcon />
                 )
             }
+            {...rest}
         />
     );
 };
+
+export interface ResourceMenuItemProps
+    extends Omit<MenuItemLinkProps, 'to'>,
+        Partial<Pick<MenuItemLinkProps, 'to'>> {
+    name: string;
+}

@@ -63,6 +63,31 @@ export const Default = () => {
     );
 };
 
+export const WithDashboard = () => {
+    const MenuDefault = () => <Menu hasDashboard={true} dense={false} />;
+    const DefaultLayout = ({ children }) => (
+        <Layout menu={MenuDefault}>{children}</Layout>
+    );
+    const Dashboard = () => <Page title="Dashboard" />;
+
+    return (
+        <Admin
+            store={memoryStore()}
+            dataProvider={testDataProvider()}
+            layout={DefaultLayout}
+            dashboard={Dashboard}
+        >
+            {resources.map((resource, index) => (
+                <Resource
+                    name={resource}
+                    key={`resource_${index}`}
+                    list={<DemoList name={resource} />}
+                />
+            ))}
+        </Admin>
+    );
+};
+
 export const Dense = () => {
     const MenuDense = () => <Menu hasDashboard={true} dense={true} />;
     const LayoutDense = ({ children }) => (
@@ -128,6 +153,54 @@ export const Custom = () => {
                     <Route
                         path="/products"
                         element={<Page title="Catalog" />}
+                    />
+                </CustomRoutes>
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+export const WithKeyboardShortcuts = () => {
+    const CustomMenu = () => (
+        <Menu>
+            <Menu.DashboardItem keyboardShortcut="ctrl+alt+D" />
+            <Menu.Item
+                to="/sales"
+                leftIcon={<PieChartOutlined />}
+                primaryText="Sales"
+                keyboardShortcut="ctrl+alt+S"
+            />
+            <Menu.Item
+                to="/customers"
+                leftIcon={<PeopleOutlined />}
+                primaryText="Customers"
+                keyboardShortcut="ctrl+alt+C"
+            />
+            <Menu.ResourceItem
+                name="products"
+                leftIcon={<Inventory />}
+                keyboardShortcut="ctrl+alt+P"
+            />
+        </Menu>
+    );
+    const CustomLayout = ({ children }) => (
+        <Layout menu={CustomMenu}>{children}</Layout>
+    );
+
+    const Dashboard = () => <Page title="Dashboard" />;
+    return (
+        <TestMemoryRouter initialEntries={['/']}>
+            <Admin
+                dataProvider={testDataProvider()}
+                layout={CustomLayout}
+                dashboard={Dashboard}
+            >
+                <Resource name="products" list={<Page title="Products" />} />
+                <CustomRoutes>
+                    <Route path="/sales" element={<Page title="Sales" />} />
+                    <Route
+                        path="/customers"
+                        element={<Page title="Customers" />}
                     />
                 </CustomRoutes>
             </Admin>
