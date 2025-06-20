@@ -1462,7 +1462,7 @@ Theming is so powerful that you can even use react-admin to build a [Music Playe
 
 ![Music Player](./img/navidrome.png)
 
-Use the `sx` prop on almost every react-admin component to override its default style - and the style of its descendants. For instance, here is how to change the width of DataTable columns:
+Use the `sx` prop on almost every react-admin component to override its default style - and the style of its descendants. For instance, here is how to change the width of `<DataTable>` columns:
 
 {% raw %}
 
