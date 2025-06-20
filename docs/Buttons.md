@@ -824,7 +824,7 @@ export const en = {
         posts: {
             name: 'Post |||| Posts',
             action: {
-                delete: 'Destroy %{recordRepresentation}'
+                delete: 'Permanently remove %{recordRepresentation}'
             }
         },
     },
@@ -1270,7 +1270,7 @@ export const en = {
 You can also customize this label by specifying a custom `label` prop:
 
 ```jsx
-<ListButton label="Delete this comment" />
+<ListButton label="See all comments" />
 ```
 
 ### `scrollToTop`
