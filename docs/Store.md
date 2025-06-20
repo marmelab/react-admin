@@ -166,7 +166,7 @@ This way, each time the application is loaded, the store will be reset to an emp
 
 ## Testing Components Using The Store
 
-The react-admin Store is persistent. This means that if a unit test modifies an item in the store, the value will be changed for the next test. This will cause random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. datatable row selection, sidebar state, language selection).
+The react-admin Store is persistent. This means that if a unit test modifies an item in the store, the value will be changed for the next test. This will cause random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. `<DataTable>` row selection, sidebar state, language selection).
 
 To isolate your unit tests, pass a new `memoryStore` for each test:
 
