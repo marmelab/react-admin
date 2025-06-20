@@ -736,6 +736,12 @@ export const PostCreateButton = () => (
 );
 ```
 
+Custom labels are automatically translated, so you can use a translation key, too:
+
+```jsx
+<CreateButton label="resources.comments.actions.create" />
+```
+
 ### `scrollToTop`
 
 By default, `<CreateButton>` scrolls the page to the top after redirecting. You can disable it as follows:
@@ -1072,6 +1078,12 @@ export const PostEditButton = () => (
 );
 ```
 
+Custom labels are automatically translated, so you can use a translation key, too:
+
+```jsx
+<EditButton label="resources.comments.actions.edit" />
+```
+
 ### `scrollToTop`
 
 By default, `<EditButton>` scrolls the page to the top after redirecting. You can disable it as follows:
@@ -1273,6 +1285,12 @@ You can also customize this label by specifying a custom `label` prop:
 <ListButton label="See all comments" />
 ```
 
+Custom labels are automatically translated, so you can use a translation key, too:
+
+```jsx
+<ListButton label="resources.comments.actions.list" />
+```
+
 ### `scrollToTop`
 
 By default, `<ListButton>` scrolls the page to the top after redirecting. You can disable it as follows:
@@ -1447,11 +1465,16 @@ export const en = {
 
 You can also customize this label by specifying a custom `label` prop:
 
-
 ```jsx
 export const PostShowButton = () => (
     <ShowButton label="Display" />
 );
+```
+
+Custom labels are automatically translated, so you can use a translation key, too:
+
+```jsx
+<ShowButton label="resources.comments.actions.show" />
 ```
 
 ### `scrollToTop`
