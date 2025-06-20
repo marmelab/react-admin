@@ -27,7 +27,7 @@ const isSmall = useMediaQuery('(min-width:600px)');
 
 ## Responsive Layouts
 
-Here is an example for a responsive list of posts, displaying a `SimpleList` on mobile, and a `DataTable` otherwise:
+Here is an example for a responsive list of posts, displaying a [`<SimpleList>`](./SimpleList.md) on mobile, and a [`<DataTable>`](./DataTable.md) otherwise:
 
 ```jsx
 // in src/posts.js
