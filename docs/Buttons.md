@@ -552,13 +552,82 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 | Prop         | Required | Type                           | Default | Description                              |
 | ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
 | `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
-| `children`   | Optional | `ReactElement`                 | -        | icon to use                             |
+| `children`   | Optional | `ReactNode`                    | -        | icon to use                             |
 | `className`  | Optional | `string`                       | -        | Class name to customize the look and feel of the button element itself          |
 | `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
 | `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
+| `label`      | Optional | `ReactNode`                    | `false`   | The button label |
 | `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
 
 Other props are passed down to [the underlying Material UI `<Button>`](https://mui.com/material-ui/api/button/).
+
+### `alignIcon`
+
+The icon position relative to the label. Defaults to `left`.
+
+```tsx
+<Button label="Ban user" onClick={handleClick} alignIcon="right" />
+```
+
+### `children`
+
+The button icon:
+
+```tsx
+<Button label="Ban user" onClick={handleClick}>
+    <BanIcon />
+</Button>
+```
+
+### `className`
+
+The button CSS classes:
+
+```tsx
+<Button label="Ban user" onClick={handleClick} className="ban-button" />
+```
+
+### `color`
+
+The button label and icon color. Accepts `default`, `inherit`, `primary`, `secondary` or `error`.
+
+```tsx
+<Button label="Ban user" onClick={handleClick} color="secondary" />
+```
+
+### `disabled`
+
+A boolean value indicating whether the button is disabled.
+
+```tsx
+<Button label="Ban user" onClick={handleClick} disabled={canBanUsers} />
+```
+
+### `label`
+
+A ReactNode used as the button label.
+
+If you pass a string, it will be automatically translated, so you can use either a simple string or a translation key:
+
+```tsx
+<Button label="Ban user" onClick={handleClick} />
+<Button label="myapp.actions.ban_user" onClick={handleClick} />
+```
+
+Pass `false` or `null` if you don't want a label at all:
+
+```tsx
+<Button label={false} onClick={handleClick} />
+<Button label={null} onClick={handleClick} />
+```
+
+### `size`
+
+The button size. Accepts `large`, `medium` or `small`. Defaults to `small`.
+
+```tsx
+<Button label="Ban user" onClick={handleClick} size="large" />
+```
 
 ### `sx`: CSS API
 
