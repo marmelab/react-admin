@@ -7,6 +7,7 @@ import {
 } from '@mui/material/styles';
 import {
     useDeleteMany,
+    useIsOffine,
     useRefresh,
     useNotify,
     useResourceContext,
@@ -43,6 +44,7 @@ export const BulkDeleteWithUndoButton = (
     const translate = useTranslate();
     const [deleteMany, { isPending }] = useDeleteMany();
 
+    const isOffline = useIsOffine();
     const handleClick = e => {
         deleteMany(
             resource,
@@ -50,15 +52,21 @@ export const BulkDeleteWithUndoButton = (
             {
                 onSuccess: () => {
                     notify(
-                        successMessage ??
-                            `resources.${resource}.notifications.deleted`,
+                        successMessage ?? isOffline
+                            ? `resources.${resource}.notifications.pending_delete`
+                            : `resources.${resource}.notifications.deleted`,
                         {
                             type: 'info',
                             messageArgs: {
                                 smart_count: selectedIds.length,
-                                _: translate('ra.notification.deleted', {
-                                    smart_count: selectedIds.length,
-                                }),
+                                _: translate(
+                                    isOffline
+                                        ? 'ra.notification.pending_delete'
+                                        : 'ra.notification.deleted',
+                                    {
+                                        smart_count: selectedIds.length,
+                                    }
+                                ),
                             },
                             undoable: true,
                         }

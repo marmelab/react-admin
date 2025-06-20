@@ -10,6 +10,7 @@ import {
 import {
     type MutationMode,
     useDeleteMany,
+    useIsOffine,
     useListContext,
     useNotify,
     useRefresh,
@@ -50,6 +51,7 @@ export const BulkDeleteWithConfirmButton = (
     const resource = useResourceContext(props);
     const refresh = useRefresh();
     const translate = useTranslate();
+    const isOffline = useIsOffine();
     const [deleteMany, { isPending }] = useDeleteMany(
         resource,
         { ids: selectedIds, meta: mutationMeta },
@@ -57,15 +59,21 @@ export const BulkDeleteWithConfirmButton = (
             onSuccess: () => {
                 refresh();
                 notify(
-                    successMessage ??
-                        `resources.${resource}.notifications.deleted`,
+                    successMessage ?? isOffline
+                        ? `resources.${resource}.notifications.pending_delete`
+                        : `resources.${resource}.notifications.deleted`,
                     {
                         type: 'info',
                         messageArgs: {
                             smart_count: selectedIds.length,
-                            _: translate('ra.notification.deleted', {
-                                smart_count: selectedIds.length,
-                            }),
+                            _: translate(
+                                isOffline
+                                    ? 'ra.notification.pending_delete'
+                                    : 'ra.notification.deleted',
+                                {
+                                    smart_count: selectedIds.length,
+                                }
+                            ),
                         },
                         undoable: mutationMode === 'undoable',
                     }

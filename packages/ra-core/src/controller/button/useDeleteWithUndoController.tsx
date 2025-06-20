@@ -6,7 +6,7 @@ import { useUnselect } from '../../controller';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { RaRecord, DeleteParams } from '../../types';
-import { useResourceContext } from '../../core';
+import { useIsOffine, useResourceContext } from '../../core';
 import { useTranslate } from '../../i18n';
 
 /**
@@ -63,21 +63,29 @@ const useDeleteWithUndoController = <
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
     const translate = useTranslate();
+
+    const isOffline = useIsOffine();
     const [deleteOne, { isPending }] = useDelete<RecordType, ErrorType>(
         resource,
         undefined,
         {
             onSuccess: () => {
                 notify(
-                    successMessage ??
-                        `resources.${resource}.notifications.deleted`,
+                    successMessage ?? isOffline
+                        ? `resources.${resource}.notifications.pending_delete`
+                        : `resources.${resource}.notifications.deleted`,
                     {
                         type: 'info',
                         messageArgs: {
                             smart_count: 1,
-                            _: translate('ra.notification.deleted', {
-                                smart_count: 1,
-                            }),
+                            _: translate(
+                                isOffline
+                                    ? 'ra.notification.pending_delete'
+                                    : 'ra.notification.deleted',
+                                {
+                                    smart_count: 1,
+                                }
+                            ),
                         },
                         undoable: true,
                     }

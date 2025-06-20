@@ -17,6 +17,7 @@ import {
     useRecordContext,
     useUpdate,
     useGetRecordRepresentation,
+    useIsOffine,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -36,6 +37,7 @@ export const UpdateWithConfirmButton = (
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
     const record = useRecordContext(props);
+    const isOffline = useIsOffine();
 
     const {
         confirmTitle: confirmTitleProp,
@@ -51,14 +53,26 @@ export const UpdateWithConfirmButton = (
     const {
         meta: mutationMeta,
         onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                    _: translate('ra.notification.updated', { smart_count: 1 }),
-                },
-                undoable: mutationMode === 'undoable',
-            });
+            notify(
+                isOffline
+                    ? `resources.${resource}.notifications.pending_update`
+                    : `resources.${resource}.notifications.updated`,
+                {
+                    type: 'info',
+                    messageArgs: {
+                        smart_count: 1,
+                        _: translate(
+                            isOffline
+                                ? 'ra.notification.pending_update'
+                                : 'ra.notification.updated',
+                            {
+                                smart_count: 1,
+                            }
+                        ),
+                    },
+                    undoable: mutationMode === 'undoable',
+                }
+            );
         },
         onError = (error: Error | string) => {
             notify(

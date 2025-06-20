@@ -23,8 +23,14 @@ export const messages = {
             },
             notifications: {
                 created: 'Post created |||| %{smart_count} posts created',
+                pending_create:
+                    'Post will be created when your device will be online |||| %{smart_count} posts will be created when your device will be online',
                 updated: 'Post updated |||| %{smart_count} posts updated',
+                pending_update:
+                    'Post will be updated when your device will be online |||| %{smart_count} posts will be updated when your device will be online',
                 deleted: 'Post deleted |||| %{smart_count} posts deleted',
+                pending_delete:
+                    'Post will be deleted when your device will be online |||| %{smart_count} posts will be deleted when your device will be online',
             },
         },
         comments: {

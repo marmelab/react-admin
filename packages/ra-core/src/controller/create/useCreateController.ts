@@ -20,6 +20,7 @@ import {
     useResourceContext,
     useResourceDefinition,
     useGetResourceLabel,
+    useIsOffine,
 } from '../../core';
 
 /**
@@ -87,6 +88,7 @@ export const useCreateController = <
         unregisterMutationMiddleware,
     } = useMutationMiddlewares();
 
+    const isOffline = useIsOffine();
     const [create, { isPending: saving }] = useCreate<
         RecordType,
         MutationOptionsError,
@@ -96,16 +98,26 @@ export const useCreateController = <
             if (onSuccess) {
                 return onSuccess(data, variables, context);
             }
-            notify(`resources.${resource}.notifications.created`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                    _: translate(`ra.notification.created`, {
+            notify(
+                isOffline
+                    ? `resources.${resource}.notifications.pending_create`
+                    : `resources.${resource}.notifications.created`,
+                {
+                    type: 'info',
+                    messageArgs: {
                         smart_count: 1,
-                    }),
-                },
-                undoable: mutationMode === 'undoable',
-            });
+                        _: translate(
+                            isOffline
+                                ? 'ra.notification.pending_create'
+                                : 'ra.notification.created',
+                            {
+                                smart_count: 1,
+                            }
+                        ),
+                    },
+                    undoable: mutationMode === 'undoable',
+                }
+            );
             redirect(finalRedirectTo, resource, data.id, data);
         },
         onError: (error: MutationOptionsError, variables, context) => {

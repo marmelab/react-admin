@@ -14,6 +14,7 @@ import {
     useUpdate,
     type UpdateParams,
     useTranslate,
+    useIsOffine,
 } from 'ra-core';
 import type { UseMutationOptions } from '@tanstack/react-query';
 
@@ -29,6 +30,7 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
     const resource = useResourceContext(props);
     const refresh = useRefresh();
     const translate = useTranslate();
+    const isOffline = useIsOffine();
 
     const {
         data,
@@ -44,14 +46,26 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
     const {
         meta: mutationMeta,
         onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                    _: translate('ra.notification.updated', { smart_count: 1 }),
-                },
-                undoable: true,
-            });
+            notify(
+                isOffline
+                    ? `resources.${resource}.notifications.pending_update`
+                    : `resources.${resource}.notifications.updated`,
+                {
+                    type: 'info',
+                    messageArgs: {
+                        smart_count: 1,
+                        _: translate(
+                            isOffline
+                                ? 'ra.notification.pending_update'
+                                : 'ra.notification.updated',
+                            {
+                                smart_count: 1,
+                            }
+                        ),
+                    },
+                    undoable: true,
+                }
+            );
         },
         onError = (error: Error | string) => {
             notify(
