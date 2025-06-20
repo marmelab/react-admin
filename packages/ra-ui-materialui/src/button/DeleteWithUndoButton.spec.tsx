@@ -13,6 +13,7 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { DeleteWithUndoButton } from './DeleteWithUndoButton';
+import { Label } from './DeleteButton.stories';
 
 const theme = createTheme();
 
@@ -23,6 +24,14 @@ const invalidButtonDomProps = {
 };
 
 describe('<DeleteWithUndoButton />', () => {
+    it('should allow resource specific default title', async () => {
+        render(<Label translations="resource specific" />);
+        await screen.findByText('Delete War and Peace permanently');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Supprimer définitivement War and Peace');
+    });
+
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 

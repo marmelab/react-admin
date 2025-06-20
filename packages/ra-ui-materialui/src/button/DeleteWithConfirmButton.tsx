@@ -15,10 +15,10 @@ import {
     useGetRecordRepresentation,
     useResourceTranslation,
 } from 'ra-core';
+import { humanize, singularize } from 'inflection';
 
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
-import { humanize, singularize } from 'inflection';
 
 export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     props: DeleteWithConfirmButtonProps<RecordType>
@@ -131,8 +131,8 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             <Confirm
                 isOpen={open}
                 loading={isPending}
-                title={confirmTitle}
-                content={confirmContent}
+                title={<>{confirmTitle}</>}
+                content={<>{confirmContent}</>}
                 confirmColor={confirmColor}
                 onConfirm={handleDelete}
                 onClose={handleDialogClose}

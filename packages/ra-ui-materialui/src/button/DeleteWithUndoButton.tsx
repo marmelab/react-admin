@@ -11,9 +11,10 @@ import {
     useResourceContext,
     RedirectionSideEffect,
     useTranslate,
-    useGetResourceLabel,
     useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
+import { humanize, singularize } from 'inflection';
 
 import { Button, ButtonProps } from './Button';
 
@@ -48,22 +49,31 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         successMessage,
     });
     const translate = useTranslate();
-    const getResourceLabel = useGetResourceLabel();
-    const getRecordRepresentation = useGetRecordRepresentation();
-    const recordRepresentationValue = getRecordRepresentation(record);
-    const recordRepresentation =
-        typeof recordRepresentationValue === 'string'
-            ? recordRepresentationValue
-            : recordRepresentationValue?.toString();
-    const label =
-        labelProp ??
-        translate(`resources.${resource}.action.delete`, {
-            recordRepresentation,
-            _: translate(`ra.action.delete`, {
-                name: getResourceLabel(resource, 1),
-                recordRepresentation,
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    let recordRepresentation = getRecordRepresentation(record);
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 1,
+        _: humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 1,
+                _: resource ? singularize(resource) : undefined,
             }),
-        });
+            true
+        ),
+    });
+    // We don't support React elements for this
+    if (React.isValidElement(recordRepresentation)) {
+        recordRepresentation = `#${record?.id}`;
+    }
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.delete`,
+        baseI18nKey: 'ra.action.delete',
+        options: {
+            name: resourceName,
+            recordRepresentation,
+        },
+        userText: labelProp,
+    });
 
     return (
         <Button

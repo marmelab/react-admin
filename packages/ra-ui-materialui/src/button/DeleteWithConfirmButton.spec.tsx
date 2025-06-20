@@ -26,6 +26,7 @@ import {
     WithCustomTitleAndContent,
     WithDefaultTranslation,
 } from './DeleteWithConfirmButton.stories';
+import { Label } from './DeleteButton.stories';
 
 const theme = createTheme();
 
@@ -37,6 +38,32 @@ const invalidButtonDomProps = {
 };
 
 describe('<DeleteWithConfirmButton />', () => {
+    it('should allow resource specific label, confirm title and confirm content', async () => {
+        render(
+            <Label
+                translations="resource specific"
+                mutationMode="pessimistic"
+            />
+        );
+        fireEvent.click(
+            await screen.findByText('Delete War and Peace permanently')
+        );
+        await screen.findByText('Delete War and Peace permanently?');
+        await screen.findByText(
+            'Are you sure you want to delete War and Peace permanently?'
+        );
+        fireEvent.click(screen.getByText('Cancel'));
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        fireEvent.click(
+            await screen.findByText('Supprimer définitivement War and Peace')
+        );
+        await screen.findByText('Supprimer définitivement War and Peace ?');
+        await screen.findByText(
+            'Êtes-vous sûr de vouloir supprimer définitivement War and Peace ?'
+        );
+    });
+
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -68,8 +95,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allow to override the resource', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -109,8 +136,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allows to undo the deletion after confirmation if mutationMode is undoable', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -154,8 +181,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allow to override the success side effects', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -203,8 +230,8 @@ describe('<DeleteWithConfirmButton />', () => {
     it('should allow to override the error side effects', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -251,8 +278,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allow to override the translateOptions props', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -294,8 +321,8 @@ describe('<DeleteWithConfirmButton />', () => {
     it('should display success message after successful deletion', async () => {
         const successMessage = 'Test Message';
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),

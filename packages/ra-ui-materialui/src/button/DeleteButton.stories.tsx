@@ -57,7 +57,13 @@ const customI18nProvider = polyglotI18nProvider(
                   resources: {
                       books: {
                           action: {
-                              delete: 'Détruire %{recordRepresentation}',
+                              delete: 'Supprimer définitivement %{recordRepresentation}',
+                          },
+                          message: {
+                              delete_title:
+                                  'Supprimer définitivement %{recordRepresentation} ?',
+                              delete_content:
+                                  'Êtes-vous sûr de vouloir supprimer définitivement %{recordRepresentation} ?',
                           },
                       },
                   },
@@ -66,7 +72,13 @@ const customI18nProvider = polyglotI18nProvider(
                   resources: {
                       books: {
                           action: {
-                              delete: 'Destroy %{recordRepresentation}',
+                              delete: 'Delete %{recordRepresentation} permanently',
+                          },
+                          message: {
+                              delete_title:
+                                  'Delete %{recordRepresentation} permanently?',
+                              delete_content:
+                                  'Are you sure you want to delete %{recordRepresentation} permanently?',
                           },
                       },
                   },

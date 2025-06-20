@@ -15,7 +15,7 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
-import { MutationOptions } from './UpdateButton.stories';
+import { Label, MutationOptions } from './UpdateButton.stories';
 import {
     Basic,
     NoRecordRepresentation,
@@ -49,9 +49,9 @@ describe('<UpdateWithConfirmButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(
-            (await screen.findByLabelText('ra.action.update')).getAttribute(
-                'type'
-            )
+            (
+                await screen.findByLabelText('resources.posts.action.update')
+            ).getAttribute('type')
         ).toEqual('button');
 
         spy.mockRestore();
@@ -67,8 +67,8 @@ describe('<UpdateWithConfirmButton />', () => {
 
     it('should allow to override the resource', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 1000 },
                 }),
@@ -97,7 +97,9 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.update'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.comments.action.update')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalledWith('comments', {
@@ -111,8 +113,8 @@ describe('<UpdateWithConfirmButton />', () => {
 
     it('should allow to undo the update after confirmation if mutationMode is undoable', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 1000 },
                 }),
@@ -144,7 +146,9 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.update'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.update')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
@@ -157,8 +161,8 @@ describe('<UpdateWithConfirmButton />', () => {
 
     it('should allow to override the success side effects', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 1000 },
                 }),
@@ -188,7 +192,9 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.update'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.update')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalled();
@@ -209,8 +215,8 @@ describe('<UpdateWithConfirmButton />', () => {
     it('should allow to override the error side effects', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 1000 },
                 }),
@@ -240,7 +246,9 @@ describe('<UpdateWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.update'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.update')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalled();
@@ -348,5 +356,29 @@ describe('<UpdateWithConfirmButton />', () => {
         );
         await screen.findByText('Update author #1');
         await screen.findByText('Are you sure you want to update author #1?');
+    });
+
+    it('should allow resource specific label, confirm title and confirm content', async () => {
+        render(
+            <Label
+                translations="resource specific"
+                mutationMode="pessimistic"
+            />
+        );
+        fireEvent.click(await screen.findByText('Reset views for Lorem Ipsum'));
+        await screen.findByText('Reset views for Lorem Ipsum?');
+        await screen.findByText(
+            'Are you sure you want to reset views for Lorem Ipsum?'
+        );
+        fireEvent.click(screen.getByText('Cancel'));
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        fireEvent.click(
+            await screen.findByText('Mettre les vues à zéro pour Lorem Ipsum')
+        );
+        await screen.findByText('Mettre les vues à zéro pour Lorem Ipsum ?');
+        await screen.findByText(
+            'Êtes-vous sûr de vouloir mettre les vues à zéro pour Lorem Ipsum ?'
+        );
     });
 });

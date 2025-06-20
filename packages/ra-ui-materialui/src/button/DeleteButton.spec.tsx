@@ -17,14 +17,6 @@ describe('<DeleteButton />', () => {
         await screen.findByText('Supprimer');
     });
 
-    it('should allow resource specific default title', async () => {
-        render(<Label translations="resource specific" />);
-        await screen.findByText('Destroy War and Peace');
-        fireEvent.click(screen.getByText('English', { selector: 'button' }));
-        fireEvent.click(await screen.findByText('Français'));
-        await screen.findByText('Détruire War and Peace');
-    });
-
     it('should only render when users have the right to delete', async () => {
         render(<FullApp />);
         await screen.findByText('War and Peace');

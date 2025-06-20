@@ -7,6 +7,12 @@ import {
     useNotify,
     withLifecycleCallbacks,
     TestMemoryRouter,
+    mergeTranslations,
+    MutationMode,
+    I18nProvider,
+    memoryStore,
+    ResourceContextProvider,
+    RecordContextProvider,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 
@@ -17,10 +23,11 @@ import { NumberField, TextField } from '../field';
 import { Show, SimpleShowLayout } from '../detail';
 import { TopToolbar } from '../layout';
 import { Datagrid, List } from '../list';
+import { LocalesMenuButton } from './LocalesMenuButton';
 
 export default { title: 'ra-ui-materialui/button/UpdateButton' };
 
-const i18nProvider = polyglotI18nProvider(
+const defaultI18nProvider = polyglotI18nProvider(
     locale =>
         locale === 'fr'
             ? {
@@ -39,6 +46,46 @@ const i18nProvider = polyglotI18nProvider(
               }
             : englishMessages,
     'en' // Default locale
+);
+
+const customI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      posts: {
+                          action: {
+                              update: 'Mettre les vues à zéro pour %{recordRepresentation}',
+                          },
+                          message: {
+                              bulk_update_title:
+                                  'Mettre les vues à zéro pour %{recordRepresentation} ?',
+                              bulk_update_content:
+                                  'Êtes-vous sûr de vouloir mettre les vues à zéro pour %{recordRepresentation} ?',
+                          },
+                      },
+                  },
+              })
+            : mergeTranslations(englishMessages, {
+                  resources: {
+                      posts: {
+                          action: {
+                              update: 'Reset views for %{recordRepresentation}',
+                          },
+                          message: {
+                              bulk_update_title:
+                                  'Reset views for %{recordRepresentation}?',
+                              bulk_update_content:
+                                  'Are you sure you want to reset views for %{recordRepresentation}?',
+                          },
+                      },
+                  },
+              }),
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
 );
 
 const getDataProvider = () =>
@@ -98,7 +145,7 @@ export const InsideAList = () => (
     <TestMemoryRouter>
         <AdminContext
             dataProvider={getDataProvider()}
-            i18nProvider={i18nProvider}
+            i18nProvider={defaultI18nProvider}
         >
             <AdminUI>
                 <Resource
@@ -115,7 +162,7 @@ export const Undoable = () => (
     <TestMemoryRouter initialEntries={['/posts/1/show']}>
         <AdminContext
             dataProvider={getDataProvider()}
-            i18nProvider={i18nProvider}
+            i18nProvider={defaultI18nProvider}
         >
             <AdminUI>
                 <Resource name="posts" show={<PostShow />} />
@@ -149,7 +196,7 @@ export const Pessimistic = () => (
     <TestMemoryRouter initialEntries={['/posts/1/show']}>
         <AdminContext
             dataProvider={getDataProvider()}
-            i18nProvider={i18nProvider}
+            i18nProvider={defaultI18nProvider}
         >
             <AdminUI>
                 <Resource name="posts" show={<PostShowPessimistic />} />
@@ -183,7 +230,7 @@ export const Optimistic = () => (
     <TestMemoryRouter initialEntries={['/posts/1/show']}>
         <AdminContext
             dataProvider={getDataProvider()}
-            i18nProvider={i18nProvider}
+            i18nProvider={defaultI18nProvider}
         >
             <AdminUI>
                 <Resource name="posts" show={<PostShowOptimistic />} />
@@ -225,7 +272,7 @@ export const MutationOptions = () => (
     <TestMemoryRouter initialEntries={['/posts/1/show']}>
         <AdminContext
             dataProvider={getDataProvider()}
-            i18nProvider={i18nProvider}
+            i18nProvider={defaultI18nProvider}
         >
             <AdminUI>
                 <Resource name="posts" show={<PostShowMutationOptions />} />
@@ -259,7 +306,7 @@ export const Sx = () => (
     <TestMemoryRouter initialEntries={['/posts/1/show']}>
         <AdminContext
             dataProvider={getDataProvider()}
-            i18nProvider={i18nProvider}
+            i18nProvider={defaultI18nProvider}
         >
             <AdminUI>
                 <Resource name="posts" show={<PostShowSx />} />
@@ -301,7 +348,7 @@ export const SideEffects = () => (
     <TestMemoryRouter initialEntries={['/posts/1/show']}>
         <AdminContext
             dataProvider={getDataProvider()}
-            i18nProvider={i18nProvider}
+            i18nProvider={defaultI18nProvider}
         >
             <AdminUI>
                 <Resource name="posts" show={<PostShowSideEffects />} />
@@ -309,3 +356,56 @@ export const SideEffects = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const Label = ({
+    mutationMode = 'undoable',
+    translations = 'default',
+    i18nProvider = translations === 'default'
+        ? defaultI18nProvider
+        : customI18nProvider,
+    label,
+}: {
+    mutationMode?: MutationMode;
+    i18nProvider?: I18nProvider;
+    translations?: 'default' | 'resource specific';
+    label?: string;
+}) => (
+    <TestMemoryRouter>
+        <AdminContext i18nProvider={i18nProvider} store={memoryStore()}>
+            <ResourceContextProvider value="posts">
+                <RecordContextProvider
+                    value={{
+                        id: 1,
+                        title: 'Lorem Ipsum',
+                        body: 'Lorem ipsum dolor sit amet',
+                        views: 500,
+                    }}
+                >
+                    <div>
+                        <UpdateButton
+                            label={label}
+                            mutationMode={mutationMode}
+                            data={{ views: 0 }}
+                        />
+                    </div>
+                </RecordContextProvider>
+                <LocalesMenuButton />
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+Label.args = {
+    mutationMode: 'undoable',
+    translations: 'default',
+};
+Label.argTypes = {
+    mutationMode: {
+        options: ['undoable', 'optimistic', 'pessimistic'],
+        control: { type: 'select' },
+    },
+    translations: {
+        options: ['default', 'resource specific'],
+        control: { type: 'radio' },
+    },
+};
