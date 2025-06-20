@@ -66,7 +66,7 @@ In the related `<Resource>`, you don't need to declare a `create` component as t
 <Resource name="customers" list={CustomerList} />
 ```
 
-**Note**: You can't use the `<CreateDialog>` and have a standard `<Edit>` specified on your `<Resource>`, because the `<Routes>` declarations would conflict. If you need this, use the [`<CreateInDialogButton>`](./CreateInDialogButton.md) instead.
+**Note**: If you use a react-admin version older than `5.8.5`, you can't have both a `<CreateDialog>` and a standard `<Edit>` specified on your `<Resource>`, because the `<Routes>` declarations would conflict. If you need this, use the `<CreateInDialogButton>` instead.
 
 ## Props
 
