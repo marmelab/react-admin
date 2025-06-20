@@ -9,13 +9,9 @@ import {
     EditGuesser,
     EditButton,
     useRecordContext,
-    Edit,
-    SimpleForm,
-    TextInput,
 } from './';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Button } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
 
 export default {
     title: 'react-admin/Resource',
@@ -147,49 +143,22 @@ const AuthorList = () => (
 );
 
 const BookList = () => {
-    const { id } = useParams();
+    const { authorId } = useParams();
     return (
-        <List resource="books" filter={{ authorId: id }}>
-            <Datagrid>
+        <List resource="books" filter={{ authorId }}>
+            <Datagrid rowClick="edit">
                 <TextField source="id" />
                 <TextField source="title" />
                 <TextField source="year" />
-                <EditBookButton />
             </Datagrid>
         </List>
-    );
-};
-
-const EditBookButton = () => {
-    const book = useRecordContext();
-    return (
-        <Button
-            component={Link}
-            to={`/authors/${book?.authorId}/books/${book?.id}`}
-            startIcon={<EditIcon />}
-        >
-            Edit
-        </Button>
-    );
-};
-
-const BookEdit = () => {
-    const { id, bookId } = useParams();
-    return (
-        <Edit resource="books" id={bookId} redirect={`/authors/${id}/books`}>
-            <SimpleForm>
-                <TextInput source="title" />
-                <TextInput source="year" />
-            </SimpleForm>
-        </Edit>
     );
 };
 
 export const Nested = () => (
     <Admin dataProvider={dataProvider}>
         <Resource name="authors" list={AuthorList} edit={EditGuesser}>
-            <Route path=":id/books" element={<BookList />} />
-            <Route path=":id/books/:bookId" element={<BookEdit />} />
+            <Route path=":authorId/books" element={<BookList />} />
         </Resource>
     </Admin>
 );
