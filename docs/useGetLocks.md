@@ -15,7 +15,7 @@ import { useGetLocks } from '@react-admin/ra-realtime';
 const { data } = useGetLocks('posts');
 ```
 
-Here is how to use it in a custom DataTable, to disable edit and delete buttons for locked records:
+Here is how to use it in a custom [`<DataTable>`](./DataTable.md), to disable edit and delete buttons for locked records:
 
 {% raw %}
 ```tsx
