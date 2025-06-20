@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, render, waitFor, act } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 import expect from 'expect';
 
 import { testDataProvider } from './testDataProvider';
 import { CoreAdminContext } from '../core';
 import { useUpdateMany } from './useUpdateMany';
-import { UndefinedValues } from './useUpdateMany.stories';
+import { UndefinedValues, WithMiddlewares } from './useUpdateMany.stories';
 
 describe('useUpdateMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
@@ -436,4 +436,198 @@ describe('useUpdateMany', () => {
             ); // and not [{"title":"world"},{"title":"world"}]
         });
     });
+
+    describe('middlewares', () => {
+        it('when pessimistic, it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {
+            render(<WithMiddlewares mutationMode="pessimistic" timeout={10} />);
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(
+                    // We could expect 'Hello World from middleware' here, but
+                    // updateMany's result only contains the ids, not the updated data
+                    // so the cache can only be updated with the call-time params,
+                    // which do not include the middleware's result.
+                    // I guess it's OK for most cases though...
+                    screen.queryByText('Hello World')
+                ).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Refetch').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+
+        it('when pessimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(
+                <WithMiddlewares
+                    mutationMode="pessimistic"
+                    shouldError
+                    timeout={10}
+                />
+            );
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('something went wrong')).toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+
+        it('when optimistic, it accepts middlewares and displays result and success side effects right away', async () => {
+            render(<WithMiddlewares mutationMode="optimistic" timeout={10} />);
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when optimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(
+                <WithMiddlewares
+                    mutationMode="optimistic"
+                    shouldError
+                    timeout={10}
+                />
+            );
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            await screen.findByText('Hello');
+        });
+
+        it('when undoable, it accepts middlewares and displays result and success side effects right away and fetched on confirm', async () => {
+            render(<WithMiddlewares mutationMode="undoable" timeout={10} />);
+            act(() => {
+                screen.getByText('Update title').click();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            act(() => {
+                screen.getByText('Confirm').click();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(
+                () => {
+                    expect(screen.queryByText('mutating')).toBeNull();
+                },
+                { timeout: 4000 }
+            );
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(
+                screen.queryByText('Hello World from middleware')
+            ).not.toBeNull();
+        });
+        it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on cancel', async () => {
+            render(<WithMiddlewares mutationMode="undoable" timeout={10} />);
+            await screen.findByText('Hello');
+            act(() => {
+                screen.getByText('Update title').click();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            act(() => {
+                screen.getByText('Cancel').click();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('Hello World')).toBeNull();
+            });
+            expect(screen.queryByText('mutating')).toBeNull();
+            await screen.findByText('Hello');
+        });
+        it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on error', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(
+                <WithMiddlewares
+                    mutationMode="undoable"
+                    shouldError
+                    timeout={10}
+                />
+            );
+            await screen.findByText('Hello');
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await screen.findByText('Hello', undefined, { timeout: 4000 });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+    });
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
 });
