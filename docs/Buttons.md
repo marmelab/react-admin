@@ -1642,7 +1642,7 @@ See [The AppBar documentation](./AppBar.md#usermenu) for more details.
 
 ## Performance
 
-The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) when displaying a large number of buttons (e.g. in a large datatable). It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
+The ripple effect can cause [performance issues](https://github.com/marmelab/react-admin/issues/5587) when displaying a large number of buttons (e.g. in a large `<DataTable>`). It's possible to remove the ripple effect from within your Material UI theme. The [Material UI docs](https://mui.com/material-ui/getting-started/faq/#how-can-i-disable-the-ripple-effect-globally) provide instructions on how to do this.
 
 It's worth noting that removing the ripple will cause accessibility issues, including a lack of focus states during tab navigating for components like `BooleanInput` and `CheckboxGroupInput`.
 
