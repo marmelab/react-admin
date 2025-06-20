@@ -22,7 +22,7 @@ const PurpleTextField = ({ source }) => {
 ```
 {% endraw %}
 
-**Tip**: Every time it renders a record, react-admin creates a `RecordContext`. This includes datatable rows, simple list items, reference fields, show, and edit pages. You can even create a `RecordContext` yourself and use react-admin Fields in custom pages.
+**Tip**: Every time it renders a record, react-admin creates a `RecordContext`. This includes `<DataTable>` rows, simple list items, reference fields, show, and edit pages. You can even create a `RecordContext` yourself and use react-admin Fields in custom pages.
 
 React-admin Field components also accept a `record` prop. This allows you to use them outside a `RecordContext`, or to use another `record` than the one in the current context.
 
