@@ -1,10 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { testDataProvider } from '../../dataProvider';
 import {
     AccessControl,
+    DefaultTitle,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
 } from './ShowBase.stories';
@@ -89,5 +90,19 @@ describe('ShowBase', () => {
         });
         resolveCanAccess!(true);
         await screen.findByText('Hello');
+    });
+
+    it('should provide a default title', async () => {
+        render(<DefaultTitle translations="default" />);
+        await screen.findByText('Post Hello (en)');
+        fireEvent.click(screen.getByText('FR'));
+        await screen.findByText('Article Hello (fr)');
+    });
+
+    it('should allow resource specific default title', async () => {
+        render(<DefaultTitle translations="resource specific" />);
+        await screen.findByText('Details of article Hello (en)');
+        fireEvent.click(screen.getByText('FR'));
+        await screen.findByText("Détails de l'article Hello (fr)");
     });
 });

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { Basic, AccessControl } from './EditButton.stories';
+import { Basic, AccessControl, Label } from './EditButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -21,6 +21,22 @@ describe('<EditButton />', () => {
         );
 
         spy.mockRestore();
+    });
+
+    it('should provide a default label', async () => {
+        render(<Label translations="default" />);
+        await screen.findByText('Edit');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Éditer');
+    });
+
+    it('should allow resource specific default title', async () => {
+        render(<Label translations="resource specific" />);
+        await screen.findByText('Change War and Peace');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Modifier War and Peace');
     });
 
     it('should only render when users have the right to edit', async () => {

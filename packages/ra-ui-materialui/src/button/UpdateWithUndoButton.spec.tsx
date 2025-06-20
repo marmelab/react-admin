@@ -8,7 +8,7 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { UpdateWithUndoButton } from './UpdateWithUndoButton';
-import { InsideAList } from './UpdateButton.stories';
+import { InsideAList, Label } from './UpdateButton.stories';
 
 const theme = createTheme();
 
@@ -35,7 +35,9 @@ describe('<UpdateWithUndoButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(
-            screen.getByLabelText('ra.action.update').getAttribute('type')
+            screen
+                .getByLabelText('resources.posts.action.update')
+                .getAttribute('type')
         ).toEqual('button');
 
         spy.mockRestore();
@@ -56,8 +58,8 @@ describe('<UpdateWithUndoButton />', () => {
 
     it('should allow to override the onSuccess side effects', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem', views: 500 },
                 }),
@@ -88,7 +90,7 @@ describe('<UpdateWithUndoButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.update'));
+        fireEvent.click(screen.getByLabelText('resources.posts.action.update'));
         await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith(
                 { id: 123, title: 'lorem', views: 0 },
@@ -113,5 +115,20 @@ describe('<UpdateWithUndoButton />', () => {
         fireEvent.click(resetButton);
         await screen.findByText('0');
         screen.getByRole('button', { name: 'Export' }); // check if we still are on the list page
+    });
+
+    it('should allow resource specific label', async () => {
+        render(
+            <Label
+                translations="resource specific"
+                mutationMode="pessimistic"
+            />
+        );
+        fireEvent.click(await screen.findByText('Reset views for Lorem Ipsum'));
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        fireEvent.click(
+            await screen.findByText('Mettre les vues à zéro pour Lorem Ipsum')
+        );
     });
 });

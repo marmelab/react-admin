@@ -13,6 +13,7 @@ import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { DeleteWithUndoButton } from './DeleteWithUndoButton';
+import { Label } from './DeleteButton.stories';
 import { Themed } from './DeleteWithUndoButton.stories';
 
 const theme = createTheme();
@@ -24,6 +25,14 @@ const invalidButtonDomProps = {
 };
 
 describe('<DeleteWithUndoButton />', () => {
+    it('should allow resource specific default title', async () => {
+        render(<Label translations="resource specific" />);
+        await screen.findByText('Delete War and Peace permanently');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Supprimer définitivement War and Peace');
+    });
+
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -37,7 +46,9 @@ describe('<DeleteWithUndoButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(
-            screen.getByLabelText('ra.action.delete').getAttribute('type')
+            screen
+                .getByLabelText('resources.posts.action.delete')
+                .getAttribute('type')
         ).toEqual('button');
 
         spy.mockRestore();
@@ -87,7 +98,7 @@ describe('<DeleteWithUndoButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByLabelText('resources.posts.action.delete'));
         await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith(
                 { id: 123, title: 'lorem' },
@@ -145,7 +156,9 @@ describe('<DeleteWithUndoButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.comments.action.delete')
+        );
         await waitFor(() => {
             expect(notificationsSpy).toEqual([
                 {

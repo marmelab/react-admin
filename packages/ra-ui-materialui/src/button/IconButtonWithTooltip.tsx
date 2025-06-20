@@ -23,7 +23,10 @@ export const IconButtonWithTooltip = ({
         setOpen(true);
     };
 
-    const translatedLabel = translate(label, { _: label });
+    let translatedLabel = label;
+    if (typeof label === 'string') {
+        translatedLabel = translate(label, { _: label });
+    }
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
         handleClose();
@@ -38,7 +41,11 @@ export const IconButtonWithTooltip = ({
             onClose={handleClose}
         >
             <IconButton
-                aria-label={translatedLabel}
+                aria-label={
+                    typeof translatedLabel === 'string'
+                        ? translatedLabel
+                        : undefined
+                }
                 onClick={handleClick}
                 {...props}
             />
@@ -47,5 +54,5 @@ export const IconButtonWithTooltip = ({
 };
 
 export interface IconButtonWithTooltipProps extends IconButtonProps {
-    label: string;
+    label: React.ReactNode;
 }

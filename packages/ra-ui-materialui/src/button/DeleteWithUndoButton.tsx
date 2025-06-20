@@ -10,7 +10,11 @@ import {
     useRecordContext,
     useResourceContext,
     RedirectionSideEffect,
+    useTranslate,
+    useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
+import { humanize, singularize } from 'inflection';
 
 import { Button, ButtonProps } from './Button';
 import {
@@ -28,7 +32,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
     });
 
     const {
-        label = 'ra.action.delete',
+        label: labelProp,
         className,
         icon = defaultIcon,
         onClick,
@@ -41,6 +45,11 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
 
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<DeleteWithUndoButton> components should be used inside a <Resource> component or provided with a resource prop. (The <Resource> component set the resource prop for all its children).'
+        );
+    }
     const { isPending, handleDelete } = useDeleteWithUndoController({
         record,
         resource,
@@ -49,12 +58,41 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         mutationOptions,
         successMessage,
     });
+    const translate = useTranslate();
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    let recordRepresentation = getRecordRepresentation(record);
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 1,
+        _: humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 1,
+                _: resource ? singularize(resource) : undefined,
+            }),
+            true
+        ),
+    });
+    // We don't support React elements for this
+    if (React.isValidElement(recordRepresentation)) {
+        recordRepresentation = `#${record?.id}`;
+    }
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.delete`,
+        baseI18nKey: 'ra.action.delete',
+        options: {
+            name: resourceName,
+            recordRepresentation,
+        },
+        userText: labelProp,
+    });
 
     return (
         <StyledButton
             onClick={handleDelete}
             disabled={isPending}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             className={clsx('ra-delete-button', className)}
             key="button"
             color={color}

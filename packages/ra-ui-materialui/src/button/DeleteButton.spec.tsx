@@ -5,10 +5,19 @@ import {
     NotificationDefault,
     NotificationTranslated,
     FullApp,
+    Label,
     Themed,
 } from './DeleteButton.stories';
 
 describe('<DeleteButton />', () => {
+    it('should provide a default label', async () => {
+        render(<Label translations="default" />);
+        await screen.findByText('Delete');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Supprimer');
+    });
+
     it('should only render when users have the right to delete', async () => {
         render(<FullApp />);
         await screen.findByText('War and Peace');

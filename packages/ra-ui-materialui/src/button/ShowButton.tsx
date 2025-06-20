@@ -3,11 +3,14 @@ import { memo } from 'react';
 import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import {
-    RaRecord,
+    type RaRecord,
     useResourceContext,
     useRecordContext,
     useCreatePath,
     useCanAccess,
+    useGetResourceLabel,
+    useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
 import {
     ComponentsOverrides,
@@ -40,7 +43,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
 
     const {
         icon = defaultIcon,
-        label = 'ra.action.show',
+        label: labelProp,
         record: recordProp,
         resource: resourceProp,
         scrollToTop = true,
@@ -59,13 +62,35 @@ const ShowButton = <RecordType extends RaRecord = any>(
         resource,
         record,
     });
+    const getResourceLabel = useGetResourceLabel();
+    const getRecordRepresentation = useGetRecordRepresentation();
+    const recordRepresentationValue = getRecordRepresentation(record);
+
+    const recordRepresentation =
+        typeof recordRepresentationValue === 'string'
+            ? recordRepresentationValue
+            : recordRepresentationValue?.toString();
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.show`,
+        baseI18nKey: 'ra.action.show',
+        options: {
+            name: getResourceLabel(resource, 1),
+            recordRepresentation,
+        },
+        userText: labelProp,
+    });
+
     if (!record || !canAccess || isPending) return null;
+
     return (
         <StyledButton
             component={Link}
             to={createPath({ type: 'show', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             onClick={stopPropagation}
             {...(rest as any)}
         >
