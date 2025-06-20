@@ -99,7 +99,7 @@ describe('useCreate', () => {
         });
     });
 
-    it('accepts a meta paramater', async () => {
+    it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
             create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
@@ -236,18 +236,19 @@ describe('useCreate', () => {
             });
         });
         it('when optimistic, displays result and success side effects right away', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<SuccessCaseOptimistic timeout={10} />);
             screen.getByText('Create post').click();
             await waitFor(() => {
-                expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello World')).not.toBeNull();
             await waitFor(() => {
-                expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello World')).not.toBeNull();
         });
         it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
