@@ -306,7 +306,7 @@ There are 2 important gotchas here:
 - Don't forget to merge your custom style overrides with the ones from react-admin's `defaultTheme`, otherwise the application will have the default Material UI theme (most notably, outlined text inputs)
 - Custom style overrides must live under a `root` key. Then, the style override syntax is the same as the one used for the [`sx`](./SX.md) prop.
 
-To guess the name of the subclass to use (like `.RaDataTable-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [DataTable CSS documentation](./DataTable.md#sx-css-api)).
+To guess the name of the subclass to use (like `.RaDataTable-headerCell` above) for customizing a component, you can use the developer tools of your browser, or check the react-admin documentation for individual components (e.g. the [`<DataTable>` CSS documentation](./DataTable.md#sx-css-api)).
 
 **Tip**: As an alternative, you can also re-export styled components, and use them instead of the react-admin components. Check the [Reusable Components](./SX.md#reusable-components) documentation for an example.
 
