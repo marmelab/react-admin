@@ -275,7 +275,7 @@ You can also hide the title by passing `null`:
 
 ## Usage Without Routing
 
-By default, `<ShowDialog>` creates a react-router `<Route>` for the displaying path (e.g. `/posts/2/show`), and renders when users go to that location (either by clicking on a datatable row, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list.
+By default, `<ShowDialog>` creates a react-router `<Route>` for the displaying path (e.g. `/posts/2/show`), and renders when users go to that location (either by clicking on a `<DataTable>` row, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list.
 
 This may not be what you want if you need to display the show dialog in another page (e.g. to show a related record).
 
