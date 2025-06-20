@@ -664,4 +664,4 @@ export const PostList = () => (
 
 **Tip**: No need to pass any `filters` to the list anymore, as the `<PostFilterForm>` component will display them.
 
-You can use a similar approach to offer alternative User Experiences for data filtering, e.g. to display the filters as a line in the datatable headers.
+You can use a similar approach to offer alternative User Experiences for data filtering, e.g. to display the filters as a line in the `<DataTable>` headers.
