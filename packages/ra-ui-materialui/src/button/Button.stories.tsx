@@ -3,7 +3,9 @@ import { ReactNode } from 'react';
 import { createTheme, ThemeProvider, Stack } from '@mui/material';
 import type { PaletteColor } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import { I18nContextProvider, I18nProvider } from 'ra-core';
 import { Button } from './Button';
 import { defaultTheme } from '../theme/defaultTheme';
 
@@ -23,6 +25,47 @@ export const Basic = () => (
             />
         </UIWrapper>
     </ThemeProvider>
+);
+
+const defaultI18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
+export const SimpleStringLabel = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => (
+    <I18nContextProvider value={i18nProvider}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
+            <UIWrapper>
+                <Button label="A non translated string" />
+            </UIWrapper>
+        </ThemeProvider>
+    </I18nContextProvider>
+);
+export const TranslationKeyLabel = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => (
+    <I18nContextProvider value={i18nProvider}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
+            <UIWrapper>
+                <Button label="ra.action.create" variant="outlined" />
+            </UIWrapper>
+        </ThemeProvider>
+    </I18nContextProvider>
+);
+export const ReactNodeLabel = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => (
+    <I18nContextProvider value={i18nProvider}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
+            <UIWrapper>
+                <Button label={<>A ReactNode</>} variant="contained" />
+            </UIWrapper>
+        </ThemeProvider>
+    </I18nContextProvider>
 );
 
 export const WithIcon = () => (
@@ -49,7 +92,7 @@ export const WithThemeProps = () => (
                 // @ts-ignore
                 RaButton: {
                     defaultProps: {
-                        size: 'normal',
+                        size: 'large',
                         color: 'secondary',
                     },
                 },
