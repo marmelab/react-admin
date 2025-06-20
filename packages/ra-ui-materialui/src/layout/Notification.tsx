@@ -69,23 +69,22 @@ export const Notification = (inProps: NotificationProps) => {
                 setCurrentNotification(notification);
                 setOpen(true);
             }
-        } else if (notifications.length && currentNotification && open) {
-            // Close an active snack when a new one is added
-            setOpen(false);
         }
 
-        const beforeunload = (e: BeforeUnloadEvent) => {
-            e.preventDefault();
-            const confirmationMessage = '';
-            e.returnValue = confirmationMessage;
-            return confirmationMessage;
-        };
-
-        if (currentNotification?.notificationOptions?.undoable) {
-            window.addEventListener('beforeunload', beforeunload);
-            return () => {
-                window.removeEventListener('beforeunload', beforeunload);
+        if (currentNotification) {
+            const beforeunload = (e: BeforeUnloadEvent) => {
+                e.preventDefault();
+                const confirmationMessage = '';
+                e.returnValue = confirmationMessage;
+                return confirmationMessage;
             };
+
+            if (currentNotification?.notificationOptions?.undoable) {
+                window.addEventListener('beforeunload', beforeunload);
+                return () => {
+                    window.removeEventListener('beforeunload', beforeunload);
+                };
+            }
         }
     }, [notifications, currentNotification, open, takeNotification]);
 
