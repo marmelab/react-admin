@@ -155,33 +155,33 @@ In this case, you'll have to get the current locale through the `useLocaleState`
 
 {% raw %}
 ```jsx
-import { List, Datagrid, TextField, ReferenceArrayField, SingleFieldList, ChipField, useLocaleState } from 'react-admin';
+import { List, DataTable, ReferenceArrayField, SingleFieldList, ChipField, useLocaleState } from 'react-admin';
 
 const PostList = () => {
     const [locale] = useLocaleState();
 
     return (
         <List>
-            <Datagrid>
-                <TextField source={`name.${locale}`} />
-                <ReferenceArrayField
+            <DataTable>
+                <DataTable.Col source={`name.${locale}`} />
+                <DataTable.Col 
                     label="Tags"
-                    reference="tags"
-                    source="tags"
                     sortBy="tags.name"
                     sort={{ field: `name.${locale}`, order: 'ASC' }}
                 >
-                    <SingleFieldList>
-                        <ChipField source={`name.${locale}`} size="small" />
-                    </SingleFieldList>
-                </ReferenceArrayField>
-            </Datagrid>
+                    <ReferenceArrayField reference="tags" source="tags">
+                        <SingleFieldList>
+                            <ChipField source={`name.${locale}`} size="small" />
+                        </SingleFieldList>
+                    </ReferenceArrayField>
+                </DataTable>
+            </DataTable>
         </List>
     )
 }
 ```
 {% endraw %}
 
-Note that you can't have an [optimized](https://marmelab.com/react-admin/List.html#performance) Datagrid when doing so, as changing the locale wouldn't trigger a render of its children.
+Note that you can't have an [optimized](./Datagrid.md#optimized) Datagrid when doing so, as changing the locale wouldn't trigger a render of its children.
 
 The same pattern applies to show views when you don't want to display all translations: get the locale from the `useLocale` hook and dynamically set the `source` prop of the translatable fields.

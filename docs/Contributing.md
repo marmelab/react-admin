@@ -194,7 +194,7 @@ An exception is the `<Datagrid>` component, which inspects its Field children at
 - If a child is wrapped inside another component that doesn't follow the same API, the feature breaks
 - Developers typically expect a component to affect its subtree, not its ancestors. Violating this expectation can lead to difficult-to-explain bugs.
 
-We keep child inspection in `<Datagrid>` because there is no superior alternative, but it's an uncommon exception.
+We keep child inspection in `<Datagrid>` for backwards compatibility reasons, but since then we introduced a superior alternative to solve the aforementioned issues: [`<DataTable>`](./DataTable.md).
 
 ## Principle Of Least Documentation
 

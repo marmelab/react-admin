@@ -30,14 +30,13 @@ import { Card, CardContent } from '@mui/material';
 import {
     AutocompleteInput,
     FilterLiveForm,
-    Datagrid,
+    DataTable,
     FilterList,
     FilterListItem,
     FilterListSection,
     List,
     ReferenceField,
     ReferenceInput,
-    TextField,
     TextInput,
 } from 'react-admin';
 
@@ -76,11 +75,13 @@ const BookListAside = () => (
 
 export const BookList = () => (
     <List aside={<BookListAside />}>
-        <Datagrid>
-            <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Autor" source="authorId">
+                <ReferenceField source="authorId" reference="authors" />
+            </DataTable.Col>
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 ```

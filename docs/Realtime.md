@@ -59,20 +59,18 @@ For instance, include a `<ListLiveUpdate>` within a `<List>` to have a list refr
 ```diff
 import {
     List,
-    Datagrid,
-    TextField,
-    NumberField,
+    DataTable,
     Datefield,
 } from 'react-admin';
 +import { ListLiveUpdate } from '@react-admin/ra-realtime';
 
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <DateField source="published_at" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.NumberCol source="views" />
+            <DataTable.Col source="published_at" field={DateField} />
+        </DataTable>
 +       <ListLiveUpdate />
     </List>
 );

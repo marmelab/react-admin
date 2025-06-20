@@ -21,7 +21,7 @@ import {
     FilterList,
     FilterListItem,
     List,
-    Datagrid
+    DataTable
 +   SavedQueriesList
 } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
@@ -42,9 +42,9 @@ const SongFilterSidebar = () => (
 
 const SongList = () => (
     <List aside={<SongFilterSidebar />}>
-        <Datagrid>
+        <DataTable>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -59,7 +59,7 @@ When set, the `<SavedQueriesList icon>` prop appears on the left side of the fil
 
 {% raw %}
 ```jsx
-import { FilterList, FilterListItem, List, Datagrid, SavedQueriesList } from 'react-admin';
+import { FilterList, FilterListItem, List, DataTable, SavedQueriesList } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 
@@ -79,9 +79,9 @@ const SongFilterSidebar = () => (
 
 const SongList = () => (
     <List aside={<SongFilterSidebar />}>
-        <Datagrid>
+        <DataTable>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```

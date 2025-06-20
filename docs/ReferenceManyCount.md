@@ -11,7 +11,7 @@ When you need to render the number of records related to another record via a on
 
 ## Usage
 
-Use `<ReferenceManyCount>` as a regular Field in a `<Datagrid>` or `<SimpleShowLayout>` - or anywhere inside a [`RecordContext`](./useRecordContext.md). You must set the `reference` and `target` props to match the relationship:
+Use `<ReferenceManyCount>` as a regular Field in a `<DataTable>` or `<SimpleShowLayout>` - or anywhere inside a [`RecordContext`](./useRecordContext.md). You must set the `reference` and `target` props to match the relationship:
 
 - `reference` is the name of the related resource to fetch (e.g. `comments`)
 - `target` is the name of the field in the related resource that points to the current resource (e.g. `post_id`)
@@ -20,40 +20,37 @@ For instance, to display the number of comments related to a post in a List view
 
 ```jsx
 import { 
-    ChipField,
-    Datagrid,
-    DateField,
     List,
-    NumberField,
+    DataTable,
+    ChipField,
+    DateField,
     ReferenceArrayField,
     ReferenceManyCount,
     SingleFieldList,
-    TextField,
 } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" sortByOrder="DESC" />
-            <ReferenceManyCount
-                label="Nb comments"
-                reference="comments"
-                target="post_id"
-                link
-            />
-            <NumberField source="views" sortByOrder="DESC" />
-            <ReferenceArrayField
-                label="Tags"
-                reference="tags"
-                source="tags"
-            >
-                <SingleFieldList>
-                    <ChipField source="name.en" size="small" />
-                </SingleFieldList>
-            </ReferenceArrayField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" sortByOrder="DESC" field={DateField} />
+            <DataTable.Col label="Nb comments">
+                <ReferenceManyCount
+                    reference="comments"
+                    target="post_id"
+                    link
+                />
+            </DataTable.Col>
+            <DataTable.Col source="views" sortByOrder="DESC" field={NumberField} />
+            <DataTable.Col source="tags" label="Tags">
+                <ReferenceArrayField reference="tags" source="tags">
+                    <SingleFieldList>
+                        <ChipField source="name.en" size="small" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 )
 ```

@@ -35,6 +35,8 @@ Theoretically, you can omit the `source` for the `<FunctionField>` since you pro
 
 `<FunctionField>` is based on [the `useRecordContext` hook](./useRecordContext.md).
 
+**Tip:** You don't need to use `<FunctionField>` if you are using [`<DataTable>`](./DataTable.md), as the [`<DataTable.Col>`](./DataTable.md#datatablecol) component directly provides a [`render`](./DataTable.md#render) prop that works similarly to `<FunctionField>`.
+
 ## Props
 
 | Prop     | Required | Type     | Default | Description                                                                |

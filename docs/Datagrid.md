@@ -5,6 +5,8 @@ title: "The Datagrid Component"
 
 # `<Datagrid>`
 
+> **Note:** React-admin v5.8.0 introduced a successor to `<Datagrid>` called [`<DataTable>`](./DataTable.md). It offers a better developer experience by removing child inspection, and avoids 'polluting' the field components with props only serving in datagrid columns (e.g. sortBy, label, etc). Hence, we recommend using `<DataTable>` instead of `<Datagrid>` for new projects. `<Datagrid>` is of course still available for backward compatibility.
+
 The `<Datagrid>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, and an expand panel. It is usually used as a descendant of the [`<List>`](./List.md#list) and [`<ReferenceManyField>`](./ReferenceManyField.md) components. Outside these components, it must be used inside a `ListContext`.
 
 <iframe src="https://www.youtube-nocookie.com/embed/IX_3Hz123m4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>

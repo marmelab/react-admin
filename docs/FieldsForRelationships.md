@@ -119,17 +119,17 @@ const AuthorShow = () => (
             <TextField source="last_name" />
             <DateField source="date_of_birth" />
             <ArrayField source="books">
-                <Datagrid>
-                    <TextField source="title" />
-                    <DateField source="published_at" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="published_at" field={DateField} />
+                </DataTable>
             </ArrayField>
         </SimpleShowLayout>
     </Show>
 );
 ```
 
-`<ArrayField>` creates a `ListContext` with the embedded records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
+`<ArrayField>` creates a `ListContext` with the embedded records, so you can use any component relying on this context (`<DataTable>`, `<SimpleList>`, etc.).
 
 ## `<ReferenceField>`
 
@@ -176,16 +176,20 @@ This is fine, but what if you need to display the author details for a list of b
 ```jsx
 const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <ReferenceField label="Author" source="author_id" reference="authors">
-                <FunctionField render={record => `${record.first_name} ${record.last_name}`} />
-            </ReferenceField>
-            <ReferenceField label="Author DOB" source="author_id" reference="authors">
-                <DateField source="date_of_birth" />
-            </ReferenceField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" field={DateField} />
+            <DataTable.Col source="author_id" label="Author">
+                <ReferenceField source="author_id" reference="authors">
+                    <FunctionField render={record => `${record.first_name} ${record.last_name}`} />
+                </ReferenceField>
+            </DataTable.Col>
+            <DataTable.Col source="author_id" label="Author DOB">
+                <ReferenceField source="author_id" reference="authors">
+                    <DateField source="date_of_birth" />
+                </ReferenceField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -219,10 +223,10 @@ const AuthorShow = () => (
             <TextField source="last_name" />
             <DateField source="date_of_birth" />
             <ReferenceManyField reference="books" target="author_id">
-                <Datagrid>
-                    <TextField source="title" />
-                    <DateField source="published_at" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="published_at" field={DateField} />
+                </DataTable>
             </ReferenceManyField>
         </SimpleShowLayout>
     </Show>
@@ -231,7 +235,7 @@ const AuthorShow = () => (
 
 `<ReferenceManyField>` uses the current `record` (an author in this example) to build a filter for the list of books on the foreign key field (`author_id`). Then, it uses `dataProvider.getManyReference('books', { target: 'author_id', id: book.id })` fetch the related books.
 
-`<ReferenceManyField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
+`<ReferenceManyField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<DataTable>`, `<SimpleList>`, etc.).
 
 **Tip**: For many APIs, there is no difference between `dataProvider.getList()` and `dataProvider.getManyReference()`. The latter is a specialized version of the former, with a predefined `filter`. But some APIs expose related records as a sub-route, and therefore need a special method to fetch them. For instance, the books of an author can be exposed via the following endpoint: 
 
@@ -267,10 +271,10 @@ const AuthorShow = () => (
             <TextField source="last_name" />
             <DateField source="date_of_birth" />
             <ReferenceArrayField reference="books" source="book_ids">
-                <Datagrid>
-                    <TextField source="title" />
-                    <DateField source="published_at" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="published_at" field={DateField} />
+                </DataTable>
             </ReferenceArrayField>
         </SimpleShowLayout>
     </Show>
@@ -279,23 +283,25 @@ const AuthorShow = () => (
 
 `<ReferenceArrayField>` reads the list of `book_ids` in the current `record` (an author in this example). Then, it uses `dataProvider.getMany('books', { ids })` fetch the related books.
 
-`<ReferenceArrayField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
+`<ReferenceArrayField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<DataTable>`, `<SimpleList>`, etc.).
 
 You can also use it in a List page:
 
 ```jsx
 const AuthorList = () => (
     <List>
-        <Datagrid>
-            <TextField source="first_name" />
-            <TextField source="last_name" />
-            <DateField source="date_of_birth" />
-            <ReferenceArrayField reference="books" source="book_ids">
-                <SingleFieldList>
-                    <TextField source="title" />
-                </SingleFieldList>
-            </ReferenceArrayField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="first_name" />
+            <DataTable.Col source="last_name" />
+            <DataTable.Col source="date_of_birth" field={DateField} />
+            <DataTable.Col label="Books" source="book_ids">
+                <ReferenceArrayField reference="books" source="book_ids">
+                    <SingleFieldList>
+                        <TextField source="title" />
+                    </SingleFieldList>
+                </ReferenceArrayField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -331,10 +337,10 @@ const AuthorShow = () => (
                 through="book_authors"
                 using="author_id,book_id"
             >
-                <Datagrid>
-                    <TextField source="title" />
-                    <DateField source="published_at" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="published_at" field={DateField} />
+                </DataTable>
             </ReferenceManyToManyField>
             <EditButton />
         </SimpleShowLayout>
@@ -355,13 +361,13 @@ const BookShow = props => (
                 through="book_authors"
                 using="book_id,author_id"
             >
-                <Datagrid>
-                    <FunctionField 
+                <DataTable>
+                    <DataTable.Col
                         label="Author"
                         render={record => `${record.first_name} ${record.last_name}`}
                     />
-                    <DateField source="date_of_birth" />
-                </Datagrid>
+                    <DataTable.Col source="date_of_birth" field={DateField} />
+                </DataTable>
             </ReferenceManyToManyField>
             <EditButton />
         </SimpleShowLayout>
@@ -369,7 +375,7 @@ const BookShow = props => (
 );
 ```
 
-`<ReferenceManyToManyField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
+`<ReferenceManyToManyField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<DataTable>`, `<SimpleList>`, etc.).
 
 ## `<ReferenceOneField>`
 

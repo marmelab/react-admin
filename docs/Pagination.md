@@ -66,19 +66,18 @@ To achieve this, you can use the `<InfiniteList>` component instead of the `<Lis
 import {
 -   List,
 +   InfiniteList,
-    Datagrid,
-    TextField,
+    DataTable,
     DateField
 } from 'react-admin';
 
 const BookList = () => (
 -   <List>
 +   <InfiniteList>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="author" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" field={DateField} />
+        </DataTable>
 -   </List>
 +   </InfiniteList>
 );

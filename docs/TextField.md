@@ -22,7 +22,7 @@ import { TextField } from 'react-admin';
 Use `<TextField>` as descendent of:
 
 - a record detail component (`<Show>`, `<Edit>`),
-- a layout component for a list of records (`<Datagrid>`, `<SimpleList>`, `<SingleFieldList>`)
+- a layout component for a list of records (`<DataTable>`, `<SimpleList>`, `<SingleFieldList>`)
 - a [`RecordContextProvider`](./useRecordContext.md#creating-a-record-context)
 
 For instance, to render the title and teaser of a post in a show view:

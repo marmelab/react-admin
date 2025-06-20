@@ -56,12 +56,12 @@ const ListWatcher = () => {
 
 const MovieList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="director" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="director" />
+            <DataTable.Col source="year" />
+        </DataTable>
         <ListWatcher />
     </List>
 );

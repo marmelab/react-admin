@@ -100,15 +100,15 @@ This example uses the `useGetList` hook instead of `fetch` because `useGetList` 
 
 This list is a bit rough in the edges (for instance, typing in the search input makes one call to the dataProvider per character), but it's good enough for the purpose of this chapter. 
 
-### `<Datagrid>` Displays Fields In A Table
+### `<DataTable>` Displays Fields In A Table
 
-Table layouts usually require a lot of code to define the table head, row, columns, etc. React-admin `<Datagrid>` component, together with Field components, can help remove that boilerplate:
+Table layouts usually require a lot of code to define the table head, row, columns, etc. React-admin `<DataTable>` component can help remove that boilerplate:
 
 {% raw %}
 ```diff
 import { useState } from 'react';
 -import { Title, useGetList } from 'react-admin';
-+import { Title, useGetList, Datagrid, TextField } from 'react-admin';
++import { Title, useGetList, DataTable } from 'react-admin';
 import {
     Card,
     TextField as MuiTextField,
@@ -166,12 +166,12 @@ const BookList = () => {
 -                       ))}
 -                   </TableBody>
 -               </Table>
-+               <Datagrid data={data} sort={sort}>
-+                   <TextField source="id" />
-+                   <TextField source="title" />
-+                   <TextField source="author" />
-+                   <TextField source="year" />
-+               </Datagrid>
++               <DataTable data={data} sort={sort}>
++                   <DataTable.Col source="id" />
++                   <DataTable.Col source="title" />
++                   <DataTable.Col source="author" />
++                   <DataTable.Col source="year" />
++               </DataTable>
             </Card>
             <Toolbar>
                 {page > 1 && <Button onClick={() => setPage(page - 1)}>Previous page</Button>}
@@ -183,11 +183,11 @@ const BookList = () => {
 ```
 {% endraw %}
 
-`<Datagrid>` does more than the previous table: it renders table headers depending on the current sort, and allows you to change the sort order by clicking a column header. Also, for each row, `<Datagrid>` creates a `RecordContext`, which lets you use react-admin Field and Buttons without explicitly passing the row data.
+`<DataTable>` does more than the previous table: it renders table headers depending on the current sort, and allows you to change the sort order by clicking a column header. Also, for each row, `<DataTable>` creates a `RecordContext`, which lets you use react-admin Field and Buttons without explicitly passing the row data.
 
 ### `ListContext` Exposes List Data To Descendants
 
-`<Datagrid>` requires a `data` prop to render, but it can grab it from a `ListContext` instead. Creating such a context with `<ListContextProvider>` also allows to use other react-admin components specialized in filtering (`<FilterForm>`) and pagination (`<Pagination>`), and to reduce the boilerplate code even further:
+`<DataTable>` requires a `data` prop to render, but it can grab it from a `ListContext` instead. Creating such a context with `<ListContextProvider>` also allows to use other react-admin components specialized in filtering (`<FilterForm>`) and pagination (`<Pagination>`), and to reduce the boilerplate code even further:
 
 {% raw %}
 ```diff
@@ -195,8 +195,7 @@ import { useState } from 'react';
 import { 
     Title,
     useGetList,
-    Datagrid,
-    TextField,
+    DataTable,
 +   ListContextProvider,
 +   FilterForm,
 +   Pagination,
@@ -237,13 +236,13 @@ const BookList = () => {
 -           />
 +           <FilterForm filters={filters} />
             <Card>
--               <Datagrid data={data} sort={sort}>
-+               <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="title" />
-                    <TextField source="author" />
-                    <TextField source="year" />
-                </Datagrid>
+-               <DataTable data={data} sort={sort}>
++               <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="author" />
+                    <DataTable.Col source="year" />
+                </DataTable>
             </Card>
 -           <Toolbar>
 -               {page > 1 && <Button onClick={() => setPage(page - 1)}>Previous page</Button>}
@@ -268,8 +267,7 @@ import {
     Title,
 -   useGetList,
 +   useListController,
-    Datagrid,
-    TextField,
+    DataTable,
     ListContextProvider,
     FilterForm,
     Pagination,
@@ -304,12 +302,12 @@ const BookList = () => {
                 <Title title="Book list" />
                 <FilterForm filters={filters} />
                 <Card>
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="title" />
-                        <TextField source="author" />
-                        <TextField source="year" />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                        <DataTable.Col source="year" />
+                    </DataTable>
                 </Card>
                 <Pagination />
             </div>
@@ -340,8 +338,7 @@ As calling the List controller and putting its result into a context is also com
 import { 
     Title,
 -   useListController,
-    Datagrid,
-    TextField,
+    DataTable,
 -   ListContextProvider,
 +   ListBase,
     FilterForm,
@@ -365,12 +362,12 @@ const BookList = () => {
                 <Title title="Book list" />
                 <FilterForm filters={filters} />
                 <Card>
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="title" />
-                        <TextField source="author" />
-                        <TextField source="year" />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                        <DataTable.Col source="year" />
+                    </DataTable>
                 </Card>
                 <Pagination />
             </div>
@@ -380,7 +377,7 @@ const BookList = () => {
 };
 ```
 
-Notice that we're not handling the loading state manually anymore. In fact, the `<Datagrid>` component can render a skeleton while the data is being fetched.
+Notice that we're not handling the loading state manually anymore. In fact, the `<DataTable>` component can render a skeleton while the data is being fetched.
 
 ### `useListContext` Accesses The List Context
 
@@ -412,8 +409,7 @@ import {
 -   Title,
 -   ListBase,
 +   List,
-    Datagrid,
-    TextField,
+    DataTable,
 -   FilterForm,
 -   Pagination,
     TextInput
@@ -429,12 +425,12 @@ const BookList = () => (
 -           <FilterForm filters={filters} />
 -           <Card>
 +    <List filters={filters}>
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="title" />
-                    <TextField source="author" />
-                    <TextField source="year" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="author" />
+                    <DataTable.Col source="year" />
+                </DataTable>
 -           </Card>
 -           <Pagination />
 -       </div>
@@ -450,8 +446,7 @@ Remember the first snippet in this page? The react-admin version is much shorter
 ```tsx
 import { 
     List,
-    Datagrid,
-    TextField,
+    DataTable,
     TextInput
 } from 'react-admin';
 
@@ -459,12 +454,12 @@ const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
 
 const BookList = () => (
     <List filters={filters}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 ```
@@ -473,9 +468,9 @@ By encapsulating common CRUD logic, react-admin reduces the amount of code you n
 
 ## `<ListGuesser>`: Zero-Configuration List
 
-Sometimes typing `<Datagrid>` and a few `<Field>` components is too much - for instance if you want to prototype an admin for many resources, or search data through an API without worrying about the actual data structure.
+Sometimes typing `<DataTable>` and a few `<Field>` components is too much - for instance if you want to prototype an admin for many resources, or search data through an API without worrying about the actual data structure.
 
-For these cases, react-admin provides a `<ListGuesser>` component that will guess the datagrid columns from the data. It's a bit like the `<List>` component, but it doesn't require any configuration.
+For these cases, react-admin provides a `<ListGuesser>` component that will guess the `<DataTable>` columns from the data. It's a bit like the `<List>` component, but it doesn't require any configuration.
 
 ```tsx
 import { Admin, Resource, ListGuesser } from 'react-admin';
@@ -492,9 +487,9 @@ const App = () => (
 
 ## List Iterators
 
-The components you can use as child of `<List>` are called "List Iterator". They render a list of records. `<Datagrid>` is such a List Iterator, but react-admin provides many more:
+The components you can use as child of `<List>` are called "List Iterator". They render a list of records. `<DataTable>` is such a List Iterator, but react-admin provides many more:
 
-- [`<Datagrid>`](./Datagrid.md)
+- [`<DataTable>`](./DataTable.md)
 - [`<DatagridAG>`](./DatagridAG.md)
 - [`<SimpleList>`](./SimpleList.md)
 - [`<SingleFieldList>`](./SingleFieldList.md)
@@ -506,7 +501,7 @@ If that's not enough, [building a custom iterator](#building-a-custom-iterator) 
 
 ## Responsive Lists
 
-On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You should use [the  `<SimpleList>` component](./SimpleList.md) instead - it's another built-in List Iterator.
+On Mobile, `<DataTable>` doesn't work well - the screen is too narrow. You should use [the  `<SimpleList>` component](./SimpleList.md) instead - it's another built-in List Iterator.
 
 <video controls autoplay playsinline muted loop style="height:300px">
     <source src="./img/simple-list.webm" type="video/webm"/>
@@ -514,13 +509,13 @@ On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You should
     Your browser does not support the video tag.
 </video>
 
-To use `<Datagrid>` on desktop and `<SimpleList>` on mobile, use the `useMediaQuery` hook:
+To use `<DataTable>` on desktop and `<SimpleList>` on mobile, use the `useMediaQuery` hook:
 
 ```tsx
 // in src/posts.tsx
 import * as React from 'react';
 import { useMediaQuery, Theme } from '@mui/material';
-import { List, SimpleList, Datagrid, TextField, ReferenceField } from 'react-admin';
+import { List, SimpleList, DataTable, TextField, ReferenceField } from 'react-admin';
 
 type Post = {
     id: number;
@@ -542,14 +537,16 @@ export const PostList = () => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : (
-                <Datagrid>
-                    <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
-                    </ReferenceField>
-                    <TextField source="title" />
-                    <TextField source="body" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col label="User" source="userId">
+                        <ReferenceField source="userId" reference="users">
+                            <TextField source="name" />
+                        </ReferenceField>
+                    </DataTable.Col>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="body" />
+                </DataTable>
             )}
         </List>
     );
@@ -560,7 +557,7 @@ Check [the dedicated `useMediaQuery` documentation](./useMediaQuery.md) for more
 
 ## Building a Custom Iterator
 
-In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. 
+In some cases, neither the `<DataTable>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. 
 
 As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `<WithListContext>` component](./WithListContext.md) to get the list data in a render prop. 
 
@@ -671,7 +668,7 @@ sort=published_at
 order=DESC
 ```
 
-If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. Check [the `<Datagrid>` documentation](./Datagrid.md#customizing-column-sort) to see how to disable or modify the field used for sorting on a particular column.
+If you're using a `<DataTable>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. Check [the `<DataTable>` documentation](./DataTable.md#customizing-column-sort) to see how to disable or modify the field used for sorting on a particular column.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/sort-column-header.webm" type="video/webm"/>
@@ -726,7 +723,7 @@ const SortByViews = () => (
 
 ## Building a Custom Sort Control
 
-When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `sort` and `setSort`:
+When neither the `<DataTable>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `sort` and `setSort`:
 
 ```tsx
 import * as React from 'react';

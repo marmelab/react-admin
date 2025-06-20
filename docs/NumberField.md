@@ -38,6 +38,8 @@ const PostList = () => (
 
 ![NumberField](./img/number-field.webp)`
 
+**Tip:** If you are in a [`<DataTable>`](./DataTable.md), you can use [`<DataTable.NumberCol>`](./DataTable.md#datatablenumbercol) instead to achieve the same result.
+
 `<NumberField>` works for values that are numbers (e.g. `2108`) or strings that convert to numbers (e.g. `'2108'`).
 
 `<NumberField>` uses `Intl.NumberFormat()` if available, passing the `locales` and `options` props as arguments. This allows a perfect display of decimals, currencies, percentages, etc. See [Intl.NumberFormat documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the `options` prop syntax.

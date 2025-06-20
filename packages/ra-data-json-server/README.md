@@ -122,10 +122,10 @@ You can leverage this feature in page components to avoid multiple requests to t
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { embed: 'author' } }}>
-        <Datagrid>
-            <TextField source="title" />
-            <TextField source="author.name" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author.name" />
+        </DataTable>
     </List>
 );
 ```
