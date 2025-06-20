@@ -314,7 +314,7 @@ To guess the name of the subclass to use (like `.RaDataTable-headerCell` above) 
 
 ![Developer tools](./img/sx-class-name.png)
 
-The react-admin documentation for individual components also lists the classes available for styling. For instance, here is the [DataTable CSS documentation](./DataTable.md#sx-css-api):
+The react-admin documentation for individual components also lists the classes available for styling. For instance, here is the [`<DataTable>` CSS documentation](./DataTable.md#sx-css-api):
 
 ![DataTable CSS documentation](./img/sx-documentation.png)
 
