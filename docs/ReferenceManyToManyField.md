@@ -59,7 +59,7 @@ export const BandShow = () => (
 
 | Prop        | Required | Type                                        | Default                          | Description                                                                                                                                                                                                       |
 | ----------- | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`  | Required | `element`                                   | -                                | An iterator element (e.g. `<SingleFieldList>` or `<Datagrid>`). The iterator element usually has one or more child `<Field>` components.                                                                          |
+| `children`  | Required | `element`                                   | -                                | An iterator element (e.g. `<SingleFieldList>` or `<DataTable>`). The iterator element usually has one or more child `<Field>` components.                                                                          |
 | `reference` | Required | `string`                                    | -                                | Name of the reference resource, e.g. 'venues'                                                                                                                                                                    |
 | `through`   | Required | `string`                                    | -                                | Name of the resource for the associative table, e.g. 'performances'                                                                                                                                               |
 | `filter`    | Optional | `object`                                    | `{}`                             | Filter for the associative table (passed to the `getManyReference()` call)                                                                                                                                        |
@@ -74,7 +74,7 @@ export const BandShow = () => (
 
 `<ReferenceManyToManyField>` expects an _iterator_ component as child, i.e. a component working inside a `ListContext`.
 
-This means you can use a `<Datagrid>` instead of a `<SingleFieldList>`, which is useful if you want to display more details about related records. For instance, to display the venue `name` and `location`:
+This means you can use a `<DataTable>` instead of a `<SingleFieldList>`, which is useful if you want to display more details about related records. For instance, to display the venue `name` and `location`:
 
 ```diff
 export const BandShow = () => (
@@ -90,10 +90,10 @@ export const BandShow = () => (
 -               <SingleFieldList>
 -                   <ChipField source="name" />
 -               </SingleFieldList>
-+               <Datagrid>
-+                   <TextField source="name" />
-+                   <TextField source="location" />
-+               </Datagrid>
++               <DataTable>
++                   <DataTable.Col source="name" />
++                   <DataTable.Col source="location" />
++               </DataTable>
             </ReferenceManyToManyField>
             <EditButton />
         </SimpleShowLayout>

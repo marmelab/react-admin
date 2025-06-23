@@ -11,7 +11,7 @@ title: "The SimpleList Component"
     Your browser does not support the video tag.
 </video>
 
-For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [Material UI's `<List>` and `<ListItem>` components](https://mui.com/components/lists/). 
+For mobile devices, a `<DataTable>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [Material UI's `<List>` and `<ListItem>` components](https://mui.com/components/lists/). 
 
 `<SimpleList>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record.
 
@@ -241,11 +241,11 @@ See [`primaryText`](#primarytext)
 
 ## Using `<SimpleList>` On Small Screens
 
-To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use Material UI's `useMediaQuery` hook:
+To use `<SimpleList>` on small screens and a `<DataTable>` on larger screens, use Material UI's `useMediaQuery` hook:
 
 ```jsx
 import { useMediaQuery } from '@mui/material';
-import { List, SimpleList, Datagrid } from 'react-admin';
+import { List, SimpleList, DataTable } from 'react-admin';
 
 export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -259,9 +259,9 @@ export const PostList = () => {
                     rowClick={(id, resource, record) => record.canEdit ? "edit" : "show"}   
                 />
             ) : (
-                <Datagrid>
+                <DataTable>
                     //...
-                </Datagrid>
+                </DataTable>
             )}
         </List>
     );

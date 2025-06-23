@@ -375,6 +375,13 @@ export const Themed = () => (
                         defaultProps: {
                             className: 'custom-class',
                         },
+                        styleOverrides: {
+                            root: {
+                                ['& .RaEdit-card']: {
+                                    color: 'red',
+                                },
+                            },
+                        },
                     },
                 },
             } as ThemeOptions)}

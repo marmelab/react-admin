@@ -4,7 +4,6 @@ import {
     styled,
     type SxProps,
     type Theme,
-    useThemeProps,
 } from '@mui/material/styles';
 import type { ReactElement, ReactNode, ElementType } from 'react';
 import Card from '@mui/material/Card';
@@ -24,12 +23,8 @@ const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
 export const ListView = <RecordType extends RaRecord = any>(
-    inProps: ListViewProps
+    props: ListViewProps
 ) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
     const {
         actions = defaultActions,
         aside,

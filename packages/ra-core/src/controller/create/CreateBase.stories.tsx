@@ -1,17 +1,91 @@
 import * as React from 'react';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import {
     AuthProvider,
     CoreAdminContext,
     CreateBase,
     CreateBaseProps,
     DataProvider,
+    I18nProvider,
+    mergeTranslations,
     SaveHandlerCallbacks,
     testDataProvider,
+    useCreateContext,
+    useLocaleState,
     useSaveContext,
 } from '../..';
 
 export default {
     title: 'ra-core/controller/CreateBase',
+};
+
+const defaultI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      posts: {
+                          name: 'Article |||| Articles',
+                      },
+                  },
+              })
+            : englishMessages,
+    'en'
+);
+
+const customI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      posts: {
+                          page: {
+                              create: 'Créer un article',
+                          },
+                      },
+                  },
+              })
+            : mergeTranslations(englishMessages, {
+                  resources: {
+                      posts: {
+                          page: {
+                              create: 'Create an article',
+                          },
+                      },
+                  },
+              }),
+    'en'
+);
+
+export const DefaultTitle = ({
+    translations = 'default',
+    i18nProvider = translations === 'default'
+        ? defaultI18nProvider
+        : customI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+    translations?: 'default' | 'resource specific';
+}) => (
+    <CoreAdminContext
+        dataProvider={defaultDataProvider}
+        i18nProvider={i18nProvider}
+    >
+        <CreateBase {...defaultProps}>
+            <Title />
+        </CreateBase>
+    </CoreAdminContext>
+);
+
+DefaultTitle.args = {
+    translations: 'default',
+};
+DefaultTitle.argTypes = {
+    translations: {
+        options: ['default', 'resource specific'],
+        control: { type: 'radio' },
+    },
 };
 
 export const NoAuthProvider = ({
@@ -101,4 +175,20 @@ const Child = ({
     };
 
     return <button onClick={handleClick}>save</button>;
+};
+
+const Title = () => {
+    const { defaultTitle } = useCreateContext();
+    const [locale, setLocale] = useLocaleState();
+    return (
+        <div>
+            <strong>
+                {defaultTitle} ({locale})
+            </strong>
+            <div>
+                <button onClick={() => setLocale('en')}>EN</button>
+                <button onClick={() => setLocale('fr')}>FR</button>
+            </div>
+        </div>
+    );
 };

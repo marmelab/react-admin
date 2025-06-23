@@ -1815,3 +1815,29 @@ const ReviewList = () => (
 );
 ```
 
+
+## Migrating From `<Datagrid>` To `<DataTable>`
+
+To help you migrate from `<Datagrid>` to `<DataTable>`, we've created a codemod.
+
+> **DISCLAIMER**
+> Please review the generated changes thoroughly!
+>
+> Applying the codemod might break your code formatting, so don't forget to run your formatter (prettier, eslint, biome, etc.) after you've applied the codemod!
+
+For `.js` or `.jsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=js,jsx \
+    --transform=./node_modules/ra-core/codemods/replace-Datagrid-DataTable.ts
+```
+
+For `.ts` or `.tsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=ts,tsx \
+    --parser=tsx \
+    --transform=./node_modules/ra-core/codemods/replace-Datagrid-DataTable.ts
+```

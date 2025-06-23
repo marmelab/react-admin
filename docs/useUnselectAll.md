@@ -5,7 +5,7 @@ title: "useUnselectAll"
 
 # `useUnselectAll`
 
-This hook returns a function that unselects all lines in the current `<Datagrid>`. Pass the name of the resource as argument.
+This hook returns a function that unselects all lines in the current `<DataTable>`. Pass the name of the resource as argument.
 
 ```jsx
 import { useUnselectAll } from 'react-admin';

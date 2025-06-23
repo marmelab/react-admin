@@ -46,7 +46,7 @@ const DeleteUserButton = () => {
 The `checkAccess` function expects an argument with the shape `{ action, resource, record }`. This function resolves to a boolean indicating whether users can access the provided resource and action.
 
 ```jsx
-import { Datagrid, List, TextField, useCanAccessCallback } from 'react-admin';
+import { DataTable, List, useCanAccessCallback } from 'react-admin';
 
 export const UserList = () => {
     const checkAccess = useCanAccessCallback();
@@ -60,11 +60,11 @@ export const UserList = () => {
     };
     return (
         <List>
-            <Datagrid onClick={handleRowClick}>
-                <TextField source="id" />
-                <TextField source="name" />
-                <TextField source="email" />
-            </Datagrid>
+            <DataTable onClick={handleRowClick}>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="name" />
+                <DataTable.Col source="email" />
+            </DataTable>
         </List>
     );
 };
@@ -72,7 +72,7 @@ export const UserList = () => {
 
 ## Multiple Resources
 
-`useCanAccessResources` can check the access to several resources in parallel (e.g. all the columns of a `<Datagrid>`) instead of just one for `useCanAccess`.
+`useCanAccessResources` can check the access to several resources in parallel (e.g. all the columns of a `<DataTable>`) instead of just one for `useCanAccess`.
 
 It takes an object `{ action, resources, record }` as argument. The `resources` parameter is an array of resource names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object with a property for each provided resource, determining whether the user can access it.
 

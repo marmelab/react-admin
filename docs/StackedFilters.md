@@ -20,22 +20,22 @@ Use a `<StackedFilters>` component in the [`<List actions>`](./List.md#actions) 
 // in src/posts/PostList.tsx
 import {
     BooleanField,
-    Datagrid,
+    DataTable,
     List,
-    NumberField,
     ReferenceArrayField,
-    TextField,
 } from 'react-admin';
 import { PostListToolbar } from './PostListToolbar';
 
 const PostList = () => (
     <List actions={<PostListToolbar />}>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <ReferenceArrayField tags="tags" source="tag_ids" />
-            <BooleanField source="published" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.NumberCol source="views" />
+            <DataTable.Col source="tag_ids">
+                <ReferenceArrayField tags="tags" source="tag_ids" />
+            </DataTable.Col>
+            <DataTable.Col source="published" field={BooleanField} />
+        </DataTable>
     </List>
 );
 
@@ -401,7 +401,6 @@ Just like `<StackedFilters>`, `<StackedFiltersForm>` requires a [filtering confi
 {% raw %}
 ```tsx
 import {
-    Datagrid,
     List,
     TextField,
     NumberField,

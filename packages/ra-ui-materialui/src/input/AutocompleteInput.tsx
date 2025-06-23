@@ -628,6 +628,21 @@ If you provided a React element for the optionText prop, you must also provide t
                         ...params.InputProps,
                         ...TextFieldProps?.InputProps,
                     };
+                    // @ts-expect-error slotProps do not yet exist in MUI v5
+                    const mergedSlotProps = TextFieldProps?.slotProps
+                        ? {
+                              slotProps: {
+                                  // @ts-expect-error slotProps do not yet exist in MUI v5
+                                  ...TextFieldProps?.slotProps,
+                                  input: {
+                                      readOnly,
+                                      ...params.InputProps,
+                                      // @ts-expect-error slotProps do not yet exist in MUI v5
+                                      ...TextFieldProps?.slotProps?.input,
+                                  },
+                              },
+                          }
+                        : undefined;
                     return (
                         <TextField
                             name={field.name}
@@ -663,6 +678,7 @@ If you provided a React element for the optionText prop, you must also provide t
                             {...params}
                             {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
+                            {...mergedSlotProps}
                             size={size}
                             inputRef={handleInputRef}
                         />
