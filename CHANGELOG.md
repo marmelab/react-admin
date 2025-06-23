@@ -1,5 +1,26 @@
 # Changelog
 
+## 5.9.0
+
+* Add support for customization with MUI theme to inputs ([#10772](https://github.com/marmelab/react-admin/pull/10772)) ([Madeorsk](https://github.com/Madeorsk))
+* Add support for customization with MUI theme to main views components and buttons ([#10771](https://github.com/marmelab/react-admin/pull/10771)) ([Madeorsk](https://github.com/Madeorsk))
+* Add support for customization with MUI theme to fields and delete buttons ([#10770](https://github.com/marmelab/react-admin/pull/10770)) ([Madeorsk](https://github.com/Madeorsk))
+* Add `<RecordField>` component ([#10749](https://github.com/marmelab/react-admin/pull/10749)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for middlewares to `useUpdateMany` ([#10795](https://github.com/marmelab/react-admin/pull/10795)) ([slax57](https://github.com/slax57))
+* Allow resource specific translations for pages and buttons ([#10686](https://github.com/marmelab/react-admin/pull/10686)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteInput>` should not break when overriding input slot props ([#10793](https://github.com/marmelab/react-admin/pull/10793)) ([slax57](https://github.com/slax57))
+* Fix bulk action buttons hover style ([#10788](https://github.com/marmelab/react-admin/pull/10788)) ([djhi](https://github.com/djhi))
+* Fix image alignment in ready page in some contexts ([#10780](https://github.com/marmelab/react-admin/pull/10780)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix `useLogoutAccessDenied` should not throw when no `redirectTo` is provided ([#10763](https://github.com/marmelab/react-admin/pull/10763)) ([carloshv93](https://github.com/carloshv93))
+* [Doc] AuthProvider List: Add Appwrite ([#10798](https://github.com/marmelab/react-admin/pull/10798)) ([slax57](https://github.com/slax57))
+* [Doc] DataProvider List: Update Appwrite logo and name ([#10787](https://github.com/marmelab/react-admin/pull/10787)) ([slax57](https://github.com/slax57))
+* [Doc] Add a migration section in `<DataTable>` documentation that shows the codemod ([#10786](https://github.com/marmelab/react-admin/pull/10786)) ([djhi](https://github.com/djhi))
+* [Doc] Mention that `helperText` also supports translation keys ([#10785](https://github.com/marmelab/react-admin/pull/10785)) ([slax57](https://github.com/slax57))
+* [Doc] Add deployment instructions ([#10783](https://github.com/marmelab/react-admin/pull/10783)) ([Madeorsk](https://github.com/Madeorsk))
+* [Doc] Change our `Datagrid` examples to `DataTable` ([#10766](https://github.com/marmelab/react-admin/pull/10766)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Demo] Remove duplicate file `segments.ts` ([#10792](https://github.com/marmelab/react-admin/pull/10792)) ([slax57](https://github.com/slax57))
+* [chore] Ensure tests are working in all environments by running them in US english ([#10781](https://github.com/marmelab/react-admin/pull/10781)) ([Madeorsk](https://github.com/Madeorsk))
+
 ## 5.8.4
 
 * Replace `Datagrid` by `DataTable` in Guessers ([#10754](https://github.com/marmelab/react-admin/pull/10754)) ([erwanMarmelab](https://github.com/erwanMarmelab))
