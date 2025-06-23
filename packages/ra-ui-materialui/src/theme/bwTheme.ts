@@ -144,6 +144,37 @@ const createBWTheme = (mode: 'light' | 'dark'): ThemeOptions => {
             },
             MuiIconButton: {
                 defaultProps: { disableRipple: true },
+                styleOverrides: {
+                    root: {
+                        textTransform: 'none',
+                        boxShadow: 'none',
+                    },
+                    colorPrimary: {
+                        '&:hover': {
+                            backgroundColor: GREY,
+                        },
+                    },
+                    colorSuccess: {
+                        borderColor: isDarkMode
+                            ? alpha(green['500'], 0.7)
+                            : alpha(green['800'], 0.5),
+                        '&:hover': {
+                            borderColor: isDarkMode
+                                ? green['500']
+                                : green['800'],
+                        },
+                    },
+                    colorError: {
+                        borderColor: isDarkMode
+                            ? alpha(deepOrange['600'], 0.7)
+                            : alpha(red['900'], 0.5),
+                        '&:hover': {
+                            borderColor: isDarkMode
+                                ? deepOrange['600']
+                                : red['900'],
+                        },
+                    },
+                },
             },
             MuiListItemButton: {
                 defaultProps: { disableRipple: true },

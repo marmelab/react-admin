@@ -95,30 +95,32 @@ React-admin's `<DeleteButton>` lets user delete the current record [in an optimi
 Alternately, you can force the user to confirm the deletion by using `<DeleteButton mutationMode="pessimistic">`. Under the hood, this leverages the `<Confirm>` component to ask for confirmation before deleting the record.
 
 ```jsx
-import { List, Datagrid, TextField, DeleteButton } from 'react-admin';
+import { List, DataTable, DeleteButton } from 'react-admin';
 
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DeleteButton mutationMode="pessimistic" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col>
+                <DeleteButton mutationMode="pessimistic" />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
 
-The same goes for deleting multiple records in a [bulk action](./Datagrid.md#bulkactionbuttons): use `<BulkDeleteButton mutationMode="pessimistic">` to ask a confirmation before the deletion.
+The same goes for deleting multiple records in a [bulk action](./DataTable.md#bulkactionbuttons): use `<BulkDeleteButton mutationMode="pessimistic">` to ask a confirmation before the deletion.
 
 ```jsx
-import { List, Datagrid, TextField, BulkDeleteButton } from 'react-admin';
+import { List, DataTable, BulkDeleteButton } from 'react-admin';
 
 const PostList = () => (
     <List>
-        <Datagrid bulkActionButtons={<BulkDeleteButton mutationMode="pessimistic" />}>
-            <TextField source="id" />
-            <TextField source="title" />
-        </Datagrid>
+        <DataTable bulkActionButtons={<BulkDeleteButton mutationMode="pessimistic" />}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+        </DataTable>
     </List>
 );
 ```

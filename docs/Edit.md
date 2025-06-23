@@ -19,7 +19,7 @@ For instance, the following component will render an edition form for posts when
 
 ```jsx
 // in src/posts.js
-import { Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, required } from 'react-admin';
+import { Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, DataTable, DateField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
 export const PostEdit = () => (
@@ -31,11 +31,13 @@ export const PostEdit = () => (
             <RichTextInput source="body" validate={required()} />
             <DateInput label="Publication date" source="published_at" />
             <ReferenceManyField label="Comments" reference="comments" target="post_id">
-                <Datagrid>
-                    <TextField source="body" />
-                    <DateField source="created_at" />
-                    <EditButton />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="body" />
+                    <DataTable.Col source="created_at" field={DateField} />
+                    <DataTable.Col>
+                        <EditButton />
+                    </DataTable.Col>
+                </DataTable>
             </ReferenceManyField>
         </SimpleForm>
     </Edit>
@@ -818,7 +820,7 @@ That means that if you want to create a link to an edition view, modifying immed
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { EditButton, Datagrid, List } from 'react-admin';
+import { EditButton, DataTable, List } from 'react-admin';
 
 const ApproveButton = () => {
     return (
@@ -830,10 +832,12 @@ const ApproveButton = () => {
 
 export default PostList = () => (
     <List>
-        <Datagrid>
+        <DataTable>
             ...
-            <ApproveButton />
-        </Datagrid>
+            <DataTable.Col>
+                <ApproveButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 )
 ```
