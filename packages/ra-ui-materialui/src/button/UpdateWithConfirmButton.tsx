@@ -182,7 +182,8 @@ export const UpdateWithConfirmButton = <
         <Fragment>
             <StyledButton
                 onClick={handleClick}
-                label={label}
+                // avoid double translation
+                label={<>{label}</>}
                 // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
                 aria-label={typeof label === 'string' ? label : undefined}
                 {...sanitizeRestProps(rest)}

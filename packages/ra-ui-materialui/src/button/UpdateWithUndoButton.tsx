@@ -127,6 +127,7 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
     return (
         <StyledButton
             onClick={handleClick}
+            // avoid double translation
             label={<>{label}</>}
             // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
             aria-label={typeof label === 'string' ? label : undefined}
