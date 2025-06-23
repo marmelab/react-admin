@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { Basic, AccessControl, Themed } from './ShowButton.stories';
+import { Basic, AccessControl, Label, Themed } from './ShowButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -21,6 +21,22 @@ describe('<ShowButton />', () => {
         );
 
         spy.mockRestore();
+    });
+
+    it('should provide a default label', async () => {
+        render(<Label translations="default" />);
+        await screen.findByText('Show');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Afficher');
+    });
+
+    it('should allow resource specific default title', async () => {
+        render(<Label translations="resource specific" />);
+        await screen.findByText('See War and Peace');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Voir War and Peace');
     });
 
     it('should only render when users have the right to show', async () => {

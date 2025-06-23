@@ -14,6 +14,9 @@ import {
     useRecordContext,
     useCreatePath,
     useCanAccess,
+    useGetResourceLabel,
+    useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -39,7 +42,7 @@ export const EditButton = <RecordType extends RaRecord = any>(
     });
     const {
         icon = defaultIcon,
-        label = 'ra.action.edit',
+        label: labelProp,
         scrollToTop = true,
         className,
         ...rest
@@ -57,13 +60,35 @@ export const EditButton = <RecordType extends RaRecord = any>(
         resource,
         record,
     });
+    const getResourceLabel = useGetResourceLabel();
+    const getRecordRepresentation = useGetRecordRepresentation();
+    const recordRepresentationValue = getRecordRepresentation(record);
+
+    const recordRepresentation =
+        typeof recordRepresentationValue === 'string'
+            ? recordRepresentationValue
+            : recordRepresentationValue?.toString();
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.edit`,
+        baseI18nKey: 'ra.action.edit',
+        options: {
+            name: getResourceLabel(resource, 1),
+            recordRepresentation,
+        },
+        userText: labelProp,
+    });
+
     if (!record || !canAccess || isPending) return null;
+
     return (
         <StyledButton
             component={Link}
             to={createPath({ type: 'edit', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             onClick={stopPropagation}
             className={clsx(EditButtonClasses.root, className)}
             {...(rest as any)}

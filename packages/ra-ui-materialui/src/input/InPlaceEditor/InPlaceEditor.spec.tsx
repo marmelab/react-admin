@@ -24,6 +24,7 @@ describe('InPlaceEditor', () => {
         await screen.findByText('Jane Doe');
     });
     it('should revert to the previous version on error', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         render(<Basic delay={0} updateFails />);
         const value = await screen.findByText('John Doe');
         value.click();

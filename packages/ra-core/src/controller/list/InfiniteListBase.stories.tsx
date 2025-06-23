@@ -1,11 +1,19 @@
 import * as React from 'react';
 import fakeRestProvider from 'ra-data-fakerest';
-
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { InfiniteListBase } from './InfiniteListBase';
 import { CoreAdminContext } from '../../core';
 import { useListContext } from './useListContext';
 import { useInfinitePaginationContext } from './useInfinitePaginationContext';
-import { AuthProvider, DataProvider } from '../..';
+import {
+    AuthProvider,
+    DataProvider,
+    I18nProvider,
+    mergeTranslations,
+    useLocaleState,
+} from '../..';
 
 export default {
     title: 'ra-core/controller/list/InfiniteListBase',
@@ -170,3 +178,86 @@ export const AccessControl = ({
         </InfiniteListBase>
     </CoreAdminContext>
 );
+
+const defaultI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      books: {
+                          name: 'Livre |||| Livres',
+                      },
+                  },
+              })
+            : englishMessages,
+    'en'
+);
+
+const customI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      books: {
+                          page: {
+                              list: 'Liste des livres',
+                          },
+                      },
+                  },
+              })
+            : mergeTranslations(englishMessages, {
+                  resources: {
+                      books: {
+                          page: {
+                              list: 'Book list',
+                          },
+                      },
+                  },
+              }),
+    'en'
+);
+
+export const DefaultTitle = ({
+    translations = 'default',
+    i18nProvider = translations === 'default'
+        ? defaultI18nProvider
+        : customI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+    translations?: 'default' | 'resource specific';
+}) => (
+    <CoreAdminContext
+        dataProvider={defaultDataProvider}
+        i18nProvider={i18nProvider}
+    >
+        <InfiniteListBase resource="books" perPage={5}>
+            <Title />
+        </InfiniteListBase>
+    </CoreAdminContext>
+);
+
+DefaultTitle.args = {
+    translations: 'default',
+};
+DefaultTitle.argTypes = {
+    translations: {
+        options: ['default', 'resource specific'],
+        control: { type: 'radio' },
+    },
+};
+
+const Title = () => {
+    const { defaultTitle } = useListContext();
+    const [locale, setLocale] = useLocaleState();
+    return (
+        <div>
+            <strong>
+                {defaultTitle} ({locale})
+            </strong>
+            <div>
+                <button onClick={() => setLocale('en')}>EN</button>
+                <button onClick={() => setLocale('fr')}>FR</button>
+            </div>
+        </div>
+    );
+};
