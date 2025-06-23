@@ -489,7 +489,7 @@ That means that if you want to create a link to a creation form, presetting *som
 
 ```jsx
 import * as React from 'react';
-import { CreateButton, Datagrid, List, useRecordContext } from 'react-admin';
+import { CreateButton, DataTable, List, useRecordContext } from 'react-admin';
 
 const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
@@ -503,10 +503,12 @@ const CreateRelatedCommentButton = () => {
 
 export default PostList = () => (
     <List>
-        <Datagrid>
+        <DataTable>
             ...
-            <CreateRelatedCommentButton />
-        </Datagrid>
+            <DataTable.Col>
+                <CreateRelatedCommentButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 )
 ```
@@ -540,7 +542,7 @@ Should you use the location `state` or the location `search`? The latter modifie
 
 And if you want to prefill the form with constant values, use the `defaultValues` prop on the Form tag.
 
-**Tip**: [The `<Clonebutton>` component](./Buttons.md#clonebutton) redirects to a Creation view prefilled with the same data as the current context. You can use it e.g. in a `<Datagrid>`, or in the `<Edit actions>` toolbar.
+**Tip**: [The `<Clonebutton>` component](./Buttons.md#clonebutton) redirects to a Creation view prefilled with the same data as the current context. You can use it e.g. in a `<DataTable>`, or in the `<Edit actions>` toolbar.
 
 ## Save And Add Another
 

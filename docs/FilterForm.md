@@ -23,12 +23,11 @@ It's an internal component that you should only need if you build a custom List 
 ```jsx
 import {
     CreateButton,
-    Datagrid,
+    DataTable,
     FilterButton,
     FilterForm,
     ListBase,
     Pagination,
-    TextField,
     TextInput,
     SearchInput
 } from 'react-admin';
@@ -52,11 +51,11 @@ const ListToolbar = () => (
 const PostList = () => (
     <ListBase>
         <ListToolbar />
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="body" />
+        </DataTable>
         <Pagination />
     </ListBase>
 )

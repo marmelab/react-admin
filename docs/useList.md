@@ -7,7 +7,7 @@ title: "useList"
 
 The `useList` hook allows to create a `ListContext` based on local data. `useList` creates callbacks for sorting, paginating, filtering, and selecting records from an array.
 
-Thanks to it, you can display your data inside a [`<Datagrid>`](./Datagrid.md), a [`<SimpleList>`](./SimpleList.md) or an [`<EditableDatagrid>`](./EditableDatagrid.md).
+Thanks to it, you can display your data inside a [`<DataTable>`](./DataTable.md), a [`<SimpleList>`](./SimpleList.md) or an [`<EditableDatagrid>`](./EditableDatagrid.md).
 
 ## Usage
 
@@ -17,8 +17,7 @@ Thanks to it, you can display your data inside a [`<Datagrid>`](./Datagrid.md), 
 import {
     useList,
     ListContextProvider,
-    Datagrid,
-    TextField
+    DataTable,
 } from 'react-admin';
 
 const data = [
@@ -31,10 +30,10 @@ const MyComponent = () => {
     const listContext = useList({ data });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid resource="actors">
-                <TextField source="id" />
-                <TextField source="name" />
-            </Datagrid>
+            <DataTable resource="actors">
+                <DataTable.Col source="id" />
+                <DataTable.Col source="name" />
+            </DataTable>
         </ListContextProvider>
     );
 };
@@ -53,10 +52,10 @@ const MyComponent = () => {
     const listContext = useList({ data, isPending });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid resource="posts">
-                <TextField source="id" />
-                <TextField source="name" />
-            </Datagrid>
+            <DataTable resource="posts">
+                <DataTable.Col source="id" />
+                <DataTable.Col source="name" />
+            </DataTable>
         </ListContextProvider>
     );
 };
@@ -141,7 +140,7 @@ const { data } = useList({
 
 ## `isFetching`
 
-This value ends up in the return value. It is used by list iterators (like `<Datagrid>`) to know when to display a loading indicator.
+This value ends up in the return value. It is used by list iterators (like `<DataTable>`) to know when to display a loading indicator.
 
 ```jsx
 import { useGetList, useList } from 'react-admin';
@@ -154,10 +153,10 @@ const MyComponent = () => {
     const listContext = useList({ data, isFetching });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid resource="posts">
-                <TextField source="id" />
-                <TextField source="name" />
-            </Datagrid>
+            <DataTable resource="posts">
+                <DataTable.Col source="id" />
+                <DataTable.Col source="name" />
+            </DataTable>
         </ListContextProvider>
     );
 };
@@ -165,15 +164,14 @@ const MyComponent = () => {
 
 ## `isPending`
 
-This value ends up in the return value. It is used by list iterators (like `<Datagrid>`) to know when to display a loading indicator.
+This value ends up in the return value. It is used by list iterators (like `<DataTable>`) to know when to display a loading indicator.
 
 ```jsx
 import {
     useGetList,
     useList,
     ListContextProvider,
-    Datagrid,
-    TextField
+    DataTable,
 } from 'react-admin';
 
 const MyComponent = () => {
@@ -184,10 +182,10 @@ const MyComponent = () => {
     const listContext = useList({ data, isPending });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid resource="posts">
-                <TextField source="id" />
-                <TextField source="name" />
-            </Datagrid>
+            <DataTable resource="posts">
+                <DataTable.Col source="id" />
+                <DataTable.Col source="name" />
+            </DataTable>
         </ListContextProvider>
     );
 };

@@ -9,7 +9,7 @@ title: "The ReferenceManyField Component"
 
 <iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). Its children can then use the data from this context. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<Datagrid>`](./Datagrid.md) as child.
+This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). Its children can then use the data from this context. The most common case is to use [`<SingleFieldList>`](./SingleFieldList.md) or [`<DataTable>`](./DataTable.md) as child.
 
 **Tip**: If the relationship is materialized by an array of ids in the initial record, use [the `<ReferenceArrayField>` component](./ReferenceArrayField.md) instead.
 
@@ -33,7 +33,7 @@ For instance, if an `author` has many `books`, and each book resource exposes an
 `<ReferenceManyField>` can render the titles of all the books by a given author.
 
 ```jsx
-import { Show, SimpleShowLayout, ReferenceManyField, Datagrid, TextField, DateField } from 'react-admin';
+import { Show, SimpleShowLayout, ReferenceManyField, DataTable, TextField, DateField } from 'react-admin';
 
 const AuthorShow = () => (
     <Show>
@@ -41,10 +41,10 @@ const AuthorShow = () => (
             <TextField source="first_name" />
             <TextField source="last_name" />
             <ReferenceManyField reference="books" target="author_id" label="Books">
-              <Datagrid>
-                <TextField source="title" />
-                <DateField source="published_at" />
-              </Datagrid>
+              <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col source="published_at" field={DateField} />
+              </DataTable>
             </ReferenceManyField>
         </SimpleShowLayout>
     </Show>
@@ -58,20 +58,24 @@ const AuthorShow = () => (
 You can also use `<ReferenceManyField>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'react-admin';
+import { List, DataTable, ChipField, ReferenceManyField, SingleFieldList } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" type="email" />
-            <ReferenceManyField label="Comments by" reference="comments" target="post_id">
-                <SingleFieldList>
-                    <ChipField source="author.name" />
-                </SingleFieldList>
-            </ReferenceManyField>
-            <EditButton />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Comments by">
+                <ReferenceManyField reference="comments" target="post_id">
+                    <SingleFieldList>
+                        <ChipField source="author.name" />
+                    </SingleFieldList>
+                </ReferenceManyField>
+            </DataTable.Col>
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -103,16 +107,17 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 `<ReferenceManyField>` renders its children inside a [`ListContext`](./useListContext.md). This means you can use any component that uses a `ListContext`:
 
 - [`<SingleFieldList>`](./SingleFieldList.md)
+- [`<DataTable>`](./DataTable.md)
 - [`<Datagrid>`](./Datagrid.md)
 - [`<SimpleList>`](./SimpleList.md)
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
 - [`<Calendar>`](./Calendar.md)
 - Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how). 
 
-For instance, use a `<Datagrid>` to render the related records in a table:
+For instance, use a `<DataTable>` to render the related records in a table:
 
 ```jsx
-import { Show, SimpleShowLayout, TextField, ReferenceManyField, Datagrid, DateField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, ReferenceManyField, DataTable, DateField } from 'react-admin';
 
 export const AuthorShow = () => (
   <Show>
@@ -121,10 +126,10 @@ export const AuthorShow = () => (
       <TextField source="last_name" />
       <DateField label="Born" source="dob" />
       <ReferenceManyField label="Books" reference="books" target="author_id">
-        <Datagrid>
-          <TextField source="title" />
-          <DateField source="published_at" />
-        </Datagrid>
+        <DataTable>
+          <DataTable.Col source="title" />
+          <DataTable.Col source="published_at" field={DateField} />
+        </DataTable>
       </ReferenceManyField>
     </SimpleShowLayout>
   </Show>
@@ -209,9 +214,9 @@ const AuthorEdit = () => (
       <ReferenceManyField reference="comments" target="post_id">
           <FilterButton filters={filters}/>
           <FilterForm filters={filters}/>
-          <Datagrid>
+          <DataTable>
               ...
-          </Datagrid>
+          </DataTable>
       </ReferenceManyField>
     </SimpleForm>
   </Edit>
@@ -222,15 +227,15 @@ const AuthorEdit = () => (
 
 ## `label`
 
-By default, `<SimpleShowLayout>`, `<Datagrid>` and other layout components infer the label of a field based on its `source`. For a `<ReferenceManyField>`, the source defaults to `id`, so this may not be what you expect:
+By default, `<SimpleShowLayout>`, `<DataTable>` and other layout components infer the label of a field based on its `source`. For a `<ReferenceManyField>`, the source defaults to `id`, so this may not be what you expect:
 
 ```jsx
 {/* default label is 'Id', or the translation of 'resources.authors.fields.id' if it exists */}
 <ReferenceManyField reference="books" target="author_id">
-  <Datagrid>
-    <TextField source="title" />
-    <DateField source="published_at" />
-  </Datagrid>
+  <DataTable>
+    <DataTable.Col source="title" />
+    <DataTable.Col source="published_at" field={DateField} />
+  </DataTable>
 </ReferenceManyField>
 ```
 
@@ -238,10 +243,10 @@ That's why you often need to set an explicit `label` on a `<ReferenceField>`:
 
 ```jsx
 <ReferenceManyField label="Books" reference="books" target="author_id">
-  <Datagrid>
-    <TextField source="title" />
-    <DateField source="published_at" />
-  </Datagrid>
+  <DataTable>
+    <DataTable.Col source="title" />
+    <DataTable.Col source="published_at" field={DateField} />
+  </DataTable>
 </ReferenceManyField>
 ```
 
@@ -249,10 +254,10 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
 
 ```jsx
 <ReferenceManyField label="resources.authors.fields.books" reference="books" target="author_id">
-  <Datagrid>
-    <TextField source="title" />
-    <DateField source="published_at" />
-  </Datagrid>
+  <DataTable>
+    <DataTable.Col source="title" />
+    <DataTable.Col source="published_at" field={DateField} />
+  </DataTable>
 </ReferenceManyField>
 ```
 
@@ -298,10 +303,10 @@ For instance, if you want to display the `books` of a given `author`, the `refer
 
 ```jsx
 <ReferenceManyField label="Books" reference="books" target="author_id">
-  <Datagrid>
-    <TextField source="title" />
-    <DateField source="published_at" />
-  </Datagrid>
+  <DataTable>
+    <DataTable.Col source="title" />
+    <DataTable.Col source="published_at" field={DateField} />
+  </DataTable>
 </ReferenceManyField>
 ```
 
@@ -353,9 +358,9 @@ In the example below, both lists use the same reference ('books'), but their sel
             meta: { foo: 'bar' },
         }}
     >
-        <Datagrid>
-            <TextField source="title" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+        </DataTable>
     </ReferenceManyField>
     <ReferenceManyField
         reference="books"
@@ -365,9 +370,9 @@ In the example below, both lists use the same reference ('books'), but their sel
         }}
         storeKey="custom"
     >
-        <Datagrid>
-            <TextField source="title" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+        </DataTable>
     </ReferenceManyField>
 </Stack>
 ```
@@ -379,10 +384,10 @@ Name of the field carrying the relationship on the referenced resource. For inst
 
 ```jsx
 <ReferenceManyField label="Books" reference="books" target="author_id">
-  <Datagrid>
-    <TextField source="title" />
-    <DateField source="published_at" />
-  </Datagrid>
+  <DataTable>
+    <DataTable.Col source="title" />
+    <DataTable.Col source="published_at" field={DateField} />
+  </DataTable>
 </ReferenceManyField>
 ```
 
@@ -430,7 +435,7 @@ To allow users to create or edit a record without leaving the current view, use 
 
 {% raw %}
 ```jsx
-import { Edit, SimpleForm, TextInput, ReferenceManyField, WithRecord, Datagrid } from 'react-admin';
+import { Edit, SimpleForm, TextInput, ReferenceManyField, WithRecord, DataTable } from 'react-admin';
 import { CreateInDialogButton, EditInDialogButton } from "@react-admin/ra-form-layout";
 
 const EmployerEdit = () => (
@@ -455,22 +460,22 @@ const EmployerEdit = () => (
                       </CreateInDialogButton>
                   )}
               />
-              <Datagrid>
-                  <TextField source="first_name" />
-                  <TextField source="last_name" />
-                  <WithRecord
-                    render={record => (
-                      <EditInDialogButton>
-                          <SimpleForm
-                            record={{ employer_id: record.id }}
-                          >
-                            <TextInput source="first_name" />
-                            <TextInput source="last_name" />
-                          </SimpleForm>
-                        </EditInDialogButton>
+              <DataTable>
+                  <DataTable.Col source="first_name" />
+                  <DataTable.Col source="last_name" />
+                  <DataTable.Col
+                      render={record => (
+                          <EditInDialogButton>
+                              <SimpleForm
+                                record={{ employer_id: record.id }}
+                              >
+                                  <TextInput source="first_name" />
+                                  <TextInput source="last_name" />
+                              </SimpleForm>
+                          </EditInDialogButton>
                       )}
                   />
-              </Datagrid>
+              </DataTable>
           </ReferenceManyField>
       </SimpleForm>
   </Edit>

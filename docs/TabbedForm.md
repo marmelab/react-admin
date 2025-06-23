@@ -25,7 +25,7 @@ import * as React from "react";
 import {
     TabbedForm,
     Edit,
-    Datagrid,
+    DataTable,
     TextField,
     DateField,
     TextInput,
@@ -56,11 +56,13 @@ export const PostEdit = () => (
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="body" />
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </ReferenceManyField>
             </TabbedForm.Tab>
         </TabbedForm>
@@ -292,11 +294,13 @@ export const PostEdit = () => (
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="body" />
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </ReferenceManyField>
             </TabbedForm.Tab>
         </TabbedForm>
@@ -728,7 +732,7 @@ const ProductEdit = () => (
                     target="product_id"
                     pagination={<Pagination />}
                 >
-                    <Datagrid
+                    <DataTable
                         sx={{
                             width: '100%',
                             '& .column-comment': {
@@ -739,13 +743,15 @@ const ProductEdit = () => (
                             },
                         }}
                     >
-                        <DateField source="date" />
-                        <CustomerReferenceField />
-                        <StarRatingField />
-                        <TextField source="comment" />
-                        <TextField source="status" />
-                        <EditButton />
-                    </Datagrid>
+                        <DataTable.Col source="date" field={DateField} />
+                        <DataTable.Col field={CustomerReferenceField} />
+                        <DataTable.Col field={StarRatingField} />
+                        <DataTable.Col source="comment" />
+                        <DataTable.Col source="status" />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </ReferenceManyField>
             </ReviewsFormTab>
         </TabbedForm>

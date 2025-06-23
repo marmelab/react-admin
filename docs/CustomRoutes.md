@@ -281,17 +281,17 @@ const App = () => (
 
 // in src/BookList.jss
 import { useParams } from 'react-router-dom';
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 
 const BookList = () => {
     const { authorId } = useParams();
     return (
         <List resource="books" filter={{ authorId }}>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="year" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="year" />
+            </DataTable>
         </List>
     );
 };
