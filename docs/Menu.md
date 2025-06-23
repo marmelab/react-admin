@@ -183,13 +183,14 @@ export const MyMenu = () => (
 );
 ```
 
-| Prop               | Required | Type                 | Default | Description                              |
-| ------------------ | -------- | -------------------- | ------- | ---------------------------------------- |
-| `to`               | Required | `string | location`  | -       | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. |
-| `primaryText`      | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
-| `keyboardShortcut` | Optional | `string | string[]`  | -       | The keyboard shortcut(s) to activate this menu item |
-| `leftIcon`         | Optional | `ReactNode`          | -       | The menu icon |
-| `sx`               | Optional | `SxProp`             | -       | Style overrides, powered by MUI System |
+| Prop                             | Required | Type                 | Default              | Description                              |
+| -------------------------------- | -------- | -------------------- | -------------------- | ---------------------------------------- |
+| `to`                             | Required | `string | location`  | -                    | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. | 
+| `primaryText`                    | Required | `ReactNode`          | -                    | The menu content, displayed when the menu isn't minimized. |
+| `keyboardShortcut`               | Optional | `string | string[]`  | -                    | The keyboard shortcut(s) to activate this menu item |
+| `keyboardShortcutRepresentation` | Optional | `ReactNode`          | `<keyboardShortcut>` | A react node that displays the keyboard shortcut |
+| `leftIcon`                       | Optional | `ReactNode`          | -                    | The menu icon |
+| `sx`                             | Optional | `SxProp`             | -                    | Style overrides, powered by MUI System |
 
 Additional props are passed down to [the underling Material UI `<MenuItem>` component](https://mui.com/material-ui/api/menu-item/).
 
@@ -240,13 +241,33 @@ export const MyMenu = () => (
         <Menu.Item
             to="/sales"
             primaryText="Sales"
-            keyboardShortcut="ctrl+alt+S"
+            // Letter G then letter S
+            keyboardShortcut="G>S"
         />
     </Menu>
 );
 ```
 
 This leverages the [react-hotkeys-hook](https://github.com/JohannesKlauss/react-hotkeys-hook) library, checkout [their documentation](https://react-hotkeys-hook.vercel.app/docs/documentation/useHotkeys/) for more examples.
+
+### `keyboardShortcutRepresentation`
+
+A React node that displays the keyboard shortcut. It defaults to `<KeyboardShortcut>`. You can customize it by providing your own:
+
+```tsx
+const CustomMenu = () => (
+    <Menu>
+        <Menu.Item
+            to="/sales"
+            primaryText="Sales"
+            keyboardShortcut="G>S"
+            // Render a simple textual representation of the shortcut
+            keyboardShortcutRepresentation="G then S"
+        />
+    </Menu>
+);
+```
+
 
 ### `leftIcon`
 
