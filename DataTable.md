@@ -7,6 +7,8 @@ title: "The DataTable Component"
 
 The `<DataTable>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, a collapsible panel, hiding and reordering columns, dynamic row and cell styles, and more.
 
+<iframe src="https://www.youtube-nocookie.com/embed/IHjBd9WrVcI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+
 ## Usage
 
 Use `<DataTable>` inside a `ListContext` (e.g., as a descendent of [`<List>`](./List.md#list) or [`<ReferenceManyField>`](./ReferenceManyField.md)). Define the table columns with its children using `<DataTable.Col>` components:
