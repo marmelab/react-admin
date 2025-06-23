@@ -163,23 +163,77 @@ export const Custom = () => {
 export const WithKeyboardShortcuts = () => {
     const CustomMenu = () => (
         <Menu>
-            <Menu.DashboardItem keyboardShortcut="ctrl+alt+D" />
+            <Menu.DashboardItem keyboardShortcut="G>D" />
+            <Menu.Item
+                to="/sales"
+                leftIcon={<PieChartOutlined />}
+                primaryText="Sales"
+                keyboardShortcut="G>S"
+            />
+            <Menu.Item
+                to="/customers"
+                leftIcon={<PeopleOutlined />}
+                primaryText="Customers"
+                keyboardShortcut="G>C"
+            />
+            <Menu.ResourceItem
+                name="products"
+                leftIcon={<Inventory />}
+                keyboardShortcut="G>P"
+            />
+        </Menu>
+    );
+    const CustomLayout = ({ children }) => (
+        <Layout menu={CustomMenu}>{children}</Layout>
+    );
+
+    const Dashboard = () => <Page title="Dashboard" />;
+    return (
+        <TestMemoryRouter initialEntries={['/']}>
+            <Admin
+                dataProvider={testDataProvider()}
+                layout={CustomLayout}
+                dashboard={Dashboard}
+            >
+                <Resource name="products" list={<Page title="Products" />} />
+                <CustomRoutes>
+                    <Route path="/sales" element={<Page title="Sales" />} />
+                    <Route
+                        path="/customers"
+                        element={<Page title="Customers" />}
+                    />
+                </CustomRoutes>
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+export const WithCustomKeyboardShortcutRepresentation = () => {
+    const CustomMenu = () => (
+        <Menu>
+            <Menu.DashboardItem
+                keyboardShortcut="ctrl+alt+D"
+                keyboardShortcutRepresentation="ctrl+alt+D"
+            />
             <Menu.Item
                 to="/sales"
                 leftIcon={<PieChartOutlined />}
                 primaryText="Sales"
                 keyboardShortcut="ctrl+alt+S"
+                keyboardShortcutRepresentation="ctrl+alt+S"
             />
             <Menu.Item
                 to="/customers"
                 leftIcon={<PeopleOutlined />}
                 primaryText="Customers"
                 keyboardShortcut="ctrl+alt+C"
+                keyboardShortcutRepresentation="ctrl+alt+C"
             />
             <Menu.ResourceItem
                 name="products"
                 leftIcon={<Inventory />}
                 keyboardShortcut="ctrl+alt+P"
+                keyboardShortcutRepresentation="ctrl+alt+P"
             />
         </Menu>
     );

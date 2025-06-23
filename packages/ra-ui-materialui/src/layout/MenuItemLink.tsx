@@ -21,16 +21,12 @@ import {
     useMediaQuery,
     Theme,
     useForkRef,
+    Box,
 } from '@mui/material';
-import {
-    getKeyboardShortcutLabel,
-    KeyboardShortcut,
-    useTranslate,
-    useBasename,
-    useEvent,
-} from 'ra-core';
-import type { Keys } from 'react-hotkeys-hook';
+import { useTranslate, useBasename, useEvent } from 'ra-core';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useSidebarState } from './useSidebarState';
+import { KeyboardShortcut } from '../KeyboardShortcut';
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -100,6 +96,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
             tooltipProps,
             children,
             keyboardShortcut,
+            keyboardShortcutRepresentation,
             ...rest
         } = props;
 
@@ -125,8 +122,13 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
         const match = useMatch({ path: to, end: to === `${basename}/` });
 
         const itemRef = useRef<HTMLLIElement>(null);
+        // Use a forked ref allows us to have a ref locally without losing the one passed by users
         const forkedRef = useForkRef(itemRef, ref);
+
         const handleShortcut = useEvent(() => itemRef.current?.click());
+        useHotkeys(keyboardShortcut ?? [], handleShortcut, {
+            enabled: keyboardShortcut != null,
+        });
 
         const renderMenuItem = () => {
             return (
@@ -141,39 +143,37 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
                     {...rest}
                     onClick={handleMenuTap}
                 >
-                    {keyboardShortcut ? (
-                        <KeyboardShortcut
-                            keys={keyboardShortcut}
-                            callback={handleShortcut}
-                        />
-                    ) : null}
-                    {leftIcon && (
-                        <ListItemIcon className={MenuItemLinkClasses.icon}>
-                            {leftIcon}
-                        </ListItemIcon>
-                    )}
-                    {children
-                        ? children
-                        : typeof primaryText === 'string'
-                          ? translate(primaryText, { _: primaryText })
-                          : primaryText}
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
+                        {leftIcon && (
+                            <ListItemIcon className={MenuItemLinkClasses.icon}>
+                                {leftIcon}
+                            </ListItemIcon>
+                        )}
+                        {children
+                            ? children
+                            : typeof primaryText === 'string'
+                              ? translate(primaryText, { _: primaryText })
+                              : primaryText}
+                    </Box>
+                    {keyboardShortcut
+                        ? keyboardShortcutRepresentation ?? (
+                              <KeyboardShortcut
+                                  keyboardShortcut={keyboardShortcut}
+                              />
+                          )
+                        : null}
                 </StyledMenuItem>
             );
         };
-        if (open && keyboardShortcut == null) {
-            return renderMenuItem();
-        }
 
-        if (open && keyboardShortcut != null) {
-            return (
-                <Tooltip
-                    title={getKeyboardShortcutLabel(keyboardShortcut)}
-                    placement="right"
-                    {...tooltipProps}
-                >
-                    {renderMenuItem()}
-                </Tooltip>
-            );
+        if (open) {
+            return renderMenuItem();
         }
 
         return (
@@ -203,7 +203,8 @@ export type MenuItemLinkProps = Omit<
      */
     sidebarIsOpen?: boolean;
     tooltipProps?: TooltipProps;
-    keyboardShortcut?: Keys;
+    keyboardShortcut?: string;
+    keyboardShortcutRepresentation?: ReactNode;
 };
 
 const PREFIX = 'RaMenuItemLink';
