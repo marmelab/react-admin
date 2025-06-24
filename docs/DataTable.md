@@ -718,7 +718,7 @@ const PostList = () => (
 );
 ```
 
-Using the `hiddenColumns` property instead of removing `<DataTable.Col>` elements entirely allows hidden columns to be displayed again using a `ColumnsButton`, as explained in the [Hiding or Reordering Columns](#hiding-or-reordering-columns) section.
+Using `hiddenColumns` instead of removing `<DataTable.Col>` elements allows hidden columns to be displayed again using a `<ColumnsButton>`, as explained in the [Hiding or Reordering Columns](#hiding-or-reordering-columns) section.
 
 ## `hover`
 
