@@ -691,6 +691,33 @@ const PostList = () => (
 
 **Tip**: To handle sorting in your custom DataTable head component, check out the [Building a custom sort control](./ListTutorial.md#building-a-custom-sort-control) section.
 
+## `hiddenColumns`
+
+By default, `<DataTable>` renders all `<DataTable.Col>` children. Use the `hiddenColumns` property to set hidden columns by default.
+
+```tsx
+import { ColumnsButton, TopToolbar, List, DataTable } from 'react-admin';
+
+const PostListActions = () => (
+        <TopToolbar>
+          <ColumnsButton />
+        </TopToolbar>
+)
+
+const PostList = () => (
+    <List actions={<PostListActions />}>
+        <DataTable hiddenColumns={['id', 'author']}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </List>
+);
+```
+
+Using the `hiddenColumns` property instead of removing `<DataTable.Col>` elements entirely allows hidden columns to be displayed again using a `ColumnsButton`, as explained in the [Hiding or Reordering Columns](#hiding-or-reordering-columns) section.
+
 ## `hover`
 
 By default, when a user hovers over a row, the background color changes to indicate the row is active. Set the `hover` prop to `false` to disable this behavior.
