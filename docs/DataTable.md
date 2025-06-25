@@ -989,13 +989,13 @@ Additional props are passed to [the MUI `<TableCell>`](https://mui.com/material-
 
 ### `align`
 
-Table cells are right-aligned by default. To left-align a column, set the `align` prop to `"left"`. This is useful for numeric columns:
+Table cells are left-aligned by default. To right-align a column, set the `align` prop to `"right"`. This is useful for numeric columns:
 
 ```tsx
 <DataTable.Col 
     source="nb_views"
     field={NumberField}
-    align="left" 
+    align="right" 
 />
 ```
 
