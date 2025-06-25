@@ -137,6 +137,8 @@ const AuthorList = () => (
             <DataTable.Col source="lastName" />
             <DataTable.Col>
                 <EditButton />
+            </DataTable.Col>
+            <DataTable.Col>
                 <BooksButton />
             </DataTable.Col>
         </DataTable>
