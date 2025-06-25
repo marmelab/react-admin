@@ -2,6 +2,7 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
+
 import {
     AuthProvider,
     I18nProvider,
@@ -10,13 +11,13 @@ import {
     ResourceContextProvider,
     TestMemoryRouter,
 } from 'ra-core';
+
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { QueryClient } from '@tanstack/react-query';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List } from '../list/List';
-import { Datagrid } from '../list/datagrid/Datagrid';
-import { TextField } from '../field/TextField';
+import { DataTable } from '../list';
 import { Create } from '../detail/Create';
 import { SimpleForm } from '../form/SimpleForm';
 import { TextInput } from '../input/TextInput';
@@ -202,12 +203,12 @@ const AccessControlLayout = ({
 const BookList = () => {
     return (
         <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
         </List>
     );
 };

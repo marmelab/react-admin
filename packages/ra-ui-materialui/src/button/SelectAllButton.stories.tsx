@@ -3,12 +3,10 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-
 import { SelectAllButton } from './SelectAllButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { List, Datagrid, BulkActionsToolbar } from '../list';
-import { TextField, NumberField } from '../field';
+import { List, DataTable, BulkActionsToolbar } from '../list';
 import { BulkDeleteButton } from './BulkDeleteButton';
 
 export default { title: 'ra-ui-materialui/button/SelectAllButton' };
@@ -134,7 +132,7 @@ const Wrapper = ({ children }) => (
                     name="books"
                     list={() => (
                         <List>
-                            <Datagrid
+                            <DataTable
                                 bulkActionsToolbar={
                                     <BulkActionsToolbar
                                         selectAllButton={children}
@@ -143,11 +141,11 @@ const Wrapper = ({ children }) => (
                                     </BulkActionsToolbar>
                                 }
                             >
-                                <TextField source="id" />
-                                <TextField source="title" />
-                                <TextField source="author" />
-                                <NumberField source="reads" />
-                            </Datagrid>
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="title" />
+                                <DataTable.Col source="author" />
+                                <DataTable.NumberCol source="reads" />
+                            </DataTable>
                         </List>
                     )}
                 />

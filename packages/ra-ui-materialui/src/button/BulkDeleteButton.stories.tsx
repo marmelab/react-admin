@@ -5,12 +5,10 @@ import { Resource } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-
 import { AdminContext } from '../AdminContext';
 import { BulkDeleteButton } from './BulkDeleteButton';
 import { defaultLightTheme } from '../theme';
-import { Datagrid, List } from '../list';
-import { NumberField, TextField } from '../field';
+import { DataTable, List } from '../list';
 import { AdminUI } from '../AdminUI';
 
 export default { title: 'ra-ui-materialui/button/BulkDeleteButton' };
@@ -104,12 +102,12 @@ const Wrapper = ({ children, ...props }) => {
                     name="books"
                     list={() => (
                         <List>
-                            <Datagrid bulkActionButtons={children}>
-                                <TextField source="id" />
-                                <TextField source="title" />
-                                <TextField source="author" />
-                                <NumberField source="reads" />
-                            </Datagrid>
+                            <DataTable bulkActionButtons={children}>
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="title" />
+                                <DataTable.Col source="author" />
+                                <DataTable.NumberCol source="reads" />
+                            </DataTable>
                         </List>
                     )}
                 />

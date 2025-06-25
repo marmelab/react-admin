@@ -9,17 +9,15 @@ import {
     TestMemoryRouter,
 } from 'ra-core';
 import { Box, Button, Card, ThemeOptions, Typography } from '@mui/material';
-
 import { InfiniteList } from './InfiniteList';
 import { SimpleList } from './SimpleList';
-import { Datagrid, type DatagridProps } from './datagrid';
+import { DataTable, type DataTableProps } from './datatable';
 import {
     InfinitePagination,
     Pagination as DefaultPagination,
 } from './pagination';
 import { AdminUI } from '../AdminUI';
 import { AdminContext } from '../AdminContext';
-import { TextField } from '../field';
 import { SearchInput } from '../input';
 import { BulkDeleteButton, SelectAllButton, SortButton } from '../button';
 import { TopToolbar, Layout } from '../layout';
@@ -208,11 +206,11 @@ export const PaginationLoadMore = () => (
             name="books"
             list={() => (
                 <InfiniteList pagination={<LoadMore />}>
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="title" />
-                        <TextField source="author" />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                    </DataTable>
                 </InfiniteList>
             )}
         />
@@ -249,11 +247,11 @@ export const PaginationCustom = () => (
             name="books"
             list={() => (
                 <InfiniteList pagination={<CustomPagination />}>
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="title" />
-                        <TextField source="author" />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                    </DataTable>
                 </InfiniteList>
             )}
         />
@@ -283,11 +281,11 @@ export const PerPageSmall = () => (
             name="books"
             list={() => (
                 <InfiniteList perPage={1}>
-                    <Datagrid>
-                        <TextField source="id" />
-                        <TextField source="title" />
-                        <TextField source="author" />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                    </DataTable>
                 </InfiniteList>
             )}
         />
@@ -352,18 +350,18 @@ export const WithFooter = () => (
 export const WithDatagrid = ({
     bulkActionsToolbar,
 }: {
-    bulkActionsToolbar?: DatagridProps['bulkActionsToolbar'];
+    bulkActionsToolbar?: DataTableProps['bulkActionsToolbar'];
 }) => (
     <Admin dataProvider={dataProvider}>
         <Resource
             name="books"
             list={() => (
                 <InfiniteList>
-                    <Datagrid bulkActionsToolbar={bulkActionsToolbar}>
-                        <TextField source="id" />
-                        <TextField source="title" />
-                        <TextField source="author" />
-                    </Datagrid>
+                    <DataTable bulkActionsToolbar={bulkActionsToolbar}>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="title" />
+                        <DataTable.Col source="author" />
+                    </DataTable>
                 </InfiniteList>
             )}
         />

@@ -4,10 +4,8 @@ import merge from 'lodash/merge';
 import {
     Admin,
     Resource,
-    Datagrid,
+    DataTable,
     List,
-    TextField,
-    NumberField,
     DateField,
     FilterList,
     FilterListItem,
@@ -137,15 +135,17 @@ const Aside = () => (
 
 const SongList = () => (
     <List aside={<Aside />}>
-        <Datagrid rowClick="edit">
-            <TextField source="title" />
-            <TextField source="artist" />
-            <TextField source="writer" />
-            <TextField source="producer" />
-            <TextField source="recordCompany" />
-            <NumberField source="rank" />
-            <DateField source="released" />
-        </Datagrid>
+        <DataTable rowClick="edit">
+            <DataTable.Col source="title" />
+            <DataTable.Col source="artist" />
+            <DataTable.Col source="writer" />
+            <DataTable.Col source="producer" />
+            <DataTable.Col source="recordCompany" />
+            <DataTable.NumberCol source="rank" />
+            <DataTable.Col source="released">
+                <DateField source="released" />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 

@@ -6,7 +6,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
-import { Datagrid, Pagination } from '../list';
+import { DataTable, Pagination } from '../list';
 import { ReferenceArrayField } from './ReferenceArrayField';
 import { TextField } from './TextField';
 import { Show, SimpleShowLayout } from '../detail';
@@ -58,10 +58,10 @@ export const Children = () => (
                 <SimpleShowLayout>
                     <TextField source="name" />
                     <ReferenceArrayField source="members" reference="artists">
-                        <Datagrid bulkActionButtons={false}>
-                            <TextField source="id" />
-                            <TextField source="name" />
-                        </Datagrid>
+                        <DataTable bulkActionButtons={false}>
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="name" />
+                        </DataTable>
                     </ReferenceArrayField>
                 </SimpleShowLayout>
             </Show>
@@ -96,10 +96,10 @@ export const DifferentIdTypes = () => (
                     source="members"
                     reference="artists"
                 >
-                    <Datagrid bulkActionButtons={false}>
-                        <TextField source="id" />
-                        <TextField source="name" />
-                    </Datagrid>
+                    <DataTable bulkActionButtons={false}>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="name" />
+                    </DataTable>
                 </ReferenceArrayField>
             </Show>
         </CardContent>
@@ -127,10 +127,10 @@ export const WithMeta = () => {
                             meta: { foo: 'bar' },
                         }}
                     >
-                        <Datagrid bulkActionButtons={false}>
-                            <TextField source="id" />
-                            <TextField source="name" />
-                        </Datagrid>
+                        <DataTable bulkActionButtons={false}>
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="name" />
+                        </DataTable>
                     </ReferenceArrayField>
                 </Show>
             </CardContent>
@@ -154,10 +154,10 @@ export const WithPagination = () => (
                         pagination={<Pagination />}
                         perPage={5}
                     >
-                        <Datagrid>
-                            <TextField source="id" />
-                            <TextField source="name" />
-                        </Datagrid>
+                        <DataTable>
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="name" />
+                        </DataTable>
                     </ReferenceArrayField>
                 </SimpleShowLayout>
             </Show>

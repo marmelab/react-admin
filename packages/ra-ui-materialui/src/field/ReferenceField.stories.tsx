@@ -26,10 +26,9 @@ import { ReferenceField } from './ReferenceField';
 import { ReferenceManyCount } from './ReferenceManyCount';
 import { ReferenceInput } from '../input/ReferenceInput';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
-import { Datagrid } from '../list/datagrid/Datagrid';
 import { AdminUI, AdminContext } from '../';
 import { defaultLightTheme, ThemeProvider, ThemesContext } from '../theme';
-import { List } from '../list';
+import { DataTable, List } from '../list';
 import { EditGuesser, ShowGuesser } from '../detail';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceField' };
@@ -388,16 +387,14 @@ const ListWrapper = ({ children }) => (
 
 export const InDatagrid = () => (
     <ListWrapper>
-        <Datagrid>
-            <TextField source="title" />
-            <ReferenceField
-                label="ISBN"
-                source="detail_id"
-                reference="book_details"
-            >
-                <TextField source="ISBN" />
-            </ReferenceField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col label="ISBN">
+                <ReferenceField source="detail_id" reference="book_details">
+                    <TextField source="ISBN" />
+                </ReferenceField>
+            </DataTable.Col>
+        </DataTable>
     </ListWrapper>
 );
 
@@ -617,28 +614,27 @@ const bookListFilters = [
 
 const BookList = () => (
     <List filters={bookListFilters}>
-        <Datagrid rowClick="edit">
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable rowClick="edit">
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="authorId">
+                <ReferenceField source="authorId" reference="authors" />
+            </DataTable.Col>
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 
 const AuthorList = () => (
     <List>
-        <Datagrid rowClick="edit">
-            <TextField source="id" />
-            <TextField source="firstName" />
-            <TextField source="lastName" />
-            <ReferenceManyCount
-                label="Nb books"
-                reference="books"
-                target="authorId"
-                link
-            />
-        </Datagrid>
+        <DataTable rowClick="edit">
+            <DataTable.Col source="id" />
+            <DataTable.Col source="firstName" />
+            <DataTable.Col source="lastName" />
+            <DataTable.Col label="Nb books">
+                <ReferenceManyCount reference="books" target="authorId" link />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 
