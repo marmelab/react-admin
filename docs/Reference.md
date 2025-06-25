@@ -174,7 +174,6 @@ title: "Index"
 
 * [`<SaveButton>`](./SaveButton.md)
 * [`<SavedQueriesList>`](./SavedQueriesList.md)
-* [`<Scheduler>`](./Scheduler.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<Search>`](./Search.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<SearchInput>`](./SearchInput.md)
 * [`<SearchWithResult>`](./SearchWithResult.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
