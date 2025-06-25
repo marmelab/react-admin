@@ -158,7 +158,7 @@ For example, to render a `<SelectField>` in read mode, you can use the following
 
 The component to render in edit mode. By default, it's a `<TextInput>` using the `source` prop.
 
-You can use any [input component](./Input.md) instead, as it renders in a `<Form>`. You will probably need to tweak the input variant, margin and style so that it matches the style of the read mode component.
+You can use any [input component](./Inputs.md) instead, as it renders in a `<Form>`. You will probably need to tweak the input variant, margin and style so that it matches the style of the read mode component.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/InPlaceEditorField.mp4" type="video/mp4"/>

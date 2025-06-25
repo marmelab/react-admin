@@ -143,7 +143,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: `<DataTable>` also lets you customize the table [header](#header) and [footer](#footer) components.
+**Tip**: `<DataTable>` also lets you customize the table [header](#head) and [footer](#foot) components.
 
 ## `bulkActionButtons`
 
@@ -743,7 +743,7 @@ Using the `isRowExpandable` prop, you can customize which rows can have a collap
 For instance, this code shows an expand button only for rows that have a detail to show:
 
 ```tsx
-import { List, DataTable useRecordContext } from 'react-admin';
+import { List, DataTable, useRecordContext } from 'react-admin';
 
 const PostPanel = () => {
     const record = useRecordContext();
@@ -1645,7 +1645,7 @@ An action column should not be sortable, so you don't need to specify a `source`
 
 ```tsx
 <DataTable.Col>
-    <EditButton>
+    <EditButton />
     <DeleteButton />
 </DataTable.Col>
 ```
@@ -1681,9 +1681,9 @@ const ProductList = () => (
             </CanAccess>
             <CanAccess action="read" resource="products.reference">
                 <DataTable.Col source="reference" />
-            </DataTable.Col>
+            </CanAccess>
             <CanAccess action="read" resource="products.category_id">
-                <DataTable.Col source="category_id" />
+                <DataTable.Col source="category_id">
                     <ReferenceField source="category_id" reference="categories" />
                 </DataTable.Col>
             </CanAccess>
@@ -1715,9 +1715,9 @@ As this is quite verbose, you may prefer using the `<Datagrid>` component from t
 - Users must have the `'read'` permission on a resource column to see it in the export:
 
 ```jsx
-{ action: "read", resource: `${resource}.${source}` }.
+{ action: "read", resource: `${resource}.${source}` }
 // or
-{ action: "read", resource: `${resource}.*` }.
+{ action: "read", resource: `${resource}.*` }
 ```
 
 - Users must have the `'delete'` permission on the resource to see the `<BulkExportButton>`.
@@ -1786,7 +1786,7 @@ const ProductList = () => (
 **Tip**: Adding the 'read' permission for the resource itself doesn't grant the 'read' permission on the columns. If you want a user to see all possible columns, add the 'read' permission on columns using a wildcard:
 
 ```jsx
-{ action: "read", resource: "products.*" }.
+{ action: "read", resource: "products.*" }
 ```
 
 ## Typescript
