@@ -58,7 +58,7 @@ export interface InferredElementDescription {
  */
 export const inferTypeFromValues = (
     name,
-    values = []
+    values: any[] = []
 ): InferredElementDescription => {
     if (name === 'id') {
         return { type: 'id', props: { source: name } };

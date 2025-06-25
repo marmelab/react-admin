@@ -15,8 +15,11 @@ import {
     type UpdateParams,
     useTranslate,
     useIsOffine,
+    useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
 import type { UseMutationOptions } from '@tanstack/react-query';
+import { humanize, singularize } from 'inflection';
 
 import { Button, type ButtonProps } from './Button';
 
@@ -29,18 +32,42 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
     const notify = useNotify();
     const resource = useResourceContext(props);
     const refresh = useRefresh();
-    const translate = useTranslate();
     const isOffline = useIsOffine();
 
     const {
         data,
-        label = 'ra.action.update',
+        label: labelProp,
         icon = defaultIcon,
         onClick,
         mutationOptions = {},
         ...rest
     } = props;
-
+    const translate = useTranslate();
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    let recordRepresentation = getRecordRepresentation(record);
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 1,
+        _: humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 1,
+                _: resource ? singularize(resource) : undefined,
+            }),
+            true
+        ),
+    });
+    // We don't support React elements for this
+    if (React.isValidElement(recordRepresentation)) {
+        recordRepresentation = `#${record?.id}`;
+    }
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.update`,
+        baseI18nKey: 'ra.action.update',
+        options: {
+            name: resourceName,
+            recordRepresentation,
+        },
+        userText: labelProp,
+    });
     const [updateMany, { isPending }] = useUpdate();
 
     const {
@@ -114,7 +141,10 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
     return (
         <StyledButton
             onClick={handleClick}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             disabled={isPending}
             {...sanitizeRestProps(rest)}
         >

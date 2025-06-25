@@ -9,6 +9,11 @@ import {
     useListContext,
     useResourceContext,
 } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { Button, ButtonProps } from './Button';
 
@@ -35,7 +40,12 @@ import { Button, ButtonProps } from './Button';
  *     </List>
  * );
  */
-export const BulkExportButton = (props: BulkExportButtonProps) => {
+export const BulkExportButton = (inProps: BulkExportButtonProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         onClick,
         label = 'ra.action.export',
@@ -77,13 +87,13 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
     );
 
     return (
-        <Button
+        <StyledButton
             onClick={handleClick}
             label={label}
             {...sanitizeRestProps(rest)}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -104,3 +114,29 @@ interface Props {
 }
 
 export type BulkExportButtonProps = Props & ButtonProps;
+
+const PREFIX = 'RaBulkExportButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<BulkExportButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

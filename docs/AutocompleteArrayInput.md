@@ -147,65 +147,68 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 
 {% raw %}
 ```jsx
-import { CreateRole } from './CreateRole';
-
-const choices = [
-    { id: 'admin', name: 'Admin' },
-    { id: 'u001', name: 'Editor' },
-    { id: 'u002', name: 'Moderator' },
-    { id: 'u003', name: 'Reviewer' },
-];
+import {
+    AutocompleteArrayInput,
+    Create,
+    CreateBase,
+    ReferenceArrayInput,
+    SimpleForm,
+    TextInput,
+    useCreateSuggestionContext
+} from 'react-admin';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+} from '@mui/material';
 
 const UserCreate = () => (
     <Create>
         <SimpleForm>
-            <AutocompleteArrayInput
-                source="roles"
-                choices={choices}
-                create={<CreateRole />}
-            />
+            <ReferenceArrayInput source="roles" reference="roles">
+                <AutocompleteArrayInput create={<CreateRole />} />
+            </ReferenceArrayInput>
         </SimpleForm>
     </Create>
 );
 
-// in ./CreateRole.js
-import { useCreateSuggestionContext } from 'react-admin';
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    TextField,
-} from '@mui/material';
-
 const CreateRole = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [value, setValue] = React.useState(filter || '');
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        const newOption = { id: value, name: value };
-        choices.push(newOption);
-        setValue('');
-        onCreate(newOption);
-    };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="Role name"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Role</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="roles"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm defaultValues={{ name: filter }}>
+                        <TextInput
+                            source="name"
+                            helperText={false}
+                            autoFocus
+                        />
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
         </Dialog>
     );
 };
@@ -492,6 +495,8 @@ const choices = [
 <AutocompleteArrayInput source="roles" choices={choices} optionValue="_id" />
 ```
 
+**Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<AutocompleteArrayInput>` inside a `<ReferenceArrayInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
+
 ## `shouldRenderSuggestions`
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain acceptable performance. `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly and might be all you need (depending on your data set).
@@ -718,20 +723,14 @@ import {
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
-    useCreate,
     useCreateSuggestionContext
 } from 'react-admin';
-
 import CloseIcon from '@mui/icons-material/Close';
 import {
-    Box,
-    BoxProps,
-    Button,
     Dialog,
     DialogContent,
     DialogTitle,
     IconButton,
-    TextField,
 } from '@mui/material';
 
 const PostCreate = () => {
@@ -749,10 +748,6 @@ const PostCreate = () => {
 
 const CreateTag = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-   
-    const onTagCreate = tag => {
-        onCreate(tag);
-    };
 
     return (
         <Dialog open onClose={onCancel}>
@@ -774,9 +769,7 @@ const CreateTag = () => {
                     redirect={false}
                     resource="tags"
                     mutationOptions={{
-                        onSuccess: tag => {
-                            onTagCreate(tag);
-                        },
+                        onSuccess: onCreate,
                     }}
                 >
                     <SimpleForm defaultValues={{ name: filter }}>

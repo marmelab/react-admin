@@ -7,6 +7,7 @@ import {
     UpdateWithUndoButton,
     UpdateWithUndoButtonProps,
 } from './UpdateWithUndoButton';
+import { useThemeProps } from '@mui/material/styles';
 
 /**
  * Updates the current record.
@@ -30,7 +31,10 @@ import {
  * );
  */
 export const UpdateButton = (props: UpdateButtonProps) => {
-    const { mutationMode = 'undoable', ...rest } = props;
+    const { mutationMode = 'undoable', ...rest } = useThemeProps({
+        name: PREFIX,
+        props: props,
+    });
 
     return mutationMode === 'undoable' ? (
         <UpdateWithUndoButton {...rest} />
@@ -46,3 +50,17 @@ export type UpdateButtonProps =
     | ({
           mutationMode?: 'pessimistic' | 'optimistic';
       } & UpdateWithConfirmButtonProps);
+
+const PREFIX = 'RaUpdateButton';
+
+declare module '@mui/material/styles' {
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<UpdateButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+        };
+    }
+}

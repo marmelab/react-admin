@@ -9,6 +9,7 @@ import { AdminContext } from '../AdminContext';
 import { SaveButton } from '../button';
 import { SimpleForm, Toolbar } from '../form';
 import { required, ResourceContextProvider } from 'ra-core';
+import { Themed } from './NumberInput.stories';
 
 describe('<NumberInput />', () => {
     const defaultProps = {
@@ -671,5 +672,10 @@ describe('<NumberInput />', () => {
                 expect(screen.getByText('error')).not.toBeNull();
             });
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        await screen.findByTestId('themed');
     });
 });

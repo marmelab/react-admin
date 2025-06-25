@@ -24,6 +24,7 @@ import {
     Title,
     TitleFalse,
     TitleElement,
+    Themed,
 } from './Show.stories';
 import { Show } from './Show';
 
@@ -127,6 +128,13 @@ describe('<Show />', () => {
     it('should allow to override the root component', () => {
         render(<Component />);
         expect(screen.getByTestId('custom-component')).toBeDefined();
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.queryByTestId('themed-view').classList).toContain(
+            'custom-class'
+        );
     });
 
     describe('title', () => {

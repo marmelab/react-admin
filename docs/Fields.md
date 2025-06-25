@@ -22,7 +22,7 @@ const PurpleTextField = ({ source }) => {
 ```
 {% endraw %}
 
-**Tip**: Every time it renders a record, react-admin creates a `RecordContext`. This includes datagrid rows, simple list items, reference fields, show, and edit pages. You can even create a `RecordContext` yourself and use react-admin Fields in custom pages.
+**Tip**: Every time it renders a record, react-admin creates a `RecordContext`. This includes `<DataTable>` rows, simple list items, reference fields, show, and edit pages. You can even create a `RecordContext` yourself and use react-admin Fields in custom pages.
 
 React-admin Field components also accept a `record` prop. This allows you to use them outside a `RecordContext`, or to use another `record` than the one in the current context.
 
@@ -79,7 +79,7 @@ Will render
 </Typography>
 ```
 
-Field components are generally used in List and Show views, as children of `<Datagrid>`, `<SimpleShowLayout>`, and `<TabbedShowLayout>`. The parent component usually reads their `source` and/or `label` prop to add a title.
+Field components are generally used in List and Show views, as children of `<DataTable>`, `<Datagrid>`, `<SimpleShowLayout>`, and `<TabbedShowLayout>`. The parent component usually reads their `source` and/or `label` prop to add a title.
 
 ```jsx
 // in src/posts.js
@@ -147,14 +147,7 @@ CSS class name passed to the root component.
 By default, a Field renders an empty string when the record has no value for that field. You can override this behavior by setting the `emptyText` prop. The emptyText supports i8nProvider translation, if the translation is not found it will display the value as default.
 
 ```jsx
-const PostList = () => (
-    <List>
-        <Datagrid>
-            <TextField source="title" />
-            <TextField source="author" emptyText="missing data" />
-        </Datagrid>
-    </List>
-);
+<TextField source="author" emptyText="missing data" />
 ```
 
 ## `label`
@@ -183,6 +176,8 @@ You can customize this automated label by specifying a `label` prop. `<SimpleSho
 
 **Note**: This prop has no effect when rendering a field outside a `<Datagrid>`, a `<SimpleShowLayout>`, a `<TabbedShowLayout>`, a `<SimpleForm>`, or a `<TabbedForm>`.
 
+**Tip**: Having to specify the `label` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
+
 ## `record`
 
 By default, fields use the `record` from the `RecordContext`. But you can override it by passing the `record` prop - e.g. if you're rendering a field outside a `RecordContext`, or if you want to use a different record than the one in the context.
@@ -202,7 +197,7 @@ const PostList = () => (
     <List>
         <Datagrid>
             <TextField source="title" />
-            <ReferenceField source="author_id" sortable={false}>
+            <ReferenceField source="author_id" reference="authors" sortable={false}>
                 <TextField source="name" />
             </ReferenceField>
         </Datagrid>
@@ -212,9 +207,11 @@ const PostList = () => (
 
 **Note**: This prop has no effect when rendering a field outside a `<Datagrid>`.
 
+**Tip**: Having to specify the `sortable` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
+
 ## `sortBy`
 
-In a `<Datagrid>`, users can change the sort field and order by clicking on the column headers. `<Datagrid>` uses the Field `source`to determine the sort field (e.g. clicking on the column header for the `<TextField source="title" />` field sorts the list according to the `title` field).
+In a `<Datagrid>`, users can change the sort field and order by clicking on the column headers. `<Datagrid>` uses the Field `source` to determine the sort field (e.g. clicking on the column header for the `<TextField source="title" />` field sorts the list according to the `title` field).
 
 You may want to use a different sort field than the `source`, e.g. for Reference fields. In that case, use the `sortBy` prop to specify the sort field.
 
@@ -223,7 +220,7 @@ const PostList = () => (
     <List>
         <Datagrid>
             <TextField source="title" />
-            <ReferenceField source="author_id" sortBy="author.name">
+            <ReferenceField source="author_id" reference="authors" sortBy="author.name">
                 <TextField source="name" />
             </ReferenceField>
         </Datagrid>
@@ -232,6 +229,8 @@ const PostList = () => (
 ```
 
 **Note**: This prop has no effect when rendering a field outside a `<Datagrid>`.
+
+**Tip**: Having to specify the `sortBy` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
 
 ## `sortByOrder`
 
@@ -251,6 +250,8 @@ const PostList = () => (
 ```
 
 **Note**: This prop has no effect when rendering a field outside a `<Datagrid>`.
+
+**Tip**: Having to specify the `sortByOrder` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
 
 ## `source`
 
@@ -302,6 +303,10 @@ const PostList = () => (
     </List>
 );
 ```
+
+**Tip:** [`<NumberField>`](./NumberField.md) automatically sets the `textAlign` to `right`, so you don't need to set it manually when using that component.
+
+**Tip:** If you are using [`<DataTable>`](./DataTable.md) (the successor of `<Datagrid>`), you can set the [`align`](./DataTable.md#align) prop on the [`<DataTable.Col>`](./DataTable.md#datatablecol) component instead.
 
 ## Deep Field Source
 
@@ -361,6 +366,8 @@ const BookList = () => (
 );
 ```
 
+**Tip**: Having to specify the `label` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
+
 But as Field components don't render the label themselves (again, this is the responsibility of the parent layout component to render the label), this doesn't work when you use a Field inside a Form, or when the field isn't a direct child of a layout component.
 
 To render a field with a label in such situations, wrap the field in [a `<Labeled>` component](./Labeled.md):
@@ -385,6 +392,8 @@ React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<Si
 // No label will be added in SimpleShowLayout
 <TextField source="author.name" label={false} />
 ```
+
+**Tip**: Having to specify the `label` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
 
 ## Conditional Formatting
 
@@ -615,9 +624,10 @@ const AuthorField = () => {
 
 You can find components for react-admin in third-party repositories.
 
-- [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): a quick and customizable copy-to-clipboard field.
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
-- [alexgschwend/react-admin-color-picker](https://github.com/alexgschwend/react-admin-color-picker): a color field
+- [alexgschwend/react-admin-color-picker](https://github.com/alexgschwend/react-admin-color-picker): a color field.
+- [huyanhvn/react-admin-clipboard-field](https://github.com/huyanhvn/react-admin-clipboard-field): a wrapper to TextField that copies field content to clipboard.
+- [OoDeLally/react-admin-clipboard-list-field](https://github.com/OoDeLally/react-admin-clipboard-list-field): copy various formats of the same value to clipboard.
 
 ## TypeScript
 

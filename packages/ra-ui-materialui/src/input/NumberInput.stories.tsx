@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { required } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
+import { createTheme } from '@mui/material/styles';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
@@ -11,8 +12,8 @@ import { TextInput } from './TextInput';
 
 export default { title: 'ra-ui-materialui/input/NumberInput' };
 
-const Wrapper = ({ children }) => (
-    <AdminContext defaultTheme="light">
+const Wrapper = ({ children, theme = undefined }) => (
+    <AdminContext defaultTheme="light" theme={theme}>
         <Create
             resource="posts"
             record={{ id: 123, views: 23 }}
@@ -202,6 +203,12 @@ export const Sx = () => (
     </Wrapper>
 );
 
+export const OutlinedNoLabel = () => (
+    <Wrapper>
+        <NumberInput source="views" label={false} variant="outlined" />
+    </Wrapper>
+);
+
 const FormStateInspector = () => {
     const { touchedFields, isDirty, dirtyFields, isValid, errors } =
         useFormState();
@@ -269,5 +276,29 @@ export const SetFocus = () => (
         <TextInput source="title" />
         <NumberInput source="views" />
         <SetFocusButton source="views" />
+    </Wrapper>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={createTheme({
+            components: {
+                RaNumberInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    } as any,
+                    styleOverrides: {
+                        root: {
+                            ['& input']: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            },
+        })}
+    >
+        <NumberInput source="views" />
+        <FormInspector name="views" />
     </Wrapper>
 );

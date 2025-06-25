@@ -26,6 +26,7 @@ import {
     SXNoLink,
     SlowAccessControl,
     ErrorWhileFetching,
+    Themed,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -619,7 +620,7 @@ describe('<ReferenceField />', () => {
                     selector: 'a > span',
                 })
             );
-            await screen.findByText('ra.page.show');
+            await screen.findByText('resources.authors.page.show');
             await screen.findByText('Carroll');
         });
         it('should render a link to the edit view when users have access to it for the referenced resource', async () => {
@@ -643,7 +644,7 @@ describe('<ReferenceField />', () => {
                     selector: 'a > span',
                 })
             );
-            await screen.findByText('ra.page.edit');
+            await screen.findByText('resources.authors.page.edit');
             await screen.findByDisplayValue('Carroll');
         });
         it('should not render a link when users do not have access to show nor edit for the referenced resource', async () => {
@@ -681,5 +682,10 @@ describe('<ReferenceField />', () => {
                 getComputedStyle(root).getPropertyValue('background-color')
             ).toBe('red');
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(await screen.findByTestId('themed')).toBeDefined();
     });
 });

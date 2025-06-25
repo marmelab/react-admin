@@ -204,7 +204,7 @@ React-admin provides four bulk action buttons that you can use in data tables:
 **Tip**: Users can select a range of rows by pressing the shift key while clicking a row checkbox.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/Datagrid-select-range.mp4" type="video/mp4"/>
+  <source src="./img/datagrid-select-range.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -526,7 +526,7 @@ const BookList = () => (
 ## `expand`
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/Datagrid_expand.mp4" type="video/mp4"/>
+  <source src="./img/datagrid_expand.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1304,7 +1304,7 @@ Refer to the [`<NumberField>`](./NumberField.md) documentation for more details.
 `<DataTable>` has sticky headers, which means that the header row will remain visible even when scrolling down the page.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/Datagrid-headers-pinning.mp4" type="video/mp4"/>
+  <source src="./img/datagrid-headers-pinning.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1850,3 +1850,29 @@ const ReviewList = () => (
 );
 ```
 
+
+## Migrating From `<Datagrid>` To `<DataTable>`
+
+To help you migrate from `<Datagrid>` to `<DataTable>`, we've created a codemod.
+
+> **DISCLAIMER**
+> Please review the generated changes thoroughly!
+>
+> Applying the codemod might break your code formatting, so don't forget to run your formatter (prettier, eslint, biome, etc.) after you've applied the codemod!
+
+For `.js` or `.jsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=js,jsx \
+    --transform=./node_modules/ra-core/codemods/replace-Datagrid-DataTable.ts
+```
+
+For `.ts` or `.tsx` files:
+
+```sh
+npx jscodeshift ./path/to/src/ \
+    --extensions=ts,tsx \
+    --parser=tsx \
+    --transform=./node_modules/ra-core/codemods/replace-Datagrid-DataTable.ts
+```

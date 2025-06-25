@@ -92,17 +92,15 @@ const LatestNews = () => {
 
 ## Rendering Data
 
-If you want to use the result in a react-admin iterator component like [`<Datagrid>`](./Datagrid.md), [`<SimpleList>`](./SimpleList.md), or [`<SingleFieldList>`](./SingleFieldList.md), you must first create a [`ListContext`](./useListContext.md) with the data. The [`useList`](./useList.md) hook does that for you:
+If you want to use the result in a react-admin iterator component like [`<DataTable>`](./DataTable.md), [`<SimpleList>`](./SimpleList.md), or [`<SingleFieldList>`](./SingleFieldList.md), you must first create a [`ListContext`](./useListContext.md) with the data. The [`useList`](./useList.md) hook does that for you:
 
 ```jsx
 import {
     useGetList,
     useList,
     ListContextProvider,
-    Datagrid,
-    TextField,
+    DataTable,
     DateField,
-    NumberField,
     Pagination
 } from 'react-admin';
 
@@ -121,18 +119,18 @@ const LatestNews = () => {
     return (
         <ListContextProvider value={listContext}>
             <h1>Latest news</h1>
-            <Datagrid>
-                <TextField source="title" />
-                <DateField source="published_at" />
-                <NumberField source="views" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col source="published_at" field={DateField} />
+                <DataTable.NumberCol source="views" />
+            </DataTable>
             <Pagination />
         </ListContextProvider>
     );
 };
 ```
 
-In this example, the `useGetList` hook fetches all the posts, and displays a list of the 10 most recent posts in a `<Datagrid>`. The `<Pagination>` component allows the user to navigate through the list. Users can also sort the list by clicking on the column headers.
+In this example, the `useGetList` hook fetches all the posts, and displays a list of the 10 most recent posts in a `<DataTable>`. The `<Pagination>` component allows the user to navigate through the list. Users can also sort the list by clicking on the column headers.
 
 ## Passing Additional Arguments
 
@@ -220,11 +218,11 @@ import { ReferenceManyField } from 'react-admin';
 const PostComments = () => {
     return (
         <ReferenceManyField reference="comments" target="post_id">
-            <Datagrid>
-                <DateField source="created_at" />
-                <TextField source="author" />
-                <TextField source="body" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="created_at" field={DateField} />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="body" />
+            </DataTable>
         </ReferenceManyField>
     );
 };
@@ -246,11 +244,11 @@ const PostComments = () => {
     const listContext = useList({ data });
     return (
         <ListContextProvider value={listContext}>
-            <Datagrid>
-                <DateField source="created_at" />
-                <TextField source="author" />
-                <TextField source="body" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="created_at" field={DateField} />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="body" />
+            </DataTable>
         </ListContextProvider>
     );
 };

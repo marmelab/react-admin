@@ -170,42 +170,41 @@ describe('useReferenceInputController', () => {
         );
 
         await waitFor(() => {
-            expect(children.mock.calls.length).toBeGreaterThanOrEqual(3);
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    allChoices: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
+                    availableChoices: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
+                    selectedChoices: [{ id: 1, title: 'foo' }],
+                    displayedFilters: {},
+                    error: null,
+                    filter: {},
+                    filterValues: {},
+                    isFetching: false,
+                    isLoading: false,
+                    page: 1,
+                    perPage: 25,
+                    hasPreviousPage: false,
+                    hasNextPage: false,
+                    hideFilter: expect.any(Function),
+                    setFilters: expect.any(Function),
+                    setPage: expect.any(Function),
+                    setPerPage: expect.any(Function),
+                    setSort: expect.any(Function),
+                    showFilter: expect.any(Function),
+                    sort: { field: 'title', order: 'ASC' },
+                    refetch: expect.any(Function),
+                    resource: 'posts',
+                    source: 'post_id',
+                    total: 2,
+                })
+            );
         });
-        expect(children).toHaveBeenCalledWith(
-            expect.objectContaining({
-                allChoices: [
-                    { id: 1, title: 'foo' },
-                    { id: 2, title: 'bar' },
-                ],
-                availableChoices: [
-                    { id: 1, title: 'foo' },
-                    { id: 2, title: 'bar' },
-                ],
-                selectedChoices: [{ id: 1, title: 'foo' }],
-                displayedFilters: {},
-                error: null,
-                filter: {},
-                filterValues: {},
-                isFetching: false,
-                isLoading: false,
-                page: 1,
-                perPage: 25,
-                hasPreviousPage: false,
-                hasNextPage: false,
-                hideFilter: expect.any(Function),
-                setFilters: expect.any(Function),
-                setPage: expect.any(Function),
-                setPerPage: expect.any(Function),
-                setSort: expect.any(Function),
-                showFilter: expect.any(Function),
-                sort: { field: 'title', order: 'ASC' },
-                refetch: expect.any(Function),
-                resource: 'posts',
-                source: 'post_id',
-                total: 2,
-            })
-        );
     });
 
     it('should refetch reference getList when its props change', async () => {

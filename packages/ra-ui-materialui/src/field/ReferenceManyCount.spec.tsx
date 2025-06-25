@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import {
     Basic,
     ErrorState,
+    Themed,
     WithFilter,
     Wrapper,
 } from './ReferenceManyCount.stories';
@@ -45,5 +46,10 @@ describe('<ReferenceManyCount />', () => {
             meta: undefined,
             signal: undefined,
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.getByTestId('themed')).toBeDefined();
     });
 });

@@ -72,7 +72,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
 
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
     const { append, fields, move, remove, replace } = useArrayInput(props);
-    const { resetField, trigger, getValues } = useFormContext();
+    const { trigger, getValues } = useFormContext();
     const translate = useTranslate();
     const record = useRecordContext(props);
     const initialDefaultValue = useRef({});
@@ -111,7 +111,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                     !Children.only(children).props.source &&
                     // Make sure it's not a FormDataConsumer
                     // @ts-ignore
-                    !Children.only(children).type !== FormDataConsumer
+                    Children.only(children).type !== FormDataConsumer
                 ) {
                     // ArrayInput used for an array of scalar values
                     // (e.g. tags: ['foo', 'bar'])
@@ -134,10 +134,8 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                 }
             }
             append(defaultValue);
-            // Make sure the newly added inputs are not considered dirty by react-hook-form
-            resetField(`${finalSource}.${fields.length}`, { defaultValue });
         },
-        [append, children, resetField, finalSource, fields.length]
+        [append, children]
     );
 
     const handleReorder = useCallback(

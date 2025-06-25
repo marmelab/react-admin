@@ -7,7 +7,11 @@ import {
     ListItemText,
     ListProps,
 } from '@mui/material';
-import { type ComponentsOverrides, styled } from '@mui/material/styles';
+import {
+    type ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import {
     type RaRecord,
     RecordContextProvider,
@@ -68,8 +72,13 @@ import { Offline } from '../../Offline';
  * );
  */
 export const SimpleList = <RecordType extends RaRecord = any>(
-    props: SimpleListProps<RecordType>
+    inProps: SimpleListProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         className,
         empty = DefaultEmpty,

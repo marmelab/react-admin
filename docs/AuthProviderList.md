@@ -8,6 +8,7 @@ title: "Supported Auth Provider Backends"
 It's very common that your auth logic is so specific that you'll need to write your own `authProvider`. However, the community has built a few open-source Auth Providers that may fit your need:
 
 <div class="providers-list" markdown="1">
+- ![Appwrite Logo](./img/backend-logos/appwrite.svg "Appwrite Logo")**[Appwrite](https://appwrite.io/)**: [marmelab/ra-appwrite](https://github.com/marmelab/ra-appwrite)
 - ![auth0 Logo](./img/backend-logos/auth0.svg "auth0 Logo")**[Auth0 by Okta](https://auth0.com/)**: [marmelab/ra-auth-auth0](https://github.com/marmelab/ra-auth-auth0/blob/main/packages/ra-auth-auth0/Readme.md)
 - ![amplify Logo](./img/backend-logos/amplify.svg "amplify Logo")**[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 - ![cognito Logo](./img/backend-logos/aws.png "cognito Logo")**[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [marmelab/ra-auth-cognito](https://github.com/marmelab/ra-auth-cognito/blob/main/packages/ra-auth-cognito/Readme.md)

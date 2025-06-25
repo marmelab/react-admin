@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
 import { Resource, useRecordContext, TestMemoryRouter } from 'ra-core';
-import { Box, Card, Stack } from '@mui/material';
+import { Box, Card, Stack, ThemeOptions } from '@mui/material';
+
 import { TextField } from '../field';
 import { Labeled } from '../Labeled';
 import { SimpleShowLayout } from './SimpleShowLayout';
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 import { Show } from './Show';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/detail/Show' };
 
@@ -240,6 +243,39 @@ export const Default = () => (
                     </Show>
                 )}
                 edit={() => <span />}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const Themed = () => (
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin
+            dataProvider={dataProvider}
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaShow: {
+                        defaultProps: {
+                            className: 'custom-class',
+                        },
+                        styleOverrides: {
+                            root: {
+                                ['& .RaShow-card']: {
+                                    color: 'red',
+                                },
+                            },
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <Resource
+                name="books"
+                show={() => (
+                    <Show data-testid={'themed-view'}>
+                        <BookTitle />
+                    </Show>
+                )}
             />
         </Admin>
     </TestMemoryRouter>

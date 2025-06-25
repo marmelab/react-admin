@@ -23,9 +23,11 @@ import { Notification } from '../layout';
 import {
     Basic,
     NoRecordRepresentation,
+    Themed,
     WithCustomTitleAndContent,
     WithDefaultTranslation,
 } from './DeleteWithConfirmButton.stories';
+import { Label } from './DeleteButton.stories';
 
 const theme = createTheme();
 
@@ -37,6 +39,32 @@ const invalidButtonDomProps = {
 };
 
 describe('<DeleteWithConfirmButton />', () => {
+    it('should allow resource specific label, confirm title and confirm content', async () => {
+        render(
+            <Label
+                translations="resource specific"
+                mutationMode="pessimistic"
+            />
+        );
+        fireEvent.click(
+            await screen.findByText('Delete War and Peace permanently')
+        );
+        await screen.findByText('Delete War and Peace permanently?');
+        await screen.findByText(
+            'Are you sure you want to delete War and Peace permanently?'
+        );
+        fireEvent.click(screen.getByText('Cancel'));
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        fireEvent.click(
+            await screen.findByText('Supprimer définitivement War and Peace')
+        );
+        await screen.findByText('Supprimer définitivement War and Peace ?');
+        await screen.findByText(
+            'Êtes-vous sûr de vouloir supprimer définitivement War and Peace ?'
+        );
+    });
+
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -50,7 +78,9 @@ describe('<DeleteWithConfirmButton />', () => {
 
         expect(spy).not.toHaveBeenCalled();
         expect(
-            screen.getByLabelText('ra.action.delete').getAttribute('type')
+            screen
+                .getByLabelText('resources.posts.action.delete')
+                .getAttribute('type')
         ).toEqual('button');
 
         spy.mockRestore();
@@ -66,8 +96,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allow to override the resource', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -93,7 +123,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.comments.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalledWith('comments', {
@@ -105,8 +137,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allows to undo the deletion after confirmation if mutationMode is undoable', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -135,7 +167,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
@@ -148,8 +182,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allow to override the success side effects', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -176,7 +210,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
@@ -195,8 +231,8 @@ describe('<DeleteWithConfirmButton />', () => {
     it('should allow to override the error side effects', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -223,7 +259,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
@@ -241,8 +279,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allow to override the translateOptions props', async () => {
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -275,15 +313,17 @@ describe('<DeleteWithConfirmButton />', () => {
             expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
 
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
         expect(screen.queryByDisplayValue('#20061703')).toBeDefined();
     });
 
     it('should display success message after successful deletion', async () => {
         const successMessage = 'Test Message';
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getOne: () =>
-                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -323,7 +363,9 @@ describe('<DeleteWithConfirmButton />', () => {
         await waitFor(() => {
             expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(await screen.findByLabelText('ra.action.delete'));
+        fireEvent.click(
+            await screen.findByLabelText('resources.comments.action.delete')
+        );
         fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(notificationsSpy).toEqual([
@@ -394,5 +436,11 @@ describe('<DeleteWithConfirmButton />', () => {
         );
         await screen.findByText('Delete author #1');
         await screen.findByText('Are you sure you want to delete this author?');
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const buttons = await screen.findAllByTestId('themed');
+        expect(buttons[0].classList).toContain('MuiButton-outlined');
     });
 });

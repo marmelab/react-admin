@@ -18,11 +18,11 @@ import { listFieldTypes } from './listFieldTypes';
 import { capitalize, singularize } from 'inflection';
 
 /**
- * List component rendering a <Datagrid> based on the result of the
+ * List component rendering a <DataTable> based on the result of the
  * dataProvider.getList() call.
  *
  * The result (choice and type of columns) isn't configurable, but the
- * <ListGuesser> outputs the <Datagrid> it has guessed to the console so that
+ * <ListGuesser> outputs the <DataTable> it has guessed to the console so that
  * developers can start from there.
  *
  * To be used as the list prop of a <Resource>.
@@ -129,6 +129,7 @@ const ListViewGuesser = (
                         )
                     )
                 )
+                .filter(component => !component.match(/[A-Za-z]+\.[A-Za-z]+/i))
                 .sort();
 
             if (enableLog) {

@@ -8,7 +8,7 @@ import {
     useInfinitePaginationContext,
     TestMemoryRouter,
 } from 'ra-core';
-import { Box, Button, Card, Typography } from '@mui/material';
+import { Box, Button, Card, ThemeOptions, Typography } from '@mui/material';
 
 import { InfiniteList } from './InfiniteList';
 import { SimpleList } from './SimpleList';
@@ -24,6 +24,8 @@ import { SearchInput } from '../input';
 import { BulkDeleteButton, SelectAllButton, SortButton } from '../button';
 import { TopToolbar, Layout } from '../layout';
 import { BulkActionsToolbar } from './BulkActionsToolbar';
+import { deepmerge } from '@mui/utils';
+import { defaultLightTheme } from '../theme';
 
 export default {
     title: 'ra-ui-materialui/list/InfiniteList',
@@ -89,11 +91,12 @@ const dataProvider = fakeRestProvider(
     500
 );
 
-const Admin = ({ children, dataProvider, layout }: any) => (
+const Admin = ({ children, dataProvider, layout, ...props }: any) => (
     <TestMemoryRouter>
         <AdminContext
             dataProvider={dataProvider}
             i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+            {...props}
         >
             <AdminUI layout={layout}>{children}</AdminUI>
         </AdminContext>
@@ -428,6 +431,46 @@ export const PartialPagination = () => (
             name="books"
             list={() => (
                 <InfiniteList>
+                    <SimpleList
+                        primaryText="%{title}"
+                        secondaryText="%{author}"
+                    />
+                </InfiniteList>
+            )}
+        />
+    </Admin>
+);
+
+export const Themed = () => (
+    <Admin
+        dataProvider={dataProvider}
+        theme={deepmerge(defaultLightTheme, {
+            components: {
+                RaInfiniteList: {
+                    defaultProps: {
+                        className: 'custom-class',
+                        perPage: 5,
+                    },
+                },
+                RaList: {
+                    styleOverrides: {
+                        root: {
+                            background: 'pink',
+
+                            ['& .MuiListItemText-primary']: {
+                                color: 'hotpink',
+                                fontWeight: 'bold',
+                            },
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList data-testid={'themed-list'}>
                     <SimpleList
                         primaryText="%{title}"
                         secondaryText="%{author}"

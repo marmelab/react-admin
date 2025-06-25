@@ -19,7 +19,8 @@ import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 import { Offline } from '../Offline';
 
-const defaultOffline = <Offline variant="inline" />;
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { useThemeProps } from '@mui/material/styles';
 
 /**
  * Render the related record in a one-to-one relationship
@@ -35,8 +36,13 @@ export const ReferenceOneField = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
 >(
-    props: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
+    inProps: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         children,
         reference,
@@ -48,6 +54,7 @@ export const ReferenceOneField = <
         filter,
         link,
         queryOptions,
+        ...rest
     } = props;
     const record = useRecordContext<RecordType>(props);
     const translate = useTranslate();
@@ -108,7 +115,11 @@ export const ReferenceOneField = <
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
                 <RecordContextProvider value={context.referenceRecord}>
-                    <ReferenceFieldView reference={reference} source={source}>
+                    <ReferenceFieldView
+                        reference={reference}
+                        source={source}
+                        {...sanitizeFieldRestProps(rest)}
+                    >
                         {children}
                     </ReferenceFieldView>
                 </RecordContextProvider>
@@ -143,3 +154,19 @@ export interface ReferenceOneFieldProps<
 // will match the default sort ({ field: 'id', order: 'DESC'})
 // leading to an incorrect sort indicator in a datagrid header
 ReferenceOneField.sortable = false;
+
+const defaultOffline = <Offline variant="inline" />;
+
+const PREFIX = 'RaReferenceOneField';
+
+declare module '@mui/material/styles' {
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<ReferenceOneFieldProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+        };
+    }
+}

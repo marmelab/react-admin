@@ -19,7 +19,7 @@ For instance, the following component will render an edition form for posts when
 
 ```jsx
 // in src/posts.js
-import { Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, required } from 'react-admin';
+import { Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, DataTable, DateField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
 export const PostEdit = () => (
@@ -31,11 +31,13 @@ export const PostEdit = () => (
             <RichTextInput source="body" validate={required()} />
             <DateInput label="Publication date" source="published_at" />
             <ReferenceManyField label="Comments" reference="comments" target="post_id">
-                <Datagrid>
-                    <TextField source="body" />
-                    <DateField source="created_at" />
-                    <EditButton />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="body" />
+                    <DataTable.Col source="created_at" field={DateField} />
+                    <DataTable.Col>
+                        <EditButton />
+                    </DataTable.Col>
+                </DataTable>
             </ReferenceManyField>
         </SimpleForm>
     </Edit>
@@ -606,9 +608,29 @@ To override the style of all instances of `<Edit>` components using the [applica
 
 ## `title`
 
-By default, the title for the Edit view is “Edit [resource_name] [record representation]”. Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
+By default, the title for the Edit view is the translation key `ra.page.edit` that translates to “Edit [resource_name] [record representation]”. Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
 
-You can customize this title by specifying a custom `title` string:
+You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.page.edit` (e.g. `resources.posts.page.edit`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            page: {
+                edit: 'Update post "%{recordRepresentation}"'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this title by specifying a custom `title` string:
 
 ```jsx
 export const PostEdit = () => (
@@ -833,7 +855,7 @@ That means that if you want to create a link to an edition view, modifying immed
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { EditButton, Datagrid, List } from 'react-admin';
+import { EditButton, DataTable, List } from 'react-admin';
 
 const ApproveButton = () => {
     return (
@@ -845,10 +867,12 @@ const ApproveButton = () => {
 
 export default PostList = () => (
     <List>
-        <Datagrid>
+        <DataTable>
             ...
-            <ApproveButton />
-        </Datagrid>
+            <DataTable.Col>
+                <ApproveButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 )
 ```

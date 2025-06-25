@@ -41,5 +41,6 @@ export const sanitizeInputRestProps = ({
     validate,
     validateFields,
     value,
+    fullWidth,
     ...rest
 }: any) => rest;

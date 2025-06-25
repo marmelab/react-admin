@@ -27,11 +27,15 @@ const Wrapper = ({ children }) => (
     </NotificationContextProvider>
 );
 
-const BasicNotification = () => {
+const BasicNotification = ({
+    message = 'hello, world',
+}: {
+    message?: string;
+}) => {
     const notify = useNotify();
     React.useEffect(() => {
-        notify('hello, world');
-    }, [notify]);
+        notify(message);
+    }, [message, notify]);
     return null;
 };
 
@@ -241,5 +245,12 @@ const CustomNotificationElementWithAction = () => {
 export const CustomNotificationWithAction = () => (
     <Wrapper>
         <CustomNotificationElementWithAction />
+    </Wrapper>
+);
+
+export const ConsecutiveNotifications = () => (
+    <Wrapper>
+        <BasicNotification />
+        <BasicNotification message="goodbye, world" />
     </Wrapper>
 );

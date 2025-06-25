@@ -3,7 +3,8 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { minValue, useRecordContext } from 'ra-core';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, createTheme, Typography } from '@mui/material';
+import { ThemeOptions } from '@mui/material/styles';
 import get from 'lodash/get';
 
 import { AdminContext } from '../AdminContext';
@@ -103,6 +104,12 @@ export const Parse = ({ simpleFormProps }) => (
     </Wrapper>
 );
 
+export const OutlinedNoLabel = () => (
+    <Wrapper>
+        <DateInput source="publishedAt" label={false} variant="outlined" />
+    </Wrapper>
+);
+
 export const ExternalChanges = ({
     dateInputProps = {},
     simpleFormProps = {
@@ -135,16 +142,52 @@ export const ExternalChangesWithParse = ({
     </Wrapper>
 );
 
+export const Themed = ({
+    dateInputProps,
+    simpleFormProps,
+}: {
+    dateInputProps?: Partial<DateInputProps>;
+    simpleFormProps?: Partial<SimpleFormProps>;
+}) => (
+    <Wrapper
+        simpleFormProps={simpleFormProps}
+        theme={createTheme({
+            components: {
+                RaDateInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    } as any,
+                    styleOverrides: {
+                        root: {
+                            ['& input']: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            },
+        })}
+    >
+        <DateInput source="publishedAt" {...dateInputProps} />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({
     children,
     simpleFormProps,
+    theme = undefined,
 }: {
     children: React.ReactNode;
     simpleFormProps?: Partial<SimpleFormProps>;
+    theme?: ThemeOptions;
 }) => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
+    <AdminContext
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+        theme={theme}
+    >
         <Create resource="posts">
             <SimpleForm {...simpleFormProps}>
                 {children}

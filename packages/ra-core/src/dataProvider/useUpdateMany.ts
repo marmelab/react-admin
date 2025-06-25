@@ -18,6 +18,7 @@ import {
     MutationMode,
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
+    DataProvider,
 } from '../types';
 import { useEvent } from '../util';
 import { Identifier } from '..';
@@ -89,11 +90,17 @@ export const useUpdateMany = <
     const queryClient = useQueryClient();
     const addUndoableMutation = useAddUndoableMutation();
     const { ids, data, meta } = params;
-    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
+    const {
+        mutationMode = 'pessimistic',
+        getMutateWithMiddlewares,
+        ...mutationOptions
+    } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef =
         useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(params);
     const snapshot = useRef<Snapshot>([]);
+    // Ref that stores the mutation with middlewares to avoid losing them if the calling component is unmounted
+    const mutateWithMiddlewares = useRef(dataProvider.updateMany);
     const hasCallTimeOnError = useRef(false);
     const hasCallTimeOnSuccess = useRef(false);
     const hasCallTimeOnSettled = useRef(false);
@@ -214,8 +221,8 @@ export const useUpdateMany = <
                     'useUpdateMany mutation requires a non-empty data object'
                 );
             }
-            return dataProvider
-                .updateMany<RecordType>(callTimeResource, {
+            return mutateWithMiddlewares
+                .current(callTimeResource, {
                     ids: callTimeIds,
                     data: callTimeData,
                     meta: callTimeMeta,
@@ -342,6 +349,15 @@ export const useUpdateMany = <
             returnPromise = mutationOptions.returnPromise,
             ...otherCallTimeOptions
         } = callTimeOptions;
+
+        // Store the mutation with middlewares to avoid losing them if the calling component is unmounted
+        if (getMutateWithMiddlewares) {
+            mutateWithMiddlewares.current = getMutateWithMiddlewares(
+                dataProvider.updateMany.bind(dataProvider)
+            );
+        } else {
+            mutateWithMiddlewares.current = dataProvider.updateMany;
+        }
 
         hasCallTimeOnError.current = !!otherCallTimeOptions.onError;
         hasCallTimeOnSuccess.current = !!otherCallTimeOptions.onSuccess;
@@ -508,7 +524,18 @@ export type UseUpdateManyOptions<
     Array<RecordType['id']>,
     MutationError,
     Partial<Omit<UseUpdateManyMutateParams<RecordType>, 'mutationFn'>>
-> & { mutationMode?: MutationMode; returnPromise?: boolean };
+> & {
+    mutationMode?: MutationMode;
+    returnPromise?: boolean;
+    getMutateWithMiddlewares?: <
+        UpdateFunctionType extends
+            DataProvider['updateMany'] = DataProvider['updateMany'],
+    >(
+        mutate: UpdateFunctionType
+    ) => (
+        ...Params: Parameters<UpdateFunctionType>
+    ) => ReturnType<UpdateFunctionType>;
+};
 
 export type UseUpdateManyResult<
     RecordType extends RaRecord = any,

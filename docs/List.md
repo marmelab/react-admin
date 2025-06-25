@@ -5,27 +5,27 @@ title: "The List Component"
 
 # `<List>`
 
-The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<Datagrid>`](./Datagrid.md), are responsible for displaying the list of records.
+The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<DataTable>`](./DataTable.md), are responsible for displaying the list of records.
 
 <iframe src="https://www.youtube-nocookie.com/embed/NNNPPmEMz6s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;"></iframe>
 
 ## Usage
 
-Here is the minimal code necessary to display a list of posts using a [`<Datagrid>`](./Datagrid.md):
+Here is the minimal code necessary to display a list of posts using a [`<DataTable>`](./DataTable.md):
 
 ```jsx
 // in src/posts.jsx
-import { List, Datagrid, TextField, DateField, BooleanField } from 'react-admin';
+import { List, DataTable, DateField, BooleanField } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <TextField source="category" />
-            <BooleanField source="commentable" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" field={DateField} />
+            <DataTable.Col source="category" />
+            <DataTable.Col source="commentable" field={BooleanField} />
+        </DataTable>
     </List>
 );
 
@@ -268,43 +268,45 @@ export const PostList = () => (
 
 ![List children](./img/list-children.webp)
 
-The most common List child is [`<Datagrid>`](./Datagrid.md):
+The most common List child is [`<DataTable>`](./DataTable.md):
 
 ```jsx
 export const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <ReferenceManyCount label="Nb comments" reference="comments" target="post_id" link />
-            <BooleanField source="commentable" label="Com." />
-            <NumberField source="nb_views" label="Views" />
-            <>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" field={DateField} />
+            <DataTable.Col label="Nb comments">
+                <ReferenceManyCount reference="comments" target="post_id" link />
+            </DataTable.Col>
+            <DataTable.Col source="commentable" label="Com." field={BooleanField} />
+            <DataTable.NumberCol source="nb_views" label="Views" />
+            <DataTable.Col>
                 <EditButton />
                 <ShowButton />
-            </>
-        </Datagrid>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
 
 React-admin provides several components that can read and display a list of records from a `ListContext`, each with a different layout:
 
-- [`<Datagrid>`](./Datagrid.md) displays records in a table
+- [`<DataTable>`](./DataTable.md) displays records in a table
 - [`<EditableDatagrid>`](./EditableDatagrid.md) displays records in a table AND lets users edit them inline
 - [`<SimpleList>`](./SimpleList.md) displays records in a list without many details - suitable for mobile devices
 - [`<Tree>`](./TreeWithDetails.md) displays records in a tree structure
 - [`<Calendar>`](./Calendar.md) displays event records in a calendar
 - [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record
 
-So for instance, you can use a `<SimpleList>` instead of a `<Datagrid>` on mobile devices:
+So for instance, you can use a `<SimpleList>` instead of a `<DataTable>` on mobile devices:
 
 ```jsx
 // in src/posts.js
 import * as React from 'react';
 import { useMediaQuery } from '@mui/material';
-import { List, SimpleList, Datagrid, TextField, ReferenceField } from 'react-admin';
+import { List, SimpleList, DataTable, TextField, ReferenceField } from 'react-admin';
 
 export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -317,14 +319,16 @@ export const PostList = () => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : (
-                <Datagrid>
-                    <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
-                    </ReferenceField>
-                    <TextField source="title" />
-                    <TextField source="body" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col label="User" source="userId">
+                        <ReferenceField source="userId" reference="users">
+                            <TextField source="name" />
+                        </ReferenceField>
+                    </DataTable.Col>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="body" />
+                </DataTable>
             )}
         </List>
     );
@@ -358,7 +362,7 @@ Check [Building a custom List Iterator](./ListTutorial.md#building-a-custom-iter
 
 ## `component`
 
-By default, the List view renders the main content area inside a Material UI `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
+By default, the List view renders the main content area inside a Material UI `<Card>` element. The actual layout of the list depends on the child component you're using (`<DataTable>`, `<SimpleList>`, or a custom layout component).
 
 Some List layouts display each record in a `<Card>`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
 
@@ -527,7 +531,7 @@ const ProductList = () => (
 
 ## `emptyWhileLoading`
 
-Default layout components (`<Datagrid>` and `<SimpleList>`) return null when the data is loading. If you use a custom layout component instead, you'll have to handle the case where the `data` is not yet defined.
+Default layout components (`<DataTable>` and `<SimpleList>`) return null when the data is loading. If you use a custom layout component instead, you'll have to handle the case where the `data` is not yet defined.
 
 That means that the following will fail on load with a "ReferenceError: data is not defined" error:
 
@@ -667,7 +671,7 @@ const CommentList = () => (
 
 **Tip**: The `<ExportButton>` limits the main request to the `dataProvider` to 1,000 records. If you want to increase or decrease this limit, pass a `maxResults` prop to the `<ExportButton>` in a custom `<ListActions>` component.
 
-**Tip**: React-admin also provides a `<BulkExportButton>` component that depends on the `exporter`, and that you can use in the `bulkActionButtons` prop of the `<Datagrid>` component.
+**Tip**: React-admin also provides a `<BulkExportButton>` component that depends on the `exporter`, and that you can use in the `bulkActionButtons` prop of the `<DataTable>` component.
 
 **Tip**: For complex (or large) exports, fetching all the related records and assembling them client-side can be slow. In that case, create the CSV on the server side, and replace the `<ExportButton>` component by a custom one, fetching the CSV route.
 
@@ -921,8 +925,7 @@ import {
     CustomRoutes,
     Resource,
     List,
-    Datagrid,
-    TextField,
+    DataTable,
 } from 'react-admin';
 import { Route } from 'react-router-dom';
 
@@ -932,12 +935,12 @@ const NewerBooks = () => (
         storeKey="newerBooks"
         sort={{ field: 'year', order: 'DESC' }}
     >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 
@@ -947,12 +950,12 @@ const OlderBooks = () => (
         storeKey="olderBooks"
         sort={{ field: 'year', order: 'ASC' }}
     >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable source="id" />
+            <DataTable source="title" />
+            <DataTable source="author" />
+            <DataTable source="year" />
+        </DataTable>
     </List>
 );
 
@@ -976,11 +979,31 @@ const Admin = () => {
 
 ## `title`
 
-The default title for a list view is the plural name of the resource (e.g. "Posts").
+The default title for a list view is the translation key `ra.page.list` that translates to [the plural name of the resource](./TranslationTranslating.md#translating-resource-and-field-names) (e.g. "Posts").
 
 ![List title](./img/list-title.png)
 
-Use the `title` prop to customize the List view title:
+You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.page.list` (e.g. `resources.posts.page.list`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            page: {
+                list: 'Post list'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this title by specifying a custom `title` prop:
 
 ```jsx
 export const PostList = () => (
@@ -1042,7 +1065,7 @@ const App = () => (
 );
 ```
 
-Just like `<List>`, `<ListGuesser>` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `<Datagrid>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code.
+Just like `<List>`, `<ListGuesser>` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `<DataTable>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code.
 
 ![Guessed List](./img/guessed-list.png)
 
@@ -1063,19 +1086,18 @@ To achieve infinite pagination, replace the `<List>` component with [the `<Infin
 import {
 -   List,
 +   InfiniteList,
-    Datagrid,
-    TextField,
+    DataTable,
     DateField
 } from 'react-admin';
 
 const BookList = () => (
 -   <List>
 +   <InfiniteList>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="author" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" field={DateField} />
+        </DataTable>
 -   </List>
 +   </InfiniteList>
 );
@@ -1088,14 +1110,14 @@ const BookList = () => (
 If you want to subscribe to live updates on the list of records (topic: `resource/[resource]`), add [the `<ListLiveUpdate>` component](./ListLiveUpdate.md) in your `<List>` children.
 
 ```diff
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 +import { ListLiveUpdate } from '@react-admin/ra-realtime';
 
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+        </DataTable>
 +       <ListLiveUpdate />
     </List>
 );
@@ -1259,11 +1281,11 @@ const Dashboard = () => (
 - [`<ReferenceManyField>`](./ReferenceManyField.md),
 - [`<ReferenceManyToManyField>`](./ReferenceManyToManyField.md).
 
-If the `<List>` children allow to *modify* the list state (i.e. if they let users change the sort order, the filters, the selection, or the pagination), then you should also use the [`disableSyncWithLocation`](#disablesyncwithlocation) prop to prevent react-admin from changing the URL. This is the case e.g. if you use a `<Datagrid>`, which lets users sort the list by clicking on column headers.
+If the `<List>` children allow to *modify* the list state (i.e. if they let users change the sort order, the filters, the selection, or the pagination), then you should also use the [`disableSyncWithLocation`](#disablesyncwithlocation) prop to prevent react-admin from changing the URL. This is the case e.g. if you use a `<DataTable>`, which lets users sort the list by clicking on column headers.
 
 {% raw %}
 ```jsx
-import { List, Datagrid, TextField, NumberField, DateField } from 'react-admin';
+import { List, DataTable, DateField } from 'react-admin';
 import { Container, Typography } from '@mui/material';
 
 const Dashboard = () => (
@@ -1276,10 +1298,10 @@ const Dashboard = () => (
             perPage={10}
             disableSyncWithLocation
         >
-            <Datagrid bulkActionButtons={false}>
-                <TextField source="title" />
-                <NumberField source="views" />
-            </Datagrid>
+            <DataTable bulkActionButtons={false}>
+                <DataTable.Col source="title" />
+                <DataTable.NumberCol source="views" />
+            </DataTable>
         </List>
         <Typography>Latest comments</Typography>
         <List
@@ -1288,18 +1310,18 @@ const Dashboard = () => (
             perPage={10}
             disableSyncWithLocation
         >
-            <Datagrid bulkActionButtons={false}>
-                <TextField source="author.name" />
-                <TextField source="body" />
-                <DateField source="published_at" />
-            </Datagrid>
+            <DataTable bulkActionButtons={false}>
+                <DataTable.Col source="author.name" />
+                <DataTable.Col source="body" />
+                <DataTable.Col source="published_at" field={DateField} />
+            </DataTable>
         </List>
     </Container>
 )
 ```
 {% endraw %}
 
-**Note**: If you render more than one `<Datagrid>` for the same resource in the same page, they will share the selection state (i.e. the checked checkboxes). This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. You can get rid of the checkboxes by setting `<Datagrid bulkActionButtons={false}>`.
+**Note**: If you render more than one `<DataTable>` for the same resource in the same page, they will share the selection state (i.e. the checked checkboxes). This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. You can get rid of the checkboxes by setting `<DataTable bulkActionButtons={false}>`.
 
 ## Headless Version
 
@@ -1387,16 +1409,16 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 For instance, to render the `<PostList>` page below:
 
 ```tsx
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 
 // Resource name is "posts"
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="published_at" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="published_at" />
+        </DataTable>
     </List>
 );
 ```

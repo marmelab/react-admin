@@ -88,8 +88,8 @@ const cli = meow(
     Examples
 	  $ npx create-react-admin@latest my-admin
 	  $ npx create-react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
-	  $ yarn create react-admin@latest my-admin
-	  $ yarn create react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
+	  $ yarn create react-admin my-admin
+	  $ yarn create react-admin my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 	  $ bun create react-admin@latest my-admin
 	  $ bun create react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 `,
@@ -123,7 +123,7 @@ const cli = meow(
     }
 );
 
-if (cli.flags.h) {
+if (cli.flags.h || cli.flags.help) {
     cli.showHelp();
 } else {
     const name = cli.input.length > 0 ? cli.input[0].trim() : undefined;

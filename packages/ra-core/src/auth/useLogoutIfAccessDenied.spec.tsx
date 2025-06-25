@@ -258,4 +258,34 @@ describe('useLogoutIfAccessDenied', () => {
             expect(screen.queryByText('unauthorized')).not.toBeNull();
         });
     });
+
+    it('should stay on same page if error have no redirectTo', async () => {
+        render(
+            <TestMemoryRouter>
+                <AuthContext.Provider
+                    value={{
+                        ...authProvider,
+                        checkError: () => {
+                            return Promise.reject({
+                                logoutUser: false,
+                                message: 'Access denied',
+                            });
+                        },
+                    }}
+                >
+                    <Routes>
+                        <Route path="/" element={<TestComponent />} />
+                        <Route path="/login" element={<div>Login page</div>} />
+                    </Routes>
+                </AuthContext.Provider>
+            </TestMemoryRouter>
+        );
+        await waitFor(() => {
+            expect(authProvider.logout).toHaveBeenCalledTimes(0);
+            expect(notify).toHaveBeenCalledWith('Access denied', {
+                type: 'error',
+            });
+            expect(notify).toHaveBeenCalledTimes(1);
+        });
+    });
 });

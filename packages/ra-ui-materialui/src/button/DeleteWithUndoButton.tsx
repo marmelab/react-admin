@@ -10,15 +10,29 @@ import {
     useRecordContext,
     useResourceContext,
     RedirectionSideEffect,
+    useTranslate,
+    useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
+import { humanize, singularize } from 'inflection';
 
 import { Button, ButtonProps } from './Button';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
-    props: DeleteWithUndoButtonProps<RecordType>
+    inProps: DeleteWithUndoButtonProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
-        label = 'ra.action.delete',
+        label: labelProp,
         className,
         icon = defaultIcon,
         onClick,
@@ -31,6 +45,11 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
 
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
+    if (!resource) {
+        throw new Error(
+            '<DeleteWithUndoButton> components should be used inside a <Resource> component or provided with a resource prop. (The <Resource> component set the resource prop for all its children).'
+        );
+    }
     const { isPending, handleDelete } = useDeleteWithUndoController({
         record,
         resource,
@@ -39,19 +58,48 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         mutationOptions,
         successMessage,
     });
+    const translate = useTranslate();
+    const getRecordRepresentation = useGetRecordRepresentation(resource);
+    let recordRepresentation = getRecordRepresentation(record);
+    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+        smart_count: 1,
+        _: humanize(
+            translate(`resources.${resource}.name`, {
+                smart_count: 1,
+                _: resource ? singularize(resource) : undefined,
+            }),
+            true
+        ),
+    });
+    // We don't support React elements for this
+    if (React.isValidElement(recordRepresentation)) {
+        recordRepresentation = `#${record?.id}`;
+    }
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.delete`,
+        baseI18nKey: 'ra.action.delete',
+        options: {
+            name: resourceName,
+            recordRepresentation,
+        },
+        userText: labelProp,
+    });
 
     return (
-        <Button
+        <StyledButton
             onClick={handleDelete}
             disabled={isPending}
-            label={label}
+            // avoid double translation
+            label={<>{label}</>}
+            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+            aria-label={typeof label === 'string' ? label : undefined}
             className={clsx('ra-delete-button', className)}
             key="button"
             color={color}
             {...rest}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
@@ -72,4 +120,30 @@ export interface DeleteWithUndoButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     successMessage?: string;
+}
+
+const PREFIX = 'RaDeleteWithUndoButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<DeleteWithUndoButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
 }

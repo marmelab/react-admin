@@ -628,16 +628,33 @@ If you provided a React element for the optionText prop, you must also provide t
                         ...params.InputProps,
                         ...TextFieldProps?.InputProps,
                     };
+                    // @ts-expect-error slotProps do not yet exist in MUI v5
+                    const mergedSlotProps = TextFieldProps?.slotProps
+                        ? {
+                              slotProps: {
+                                  // @ts-expect-error slotProps do not yet exist in MUI v5
+                                  ...TextFieldProps?.slotProps,
+                                  input: {
+                                      readOnly,
+                                      ...params.InputProps,
+                                      // @ts-expect-error slotProps do not yet exist in MUI v5
+                                      ...TextFieldProps?.slotProps?.input,
+                                  },
+                              },
+                          }
+                        : undefined;
                     return (
                         <TextField
                             name={field.name}
                             label={
-                                <FieldTitle
-                                    label={label}
-                                    source={source}
-                                    resource={resourceProp}
-                                    isRequired={isRequired}
-                                />
+                                label !== '' && label !== false ? (
+                                    <FieldTitle
+                                        label={label}
+                                        source={source}
+                                        resource={resourceProp}
+                                        isRequired={isRequired}
+                                    />
+                                ) : null
                             }
                             error={!!fetchError || invalid}
                             helperText={
@@ -661,6 +678,7 @@ If you provided a React element for the optionText prop, you must also provide t
                             {...params}
                             {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
+                            {...mergedSlotProps}
                             size={size}
                             inputRef={handleInputRef}
                         />

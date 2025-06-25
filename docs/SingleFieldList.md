@@ -38,33 +38,33 @@ const PostShow = () => (
 );
 ```
 
-You can also use  `<SingleFieldList>` in a list view, e.g. to display the tags for each post in a `<Datagrid>`:
+You can also use  `<SingleFieldList>` in a list view, e.g. to display the tags for each post in a `<DataTable>`:
 
 ```jsx
 import { 
     List,
-    Datagrid,
+    DataTable,
     ReferenceArrayField,
     SingleFieldList,
-    TextField,
     DateField,
     BooleanField,
-    NumberField,
     ChipField
 } from 'react-admin';
 
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <BooleanField source="commentable" />
-            <NumberField source="views" />
-            <ReferenceArrayField label="Tags" reference="tags" source="tags">
-                <SingleFieldList />
-            </ReferenceArrayField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" field={DateField} />
+            <DataTable.Col source="commentable" field={BooleanField} />
+            <DataTable.NumberCol source="views" />
+            <DataTable.Col source="tags" label="Tags">
+                <ReferenceArrayField  reference="tags" source="tags">
+                    <SingleFieldList />
+                </ReferenceArrayField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 )
 ```

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     AccessControl,
+    DefaultTitle,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
 } from './ListBase.stories';
@@ -87,5 +88,19 @@ describe('ListBase', () => {
         });
         resolveCanAccess!(true);
         await screen.findByText('Hello');
+    });
+
+    it('should provide a default title', async () => {
+        render(<DefaultTitle translations="default" />);
+        await screen.findByText('Books (en)');
+        fireEvent.click(screen.getByText('FR'));
+        await screen.findByText('Livres (fr)');
+    });
+
+    it('should allow resource specific default title', async () => {
+        render(<DefaultTitle translations="resource specific" />);
+        await screen.findByText('Book list (en)');
+        fireEvent.click(screen.getByText('FR'));
+        await screen.findByText('Liste des livres (fr)');
     });
 });

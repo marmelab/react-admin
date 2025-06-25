@@ -24,7 +24,12 @@ const InvoiceShow = () => {
                     </Grid>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid size={{ xs: 12 }} alignContent="flex-end">
+                    <Grid
+                        size={{ xs: 12 }}
+                        sx={{
+                            alignContent: 'flex-end',
+                        }}
+                    >
                         <ReferenceField
                             reference="customers"
                             source="customer_id"
@@ -34,7 +39,13 @@ const InvoiceShow = () => {
                         </ReferenceField>
                     </Grid>
                 </Grid>
-                <Box height={20}>&nbsp;</Box>
+                <Box
+                    sx={{
+                        height: 20,
+                    }}
+                >
+                    &nbsp;
+                </Box>
                 <Grid container spacing={2}>
                     <Grid size={{ xs: 6 }}>
                         <Typography variant="h6" gutterBottom align="center">
@@ -63,7 +74,11 @@ const InvoiceShow = () => {
                         </ReferenceField>
                     </Grid>
                 </Grid>
-                <Box margin="10px 0">
+                <Box
+                    sx={{
+                        margin: '10px 0',
+                    }}
+                >
                     <ReferenceField
                         reference="orders"
                         source="order_id"

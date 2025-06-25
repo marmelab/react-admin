@@ -12,7 +12,7 @@ The `<InfiniteList>` component is an alternative to [the `<List>` component](./L
   Your browser does not support the video tag.
 </video>
 
-`<InfiniteList>` fetches the list of records from the data provider, and renders the default list layout (title, buttons, filters). It delegates the rendering of the list of records to its child component. Usually, it's a [`<Datagrid>`](./Datagrid.md) or a [`<SimpleList>`](./SimpleList.md), responsible for displaying a table with one row for each record.
+`<InfiniteList>` fetches the list of records from the data provider, and renders the default list layout (title, buttons, filters). It delegates the rendering of the list of records to its child component. Usually, it's a [`<DataTable>`](./DataTable.md) or a [`<SimpleList>`](./SimpleList.md), responsible for displaying a table with one row for each record.
 
 ## Usage
 
@@ -20,15 +20,15 @@ Here is the minimal code necessary to display a list of books with infinite scro
 
 ```jsx
 // in src/books.js
-import { InfiniteList, Datagrid, TextField, DateField } from 'react-admin';
+import { InfiniteList, DataTable, DateField } from 'react-admin';
 
 export const BookList = () => (
     <InfiniteList>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="author" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" field={DateField} />
+        </DataTable>
     </InfiniteList>
 );
 
@@ -49,7 +49,7 @@ export default App;
 
 That's enough to display a basic post list, that users can sort and filter, and load additional records when they reach the bottom of the list.
 
-**Tip**: `<Datagrid>` has a sticky header by default, so the user can always see the column names when they scroll down.
+**Tip**: `<DataTable>` has a sticky header by default, so the user can always see the column names when they scroll down.
 
 ## Props
 
@@ -93,7 +93,7 @@ For example, here is a custom infinite pagination component displaying a "Load M
 
 {% raw %}
 ```jsx
-import { InfiniteList, useInfinitePaginationContext, Datagrid, TextField } from 'react-admin';
+import { InfiniteList, useInfinitePaginationContext, DataTable } from 'react-admin';
 import { Box, Button } from '@mui/material';
 
 const LoadMore = () => {
@@ -116,11 +116,11 @@ const LoadMore = () => {
 
 export const BookList = () => (
     <InfiniteList pagination={<LoadMore />}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+        </DataTable>
     </InfiniteList>
 );
 ```
@@ -280,16 +280,16 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 For instance, for the `<PostList>` page below:
 
 ```tsx
-import { InfiniteList, Datagrid, TextField } from 'react-admin';
+import { InfiniteList, DataTable } from 'react-admin';
 
 // Resource name is "posts"
 const PostList = () => (
     <InfiniteList>
-        <Datagrid>
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="published_at" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="published_at" />
+        </DataTable>
     </InfiniteList>
 );
 ```

@@ -74,12 +74,14 @@ export const NullableBooleanInput = (inProps: NullableBooleanInputProps) => {
             readOnly={readOnly}
             margin={margin}
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' && label !== false ? (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                ) : null
             }
             error={invalid}
             helperText={

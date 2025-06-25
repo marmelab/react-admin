@@ -106,6 +106,7 @@ export const BulkDeleteWithUndoButton = (
             onClick={handleClick}
             label={label}
             disabled={isPending}
+            color="error"
             {...sanitizeRestProps(rest)}
         >
             {icon}
@@ -139,16 +140,7 @@ const PREFIX = 'RaBulkDeleteWithUndoButton';
 const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    color: (theme.vars || theme).palette.error.main,
-    '&:hover': {
-        backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.error.main}, transparent 12%)`,
-        // Reset on mouse devices
-        '@media (hover: none)': {
-            backgroundColor: 'transparent',
-        },
-    },
-}));
+})(() => ({}));
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {

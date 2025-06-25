@@ -4,6 +4,8 @@ import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import {
     AuthProvider,
+    I18nProvider,
+    mergeTranslations,
     RecordContextProvider,
     Resource,
     ResourceContextProvider,
@@ -11,6 +13,8 @@ import {
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { QueryClient } from '@tanstack/react-query';
+import { deepmerge } from '@mui/utils';
+import { ThemeOptions } from '@mui/material';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List } from '../list/List';
@@ -21,16 +25,52 @@ import { TextInput } from '../input/TextInput';
 import { ListButton } from './ListButton';
 import { Edit } from '../detail/Edit';
 import { TopToolbar } from '../layout';
+import { LocalesMenuButton } from './LocalesMenuButton';
+import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/button/ListButton' };
 
+const defaultI18nProvider = () =>
+    polyglotI18nProvider(
+        locale => (locale === 'fr' ? frenchMessages : englishMessages),
+        'en',
+        [
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'Français' },
+        ]
+    );
+
+const customI18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, {
+                  resources: {
+                      books: {
+                          action: {
+                              list: 'Voir tous les livres',
+                          },
+                      },
+                  },
+              })
+            : mergeTranslations(englishMessages, {
+                  resources: {
+                      books: {
+                          action: {
+                              list: 'See all books',
+                          },
+                      },
+                  },
+              }),
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
+
 export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
     <TestMemoryRouter>
-        <AdminContext
-            i18nProvider={polyglotI18nProvider(locale =>
-                locale === 'fr' ? frenchMessages : englishMessages
-            )}
-        >
+        <AdminContext i18nProvider={defaultI18nProvider()}>
             <ResourceContextProvider value="books">
                 <RecordContextProvider value={{ id: 1 }}>
                     <ListButton {...buttonProps} />
@@ -39,6 +79,39 @@ export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const Label = ({
+    translations = 'default',
+    i18nProvider = translations === 'default'
+        ? defaultI18nProvider()
+        : customI18nProvider,
+    label,
+}: {
+    i18nProvider?: I18nProvider;
+    translations?: 'default' | 'resource specific';
+    label?: string;
+}) => (
+    <TestMemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <ResourceContextProvider value="books">
+                <div>
+                    <ListButton label={label} />
+                </div>
+                <LocalesMenuButton />
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+Label.args = {
+    translations: 'default',
+};
+Label.argTypes = {
+    translations: {
+        options: ['default', 'resource specific'],
+        control: { type: 'radio' },
+    },
+};
 
 export const AccessControl = () => {
     const queryClient = new QueryClient();
@@ -76,9 +149,7 @@ const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
         <AdminContext
             dataProvider={dataProvider}
             authProvider={authProvider}
-            i18nProvider={polyglotI18nProvider(locale =>
-                locale === 'fr' ? frenchMessages : englishMessages
-            )}
+            i18nProvider={defaultI18nProvider()}
             queryClient={queryClient}
         >
             <AdminUI
@@ -234,3 +305,29 @@ const dataProvider = fakeRestDataProvider({
     ],
     authors: [],
 });
+
+export const Themed = ({ buttonProps }: { buttonProps?: any }) => (
+    <TestMemoryRouter>
+        <AdminContext
+            theme={deepmerge(defaultLightTheme, {
+                components: {
+                    RaListButton: {
+                        defaultProps: {
+                            label: 'List',
+                            className: 'custom-class',
+                        },
+                    },
+                },
+            } as ThemeOptions)}
+        >
+            <ResourceContextProvider value="books">
+                <RecordContextProvider value={{ id: 1 }}>
+                    <ListButton
+                        data-testid={'themed-button'}
+                        {...buttonProps}
+                    />
+                </RecordContextProvider>
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
