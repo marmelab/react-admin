@@ -120,13 +120,11 @@ export const DataTableHeadCell = React.memo(
                             </TableSortLabel>
                         </Tooltip>
                     ) : (
-                        <TableSortLabel disabled>
-                            <FieldTitle
-                                label={label}
-                                source={source}
-                                resource={resource}
-                            />
-                        </TableSortLabel>
+                        <FieldTitle
+                            label={label}
+                            source={source}
+                            resource={resource}
+                        />
                     )}
                 </TableCellStyled>
             );

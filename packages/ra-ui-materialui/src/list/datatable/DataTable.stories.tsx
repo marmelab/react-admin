@@ -37,6 +37,7 @@ import {
 import {
     BulkDeleteButton,
     BulkExportButton,
+    CreateButton,
     EditButton,
     SelectAllButton as RaSelectAllButton,
 } from '../../button';
@@ -893,6 +894,20 @@ export const NonPrimitiveData = () => (
             <DataTable.Col source="title" />
             <DataTable.Col source="author" />
             <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const HeaderButton = () => (
+    <Wrapper i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Author" source="author.name" disableSort />
+            <DataTable.Col source="year" />
+            <DataTable.Col label={<CreateButton />}>
+                <EditButton />
+            </DataTable.Col>
         </DataTable>
     </Wrapper>
 );
