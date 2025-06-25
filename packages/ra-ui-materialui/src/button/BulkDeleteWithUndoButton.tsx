@@ -52,9 +52,11 @@ export const BulkDeleteWithUndoButton = (
             {
                 onSuccess: () => {
                     notify(
-                        successMessage ?? isOffline
-                            ? `resources.${resource}.notifications.pending_delete`
-                            : `resources.${resource}.notifications.deleted`,
+                        successMessage != null
+                            ? successMessage
+                            : isOffline
+                              ? `resources.${resource}.notifications.pending_delete`
+                              : `resources.${resource}.notifications.deleted`,
                         {
                             type: 'info',
                             messageArgs: {
