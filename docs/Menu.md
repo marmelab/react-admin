@@ -248,7 +248,7 @@ export const MyMenu = () => (
 );
 ```
 
-This leverages the [react-hotkeys-hook](https://github.com/JohannesKlauss/react-hotkeys-hook) library, checkout [their documentation](https://react-hotkeys-hook.vercel.app/docs/documentation/useHotkeys/) for more examples.
+This leverages the [react-hotkeys-hook](https://github.com/JohannesKlauss/react-hotkeys-hook) library, checkout [their documentation](https://react-hotkeys-hook.vercel.app/docs/documentation/useHotkeys/basic-usage) for more examples.
 
 ### `keyboardShortcutRepresentation`
 
