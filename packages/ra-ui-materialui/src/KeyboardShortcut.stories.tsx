@@ -22,3 +22,9 @@ export const Sequential = () => (
         <KeyboardShortcut keyboardShortcut="meta+K>X" />
     </Wrapper>
 );
+
+export const SameKeyTwice = () => (
+    <Wrapper>
+        <KeyboardShortcut keyboardShortcut="g>g" />
+    </Wrapper>
+);

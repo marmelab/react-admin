@@ -24,9 +24,9 @@ export const KeyboardShortcut = ({
             {keyboardShortcut
                 .split('>')
                 .map((sequence, sequenceIndex, sequences) => (
-                    <React.Fragment key={sequence}>
-                        {sequence.split('+').map((key, keyIndex, keys) => (
-                            <React.Fragment key={key}>
+                    <React.Fragment key={`${sequence}-${sequenceIndex}`}>
+                        {sequence.split('+').map((key, keyIndex) => (
+                            <React.Fragment key={`${key}-${keyIndex}`}>
                                 <Typography
                                     component="kbd"
                                     className={KeyboardShortcutClasses.kbd}
