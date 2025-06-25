@@ -36,9 +36,6 @@ export const KeyboardShortcut = ({
                                         ? KeyMap[key]
                                         : key.toUpperCase()}
                                 </Typography>
-                                {keyIndex < keys.length - 1 ? (
-                                    <>&nbsp;</>
-                                ) : null}
                             </React.Fragment>
                         ))}
                         {sequenceIndex < sequences.length - 1 ? (

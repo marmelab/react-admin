@@ -187,8 +187,8 @@ export const MyMenu = () => (
 | -------------------------------- | -------- | -------------------- | -------------------- | ---------------------------------------- |
 | `to`                             | Required | `string | location`  | -                    | The menu item's target. It is passed to a React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component. | 
 | `primaryText`                    | Required | `ReactNode`          | -                    | The menu content, displayed when the menu isn't minimized. |
-| `keyboardShortcut`               | Optional | `string | string[]`  | -                    | The keyboard shortcut(s) to activate this menu item |
-| `keyboardShortcutRepresentation` | Optional | `ReactNode`          | `<keyboardShortcut>` | A react node that displays the keyboard shortcut |
+| `keyboardShortcut`               | Optional | `string`  | -                    | The keyboard shortcut(s) to activate this menu item |
+| `keyboardShortcut Representation` | Optional | `ReactNode`          | `<KeyboardShortcut>` | A react node that displays the keyboard shortcut |
 | `leftIcon`                       | Optional | `ReactNode`          | -                    | The menu icon |
 | `sx`                             | Optional | `SxProp`             | -                    | Style overrides, powered by MUI System |
 
@@ -241,7 +241,7 @@ export const MyMenu = () => (
         <Menu.Item
             to="/sales"
             primaryText="Sales"
-            // Letter G then letter S
+            // G key then S key
             keyboardShortcut="G>S"
         />
     </Menu>
