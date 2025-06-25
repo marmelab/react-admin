@@ -30,7 +30,7 @@ import {
     Show,
     SimpleShowLayout,
     SimpleForm,
-    Datagrid,
+    DataTable,
     TextField,
     TextInput,
 } from '..';
@@ -161,20 +161,21 @@ export const EmptyText = () => (
                     name="books"
                     list={() => (
                         <List>
-                            <Datagrid>
-                                <TextField source="id" />
-                                <TextField source="title" />
-                                <TextField source="year" />
-                                <TextField source="Genre" />
-                                <ReferenceOneField
-                                    reference="book_details"
-                                    target="book_id"
-                                    label="ISBN"
-                                    emptyText="no detail"
-                                >
-                                    <TextField source="ISBN" />
-                                </ReferenceOneField>
-                            </Datagrid>
+                            <DataTable>
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="title" />
+                                <DataTable.Col source="year" />
+                                <DataTable.Col source="Genre" />
+                                <DataTable.Col label="ISBN">
+                                    <ReferenceOneField
+                                        reference="book_details"
+                                        target="book_id"
+                                        emptyText="no detail"
+                                    >
+                                        <TextField source="ISBN" />
+                                    </ReferenceOneField>
+                                </DataTable.Col>
+                            </DataTable>
                         </List>
                     )}
                     show={() => (
@@ -202,14 +203,16 @@ export const EmptyText = () => (
                     name="book_details"
                     list={() => (
                         <List>
-                            <Datagrid>
-                                <TextField source="id" />
-                                <TextField source="ISBN" />
-                                <ReferenceField
-                                    source="book_id"
-                                    reference="books"
-                                />
-                            </Datagrid>
+                            <DataTable>
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="ISBN" />
+                                <DataTable.Col source="book_id">
+                                    <ReferenceField
+                                        source="book_id"
+                                        reference="books"
+                                    />
+                                </DataTable.Col>
+                            </DataTable>
                         </List>
                     )}
                     create={() => (
@@ -339,17 +342,15 @@ const ListWrapper = ({ children }) => (
 
 export const InDatagrid = () => (
     <ListWrapper>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceOneField
-                label="ISBN"
-                reference="book_details"
-                target="book_id"
-            >
-                <TextField source="ISBN" />
-            </ReferenceOneField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col label="ISBN">
+                <ReferenceOneField reference="book_details" target="book_id">
+                    <TextField source="ISBN" />
+                </ReferenceOneField>
+            </DataTable.Col>
+        </DataTable>
     </ListWrapper>
 );
 

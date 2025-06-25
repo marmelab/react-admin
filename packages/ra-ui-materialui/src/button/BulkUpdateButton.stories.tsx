@@ -3,12 +3,10 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-
 import { BulkUpdateButton } from './BulkUpdateButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { List, Datagrid } from '../list';
-import { TextField, NumberField } from '../field';
+import { List, DataTable } from '../list';
 import { deepmerge } from '@mui/utils';
 import { defaultLightTheme } from '../theme';
 import { ThemeOptions } from '@mui/material';
@@ -104,12 +102,12 @@ const Wrapper = ({ bulkActionButtons, theme = undefined }) => (
                     name="books"
                     list={() => (
                         <List>
-                            <Datagrid bulkActionButtons={bulkActionButtons}>
-                                <TextField source="id" />
-                                <TextField source="title" />
-                                <TextField source="author" />
-                                <NumberField source="reads" />
-                            </Datagrid>
+                            <DataTable bulkActionButtons={bulkActionButtons}>
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="title" />
+                                <DataTable.Col source="author" />
+                                <DataTable.NumberCol source="reads" />
+                            </DataTable>
                         </List>
                     )}
                 />

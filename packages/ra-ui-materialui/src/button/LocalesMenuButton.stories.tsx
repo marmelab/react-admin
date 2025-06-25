@@ -6,12 +6,10 @@ import { useTranslate, Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Typography } from '@mui/material';
 import LanguageIcon from '@mui/icons-material/Language';
-
 import { LocalesMenuButton } from './LocalesMenuButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { List, Datagrid } from '../list';
-import { TextField } from '../field';
+import { List, DataTable } from '../list';
 import { AppBar, Layout, TitlePortal } from '../layout';
 
 export default { title: 'ra-ui-materialui/button/LocalesMenuButton' };
@@ -143,12 +141,12 @@ const dataProvider = fakeRestDataProvider({
 const BookList = () => {
     return (
         <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
         </List>
     );
 };
