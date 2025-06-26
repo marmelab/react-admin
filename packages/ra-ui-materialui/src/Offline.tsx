@@ -72,19 +72,19 @@ const Root = styled(Alert, {
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        RaOffline: 'root';
+        [PREFIX]: 'root';
     }
 
     interface ComponentsPropsList {
-        RaOffline: Partial<Offline>;
+        [PREFIX]: Partial<Offline>;
     }
 
     interface Components {
-        RaOffline?: {
-            defaultProps?: ComponentsPropsList['RaOffline'];
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
             styleOverrides?: ComponentsOverrides<
                 Omit<Theme, 'components'>
-            >['RaOffline'];
+            >[typeof PREFIX];
         };
     }
 }
