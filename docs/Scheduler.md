@@ -442,7 +442,7 @@ export const EventList = () => (
 
 ## `<SchedulerDaysNavigationButtons>`
 
-A component that display navigation button to move through days in a `<Scheduler>` that displays data day by day.
+A component that displays navigation buttons to move through days in a `<Scheduler>` that displays data day by day.
 
 {% raw %}
 ```tsx
@@ -472,7 +472,7 @@ export const EventList = () => (
 
 ## `<SchedulerWeeksNavigationButtons>`
 
-A component that display navigation button to move through weeks in a `<Scheduler>` that displays data week by week.
+A component that displays navigation buttons to move through weeks in a `<Scheduler>` that displays data week by week.
 
 {% raw %}
 ```tsx
@@ -502,7 +502,7 @@ export const EventList = () => (
 
 ## `<SchedulerMonthsNavigationButtons>`
 
-A component that display navigation button to move through months in a `<Scheduler>` that displays data month by month.
+A component that displays navigation buttons to move through months in a `<Scheduler>` that displays data month by month.
 
 {% raw %}
 ```tsx
