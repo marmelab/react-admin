@@ -905,10 +905,10 @@ import { addOfflineSupportToQueryClient } from 'react-admin';
 import { QueryClient } from '@tanstack/react-query';
 import { dataProvider } from './dataProvider';
 
-export const queryClient = new QueryClient();
+const baseQueryClient = new QueryClient();
 
-const queryClientWithOfflineSupport = addOfflineSupportToQueryClient({
-    queryClient,
+export const queryClient = addOfflineSupportToQueryClient({
+    queryClient: baseQueryClient,
     dataProvider,
     resources: ['posts', 'comments'],
 });
@@ -1007,14 +1007,14 @@ import { dataProvider } from './dataProvider';
 const baseQueryClient = new QueryClient();
 
 export const queryClient = addOfflineSupportToQueryClient({
-    queryClient,
+    queryClient: baseQueryClient,
     dataProvider,
     resources: ['posts', 'comments'],
 });
 
 queryClient.setMutationDefaults('banUser', {
     mutationFn: async (userId) => {
-        return dataProviderFn.banUser(userId);
+        return dataProvider.banUser(userId);
     },
 });
 ```
