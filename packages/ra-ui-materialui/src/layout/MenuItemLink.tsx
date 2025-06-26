@@ -219,6 +219,8 @@ const StyledMenuItem = styled(MenuItem, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     color: (theme.vars || theme).palette.text.secondary,
+    justifyContent: 'space-between',
+    gap: theme.spacing(1),
 
     [`&.${MenuItemLinkClasses.active}`]: {
         color: (theme.vars || theme).palette.text.primary,
