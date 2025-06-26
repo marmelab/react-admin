@@ -43,7 +43,8 @@ describe('<Menu>', () => {
             key: 'c',
             code: 'KeyC',
         });
-        expect(await screen.findAllByText('Customers')).toHaveLength(2);
+        // Only one Customers text as the menu item has a different longer label
+        await screen.findByText('Customers');
         fireEvent.keyDown(global.document, {
             key: 'g',
             code: 'KeyG',
