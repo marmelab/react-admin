@@ -86,6 +86,7 @@ const KeyboardShortcutClasses = {
 };
 
 const Root = styled('div')(({ theme }) => ({
+    opacity: 0.7,
     [`& .${KeyboardShortcutClasses.kbd}`]: {
         padding: '4px 5px',
         display: 'inline-block',
