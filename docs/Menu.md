@@ -248,6 +248,8 @@ export const MyMenu = () => (
 );
 ```
 
+![A menu with keyboard shortcuts displayed](./img/menu-shortcuts.png)
+
 This leverages the [react-hotkeys-hook](https://github.com/JohannesKlauss/react-hotkeys-hook) library, checkout [their documentation](https://react-hotkeys-hook.vercel.app/docs/documentation/useHotkeys/basic-usage) for more examples.
 
 ### `keyboardShortcutRepresentation`
@@ -267,6 +269,8 @@ const CustomMenu = () => (
     </Menu>
 );
 ```
+
+![A menu with keyboard shortcuts displayed](./img/menu-custom-shortcuts.png)
 
 
 ### `leftIcon`
