@@ -21,7 +21,7 @@ import {
     useMediaQuery,
     Theme,
     useForkRef,
-    Box,
+    Typography,
 } from '@mui/material';
 import { useTranslate, useBasename, useEvent } from 'ra-core';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -133,7 +133,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
         const renderMenuItem = () => {
             return (
                 <StyledMenuItem
-                    className={clsx(className, {
+                    className={clsx(className, MenuItemLinkClasses.root, {
                         [MenuItemLinkClasses.active]: !!match,
                     })}
                     // @ts-ignore
@@ -143,27 +143,24 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
                     {...rest}
                     onClick={handleMenuTap}
                 >
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        {leftIcon && (
-                            <ListItemIcon className={MenuItemLinkClasses.icon}>
-                                {leftIcon}
-                            </ListItemIcon>
-                        )}
+                    {leftIcon && (
+                        <ListItemIcon className={MenuItemLinkClasses.icon}>
+                            {leftIcon}
+                        </ListItemIcon>
+                    )}
+                    <Typography variant="inherit" noWrap sx={{ flexGrow: 1 }}>
                         {children
                             ? children
                             : typeof primaryText === 'string'
-                              ? translate(primaryText, { _: primaryText })
+                              ? translate(primaryText, {
+                                    _: primaryText,
+                                })
                               : primaryText}
-                    </Box>
+                    </Typography>
                     {keyboardShortcut
                         ? keyboardShortcutRepresentation ?? (
                               <KeyboardShortcut
+                                  className={MenuItemLinkClasses.shortcut}
                                   keyboardShortcut={keyboardShortcut}
                               />
                           )
@@ -210,8 +207,10 @@ export type MenuItemLinkProps = Omit<
 const PREFIX = 'RaMenuItemLink';
 
 export const MenuItemLinkClasses = {
+    root: `${PREFIX}-root`,
     active: `${PREFIX}-active`,
     icon: `${PREFIX}-icon`,
+    shortcut: `${PREFIX}-shortcut`,
 };
 
 const StyledMenuItem = styled(MenuItem, {
@@ -219,8 +218,23 @@ const StyledMenuItem = styled(MenuItem, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     color: (theme.vars || theme).palette.text.secondary,
-    justifyContent: 'space-between',
-    gap: theme.spacing(1),
+
+    [`& .${MenuItemLinkClasses.icon}`]: {
+        color: (theme.vars || theme).palette.text.secondary,
+    },
+
+    [`& .${MenuItemLinkClasses.shortcut}`]: {
+        color: (theme.vars || theme).palette.text.secondary,
+        fontSize: theme.typography.body2.fontSize,
+        opacity: 0,
+        display: 'none',
+        transition: 'opacity 0.3s',
+    },
+
+    [`&:hover .${MenuItemLinkClasses.shortcut}`]: {
+        opacity: 0.7,
+        display: 'inline-flex',
+    },
 
     [`&.${MenuItemLinkClasses.active}`]: {
         color: (theme.vars || theme).palette.text.primary,
@@ -238,19 +252,19 @@ const LinkRef = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        RaMenuItemLink: 'root' | 'active' | 'icon';
+        [PREFIX]: 'root' | 'active' | 'icon' | 'shortcut';
     }
 
     interface ComponentsPropsList {
-        RaMenuItemLink: Partial<MenuItemLinkProps>;
+        [PREFIX]: Partial<MenuItemLinkProps>;
     }
 
     interface Components {
-        RaMenuItemLink?: {
-            defaultProps?: ComponentsPropsList['RaMenuItemLink'];
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
             styleOverrides?: ComponentsOverrides<
                 Omit<Theme, 'components'>
-            >['RaMenuItemLink'];
+            >[typeof PREFIX];
         };
     }
 }
