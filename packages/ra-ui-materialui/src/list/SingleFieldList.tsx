@@ -90,7 +90,7 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
 
         return null;
     }
-    if (isPaused && (isPlaceholderData || data == null)) {
+    if (isPaused && (isPlaceholderData || total == null)) {
         if (offline) {
             return offline;
         }

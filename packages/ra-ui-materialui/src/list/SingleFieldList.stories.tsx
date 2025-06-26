@@ -128,7 +128,7 @@ export const Loading = () => (
 );
 
 export const Offline = () => (
-    <Wrapper listContext={{ isPaused: true }}>
+    <Wrapper listContext={{ isPaused: true, data: null, total: null }}>
         <SingleFieldList />
     </Wrapper>
 );
