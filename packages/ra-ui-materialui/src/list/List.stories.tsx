@@ -147,10 +147,7 @@ const data = {
 const defaultDataProvider = fakeRestDataProvider(data);
 
 const BookList = () => {
-    const { error, isPending } = useListContext();
-    if (isPending) {
-        return <div>Loading...</div>;
-    }
+    const { error } = useListContext();
     if (error) {
         return <div>Error: {error.message}</div>;
     }

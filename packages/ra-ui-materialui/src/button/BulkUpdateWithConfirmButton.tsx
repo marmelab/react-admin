@@ -16,6 +16,7 @@ import {
     type MutationMode,
     type RaRecord,
     type UpdateManyParams,
+    useIsOffine,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -36,6 +37,7 @@ export const BulkUpdateWithConfirmButton = (
     const unselectAll = useUnselectAll(resource);
     const [isOpen, setOpen] = useState(false);
     const { selectedIds } = useListContext();
+    const isOffline = useIsOffine();
 
     const {
         confirmTitle = 'ra.message.bulk_update_title',
@@ -46,16 +48,26 @@ export const BulkUpdateWithConfirmButton = (
         mutationMode = 'pessimistic',
         onClick,
         onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: selectedIds.length,
-                    _: translate('ra.notification.updated', {
+            notify(
+                isOffline
+                    ? `resources.${resource}.notifications.pending_update`
+                    : `resources.${resource}.notifications.updated`,
+                {
+                    type: 'info',
+                    messageArgs: {
                         smart_count: selectedIds.length,
-                    }),
-                },
-                undoable: mutationMode === 'undoable',
-            });
+                        _: translate(
+                            isOffline
+                                ? 'ra.notification.pending_update'
+                                : 'ra.notification.updated',
+                            {
+                                smart_count: selectedIds.length,
+                            }
+                        ),
+                    },
+                    undoable: mutationMode === 'undoable',
+                }
+            );
             unselectAll();
             setOpen(false);
         },

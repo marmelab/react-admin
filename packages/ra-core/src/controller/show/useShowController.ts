@@ -97,6 +97,7 @@ export const useShowController = <
         error,
         isLoading,
         isFetching,
+        isPaused,
         isPending,
         refetch,
     } = useGetOne<RecordType, ErrorType>(
@@ -159,6 +160,7 @@ export const useShowController = <
         error,
         isLoading,
         isFetching,
+        isPaused,
         isPending,
         record,
         refetch,
@@ -180,6 +182,7 @@ export interface ShowControllerBaseResult<RecordType extends RaRecord = any> {
     defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
+    isPaused: boolean;
     resource: string;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];

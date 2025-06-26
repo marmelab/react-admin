@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { ReactNode } from 'react';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import {
     type ComponentsOverrides,
     styled,
@@ -12,11 +12,11 @@ import ErrorIcon from '@mui/icons-material/Error';
 import {
     type LinkToType,
     useGetRecordRepresentation,
-    useTranslate,
     type RaRecord,
     ReferenceFieldBase,
     useReferenceFieldContext,
     useFieldValue,
+    Translate,
 } from 'ra-core';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -25,7 +25,7 @@ import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import type { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
-import { visuallyHidden } from '@mui/utils';
+import { Offline } from '../Offline';
 
 /**
  * Fetch reference record, and render its representation, or delegate rendering to child component.
@@ -69,13 +69,12 @@ export const ReferenceField = <
         name: PREFIX,
     });
     const { emptyText } = props;
-    const translate = useTranslate();
     const id = useFieldValue(props);
 
     if (id == null) {
         return emptyText ? (
             <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
+                <Translate i18nKey={emptyText}>{emptyText}</Translate>
             </Typography>
         ) : null;
     }
@@ -106,6 +105,7 @@ export interface ReferenceFieldProps<
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
+const defaultOffline = <Offline variant="inline" />;
 
 export const ReferenceFieldView = <
     RecordType extends Record<string, any> = Record<string, any>,
@@ -113,25 +113,37 @@ export const ReferenceFieldView = <
 >(
     props: ReferenceFieldViewProps<RecordType, ReferenceRecordType>
 ) => {
-    const { children, className, emptyText, reference, sx, ...rest } =
-        useThemeProps({
-            props: props,
-            name: PREFIX,
-        });
-    const { error, link, isLoading, referenceRecord } =
+    const {
+        children,
+        className,
+        emptyText,
+        offline = defaultOffline,
+        reference,
+        sx,
+        ...rest
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
+    const { error, link, isLoading, isPaused, referenceRecord } =
         useReferenceFieldContext();
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
-    const translate = useTranslate();
 
     if (error) {
         return (
-            <div>
+            <Stack direction="row" alignItems="center" gap={1}>
                 <ErrorIcon role="presentation" color="error" fontSize="small" />
-                <span style={visuallyHidden}>
-                    {typeof error === 'string' ? error : error?.message}
-                </span>
-            </div>
+                <Typography
+                    component="span"
+                    variant="body2"
+                    sx={{ color: 'error.main' }}
+                >
+                    <Translate i18nKey="ra.notification.http_error">
+                        Server communication error
+                    </Translate>
+                </Typography>
+            </Stack>
         );
     }
     // We explicitly check isLoading here as the record may not have an id for the reference,
@@ -141,9 +153,12 @@ export const ReferenceFieldView = <
         return <LinearProgress />;
     }
     if (!referenceRecord) {
+        if (isPaused) {
+            return offline;
+        }
         return emptyText ? (
             <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
+                <Translate i18nKey={emptyText}>{emptyText}</Translate>
             </Typography>
         ) : null;
     }
@@ -190,6 +205,7 @@ export interface ReferenceFieldViewProps<
 > extends FieldProps<RecordType>,
         Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'link'> {
     children?: ReactNode;
+    offline?: ReactNode;
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;

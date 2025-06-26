@@ -4,6 +4,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Basic } from './InPlaceEditor.stories';
 
 describe('InPlaceEditor', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
     it('should render the field value on mount', async () => {
         render(<Basic delay={0} />);
         await screen.findByText('John Doe');

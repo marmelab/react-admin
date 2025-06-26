@@ -39,10 +39,16 @@ export default {
             },
             notifications: {
                 created: 'Article créé |||| %{smart_count} articles créés',
+                pending_create:
+                    "L'Article créé quand votre appareil sera connecté |||| %{smart_count} articles seront créés quand votre appareil sera connecté",
                 updated:
                     'Article mis à jour |||| %{smart_count} articles mis à jour',
+                pending_update:
+                    "L'article sera mis à jour quand votre appareil sera connecté |||| %{smart_count} articles seront mis à jour quand votre appareil sera connecté",
                 deleted:
                     'Article supprimé |||| %{smart_count} articles supprimés',
+                pending_delete:
+                    "L'article sera supprimé quand votre appareil sera connecté |||| %{smart_count} articles seront supprimés quand votre appareil sera connecté",
             },
         },
         comments: {

@@ -17,6 +17,7 @@ import {
     useRecordContext,
     useUpdate,
     useGetRecordRepresentation,
+    useIsOffine,
     useResourceTranslation,
 } from 'ra-core';
 
@@ -39,6 +40,7 @@ export const UpdateWithConfirmButton = <
     const translate = useTranslate();
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
+    const isOffline = useIsOffine();
     const record = useRecordContext<RecordType>(props);
 
     const {
@@ -61,14 +63,26 @@ export const UpdateWithConfirmButton = <
     const {
         meta: mutationMeta,
         onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                    _: translate('ra.notification.updated', { smart_count: 1 }),
-                },
-                undoable: mutationMode === 'undoable',
-            });
+            notify(
+                isOffline
+                    ? `resources.${resource}.notifications.pending_update`
+                    : `resources.${resource}.notifications.updated`,
+                {
+                    type: 'info',
+                    messageArgs: {
+                        smart_count: 1,
+                        _: translate(
+                            isOffline
+                                ? 'ra.notification.pending_update'
+                                : 'ra.notification.updated',
+                            {
+                                smart_count: 1,
+                            }
+                        ),
+                    },
+                    undoable: mutationMode === 'undoable',
+                }
+            );
         },
         onError = (error: MutationOptionsError) => {
             notify(

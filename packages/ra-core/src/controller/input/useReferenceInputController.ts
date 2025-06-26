@@ -79,11 +79,12 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     // fetch possible values
     const {
-        data: possibleValuesData = [],
+        data: possibleValuesData,
         total,
         pageInfo,
         isFetching: isFetchingPossibleValues,
         isLoading: isLoadingPossibleValues,
+        isPaused: isPausedPossibleValues,
         isPending: isPendingPossibleValues,
         error: errorPossibleValues,
         refetch: refetchGetList,
@@ -112,6 +113,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         error: errorReference,
         isLoading: isLoadingReference,
         isFetching: isFetchingReference,
+        isPaused: isPausedReference,
         isPending: isPendingReference,
     } = useReference<RecordType>({
         id: currentValue,
@@ -128,6 +130,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         // The reference query isn't enabled when there is no value yet but as it has no data, react-query will flag it as pending
         (currentValue != null && currentValue !== '' && isPendingReference) ||
         isPendingPossibleValues;
+    const isPaused = isPausedPossibleValues || isPausedReference;
 
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
@@ -140,17 +143,30 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     }, [currentReferenceRecord]);
 
     // add current value to possible sources
-    let finalData: RecordType[], finalTotal: number | undefined;
-    if (
-        !referenceRecord ||
-        possibleValuesData.find(record => record.id === referenceRecord.id)
-    ) {
-        finalData = possibleValuesData;
-        finalTotal = total;
-    } else {
-        finalData = [referenceRecord, ...possibleValuesData];
-        finalTotal = total == null ? undefined : total + 1;
-    }
+    const { finalData, finalTotal } = useMemo(() => {
+        if (isPaused && possibleValuesData == null) {
+            return {
+                finalData: null,
+                finalTotal: null,
+            };
+        }
+        if (
+            !referenceRecord ||
+            (possibleValuesData ?? []).find(
+                record => record.id === referenceRecord.id
+            )
+        ) {
+            return {
+                finalData: possibleValuesData,
+                finalTotal: total,
+            };
+        } else {
+            return {
+                finalData: [referenceRecord, ...(possibleValuesData ?? [])],
+                finalTotal: total == null ? undefined : total + 1,
+            };
+        }
+    }, [isPaused, referenceRecord, possibleValuesData, total]);
 
     const refetch = useCallback(() => {
         refetchGetList();
@@ -176,7 +192,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         hideFilter: paramsModifiers.hideFilter,
         isFetching: isFetchingReference || isFetchingPossibleValues,
         isLoading: isLoadingReference || isLoadingPossibleValues,
-        isPending: isPending,
+        isPaused,
+        isPending,
         page: params.page,
         perPage: params.perPage,
         refetch,

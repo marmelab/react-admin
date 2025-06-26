@@ -23,7 +23,10 @@ import {
     useShowController,
     useLocaleState,
     useRecordContext,
+    Translate,
 } from 'react-admin';
+import { Tooltip } from '@mui/material';
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
 import PostTitle from './PostTitle';
 
 const CreateRelatedComment = () => {
@@ -112,11 +115,36 @@ const PostShow = () => {
                     </TabbedShowLayout.Tab>
                     <TabbedShowLayout.Tab
                         label="post.form.comments"
+                        sx={{
+                            '& .MuiTab-root > span': {
+                                display: 'flex',
+                                alignItems: 'center',
+                            },
+                        }}
                         count={
                             <ReferenceManyCount
                                 reference="comments"
                                 target="post_id"
-                                sx={{ lineHeight: 'inherit' }}
+                                sx={{
+                                    lineHeight: 'inherit',
+                                }}
+                                offline={
+                                    <Tooltip
+                                        title={
+                                            <Translate i18nKey="ra.notification.offline" />
+                                        }
+                                    >
+                                        <ReportProblemOutlinedIcon
+                                            color="warning"
+                                            sx={{
+                                                marginTop: -2,
+                                                position: 'relative',
+                                                top: theme =>
+                                                    theme.spacing(0.5),
+                                            }}
+                                        />
+                                    </Tooltip>
+                                }
                             />
                         }
                     >

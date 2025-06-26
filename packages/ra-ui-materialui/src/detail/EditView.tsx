@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType } from 'react';
+import type { ReactNode, ElementType } from 'react';
 import {
     Card,
     CardContent,
@@ -13,9 +13,11 @@ import { useEditContext, useResourceDefinition } from 'ra-core';
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
+import { Offline } from '../Offline';
 import { EditProps } from './Edit';
 
 const defaultActions = <EditActions />;
+const defaultOffline = <Offline />;
 
 export const EditView = (props: EditViewProps) => {
     const {
@@ -24,13 +26,25 @@ export const EditView = (props: EditViewProps) => {
         children,
         className,
         component: Content = Card,
+        offline = defaultOffline,
         emptyWhileLoading = false,
         title,
         ...rest
     } = props;
 
     const { hasShow } = useResourceDefinition();
-    const { resource, defaultTitle, record, isPending } = useEditContext();
+    const { resource, defaultTitle, record, isPending, isPaused } =
+        useEditContext();
+
+    if (isPaused && record == null && offline) {
+        return (
+            <Root className={clsx('edit-page', className)} {...rest}>
+                <div className={clsx(EditClasses.main, EditClasses.noActions)}>
+                    <Content className={EditClasses.card}>{offline}</Content>
+                </div>
+            </Root>
+        );
+    }
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
@@ -64,11 +78,12 @@ export const EditView = (props: EditViewProps) => {
 
 export interface EditViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
+    actions?: ReactNode;
+    aside?: ReactNode;
+    offline?: ReactNode;
     component?: ElementType;
     emptyWhileLoading?: boolean;
-    title?: string | ReactElement | false;
+    title?: ReactNode;
     sx?: SxProps<Theme>;
 }
 

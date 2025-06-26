@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType } from 'react';
+import type { ReactNode, ElementType } from 'react';
 import {
     Card,
     type ComponentsOverrides,
@@ -11,9 +11,11 @@ import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
+import { Offline } from '../Offline';
 import { ShowProps } from './Show';
 
 const defaultActions = <ShowActions />;
+const defaultOffline = <Offline />;
 
 export const ShowView = (props: ShowViewProps) => {
     const {
@@ -23,12 +25,23 @@ export const ShowView = (props: ShowViewProps) => {
         className,
         component: Content = Card,
         emptyWhileLoading = false,
+        offline = defaultOffline,
         title,
         ...rest
     } = props;
 
-    const { resource, defaultTitle, record } = useShowContext();
+    const { resource, defaultTitle, isPaused, record } = useShowContext();
     const { hasEdit } = useResourceDefinition();
+
+    if (isPaused && record == null && offline) {
+        return (
+            <Root className={clsx('show-page', className)} {...rest}>
+                <div className={clsx(ShowClasses.main, ShowClasses.noActions)}>
+                    <Content className={ShowClasses.card}>{offline}</Content>
+                </div>
+            </Root>
+        );
+    }
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
@@ -60,11 +73,12 @@ export const ShowView = (props: ShowViewProps) => {
 
 export interface ShowViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
+    actions?: ReactNode;
+    aside?: ReactNode;
     component?: ElementType;
     emptyWhileLoading?: boolean;
-    title?: string | ReactElement | false;
+    offline?: ReactNode;
+    title?: ReactNode;
     sx?: SxProps<Theme>;
 }
 

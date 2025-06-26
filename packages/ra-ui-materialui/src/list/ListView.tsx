@@ -42,7 +42,9 @@ export const ListView = <RecordType extends RaRecord = any>(
         defaultTitle,
         data,
         error,
+        isPaused,
         isPending,
+        isPlaceholderData,
         filterValues,
         resource,
         total,
@@ -72,6 +74,8 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
 
     const shouldRenderEmptyPage =
+        !isPaused &&
+        !isPlaceholderData &&
         !error &&
         // the list is not loading data for the first time
         !isPending &&

@@ -23,6 +23,7 @@ import {
     useResourceContext,
     useGetResourceLabel,
     useGetRecordRepresentation,
+    useIsOffine,
 } from '../../core';
 import {
     SaveContextValue,
@@ -113,6 +114,7 @@ export const useEditController = <
         error,
         isLoading,
         isFetching,
+        isPaused,
         isPending,
         refetch,
     } = useGetOne<RecordType, ErrorType>(
@@ -173,6 +175,7 @@ export const useEditController = <
 
     const recordCached = { id, previousData: record };
 
+    const isOffline = useIsOffine();
     const [update, { isPending: saving }] = useUpdate<RecordType, ErrorType>(
         resource,
         recordCached,
@@ -181,16 +184,26 @@ export const useEditController = <
                 if (onSuccess) {
                     return onSuccess(data, variables, context);
                 }
-                notify(`resources.${resource}.notifications.updated`, {
-                    type: 'info',
-                    messageArgs: {
-                        smart_count: 1,
-                        _: translate('ra.notification.updated', {
+                notify(
+                    isOffline
+                        ? `resources.${resource}.notifications.pending_update`
+                        : `resources.${resource}.notifications.updated`,
+                    {
+                        type: 'info',
+                        messageArgs: {
                             smart_count: 1,
-                        }),
-                    },
-                    undoable: mutationMode === 'undoable',
-                });
+                            _: translate(
+                                isOffline
+                                    ? 'ra.notification.pending_update'
+                                    : 'ra.notification.updated',
+                                {
+                                    smart_count: 1,
+                                }
+                            ),
+                        },
+                        undoable: mutationMode === 'undoable',
+                    }
+                );
                 redirect(redirectTo, resource, data.id, data);
             },
             onError: (error, variables, context) => {
@@ -289,6 +302,7 @@ export const useEditController = <
         error,
         isFetching,
         isLoading,
+        isPaused,
         isPending,
         mutationMode,
         record,
@@ -324,6 +338,7 @@ export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
+    isPaused: boolean;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;

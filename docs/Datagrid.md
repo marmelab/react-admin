@@ -59,6 +59,7 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 | `hover`              | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
 | `isRowExpandable`    | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
 | `isRowSelectable`    | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |
+| `offline`            | Optional | Element                 | `<Offline>`           | The content rendered to render when data could not be fetched because of connectivity issues. |
 | `optimized`          | Optional | Boolean                 | `false`               | Whether to optimize the rendering of the table.               |
 | `rowClick`           | Optional | mixed                   |                       | The action to trigger when the user clicks on a row.          |
 | `rowStyle`           | Optional | Function                |                       | A function that returns the style to apply to a row.          |
@@ -641,6 +642,40 @@ export const PostList = () => (
 );
 ```
 {% endraw %}
+
+## `offline`
+
+It's possible that a `<Datagrid>` will have no records to display because of connectivity issues. In that case, `<Datagrid>` will display the following message:
+
+> No connectivity. Could not fetch data.
+
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<Datagrid offline>` prop:
+
+```tsx
+const CustomOffline = () => <div>No network. Data couldn't be fetched.</div>;
+
+const PostList = () => (
+    <List>
+        <Datagrid offline={<CustomOffline />}>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="views" />
+        </Datagrid>
+    </List>
+);
+```
 
 ## `optimized`
 

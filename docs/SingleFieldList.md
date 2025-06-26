@@ -83,12 +83,13 @@ You can customize how each record is displayed by passing a Field component as c
 
 `<SingleFieldList>` accepts the following props:
 
-| Prop        | Required | Type                      | Default | Description                                     |
-| ----------- | -------- | ------------------------- | ------- | ----------------------------------------------- |
-| `children`  | Optional | `ReactNode`               |         | React element to render for each record         |
-| `empty`     | Optional | `ReactNode`               |         | React element to display when the list is empty |
-| `linkType`  | Optional | `'edit' | 'show' | false` | `edit`  | The target of the link on each item             |
-| `sx`        | Optional | `object`                  |         | The sx props of the Material UI Box component   |
+| Prop        | Required | Type                      | Default                        | Description                                     |
+| ----------- | -------- | ------------------------- | ------------------------------ | ----------------------------------------------- |
+| `children`  | Optional | `ReactNode`               |                                | React element to render for each record         |
+| `empty`     | Optional | `ReactNode`               |                                | React element to display when the list is empty |
+| `linkType`  | Optional | `'edit' | 'show' | false` | `edit`                         | The target of the link on each item             |
+| `offline`   | Optional | Element                   | `<Offline variant="inline" />` | The content rendered to render when data could not be fetched because of connectivity issues. |
+| `sx`        | Optional | `object`                  |                                | The sx props of the Material UI Box component   |
 
 Additional props are passed down to the underlying [Material UI `<Stack>` component](https://mui.com/material-ui/react-stack/).
 
@@ -132,6 +133,51 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
 * `linkType="edit"`: links to the edit page. This is the default behavior.
 * `linkType="show"`: links to the show page.
 * `linkType={false}`: does not create any link.
+
+## `offline`
+
+It's possible that a `<SingleFieldList>` will have no records to display because of connectivity issues. In that case, `<SingleFieldList>` will display the following message:
+
+> No connectivity. Could not fetch data.
+
+You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.notification.offline` key.
+
+```tsx
+const messages = {
+    ra: {
+        notification: {
+            offline: "No network. Data couldn't be fetched.",
+        }
+    }
+}
+```
+
+If you need to go beyond text, pass a custom element as the `<SingleFieldList offline>` prop:
+
+```tsx
+import {
+    Show,
+    SimpleShowLayout,
+    TextField,
+    ReferenceArrayField,
+    SingleFieldList
+} from 'react-admin';
+
+const Offline = () => (
+    <p>No network. Data couldn't be fetched.</p>
+);
+
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <ReferenceArrayField label="Tags" reference="tags" source="tags">
+                <SingleFieldList offline={<Offline />} />
+            </ReferenceArrayField>
+        </SimpleShowLayout>
+    </Show>
+);
+```
 
 ## `sx`: CSS API
 

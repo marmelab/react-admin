@@ -15,6 +15,7 @@ import {
     type RaRecord,
     type UpdateManyParams,
     useTranslate,
+    useIsOffine,
 } from 'ra-core';
 import type { UseMutationOptions } from '@tanstack/react-query';
 
@@ -34,6 +35,7 @@ export const BulkUpdateWithUndoButton = (
     const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
     const translate = useTranslate();
+    const isOffline = useIsOffine();
 
     const {
         data,
@@ -43,14 +45,21 @@ export const BulkUpdateWithUndoButton = (
         onClick,
         onSuccess = () => {
             notify(
-                successMessage ?? `resources.${resource}.notifications.updated`,
+                successMessage ?? isOffline
+                    ? `resources.${resource}.notifications.pending_update`
+                    : `resources.${resource}.notifications.updated`,
                 {
                     type: 'info',
                     messageArgs: {
                         smart_count: selectedIds.length,
-                        _: translate('ra.notification.updated', {
-                            smart_count: selectedIds.length,
-                        }),
+                        _: translate(
+                            isOffline
+                                ? 'ra.notification.pending_update'
+                                : 'ra.notification.updated',
+                            {
+                                smart_count: selectedIds.length,
+                            }
+                        ),
                     },
                     undoable: true,
                 }

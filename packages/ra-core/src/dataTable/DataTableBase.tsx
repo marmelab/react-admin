@@ -31,6 +31,7 @@ export const DataTableBase = function DataTable<
         loading,
         isRowSelectable,
         isRowExpandable,
+        offline,
         resource,
         rowClick,
         expandSingle = false,
@@ -39,7 +40,9 @@ export const DataTableBase = function DataTable<
     const {
         sort,
         data,
+        isPaused,
         isPending,
+        isPlaceholderData,
         onSelect,
         onToggleItem,
         selectedIds,
@@ -145,7 +148,7 @@ export const DataTableBase = function DataTable<
         ]
     );
 
-    if (isPending === true) {
+    if (isPending && !isPaused) {
         return loading;
     }
 
@@ -154,9 +157,21 @@ export const DataTableBase = function DataTable<
      * displaying the table header with zero data rows,
      * the DataTable displays the empty component.
      */
-    if (data == null || data.length === 0 || total === 0) {
+    if (
+        (data == null || data.length === 0 || total === 0) &&
+        !isPaused &&
+        !isPlaceholderData
+    ) {
         if (empty) {
             return empty;
+        }
+
+        return null;
+    }
+
+    if (isPaused && (isPlaceholderData || data == null)) {
+        if (offline) {
+            return offline;
         }
 
         return null;
@@ -206,6 +221,7 @@ export interface DataTableBaseProps<RecordType extends RaRecord = any> {
     hasBulkActions: boolean;
     hover?: boolean;
     empty: ReactNode;
+    offline: ReactNode;
     isRowExpandable?: (record: RecordType) => boolean;
     isRowSelectable?: (record: RecordType) => boolean;
     loading: ReactNode;

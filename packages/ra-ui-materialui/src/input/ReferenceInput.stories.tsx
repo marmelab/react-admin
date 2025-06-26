@@ -109,6 +109,94 @@ export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
     </TestMemoryRouter>
 );
 
+const LoadChildrenOnDemand = ({ children }: { children: React.ReactNode }) => {
+    const [showChildren, setShowChildren] = React.useState(false);
+    const handleClick = () => {
+        setShowChildren(true);
+    };
+    return showChildren ? (
+        children
+    ) : (
+        <div>
+            <Typography variant="body2" gutterBottom>
+                Don't forget to go offline first
+            </Typography>
+            <button onClick={handleClick}>Load Children</button>
+        </div>
+    );
+};
+
+export const Offline = ({ dataProvider = dataProviderWithAuthors }) => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <LoadChildrenOnDemand>
+                                <ReferenceInput
+                                    reference="authors"
+                                    source="author"
+                                />
+                            </LoadChildrenOnDemand>
+                        </SimpleForm>
+                    </Edit>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const CustomOffline = ({ dataProvider = dataProviderWithAuthors }) => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <LoadChildrenOnDemand>
+                                <ReferenceInput
+                                    reference="authors"
+                                    source="author"
+                                    offline={<p>You're offline</p>}
+                                />
+                            </LoadChildrenOnDemand>
+                        </SimpleForm>
+                    </Edit>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const tags = [
     { id: 5, name: 'lorem' },
     { id: 6, name: 'ipsum' },

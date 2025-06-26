@@ -10,6 +10,7 @@ import {
     RecordContextProvider,
     type UseUpdateOptions,
     type RaRecord,
+    useIsOffine,
 } from 'ra-core';
 import isEqual from 'lodash/isEqual';
 import { styled } from '@mui/material/styles';
@@ -130,22 +131,33 @@ export const InPlaceEditor = <
     const notify = useNotify();
     const translate = useTranslate();
     const [update] = useUpdate();
+    const isOffline = useIsOffine();
 
     const {
         meta: mutationMeta,
         onSuccess = () => {
             dispatch({ type: 'success' });
             if (mutationMode !== 'undoable' && !notifyOnSuccess) return;
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                    _: translate('ra.notification.updated', {
+            notify(
+                isOffline
+                    ? `resources.${resource}.notifications.pending_update`
+                    : `resources.${resource}.notifications.updated`,
+                {
+                    type: 'info',
+                    messageArgs: {
                         smart_count: 1,
-                    }),
-                },
-                undoable: mutationMode === 'undoable',
-            });
+                        _: translate(
+                            isOffline
+                                ? 'ra.notification.pending_update'
+                                : 'ra.notification.updated',
+                            {
+                                smart_count: 1,
+                            }
+                        ),
+                    },
+                    undoable: mutationMode === 'undoable',
+                }
+            );
         },
         onError = error => {
             notify('ra.notification.http_error', {

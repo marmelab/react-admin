@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
@@ -17,6 +17,8 @@ import {
 
 import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
+import { Offline } from '../Offline';
+
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { useThemeProps } from '@mui/material/styles';
 
@@ -47,6 +49,7 @@ export const ReferenceOneField = <
         source = 'id',
         target,
         emptyText,
+        offline = defaultOffline,
         sort,
         filter,
         link,
@@ -91,11 +94,20 @@ export const ReferenceOneField = <
             emptyText
         ) : null;
 
-    return !record ||
+    if (
+        !record ||
         (!controllerProps.isPending &&
-            controllerProps.referenceRecord == null) ? (
-        empty
-    ) : (
+            !controllerProps.isPaused &&
+            controllerProps.referenceRecord == null)
+    ) {
+        return empty;
+    }
+
+    if (controllerProps.isPaused && controllerProps.referenceRecord == null) {
+        return offline;
+    }
+
+    return (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
                 <RecordContextProvider value={context.referenceRecord}>
@@ -123,7 +135,8 @@ export interface ReferenceOneFieldProps<
     source?: string;
     filter?: any;
     link?: LinkToType<ReferenceRecordType>;
-    emptyText?: string | ReactElement;
+    emptyText?: ReactNode;
+    offline?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];
@@ -137,6 +150,8 @@ export interface ReferenceOneFieldProps<
 // will match the default sort ({ field: 'id', order: 'DESC'})
 // leading to an incorrect sort indicator in a datagrid header
 ReferenceOneField.sortable = false;
+
+const defaultOffline = <Offline variant="inline" />;
 
 const PREFIX = 'RaReferenceOneField';
 
