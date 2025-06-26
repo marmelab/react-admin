@@ -44,7 +44,9 @@ export const LoadingIndicator = (inProps: LoadingIndicatorProps) => {
                         title={
                             <Translate
                                 i18nKey="ra.notifications.pending_operations"
-                                options={{ smart_count: 1 }}
+                                options={{
+                                    smart_count: pendingMutations.length,
+                                }}
                             >
                                 {pendingMutations.length > 1
                                     ? `There are ${pendingMutations.length} pending
