@@ -93,7 +93,6 @@ export const EditClasses = {
     main: `${PREFIX}-main`,
     noActions: `${PREFIX}-noActions`,
     card: `${PREFIX}-card`,
-    offline: `${PREFIX}-offline`,
 };
 
 const Root = styled('div', {
