@@ -9,10 +9,10 @@ import type { DataProvider } from '../types';
  *
  * @example <caption>Adding offline support for the default mutations</caption>
  * // in src/App.tsx
- * import { Admin, Resource, addOfflineSupportToQueryClient, reactAdminMutations } from 'react-admin';
+ * import { addOfflineSupportToQueryClient } from 'react-admin';
+ * import { QueryClient } from '@tanstack/react-query';
  * import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
  * import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
- * import { queryClient } from './queryClient';
  * import { dataProvider } from './dataProvider';
  * import { posts } from './posts';
  * import { comments } from './comments';
@@ -21,11 +21,10 @@ import type { DataProvider } from '../types';
  *     storage: window.localStorage,
  * });
  *
- * addOfflineSupportToQueryClient({
- *    queryClient,
+ * const queryClient = addOfflineSupportToQueryClient({
+ *   queryClient: new QueryClient(),
  *   dataProvider,
  *   resources: ['posts', 'comments'],
- *   mutations: [...reactAdminMutations, 'myCustomMutation'],
  * });
  *
  * const App = () => (
@@ -46,10 +45,10 @@ import type { DataProvider } from '../types';
  *
  * @example <caption>Adding offline support with custom mutations</caption>
  * // in src/App.tsx
- * import { addOfflineSupportToQueryClient } from 'react-admin';
+ * import { Admin, Resource, addOfflineSupportToQueryClient, reactAdminMutations } from 'react-admin';
+ * import { QueryClient } from '@tanstack/react-query';
  * import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
  * import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
- * import { queryClient } from './queryClient';
  * import { dataProvider } from './dataProvider';
  * import { posts } from './posts';
  * import { comments } from './comments';
@@ -58,10 +57,11 @@ import type { DataProvider } from '../types';
  *     storage: window.localStorage,
  * });
  *
- * addOfflineSupportToQueryClient({
- *    queryClient,
+ * const queryClient = addOfflineSupportToQueryClient({
+ *   queryClient: new QueryClient(),
  *   dataProvider,
  *   resources: ['posts', 'comments'],
+ *   mutations: [...reactAdminMutations, 'myCustomMutation'],
  * });
  *
  * const App = () => (
