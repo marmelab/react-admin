@@ -49,10 +49,12 @@ export const KeyboardShortcut = ({
 
 const KeyMap = {
     meta: '⌘',
+    mod: '⌘',
     ctrl: '⌃',
     shift: '⇧',
     alt: '⌥',
     enter: '⏎',
+    esc: '⎋',
     escape: '⎋',
     backspace: '⌫',
     delete: '⌦',
