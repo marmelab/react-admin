@@ -126,23 +126,6 @@ const LoadChildrenOnDemand = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-const BookEditOffline = () => (
-    <Edit
-        mutationMode="pessimistic"
-        mutationOptions={{
-            onSuccess: data => {
-                console.log(data);
-            },
-        }}
-    >
-        <SimpleForm>
-            <LoadChildrenOnDemand>
-                <ReferenceInput reference="authors" source="author" />
-            </LoadChildrenOnDemand>
-        </SimpleForm>
-    </Edit>
-);
-
 export const Offline = ({ dataProvider = dataProviderWithAuthors }) => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin dataProvider={dataProvider}>
@@ -152,7 +135,64 @@ export const Offline = ({ dataProvider = dataProviderWithAuthors }) => (
                     `${record.first_name} ${record.last_name}`
                 }
             />
-            <Resource name="books" edit={BookEditOffline} />
+            <Resource
+                name="books"
+                edit={
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <LoadChildrenOnDemand>
+                                <ReferenceInput
+                                    reference="authors"
+                                    source="author"
+                                />
+                            </LoadChildrenOnDemand>
+                        </SimpleForm>
+                    </Edit>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const CustomOffline = ({ dataProvider = dataProviderWithAuthors }) => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <LoadChildrenOnDemand>
+                                <ReferenceInput
+                                    reference="authors"
+                                    source="author"
+                                    offline={<p>You're offline</p>}
+                                />
+                            </LoadChildrenOnDemand>
+                        </SimpleForm>
+                    </Edit>
+                }
+            />
         </Admin>
     </TestMemoryRouter>
 );

@@ -21,6 +21,7 @@ export type ChoicesContextBaseValue<RecordType extends RaRecord = any> = {
     isFetching: boolean;
     isLoading: boolean;
     isPaused: boolean;
+    isPlaceholderData: boolean;
     page: number;
     perPage: number;
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];

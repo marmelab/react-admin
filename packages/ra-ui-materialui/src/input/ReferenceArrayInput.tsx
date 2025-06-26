@@ -100,15 +100,13 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
     const { isPaused, allChoices } = controllerProps;
 
     return isPaused && allChoices == null ? (
-        offline ?? (
-            <Labeled
-                source={props.source}
-                label={props.label}
-                resource={props.resource}
-            >
-                <Offline variant="inline" />
-            </Labeled>
-        )
+        <Labeled
+            source={props.source}
+            label={props.label}
+            resource={props.resource}
+        >
+            {offline ?? <Offline variant="inline" />}
+        </Labeled>
     ) : (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ElementType, ReactElement } from 'react';
+import type { ElementType, ReactElement, ReactNode } from 'react';
 import {
     Stack,
     type StackProps,
@@ -45,6 +45,14 @@ export const Labeled = (inProps: LabeledProps) => {
         ...rest
     } = props;
 
+    const childrenProps = React.isValidElement(children) ? children.props : {};
+    const isLabeled = React.isValidElement(children)
+        ? // @ts-ignore
+          children.type?.displayName === 'Labeled'
+        : false;
+    const shouldAddLabel =
+        label !== false && childrenProps.label !== false && !isLabeled;
+
     return (
         <Root
             // @ts-ignore https://github.com/mui/material-ui/issues/29875
@@ -54,13 +62,7 @@ export const Labeled = (inProps: LabeledProps) => {
             })}
             {...rest}
         >
-            {label !== false &&
-            children.props.label !== false &&
-            typeof children.type !== 'string' &&
-            // @ts-ignore
-            children.type?.displayName !== 'Labeled' &&
-            // @ts-ignore
-            children.type?.displayName !== 'Labeled' ? (
+            {shouldAddLabel ? (
                 <Typography
                     sx={
                         color
@@ -75,8 +77,8 @@ export const Labeled = (inProps: LabeledProps) => {
                     {...TypographyProps}
                 >
                     <FieldTitle
-                        label={label || children.props.label}
-                        source={source || children.props.source}
+                        label={label || childrenProps.label}
+                        source={source || childrenProps.source}
                         resource={resource}
                         isRequired={isRequired}
                     />
@@ -90,7 +92,7 @@ export const Labeled = (inProps: LabeledProps) => {
 Labeled.displayName = 'Labeled';
 
 export interface LabeledProps extends StackProps {
-    children: ReactElement;
+    children: ReactNode;
     className?: string;
     color?:
         | ResponsiveStyleValue<Property.Color | Property.Color[]>

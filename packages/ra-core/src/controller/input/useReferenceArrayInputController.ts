@@ -63,6 +63,7 @@ export const useReferenceArrayInputController = <
         isFetching: isFetchingGetMany,
         isPaused: isPausedGetMany,
         isPending: isPendingGetMany,
+        isPlaceholderData: isPlaceholderDataGetMany,
         refetch: refetchGetMany,
     } = useGetManyAggregate<RecordType>(
         reference,
@@ -102,6 +103,7 @@ export const useReferenceArrayInputController = <
         isFetching: isFetchingGetList,
         isPaused: isPausedGetList,
         isPending: isPendingGetList,
+        isPlaceholderData: isPlaceholderDataGetList,
         refetch: refetchGetMatching,
     } = useGetList<RecordType>(
         reference,
@@ -157,6 +159,7 @@ export const useReferenceArrayInputController = <
         isLoading: isLoadingGetMany || isLoadingGetList,
         isPaused: isPausedGetMany || isPausedGetList,
         isPending: isPendingGetMany || isPendingGetList,
+        isPlaceholderData: isPlaceholderDataGetMany || isPlaceholderDataGetList,
         page: params.page,
         perPage: params.perPage,
         refetch,

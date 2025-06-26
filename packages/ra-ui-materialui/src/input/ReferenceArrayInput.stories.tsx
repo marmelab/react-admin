@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    DataProvider,
-    Form,
-    testDataProvider,
-    TestMemoryRouter,
-} from 'ra-core';
+import { DataProvider, Form, TestMemoryRouter } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Admin, Resource } from 'react-admin';
@@ -29,23 +24,21 @@ const tags = [
     { id: 2, name: 'Design' },
     { id: 3, name: 'Painting' },
     { id: 4, name: 'Photography' },
+    { id: 5, name: 'Sculpture' },
+    { id: 6, name: 'Urbanism' },
+    { id: 7, name: 'Video' },
+    { id: 8, name: 'Web' },
+    { id: 9, name: 'Writing' },
+    { id: 10, name: 'Other' },
 ];
 
-const dataProvider = testDataProvider({
-    // @ts-ignore
-    getList: () =>
-        Promise.resolve({
-            data: tags,
-            total: tags.length,
-        }),
-    // @ts-ignore
-    getMany: (resource, params) => {
-        console.log('getMany', resource, params);
-        return Promise.resolve({
-            data: params.ids.map(id => tags.find(tag => tag.id === id)),
-        });
+const dataProvider = fakeRestProvider(
+    {
+        tags,
     },
-});
+    process.env.NODE_ENV !== 'test',
+    process.env.NODE_ENV !== 'test' ? 300 : 0
+);
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 

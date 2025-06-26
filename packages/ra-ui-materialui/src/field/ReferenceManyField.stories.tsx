@@ -8,7 +8,7 @@ import {
 } from 'ra-core';
 import { Admin, ListGuesser, Resource } from 'react-admin';
 import type { AdminProps } from 'react-admin';
-import { ThemeProvider, Box, Stack } from '@mui/material';
+import { ThemeProvider, Box, Stack, Typography } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import fakeDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -120,6 +120,40 @@ export const Basic = () => (
                 <TextField source="title" />
             </Datagrid>
         </ReferenceManyField>
+    </Wrapper>
+);
+
+const LoadChildrenOnDemand = ({ children }: { children: React.ReactNode }) => {
+    const [showChildren, setShowChildren] = React.useState(false);
+    const handleClick = () => {
+        setShowChildren(true);
+    };
+    return showChildren ? (
+        children
+    ) : (
+        <div>
+            <Typography variant="body2" gutterBottom>
+                Don't forget to go offline first
+            </Typography>
+            <button onClick={handleClick}>Load Children</button>
+        </div>
+    );
+};
+
+export const Offline = () => (
+    <Wrapper record={authors[3]}>
+        <LoadChildrenOnDemand>
+            <ReferenceManyField
+                reference="books"
+                target="author_id"
+                pagination={<Pagination />}
+                perPage={5}
+            >
+                <Datagrid>
+                    <TextField source="title" />
+                </Datagrid>
+            </ReferenceManyField>
+        </LoadChildrenOnDemand>
     </Wrapper>
 );
 

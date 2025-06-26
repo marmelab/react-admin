@@ -108,7 +108,11 @@ export const Offline = () => (
 );
 
 export const OfflineWithChildren = () => (
-    <AdminContext dataProvider={dataProvider} defaultTheme="light">
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => englishMessages)}
+        defaultTheme="light"
+    >
         <ResourceDefinitionContextProvider definitions={resouceDefs}>
             <Show resource="bands" id={1} sx={{ width: 600 }}>
                 <SimpleShowLayout>
@@ -117,11 +121,13 @@ export const OfflineWithChildren = () => (
                         <ReferenceArrayField
                             source="members"
                             reference="artists"
+                            perPage={5}
                         >
                             <Datagrid bulkActionButtons={false}>
                                 <TextField source="id" />
                                 <TextField source="name" />
                             </Datagrid>
+                            <Pagination />
                         </ReferenceArrayField>
                     </LoadChildrenOnDemand>
                 </SimpleShowLayout>

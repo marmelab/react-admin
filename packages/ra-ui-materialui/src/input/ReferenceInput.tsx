@@ -78,15 +78,13 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
         <ReferenceInputBase
             {...rest}
             offline={
-                offline ?? (
-                    <Labeled
-                        source={rest.source}
-                        label={rest.label}
-                        resource={rest.resource}
-                    >
-                        <Offline />
-                    </Labeled>
-                )
+                <Labeled
+                    source={rest.source}
+                    label={rest.label}
+                    resource={rest.resource}
+                >
+                    {offline ?? <Offline />}
+                </Labeled>
             }
         >
             {children}
