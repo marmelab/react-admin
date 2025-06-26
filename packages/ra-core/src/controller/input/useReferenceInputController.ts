@@ -79,7 +79,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     // fetch possible values
     const {
-        data: possibleValuesData = [],
+        data: possibleValuesData,
         total,
         pageInfo,
         isFetching: isFetchingPossibleValues,
@@ -143,17 +143,30 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     }, [currentReferenceRecord]);
 
     // add current value to possible sources
-    let finalData: RecordType[], finalTotal: number | undefined;
-    if (
-        !referenceRecord ||
-        possibleValuesData.find(record => record.id === referenceRecord.id)
-    ) {
-        finalData = possibleValuesData;
-        finalTotal = total;
-    } else {
-        finalData = [referenceRecord, ...possibleValuesData];
-        finalTotal = total == null ? undefined : total + 1;
-    }
+    const { finalData, finalTotal } = useMemo(() => {
+        if (isPaused && possibleValuesData == null) {
+            return {
+                finalData: null,
+                finalTotal: null,
+            };
+        }
+        if (
+            !referenceRecord ||
+            (possibleValuesData ?? []).find(
+                record => record.id === referenceRecord.id
+            )
+        ) {
+            return {
+                finalData: possibleValuesData,
+                finalTotal: total,
+            };
+        } else {
+            return {
+                finalData: [referenceRecord, ...(possibleValuesData ?? [])],
+                finalTotal: total == null ? undefined : total + 1,
+            };
+        }
+    }, [isPaused, referenceRecord, possibleValuesData, total]);
 
     const refetch = useCallback(() => {
         refetchGetList();
