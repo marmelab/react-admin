@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import { RaRecord } from '../types';
@@ -7,6 +7,7 @@ import { testDataProvider } from './testDataProvider';
 import { useCreate } from './useCreate';
 import { useGetList } from './useGetList';
 import { CoreAdminContext } from '../core';
+import { Basic } from './useCreate.stories';
 import {
     ErrorCase as ErrorCasePessimistic,
     SuccessCase as SuccessCasePessimistic,
@@ -333,6 +334,23 @@ describe('useCreate', () => {
                 expect(screen.queryByText('Hello World')).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
+        });
+        it('allows to control the mutation mode', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<Basic timeout={10} />);
+            // Create a post in pessimistic mode
+            fireEvent.click(await screen.findByText('Create post'));
+            await screen.findByText('Hello World 2');
+            fireEvent.click(await screen.findByText('undoable'));
+            fireEvent.click(await screen.findByText('Increment id'));
+            await screen.findByText('nothing yet');
+            // Create a post in undoable mode
+            fireEvent.click(await screen.findByText('Create post'));
+            // Check the optimistic result
+            await screen.findByText('Hello World 3');
+            // As we haven't confirmed the undoable mutation, refetching the post should return nothing
+            fireEvent.click(await screen.findByText('Refetch'));
+            await screen.findByText('nothing yet');
         });
     });
 

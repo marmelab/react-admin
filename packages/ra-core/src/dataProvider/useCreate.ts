@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
     useMutation,
     UseMutationOptions,
@@ -96,7 +96,11 @@ export const useCreate = <
         getMutateWithMiddlewares,
         ...mutationOptions
     } = options;
+
     const mode = useRef<MutationMode>(mutationMode);
+    useEffect(() => {
+        mode.current = mutationMode;
+    }, [mutationMode]);
 
     const paramsRef =
         useRef<Partial<CreateParams<Partial<RecordType>>>>(params);
