@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core';
@@ -20,6 +20,7 @@ import {
     SuccessCase as SuccessCaseUndoable,
 } from './useDelete.undoable.stories';
 import { QueryClient } from '@tanstack/react-query';
+import { Basic } from './useDelete.stories';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
@@ -448,6 +449,31 @@ describe('useDelete', () => {
                 },
                 { timeout: 4000 }
             );
+        });
+        it('allows to control the mutation mode', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<Basic timeout={10} />);
+            // Delete the first post in pessimistic mode
+            await screen.findByText('Hello');
+            await screen.findByText('World');
+            fireEvent.click(await screen.findByText('Delete post'));
+            await screen.findByText('World');
+            // Wait for the post to be deleted
+            await waitFor(() => {
+                expect(screen.queryByText('Hello')).toBeNull();
+            });
+
+            fireEvent.click(await screen.findByText('undoable'));
+            fireEvent.click(await screen.findByText('Increment id'));
+            // Delete the second post in undoable mode
+            fireEvent.click(await screen.findByText('Delete post'));
+            // Check the optimistic result
+            await waitFor(() => {
+                expect(screen.queryByText('World')).toBeNull();
+            });
+            // As we haven't confirmed the undoable mutation, refetching the post should return nothing
+            fireEvent.click(await screen.findByText('Refetch'));
+            await screen.findByText('World');
         });
     });
 
