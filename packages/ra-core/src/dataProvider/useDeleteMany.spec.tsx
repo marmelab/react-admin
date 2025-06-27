@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { waitFor, render } from '@testing-library/react';
+import { waitFor, render, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from './testDataProvider';
 import { useDeleteMany } from './useDeleteMany';
 import { QueryClient } from '@tanstack/react-query';
+import { Basic } from './useDeleteMany.stories';
 
 describe('useDeleteMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
@@ -262,5 +263,37 @@ describe('useDeleteMany', () => {
                 });
             });
         });
+    });
+
+    it('allows to control the mutation mode', async () => {
+        jest.spyOn(console, 'log').mockImplementation(() => {});
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        render(<Basic timeout={10} />);
+        await screen.findByText('Hello World 1');
+        await screen.findByText('Hello World 2');
+        await screen.findByText('Hello World 3');
+        await screen.findByText('Hello World 4');
+
+        // Delete the first 2 posts in pessimistic mode
+        fireEvent.click(await screen.findByText('Delete posts'));
+        // Wait for the post to be deleted
+        await waitFor(() => {
+            expect(screen.queryByText('Hello World 1')).toBeNull();
+            expect(screen.queryByText('Hello World 2')).toBeNull();
+        });
+
+        fireEvent.click(await screen.findByText('undoable'));
+        fireEvent.click(await screen.findByText('Increment id'));
+        // Delete the 2 next posts in undoable mode
+        fireEvent.click(await screen.findByText('Delete posts'));
+        // Check the optimistic result
+        await waitFor(() => {
+            expect(screen.queryByText('Hello World 3')).toBeNull();
+            expect(screen.queryByText('Hello World 4')).toBeNull();
+        });
+        // As we haven't confirmed the undoable mutation, refetching the post should return nothing
+        fireEvent.click(await screen.findByText('Refetch'));
+        await screen.findByText('Hello World 3');
+        await screen.findByText('Hello World 4');
     });
 });

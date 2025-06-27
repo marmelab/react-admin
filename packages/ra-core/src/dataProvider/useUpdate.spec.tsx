@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core';
@@ -25,6 +31,7 @@ import {
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useUpdate.undoable.stories';
 import { QueryClient } from '@tanstack/react-query';
+import { Basic } from './useUpdate.stories';
 
 describe('useUpdate', () => {
     describe('mutate', () => {
@@ -367,6 +374,23 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('Hello World')).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
+        });
+        it('allows to control the mutation mode', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<Basic timeout={10} />);
+            await screen.findByText('Hello');
+            // Update the post in pessimistic mode
+            fireEvent.click(await screen.findByText('Update title'));
+            await screen.findByText('Hello World 0');
+            fireEvent.click(await screen.findByText('undoable'));
+            fireEvent.click(await screen.findByText('Increment counter'));
+            // Update a post in undoable mode
+            fireEvent.click(await screen.findByText('Update title'));
+            // Check the optimistic result
+            await screen.findByText('Hello World 1');
+            // As we haven't confirmed the undoable mutation, refetching the post should return nothing
+            fireEvent.click(await screen.findByText('Refetch'));
+            await screen.findByText('Hello World 0');
         });
     });
     describe('query cache', () => {
