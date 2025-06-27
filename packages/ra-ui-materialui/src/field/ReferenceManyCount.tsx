@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-    useReferenceManyFieldController,
     useRecordContext,
-    useTimeout,
     useCreatePath,
+    ReferenceManyCountBase,
     SortPayload,
     RaRecord,
 } from 'ra-core';
@@ -15,6 +14,7 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
+import get from 'lodash/get';
 
 import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -51,39 +51,20 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         link,
         resource,
         source = 'id',
-        timeout = 1000,
         ...rest
     } = props;
     const record = useRecordContext(props);
-    const oneSecondHasPassed = useTimeout(timeout);
     const createPath = useCreatePath();
 
-    const { isPending, error, total } =
-        useReferenceManyFieldController<RecordType>({
-            filter,
-            sort,
-            page: 1,
-            perPage: 1,
-            record,
-            reference,
-            // @ts-ignore remove when #8491 is released
-            resource,
-            source,
-            target,
-        });
-
-    const body = isPending ? (
-        oneSecondHasPassed ? (
-            <CircularProgress size={14} />
-        ) : (
-            ''
-        )
-    ) : error ? (
-        <ErrorIcon color="error" fontSize="small" titleAccess="error" />
-    ) : (
-        total
+    const body = (
+        <ReferenceManyCountBase
+            {...props}
+            loading={<CircularProgress size={14} />}
+            error={
+                <ErrorIcon color="error" fontSize="small" titleAccess="error" />
+            }
+        />
     );
-
     return (
         <StyledTypography
             className={clsx(className, ReferenceManyCountClasses.root)}
@@ -101,7 +82,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
                         }),
                         search: `filter=${JSON.stringify({
                             ...(filter || {}),
-                            [target]: record[source],
+                            [target]: get(record, source),
                         })}`,
                     }}
                     onClick={e => e.stopPropagation()}

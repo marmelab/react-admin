@@ -13,6 +13,7 @@ import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
+import { useRecordContext } from '../record';
 
 /**
  * Fetch reference records, and return them when available
@@ -55,7 +56,6 @@ export const useReferenceManyFieldController = <
     const {
         debounce = 500,
         reference,
-        record,
         target,
         filter = defaultFilter,
         source = 'id',
@@ -68,6 +68,7 @@ export const useReferenceManyFieldController = <
         >,
     } = props;
     const notify = useNotify();
+    const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();

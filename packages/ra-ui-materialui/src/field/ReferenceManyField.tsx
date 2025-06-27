@@ -69,6 +69,7 @@ export const ReferenceManyField = <
         page = 1,
         pagination = null,
         perPage = 25,
+        record,
         reference,
         resource,
         sort = defaultSort,
@@ -77,7 +78,6 @@ export const ReferenceManyField = <
         target,
         queryOptions,
     } = props;
-    const record = useRecordContext(props);
 
     const controllerProps = useReferenceManyFieldController<
         RecordType,
