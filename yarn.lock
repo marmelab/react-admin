@@ -16333,6 +16333,7 @@ __metadata:
     react-dropzone: "npm:^14.2.3"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.53.0"
+    react-hotkeys-hook: "npm:^5.1.0"
     react-is: "npm:^18.2.0 || ^19.0.0"
     react-router: "npm:^6.28.1"
     react-router-dom: "npm:^6.28.1"
@@ -16622,6 +16623,16 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
   checksum: 6d62b150618a833c17d59e669b707661499e2bb516a8d340ca37699f99eb448bbba7b5b78324938c8948014e21efaa32e3510c2ba246fd5e97a96fca0cfa7c98
+  languageName: node
+  linkType: hard
+
+"react-hotkeys-hook@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "react-hotkeys-hook@npm:5.1.0"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 99df6d3c305b139ac7afd073b58575961bf30a819fb23e8f1251b1b3a9f1c7662737f8b6266e3fc42bd5bdfdaca81aa1e019613f95f9a6313267de265e45836d
   languageName: node
   linkType: hard
 
