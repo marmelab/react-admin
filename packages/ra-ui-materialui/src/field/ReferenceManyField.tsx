@@ -3,7 +3,6 @@ import {
     useReferenceManyFieldController,
     ListContextProvider,
     ResourceContextProvider,
-    useRecordContext,
     RaRecord,
     UseReferenceManyFieldControllerParams,
 } from 'ra-core';
