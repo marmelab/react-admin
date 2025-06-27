@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
     useMutation,
     useQueryClient,
@@ -93,6 +93,9 @@ export const useDeleteMany = <
     const { ids } = params;
     const { mutationMode = 'pessimistic', ...mutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
+    useEffect(() => {
+        mode.current = mutationMode;
+    }, [mutationMode]);
     const paramsRef = useRef<Partial<DeleteManyParams<RecordType>>>({});
     const snapshot = useRef<Snapshot>([]);
     const hasCallTimeOnError = useRef(false);
