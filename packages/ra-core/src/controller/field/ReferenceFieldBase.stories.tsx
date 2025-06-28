@@ -11,7 +11,7 @@ import { useReferenceFieldContext } from './ReferenceFieldContext';
 import { DataProvider } from '../../types';
 
 export default {
-    title: 'ra-core/fields/ReferenceFieldBase',
+    title: 'ra-core/controller/field/ReferenceFieldBase',
     excludeStories: ['dataProviderWithAuthors'],
 };
 
@@ -359,7 +359,7 @@ const MyReferenceField = (props: { children: React.ReactNode }) => {
     }
 
     if (context.error) {
-        return <p style={{ color: 'red' }}>{context.error}</p>;
+        return <p style={{ color: 'red' }}>{context.error.toString()}</p>;
     }
     return props.children;
 };
