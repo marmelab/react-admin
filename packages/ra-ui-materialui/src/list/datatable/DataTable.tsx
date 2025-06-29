@@ -39,7 +39,6 @@ import { DataTableNumberColumn } from './DataTableNumberColumn';
 import { ColumnsSelector } from './ColumnsSelector';
 import { DataTableRowSxContext } from './DataTableRowSxContext';
 
-const DefaultEmpty = <ListNoResults />;
 const DefaultFoot = (_props: { children: ReactNode }) => null;
 const PREFIX = 'RaDataTable';
 
@@ -148,7 +147,7 @@ export const DataTable = React.forwardRef(function DataTable<
         foot: TableFoot = DefaultFoot,
         children,
         className,
-        empty = DefaultEmpty,
+        empty,
         expand,
         bulkActionsToolbar,
         bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
@@ -183,7 +182,7 @@ export const DataTable = React.forwardRef(function DataTable<
             {...props}
             hasBulkActions={hasBulkActions}
             loading={loading}
-            empty={empty}
+            empty={empty ?? <ListNoResults resource={resourceFromContext} />}
         >
             <DataTableRowSxContext.Provider value={rowSx}>
                 <DataTableRoot

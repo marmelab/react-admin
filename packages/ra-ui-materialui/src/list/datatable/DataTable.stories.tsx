@@ -342,7 +342,12 @@ const MyCustomList = () => {
     });
 
     return (
-        <DataTable data={data} total={total} isPending={isPending}>
+        <DataTable
+            data={data}
+            total={total}
+            isPending={isPending}
+            resource="books"
+        >
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
         </DataTable>
@@ -351,9 +356,31 @@ const MyCustomList = () => {
 
 export const StandaloneStatic = () => (
     <AdminContext dataProvider={dataProvider} theme={theme}>
-        <ResourceContextProvider value="books">
-            <MyCustomList />
-        </ResourceContextProvider>
+        <MyCustomList />
+    </AdminContext>
+);
+
+const MyCustomListNoResults = () => {
+    const { data, total, isPending } = useGetList('books', {
+        filter: { title: 'Non-existing book' },
+    });
+
+    return (
+        <DataTable
+            data={data}
+            total={total}
+            isPending={isPending}
+            resource="books"
+        >
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+        </DataTable>
+    );
+};
+
+export const StandaloneNoResults = () => (
+    <AdminContext dataProvider={dataProvider} theme={theme}>
+        <MyCustomListNoResults />
     </AdminContext>
 );
 
@@ -366,19 +393,19 @@ const MyCustomListInteractive = () => {
 
     return (
         <ListContextProvider value={listContext}>
-            <DataTable sx={{ mt: 6 }}>
-                <DataTable.Col source="id" />
-                <DataTable.Col source="title" />
-            </DataTable>
+            <ResourceContextProvider value="books">
+                <DataTable sx={{ mt: 6 }}>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="title" />
+                </DataTable>
+            </ResourceContextProvider>
         </ListContextProvider>
     );
 };
 
 export const StandaloneDynamic = () => (
     <AdminContext dataProvider={dataProvider} theme={theme}>
-        <ResourceContextProvider value="books">
-            <MyCustomListInteractive />
-        </ResourceContextProvider>
+        <MyCustomListInteractive />
     </AdminContext>
 );
 
