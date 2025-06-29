@@ -155,11 +155,7 @@ export const DataTableBase = function DataTable<
      * the DataTable displays the empty component.
      */
     if (data == null || data.length === 0 || total === 0) {
-        if (empty) {
-            return empty;
-        }
-
-        return null;
+        return empty ?? null;
     }
 
     /**

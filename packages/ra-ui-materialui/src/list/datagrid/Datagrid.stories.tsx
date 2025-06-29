@@ -409,6 +409,7 @@ const MyCustomList = () => {
             isPending={isPending}
             sort={sort}
             bulkActionButtons={false}
+            resource="books"
         >
             <TextField source="id" />
             <TextField source="title" />
@@ -424,24 +425,52 @@ const MyCustomListInteractive = () => {
     const listContext = useList({ data, isPending });
 
     return (
-        <ListContextProvider value={listContext}>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-            </Datagrid>
-        </ListContextProvider>
+        <ResourceContextProvider value="books">
+            <ListContextProvider value={listContext}>
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                </Datagrid>
+            </ListContextProvider>
+        </ResourceContextProvider>
     );
 };
 
 export const Standalone = () => (
     <ThemeProvider theme={theme}>
         <CoreAdminContext dataProvider={dataProvider}>
-            <ResourceContextProvider value="books">
-                <h1>Static</h1>
-                <MyCustomList />
-                <h1>Dynamic (with useList)</h1>
-                <MyCustomListInteractive />
-            </ResourceContextProvider>
+            <h1>Static</h1>
+            <MyCustomList />
+            <h1>Dynamic (with useList)</h1>
+            <MyCustomListInteractive />
+        </CoreAdminContext>
+    </ThemeProvider>
+);
+
+const MyCustomListNoResults = () => {
+    const { data, total, isPending } = useGetList('books', {
+        filter: { title: 'Non-existing book' },
+    });
+
+    return (
+        <Datagrid
+            data={data}
+            total={total}
+            isPending={isPending}
+            sort={sort}
+            bulkActionButtons={false}
+            resource="books"
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+        </Datagrid>
+    );
+};
+
+export const StandaloneNoResults = () => (
+    <ThemeProvider theme={theme}>
+        <CoreAdminContext dataProvider={dataProvider}>
+            <MyCustomListNoResults />
         </CoreAdminContext>
     </ThemeProvider>
 );

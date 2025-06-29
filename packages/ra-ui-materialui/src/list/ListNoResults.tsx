@@ -9,10 +9,10 @@ import {
 
 import { Button } from '../button';
 
-export const ListNoResults = () => {
+export const ListNoResults = (props: ListNoResultsProps) => {
     const translate = useTranslate();
-    const resource = useResourceContext();
-    const { filterValues, setFilters } = useListContextWithProps();
+    const resource = useResourceContext(props);
+    const { filterValues, setFilters } = useListContextWithProps(props);
     const getResourceLabel = useGetResourceLabel();
     if (!resource) {
         throw new Error(
@@ -49,3 +49,9 @@ export const ListNoResults = () => {
         </CardContent>
     );
 };
+
+export interface ListNoResultsProps {
+    resource?: string;
+    filterValues?: any;
+    setFilters?: (filters: any, filterTypes?: string[]) => void;
+}
