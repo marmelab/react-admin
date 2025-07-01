@@ -272,3 +272,13 @@ export const TranslateChoice = () => {
         </AdminContext>
     );
 };
+
+export const DisabledChoice = () => (
+    <Wrapper>
+        <RadioButtonGroupInput source="category" choices={[
+            { id: 'tech', name: 'Tech', details: 'Tech details' },
+            { id: 'lifestyle', name: 'Lifestyle', details: 'Lifestyle details' },
+            { id: 'people', name: 'People', details: 'People details', disabled: true },
+        ]} />
+    </Wrapper>
+);

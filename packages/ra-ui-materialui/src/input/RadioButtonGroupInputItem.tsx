@@ -10,13 +10,14 @@ export const RadioButtonGroupInputItem = ({
     source,
     translateChoice,
 }) => {
-    const { getChoiceText, getChoiceValue } = useChoices({
+    const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
         optionValue,
         translateChoice,
     });
     const label = getChoiceText(choice);
     const value = getChoiceValue(choice);
+    const disabled = getDisableValue(choice);
 
     const nodeId = `${source}_${value}`;
 
@@ -25,6 +26,7 @@ export const RadioButtonGroupInputItem = ({
             label={label}
             htmlFor={nodeId}
             value={value}
+            disabled={disabled}
             control={<Radio id={nodeId} color="primary" />}
         />
     );
