@@ -1001,7 +1001,7 @@ With `<Datagrid>`, you can select a range of rows by pressing the shift key whil
 ---
 
 If you need to customize the `<SolarLayout>` appBar that appears on Mobile, you can set the `appBar` prop of `<SolarLayout>`. For instance, here's how you could customize its colors and add some extra content to its far right.
-#SolarLayout https://marmelab.com/ra-enterprise/modules/ra-navigation#appbar-1
+#SolarLayout https://react-admin-ee.marmelab.com/documentation/ra-navigation#appbar-1
 
 {% raw %}
 ```tsx
@@ -1226,7 +1226,7 @@ export const PostList = () => (
 
 ---
 
-The `canAccess` helper function allows you to check if the current user has the permissions to execute an action. You can use it to disable desired links on a menu for instance. #Role-Based-Access-Control #RBAC https://marmelab.com/ra-enterprise/modules/ra-rbac#canaccess 
+The `canAccess` helper function allows you to check if the current user has the permissions to execute an action. You can use it to disable desired links on a menu for instance. #Role-Based-Access-Control #RBAC https://react-admin-ee.marmelab.com/ra-rbac#canaccess 
 
 ```tsx
 import { usePermissions, Menu } from "react-admin";
