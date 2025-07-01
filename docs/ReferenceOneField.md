@@ -59,6 +59,7 @@ const BookShow = () => (
 | `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
 | `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
 | `children`     | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
+| `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options |
@@ -78,32 +79,32 @@ For instance, if you want to render both the genre and the ISBN for a book:
 </ReferenceOneField>
 ```
 
-## `emptyText`
+## `empty`
 
-Use `emptyText` to customize the text displayed when the related record is empty.
+Use `empty` to customize the text displayed when the related record is empty.
 
 ```jsx
-<ReferenceOneField label="Details" reference="book_details" target="book_id" emptyText="no detail">
+<ReferenceOneField label="Details" reference="book_details" target="book_id" empty="no detail">
     <TextField source="genre" /> (<TextField source="ISBN" />)
 </ReferenceOneField>
 ```
 
-`emptyText` also accepts a translation key.
+`empty` also accepts a translation key.
 
 ```jsx
-<ReferenceOneField label="Details" reference="book_details" target="book_id" emptyText="resources.books.not_found">
+<ReferenceOneField label="Details" reference="book_details" target="book_id" empty="resources.books.not_found">
     <TextField source="genre" /> (<TextField source="ISBN" />)
 </ReferenceOneField>
 ```
 
-`emptyText` also accepts a `ReactElement`.
+`empty` also accepts a `ReactNode`.
 
 ```jsx
 <ReferenceOneField
     label="Details"
     reference="book_details"
     target="book_id"
-    emptyText={<CreateButton to="/book_details/create" />}
+    empty={<CreateButton to="/book_details/create" />}
 >
     <TextField source="genre" /> (<TextField source="ISBN" />)
 </ReferenceOneField>

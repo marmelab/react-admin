@@ -16,7 +16,6 @@ import {
     type RaRecord,
     ReferenceFieldBase,
     useReferenceFieldContext,
-    useFieldValue,
 } from 'ra-core';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -68,20 +67,26 @@ export const ReferenceField = <
         props: inProps,
         name: PREFIX,
     });
-    const { emptyText } = props;
+    const { emptyText, empty } = props;
     const translate = useTranslate();
-    const id = useFieldValue(props);
-
-    if (id == null) {
-        return emptyText ? (
-            <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : null;
-    }
 
     return (
-        <ReferenceFieldBase<ReferenceRecordType> {...props}>
+        <ReferenceFieldBase<ReferenceRecordType>
+            {...props}
+            empty={
+                emptyText ? (
+                    <Typography component="span" variant="body2">
+                        {emptyText && translate(emptyText, { _: emptyText })}
+                    </Typography>
+                ) : typeof empty === 'string' ? (
+                    <Typography component="span" variant="body2">
+                        {empty && translate(empty, { _: empty })}
+                    </Typography>
+                ) : (
+                    empty ?? null
+                )
+            }
+        >
             <PureReferenceFieldView<RecordType, ReferenceRecordType>
                 {...props}
             />
@@ -94,6 +99,11 @@ export interface ReferenceFieldProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
+    /**
+     * @deprecated Use the empty prop instead
+     */
+    emptyText?: string;
+    empty?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<ReferenceRecordType[], Error>,
         'queryFn' | 'queryKey'
@@ -122,7 +132,6 @@ export const ReferenceFieldView = <
         useReferenceFieldContext();
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
-    const translate = useTranslate();
 
     if (error) {
         return (
@@ -139,13 +148,6 @@ export const ReferenceFieldView = <
     // isLoading checks that we are actually loading the reference record
     if (isLoading) {
         return <LinearProgress />;
-    }
-    if (!referenceRecord) {
-        return emptyText ? (
-            <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : null;
     }
 
     const child = children || (

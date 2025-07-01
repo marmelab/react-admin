@@ -90,6 +90,7 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
 | `children`     | Required | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
 | `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
+| `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
@@ -174,6 +175,44 @@ const PostCommentsField = () => (
         ...
     </ReferenceManyField>
 );
+```
+
+## `empty`
+
+Use `empty` to customize the text displayed when the related record is empty.
+
+```jsx
+<ReferenceManyField
+  reference="books"
+  target="author_id"
+  empty="no books"
+>
+    ...
+</ReferenceManyField>
+```
+
+`empty` also accepts a translation key.
+
+```jsx
+<ReferenceManyField
+  reference="books"
+  target="author_id"
+  empty="resources.authors.fields.books.empty"
+>
+    ...
+</ReferenceManyField>
+```
+
+`empty` also accepts a `ReactNode`.
+
+```jsx
+<ReferenceManyField
+  reference="books"
+  target="author_id"
+    empty={<CreateButton resource="books" />}
+>
+    ...
+</ReferenceManyField>
 ```
 
 ## `filter`: Permanent Filter

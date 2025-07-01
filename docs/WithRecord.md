@@ -23,7 +23,7 @@ const BookShow = () => (
 );
 ```
 
-Note that if `record` is undefined, `<WithRecord>` doesn't call the `render` callback and renders nothing, so you don't have to worry about this case in your render callback.
+Note that if `record` is undefined, `<WithRecord>` doesn't call the `render` callback and renders nothing (or the `empty` prop), so you don't have to worry about this case in your render callback.
 
 ## Availability
 

@@ -1,6 +1,7 @@
 import get from 'lodash/get';
 import { UseQueryOptions } from '@tanstack/react-query';
 
+import { useRecordContext } from '../record';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { RaRecord, SortPayload } from '../../types';
@@ -8,24 +9,25 @@ import { UseReferenceResult } from '../useReference';
 
 export interface UseReferenceOneFieldControllerParams<
     RecordType extends RaRecord = any,
+    ReferenceRecordType extends RaRecord = any,
     ErrorType = Error,
 > {
-    record?: RaRecord;
     reference: string;
-    source?: string;
     target: string;
-    sort?: SortPayload;
     filter?: any;
     queryOptions?: Omit<
         UseQueryOptions<
             {
-                data: RecordType[];
+                data: ReferenceRecordType[];
                 total: number;
             },
             ErrorType
         >,
         'queryFn' | 'queryKey'
     > & { meta?: any };
+    record?: RecordType;
+    sort?: SortPayload;
+    source?: string;
 }
 
 /**
@@ -53,24 +55,29 @@ export interface UseReferenceOneFieldControllerParams<
  */
 export const useReferenceOneFieldController = <
     RecordType extends RaRecord = any,
+    ReferenceRecordType extends RaRecord = any,
     ErrorType = Error,
 >(
-    props: UseReferenceOneFieldControllerParams<RecordType, ErrorType>
-): UseReferenceResult<RecordType, ErrorType> => {
+    props: UseReferenceOneFieldControllerParams<
+        RecordType,
+        ReferenceRecordType,
+        ErrorType
+    >
+): UseReferenceResult<ReferenceRecordType, ErrorType> => {
     const {
         reference,
-        record,
         target,
         source = 'id',
         sort = { field: 'id', order: 'ASC' },
         filter = {},
         queryOptions = {},
     } = props;
+    const record = useRecordContext<RecordType>(props);
     const notify = useNotify();
     const { meta, ...otherQueryOptions } = queryOptions;
 
     const { data, error, isFetching, isLoading, isPending, refetch } =
-        useGetManyReference<RecordType, ErrorType>(
+        useGetManyReference<ReferenceRecordType, ErrorType>(
             reference,
             {
                 target,

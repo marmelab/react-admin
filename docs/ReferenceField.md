@@ -74,7 +74,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `source`    | Required | `string`            | -        | Name of the property to display |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
 | `children`  | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
-| `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
+| `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
@@ -82,18 +82,30 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-## `emptyText`
+## `empty`
 
-`<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `emptyText` prop.
+`<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `empty` prop.
 
 ```jsx
-<ReferenceField source="user_id" reference="users" emptyText="Missing user" />
+<ReferenceField source="user_id" reference="users" empty="Missing user" />
 ```
 
-`<ReferenceField>` renders the `emptyText`:
+`<ReferenceField>` renders the `empty` element when:
 
-- when the referenced record is missing (no record in the `users` table with the right `user_id`), or
-- when the field is empty (no `user_id` in the record).
+- the referenced record is missing (no record in the `users` table with the right `user_id`), or
+- the field is empty (no `user_id` in the record).
+
+When `empty` is a string, `<ReferenceField>` renders it as a `<Typography>` and passes the text through the i18n system, so you can use translation keys to have one message for each language supported by the interface:
+
+```jsx
+<ReferenceField source="user_id" reference="users" empty="resources.users.missing" />
+```
+
+You can also pass a React element to the `empty` prop:
+
+```jsx
+<ReferenceField source="user_id" reference="users" empty={<span>Missing user</span>} />
+```
 
 ## `label`
 
