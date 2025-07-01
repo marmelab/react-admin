@@ -6,6 +6,11 @@ import purify from 'dompurify';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 /**
  * Render an HTML string as rich text
@@ -25,8 +30,13 @@ import { genericMemo } from './genericMemo';
 const RichTextFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: RichTextFieldProps<RecordType>
+    inProps: RichTextFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         className,
         emptyText,
@@ -38,13 +48,13 @@ const RichTextFieldImpl = <
     const translate = useTranslate();
 
     return (
-        <Typography
+        <StyledTypography
             className={className}
             variant="body2"
             component="span"
             {...sanitizeFieldRestProps(rest)}
         >
-            {value == null && emptyText ? (
+            {(value == null || value === '') && emptyText ? (
                 translate(emptyText, { _: emptyText })
             ) : stripTags ? (
                 removeTags(value)
@@ -55,7 +65,7 @@ const RichTextFieldImpl = <
                     }}
                 />
             )}
-        </Typography>
+        </StyledTypography>
     );
 };
 RichTextFieldImpl.displayName = 'RichTextFieldImpl';
@@ -80,3 +90,29 @@ export interface RichTextFieldProps<
 
 export const removeTags = (input: string) =>
     input ? input.replace(/<[^>]+>/gm, '') : '';
+
+const PREFIX = 'RaRichTextField';
+
+const StyledTypography = styled(Typography, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<RichTextFieldProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

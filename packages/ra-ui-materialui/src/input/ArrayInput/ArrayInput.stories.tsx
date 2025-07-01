@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Admin, DateTimeInput } from 'react-admin';
+import {
+    Admin,
+    DateTimeInput,
+    DeleteButton,
+    SaveButton,
+    Toolbar,
+} from 'react-admin';
 import {
     minLength,
     required,
@@ -8,7 +14,7 @@ import {
     TestMemoryRouter,
     useSourceContext,
 } from 'ra-core';
-import { Button, InputAdornment } from '@mui/material';
+import { Button, InputAdornment, Stack } from '@mui/material';
 
 import { Edit, Create } from '../../detail';
 import { SimpleForm, TabbedForm } from '../../form';
@@ -924,6 +930,53 @@ export const SetValue = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+const ResetButton = () => {
+    const { reset } = useFormContext();
+
+    return (
+        <>
+            <Button onClick={() => reset()}>Reset</Button>
+        </>
+    );
+};
+
+const BookCreateReset = () => {
+    return (
+        <Create>
+            <SimpleForm
+                toolbar={
+                    <Toolbar>
+                        <div className="RaToolbar-defaultToolbar">
+                            <Stack direction="row" gap={2}>
+                                <SaveButton />
+                                <ResetButton />
+                            </Stack>
+                            <DeleteButton />
+                        </div>
+                    </Toolbar>
+                }
+            >
+                <ArrayInput source="authors">
+                    <SimpleFormIterator inline>
+                        <TextInput source="name" helperText={false} />
+                        <TextInput source="role" helperText={false} />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Create>
+    );
+};
+
+export const Reset = () => {
+    return (
+        <TestMemoryRouter initialEntries={['/books/create']}>
+            <Admin dataProvider={dataProvider}>
+                <Resource name="books" create={BookCreateReset} />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
 
 export const Focus = ({
     input,

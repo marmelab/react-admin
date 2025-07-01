@@ -44,7 +44,12 @@ export const Menu = (inProps: MenuProps) => {
         props: inProps,
         name: PREFIX,
     });
-    const { children, className, ...rest } = props;
+    const {
+        children,
+        className,
+        hasDashboard: hasDashboardProp,
+        ...rest
+    } = props;
     const hasDashboard = useHasDashboard();
     const [open] = useSidebarState();
 

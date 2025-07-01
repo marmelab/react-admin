@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { useTheme, useMediaQuery } from '@mui/material';
-import { Box, ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
+import {
+    useTheme,
+    useMediaQuery,
+    Box,
+    ImageList,
+    ImageListItem,
+    ImageListItemBar,
+} from '@mui/material';
 import { useCreatePath, NumberField, useListContext } from 'react-admin';
 import { Link } from 'react-router-dom';
 
@@ -33,7 +39,12 @@ const LoadingGridList = () => {
         <ImageList rowHeight={180} cols={cols} sx={{ m: 0 }}>
             {times(perPage, key => (
                 <ImageListItem key={key}>
-                    <Box bgcolor="grey.300" height="100%" />
+                    <Box
+                        sx={{
+                            bgcolor: 'grey.300',
+                            height: '100%',
+                        }}
+                    />
                 </ImageListItem>
             ))}
         </ImageList>

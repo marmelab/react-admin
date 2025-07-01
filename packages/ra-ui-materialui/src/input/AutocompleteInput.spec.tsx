@@ -1452,6 +1452,68 @@ describe('<AutocompleteInput />', () => {
             expect(input.value).not.toBe('Create x');
             expect(input.value).toBe('x');
         }, 10000);
+
+        it('should include an option with the custom createLabel when the input is empty and optionText is a string', async () => {
+            render(<CreateLabel optionText="full_name" />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            const customCreateLabel = screen.queryByText(
+                'Start typing to create a new item'
+            );
+            expect(customCreateLabel).not.toBeNull();
+            expect(
+                (customCreateLabel as HTMLElement).getAttribute('aria-disabled')
+            ).toEqual('true');
+            expect(screen.queryByText(/Create/)).toBeNull();
+        });
+
+        it('should include an option with the custom createLabel when the input is empty and optionText is a function', async () => {
+            render(
+                <CreateLabel
+                    optionText={choice =>
+                        `${choice.first_name} ${choice.last_name}`
+                    }
+                />
+            );
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            const customCreateLabel = screen.queryByText(
+                'Start typing to create a new item'
+            );
+            expect(customCreateLabel).not.toBeNull();
+            expect(
+                (customCreateLabel as HTMLElement).getAttribute('aria-disabled')
+            ).toEqual('true');
+            expect(screen.queryByText(/Create/)).toBeNull();
+        });
+
+        it('should allow the creation of a new choice when using optionValue', async () => {
+            render(<OnCreate optionValue="_id" />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            // Enter an unknown value and submit it with Enter
+            await userEvent.type(input, 'New Value{Enter}');
+            await screen.getByDisplayValue('New Value');
+            // Clear the input, otherwise the new value won't be shown in the dropdown as it is selected
+            fireEvent.change(input, {
+                target: { value: '' },
+            });
+            // Open the dropdown
+            fireEvent.mouseDown(input);
+            // Check the new value is in the dropdown
+            await screen.findByText('New Value');
+        });
     });
     describe('create', () => {
         it('should allow the creation of a new choice', async () => {

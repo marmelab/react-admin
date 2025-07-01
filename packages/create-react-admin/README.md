@@ -11,7 +11,7 @@ npx create react-admin@latest my-app
 # or
 yarn create react-admin my-app
 # or
-bun create react-admin my-app
+bun create react-admin@latest my-app
 ```
 
 You'll be asked to choose a data provider (optional), an auth provider (optional). You may also setup the resources you want initially.

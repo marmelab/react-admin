@@ -159,6 +159,18 @@ You can add validation rules to your form inputs in several ways:
 
 Form validation deserves a section of its own; check [the Validation chapter](./Validation.md) for more details.
 
+## Empty Values
+
+React-admin Form components initialize the form based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty, the form will be empty.
+If a record property is not `undefined`, it is not considered empty:
+
+- An empty string is a valid value
+- `0` is a valid value
+- `null` is a valid value
+- An empty array is a valid value
+
+In all those cases, the value will not be considered empty and [default values](#default-values) won't be applied.
+
 ## Default Values
 
 React-admin Form components initialize the form based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty, the form will be empty.
@@ -609,11 +621,33 @@ const PersonEdit = () => (
 ```
 {% endraw %}
 
-Note that you **must** set the `<SimpleForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgment by the server will be lost.
-
-If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
-
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
+
+An alternative to the `<AutoSave>` component is to use [the `<AutoPersistInStore>` component](./AutoPersistInStore.md). This component saves the form values in the local storage of the browser. This way, if the user navigates away without saving, the form values are reapplied when the user comes back to the page. This is useful for long forms where users may spend a lot of time.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoPersistInStore.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To enable this behavior, add the `<AutoPersistInStore>` component inside the form component:
+
+```tsx
+import { AutoPersistInStore } from '@react-admin/ra-form-layout';
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <TextInput source="teaser" />
+            <AutoPersistInStore />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+Check [the `<AutoPersistInStore>` component](./AutoPersistInStore.md) documentation for more details.
 
 ## Adding Fields With Labels
 
@@ -770,3 +804,39 @@ Users often need to edit data from several resources in the same form. React-adm
   <source src="./img/reference-many-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+## Edit In Place
+
+Instead of asking users to fill a form to edit a record, you can let them edit the record straight from the list or show view. [The `<InPlaceEditor>` component](./InPlaceEditor.md) uses a `<TextField>` in read mode, and a `<TextInput>` in edition mode. It is useful for quick edits without navigating to a separate edit page.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/InPlaceEditor.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+{% raw %}
+```tsx
+import { Show, InPlaceEditor } from 'react-admin';
+import { Stack, Box, Typography } from '@mui/material';
+
+const CustomerShow = () => (
+    <Show>
+        <Stack direction="row" spacing={2}>
+            <AvatarField />
+            <CustomerActions />
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography>Phone</Typography>
+                <InPlaceEditor source="phone" />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography>Email</Typography>
+                <InPlaceEditor source="email" />
+            </Box>
+            ...
+        </Stack>
+    </Show>
+);
+```
+{% endraw %}
+
+Check out [the `<InPlaceEditor>` documentation](./InPlaceEditor.md) for more details.

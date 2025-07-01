@@ -80,7 +80,7 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
     });
     const {
         className,
-        defaultValue,
+        defaultValue = [],
         label,
         isFetching,
         isLoading,
@@ -137,7 +137,7 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
     }, [finalSource, formGroups, formGroupName]);
 
     useApplyInputDefaultValues({
-        inputProps: props,
+        inputProps: { ...props, defaultValue },
         isArrayInput: true,
         fieldArrayInputControl: fieldProps,
     });

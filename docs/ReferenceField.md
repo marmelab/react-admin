@@ -65,7 +65,7 @@ Alternately, if you pass a child component, `<ReferenceField>` will render it in
 
 This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. 
 
-It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<Datagrid>`), this allows to call the `dataProvider` once instead of once per row. 
+It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row. 
 
 ## Props
 
@@ -74,7 +74,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `source`    | Required | `string`            | -        | Name of the property to display |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
 | `children`  | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
-| `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
+| `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
@@ -82,18 +82,30 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-## `emptyText`
+## `empty`
 
-`<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `emptyText` prop.
+`<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `empty` prop.
 
 ```jsx
-<ReferenceField source="user_id" reference="users" emptyText="Missing user" />
+<ReferenceField source="user_id" reference="users" empty="Missing user" />
 ```
 
-`<ReferenceField>` renders the `emptyText`:
+`<ReferenceField>` renders the `empty` element when:
 
-- when the referenced record is missing (no record in the `users` table with the right `user_id`), or
-- when the field is empty (no `user_id` in the record).
+- the referenced record is missing (no record in the `users` table with the right `user_id`), or
+- the field is empty (no `user_id` in the record).
+
+When `empty` is a string, `<ReferenceField>` renders it as a `<Typography>` and passes the text through the i18n system, so you can use translation keys to have one message for each language supported by the interface:
+
+```jsx
+<ReferenceField source="user_id" reference="users" empty="resources.users.missing" />
+```
+
+You can also pass a React element to the `empty` prop:
+
+```jsx
+<ReferenceField source="user_id" reference="users" empty={<span>Missing user</span>} />
+```
 
 ## `label`
 
@@ -109,6 +121,8 @@ That's why you often need to set an explicit `label` on a `<ReferenceField>`:
 ```jsx
 <ReferenceField label="Author name" source="user_id" reference="users" />
 ```
+
+**Tip**: Having to specify the `label` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
 
 React-admin uses [the i18n system](./Translation.md) to translate the label, so you can use translation keys to have one label for each language supported by the interface:
 
@@ -178,6 +192,8 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
 <ReferenceField source="user_id" reference="users" sortBy="user.name" />
 ```
 
+**Tip**: Having to specify the `sortBy` prop on the field for it to be used by the Datagrid is no longer necessary with [`<DataTable>`](./DataTable.md), the successor of the `<Datagrid>` component. Instead, `<DataTable>` properly separates the props for the column header and the field itself, thanks to the [`<DataTable.Col>`](./DataTable.md#datatablecol) component.
+
 ## `sx`: CSS API
 
 The `<ReferenceField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
@@ -192,23 +208,27 @@ To override the style of all instances of `<ReferenceField>` using the [applicat
 
 <iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-When used in a `<Datagrid>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
+When used in a `<DataTable>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
 
 ![ReferenceField](./img/reference-field.png)
 
 For instance, with this code:
 
 ```jsx
-import { List, Datagrid, ReferenceField, TextField, EditButton } from 'react-admin';
+import { List, DataTable, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <ReferenceField label="User" source="user_id" reference="users" />
-            <TextField source="title" />
-            <EditButton />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col label="User" source="user_id">
+                <ReferenceField source="user_id" reference="users" />
+            </DataTable.Col>
+            <DataTable.Col source="title" />
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -247,11 +267,13 @@ For example, the following code prefetches the authors referenced by the posts:
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <Datagrid>
-            <TextField source="title" />
-            {/** renders without an additional request */}
-            <ReferenceField source="author_id" reference="authors" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author_id">
+                {/** renders without an additional request */}
+                <ReferenceField source="author_id" reference="authors" />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```

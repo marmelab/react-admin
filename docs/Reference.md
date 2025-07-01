@@ -19,6 +19,7 @@ title: "Index"
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
+* [`<AutoPersistInStore>`](./AutoPersistInStore.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<AutoSave>`](./AutoSave.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 
 **- B -**
@@ -106,6 +107,7 @@ title: "Index"
 * [`<ImageField>`](./ImageField.md)
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
+* [`<InPlaceEditor>`](./InPlaceEditor.md)
 * [`<InspectorButton>`](./Configurable.md#inspectorbutton)
 
 **- L -**
@@ -122,7 +124,7 @@ title: "Index"
 * [`<Login>`](./Authentication.md#customizing-the-login-component)
 * [`<LoginForm>`](./Authentication.md#customizing-the-login-component)
 * [`<LoginWithEmail>`](./Authentication.md#customizing-the-login-component)
-* [`<Logout>`](./Authentication.md#customizing-the-logout-component)
+* [`<Logout>`](./AppBar.md#usermenu)
 
 **- M -**
 
@@ -147,6 +149,7 @@ title: "Index"
 **- R -**
 
 * [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)
+* [`<RecordField>`](./RecordField.md)
 * [`<RecordRepresentation>`](./RecordRepresentation.md)
 * [`<ReferenceArrayField>`](./ReferenceArrayField.md)
 * [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)

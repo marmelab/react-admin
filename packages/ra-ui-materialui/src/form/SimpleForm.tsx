@@ -62,7 +62,12 @@ export const SimpleForm = (inProps: SimpleFormProps) => {
     return (
         <Form {...rest}>
             <Component className={className} sx={sx}>
-                <Stack alignItems="flex-start" {...sanitizeRestProps(props)}>
+                <Stack
+                    {...sanitizeRestProps(props)}
+                    sx={{
+                        alignItems: 'flex-start',
+                    }}
+                >
                     {children}
                 </Stack>
             </Component>
@@ -95,7 +100,6 @@ const DefaultComponent = styled(CardContent, {
 
 const DefaultToolbar = <Toolbar />;
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const sanitizeRestProps = ({
     children,
     className,
@@ -119,7 +123,6 @@ const sanitizeRestProps = ({
     warnWhenUnsavedChanges,
     ...props
 }: SimpleFormProps) => props;
-/* eslint-enable @typescript-eslint/no-unused-vars */
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {

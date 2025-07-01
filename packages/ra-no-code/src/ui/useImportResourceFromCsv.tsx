@@ -90,7 +90,7 @@ const sanitizeRecords = (
 const sanitizeRecord = (records, values, field) => {
     if (field.split('.').length > 1) {
         return records.map(record => {
-            let { [field]: pathField, ...newRecord } = record;
+            const { [field]: pathField, ...newRecord } = record;
             return set(newRecord, field, record[field]);
         });
     }

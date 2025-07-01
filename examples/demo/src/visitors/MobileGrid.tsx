@@ -24,7 +24,11 @@ const MobileGrid = () => {
     }
 
     return (
-        <Box margin="0.5em">
+        <Box
+            sx={{
+                margin: '0.5em',
+            }}
+        >
             {data.map(record => (
                 <RecordContextProvider key={record.id} value={record}>
                     <Card sx={{ margin: '0.5rem 0' }}>

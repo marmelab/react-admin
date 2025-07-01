@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { MutationMode } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
+
 import {
     BulkUpdateWithConfirmButton,
     BulkUpdateWithConfirmButtonProps,
@@ -7,7 +10,6 @@ import {
     BulkUpdateWithUndoButton,
     BulkUpdateWithUndoButtonProps,
 } from './BulkUpdateWithUndoButton';
-import { MutationMode } from 'ra-core';
 
 /**
  * Updates the selected rows.
@@ -33,7 +35,14 @@ import { MutationMode } from 'ra-core';
  * );
  */
 export const BulkUpdateButton = (props: BulkUpdateButtonProps) => {
-    const { mutationMode = 'undoable', data = defaultData, ...rest } = props;
+    const {
+        mutationMode = 'undoable',
+        data = defaultData,
+        ...rest
+    } = useThemeProps({
+        name: PREFIX,
+        props: props,
+    });
 
     return mutationMode === 'undoable' ? (
         <BulkUpdateWithUndoButton data={data} {...rest} />
@@ -54,3 +63,17 @@ export type BulkUpdateButtonProps = Props &
     (BulkUpdateWithUndoButtonProps | BulkUpdateWithConfirmButtonProps);
 
 const defaultData = [];
+
+const PREFIX = 'RaBulkUpdateButton';
+
+declare module '@mui/material/styles' {
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<BulkUpdateButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+        };
+    }
+}

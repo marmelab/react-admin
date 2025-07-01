@@ -70,9 +70,9 @@ const ShowViewGuesser = (
                         )
                     )
                 )
+                .filter(component => !component.match(/[A-Za-z]+\.[A-Za-z]+/i))
                 .sort();
 
-            // eslint-disable-next-line no-console
             console.log(
                 `Guessed Show:
 

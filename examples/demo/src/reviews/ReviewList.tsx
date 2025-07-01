@@ -52,7 +52,11 @@ const ReviewList = () => {
     const match = matchPath('/reviews/:id', location.pathname);
 
     return (
-        <Box display="flex">
+        <Box
+            sx={{
+                display: 'flex',
+            }}
+        >
             <List
                 sx={{
                     flexGrow: 1,
@@ -60,7 +64,7 @@ const ReviewList = () => {
                         theme.transitions.create(['all'], {
                             duration: theme.transitions.duration.enteringScreen,
                         }),
-                    marginRight: !!match ? '400px' : 0,
+                    marginRight: match ? '400px' : 0,
                 }}
                 filters={reviewFilters}
                 perPage={25}
@@ -73,7 +77,7 @@ const ReviewList = () => {
                 ) : (
                     <ReviewListDesktop
                         selectedRow={
-                            !!match
+                            match
                                 ? parseInt((match as any).params.id, 10)
                                 : undefined
                         }

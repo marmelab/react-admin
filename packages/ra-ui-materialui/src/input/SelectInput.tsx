@@ -122,6 +122,7 @@ export const SelectInput = (inProps: SelectInputProps) => {
         create,
         createLabel,
         createValue,
+        createHintValue,
         defaultValue,
         disableValue = 'disabled',
         emptyText = '',
@@ -149,7 +150,6 @@ export const SelectInput = (inProps: SelectInputProps) => {
     const translate = useTranslate();
 
     useEffect(() => {
-        // eslint-disable-next-line eqeqeq
         if (emptyValue == null) {
             throw new Error(
                 `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`
@@ -193,6 +193,8 @@ export const SelectInput = (inProps: SelectInputProps) => {
         optionValue,
         disableValue,
         translateChoice: translateChoice ?? !isFromReference,
+        createValue,
+        createHintValue,
     });
     const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
@@ -250,6 +252,7 @@ export const SelectInput = (inProps: SelectInputProps) => {
         create,
         createLabel,
         createValue,
+        createHintValue,
         handleChange,
         onCreate,
         optionText,
@@ -320,15 +323,14 @@ export const SelectInput = (inProps: SelectInputProps) => {
                 onChange={handleChangeWithCreateSupport}
                 select
                 label={
-                    label !== '' &&
-                    label !== false && (
+                    label !== '' && label !== false ? (
                         <FieldTitle
                             label={label}
                             source={source}
                             resource={resourceProp}
                             isRequired={isRequired}
                         />
-                    )
+                    ) : null
                 }
                 clearAlwaysVisible
                 error={!!fetchError || invalid}

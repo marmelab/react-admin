@@ -1,6 +1,7 @@
 import React, {
     forwardRef,
     useCallback,
+    useRef,
     type ReactElement,
     type ReactNode,
 } from 'react';
@@ -19,10 +20,13 @@ import {
     type TooltipProps,
     useMediaQuery,
     Theme,
+    useForkRef,
+    Typography,
 } from '@mui/material';
-
+import { useTranslate, useBasename, useEvent } from 'ra-core';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useSidebarState } from './useSidebarState';
-import { useTranslate, useBasename } from 'ra-core';
+import { KeyboardShortcut } from '../KeyboardShortcut';
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -91,6 +95,8 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
             sidebarIsOpen,
             tooltipProps,
             children,
+            keyboardShortcut,
+            keyboardShortcutRepresentation,
             ...rest
         } = props;
 
@@ -115,15 +121,24 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
             (typeof props.to === 'string' ? props.to : props.to.pathname) || '';
         const match = useMatch({ path: to, end: to === `${basename}/` });
 
+        const itemRef = useRef<HTMLLIElement>(null);
+        // Use a forked ref allows us to have a ref locally without losing the one passed by users
+        const forkedRef = useForkRef(itemRef, ref);
+
+        const handleShortcut = useEvent(() => itemRef.current?.click());
+        useHotkeys(keyboardShortcut ?? [], handleShortcut, {
+            enabled: keyboardShortcut != null,
+        });
+
         const renderMenuItem = () => {
             return (
                 <StyledMenuItem
-                    className={clsx(className, {
+                    className={clsx(className, MenuItemLinkClasses.root, {
                         [MenuItemLinkClasses.active]: !!match,
                     })}
                     // @ts-ignore
                     component={LinkRef}
-                    ref={ref}
+                    ref={forkedRef}
                     tabIndex={0}
                     {...rest}
                     onClick={handleMenuTap}
@@ -133,18 +148,32 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
                             {leftIcon}
                         </ListItemIcon>
                     )}
-                    {children
-                        ? children
-                        : typeof primaryText === 'string'
-                          ? translate(primaryText, { _: primaryText })
-                          : primaryText}
+                    <Typography variant="inherit" noWrap sx={{ flexGrow: 1 }}>
+                        {children
+                            ? children
+                            : typeof primaryText === 'string'
+                              ? translate(primaryText, {
+                                    _: primaryText,
+                                })
+                              : primaryText}
+                    </Typography>
+                    {keyboardShortcut
+                        ? keyboardShortcutRepresentation ?? (
+                              <KeyboardShortcut
+                                  className={MenuItemLinkClasses.shortcut}
+                                  keyboardShortcut={keyboardShortcut}
+                              />
+                          )
+                        : null}
                 </StyledMenuItem>
             );
         };
 
-        return open ? (
-            renderMenuItem()
-        ) : (
+        if (open) {
+            return renderMenuItem();
+        }
+
+        return (
             <Tooltip
                 title={
                     typeof primaryText === 'string'
@@ -171,13 +200,17 @@ export type MenuItemLinkProps = Omit<
      */
     sidebarIsOpen?: boolean;
     tooltipProps?: TooltipProps;
+    keyboardShortcut?: string;
+    keyboardShortcutRepresentation?: ReactNode;
 };
 
 const PREFIX = 'RaMenuItemLink';
 
 export const MenuItemLinkClasses = {
+    root: `${PREFIX}-root`,
     active: `${PREFIX}-active`,
     icon: `${PREFIX}-icon`,
+    shortcut: `${PREFIX}-shortcut`,
 };
 
 const StyledMenuItem = styled(MenuItem, {
@@ -185,6 +218,23 @@ const StyledMenuItem = styled(MenuItem, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     color: (theme.vars || theme).palette.text.secondary,
+
+    [`& .${MenuItemLinkClasses.icon}`]: {
+        color: (theme.vars || theme).palette.text.secondary,
+    },
+
+    [`& .${MenuItemLinkClasses.shortcut}`]: {
+        color: (theme.vars || theme).palette.text.secondary,
+        fontSize: theme.typography.body2.fontSize,
+        opacity: 0,
+        display: 'none',
+        transition: 'opacity 0.3s',
+    },
+
+    [`&:hover .${MenuItemLinkClasses.shortcut}`]: {
+        opacity: 0.7,
+        display: 'inline-flex',
+    },
 
     [`&.${MenuItemLinkClasses.active}`]: {
         color: (theme.vars || theme).palette.text.primary,
@@ -202,19 +252,19 @@ const LinkRef = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        RaMenuItemLink: 'root' | 'active' | 'icon';
+        [PREFIX]: 'root' | 'active' | 'icon' | 'shortcut';
     }
 
     interface ComponentsPropsList {
-        RaMenuItemLink: Partial<MenuItemLinkProps>;
+        [PREFIX]: Partial<MenuItemLinkProps>;
     }
 
     interface Components {
-        RaMenuItemLink?: {
-            defaultProps?: ComponentsPropsList['RaMenuItemLink'];
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
             styleOverrides?: ComponentsOverrides<
                 Omit<Theme, 'components'>
-            >['RaMenuItemLink'];
+            >[typeof PREFIX];
         };
     }
 }

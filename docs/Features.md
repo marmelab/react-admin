@@ -157,12 +157,14 @@ For instance, `<ReferenceField>` displays the name of a related record, like the
 ```jsx
 const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceField source="author_id" reference="authors" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author_id">
+                <ReferenceField source="author_id" reference="authors" />
+            </DataTable.Col>
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 ```
@@ -212,12 +214,14 @@ const BookList = () => (
     <List filters={[
         <ReferenceInput source="authorId" reference="authors" alwaysOn />,
     ]}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="authorId">
+                <ReferenceField source="authorId" reference="authors" />
+            </DataTable.Col>
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 ```
@@ -273,11 +277,43 @@ And for mobile users, react-admin renders a different layout with larger margins
 
 ## Headless Core
 
-React-admin components use Material UI components by default, which lets you scaffold a page in no time. As material UI supports [theming](#theming), you can easily customize the look and feel of your app. But in some cases, this is not enough, and you need to use another UI library.
+React-admin components use Material UI components by default, which lets you scaffold a page in no time. As Material UI supports [theming](#theming), you can easily customize the look and feel of your app. But in some cases, this is not enough, and you need to use another UI library.
 
 You can change the UI library you use with react-admin to use [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library. The **headless logic** behind react-admin components is agnostic of the UI library, and is exposed via `...Base` components and controller hooks.
 
-For instance, here a List view built with [Ant Design](https://ant.design/):
+For instance, [`shadcn-admin-kit`](https://github.com/marmelab/shadcn-admin-kit) is a react-admin distribution that replaces Material UI with [Shadcn UI](https://ui.shadcn.com/).
+
+[![Shadcn admin kit](https://github.com/marmelab/shadcn-admin-kit/raw/main/public/shadcn-admin-kit.webp)](https://github.com/marmelab/shadcn-admin-kit)
+
+`shadcn-admin-kit` follows the same syntax conventions as react-admin, so most of the react-admin documentation still applies. For example, the `<ProductEdit>` component looks like this:
+
+```tsx
+import {
+  AutocompleteInput,
+  Edit,
+  ReferenceInput,
+  SimpleForm,
+  TextInput,
+} from "@/components/admin";
+import { required } from "ra-core";
+
+export const ProductEdit = () => (
+  <Edit>
+    <SimpleForm>
+      <TextInput source="reference" label="Reference" validate={required()} />
+      <ReferenceInput source="category_id" reference="categories">
+        <AutocompleteInput label="Category" validate={required()} />
+      </ReferenceInput>
+      <TextInput source="width" type="number" />
+      <TextInput source="height" type="number" />
+      <TextInput source="price" type="number" />
+      <TextInput source="stock" label="Stock" type="number" />
+    </SimpleForm>
+  </Edit>
+);
+```
+
+Here is another example: a List view built with [Ant Design](https://ant.design/):
 
 ![List view built with Ant Design](./img/list_ant_design.png)
 
@@ -360,10 +396,7 @@ Check the following hooks to learn more about headless controllers:
 - [`useCreateController`](./useCreateController.md)
 - [`useShowController`](./useShowController.md)
 
-And check these examples for admin panels built with react-admin but without Material UI:
-
-- [DaisyUI, Tailwind CSS, Tanstack Table and React-Aria](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html)
-- [shadcn/ui, Tailwind CSS and Radix UI](https://github.com/marmelab/ra-shadcn-demo)
+And for a more in-depth tutorial about using react-admin with your favorite UI library, check the following article: [Building an admin with DaisyUI, Tailwind CSS, Tanstack Table and React-Aria](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html).
 
 ## Guessers & Scaffolding
 
@@ -395,7 +428,7 @@ Check the following components to learn more about guessers:
 
 Most admins need to display a list of records, letting users sort, filter, and paginate them. React-admin provides a set of components to build such lists, called "Datagrid components".
 
-The basic [`<Datagrid>` component](./Datagrid.md) displays a list of records in a table, with a row for each record and a column for each field. It alsosupports an expand panel, a row selection checkbox, and a bulk action toolbar.
+The [`<DataTable>` component](./DataTable.md) (successor of the [`<Datagrid>` component](./Datagrid.md)) displays a list of records in a table, with a row for each record and a column for each field. It alsosupports an expand panel, a row selection checkbox, and a bulk action toolbar.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/datagrid.mp4" type="video/mp4"/>
@@ -486,7 +519,7 @@ Users often apply the same filters over and over again. Saved Queries **let user
 Here is an example `<FilterList>` sidebar with saved queries:
 
 ```jsx
-import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
+import { FilterList, FilterListItem, List, DataTable } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
 
 import { SavedQueriesList } from 'react-admin';
@@ -507,9 +540,9 @@ const SongFilterSidebar = () => (
 
 const SongList = () => (
     <List aside={<SongFilterSidebar />}>
-        <Datagrid>
+        <DataTable>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -541,8 +574,7 @@ For instance, here is how to build a tabbed form for editing a blog post:
 import {
     TabbedForm,
     Edit,
-    Datagrid,
-    TextField,
+    DataTable,
     DateField,
     TextInput,
     ReferenceManyField,
@@ -572,11 +604,13 @@ export const PostEdit = () => (
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="body" />
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </ReferenceManyField>
             </TabbedForm.Tab>
         </TabbedForm>
@@ -1123,7 +1157,7 @@ These building blocks include:
 - A [rich text editor](./RichTextInput.md),
 - A [markdown editor](./MarkdownInput.md)
 - A [clone button](./Buttons.md#clonebutton)
-- Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./ContainerLayout.md#horizontalmenu), etc.)
+- Various navigation menus ([simple](./Menu.md), [hierarchical](./MultiLevelMenu.md), [horizontal](./HorizontalMenu.md), etc.)
 - Various [page](./ContainerLayout.md) and [form](https://react-admin-ee.marmelab.com/documentation/ra-form-layout) layouts
 - ...and many more.
 
@@ -1169,20 +1203,18 @@ For instance, include a `<ListLiveUpdate>` within a `<List>` to have a list refr
 ```diff
 import {
     List,
-    Datagrid,
-    TextField,
-    NumberField,
+    DataTable,
     Datefield,
 } from 'react-admin';
 +import { ListLiveUpdate } from '@react-admin/ra-realtime';
 
 const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <DateField source="published_at" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.NumberCol source="views" />
+            <DataTable.Col source="published_at" field={DateField} />
+        </DataTable>
 +       <ListLiveUpdate />
     </List>
 );
@@ -1309,7 +1341,7 @@ For instance, the Saved Queries feature lets users **save a combination of filte
 Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar. It's enabled by default for the Filter Button/Form combo, but you have to add it yourself in the `<FilterList>` Sidebar.
 
 ```diff
-import { FilterList, FilterListItem, List, Datagrid } from 'react-admin';
+import { FilterList, FilterListItem, List, DataTable } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
 
 +import { SavedQueriesList } from 'react-admin';
@@ -1330,9 +1362,9 @@ const SongFilterSidebar = () => (
 
 const SongList = () => (
     <List aside={<SongFilterSidebar />}>
-        <Datagrid>
+        <DataTable>
             ...
-        </Datagrid>
+        </DataTable>
     </List>
 );
 ```
@@ -1430,19 +1462,17 @@ Theming is so powerful that you can even use react-admin to build a [Music Playe
 
 ![Music Player](./img/navidrome.png)
 
-Use the `sx` prop on almost every react-admin component to override its default style - and the style of its descendants. For instance, here is how to change the width of Datagrid columns:
+Use the `sx` prop on almost every react-admin component to override its default style - and the style of its descendants. For instance, here is how to change the width of `<DataTable>` columns:
 
 {% raw %}
 
 ```jsx
 import {
     BooleanField,
-    Datagrid,
+    DataTable,
     DateField,
     EditButton,
     List,
-    NumberField,
-    TextField,
     ShowButton,
 } from 'react-admin';
 import Icon from '@mui/icons-material/Person';
@@ -1451,22 +1481,22 @@ export const VisitorIcon = Icon;
 
 export const PostList = () => (
     <List>
-        <Datagrid
+        <DataTable
             sx={{
                 backgroundColor: "Lavender",
-                "& .RaDatagrid-headerCell": {
+                "& .RaDataTable-headerCell": {
                     backgroundColor: "MistyRose",
                 },
             }}
         >
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" sortByOrder="DESC" />
-            <BooleanField source="commentable" sortable={false} />
-            <NumberField source="views" sortByOrder="DESC" />
-            <EditButton />
-            <ShowButton />
-        </Datagrid>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" sortByOrder="DESC" field={DateField} />
+            <DataTable.Col source="commentable" sortable={false} field={BooleanField} />
+            <DataTable.NumberCol source="views" sortByOrder="DESC" />
+            <DataTable.Col field={EditButton} />
+            <DataTable.Col field={ShowButton} />
+        </DataTable>
     </List>
 );
 ```
@@ -1506,11 +1536,11 @@ const theme = {
     ...defaultTheme,
     components: {
         ...defaultTheme.components,
-        RaDatagrid: {
+        RaDataTable: {
             styleOverrides: {
               root: {
                   backgroundColor: "Lavender",
-                  "& .RaDatagrid-headerCell": {
+                  "& .RaDataTable-headerCell": {
                       backgroundColor: "MistyRose",
                   },
               }
@@ -1649,12 +1679,12 @@ For a given component, the `sx` prop lets you customize its style based on the s
 
 {% endraw %}
 
-To make a component responsive, you can also render it conditionally based on the screen size. For instance, to render a `<SimpleList>` on desktop and a `<Datagrid>` on mobile:
+To make a component responsive, you can also render it conditionally based on the screen size. For instance, to render a `<SimpleList>` on desktop and a `<DataTable>` on mobile:
 
 ```jsx
 import * as React from 'react';
 import { useMediaQuery } from '@mui/material';
-import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { List, SimpleList, DataTable, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -1667,15 +1697,19 @@ export const PostList = () => {
                     tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
                 />
             ) : (
-                <Datagrid>
-                    <TextField source="id" />
-                    <ReferenceField label="User" source="userId" reference="users">
-                        <TextField source="name" />
-                    </ReferenceField>
-                    <TextField source="title" />
-                    <TextField source="body" />
-                    <EditButton />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="userId" label="User">
+                        <ReferenceField source="userId" reference="users">
+                            <TextField source="name" />
+                        </ReferenceField>
+                    </DataTable.Col>
+                    <DataTable.Col source="title" />
+                    <DataTable.Col source="body" />
+                    <DataTable.Col>
+                        <EditButton />
+                    </DataTable.Col>
+                </DataTable>
             )}
         </List>
     );

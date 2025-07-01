@@ -7,6 +7,7 @@ import {
     screen,
     act,
 } from '@testing-library/react';
+import { onlineManager } from '@tanstack/react-query';
 import { testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
 import { CoreAdminContext } from '../../core';
@@ -34,6 +35,10 @@ describe('useListController', () => {
         resource: 'posts',
         debounce: 200,
     };
+
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
@@ -117,7 +122,7 @@ describe('useListController', () => {
     });
 
     describe('setFilters', () => {
-        let childFunction = ({ setFilters, filterValues }) => (
+        const childFunction = ({ setFilters, filterValues }) => (
             <input
                 aria-label="search"
                 type="text"
@@ -276,7 +281,7 @@ describe('useListController', () => {
         it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
 
-            let childFunction = ({ showFilter, displayedFilters }) => {
+            const childFunction = ({ showFilter, displayedFilters }) => {
                 currentDisplayedFilters = displayedFilters;
                 return (
                     <>
@@ -589,6 +594,42 @@ describe('useListController', () => {
             expect(dataProvider.getList).toHaveBeenCalled();
             expect(authProvider.checkAuth).not.toHaveBeenCalled();
         });
+
+        it('should not call checkAuth nor canAccess when disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn().mockResolvedValue(true),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: jest.fn().mockResolvedValue(false),
+            };
+            render(<DisableAuthentication authProvider={authProvider} />);
+            await screen.findByText('Post #1 - 90 votes');
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
+            expect(authProvider.canAccess).not.toHaveBeenCalled();
+        });
+
+        it('should not call checkAuth nor canAccess when disableAuthentication is true even if useAuthState was called before', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn().mockResolvedValue(true),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: jest.fn().mockResolvedValue(false),
+            };
+            render(<DisableAuthentication authProvider={authProvider} />);
+            await screen.findByText('Post #1 - 90 votes');
+            fireEvent.click(await screen.findByText('Dashboard'));
+            await screen.findByText('Dashboard view');
+            fireEvent.click(await screen.findByText('List'));
+            await screen.findByText('Post #1 - 90 votes');
+            // checkAuth is called twice: once by RA (with different params)
+            // and once by our custom Dashboard component
+            expect(authProvider.checkAuth).toHaveBeenCalledTimes(2);
+            expect(authProvider.canAccess).not.toHaveBeenCalled();
+        });
     });
 
     describe('onSelectAll', () => {
@@ -681,6 +722,40 @@ describe('useListController', () => {
                     'ra.message.placeholder_data_warning - warning'
                 )
             ).toBeNull();
+        });
+    });
+
+    describe('response metadata', () => {
+        it('should return response metadata as meta', async () => {
+            const getList = jest.fn().mockImplementation(() =>
+                Promise.resolve({
+                    data: [],
+                    total: 0,
+                    meta: { foo: 'bar' },
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        page: 1,
+                        total: 0,
+                        hasNextPage: false,
+                        hasPreviousPage: false,
+                        meta: { foo: 'bar' },
+                    })
+                );
+            });
         });
     });
 });

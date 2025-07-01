@@ -1,4 +1,3 @@
-/* eslint-disable default-case */
 import {
     IntrospectionField,
     IntrospectionInputObjectType,
@@ -51,7 +50,7 @@ export default (introspectionResults: IntrospectionResult) =>
                         : {}),
                 };
             case GET_MANY_REFERENCE: {
-                let variables = buildGetListVariables(introspectionResults)(
+                const variables = buildGetListVariables(introspectionResults)(
                     resource,
                     raFetchMethod,
                     preparedParams
@@ -272,7 +271,9 @@ const buildGetListVariables =
                     const resourceField = resource.type.fields.find(
                         f => f.name === parts[0]
                     );
-                    const type = getFinalType(resourceField.type);
+                    const type = getFinalType(
+                        resourceField.type
+                    ) as IntrospectionType;
                     return {
                         ...acc,
                         [key]: sanitizeValue(type, params.filter[key]),
@@ -284,7 +285,9 @@ const buildGetListVariables =
                 );
 
                 if (resourceField) {
-                    const type = getFinalType(resourceField.type);
+                    const type = getFinalType(
+                        resourceField.type
+                    ) as IntrospectionType;
                     const isAList = isList(resourceField.type);
 
                     if (isAList) {

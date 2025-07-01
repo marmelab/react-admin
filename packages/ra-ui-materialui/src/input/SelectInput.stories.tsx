@@ -1,24 +1,35 @@
-import * as React from 'react';
-import { Admin, AdminContext } from 'react-admin';
-import { Resource, required, useGetList, TestMemoryRouter } from 'ra-core';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    TextField,
+} from '@mui/material';
+import {
+    CreateBase,
+    Resource,
+    TestMemoryRouter,
+    required,
+    useGetList,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import {
-    Dialog,
-    DialogContent,
-    DialogActions,
-    TextField,
-    Button,
-} from '@mui/material';
+import * as React from 'react';
 
-import { Create as RaCreate, Edit } from '../detail';
-import { SimpleForm } from '../form';
-import { SelectInput } from './SelectInput';
-import { TextInput } from './TextInput';
-import { ReferenceInput } from './ReferenceInput';
+import { AdminContext } from '../AdminContext';
+
+import { AdminUI } from '../AdminUI';
 import { SaveButton } from '../button/SaveButton';
+import { Edit, Create as RaCreate } from '../detail';
+import { SimpleForm } from '../form';
 import { Toolbar } from '../form/Toolbar';
 import { FormInspector } from './common';
+import { ReferenceInput } from './ReferenceInput';
+import { SelectInput, SelectInputProps } from './SelectInput';
+import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
@@ -100,6 +111,45 @@ export const Disabled = () => (
         />
     </Wrapper>
 );
+
+export const Variant = ({ hideLabel }) => (
+    <Wrapper>
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            label={hideLabel ? false : 'default'}
+        />
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            label={hideLabel ? false : 'outlined'}
+            variant="outlined"
+        />
+        <SelectInput
+            source="gender"
+            choices={[
+                { id: 'M', name: 'Male ' },
+                { id: 'F', name: 'Female' },
+            ]}
+            label={hideLabel ? false : 'standard'}
+            variant="standard"
+        />
+    </Wrapper>
+);
+Variant.args = {
+    hideLabel: false,
+};
+Variant.argTypes = {
+    hideLabel: {
+        type: 'boolean',
+    },
+};
 
 export const ReadOnly = () => (
     <Wrapper>
@@ -282,10 +332,22 @@ export const OnCreate = () => {
     );
 };
 
-export const CreateLabel = () => {
-    const categories = [
-        { name: 'Tech', id: 'tech' },
-        { name: 'Lifestyle', id: 'lifestyle' },
+export const CreateLabel = ({
+    optionText,
+}: Pick<SelectInputProps, 'optionText'>) => {
+    const categories: Partial<{
+        id: string;
+        name: string;
+        full_name: string;
+        language: string;
+    }>[] = [
+        { id: 'tech', name: 'Tech', full_name: 'Tech', language: 'en' },
+        {
+            id: 'lifestyle',
+            name: 'Lifestyle',
+            full_name: 'Lifestyle',
+            language: 'en',
+        },
     ];
     return (
         <Wrapper name="category">
@@ -293,19 +355,46 @@ export const CreateLabel = () => {
                 onCreate={() => {
                     const newCategoryName = prompt('Enter a new category');
                     if (!newCategoryName) return;
-                    const newCategory = {
+                    const newCategory: Partial<{
+                        id: string;
+                        name: string;
+                        full_name: string;
+                        language: string;
+                    }> = {
                         id: newCategoryName.toLowerCase(),
-                        name: newCategoryName,
                     };
+                    if (optionText == null) {
+                        newCategory.name = newCategoryName;
+                    } else if (typeof optionText === 'string') {
+                        newCategory[optionText] = newCategoryName;
+                    } else {
+                        newCategory.full_name = newCategoryName;
+                        newCategory.language = 'fr';
+                    }
                     categories.push(newCategory);
                     return newCategory;
                 }}
                 source="category"
                 choices={categories}
                 createLabel="Create a new category"
+                optionText={optionText}
             />
         </Wrapper>
     );
+};
+CreateLabel.args = {
+    optionText: undefined,
+};
+CreateLabel.argTypes = {
+    optionText: {
+        options: ['default', 'string', 'function'],
+        mapping: {
+            default: undefined,
+            string: 'full_name',
+            function: choice => `${choice.full_name} (${choice.language})`,
+        },
+        control: { type: 'inline-radio' },
+    },
 };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
@@ -372,7 +461,6 @@ const dataProviderWithAuthors = {
         }),
     getList: () =>
         new Promise(resolve => {
-            // eslint-disable-next-line eqeqeq
             setTimeout(
                 () =>
                     resolve({
@@ -412,7 +500,50 @@ export const FetchChoices = () => {
     };
     return (
         <TestMemoryRouter initialEntries={['/books/1']}>
-            <Admin dataProvider={dataProviderWithAuthors}>
+            <AdminContext
+                dataProvider={dataProviderWithAuthors}
+                i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
+                defaultTheme="light"
+            >
+                <AdminUI>
+                    <Resource
+                        name="authors"
+                        recordRepresentation={record =>
+                            `${record.first_name} ${record.last_name}`
+                        }
+                    />
+                    <Resource
+                        name="books"
+                        edit={() => (
+                            <Edit
+                                mutationMode="pessimistic"
+                                mutationOptions={{
+                                    onSuccess: data => {
+                                        console.log(data);
+                                    },
+                                }}
+                            >
+                                <SimpleForm>
+                                    <BookAuthorsInput />
+                                    <FormInspector name="author" />
+                                </SimpleForm>
+                            </Edit>
+                        )}
+                    />
+                </AdminUI>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
+
+export const InsideReferenceInput = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <AdminContext
+            dataProvider={dataProviderWithAuthors}
+            i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
+            defaultTheme="light"
+        >
+            <AdminUI>
                 <Resource
                     name="authors"
                     recordRepresentation={record =>
@@ -431,47 +562,19 @@ export const FetchChoices = () => {
                             }}
                         >
                             <SimpleForm>
-                                <BookAuthorsInput />
+                                <ReferenceInput
+                                    reference="authors"
+                                    source="author"
+                                >
+                                    <SelectInput />
+                                </ReferenceInput>
                                 <FormInspector name="author" />
                             </SimpleForm>
                         </Edit>
                     )}
                 />
-            </Admin>
-        </TestMemoryRouter>
-    );
-};
-
-export const InsideReferenceInput = () => (
-    <TestMemoryRouter initialEntries={['/books/1']}>
-        <Admin dataProvider={dataProviderWithAuthors}>
-            <Resource
-                name="authors"
-                recordRepresentation={record =>
-                    `${record.first_name} ${record.last_name}`
-                }
-            />
-            <Resource
-                name="books"
-                edit={() => (
-                    <Edit
-                        mutationMode="pessimistic"
-                        mutationOptions={{
-                            onSuccess: data => {
-                                console.log(data);
-                            },
-                        }}
-                    >
-                        <SimpleForm>
-                            <ReferenceInput reference="authors" source="author">
-                                <SelectInput />
-                            </ReferenceInput>
-                            <FormInspector name="author" />
-                        </SimpleForm>
-                    </Edit>
-                )}
-            />
-        </Admin>
+            </AdminUI>
+        </AdminContext>
     </TestMemoryRouter>
 );
 
@@ -479,7 +582,7 @@ export const InsideReferenceInputDefaultValue = ({
     onSuccess = console.log,
 }) => (
     <TestMemoryRouter initialEntries={['/books/1']}>
-        <Admin
+        <AdminContext
             dataProvider={{
                 ...dataProviderWithAuthors,
                 getOne: () =>
@@ -495,37 +598,44 @@ export const InsideReferenceInputDefaultValue = ({
                         },
                     }),
             }}
+            i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
+            defaultTheme="light"
         >
-            <Resource
-                name="authors"
-                recordRepresentation={record =>
-                    `${record.first_name} ${record.last_name}`
-                }
-            />
-            <Resource
-                name="books"
-                edit={() => (
-                    <Edit
-                        mutationMode="pessimistic"
-                        mutationOptions={{ onSuccess }}
-                    >
-                        <SimpleForm>
-                            <TextInput source="title" />
-                            <ReferenceInput reference="authors" source="author">
-                                <SelectInput />
-                            </ReferenceInput>
-                            <FormInspector name="author" />
-                        </SimpleForm>
-                    </Edit>
-                )}
-            />
-        </Admin>
+            <AdminUI>
+                <Resource
+                    name="authors"
+                    recordRepresentation={record =>
+                        `${record.first_name} ${record.last_name}`
+                    }
+                />
+                <Resource
+                    name="books"
+                    edit={() => (
+                        <Edit
+                            mutationMode="pessimistic"
+                            mutationOptions={{ onSuccess }}
+                        >
+                            <SimpleForm>
+                                <TextInput source="title" />
+                                <ReferenceInput
+                                    reference="authors"
+                                    source="author"
+                                >
+                                    <SelectInput />
+                                </ReferenceInput>
+                                <FormInspector name="author" />
+                            </SimpleForm>
+                        </Edit>
+                    )}
+                />
+            </AdminUI>
+        </AdminContext>
     </TestMemoryRouter>
 );
 
 export const InsideReferenceInputWithError = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
-        <Admin
+        <AdminContext
             dataProvider={{
                 ...dataProviderWithAuthors,
                 getList: () =>
@@ -533,36 +643,129 @@ export const InsideReferenceInputWithError = () => (
                         new Error('Error while fetching the authors')
                     ),
             }}
+            i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
+            defaultTheme="light"
         >
-            <Resource
-                name="authors"
-                recordRepresentation={record =>
-                    `${record.first_name} ${record.last_name}`
-                }
-            />
-            <Resource
-                name="books"
-                edit={() => (
-                    <Edit
-                        mutationMode="pessimistic"
-                        mutationOptions={{
-                            onSuccess: data => {
-                                console.log(data);
-                            },
-                        }}
-                    >
-                        <SimpleForm>
-                            <ReferenceInput reference="authors" source="author">
-                                <SelectInput />
-                            </ReferenceInput>
-                            <FormInspector name="author" />
-                        </SimpleForm>
-                    </Edit>
-                )}
-            />
-        </Admin>
+            <AdminUI>
+                <Resource
+                    name="authors"
+                    recordRepresentation={record =>
+                        `${record.first_name} ${record.last_name}`
+                    }
+                />
+                <Resource
+                    name="books"
+                    edit={() => (
+                        <Edit
+                            mutationMode="pessimistic"
+                            mutationOptions={{
+                                onSuccess: data => {
+                                    console.log(data);
+                                },
+                            }}
+                        >
+                            <SimpleForm>
+                                <ReferenceInput
+                                    reference="authors"
+                                    source="author"
+                                >
+                                    <SelectInput />
+                                </ReferenceInput>
+                                <FormInspector name="author" />
+                            </SimpleForm>
+                        </Edit>
+                    )}
+                />
+            </AdminUI>
+        </AdminContext>
     </TestMemoryRouter>
 );
+
+const CreateAuthor = () => {
+    const { onCancel, onCreate } = useCreateSuggestionContext();
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="authors"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm>
+                        <TextInput
+                            source="first_name"
+                            helperText={false}
+                            autoFocus
+                        />
+                        <TextInput source="last_name" helperText={false} />
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
+export const InsideReferenceInputWithCreationSupport = () => {
+    return (
+        <TestMemoryRouter initialEntries={['/books/1']}>
+            <AdminContext
+                dataProvider={dataProviderWithAuthors}
+                i18nProvider={polyglotI18nProvider(() => englishMessages, 'en')}
+                defaultTheme="light"
+            >
+                <AdminUI>
+                    <Resource
+                        name="authors"
+                        recordRepresentation={record =>
+                            `${record.first_name} ${record.last_name}`
+                        }
+                    />
+                    <Resource
+                        name="books"
+                        edit={() => (
+                            <Edit
+                                mutationMode="pessimistic"
+                                mutationOptions={{
+                                    onSuccess: data => {
+                                        console.log(data);
+                                    },
+                                }}
+                            >
+                                <SimpleForm>
+                                    <ReferenceInput
+                                        reference="authors"
+                                        source="author"
+                                    >
+                                        <SelectInput
+                                            create={<CreateAuthor />}
+                                        />
+                                    </ReferenceInput>
+                                    <FormInspector name="author" />
+                                </SimpleForm>
+                            </Edit>
+                        )}
+                    />
+                </AdminUI>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
 
 export const TranslateChoice = () => {
     const i18nProvider = polyglotI18nProvider(() => ({

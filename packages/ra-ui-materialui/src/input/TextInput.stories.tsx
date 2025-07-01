@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { required, Resource } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
+import { createTheme } from '@mui/material/styles';
 
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
-import { Edit } from '../detail';
+import { Create, Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
 import { FormInspector } from './common';
@@ -14,8 +14,8 @@ import { MemoryRouter } from 'react-router';
 
 export default { title: 'ra-ui-materialui/input/TextInput' };
 
-const Wrapper = ({ children }) => (
-    <AdminContext defaultTheme="light">
+const Wrapper = ({ children, theme = undefined }) => (
+    <AdminContext defaultTheme="light" theme={theme}>
         <Create
             resource="posts"
             record={{ id: 123, title: 'Lorem ipsum' }}
@@ -405,4 +405,28 @@ export const Parse = ({ onSuccess = console.log }) => (
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={createTheme({
+            components: {
+                RaTextInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    } as any,
+                    styleOverrides: {
+                        root: {
+                            ['& input']: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            },
+        })}
+    >
+        <TextInput source="title" />
+        <FormInspector />
+    </Wrapper>
 );

@@ -385,9 +385,29 @@ To override the style of all instances of `<Show>` using the [application-wide s
 
 ## `title`
 
-By default, the title for the Show view is "[resource_name] [record representation]". Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
+By default, the title for the Show view is the translation key `ra.page.show` that translates to "[resource_name] [record representation]". Check the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop for more details.
 
-You can customize this title by specifying a custom `title` string:
+You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.page.show` (e.g. `resources.posts.page.show`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            page: {
+                show: 'Details of post "%{recordRepresentation}"'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this title by specifying a custom `title` string:
 
 ```jsx
 export const PostShow = () => (

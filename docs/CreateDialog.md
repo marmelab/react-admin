@@ -5,7 +5,7 @@ title: "CreateDialog"
 
 # `<CreateDialog>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a replacement to [the `<Create>` component](./Create.md) allowing users to create records without leaving the context of the list page.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers a replacement to [the `<Create>` component](./Create.md) allowing users to create records without leaving the context of the list page.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/create-dialog.mp4" type="video/mp4" />
@@ -31,7 +31,7 @@ Then, add the `<CreateDialog>` component as a sibling to a `<List>` component.
 import {
     List,
     ListActions,
-    Datagrid,
+    DataTable,
     SimpleForm,
     TextInput,
     DateInput,
@@ -43,9 +43,9 @@ import { CreateDialog } from '@react-admin/ra-form-layout';
 const CustomerList = () => (
     <>
         <List actions={<ListActions hasCreate />}>
-            <Datagrid>
+            <DataTable>
                 ...
-            </Datagrid>
+            </DataTable>
         </List>
         <CreateDialog>
             <SimpleForm>
@@ -213,7 +213,7 @@ Here is an example:
 import {
     List,
     ListActions,
-    Datagrid,
+    DataTable,
     SimpleForm,
     TextInput,
     DateInput,
@@ -224,9 +224,9 @@ import { CreateDialog } from '@react-admin/ra-form-layout';
 const CustomerList = () => (
     <>
         <List actions={<ListActions hasCreate />}>
-            <Datagrid>
+            <DataTable>
                 ...
-            </Datagrid>
+            </DataTable>
         </List>
         <CreateDialog title="Create a new customer">
             <SimpleForm>
@@ -305,7 +305,7 @@ Put `<CreateInDialogButton>` wherever you would put a `<CreateButton>`, and use 
 {% raw %}
 ```jsx
 import {
-  Datagrid,
+  DataTable,
   ReferenceManyField,
   Show,
   SimpleForm,
@@ -331,10 +331,10 @@ const CompanyShow = () => (
                         </SimpleForm>
                     </CreateInDialogButton>
                 )} />
-                <Datagrid>
-                    <TextField source="first_name" />
-                    <TextField source="last_name" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="first_name" />
+                    <DataTable.Col source="last_name" />
+                </DataTable>
             </ReferenceManyField>
         </SimpleShowLayout>
     </Show>
@@ -369,7 +369,7 @@ Below is an example of an `<Edit>` page, including a 'create a new customer' but
 import React, { useCallback, useState } from 'react';
 import {
     Button,
-    Datagrid,
+    DataTable,
     DateField,
     DateInput,
     Edit,
@@ -378,7 +378,6 @@ import {
     SelectField,
     SelectInput,
     SimpleForm,
-    TextField,
     TextInput,
     useRecordContext,
 } from 'react-admin';
@@ -437,13 +436,15 @@ const EmployerSimpleFormWithFullyControlledDialogs = () => {
                 reference="customers"
                 target="employer_id"
             >
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="first_name" />
-                    <TextField source="last_name" />
-                    <DateField source="dob" label="born" />
-                    <SelectField source="sex" choices={sexChoices} />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="first_name" />
+                    <DataTable.Col source="last_name" />
+                    <DataTable.Col source="dob" label="born" field={DateField} />
+                    <DataTable.Col source="sex">
+                        <SelectField source="sex" choices={sexChoices} />
+                    </DataTable.Col>
+                </DataTable>
             </ReferenceManyField>
         </SimpleForm>
     );
@@ -468,17 +469,18 @@ Add the `warnWhenUnsavedChanges` prop to your Form like so:
 import React from 'react';
 import {
     List,
-    Datagrid,
+    ListActions,
+    DataTable,
     SimpleForm,
 } from 'react-admin';
 import { CreateDialog } from '@react-admin/ra-form-layout';
 
 const CustomerList = () => (
     <>
-        <List hasCreate>
-            <Datagrid rowClick="edit">
+        <List actions={<ListActions hasCreate />}>
+            <DataTable rowClick="edit">
                 ...
-            </Datagrid>
+            </DataTable>
         </List>
         <CreateDialog>
             <SimpleForm warnWhenUnsavedChanges>

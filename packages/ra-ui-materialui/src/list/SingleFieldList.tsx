@@ -77,11 +77,7 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
     }
 
     if (data == null || data.length === 0 || total === 0) {
-        if (empty) {
-            return empty;
-        }
-
-        return null;
+        return empty ?? null;
     }
 
     return (
@@ -135,7 +131,7 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
 export interface SingleFieldListProps<RecordType extends RaRecord = any>
     extends StackProps {
     className?: string;
-    empty?: React.ReactElement;
+    empty?: React.ReactNode;
     linkType?: string | false;
     children?: React.ReactNode;
     // can be injected when using the component without context

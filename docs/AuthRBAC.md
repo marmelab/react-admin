@@ -11,7 +11,7 @@ Building up on react-admin's [Access Control features](./Permissions.md#access-c
     <source src="./img/ra-rbac.mp4" type="video/mp4" />
 </video>
 
-The RBAC features are part of [ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> package. Test them live in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-rbac-full-app--full-app).
+The RBAC features are part of [ra-rbac](https://react-admin-ee.marmelab.com/documentation/ra-rbac), an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> package. Test them live in the [Enterprise Edition Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-rbac-full-app--full-app).
 
 ## At a Glance
 
@@ -100,17 +100,17 @@ An _action_ is a string, usually a verb, that represents an operation. Examples 
 
 React-admin already does page-level access control with actions like "list", "show", "edit", "create", and "delete". RBAC checks additional actions in its components:
 
-| Action   | Description                      | Used In                                                                                                         |
-| -------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `list`   | Allow to access the List page    | [`<List>`](./List.md#access-control), [`<ListButton>`](./Buttons.md#listbutton), [`<Menu.ResourceItem>`](./Menu.md#access-control) |
-| `show`   | Allow to access the Show page    | [`<Show>`](./Show.md), [`<ShowButton>`](./Buttons.md#showbutton), [`<Datagrid>`](./Datagrid.md#access-control), [`<Edit>`](./Edit.md) |
-| `create` | Allow to access the Create page  | [`<Create>`](./Create.md), [`<CreateButton>`](./Buttons.md#createbutton), [`<List>`](./List.md#access-control) |
-| `edit`   | Allow to access the Edit page    | [`<Edit>`](./Edit.md), [`<EditButton>`](./Buttons.md#editbutton), [`<Datagrid>`](./Datagrid.md#access-control), [`<Show>`](./Show.md) |
-| `delete` | Allow to delete data             | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](#tabform) |
-| `export` | Allow to export data             | [`<ExportButton>`](./Buttons.md#exportbutton), [`<List>`](./List.md#access-control)                                       |
-| `clone`  | Allow to clone a record          | [`<CloneButton>`](./Buttons.md#clonebutton), [`<Edit>`](./Edit.md)                                   |
-| `read`   | Allow to view a field (or a tab) | [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control), [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control) |
-| `write`  | Allow to edit a field (or a tab) | [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](./TabbedForm.md#access-control), [`<WizardForm>`](./WizardForm.md#enableaccesscontrol), [`<LongForm>`](./LongForm.md#enableaccesscontrol), [`<AccordionForm>`](./AccordionForm.md#enableaccesscontrol) |
+| Action   | Description                      | Used In                                                                                                                                                                                                                                                                                                |
+| -------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `list`   | Allow to access the List page    | [`<List>`](./List.md#access-control), [`<ListButton>`](./Buttons.md#listbutton), [`<Menu.ResourceItem>`](./Menu.md#access-control)                                                                                                                                                                     |
+| `show`   | Allow to access the Show page    | [`<Show>`](./Show.md), [`<ShowButton>`](./Buttons.md#showbutton), [`<DataTable>`](./DataTable.md#access-control), [`<Datagrid>`](./Datagrid.md#access-control), [`<Edit>`](./Edit.md)                                                                                                                  |
+| `create` | Allow to access the Create page  | [`<Create>`](./Create.md), [`<CreateButton>`](./Buttons.md#createbutton), [`<List>`](./List.md#access-control)                                                                                                                                                                                         |
+| `edit`   | Allow to access the Edit page    | [`<Edit>`](./Edit.md), [`<EditButton>`](./Buttons.md#editbutton), [`<DataTable>`](./DataTable.md#access-control), [`<Datagrid>`](./Datagrid.md#access-control), [`<Show>`](./Show.md)                                                                                                                  |
+| `delete` | Allow to delete data             | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<DataTable>`](./DataTable.md#access-control), [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](./TabbedForm.md#access-control) |
+| `export` | Allow to export data             | [`<ExportButton>`](./Buttons.md#exportbutton), [`<List>`](./List.md#access-control)                                                                                                                                                                                                                    |
+| `clone`  | Allow to clone a record          | [`<CloneButton>`](./Buttons.md#clonebutton), [`<Edit>`](./Edit.md)                                                                                                                                                                                                                                     |
+| `read`   | Allow to view a field (or a tab) | [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control), [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control)                                                                                                                               |
+| `write`  | Allow to edit a field (or a tab) | [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](./TabbedForm.md#access-control), [`<WizardForm>`](./WizardForm.md#enableaccesscontrol), [`<LongForm>`](./LongForm.md#enableaccesscontrol), [`<AccordionForm>`](./AccordionForm.md#enableaccesscontrol)                              |
 
 **Tip:** Be sure not to confuse "show" and "read", or "edit" and "write", as they are not the same. The first operate at the page level, the second at the field level. A good mnemonic is to realize "show" and "edit" are named the same as the react-admin page they allow to control: the Show and Edit pages.
 

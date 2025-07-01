@@ -5,7 +5,7 @@ title: "useGetLocksLive"
 
 # `useGetLocksLive`
 
-Use the `useGetLocksLive` hook to get the locks in real time. This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook calls `dataProvider.getLocks()` for the current resource on mount, and subscribes to live updates on the `lock/[resource]` topic.
+Use the `useGetLocksLive` hook to get the locks in real time. This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> hook calls `dataProvider.getLocks()` for the current resource on mount, and subscribes to live updates on the `lock/[resource]` topic.
 
 This means that if a lock is acquired or released by another user while the current user is on the page, the return value will be updated.
 
@@ -29,10 +29,12 @@ const PostList = () => {
     const { data: locks } = useGetLocksLive();
     return (
         <List>
-            <Datagrid>
-                <TextField source="title" />
-                <LockField locks={locks} />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col>
+                    <LockField locks={locks} />
+                </DataTable.Col>
+            </DataTable>
         </List>
     );
 };

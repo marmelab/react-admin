@@ -61,7 +61,7 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
                 },
                 '&.Mui-selected, &.Mui-selected:hover': {
                     color: theme.palette.primary.contrastText,
-                    zIndex: 5,
+                    zIndex: 2,
                 },
                 '&:hover': {
                     color: theme.palette.primary.main,
@@ -163,6 +163,13 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
     RaTranslatableInputs: {
         defaultProps: {
             fullWidth: true,
+        },
+    },
+    RaBulkActionsToolbar: {
+        styleOverrides: {
+            toolbar: {
+                zIndex: 10,
+            },
         },
     },
 });

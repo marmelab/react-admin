@@ -1,6 +1,5 @@
 import React from 'react';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { To } from 'react-router';
 import { useBasename } from 'ra-core';
 
 import { MenuItemLink, MenuItemLinkProps } from './MenuItemLink';
@@ -24,8 +23,9 @@ export const DashboardMenuItem = (props: DashboardMenuItemProps) => {
     );
 };
 
-export interface DashboardMenuItemProps extends Omit<MenuItemLinkProps, 'to'> {
-    to?: To;
+export interface DashboardMenuItemProps
+    extends Omit<MenuItemLinkProps, 'to'>,
+        Partial<Pick<MenuItemLinkProps, 'to'>> {
     /**
      * @deprecated
      */

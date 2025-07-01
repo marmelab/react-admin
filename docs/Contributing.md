@@ -185,7 +185,7 @@ Some components may have peculiar APIs, often for historical reasons. We priorit
 
 ## Principle of Least Surprise
 
-Because react-admin is designed for [composition](#composition), you should be able to combine react-admin components in various ways and expect them to "just work". If, for any reason, two components aren't compatible, the app should break as soon as possible. In most cases, strong TypeScript types help you detect these incompatibilities at compile time.
+Because react-admin is designed for [composition](./Architecture.md#composition), you should be able to combine react-admin components in various ways and expect them to "just work". If, for any reason, two components aren't compatible, the app should break as soon as possible. In most cases, strong TypeScript types help you detect these incompatibilities at compile time.
 
 To minimize surprises, we avoid using `React.cloneElement()` and refrain from passing props down the tree. We also avoid child inspection.
 
@@ -194,7 +194,7 @@ An exception is the `<Datagrid>` component, which inspects its Field children at
 - If a child is wrapped inside another component that doesn't follow the same API, the feature breaks
 - Developers typically expect a component to affect its subtree, not its ancestors. Violating this expectation can lead to difficult-to-explain bugs.
 
-We keep child inspection in `<Datagrid>` because there is no superior alternative, but it's an uncommon exception.
+We keep child inspection in `<Datagrid>` for backwards compatibility reasons, but since then we introduced a superior alternative to solve the aforementioned issues: [`<DataTable>`](./DataTable.md).
 
 ## Principle Of Least Documentation
 

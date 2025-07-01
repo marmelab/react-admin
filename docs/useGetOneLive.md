@@ -5,7 +5,7 @@ title: "useGetOneLive"
 
 # `useGetOneLive`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook, alternative to [`useGetOne`](./useGetOne.md), subscribes to live updates on the record.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> hook, alternative to [`useGetOne`](./useGetOne.md), subscribes to live updates on the record.
 
 ## Usage
 

@@ -1,5 +1,10 @@
 import * as React from 'react';
 import { Typography, TypographyProps } from '@mui/material';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import { useFieldValue, useTranslate } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -33,8 +38,13 @@ import { genericMemo } from './genericMemo';
 const DateFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,
 >(
-    props: DateFieldProps<RecordType>
+    inProps: DateFieldProps<RecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         className,
         emptyText,
@@ -95,14 +105,14 @@ const DateFieldImpl = <
     }
 
     return (
-        <Typography
+        <StyledTypography
             component="span"
             variant="body2"
             className={className}
             {...sanitizeFieldRestProps(rest)}
         >
             {dateString}
-        </Typography>
+        </StyledTypography>
     );
 };
 DateFieldImpl.displayName = 'DateFieldImpl';
@@ -136,3 +146,28 @@ const toLocaleStringSupportsLocales = (() => {
     }
     return false;
 })();
+
+const PREFIX = 'RaDateField';
+const StyledTypography = styled(Typography, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<DateFieldProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

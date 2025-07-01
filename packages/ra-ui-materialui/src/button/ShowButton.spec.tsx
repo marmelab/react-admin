@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { Basic, AccessControl } from './ShowButton.stories';
+import { Basic, AccessControl, Label, Themed } from './ShowButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -23,6 +23,22 @@ describe('<ShowButton />', () => {
         spy.mockRestore();
     });
 
+    it('should provide a default label', async () => {
+        render(<Label translations="default" />);
+        await screen.findByText('Show');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Afficher');
+    });
+
+    it('should allow resource specific default title', async () => {
+        render(<Label translations="resource specific" />);
+        await screen.findByText('See War and Peace');
+        fireEvent.click(screen.getByText('English', { selector: 'button' }));
+        fireEvent.click(await screen.findByText('Français'));
+        await screen.findByText('Voir War and Peace');
+    });
+
     it('should only render when users have the right to show', async () => {
         render(<AccessControl />);
         await screen.findByText('War and Peace');
@@ -42,5 +58,12 @@ describe('<ShowButton />', () => {
         await waitFor(() => {
             expect(screen.queryAllByLabelText('Show')).toHaveLength(1);
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        const button = screen.queryByTestId('themed-button');
+        expect(button.classList).toContain('custom-class');
+        expect(button.textContent).toBe('Show');
     });
 });

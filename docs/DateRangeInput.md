@@ -5,7 +5,7 @@ title: "The DateRangeInput Component"
 
 # `<DateRangeInput>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component `<DateRangeInput>` is a date range picker, allowing users to pick an interval by selecting a start and an end date. It is ideal for filtering records based on a date range. It is designed to work with various locales and date formats.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component `<DateRangeInput>` is a date range picker, allowing users to pick an interval by selecting a start and an end date. It is ideal for filtering records based on a date range. It is designed to work with various locales and date formats.
 
 ![DateRangeInput](./img/DateRangeInput.png)
 
@@ -160,7 +160,7 @@ Here is an example:
 
 ```tsx
 import { DateRangeInput } from '@react-admin/ra-form-layout/DateRangeInput';
-import { List, Datagrid, NumberField, TextField, DateField } from 'react-admin';
+import { List, DataTable, DateField } from 'react-admin';
 import { endOfDay } from 'date-fns';
 
 const dateRangeFilterParse = (dates: (Date | null)[]) => {
@@ -177,11 +177,11 @@ const eventsFilters = [
 
 export const EventsList = () => (
     <List filters={eventsFilters}>
-        <Datagrid>
-            <NumberField source="id" />
-            <TextField source="name" />
-            <DateField source="date" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.NumberCol source="id" />
+            <DataTable.Col source="name" />
+            <DataTable.Col source="date" field={DateField} />
+        </DataTable>
     </List>
 );
 ```

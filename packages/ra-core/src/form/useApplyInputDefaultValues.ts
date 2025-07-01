@@ -32,7 +32,7 @@ export const useApplyInputDefaultValues = ({
     isArrayInput,
     fieldArrayInputControl,
 }: Props) => {
-    const { defaultValue, source } = inputProps;
+    const { defaultValue, source, disabled } = inputProps;
     const finalSource = useWrappedSource(source);
 
     const record = useRecordContext(inputProps);
@@ -46,7 +46,12 @@ export const useApplyInputDefaultValues = ({
         if (
             defaultValue == null ||
             formValue != null ||
-            recordValue != null ||
+            // When the input is disabled, its value may always be undefined, no matter the default value.
+            // This prevents from trying to reset the value indefinitely.
+            disabled ||
+            // We check strictly for undefined to avoid setting default value
+            // when the field is null
+            recordValue !== undefined ||
             isDirty
         ) {
             return;

@@ -7,21 +7,17 @@ import {
     styled,
     type SxProps,
     type Theme,
-    useThemeProps,
 } from '@mui/material';
 import clsx from 'clsx';
 import { useEditContext, useResourceDefinition } from 'ra-core';
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
+import { EditProps } from './Edit';
 
 const defaultActions = <EditActions />;
 
-export const EditView = (inProps: EditViewProps) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
+export const EditView = (props: EditViewProps) => {
     const {
         actions,
         aside,
@@ -106,7 +102,7 @@ declare module '@mui/material/styles' {
     }
 
     interface ComponentsPropsList {
-        RaEdit: Partial<EditViewProps>;
+        RaEdit: Partial<EditProps>;
     }
 
     interface Components {

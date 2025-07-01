@@ -23,6 +23,7 @@ import {
     NestedInlineNoTranslation,
     Validation,
     Focus,
+    Reset,
 } from './ArrayInput.stories';
 import { useArrayInput } from './useArrayInput';
 
@@ -455,6 +456,64 @@ describe('<ArrayInput />', () => {
             expect(document.activeElement).toBe(
                 screen.getAllByLabelText('Role')[2]
             );
+        });
+    });
+
+    describe('should empty the input on form reset', () => {
+        it('should remove a filled line twice', async () => {
+            render(<Reset />);
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+
+            fireEvent.click(await screen.findByRole('button', { name: 'Add' }));
+            fireEvent.change(screen.getByLabelText('Name'), {
+                target: { value: 'Leo Tolstoy' },
+            });
+            fireEvent.change(screen.getByLabelText('Role'), {
+                target: { value: 'Writer' },
+            });
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+            fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+            await waitFor(() => {
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+            });
+
+            fireEvent.click(await screen.findByRole('button', { name: 'Add' }));
+            fireEvent.change(screen.getByLabelText('Name'), {
+                target: { value: 'Leo Tolstoy' },
+            });
+            fireEvent.change(screen.getByLabelText('Role'), {
+                target: { value: 'Writer' },
+            });
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+            fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+            await waitFor(() => {
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+            });
+        });
+
+        it('should remove an empty line twice', async () => {
+            render(<Reset />);
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+
+            fireEvent.click(await screen.findByRole('button', { name: 'Add' }));
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+            fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+            await waitFor(() => {
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+            });
+
+            fireEvent.click(await screen.findByRole('button', { name: 'Add' }));
+
+            expect(screen.queryAllByRole('listitem')).toHaveLength(1);
+            fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+            await waitFor(() => {
+                expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+            });
         });
     });
 });

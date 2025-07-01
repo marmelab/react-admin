@@ -18,7 +18,11 @@ import { SimpleForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import { TextInput } from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
-import { Basic } from './SimpleFormIterator.stories';
+import {
+    Basic,
+    DefaultValue,
+    WithFormDataConsumer,
+} from './SimpleFormIterator.stories';
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
@@ -418,22 +422,7 @@ describe('<SimpleFormIterator />', () => {
     });
 
     it('should not reapply default values set at form level after removing and then re-adding one row', async () => {
-        render(
-            <Wrapper>
-                <SimpleForm
-                    defaultValues={{
-                        emails: [{ email: 'test@marmelab.com', name: 'test' }],
-                    }}
-                >
-                    <ArrayInput source="emails">
-                        <SimpleFormIterator>
-                            <TextInput source="email" label="Email" />
-                            <TextInput source="name" label="Name" />
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
-            </Wrapper>
-        );
+        render(<DefaultValue />);
 
         const removeFirstButton = getByLabelText(
             // @ts-ignore
@@ -456,47 +445,30 @@ describe('<SimpleFormIterator />', () => {
             expect(inputElements.length).toBe(1);
         });
 
-        expect(
-            screen
-                .queryAllByLabelText('Email')
-                .map(inputElement => (inputElement as HTMLInputElement).value)
-        ).toEqual(['']);
-        expect(
-            screen
-                .queryAllByLabelText('Name')
-                .map(inputElement => (inputElement as HTMLInputElement).value)
-        ).toEqual(['']);
+        await waitFor(() => {
+            expect(
+                screen
+                    .queryAllByLabelText('Email')
+                    .map(
+                        inputElement => (inputElement as HTMLInputElement).value
+                    )
+            ).toEqual(['']);
+        });
+        await waitFor(() => {
+            expect(
+                screen
+                    .queryAllByLabelText('Name')
+                    .map(
+                        inputElement => (inputElement as HTMLInputElement).value
+                    )
+            ).toEqual(['']);
+        });
 
         expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
     it('should not reapply default values set at form level after removing and then re-adding one row, even with FormDataConsumer', async () => {
-        render(
-            <Wrapper>
-                <SimpleForm
-                    defaultValues={{
-                        emails: [{ email: 'test@marmelab.com', name: 'test' }],
-                    }}
-                >
-                    <ArrayInput source="emails">
-                        <SimpleFormIterator>
-                            <FormDataConsumer>
-                                {() => (
-                                    <>
-                                        <TextInput
-                                            source="email"
-                                            label="Email"
-                                            defaultValue="default@marmelab.com"
-                                        />
-                                        <TextInput source="name" label="Name" />
-                                    </>
-                                )}
-                            </FormDataConsumer>
-                        </SimpleFormIterator>
-                    </ArrayInput>
-                </SimpleForm>
-            </Wrapper>
-        );
+        render(<WithFormDataConsumer />);
 
         const removeFirstButton = getByLabelText(
             // @ts-ignore

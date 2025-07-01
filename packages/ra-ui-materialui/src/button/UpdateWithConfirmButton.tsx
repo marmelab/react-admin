@@ -17,15 +17,19 @@ import {
     useRecordContext,
     useUpdate,
     useGetRecordRepresentation,
+    useResourceTranslation,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, type ButtonProps } from './Button';
 import type { UseMutationOptions } from '@tanstack/react-query';
-import { humanize, inflect } from 'inflection';
+import { humanize, singularize } from 'inflection';
 
-export const UpdateWithConfirmButton = (
-    inProps: UpdateWithConfirmButtonProps
+export const UpdateWithConfirmButton = <
+    RecordType extends RaRecord = any,
+    MutationOptionsError extends Error = Error,
+>(
+    inProps: UpdateWithConfirmButtonProps<RecordType, MutationOptionsError>
 ) => {
     const props = useThemeProps({
         props: inProps,
@@ -35,17 +39,23 @@ export const UpdateWithConfirmButton = (
     const translate = useTranslate();
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
-    const record = useRecordContext(props);
+    const record = useRecordContext<RecordType>(props);
 
     const {
         confirmTitle: confirmTitleProp,
         confirmContent: confirmContentProp,
         data,
         icon = defaultIcon,
-        label = 'ra.action.update',
+        label: labelProp,
         mutationMode = 'pessimistic',
         onClick,
-        mutationOptions = {},
+        mutationOptions = emptyObject as UseMutationOptions<
+            RecordType,
+            MutationOptionsError,
+            UpdateParams<RecordType>
+        > & { meta?: any },
+        titleTranslateOptions = emptyObject,
+        contentTranslateOptions = emptyObject,
         ...rest
     } = props;
     const {
@@ -60,7 +70,7 @@ export const UpdateWithConfirmButton = (
                 undoable: mutationMode === 'undoable',
             });
         },
-        onError = (error: Error | string) => {
+        onError = (error: MutationOptionsError) => {
             notify(
                 typeof error === 'string'
                     ? error
@@ -84,7 +94,7 @@ export const UpdateWithConfirmButton = (
         ...otherMutationOptions
     } = mutationOptions;
 
-    const [update, { isPending }] = useUpdate(
+    const [update, { isPending }] = useUpdate<RecordType, MutationOptionsError>(
         resource,
         { id: record?.id, data, meta: mutationMeta, previousData: record },
         {
@@ -96,7 +106,7 @@ export const UpdateWithConfirmButton = (
         }
     );
 
-    const handleClick = e => {
+    const handleClick = (e: React.MouseEvent) => {
         setOpen(true);
         e.stopPropagation();
     };
@@ -120,14 +130,12 @@ export const UpdateWithConfirmButton = (
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
-    let confirmContent = `resources.${resource}.message.bulk_update_content`;
-    let confirmTitle = `resources.${resource}.message.bulk_update_title`;
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
         smart_count: 1,
         _: humanize(
             translate(`resources.${resource}.name`, {
                 smart_count: 1,
-                _: resource ? inflect(resource, 1) : undefined,
+                _: resource ? singularize(resource) : undefined,
             }),
             true
         ),
@@ -136,12 +144,48 @@ export const UpdateWithConfirmButton = (
     if (React.isValidElement(recordRepresentation)) {
         recordRepresentation = `#${record?.id}`;
     }
+    const label = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.action.update`,
+        baseI18nKey: 'ra.action.update',
+        options: {
+            name: resourceName,
+            recordRepresentation,
+        },
+        userText: labelProp,
+    });
+    const confirmTitle = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.message.bulk_update_title`,
+        baseI18nKey: 'ra.message.bulk_update_title',
+        options: {
+            recordRepresentation,
+            name: resourceName,
+            id: record?.id,
+            smart_count: 1,
+            ...titleTranslateOptions,
+        },
+        userText: confirmTitleProp,
+    });
+    const confirmContent = useResourceTranslation({
+        resourceI18nKey: `resources.${resource}.message.bulk_update_content`,
+        baseI18nKey: 'ra.message.bulk_update_content',
+        options: {
+            recordRepresentation,
+            name: resourceName,
+            id: record?.id,
+            smart_count: 1,
+            ...contentTranslateOptions,
+        },
+        userText: confirmContentProp,
+    });
 
     return (
         <Fragment>
             <StyledButton
                 onClick={handleClick}
-                label={label}
+                // avoid double translation
+                label={<>{label}</>}
+                // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+                aria-label={typeof label === 'string' ? label : undefined}
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
@@ -149,28 +193,8 @@ export const UpdateWithConfirmButton = (
             <Confirm
                 isOpen={isOpen}
                 loading={isPending}
-                title={confirmTitleProp ?? confirmTitle}
-                content={confirmContentProp ?? confirmContent}
-                titleTranslateOptions={{
-                    smart_count: 1,
-                    name: resourceName,
-                    recordRepresentation,
-                    _: translate('ra.message.bulk_update_title', {
-                        smart_count: 1,
-                        name: resourceName,
-                        recordRepresentation,
-                    }),
-                }}
-                contentTranslateOptions={{
-                    smart_count: 1,
-                    name: resourceName,
-                    recordRepresentation,
-                    _: translate('ra.message.bulk_update_content', {
-                        smart_count: 1,
-                        name: resourceName,
-                        recordRepresentation,
-                    }),
-                }}
+                title={<>{confirmTitle}</>}
+                content={<>{confirmContent}</>}
                 onConfirm={handleUpdate}
                 onClose={handleDialogClose}
             />
@@ -188,7 +212,7 @@ const sanitizeRestProps = ({
 
 export interface UpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError extends Error = Error,
 > extends ButtonProps {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
@@ -200,6 +224,8 @@ export interface UpdateWithConfirmButtonProps<
         MutationOptionsError,
         UpdateParams<RecordType>
     > & { meta?: any };
+    titleTranslateOptions?: object;
+    contentTranslateOptions?: object;
 }
 
 const PREFIX = 'RaUpdateWithConfirmButton';
@@ -219,6 +245,7 @@ const StyledButton = styled(Button, {
 }));
 
 const defaultIcon = <ActionUpdate />;
+const emptyObject = {};
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {

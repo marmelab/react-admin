@@ -14,6 +14,7 @@ import {
     ExternalChanges,
     ExternalChangesWithParse,
     Parse,
+    Themed,
 } from './DateInput.stories';
 
 describe('<DateInput />', () => {
@@ -28,7 +29,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date string as value', async () => {
-        let onSubmit = jest.fn();
+        const onSubmit = jest.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -54,7 +55,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date time string as value', async () => {
-        let onSubmit = jest.fn();
+        const onSubmit = jest.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -80,7 +81,7 @@ describe('<DateInput />', () => {
     });
 
     it('should accept a date object as value', async () => {
-        let onSubmit = jest.fn();
+        const onSubmit = jest.fn();
         render(
             <Basic
                 simpleFormProps={{
@@ -114,7 +115,7 @@ describe('<DateInput />', () => {
             '2021-09-11T20:46:20.000Z',
             '2021-09-11 20:46:20.000Z',
         ])('should accept a value with timezone %s', async publishedAt => {
-            let onSubmit = jest.fn();
+            const onSubmit = jest.fn();
             render(
                 <Basic
                     simpleFormProps={{
@@ -318,5 +319,10 @@ describe('<DateInput />', () => {
             fireEvent.blur(input);
             await screen.findByText('Required');
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        await screen.findByTestId('themed');
     });
 });

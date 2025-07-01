@@ -5,7 +5,7 @@ title: "The StackedFilters Component"
 
 # `<StackedFilters>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component provides an alternative filter UI for `<List>` pages. It introduces the concept of operators to allow richer filtering.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component provides an alternative filter UI for `<List>` pages. It introduces the concept of operators to allow richer filtering.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/stackedfilters-overview.mp4" type="video/mp4"/>
@@ -20,22 +20,22 @@ Use a `<StackedFilters>` component in the [`<List actions>`](./List.md#actions) 
 // in src/posts/PostList.tsx
 import {
     BooleanField,
-    Datagrid,
+    DataTable,
     List,
-    NumberField,
     ReferenceArrayField,
-    TextField,
 } from 'react-admin';
 import { PostListToolbar } from './PostListToolbar';
 
 const PostList = () => (
     <List actions={<PostListToolbar />}>
-        <Datagrid>
-            <TextField source="title" />
-            <NumberField source="views" />
-            <ReferenceArrayField tags="tags" source="tag_ids" />
-            <BooleanField source="published" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.NumberCol source="views" />
+            <DataTable.Col source="tag_ids">
+                <ReferenceArrayField tags="tags" source="tag_ids" />
+            </DataTable.Col>
+            <DataTable.Col source="published" field={BooleanField} />
+        </DataTable>
     </List>
 );
 
@@ -401,7 +401,6 @@ Just like `<StackedFilters>`, `<StackedFiltersForm>` requires a [filtering confi
 {% raw %}
 ```tsx
 import {
-    Datagrid,
     List,
     TextField,
     NumberField,

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { InfiniteListBase, InfiniteListBaseProps, RaRecord } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
 
 import { InfinitePagination } from './pagination';
 import { ListView, ListViewProps } from './ListView';
@@ -59,39 +60,48 @@ import { Loading } from '../layout';
  *     </List>
  * );
  */
-export const InfiniteList = <RecordType extends RaRecord = any>({
-    debounce,
-    disableAuthentication,
-    disableSyncWithLocation,
-    exporter,
-    filter = defaultFilter,
-    filterDefaultValues,
-    loading = defaultLoading,
-    pagination = defaultPagination,
-    perPage = 10,
-    queryOptions,
-    resource,
-    sort,
-    storeKey,
-    ...rest
-}: InfiniteListProps<RecordType>): ReactElement => (
-    <InfiniteListBase<RecordType>
-        debounce={debounce}
-        disableAuthentication={disableAuthentication}
-        disableSyncWithLocation={disableSyncWithLocation}
-        exporter={exporter}
-        filter={filter}
-        filterDefaultValues={filterDefaultValues}
-        loading={loading}
-        perPage={perPage}
-        queryOptions={queryOptions}
-        resource={resource}
-        sort={sort}
-        storeKey={storeKey}
-    >
-        <ListView<RecordType> {...rest} pagination={pagination} />
-    </InfiniteListBase>
-);
+export const InfiniteList = <RecordType extends RaRecord = any>(
+    props: InfiniteListProps<RecordType>
+): ReactElement => {
+    const {
+        debounce,
+        disableAuthentication,
+        disableSyncWithLocation,
+        exporter,
+        filter = defaultFilter,
+        filterDefaultValues,
+        loading = defaultLoading,
+        pagination = defaultPagination,
+        perPage = 10,
+        queryOptions,
+        resource,
+        sort,
+        storeKey,
+        ...rest
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
+
+    return (
+        <InfiniteListBase<RecordType>
+            debounce={debounce}
+            disableAuthentication={disableAuthentication}
+            disableSyncWithLocation={disableSyncWithLocation}
+            exporter={exporter}
+            filter={filter}
+            filterDefaultValues={filterDefaultValues}
+            loading={loading}
+            perPage={perPage}
+            queryOptions={queryOptions}
+            resource={resource}
+            sort={sort}
+            storeKey={storeKey}
+        >
+            <ListView<RecordType> {...rest} pagination={pagination} />
+        </InfiniteListBase>
+    );
+};
 
 const defaultPagination = <InfinitePagination />;
 const defaultFilter = {};
@@ -100,3 +110,17 @@ const defaultLoading = <Loading />;
 export interface InfiniteListProps<RecordType extends RaRecord = any>
     extends InfiniteListBaseProps<RecordType>,
         ListViewProps {}
+
+const PREFIX = 'RaInfiniteList';
+
+declare module '@mui/material/styles' {
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<InfiniteListProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+        };
+    }
+}

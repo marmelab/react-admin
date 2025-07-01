@@ -5,7 +5,7 @@ title: "useDefineAppLocation"
 
 # `useDefineAppLocation`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> hook lets you define the app location for a page, used by components like [`<Breadcrumb>`](./Breadcrumb.md) and [`<IconMenu>`](./IconMenu.md) to render the current location.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> hook lets you define the app location for a page, used by components like [`<Breadcrumb>`](./Breadcrumb.md) and [`<IconMenu>`](./IconMenu.md) to render the current location.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="https://react-admin-ee.marmelab.com/assets/ra-navigation/latest/breadcumb-nested-resource.mp4" type="video/mp4" />
@@ -163,17 +163,17 @@ However, you can customize these default app locations in your CRUD pages. For i
 
 {% raw %}
 ```jsx
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, DataTable } from 'react-admin';
 import { useDefineAppLocation } from '@react-admin/ra-navigation';
 
 export const PublishedPostsList = () => {
     useDefineAppLocation('posts.published');
     return (
         <List filter={{ isPublished: true }}>
-            <Datagrid>
-                <TextField source="title" />
+            <DataTable>
+                <DataTable.Col source="title" />
                 ...
-            </Datagrid>
+            </DataTable>
         </List>
     );
 }

@@ -3,7 +3,8 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { useRecordContext } from 'ra-core';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, createTheme, Typography } from '@mui/material';
+import { ThemeOptions } from '@mui/material/styles';
 import get from 'lodash/get';
 
 import { AdminContext } from '../AdminContext';
@@ -45,6 +46,12 @@ export const ReadOnly = () => (
             readOnly
             defaultValue="01/01/2000-12:12"
         />
+    </Wrapper>
+);
+
+export const OutlinedNoLabel = () => (
+    <Wrapper>
+        <DateTimeInput source="published" label={false} variant="outlined" />
     </Wrapper>
 );
 
@@ -90,16 +97,45 @@ export const AsDateObject = () => (
     </Wrapper>
 );
 
+export const Themed = () => (
+    <Wrapper
+        theme={createTheme({
+            components: {
+                RaDateTimeInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    } as any,
+                    styleOverrides: {
+                        root: {
+                            ['& input']: {
+                                color: 'red',
+                            },
+                        },
+                    },
+                },
+            },
+        })}
+    >
+        <DateTimeInput source="published" />
+    </Wrapper>
+);
+
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 const Wrapper = ({
     children,
     simpleFormProps,
+    theme,
 }: {
     children: React.ReactNode;
     simpleFormProps?: Omit<SimpleFormProps, 'children'>;
+    theme: ThemeOptions;
 }) => (
-    <AdminContext i18nProvider={i18nProvider} defaultTheme="light">
+    <AdminContext
+        i18nProvider={i18nProvider}
+        defaultTheme="light"
+        theme={theme}
+    >
         <Create resource="posts">
             <SimpleForm {...simpleFormProps}>
                 {children}

@@ -65,20 +65,22 @@ The `<Resource>` component defines CRUD pages (`list`, `edit`, and `create`) for
 ```jsx
 // in posts.js
 import * as React from "react";
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput, useRecordContext } from 'react-admin';
+import { List, DataTable, Edit, Create, SimpleForm, DateField, EditButton, TextInput, DateInput, useRecordContext } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 export const PostIcon = BookIcon;
 
 export const PostList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <TextField source="average_note" />
-            <TextField source="views" />
-            <EditButton />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="published_at" field={DateField} />
+            <DataTable.Col source="average_note" />
+            <DataTable.Col source="views" />
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 

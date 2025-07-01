@@ -5,7 +5,7 @@ import { RecordContextProvider, I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { RichTextField, removeTags } from './RichTextField';
-import { Secure } from './RichTextField.stories';
+import { Secure, Themed } from './RichTextField.stories';
 
 describe('stripTags', () => {
     it('should strip HTML tags from input', () => {
@@ -110,7 +110,7 @@ describe('<RichTextField />', () => {
         expect(container.children[0].classList.contains('foo')).toBe(true);
     });
 
-    it.each([null, undefined])(
+    it.each([null, undefined, ''])(
         'should render the emptyText when value is %s and stripTags is set to false',
         body => {
             const { queryByText } = render(
@@ -124,7 +124,7 @@ describe('<RichTextField />', () => {
         }
     );
 
-    it.each([null, undefined])(
+    it.each([null, undefined, ''])(
         'should render the emptyText when value is %s and stripTags is set to true',
         body => {
             const { queryByText } = render(
@@ -182,5 +182,10 @@ describe('<RichTextField />', () => {
         );
 
         expect(screen.getByText('Not found')).not.toBeNull();
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.getByTestId('themed')).toBeDefined();
     });
 });

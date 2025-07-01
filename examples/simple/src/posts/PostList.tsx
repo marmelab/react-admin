@@ -29,7 +29,7 @@ import {
     TopToolbar,
     useRecordContext,
     useTranslate,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from 'react-admin';
 
 import ResetViewsButton from './ResetViewsButton';
 

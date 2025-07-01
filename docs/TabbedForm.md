@@ -25,7 +25,7 @@ import * as React from "react";
 import {
     TabbedForm,
     Edit,
-    Datagrid,
+    DataTable,
     TextField,
     DateField,
     TextInput,
@@ -56,11 +56,13 @@ export const PostEdit = () => (
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="body" />
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </ReferenceManyField>
             </TabbedForm.Tab>
         </TabbedForm>
@@ -150,7 +152,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./forms.md#default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
 
 ## `id`
 
@@ -292,11 +294,13 @@ export const PostEdit = () => (
             </TabbedForm.Tab>
             <TabbedForm.Tab label="comments">
                 <ReferenceManyField reference="comments" target="post_id" label={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
+                    <DataTable>
+                        <DataTable.Col source="body" />
+                        <DataTable.Col source="created_at" field={DateField} />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </ReferenceManyField>
             </TabbedForm.Tab>
         </TabbedForm>
@@ -728,7 +732,7 @@ const ProductEdit = () => (
                     target="product_id"
                     pagination={<Pagination />}
                 >
-                    <Datagrid
+                    <DataTable
                         sx={{
                             width: '100%',
                             '& .column-comment': {
@@ -739,13 +743,15 @@ const ProductEdit = () => (
                             },
                         }}
                     >
-                        <DateField source="date" />
-                        <CustomerReferenceField />
-                        <StarRatingField />
-                        <TextField source="comment" />
-                        <TextField source="status" />
-                        <EditButton />
-                    </Datagrid>
+                        <DataTable.Col source="date" field={DateField} />
+                        <DataTable.Col field={CustomerReferenceField} />
+                        <DataTable.Col field={StarRatingField} />
+                        <DataTable.Col source="comment" />
+                        <DataTable.Col source="status" />
+                        <DataTable.Col>
+                            <EditButton />
+                        </DataTable.Col>
+                    </DataTable>
                 </ReferenceManyField>
             </ReviewsFormTab>
         </TabbedForm>
@@ -788,12 +794,44 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-Note that you **must** set the `<TabbedForm resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
-
-If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
-
 Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
 
+An alternative to the `<AutoSave>` component is to use [the `<AutoPersistInStore>` component](./AutoPersistInStore.md). This component saves the form values in the local storage of the browser. This way, if the user navigates away without saving, the form values are reapplied when the user comes back to the page. This is useful for long forms where users may spend a lot of time.
+
+<video controls autoplay playsinline muted loop>
+  <source src="./img/AutoPersistInStore.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+To enable this behavior, add the `<AutoPersistInStore>` component inside the form component:
+
+```tsx
+import { AutoPersistInStore } from '@react-admin/ra-form-layout';
+import { Create, TabbedForm, TextInput, DateInput, SelectInput } from 'react-admin';
+
+const CustomerCreate = () => (
+    <Create>
+        <TabbedForm>
+            <TabbedForm.Tab label="Identity">
+                <TextInput source="first_name" />
+                <TextInput source="last_name" />
+                <DateInput source="born" />
+                <SelectInput source="sex" choices={[
+                    { id: 'male', name: 'Male' },
+                    { id: 'female', name: 'Female' },
+                    { id: 'other', name: 'Other' },
+                ]} />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Work">
+                {/* ... */}
+            </TabbedForm.Tab>
+            <AutoPersistInStore />
+        </TabbedForm>
+    </Create>
+);
+```
+
+Check [the `<AutoPersistInStore>` component](./AutoPersistInStore.md) documentation for more details.
 
 ## Versioning
 

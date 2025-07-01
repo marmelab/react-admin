@@ -166,43 +166,6 @@ jobs:
       - name: Build crm
         run: make build-crm
 
-  greenframe:
-    runs-on: ubuntu-latest
-    name: GreenFrame
-    needs: [e-commerce]
-    if: github.event_name == 'push' && github.ref_type == 'tag' && contains(github.ref, 'refs/tags/v') && !contains('beta', github.ref) && !contains('alpha', github.ref)
-    steps:
-      # To use this repository's private action,
-      # you must check out the repository
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2 # Fetch HEAD^ to enable git comparison
-      - name: Use Node.js LTS
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-          cache: 'yarn'
-      - name: Install dependencies
-        run: yarn
-      - name: Download demo build
-        uses: actions/download-artifact@v4
-        with:
-          name: demo-build
-      - name: Unzip demo build
-        run: unzip -o -u demo-build.zip
-      - name: Run e-commerce
-        # Run the demo in production mode
-        run: cd ./examples/demo/dist && python3 -m http.server 4173 &
-      - name: Install GreenFrame CLI
-        run: curl https://assets.greenframe.io/install.sh | bash
-        shell: bash
-      - name: Run GreenFrame Analysis
-        env:
-          GREENFRAME_SECRET_TOKEN: ${{secrets.GREENFRAME_SECRET_TOKEN}}
-        run: greenframe analyze -C .greenframe.yml --branchName master
-        shell: bash
-
   create-react-admin:
     runs-on: ubuntu-latest
     name: create-react-admin

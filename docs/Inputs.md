@@ -61,28 +61,28 @@ Additional props are passed down to the underlying component (usually a Material
 
 React-admin provides a set of Input components, each one designed for a specific data type. Here is a list of the most common ones:
 
-| Data Type             | Example value                                                | Input Components                                                                                                                                                                                     |
-|-----------------------|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| String                | `'Lorem Ipsum'`                                              | [`<TextInput>`](./TextInput.md), [`<PredictiveTextInput>`](./PredictiveTextInput.md)                                                                                                                 |
-| Rich text             | `<p>Lorem Ipsum</p>`                                         | [`<RichTextInput>`](./RichTextInput.md), [`<SmartRichTextInput>`](./SmartRichTextInput.md)                                                                                                                                                              |
-| Markdown              | `# Lorem Ipsum`                                              | [`<MarkdownInput>`](./MarkdownInput.md)                                                                                                                                                              |
-| Password              | `'********'`                                                 | [`<PasswordInput>`](./PasswordInput.md)                                                                                                                                                              |
-| Image URL             | `'https://example.com/image.png'`                            | [`<ImageInput>`](./ImageInput.md)                                                                                                                                                                    |
-| File URL              | `'https://example.com/file.pdf'`                             | [`<FileInput>`](./FileInput.md)                                                                                                                                                                      |
-| Number                | `42`, `1.345`                                                | [`<NumberInput>`](./NumberInput.md)                                                                                                                                                                  |
-| Boolean               | `true`                                                       | [`<BooleanInput>`](./BooleanInput.md), [`<NullableBooleanInput>`](./NullableBooleanInput.md)                                                                                                         |
-| Date                  | `'2022-10-23'`                                               | [`<DateInput>`](./DateInput.md)                                                                                                                                                                      |
-| Time                  | `'14:30:00'`                                                 | [`<TimeInput>`](./TimeInput.md)                                                                                                                                                                      |
-| Date & time           | `'2022-10-24T19:40:28.003Z'`                                 | [`<DateTimeInput>`](./DateTimeInput.md)                                                                                                                                                              |
-| Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](#source))                                                                                                                                                                |
-| Enum                  | `'foo'`                                                      | [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)                                                        |
-| Tree node             | `42`                                                         | [`<TreeInput>`](./TreeInput.md)                                                                                                                                                                      |
-| Foreign key           | `42`                                                         | [`<ReferenceInput>`](./ReferenceInput.md)                                                                                                                                                            |
-| Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                    |
-| Array of Enums        | `['foo', 'bar']`                                             | [`<TextArrayInput>`](./TextArrayinput.md), [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), [`<DualListInput>`](./DualListInput.md) |
-| Array of foreign keys | `[42, 43]`                                                   | [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)                                                                                                                                                  |
-| Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                    |
-| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceNodeInput>`](./ReferenceNodeInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md) |
+| Data Type             | Example value                                                | Input Components                                                                                                                                                                                                                                |
+|-----------------------|--------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| String                | `'Lorem Ipsum'`                                              | [`<TextInput>`](./TextInput.md), [`<PredictiveTextInput>`](./PredictiveTextInput.md)                                                                                                                                                            |
+| Rich text             | `<p>Lorem Ipsum</p>`                                         | [`<RichTextInput>`](./RichTextInput.md), [`<SmartRichTextInput>`](./SmartRichTextInput.md)                                                                                                                                                      |
+| Markdown              | `# Lorem Ipsum`                                              | [`<MarkdownInput>`](./MarkdownInput.md)                                                                                                                                                                                                         |
+| Password              | `'********'`                                                 | [`<PasswordInput>`](./PasswordInput.md)                                                                                                                                                                                                         |
+| Image URL             | `'https://example.com/image.png'`                            | [`<ImageInput>`](./ImageInput.md)                                                                                                                                                                                                               |
+| File URL              | `'https://example.com/file.pdf'`                             | [`<FileInput>`](./FileInput.md)                                                                                                                                                                                                                 |
+| Number                | `42`, `1.345`                                                | [`<NumberInput>`](./NumberInput.md)                                                                                                                                                                                                             |
+| Boolean               | `true`                                                       | [`<BooleanInput>`](./BooleanInput.md), [`<NullableBooleanInput>`](./NullableBooleanInput.md)                                                                                                                                                    |
+| Date                  | `'2022-10-23'`                                               | [`<DateInput>`](./DateInput.md)                                                                                                                                                                                                                 |
+| Time                  | `'14:30:00'`                                                 | [`<TimeInput>`](./TimeInput.md)                                                                                                                                                                                                                 |
+| Date & time           | `'2022-10-24T19:40:28.003Z'`                                 | [`<DateTimeInput>`](./DateTimeInput.md)                                                                                                                                                                                                         |
+| Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](#source))                                                                                                                                                                                                           |
+| Enum                  | `'foo'`                                                      | [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)                                                                                                   |
+| Tree node             | `42`                                                         | [`<TreeInput>`](./TreeInput.md)                                                                                                                                                                                                                 |
+| Foreign key           | `42`                                                         | [`<ReferenceInput>`](./ReferenceInput.md)                                                                                                                                                                                                       |
+| Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                                                               |
+| Array of Enums        | `['foo', 'bar']`                                             | [`<TextArrayInput>`](./TextArrayInput.md), [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), [`<DualListInput>`](./DualListInput.md) |
+| Array of foreign keys | `[42, 43]`                                                   | [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)                                                                                                                                                                                             |
+| Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                                                               |
+| Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceNodeInput>`](./ReferenceNodeInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md)                            |
 
 ## `className`
 
@@ -330,6 +330,8 @@ Most inputs accept a `helperText` prop to display a text below the input.
 
 Set `helperText` to `false` to remove the empty line below the input. Beware that the form may "jump" visually when the input contains an error, as the error message will appear below the input.
 
+**Tip:** `helperText` also supports [translation keys](./Translation.md#translation-keys).
+
 **Tip:** It is not possible to set a `helperText` for inputs used inside a [filter](./List.md#filters-filter-inputs).
 
 ## `label`
@@ -556,6 +558,18 @@ const dateParser = value => {
 **Tip:** A common usage for this feature is to deal with empty values. Indeed, HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`. 
 
 **Tip**: If you need to do this globally, including for custom input components that do not use [the `useInput` hook](#the-useinput-hook), have a look at [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues).
+
+## Empty Values
+
+React-admin Form components initialize the input based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty or the matching property for this input is empty, the input will be empty.
+If a record property is not `undefined`, it is not considered empty:
+
+- An empty string is a valid value
+- `0` is a valid value
+- `null` is a valid value
+- An empty array is a valid value
+
+In all those cases, the value will not be considered empty and the [default value](#defaultvalue) won't be applied.
 
 ## Marking An Input as Required
 

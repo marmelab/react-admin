@@ -2,6 +2,11 @@ import * as React from 'react';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
@@ -18,29 +23,34 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * <NumberInput source="nb_views" step={1} />
  *
  */
-export const NumberInput = ({
-    className,
-    defaultValue = null,
-    format = convertNumberToString,
-    helperText,
-    label,
-    margin,
-    onChange,
-    onBlur,
-    onFocus,
-    parse,
-    resource,
-    source,
-    step = 'any',
-    min,
-    max,
-    validate,
-    variant,
-    inputProps: overrideInputProps,
-    disabled,
-    readOnly,
-    ...rest
-}: NumberInputProps) => {
+export const NumberInput = (props: NumberInputProps) => {
+    const {
+        className,
+        defaultValue = null,
+        format = convertNumberToString,
+        helperText,
+        label,
+        margin,
+        onChange,
+        onBlur,
+        onFocus,
+        parse,
+        resource,
+        source,
+        step = 'any',
+        min,
+        max,
+        validate,
+        variant,
+        inputProps: overrideInputProps,
+        disabled,
+        readOnly,
+        ...rest
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
+
     const {
         field,
         fieldState: { error, invalid },
@@ -76,7 +86,7 @@ export const NumberInput = ({
             const stringValue = format(field.value);
             setValue(value => (value !== stringValue ? stringValue : value));
         }
-    }, [field.value, format]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [field.value, format]);
 
     // update the input text when the user types in the input
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +134,7 @@ export const NumberInput = ({
 
     const { ref, ...fieldWithoutRef } = field;
     return (
-        <TextField
+        <StyledTextField
             id={id}
             {...fieldWithoutRef}
             inputRef={ref}
@@ -149,12 +159,14 @@ export const NumberInput = ({
                 ) : null
             }
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' && label !== false ? (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                ) : null
             }
             margin={margin}
             inputProps={{ ...inputProps, readOnly }}
@@ -190,3 +202,29 @@ const convertStringToNumber = value => {
 
 const convertNumberToString = value =>
     value == null || isNaN(value) ? '' : value.toString();
+
+const PREFIX = 'RaNumberInput';
+
+const StyledTextField = styled(TextField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<NumberInputProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

@@ -5,7 +5,7 @@ title: "EditDialog"
 
 # `<EditDialog>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" /> component offers a replacement to [the `<Edit>` component](./Edit.md) allowing users to update records without leaving the context of the list page.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component offers a replacement to [the `<Edit>` component](./Edit.md) allowing users to update records without leaving the context of the list page.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/edit-dialog.mp4" type="video/mp4" />
@@ -29,7 +29,7 @@ Then, add the `<EditDialog>` component as a sibling to a `<List>` component.
 ```jsx
 import {
     List,
-    Datagrid,
+    DataTable,
     SimpleForm,
     TextField,
     TextInput,
@@ -42,9 +42,9 @@ import { EditDialog } from '@react-admin/ra-form-layout';
 const CustomerList = () => (
     <>
         <List>
-            <Datagrid rowClick="edit">
+            <DataTable rowClick="edit">
                 ...
-            </Datagrid>
+            </DataTable>
         </List>
         <EditDialog>
             <SimpleForm>
@@ -245,7 +245,8 @@ Here is an example:
 import React from 'react';
 import {
     List,
-    Datagrid,
+    ListActions,
+    DataTable,
     SimpleForm,
     TextInput,
     DateInput,
@@ -265,10 +266,10 @@ const CustomerEditTitle = () => {
 
 const CustomerList = () => (
     <>
-        <List hasCreate>
-            <Datagrid rowClick="edit">
+        <List actions={<ListActions hasCreate />}>
+            <DataTable rowClick="edit">
                 ...
-            </Datagrid>
+            </DataTable>
         </List>
         <EditDialog title={<CustomerEditTitle />}>
             <SimpleForm>
@@ -336,7 +337,7 @@ export const UserEdit = () => {
 
 ## Usage Without Routing
 
-By default, `<EditDialog>` creates a react-router `<Route>` for the edition path (e.g. `/posts/2`), and renders when users go to that location (either by clicking on a datagrid row, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list. 
+By default, `<EditDialog>` creates a react-router `<Route>` for the edition path (e.g. `/posts/2`), and renders when users go to that location (either by clicking on a `<DataTable>` row, or by typing the URL in the browser). If you embed it in the `list` page as explained above, the dialog will always render on top of the list.
 
 This may not be what you want if you need to display the edit dialog in another page (e.g. to edit a related record).
 
@@ -351,7 +352,7 @@ Put `<EditInDialogButton>` wherever you would put an `<EditButton>`, and use the
 
 ```jsx
 import {
-  Datagrid,
+  DataTable,
   ReferenceManyField,
   Show,
   SimpleForm,
@@ -368,16 +369,18 @@ const CompanyShow = () => (
             <TextField source="address" />
             <TextField source="city" />
             <ReferenceManyField target="company_id" reference="employees">
-                <Datagrid>
-                    <TextField source="first_name" />
-                    <TextField source="last_name" />
-                    <EditInDialogButton>
-                        <SimpleForm>
-                            <TextInput source="first_name" />
-                            <TextInput source="last_name" />
-                        </SimpleForm>
-                    </EditInDialogButton>
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="first_name" />
+                    <DataTable.Col source="last_name" />
+                    <DataTable.Col>
+                        <EditInDialogButton>
+                            <SimpleForm>
+                                <TextInput source="first_name" />
+                                <TextInput source="last_name" />
+                            </SimpleForm>
+                        </EditInDialogButton>
+                    </DataTable.Col>
+                </DataTable>
             </ReferenceManyField>
         </SimpleShowLayout>
     </Show>
@@ -411,7 +414,7 @@ Below is an example of an `<Edit>` page, including a 'create a new customer' but
 import React, { useCallback, useState } from 'react';
 import {
     Button,
-    Datagrid,
+    DataTable,
     DateField,
     DateInput,
     Edit,
@@ -420,7 +423,6 @@ import {
     SelectField,
     SelectInput,
     SimpleForm,
-    TextField,
     TextInput,
     useRecordContext,
 } from 'react-admin';
@@ -461,20 +463,24 @@ const EmployerSimpleFormWithFullyControlledDialogs = () => {
                 reference="customers"
                 target="employer_id"
             >
-                <Datagrid>
-                    <TextField source="id" />
-                    <TextField source="first_name" />
-                    <TextField source="last_name" />
-                    <DateField source="dob" label="born" />
-                    <SelectField source="sex" choices={sexChoices} />
-                    <Button
-                        label="Edit customer"
-                        onClick={() => openEditDialog()}
-                        size="medium"
-                        variant="contained"
-                        sx={{ mb: 4 }}
-                    />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="id" />
+                    <DataTable.Col source="first_name" />
+                    <DataTable.Col source="last_name" />
+                    <DataTable.Col source="dob" label="born" field={DateField} />
+                    <DataTable.Col source="sex">
+                        <SelectField source="sex" choices={sexChoices} />
+                    </DataTable.Col>
+                    <DataTable.Col>
+                        <Button
+                            label="Edit customer"
+                            onClick={() => openEditDialog()}
+                            size="medium"
+                            variant="contained"
+                            sx={{ mb: 4 }}
+                        />
+                    <DataTable.Col>
+                </DataTable>
             </ReferenceManyField>
             <EditDialog
                 fullWidth
@@ -510,17 +516,18 @@ Add the `warnWhenUnsavedChanges` prop to your Form like so:
 import React from 'react';
 import {
     List,
-    Datagrid,
+    ListActions,
+    DataTable,
     SimpleForm,
 } from 'react-admin';
 import { EditDialog } from '@react-admin/ra-form-layout';
 
 const CustomerList = () => (
     <>
-        <List hasCreate>
-            <Datagrid rowClick="edit">
+        <List actions={<ListActions hasCreate />}>
+            <DataTable rowClick="edit">
                 ...
-            </Datagrid>
+            </DataTable>
         </List>
         <EditDialog>
             <SimpleForm warnWhenUnsavedChanges>

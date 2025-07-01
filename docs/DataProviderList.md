@@ -10,7 +10,7 @@ Thanks to the Data Provider architecture, react-admin supports a lot of API back
 If you can't find a Data Provider for your backend below, no worries! [Writing a Data Provider](./DataProviderWriting.md) takes a couple of hours, and won't prevent you from using react-admin.
 
 <div class="providers-list" markdown="1">
-* ![AppWrite Logo](./img/backend-logos/appwrite.svg "AppWrite Logo")**[AppWrite](https://appwrite.io/)**: [marmelab/ra-appwrite](https://github.com/marmelab/ra-appwrite)
+* ![Appwrite Logo](./img/backend-logos/appwrite.svg "Appwrite Logo")**[Appwrite](https://appwrite.io/)**: [marmelab/ra-appwrite](https://github.com/marmelab/ra-appwrite)
 * ![AWS Amplify Logo](./img/backend-logos/amplify.svg "AWS Amplify Logo")**[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 * ![blitz Logo](./img/backend-logos/blitz.svg "blitz Logo")**[Blitz-js](https://blitzjs.com/docs)**: [theapexlab/ra-data-blitz](https://github.com/theapexlab/ra-data-blitz)
 * <div class="flex">
@@ -28,14 +28,14 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![feathersjs Logo](./img/backend-logos/feathersjs.svg "feathersjs Logo")**[Feathersjs](https://www.feathersjs.com/)**: [josx/ra-data-feathers](https://github.com/josx/ra-data-feathers)
 * ![Firebase Firestore Logo](./img/backend-logos/firebase.png "Firebase Firestore Logo")**[Firebase Firestore](https://firebase.google.com/docs/firestore)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase).
 * ![Firebase Realtime Logo](./img/backend-logos/firebase.png "Firebase Realtime Logo")**[Firebase Realtime Database](https://firebase.google.com/docs/database)**: [aymendhaya/ra-data-firebase-client](https://github.com/aymendhaya/ra-data-firebase-client).
-* ![geoserver Logo](./img/backend-logos/geoserver.png "geoserver Logo")**[GeoServer](http://geoserver.org/)**: [sergioedo/ra-data-geoserver](https://github.com/sergioedo/ra-data-geoserver)
+* ![geoserver Logo](./img/backend-logos/geoserver.png "geoserver Logo")**[GeoServer](https://geoserver.org/)**: [sergioedo/ra-data-geoserver](https://github.com/sergioedo/ra-data-geoserver)
 * ![Genezio Logo](./img/backend-logos/genezio.png "Genezio Logo")**[Genezio](https://genezio.com/)**: [bogdanripa/react-admin-genezio](https://github.com/bogdanripa/react-admin-genezio)
 * ![sheets Logo](./img/backend-logos/sheets.svg "sheets Logo")**[Google Sheets](https://www.google.com/sheets/about/)**: [marmelab/ra-data-google-sheets](https://github.com/marmelab/ra-data-google-sheets)
 * ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[GraphQL (generic)](https://graphql.org/)**: [marmelab/ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) (uses [Apollo](https://www.apollodata.com/))
 * ![graphql Logo](./img/backend-logos/graphql.svg "graphql Logo")**[GraphQL (simple)](https://graphql.org/)**: [marmelab/ra-data-graphql-simple](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql-simple).
 * <div class="flex">
     <span class="avatar">H</span>
-    <b><a href="http://stateless.co/hal_specification.html">HAL</a></b>: <a href="https://github.com/b-social/ra-data-hal">b-social/ra-data-hal</a>
+    <b><a href="https://stateless.co/hal_specification.html">HAL</a></b>: <a href="https://github.com/b-social/ra-data-hal">b-social/ra-data-hal</a>
   </div>
 * ![hasura Logo](./img/backend-logos/github.svg "hasura Logo")**[Hasura](https://github.com/hasura/graphql-engine)**: [hasura/ra-data-hasura](https://github.com/hasura/ra-data-hasura)
 * ![hydra Logo](./img/backend-logos/hydra.png "hydra Logo")**[Hydra](https://www.hydra-cg.com/) / [JSON-LD](https://json-ld.org/)**: [api-platform/admin/hydra](https://github.com/api-platform/admin/blob/master/src/hydra/dataProvider.ts)

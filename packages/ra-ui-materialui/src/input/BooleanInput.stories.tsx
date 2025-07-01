@@ -3,6 +3,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { useFormContext } from 'react-hook-form';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { createTheme } from '@mui/material/styles';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
@@ -18,11 +19,34 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const Disabled = () => (
+export const Disabled = ({
+    defaultValue,
+    disabled,
+}: {
+    defaultValue: boolean;
+    disabled: boolean;
+}) => (
     <Wrapper>
-        <BooleanInput source="published" disabled />
+        <BooleanInput
+            source="published"
+            defaultValue={defaultValue}
+            disabled={disabled}
+        />
     </Wrapper>
 );
+
+Disabled.argTypes = {
+    defaultValue: {
+        control: 'boolean',
+    },
+    disabled: {
+        control: 'boolean',
+    },
+};
+Disabled.args = {
+    defaultValue: true,
+    disabled: true,
+};
 
 export const ReadOnly = () => (
     <Wrapper>
@@ -44,10 +68,11 @@ export const Dark = () => (
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
-const Wrapper = ({ children, defaultTheme = 'light' }) => (
+const Wrapper = ({ children, defaultTheme = 'light', theme = undefined }) => (
     <AdminContext
         i18nProvider={i18nProvider}
         defaultTheme={defaultTheme as any}
+        theme={theme}
     >
         <Create resource="posts">
             <SimpleForm>{children}</SimpleForm>
@@ -72,4 +97,25 @@ export const SetFocus = () => (
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={createTheme({
+            components: {
+                RaBooleanInput: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    } as any,
+                    styleOverrides: {
+                        root: {
+                            color: 'red',
+                        },
+                    },
+                },
+            },
+        })}
+    >
+        <BooleanInput source="published" />
+    </Wrapper>
 );

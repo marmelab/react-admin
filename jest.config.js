@@ -25,7 +25,7 @@ module.exports = {
         '/packages/create-react-admin/templates',
     ],
     transformIgnorePatterns: [
-        '[/\\\\]node_modules[/\\\\](?!(@hookform)/).+\\.(js|jsx|mjs|ts|tsx)$',
+        '[/\\\\]node_modules[/\\\\](?!(@hookform|react-hotkeys-hook)/).+\\.(js|jsx|mjs|ts|tsx)$',
     ],
     transform: {
         // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`

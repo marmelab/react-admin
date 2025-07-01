@@ -28,6 +28,7 @@ import {
     NotificationDefault,
     NotificationTranslated,
     EmptyWhileLoading,
+    Themed,
 } from './Edit.stories';
 
 describe('<Edit />', () => {
@@ -138,6 +139,13 @@ describe('<Edit />', () => {
 
         await screen.findByText('War and Peace, by Leo Tolstoy (1869)');
         expect(screen.queryByText('Something went wrong')).toBeNull();
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(screen.queryByTestId('themed-view').classList).toContain(
+            'custom-class'
+        );
     });
 
     describe('mutationMode prop', () => {

@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { MutationMode, useCanAccess, useResourceContext } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
+
 import {
     BulkDeleteWithConfirmButton,
     BulkDeleteWithConfirmButtonProps,
@@ -7,7 +10,6 @@ import {
     BulkDeleteWithUndoButton,
     BulkDeleteWithUndoButtonProps,
 } from './BulkDeleteWithUndoButton';
-import { MutationMode, useCanAccess, useResourceContext } from 'ra-core';
 
 /**
  * Deletes the selected rows.
@@ -32,10 +34,12 @@ import { MutationMode, useCanAccess, useResourceContext } from 'ra-core';
  *     </List>
  * );
  */
-export const BulkDeleteButton = ({
-    mutationMode = 'undoable',
-    ...props
-}: BulkDeleteButtonProps) => {
+export const BulkDeleteButton = (inProps: BulkDeleteButtonProps) => {
+    const { mutationMode = 'undoable', ...props } = useThemeProps({
+        name: PREFIX,
+        props: inProps,
+    });
+
     const resource = useResourceContext(props);
     if (!resource) {
         throw new Error(
@@ -62,3 +66,17 @@ interface Props {
 
 export type BulkDeleteButtonProps = Props &
     (BulkDeleteWithUndoButtonProps | BulkDeleteWithConfirmButtonProps);
+
+const PREFIX = 'RaBulkDeleteButton';
+
+declare module '@mui/material/styles' {
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<BulkDeleteButtonProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+        };
+    }
+}

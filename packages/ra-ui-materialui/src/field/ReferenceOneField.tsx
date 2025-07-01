@@ -1,22 +1,18 @@
-import React, { ReactElement, ReactNode, useMemo } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
-    useReferenceOneFieldController,
-    useRecordContext,
-    ResourceContextProvider,
     LinkToType,
-    useGetPathForRecord,
     useTranslate,
     SortPayload,
     RaRecord,
-    RecordContextProvider,
-    ReferenceFieldContextProvider,
-    UseReferenceFieldControllerResult,
+    ReferenceOneFieldBase,
 } from 'ra-core';
 
 import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
+import { useThemeProps } from '@mui/material/styles';
 
 /**
  * Render the related record in a one-to-one relationship
@@ -32,71 +28,58 @@ export const ReferenceOneField = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
 >(
-    props: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
+    inProps: ReferenceOneFieldProps<RecordType, ReferenceRecordType>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     const {
         children,
         reference,
         source = 'id',
         target,
         emptyText,
+        empty,
         sort,
         filter,
         link,
         queryOptions,
+        ...rest
     } = props;
-    const record = useRecordContext<RecordType>(props);
     const translate = useTranslate();
 
-    const controllerProps = useReferenceOneFieldController<ReferenceRecordType>(
-        {
-            record,
-            reference,
-            source,
-            target,
-            sort,
-            filter,
-            queryOptions,
-        }
-    );
-
-    const path = useGetPathForRecord({
-        record: controllerProps.referenceRecord,
-        resource: reference,
-        link,
-    });
-
-    const context = useMemo<UseReferenceFieldControllerResult>(
-        () => ({
-            ...controllerProps,
-            link: path,
-        }),
-        [controllerProps, path]
-    );
-
-    const empty =
-        typeof emptyText === 'string' ? (
-            <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : emptyText ? (
-            emptyText
-        ) : null;
-
-    return !record ||
-        (!controllerProps.isPending &&
-            controllerProps.referenceRecord == null) ? (
-        empty
-    ) : (
-        <ResourceContextProvider value={reference}>
-            <ReferenceFieldContextProvider value={context}>
-                <RecordContextProvider value={context.referenceRecord}>
-                    <ReferenceFieldView reference={reference} source={source}>
-                        {children}
-                    </ReferenceFieldView>
-                </RecordContextProvider>
-            </ReferenceFieldContextProvider>
-        </ResourceContextProvider>
+    return (
+        <ReferenceOneFieldBase
+            {...props}
+            empty={
+                emptyText ? (
+                    typeof emptyText === 'string' ? (
+                        <Typography component="span" variant="body2">
+                            {emptyText &&
+                                translate(emptyText, { _: emptyText })}
+                        </Typography>
+                    ) : (
+                        emptyText
+                    )
+                ) : typeof empty === 'string' ? (
+                    <Typography component="span" variant="body2">
+                        {empty && translate(empty, { _: empty })}
+                    </Typography>
+                ) : (
+                    empty ?? null
+                )
+            }
+        >
+            <ReferenceFieldView
+                reference={reference}
+                source={source}
+                {...sanitizeFieldRestProps(rest)}
+            >
+                {children}
+            </ReferenceFieldView>
+        </ReferenceOneFieldBase>
     );
 };
 
@@ -111,7 +94,11 @@ export interface ReferenceOneFieldProps<
     source?: string;
     filter?: any;
     link?: LinkToType<ReferenceRecordType>;
+    /**
+     * @deprecated Use the empty prop instead
+     */
     emptyText?: string | ReactElement;
+    empty?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];
@@ -125,3 +112,17 @@ export interface ReferenceOneFieldProps<
 // will match the default sort ({ field: 'id', order: 'DESC'})
 // leading to an incorrect sort indicator in a datagrid header
 ReferenceOneField.sortable = false;
+
+const PREFIX = 'RaReferenceOneField';
+
+declare module '@mui/material/styles' {
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<ReferenceOneFieldProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+        };
+    }
+}

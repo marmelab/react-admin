@@ -2,6 +2,11 @@ import * as React from 'react';
 import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -43,24 +48,29 @@ const parseTime = (value: string) => {
  *     </Edit>
  * );
  */
-export const TimeInput = ({
-    className,
-    defaultValue,
-    format = formatTime,
-    label,
-    helperText,
-    margin,
-    onBlur,
-    onChange,
-    source,
-    resource,
-    disabled,
-    readOnly,
-    parse = parseTime,
-    validate,
-    variant,
-    ...rest
-}: TimeInputProps) => {
+export const TimeInput = (props: TimeInputProps) => {
+    const {
+        className,
+        defaultValue,
+        format = formatTime,
+        label,
+        helperText,
+        margin,
+        onBlur,
+        onChange,
+        source,
+        resource,
+        disabled,
+        readOnly,
+        parse = parseTime,
+        validate,
+        variant,
+        ...rest
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
+
     const { field, fieldState, id, isRequired } = useInput({
         defaultValue,
         format,
@@ -80,7 +90,7 @@ export const TimeInput = ({
     const renderHelperText = helperText !== false || invalid;
 
     return (
-        <TextField
+        <StyledTextField
             id={id}
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
@@ -100,12 +110,14 @@ export const TimeInput = ({
                 ) : null
             }
             label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
+                label !== '' && label !== false ? (
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                ) : null
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
@@ -160,3 +172,29 @@ const formatTime = (value: string | Date) => {
 
     return convertDateToString(new Date(value));
 };
+
+const PREFIX = 'RaTimeInput';
+
+const StyledTextField = styled(TextField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface ComponentsPropsList {
+        [PREFIX]: Partial<TimeInputProps>;
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

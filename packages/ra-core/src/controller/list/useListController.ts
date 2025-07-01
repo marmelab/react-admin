@@ -85,8 +85,7 @@ export const useListController = <
     const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
         action: 'list',
         resource,
-        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
-        enabled: !isPendingAuthenticated,
+        enabled: !disableAuthentication && !isPendingAuthenticated,
     });
 
     const translate = useTranslate();
@@ -192,8 +191,10 @@ export const useListController = <
     );
 
     const getResourceLabel = useGetResourceLabel();
-    const defaultTitle = translate('ra.page.list', {
-        name: getResourceLabel(resource, 2),
+    const defaultTitle = translate(`resources.${resource}.page.list`, {
+        _: translate('ra.page.list', {
+            name: getResourceLabel(resource, 2),
+        }),
     });
 
     const onSelectAll = useSelectAll({

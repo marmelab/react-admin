@@ -27,7 +27,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import QrCode from '@mui/icons-material/QrCode';
 import { Route } from 'react-router-dom';
 
-import { Layout, Menu, Title } from '.';
+import { Layout, Menu, MenuItemLinkClasses, Title } from '.';
 
 export default { title: 'ra-ui-materialui/layout/Menu' };
 
@@ -51,6 +51,31 @@ export const Default = () => {
             store={memoryStore()}
             dataProvider={testDataProvider()}
             layout={DefaultLayout}
+        >
+            {resources.map((resource, index) => (
+                <Resource
+                    name={resource}
+                    key={`resource_${index}`}
+                    list={<DemoList name={resource} />}
+                />
+            ))}
+        </Admin>
+    );
+};
+
+export const WithDashboard = () => {
+    const MenuDefault = () => <Menu hasDashboard={true} dense={false} />;
+    const DefaultLayout = ({ children }) => (
+        <Layout menu={MenuDefault}>{children}</Layout>
+    );
+    const Dashboard = () => <Page title="Dashboard" />;
+
+    return (
+        <Admin
+            store={memoryStore()}
+            dataProvider={testDataProvider()}
+            layout={DefaultLayout}
+            dashboard={Dashboard}
         >
             {resources.map((resource, index) => (
                 <Resource
@@ -134,6 +159,182 @@ export const Custom = () => {
         </TestMemoryRouter>
     );
 };
+
+export const WithKeyboardShortcuts = () => {
+    const CustomMenu = () => (
+        <Menu>
+            <Menu.DashboardItem keyboardShortcut="G>D" />
+            <Menu.Item
+                to="/sales"
+                leftIcon={<PieChartOutlined />}
+                primaryText="Sales"
+                keyboardShortcut="G>S"
+            />
+            <Menu.Item
+                to="/customers"
+                leftIcon={<PeopleOutlined />}
+                primaryText="Customers very long"
+                keyboardShortcut="G>C"
+            />
+            <Menu.ResourceItem
+                name="products"
+                leftIcon={<Inventory />}
+                keyboardShortcut="G>P"
+            />
+        </Menu>
+    );
+    const CustomLayout = ({ children }) => (
+        <Layout menu={CustomMenu}>{children}</Layout>
+    );
+
+    const Dashboard = () => <Page title="Dashboard" />;
+    return (
+        <TestMemoryRouter initialEntries={['/']}>
+            <Admin
+                dataProvider={testDataProvider()}
+                layout={CustomLayout}
+                dashboard={Dashboard}
+            >
+                <Resource name="products" list={<Page title="Products" />} />
+                <CustomRoutes>
+                    <Route path="/sales" element={<Page title="Sales" />} />
+                    <Route
+                        path="/customers"
+                        element={<Page title="Customers" />}
+                    />
+                </CustomRoutes>
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+export const WithCustomKeyboardShortcutRepresentation = () => {
+    const CustomMenu = () => (
+        <Menu>
+            <Menu.DashboardItem
+                keyboardShortcut="ctrl+alt+D"
+                keyboardShortcutRepresentation="ctrl+alt+D"
+            />
+            <Menu.Item
+                to="/sales"
+                leftIcon={<PieChartOutlined />}
+                primaryText="Sales"
+                keyboardShortcut="ctrl+alt+S"
+                keyboardShortcutRepresentation="ctrl+alt+S"
+            />
+            <Menu.Item
+                to="/customers"
+                leftIcon={<PeopleOutlined />}
+                primaryText="Customers very long"
+                keyboardShortcut="ctrl+alt+C"
+                keyboardShortcutRepresentation="ctrl+alt+C"
+            />
+            <Menu.ResourceItem
+                name="products"
+                leftIcon={<Inventory />}
+                keyboardShortcut="ctrl+alt+P"
+                keyboardShortcutRepresentation="ctrl+alt+P"
+            />
+        </Menu>
+    );
+    const CustomLayout = ({ children }) => (
+        <Layout menu={CustomMenu}>{children}</Layout>
+    );
+
+    const Dashboard = () => <Page title="Dashboard" />;
+    return (
+        <TestMemoryRouter initialEntries={['/']}>
+            <Admin
+                dataProvider={testDataProvider()}
+                layout={CustomLayout}
+                dashboard={Dashboard}
+            >
+                <Resource name="products" list={<Page title="Products" />} />
+                <CustomRoutes>
+                    <Route path="/sales" element={<Page title="Sales" />} />
+                    <Route
+                        path="/customers"
+                        element={<Page title="Customers" />}
+                    />
+                </CustomRoutes>
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+export const WithCustomKeyboardShortcutRepresentationUsingMenuItemClasses =
+    () => {
+        const CustomMenu = () => (
+            <Menu>
+                <Menu.DashboardItem
+                    keyboardShortcut="ctrl+alt+D"
+                    keyboardShortcutRepresentation={
+                        <div className={MenuItemLinkClasses.shortcut}>
+                            ctrl+alt+D
+                        </div>
+                    }
+                />
+                <Menu.Item
+                    to="/sales"
+                    leftIcon={<PieChartOutlined />}
+                    primaryText="Sales"
+                    keyboardShortcut="ctrl+alt+S"
+                    keyboardShortcutRepresentation={
+                        <div className={MenuItemLinkClasses.shortcut}>
+                            ctrl+alt+S
+                        </div>
+                    }
+                />
+                <Menu.Item
+                    to="/customers"
+                    leftIcon={<PeopleOutlined />}
+                    primaryText="Customers very long"
+                    keyboardShortcut="ctrl+alt+C"
+                    keyboardShortcutRepresentation={
+                        <div className={MenuItemLinkClasses.shortcut}>
+                            ctrl+alt+C
+                        </div>
+                    }
+                />
+                <Menu.ResourceItem
+                    name="products"
+                    leftIcon={<Inventory />}
+                    keyboardShortcut="ctrl+alt+P"
+                    keyboardShortcutRepresentation={
+                        <div className={MenuItemLinkClasses.shortcut}>
+                            ctrl+alt+P
+                        </div>
+                    }
+                />
+            </Menu>
+        );
+        const CustomLayout = ({ children }) => (
+            <Layout menu={CustomMenu}>{children}</Layout>
+        );
+
+        const Dashboard = () => <Page title="Dashboard" />;
+        return (
+            <TestMemoryRouter initialEntries={['/']}>
+                <Admin
+                    dataProvider={testDataProvider()}
+                    layout={CustomLayout}
+                    dashboard={Dashboard}
+                >
+                    <Resource
+                        name="products"
+                        list={<Page title="Products" />}
+                    />
+                    <CustomRoutes>
+                        <Route path="/sales" element={<Page title="Sales" />} />
+                        <Route
+                            path="/customers"
+                            element={<Page title="Customers" />}
+                        />
+                    </CustomRoutes>
+                </Admin>
+            </TestMemoryRouter>
+        );
+    };
 
 const Page = ({ title }) => (
     <>

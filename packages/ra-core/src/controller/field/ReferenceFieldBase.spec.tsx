@@ -8,12 +8,6 @@ import { ReferenceFieldBase } from './ReferenceFieldBase';
 import { Error, Loading, Meta } from './ReferenceFieldBase.stories';
 
 describe('<ReferenceFieldBase />', () => {
-    const defaultProps = {
-        reference: 'posts',
-        resource: 'comments',
-        source: 'post_id',
-    };
-
     beforeAll(() => {
         window.scrollTo = jest.fn();
     });
@@ -52,7 +46,7 @@ describe('<ReferenceFieldBase />', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <ReferenceFieldBase {...defaultProps}>
+                <ReferenceFieldBase reference="posts" source="post_id">
                     <MyComponent />
                 </ReferenceFieldBase>
             </CoreAdminContext>

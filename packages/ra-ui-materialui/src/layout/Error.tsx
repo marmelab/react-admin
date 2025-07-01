@@ -76,7 +76,7 @@ export const Error = (
                         <Accordion className={ErrorClasses.panel}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
-                                className={ErrorClasses.panelSumary}
+                                className={ErrorClasses.panelSummary}
                             >
                                 {translate(error.message, {
                                     _: error.message,
@@ -160,7 +160,7 @@ export const ErrorClasses = {
     title: `${PREFIX}-title`,
     icon: `${PREFIX}-icon`,
     panel: `${PREFIX}-panel`,
-    panelSumary: `${PREFIX}-panelSumary`,
+    panelSummary: `${PREFIX}-panelSummary`,
     panelDetails: `${PREFIX}-panelDetails`,
     toolbar: `${PREFIX}-toolbar`,
     advice: `${PREFIX}-advice`,
@@ -196,7 +196,7 @@ const Root = styled('div', {
         maxWidth: '60em',
     },
 
-    [`& .${ErrorClasses.panelSumary}`]: {
+    [`& .${ErrorClasses.panelSummary}`]: {
         userSelect: 'all',
     },
 

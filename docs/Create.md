@@ -342,9 +342,29 @@ To override the style of all instances of `<Create>` components using the [appli
 
 ## `title`
 
-By default, the title for the `Create` view is "Create [resource_name]".
+By default, the title for the `Create` view is the translation key `ra.page.create` that translates to "Create [resource_name]" as we also pass the translation of the [resource name](./TranslationTranslating.md#translating-resource-and-field-names) in its singular form.
 
-You can customize this title by specifying a custom `title` prop:
+You can customize this title by providing a resource specific translation with the key `resources.RESOURCE.page.create` (e.g. `resources.posts.page.create`):
+
+```js
+// in src/i18n/en.js
+import englishMessages from 'ra-language-english';
+
+export const en = {
+    ...englishMessages,
+    resources: {
+        posts: {
+            name: 'Post |||| Posts',
+            page: {
+                create: 'New post'
+            }
+        },
+    },
+    ...
+};
+```
+
+You can also customize this title by specifying a custom `title` prop:
 
 ```jsx
 export const PostCreate = () => (
@@ -489,7 +509,7 @@ That means that if you want to create a link to a creation form, presetting *som
 
 ```jsx
 import * as React from 'react';
-import { CreateButton, Datagrid, List, useRecordContext } from 'react-admin';
+import { CreateButton, DataTable, List, useRecordContext } from 'react-admin';
 
 const CreateRelatedCommentButton = () => {
     const record = useRecordContext();
@@ -503,10 +523,12 @@ const CreateRelatedCommentButton = () => {
 
 export default PostList = () => (
     <List>
-        <Datagrid>
+        <DataTable>
             ...
-            <CreateRelatedCommentButton />
-        </Datagrid>
+            <DataTable.Col>
+                <CreateRelatedCommentButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 )
 ```
@@ -540,7 +562,7 @@ Should you use the location `state` or the location `search`? The latter modifie
 
 And if you want to prefill the form with constant values, use the `defaultValues` prop on the Form tag.
 
-**Tip**: [The `<Clonebutton>` component](./Buttons.md#clonebutton) redirects to a Creation view prefilled with the same data as the current context. You can use it e.g. in a `<Datagrid>`, or in the `<Edit actions>` toolbar.
+**Tip**: [The `<Clonebutton>` component](./Buttons.md#clonebutton) redirects to a Creation view prefilled with the same data as the current context. You can use it e.g. in a `<DataTable>`, or in the `<Edit actions>` toolbar.
 
 ## Save And Add Another
 

@@ -16,7 +16,6 @@ import {
     type RaRecord,
     ReferenceFieldBase,
     useReferenceFieldContext,
-    useFieldValue,
 } from 'ra-core';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -68,20 +67,26 @@ export const ReferenceField = <
         props: inProps,
         name: PREFIX,
     });
-    const { emptyText } = props;
+    const { emptyText, empty } = props;
     const translate = useTranslate();
-    const id = useFieldValue(props);
-
-    if (id == null) {
-        return emptyText ? (
-            <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : null;
-    }
 
     return (
-        <ReferenceFieldBase<ReferenceRecordType> {...props}>
+        <ReferenceFieldBase<ReferenceRecordType>
+            {...props}
+            empty={
+                emptyText ? (
+                    <Typography component="span" variant="body2">
+                        {emptyText && translate(emptyText, { _: emptyText })}
+                    </Typography>
+                ) : typeof empty === 'string' ? (
+                    <Typography component="span" variant="body2">
+                        {empty && translate(empty, { _: empty })}
+                    </Typography>
+                ) : (
+                    empty ?? null
+                )
+            }
+        >
             <PureReferenceFieldView<RecordType, ReferenceRecordType>
                 {...props}
             />
@@ -94,6 +99,11 @@ export interface ReferenceFieldProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
+    /**
+     * @deprecated Use the empty prop instead
+     */
+    emptyText?: string;
+    empty?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<ReferenceRecordType[], Error>,
         'queryFn' | 'queryKey'
@@ -113,12 +123,15 @@ export const ReferenceFieldView = <
 >(
     props: ReferenceFieldViewProps<RecordType, ReferenceRecordType>
 ) => {
-    const { children, className, emptyText, reference, sx } = props;
+    const { children, className, emptyText, reference, sx, ...rest } =
+        useThemeProps({
+            props: props,
+            name: PREFIX,
+        });
     const { error, link, isLoading, referenceRecord } =
         useReferenceFieldContext();
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
-    const translate = useTranslate();
 
     if (error) {
         return (
@@ -136,15 +149,8 @@ export const ReferenceFieldView = <
     if (isLoading) {
         return <LinearProgress />;
     }
-    if (!referenceRecord) {
-        return emptyText ? (
-            <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : null;
-    }
 
-    let child = children || (
+    const child = children || (
         <Typography component="span" variant="body2">
             {getRecordRepresentation(referenceRecord)}
         </Typography>
@@ -155,6 +161,7 @@ export const ReferenceFieldView = <
             <Root
                 className={clsx(ReferenceFieldClasses.root, className)}
                 sx={sx}
+                {...rest}
             >
                 <Link
                     to={link}
@@ -169,7 +176,11 @@ export const ReferenceFieldView = <
     }
 
     return (
-        <Root className={clsx(ReferenceFieldClasses.root, className)} sx={sx}>
+        <Root
+            className={clsx(ReferenceFieldClasses.root, className)}
+            sx={sx}
+            {...rest}
+        >
             {child}
         </Root>
     );
@@ -198,7 +209,10 @@ export const ReferenceFieldClasses = {
 
 const Root = styled('span', {
     name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
+    overridesResolver: (props, styles) => ({
+        ['&']: styles.root,
+        [`& .${ReferenceFieldClasses.link}`]: styles.link,
+    }),
 })(({ theme }) => ({
     lineHeight: 'initial',
     [`& .${ReferenceFieldClasses.link}`]: {

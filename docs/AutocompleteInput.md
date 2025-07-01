@@ -51,8 +51,6 @@ The form value for the source must be the selected value, e.g.
 
 **Tip**: If you need to let users select more than one item in the list, check out the [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) component.
 
-**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on Material UI `<Autocomplete>` component.
-
 ## Props
 
 | Prop                       | Required | Type                  | Default                                                             | Description                                                                                                                                                                                                         |
@@ -153,65 +151,67 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 
 {% raw %}
 ```jsx
-import { CreateCategory } from './CreateCategory';
+import { 
+    Create, 
+    CreateBase, 
+    SimpleForm, 
+    ReferenceInput, 
+    AutocompleteInput, 
+    TextInput, 
+    useCreateSuggestionContext 
+} from 'react-admin';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+} from '@mui/material';
 
-const PostCreate = () => (
+const BookCreate = () => (
     <Create>
         <SimpleForm>
-            <TextInput source="title" />
-            <ReferenceInput source="category_id" reference="categories">
-                <AutocompleteInput create={<CreateCategory />} />
+            <ReferenceInput reference="authors" source="author">
+                <AutocompleteInput
+                    create={<CreateAuthor />}
+                />
             </ReferenceInput>
         </SimpleForm>
     </Create>
 );
 
-// in ./CreateCategory.js
-import React from 'react';
-import { useCreate, useCreateSuggestionContext } from 'react-admin';
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    TextField,
-} from '@mui/material';
-
-const CreateCategory = () => {
+const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [create] = useCreate();
-    const [value, setValue] = React.useState(filter || '');
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-          'categories',
-          { data: { title: value } },
-          {
-              onSuccess: (data) => {
-                  setValue('');
-                  onCreate(data);
-              },
-          }
-        );
-    };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New category name"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+            <DialogTitle sx={{ m: 0, p: 2 }}>Create Author</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="authors"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm defaultValues={{ name: filter }}>
+                        <TextInput source="name" helperText={false} />
+                        <TextInput source="language" helperText={false} autoFocus />
+                    </SimpleForm>
+                </CreateBase>
+            </DialogContent>
         </Dialog>
     );
 };
@@ -568,6 +568,8 @@ const choices = [
 />
 ```
 
+**Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<AutocompleteInput>` inside a `<ReferenceInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
+
 ## `shouldRenderSuggestions`
 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain acceptable performance. `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly and might be all you need (depending on your data set).
@@ -871,21 +873,18 @@ Use the `create` prop when you want a more polished or complex UI. For example a
 import {
     AutocompleteInput,
     Create,
+    CreateBase,
     ReferenceInput,
     SimpleForm,
     TextInput,
-    useCreate,
-    useCreateSuggestionContext
+    useCreateSuggestionContext,
 } from 'react-admin';
-
+import CloseIcon from '@mui/icons-material/Close';
 import {
-    Box,
-    BoxProps,
-    Button,
     Dialog,
-    DialogActions,
     DialogContent,
-    TextField,
+    DialogTitle,
+    IconButton,
 } from '@mui/material';
 
 const PostCreate = () => {
@@ -903,43 +902,35 @@ const PostCreate = () => {
 
 const CreateCategory = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
-    const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate();
-
-    const handleSubmit = event => {
-        event.preventDefault();
-        create(
-            'categories',
-            {
-                data: {
-                    title: value,
-                },
-            },
-            {
-                onSuccess: (data) => {
-                    setValue('');
-                    onCreate(data);
-                },
-            }
-        );
-    };
 
     return (
         <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New category name"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
+             <DialogTitle sx={{ m: 0, p: 2 }}>Create Category</DialogTitle>
+             <IconButton
+                aria-label="close"
+                onClick={onCancel}
+                sx={theme => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ p: 0 }}>
+                <CreateBase
+                    redirect={false}
+                    resource="categories"
+                    mutationOptions={{
+                        onSuccess: onCreate,
+                    }}
+                >
+                    <SimpleForm defaultValues={{ title: filter }}>
+                        <TextInput source="name" helperText={false} autoFocus/>
+                    </SimpleForm>
+                </CreateBase>
+             </DialogContent>
         </Dialog>
     );
 };

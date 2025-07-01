@@ -1,5 +1,10 @@
 import React from 'react';
 import { Tooltip, IconButton, useMediaQuery } from '@mui/material';
+import {
+    ComponentsOverrides,
+    styled,
+    useThemeProps,
+} from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useTranslate } from 'ra-core';
@@ -25,6 +30,11 @@ import { useThemesContext, useTheme } from '../theme';
  * );
  */
 export const ToggleThemeButton = () => {
+    const props = useThemeProps({
+        props: {},
+        name: PREFIX,
+    });
+
     const translate = useTranslate();
     const { darkTheme, defaultTheme } = useThemesContext();
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)', {
@@ -43,13 +53,35 @@ export const ToggleThemeButton = () => {
 
     return (
         <Tooltip title={toggleThemeTitle} enterDelay={300}>
-            <IconButton
+            <StyledIconButton
                 color="inherit"
                 onClick={handleTogglePaletteType}
                 aria-label={toggleThemeTitle}
+                {...props}
             >
                 {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
+            </StyledIconButton>
         </Tooltip>
     );
 };
+
+const PREFIX = 'RaToggleThemeButton';
+
+const StyledIconButton = styled(IconButton, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({});
+
+declare module '@mui/material/styles' {
+    interface ComponentNameToClassKey {
+        [PREFIX]: 'root';
+    }
+
+    interface Components {
+        [PREFIX]?: {
+            styleOverrides?: ComponentsOverrides<
+                Omit<Theme, 'components'>
+            >[typeof PREFIX];
+        };
+    }
+}

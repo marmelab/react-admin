@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { ListBase, ListBaseProps, RaRecord } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
 
 import { ListView, ListViewProps } from './ListView';
 import { Loading } from '../layout';
@@ -55,38 +56,47 @@ import { Loading } from '../layout';
  *     </List>
  * );
  */
-export const List = <RecordType extends RaRecord = any>({
-    debounce,
-    disableAuthentication,
-    disableSyncWithLocation,
-    exporter,
-    filter = defaultFilter,
-    filterDefaultValues,
-    loading = defaultLoading,
-    perPage = 10,
-    queryOptions,
-    resource,
-    sort,
-    storeKey,
-    ...rest
-}: ListProps<RecordType>): ReactElement => (
-    <ListBase<RecordType>
-        debounce={debounce}
-        disableAuthentication={disableAuthentication}
-        disableSyncWithLocation={disableSyncWithLocation}
-        exporter={exporter}
-        filter={filter}
-        filterDefaultValues={filterDefaultValues}
-        loading={loading}
-        perPage={perPage}
-        queryOptions={queryOptions}
-        resource={resource}
-        sort={sort}
-        storeKey={storeKey}
-    >
-        <ListView<RecordType> {...rest} />
-    </ListBase>
-);
+export const List = <RecordType extends RaRecord = any>(
+    props: ListProps<RecordType>
+): ReactElement => {
+    const {
+        debounce,
+        disableAuthentication,
+        disableSyncWithLocation,
+        exporter,
+        filter = defaultFilter,
+        filterDefaultValues,
+        loading = defaultLoading,
+        perPage = 10,
+        queryOptions,
+        resource,
+        sort,
+        storeKey,
+        ...rest
+    } = useThemeProps({
+        props: props,
+        name: PREFIX,
+    });
+
+    return (
+        <ListBase<RecordType>
+            debounce={debounce}
+            disableAuthentication={disableAuthentication}
+            disableSyncWithLocation={disableSyncWithLocation}
+            exporter={exporter}
+            filter={filter}
+            filterDefaultValues={filterDefaultValues}
+            loading={loading}
+            perPage={perPage}
+            queryOptions={queryOptions}
+            resource={resource}
+            sort={sort}
+            storeKey={storeKey}
+        >
+            <ListView<RecordType> {...rest} />
+        </ListBase>
+    );
+};
 
 export interface ListProps<RecordType extends RaRecord = any>
     extends ListBaseProps<RecordType>,
@@ -94,3 +104,5 @@ export interface ListProps<RecordType extends RaRecord = any>
 
 const defaultFilter = {};
 const defaultLoading = <Loading />;
+
+const PREFIX = 'RaList'; // Types declared in ListView.

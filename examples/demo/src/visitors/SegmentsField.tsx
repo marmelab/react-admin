@@ -19,7 +19,13 @@ const SegmentsField = (_: Omit<FieldProps, 'source'> & { source?: string }) => {
         return null;
     }
     return (
-        <Stack direction="row" gap={1} flexWrap="wrap">
+        <Stack
+            direction="row"
+            sx={{
+                gap: 1,
+                flexWrap: 'wrap',
+            }}
+        >
             {record.groups.map(segmentId => (
                 <Chip
                     size="small"

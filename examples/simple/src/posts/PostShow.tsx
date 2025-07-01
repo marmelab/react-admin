@@ -7,6 +7,7 @@ import {
     DataTable,
     DateField,
     EditButton,
+    InPlaceEditor,
     NumberField,
     ReferenceArrayField,
     ReferenceManyField,
@@ -93,7 +94,20 @@ const PostShow = () => {
                         />
                         <NumberField source="average_note" />
                         <BooleanField source="commentable" />
-                        <TextField source="views" />
+                        <InPlaceEditor
+                            source="views"
+                            sx={{
+                                '& .RaInPlaceEditor-reading div': {
+                                    fontSize: 14,
+                                },
+                                '& .RaInPlaceEditor-saving div': {
+                                    fontSize: 14,
+                                },
+                                '& .RaInPlaceEditor-editing input': {
+                                    fontSize: 14,
+                                },
+                            }}
+                        />
                         <CloneButton />
                     </TabbedShowLayout.Tab>
                     <TabbedShowLayout.Tab

@@ -211,8 +211,8 @@ export function ContactImportDialog({
 }
 
 function millisecondsToTime(ms: number) {
-    var seconds = Math.floor((ms / 1000) % 60);
-    var minutes = Math.floor((ms / (60 * 1000)) % 60);
+    const seconds = Math.floor((ms / 1000) % 60);
+    const minutes = Math.floor((ms / (60 * 1000)) % 60);
 
     return `${minutes}m ${seconds}s`;
 }

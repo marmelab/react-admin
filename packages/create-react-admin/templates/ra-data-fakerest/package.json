@@ -3,12 +3,12 @@
         "test": "vitest"
     },
     "dependencies": {
-        "ra-data-fakerest": "^5.7.0"
+        "ra-data-fakerest": "^5.9.0"
     },
     "devDependencies": {
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.0.0",
         "jsdom": "^24.1.1",
-        "vitest": "^2.0.5"
+        "vitest": "^3.1.1"
     }
 }

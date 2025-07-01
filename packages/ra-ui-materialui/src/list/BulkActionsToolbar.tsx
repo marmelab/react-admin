@@ -9,11 +9,12 @@ import {
     type ComponentsOverrides,
     styled,
     useThemeProps,
+    lighten,
+    darken,
 } from '@mui/material/styles';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { lighten } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
@@ -69,7 +70,7 @@ export const BulkActionsToolbar = (inProps: BulkActionsToolbarProps) => {
                             color: theme =>
                                 (theme.vars || theme).palette.text.primary,
                         }}
-                        variant="subtitle1"
+                        variant="body1"
                     >
                         {translate(label, {
                             _: label,
@@ -124,7 +125,7 @@ const Root = styled('div', {
             ? theme.vars.palette.bulkActionsToolbarBackgroundColor
             : theme.palette.mode === 'light'
               ? lighten(theme.palette.primary.light, 0.8)
-              : theme.palette.primary.dark,
+              : darken(theme.palette.primary.dark, 0.5),
         minHeight: theme.spacing(6),
         height: theme.spacing(6),
         paddingRight: theme.spacing(2),
@@ -158,14 +159,12 @@ const Root = styled('div', {
     [`& .${BulkActionsToolbarClasses.title}`]: {
         display: 'flex',
         flex: '0 0 auto',
+        alignItems: 'center',
         gap: theme.spacing(1),
     },
 
     [`& .${BulkActionsToolbarClasses.icon}`]: {
         marginLeft: '-0.5em',
-        '&:hover': {
-            backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.primary.main}, transparent 12%)`,
-        },
     },
 }));
 

@@ -23,7 +23,7 @@ const testLocalStorage = () => {
     }
 };
 
-let localStorageAvailable = testLocalStorage();
+const localStorageAvailable = testLocalStorage();
 
 /**
  * Store using localStorage, or memory storage in incognito mode
@@ -99,10 +99,9 @@ export const localStorageStore = (
                 window.removeEventListener('storage', onLocalStorageChange);
             }
         },
-        getItem<T = any>(key: string, defaultValue?: T): T {
+        getItem<T = any>(key: string, defaultValue?: T): T | undefined {
             const valueFromStorage = getStorage().getItem(`${prefix}.${key}`);
 
-            // eslint-disable-next-line eqeqeq
             return valueFromStorage == null
                 ? defaultValue
                 : tryParse(valueFromStorage);

@@ -30,7 +30,7 @@ export const useTranslatable = (
     const context = useMemo<TranslatableContextValue>(
         () => ({
             locales,
-            selectedLocale,
+            selectedLocale: selectedLocale || 'en',
             selectLocale: setSelectedLocale,
             getRecordForLocale,
         }),

@@ -22,9 +22,9 @@ import {
     FilterButton,
     Pagination,
     SingleFieldList,
+    FilterForm,
 } from '../list';
 import { Notification } from '../layout/Notification';
-import { FilterForm } from '../list';
 import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
@@ -116,6 +116,25 @@ const Wrapper = ({
 export const Basic = () => (
     <Wrapper>
         <ReferenceManyField reference="books" target="author_id">
+            <Datagrid>
+                <TextField source="title" />
+            </Datagrid>
+        </ReferenceManyField>
+    </Wrapper>
+);
+
+export const Empty = () => (
+    <Wrapper
+        dataProvider={fakeDataProvider(
+            { authors, books: [] },
+            process.env.NODE_ENV === 'development'
+        )}
+    >
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            empty="no books"
+        >
             <Datagrid>
                 <TextField source="title" />
             </Datagrid>

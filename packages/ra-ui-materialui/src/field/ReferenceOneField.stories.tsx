@@ -15,8 +15,8 @@ import {
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { ThemeProvider, Stack } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, Stack, ThemeOptions } from '@mui/material';
+import { deepmerge } from '@mui/utils';
 
 import {
     ReferenceOneField,
@@ -34,6 +34,7 @@ import {
     TextField,
     TextInput,
 } from '..';
+import { defaultLightTheme, ThemeProvider, ThemesContext } from '../theme';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceOneField' };
 
@@ -64,17 +65,29 @@ const defaultDataProvider = {
         }),
 } as any;
 
-const Wrapper = ({ children, dataProvider = defaultDataProvider }) => (
+const Wrapper = ({
+    children,
+    dataProvider = defaultDataProvider,
+    theme = defaultLightTheme,
+}) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
-        <CoreAdminContext dataProvider={dataProvider}>
-            <ResourceContextProvider value="books">
-                <RecordContextProvider
-                    value={{ id: 1, title: 'War and Peace' }}
-                >
-                    {children}
-                </RecordContextProvider>
-            </ResourceContextProvider>
-        </CoreAdminContext>
+        <ThemesContext.Provider
+            value={{
+                lightTheme: theme,
+            }}
+        >
+            <ThemeProvider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceContextProvider value="books">
+                        <RecordContextProvider
+                            value={{ id: 1, title: 'War and Peace' }}
+                        >
+                            {children}
+                        </RecordContextProvider>
+                    </ResourceContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        </ThemesContext.Provider>
     </TestMemoryRouter>
 );
 
@@ -217,13 +230,104 @@ export const EmptyText = () => (
     </TestMemoryRouter>
 );
 
-export const EmptyWithTranslate = () => (
+export const EmptyTextWithTranslate = () => (
     <Wrapper dataProvider={emptyDataProvider}>
         <I18nContextProvider value={i18nProvider}>
             <ReferenceOneField
                 reference="book_details"
                 target="book_id"
                 emptyText="resources.books.not_found"
+            >
+                <TextField source="ISBN" />
+            </ReferenceOneField>
+        </I18nContextProvider>
+    </Wrapper>
+);
+
+export const Empty = () => (
+    <TestMemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={() => (
+                        <List>
+                            <Datagrid>
+                                <TextField source="id" />
+                                <TextField source="title" />
+                                <TextField source="year" />
+                                <TextField source="Genre" />
+                                <ReferenceOneField
+                                    reference="book_details"
+                                    target="book_id"
+                                    label="ISBN"
+                                    empty="no detail"
+                                >
+                                    <TextField source="ISBN" />
+                                </ReferenceOneField>
+                            </Datagrid>
+                        </List>
+                    )}
+                    show={() => (
+                        <Show>
+                            <SimpleShowLayout>
+                                <TextField source="id" />
+                                <TextField source="title" />
+                                <TextField source="year" />
+                                <TextField source="Genre" />
+                                <ReferenceOneField
+                                    reference="book_details"
+                                    target="book_id"
+                                    label="ISBN"
+                                    empty={
+                                        <CreateButton to="/book_details/create" />
+                                    }
+                                >
+                                    <TextField source="ISBN" />
+                                </ReferenceOneField>
+                            </SimpleShowLayout>
+                        </Show>
+                    )}
+                />
+                <Resource
+                    name="book_details"
+                    list={() => (
+                        <List>
+                            <Datagrid>
+                                <TextField source="id" />
+                                <TextField source="ISBN" />
+                                <ReferenceField
+                                    source="book_id"
+                                    reference="books"
+                                />
+                            </Datagrid>
+                        </List>
+                    )}
+                    create={() => (
+                        <Create>
+                            <SimpleForm>
+                                <TextInput source="ISBN" />
+                                <ReferenceInput
+                                    source="book_id"
+                                    reference="books"
+                                    label="Book"
+                                />
+                            </SimpleForm>
+                        </Create>
+                    )}
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const EmptyWithTranslate = () => (
+    <Wrapper dataProvider={emptyDataProvider}>
+        <I18nContextProvider value={i18nProvider}>
+            <ReferenceOneField
+                reference="book_details"
+                target="book_id"
+                empty="resources.books.not_found"
             >
                 <TextField source="ISBN" />
             </ReferenceOneField>
@@ -308,22 +412,20 @@ export const InShowLayout = () => (
 );
 
 const ListWrapper = ({ children }) => (
-    <ThemeProvider theme={createTheme()}>
-        <Wrapper>
-            <ListContextProvider
-                value={
-                    {
-                        total: 1,
-                        data: [{ id: 1, title: 'War and Peace' }],
-                        sort: { field: 'id', order: 'ASC' },
-                        setSort: () => {},
-                    } as any
-                }
-            >
-                {children}
-            </ListContextProvider>
-        </Wrapper>
-    </ThemeProvider>
+    <Wrapper>
+        <ListContextProvider
+            value={
+                {
+                    total: 1,
+                    data: [{ id: 1, title: 'War and Peace' }],
+                    sort: { field: 'id', order: 'ASC' },
+                    setSort: () => {},
+                } as any
+            }
+        >
+            {children}
+        </ListContextProvider>
+    </Wrapper>
 );
 
 export const InDatagrid = () => (
@@ -433,6 +535,31 @@ export const QueryOptions = ({ dataProvider = defaultDataProvider }) => (
             target="book_id"
             queryOptions={{ meta: { foo: 'bar' } }}
         >
+            <TextField source="ISBN" />
+        </ReferenceOneField>
+    </Wrapper>
+);
+
+export const Themed = () => (
+    <Wrapper
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaReferenceOneField: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
+                },
+                RaReferenceField: {
+                    styleOverrides: {
+                        root: {
+                            color: 'hotpink',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <ReferenceOneField reference="book_details" target="book_id">
             <TextField source="ISBN" />
         </ReferenceOneField>
     </Wrapper>

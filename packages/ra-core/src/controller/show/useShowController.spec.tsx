@@ -254,5 +254,39 @@ describe('useShowController', () => {
             expect(dataProvider.getOne).toHaveBeenCalled();
             expect(authProvider.checkAuth).not.toHaveBeenCalled();
         });
+
+        it('should not call checkAuth nor canAccess when disableAuthentication is true', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn().mockResolvedValue(true),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: jest.fn().mockResolvedValue(false),
+            };
+            render(<DisableAuthentication authProvider={authProvider} />);
+            await screen.findByText('Post #1 - 90 votes');
+            expect(authProvider.checkAuth).not.toHaveBeenCalled();
+            expect(authProvider.canAccess).not.toHaveBeenCalled();
+        });
+
+        it('should not call checkAuth nor canAccess when disableAuthentication is true even if useAuthState was called before', async () => {
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn().mockResolvedValue(true),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+                canAccess: jest.fn().mockResolvedValue(false),
+            };
+            render(<DisableAuthentication authProvider={authProvider} />);
+            await screen.findByText('Post #1 - 90 votes');
+            fireEvent.click(await screen.findByText('List'));
+            await screen.findByText('List view');
+            fireEvent.click(await screen.findByText('Show'));
+            await screen.findByText('Post #1 - 90 votes');
+            expect(authProvider.checkAuth).toHaveBeenCalledTimes(1);
+            expect(authProvider.canAccess).not.toHaveBeenCalled();
+        });
     });
 });

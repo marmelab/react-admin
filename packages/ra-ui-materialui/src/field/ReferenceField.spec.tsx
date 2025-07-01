@@ -20,11 +20,14 @@ import {
     LinkDefaultShowView,
     LinkMissingView,
     LinkFalse,
-    MissingReferenceIdEmptyTextTranslation,
     MissingReferenceEmptyText,
+    MissingReferenceIdEmptyTextTranslation,
+    MissingReferenceIdEmpty,
+    MissingReferenceIdEmptyTranslation,
     SXLink,
     SXNoLink,
     SlowAccessControl,
+    Themed,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -292,29 +295,48 @@ describe('<ReferenceField />', () => {
         });
     });
 
-    it('should display the emptyText if the field is empty', () => {
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <ReferenceField
-                        record={{ id: 123 }}
-                        resource="comments"
-                        // @ts-expect-error source prop does not have a valid value
-                        source="postId"
-                        reference="posts"
-                        emptyText="EMPTY"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        expect(screen.getByText('EMPTY')).not.toBeNull();
+    describe('emptyText', () => {
+        it('should display the emptyText if the field is empty', () => {
+            render(
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <ReferenceField
+                            record={{ id: 123 }}
+                            resource="comments"
+                            // @ts-expect-error source prop does not have a valid value
+                            source="postId"
+                            reference="posts"
+                            emptyText="EMPTY"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </CoreAdminContext>
+                </ThemeProvider>
+            );
+            expect(screen.getByText('EMPTY')).not.toBeNull();
+        });
+
+        it('should display the emptyText if there is no reference', async () => {
+            render(<MissingReferenceEmptyText />);
+            await screen.findByText('no detail');
+        });
+
+        it('should translate emptyText', async () => {
+            render(<MissingReferenceIdEmptyTextTranslation />);
+
+            expect(await screen.findByText('Not found')).not.toBeNull();
+        });
     });
 
-    it('should display the emptyText if there is no reference', async () => {
-        render(<MissingReferenceEmptyText />);
-        await screen.findByText('no detail');
+    describe('empty', () => {
+        it('should render the empty prop when the record is not found', async () => {
+            render(<MissingReferenceIdEmpty />);
+            await screen.findByText('no detail');
+        });
+        it('should translate empty if it is a string', async () => {
+            render(<MissingReferenceIdEmptyTranslation />);
+            await screen.findByText('Not found');
+        });
     });
 
     it('should use record from RecordContext', async () => {
@@ -581,12 +603,6 @@ describe('<ReferenceField />', () => {
         expect(await screen.findByText('novel')).not.toBeNull();
     });
 
-    it('should translate emptyText', async () => {
-        render(<MissingReferenceIdEmptyTextTranslation />);
-
-        expect(await screen.findByText('Not found')).not.toBeNull();
-    });
-
     it('should accept a queryOptions prop', async () => {
         const dataProvider = testDataProvider({
             getMany: jest.fn().mockResolvedValue({
@@ -639,7 +655,7 @@ describe('<ReferenceField />', () => {
                     selector: 'a > span',
                 })
             );
-            await screen.findByText('ra.page.show');
+            await screen.findByText('resources.authors.page.show');
             await screen.findByText('Carroll');
         });
         it('should render a link to the edit view when users have access to it for the referenced resource', async () => {
@@ -663,7 +679,7 @@ describe('<ReferenceField />', () => {
                     selector: 'a > span',
                 })
             );
-            await screen.findByText('ra.page.edit');
+            await screen.findByText('resources.authors.page.edit');
             await screen.findByDisplayValue('Carroll');
         });
         it('should not render a link when users do not have access to show nor edit for the referenced resource', async () => {
@@ -701,5 +717,10 @@ describe('<ReferenceField />', () => {
                 getComputedStyle(root).getPropertyValue('background-color')
             ).toBe('red');
         });
+    });
+
+    it('should be customized by a theme', async () => {
+        render(<Themed />);
+        expect(await screen.findByTestId('themed')).toBeDefined();
     });
 });

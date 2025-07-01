@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { RecordContextProvider, useTimeout } from 'ra-core';
 import dompurify from 'dompurify';
+import { deepmerge } from '@mui/utils';
+import { createTheme, ThemeOptions } from '@mui/material';
 
 import { RichTextField, RichTextFieldProps } from './RichTextField';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
+import { AdminContext } from '../AdminContext';
 
 export default {
     title: 'ra-ui-materialui/fields/RichTextField',
@@ -24,23 +27,23 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
 };
 
 export const Basic = () => (
-    <RecordContextProvider value={record}>
+    <Wrapper record={record}>
         <RichTextField source="body" />
-    </RecordContextProvider>
+    </Wrapper>
 );
 
 export const StripTags = () => (
-    <RecordContextProvider value={record}>
+    <Wrapper record={record}>
         <RichTextField source="body" stripTags />
-    </RecordContextProvider>
+    </Wrapper>
 );
 
 export const InSimpleShowLayout = () => (
-    <RecordContextProvider value={record}>
+    <Wrapper record={record}>
         <SimpleShowLayout>
             <RichTextField source="body" />
         </SimpleShowLayout>
-    </RecordContextProvider>
+    </Wrapper>
 );
 
 const DomPurifyInspector = () => {
@@ -57,8 +60,8 @@ const DomPurifyInspector = () => {
 };
 
 export const Secure = () => (
-    <RecordContextProvider
-        value={{
+    <Wrapper
+        record={{
             id: 1,
             body: `
 <p>
@@ -80,7 +83,7 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
             <h4>Stolen data:</h4>
             <input id="stolendata" defaultValue="none" />
         </div>
-    </RecordContextProvider>
+    </Wrapper>
 );
 
 const TargetBlankEnabledRichTextField = (props: RichTextFieldProps) => {
@@ -95,8 +98,8 @@ const TargetBlankEnabledRichTextField = (props: RichTextFieldProps) => {
 };
 
 export const TargetBlank = () => (
-    <RecordContextProvider
-        value={{
+    <Wrapper
+        record={{
             id: 1,
             body: `
 <p>
@@ -111,12 +114,12 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
         }}
     >
         <TargetBlankEnabledRichTextField source="body" />
-    </RecordContextProvider>
+    </Wrapper>
 );
 
 export const PurifyOptions = () => (
-    <RecordContextProvider
-        value={{
+    <Wrapper
+        record={{
             id: 1,
             body: `
 <p>
@@ -131,5 +134,64 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
         }}
     >
         <RichTextField source="body" purifyOptions={{ ADD_ATTR: ['target'] }} />
-    </RecordContextProvider>
+    </Wrapper>
+);
+
+const Wrapper = ({
+    children,
+    record,
+    theme = undefined,
+    defaultTheme = 'light',
+}) => (
+    <AdminContext defaultTheme={defaultTheme as any} theme={theme}>
+        <RecordContextProvider value={record}>{children}</RecordContextProvider>
+    </AdminContext>
+);
+
+export const Empty = ({ emptyText, body }) => (
+    <Wrapper record={{ id: 1, body }}>
+        <RichTextField source="body" emptyText={emptyText} />
+    </Wrapper>
+);
+Empty.args = {
+    emptyText: 'empty',
+    body: '',
+};
+Empty.argTypes = {
+    emptyText: {
+        options: [undefined, 'empty'],
+        control: { type: 'inline-radio' },
+    },
+    body: {
+        options: [undefined, null, 'empty string', 'foo'],
+        mapping: {
+            undefined: undefined,
+            null: null,
+            'empty string': '',
+            foo: 'foo',
+        },
+        control: { type: 'inline-radio' },
+    },
+};
+
+export const Themed = () => (
+    <Wrapper
+        record={record}
+        theme={deepmerge(createTheme(), {
+            components: {
+                RaRichTextField: {
+                    defaultProps: {
+                        'data-testid': 'themed',
+                    },
+                    styleOverrides: {
+                        root: {
+                            color: 'hotpink',
+                        },
+                    },
+                },
+            },
+        } as ThemeOptions)}
+    >
+        <RichTextField source="body" />
+    </Wrapper>
 );

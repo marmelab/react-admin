@@ -277,7 +277,6 @@ export const AutocompleteInput = <
     });
 
     useEffect(() => {
-        // eslint-disable-next-line eqeqeq
         if (emptyValue == null) {
             throw new Error(
                 `emptyValue being set to null or undefined is not supported. Use parse to turn the empty string into null.`
@@ -327,6 +326,8 @@ If you provided a React element for the optionText prop, you must also provide t
             optionText ??
             (isFromReference ? getRecordRepresentation : undefined),
         optionValue,
+        createValue,
+        createHintValue,
         selectedItem: selectedChoice,
         suggestionLimit,
         translateChoice: translateChoice ?? !isFromReference,
@@ -526,7 +527,7 @@ If you provided a React element for the optionText prop, you must also provide t
     );
     const doesQueryMatchSuggestion = useCallback(
         filter => {
-            const hasOption = !!finalChoices
+            const hasOption = finalChoices
                 ? finalChoices.some(choice => getOptionLabel(choice) === filter)
                 : false;
 
@@ -627,16 +628,33 @@ If you provided a React element for the optionText prop, you must also provide t
                         ...params.InputProps,
                         ...TextFieldProps?.InputProps,
                     };
+                    // @ts-expect-error slotProps do not yet exist in MUI v5
+                    const mergedSlotProps = TextFieldProps?.slotProps
+                        ? {
+                              slotProps: {
+                                  // @ts-expect-error slotProps do not yet exist in MUI v5
+                                  ...TextFieldProps?.slotProps,
+                                  input: {
+                                      readOnly,
+                                      ...params.InputProps,
+                                      // @ts-expect-error slotProps do not yet exist in MUI v5
+                                      ...TextFieldProps?.slotProps?.input,
+                                  },
+                              },
+                          }
+                        : undefined;
                     return (
                         <TextField
                             name={field.name}
                             label={
-                                <FieldTitle
-                                    label={label}
-                                    source={source}
-                                    resource={resourceProp}
-                                    isRequired={isRequired}
-                                />
+                                label !== '' && label !== false ? (
+                                    <FieldTitle
+                                        label={label}
+                                        source={source}
+                                        resource={resourceProp}
+                                        isRequired={isRequired}
+                                    />
+                                ) : null
                             }
                             error={!!fetchError || invalid}
                             helperText={
@@ -652,10 +670,15 @@ If you provided a React element for the optionText prop, you must also provide t
                             }
                             margin={margin}
                             variant={variant}
-                            className={AutocompleteInputClasses.textField}
+                            className={clsx({
+                                [AutocompleteInputClasses.textField]: true,
+                                [AutocompleteInputClasses.emptyLabel]:
+                                    label === false || label === '',
+                            })}
                             {...params}
                             {...TextFieldProps}
                             InputProps={mergedTextFieldProps}
+                            {...mergedSlotProps}
                             size={size}
                             inputRef={handleInputRef}
                         />
@@ -734,6 +757,7 @@ const PREFIX = 'RaAutocompleteInput';
 
 export const AutocompleteInputClasses = {
     textField: `${PREFIX}-textField`,
+    emptyLabel: `${PREFIX}-emptyLabel`,
 };
 
 const StyledAutocomplete = styled(Autocomplete, {
@@ -743,6 +767,10 @@ const StyledAutocomplete = styled(Autocomplete, {
     [`& .${AutocompleteInputClasses.textField}`]: {
         minWidth: theme.spacing(20),
     },
+    [`& .${AutocompleteInputClasses.emptyLabel} .MuiOutlinedInput-root legend`]:
+        {
+            width: 0,
+        },
 }));
 
 // @ts-ignore

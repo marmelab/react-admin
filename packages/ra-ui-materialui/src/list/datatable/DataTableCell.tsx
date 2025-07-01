@@ -49,6 +49,8 @@ export const DataTableCell = React.memo(
                 ...(cellSx && record ? cellSx(record) : {}),
                 ...sx,
             } as SxProps;
+
+            const fieldValue = get(record, source!);
             return (
                 <TableCellStyled
                     ref={ref}
@@ -65,7 +67,9 @@ export const DataTableCell = React.memo(
                             ? record && render(record)
                             : field
                               ? React.createElement(field, { source })
-                              : get(record, source!))}
+                              : fieldValue != null
+                                ? fieldValue.toString()
+                                : null)}
                 </TableCellStyled>
             );
         }

@@ -71,8 +71,7 @@ export const useCreateController = <
     const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
         action: 'create',
         resource,
-        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
-        enabled: !isPendingAuthenticated,
+        enabled: !disableAuthentication && !isPendingAuthenticated,
     });
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const finalRedirectTo =
@@ -190,8 +189,10 @@ export const useCreateController = <
     );
 
     const getResourceLabel = useGetResourceLabel();
-    const defaultTitle = translate('ra.page.create', {
-        name: getResourceLabel(resource, 1),
+    const defaultTitle = translate(`resources.${resource}.page.create`, {
+        _: translate('ra.page.create', {
+            name: getResourceLabel(resource, 1),
+        }),
     });
 
     return {

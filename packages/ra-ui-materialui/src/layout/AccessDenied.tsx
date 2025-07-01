@@ -28,7 +28,13 @@ export const AccessDenied = (inProps: AccessDeniedProps) => {
         <Root className={clsx(AccessDeniedClasses.root, className)} {...rest}>
             <div className={AccessDeniedClasses.message}>
                 {icon}
-                <Typography variant="h5" mt={3} color="text.secondary">
+                <Typography
+                    variant="h5"
+                    sx={{
+                        mt: 3,
+                        color: 'text.secondary',
+                    }}
+                >
                     {translate(textPrimary, { _: textPrimary })}
                 </Typography>
                 <Typography variant="body2">

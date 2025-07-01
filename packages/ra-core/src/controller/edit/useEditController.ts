@@ -3,7 +3,11 @@ import { useParams } from 'react-router-dom';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
-import { useRedirect, RedirectionSideEffect } from '../../routing';
+import {
+    useRedirect,
+    RedirectionSideEffect,
+    useCreatePath,
+} from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useGetOne,
@@ -76,13 +80,13 @@ export const useEditController = <
     const { isPending: isPendingCanAccess } = useRequireAccess<RecordType>({
         action: 'edit',
         resource,
-        // If disableAuthentication is true then isPendingAuthenticated will always be true so this hook is disabled
-        enabled: !isPendingAuthenticated,
+        enabled: !disableAuthentication && !isPendingAuthenticated,
     });
 
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
+    const createPath = useCreatePath();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
@@ -122,7 +126,15 @@ export const useEditController = <
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
-                redirect('list', resource);
+                // We need to flushSync to ensure the redirect happens before the refresh
+                // Otherwise this can cause an infinite loop when the record is not found
+                redirect(() => ({
+                    pathname: createPath({
+                        resource,
+                        type: 'list',
+                    }),
+                    flushSync: true,
+                }));
                 refresh();
             },
             refetchOnReconnect: false,
@@ -141,14 +153,22 @@ export const useEditController = <
 
     const getResourceLabel = useGetResourceLabel();
     const recordRepresentation = getRecordRepresentation(record);
-    const defaultTitle = translate('ra.page.edit', {
-        name: getResourceLabel(resource, 1),
+    const defaultTitle = translate(`resources.${resource}.page.edit`, {
         id,
         record,
         recordRepresentation:
             typeof recordRepresentation === 'string'
                 ? recordRepresentation
                 : '',
+        _: translate('ra.page.edit', {
+            name: getResourceLabel(resource, 1),
+            id,
+            record,
+            recordRepresentation:
+                typeof recordRepresentation === 'string'
+                    ? recordRepresentation
+                    : '',
+        }),
     });
 
     const recordCached = { id, previousData: record };

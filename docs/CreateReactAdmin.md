@@ -24,7 +24,27 @@ cd your-admin-name
 npm run dev
 ```
 
-**Tip**: You can replace `npx` with `npm`, `yarn`, or `bun`.
+**Tip**: You can replace `npx` with `npm`, `yarn` or `bun`:
+
+```sh
+# Using npx
+npx create-react-admin@latest your-admin-name
+# Using npm
+npm create react-admin@latest your-admin-name
+# Using yarn
+yarn create react-admin your-admin-name
+# Using bun
+bun create react-admin@latest your-admin-name
+```
+
+**Tip**: If you need to pass extra options, depending on the command you choose you may need to add `--` before the arguments:
+
+```sh
+# `npx` doesn't require the `--` before the arguments
+npx create-react-admin@latest your-admin-name --interactive
+# `npm create` does require the `--` before the arguments
+npm create react-admin@latest your-admin-name -- --interactive
+```
 
 ## Options
 
@@ -40,9 +60,9 @@ The command accepts the following options:
 
 When using this option, the terminal will ask you to choose:
 
-* a [data provider](#data-provider)
-* an [auth provider](#auth-provider)
-* the names of the [resources](#resources) to add
+* a [data provider](./DataFetchingGuide.md#the-data-provider)
+* an [auth provider](./DataFetchingGuide.md#authentication)
+* the names of the [resources](./Resource.md) to add
 * the [package manager](#package-manager) to use to install the dependencies
 
 <video controls autoplay playsinline muted loop>

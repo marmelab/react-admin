@@ -23,7 +23,7 @@ const BookShow = () => (
 );
 ```
 
-Note that if `record` is undefined, `<WithRecord>` doesn't call the `render` callback and renders nothing, so you don't have to worry about this case in your render callback.
+Note that if `record` is undefined, `<WithRecord>` doesn't call the `render` callback and renders nothing (or the `empty` prop), so you don't have to worry about this case in your render callback.
 
 ## Availability
 
@@ -32,13 +32,14 @@ As soon as there is a record available, react-admin puts it in a `RecordContext`
 - in descendants of the `<Show>` and `<ShowBase>` component
 - in descendants of the `<Edit>` and `<EditBase>` component
 - in descendants of the `<Create>` and `<CreateBase>` component
+- in descendants of the `<DataTable>` component
 - in descendants of the `<Datagrid>` component
 - in descendants of the `<SimpleList>` component
 - in descendants of the `<ReferenceField>` component
 
 ## Using in a Datagrid
 
-When using `<WithRecord>` in a [`<Datagrid>`](./Datagrid.md), you must specify the `label` prop to let react-admin know which field to display in the column header. 
+When using `<WithRecord>` in a [`<Datagrid>`](./Datagrid.md), you must specify the `label` prop to let react-admin know which field to display in the column header.
 
 ```jsx
 import { Datagrid, TextField, WithRecord } from 'react-admin';
@@ -52,6 +53,8 @@ const PostList = () => (
     </List>
 );
 ```
+
+**Tip:** You don't need to use `<WithRecord>` if you are using [`<DataTable>`](./DataTable.md), as the [`<DataTable.Col>`](./DataTable.md#datatablecol) component directly provides a [`render`](./DataTable.md#render) prop that works similarly to `<WithRecord>`.
 
 ## TypeScript
 

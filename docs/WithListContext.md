@@ -16,26 +16,28 @@ The most common use case for `<WithListContext>` is to build a custom list view 
 For instance, a list of book tags fetched via [`<ReferenceArrayField>`](./ReferenceArrayField.md): 
 
 ```jsx
-import { List, Datagrid, TextField, ReferenceArrayField, WithListContext } from 'react-admin';
+import { List, DataTable, ReferenceArrayField, WithListContext } from 'react-admin';
 import { Chip, Stack } from '@mui/material';
 
 const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
-                <WithListContext render={({ isPending, data }) => (
-                    !isPending && (
-                        <Stack direction="row" spacing={1}>
-                            {data.map(tag => (
-                                <Chip key={tag.id} label={tag.name} />
-                            ))}
-                        </Stack>
-                    )
-                )} />
-            </ReferenceArrayField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="tag_ids" label="Tags">
+                <ReferenceArrayField reference="tags" source="tag_ids">
+                    <WithListContext render={({ isPending, data }) => (
+                        !isPending && (
+                            <Stack direction="row" spacing={1}>
+                                {data.map(tag => (
+                                    <Chip key={tag.id} label={tag.name} />
+                                ))}
+                            </Stack>
+                        )
+                    )} />
+                </ReferenceArrayField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 ```
@@ -45,17 +47,19 @@ const BookList = () => (
 The equivalent with `useListContext` would require an intermediate component:
 
 ```jsx
-import { List, Datagrid, TextField, ReferenceArrayField, WithListContext } from 'react-admin';
+import { List, DataTable, ReferenceArrayField, WithListContext } from 'react-admin';
 
 const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
-                <TagList />
-            </ReferenceArrayField>
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col label="Tags" source="tag_ids">
+                <ReferenceArrayField reference="tags" source="tag_ids">
+                    <TagList />
+                </ReferenceArrayField>
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 
@@ -145,31 +149,73 @@ Whenever you use a react-admin component to fetch a list of records, react-admin
 
 ## Building a Chart
 
-A common use case is to build a chart based on the list data. For instance, the following component fetches a list of fruit prices (using `<ListBase>`), and draws a line chart with the data using [ReCharts](https://recharts.org/en-US):
+A common use case is to build a chart based on the list data. For instance, the following component fetches a list of fruit prices (using `<ListBase>`), and draws a line chart with the data using [Echarts](https://echarts.apache.org/en/index.html):
 
 ![Chart based on ListContext](./img/WithListContext-chart.png)
 
+{% raw %}
 ```jsx
 import { ListBase, WithListContext } from 'react-admin';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
+import * as echarts from 'echarts';
 
 const FruitChart = () => (
     <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
-        <WithListContext
-            render={({ data }) => (
-                <LineChart width={700} height={300} data={data}>
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                    <Line dataKey="apples" type="monotone" stroke="#8884d8" />
-                    <Line dataKey="blueberries" type="monotone" stroke="#82ca9d" />
-                    <Line dataKey="carrots" type="monotone" stroke="#ffc658" />
-                </LineChart>
-            )}
+        <WithListContext<Fruit>
+            render={({ data }) => <LineChart data={data} />}
         />
     </ListBase>
 );
+
+const LineChart = ({ data }) => {
+    const chartRef = React.useRef(null);
+    React.useEffect(() => {
+        if (!data) return;
+        const chartInstance = echarts.init(chartRef.current);
+
+        const option = {
+            tooltip: {
+                trigger: 'axis',
+            },
+            legend: {
+                data: ['Apples', 'Blueberries', 'Carrots'],
+            },
+            xAxis: {
+                type: 'category',
+                data: data.map(fruit => fruit.date),
+            },
+            yAxis: {
+                type: 'value',
+            },
+            series: [
+                {
+                    name: 'Apples',
+                    type: 'line',
+                    data: data.map(fruit => fruit.apples),
+                },
+                {
+                    name: 'Blueberries',
+                    type: 'line',
+                    data: data.map(fruit => fruit.blueberries),
+                },
+                {
+                    name: 'Carrots',
+                    type: 'line',
+                    data: data.map(fruit => fruit.carrots),
+                },
+            ],
+        };
+
+        chartInstance.setOption(option);
+
+        return () => {
+            chartInstance.dispose();
+        };
+    }, [data]);
+
+    return <div ref={chartRef} style={{ height: 300, width: 700 }} />;
+};
 ```
+{% endraw %}
 
 ## Building a Refresh Button
 

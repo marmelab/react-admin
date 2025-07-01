@@ -5,6 +5,8 @@ import {
     RaRecord,
     EditBaseProps,
 } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
+
 import { EditView, EditViewProps } from './EditView';
 import { Loading } from '../layout';
 
@@ -54,8 +56,13 @@ import { Loading } from '../layout';
  * export default App;
  */
 export const Edit = <RecordType extends RaRecord = any>(
-    props: EditProps<RecordType, Error>
+    inProps: EditProps<RecordType, Error>
 ) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: PREFIX,
+    });
+
     useCheckMinimumRequiredProps('Edit', ['children'], props);
     const {
         resource,
@@ -91,3 +98,5 @@ export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
         Omit<EditViewProps, 'children'> {}
 
 const defaultLoading = <Loading />;
+
+const PREFIX = 'RaEdit'; // Types declared in EditView.
