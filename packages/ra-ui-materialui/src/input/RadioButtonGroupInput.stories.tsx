@@ -280,11 +280,25 @@ export const TranslateChoice = () => {
 
 export const DisabledChoice = () => (
     <Wrapper>
-        <RadioButtonGroupInput source="category" choices={[
-            { id: 'tech', name: 'Tech', details: 'Tech details' },
-            { id: 'lifestyle', name: 'Lifestyle', details: 'Lifestyle details' },
-            { id: 'people', name: 'People', details: 'People details', disabled: true },
-        ]} />
+        <RadioButtonGroupInput
+            source="category"
+            choices={[
+                { id: 'tech', name: 'Tech', details: 'Tech details' },
+                {
+                    id: 'lifestyle',
+                    name: 'Lifestyle',
+                    details: 'Lifestyle details',
+                },
+                {
+                    id: 'people',
+                    name: 'People',
+                    details: 'People details',
+                    disabled: true,
+                },
+            ]}
+        />
+    </Wrapper>
+);
 
 export const Themed = () => (
     <Wrapper
