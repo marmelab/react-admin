@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     RecordRepresentation,
     Basic,
-    EmptyWithTranslate,
+    EmptyTextWithTranslate,
     QueryOptions,
     EmptyText,
     Themed,
@@ -22,7 +22,7 @@ describe('ReferenceOneField', () => {
     });
 
     it('should translate emptyText', async () => {
-        render(<EmptyWithTranslate />);
+        render(<EmptyTextWithTranslate />);
 
         await screen.findByText('Not found');
     });
