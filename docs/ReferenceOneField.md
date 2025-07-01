@@ -97,7 +97,7 @@ Use `empty` to customize the text displayed when the related record is empty.
 </ReferenceOneField>
 ```
 
-`empty` also accepts a `ReactElement`.
+`empty` also accepts a `ReactNode`.
 
 ```jsx
 <ReferenceOneField

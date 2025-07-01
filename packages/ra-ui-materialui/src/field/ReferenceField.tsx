@@ -16,7 +16,6 @@ import {
     type RaRecord,
     ReferenceFieldBase,
     useReferenceFieldContext,
-    useFieldValue,
 } from 'ra-core';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';

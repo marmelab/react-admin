@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { ResourceContextProvider } from '../../core';
 import { ListContextProvider } from '../list/ListContextProvider';
 import {
@@ -136,7 +136,7 @@ export interface ReferenceManyFieldBaseProps<
     > {
     children: ReactNode;
     empty?: ReactNode;
-    pagination?: ReactElement;
+    pagination?: ReactNode;
 }
 
 const defaultFilter = {};

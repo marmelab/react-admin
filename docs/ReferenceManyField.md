@@ -90,7 +90,7 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
 | `children`     | Required | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
 | `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
-| `empty`        | Optional | `Element`                                                                         | -                                | Element to display when there are no related records.                                |
+| `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
@@ -203,7 +203,7 @@ Use `empty` to customize the text displayed when the related record is empty.
 </ReferenceManyField>
 ```
 
-`empty` also accepts a `ReactElement`.
+`empty` also accepts a `ReactNode`.
 
 ```jsx
 <ReferenceManyField
