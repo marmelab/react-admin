@@ -6,6 +6,7 @@ import { RaRecord } from '../../types';
 import { useReferenceFieldController } from './useReferenceFieldController';
 import { ResourceContextProvider } from '../../core';
 import { RecordContextProvider } from '../record';
+import { useFieldValue } from '../../util';
 
 /**
  * Fetch reference record, and render its representation, or delegate rendering to child component.
@@ -43,11 +44,21 @@ export const ReferenceFieldBase = <
 >(
     props: ReferenceFieldBaseProps<ReferenceRecordType>
 ) => {
-    const { children } = props;
-
+    const { children, empty = null } = props;
+    const id = useFieldValue(props);
     const controllerProps =
         useReferenceFieldController<ReferenceRecordType>(props);
 
+    if (
+        // no foreign key value
+        !id ||
+        // no reference record
+        (!controllerProps.error &&
+            !controllerProps.isPending &&
+            !controllerProps.referenceRecord)
+    ) {
+        return empty;
+    }
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceFieldContextProvider value={controllerProps}>
@@ -64,6 +75,7 @@ export interface ReferenceFieldBaseProps<
 > {
     children?: ReactNode;
     className?: string;
+    empty?: ReactNode;
     error?: ReactNode;
     queryOptions?: Partial<
         UseQueryOptions<ReferenceRecordType[], Error> & {
