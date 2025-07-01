@@ -123,6 +123,25 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const Empty = () => (
+    <Wrapper
+        dataProvider={fakeDataProvider(
+            { authors, books: [] },
+            process.env.NODE_ENV === 'development'
+        )}
+    >
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            empty="no books"
+        >
+            <Datagrid>
+                <TextField source="title" />
+            </Datagrid>
+        </ReferenceManyField>
+    </Wrapper>
+);
+
 export const WithSingleFieldList = () => (
     <Wrapper>
         <ReferenceManyField reference="books" target="author_id">

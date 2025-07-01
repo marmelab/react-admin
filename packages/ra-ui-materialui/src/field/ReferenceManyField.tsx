@@ -1,10 +1,12 @@
 import React from 'react';
 import {
     ReferenceManyFieldBase,
+    useTranslate,
     type ReferenceManyFieldBaseProps,
-    RaRecord,
+    type RaRecord,
 } from 'ra-core';
 
+import { Typography } from '@mui/material';
 import type { FieldProps } from './types';
 
 /**
@@ -58,7 +60,23 @@ export const ReferenceManyField = <
     ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
-) => <ReferenceManyFieldBase<RecordType, ReferenceRecordType> {...props} />;
+) => {
+    const translate = useTranslate();
+    return (
+        <ReferenceManyFieldBase<RecordType, ReferenceRecordType>
+            {...props}
+            empty={
+                typeof props.empty === 'string' ? (
+                    <Typography component="span" variant="body2">
+                        {translate(props.empty, { _: props.empty })}
+                    </Typography>
+                ) : (
+                    props.empty
+                )
+            }
+        />
+    );
+};
 
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
