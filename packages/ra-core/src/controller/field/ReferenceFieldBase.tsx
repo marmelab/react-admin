@@ -50,8 +50,9 @@ export const ReferenceFieldBase = <
         useReferenceFieldController<ReferenceRecordType>(props);
 
     if (
-        // no foreign key value
-        !id ||
+        (empty &&
+            // no foreign key value
+            !id) ||
         // no reference record
         (!controllerProps.error &&
             !controllerProps.isPending &&
