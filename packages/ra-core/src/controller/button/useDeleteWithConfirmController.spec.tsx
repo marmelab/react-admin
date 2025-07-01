@@ -44,7 +44,7 @@ describe('useDeleteWithConfirmController', () => {
 
         const button = await screen.findByText('Delete');
         fireEvent.click(button);
-        waitFor(() => expect(receivedMeta).toEqual('metadata'), {
+        await waitFor(() => expect(receivedMeta).toEqual('metadata'), {
             timeout: 1000,
         });
     });
