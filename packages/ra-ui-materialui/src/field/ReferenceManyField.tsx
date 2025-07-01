@@ -1,13 +1,11 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React from 'react';
 import {
-    useReferenceManyFieldController,
-    ListContextProvider,
-    ResourceContextProvider,
+    ReferenceManyFieldBase,
+    type ReferenceManyFieldBaseProps,
     RaRecord,
-    UseReferenceManyFieldControllerParams,
 } from 'ra-core';
 
-import { FieldProps } from './types';
+import type { FieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -60,60 +58,10 @@ export const ReferenceManyField = <
     ReferenceRecordType extends RaRecord = RaRecord,
 >(
     props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
-) => {
-    const {
-        children,
-        debounce,
-        filter = defaultFilter,
-        page = 1,
-        pagination = null,
-        perPage = 25,
-        record,
-        reference,
-        resource,
-        sort = defaultSort,
-        source = 'id',
-        storeKey,
-        target,
-        queryOptions,
-    } = props;
-
-    const controllerProps = useReferenceManyFieldController<
-        RecordType,
-        ReferenceRecordType
-    >({
-        debounce,
-        filter,
-        page,
-        perPage,
-        record,
-        reference,
-        resource,
-        sort,
-        source,
-        storeKey,
-        target,
-        queryOptions,
-    });
-
-    return (
-        <ResourceContextProvider value={reference}>
-            <ListContextProvider value={controllerProps}>
-                {children}
-                {pagination}
-            </ListContextProvider>
-        </ResourceContextProvider>
-    );
-};
+) => <ReferenceManyFieldBase<RecordType, ReferenceRecordType> {...props} />;
 
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends Record<string, any> = Record<string, any>,
 > extends Omit<FieldProps<RecordType>, 'source'>,
-        UseReferenceManyFieldControllerParams<RecordType, ReferenceRecordType> {
-    children: ReactNode;
-    pagination?: ReactElement;
-}
-
-const defaultFilter = {};
-const defaultSort = { field: 'id', order: 'DESC' as const };
+        ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType> {}
