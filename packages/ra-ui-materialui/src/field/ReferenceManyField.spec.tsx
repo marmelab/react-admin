@@ -11,6 +11,7 @@ import { SingleFieldList } from '../list/SingleFieldList';
 import { Pagination } from '../list/pagination/Pagination';
 import {
     Basic,
+    Empty,
     WithPagination,
     WithPaginationAndSelectAllLimit,
 } from './ReferenceManyField.stories';
@@ -271,6 +272,13 @@ describe('<ReferenceManyField />', () => {
             await screen.findByText('ra.navigation.partial_page_range_info');
             await screen.findByLabelText('ra.navigation.previous');
             await screen.findByLabelText('ra.navigation.next');
+        });
+    });
+
+    describe('empty', () => {
+        it('should render the empty prop when the record is not found', async () => {
+            render(<Empty />);
+            await screen.findByText('no books');
         });
     });
 
