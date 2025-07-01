@@ -1001,7 +1001,7 @@ With `<Datagrid>`, you can select a range of rows by pressing the shift key whil
 ---
 
 If you need to customize the `<SolarLayout>` appBar that appears on Mobile, you can set the `appBar` prop of `<SolarLayout>`. For instance, here's how you could customize its colors and add some extra content to its far right.
-#SolarLayout https://react-admin-ee.marmelab.com/documentation/ra-navigation#appbar-1
+#SolarLayout https://marmelab.com/ra-enterprise/modules/ra-navigation#appbar-1
 
 {% raw %}
 ```tsx
@@ -1223,6 +1223,34 @@ export const PostList = () => (
 );
 ```
 {% endraw %}
+
+---
+
+The `canAccess` helper function allows you to check if the current user has the permissions to execute an action. You can use it to disable desired links on a menu for instance. #Role-Based-Access-Control #RBAC https://marmelab.com/ra-enterprise/modules/ra-rbac#canaccess 
+
+```tsx
+import { usePermissions, Menu } from "react-admin";
+import { canAccess } from "@react-admin/ra-rbac";
+
+const MyMenu = () => {
+  const { permissions } = usePermissions();
+  return (
+    <Menu>
+      <Menu.DashboardItem />
+      <Menu.Item
+        to="/categories"
+        primaryText="Categories"
+        disabled={
+          !canAccess({
+            permissions,
+            resource: "categories",
+          })
+        }
+      />
+    </Menu>
+  );
+};
+```
 
 ---
 
@@ -2000,18 +2028,41 @@ You can add custom CSS classes to any column or cell in `DatagridAG` or `Datagri
 {% raw %}
 ```tsx
 const columnDefs = [
-  { field: 'static', cellClass: 'my-class' },
-  { field: 'staticArray', cellClass: ['my-class1','my-class2'] },
-  { field: 'function', cellClass: params => params.value === 'something' ? 'my-class-1' : 'my-class-2' },
-  { field: 'functionArray', cellClass: params => ['my-class-1','my-class-2'] },
+  // return same class for each row
+  {
+    field: 'static',
+    cellClass: 'my-class'
+  },
+  // return same array of classes for each row
+  {
+    field: 'staticArray',
+    cellClass: ['my-class1','my-class2'],
+  },
+  // return class based on function
+  {
+    field: 'function',
+    cellClass: params => {
+      return params.value === 'something' ? 'my-class-1' : 'my-class-2';
+    },
+  },
+  // return array of classes based on function
+  {
+    field: 'functionArray',
+    cellClass: params => ['my-class-1','my-class-2'],
+  },
+  // return array of classes based on many functions with `cellClassRules`
   {
     field: 'functionRules',
     cellClassRules: {
+      // apply green to 2008
       'rag-green-outer': params => params.value === 2008,
+      // apply blue to 2004
       'rag-blue-outer': params => params.value === 2004,
+      // apply red to 2000
       'rag-red-outer': params => params.value === 2000,
     }
-  },
+  }
+  // return array of classes based on many functions with `cellClassRules`
   {
     field: 'simplifiedFunctionRules',
     cellClassRules: {

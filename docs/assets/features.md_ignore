@@ -24,7 +24,7 @@ The `<ToggleThemeButton>` component lets users switch from light to dark mode, a
 
 If you need horizontal space, switch the classic menu for an `<IconMenu>`. It renders a reduced menu bar with a sliding panel for second-level menu items. This menu saves a lot of screen real estate, and allows for sub menus of any level of complexity. #UI https://marmelab.com/react-admin/IconMenu.html
 
-![IconMenu](https://react-admin-ee.marmelab.com/assets/ra-multilevelmenu-categories.gif)
+![IconMenu](https://marmelab.com/ra-enterprise/modules/assets/ra-multilevelmenu-categories.gif)
 
 ---
 
@@ -54,7 +54,7 @@ When a form becomes too complex, organize the inputs in different sections with 
 
 To provide users visibility on their progression through a complex form, use the `<WizardForm>`. #form https://marmelab.com/react-admin/WizardForm.html
 
-![WizardForm](https://react-admin-ee.marmelab.com/assets/ra-wizard-form-overview.gif)
+![WizardForm](https://marmelab.com/ra-enterprise/modules/assets/ra-wizard-form-overview.gif)
 
 ---
 
@@ -118,7 +118,7 @@ With your admin getting bigger, or if you have to manage many resources and/or s
 
 <video controls autoplay playsinline muted loop width="100%">
     <source
-        src="https://react-admin-ee.marmelab.com/assets/breadcumb-nested-resource.mp4"
+        src="https://marmelab.com/ra-enterprise/modules/assets/ra-navigation/latest/breadcumb-nested-resource.webm"
         type="video/webm"
     />
     Your browser does not support the video tag.
@@ -177,7 +177,8 @@ Edition forms in react-admin have a built-in "Undo" feature, letting end users c
 `<Edit>` is designed to be a page component, passed to the edit prop of the `<Resource>` component. But you may want to let users edit a record in a dialiog without leaving the context of the list page. If so, you can use the `<EditDialog>` component. #form https://marmelab.com/react-admin/EditDialog.html
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/edit-dialog.mp4" type="video/mp4">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.webm" type="video/webm">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -186,7 +187,8 @@ Edition forms in react-admin have a built-in "Undo" feature, letting end users c
 If you want to let users edit a record from another page, use the `<EditInDialogButton>` component. #form https://marmelab.com/react-admin/EditInDialogButton.html
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.webm" type="video/webm">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-form-layout/latest/InDialogButtons.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -215,7 +217,8 @@ Use `<ReferenceOneInput>` in an `<Edit>` or `<Create>` view to edit a record lin
 The `<Search>` component renders a global search input. It’s designed to be always accessible in the top `<AppBar>`. #ui https://marmelab.com/react-admin/Search.html
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-demo.mp4" type="video/mp4">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.webm" type="video/webm">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -234,7 +237,8 @@ The `<Configurable>` component makes another component configurable by the end u
 In the case you want keep track of user actions, and get an overview of the activity of your admin, you can display event lists and audit logs with `<TimeLine>`, `<RecordTimeline>` and with `<EventList>` components. #activitylog #timeline #eventlog https://marmelab.com/ra-enterprise/modules/ra-audit-log
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-audit-log/latest/ra-audit-log-event-list.mp4" type="video/mp4">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log-event-list.webm" type="video/webm">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-audit-log/latest/ra-audit-log-event-list.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -252,7 +256,7 @@ To show more data from a resource without adding too many columns, you can show 
 With your admin getting bigger, the default sidebar menu might become too crowded. The `SolarLayout` is a beautiful alternative layout that help you organize your pages. #ui
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-solar-layout.mp4" type="video/mp4">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-solar-layout.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -261,7 +265,8 @@ With your admin getting bigger, the default sidebar menu might become too crowde
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the `<Calendar>` component. #ui https://marmelab.com/react-admin/Calendar.html
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-calendar.mp4" type="video/mp4">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.webm" type="video/webm">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-calendar.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
@@ -279,7 +284,8 @@ If your app needs to display **events**, **appointments**, **time intervals**, o
 The `<SearchWithResult>` component renders a search input and the search results directly below the input. It's ideal for dashboards or menu panels. #ui #search https://marmelab.com/ra-enterprise/modules/ra-search#searchwithresult
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://react-admin-ee.marmelab.com/assets/ra-search-with-result-overview.mp4" type="video/mp4">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-overview.webm" type="video/webm">
+  <source src="https://marmelab.com/ra-enterprise/modules/assets/ra-search-with-result-overview.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
