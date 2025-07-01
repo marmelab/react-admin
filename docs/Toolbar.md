@@ -45,11 +45,9 @@ const CommentCreate = () => (
 
 `<Toolbar>` accepts the following props:
 
-- [`<Toolbar>`](#toolbar)
-  - [Usage](#usage)
-  - [Props](#props)
-  - [`children`](#children)
-  - [`sx`: CSS API](#sx-css-api)
+- [`children`](#children)
+- `className`
+- [`sx`](#sx-css-api)
 
 Additional props are passed down to [the Material UI `<Toolbar>` component](https://mui.com/material-ui/api/toolbar/).
 

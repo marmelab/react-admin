@@ -53,17 +53,14 @@ const PostEdit = () => (
 
 `<SaveButton>` accepts the following props:
 
-- [`<SaveButton>`](#savebutton)
-  - [Usage](#usage)
-  - [Props](#props)
-  - [`icon`](#icon)
-  - [`label`](#label)
-  - [`mutationOptions`](#mutationoptions)
-  - [`onClick`](#onclick)
-  - [`alwaysEnable`](#alwaysenable)
-  - [`sx`: CSS API](#sx-css-api)
-  - [`transform`](#transform)
-  - [`type`](#type)
+- [`icon`](#icon)
+- [`label`](#label)
+- [`mutationOptions`](#mutationoptions)
+- [`onClick`](#onclick)
+- [`alwaysEnable`](#alwaysenable)
+- [`sx`](#sx-css-api)
+- [`transform`](#transform)
+- [`type`](#type)
 
 Additional props (e.g. `color`, `variant`) are passed to [the underlying Material UI `<Button>` component](https://mui.com/components/buttons/).
 

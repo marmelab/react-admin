@@ -1,7 +1,6 @@
 ---
 layout: default
 title: "useList"
-storybook_path: ra-core-controller-list-uselist--basic
 ---
 
 # `useList`
@@ -66,18 +65,14 @@ const MyComponent = () => {
 
 `useList` expects an object with the following keys:
 
-- [`useList`](#uselist)
-  - [Usage](#usage)
-  - [Parameters](#parameters)
-  - [`data`](#data)
-  - [`filter`](#filter)
-  - [`filterCallback`](#filtercallback)
-  - [`isFetching`](#isfetching)
-  - [`isPending`](#ispending)
-  - [`page`](#page)
-  - [`perPage`](#perpage)
-  - [`sort`](#sort)
-  - [Return Value](#return-value)
+* [`data`](#data)
+* [`filter`](#filter)
+* [`filterCallback`](#filtercallback)
+* [`isFetching`](#isfetching)
+* [`isPending`](#ispending)
+* [`page`](#page)
+* [`perPage`](#perpage)
+* [`sort`](#sort)
 
 ## `data`
 
