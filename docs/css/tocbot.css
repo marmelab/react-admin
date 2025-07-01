@@ -42,6 +42,12 @@
     background-color: var(--deepblue);
 }
 
+.toc-link-icon {
+    position: relative;
+    top: 3px;
+    left: 8px;
+}
+
 .is-active-link {
     color: var(--deepblue) !important;
 }

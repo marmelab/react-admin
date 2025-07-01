@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The useCreateController hook"
+storybook_path: ra-core-controller-usecreatecontroller--authenticated
 ---
 
 # `useCreateController`

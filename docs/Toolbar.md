@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Toolbar Component"
+storybook_path: ra-ui-materialui-layout-appbar--toolbar
 ---
 
 # `<Toolbar>`
@@ -44,9 +45,11 @@ const CommentCreate = () => (
 
 `<Toolbar>` accepts the following props:
 
-- [`children`](#children)
-- `className`
-- [`sx`](#sx-css-api)
+- [`<Toolbar>`](#toolbar)
+  - [Usage](#usage)
+  - [Props](#props)
+  - [`children`](#children)
+  - [`sx`: CSS API](#sx-css-api)
 
 Additional props are passed down to [the Material UI `<Toolbar>` component](https://mui.com/material-ui/api/toolbar/).
 

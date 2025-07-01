@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The FilterLiveSearch Component"
+storybook_path: ra-ui-materialui-list-filter-filterlivesearch--basic
 ---
 
 # `<FilterLiveSearch>`

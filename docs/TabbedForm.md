@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "TabbedForm"
+storybook_path: ra-ui-materialui-forms-tabbedform--basic
 ---
 
 # `<TabbedForm>`

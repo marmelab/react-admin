@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The DataTable Component"
+storybook_path: ra-ui-materialui-list-datatable--basic
 ---
 
 # `<DataTable>`

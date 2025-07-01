@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The InPlaceEditor Component"
+storybook_path: ra-ui-materialui-input-inplaceeditor--complex
 ---
 
 # `<InPlaceEditor>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useCreate"
+storybook_path: ra-core-dataprovider-usecreate-optimistic--success-case
 ---
 
 # `useCreate`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The TimeInput Component"
+storybook_path: ra-ui-materialui-input-timeinput--basic
 ---
 
 # `<TimeInput>`

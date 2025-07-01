@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useRegisterMutationMiddleware"
+storybook_path: ra-core-form-useregistermutationmiddleware--basic
 ---
 
 # `useRegisterMutationMiddleware`

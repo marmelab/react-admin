@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useNotify"
+storybook_path: ra-core-usenotify--basic
 ---
 
 # `useNotify`

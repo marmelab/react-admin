@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ReferenceManyField Component"
+storybook_path: ra-ui-materialui-fields-referencemanyfield--basic
 ---
 
 # `<ReferenceManyField>`

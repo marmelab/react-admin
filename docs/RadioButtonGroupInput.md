@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The RadioButtonGroupInput Component"
+storybook_path: ra-ui-materialui-input-radiobuttongroupinput--basic
 ---
 
 # `<RadioButtonGroupInput>`

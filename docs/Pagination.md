@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Pagination Component"
+storybook_path: ra-ui-materialui-list-pagination--basic
 ---
 
 # `<Pagination>`

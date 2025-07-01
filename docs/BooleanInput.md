@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The BooleanInput Component"
+storybook_path: ra-ui-materialui-input-booleaninput--basic
 ---
 
 # `<BooleanInput>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useListController"
+storybook_path: ra-core-controller-list-uselistcontroller--authenticated
 ---
 
 # `useListController`

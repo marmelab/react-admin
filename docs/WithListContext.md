@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "WithListContext"
+storybook_path: ra-core-controller-list-withlistcontext--basic
 ---
 
 # `<WithListContext>`
