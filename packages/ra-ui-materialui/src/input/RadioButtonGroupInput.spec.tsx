@@ -541,6 +541,35 @@ describe('<RadioButtonGroupInput />', () => {
         expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
+    it('should render disabled choices marked as so', () => {
+        const choices = [
+            { id: 1, name: 'VISA' },
+            { id: 2, name: 'Mastercard', disabled: true },
+        ];
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="creditcards">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <RadioButtonGroupInput
+                            {...defaultProps}
+                            choices={choices}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.creditcards.fields.type')
+        );
+
+        expect(
+            screen.getByText('VISA').getAttribute('aria-disabled')
+        ).toBeNull();
+        expect(
+            screen.getByText('Mastercard').getAttribute('aria-disabled')
+        ).toEqual('true');
+    });
+
     describe('inside ReferenceArrayInput', () => {
         it('should use the recordRepresentation as optionText', async () => {
             render(<InsideReferenceArrayInput />);
