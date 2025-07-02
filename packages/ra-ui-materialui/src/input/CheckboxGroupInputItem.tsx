@@ -53,7 +53,6 @@ export const CheckboxGroupInputItem = (
             onChange={onChange}
             className={className}
             inputRef={inputRef}
-            disabled={disabled}
             control={
                 <Checkbox
                     id={`${id}_${getChoiceValue(choice)}`}
@@ -66,6 +65,7 @@ export const CheckboxGroupInputItem = (
                             : false
                     }
                     value={String(getChoiceValue(choice))}
+                    disabled={disabled}
                     {...options}
                 />
             }
