@@ -560,12 +560,13 @@ describe('<RadioButtonGroupInput />', () => {
         );
         fireEvent.mouseDown(screen.getByLabelText('Mastercard'));
 
-        expect(screen.getByText('VISA').getAttribute('class')).not.toContain(
-            'Mui-disabled'
-        );
-        expect(screen.getByText('Mastercard').getAttribute('class')).toContain(
-            'Mui-disabled'
-        );
+        const enabledInput = screen.getByLabelText('VISA') as HTMLInputElement;
+        expect(enabledInput.disabled).toBe(false);
+
+        const disabledInput = screen.getByLabelText(
+            'Mastercard'
+        ) as HTMLInputElement;
+        expect(disabledInput.disabled).toBe(true);
     });
 
     describe('inside ReferenceArrayInput', () => {
