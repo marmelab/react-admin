@@ -559,15 +559,15 @@ describe('<RadioButtonGroupInput />', () => {
             </AdminContext>
         );
         fireEvent.mouseDown(
-            screen.getByLabelText('resources.creditcards.fields.type')
+            screen.getByLabelText('Mastercard')
         );
 
         expect(
-            screen.getByText('VISA').getAttribute('aria-disabled')
-        ).toBeNull();
+            screen.getByText('VISA').getAttribute('class')
+        ).not.toContain('Mui-disabled');
         expect(
-            screen.getByText('Mastercard').getAttribute('aria-disabled')
-        ).toEqual('true');
+            screen.getByText('Mastercard').getAttribute('class')
+        ).toContain('Mui-disabled');
     });
 
     describe('inside ReferenceArrayInput', () => {
