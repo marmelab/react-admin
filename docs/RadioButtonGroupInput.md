@@ -94,6 +94,17 @@ const choices = [
 />
 ```
 
+You can render some options as disabled by setting the `disabled` field in some choices:
+
+```jsx
+const choices = [
+    { id: 'tech', name: 'Tech' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'people', name: 'People', disabled: true },
+];
+<RadioButtonGroupInput source="category" choices={choices} />
+```
+
 The choices are translated by default, so you can use translation identifiers as choices:
 
 ```jsx
