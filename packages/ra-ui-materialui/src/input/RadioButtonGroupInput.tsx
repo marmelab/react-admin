@@ -88,6 +88,23 @@ import { LinearProgress } from '../layout';
  * <RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
  *
  * The object passed as `options` props is passed to the Material UI <RadioButtonGroup> component
+ *
+ * You can disable some choices by providing a `disableValue` field which name is `disabled` by default
+ * @example
+ * const choices = [
+ *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ *    { id: 976, first_name: 'William', last_name: 'Rinkerd', disabled: true },
+ * ];
+ *
+ *  @example
+ * const choices = [
+ *   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+ *   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+ *   { id: 976, first_name: 'William', last_name: 'Rinkerd', not_available: true },
+ * ];
+ * <RadioButtonGroupInput source="gender" choices={choices} disableValue="not_available" />
+ *
  */
 export const RadioButtonGroupInput = (inProps: RadioButtonGroupInputProps) => {
     const props = useThemeProps({
@@ -115,6 +132,7 @@ export const RadioButtonGroupInput = (inProps: RadioButtonGroupInputProps) => {
         source: sourceProp,
         translateChoice,
         validate,
+        disableValue = 'disabled',
         disabled,
         readOnly,
         ...rest
@@ -222,6 +240,7 @@ export const RadioButtonGroupInput = (inProps: RadioButtonGroupInputProps) => {
                         optionValue={optionValue}
                         source={id}
                         translateChoice={translateChoice ?? !isFromReference}
+                        disableValue={disableValue}
                     />
                 ))}
             </RadioGroup>
@@ -277,6 +296,7 @@ export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
     RadioGroupProps & {
         options?: RadioGroupProps;
         source?: string;
+        disableValue?: string;
     };
 
 const PREFIX = 'RaRadioButtonGroupInput';

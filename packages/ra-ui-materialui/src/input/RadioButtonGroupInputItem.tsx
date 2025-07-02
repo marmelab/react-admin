@@ -19,6 +19,7 @@ export const RadioButtonGroupInputItem = (
         optionValue,
         source,
         translateChoice,
+        disableValue = 'disabled',
         ...rest
     } = useThemeProps({
         props: props,
@@ -29,6 +30,7 @@ export const RadioButtonGroupInputItem = (
         optionText,
         optionValue,
         translateChoice,
+        disableValue,
     });
     const label = getChoiceText(choice);
     const value = getChoiceValue(choice);
@@ -55,6 +57,7 @@ export interface RadioButtonGroupInputItemProps
         Pick<ChoicesProps, 'optionValue' | 'optionText' | 'translateChoice'> {
     choice: any;
     source: any;
+    disableValue?: string;
 }
 
 const PREFIX = 'RaRadioButtonGroupInputItem';
