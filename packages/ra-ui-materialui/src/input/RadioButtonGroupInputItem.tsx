@@ -54,10 +54,12 @@ export default RadioButtonGroupInputItem;
 
 export interface RadioButtonGroupInputItemProps
     extends Omit<FormControlLabelProps, 'control' | 'label'>,
-        Pick<ChoicesProps, 'optionValue' | 'optionText' | 'translateChoice'> {
+        Pick<
+            ChoicesProps,
+            'optionValue' | 'optionText' | 'translateChoice' | 'disableValue'
+        > {
     choice: any;
     source: any;
-    disableValue?: string;
 }
 
 const PREFIX = 'RaRadioButtonGroupInputItem';

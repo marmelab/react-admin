@@ -296,7 +296,6 @@ export type RadioButtonGroupInputProps = Omit<CommonInputProps, 'source'> &
     RadioGroupProps & {
         options?: RadioGroupProps;
         source?: string;
-        disableValue?: string;
     };
 
 const PREFIX = 'RaRadioButtonGroupInput';
