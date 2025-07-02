@@ -94,17 +94,6 @@ const choices = [
 />
 ```
 
-You can render some options as disabled by setting the `disabled` field in some choices:
-
-```jsx
-const choices = [
-    { id: 'tech', name: 'Tech' },
-    { id: 'lifestyle', name: 'Lifestyle' },
-    { id: 'people', name: 'People', disabled: true },
-];
-<RadioButtonGroupInput source="category" choices={choices} />
-```
-
 The choices are translated by default, so you can use translation identifiers as choices:
 
 ```jsx
@@ -292,6 +281,19 @@ However, in some cases, you may not want the choice to be translated. In that ca
 ```
 
 Note that `translateChoice` is set to `false` when `<RadioButtonGroupInput>` is a child of `<ReferenceInput>`.
+
+## Disabled `choices`
+
+You can render some options as disabled by setting the `disabled` field in some choices:
+
+```jsx
+const choices = [
+    { id: 'tech', name: 'Tech' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'people', name: 'People', disabled: true },
+];
+<RadioButtonGroupInput source="category" choices={choices} />
+```
 
 ## Fetching Choices
 
