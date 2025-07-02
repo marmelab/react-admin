@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SingleFieldList Component"
+storybook_path: ra-ui-materialui-list-singlefieldlist--basic
 ---
 
 # `<SingleFieldList>`

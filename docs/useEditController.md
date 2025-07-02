@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The useEditController hook"
+storybook_path: ra-core-controller-useeditcontroller--authenticated
 ---
 
 # `useEditController`

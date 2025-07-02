@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useShowController"
+storybook_path: ra-core-controller-useshowcontroller--authenticated
 ---
 
 # `useShowController`

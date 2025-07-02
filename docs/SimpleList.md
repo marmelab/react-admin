@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SimpleList Component"
+storybook_path: ra-ui-materialui-list-simplelist--basic
 ---
 
 # `<SimpleList>`

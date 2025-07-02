@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SelectField Component"
+storybook_path: ra-ui-materialui-fields-selectfield--basic
 ---
 
 # `<SelectField>`

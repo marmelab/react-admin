@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SortButton Component"
+storybook_path: ra-ui-materialui-button-sortbutton--basic
 ---
 
 # `<SortButton>`

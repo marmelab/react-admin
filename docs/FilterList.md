@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The FilterList Component"
+storybook_path: ra-ui-materialui-list-filter-filterlist--basic
 ---
 
 # `<FilterList>`

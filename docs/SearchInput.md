@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SearchInput Component"
+storybook_path: ra-ui-materialui-input-searchinput--basic
 ---
 
 # `<SearchInput>`

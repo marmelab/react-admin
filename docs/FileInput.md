@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The FileInput Component"
+storybook_path: ra-ui-materialui-input-fileinput--basic
 ---
 
 # `<FileInput>`

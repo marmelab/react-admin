@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ReferenceManyCount Component"
+storybook_path: ra-ui-materialui-fields-referencemanycount--basic
 ---
 
 # `<ReferenceManyCount>`

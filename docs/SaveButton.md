@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SaveButton Component"
+storybook_path: ra-ui-materialui-button-savebutton--basic
 ---
 
 # `<SaveButton>`

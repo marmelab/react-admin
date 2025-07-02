@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The FilterButton Component"
+storybook_path: ra-ui-materialui-list-filter-filterbutton--basic
 ---
 
 # `<FilterButton>`

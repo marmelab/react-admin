@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useInput"
+storybook_path: ra-core-form-useinput--basic
 ---
 
 # `useInput`

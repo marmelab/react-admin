@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The PasswordInput Component"
+storybook_path: ra-ui-materialui-input-passwordinput--basic
 ---
 
 # `<PasswordInput>`

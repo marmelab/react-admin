@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The EmailField Component"
+storybook_path: ra-ui-materialui-fields-emailfield--basic
 ---
 
 # `<EmailField>`

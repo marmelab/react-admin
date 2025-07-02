@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Toolbar Component"
+storybook_path: ra-ui-materialui-layout-appbar--toolbar
 ---
 
 # `<Toolbar>`

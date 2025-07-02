@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The AutocompleteInput Component"
+storybook_path: ra-ui-materialui-input-autocompleteinput--basic
 ---
 
 # `<AutocompleteInput>`

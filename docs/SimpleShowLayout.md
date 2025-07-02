@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "SimpleShowLayout"
+storybook_path: ra-ui-materialui-detail-simpleshowlayout--basic
 ---
 
 # `<SimpleShowLayout>`

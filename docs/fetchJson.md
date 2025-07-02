@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "fetchJson"
+storybook_path: ra-core-dataprovider-fetch--fetch-json
 ---
 
 # `fetchJson`

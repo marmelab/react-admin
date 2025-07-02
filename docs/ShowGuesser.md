@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "ShowGuesser"
+storybook_path: ra-ui-materialui-detail-showguesser--show-guesser
 ---
 
 # `<ShowGuesser>`

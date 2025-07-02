@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The RichTextField Component"
+storybook_path: ra-ui-materialui-fields-richtextfield--basic
 ---
 
 # `<RichTextField>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Datagrid Component"
+storybook_path: ra-ui-materialui-list-datagrid--basic
 ---
 
 # `<Datagrid>`

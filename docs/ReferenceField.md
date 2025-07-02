@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ReferenceField Component"
+storybook_path: ra-ui-materialui-fields-referencefield--basic
 ---
 
 # `<ReferenceField>`
