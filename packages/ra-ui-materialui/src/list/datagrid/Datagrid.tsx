@@ -236,7 +236,11 @@ export const Datagrid: React.ForwardRefExoticComponent<
      * the Datagrid displays the empty component.
      */
     if (data == null || data.length === 0 || total === 0) {
-        return empty ?? <ListNoResults resource={resource} />;
+        return empty === undefined ? (
+            <ListNoResults resource={resource} />
+        ) : (
+            empty
+        );
     }
 
     /**

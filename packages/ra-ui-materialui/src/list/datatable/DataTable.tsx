@@ -182,7 +182,13 @@ export const DataTable = React.forwardRef(function DataTable<
             {...props}
             hasBulkActions={hasBulkActions}
             loading={loading}
-            empty={empty ?? <ListNoResults resource={resourceFromContext} />}
+            empty={
+                empty === undefined ? (
+                    <ListNoResults resource={resourceFromContext} />
+                ) : (
+                    empty
+                )
+            }
         >
             <DataTableRowSxContext.Provider value={rowSx}>
                 <DataTableRoot
