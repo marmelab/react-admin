@@ -9,6 +9,7 @@ import {
     FC,
     ComponentType,
     ReactElement,
+    ReactNode,
     useMemo,
 } from 'react';
 import {
@@ -139,7 +140,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
         header = DatagridHeader,
         children,
         className,
-        empty = DefaultEmpty,
+        empty,
         expand,
         bulkActionsToolbar,
         bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
@@ -235,11 +236,11 @@ export const Datagrid: React.ForwardRefExoticComponent<
      * the Datagrid displays the empty component.
      */
     if (data == null || data.length === 0 || total === 0) {
-        if (empty) {
-            return empty;
-        }
-
-        return null;
+        return empty === undefined ? (
+            <ListNoResults resource={resource} />
+        ) : (
+            empty
+        );
     }
 
     /**
@@ -464,7 +465,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      *     </List>
      * );
      */
-    empty?: ReactElement;
+    empty?: ReactNode;
 
     /**
      * A function that returns whether the row for a record is expandable.
@@ -608,5 +609,3 @@ const sanitizeRestProps = props =>
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 Datagrid.displayName = 'Datagrid';
-
-const DefaultEmpty = <ListNoResults />;
