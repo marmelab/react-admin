@@ -558,16 +558,14 @@ describe('<RadioButtonGroupInput />', () => {
                 </ResourceContextProvider>
             </AdminContext>
         );
-        fireEvent.mouseDown(
-            screen.getByLabelText('Mastercard')
-        );
+        fireEvent.mouseDown(screen.getByLabelText('Mastercard'));
 
-        expect(
-            screen.getByText('VISA').getAttribute('class')
-        ).not.toContain('Mui-disabled');
-        expect(
-            screen.getByText('Mastercard').getAttribute('class')
-        ).toContain('Mui-disabled');
+        expect(screen.getByText('VISA').getAttribute('class')).not.toContain(
+            'Mui-disabled'
+        );
+        expect(screen.getByText('Mastercard').getAttribute('class')).toContain(
+            'Mui-disabled'
+        );
     });
 
     describe('inside ReferenceArrayInput', () => {
