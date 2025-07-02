@@ -426,4 +426,65 @@ describe('<CheckboxGroupInput />', () => {
             await screen.findByText('Option 1 (This is option 1)');
         });
     });
+
+    it('should render disabled choices marked as so', () => {
+        const choices = [
+            { id: 'ang', name: 'Angular' },
+            { id: 'rct', name: 'React', disabled: true },
+        ];
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            choices={choices}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        fireEvent.mouseDown(screen.getByLabelText('React'));
+
+        const enabledInput = screen.getByLabelText(
+            'Angular'
+        ) as HTMLInputElement;
+        expect(enabledInput.disabled).toBe(false);
+
+        const disabledInput = screen.getByLabelText(
+            'React'
+        ) as HTMLInputElement;
+        expect(disabledInput.disabled).toBe(true);
+    });
+
+    it('should render disabled choices marked as so by disableValue prop', () => {
+        const choices = [
+            { id: 'ang', name: 'Angular' },
+            { id: 'rct', name: 'React', not_available: true },
+        ];
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <CheckboxGroupInput
+                            {...defaultProps}
+                            choices={choices}
+                            disableValue="not_available"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        fireEvent.mouseDown(screen.getByLabelText('React'));
+
+        const enabledInput = screen.getByLabelText(
+            'Angular'
+        ) as HTMLInputElement;
+        expect(enabledInput.disabled).toBe(false);
+
+        const disabledInput = screen.getByLabelText(
+            'React'
+        ) as HTMLInputElement;
+        expect(disabledInput.disabled).toBe(true);
+    });
 });

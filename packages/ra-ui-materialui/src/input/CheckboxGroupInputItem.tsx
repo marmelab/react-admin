@@ -32,16 +32,19 @@ export const CheckboxGroupInputItem = (
         value,
         labelPlacement,
         inputRef,
+        disableValue = 'disabled',
         ...rest
     } = props;
 
-    const { getChoiceText, getChoiceValue } = useChoices({
+    const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
         optionValue,
         translateChoice,
+        disableValue,
     });
 
     const choiceName = getChoiceText(choice);
+    const disabled = getDisableValue(choice);
 
     return (
         <StyledFormControlLabel
@@ -50,6 +53,7 @@ export const CheckboxGroupInputItem = (
             onChange={onChange}
             className={className}
             inputRef={inputRef}
+            disabled={disabled}
             control={
                 <Checkbox
                     id={`${id}_${getChoiceValue(choice)}`}
@@ -74,7 +78,10 @@ export const CheckboxGroupInputItem = (
 
 export interface CheckboxGroupInputItemProps
     extends Omit<FormControlLabelProps, 'control' | 'label'>,
-        Pick<ChoicesProps, 'optionValue' | 'optionText' | 'translateChoice'> {
+        Pick<
+            ChoicesProps,
+            'optionValue' | 'optionText' | 'translateChoice' | 'disableValue'
+        > {
     choice: any;
     value: any;
     fullWidth?: boolean;
