@@ -1,11 +1,12 @@
 ---
 layout: default
 title: "The Datagrid Component"
+storybook_path: ra-ui-materialui-list-datagrid--basic
 ---
 
 # `<Datagrid>`
 
-> **Note:** React-admin v5.8.0 introduced a successor to `<Datagrid>` called [`<DataTable>`](./DataTable.md). It offers a better developer experience by removing child inspection, and avoids 'polluting' the field components with props only serving in datagrid columns (e.g. sortBy, label, etc). Hence, we recommend using `<DataTable>` instead of `<Datagrid>` for new projects. `<Datagrid>` is of course still available for backward compatibility.
+> **Note:** React-admin v5.8.0 introduced a successor to `<Datagrid>` called [`<DataTable>`](./DataTable.md). It offers a better developer experience by removing child inspection, and avoids 'polluting' the field components with props only serving in datagrid columns (e.g. sortBy, label, etc). Hence, we recommend using `<DataTable>` instead of `<Datagrid>` for new projects. `<Datagrid>` is of course still available for backward compatibility. If you want to migrate to `<DataTable>`, we offer a [codemod](./DataTable.md#migrating-from-datagrid-to-datatable) that makes it easier.
 
 The `<Datagrid>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, and an expand panel. It is usually used as a descendant of the [`<List>`](./List.md#list) and [`<ReferenceManyField>`](./ReferenceManyField.md) components. Outside these components, it must be used inside a `ListContext`.
 

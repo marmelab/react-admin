@@ -12,14 +12,12 @@ import BiotechIcon from '@mui/icons-material/Biotech';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
-
 import { FilterList } from './FilterList';
 import { FilterListItem } from './FilterListItem';
 import { AdminContext } from '../../AdminContext';
 import { AdminUI } from '../../AdminUI';
 import { List } from '../List';
-import { Datagrid } from '../datagrid/Datagrid';
-import { TextField } from '../../field';
+import { DataTable } from '../datatable/DataTable';
 
 export default { title: 'ra-ui-materialui/list/filter/FilterList' };
 
@@ -317,11 +315,11 @@ const BookListAside = () => (
 
 const BookList = () => (
     <List aside={<BookListAside />}>
-        <Datagrid>
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 

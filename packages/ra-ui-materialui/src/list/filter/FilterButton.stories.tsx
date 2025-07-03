@@ -5,11 +5,10 @@ import {
     Admin,
     Resource,
     CreateButton,
-    Datagrid,
+    DataTable,
     FilterButton,
     FilterForm,
     Pagination,
-    TextField,
     TextInput,
     TopToolbar,
     SearchInput,
@@ -177,11 +176,11 @@ const PostList = (props: {
                 args={props.args}
                 buttonProps={props.buttonProps}
             />
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="body" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="body" />
+            </DataTable>
             <Pagination />
         </ListBase>
     );

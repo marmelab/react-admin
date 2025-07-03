@@ -3,9 +3,8 @@ import { Route, Link, useParams } from 'react-router-dom';
 import {
     Admin,
     Resource,
-    Datagrid,
+    DataTable,
     List,
-    TextField,
     EditGuesser,
     EditButton,
     useRecordContext,
@@ -132,13 +131,17 @@ const BooksButton = () => {
 
 const AuthorList = () => (
     <List>
-        <Datagrid rowClick={false}>
-            <TextField source="id" />
-            <TextField source="firstName" />
-            <TextField source="lastName" />
-            <EditButton />
-            <BooksButton />
-        </Datagrid>
+        <DataTable rowClick={false}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="firstName" />
+            <DataTable.Col source="lastName" />
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
+            <DataTable.Col>
+                <BooksButton />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 
@@ -146,11 +149,11 @@ const BookList = () => {
     const { authorId } = useParams();
     return (
         <List resource="books" filter={{ authorId }}>
-            <Datagrid rowClick="edit">
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="year" />
-            </Datagrid>
+            <DataTable rowClick="edit">
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="year" />
+            </DataTable>
         </List>
     );
 };

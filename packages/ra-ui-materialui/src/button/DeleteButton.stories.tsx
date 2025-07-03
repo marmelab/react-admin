@@ -5,6 +5,7 @@ import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import { QueryClient } from '@tanstack/react-query';
 import fakeRestDataProvider from 'ra-data-fakerest';
+
 import {
     AuthProvider,
     I18nProvider,
@@ -16,12 +17,12 @@ import {
     ResourceContextProvider,
     TestMemoryRouter,
 } from 'ra-core';
+
 import { deepmerge } from '@mui/utils';
 import { AdminContext } from '../AdminContext';
 import { DeleteButton } from './DeleteButton';
 import { List } from '../list/List';
-import { Datagrid } from '../list/datagrid/Datagrid';
-import { TextField } from '../field/TextField';
+import { DataTable } from '../list';
 import { AdminUI } from '../AdminUI';
 import { Notification } from '../layout';
 import { LocalesMenuButton } from './LocalesMenuButton';
@@ -397,13 +398,15 @@ const AccessControlLayout = ({
 
 const BookList = ({ mutationMode = 'undoable' as const }) => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-            <DeleteButton mutationMode={mutationMode} />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+            <DataTable.Col>
+                <DeleteButton mutationMode={mutationMode} />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 

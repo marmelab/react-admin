@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ListBase Component"
+storybook_path: ra-core-controller-list-listbase--no-auth-provider
 ---
 
 # `<ListBase>`

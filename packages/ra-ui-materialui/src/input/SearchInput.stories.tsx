@@ -4,11 +4,9 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { List, Datagrid } from '../list';
-import { TextField } from '../field';
+import { List, DataTable } from '../list';
 import { SearchInput } from './SearchInput';
 
 export default { title: 'ra-ui-materialui/input/SearchInput' };
@@ -111,12 +109,12 @@ const postFilters = [<SearchInput source="q" alwaysOn />];
 const BookList = () => {
     return (
         <List filters={postFilters}>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
         </List>
     );
 };
@@ -179,12 +177,12 @@ const RaceConditionBookList = () => {
     return (
         <List filters={postFilters}>
             <RaceConditionTrigger />
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
         </List>
     );
 };
@@ -204,12 +202,12 @@ const postFiltersReadOnly = [<SearchInput source="q" alwaysOn readOnly />];
 const BookListReadOnly = () => {
     return (
         <List filters={postFiltersReadOnly}>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+            </DataTable>
         </List>
     );
 };

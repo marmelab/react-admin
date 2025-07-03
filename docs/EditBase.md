@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The EditBase Component"
+storybook_path: ra-core-controller-editbase--default-title
 ---
 
 # `<EditBase>`

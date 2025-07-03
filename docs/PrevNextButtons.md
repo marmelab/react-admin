@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The PrevNextButtons Component"
+storybook_path: ra-ui-materialui-button-prevnextbuttons--basic
 ---
 
 # `<PrevNextButtons>`

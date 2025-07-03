@@ -9,8 +9,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import frenchMessages from 'ra-language-french';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Datagrid, List } from '../list';
-import { TextField } from '../field';
+import { DataTable, List } from '../list';
 
 export default { title: 'ra-ui-materialui/button/DeleteWithUndoButton' };
 
@@ -145,13 +144,13 @@ const dataProvider = fakeRestDataProvider({
 const BookList = ({ children }) => {
     return (
         <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-                {children}
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+                <DataTable.Col>{children}</DataTable.Col>
+            </DataTable>
         </List>
     );
 };

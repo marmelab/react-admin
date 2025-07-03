@@ -16,9 +16,9 @@ import englishMessages from 'ra-language-english';
 
 import { TextField } from '../field';
 import { ReferenceManyField } from './ReferenceManyField';
-import { Datagrid } from '../list/datagrid/Datagrid';
 import {
     BulkActionsToolbar,
+    DataTable,
     FilterButton,
     Pagination,
     SingleFieldList,
@@ -116,9 +116,9 @@ const Wrapper = ({
 export const Basic = () => (
     <Wrapper>
         <ReferenceManyField reference="books" target="author_id">
-            <Datagrid>
-                <TextField source="title" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+            </DataTable>
         </ReferenceManyField>
     </Wrapper>
 );
@@ -159,9 +159,9 @@ export const WithFilter = () => (
         <ReferenceManyField reference="books" target="author_id">
             <FilterButton filters={filters} />
             <FilterForm filters={filters} />
-            <Datagrid bulkActionButtons={false}>
-                <TextField source="title" />
-            </Datagrid>
+            <DataTable bulkActionButtons={false}>
+                <DataTable.Col source="title" />
+            </DataTable>
         </ReferenceManyField>
     </Wrapper>
 );
@@ -175,9 +175,9 @@ export const WithMeta = () => (
                 meta: { foo: 'bar' },
             }}
         >
-            <Datagrid>
-                <TextField source="title" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+            </DataTable>
         </ReferenceManyField>
     </Wrapper>
 );
@@ -192,9 +192,9 @@ export const StoreKey = () => (
                     meta: { foo: 'bar' },
                 }}
             >
-                <Datagrid>
-                    <TextField source="title" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="title" />
+                </DataTable>
             </ReferenceManyField>
             <ReferenceManyField
                 reference="books"
@@ -204,9 +204,9 @@ export const StoreKey = () => (
                 }}
                 storeKey="custom"
             >
-                <Datagrid>
-                    <TextField source="title" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="title" />
+                </DataTable>
             </ReferenceManyField>
         </Stack>
     </Wrapper>
@@ -230,15 +230,15 @@ export const WithPagination = ({
             pagination={<Pagination />}
             perPage={5}
         >
-            <Datagrid
+            <DataTable
                 bulkActionsToolbar={
                     <BulkActionsToolbar selectAllButton={selectAllButton}>
                         <BulkDeleteButton />
                     </BulkActionsToolbar>
                 }
             >
-                <TextField source="title" />
-            </Datagrid>
+                <DataTable.Col source="title" />
+            </DataTable>
         </ReferenceManyField>
     </Wrapper>
 );
@@ -267,9 +267,9 @@ const AuthorEdit = () => (
                 pagination={<Pagination />}
                 perPage={5}
             >
-                <Datagrid>
-                    <TextField source="title" />
-                </Datagrid>
+                <DataTable>
+                    <DataTable.Col source="title" />
+                </DataTable>
             </ReferenceManyField>
         </SimpleForm>
     </Edit>

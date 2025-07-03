@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ChipField Component"
+storybook_path: ra-ui-materialui-fields-chipfield--basic
 ---
 
 # `<ChipField>`

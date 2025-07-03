@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ArrayInput Component"
+storybook_path: ra-ui-materialui-input-arrayinput--basic
 ---
 
 # `<ArrayInput>`

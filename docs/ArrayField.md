@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ArrayField Component"
+storybook_path: ra-ui-materialui-fields-arrayfield--basic
 ---
 
 # `<ArrayField>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The TranslatableFields Component"
+storybook_path: ra-ui-materialui-fields-translatablefields--basic
 ---
 
 # `<TranslatableFields>`

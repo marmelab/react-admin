@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "CanAccess"
+storybook_path: ra-core-auth-canaccess--basic
 ---
 
 # `<CanAccess>`

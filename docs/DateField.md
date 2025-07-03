@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The DateField Component"
+storybook_path: ra-ui-materialui-fields-datefield--basic
 ---
 
 # `<DateField>`

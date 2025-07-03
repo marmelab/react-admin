@@ -2,9 +2,7 @@ import * as React from 'react';
 import { Admin } from 'react-admin';
 import { Resource, memoryStore, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
-
-import { List, Datagrid } from '../list';
-import { TextField } from '../field';
+import { List, DataTable } from '../list';
 
 export default { title: 'ra-ui-materialui/button/ToggleThemeButton' };
 
@@ -82,12 +80,12 @@ const dataProvider = fakeRestDataProvider({
 
 const BookList = () => (
     <List>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 

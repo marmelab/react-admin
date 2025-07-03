@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Menu Component"
+storybook_path: ra-ui-materialui-layout-menu--default
 ---
 
 # `<Menu>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "TabbedShowLayout"
+storybook_path: ra-ui-materialui-detail-tabbedshowlayout--basic
 ---
 
 # `<TabbedShowLayout>`

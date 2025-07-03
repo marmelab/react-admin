@@ -1,5 +1,7 @@
 let allMenus, navLinks, versionsLinks;
 
+const STORYBOOK_PATH_META_SELECTOR = 'meta[name="storybook_path"]';
+
 function hideTips() {
     const tipElement = document.getElementById('tip');
     const tipContainer = document.getElementById('tip-container');
@@ -57,6 +59,39 @@ function buildPageToC() {
             collapseDepth: 2,
             hasInnerContainers: true,
         });
+
+        const storybookPathMetaElement = document.querySelector(
+            STORYBOOK_PATH_META_SELECTOR
+        );
+        let storybookPathMetaContent;
+        if (storybookPathMetaElement) {
+            storybookPathMetaContent = document.querySelector(
+                STORYBOOK_PATH_META_SELECTOR
+            ).content;
+        }
+        const tocList = document.querySelector('.toc-list');
+        if (!tocList || !storybookPathMetaContent) {
+            return;
+        }
+
+        const storybookListItem = document.createElement('li');
+        storybookListItem.className = 'toc-list-item';
+
+        const storybookLink = document.createElement('a');
+        storybookLink.className = 'toc-link';
+        storybookLink.href = `https://react-admin-storybook.vercel.app?path=/story/${storybookPathMetaContent}`;
+        storybookLink.textContent = 'Storybook';
+        storybookLink.target = '_blank';
+        storybookLink.rel = 'noopener noreferrer';
+
+        const storybookLaunchIcon = document.createElement('img');
+        storybookLaunchIcon.src = './img/icons/launch.png';
+        storybookLaunchIcon.alt = 'Open Storybook';
+        storybookLaunchIcon.className = 'toc-link-icon';
+
+        storybookListItem.appendChild(storybookLink);
+        storybookLink.appendChild(storybookLaunchIcon);
+        tocList.appendChild(storybookListItem);
     }
 }
 
@@ -79,8 +114,29 @@ function replaceContent(text) {
         content.innerHTML = tmpContent.innerHTML;
     }
 
-    window.scrollTo(0, 0);
+    const newStorybookPathMeta = tmpElement.querySelector(
+        STORYBOOK_PATH_META_SELECTOR
+    );
 
+    const newStorybookPathContent = newStorybookPathMeta?.content ?? '';
+    const storybookPathMetaElement = document.querySelector(
+        STORYBOOK_PATH_META_SELECTOR
+    );
+    if (storybookPathMetaElement && newStorybookPathContent) {
+        document
+            .querySelector(STORYBOOK_PATH_META_SELECTOR)
+            .setAttribute('content', newStorybookPathContent);
+    } else if (newStorybookPathContent) {
+        const metaElement = document.createElement('meta');
+        metaElement.setAttribute('name', 'storybook_path');
+        metaElement.setAttribute('content', newStorybookPathContent);
+        document.head.appendChild(metaElement);
+    } else {
+        // Remove the meta element if it doesn't exist in the new content
+        storybookPathMetaElement?.remove();
+    }
+
+    window.scrollTo(0, 0);
     buildPageToC();
 
     navigationFitScroll();

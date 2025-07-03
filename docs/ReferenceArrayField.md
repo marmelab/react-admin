@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ReferenceArrayField Component"
+storybook_path: ra-ui-materialui-fields-referencearrayfield--basic
 ---
 
 # `<ReferenceArrayField>`

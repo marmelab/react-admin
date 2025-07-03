@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Admin, Datagrid, List, TextField } from 'react-admin';
+import { Admin, DataTable, List } from 'react-admin';
 import { QueryClient } from '@tanstack/react-query';
 import {
     Resource,
@@ -505,10 +505,10 @@ export const ErrorRadioButtonGroupInput = () => (
 
 const AuthorList = () => (
     <List>
-        <Datagrid>
-            <TextField source="first_name" />
-            <TextField source="last_name" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="first_name" />
+            <DataTable.Col source="last_name" />
+        </DataTable>
     </List>
 );
 

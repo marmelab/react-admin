@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Admin Component"
+storybook_path: react-admin-admin--basic
 ---
 
 # `<Admin>`

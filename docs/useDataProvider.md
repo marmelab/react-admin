@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useDataProvider"
+storybook_path: ra-core-dataprovider-usedataprovider--prefetching
 ---
 
 # `useDataProvider`

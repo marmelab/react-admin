@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Labeled"
+storybook_path: ra-ui-materialui-detail-labeled--basic
 ---
 
 # `<Labeled>`

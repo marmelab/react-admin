@@ -5,12 +5,10 @@ import frenchMessages from 'ra-language-french';
 import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Alert } from '@mui/material';
-
 import { UpdateWithConfirmButton } from './UpdateWithConfirmButton';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
-import { List, Datagrid } from '../list';
-import { TextField } from '../field';
+import { List, DataTable } from '../list';
 
 export default { title: 'ra-ui-materialui/button/UpdateWithConfirmButton' };
 
@@ -171,13 +169,13 @@ const dataProvider = fakeRestDataProvider({
 const BookList = ({ children }) => {
     return (
         <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-                {children}
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+                <DataTable.Col>{children}</DataTable.Col>
+            </DataTable>
         </List>
     );
 };
@@ -185,11 +183,11 @@ const BookList = ({ children }) => {
 const AuthorList = ({ children }) => {
     return (
         <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="fullName" />
-                {children}
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="fullName" />
+                <DataTable.Col>{children}</DataTable.Col>
+            </DataTable>
         </List>
     );
 };

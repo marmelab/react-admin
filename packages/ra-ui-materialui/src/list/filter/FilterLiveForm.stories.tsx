@@ -21,11 +21,11 @@ import { FilterListSection } from '.';
 import { AdminContext } from '../../AdminContext';
 import { AdminUI } from '../../AdminUI';
 import { ExportButton } from '../../button';
-import { ReferenceField, TextField } from '../../field';
+import { ReferenceField } from '../../field';
 import { AutocompleteInput, ReferenceInput, TextInput } from '../../input';
 import { TopToolbar } from '../../layout';
 import { List } from '../List';
-import { Datagrid } from '../datagrid/Datagrid';
+import { DataTable } from '../datatable/DataTable';
 import { FilterList } from './FilterList';
 import { FilterListItem } from './FilterListItem';
 
@@ -443,11 +443,13 @@ const BookListAside = () => (
 
 const BookList = () => (
     <List aside={<BookListAside />}>
-        <Datagrid>
-            <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="authorId">
+                <ReferenceField source="authorId" reference="authors" />
+            </DataTable.Col>
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 
@@ -491,11 +493,13 @@ const ListActions = () => (
 
 const BookListWithActions = () => (
     <List actions={<ListActions />}>
-        <Datagrid>
-            <TextField source="title" />
-            <ReferenceField source="authorId" reference="authors" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="title" />
+            <DataTable.Col source="authorId">
+                <ReferenceField source="authorId" reference="authors" />
+            </DataTable.Col>
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 
