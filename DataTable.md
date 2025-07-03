@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The DataTable Component"
+storybook_path: ra-ui-materialui-list-datatable--basic
 ---
 
 # `<DataTable>`
@@ -143,7 +144,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: `<DataTable>` also lets you customize the table [header](#header) and [footer](#footer) components.
+**Tip**: `<DataTable>` also lets you customize the table [header](#head) and [footer](#foot) components.
 
 ## `bulkActionButtons`
 
@@ -693,6 +694,33 @@ const PostList = () => (
 
 **Tip**: To handle sorting in your custom DataTable head component, check out the [Building a custom sort control](./ListTutorial.md#building-a-custom-sort-control) section.
 
+## `hiddenColumns`
+
+By default, `<DataTable>` renders all `<DataTable.Col>` children. Use the `hiddenColumns` property to set hidden columns by default.
+
+```tsx
+import { ColumnsButton, TopToolbar, List, DataTable } from 'react-admin';
+
+const PostListActions = () => (
+        <TopToolbar>
+          <ColumnsButton />
+        </TopToolbar>
+)
+
+const PostList = () => (
+    <List actions={<PostListActions />}>
+        <DataTable hiddenColumns={['id', 'author']}>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </List>
+);
+```
+
+Using `hiddenColumns` instead of removing `<DataTable.Col>` elements allows hidden columns to be displayed again using a `<ColumnsButton>`, as explained in the [Hiding or Reordering Columns](#hiding-or-reordering-columns) section.
+
 ## `hover`
 
 By default, when a user hovers over a row, the background color changes to indicate the row is active. Set the `hover` prop to `false` to disable this behavior.
@@ -716,7 +744,7 @@ Using the `isRowExpandable` prop, you can customize which rows can have a collap
 For instance, this code shows an expand button only for rows that have a detail to show:
 
 ```tsx
-import { List, DataTable useRecordContext } from 'react-admin';
+import { List, DataTable, useRecordContext } from 'react-admin';
 
 const PostPanel = () => {
     const record = useRecordContext();
@@ -962,13 +990,13 @@ Additional props are passed to [the MUI `<TableCell>`](https://mui.com/material-
 
 ### `align`
 
-Table cells are right-aligned by default. To left-align a column, set the `align` prop to `"left"`. This is useful for numeric columns:
+Table cells are left-aligned by default. To right-align a column, set the `align` prop to `"right"`. This is useful for numeric columns:
 
 ```tsx
 <DataTable.Col 
     source="nb_views"
     field={NumberField}
-    align="left" 
+    align="right" 
 />
 ```
 
@@ -1618,7 +1646,7 @@ An action column should not be sortable, so you don't need to specify a `source`
 
 ```tsx
 <DataTable.Col>
-    <EditButton>
+    <EditButton />
     <DeleteButton />
 </DataTable.Col>
 ```
@@ -1654,9 +1682,9 @@ const ProductList = () => (
             </CanAccess>
             <CanAccess action="read" resource="products.reference">
                 <DataTable.Col source="reference" />
-            </DataTable.Col>
+            </CanAccess>
             <CanAccess action="read" resource="products.category_id">
-                <DataTable.Col source="category_id" />
+                <DataTable.Col source="category_id">
                     <ReferenceField source="category_id" reference="categories" />
                 </DataTable.Col>
             </CanAccess>
@@ -1688,9 +1716,9 @@ As this is quite verbose, you may prefer using the `<Datagrid>` component from t
 - Users must have the `'read'` permission on a resource column to see it in the export:
 
 ```jsx
-{ action: "read", resource: `${resource}.${source}` }.
+{ action: "read", resource: `${resource}.${source}` }
 // or
-{ action: "read", resource: `${resource}.*` }.
+{ action: "read", resource: `${resource}.*` }
 ```
 
 - Users must have the `'delete'` permission on the resource to see the `<BulkExportButton>`.
@@ -1759,7 +1787,7 @@ const ProductList = () => (
 **Tip**: Adding the 'read' permission for the resource itself doesn't grant the 'read' permission on the columns. If you want a user to see all possible columns, add the 'read' permission on columns using a wildcard:
 
 ```jsx
-{ action: "read", resource: "products.*" }.
+{ action: "read", resource: "products.*" }
 ```
 
 ## Typescript

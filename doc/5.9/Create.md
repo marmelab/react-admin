@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Create Component"
+storybook_path: ra-ui-materialui-detail-create--basic
 ---
 
 # `<Create>`

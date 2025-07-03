@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useGetList"
+storybook_path: ra-core-dataprovider-usegetlist--no-args
 ---
 
 # `useGetList`

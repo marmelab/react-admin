@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The RecordField Component"
+storybook_path: ra-ui-materialui-fields-recordfield--basic
 ---
 
 # `<RecordField>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The CreateBase Component"
+storybook_path: ra-core-controller-createbase--default-title
 ---
 
 # `<CreateBase>`

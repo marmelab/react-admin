@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useDelete"
+storybook_path: ra-core-dataprovider-usedelete-optimistic--success-case
 ---
 
 # `useDelete`

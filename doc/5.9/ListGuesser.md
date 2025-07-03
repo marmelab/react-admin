@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ListGuesser Component"
+storybook_path: ra-ui-materialui-list-listguesser--basic
 ---
 
 # `<ListGuesser>`

@@ -57,6 +57,33 @@ function buildPageToC() {
             collapseDepth: 2,
             hasInnerContainers: true,
         });
+
+        const storybookPathMeta = document.querySelector(
+            'meta[name="storybook_path"]'
+        );
+        const tocList = document.querySelector('.toc-list');
+        if (!tocList || !storybookPathMeta) {
+            return;
+        }
+
+        const storybookListItem = document.createElement('li');
+        storybookListItem.className = 'toc-list-item';
+
+        const storybookLink = document.createElement('a');
+        storybookLink.className = 'toc-link';
+        storybookLink.href = `https://react-admin-storybook.vercel.app?path=/story/${storybookPathMeta.content}`;
+        storybookLink.textContent = 'Storybook';
+        storybookLink.target = '_blank';
+        storybookLink.rel = 'noopener noreferrer';
+
+        const storybookLaunchIcon = document.createElement('img');
+        storybookLaunchIcon.src = '/img/icons/launch.png';
+        storybookLaunchIcon.alt = 'Open Storybook';
+        storybookLaunchIcon.className = 'toc-link-icon';
+
+        storybookListItem.appendChild(storybookLink);
+        storybookLink.appendChild(storybookLaunchIcon);
+        tocList.appendChild(storybookListItem);
     }
 }
 

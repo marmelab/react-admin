@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The FunctionField Component"
+storybook_path: ra-ui-materialui-fields-functionfield--basic
 ---
 
 # `<FunctionField>`

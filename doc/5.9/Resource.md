@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Resource Component"
+storybook_path: ra-core-core-resource--basic
 ---
 
 # The `<Resource>` component

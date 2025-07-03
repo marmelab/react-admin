@@ -10,6 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        {% if page.storybook_path %}<meta name="storybook_path" content="{{ page.storybook_path }}" />{% endif %}
         <link
             rel="canonical"
             href="{{ page.name | replace: '.md', '.html' | relative_url }}"

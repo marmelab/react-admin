@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Configurable Component"
+storybook_path: ra-ui-materialui-preferences-configurable--basic
 ---
 
 # `<Configurable>`

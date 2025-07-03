@@ -232,6 +232,21 @@ If you want to see what react-admin is capable of, or if you want to learn from 
             </div>
         </div>
     </div>
+    <div class="card">
+        <a href="#team-wiki" class="no-decoration"><img src="./img/team-wiki.jpg" alt="Kanban Board"></a>
+        <div class="content-card">
+            <a href="#team-wiki" class="no-decoration">
+                <p class="title-card"><b>Team Wiki</b></p>
+                <p  class="description-card">A Team Wiki board built with React-admin Enterprise Edition</p>
+            </a>
+        </div>
+        <div class="card-footer">
+            <div class="links-container">
+                <p><b><a href="https://marmelab.com/team-wiki/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/team-wiki" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
 </div>
 
 ## E-commerce
@@ -413,6 +428,25 @@ The source shows how to implement the following features:
 - [Custom dataProvider methods](https://github.com/djhi/atomic-pm/blob/main/src/providers/fakerest/dataProvider.ts)
 - [InPlace Edition](https://github.com/djhi/atomic-pm/blob/main/src/ra/EditInPlaceInput.tsx)
 - [Drag & drop](https://github.com/djhi/atomic-pm/blob/main/src/boards/BoardShow.tsx)
+
+## Team Wiki
+
+A Team Wiki board built with React-admin Enterprise edition.
+
+* Demo: [https://marmelab.com/team-wiki/](https://marmelab.com/team-wiki/)
+* Source code: [https://github.com/marmelab/team-wiki](https://github.com/marmelab/team-wiki)
+
+It leverages the following Enterprise Edition features:
+- [Navigation](https://react-admin-ee.marmelab.com/documentation/ra-navigation)
+- [History](https://react-admin-ee.marmelab.com/documentation/ra-history)
+- [Markdown](https://react-admin-ee.marmelab.com/documentation/ra-markdown)
+- [Search](https://react-admin-ee.marmelab.com/documentation/ra-search)
+- [Tree](https://react-admin-ee.marmelab.com/documentation/ra-tree)
+
+The source shows how to implement the following features:
+- [AppBar with Custom Navigation and Search](https://github.com/marmelab/team-wiki/blob/main/src/layout/AppBar.tsx)
+- [Customizing the Markdown Input](https://github.com/marmelab/team-wiki/blob/main/src/inputs/PageMarkdownInput.tsx)
+- [Custom List](https://github.com/marmelab/team-wiki/blob/main/src/resources/pages/PageList.tsx)
 
 ## Broadcom Layer 7 API Hub
 

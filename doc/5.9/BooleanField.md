@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The BooleanField Component"
+storybook_path: ra-ui-materialui-fields-booleanfield--basic
 ---
 
 # `<BooleanField>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Layout Component"
+storybook_path: ra-ui-materialui-layout-layout--basic
 ---
 
 # `<Layout>`

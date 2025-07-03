@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The AppBar Component"
+storybook_path: ra-ui-materialui-layout-appbar--basic
 ---
 
 # `<AppBar>`

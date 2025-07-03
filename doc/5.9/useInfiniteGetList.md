@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useInfiniteGetList"
+storybook_path: ra-core-dataprovider-useinfinitegetlist--basic
 ---
 
 # `useInfiniteGetList`

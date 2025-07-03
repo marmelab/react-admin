@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The List Component"
+storybook_path: ra-ui-materialui-list-list--basic
 ---
 
 # `<List>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useUpdateMany"
+storybook_path: ra-core-dataprovider-useupdatemany--undefined-values
 ---
 
 # `useUpdateMany`

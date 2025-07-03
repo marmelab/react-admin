@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ImageInput Component"
+storybook_path: ra-ui-materialui-input-imageinput--basic
 ---
 
 # `<ImageInput>`

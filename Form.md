@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "Form"
+storybook_path: ra-core-form-form--basic
 ---
 
 # `<Form>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Count Component"
+storybook_path: ra-ui-materialui-list-count--basic
 ---
 
 # `<Count>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The TranslatableInputs Component"
+storybook_path: ra-ui-materialui-input-timeinput--basic
 ---
 
 # `<TranslatableInputs>`

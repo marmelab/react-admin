@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SelectArrayInput Component"
+storybook_path: ra-ui-materialui-input-selectarrayinput--basic
 ---
 
 # `<SelectArrayInput>`

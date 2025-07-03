@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useRedirect"
+storybook_path: ra-core-routing--use-redirect
 ---
 
 # `useRedirect`

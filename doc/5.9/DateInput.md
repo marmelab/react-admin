@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The DateInput Component"
+storybook_path: ra-ui-materialui-input-dateinput--basic
 ---
 
 # `<DateInput>`

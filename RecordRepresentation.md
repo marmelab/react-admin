@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The RecordRepresentation Component"
+storybook_path: ra-core-controller-record-recordrepresentation--no-record-representation
 ---
 
 # `<RecordRepresentation>`

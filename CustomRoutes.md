@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The CustomRoutes Component"
+storybook_path: ra-core-core-customroutes--authenticated-custom-route
 ---
 
 # `<CustomRoutes>`

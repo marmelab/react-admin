@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useGetIdentity"
+storybook_path: ra-core-auth-usegetidentity--basic
 ---
 
 # `useGetIdentity`

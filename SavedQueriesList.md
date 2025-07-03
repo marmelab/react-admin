@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SavedQueriesList Component"
+storybook_path: ra-ui-materialui-list-filter-savedquerieslist--basic
 ---
 
 # `<SavedQueriesList>`
