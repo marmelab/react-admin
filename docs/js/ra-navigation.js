@@ -1,5 +1,7 @@
 let allMenus, navLinks, versionsLinks;
 
+const STORYBOOK_PATH_META_SELECTOR = 'meta[name="storybook_path"]';
+
 function hideTips() {
     const tipElement = document.getElementById('tip');
     const tipContainer = document.getElementById('tip-container');
@@ -58,11 +60,11 @@ function buildPageToC() {
             hasInnerContainers: true,
         });
 
-        const storybookPathMeta = document.querySelector(
-            'meta[name="storybook_path"]'
-        );
+        const storybookPathMetaContent = document.querySelector(
+            STORYBOOK_PATH_META_SELECTOR
+        ).content;
         const tocList = document.querySelector('.toc-list');
-        if (!tocList || !storybookPathMeta) {
+        if (!tocList || !storybookPathMetaContent) {
             return;
         }
 
@@ -71,13 +73,13 @@ function buildPageToC() {
 
         const storybookLink = document.createElement('a');
         storybookLink.className = 'toc-link';
-        storybookLink.href = `https://react-admin-storybook.vercel.app?path=/story/${storybookPathMeta.content}`;
+        storybookLink.href = `https://react-admin-storybook.vercel.app?path=/story/${storybookPathMetaContent}`;
         storybookLink.textContent = 'Storybook';
         storybookLink.target = '_blank';
         storybookLink.rel = 'noopener noreferrer';
 
         const storybookLaunchIcon = document.createElement('img');
-        storybookLaunchIcon.src = '/img/icons/launch.png';
+        storybookLaunchIcon.src = './img/icons/launch.png';
         storybookLaunchIcon.alt = 'Open Storybook';
         storybookLaunchIcon.className = 'toc-link-icon';
 
@@ -105,6 +107,15 @@ function replaceContent(text) {
     if (content && tmpContent) {
         content.innerHTML = tmpContent.innerHTML;
     }
+
+    const newStorybookPathMeta = tmpElement.querySelector(
+        STORYBOOK_PATH_META_SELECTOR
+    );
+
+    const newStorybookPathContent = newStorybookPathMeta?.content ?? '';
+    document
+        .querySelector(STORYBOOK_PATH_META_SELECTOR)
+        .setAttribute('content', newStorybookPathContent);
 
     window.scrollTo(0, 0);
 
