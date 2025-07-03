@@ -60,9 +60,15 @@ function buildPageToC() {
             hasInnerContainers: true,
         });
 
-        const storybookPathMetaContent = document.querySelector(
+        const storybookPathMetaElement = document.querySelector(
             STORYBOOK_PATH_META_SELECTOR
-        ).content;
+        );
+        let storybookPathMetaContent;
+        if (storybookPathMetaElement) {
+            storybookPathMetaContent = document.querySelector(
+                STORYBOOK_PATH_META_SELECTOR
+            ).content;
+        }
         const tocList = document.querySelector('.toc-list');
         if (!tocList || !storybookPathMetaContent) {
             return;
@@ -113,12 +119,24 @@ function replaceContent(text) {
     );
 
     const newStorybookPathContent = newStorybookPathMeta?.content ?? '';
-    document
-        .querySelector(STORYBOOK_PATH_META_SELECTOR)
-        .setAttribute('content', newStorybookPathContent);
+    const storybookPathMetaElement = document.querySelector(
+        STORYBOOK_PATH_META_SELECTOR
+    );
+    if (storybookPathMetaElement && newStorybookPathContent) {
+        document
+            .querySelector(STORYBOOK_PATH_META_SELECTOR)
+            .setAttribute('content', newStorybookPathContent);
+    } else if (newStorybookPathContent) {
+        const metaElement = document.createElement('meta');
+        metaElement.setAttribute('name', 'storybook_path');
+        metaElement.setAttribute('content', newStorybookPathContent);
+        document.head.appendChild(metaElement);
+    } else {
+        // Remove the meta element if it doesn't exist in the new content
+        storybookPathMetaElement?.remove();
+    }
 
     window.scrollTo(0, 0);
-
     buildPageToC();
 
     navigationFitScroll();
