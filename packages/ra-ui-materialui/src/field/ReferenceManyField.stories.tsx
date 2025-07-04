@@ -135,9 +135,9 @@ export const Empty = () => (
             target="author_id"
             empty="no books"
         >
-            <Datagrid>
-                <TextField source="title" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+            </DataTable>
         </ReferenceManyField>
     </Wrapper>
 );
