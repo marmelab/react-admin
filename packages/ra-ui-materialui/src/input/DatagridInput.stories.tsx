@@ -47,7 +47,6 @@ const BookEdit = () => {
                 <DatagridInput
                     source="author"
                     choices={choices}
-                    fullWidth
                     rowClick="toggleSelection"
                 >
                     <TextField source="name" />
