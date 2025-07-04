@@ -3,7 +3,11 @@ import expect from 'expect';
 import { Route, Routes } from 'react-router';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 
-import { testDataProvider } from '../../dataProvider';
+import {
+    testDataProvider,
+    UndoableMutation,
+    useTakeUndoableMutation,
+} from '../../dataProvider';
 import { CoreAdminContext } from '../../core';
 import useDeleteWithUndoController, {
     UseDeleteWithUndoControllerParams,
@@ -22,6 +26,12 @@ describe('useDeleteWithUndoController', () => {
             }),
         });
 
+        let takeMutation: () => UndoableMutation | void;
+        const MutationTrigger = () => {
+            takeMutation = useTakeUndoableMutation();
+            return null;
+        };
+
         const MockComponent = () => {
             const { handleDelete } = useDeleteWithUndoController({
                 record: { id: 1 },
@@ -38,13 +48,20 @@ describe('useDeleteWithUndoController', () => {
                     <Routes>
                         <Route path="/" element={<MockComponent />} />
                     </Routes>
+                    <MutationTrigger />
                 </CoreAdminContext>
             </TestMemoryRouter>
         );
 
         const button = await screen.findByText('Delete');
         fireEvent.click(button);
-        waitFor(() => expect(receivedMeta).toEqual('metadata'), {
+
+        // Trigger the mutation.
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+        const mutation = takeMutation();
+        if (mutation) mutation({ isUndo: false });
+
+        await waitFor(() => expect(receivedMeta).toEqual('metadata'), {
             timeout: 1000,
         });
     });
