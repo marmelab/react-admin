@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ShowBase Component"
+storybook_path: ra-core-controller-showbase--default-title
 ---
 
 # `<ShowBase>`

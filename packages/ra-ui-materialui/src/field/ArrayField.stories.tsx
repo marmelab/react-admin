@@ -13,7 +13,7 @@ import { Card, ThemeProvider, createTheme } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { ArrayField } from './ArrayField';
-import { Datagrid, SingleFieldList } from '../list';
+import { DataTable, SingleFieldList } from '../list';
 import { ChipField } from './ChipField';
 import { SimpleShowLayout } from '../detail';
 import { TextField } from './TextField';
@@ -169,11 +169,11 @@ export const InShowLayout = () => (
                                 </SingleFieldList>
                             </ArrayField>
                             <ArrayField source="backlinks">
-                                <Datagrid bulkActionButtons={false}>
-                                    <TextField source="uuid" />
-                                    <TextField source="date" />
-                                    <TextField source="url" />
-                                </Datagrid>
+                                <DataTable bulkActionButtons={false}>
+                                    <DataTable.Col source="uuid" />
+                                    <DataTable.Col source="date" />
+                                    <DataTable.Col source="url" />
+                                </DataTable>
                             </ArrayField>
                         </SimpleShowLayout>
                     </Card>

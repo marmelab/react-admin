@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The TextInput Component"
+storybook_path: ra-ui-materialui-input-textinput--basic
 ---
 
 # `<TextInput>`

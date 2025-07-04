@@ -232,6 +232,35 @@ If you want to see what react-admin is capable of, or if you want to learn from 
             </div>
         </div>
     </div>
+    <div class="card">
+        <a href="#team-wiki" class="no-decoration"><img src="./img/team-wiki.jpg" alt="Kanban Board"></a>
+        <div class="content-card">
+            <a href="#team-wiki" class="no-decoration">
+                <p class="title-card"><b>Team Wiki</b></p>
+                <p  class="description-card">A Team Wiki board built with React-admin Enterprise Edition</p>
+            </a>
+        </div>
+        <div class="card-footer">
+            <div class="links-container">
+                <p><b><a href="https://marmelab.com/team-wiki/" class="demo link">Demo</a></b></p>
+                <p><b><a href="https://github.com/marmelab/team-wiki" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <a href="#broadcom-layer-7-api-hub" class="no-decoration"><img src="https://marmelab.com/static/bcb26e245e6e50e8f13631a156727d2e/46097/API_Hub.png" alt="Developer Portal"></a>
+        <div class="content-card">
+            <a href="#broadcom-layer-7-api-hub" class="no-decoration">
+                <p class="title-card"><b>Developer portal</b></p>
+                <p  class="description-card">Interactive documentation and rights administration for an API gateway</p>
+            </a>
+        </div>
+        <div class="card-footer">
+            <div class="links-container">
+                <p><b><a href="https://github.com/CAAPIM/APIHub" class="source-code link">Source code</a></b></p>
+            </div>
+        </div>
+    </div>
 </div>
 
 ## E-commerce
@@ -414,11 +443,32 @@ The source shows how to implement the following features:
 - [InPlace Edition](https://github.com/djhi/atomic-pm/blob/main/src/ra/EditInPlaceInput.tsx)
 - [Drag & drop](https://github.com/djhi/atomic-pm/blob/main/src/boards/BoardShow.tsx)
 
+## Team Wiki
+
+A Team Wiki board built with React-admin Enterprise edition.
+
+[![Team wiki](./img/team-wiki.jpg)](https://marmelab.com/team-wiki/)
+
+* Demo: [https://marmelab.com/team-wiki/](https://marmelab.com/team-wiki/)
+* Source code: [https://github.com/marmelab/team-wiki](https://github.com/marmelab/team-wiki)
+
+It leverages the following Enterprise Edition features:
+- [Navigation](https://react-admin-ee.marmelab.com/documentation/ra-navigation)
+- [History](https://react-admin-ee.marmelab.com/documentation/ra-history)
+- [Markdown](https://react-admin-ee.marmelab.com/documentation/ra-markdown)
+- [Search](https://react-admin-ee.marmelab.com/documentation/ra-search)
+- [Tree](https://react-admin-ee.marmelab.com/documentation/ra-tree)
+
+The source shows how to implement the following features:
+- [AppBar with Custom Navigation and Search](https://github.com/marmelab/team-wiki/blob/main/src/layout/AppBar.tsx)
+- [Customizing the Markdown Input](https://github.com/marmelab/team-wiki/blob/main/src/inputs/PageMarkdownInput.tsx)
+- [Custom List](https://github.com/marmelab/team-wiki/blob/main/src/resources/pages/PageList.tsx)
+
 ## Broadcom Layer 7 API Hub
 
 A framework built on top of react-admin for building developer portals.
 
-<div class="iframe-wrapper"><iframe src="https://www.youtube.com/embed/ecHsgNmug9E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+[![Broadcom API Hub](https://marmelab.com/static/bcb26e245e6e50e8f13631a156727d2e/46097/API_Hub.png)](https://github.com/CAAPIM/APIHub)
 
 * Source code: [https://github.com/CAAPIM/APIHub](https://github.com/CAAPIM/APIHub)
 

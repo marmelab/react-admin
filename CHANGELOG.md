@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.9.1
+
+* Fix `<Datagrid>` empty throws error when used in standalone mode ([#10812](https://github.com/marmelab/react-admin/pull/10812)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<DataTable>` does not allow to put a button in the column's header ([#10802](https://github.com/marmelab/react-admin/pull/10802)) ([slax57](https://github.com/slax57))
+* [Doc] Add link to storybook in page toc for components and hooks that have storybook ([#10819](https://github.com/marmelab/react-admin/pull/10819)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Add team wiki to demos documentation ([#10816](https://github.com/marmelab/react-admin/pull/10816)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Fix anchors and code examples ([#10807](https://github.com/marmelab/react-admin/pull/10807)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<DataTable.Col align>` default value and example ([#10806](https://github.com/marmelab/react-admin/pull/10806)) ([slax57](https://github.com/slax57))
+* [Doc] Add `<DataTable hiddenColumns>` documentation ([#10800](https://github.com/marmelab/react-admin/pull/10800)) ([Madeorsk](https://github.com/Madeorsk))
+* [Chore] Sync tips from tips repository ([#10815](https://github.com/marmelab/react-admin/pull/10815)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Chore] Migrate stories to use DataTable ([#10804](https://github.com/marmelab/react-admin/pull/10804)) ([slax57](https://github.com/slax57))
+* [Chore] Avoid vercel deployment for `gh-pages` branch ([#10803](https://github.com/marmelab/react-admin/pull/10803)) ([djhi](https://github.com/djhi))
+
 ## 5.9.0
 
 * Add support for customization with MUI theme to inputs ([#10772](https://github.com/marmelab/react-admin/pull/10772)) ([Madeorsk](https://github.com/Madeorsk))

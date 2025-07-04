@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "SimpleForm"
+storybook_path: ra-ui-materialui-forms-simpleform--basic
 ---
 
 # `<SimpleForm>`

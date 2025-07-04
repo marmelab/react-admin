@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Show Component"
+storybook_path: ra-ui-materialui-detail-show--basic
 ---
 
 # `<Show>`

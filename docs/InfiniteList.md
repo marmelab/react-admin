@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The InfiniteList Component"
+storybook_path: ra-ui-materialui-list-infinitelist--aside
 ---
 
 # `<InfiniteList>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The ReferenceInput Component"
+storybook_path: ra-ui-materialui-input-referenceinput--basic
 ---
 
 # `<ReferenceInput>`

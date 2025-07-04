@@ -16,12 +16,10 @@ import {
     Link as MuiLink,
     ThemeOptions,
 } from '@mui/material';
-
 import { List } from './List';
 import { SimpleList } from './SimpleList';
 import { ListActions } from './ListActions';
-import { Datagrid } from './datagrid';
-import { TextField } from '../field';
+import { DataTable } from './datatable';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -463,12 +461,12 @@ export const Meta = () => (
                 name="books"
                 list={() => (
                     <List queryOptions={{ meta: { foo: 'bar' } }}>
-                        <Datagrid>
-                            <TextField source="id" />
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="year" />
-                        </Datagrid>
+                        <DataTable>
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="title" />
+                            <DataTable.Col source="author" />
+                            <DataTable.Col source="year" />
+                        </DataTable>
                     </List>
                 )}
             />
@@ -491,7 +489,7 @@ export const Default = ({
                 name="books"
                 list={() => (
                     <List filters={[<SearchInput source="q" alwaysOn />]}>
-                        <Datagrid
+                        <DataTable
                             bulkActionsToolbar={
                                 <BulkActionsToolbar
                                     selectAllButton={selectAllButton}
@@ -500,11 +498,11 @@ export const Default = ({
                                 </BulkActionsToolbar>
                             }
                         >
-                            <TextField source="id" />
-                            <TextField source="title" />
-                            <TextField source="author" />
-                            <TextField source="year" />
-                        </Datagrid>
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="title" />
+                            <DataTable.Col source="author" />
+                            <DataTable.Col source="year" />
+                        </DataTable>
                         {children}
                     </List>
                 )}
@@ -536,12 +534,12 @@ const NewerBooks = () => (
         storeKey="newerBooks"
         sort={{ field: 'year', order: 'DESC' }}
     >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 
@@ -551,12 +549,12 @@ const OlderBooks = () => (
         storeKey="olderBooks"
         sort={{ field: 'year', order: 'ASC' }}
     >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 
@@ -601,12 +599,12 @@ const BooksWithStoreEnabled = () => (
         storeKey="booksStore"
         sort={{ field: 'year', order: 'DESC' }}
     >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 
@@ -616,12 +614,12 @@ const BooksWithStoreDisabled = () => (
         storeKey={false}
         sort={{ field: 'year', order: 'ASC' }}
     >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 
@@ -675,12 +673,12 @@ const BooksWithLocationDisabled = () => (
         disableSyncWithLocation
         sort={{ field: 'year', order: 'ASC' }}
     >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </List>
 );
 

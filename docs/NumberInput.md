@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The NumberInput Component"
+storybook_path: ra-ui-materialui-input-numberinput--basic
 ---
 
 # `<NumberInput>`

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The Edit Component"
+storybook_path: ra-ui-materialui-detail-edit--basic
 ---
 
 # `<Edit>`

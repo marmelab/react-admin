@@ -23,7 +23,7 @@ import { AdminUI } from '../AdminUI';
 import { NumberField, TextField } from '../field';
 import { Show, SimpleShowLayout } from '../detail';
 import { TopToolbar } from '../layout';
-import { Datagrid, List } from '../list';
+import { DataTable, List } from '../list';
 import { LocalesMenuButton } from './LocalesMenuButton';
 import { defaultLightTheme } from '../theme';
 
@@ -133,13 +133,15 @@ const PostShow = () => (
 
 const PostList = () => (
     <List>
-        <Datagrid rowClick="show">
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="body" />
-            <NumberField source="views" />
-            <UpdateButton label="Reset views" data={{ views: 0 }} />
-        </Datagrid>
+        <DataTable rowClick="show">
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="body" />
+            <DataTable.NumberCol source="views" />
+            <DataTable.Col label="Reset views">
+                <UpdateButton label="Reset views" data={{ views: 0 }} />
+            </DataTable.Col>
+        </DataTable>
     </List>
 );
 

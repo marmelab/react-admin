@@ -19,7 +19,7 @@ import { deepmerge } from '@mui/utils';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { List } from '../list/List';
-import { Datagrid } from '../list/datagrid/Datagrid';
+import { DataTable } from '../list';
 import { TextField } from '../field/TextField';
 import ShowButton from './ShowButton';
 import { Show } from '../detail/Show';
@@ -240,13 +240,15 @@ const AccessControlLayout = ({
 const BookList = () => {
     return (
         <List>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-                <ShowButton />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="id" />
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="year" />
+                <DataTable.Col>
+                    <ShowButton />
+                </DataTable.Col>
+            </DataTable>
         </List>
     );
 };

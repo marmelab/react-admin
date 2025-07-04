@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { required } from 'ra-core';
 import { useFormContext } from 'react-hook-form';
-
 import { TextInput } from './TextInput';
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm, TabbedForm, Toolbar } from '../form';
 import { SaveButton } from '../button';
-import { Datagrid, List } from '../list';
-import { TextField } from '../field';
+import { DataTable, List } from '../list';
 
 export default { title: 'ra-ui-materialui/input/InputErrors' };
 
@@ -315,10 +313,10 @@ export const FilterForm = () => (
         }
     >
         <List resource="posts" sx={{ width: 600 }} filters={postFilters}>
-            <Datagrid>
-                <TextField source="title" />
-                <TextField source="author" />
-            </Datagrid>
+            <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+            </DataTable>
         </List>
     </AdminContext>
 );

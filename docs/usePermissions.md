@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "usePermissions"
+storybook_path: ra-core-auth-usepermissions--no-auth-provider
 ---
 
 # `usePermissions`

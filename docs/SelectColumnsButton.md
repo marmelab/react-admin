@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "The SelectColumnsButton Component"
+storybook_path: ra-ui-materialui-list-selectcolumnsbutton--basic
 ---
 
 # `<SelectColumnsButton>`

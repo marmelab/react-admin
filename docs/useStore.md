@@ -1,6 +1,7 @@
 ---
 layout: default
 title: "useStore"
+storybook_path: ra-core-store-usestore--basic
 ---
 
 # `useStore`

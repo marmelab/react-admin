@@ -28,9 +28,8 @@ import { FilterButton } from './FilterButton';
 import { FilterForm } from './FilterForm';
 import { FilterLiveSearch } from './FilterLiveSearch';
 import {
-    Datagrid,
+    DataTable,
     ListGuesser,
-    TextField,
     List as RaList,
     FilterList,
     FilterListItem,
@@ -248,12 +247,12 @@ const BookListAside = () => (
 
 const BookList = () => (
     <RaList aside={<BookListAside />}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="year" />
-        </Datagrid>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
     </RaList>
 );
 
