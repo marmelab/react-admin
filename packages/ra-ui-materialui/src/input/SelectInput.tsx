@@ -415,7 +415,6 @@ export type SelectInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
-        disableValue?: string;
         emptyText?: string | ReactElement;
         emptyValue?: any;
         resettable?: boolean;

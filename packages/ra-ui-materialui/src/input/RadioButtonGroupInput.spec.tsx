@@ -541,6 +541,63 @@ describe('<RadioButtonGroupInput />', () => {
         expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
+    it('should render disabled choices marked as so', () => {
+        const choices = [
+            { id: 1, name: 'VISA' },
+            { id: 2, name: 'Mastercard', disabled: true },
+        ];
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="creditcards">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <RadioButtonGroupInput
+                            {...defaultProps}
+                            choices={choices}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        fireEvent.mouseDown(screen.getByLabelText('Mastercard'));
+
+        const enabledInput = screen.getByLabelText('VISA') as HTMLInputElement;
+        expect(enabledInput.disabled).toBe(false);
+
+        const disabledInput = screen.getByLabelText(
+            'Mastercard'
+        ) as HTMLInputElement;
+        expect(disabledInput.disabled).toBe(true);
+    });
+
+    it('should render disabled choices marked as so by disableValue prop', () => {
+        const choices = [
+            { id: 1, name: 'VISA' },
+            { id: 2, name: 'Mastercard', not_available: true },
+        ];
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="creditcards">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <RadioButtonGroupInput
+                            {...defaultProps}
+                            choices={choices}
+                            disableValue="not_available"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        fireEvent.mouseDown(screen.getByLabelText('Mastercard'));
+
+        const enabledInput = screen.getByLabelText('VISA') as HTMLInputElement;
+        expect(enabledInput.disabled).toBe(false);
+
+        const disabledInput = screen.getByLabelText(
+            'Mastercard'
+        ) as HTMLInputElement;
+        expect(disabledInput.disabled).toBe(true);
+    });
+
     describe('inside ReferenceArrayInput', () => {
         it('should use the recordRepresentation as optionText', async () => {
             render(<InsideReferenceArrayInput />);

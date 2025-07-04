@@ -20,6 +20,7 @@ export interface ChoicesProps {
     optionValue?: string;
     optionText?: OptionText;
     translateChoice?: boolean;
+    disableValue?: string;
 }
 
 export interface UseChoicesOptions {

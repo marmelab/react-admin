@@ -63,6 +63,7 @@ The form value for the source must be the selected value, e.g.
 | `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
 | `row`             | Optional | `boolean`                  | `true`  | Display options in a compact row.                                                                                                      |
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
+| `disableValue`    | Optional | `string`                   | `disabled` | The custom field name used in `choices` to disable some choices                                                                     |
 
 `<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -93,6 +94,17 @@ const choices = [
     optionText="label"
     optionValue="_id"
 />
+```
+
+You can render some options as disabled by setting the `disabled` field in some choices:
+
+```jsx
+const choices = [
+    { id: 'tech', name: 'Tech' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'people', name: 'People', disabled: true },
+];
+<RadioButtonGroupInput source="category" choices={choices} />
 ```
 
 The choices are translated by default, so you can use translation identifiers as choices:
@@ -282,6 +294,30 @@ However, in some cases, you may not want the choice to be translated. In that ca
 ```
 
 Note that `translateChoice` is set to `false` when `<RadioButtonGroupInput>` is a child of `<ReferenceInput>`.
+
+## `disableValue`
+
+By default, `<RadioButtonGroupInput>` renders the choices with the field `disabled: true` as disabled.
+
+```jsx
+const choices = [
+    { id: 'tech', name: 'Tech' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'people', name: 'People', disabled: true },
+];
+<RadioButtonGroupInput source="category" choices={choices} />
+```
+
+If you want to use another field to denote disabled options, set the `disableValue` prop.
+
+```jsx
+const choices = [
+    { id: 'tech', name: 'Tech' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'people', name: 'People', not_available: true },
+];
+<RadioButtonGroupInput source="category" choices={choices} disableValue="not_available" />
+```
 
 ## Fetching Choices
 
