@@ -82,7 +82,7 @@ export const InfiniteListBase = <RecordType extends RaRecord = any>({
                             controllerProps.isFetchingPreviousPage,
                     }}
                 >
-                    {children}
+                    {render ? render(controllerProps) : children}
                 </InfinitePaginationContext.Provider>
             </ListContextProvider>
         </OptionalResourceContextProvider>
