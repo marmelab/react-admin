@@ -47,6 +47,7 @@ export const BookEdit = () => (
 You can customize the `<EditBase>` component using the following props, documented in the `<Edit>` component:
 
 * `children`: the components that renders the form
+* `render`: alternative to children, a function that takes the EditController context and renders the form
 * [`disableAuthentication`](./Edit.md#disableauthentication): disable the authentication check
 * [`id`](./Edit.md#id): the id of the record to edit
 * [`mutationMode`](./Edit.md#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
