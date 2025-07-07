@@ -246,6 +246,45 @@ DefaultTitle.argTypes = {
     },
 };
 
+export const WithRenderProps = () => (
+    <CoreAdminContext dataProvider={defaultDataProvider}>
+        <InfiniteListBase
+            resource="books"
+            perPage={5}
+            render={context => {
+                const {
+                    hasNextPage,
+                    fetchNextPage,
+                    isFetchingNextPage,
+                    hasPreviousPage,
+                    fetchPreviousPage,
+                    isFetchingPreviousPage,
+                } = context;
+                return (
+                    <div>
+                        {hasPreviousPage && (
+                            <button
+                                onClick={() => fetchPreviousPage()}
+                                disabled={isFetchingPreviousPage}
+                            >
+                                Previous
+                            </button>
+                        )}
+                        {hasNextPage && (
+                            <button
+                                onClick={() => fetchNextPage()}
+                                disabled={isFetchingNextPage}
+                            >
+                                Next
+                            </button>
+                        )}
+                    </div>
+                );
+            }}
+        />
+    </CoreAdminContext>
+);
+
 const Title = () => {
     const { defaultTitle } = useListContext();
     const [locale, setLocale] = useLocaleState();

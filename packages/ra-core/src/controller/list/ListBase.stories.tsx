@@ -282,6 +282,69 @@ export const DefaultTitle = ({
     </CoreAdminContext>
 );
 
+export const WithRenderProps = ({
+    dataProvider = defaultDataProvider,
+}: {
+    dataProvider?: DataProvider;
+}) => (
+    <CoreAdminContext dataProvider={dataProvider}>
+        <ListBase
+            resource="books"
+            perPage={5}
+            render={controllerProps => {
+                const {
+                    data,
+                    error,
+                    isPending,
+                    sort,
+                    filterValues,
+                    page,
+                    perPage,
+                    setPage,
+                    total,
+                } = controllerProps;
+                const defaultValue = JSON.stringify({
+                    page,
+                    perPage,
+                    sort,
+                    filterValues,
+                });
+                if (isPending) {
+                    return <div>Loading...</div>;
+                }
+                if (error) {
+                    return <div>Error...</div>;
+                }
+
+                return (
+                    <div>
+                        <button
+                            disabled={page <= 1}
+                            onClick={() => setPage(page - 1)}
+                        >
+                            previous
+                        </button>
+                        <span>
+                            Page {page} of {Math.ceil(total / perPage)}
+                        </span>
+                        <button
+                            disabled={page >= total / perPage}
+                            onClick={() => setPage(page + 1)}
+                        >
+                            next
+                        </button>
+                        <ul>
+                            {data.map((record: any) => (
+                                <li key={record.id}>{record.title}</li>
+                            ))}
+                        </ul>
+                    </div>
+                );
+            }}
+        ></ListBase>
+    </CoreAdminContext>
+);
+
 DefaultTitle.args = {
     translations: 'default',
 };
