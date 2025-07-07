@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Card, CardHeader, CardContent } from '@mui/material';
 import * as echarts from 'echarts/core';
 // Import bar charts, all suffixed with Chart
 import { LineChart } from 'echarts/charts';
@@ -12,7 +11,6 @@ import {
     DatasetComponent,
     TransformComponent,
 } from 'echarts/components';
-import { useTranslate } from 'react-admin';
 // Features like Universal Transition and Label Layout
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 
@@ -84,7 +82,6 @@ const getRevenuePerDay = (orders: Order[]): TotalByDay[] => {
 
 const OrderChart = (props: { orders?: Order[] }) => {
     const { orders } = props;
-    const translate = useTranslate();
     const chartRef = React.useRef<HTMLDivElement>(null);
     const chartInstance = React.useRef<echarts.ECharts | null>(null);
 
@@ -201,14 +198,7 @@ const OrderChart = (props: { orders?: Order[] }) => {
         };
     }, [orders]);
 
-    return (
-        <Card>
-            <CardHeader title={translate('pos.dashboard.month_history')} />
-            <CardContent>
-                <div ref={chartRef} style={{ width: '100%', height: 300 }} />
-            </CardContent>
-        </Card>
-    );
+    return <div ref={chartRef} style={{ width: '100%', height: 300 }} />;
 };
 
 interface TotalByDay {
