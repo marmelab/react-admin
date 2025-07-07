@@ -26,6 +26,7 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { SelectInput } from './SelectInput';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
@@ -165,6 +166,20 @@ export const Disabled = () => (
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const DisabledChoice = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator', disabled: true },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
 );
 
 export const ReadOnly = () => (
