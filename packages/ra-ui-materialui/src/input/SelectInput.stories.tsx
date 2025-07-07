@@ -117,9 +117,9 @@ export const DisabledChoice = () => (
         <SelectInput
             source="city"
             choices={[
-                { id: 'P', name: 'Paris ' },
+                { id: 'P', name: 'Paris' },
                 { id: 'L', name: 'London' },
-                { id: 'N', name: 'New York ', disabled: true },
+                { id: 'N', name: 'New York', disabled: true },
             ]}
         />
     </Wrapper>
