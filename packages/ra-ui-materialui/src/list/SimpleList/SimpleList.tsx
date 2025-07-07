@@ -13,8 +13,8 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import {
+    ListIterator,
     type RaRecord,
-    RecordContextProvider,
     sanitizeListRestProps,
     useGetRecordRepresentation,
     useListContextWithProps,
@@ -122,8 +122,10 @@ export const SimpleList = <RecordType extends RaRecord = any>(
 
     return (
         <Root className={className} {...sanitizeListRestProps(rest)}>
-            {data.map((record, rowIndex) => (
-                <RecordContextProvider key={record.id} value={record}>
+            <ListIterator<RecordType>
+                data={data}
+                total={total}
+                render={(record, rowIndex) => (
                     <SimpleListItem
                         key={record.id}
                         rowIndex={rowIndex}
@@ -144,8 +146,8 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                             rowIndex={rowIndex}
                         />
                     </SimpleListItem>
-                </RecordContextProvider>
-            ))}
+                )}
+            />
         </Root>
     );
 };
