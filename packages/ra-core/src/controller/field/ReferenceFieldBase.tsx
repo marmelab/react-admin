@@ -3,7 +3,10 @@ import { ReactNode } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { ReferenceFieldContextProvider } from './ReferenceFieldContext';
 import { RaRecord } from '../../types';
-import { useReferenceFieldController } from './useReferenceFieldController';
+import {
+    useReferenceFieldController,
+    UseReferenceFieldControllerResult,
+} from './useReferenceFieldController';
 import { ResourceContextProvider } from '../../core';
 import { RecordContextProvider } from '../record';
 import { useFieldValue } from '../../util';
@@ -44,8 +47,9 @@ export const ReferenceFieldBase = <
 >(
     props: ReferenceFieldBaseProps<ReferenceRecordType>
 ) => {
-    const { children, empty = null } = props;
+    const { children, render, empty = null } = props;
     const id = useFieldValue(props);
+
     const controllerProps =
         useReferenceFieldController<ReferenceRecordType>(props);
 
@@ -64,7 +68,7 @@ export const ReferenceFieldBase = <
         <ResourceContextProvider value={props.reference}>
             <ReferenceFieldContextProvider value={controllerProps}>
                 <RecordContextProvider value={controllerProps.referenceRecord}>
-                    {children}
+                    {render ? render(controllerProps) : children}
                 </RecordContextProvider>
             </ReferenceFieldContextProvider>
         </ResourceContextProvider>
@@ -75,6 +79,9 @@ export interface ReferenceFieldBaseProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > {
     children?: ReactNode;
+    render?: (
+        props: UseReferenceFieldControllerResult<ReferenceRecordType>
+    ) => ReactNode;
     className?: string;
     empty?: ReactNode;
     error?: ReactNode;

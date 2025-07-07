@@ -5,7 +5,13 @@ import { CoreAdminContext } from '../../core/CoreAdminContext';
 import { useResourceContext } from '../../core/useResourceContext';
 import { testDataProvider } from '../../dataProvider';
 import { ReferenceFieldBase } from './ReferenceFieldBase';
-import { Error, Loading, Meta } from './ReferenceFieldBase.stories';
+import {
+    Errored,
+    Loading,
+    Meta,
+    WithRenderProp,
+} from './ReferenceFieldBase.stories';
+import { WithRenderProps } from '../edit/EditBase.stories';
 
 describe('<ReferenceFieldBase />', () => {
     beforeAll(() => {
@@ -17,7 +23,7 @@ describe('<ReferenceFieldBase />', () => {
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
 
-        render(<Error />);
+        render(<Errored />);
         await waitFor(() => {
             expect(screen.queryByText('Error')).not.toBeNull();
         });
@@ -40,8 +46,8 @@ describe('<ReferenceFieldBase />', () => {
             return <div>{resource}</div>;
         };
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getList: () =>
+                // @ts-ignore
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(
@@ -65,6 +71,7 @@ describe('<ReferenceFieldBase />', () => {
         const dataProvider = testDataProvider({
             getMany,
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: {
                         id: 1,
@@ -83,6 +90,64 @@ describe('<ReferenceFieldBase />', () => {
                 ids: [1],
                 meta: { test: true },
                 signal: undefined,
+            });
+        });
+    });
+
+    describe('with render prop', () => {
+        it('should display an error if error is defined', async () => {
+            jest.spyOn(console, 'error')
+                .mockImplementationOnce(() => {})
+                .mockImplementationOnce(() => {});
+
+            const dataProviderWithAuthorsError = {
+                getOne: () =>
+                    Promise.resolve({
+                        data: {
+                            id: 1,
+                            title: 'War and Peace',
+                            author: 1,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    }),
+                getMany: _resource => Promise.reject(new Error('Error')),
+            } as any;
+
+            render(
+                <WithRenderProp dataProvider={dataProviderWithAuthorsError} />
+            );
+            await waitFor(() => {
+                expect(screen.queryByText('Error')).not.toBeNull();
+            });
+        });
+
+        it('should pass the loading state', async () => {
+            jest.spyOn(console, 'error')
+                .mockImplementationOnce(() => {})
+                .mockImplementationOnce(() => {});
+
+            const dataProviderWithAuthorsLoading = {
+                getOne: () =>
+                    Promise.resolve({
+                        data: {
+                            id: 1,
+                            title: 'War and Peace',
+                            author: 1,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    }),
+                getMany: _resource => new Promise(() => {}),
+            } as any;
+
+            render(
+                <WithRenderProp dataProvider={dataProviderWithAuthorsLoading} />
+            );
+            await waitFor(() => {
+                expect(screen.queryByText('Loading...')).not.toBeNull();
             });
         });
     });
