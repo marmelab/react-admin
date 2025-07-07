@@ -112,6 +112,19 @@ export const Disabled = () => (
     </Wrapper>
 );
 
+export const DisabledChoice = () => (
+    <Wrapper>
+        <SelectInput
+            source="city"
+            choices={[
+                { id: 'P', name: 'Paris ' },
+                { id: 'L', name: 'London' },
+                { id: 'N', name: 'New York ', disabled: true },
+            ]}
+        />
+    </Wrapper>
+);
+
 export const Variant = ({ hideLabel }) => (
     <Wrapper>
         <SelectInput
