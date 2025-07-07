@@ -36,7 +36,7 @@ export default defineConfig(async () => {
             }),
         ],
         define: {
-            'process.env': process.env,
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         },
         server: {
             port: 8000,
