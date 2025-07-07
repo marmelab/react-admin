@@ -26,7 +26,6 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-import { SelectInput } from './SelectInput';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 
