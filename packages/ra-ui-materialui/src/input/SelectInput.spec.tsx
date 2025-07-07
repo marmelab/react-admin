@@ -79,7 +79,7 @@ describe('<SelectInput />', () => {
             ).toEqual('rea');
         });
 
-        it('should render disabled choices marked so', () => {
+        it('should render disabled choices marked as so', () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
                     <ResourceContextProvider value="posts">
@@ -94,6 +94,39 @@ describe('<SelectInput />', () => {
                                         disabled: true,
                                     },
                                 ]}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+            fireEvent.mouseDown(
+                screen.getByLabelText('resources.posts.fields.language')
+            );
+
+            expect(
+                screen.getByText('Angular').getAttribute('aria-disabled')
+            ).toBeNull();
+            expect(
+                screen.getByText('React').getAttribute('aria-disabled')
+            ).toEqual('true');
+        });
+
+        it('should render disabled choices marked as so by disableValue prop', () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <SelectInput
+                                {...defaultProps}
+                                choices={[
+                                    { id: 'ang', name: 'Angular' },
+                                    {
+                                        id: 'rea',
+                                        name: 'React',
+                                        not_available: true,
+                                    },
+                                ]}
+                                disableValue="not_available"
                             />
                         </SimpleForm>
                     </ResourceContextProvider>
