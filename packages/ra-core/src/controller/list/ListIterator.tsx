@@ -62,7 +62,5 @@ export interface ListIteratorProps<RecordType extends RaRecord = any> {
     resource?: string;
     data?: RecordType[];
     total?: number;
-    isLoading?: boolean;
     isPending?: boolean;
-    isLoaded?: boolean;
 }
