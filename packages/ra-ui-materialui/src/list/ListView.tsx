@@ -191,7 +191,7 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    children?: ReactNode;
+    children: ReactNode;
 
     /**
      * The component used to display the list. Defaults to <Card>.

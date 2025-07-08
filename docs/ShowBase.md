@@ -63,7 +63,7 @@ const App = () => (
 | Prop             | Required | Type              | Default | Description
 |------------------|----------|-------------------|---------|--------------------------------------------------------
 | `children`       | Optional | `ReactNode`       |         | The components rendering the record fields
-| `children`       | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode`       |         | Alternative to children, a function that takes the ShowController context and renders the form
+| `render`       | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode`       |         | Alternative to children, a function that takes the ShowController context and renders the form
 | `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
 | `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading
 | `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL

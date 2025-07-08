@@ -151,7 +151,6 @@ export const AccessControl = ({
 export const WithRenderProp = ({
     dataProvider = defaultDataProvider,
     callTimeOptions,
-    ...props
 }: {
     dataProvider?: DataProvider;
     callTimeOptions?: SaveHandlerCallbacks;

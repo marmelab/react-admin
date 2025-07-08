@@ -296,19 +296,11 @@ export const WithRenderProps = ({
                     data,
                     error,
                     isPending,
-                    sort,
-                    filterValues,
                     page,
                     perPage,
                     setPage,
                     total,
                 } = controllerProps;
-                const defaultValue = JSON.stringify({
-                    page,
-                    perPage,
-                    sort,
-                    filterValues,
-                });
                 if (isPending) {
                     return <div>Loading...</div>;
                 }
