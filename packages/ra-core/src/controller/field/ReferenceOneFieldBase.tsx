@@ -10,6 +10,7 @@ import { useGetPathForRecord } from '../../routing';
 import type { UseReferenceFieldControllerResult } from './useReferenceFieldController';
 import type { RaRecord } from '../../types';
 import type { LinkToType } from '../../routing';
+import { UseReferenceResult } from '../useReference';
 
 /**
  * Render the related record in a one-to-one relationship
@@ -29,6 +30,7 @@ export const ReferenceOneFieldBase = <
 ) => {
     const {
         children,
+        render,
         record,
         reference,
         source = 'id',
@@ -79,7 +81,7 @@ export const ReferenceOneFieldBase = <
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
                 <RecordContextProvider value={context.referenceRecord}>
-                    {children}
+                    {render ? render(controllerProps) : children}
                 </RecordContextProvider>
             </ReferenceFieldContextProvider>
         </ResourceContextProvider>
@@ -94,6 +96,7 @@ export interface ReferenceOneFieldBaseProps<
         ReferenceRecordType
     > {
     children?: ReactNode;
+    render?: (props: UseReferenceResult<ReferenceRecordType>) => ReactNode;
     link?: LinkToType<ReferenceRecordType>;
     empty?: ReactNode;
     resource?: string;

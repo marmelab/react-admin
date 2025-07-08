@@ -41,8 +41,8 @@ describe('ReferenceManyFieldBase', () => {
             return <div>{resource}</div>;
         };
         const dataProvider = testDataProvider({
+            // @ts-ignore
             getList: () =>
-                // @ts-ignore
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(

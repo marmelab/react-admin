@@ -334,9 +334,9 @@ export const WithRenderPagination = ({
                             reference="books"
                             perPage={2}
                             renderPagination={({
-                                page,
+                                page = 0,
                                 setPage,
-                                total,
+                                total = 0,
                                 perPage,
                             }) => {
                                 const nextPage = () => {
@@ -353,9 +353,7 @@ export const WithRenderPagination = ({
                                         >
                                             previous page
                                         </button>
-                                        {(page - 1) * perPage + 1} -{' '}
-                                        {Math.min(page * perPage, total)} of{' '}
-                                        {total}
+                                        {`${(page - 1) * perPage + 1} - ${Math.min(page * perPage, total)} of ${total}`}
                                         <button
                                             disabled={page >= total / perPage}
                                             onClick={nextPage}
@@ -420,12 +418,17 @@ const List = ({ source }: { source: string }) => {
 };
 
 const Pagination = () => {
-    const { page, setPage, total, perPage } = useListContextWithProps();
+    const {
+        page = 1,
+        setPage,
+        total = 0,
+        perPage = 0,
+    } = useListContextWithProps();
     const nextPage = () => {
-        setPage(page + 1);
+        setPage?.(page + 1);
     };
     const previousPage = () => {
-        setPage(page - 1);
+        setPage?.(page - 1);
     };
     return (
         <div>

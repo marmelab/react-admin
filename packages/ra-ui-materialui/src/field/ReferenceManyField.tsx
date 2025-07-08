@@ -80,6 +80,6 @@ export const ReferenceManyField = <
 
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source'>,
         ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType> {}
