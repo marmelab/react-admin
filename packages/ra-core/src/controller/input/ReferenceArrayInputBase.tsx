@@ -1,6 +1,12 @@
 import * as React from 'react';
-import { ReferenceArrayInputBase, ReferenceArrayInputBaseProps } from 'ra-core';
-import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import { InputProps } from '../../form/types';
+import {
+    useReferenceArrayInputController,
+    type UseReferenceArrayInputParams,
+} from './useReferenceArrayInputController';
+import { ResourceContextProvider } from '../../core/ResourceContextProvider';
+import { ChoicesContextProvider } from '../../form/choices/ChoicesContextProvider';
+import { RaRecord } from '../../types';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -69,23 +75,35 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  * The enclosed component may filter results. ReferenceArrayInput create a ChoicesContext which provides
  * a `setFilters` function. You can call this function to filter the results.
  */
-export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
-    const { children = defaultChildren, ...rest } = props;
+export const ReferenceArrayInputBase = <RecordType extends RaRecord = any>(
+    props: ReferenceArrayInputBaseProps<RecordType>
+) => {
+    const { children, reference, sort, filter = defaultFilter } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
-            '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
+            '<ReferenceArrayInputBase> only accepts a single child (like <Datagrid>)'
         );
     }
 
+    const controllerProps = useReferenceArrayInputController({
+        ...props,
+        sort,
+        filter,
+    });
+
     return (
-        <ReferenceArrayInputBase {...rest}>{children}</ReferenceArrayInputBase>
+        <ResourceContextProvider value={reference}>
+            <ChoicesContextProvider value={controllerProps}>
+                {children}
+            </ChoicesContextProvider>
+        </ResourceContextProvider>
     );
 };
 
-const defaultChildren = <AutocompleteArrayInput />;
+const defaultFilter = {};
 
-export interface ReferenceArrayInputProps
-    extends Omit<ReferenceArrayInputBaseProps, 'children'> {
-    children?: React.ReactNode;
-    label?: string;
+export interface ReferenceArrayInputBaseProps<RecordType extends RaRecord = any>
+    extends InputProps,
+        UseReferenceArrayInputParams<RecordType> {
+    children: React.ReactNode;
 }

@@ -7,6 +7,7 @@ import {
 export * from './useReferenceArrayInputController';
 export * from './useReferenceInputController';
 export * from './ReferenceInputBase';
+export * from './ReferenceArrayInputBase';
 
 export {
     getStatusForInput,
