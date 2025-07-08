@@ -47,7 +47,10 @@ export default defineConfig(async ({ mode }) => {
             }),
         ],
         define: {
-            'process.env': process.env,
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+            'process.env.REACT_APP_DATA_PROVIDER': JSON.stringify(
+                process.env.REACT_APP_DATA_PROVIDER
+            ),
         },
         server: {
             port: 8000,
