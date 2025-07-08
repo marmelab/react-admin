@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { memo, type ReactElement, type ReactNode } from 'react';
 import {
-    ListContextProvider,
     useListContext,
     type ListControllerProps,
-    useReferenceArrayFieldController,
     type SortPayload,
     type FilterPayload,
-    ResourceContextProvider,
-    useRecordContext,
+    ReferenceArrayFieldBase,
     type RaRecord,
 } from 'ra-core';
 import {
@@ -90,37 +87,10 @@ export const ReferenceArrayField = <
         props: inProps,
         name: PREFIX,
     });
-    const {
-        filter,
-        page = 1,
-        perPage,
-        reference,
-        resource,
-        sort,
-        source,
-        queryOptions,
-    } = props;
-    const record = useRecordContext(props);
-    const controllerProps = useReferenceArrayFieldController<
-        RecordType,
-        ReferenceRecordType
-    >({
-        filter,
-        page,
-        perPage,
-        record,
-        reference,
-        resource,
-        sort,
-        source,
-        queryOptions,
-    });
     return (
-        <ResourceContextProvider value={reference}>
-            <ListContextProvider value={controllerProps}>
-                <PureReferenceArrayFieldView {...props} />
-            </ListContextProvider>
-        </ResourceContextProvider>
+        <ReferenceArrayFieldBase {...inProps}>
+            <PureReferenceArrayFieldView {...props} />
+        </ReferenceArrayFieldBase>
     );
 };
 export interface ReferenceArrayFieldProps<
