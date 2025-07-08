@@ -15,7 +15,11 @@ import {
     ReferenceArrayInputBase,
     ReferenceArrayInputBaseProps,
 } from './ReferenceArrayInputBase';
-import { ChoicesProps, useChoicesContext } from '../../form';
+import {
+    ChoicesContextValue,
+    ChoicesProps,
+    useChoicesContext,
+} from '../../form';
 import { useGetRecordRepresentation } from '../..';
 
 export default { title: 'ra-core/controller/ReferenceArrayInputBase' };
@@ -51,8 +55,15 @@ const i18nProvider = polyglotI18nProvider(() => englishMessages);
 const CheckboxGroupInput = (
     props: Omit<InputProps, 'source'> & ChoicesProps
 ) => {
-    const { allChoices, isPending, error, resource, source, total } =
-        useChoicesContext(props);
+    const choicesContext = useChoicesContext(props);
+
+    return <CheckboxGroupInputBase {...props} {...choicesContext} />;
+};
+
+const CheckboxGroupInputBase = (
+    props: Omit<InputProps, 'source'> & ChoicesProps & ChoicesContextValue
+) => {
+    const { allChoices, isPending, error, resource, source, total } = props;
     const input = useInput({ ...props, source });
     const getRecordRepresentation = useGetRecordRepresentation(resource);
 
@@ -138,6 +149,53 @@ Basic.args = {
 };
 
 Basic.argTypes = {
+    meta: { control: 'boolean' },
+};
+
+export const WithRender = ({
+    dataProvider = defaultDataProvider,
+    meta,
+    ...props
+}: Partial<ReferenceArrayInputBaseProps> & {
+    dataProvider?: DataProvider;
+    meta?: boolean;
+}) => (
+    <TestMemoryRouter initialEntries={['/posts/create']}>
+        <CoreAdmin dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <Resource
+                name="posts"
+                create={
+                    <CreateBase resource="posts" record={{ tags_ids: [1, 3] }}>
+                        <h1>Create Post</h1>
+                        <Form>
+                            <ReferenceArrayInputBase
+                                reference="tags"
+                                resource="posts"
+                                source="tags_ids"
+                                queryOptions={
+                                    meta ? { meta: { foo: 'bar' } } : {}
+                                }
+                                {...props}
+                                render={context => (
+                                    <CheckboxGroupInputBase
+                                        {...context}
+                                        source="tags_ids"
+                                    />
+                                )}
+                            />
+                        </Form>
+                    </CreateBase>
+                }
+            />
+        </CoreAdmin>
+    </TestMemoryRouter>
+);
+
+WithRender.args = {
+    meta: false,
+};
+
+WithRender.argTypes = {
     meta: { control: 'boolean' },
 };
 

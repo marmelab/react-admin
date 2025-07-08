@@ -7,6 +7,7 @@ import {
 import { ResourceContextProvider } from '../../core/ResourceContextProvider';
 import { ChoicesContextProvider } from '../../form/choices/ChoicesContextProvider';
 import { RaRecord } from '../../types';
+import { ChoicesContextValue } from '../../form';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -78,10 +79,16 @@ import { RaRecord } from '../../types';
 export const ReferenceArrayInputBase = <RecordType extends RaRecord = any>(
     props: ReferenceArrayInputBaseProps<RecordType>
 ) => {
-    const { children, reference, sort, filter = defaultFilter } = props;
-    if (React.Children.count(children) !== 1) {
+    const { children, filter = defaultFilter, reference, render, sort } = props;
+    if (children && React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInputBase> only accepts a single child (like <Datagrid>)'
+        );
+    }
+
+    if (!render && !children) {
+        throw new Error(
+            "<EditBase> requires either a 'render' prop or 'children' prop"
         );
     }
 
@@ -94,7 +101,7 @@ export const ReferenceArrayInputBase = <RecordType extends RaRecord = any>(
     return (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
-                {children}
+                {render ? render(controllerProps) : children}
             </ChoicesContextProvider>
         </ResourceContextProvider>
     );
@@ -105,5 +112,6 @@ const defaultFilter = {};
 export interface ReferenceArrayInputBaseProps<RecordType extends RaRecord = any>
     extends InputProps,
         UseReferenceArrayInputParams<RecordType> {
-    children: React.ReactNode;
+    children?: React.ReactNode;
+    render?: (context: ChoicesContextValue<RecordType>) => React.ReactNode;
 }
