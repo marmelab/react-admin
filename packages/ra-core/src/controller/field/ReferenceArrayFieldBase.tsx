@@ -6,7 +6,7 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useRecordContext } from '../record';
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { ResourceContextProvider } from '../../core';
-import { ListContextProvider } from '../list';
+import { ListContextProvider, ListControllerResult } from '../list';
 import { FieldProps } from './types';
 
 /**
@@ -73,6 +73,9 @@ export const ReferenceArrayFieldBase = <
 ) => {
     const {
         children,
+        render,
+        pagination,
+        renderPagination,
         filter,
         page = 1,
         perPage,
@@ -100,7 +103,10 @@ export const ReferenceArrayFieldBase = <
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                {children}
+                {render ? render(controllerProps) : children}
+                {renderPagination
+                    ? renderPagination(controllerProps)
+                    : pagination}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -111,6 +117,10 @@ export interface ReferenceArrayFieldBaseProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
+    render?: (props: ListControllerResult<ReferenceRecordType>) => ReactElement;
+    renderPagination?: (
+        props: ListControllerResult<ReferenceRecordType>
+    ) => ReactElement;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;

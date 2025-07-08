@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { memo, type ReactElement, type ReactNode } from 'react';
+import { memo } from 'react';
 import {
     useListContext,
     type ListControllerProps,
-    type SortPayload,
-    type FilterPayload,
     ReferenceArrayFieldBase,
     type RaRecord,
+    ReferenceArrayFieldBaseProps,
 } from 'ra-core';
 import {
     type ComponentsOverrides,
@@ -15,7 +14,6 @@ import {
     type Theme,
     useThemeProps,
 } from '@mui/material/styles';
-import type { UseQueryOptions } from '@tanstack/react-query';
 
 import type { FieldProps } from './types';
 import { LinearProgress } from '../layout';
@@ -80,35 +78,26 @@ import { SingleFieldList } from '../list/SingleFieldList';
 export const ReferenceArrayField = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
->(
-    inProps: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
-) => {
+>({
+    pagination,
+    ...inProps
+}: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
     });
     return (
         <ReferenceArrayFieldBase {...inProps}>
-            <PureReferenceArrayFieldView {...props} />
+            <PureReferenceArrayFieldView {...props} pagination={pagination} />
         </ReferenceArrayFieldBase>
     );
 };
 export interface ReferenceArrayFieldProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends FieldProps<RecordType> {
-    children?: ReactNode;
-    filter?: FilterPayload;
-    page?: number;
-    pagination?: ReactElement;
-    perPage?: number;
-    reference: string;
-    sort?: SortPayload;
+> extends ReferenceArrayFieldBaseProps<RecordType, ReferenceRecordType>,
+        FieldProps<RecordType> {
     sx?: SxProps<Theme>;
-    queryOptions?: Omit<
-        UseQueryOptions<ReferenceRecordType[], Error>,
-        'queryFn' | 'queryKey'
-    >;
 }
 
 export interface ReferenceArrayFieldViewProps
