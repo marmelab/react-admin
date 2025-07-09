@@ -1,12 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
-import {
-    InputProps,
-    useReferenceArrayInputController,
-    ResourceContextProvider,
-    ChoicesContextProvider,
-    UseReferenceArrayInputParams,
-} from 'ra-core';
+import { ReferenceArrayInputBase, ReferenceArrayInputBaseProps } from 'ra-core';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 
 /**
@@ -77,40 +70,20 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
-    const {
-        children = defaultChildren,
-        reference,
-        sort,
-        filter = defaultFilter,
-    } = props;
+    const { children = defaultChildren, ...rest } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
-            '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
+            '<ReferenceArrayInput> only accepts a single child (like <AutocompleteArrayInput>)'
         );
     }
 
-    const controllerProps = useReferenceArrayInputController({
-        ...props,
-        sort,
-        filter,
-    });
-
     return (
-        <ResourceContextProvider value={reference}>
-            <ChoicesContextProvider value={controllerProps}>
-                {children}
-            </ChoicesContextProvider>
-        </ResourceContextProvider>
+        <ReferenceArrayInputBase {...rest}>{children}</ReferenceArrayInputBase>
     );
 };
 
 const defaultChildren = <AutocompleteArrayInput />;
-const defaultFilter = {};
 
-export interface ReferenceArrayInputProps
-    extends InputProps,
-        UseReferenceArrayInputParams {
-    children?: ReactElement;
+export interface ReferenceArrayInputProps extends ReferenceArrayInputBaseProps {
     label?: string;
-    [key: string]: any;
 }
