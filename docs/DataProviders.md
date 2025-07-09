@@ -1021,7 +1021,7 @@ queryClient.setMutationDefaults('banUser', {
 
 ## Handling Errors For Resumed Mutations
 
-If you enabled offline support, users might trigger mutations while being actually offline. When they're back online, react-query will _resume_ those mutations and they might fail for other reasons (server side validation or errors). However, as users might have navigated away from the page that triggered the mutation, they won't see any notification.
+If you enabled offline support, users might trigger mutations while being actually offline. When they're back online, TanStack Query will _resume_ those mutations and they might fail for other reasons (server side validation or errors). However, as users might have navigated away from the page that triggered the mutation, they won't see any notification.
 
 To handle this scenario, you must register default `onError` side effects for all mutations (react-admin default ones or custom). If you want to leverage react-admin notifications, you can use a custom layout:
 
@@ -1033,7 +1033,7 @@ export const MyLayout = ({ children }: { children: React.ReactNode }) => {
 
     React.useEffect(() => {
         const mutationKeyFilter = []; // An empty array targets all mutations 
-        queryClient.setMutationDefaults([], {
+        queryClient.setMutationDefaults(mutationKeyFilter, {
             onSettled(data, error) {
                 if (error) {
                     notify(error.message, { type: 'error' });
