@@ -18,6 +18,7 @@ describe('<ReferenceArrayInputBase>', () => {
     });
     it('should pass the correct resource down to child component', async () => {
         render(<Basic />);
+        // Check that the child component receives the correct resource (tags)
         await screen.findByText('Selected tags: 1, 3');
     });
 
@@ -28,6 +29,7 @@ describe('<ReferenceArrayInputBase>', () => {
 
     it('should apply default values', async () => {
         render(<Basic />);
+        // Check that the default values are applied (1, 3)
         await screen.findByText('Selected tags: 1, 3');
     });
 
