@@ -5,6 +5,7 @@ import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core/CoreAdminContext';
 import { CanAccess } from './CanAccess';
 import { TestMemoryRouter } from '../routing/TestMemoryRouter';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default {
     title: 'ra-core/auth/CanAccess',
@@ -147,6 +148,10 @@ export const ManyCalls = ({
                         <div>{post.title}</div>
                     </CanAccess>
                 ))}
+                <ReactQueryDevtools
+                    initialIsOpen={false}
+                    buttonPosition="bottom-right"
+                />
             </div>
         </CoreAdminContext>
     </TestMemoryRouter>
