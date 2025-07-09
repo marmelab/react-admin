@@ -88,7 +88,7 @@ export const ReferenceArrayInputBase = <RecordType extends RaRecord = any>(
 
     if (!render && !children) {
         throw new Error(
-            "<EditBase> requires either a 'render' prop or 'children' prop"
+            "<ReferenceArrayInputBase> requires either a 'render' prop or 'children' prop"
         );
     }
 

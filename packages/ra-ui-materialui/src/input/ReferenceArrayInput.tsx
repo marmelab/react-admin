@@ -85,7 +85,6 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
 const defaultChildren = <AutocompleteArrayInput />;
 
 export interface ReferenceArrayInputProps
-    extends Omit<ReferenceArrayInputBaseProps, 'children'> {
-    children?: React.ReactNode;
+    extends ReferenceArrayInputBaseProps {
     label?: string;
 }
