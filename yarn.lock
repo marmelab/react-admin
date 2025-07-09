@@ -4348,14 +4348,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.47.0":
-  version: 5.47.0
-  resolution: "@tanstack/query-core@npm:5.47.0"
-  checksum: 2d2378dbde2b0610b6356fcdb56904aa9d41c140c17ceb55e257b918c8555484ff36743a6a37768575631be96b9291eedc53723cd80326783095499cb97db049
-  languageName: node
-  linkType: hard
-
-"@tanstack/query-core@npm:5.81.2":
+"@tanstack/query-core@npm:5.47.0, @tanstack/query-core@npm:5.81.2":
   version: 5.81.2
   resolution: "@tanstack/query-core@npm:5.81.2"
   checksum: 36a6bddec2e7512015bcfbb0d7b0876fab418de9e0ef21ad403598276960e0b7d53efd62832ce462738ad22d9883e31cb5403eafc65dfd9b2f6744c22a9d8e42
