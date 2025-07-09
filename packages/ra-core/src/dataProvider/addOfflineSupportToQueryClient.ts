@@ -92,7 +92,7 @@ export const addOfflineSupportToQueryClient = ({
     resources.forEach(resource => {
         DataProviderMutations.forEach(mutation => {
             queryClient.setMutationDefaults([resource, mutation], {
-                mutationFn: async params => {
+                mutationFn: async (params: any) => {
                     const dataProviderFn = dataProvider[mutation] as Function;
                     return dataProviderFn.apply(dataProviderFn, ...params);
                 },
