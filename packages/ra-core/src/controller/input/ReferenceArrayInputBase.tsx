@@ -20,7 +20,7 @@ import { ChoicesContextValue } from '../../form';
  *    tag_ids: [ "1", "23", "4" ]
  * }
  *
- * ReferenceArrayInput component fetches the current resources (using
+ * ReferenceArrayInputBase component fetches the current resources (using
  * `dataProvider.getMany()`) as well as possible resources (using
  * `dataProvider.getList()`) in the reference endpoint. It then
  * delegates rendering to its child component, to which it makes the possible
@@ -33,9 +33,9 @@ import { ChoicesContextValue } from '../../form';
  * export const PostEdit = () => (
  *     <Edit>
  *         <SimpleForm>
- *             <ReferenceArrayInput source="tag_ids" reference="tags">
+ *             <ReferenceArrayInputBase source="tag_ids" reference="tags">
  *                 <SelectArrayInput optionText="name" />
- *             </ReferenceArrayInput>
+ *             </ReferenceArrayInputBase>
  *         </SimpleForm>
  *     </Edit>
  * );
@@ -44,36 +44,36 @@ import { ChoicesContextValue } from '../../form';
  * by setting the `perPage` prop.
  *
  * @example
- * <ReferenceArrayInput
+ * <ReferenceArrayInputBase
  *      source="tag_ids"
  *      reference="tags"
  *      perPage={100}>
  *     <SelectArrayInput optionText="name" />
- * </ReferenceArrayInput>
+ * </ReferenceArrayInputBase>
  *
  * By default, orders the possible values by id desc. You can change this order
  * by setting the `sort` prop (an object with `field` and `order` properties).
  *
  * @example
- * <ReferenceArrayInput
+ * <ReferenceArrayInputBase
  *      source="tag_ids"
  *      reference="tags"
  *      sort={{ field: 'name', order: 'ASC' }}>
  *     <SelectArrayInput optionText="name" />
- * </ReferenceArrayInput>
+ * </ReferenceArrayInputBase>
  *
  * Also, you can filter the query used to populate the possible values. Use the
  * `filter` prop for that.
  *
  * @example
- * <ReferenceArrayInput
+ * <ReferenceArrayInputBase
  *      source="tag_ids"
  *      reference="tags"
  *      filter={{ is_public: true }}>
  *     <SelectArrayInput optionText="name" />
- * </ReferenceArrayInput>
+ * </ReferenceArrayInputBase>
  *
- * The enclosed component may filter results. ReferenceArrayInput create a ChoicesContext which provides
+ * The enclosed component may filter results. ReferenceArrayInputBase create a ChoicesContext which provides
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceArrayInputBase = <RecordType extends RaRecord = any>(
