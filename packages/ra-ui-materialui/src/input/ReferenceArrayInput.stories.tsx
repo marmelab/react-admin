@@ -2,15 +2,16 @@ import * as React from 'react';
 import {
     DataProvider,
     Form,
+    Resource,
     testDataProvider,
     TestMemoryRouter,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Admin, Resource } from 'react-admin';
 import fakeRestProvider from 'ra-data-fakerest';
 
 import { AdminContext } from '../AdminContext';
+import { AdminUI } from '../AdminUI';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { DatagridInput, TextInput } from '../input';
@@ -31,8 +32,8 @@ const tags = [
 ];
 
 const dataProvider = testDataProvider({
-    // @ts-ignore
     getList: () =>
+        // @ts-ignore
         Promise.resolve({
             data: tags,
             total: tags.length,
@@ -50,27 +51,29 @@ const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/posts/create']}>
-        <Admin dataProvider={dataProvider}>
-            <Resource name="tags" recordRepresentation={'name'} />
-            <Resource
-                name="posts"
-                create={() => (
-                    <Create
-                        resource="posts"
-                        record={{ tags_ids: [1, 3] }}
-                        sx={{ width: 600 }}
-                    >
-                        <SimpleForm>
-                            <ReferenceArrayInput
-                                reference="tags"
-                                resource="posts"
-                                source="tags_ids"
-                            />
-                        </SimpleForm>
-                    </Create>
-                )}
-            />
-        </Admin>
+        <AdminContext dataProvider={dataProvider}>
+            <AdminUI>
+                <Resource name="tags" recordRepresentation={'name'} />
+                <Resource
+                    name="posts"
+                    create={() => (
+                        <Create
+                            resource="posts"
+                            record={{ tags_ids: [1, 3] }}
+                            sx={{ width: 600 }}
+                        >
+                            <SimpleForm>
+                                <ReferenceArrayInput
+                                    reference="tags"
+                                    resource="posts"
+                                    source="tags_ids"
+                                />
+                            </SimpleForm>
+                        </Create>
+                    )}
+                />
+            </AdminUI>
+        </AdminContext>
     </TestMemoryRouter>
 );
 
