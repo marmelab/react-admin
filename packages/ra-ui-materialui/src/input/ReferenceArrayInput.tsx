@@ -73,7 +73,7 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
     const { children = defaultChildren, ...rest } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
-            '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
+            '<ReferenceArrayInput> only accepts a single child (like <AutocompleteArrayInput>)'
         );
     }
 

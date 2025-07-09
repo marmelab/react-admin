@@ -82,7 +82,7 @@ export const ReferenceArrayInputBase = <RecordType extends RaRecord = any>(
     const { children, filter = defaultFilter, reference, render, sort } = props;
     if (children && React.Children.count(children) !== 1) {
         throw new Error(
-            '<ReferenceArrayInputBase> only accepts a single child (like <Datagrid>)'
+            '<ReferenceArrayInputBase> only accepts a single child (like <AutocompleteArrayInput>)'
         );
     }
 
