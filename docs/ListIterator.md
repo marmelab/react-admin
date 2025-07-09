@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "ListIterator"
-storybook_path: react-admin-admin--basic
+storybook_path: ra-core-controller-list-listiterator--using-render
 ---
 
 # `<ListIterator>`
@@ -43,9 +43,8 @@ Here are all the props you can set on the `<AccordionForm>` component:
 | `data`      | Optional | `RaRecord[]`                       | -       | The records. Defaults to the `data` from the `ListContext`                                           |
 | `empty`     | Optional | `ReactNode`                        | `null`  | The content to display when there is no data                                                         |
 | `isPending` | Optional | `boolean`                          | -       | A boolean indicating whether the data is pending. Defaults to the `isPending` from the `ListContext` |
-| `pending`   | Optional | `ReactNode`                        | `null`  | The content to display while the data is loading                                                     |
+| `loading`   | Optional | `ReactNode`                        | `null`  | The content to display while the data is loading                                                     |
 | `render`    | Optional | `(record: RaRecord) => ReactNode`  | -       | A function that returns the content to render for each record                                        |
-| `resource`  | Optional | `string`                           | -       | The resource. Defaults to the `ResourceContext`                                                      |
 | `total`     | Optional | `number`                           | -       | The total number of records. Defaults to the `total` from the `ListContext`                          |
 
 Additional props are passed to `react-hook-form`'s [`useForm` hook](https://react-hook-form.com/docs/useform).
@@ -148,6 +147,7 @@ const DashboardMostVisitedPosts = () => {
     return (
         <OrderedList>
             <ListIterator
+                data={data}
                 isPending={isPending}
                 render={record => <ListItem>{record.title} - {record.views}</ListItem>}
             />
@@ -158,9 +158,9 @@ const DashboardMostVisitedPosts = () => {
 {% endraw %}
 
 
-## `pending`
+## `loading`
 
-To provide a custom UI while the data is loading use the `pending` prop.
+To provide a custom UI while the data is loading use the `loading` prop.
 
 {% raw %}
 ```jsx
@@ -171,7 +171,7 @@ const DashboardMostVisitedPosts = () => (
     <ListBase resource="posts" sort={{ field: 'views', order: 'DESC' }} page={1} perPage={20}>
         <OrderedList>
             <ListIterator
-                pending={<Skeleton />}
+                loading={<Skeleton />}
                 render={record => <ListItem>{record.title} - {record.views}</ListItem>}
             />
         </OrderedList>
@@ -202,27 +202,6 @@ const DashboardMostVisitedPosts = () => (
 {% endraw %}
 
 **Note**: You can't provide both the `children` and the `render` props. If both are provided, `<ListIterator>` will use the `render` prop.
-
-## `resource`
-
-Although `<ListIterator>` reads the resource from the closest [`<ResourceContext>`](./Resource.md#resource-context), you may provide it yourself when no such context is available (e.g. in a [dashboard](./Admin.md#dashboard) or a [custom page](./Admin.md#adding-custom-pages)):
-
-{% raw %}
-```jsx
-import { ListBase, ListIterator } from 'react-admin';
-import { OrderedList, ListItem } from 'my-favorite-ui-lib';
-
-const DashboardMostVisitedPosts = () => (
-    <ListBase resource="posts" sort={{ field: 'views', order: 'DESC' }} page={1} perPage={20}>
-        <OrderedList>
-            <ListIterator
-                render={record => <ListItem>{record.title} - {record.views}</ListItem>}
-            />
-        </OrderedList>
-    </ListBase>
-);
-```
-{% endraw %}
 
 ## `total`
 

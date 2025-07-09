@@ -6,12 +6,12 @@ import { RecordContextProvider } from '../record';
 export const ListIterator = <RecordType extends RaRecord = any>(
     props: ListIteratorProps<RecordType>
 ) => {
-    const { children, empty = null, pending = null, render } = props;
+    const { children, empty = null, loading = null, render } = props;
     const { data, total, isPending } =
         useListContextWithProps<RecordType>(props);
 
     if (isPending === true) {
-        return pending ? pending : null;
+        return loading ? loading : null;
     }
 
     if (data == null || data.length === 0 || total === 0) {
@@ -56,10 +56,8 @@ export const ListIterator = <RecordType extends RaRecord = any>(
 export interface ListIteratorProps<RecordType extends RaRecord = any> {
     children?: React.ReactNode;
     empty?: React.ReactElement;
-    pending?: React.ReactElement;
+    loading?: React.ReactElement;
     render?: (record: RecordType, index: number) => React.ReactNode;
-    // can be injected when using the component without context
-    resource?: string;
     data?: RecordType[];
     total?: number;
     isPending?: boolean;

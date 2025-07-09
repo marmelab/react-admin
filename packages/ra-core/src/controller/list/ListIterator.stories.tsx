@@ -39,7 +39,7 @@ export const UsingRender = ({
                 }}
             >
                 <ListIterator
-                    pending={<div>Loading...</div>}
+                    loading={<div>Loading...</div>}
                     empty={<div>No data</div>}
                     render={record => (
                         <li
@@ -99,7 +99,7 @@ export const UsingChildren = ({
                 }}
             >
                 <ListIterator
-                    pending={<div>Loading...</div>}
+                    loading={<div>Loading...</div>}
                     empty={<div>No data</div>}
                 >
                     <ListItem />
