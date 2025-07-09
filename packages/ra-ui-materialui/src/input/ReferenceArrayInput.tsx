@@ -84,7 +84,6 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
 
 const defaultChildren = <AutocompleteArrayInput />;
 
-export interface ReferenceArrayInputProps
-    extends ReferenceArrayInputBaseProps {
+export interface ReferenceArrayInputProps extends ReferenceArrayInputBaseProps {
     label?: string;
 }
