@@ -167,6 +167,20 @@ export const Disabled = () => (
     </AdminContext>
 );
 
+export const DisabledChoice = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator', disabled: true },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
+);
+
 export const ReadOnly = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
