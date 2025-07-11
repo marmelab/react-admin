@@ -7,7 +7,7 @@ storybook_path: ra-core-controller-field-referencefieldbase--basic
 # `<ReferenceFieldBase>`
 
 `<ReferenceFieldBase>` is useful for displaying many-to-one and one-to-one relationships, e.g. the details of a user when rendering a post authored by that user.
-`<ReferenceFieldBase>` is a headless component, handling only the logic. This Allows to plug any UI library on top. For the version incorporating UI see [`<ReferenceFieldBase>`](/ReferenceField.html)
+`<ReferenceFieldBase>` is a headless component, handling only the logic. This Allows to use any UI library for the render. For a version incorporating UI see [`<ReferenceField>`](/ReferenceField.html)
 
 ## Usage
 
@@ -37,7 +37,7 @@ export const PostShow = () => (
             <TextField source="id" />
             <TextField source="title" />
             <DateField source="published_at" />
-            <ReferenceFieldBase source="user_id" reference="users" label="Author">
+            <ReferenceFieldBase source="user_id" reference="users" >
                 <CustomUIRenderer />
             </ReferenceFieldBase>
         </SimpleShowLayout>

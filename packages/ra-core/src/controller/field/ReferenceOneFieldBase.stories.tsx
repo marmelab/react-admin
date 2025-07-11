@@ -7,7 +7,7 @@ import {
     ResourceContextProvider,
     TestMemoryRouter,
     useRecordContext,
-    useReferenceOneFieldController,
+    useReferenceFieldContext,
 } from '../..';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceOneFieldBase' };
@@ -37,9 +37,7 @@ const Wrapper = ({ children, dataProvider = defaultDataProvider }) => (
 export const Basic = () => (
     <Wrapper>
         <ReferenceOneFieldBase reference="book_details" target="book_id">
-            <MyReferenceOneField reference="book_details" target="book_id">
-                <TextField source="ISBN" />
-            </MyReferenceOneField>
+            <MyReferenceOneField />
         </ReferenceOneFieldBase>
     </Wrapper>
 );
@@ -51,9 +49,7 @@ const dataProviderWithLoading = {
 export const Loading = () => (
     <Wrapper dataProvider={dataProviderWithLoading}>
         <ReferenceOneFieldBase reference="book_details" target="book_id">
-            <MyReferenceOneField reference="book_details" target="book_id">
-                <TextField source="ISBN" />
-            </MyReferenceOneField>
+            <MyReferenceOneField />
         </ReferenceOneFieldBase>
     </Wrapper>
 );
@@ -89,19 +85,8 @@ export const WithRenderProp = ({
     );
 };
 
-const MyReferenceOneField = ({
-    reference,
-    target,
-    children,
-}: {
-    children: React.ReactNode;
-    reference: string;
-    target: string;
-}) => {
-    const context = useReferenceOneFieldController({
-        reference,
-        target,
-    });
+const MyReferenceOneField = () => {
+    const context = useReferenceFieldContext();
 
     if (context.isPending) {
         return <p>Loading...</p>;
@@ -110,10 +95,10 @@ const MyReferenceOneField = ({
     if (context.error) {
         return <p style={{ color: 'red' }}>{context.error.toString()}</p>;
     }
-    return children;
-};
 
-const TextField = ({ source }) => {
-    const record = useRecordContext();
-    return <span>{record ? record[source] : ''}</span>;
+    return (
+        <span>
+            {context.referenceRecord ? context.referenceRecord.ISBN : ''}
+        </span>
+    );
 };
