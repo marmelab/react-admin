@@ -102,7 +102,7 @@ export const PostList = () => (
 
 | Prop           | Required | Type                                                                              | Default                          | Description                                                                         |
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`     | Required if no render | `Element`                                                                         | -                                | Element that render a list of records based on a `ListContext`      |
+| `children`     | Required if no render | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
 | `render`     | Required if no children | `(listContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and render elements      |
 | `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |

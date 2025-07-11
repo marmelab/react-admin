@@ -9,7 +9,6 @@ import {
     ShowBase,
     TestMemoryRouter,
     useListContext,
-    useListContextWithProps,
 } from '../..';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -181,7 +180,7 @@ const MyReferenceArrayField = (props: { children: React.ReactNode }) => {
 };
 
 const List = ({ source }: { source: string }) => {
-    const listContext = useListContextWithProps();
+    const listContext = useListContext();
     return (
         <p>
             {listContext.data?.map((datum, index) => (
@@ -192,12 +191,7 @@ const List = ({ source }: { source: string }) => {
 };
 
 const Pagination = () => {
-    const {
-        page = 1,
-        setPage,
-        total = 0,
-        perPage = 0,
-    } = useListContextWithProps();
+    const { page = 1, setPage, total = 0, perPage = 0 } = useListContext();
     const nextPage = () => {
         setPage?.(page + 1);
     };
