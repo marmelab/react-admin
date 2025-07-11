@@ -53,6 +53,12 @@ export const ReferenceFieldBase = <
     const controllerProps =
         useReferenceFieldController<ReferenceRecordType>(props);
 
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceFieldBase> requires either a 'render' prop or 'children' prop"
+        );
+    }
+
     if (
         (empty &&
             // no foreign key value

@@ -77,6 +77,12 @@ export const ReferenceOneFieldBase = <
         return empty;
     }
 
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceOneFieldBase> requires either a 'render' prop or 'children' prop"
+        );
+    }
+
     return (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>

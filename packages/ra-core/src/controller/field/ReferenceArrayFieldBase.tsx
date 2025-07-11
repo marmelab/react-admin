@@ -100,6 +100,13 @@ export const ReferenceArrayFieldBase = <
         source,
         queryOptions,
     });
+
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceArrayFieldBase> requires either a 'render' prop or 'children' prop"
+        );
+    }
+
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
