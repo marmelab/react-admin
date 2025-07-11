@@ -16,6 +16,7 @@ import {
     mergeTranslations,
     useEditContext,
     useLocaleState,
+    MutationMode,
 } from '../..';
 
 export default {
@@ -146,6 +147,35 @@ export const AccessControl = ({
         >
             <Child />
         </EditBase>
+    </CoreAdminContext>
+);
+
+export const WithRenderProps = ({
+    dataProvider = defaultDataProvider,
+    mutationMode = 'optimistic',
+}: {
+    dataProvider?: DataProvider;
+    mutationMode?: MutationMode;
+}) => (
+    <CoreAdminContext dataProvider={dataProvider}>
+        <EditBase
+            mutationMode={mutationMode}
+            {...defaultProps}
+            render={({ record, save }) => {
+                const handleClick = () => {
+                    if (!save) return;
+
+                    save({ test: 'test' });
+                };
+                return (
+                    <>
+                        <p>{record?.id}</p>
+                        <p>{record?.test}</p>
+                        <button onClick={handleClick}>save</button>
+                    </>
+                );
+            }}
+        />
     </CoreAdminContext>
 );
 

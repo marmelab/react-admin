@@ -8,6 +8,7 @@ import {
     DefaultTitle,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
+    WithRenderProp,
 } from './CreateBase.stories';
 
 describe('CreateBase', () => {
@@ -282,5 +283,23 @@ describe('CreateBase', () => {
         await screen.findByText('Create an article (en)');
         fireEvent.click(screen.getByText('FR'));
         await screen.findByText('Créer un article (fr)');
+    });
+
+    it('should allow render props', async () => {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            create: jest.fn((_, { data }) =>
+                Promise.resolve({ data: { id: 1, ...data } })
+            ),
+        });
+
+        render(<WithRenderProp dataProvider={dataProvider} />);
+        fireEvent.click(screen.getByText('save'));
+
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('posts', {
+                data: { test: 'test' },
+            });
+        });
     });
 });
