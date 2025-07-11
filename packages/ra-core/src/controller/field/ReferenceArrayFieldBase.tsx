@@ -75,7 +75,6 @@ export const ReferenceArrayFieldBase = <
         children,
         render,
         pagination,
-        renderPagination,
         filter,
         page = 1,
         perPage,
@@ -111,9 +110,7 @@ export const ReferenceArrayFieldBase = <
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
                 {render ? render(controllerProps) : children}
-                {renderPagination
-                    ? renderPagination(controllerProps)
-                    : pagination}
+                {!render && pagination}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -125,9 +122,6 @@ export interface ReferenceArrayFieldBaseProps<
 > extends FieldProps<RecordType> {
     children?: ReactNode;
     render?: (props: ListControllerResult<ReferenceRecordType>) => ReactElement;
-    renderPagination?: (
-        props: ListControllerResult<ReferenceRecordType>
-    ) => ReactElement;
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;

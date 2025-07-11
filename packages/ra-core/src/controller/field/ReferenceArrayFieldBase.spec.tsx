@@ -41,8 +41,8 @@ describe('ReferenceArrayFieldBase', () => {
             return <div>{resource}</div>;
         };
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getList: () =>
+                // @ts-ignore
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(
@@ -103,21 +103,11 @@ describe('ReferenceArrayFieldBase', () => {
         });
     });
 
-    it('should render pagination using renderPagination prop', async () => {
-        render(<WithPagination />);
+    it('should not render pagination when given a render prop', async () => {
+        render(<WithRenderProp pagination={<p>Custom Pagination</p>} />);
         await waitFor(() => {
-            expect(screen.queryByText('1 - 3 of 8')).not.toBeNull();
-            expect(screen.queryByText('Next Page')).not.toBeNull();
-            expect(screen.queryByText('Previous Page')).not.toBeNull();
+            expect(screen.queryByText('John Lennon')).not.toBeNull();
         });
-        screen.getByText('Next Page').click();
-        await waitFor(() => {
-            expect(screen.queryByText('4 - 6 of 8')).not.toBeNull();
-        });
-        screen.getByText('Previous Page').click();
-
-        await waitFor(() => {
-            expect(screen.queryByText('1 - 3 of 8')).not.toBeNull();
-        });
+        expect(screen.queryByText('Custom Pagination')).toBeNull();
     });
 });

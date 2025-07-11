@@ -111,8 +111,10 @@ export const Loading = () => (
 
 export const WithRenderProp = ({
     dataProvider = defaultDataProvider,
+    pagination,
 }: {
     dataProvider?: DataProvider;
+    pagination?: React.ReactElement;
 }) => (
     <TestMemoryRouter initialEntries={['/bands/1/show']}>
         <CoreAdmin
@@ -135,6 +137,7 @@ export const WithRenderProp = ({
                         <ReferenceArrayFieldBase
                             source="members"
                             reference="artists"
+                            pagination={pagination}
                             render={({ data, isPending, error }) => {
                                 if (isPending) {
                                     return <p>Loading...</p>;
@@ -157,77 +160,6 @@ export const WithRenderProp = ({
                                 );
                             }}
                         />
-                    </ShowBase>
-                }
-            />
-        </CoreAdmin>
-    </TestMemoryRouter>
-);
-
-export const WithRenderPaginationProp = ({
-    dataProvider = defaultDataProvider,
-}: {
-    dataProvider: DataProvider;
-}) => (
-    <TestMemoryRouter initialEntries={['/bands/1/show']}>
-        <CoreAdmin
-            dataProvider={dataProvider}
-            queryClient={
-                new QueryClient({
-                    defaultOptions: {
-                        queries: {
-                            retry: false,
-                        },
-                    },
-                })
-            }
-        >
-            <Resource name="artists" />
-            <Resource
-                name="bands"
-                show={
-                    <ShowBase resource="bands" id={1}>
-                        <ReferenceArrayFieldBase
-                            source="members"
-                            reference="artists"
-                            perPage={3}
-                            renderPagination={({
-                                total,
-                                perPage,
-                                setPage,
-                                page,
-                            }) => {
-                                const nextPage = () => {
-                                    setPage?.(page + 1);
-                                };
-                                const previousPage = () => {
-                                    setPage?.(page - 1);
-                                };
-                                return (
-                                    <div>
-                                        <button
-                                            disabled={page <= 1}
-                                            onClick={previousPage}
-                                        >
-                                            Previous Page
-                                        </button>
-                                        <span>
-                                            {`${(page - 1) * perPage + 1} - ${Math.min(page * perPage, total)} of ${total}`}
-                                        </span>
-                                        <button
-                                            disabled={page >= total / perPage}
-                                            onClick={nextPage}
-                                        >
-                                            Next Page
-                                        </button>
-                                    </div>
-                                );
-                            }}
-                        >
-                            <MyReferenceArrayField>
-                                <List source="name" />
-                            </MyReferenceArrayField>
-                        </ReferenceArrayFieldBase>
                     </ShowBase>
                 }
             />
