@@ -68,7 +68,6 @@ export const ReferenceManyFieldBase = <
         filter = defaultFilter,
         page = 1,
         pagination = null,
-        renderPagination = null,
         perPage = 25,
         record,
         reference,
@@ -130,9 +129,7 @@ export const ReferenceManyFieldBase = <
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
                 {render ? render(controllerProps) : children}
-                {renderPagination
-                    ? renderPagination(controllerProps)
-                    : pagination}
+                {!render && pagination}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -147,9 +144,6 @@ export interface ReferenceManyFieldBaseProps<
     > {
     children?: ReactNode;
     render?: (props: ListControllerResult<ReferenceRecordType>) => ReactNode;
-    renderPagination?: (
-        props: ListControllerResult<ReferenceRecordType>
-    ) => ReactNode;
     empty?: ReactNode;
     pagination?: ReactNode;
 }

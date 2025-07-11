@@ -239,7 +239,13 @@ export const WithPagination = ({ dataProvider = dataProviderWithAuthors }) => (
     </TestMemoryRouter>
 );
 
-export const WithRenderProp = ({ dataProvider = dataProviderWithAuthors }) => (
+export const WithRenderProp = ({
+    dataProvider = dataProviderWithAuthors,
+    pagination,
+}: {
+    dataProvider?: any;
+    pagination?: React.ReactNode;
+}) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
         <CoreAdmin
             dataProvider={dataProvider}
@@ -262,6 +268,7 @@ export const WithRenderProp = ({ dataProvider = dataProviderWithAuthors }) => (
                             reference="books"
                             target="author"
                             source="id"
+                            pagination={pagination}
                             render={({ error, isPending, data }) => {
                                 if (isPending) {
                                     return <p>Loading...</p>;
@@ -283,74 +290,6 @@ export const WithRenderProp = ({ dataProvider = dataProviderWithAuthors }) => (
                                 );
                             }}
                         />
-                    </ShowBase>
-                }
-            />
-        </CoreAdmin>
-    </TestMemoryRouter>
-);
-
-export const WithRenderPagination = ({
-    dataProvider = dataProviderWithAuthors,
-}) => (
-    <TestMemoryRouter initialEntries={['/authors/1/show']}>
-        <CoreAdmin
-            dataProvider={dataProvider}
-            queryClient={
-                new QueryClient({
-                    defaultOptions: {
-                        queries: {
-                            retry: false,
-                        },
-                    },
-                })
-            }
-        >
-            <Resource name="books" />
-            <Resource
-                name="authors"
-                show={
-                    <ShowBase>
-                        <ReferenceManyFieldBase
-                            target="author"
-                            source="id"
-                            reference="books"
-                            perPage={2}
-                            renderPagination={({
-                                page = 0,
-                                setPage,
-                                total = 0,
-                                perPage,
-                            }) => {
-                                const nextPage = () => {
-                                    setPage(page + 1);
-                                };
-                                const previousPage = () => {
-                                    setPage(page - 1);
-                                };
-                                return (
-                                    <div>
-                                        <button
-                                            disabled={page <= 1}
-                                            onClick={previousPage}
-                                        >
-                                            previous page
-                                        </button>
-                                        {`${(page - 1) * perPage + 1} - ${Math.min(page * perPage, total)} of ${total}`}
-                                        <button
-                                            disabled={page >= total / perPage}
-                                            onClick={nextPage}
-                                        >
-                                            next page
-                                        </button>
-                                    </div>
-                                );
-                            }}
-                        >
-                            <MyReferenceManyField>
-                                <List source="title" />
-                            </MyReferenceManyField>
-                        </ReferenceManyFieldBase>
                     </ShowBase>
                 }
             />

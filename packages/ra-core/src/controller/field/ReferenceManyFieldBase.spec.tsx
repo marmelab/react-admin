@@ -41,8 +41,8 @@ describe('ReferenceManyFieldBase', () => {
             return <div>{resource}</div>;
         };
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getList: () =>
+                // @ts-ignore
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(
@@ -156,23 +156,13 @@ describe('ReferenceManyFieldBase', () => {
                 ).not.toBeNull();
             });
         });
-    });
 
-    it('should render pagination using renderPagination prop', async () => {
-        render(<WithPagination />);
-        await waitFor(() => {
-            expect(screen.queryByText('1 - 2 of 3')).not.toBeNull();
-            expect(screen.queryByText('Next Page')).not.toBeNull();
-            expect(screen.queryByText('Previous Page')).not.toBeNull();
-        });
-        screen.getByText('Next Page').click();
-        await waitFor(() => {
-            expect(screen.queryByText('3 - 3 of 3')).not.toBeNull();
-        });
-        screen.getByText('Previous Page').click();
-
-        await waitFor(() => {
-            expect(screen.queryByText('1 - 2 of 3')).not.toBeNull();
+        it('should not render pagination when receiving a render prop', async () => {
+            render(<WithRenderProp pagination={<p>Custom Pagination</p>} />);
+            await waitFor(() => {
+                expect(screen.queryByText('War and Peace')).not.toBeNull();
+            });
+            expect(screen.queryByText('Custom Pagination')).toBeNull();
         });
     });
 });
