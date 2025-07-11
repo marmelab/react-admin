@@ -18,25 +18,25 @@ import { useFieldValue } from '../../util';
  * added as <Admin> child.
  *
  * @example // using recordRepresentation
- * <ReferenceFieldBase label="User" source="userId" reference="users" />
+ * <ReferenceFieldBase source="userId" reference="users" />
  *
  * @example // using a Field component to represent the record
- * <ReferenceFieldBase label="User" source="userId" reference="users">
+ * <ReferenceFieldBase source="userId" reference="users">
  *     <TextField source="name" />
  * </ReferenceFieldBase>
  *
  * @example // By default, includes a link to the <Edit> page of the related record
  * // (`/users/:userId` in the previous example).
  * // Set the `link` prop to "show" to link to the <Show> page instead.
- * <ReferenceFieldBase label="User" source="userId" reference="users" link="show" />
+ * <ReferenceFieldBase source="userId" reference="users" link="show" />
  *
  * @example // You can also prevent `<ReferenceFieldBase>` from adding link to children
  * // by setting `link` to false.
- * <ReferenceFieldBase label="User" source="userId" reference="users" link={false} />
+ * <ReferenceFieldBase source="userId" reference="users" link={false} />
  *
  * @example // Alternatively, you can also pass a custom function to `link`.
  * // It must take reference and record as arguments and return a string
- * <ReferenceFieldBase label="User" source="userId" reference="users" link={(record, reference) => "/path/to/${reference}/${record}"} />
+ * <ReferenceFieldBase source="userId" reference="users" link={(record, reference) => "/path/to/${reference}/${record}"} />
  *
  * @default
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
@@ -70,6 +70,7 @@ export const ReferenceFieldBase = <
     ) {
         return empty;
     }
+
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceFieldContextProvider value={controllerProps}>
