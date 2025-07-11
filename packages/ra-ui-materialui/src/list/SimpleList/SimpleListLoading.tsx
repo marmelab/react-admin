@@ -29,10 +29,11 @@ export const SimpleListLoading = (inProps: SimpleListLoadingProps) => {
         hasSecondaryText,
         hasTertiaryText,
         nbFakeLines = 5,
+        timeout = 1000,
         ...rest
     } = props;
 
-    const oneSecondHasPassed = useTimeout(1000);
+    const oneSecondHasPassed = useTimeout(timeout);
 
     return oneSecondHasPassed ? (
         <StyledList className={className} {...rest}>
@@ -109,6 +110,7 @@ export interface SimpleListLoadingProps extends ListProps {
     hasSecondaryText?: boolean;
     hasTertiaryText?: boolean;
     nbFakeLines?: number;
+    timeout?: number;
 }
 
 declare module '@mui/material/styles' {

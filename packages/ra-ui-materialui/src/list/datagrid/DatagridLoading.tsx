@@ -26,8 +26,9 @@ const DatagridLoading = ({
     nbChildren,
     nbFakeLines = 5,
     size,
+    timeout = 1000,
 }: DatagridLoadingProps) => {
-    const oneSecondHasPassed = useTimeout(1000);
+    const oneSecondHasPassed = useTimeout(timeout);
     if (!oneSecondHasPassed) return null;
     return (
         <div className={DatagridClasses.root}>
@@ -128,6 +129,7 @@ export interface DatagridLoadingProps {
     nbChildren: number;
     nbFakeLines?: number;
     size?: 'small' | 'medium';
+    timeout?: number;
 }
 
 export default memo(DatagridLoading);
