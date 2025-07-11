@@ -5,8 +5,7 @@ import { Resource } from '../../core/Resource';
 import { ShowBase } from '../../controller/show/ShowBase';
 import { TestMemoryRouter } from '../../routing';
 import { ReferenceManyFieldBase } from './ReferenceManyFieldBase';
-import { useReferenceManyFieldController } from './useReferenceManyFieldController';
-import { useListContextWithProps } from '../list';
+import { useListContext, useListContextWithProps } from '../list';
 
 export default {
     title: 'ra-core/controller/field/ReferenceManyFieldBase',
@@ -90,11 +89,7 @@ export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
                             source="id"
                             reference="books"
                         >
-                            <MyReferenceManyField
-                                reference="books"
-                                target="author"
-                                source="id"
-                            >
+                            <MyReferenceManyField>
                                 <List source="title" />
                             </MyReferenceManyField>
                         </ReferenceManyFieldBase>
@@ -148,11 +143,7 @@ export const Errored = ({ dataProvider = dataProviderWithAuthorsError }) => (
                             target="id"
                             source="author"
                         >
-                            <MyReferenceManyField
-                                reference="authors"
-                                target="id"
-                                source="author"
-                            >
+                            <MyReferenceManyField>
                                 <List source="first_name" />
                             </MyReferenceManyField>
                         </ReferenceManyFieldBase>
@@ -200,11 +191,7 @@ export const Loading = ({ dataProvider = dataProviderWithAuthorsLoading }) => (
                             target="id"
                             source="author"
                         >
-                            <MyReferenceManyField
-                                reference="authors"
-                                target="id"
-                                source="id"
-                            >
+                            <MyReferenceManyField>
                                 <List source="first_name" />
                             </MyReferenceManyField>
                         </ReferenceManyFieldBase>
@@ -241,11 +228,7 @@ export const WithPagination = ({ dataProvider = dataProviderWithAuthors }) => (
                             perPage={2}
                             pagination={<Pagination />}
                         >
-                            <MyReferenceManyField
-                                reference="books"
-                                target="author"
-                                source="id"
-                            >
+                            <MyReferenceManyField>
                                 <List source="title" />
                             </MyReferenceManyField>
                         </ReferenceManyFieldBase>
@@ -364,11 +347,7 @@ export const WithRenderPagination = ({
                                 );
                             }}
                         >
-                            <MyReferenceManyField
-                                reference="books"
-                                target="author"
-                                source="id"
-                            >
+                            <MyReferenceManyField>
                                 <List source="title" />
                             </MyReferenceManyField>
                         </ReferenceManyFieldBase>
@@ -379,22 +358,8 @@ export const WithRenderPagination = ({
     </TestMemoryRouter>
 );
 
-const MyReferenceManyField = ({
-    reference,
-    target,
-    source,
-    children,
-}: {
-    children: React.ReactNode;
-    reference: string;
-    target: string;
-    source: string;
-}) => {
-    const context = useReferenceManyFieldController({
-        reference,
-        target,
-        source,
-    });
+const MyReferenceManyField = ({ children }: { children: React.ReactNode }) => {
+    const context = useListContext();
 
     if (context.isPending) {
         return <p>Loading...</p>;
@@ -407,7 +372,7 @@ const MyReferenceManyField = ({
 };
 
 const List = ({ source }: { source: string }) => {
-    const listContext = useListContextWithProps();
+    const listContext = useListContext();
     return (
         <p>
             {listContext.data?.map((datum, index) => (
@@ -418,12 +383,7 @@ const List = ({ source }: { source: string }) => {
 };
 
 const Pagination = () => {
-    const {
-        page = 1,
-        setPage,
-        total = 0,
-        perPage = 0,
-    } = useListContextWithProps();
+    const { page = 1, setPage, total = 0, perPage = 0 } = useListContext();
     const nextPage = () => {
         setPage?.(page + 1);
     };
