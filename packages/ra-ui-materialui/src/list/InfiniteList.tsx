@@ -83,6 +83,12 @@ export const InfiniteList = <RecordType extends RaRecord = any>(
         name: PREFIX,
     });
 
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<InfiniteList> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         <InfiniteListBase<RecordType>
             debounce={debounce}
