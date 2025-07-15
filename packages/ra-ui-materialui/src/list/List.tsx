@@ -20,6 +20,7 @@ import { Loading } from '../layout';
  * - actions
  * - aside: Side Component
  * - children: List Layout
+ * - render: alternative to children Function to render the List Layout, receive the list context as argument
  * - component
  * - disableAuthentication
  * - disableSyncWithLocation

@@ -55,7 +55,8 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 
 | Prop                      | Required | Type           | Default        | Description                                                                                  |
 |---------------------------|----------|----------------|----------------|----------------------------------------------------------------------------------------------|
-| `children`                | Required | `ReactNode`    | -              | The components rendering the list of records.                                          |
+| `children`                | Required if no render | `ReactNode`    | -              | The components rendering the list of records.                                          |
+| `render`                | Required if no children | `(listContext) => ReactNode`    | -              | A function to render the list of records. Receive the list context as its argument                                          |
 | `actions`                 | Optional | `ReactElement` | -              | The actions to display in the toolbar.                                                       |
 | `aside`                   | Optional | `ReactElement` | -              | The component to display on the side of the list.                                            |
 | `component`               | Optional | `Component`    | `Card`         | The component to render as the root element.                                                 |
@@ -78,6 +79,33 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
+
+## `render`
+
+Alternatively to children you can pass a render prop to `<List>`. The render prop will receive the list context as its argument, allowing to inline the render logic for both the list content.
+When receiving a render prop the `<List>` component will ignore the children property.
+
+{% raw %}
+```tsx
+<List
+    render={({ error, isPending }) => {
+        if (isPending) {
+            return <div>Loading...</div>;
+        }
+        if (error) {
+            return <div>Error: {error.message}</div>;
+        }
+        return (
+            <SimpleList
+                primaryText="%{title} (%{year})"
+                secondaryText="%{summary}"
+                tertiaryText={record => record.year}
+            />
+        );
+    }}
+/>
+```
+{% endraw %}
 
 ## `actions`
 

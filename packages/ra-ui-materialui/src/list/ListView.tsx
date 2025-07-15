@@ -195,7 +195,7 @@ export interface ListViewProps<RecordType extends RaRecord = any> {
      *     </List>
      * );
      */
-    children: ReactNode;
+    children?: ReactNode;
 
     /**
      * A function rendering the list of records. Take the list controller as argument.
