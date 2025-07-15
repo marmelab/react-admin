@@ -1174,6 +1174,26 @@ const ProductList = () => (
 )
 ```
 
+## Enabling Data Fetching Conditionally
+
+You might want to allow data to be fetched only when at least some filters have been set. You can leverage TanStack react-query `enabled` option for that. It accepts a function that receives the query as its only parameter. As react-admin always format the `queryKey` as `[ResourceName, DataProviderMethod, DataProviderParams]`, you can check that there is at least a filter in this function:
+
+```tsx
+export const PostList = () => (
+    <List
+        filters={postFilter}
+        queryOptions={{
+            enabled: query => {
+                const listParams = query.queryKey[2] as GetListParams;
+                return listParams.filter.q?.length > 2;
+            }
+        }}
+    >
+        {/* DataGrid */}
+    </List>
+)
+```
+
 ## Accessing Extra Response Data
 
 If `dataProvider.getList()` returns additional metadata in the response under the `meta` key, you can access it in the list view using the `meta` property of the `ListContext`.
