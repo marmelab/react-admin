@@ -341,7 +341,7 @@ describe('<Edit />', () => {
         });
     });
 
-    it('should allow tu use render prop instead of children', async () => {
+    it('should allow to use render prop instead of children', async () => {
         render(<WithRenderProp />);
         await waitFor(() => {
             expect(screen.queryAllByText('War and Peace')).toHaveLength(1);

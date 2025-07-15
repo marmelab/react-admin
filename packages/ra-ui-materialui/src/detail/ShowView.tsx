@@ -39,7 +39,7 @@ export const ShowView = (props: ShowViewProps) => {
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
 
-    if (!children || (!record && emptyWhileLoading)) {
+    if (!record && emptyWhileLoading) {
         return null;
     }
     return (
@@ -57,7 +57,9 @@ export const ShowView = (props: ShowViewProps) => {
                     [ShowClasses.noActions]: !finalActions,
                 })}
             >
-                <Content className={ShowClasses.card}>{children}</Content>
+                <Content className={ShowClasses.card}>
+                    {render ? render(showContext) : children}
+                </Content>
                 {aside}
             </div>
         </Root>
