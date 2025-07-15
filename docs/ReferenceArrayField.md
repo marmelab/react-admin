@@ -86,6 +86,7 @@ You can change how the list of related records is rendered by passing a custom c
 | `source`       | Required | `string`                                                                          | -                                | Name of the property to display                                                                        |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'tags'                                       |
 | `children`     | Optional | `Element`                                                                         | `<SingleFieldList>`              | One or several elements that render a list of records based on a `ListContext`                         |
+| `render`     | Optional | `(listContext) => Element`                                                                         | `<SingleFieldList>`              | A function that takes a list context and render a list of records                         |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
@@ -177,6 +178,38 @@ export const PostShow = () => (
         </SimpleShowLayout>
     </Show>
 );
+```
+
+
+## `render`
+
+Alternatively to children you can pass a render prop to `<ReferenceArrayField>`. The render prop will receive the list context as its argument, allowing to inline the render logic .
+When receiving a render prop the `<ReferenceArrayField>` component will ignore the children property.
+
+
+```jsx
+<ReferenceArrayField
+    label="Tags"
+    reference="tags"
+    source="tag_ids"
+    render={(context) => {
+
+        if (context.isPending) {
+            return <p>Loading...</p>;
+        }
+
+        if (context.error) {
+            return <p className="error">{context.error.toString()}</p>;
+        }
+        return (
+            <p>
+                {listContext.data?.map((tag, index) => (
+                    <li key={index}>{tag.name}</li>
+                ))}
+            </p>
+        );
+    }}
+/>
 ```
 
 ## `filter`
