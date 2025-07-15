@@ -80,6 +80,12 @@ export const List = <RecordType extends RaRecord = any>(
         name: PREFIX,
     });
 
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<List> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         <ListBase<RecordType>
             debounce={debounce}

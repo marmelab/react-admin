@@ -65,7 +65,6 @@ export const Edit = <RecordType extends RaRecord = any>(
         name: PREFIX,
     });
 
-    useCheckMinimumRequiredProps('Edit', ['children'], props);
     const {
         resource,
         id,
@@ -78,6 +77,12 @@ export const Edit = <RecordType extends RaRecord = any>(
         loading = defaultLoading,
         ...rest
     } = props;
+
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<Edit> requires either a `render` prop or `children` prop'
+        );
+    }
 
     return (
         <EditBase<RecordType>

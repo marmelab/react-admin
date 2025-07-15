@@ -83,25 +83,39 @@ You can customize the `<Edit>` component using the following props:
 
 ## `render`
 
-Alternatively to children you can pass a render prop to `<List>`. The render prop will receive the list context as its argument, allowing to inline the render logic for both the list content.
-When receiving a render prop the `<List>` component will ignore the children property.
+Alternatively to children you can pass a render prop to `<Edit>`. The render prop will receive the edit context as its argument, allowing to inline the render logic for the edit form.
+When receiving a render prop the `<Edit>` component will ignore the children property.
 
 {% raw %}
 ```tsx
-<List
-    render={({ error, isPending }) => {
-        if (isPending) {
+<Edit
+    render={(listContext) => {
+        if (listContext.isPending) {
             return <div>Loading...</div>;
         }
-        if (error) {
+        if (listContext.error) {
             return <div>Error: {error.message}</div>;
         }
         return (
-            <SimpleList
-                primaryText="%{title} (%{year})"
-                secondaryText="%{summary}"
-                tertiaryText={record => record.year}
-            />
+            <div>
+                <h1>{`Edit ${listController.resource} #${listController.record.id}`}</h1>
+                <SimpleForm>
+                    <TextInput disabled label="Id" source="id" />
+                    <TextInput source="title" validate={required()} />
+                    <TextInput multiline source="teaser" validate={required()} />
+                    <RichTextInput source="body" validate={required()} />
+                    <DateInput label="Publication date" source="published_at" />
+                    <ReferenceManyField label="Comments" reference="comments" target="post_id">
+                        <DataTable>
+                            <DataTable.Col source="body" />
+                            <DataTable.Col source="created_at" field={DateField} />
+                            <DataTable.Col>
+                                <EditButton />
+                            </DataTable.Col>
+                        </DataTable>
+                    </ReferenceManyField>
+                </SimpleForm>
+            </div>
         );
     }}
 />

@@ -82,7 +82,7 @@ Additional props are passed down to the root component (a MUI `<Card>` by defaul
 
 ## `render`
 
-Alternatively to children you can pass a render prop to `<List>`. The render prop will receive the list context as its argument, allowing to inline the render logic for both the list content.
+Alternatively to children you can pass a render prop to `<List>`. The render prop will receive the list context as its argument, allowing to inline the render logic for the list content.
 When receiving a render prop the `<List>` component will ignore the children property.
 
 {% raw %}

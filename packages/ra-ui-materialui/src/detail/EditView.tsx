@@ -41,7 +41,8 @@ export const EditView = (props: EditViewProps) => {
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
-    if ((!children && !render) || (!record && isPending && emptyWhileLoading)) {
+
+    if (!record && isPending && emptyWhileLoading) {
         return null;
     }
 
