@@ -21,6 +21,8 @@ import { Loading } from '../layout';
  *
  * The <Edit> component accepts the following props:
  *
+ * - children: Component rendering  the Form Layout
+ * - render: Alternative to children. A function to render the Form Layout. Receives the edit context as its argument.
  * - actions
  * - aside
  * - component
