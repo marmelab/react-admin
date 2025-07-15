@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.9.2
+
+* Fix `fullWidth` is not propagated anymore ([#10827](https://github.com/marmelab/react-admin/pull/10827)) ([djhi](https://github.com/djhi))
+* [Doc] Mention the codemod in `<Datagrid>` documentation ([#10823](https://github.com/marmelab/react-admin/pull/10823)) ([djhi](https://github.com/djhi))
+* [Doc] Update storybook link when switching documentation page ([#10822](https://github.com/marmelab/react-admin/pull/10822)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Storybook] Add `SelectInput` and `SelectArrayInput` disable choices test and story ([#10831](https://github.com/marmelab/react-admin/pull/10831)) ([WiXSL](https://github.com/WiXSL))
+* [chore] Fix a failing test not showing up in useDeleteWithUndoController ([#10818](https://github.com/marmelab/react-admin/pull/10818)) ([Madeorsk](https://github.com/Madeorsk))
+
 ## 5.9.1
 
 * Fix `<Datagrid>` empty throws error when used in standalone mode ([#10812](https://github.com/marmelab/react-admin/pull/10812)) ([fzaninotto](https://github.com/fzaninotto))
