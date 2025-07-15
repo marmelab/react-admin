@@ -506,6 +506,46 @@ describe('<ReferenceField />', () => {
         await screen.findByText('boo');
     });
 
+    it('should render its child using render prop when given', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                                render={({ referenceRecord }) =>
+                                    referenceRecord?.title || 'No title'
+                                }
+                            />
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        expect(screen.getByText('foo')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
+
     describe('link', () => {
         it('should render a link to specified link type', async () => {
             render(<LinkShow />);
