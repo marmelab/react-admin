@@ -89,7 +89,8 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 
 | Prop           | Required | Type                                                                              | Default                          | Description                                                                         |
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`     | Required | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
+| `children`     | Required if no render | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
+| `render`     | Required if no children | `(listContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and render elements      |
 | `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
@@ -160,6 +161,71 @@ export const AuthorShow = () => (
       </ReferenceManyField>
     </SimpleShowLayout>
   </Show>
+);
+```
+
+## `render`
+
+Alternatively to children you can pass a render prop to `<ReferenceManyField>`. The render prop will receive the list context as its argument, allowing to inline the render logic for both the list and the pagination.
+When receiving a render prop the `<ReferenceManyField>` component will ignore the children and the pagination property.
+
+```jsx
+import { Show, SimpleShowLayout, ReferenceManyField, DataTable, TextField, DateField } from 'react-admin';
+
+const CustomAuthorView = ({
+    source,
+    children,
+}: {
+    source: string;
+}) => {
+    const context = useListController();
+
+    if (context.isPending) {
+        return <p>Loading...</p>;
+    }
+
+    if (context.error) {
+        return <p className="error">{context.error.toString()}</p>;
+    }
+    return (
+        <p>
+            {listContext.data?.map((datum, index) => (
+                <li key={index}>{datum[source]}</li>
+            ))}
+        </p>
+    );
+};
+
+const AuthorShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="first_name" />
+            <TextField source="last_name" />
+            <ReferenceManyField
+                reference="books"
+                target="author_id"
+                render={
+                    (context) => {
+
+                        if (context.isPending) {
+                            return <p>Loading...</p>;
+                        }
+
+                        if (context.error) {
+                            return <p className="error">{context.error.toString()}</p>;
+                        }
+                        return (
+                            <p>
+                                {listContext.data?.map((author, index) => (
+                                    <li key={index}>{author.name}</li>
+                                ))}
+                            </p>
+                        );
+                    }
+                }
+            />
+        </SimpleShowLayout>
+    </Show>
 );
 ```
 
