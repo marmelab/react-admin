@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType } from 'react';
+import type { ReactElement, ElementType, ReactNode } from 'react';
 import {
     Card,
     type ComponentsOverrides,
@@ -8,7 +8,11 @@ import {
     type Theme,
 } from '@mui/material';
 import clsx from 'clsx';
-import { useShowContext, useResourceDefinition } from 'ra-core';
+import {
+    useShowContext,
+    useResourceDefinition,
+    ShowControllerResult,
+} from 'ra-core';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
 import { ShowProps } from './Show';
@@ -20,6 +24,7 @@ export const ShowView = (props: ShowViewProps) => {
         actions,
         aside,
         children,
+        render,
         className,
         component: Content = Card,
         emptyWhileLoading = false,
@@ -27,7 +32,8 @@ export const ShowView = (props: ShowViewProps) => {
         ...rest
     } = props;
 
-    const { resource, defaultTitle, record } = useShowContext();
+    const showContext = useShowContext();
+    const { resource, defaultTitle, record } = showContext;
     const { hasEdit } = useResourceDefinition();
 
     const finalActions =
@@ -66,6 +72,7 @@ export interface ShowViewProps
     emptyWhileLoading?: boolean;
     title?: string | ReactElement | false;
     sx?: SxProps<Theme>;
+    render?: (showContext: ShowControllerResult) => ReactNode;
 }
 
 const PREFIX = 'RaShow';

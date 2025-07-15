@@ -75,6 +75,12 @@ export const Show = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
 
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<Show> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         <ShowBase<RecordType>
             id={id}
@@ -90,7 +96,7 @@ export const Show = <RecordType extends RaRecord = any>(
 
 export interface ShowProps<RecordType extends RaRecord = any>
     extends ShowBaseProps<RecordType>,
-        Omit<ShowViewProps, 'children'> {}
+        Omit<ShowViewProps, 'children' | 'render'> {}
 
 const defaultLoading = <Loading />;
 
