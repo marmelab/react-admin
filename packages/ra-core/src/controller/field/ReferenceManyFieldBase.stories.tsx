@@ -5,7 +5,7 @@ import { Resource } from '../../core/Resource';
 import { ShowBase } from '../../controller/show/ShowBase';
 import { TestMemoryRouter } from '../../routing';
 import { ReferenceManyFieldBase } from './ReferenceManyFieldBase';
-import { useListContext, useListContextWithProps } from '../list';
+import { useListContext } from '../list';
 
 export default {
     title: 'ra-core/controller/field/ReferenceManyFieldBase',

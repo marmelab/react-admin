@@ -11,8 +11,6 @@ storybook_path: ra-core-controller-field-referencefieldbase--basic
 
 ## Usage
 
-### With children
-
 For instance, let's consider a model where a `post` has one author from the `users` resource, referenced by a `user_id` field.
 
 ```
@@ -32,16 +30,9 @@ In that case, use `<ReferenceFieldBase>` to display the post author's as follows
 import { Show, SimpleShowLayout, ReferenceField, TextField, DateField } from 'react-admin';
 
 export const PostShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <TextField source="id" />
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <ReferenceFieldBase source="user_id" reference="users" >
-                <CustomUIRenderer />
-            </ReferenceFieldBase>
-        </SimpleShowLayout>
-    </Show>
+    <ReferenceFieldBase source="user_id" reference="users" >
+        <CustomUIRenderer />
+    </ReferenceFieldBase>
 );
 ```
 
@@ -76,7 +67,50 @@ export const MyReferenceField = () => (
 
 It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceFieldBase>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row.
 
-### With render prop
+
+## Props
+
+| Prop        | Required | Type                | Default  | Description                                                                                                         |
+| ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| `source`    | Required | `string`            | -        | Name of the property to display |
+| `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
+| `children`  | Optional | `ReactNode`         | -        | React component to render the referenced record, the component need to use useReferenceFieldContext to access the context. |
+| `render`  | Optional |  `(context) => ReactNode`         | -        | Function that takes the referenceFieldContext and render the referenced record.  Will take priority on children props if both are set. |
+| `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
+| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
+| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
+
+## `children`
+
+You can pass any component of your own as child, to render the related records as you wish.
+You can access the list context using the `useReferenceFieldContext` hook.
+
+```tsx
+import { Show, SimpleShowLayout, ReferenceField, TextField, DateField } from 'react-admin';
+
+export const MyReferenceFieldView = () => {
+    const context = useReferenceFieldContext();
+
+    const value = useFieldValue({ source });
+    if (context.isPending) {
+        return <p>Loading...</p>;
+    }
+
+    if (context.error) {
+        return <p className="error">{context.error.toString()}</p>;
+    }
+
+    return <p>{value}</p>;
+};
+
+export const MyReferenceField = () => (
+    <ReferenceFieldBase source="user_id" reference="users">
+        <MyReferenceFieldView />
+    </ReferenceFieldBase>
+);
+```
+
+## `render`
 
 Alternatively you can pass a render prop instead of children to be able to inline the rendering. The render function will then receive the reference field context directly.
 
@@ -98,18 +132,6 @@ export const MyReferenceField = () => (
     }} />
 );
 ```
-
-## Props
-
-| Prop        | Required | Type                | Default  | Description                                                                                                         |
-| ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| `source`    | Required | `string`            | -        | Name of the property to display |
-| `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
-| `children`  | Optional | `ReactNode`         | -        | React component to render the referenced record, the component need to use useReferenceFieldContext to access the context. |
-| `render`  | Optional |  `(context) => ReactNode`         | -        | Function that takes the referenceFieldContext and render the referenced record.  Will take priority on children props if both are set. |
-| `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
-| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
-| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
 
 ## `empty`
