@@ -3,7 +3,7 @@ import { ExtractRecordPaths, HintedString } from '../../types';
 
 type SortOrder = 'ASC' | 'DESC';
 
-export interface FieldProps<
+export interface FieldPropsBase<
     RecordType extends Record<string, any> = Record<string, any>,
 > {
     /**
