@@ -72,6 +72,7 @@ export const List = <RecordType extends RaRecord = any>(
         resource,
         sort,
         storeKey,
+        render,
         ...rest
     } = useThemeProps({
         props: props,
@@ -93,13 +94,13 @@ export const List = <RecordType extends RaRecord = any>(
             sort={sort}
             storeKey={storeKey}
         >
-            <ListView<RecordType> {...rest} />
+            <ListView<RecordType> {...rest} render={render} />
         </ListBase>
     );
 };
 
 export interface ListProps<RecordType extends RaRecord = any>
-    extends Omit<ListBaseProps<RecordType>, 'children'>,
+    extends Omit<ListBaseProps<RecordType>, 'children' | 'render'>,
         ListViewProps {}
 
 const defaultFilter = {};
