@@ -76,6 +76,7 @@ export const Edit = <RecordType extends RaRecord = any>(
         loading = defaultLoading,
         ...rest
     } = props;
+
     return (
         <EditBase<RecordType>
             resource={resource}
@@ -95,7 +96,7 @@ export const Edit = <RecordType extends RaRecord = any>(
 
 export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
     extends EditBaseProps<RecordType, ErrorType>,
-        Omit<EditViewProps, 'children'> {}
+        Omit<EditViewProps, 'children' | 'render'> {}
 
 const defaultLoading = <Loading />;
 

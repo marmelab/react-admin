@@ -66,6 +66,7 @@ You can customize the `<Edit>` component using the following props:
 * [`actions`](#actions): override the actions toolbar with a custom component
 * [`aside`](#aside): component to render aside to the main content
 * `children`: the components that renders the form
+* `render`: a function to renders the form, receive the editContext as argument.
 * `className`: passed to the root component
 * [`component`](#component): override the root component
 * [`disableAuthentication`](#disableauthentication): disable the authentication check
@@ -79,6 +80,33 @@ You can customize the `<Edit>` component using the following props:
 * [`sx`](#sx-css-api): Override the styles
 * [`title`](#title): override the page title
 * [`transform`](#transform): transform the form data before calling `dataProvider.update()`
+
+## `render`
+
+Alternatively to children you can pass a render prop to `<List>`. The render prop will receive the list context as its argument, allowing to inline the render logic for both the list content.
+When receiving a render prop the `<List>` component will ignore the children property.
+
+{% raw %}
+```tsx
+<List
+    render={({ error, isPending }) => {
+        if (isPending) {
+            return <div>Loading...</div>;
+        }
+        if (error) {
+            return <div>Error: {error.message}</div>;
+        }
+        return (
+            <SimpleList
+                primaryText="%{title} (%{year})"
+                secondaryText="%{summary}"
+                tertiaryText={record => record.year}
+            />
+        );
+    }}
+/>
+```
+{% endraw %}
 
 ## `actions`
 
