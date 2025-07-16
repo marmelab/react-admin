@@ -173,7 +173,9 @@ describe('<SaveButton />', () => {
                 {
                     id: '123',
                     data: { id: 123, title: 'ipsum' },
+                    previousData: { id: 123, title: 'lorem' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -224,7 +226,9 @@ describe('<SaveButton />', () => {
                 {
                     id: '123',
                     data: { id: 123, title: 'ipsum' },
+                    previousData: { id: 123, title: 'lorem' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
