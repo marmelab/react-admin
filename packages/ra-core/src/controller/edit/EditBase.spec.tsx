@@ -13,8 +13,8 @@ import {
 describe('EditBase', () => {
     it('should give access to the save function', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -44,8 +44,8 @@ describe('EditBase', () => {
 
     it('should allow to override the onSuccess function', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -75,7 +75,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -84,8 +86,8 @@ describe('EditBase', () => {
 
     it('should allow to override the onSuccess function at call time', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -117,7 +119,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -128,10 +132,9 @@ describe('EditBase', () => {
     it('should allow to override the onError function', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            // @ts-ignore
             update: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
@@ -153,7 +156,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -162,10 +167,9 @@ describe('EditBase', () => {
 
     it('should allow to override the onError function at call time', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            // @ts-ignore
             update: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
@@ -189,7 +193,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -199,8 +205,8 @@ describe('EditBase', () => {
 
     it('should allow to override the transform function', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -239,8 +245,8 @@ describe('EditBase', () => {
 
     it('should allow to override the transform function at call time', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })

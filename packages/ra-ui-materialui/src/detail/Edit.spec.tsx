@@ -108,7 +108,7 @@ describe('<Edit />', () => {
         });
     });
 
-    it("shoudln't display the Edit aside while loading with the emptyWhileLoading prop", async () => {
+    it("shouldn't display the Edit aside while loading with the emptyWhileLoading prop", async () => {
         let resolveGetOne;
         const RenderedComponent = () => {
             const myDataProvider = {
@@ -390,7 +390,9 @@ describe('<Edit />', () => {
                     {
                         id: '123',
                         data: { id: 123, title: 'ipsum' },
+                        previousData: { id: 123, title: 'lorem' },
                         resource: 'foo',
+                        meta: undefined,
                     },
                     { snapshot: [] }
                 );
@@ -453,7 +455,9 @@ describe('<Edit />', () => {
                     {
                         id: '123',
                         data: { id: 123, title: 'ipsum' },
+                        previousData: { id: 123, title: 'lorem' },
                         resource: 'foo',
+                        meta: undefined,
                     },
                     { snapshot: [] }
                 );
@@ -510,7 +514,9 @@ describe('<Edit />', () => {
                     {
                         id: '123',
                         data: { id: 123, title: 'ipsum' },
+                        previousData: { id: 123, title: 'lorem' },
                         resource: 'foo',
+                        meta: undefined,
                     },
                     { snapshot: [] }
                 );
@@ -573,7 +579,9 @@ describe('<Edit />', () => {
                     {
                         id: '123',
                         data: { id: 123, title: 'ipsum' },
+                        previousData: { id: 123, title: 'lorem' },
                         resource: 'foo',
+                        meta: undefined,
                     },
                     { snapshot: [] }
                 );
