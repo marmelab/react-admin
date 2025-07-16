@@ -1178,6 +1178,7 @@ const ProductList = () => (
 
 You might want to allow data to be fetched only when at least some filters have been set. You can leverage TanStack react-query `enabled` option for that. It accepts a function that receives the query as its only parameter. As react-admin always format the `queryKey` as `[ResourceName, DataProviderMethod, DataProviderParams]`, you can check that there is at least a filter in this function:
 
+{% raw %}
 ```tsx
 export const PostList = () => (
     <List
@@ -1193,6 +1194,7 @@ export const PostList = () => (
     </List>
 )
 ```
+{% endraw %}
 
 ## Accessing Extra Response Data
 
