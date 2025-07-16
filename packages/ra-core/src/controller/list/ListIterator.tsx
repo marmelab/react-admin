@@ -6,12 +6,18 @@ import { RecordContextProvider } from '../record';
 export const ListIterator = <RecordType extends RaRecord = any>(
     props: ListIteratorProps<RecordType>
 ) => {
-    const { children, empty = null, loading = null, render } = props;
-    const { data, total, isPending } =
+    const { children, empty, error: errorElement, loading, render } = props;
+    const { data, total, isPending, error } =
         useListContextWithProps<RecordType>(props);
 
     if (isPending === true) {
         return loading ? loading : null;
+    }
+
+    if (error) {
+        return errorElement
+            ? React.cloneElement(errorElement, { error })
+            : null;
     }
 
     if (data == null || data.length === 0 || total === 0) {
@@ -24,21 +30,6 @@ export const ListIterator = <RecordType extends RaRecord = any>(
         );
     }
 
-    if (render) {
-        return (
-            <>
-                {data.map((record, index) => (
-                    <RecordContextProvider
-                        key={record.id ?? `row${index}`}
-                        value={record}
-                    >
-                        {render(record, index)}
-                    </RecordContextProvider>
-                ))}
-            </>
-        );
-    }
-
     return (
         <>
             {data.map((record, index) => (
@@ -46,7 +37,7 @@ export const ListIterator = <RecordType extends RaRecord = any>(
                     key={record.id ?? `row${index}`}
                     value={record}
                 >
-                    {children}
+                    {render ? render(record, index) : children}
                 </RecordContextProvider>
             ))}
         </>
@@ -57,6 +48,7 @@ export interface ListIteratorProps<RecordType extends RaRecord = any> {
     children?: React.ReactNode;
     empty?: React.ReactElement;
     loading?: React.ReactElement;
+    error?: React.ReactElement;
     render?: (record: RecordType, index: number) => React.ReactNode;
     data?: RecordType[];
     total?: number;

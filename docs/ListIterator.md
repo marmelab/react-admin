@@ -8,40 +8,52 @@ storybook_path: ra-core-controller-list-listiterator--using-render
 
 ## Usage
 
-Use the `<ListIterator>` component as a child of any component that provides a [`ListContext`](./useListContext.md):
-
-- `<List>`,
-- `<ListGuesser>`,
-- `<ListBase>`,
-- `<ReferenceArrayField>`,
-- `<ReferenceManyField>`
+Use the `<ListIterator>` component to render a list of records in a custom way. Pass a `render` function to customize how each record is displayed.
 
 {% raw %}
 ```jsx
 import { ListBase, ListIterator } from 'react-admin';
-import { OrderedList, ListItem } from 'my-favorite-ui-lib';
 
-const DashboardMostVisitedPosts = () => (
-    <ListBase resource="posts" sort={{ field: 'views', order: 'DESC' }} page={1} perPage={20}>
-        <OrderedList>
+const MostVisitedPosts = () => (
+    <ListBase
+        resource="posts"
+        sort={{ field: 'views', order: 'DESC' }}
+        perPage={20}
+    >
+        <ul>
             <ListIterator
-                render={record => <ListItem>{record.title} - {record.views}</ListItem>}
+                render={record => <li>{record.title} - {record.views}</li>}
             />
-        </OrderedList>
+        </ul>
     </ListBase>
 );
 ```
 {% endraw %}
 
+You can use `<ListIterator>` as a child of any component that provides a [`ListContext`](./useListContext.md), such as:
+
+- [`<List>`](./List.md),
+- [`<ListGuesser>`](./ListGuesser.md),
+- [`<ListBase>`](./ListBase.md),
+- [`<ReferenceArrayField>`](./ReferenceArrayField.md),
+- [`<ReferenceManyField>`](./ReferenceManyField.md)
+
+**Tip**: React-admin provides several list components that use `<ListIterator>` internally, that you should prefer if you want to render a list of records in a standard way:
+
+- [`<DataTable>`](./DataTable.md) renders a list of records in a table format.
+- [`<SimpleList>`](./SimpleList.md) renders a list of records in a simple format, suitable for mobile devices.
+- [`<SingleFieldList>`](./SingleFieldList.md) renders a list of records with a single field.
+
 ## Props
 
-Here are all the props you can set on the `<AccordionForm>` component:
+Here are all the props you can set on the `<ListIterator>` component:
 
 | Prop        | Required | Type                               | Default | Description                                                                                          |
 | ----------- | -------- | ---------------------------------- | ------- | ---------------------------------------------------------------------------------------------------- |
 | `children`  | Optional | `ReactNode`                        | -       | The content to render for each record                                                                |
 | `data`      | Optional | `RaRecord[]`                       | -       | The records. Defaults to the `data` from the `ListContext`                                           |
 | `empty`     | Optional | `ReactNode`                        | `null`  | The content to display when there is no data                                                         |
+| `error`     | Optional | `ReactNode`                        | `null`  | The content to display when the data fetching fails                                                   |
 | `isPending` | Optional | `boolean`                          | -       | A boolean indicating whether the data is pending. Defaults to the `isPending` from the `ListContext` |
 | `loading`   | Optional | `ReactNode`                        | `null`  | The content to display while the data is loading                                                     |
 | `render`    | Optional | `(record: RaRecord) => ReactNode`  | -       | A function that returns the content to render for each record                                        |
@@ -51,30 +63,24 @@ Additional props are passed to `react-hook-form`'s [`useForm` hook](https://reac
 
 ## `children`
 
-If provided, `ListIterator` will render the `children` prop for each record. This is useful when the components you render leverages the [`RecordContext`](./useRecordContext.md):
+If provided, `ListIterator` will render the `children` prop once for each record, inside a [`RecordContext`](./useRecordContext.md).
 
 {% raw %}
 ```tsx
-import { ListBase, ListIterator, useRecordContext } from 'react-admin';
-import { OrderedList, ListItem } from 'my-favorite-ui-lib';
+import { ListIterator, useRecordContext } from 'react-admin';
 
-const DashboardMostVisitedPosts = () => (
-    <ListBase resource="posts" sort={{ field: 'views', order: 'DESC' }} page={1} perPage={20}>
-        <OrderedList>
-            <ListIterator>
-                <PostItem />
-            </ListIterator>
-        </OrderedList>
-    </ListBase>
+const PostList = () => (
+    <ul>
+        <ListIterator>
+            <PostItem />
+        </ListIterator>
+    </ul>
 );
 
 const PostItem = () => {
     const record = useRecordContext();
     if (!record) return null;
-
-    return (
-        <ListItem>{record.title} - {record.views}</ListItem>
-    );
+    return <li>{record.title} - {record.views}</li>;
 };
 ```
 {% endraw %}
@@ -88,20 +94,17 @@ Although `<ListIterator>` reads the data from the closest [`<ListContext>`](./us
 {% raw %}
 ```jsx
 import { ListIterator } from 'react-admin';
-import { OrderedList, ListItem } from 'my-favorite-ui-lib';
 import { customerSegments } from './customerSegments.json';
 
-const MyComponent = () => {
-    return (
-        <OrderedList>
-            <ListIterator
-                data={customerSegments}
-                total={customerSegments.length}
-                render={record => <ListItem>{record.name}</ListItem>}
-            />
-        </OrderedList>
-    );
-}
+const PostList = () => (
+    <ul>
+        <ListIterator
+            data={customerSegments}
+            total={customerSegments.length}
+            render={record => <li>{record.name}</li>}
+        />
+    </ul>
+);
 ```
 {% endraw %}
 
@@ -112,17 +115,33 @@ To provide a custom UI when there is no data, use the `empty` prop.
 {% raw %}
 ```jsx
 import { ListBase, ListIterator } from 'react-admin';
-import { OrderedList, ListItem } from 'my-favorite-ui-lib';
 
-const DashboardMostVisitedPosts = () => (
-    <ListBase resource="posts" sort={{ field: 'views', order: 'DESC' }} page={1} perPage={20}>
-        <OrderedList>
-            <ListIterator
-                empty={<ListItem>No posts found</ListItem>}
-                render={record => <ListItem>{record.title} - {record.views}</ListItem>}
-            />
-        </OrderedList>
-    </ListBase>
+const PostList = () => (
+    <ul>
+        <ListIterator
+            empty={<li>No posts found</li>}
+            render={record => <li>{record.title} - {record.views}</li>}
+        />
+    </ul>
+);
+```
+{% endraw %}
+
+## `error`
+
+To provide a custom UI when the data fetching fails, use the `error` prop.
+
+{% raw %}
+```jsx
+import { ListIterator } from 'react-admin';
+
+const PostList = () => (
+    <ul>
+        <ListIterator
+            error={<li>Error loading posts</li>}
+            render={record => <li>{record.title} - {record.views}</li>}
+        />
+    </ul>
 );
 ```
 {% endraw %}
@@ -133,8 +152,7 @@ Although `<ListIterator>` reads the `isPending` from the closest [`<ListContext>
 
 {% raw %}
 ```tsx
-import { ListBase, ListIterator } from 'react-admin';
-import { OrderedList, ListItem } from 'my-favorite-ui-lib';
+import { ListIterator } from 'react-admin';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPostAnalytics } from './fetchPostAnalytics';
 
@@ -145,13 +163,13 @@ const DashboardMostVisitedPosts = () => {
     });
 
     return (
-        <OrderedList>
+        <ul>
             <ListIterator
                 data={data}
                 isPending={isPending}
-                render={record => <ListItem>{record.title} - {record.views}</ListItem>}
+                render={record => <li>{record.title} - {record.views}</li>}
             />
-        </OrderedList>
+        </ul>
     );
 }
 ```
@@ -160,43 +178,38 @@ const DashboardMostVisitedPosts = () => {
 
 ## `loading`
 
-To provide a custom UI while the data is loading use the `loading` prop.
+To provide a custom UI while the data is loading, use the `loading` prop.
 
 {% raw %}
 ```jsx
-import { ListBase, ListIterator } from 'react-admin';
-import { OrderedList, ListItem, Skeleton } from 'my-favorite-ui-lib';
+import { ListIterator } from 'react-admin';
+import { Skeleton } from 'my-favorite-ui-lib';
 
-const DashboardMostVisitedPosts = () => (
-    <ListBase resource="posts" sort={{ field: 'views', order: 'DESC' }} page={1} perPage={20}>
-        <OrderedList>
-            <ListIterator
-                loading={<Skeleton />}
-                render={record => <ListItem>{record.title} - {record.views}</ListItem>}
-            />
-        </OrderedList>
-    </ListBase>
+const PostList = () => (
+    <ul>
+        <ListIterator
+            loading={<Skeleton />}
+            render={record => <li>{record.title} - {record.views}</li>}
+        />
+    </ul>
 );
 ```
 {% endraw %}
 
 ## `render`
 
-If provided, `ListIterator` will call the `render` prop for each record. This is useful when the components you render don't leverage the [`RecordContext`](./useRecordContext.md):
+If provided, `ListIterator` will call the `render` prop for each record. This is useful when the components you render need the record data to render themselves, or when you want to pass additional props to the rendered component.
 
 {% raw %}
 ```tsx
 import { ListBase, ListIterator } from 'react-admin';
-import { OrderedList, ListItem } from 'my-favorite-ui-lib';
 
-const DashboardMostVisitedPosts = () => (
-    <ListBase resource="posts" sort={{ field: 'views', order: 'DESC' }} page={1} perPage={20}>
-        <OrderedList>
-            <ListIterator
-                render={record => <ListItem>{record.title} - {record.views}</ListItem>}
-            />
-        </OrderedList>
-    </ListBase>
+const PostList = () => (
+    <ul>
+        <ListIterator
+            render={record => <li>{record.title} - {record.views}</li>}
+        />
+    </ul>
 );
 ```
 {% endraw %}
@@ -210,20 +223,17 @@ Although `<ListIterator>` reads the total from the closest [`<ListContext>`](./u
 {% raw %}
 ```jsx
 import { ListIterator } from 'react-admin';
-import { OrderedList, ListItem } from 'my-favorite-ui-lib';
 import { customerSegments } from './customerSegments.json';
 
-const MyComponent = () => {
-    return (
-        <OrderedList>
-            <ListIterator
-                data={customerSegments}
-                total={customerSegments.length}
-                render={record => <ListItem>{record.name}</ListItem>}
-            />
-        </OrderedList>
-    );
-}
+const PostList = () => (
+    <ul>
+        <ListIterator
+            data={customerSegments}
+            total={customerSegments.length}
+            render={record => <li>{record.name}</li>}
+        />
+    </ul>
+);
 ```
 {% endraw %}
 
