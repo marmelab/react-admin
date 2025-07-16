@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Admin, AutocompleteInput } from 'react-admin';
+import { Admin, AutocompleteInput, CardContentInner } from 'react-admin';
 import {
     CustomRoutes,
     Resource,
     useListContext,
     TestMemoryRouter,
     DataProvider,
+    GetListParams,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
@@ -228,6 +229,48 @@ export const Filters = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const ConditionalDataFetching = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List
+                        filters={[<SearchInput source="q" alwaysOn />]}
+                        empty={false}
+                        queryOptions={{
+                            enabled: query => {
+                                const params = query
+                                    .queryKey[2] as GetListParams;
+                                return (
+                                    params.filter.q != null &&
+                                    params.filter.q !== ''
+                                );
+                            },
+                        }}
+                    >
+                        <ConditionalDataFetchingView />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const ConditionalDataFetchingView = () => {
+    const context = useListContext();
+
+    if (context.filterValues.q == null || context.filterValues.q === '') {
+        return (
+            <CardContentInner>
+                Type a search term to fetch data
+            </CardContentInner>
+        );
+    }
+
+    return <BookList />;
+};
 
 export const Filter = () => (
     <TestMemoryRouter initialEntries={['/books']}>
