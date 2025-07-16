@@ -262,6 +262,7 @@ export const useEditController = <
                             id,
                             data,
                             meta: metaFromSave ?? mutationMeta,
+                            previousData: record,
                         },
                         {
                             onError: onErrorFromSave,
@@ -277,6 +278,7 @@ export const useEditController = <
         [
             id,
             mutationMeta,
+            record,
             resource,
             transform,
             update,

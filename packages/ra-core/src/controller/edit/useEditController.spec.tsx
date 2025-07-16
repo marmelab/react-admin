@@ -420,15 +420,31 @@ describe('useEditController', () => {
                         mutationMode="pessimistic"
                         mutationOptions={{ onSuccess }}
                     >
-                        {({ save }) => {
+                        {({ record, save }) => {
                             saveCallback = save;
-                            return <div />;
+                            return <div>{record?.id}</div>;
                         }}
                     </EditController>
                 </CoreAdminContext>
             );
+            await screen.findByText('12');
             await act(async () => saveCallback({ foo: 'bar' }));
-            await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+            await waitFor(() =>
+                expect(onSuccess).toHaveBeenCalledWith(
+                    {
+                        id: 12,
+                        foo: 'bar',
+                    },
+                    {
+                        id: 12,
+                        data: { foo: 'bar' },
+                        previousData: { id: 12 },
+                        resource: 'posts',
+                        meta: undefined,
+                    },
+                    { snapshot: expect.any(Array) }
+                )
+            );
             expect(notificationsSpy).toEqual([]);
         });
 
@@ -458,15 +474,31 @@ describe('useEditController', () => {
                         mutationMode="optimistic"
                         mutationOptions={{ onSuccess }}
                     >
-                        {({ save }) => {
+                        {({ record, save }) => {
                             saveCallback = save;
-                            return <div />;
+                            return <div>{record?.id}</div>;
                         }}
                     </EditController>
                 </CoreAdminContext>
             );
+            await screen.findByText('12');
             await act(async () => saveCallback({ foo: 'bar' }));
-            await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+            await waitFor(() =>
+                expect(onSuccess).toHaveBeenCalledWith(
+                    {
+                        id: 12,
+                        foo: 'bar',
+                    },
+                    {
+                        id: 12,
+                        data: { foo: 'bar' },
+                        previousData: { id: 12 },
+                        resource: 'posts',
+                        meta: undefined,
+                    },
+                    { snapshot: expect.any(Array) }
+                )
+            );
             expect(notificationsSpy).toEqual([]);
         });
 
@@ -495,15 +527,31 @@ describe('useEditController', () => {
                         {...defaultProps}
                         mutationOptions={{ onSuccess }}
                     >
-                        {({ save }) => {
+                        {({ record, save }) => {
                             saveCallback = save;
-                            return <div />;
+                            return <div>{record?.id}</div>;
                         }}
                     </EditController>
                 </CoreAdminContext>
             );
+            await screen.findByText('12');
             await act(async () => saveCallback({ foo: 'bar' }));
-            await waitFor(() => expect(onSuccess).toHaveBeenCalled());
+            await waitFor(() =>
+                expect(onSuccess).toHaveBeenCalledWith(
+                    {
+                        id: 12,
+                        foo: 'bar',
+                    },
+                    {
+                        id: 12,
+                        data: { foo: 'bar' },
+                        previousData: { id: 12 },
+                        resource: 'posts',
+                        meta: undefined,
+                    },
+                    { snapshot: expect.any(Array) }
+                )
+            );
             expect(notificationsSpy).toEqual([]);
         });
 
