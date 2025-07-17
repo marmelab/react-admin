@@ -32,16 +32,11 @@ Here is how to render a field of the `book_details` resource inside a Show view 
 ```jsx
 
 const BookShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <TextField source="title" />
-            <DateField source="published_at" />
-            <ReferenceField source="authorId" reference="authors" />
-            <ReferenceOneFieldBase reference="book_details" target="book_id">
-                <BookDetails />
-            </ReferenceOneFieldBase>
-        </SimpleShowLayout>
-    </Show>
+    <ShowBase>
+        <ReferenceOneFieldBase reference="book_details" target="book_id">
+            <BookDetails />
+        </ReferenceOneFieldBase>
+    </ShowBase>
 );
 
 // with BookDetails something like
@@ -156,7 +151,7 @@ Use `empty` to customize the text displayed when the related record is empty.
 
 ```jsx
 <ReferenceOneFieldBase label="Details" reference="book_details" target="book_id" empty="no detail">
-    <TextField source="genre" /> (<TextField source="ISBN" />)
+    ...
 </ReferenceOneFieldBase>
 ```
 
@@ -164,7 +159,7 @@ Use `empty` to customize the text displayed when the related record is empty.
 
 ```jsx
 <ReferenceOneFieldBase label="Details" reference="book_details" target="book_id" empty="resources.books.not_found">
-    <TextField source="genre" /> (<TextField source="ISBN" />)
+    ...
 </ReferenceOneFieldBase>
 ```
 
@@ -177,7 +172,7 @@ Use `empty` to customize the text displayed when the related record is empty.
     target="book_id"
     empty={<CreateButton to="/book_details/create" />}
 >
-    <TextField source="genre" /> (<TextField source="ISBN" />)
+    ...
 </ReferenceOneFieldBase>
 ```
 
@@ -194,7 +189,7 @@ For instance, if a product has prices in many currencies, and you only want to r
     target="product_id"
     filter={{ currency: "EUR" }}
 >
-    <NumberField source="price" />
+    ...
 </ReferenceOneFieldBase>
 ```
 {% endraw %}
@@ -205,7 +200,7 @@ By default, `<ReferenceOneFieldBase>` will set pass a links to the edition page 
 
 ```jsx
 <ReferenceOneFieldBase label="Genre" reference="book_details" target="book_id" link={false}>
-    <TextField source="genre" />
+    ...
 </ReferenceOneFieldBase>
 ```
 
@@ -218,7 +213,7 @@ You can also set the `link` prop to a string, which will be used as the link typ
     target="book_id"
     link={record => `/custom/${record.id}`}
 >
-    <TextField source="genre" />
+    ...
 </ReferenceOneFieldBase>
 ```
 {% endraw %}
@@ -237,7 +232,7 @@ For instance, if you want to disable the refetch on window focus for this query,
     target="book_id"
     queryOptions={{ refetchOnWindowFocus: false }}
 >
-    <TextField source="genre" />
+    ...
 </ReferenceOneFieldBase>
 ```
 {% endraw %}
@@ -250,7 +245,7 @@ For instance, if you want to display the details of a given book, the `reference
 
 ```jsx
 <ReferenceOneFieldBase label="Genre" reference="book_details" target="book_id">
-    <TextField source="genre" />
+    ...
 </ReferenceOneFieldBase>
 ```
 
@@ -269,7 +264,7 @@ For instance, if you want to display the latest message in a discussion, you can
     target="discussion_id"
     sort={{ field: "createdAt", order: "DESC" }}
 >
-    <TextField source="body" />
+    ...
 </ReferenceOneFieldBase>
 ```
 {% endraw %}
@@ -295,6 +290,6 @@ In that case, the `target` prop should be set to `book_id`:
 
 ```jsx
 <ReferenceOneFieldBase label="Genre" reference="book_details" target="book_id">
-    <TextField source="genre" />
+    ...
 </ReferenceOneFieldBase>
 ```
