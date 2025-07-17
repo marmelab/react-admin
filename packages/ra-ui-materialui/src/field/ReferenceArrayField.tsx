@@ -98,11 +98,14 @@ export interface ReferenceArrayFieldProps<
 > extends ReferenceArrayFieldBaseProps<RecordType, ReferenceRecordType>,
         FieldProps<RecordType> {
     sx?: SxProps<Theme>;
+    pagination?: React.ReactElement;
 }
 
 export interface ReferenceArrayFieldViewProps
     extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
-        Omit<ListControllerProps, 'queryOptions'> {}
+        Omit<ListControllerProps, 'queryOptions'> {
+    pagination?: React.ReactElement;
+}
 
 export const ReferenceArrayFieldView = (
     props: ReferenceArrayFieldViewProps

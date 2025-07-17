@@ -82,4 +82,6 @@ export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source'>,
-        ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType> {}
+        ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType> {
+    pagination?: React.ReactElement;
+}
