@@ -46,7 +46,7 @@ const BookShow = () => (
 
 // with BookDetails something like
 const BookDetails = ({ source }) => {
-    const context = useReferenceOneFieldContext({
+    const context = useReferenceFieldContext({
         reference,
         target,
     });
@@ -76,7 +76,7 @@ const BookDetails = ({ source }) => {
 | `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
 | `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
 | `children`     | Optional\* | `Element`                                   | -                                | React component to render the referenced record.                              |
-| `render`     | Optional\* | `(referenceFieldContext) => Element`                                   | -                                | A function that takes the reference field context and return a React element                              |
+| `render`     | Optional\* | `(ReferenceFieldContext) => Element`                                   | -                                | A function that takes the `ReferenceFieldContext` and return a React element                              |
 | `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
@@ -90,11 +90,11 @@ const BookDetails = ({ source }) => {
 ## `children`
 
 You can pass any component of your own as children, to render the referenced record as you wish.
-You can access the list context using the `useReferenceOneFieldController` hook.
+You can access the list context using the `useReferenceFieldContext` hook.
 
 ```jsx
 const BookDetails = () => {
-    const { isPending, error, referenceRecord } = useReferenceOneFieldContext({
+    const { isPending, error, referenceRecord } = useReferenceFieldContext({
         reference,
         target,
     });
