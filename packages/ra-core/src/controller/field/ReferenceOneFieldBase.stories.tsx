@@ -9,7 +9,7 @@ import {
     useReferenceFieldContext,
 } from '../..';
 
-export default { title: 'ra-ui-materialui/fields/ReferenceOneFieldBase' };
+export default { title: 'ra-core/controller/field/ReferenceOneFieldBase' };
 
 const defaultDataProvider = {
     getManyReference: () =>
