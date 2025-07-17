@@ -99,7 +99,7 @@ export const List = <RecordType extends RaRecord = any>(
 };
 
 export interface ListProps<RecordType extends RaRecord = any>
-    extends ListBaseProps<RecordType>,
+    extends Omit<ListBaseProps<RecordType>, 'children'>,
         ListViewProps {}
 
 const defaultFilter = {};

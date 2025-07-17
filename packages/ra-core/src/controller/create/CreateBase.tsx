@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import {
     useCreateController,
     CreateControllerProps,
+    CreateControllerResult,
 } from './useCreateController';
 import { CreateContextProvider } from './CreateContextProvider';
 import { Identifier, RaRecord } from '../../types';
@@ -44,6 +45,7 @@ export const CreateBase = <
     MutationOptionsError = Error,
 >({
     children,
+    render,
     loading = null,
     ...props
 }: CreateBaseProps<RecordType, ResultRecordType, MutationOptionsError>) => {
@@ -62,11 +64,17 @@ export const CreateBase = <
         return loading;
     }
 
+    if (!render && !children) {
+        throw new Error(
+            '<CreateBase> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <CreateContextProvider value={controllerProps}>
-                {children}
+                {render ? render(controllerProps) : children}
             </CreateContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -81,6 +89,7 @@ export interface CreateBaseProps<
         MutationOptionsError,
         ResultRecordType
     > {
-    children: ReactNode;
+    children?: ReactNode;
+    render?: (props: CreateControllerResult<RecordType>) => ReactNode;
     loading?: ReactNode;
 }

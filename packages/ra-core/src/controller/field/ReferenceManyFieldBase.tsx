@@ -6,6 +6,7 @@ import {
     type UseReferenceManyFieldControllerParams,
 } from './useReferenceManyFieldController';
 import type { RaRecord } from '../../types';
+import { ListControllerResult } from '../list';
 
 /**
  * Render related records to the current one.
@@ -61,11 +62,11 @@ export const ReferenceManyFieldBase = <
 ) => {
     const {
         children,
+        render,
         debounce,
         empty,
         filter = defaultFilter,
         page = 1,
-        pagination = null,
         perPage = 25,
         record,
         reference,
@@ -117,11 +118,16 @@ export const ReferenceManyFieldBase = <
         return empty;
     }
 
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceManyFieldBase> requires either a 'render' prop or 'children' prop"
+        );
+    }
+
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                {children}
-                {pagination}
+                {render ? render(controllerProps) : children}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -129,14 +135,14 @@ export const ReferenceManyFieldBase = <
 
 export interface ReferenceManyFieldBaseProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends UseReferenceManyFieldControllerParams<
         RecordType,
         ReferenceRecordType
     > {
-    children: ReactNode;
+    children?: ReactNode;
+    render?: (props: ListControllerResult<ReferenceRecordType>) => ReactNode;
     empty?: ReactNode;
-    pagination?: ReactNode;
 }
 
 const defaultFilter = {};

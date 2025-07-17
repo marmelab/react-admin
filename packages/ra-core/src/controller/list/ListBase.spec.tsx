@@ -5,6 +5,7 @@ import {
     DefaultTitle,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
+    WithRenderProps,
 } from './ListBase.stories';
 import { testDataProvider } from '../../dataProvider';
 
@@ -102,5 +103,17 @@ describe('ListBase', () => {
         await screen.findByText('Book list (en)');
         fireEvent.click(screen.getByText('FR'));
         await screen.findByText('Liste des livres (fr)');
+    });
+
+    it('should allow to use render props', async () => {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
+            ),
+        });
+        render(<WithRenderProps dataProvider={dataProvider} />);
+        expect(dataProvider.getList).toHaveBeenCalled();
+        await screen.findByText('Hello');
     });
 });
