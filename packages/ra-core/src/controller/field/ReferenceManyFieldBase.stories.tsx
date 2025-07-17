@@ -5,7 +5,9 @@ import { Resource } from '../../core/Resource';
 import { ShowBase } from '../../controller/show/ShowBase';
 import { TestMemoryRouter } from '../../routing';
 import { ReferenceManyFieldBase } from './ReferenceManyFieldBase';
-import { useListContext } from '../list';
+import { ListBase, ListIterator, useListContext } from '../list';
+import { DataTableBase } from '../../dataTable';
+import fakeRestDataProvider from 'ra-data-fakerest';
 
 export default {
     title: 'ra-core/controller/field/ReferenceManyFieldBase',
@@ -94,6 +96,68 @@ export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
                             </MyReferenceManyField>
                         </ReferenceManyFieldBase>
                     </ShowBase>
+                }
+            />
+        </CoreAdmin>
+    </TestMemoryRouter>
+);
+
+const dataProviderWithAuthorList = fakeRestDataProvider(
+    {
+        authors: [
+            {
+                id: 1,
+                first_name: 'Leo',
+                last_name: 'Tolstoy',
+                language: 'Russian',
+            },
+            {
+                id: 2,
+                first_name: 'William',
+                last_name: 'Shakespear',
+                language: 'English',
+            },
+        ],
+        books,
+    },
+    process.env.NODE_ENV === 'development'
+);
+
+export const InAList = ({ dataProvider = dataProviderWithAuthorList }) => (
+    <TestMemoryRouter initialEntries={['/authors']}>
+        <CoreAdmin
+            dataProvider={dataProvider}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: {
+                            retry: false,
+                        },
+                    },
+                })
+            }
+        >
+            <Resource
+                name="authors"
+                list={
+                    <ListBase>
+                        <ListIterator
+                            render={author => (
+                                <div>
+                                    <h3>{author.last_name} Books</h3>
+                                    <ReferenceManyFieldBase
+                                        target="author"
+                                        source="id"
+                                        reference="books"
+                                    >
+                                        <MyReferenceManyField>
+                                            <List source="title" />
+                                        </MyReferenceManyField>
+                                    </ReferenceManyFieldBase>
+                                </div>
+                            )}
+                        ></ListIterator>
+                    </ListBase>
                 }
             />
         </CoreAdmin>

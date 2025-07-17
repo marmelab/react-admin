@@ -33,7 +33,7 @@ For instance, if an `author` has many `books`, and each book resource exposes an
 `<ReferenceManyFieldBase>` can render the titles of all the books by a given author.
 
 ```jsx
-import { Show, SimpleShowLayout, ReferenceManyFieldBase, DataTable, TextField, DateField } from 'react-admin';
+import { ShowBase, ReferenceManyFieldBase } from 'react-admin';
 
 const BookList = ({
     source,
@@ -60,15 +60,11 @@ const BookList = ({
 };
 
 const AuthorShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <TextField source="first_name" />
-            <TextField source="last_name" />
-            <ReferenceManyFieldBase reference="books" target="author_id" >
-              <BookList source="title" />
-            </ReferenceManyFieldBase>
-        </SimpleShowLayout>
-    </Show>
+    <ShowBase>
+        <ReferenceManyFieldBase reference="books" target="author_id" >
+            <BookList source="title" />
+        </ReferenceManyFieldBase>
+    </ShowBase>
 );
 ```
 
@@ -77,23 +73,16 @@ const AuthorShow = () => (
 You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import { List, DataTable, ChipField, ReferenceManyFieldBase, SingleFieldList } from 'react-admin';
+import { ListBase, ListIterator, ReferenceManyFieldBase } from 'react-admin';
 
 export const PostList = () => (
-    <List>
-        <DataTable>
-            <DataTable.Col source="id" />
-            <DataTable.Col source="title" />
-            <DataTable.Col label="Comments by">
-                <ReferenceManyFieldBase reference="comments" target="post_id">
-                    <CustomAuthorView source="name"/>
-                </ReferenceManyFieldBase>
-            </DataTable.Col>
-            <DataTable.Col>
-                <EditButton />
-            </DataTable.Col>
-        </DataTable>
-    </List>
+    <ListBase>
+        <ListIterator>
+            <ReferenceManyFieldBase reference="comments" target="post_id">
+                <CustomAuthorView source="name"/>
+            </ReferenceManyFieldBase>
+        </ListIterator>
+    </ListBase>
 );
 ```
 
@@ -130,22 +119,19 @@ export const PostList = () => (
 For instance, use a `<DataTable>` to render the related records in a table:
 
 ```jsx
-import { Show, SimpleShowLayout, TextField, ReferenceManyFieldBase, DataTable, DateField } from 'react-admin';
+import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'react-admin';
 
 export const AuthorShow = () => (
-  <Show>
-    <SimpleShowLayout>
-      <TextField source="first_name" />
-      <TextField source="last_name" />
-      <DateField label="Born" source="dob" />
-      <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-        <DataTable>
-          <DataTable.Col source="title" />
-          <DataTable.Col source="published_at" field={DateField} />
-        </DataTable>
-      </ReferenceManyFieldBase>
-    </SimpleShowLayout>
-  </Show>
+    <ShowBase>
+        <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
+            <ListIterator render={(book) => (
+                <div>
+                    <p>{book.title}</p>
+                    <p>{book.published_at}</p>
+                </div>
+            )}/>
+        </ReferenceManyFieldBase>
+    </ShowBase>
 );
 ```
 
@@ -155,38 +141,37 @@ Alternatively, you can pass a `render` function prop instead of children. The `r
 When receiving a `render` function prop the `<ReferenceManyFieldBase>` component will ignore the children property.
 
 ```jsx
-import { Show, SimpleShowLayout, ReferenceManyFieldBase, DataTable, TextField, DateField } from 'react-admin';
+import { ShowBase, ReferenceManyFieldBase } from 'react-admin';
 
 const AuthorShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <TextField source="first_name" />
-            <TextField source="last_name" />
-            <ReferenceManyFieldBase
-                reference="books"
-                target="author_id"
-                render={
-                    ({ isPending, error, data }) => {
+    <ShowBase>
+        <ReferenceManyFieldBase
+            reference="books"
+            target="author_id"
+            render={
+                ({ isPending, error, data }) => {
 
-                        if (isPending) {
-                            return <p>Loading...</p>;
-                        }
-
-                        if (error) {
-                            return <p className="error">{error.toString()}</p>;
-                        }
-                        return (
-                            <p>
-                                {data.map((author, index) => (
-                                    <li key={index}>{author.name}</li>
-                                ))}
-                            </p>
-                        );
+                    if (isPending) {
+                        return <p>Loading...</p>;
                     }
+
+                    if (error) {
+                        return <p className="error">{error.toString()}</p>;
+                    }
+                    return (
+                        <p>
+                            {data.map((book, index) => (
+                                <div key={index}>
+                                    <p>{book.title}</p>
+                                    <p>{book.published_at}</p>
+                                </div>
+                            ))}
+                        </p>
+                    );
                 }
-            />
-        </SimpleShowLayout>
-    </Show>
+            }
+        />
+    </ShowBase>
 );
 ```
 
@@ -211,9 +196,9 @@ Use `empty` to customize the text displayed when the related record is empty.
 
 ```jsx
 <ReferenceManyFieldBase
-  reference="books"
-  target="author_id"
-  empty="no books"
+    reference="books"
+    target="author_id"
+    empty="no books"
 >
     ...
 </ReferenceManyFieldBase>
@@ -223,9 +208,9 @@ Use `empty` to customize the text displayed when the related record is empty.
 
 ```jsx
 <ReferenceManyFieldBase
-  reference="books"
-  target="author_id"
-  empty="resources.authors.fields.books.empty"
+    reference="books"
+    target="author_id"
+    empty="resources.authors.fields.books.empty"
 >
     ...
 </ReferenceManyFieldBase>
@@ -235,9 +220,9 @@ Use `empty` to customize the text displayed when the related record is empty.
 
 ```jsx
 <ReferenceManyFieldBase
-  reference="books"
-  target="author_id"
-    empty={<CreateButton resource="books" />}
+    reference="books"
+    target="author_id"
+    empty={<button onClick={...}>Create</button>}
 >
     ...
 </ReferenceManyFieldBase>
@@ -261,37 +246,6 @@ You can filter the query used to populate the possible values. Use the `filter` 
 
 {% endraw %}
 
-## Filtering The References
-
-<video controls autoplay playsinline muted loop>
-  <source src="./img/ReferenceManyFieldBaseFilterInput.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-You can add filters to `<ReferenceManyFieldBase>` by adding [`<FilterForm>`](./FilterForm.md) and [`<FilterButton>`](./FilterButton.md):
-
-{% raw %}
-
-```jsx
-const filters = [<TextInput source="q" label="Search" />];
-
-const AuthorEdit = () => (
-  <Edit>
-    <SimpleForm>
-      <ReferenceManyFieldBase reference="comments" target="post_id">
-          <FilterButton filters={filters}/>
-          <FilterForm filters={filters}/>
-          <DataTable>
-              ...
-          </DataTable>
-      </ReferenceManyFieldBase>
-    </SimpleForm>
-  </Edit>
-);
-```
-
-{% endraw %}
-
 ## `perPage`
 
 By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
@@ -310,7 +264,9 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
 ```jsx
-<ReferenceManyFieldBase queryOptions={{ meta: { foo: 'bar' } }} />
+<ReferenceManyFieldBase queryOptions={{ meta: { foo: 'bar' } }}>
+    ...
+</ReferenceManyFieldBase>
 ```
 {% endraw %}
 
@@ -322,10 +278,12 @@ For instance, if you want to display the `books` of a given `author`, the `refer
 
 ```jsx
 <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-  <DataTable>
-    <DataTable.Col source="title" />
-    <DataTable.Col source="published_at" field={DateField} />
-  </DataTable>
+  <ListIterator render={(book) => (
+    <div>
+        <p>{book.title}</p>
+        <p>{book.published_at}</p>
+    </div>
+  )} />
 </ReferenceManyFieldBase>
 ```
 
@@ -336,11 +294,11 @@ By default, it orders the possible values by id desc. You can change this order 
 {% raw %}
 ```jsx
 <ReferenceManyFieldBase
-  target="post_id"
-  reference="comments"
-  sort={{ field: 'created_at', order: 'DESC' }}
+    target="post_id"
+    reference="comments"
+    sort={{ field: 'created_at', order: 'DESC' }}
 >
-   ...
+    ...
 </ReferenceManyFieldBase>
 ```
 {% endraw %}
@@ -351,9 +309,9 @@ By default, `ReferenceManyFieldBase` uses the `id` field as target for the refer
 
 ```jsx
 <ReferenceManyFieldBase
-  target="post_id"
-  reference="comments"
-  source="_id"
+    target="post_id"
+    reference="comments"
+    source="_id"
 >
    ...
 </ReferenceManyFieldBase>
@@ -369,7 +327,7 @@ In the example below, both lists use the same reference ('books'), but their sel
 
 {% raw %}
 ```jsx
-<Stack direction="row" spacing={2}>
+<div>
     <ReferenceManyFieldBase
         reference="books"
         target="author_id"
@@ -377,9 +335,9 @@ In the example below, both lists use the same reference ('books'), but their sel
             meta: { foo: 'bar' },
         }}
     >
-        <DataTable>
-            <DataTable.Col source="title" />
-        </DataTable>
+        <ListIterator render={(book) => (
+            <p>{book.title}</p>
+        )} />
     </ReferenceManyFieldBase>
     <ReferenceManyFieldBase
         reference="books"
@@ -389,11 +347,11 @@ In the example below, both lists use the same reference ('books'), but their sel
         }}
         storeKey="custom"
     >
-        <DataTable>
-            <DataTable.Col source="title" />
-        </DataTable>
+        <Iterator render={(book) => (
+            <p>{book.title}</p>
+        )} />
     </ReferenceManyFieldBase>
-</Stack>
+</div>
 ```
 {% endraw %}
 
@@ -403,9 +361,13 @@ Name of the field carrying the relationship on the referenced resource. For inst
 
 ```jsx
 <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-  <DataTable>
-    <DataTable.Col source="title" />
-    <DataTable.Col source="published_at" field={DateField} />
-  </DataTable>
+    <ListIterator
+        render={(book) => (
+            <div>
+                <p>{book.title}</p>
+                <p>{book.published_at}</p>
+            </div>
+        )}
+    />
 </ReferenceManyFieldBase>
 ```
