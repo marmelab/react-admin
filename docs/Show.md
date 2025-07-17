@@ -61,7 +61,8 @@ That's enough to display the post show view above.
 
 | Prop             | Required | Type              | Default | Description
 |------------------|----------|-------------------|---------|--------------------------------------------------------
-| `children`       | Required | `ReactNode`       |         | The components rendering the record fields
+| `children`       | Required if no render | `ReactNode`       |         | The components rendering the record fields
+| `render`       | Required if no children | `(showContext) => ReactNode`       |         | A function rendering the record fields, receive the show context as its argument
 | `actions`        | Optional | `ReactElement`    |         | The actions to display in the toolbar
 | `aside`          | Optional | `ReactElement`    |         | The component to display on the side of the list
 | `className`      | Optional | `string`          |         | passed to the root component

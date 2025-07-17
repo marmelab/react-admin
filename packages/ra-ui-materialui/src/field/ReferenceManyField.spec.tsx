@@ -14,6 +14,7 @@ import {
     Empty,
     WithPagination,
     WithPaginationAndSelectAllLimit,
+    WithRenderProp,
 } from './ReferenceManyField.stories';
 
 const theme = createTheme();
@@ -204,6 +205,20 @@ describe('<ReferenceManyField />', () => {
                 screen.queryAllByRole('ra.action.bulk_actions')
             ).toHaveLength(0);
         });
+    });
+
+    it('should use render prop when provides', async () => {
+        render(<WithRenderProp />);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
+        });
+        const items = await screen.findAllByRole('listitem');
+        expect(items).toHaveLength(5);
+        expect(items[0].textContent).toEqual('War and Peace');
+        expect(items[1].textContent).toEqual('Anna Karenina');
+        expect(items[2].textContent).toEqual('Resurrection');
+        expect(items[3].textContent).toEqual('The Idiot');
+        expect(items[4].textContent).toEqual('The Last Day of a Condemned');
     });
 
     describe('pagination', () => {

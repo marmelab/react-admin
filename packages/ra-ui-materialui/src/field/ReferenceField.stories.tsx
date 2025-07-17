@@ -951,3 +951,23 @@ export const Themed = () => {
         </Wrapper>
     );
 };
+
+export const WithRenderProp = () => (
+    <Wrapper>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            render={({ error, isPending, referenceRecord }) => {
+                console.log({ error, isPending, referenceRecord });
+                if (isPending) {
+                    return <p>Loading...</p>;
+                }
+
+                if (error) {
+                    return <p style={{ color: 'red' }}>{error.message}</p>;
+                }
+                return referenceRecord.ISBN;
+            }}
+        ></ReferenceField>
+    </Wrapper>
+);

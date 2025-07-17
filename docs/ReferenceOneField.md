@@ -60,6 +60,7 @@ const BookShow = () => (
 | `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
 | `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
 | `children`     | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
+| `render`     | Optional | `(ReferenceFieldContext) => Element`                                   | -                                | A function that takes the `ReferenceFieldContext` and returns a React element                              |
 | `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
@@ -78,6 +79,34 @@ For instance, if you want to render both the genre and the ISBN for a book:
 <ReferenceOneField label="Details" reference="book_details" target="book_id">
     <TextField source="genre" /> (<TextField source="ISBN" />)
 </ReferenceOneField>
+```
+
+
+## `render`
+
+Alternatively to children you can pass a `render` function prop to `<ReferenceOneFieldBase>`. The `render` function prop will receive the `ReferenceFieldContext` as its argument, allowing to inline the render logic.
+When receiving a `render` function prop the `<ReferenceOneFieldBase>` component will ignore the children property.
+
+```jsx
+<ReferenceOneField
+    reference="book_details"
+    target="book_id"
+    render={({ isPending, error, referenceRecord }) => {
+        if (isPending) {
+            return <Typography>Loading...</Typography>;
+        }
+
+        if (error) {
+            return <Typography className="error" >{error.toString()}</Typography>;
+        }
+        return (
+            <div>
+                <Typography>{referenceRecord ? referenceRecord.genre : ''}</Typography>
+                <Typography>{referenceRecord ? referenceRecord.ISBN : ''}</Typography>
+            </div>
+        );
+    }}
+/>
 ```
 
 ## `empty`

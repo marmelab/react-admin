@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ElementType, ReactElement } from 'react';
+import type { ElementType, ReactElement, ReactNode } from 'react';
 import {
     Card,
     type ComponentsOverrides,
@@ -7,7 +7,7 @@ import {
     type SxProps,
     type Theme,
 } from '@mui/material';
-import { useCreateContext } from 'ra-core';
+import { CreateControllerResult, useCreateContext } from 'ra-core';
 import clsx from 'clsx';
 
 import { Title } from '../layout';
@@ -18,13 +18,16 @@ export const CreateView = (props: CreateViewProps) => {
         actions,
         aside,
         children,
+        render,
         className,
         component: Content = Card,
         title,
         ...rest
     } = props;
 
-    const { resource, defaultTitle } = useCreateContext();
+    const createContext = useCreateContext();
+
+    const { resource, defaultTitle } = createContext;
 
     return (
         <Root className={clsx('create-page', className)} {...rest}>
@@ -41,7 +44,9 @@ export const CreateView = (props: CreateViewProps) => {
                     [CreateClasses.noActions]: !actions,
                 })}
             >
-                <Content className={CreateClasses.card}>{children}</Content>
+                <Content className={CreateClasses.card}>
+                    {render ? render(createContext) : children}
+                </Content>
                 {aside}
             </div>
         </Root>
@@ -55,6 +60,8 @@ export interface CreateViewProps
     component?: ElementType;
     sx?: SxProps<Theme>;
     title?: string | ReactElement | false;
+    render?: (createContext: CreateControllerResult) => ReactNode;
+    children?: ReactNode;
 }
 
 const PREFIX = 'RaCreate';

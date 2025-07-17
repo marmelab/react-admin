@@ -58,6 +58,7 @@ You can customize the `<Create>` component using the following props:
 * [`actions`](#actions): override the actions toolbar with a custom component
 * [`aside`](#aside): component to render aside to the main content
 * `children`: the components that renders the form
+* `render`: Alternative to children. A function that renders the form, receive the create context as its argument
 * `className`: passed to the root component
 * [`component`](#component): override the root component
 * [`disableAuthentication`](#disableauthentication): disable the authentication check
@@ -69,6 +70,36 @@ You can customize the `<Create>` component using the following props:
 * [`sx`](#sx-css-api): Override the styles
 * [`title`](#title): override the page title
 * [`transform`](#transform): transform the form data before calling `dataProvider.create()`
+
+## `render`
+
+Alternatively to children you can pass a render prop to `<Create>`. The render prop will receive the create context as its argument, allowing to inline the render logic for the create form.
+When receiving a render prop the `<Create>` component will ignore the children property.
+
+{% raw %}
+```tsx
+<Create render={(createContext) => {
+    if (createContext.isPending) {
+        return <div>Loading...</div>;
+    }
+    if (createContext.error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    return (
+        <Box>
+            <h1>{`Create new ${createContext.resource}`}</h1>
+            <SimpleForm>
+                <TextInput source="title" validate={[required()]} />
+                <TextInput source="teaser" multiline={true} label="Short description" />
+                <RichTextInput source="body" />
+                <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
+            </SimpleForm>
+        </Box>
+    );
+}} />
+```
+{% endraw %}
 
 ## `actions`
 

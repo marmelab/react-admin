@@ -9,6 +9,7 @@ import {
     EmptyText,
     Empty,
     Themed,
+    WithRenderProp,
 } from './ReferenceOneField.stories';
 
 describe('ReferenceOneField', () => {
@@ -52,6 +53,11 @@ describe('ReferenceOneField', () => {
                 }
             );
         });
+    });
+
+    it('should allow to render the referenceRecord using a render prop', async () => {
+        render(<WithRenderProp />);
+        await screen.findByText('9780393966473');
     });
 
     describe('emptyText', () => {

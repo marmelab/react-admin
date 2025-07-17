@@ -844,3 +844,32 @@ export const Themed = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const WithRenderProp = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List
+                        render={({ error, isPending }) => {
+                            if (isPending) {
+                                return <div>Loading...</div>;
+                            }
+                            if (error) {
+                                return <div>Error: {error.message}</div>;
+                            }
+                            return (
+                                <SimpleList
+                                    primaryText="%{title} (%{year})"
+                                    secondaryText="%{summary}"
+                                    tertiaryText={record => record.year}
+                                />
+                            );
+                        }}
+                    />
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);

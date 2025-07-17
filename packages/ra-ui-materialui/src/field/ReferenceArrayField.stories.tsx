@@ -164,3 +164,40 @@ export const WithPagination = () => (
         </ResourceDefinitionContextProvider>
     </AdminContext>
 );
+
+export const WithRenderProp = () => (
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
+        <ResourceDefinitionContextProvider definitions={resouceDefs}>
+            <Show resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleShowLayout>
+                    <TextField source="name" />
+                    <ReferenceArrayField
+                        source="members"
+                        reference="artists"
+                        render={({ data, isPending, error }) => {
+                            if (isPending) {
+                                return <p>Loading...</p>;
+                            }
+
+                            if (error) {
+                                return (
+                                    <p style={{ color: 'red' }}>
+                                        {error.toString()}
+                                    </p>
+                                );
+                            }
+
+                            return (
+                                <p>
+                                    {data?.map((datum, index) => (
+                                        <li key={index}>{datum.name}</li>
+                                    ))}
+                                </p>
+                            );
+                        }}
+                    />
+                </SimpleShowLayout>
+            </Show>
+        </ResourceDefinitionContextProvider>
+    </AdminContext>
+);

@@ -80,6 +80,7 @@ export const ReferenceArrayField = <
     ReferenceRecordType extends RaRecord = RaRecord,
 >({
     pagination,
+    render,
     ...inProps
 }: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>) => {
     const props = useThemeProps({
@@ -88,7 +89,11 @@ export const ReferenceArrayField = <
     });
     return (
         <ReferenceArrayFieldBase {...inProps}>
-            <PureReferenceArrayFieldView {...props} pagination={pagination} />
+            <PureReferenceArrayFieldView
+                {...props}
+                pagination={pagination}
+                render={render}
+            />
         </ReferenceArrayFieldBase>
     );
 };
@@ -110,8 +115,10 @@ export interface ReferenceArrayFieldViewProps
 export const ReferenceArrayFieldView = (
     props: ReferenceArrayFieldViewProps
 ) => {
-    const { children, pagination, className, sx } = props;
-    const { isPending, total } = useListContext();
+    const { children, render, pagination, className, sx } = props;
+    const listContext = useListContext();
+
+    const { isPending, total } = listContext;
 
     return (
         <Root className={className} sx={sx}>
@@ -121,7 +128,9 @@ export const ReferenceArrayFieldView = (
                 />
             ) : (
                 <span>
-                    {children || <SingleFieldList />}
+                    {(render ? render(listContext) : children) || (
+                        <SingleFieldList />
+                    )}
                     {pagination && total !== undefined ? pagination : null}
                 </span>
             )}

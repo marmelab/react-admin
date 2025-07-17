@@ -135,6 +135,7 @@ const MyTagList = (props: { children: React.ReactNode }) => {
 Alternatively to children you can pass a `render` function prop to `<ReferenceArrayFieldBase>`. The `render` prop will receive the `ListContext` as its argument, allowing to inline the `render` logic.
 When receiving a `render` prop the `<ReferenceArrayFieldBase>` component will ignore the children property.
 
+
 ```jsx
 <ReferenceArrayFieldBase
     label="Tags"

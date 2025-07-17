@@ -397,3 +397,24 @@ export const Themed = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const WithRenderProp = () => (
+    <TestMemoryRouter initialEntries={['/books/1/Edit']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        render={editContext => {
+                            return editContext.record ? (
+                                <span>{editContext.record.title}</span>
+                            ) : null;
+                        }}
+                    >
+                        <BookTitle />
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);

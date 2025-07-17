@@ -58,9 +58,10 @@ The props are the same as [the `<List>` component](./List.md):
 
 | Prop                       | Required | Type           | Default                 | Description                                                                                  |
 |----------------------------|----------|----------------|-------------------------|----------------------------------------------------------------------------------------------|
-| `children`                 | Required | `ReactNode`    | -                       | The component to use to render the list of records.                                          |
+| `children`                 | Required if no render | `ReactNode`    | -                       | The component to use to render the list of records.                                          |
+| `render`                 | Required if no children | `ReactNode`    | -                       | A function that render the list of records, receives the list context as argument.                                          |
 | `actions`                  | Optional | `ReactElement` | -                       | The actions to display in the toolbar.                                                       |
-| `aside`                    | Optional | `ReactElement` | -                       | The component to display on the side of the list.                                            |
+| `aside`                    | Optional | `(listContext) => ReactElement` | -                       | The component to display on the side of the list.                                            |
 | `component`                | Optional | `Component`    | `Card`                  | The component to render as the root element.                                                 |
 | `debounce`                 | Optional | `number`       | `500`                   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
 | `disable Authentication`   | Optional | `boolean`      | `false`                 | Set to `true` to disable the authentication check.                                           |
@@ -83,6 +84,33 @@ The props are the same as [the `<List>` component](./List.md):
 Check the [`<List>` component](./List.md) for details about each prop.
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
+
+## `render`
+
+Alternatively to children you can pass a render prop to `<InfiniteList>`. The render prop will receive the list context as its argument, allowing to inline the render logic for the list content.
+When receiving a render prop the `<InfiniteList>` component will ignore the children property.
+
+{% raw %}
+```tsx
+<InfiniteList
+    render={({ error, isPending }) => {
+        if (isPending) {
+            return <div>Loading...</div>;
+        }
+        if (error) {
+            return <div>Error: {error.message}</div>;
+        }
+        return (
+            <SimpleList
+                primaryText="%{title} (%{year})"
+                secondaryText="%{summary}"
+                tertiaryText={record => record.year}
+            />
+        );
+    }}
+/>
+```
+{% endraw %}
 
 ## `pagination`
 

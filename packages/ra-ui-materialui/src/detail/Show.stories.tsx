@@ -280,3 +280,22 @@ export const Themed = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const WithRenderProp = () => (
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <Show
+                        render={showContext =>
+                            showContext.record ? (
+                                <span>{showContext.record.title}</span>
+                            ) : null
+                        }
+                    />
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);

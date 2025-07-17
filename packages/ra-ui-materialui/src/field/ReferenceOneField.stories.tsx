@@ -568,3 +568,25 @@ export const Themed = () => (
         </ReferenceOneField>
     </Wrapper>
 );
+
+export const WithRenderProp = () => (
+    <Wrapper>
+        <ReferenceOneField
+            reference="book_details"
+            target="book_id"
+            render={({ isPending, error, referenceRecord }) => {
+                if (isPending) {
+                    return <p>Loading...</p>;
+                }
+
+                if (error) {
+                    return <p style={{ color: 'red' }}>{error.toString()}</p>;
+                }
+
+                return (
+                    <span>{referenceRecord ? referenceRecord.ISBN : ''}</span>
+                );
+            }}
+        />
+    </Wrapper>
+);

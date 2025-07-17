@@ -66,6 +66,7 @@ You can customize the `<Edit>` component using the following props:
 * [`actions`](#actions): override the actions toolbar with a custom component
 * [`aside`](#aside): component to render aside to the main content
 * `children`: the components that renders the form
+* `render`: a function to renders the form, receive the editContext as argument.
 * `className`: passed to the root component
 * [`component`](#component): override the root component
 * [`disableAuthentication`](#disableauthentication): disable the authentication check
@@ -79,6 +80,47 @@ You can customize the `<Edit>` component using the following props:
 * [`sx`](#sx-css-api): Override the styles
 * [`title`](#title): override the page title
 * [`transform`](#transform): transform the form data before calling `dataProvider.update()`
+
+## `render`
+
+Alternatively to children you can pass a render prop to `<Edit>`. The render prop will receive the edit context as its argument, allowing to inline the render logic for the edit form.
+When receiving a render prop the `<Edit>` component will ignore the children property.
+
+{% raw %}
+```tsx
+<Edit
+    render={(listContext) => {
+        if (listContext.isPending) {
+            return <div>Loading...</div>;
+        }
+        if (listContext.error) {
+            return <div>Error: {error.message}</div>;
+        }
+        return (
+            <div>
+                <h1>{`Edit ${listController.resource} #${listController.record.id}`}</h1>
+                <SimpleForm>
+                    <TextInput disabled label="Id" source="id" />
+                    <TextInput source="title" validate={required()} />
+                    <TextInput multiline source="teaser" validate={required()} />
+                    <RichTextInput source="body" validate={required()} />
+                    <DateInput label="Publication date" source="published_at" />
+                    <ReferenceManyField label="Comments" reference="comments" target="post_id">
+                        <DataTable>
+                            <DataTable.Col source="body" />
+                            <DataTable.Col source="created_at" field={DateField} />
+                            <DataTable.Col>
+                                <EditButton />
+                            </DataTable.Col>
+                        </DataTable>
+                    </ReferenceManyField>
+                </SimpleForm>
+            </div>
+        );
+    }}
+/>
+```
+{% endraw %}
 
 ## `actions`
 

@@ -305,3 +305,22 @@ export const Themed = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const WithRenderProp = () => (
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                create={() => (
+                    <Create
+                        render={createContext => {
+                            return (
+                                <div>{`Create new ${createContext.resource}`}</div>
+                            );
+                        }}
+                    />
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
