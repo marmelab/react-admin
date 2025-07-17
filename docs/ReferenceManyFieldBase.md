@@ -106,7 +106,6 @@ export const PostList = () => (
 | `debounce`     | Optional\* | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
-| `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                       |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
@@ -152,7 +151,7 @@ export const AuthorShow = () => (
 
 ## `render`
 
-Alternatively, you can pass a `render` function prop instead of children. The `render` prop will receive the `ListContext` as arguments, allowing to inline the render logic for both the list and the pagination.
+Alternatively, you can pass a `render` function prop instead of children. The `render` prop will receive the `ListContext` as arguments, allowing to inline the render logic.
 When receiving a `render` function prop the `<ReferenceManyFieldBase>` component will ignore the children property.
 
 ```jsx
@@ -292,20 +291,6 @@ const AuthorEdit = () => (
 ```
 
 {% endraw %}
-
-## `pagination`
-
-If you want to allow users to paginate the list, pass a `<Pagination>` element as the `pagination` prop:
-
-```jsx
-import { Pagination } from 'react-admin';
-
-<ReferenceManyFieldBase pagination={<Pagination />} reference="comments" target="post_id">
-   ...
-</ReferenceManyFieldBase>
-```
-
-***Note:*** The pagination prop will be ignored if a render prop is specified
 
 ## `perPage`
 

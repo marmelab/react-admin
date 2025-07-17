@@ -98,7 +98,6 @@ You can change how the list of related records is rendered by passing a custom c
 | `children`     | Optional\* | `Element`                                                                         |               | One or several elements that render a list of records based on a `ListContext`                         |
 | `render`     | Optional\* | `(ListContext) => Element`                                                                         |               | A function that takes a list context and renders a list of records                        |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
-| `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
@@ -140,7 +139,7 @@ const MyTagList = (props: { children: React.ReactNode }) => {
 
 ## `render`
 
-Alternatively to children you can pass a `render` function prop to `<ReferenceArrayFieldBase>`. The `render` prop will receive the `ListContext` as its argument, allowing to inline the `render` logic for both the list and the pagination.
+Alternatively to children you can pass a `render` function prop to `<ReferenceArrayFieldBase>`. The `render` prop will receive the `ListContext` as its argument, allowing to inline the `render` logic.
 When receiving a `render` prop the `<ReferenceArrayFieldBase>` component will ignore the children property.
 
 ```jsx
@@ -183,26 +182,6 @@ For instance, to render only tags that are 'published', you can use the followin
 ```
 {% endraw %}
 
-## `pagination`
-
-`<ReferenceArrayFieldBase>` fetches *all* the related fields, and puts them all in a `ListContext`. If a record has a large number of related records, you can limit the number of displayed records with the [`perPage`](#perpage) prop. Then, let users display remaining records by rendering pagination controls. For that purpose, pass a pagination element to the `pagination` prop.
-
-For instance, to limit the display of related records to 10, you can use the following code:
-
-```jsx
-import { Pagination, ReferenceArrayFieldBase } from 'react-admin';
-
-<ReferenceArrayFieldBase
-    label="Tags"
-    source="tag_ids"
-    reference="tags"
-    perPage={10}
-    pagination={<Pagination />}
-/>
-```
-
-***Note:*** The pagination prop will be ignored when the component receive a render prop
-
 ## `perPage`
 
 `<ReferenceArrayFieldBase>` fetches *all* the related fields, and puts them all in a `ListContext`. If a record has a large number of related records, it may be a good idea to limit the number of displayed records. The `perPage` prop allows to create a client-side pagination for the related records.
@@ -212,8 +191,6 @@ For instance, to limit the display of related records to 10, you can use the fol
 ```jsx
  <ReferenceArrayFieldBase label="Tags" source="tag_ids" reference="tags" perPage={10} />
 ```
-
-If you want to let the user display the remaining records, you have to pass a [`pagination`](#pagination) element.
 
 ## `queryOptions`
 

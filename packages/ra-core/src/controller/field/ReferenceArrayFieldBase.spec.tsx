@@ -4,7 +4,6 @@ import {
     Basic,
     Errored,
     Loading,
-    WithPagination,
     WithRenderProp,
 } from './ReferenceArrayFieldBase.stories';
 
@@ -71,24 +70,6 @@ describe('ReferenceArrayFieldBase', () => {
         });
     });
 
-    it('should render pagination', async () => {
-        render(<WithPagination />);
-        await waitFor(() => {
-            expect(screen.queryByText('1 - 3 of 8')).not.toBeNull();
-            expect(screen.queryByText('Next Page')).not.toBeNull();
-            expect(screen.queryByText('Previous Page')).not.toBeNull();
-        });
-        screen.getByText('Next Page').click();
-        await waitFor(() => {
-            expect(screen.queryByText('4 - 6 of 8')).not.toBeNull();
-        });
-        screen.getByText('Previous Page').click();
-
-        await waitFor(() => {
-            expect(screen.queryByText('1 - 3 of 8')).not.toBeNull();
-        });
-    });
-
     it('should support renderProp', async () => {
         render(<WithRenderProp />);
         await waitFor(() => {
@@ -101,13 +82,5 @@ describe('ReferenceArrayFieldBase', () => {
             expect(screen.queryByText('Ronnie Wood')).not.toBeNull();
             expect(screen.queryByText('Charlie Watts')).not.toBeNull();
         });
-    });
-
-    it('should not render pagination when given a render prop', async () => {
-        render(<WithRenderProp pagination={<p>Custom Pagination</p>} />);
-        await waitFor(() => {
-            expect(screen.queryByText('John Lennon')).not.toBeNull();
-        });
-        expect(screen.queryByText('Custom Pagination')).toBeNull();
     });
 });

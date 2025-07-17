@@ -202,49 +202,10 @@ export const Loading = ({ dataProvider = dataProviderWithAuthorsLoading }) => (
     </TestMemoryRouter>
 );
 
-export const WithPagination = ({ dataProvider = dataProviderWithAuthors }) => (
-    <TestMemoryRouter initialEntries={['/authors/1/show']}>
-        <CoreAdmin
-            dataProvider={dataProvider}
-            queryClient={
-                new QueryClient({
-                    defaultOptions: {
-                        queries: {
-                            retry: false,
-                        },
-                    },
-                })
-            }
-        >
-            <Resource name="books" />
-            <Resource
-                name="authors"
-                show={
-                    <ShowBase>
-                        <ReferenceManyFieldBase
-                            target="author"
-                            source="id"
-                            reference="books"
-                            perPage={2}
-                            pagination={<Pagination />}
-                        >
-                            <MyReferenceManyField>
-                                <List source="title" />
-                            </MyReferenceManyField>
-                        </ReferenceManyFieldBase>
-                    </ShowBase>
-                }
-            />
-        </CoreAdmin>
-    </TestMemoryRouter>
-);
-
 export const WithRenderProp = ({
     dataProvider = dataProviderWithAuthors,
-    pagination,
 }: {
     dataProvider?: any;
-    pagination?: React.ReactNode;
 }) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
         <CoreAdmin
@@ -268,7 +229,6 @@ export const WithRenderProp = ({
                             reference="books"
                             target="author"
                             source="id"
-                            pagination={pagination}
                             render={({ error, isPending, data }) => {
                                 if (isPending) {
                                     return <p>Loading...</p>;
@@ -318,28 +278,5 @@ const List = ({ source }: { source: string }) => {
                 <li key={index}>{datum[source]}</li>
             ))}
         </p>
-    );
-};
-
-const Pagination = () => {
-    const { page = 1, setPage, total = 0, perPage = 0 } = useListContext();
-    const nextPage = () => {
-        setPage?.(page + 1);
-    };
-    const previousPage = () => {
-        setPage?.(page - 1);
-    };
-    return (
-        <div>
-            <button disabled={page <= 1} onClick={previousPage}>
-                Previous Page
-            </button>
-            <span>
-                {`${(page - 1) * perPage + 1} - ${Math.min(page * perPage, total)} of ${total}`}
-            </span>
-            <button disabled={page >= total / perPage} onClick={nextPage}>
-                Next Page
-            </button>
-        </div>
     );
 };
