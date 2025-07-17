@@ -21,7 +21,7 @@ This field fetches a one-to-one relationship, e.g. the details of a book, when u
 
 `<ReferenceOneFieldBase>` behaves like `<ReferenceManyFieldBase>`: it uses the current `record` (a book in this example) to build a filter for the book details with the foreign key (`book_id`). Then, it uses `dataProvider.getManyReference('book_details', { target: 'book_id', id: book.id })` to fetch the related details, and takes the first one.
 
-`<ReferenceOneFieldBase>` is a headless component, handling only the logic. This Allows to use any UI library for the render. For a version incorporating UI see [`<ReferenceOneField>`](/ReferenceOneField.html)
+`<ReferenceOneFieldBase>` is a headless component, handling only the logic. This allows to use any UI library for the render. For a version based on MUI see [`<ReferenceOneField>`](/ReferenceOneField.html)
 
 For the inverse relationships (the book linked to a book_detail), you can use a [`<ReferenceFieldBase>`](./ReferenceFieldBase.md).
 
@@ -38,14 +38,14 @@ const BookShow = () => (
             <DateField source="published_at" />
             <ReferenceField source="authorId" reference="authors" />
             <ReferenceOneFieldBase reference="book_details" target="book_id">
-                <MyBookView />
+                <BookDetails />
             </ReferenceOneFieldBase>
         </SimpleShowLayout>
     </Show>
 );
 
-// with MyBookView something like
-const MyBookView = ({ source }) => {
+// with BookDetails something like
+const BookDetails = ({ source }) => {
     const context = useReferenceOneFieldContext({
         reference,
         target,
@@ -75,8 +75,8 @@ const MyBookView = ({ source }) => {
 | -------------- | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
 | `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
 | `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
-| `children`     | Required if no render | `Element`                                   | -                                | React component to render the referenced record, the component need to use useReferenceOneFieldContext to access the context.                              |
-| `render`     | Required if no children | `(referenceFieldContext) => Element`                                   | -                                | A function that takes the reference field context and return a React element                              |
+| `children`     | Optional\* | `Element`                                   | -                                | React component to render the referenced record.                              |
+| `render`     | Optional\* | `(referenceFieldContext) => Element`                                   | -                                | A function that takes the reference field context and return a React element                              |
 | `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
@@ -85,62 +85,64 @@ const MyBookView = ({ source }) => {
 
 `<ReferenceOneFieldBase>` also accepts the [common field props](./Fields.md#common-field-props).
 
+\* Either one of children or render is required.
+
 ## `children`
 
 You can pass any component of your own as children, to render the referenced record as you wish.
 You can access the list context using the `useReferenceOneFieldController` hook.
 
 ```jsx
-const MyBookView = () => {
-    const context = useReferenceOneFieldContext({
+const BookDetails = () => {
+    const { isPending, error, referenceRecord } = useReferenceOneFieldContext({
         reference,
         target,
     });
 
-    if (context.isPending) {
+    if (isPending) {
         return <p>Loading...</p>;
     }
 
-    if (context.error) {
-        return <p className="error" >{context.error.toString()}</p>;
+    if (error) {
+        return <p className="error" >{error.toString()}</p>;
     }
     return (
         <div>
-            <p>{record ? record.genre : ''}</p>
-            <p>{record ? record.ISBN : ''}</p>
+            <p>{referenceRecord ? referenceRecord.genre : ''}</p>
+            <p>{referenceRecord ? referenceRecord.ISBN : ''}</p>
         </div>
     );
 }
 
 const BookShow = () => (
     <ReferenceOneFieldBase reference="book_details" target="book_id">
-        <MyBookView />
+        <BookDetails />
     </ReferenceOneFieldBase>
 );
 ```
 
 ## `render`
 
-Alternatively to children you can pass a render prop to `<ReferenceOneFieldBase>`. The render prop will receive the reference on field context as its argument, allowing to inline the render logic.
-When receiving a render prop the `<ReferenceOneFieldBase>` component will ignore the children property.
+Alternatively to children you can pass a `render` function prop to `<ReferenceOneFieldBase>`. The `render` function prop will receive the `ReferenceFieldContext` as its argument, allowing to inline the render logic.
+When receiving a `render` function prop the `<ReferenceOneFieldBase>` component will ignore the children property.
 
 ```jsx
 const BookShow = () => (
     <ReferenceOneFieldBase
         reference="book_details"
         target="book_id"
-        render={(context) => {
-            if (context.isPending) {
+        render={({ isPending, error, referenceRecord }) => {
+            if (isPending) {
                 return <p>Loading...</p>;
             }
 
-            if (context.error) {
-                return <p className="error" >{context.error.toString()}</p>;
+            if (error) {
+                return <p className="error" >{error.toString()}</p>;
             }
             return (
                 <div>
-                    <p>{record ? record.genre : ''}</p>
-                    <p>{record ? record.ISBN : ''}</p>
+                    <p>{referenceRecord ? referenceRecord.genre : ''}</p>
+                    <p>{referenceRecord ? referenceRecord.ISBN : ''}</p>
                 </div>
             );
         }}
@@ -211,7 +213,7 @@ You can also set the `link` prop to a string, which will be used as the link typ
 
 {% raw %}
 ```jsx
-<ReferenceOneFieldBase 
+<ReferenceOneFieldBase
     reference="book_details"
     target="book_id"
     link={record => `/custom/${record.id}`}
@@ -296,4 +298,3 @@ In that case, the `target` prop should be set to `book_id`:
     <TextField source="genre" />
 </ReferenceOneFieldBase>
 ```
-

@@ -13,7 +13,6 @@ For a component handling the UI too use [the `<ReferenceManyField>` component](.
 
 **Tip**: If the relationship is materialized by an array of ids in the initial record, use [the `<ReferenceArrayFieldBase>` component](./ReferenceArrayFieldBase.md) instead.
 
-
 ## Usage
 
 ### With children
@@ -36,7 +35,7 @@ For instance, if an `author` has many `books`, and each book resource exposes an
 ```jsx
 import { Show, SimpleShowLayout, ReferenceManyFieldBase, DataTable, TextField, DateField } from 'react-admin';
 
-const CustomAuthorView = ({
+const BookList = ({
     source,
     children,
 }: {
@@ -53,8 +52,8 @@ const CustomAuthorView = ({
     }
     return (
         <p>
-            {listContext.data?.map((datum, index) => (
-                <li key={index}>{datum[source]}</li>
+            {listContext.data?.map((book, index) => (
+                <li key={index}>{book[source]}</li>
             ))}
         </p>
     );
@@ -66,7 +65,7 @@ const AuthorShow = () => (
             <TextField source="first_name" />
             <TextField source="last_name" />
             <ReferenceManyFieldBase reference="books" target="author_id" >
-              <CustomAuthorView source="title" />
+              <BookList source="title" />
             </ReferenceManyFieldBase>
         </SimpleShowLayout>
     </Show>
@@ -102,9 +101,9 @@ export const PostList = () => (
 
 | Prop           | Required | Type                                                                              | Default                          | Description                                                                         |
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`     | Required if no render | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
-| `render`     | Required if no children | `(listContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and render elements      |
-| `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
+| `children`     | Optional | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
+| `render`     | Optional\* | `(ListContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and render elements      |
+| `debounce`     | Optional\* | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
@@ -115,6 +114,8 @@ export const PostList = () => (
 | `source`       | Optional | `string`                                                                          | `id`                             | Target field carrying the relationship on the source record (usually 'id')          |
 | `storeKey`     | Optional | `string`                                                                          | -                                | The key to use to store the records selection state                                 |
 | `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+
+\* Either one of children or render is required.
 
 ## `children`
 
@@ -151,57 +152,33 @@ export const AuthorShow = () => (
 
 ## `render`
 
-Alternatively to children you can pass a render prop to `<ReferenceManyFieldBase>`. The render prop will receive the list context as its argument, allowing to inline the render logic for both the list and the pagination.
-When receiving a render prop the `<ReferenceManyFieldBase>` component will ignore the children and the pagination property.
+Alternatively, you can pass a `render` function prop instead of children. The `render` prop will receive the `ListContext` as arguments, allowing to inline the render logic for both the list and the pagination.
+When receiving a `render` function prop the `<ReferenceManyFieldBase>` component will ignore the children property.
 
 ```jsx
 import { Show, SimpleShowLayout, ReferenceManyFieldBase, DataTable, TextField, DateField } from 'react-admin';
-
-const CustomAuthorView = ({
-    source,
-    children,
-}: {
-    source: string;
-}) => {
-    const context = useListController();
-
-    if (context.isPending) {
-        return <p>Loading...</p>;
-    }
-
-    if (context.error) {
-        return <p className="error">{context.error.toString()}</p>;
-    }
-    return (
-        <p>
-            {listContext.data?.map((datum, index) => (
-                <li key={index}>{datum[source]}</li>
-            ))}
-        </p>
-    );
-};
 
 const AuthorShow = () => (
     <Show>
         <SimpleShowLayout>
             <TextField source="first_name" />
             <TextField source="last_name" />
-            <ReferenceManyFieldBase 
+            <ReferenceManyFieldBase
                 reference="books"
                 target="author_id"
                 render={
-                    (context) => {
+                    ({ isPending, error, data }) => {
 
-                        if (context.isPending) {
+                        if (isPending) {
                             return <p>Loading...</p>;
                         }
 
-                        if (context.error) {
-                            return <p className="error">{context.error.toString()}</p>;
+                        if (error) {
+                            return <p className="error">{error.toString()}</p>;
                         }
                         return (
                             <p>
-                                {listContext.data?.map((author, index) => (
+                                {data.map((author, index) => (
                                     <li key={index}>{author.name}</li>
                                 ))}
                             </p>

@@ -66,10 +66,8 @@ The `<ListBase>` component accepts the same props as [`useListController`](./use
 * [`resource`](./List.md#resource)
 * [`sort`](./List.md#sort)
 
-These are a subset of the props accepted by `<List>` - only the props that change data fetching, and not the props related to the user interface.
-
 In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children) for usage examples.
-Alternatively you can pass a render function to the props, in place of children. This function will receive the listContext as argument. 
+Alternatively, you can pass a `render` function prop instead of `children`. This function will receive the `ListContext` as argument. 
 
 ## Security
 

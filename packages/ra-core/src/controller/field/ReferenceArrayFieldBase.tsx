@@ -7,7 +7,7 @@ import { useRecordContext } from '../record';
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { ResourceContextProvider } from '../../core';
 import { ListContextProvider, ListControllerResult } from '../list';
-import { FieldPropsBase } from './types';
+import { BaseFieldProps } from './types';
 
 /**
  * A container component that fetches records from another resource specified
@@ -119,7 +119,7 @@ export const ReferenceArrayFieldBase = <
 export interface ReferenceArrayFieldBaseProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends FieldPropsBase<RecordType> {
+> extends BaseFieldProps<RecordType> {
     children?: ReactNode;
     render?: (props: ListControllerResult<ReferenceRecordType>) => ReactElement;
     filter?: FilterPayload;

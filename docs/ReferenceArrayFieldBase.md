@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "The ReferenceArrayFieldBase Component"
-storybook_path: ra-ui-materialui-fields-referencearrayfieldbase--basic
+storybook_path: ra-core-fields-referencearrayfieldbase--basic
 ---
 
 # `<ReferenceArrayFieldBase>`
@@ -46,7 +46,7 @@ In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as C
 ```jsx
 import { List, DataTable, ReferenceArrayFieldBase } from 'react-admin';
 
-const MyPostView = (props: { children: React.ReactNode }) => {
+const MyTagsView = (props: { children: React.ReactNode }) => {
     const context = useListContext();
 
     if (context.isPending) {
@@ -72,7 +72,7 @@ export const PostList = () => (
             <DataTable.Col source="title" />
             <DataTable.Col source="tag_ids" label="Tags">
                 <ReferenceArrayFieldBase reference="tags" source="tag_ids">
-                    <MyPostView />
+                    <MyTagsView />
                 </ReferenceArrayFieldBase>
             </DataTable.Col>
             <DataTable.Col>
@@ -87,7 +87,7 @@ export const PostList = () => (
 
 `<ReferenceArrayFieldBase>` fetches the `tag` resources related to each `post` resource by matching `post.tag_ids` to `tag.id`.
 
-You can change how the list of related records is rendered by passing a custom child reading the `ListContext` (e.g. a [`<DataTable>`](./DataTable.md)). See the [`children`](#children) section for details.
+You can change how the list of related records is rendered by passing a custom child reading the `ListContext` (e.g. a [`<DataTable>`](./DataTable.md)) or a render function prop. See the [`children`](#children) and the [`render`](#render) sections for details.
 
 ## Props
 
@@ -95,8 +95,8 @@ You can change how the list of related records is rendered by passing a custom c
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `source`       | Required | `string`                                                                          | -                                | Name of the property to display                                                                        |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'tags'                                       |
-| `children`     | Required if no render | `Element`                                                                         |               | One or several elements that render a list of records based on a `ListContext`                         |
-| `render`     | Required if no children | `(listContext) => Element`                                                                         |               | A function that takes a list context and render a list of records                        |
+| `children`     | Optional\* | `Element`                                                                         |               | One or several elements that render a list of records based on a `ListContext`                         |
+| `render`     | Optional\* | `(ListContext) => Element`                                                                         |               | A function that takes a list context and renders a list of records                        |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
@@ -104,32 +104,33 @@ You can change how the list of related records is rendered by passing a custom c
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
 | `sortBy`       | Optional | `string | Function`                                                               | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
 
+\* Either one of children or render is required.
+
 ## `children`
 
 You can pass any component of your own as child, to render the list of related records as you wish.
 You can access the list context using the `useListContext` hook.
 
-
 ```jsx
 
 <ReferenceArrayFieldBase label="Tags" reference="tags" source="tag_ids">
-    <MyPostView />
+    <MyTagList />
 </ReferenceArrayFieldBase>
 
-// With MyPostView like:
-const MyPostView = (props: { children: React.ReactNode }) => {
-    const context = useListContext();
+// With MyTagList like:
+const MyTagList = (props: { children: React.ReactNode }) => {
+    const { isPending, error, data } = useListContext();
 
-    if (context.isPending) {
+    if (isPending) {
         return <p>Loading...</p>;
     }
 
-    if (context.error) {
-        return <p className="error">{context.error.toString()}</p>;
+    if (error) {
+        return <p className="error">{error.toString()}</p>;
     }
     return (
         <p>
-            {listContext.data?.map((tag, index) => (
+            {data?.map((tag, index) => (
                 <li key={index}>{tag.name}</li>
             ))}
         </p>
@@ -139,27 +140,24 @@ const MyPostView = (props: { children: React.ReactNode }) => {
 
 ## `render`
 
-Alternatively to children you can pass a render prop to `<ReferenceArrayFieldBase>`. The render prop will receive the list context as its argument, allowing to inline the render logic for both the list and the pagination.
-When receiving a render prop the `<ReferenceArrayFieldBase>` component will ignore the children and the pagination property.
-
+Alternatively to children you can pass a `render` function prop to `<ReferenceArrayFieldBase>`. The `render` prop will receive the `ListContext` as its argument, allowing to inline the `render` logic for both the list and the pagination.
+When receiving a `render` prop the `<ReferenceArrayFieldBase>` component will ignore the children property.
 
 ```jsx
-<ReferenceArrayFieldBase 
+<ReferenceArrayFieldBase
     label="Tags"
     reference="tags"
     source="tag_ids"
-    render={(context) => {
-
-        if (context.isPending) {
+    render={({ isPending, error, data }) => {
+        if (isPending) {
             return <p>Loading...</p>;
         }
-
-        if (context.error) {
-            return <p className="error">{context.error.toString()}</p>;
+        if (error) {
+            return <p className="error">{error.toString()}</p>;
         }
         return (
             <p>
-                {listContext.data?.map((tag, index) => (
+                {data.map((tag, index) => (
                     <li key={index}>{tag.name}</li>
                 ))}
             </p>
@@ -176,7 +174,7 @@ For instance, to render only tags that are 'published', you can use the followin
 
 {% raw %}
 ```jsx
-<ReferenceArrayFieldBase 
+<ReferenceArrayFieldBase
     label="Tags"
     source="tag_ids"
     reference="tags"
@@ -229,7 +227,6 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 ```
 {% endraw %}
 
-
 ## `reference`
 
 The resource to fetch for the relateds record.
@@ -250,7 +247,7 @@ For instance, to sort tags by title in ascending order, you can use the followin
 
 {% raw %}
 ```jsx
-<ReferenceArrayFieldBase 
+<ReferenceArrayFieldBase
     label="Tags"
     source="tag_ids"
     reference="tags"

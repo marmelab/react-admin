@@ -1,11 +1,11 @@
 import { TableCellProps } from '@mui/material/TableCell';
-import { FieldPropsBase } from 'ra-core';
+import { BaseFieldProps } from 'ra-core';
 
 type TextAlign = TableCellProps['align'];
 
 export interface FieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-> extends FieldPropsBase<RecordType> {
+> extends BaseFieldProps<RecordType> {
     /**
      * A class name to apply to the root div element
      */
