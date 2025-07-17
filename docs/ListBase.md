@@ -19,32 +19,28 @@ You can use `ListBase` to create your own custom reusable List component, like t
 ```jsx
 import { 
     ListBase,
-    Title,
-    ListToolbar,
-    Pagination,
-    DataTable,
+    ListIterator,
 } from 'react-admin';
-import { Card } from '@mui/material';
 
 const MyList = ({ children, actions, filters, title, ...props }) => (
     <ListBase {...props}>
-        <Title title={title}/>
-        <ListToolbar
+        <h1>{title}</h1>
+        <CustomToolbar
             filters={filters}
             actions={actions}
         />
-        <Card>
+        <div>
             {children}
-        </Card>
-        <Pagination />
+        </div>
+        <CustomPagination />
     </ListBase>
 );
 
 const PostList = () => (
     <MyList title="Post List">
-        <DataTable>
+        <ListIterator>
             ...
-        </DataTable>
+        </ListIterator>
     </MyList>
 );
 ```
@@ -78,16 +74,14 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 For instance, for the `<PostList>` page below:
 
 ```tsx
-import { ListBase, DataTable } from 'react-admin';
+import { ListBase, ListIterator } from 'react-admin';
 
 // Resource name is "posts"
 const PostList = () => (
     <ListBase>
-        <DataTable>
-            <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
-            <DataTable.Col source="published_at" />
-        </DataTable>
+        <ListIterator>
+            <CustomPostRenderer />
+        </ListIterator>
     </ListBase>
 );
 ```
