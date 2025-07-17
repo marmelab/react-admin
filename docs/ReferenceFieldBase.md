@@ -247,17 +247,11 @@ import { ListBase, ListIterator, ReferenceFieldBase } from 'react-admin';
 
 export const PostList = () => (
     <ListBase>
-        <ListIterator
-            render={({ referenceRecord}) => (
-                <div>
-                    <p>#{referenceRecord?.id}</p>
-                    <ReferenceFieldBase source="user_id" reference="users">
-                        <AuthorView />
-                    </ReferenceFieldBase>
-                    <p>{referenceRecord.title}</p>
-                </div>
-            )}
-        />
+        <ListIterator>
+            <ReferenceFieldBase source="user_id" reference="users">
+                <AuthorView />
+            </ReferenceFieldBase>
+        </ListIterator>
     </ListBase>
 );
 ```

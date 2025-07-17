@@ -278,12 +278,12 @@ For instance, if you want to display the `books` of a given `author`, the `refer
 
 ```jsx
 <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-  <ListIterator render={(book) => (
-    <div>
-        <p>{book.title}</p>
-        <p>{book.published_at}</p>
-    </div>
-  )} />
+    <ListIterator render={(book) => (
+        <div>
+            <p>{book.title}</p>
+            <p>{book.published_at}</p>
+        </div>
+    )} />
 </ReferenceManyFieldBase>
 ```
 

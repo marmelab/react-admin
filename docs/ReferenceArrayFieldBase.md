@@ -44,7 +44,7 @@ A typical `post` record therefore looks like this:
 In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as Chips as follows:
 
 ```jsx
-import { List, DataTable, ReferenceArrayFieldBase } from 'react-admin';
+import { ListBase, ListIterator, ReferenceArrayFieldBase } from 'react-admin';
 
 const MyTagsView = (props: { children: React.ReactNode }) => {
     const context = useListContext();
@@ -66,20 +66,13 @@ const MyTagsView = (props: { children: React.ReactNode }) => {
 };
 
 export const PostList = () => (
-    <List>
-        <DataTable>
-            <DataTable.Col source="id" />
-            <DataTable.Col source="title" />
-            <DataTable.Col source="tag_ids" label="Tags">
-                <ReferenceArrayFieldBase reference="tags" source="tag_ids">
-                    <MyTagsView />
-                </ReferenceArrayFieldBase>
-            </DataTable.Col>
-            <DataTable.Col>
-                <EditButton />
-            </DataTable.Col>
-        </DataTable>
-    </List>
+    <ListBase>
+        <ListIterator>
+            <ReferenceArrayFieldBase reference="tags" source="tag_ids">
+                <MyTagsView />
+            </ReferenceArrayFieldBase>
+        </ListIterator>
+    </ListBase>
 );
 ```
 
