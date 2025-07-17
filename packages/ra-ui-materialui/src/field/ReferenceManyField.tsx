@@ -74,7 +74,10 @@ export const ReferenceManyField = <
                     props.empty
                 )
             }
-        />
+        >
+            {props.children}
+            {!props.render && props.pagination}
+        </ReferenceManyFieldBase>
     );
 };
 
