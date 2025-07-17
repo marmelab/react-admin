@@ -54,7 +54,7 @@ export const UserView = () => {
     if (context.error) {
         return <p className="error">{context.error.toString()}</p>;
     }
-    
+
     return <p>{value}</p>;
 };
 
@@ -85,7 +85,7 @@ You can pass any component of your own as child, to render the related records a
 You can access the list context using the `useReferenceFieldContext` hook.
 
 ```tsx
-import { Show, SimpleShowLayout, ReferenceField, TextField, DateField } from 'react-admin';
+import { ReferenceFieldBase } from 'react-admin';
 
 export const UserView = () => {
     const { isPending, error } = useReferenceFieldContext();
@@ -111,14 +111,14 @@ export const MyReferenceField = () => (
 
 ## `render`
 
-Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ReferenceFieldContext` as argument. 
+Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ReferenceFieldContext` as argument.
 
 ```jsx
 export const MyReferenceField = () => (
     <ReferenceFieldBase
         source="user_id"
         reference="users"
-        render={({ error, isPending }) => {
+        render={({ error, isPending, referenceRecord }) => {
             if (isPending) {
                 return <p>Loading...</p>;
             }
@@ -130,7 +130,7 @@ export const MyReferenceField = () => (
                     </p>
                 );
             }
-            return <p>{value}</p>;
+            return <p>{referenceRecord.name}</p>;
         }}
     />
 );
@@ -143,7 +143,9 @@ The `render` function prop will take priority on `children` props if both are se
 `<ReferenceFieldBase>` can display a custom message when the referenced record is missing, thanks to the `empty` prop.
 
 ```jsx
-<ReferenceFieldBase source="user_id" reference="users" empty="Missing user" />
+<ReferenceFieldBase source="user_id" reference="users" empty="Missing user" >
+    ...
+</ReferenceFieldBase>
 ```
 
 `<ReferenceFieldBase>` renders the `empty` element when:
@@ -154,8 +156,12 @@ The `render` function prop will take priority on `children` props if both are se
 You can pass either a React element or a string to the `empty` prop:
 
 ```jsx
-<ReferenceField source="user_id" reference="users" empty={<span>Missing user</span>} />
-<ReferenceField source="user_id" reference="users" empty="Missing user" />
+<ReferenceFieldBase source="user_id" reference="users" empty={<span>Missing user</span>} >
+    ...
+</ReferenceFieldBase>
+<ReferenceFieldBase source="user_id" reference="users" empty="Missing user" >
+    ...
+</ReferenceFieldBase>
 ```
 
 ## `link`
@@ -163,14 +169,18 @@ You can pass either a React element or a string to the `empty` prop:
 To change the link from the `<Edit>` page to the `<Show>` page, set the `link` prop to "show".
 
 ```jsx
-<ReferenceFieldBase source="user_id" reference="users" link="show" />
+<ReferenceFieldBase source="user_id" reference="users" link="show" >
+    ...
+</ReferenceFieldBase>
 ```
 
 You can also prevent `<ReferenceFieldBase>` from adding a link to children by setting `link` to `false`.
 
 ```jsx
 // No link
-<ReferenceFieldBase source="user_id" reference="users" link={false} />
+<ReferenceFieldBase source="user_id" reference="users" link={false} >
+    ...
+</ReferenceFieldBase>
 ```
 
 You can also use a custom `link` function to get a custom path for the children. This function must accept `record` and `reference` as arguments.
@@ -181,7 +191,9 @@ You can also use a custom `link` function to get a custom path for the children.
     source="user_id"
     reference="users"
     link={(record, reference) => `/my/path/to/${reference}/${record.id}`}
-/>
+>
+    ...
+</ReferenceFieldBase>
 ```
 ## `queryOptions`
 
@@ -195,8 +207,9 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
     source="user_id"
     reference="users"
     queryOptions={{ meta: { foo: 'bar' } }}
+    render={({ referenceRecord }) => referenceRecord.name}
 >
-    <TextField source="name" />
+    ...
 </ReferenceFieldBase>
 ```
 {% endraw %}
@@ -208,41 +221,44 @@ The resource to fetch for the related record.
 For instance, if the `posts` resource has a `user_id` field, set the `reference` to `users` to fetch the user related to each post.
 
 ```jsx
-<ReferenceFieldBase source="user_id" reference="users" />
+<ReferenceFieldBase source="user_id" reference="users" >
+    ...
+</ReferenceFieldBase>
 ```
 ## `sortBy`
 
 By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceFieldBase>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
 
 ```jsx
-<ReferenceFieldBase source="user_id" reference="users" sortBy="user.name" />
+<ReferenceFieldBase source="user_id" reference="users" sortBy="user.name">
+    ...
+</ReferenceFieldBase>
 ```
 ## Performance
 
 <iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced record only once for the entire table. 
-
-![ReferenceField](./img/reference-field.png)
+When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
 
 For instance, with this code:
 
 ```jsx
-import { List, DataTable, ReferenceField, EditButton } from 'react-admin';
+import { ListBase, ListIterator, ReferenceFieldBase } from 'react-admin';
 
 export const PostList = () => (
-    <List>
-        <DataTable>
-            <DataTable.Col source="id" />
-            <DataTable.Col label="User" source="user_id">
-                <ReferenceField source="user_id" reference="users" />
-            </DataTable.Col>
-            <DataTable.Col source="title" />
-            <DataTable.Col>
-                <EditButton />
-            </DataTable.Col>
-        </DataTable>
-    </List>
+    <ListBase>
+        <ListIterator
+            render={({ referenceRecord}) => (
+                <div>
+                    <p>#{referenceRecord?.id}</p>
+                    <ReferenceFieldBase source="user_id" reference="users">
+                        <AuthorView />
+                    </ReferenceFieldBase>
+                    <p>{referenceRecord.title}</p>
+                </div>
+            )}
+        />
+    </ListBase>
 );
 ```
 
@@ -279,15 +295,18 @@ For example, the following code prefetches the authors referenced by the posts:
 {% raw %}
 ```jsx
 const PostList = () => (
-    <List queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <DataTable>
-            <DataTable.Col source="title" />
-            <DataTable.Col source="author_id">
-                {/** renders without an additional request */}
-                <ReferenceFieldBase source="author_id" reference="authors" />
-            </DataTable.Col>
-        </DataTable>
-    </List>
+    <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
+        <ListIterator
+            render={({ title, author_id }) => (
+                <div>
+                    <h3>{title}</h3>
+                    <ReferenceFieldBase source="author_id" reference="authors">
+                        <AuthorView />
+                    </ReferenceFieldBase>
+                </div>
+            )}
+        />
+    </ListBase>
 );
 ```
 {% endraw %}
