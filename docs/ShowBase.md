@@ -78,29 +78,18 @@ For instance, to display several fields in a single line, you can use Material U
 
 {% raw %}
 ```jsx
-import { ShowBase, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
-import { Grid } from '@mui/material';
+import { ShowBase, ReferenceFieldBase, WithRecord } from 'react-admin';
 import StarIcon from '@mui/icons-material/Star';
 
 const BookShow = () => (
     <ShowBase>
-        <Grid container spacing={2} sx={{ margin: 2 }}>
-            <Grid item xs={12} sm={6}>
-                <TextField label="Title" source="title" />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <ReferenceField label="Author" source="author_id" reference="authors">
-                    <TextField source="name" />
-                </ReferenceField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <DateField label="Publication Date" source="published_at" />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <WithRecord label="Rating" render={record => <>
-                    {[...Array(record.rating)].map((_, index) => <StarIcon key={index} />)}
-                </>} />
-            </Grid>
+        <div>
+            <ReferenceFieldBase source="author_id" reference="authors">
+                ...
+            </ReferenceFieldBase>
+            <WithRecord label="Rating" render={record => <>
+                {[...Array(record.rating)].map((_, index) => <StarIcon key={index} />)}
+            </>} />
         </Grid>
     </ShowBase>
 );
@@ -170,7 +159,7 @@ You can override this behavior and pass custom side effects by providing a custo
 
 ```jsx
 import * as React from 'react';
-import { useNotify, useRefresh, useRedirect, ShowBase, SimpleShowLayout } from 'react-admin';
+import { useNotify, useRefresh, useRedirect, ShowBase } from 'react-admin';
 
 const PostShow = () => {
     const notify = useNotify();
@@ -185,9 +174,7 @@ const PostShow = () => {
 
     return (
         <ShowBase queryOptions={{ onError }}>
-            <SimpleShowLayout>
-                ...
-            </SimpleShowLayout>
+            ...
         </ShowBase>
     );
 }
@@ -228,16 +215,12 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 For instance, for the `<PostShow>`page below:
 
 ```tsx
-import { ShowBase, SimpleShowLayout, TextField } from 'react-admin';
+import { ShowBase } from 'react-admin';
 
 // Resource name is "posts"
 const PostShow = () => (
     <ShowBase>
-        <SimpleShowLayout>
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="published_at" />
-        </SimpleShowLayout>
+        ...
     </ShowBase>
 );
 ```
