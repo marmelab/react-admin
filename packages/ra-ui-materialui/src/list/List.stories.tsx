@@ -7,6 +7,7 @@ import {
     TestMemoryRouter,
     DataProvider,
     GetListParams,
+    WithListContext,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
@@ -253,27 +254,24 @@ export const ConditionalDataFetching = () => (
                             },
                         }}
                     >
-                        <ConditionalDataFetchingView />
+                        <WithListContext
+                            render={context =>
+                                context.filterValues.q == null ||
+                                context.filterValues.q === '' ? (
+                                    <CardContentInner>
+                                        Type a search term to fetch data
+                                    </CardContentInner>
+                                ) : (
+                                    <BookList />
+                                )
+                            }
+                        />
                     </List>
                 )}
             />
         </Admin>
     </TestMemoryRouter>
 );
-
-const ConditionalDataFetchingView = () => {
-    const context = useListContext();
-
-    if (context.filterValues.q == null || context.filterValues.q === '') {
-        return (
-            <CardContentInner>
-                Type a search term to fetch data
-            </CardContentInner>
-        );
-    }
-
-    return <BookList />;
-};
 
 export const Filter = () => (
     <TestMemoryRouter initialEntries={['/books']}>

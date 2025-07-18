@@ -1190,11 +1190,26 @@ export const PostList = () => (
             }
         }}
     >
-        {/* DataGrid */}
+        <WithListContext
+            render={context =>
+                context.filterValues.q == null ||
+                context.filterValues.q === '' ? (
+                    <CardContentInner>
+                        Type a search term to fetch data
+                    </CardContentInner>
+                ) : (
+                    <Datagrid>
+                        {/* your fields */}
+                    </Datagrid>
+                )
+            }
+        />
     </List>
 )
 ```
 {% endraw %}
+
+**Note**: Notice we display some custom UI when there is no filter. This is because otherwise, users would see the loading UI as Tanstack Query will set the `isPending` property of the underlying query to `true` if the query isn't enabled. 
 
 ## Accessing Extra Response Data
 
