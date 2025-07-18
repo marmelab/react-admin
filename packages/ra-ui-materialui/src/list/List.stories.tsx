@@ -143,7 +143,10 @@ const data = {
     authors: [],
 };
 
-const defaultDataProvider = fakeRestDataProvider(data);
+const defaultDataProvider = fakeRestDataProvider(
+    data,
+    process.env.NODE_ENV !== 'test'
+);
 
 const BookList = () => {
     const { error, isPending } = useListContext();
