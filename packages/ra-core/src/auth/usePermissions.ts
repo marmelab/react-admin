@@ -108,7 +108,10 @@ const usePermissions = <PermissionsType = any, ErrorType = Error>(
     );
 
     return !authProvider || !authProvider.getPermissions
-        ? (fakeQueryResult as UsePermissionsResult<PermissionsType, ErrorType>)
+        ? (fakeQueryResult as unknown as UsePermissionsResult<
+              PermissionsType,
+              ErrorType
+          >)
         : result;
 };
 

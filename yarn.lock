@@ -4312,40 +4312,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.47.0":
-  version: 5.47.0
-  resolution: "@tanstack/query-core@npm:5.47.0"
-  checksum: 2d2378dbde2b0610b6356fcdb56904aa9d41c140c17ceb55e257b918c8555484ff36743a6a37768575631be96b9291eedc53723cd80326783095499cb97db049
+"@tanstack/query-core@npm:5.83.0":
+  version: 5.83.0
+  resolution: "@tanstack/query-core@npm:5.83.0"
+  checksum: e6dc480bc99eaca552a9ad65423788b60368cf99308681252fc7dbe42a3f2c1c978db0d3471cc3349b9112cfb4d967ace4e192a1d7e987e30c5c1ff74809c77c
   languageName: node
   linkType: hard
 
-"@tanstack/query-devtools@npm:5.47.0":
-  version: 5.47.0
-  resolution: "@tanstack/query-devtools@npm:5.47.0"
-  checksum: b6223395794d08f96d57395c0dcdfbc7cc73c311e82f1a7a13b8685ad8f0e4f10b537df46f7e7e4b65bc29f480a915f246937310d650e01d7db915f4c4757ada
+"@tanstack/query-devtools@npm:5.81.2":
+  version: 5.81.2
+  resolution: "@tanstack/query-devtools@npm:5.81.2"
+  checksum: f942cba7bd3ecb471063cd472eeebb2ec76005feeb7e0f357b191da5ab9f769aa767bc88d4da82b2b39c4fcbb16dfed38ce3c77b6eea4d4c30405368c1120207
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.21.7":
-  version: 5.47.0
-  resolution: "@tanstack/react-query-devtools@npm:5.47.0"
+"@tanstack/react-query-devtools@npm:^5.83.0":
+  version: 5.83.0
+  resolution: "@tanstack/react-query-devtools@npm:5.83.0"
   dependencies:
-    "@tanstack/query-devtools": "npm:5.47.0"
+    "@tanstack/query-devtools": "npm:5.81.2"
   peerDependencies:
-    "@tanstack/react-query": ^5.47.0
+    "@tanstack/react-query": ^5.83.0
     react: ^18 || ^19
-  checksum: 1c2a5916b8ac3c580263114c6ff5bf780f655d777ddd1027187f200f6a29703e28be98fadd0918537eb3f07cbfe283013f4212eafa7facde25116ab42b38d4e9
+  checksum: 9d3c0c4ba5d5f42d1e76a5d009d768fe407e2bcdfa24986236a5b501bf41de8a04c30ebca97c871f822f6c20e508490943dbe0602640770d95f518cce9e7a760
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.21.7":
-  version: 5.47.0
-  resolution: "@tanstack/react-query@npm:5.47.0"
+"@tanstack/react-query@npm:^5.83.0":
+  version: 5.83.0
+  resolution: "@tanstack/react-query@npm:5.83.0"
   dependencies:
-    "@tanstack/query-core": "npm:5.47.0"
+    "@tanstack/query-core": "npm:5.83.0"
   peerDependencies:
-    react: ^18.0.0
-  checksum: ed94c3255fd20180b0d133138f621ab471729c218c926321d316c3565061c7127e6f1f60c5020ef40455c740b8b5a525bd91292a271f63e7315114c810ddff6f
+    react: ^18 || ^19
+  checksum: 883229f9219ca906a54d7caafd44d59b57db5dbe87e954f8a7027f460e9f8b97842dfbd0d676dc3111d577baf312c64f6c1fdd67cd1e4b0f0bf574e29670c606
   languageName: node
   linkType: hard
 
@@ -16027,14 +16027,13 @@ __metadata:
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
     "@hookform/resolvers": "npm:^3.2.0"
-    "@tanstack/react-query": "npm:^5.21.7"
+    "@tanstack/react-query": "npm:^5.83.0"
     "@testing-library/react": "npm:^15.0.7"
     "@types/jest": "npm:^29.5.2"
     "@types/jscodeshift": "npm:^0.11.11"
     "@types/node": "npm:^20.10.7"
     "@types/node-polyglot": "npm:^0.4.31"
     "@types/react": "npm:^18.3.3"
-    clsx: "npm:^2.1.1"
     cross-env: "npm:^5.2.0"
     date-fns: "npm:^3.6.0"
     echarts: "npm:^5.6.0"
@@ -16271,7 +16270,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-no-code@workspace:packages/ra-no-code"
   dependencies:
-    "@tanstack/react-query": "npm:^5.21.7"
+    "@tanstack/react-query": "npm:^5.83.0"
     "@testing-library/react": "npm:^15.0.7"
     "@testing-library/user-event": "npm:^14.5.2"
     clsx: "npm:^2.1.1"
@@ -16305,7 +16304,7 @@ __metadata:
     "@mui/material": "npm:^5.16.12"
     "@mui/system": "npm:^5.16.12"
     "@mui/utils": "npm:^5.16.12"
-    "@tanstack/react-query": "npm:^5.21.7"
+    "@tanstack/react-query": "npm:^5.83.0"
     "@testing-library/react": "npm:^15.0.7"
     "@types/dompurify": "npm:^3.0.2"
     "@types/react": "npm:^18.3.3"
@@ -16515,6 +16514,7 @@ __metadata:
     "@emotion/styled": "npm:^11.14.0"
     "@mui/icons-material": "npm:^5.16.12 || ^6.0.0 || ^7.0.0"
     "@mui/material": "npm:^5.16.12 || ^6.0.0 || ^7.0.0"
+    "@tanstack/react-query": "npm:^5.83.0"
     cross-env: "npm:^5.2.0"
     expect: "npm:^27.4.6"
     ra-core: "npm:^5.9.1"
@@ -17860,8 +17860,8 @@ __metadata:
     "@hookform/devtools": "npm:^4.3.3"
     "@mui/icons-material": "npm:^5.16.12"
     "@mui/material": "npm:^5.16.12"
-    "@tanstack/react-query": "npm:^5.21.7"
-    "@tanstack/react-query-devtools": "npm:^5.21.7"
+    "@tanstack/react-query": "npm:^5.83.0"
+    "@tanstack/react-query-devtools": "npm:^5.83.0"
     "@vitejs/plugin-react": "npm:^4.3.4"
     jsonexport: "npm:^3.2.0"
     little-state-machine: "npm:^4.8.1"

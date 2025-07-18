@@ -150,7 +150,7 @@ const useAuthState = <ErrorType = Error>(
 
     return authProvider != null
         ? result
-        : (noAuthProviderQueryResult as UseAuthStateResult<ErrorType>);
+        : (noAuthProviderQueryResult as unknown as UseAuthStateResult<ErrorType>);
 };
 
 type UseAuthStateOptions<ErrorType = Error> = Omit<

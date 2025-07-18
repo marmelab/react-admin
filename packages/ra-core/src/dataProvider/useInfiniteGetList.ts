@@ -248,7 +248,6 @@ export type UseInfiniteGetListOptions<
         GetInfiniteListResult<RecordType>,
         ErrorType,
         InfiniteData<GetInfiniteListResult<RecordType>>,
-        GetInfiniteListResult<RecordType>,
         QueryKey,
         number
     >,
