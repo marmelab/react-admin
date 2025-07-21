@@ -1192,8 +1192,7 @@ export const PostList = () => (
     >
         <WithListContext
             render={context =>
-                context.filterValues.q == null ||
-                context.filterValues.q === '' ? (
+                context.filterValues.q?.length > 2 ? (
                     <CardContentInner>
                         Type a search term to fetch data
                     </CardContentInner>
