@@ -88,7 +88,8 @@
     "workspaces": [
         "packages/*",
         "examples/*",
-        "cypress"
+        "cypress",
+        "docs_headless"
     ],
     "dependenciesMeta": {
         "@react-spring/core": {
