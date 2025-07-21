@@ -47,7 +47,7 @@ export const ReferenceFieldBase = <
 >(
     props: ReferenceFieldBaseProps<ReferenceRecordType>
 ) => {
-    const { children, render, empty = null } = props;
+    const { children, render, loading, error, empty = null } = props;
     const id = useFieldValue(props);
 
     const controllerProps =
@@ -59,6 +59,12 @@ export const ReferenceFieldBase = <
         );
     }
 
+    if (controllerProps.isPending && loading) {
+        return loading;
+    }
+    if (controllerProps.error && error) {
+        return error;
+    }
     if (
         (empty &&
             // no foreign key value
@@ -92,6 +98,7 @@ export interface ReferenceFieldBaseProps<
     className?: string;
     empty?: ReactNode;
     error?: ReactNode;
+    loading?: ReactNode;
     queryOptions?: Partial<
         UseQueryOptions<ReferenceRecordType[], Error> & {
             meta?: any;

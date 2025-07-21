@@ -65,6 +65,8 @@ export const ReferenceManyFieldBase = <
         render,
         debounce,
         empty,
+        error,
+        loading,
         filter = defaultFilter,
         page = 1,
         perPage = 25,
@@ -96,6 +98,18 @@ export const ReferenceManyFieldBase = <
         queryOptions,
     });
 
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceManyFieldBase> requires either a 'render' prop or 'children' prop"
+        );
+    }
+
+    if (controllerProps.isPending && loading) {
+        return loading;
+    }
+    if (controllerProps.error && error) {
+        return error;
+    }
     if (
         // there is an empty page component
         empty &&
@@ -118,12 +132,6 @@ export const ReferenceManyFieldBase = <
         return empty;
     }
 
-    if (!render && !children) {
-        throw new Error(
-            "<ReferenceManyFieldBase> requires either a 'render' prop or 'children' prop"
-        );
-    }
-
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
@@ -143,6 +151,8 @@ export interface ReferenceManyFieldBaseProps<
     children?: ReactNode;
     render?: (props: ListControllerResult<ReferenceRecordType>) => ReactNode;
     empty?: ReactNode;
+    error?: ReactNode;
+    loading?: ReactNode;
 }
 
 const defaultFilter = {};
