@@ -5,7 +5,9 @@ import {
     useTranslateLabel,
     useDataTableStoreContext,
     useDataTableColumnRankContext,
+    useDataTableColumnFilterContext,
 } from 'ra-core';
+import * as diacritic from 'diacritic';
 
 import { FieldToggle } from '../../preferences';
 import { DataTableColumnProps } from './DataTableColumn';
@@ -24,14 +26,16 @@ export const ColumnsSelectorItem = ({
     const [columnRanks, setColumnRanks] = useStore<number[]>(
         `${storeKey}_columnRanks`
     );
+    const columnFilter = useDataTableColumnFilterContext();
     const translateLabel = useTranslateLabel();
     if (!source && !label) return null;
     const fieldLabel = translateLabel({
         label: typeof label === 'string' ? label : undefined,
         resource,
         source,
-    });
+    }) as string;
     const isColumnHidden = hiddenColumns.includes(source!);
+    const isColumnFiltered = fieldLabelMatchesFilter(fieldLabel, columnFilter);
 
     const handleMove = (index1, index2) => {
         const colRanks = !columnRanks
@@ -69,7 +73,7 @@ export const ColumnsSelectorItem = ({
         setColumnRanks(newColumnRanks);
     };
 
-    return (
+    return isColumnFiltered ? (
         <FieldToggle
             key={columnRank}
             source={source!}
@@ -85,7 +89,7 @@ export const ColumnsSelectorItem = ({
             }
             onMove={handleMove}
         />
-    );
+    ) : null;
 };
 
 const padRanks = (ranks: number[], length: number) =>
@@ -95,3 +99,11 @@ const padRanks = (ranks: number[], length: number) =>
             (_, i) => ranks.length + i
         )
     );
+
+const fieldLabelMatchesFilter = (fieldLabel: string, columnFilter?: string) =>
+    columnFilter
+        ? diacritic
+              .clean(fieldLabel)
+              .toLowerCase()
+              .includes(diacritic.clean(columnFilter).toLowerCase())
+        : true;

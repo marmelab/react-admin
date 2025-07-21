@@ -24,6 +24,7 @@ const englishMessages: TranslationMessages = {
             remove: 'Remove',
             save: 'Save',
             search: 'Search',
+            search_columns: 'Search columns',
             select_all: 'Select all',
             select_all_button: 'Select all',
             select_row: 'Select this row',

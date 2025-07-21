@@ -5,10 +5,14 @@ import {
     useStore,
     DataTableColumnRankContext,
     useDataTableStoreContext,
+    useTranslate,
+    DataTableColumnFilterContext,
 } from 'ra-core';
-import { Box } from '@mui/material';
+import { Box, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { Button } from '../../button';
+import { ResettableTextField } from '../../input';
 
 /**
  * Render DataTable.Col elements in the ColumnsButton selector using a React Portal.
@@ -16,6 +20,7 @@ import { Button } from '../../button';
  * @see ColumnsButton
  */
 export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
+    const translate = useTranslate();
     const { storeKey, defaultHiddenColumns } = useDataTableStoreContext();
     const [columnRanks, setColumnRanks] = useStore<number[] | undefined>(
         `${storeKey}_columnRanks`
@@ -53,19 +58,57 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
         };
     }, [elementId, container]);
 
+    const [columnFilter, setColumnFilter] = React.useState<
+        string | undefined
+    >();
+
     if (!container) return null;
 
     const childrenArray = Children.toArray(children);
     const paddedColumnRanks = padRanks(columnRanks ?? [], childrenArray.length);
+    const shouldDisplaySearchInput = childrenArray.length > 5;
 
     return createPortal(
         <>
+            {shouldDisplaySearchInput ? (
+                <ResettableTextField
+                    hiddenLabel
+                    label=""
+                    value={columnFilter}
+                    onChange={e => {
+                        if (typeof e === 'string') {
+                            setColumnFilter(e);
+                            return;
+                        }
+                        setColumnFilter(e.target.value);
+                    }}
+                    placeholder={translate('ra.action.search_columns', {
+                        _: 'Search columns',
+                    })}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <SearchIcon color="disabled" />
+                            </InputAdornment>
+                        ),
+                    }}
+                    resettable
+                    autoFocus
+                    size="small"
+                    sx={{ mb: 1 }}
+                />
+            ) : null}
             {paddedColumnRanks.map((position, index) => (
                 <DataTableColumnRankContext.Provider
                     value={position}
                     key={index}
                 >
-                    {childrenArray[position]}
+                    <DataTableColumnFilterContext.Provider
+                        value={columnFilter}
+                        key={index}
+                    >
+                        {childrenArray[position]}
+                    </DataTableColumnFilterContext.Provider>
                 </DataTableColumnRankContext.Provider>
             ))}
             <Box
