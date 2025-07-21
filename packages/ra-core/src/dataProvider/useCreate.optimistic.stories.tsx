@@ -51,7 +51,12 @@ export const SuccessCase = ({ timeout = 1000 }) => {
 const SuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
-    const { data, error, refetch } = useGetOne('posts', { id: 2 });
+    const {
+        isPending: isPendingGetOne,
+        data,
+        error,
+        refetch,
+    } = useGetOne('posts', { id: 2 });
     const [create, { isPending }] = useCreate();
     const handleClick = () => {
         create(
@@ -67,7 +72,9 @@ const SuccessCore = () => {
     };
     return (
         <>
-            {error ? (
+            {isPendingGetOne ? (
+                <p>Loading...</p>
+            ) : error ? (
                 <p>{error.message}</p>
             ) : (
                 <dl>
@@ -135,7 +142,12 @@ const ErrorCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
-    const { data, error: getOneError, refetch } = useGetOne('posts', { id: 2 });
+    const {
+        isPending: isPendingGetOne,
+        data,
+        error: getOneError,
+        refetch,
+    } = useGetOne('posts', { id: 2 });
     const [create, { isPending }] = useCreate();
     const handleClick = () => {
         create(
@@ -158,7 +170,9 @@ const ErrorCore = () => {
     };
     return (
         <>
-            {getOneError ? (
+            {isPendingGetOne ? (
+                <p>Loading...</p>
+            ) : getOneError ? (
                 <p>{getOneError.message}</p>
             ) : (
                 <dl>
