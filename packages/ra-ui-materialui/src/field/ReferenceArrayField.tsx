@@ -78,22 +78,25 @@ import { SingleFieldList } from '../list/SingleFieldList';
 export const ReferenceArrayField = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
->({
-    pagination,
-    render,
-    ...inProps
-}: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>) => {
+>(
+    inProps: ReferenceArrayFieldProps<RecordType, ReferenceRecordType>
+) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
     });
+    const { pagination, children, className, sx, render, ...controllerProps } =
+        props;
     return (
-        <ReferenceArrayFieldBase {...inProps}>
+        <ReferenceArrayFieldBase {...controllerProps}>
             <PureReferenceArrayFieldView
-                {...props}
                 pagination={pagination}
+                className={className}
+                sx={sx}
                 render={render}
-            />
+            >
+                {children}
+            </PureReferenceArrayFieldView>
         </ReferenceArrayFieldBase>
     );
 };
@@ -106,10 +109,12 @@ export interface ReferenceArrayFieldProps<
     pagination?: React.ReactElement;
 }
 
-export interface ReferenceArrayFieldViewProps
-    extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
-        Omit<ListControllerProps, 'queryOptions'> {
+export interface ReferenceArrayFieldViewProps {
     pagination?: React.ReactElement;
+    children?: React.ReactNode;
+    render?: (props: ListControllerProps) => React.ReactNode;
+    className?: string;
+    sx?: SxProps<Theme>;
 }
 
 export const ReferenceArrayFieldView = (

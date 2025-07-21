@@ -21,16 +21,17 @@ This field fetches a one-to-one relationship, e.g. the details of a book, when u
 
 `<ReferenceOneFieldBase>` behaves like `<ReferenceManyFieldBase>`: it uses the current `record` (a book in this example) to build a filter for the book details with the foreign key (`book_id`). Then, it uses `dataProvider.getManyReference('book_details', { target: 'book_id', id: book.id })` to fetch the related details, and takes the first one.
 
-`<ReferenceOneFieldBase>` is a headless component, handling only the logic. This allows to use any UI library for the render. For a version based on MUI see [`<ReferenceOneField>`](/ReferenceOneField.html)
+`<ReferenceOneFieldBase>` is a headless component, handling only the logic and relying on its `children` or `render` prop  to render the UI.
 
-For the inverse relationships (the book linked to a book_detail), you can use a [`<ReferenceFieldBase>`](./ReferenceFieldBase.md).
+**Tip**: For a version based on MUI, see [`<ReferenceOneField>`](/ReferenceOneField.html)
+
+**Tip**: For the inverse relationships (the book linked to a book_detail), you can use a [`<ReferenceFieldBase>`](./ReferenceFieldBase.md).
 
 ## Usage
 
 Here is how to render a field of the `book_details` resource inside a Show view for the `books` resource:
 
 ```jsx
-
 const BookShow = () => (
     <ShowBase>
         <ReferenceOneFieldBase reference="book_details" target="book_id">
@@ -39,8 +40,7 @@ const BookShow = () => (
     </ShowBase>
 );
 
-// with BookDetails something like
-const BookDetails = ({ source }) => {
+const BookDetails = () => {
     const context = useReferenceFieldContext({
         reference,
         target,
@@ -53,10 +53,13 @@ const BookDetails = ({ source }) => {
     if (context.error) {
         return <p className="error" >{context.error.toString()}</p>;
     }
+    if (!context.referenceRecord) {
+        return <p>No details found</p>;
+    }
     return (
         <div>
-            <p>{record ? record.genre : ''}</p>
-            <p>{record ? record.ISBN : ''}</p>
+            <p>{context.referenceRecord.genre}</p>
+            <p>{context.referenceRecord.ISBN}</p>
         </div>
     );
 }
@@ -88,6 +91,12 @@ You can pass any component of your own as children, to render the referenced rec
 You can access the list context using the `useReferenceFieldContext` hook.
 
 ```jsx
+const BookShow = () => (
+    <ReferenceOneFieldBase reference="book_details" target="book_id">
+        <BookDetails />
+    </ReferenceOneFieldBase>
+);
+
 const BookDetails = () => {
     const { isPending, error, referenceRecord } = useReferenceFieldContext({
         reference,
@@ -101,19 +110,16 @@ const BookDetails = () => {
     if (error) {
         return <p className="error" >{error.toString()}</p>;
     }
+    if (!referenceRecord) {
+        return <p>No details found</p>;
+    }
     return (
         <div>
-            <p>{referenceRecord ? referenceRecord.genre : ''}</p>
-            <p>{referenceRecord ? referenceRecord.ISBN : ''}</p>
+            <p>{referenceRecord.genre}</p>
+            <p>{referenceRecord.ISBN}</p>
         </div>
     );
 }
-
-const BookShow = () => (
-    <ReferenceOneFieldBase reference="book_details" target="book_id">
-        <BookDetails />
-    </ReferenceOneFieldBase>
-);
 ```
 
 ## `render`
@@ -134,10 +140,14 @@ const BookShow = () => (
             if (error) {
                 return <p className="error" >{error.toString()}</p>;
             }
+
+            if (!referenceRecord) {
+                return <p>No details found</p>;
+            }
             return (
                 <div>
-                    <p>{referenceRecord ? referenceRecord.genre : ''}</p>
-                    <p>{referenceRecord ? referenceRecord.ISBN : ''}</p>
+                    <p>{referenceRecord.genre}</p>
+                    <p>{referenceRecord.ISBN}</p>
                 </div>
             );
         }}
@@ -196,7 +206,7 @@ For instance, if a product has prices in many currencies, and you only want to r
 
 ## `link`
 
-By default, `<ReferenceOneFieldBase>` will set pass a links to the edition page of the related record in the context.link. You can disable this behavior by setting the `link` prop to `false`.
+By default, `<ReferenceOneFieldBase>` populates the context with a `link` value that links to the edition page of the related record. You can disable this behavior by setting the `link` prop to `false`.
 
 ```jsx
 <ReferenceOneFieldBase label="Genre" reference="book_details" target="book_id" link={false}>

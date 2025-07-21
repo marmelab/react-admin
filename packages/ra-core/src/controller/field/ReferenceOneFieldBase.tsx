@@ -36,6 +36,8 @@ export const ReferenceOneFieldBase = <
         source = 'id',
         target,
         empty,
+        error,
+        loading,
         sort,
         filter,
         link,
@@ -69,17 +71,37 @@ export const ReferenceOneFieldBase = <
         [controllerProps, path]
     );
 
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceOneFieldBase> requires either a 'render' prop or 'children' prop"
+        );
+    }
+
     const recordFromContext = useRecordContext<RecordType>(props);
+    if (controllerProps.isPending && loading) {
+        return (
+            <ResourceContextProvider value={reference}>
+                {loading}
+            </ResourceContextProvider>
+        );
+    }
+    if (controllerProps.error && error) {
+        return (
+            <ResourceContextProvider value={reference}>
+                <ReferenceFieldContextProvider value={context}>
+                    {error}
+                </ReferenceFieldContextProvider>
+            </ResourceContextProvider>
+        );
+    }
     if (
         !recordFromContext ||
         (!controllerProps.isPending && controllerProps.referenceRecord == null)
     ) {
-        return empty;
-    }
-
-    if (!render && !children) {
-        throw new Error(
-            "<ReferenceOneFieldBase> requires either a 'render' prop or 'children' prop"
+        return (
+            <ResourceContextProvider value={reference}>
+                {empty}
+            </ResourceContextProvider>
         );
     }
 
@@ -102,8 +124,10 @@ export interface ReferenceOneFieldBaseProps<
         ReferenceRecordType
     > {
     children?: ReactNode;
+    loading?: ReactNode;
+    error?: ReactNode;
+    empty?: ReactNode;
     render?: (props: UseReferenceResult<ReferenceRecordType>) => ReactNode;
     link?: LinkToType<ReferenceRecordType>;
-    empty?: ReactNode;
     resource?: string;
 }

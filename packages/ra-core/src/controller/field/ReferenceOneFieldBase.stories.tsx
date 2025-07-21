@@ -36,10 +36,27 @@ const Wrapper = ({ children, dataProvider = defaultDataProvider }) => (
 export const Basic = () => (
     <Wrapper>
         <ReferenceOneFieldBase reference="book_details" target="book_id">
-            <MyReferenceOneField />
+            <BookDetails />
         </ReferenceOneFieldBase>
     </Wrapper>
 );
+
+const BookDetails = () => {
+    const { isPending, error, referenceRecord } = useReferenceFieldContext();
+
+    if (isPending) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p style={{ color: 'red' }}>{error.toString()}</p>;
+    }
+    if (!referenceRecord) {
+        return <p>No details found</p>;
+    }
+
+    return <span>{referenceRecord.ISBN}</span>;
+};
 
 const dataProviderWithLoading = {
     getManyReference: () => new Promise(() => {}),
@@ -48,7 +65,7 @@ const dataProviderWithLoading = {
 export const Loading = () => (
     <Wrapper dataProvider={dataProviderWithLoading}>
         <ReferenceOneFieldBase reference="book_details" target="book_id">
-            <MyReferenceOneField />
+            <BookDetails />
         </ReferenceOneFieldBase>
     </Wrapper>
 );
@@ -81,23 +98,5 @@ export const WithRenderProp = ({
                 }}
             />
         </Wrapper>
-    );
-};
-
-const MyReferenceOneField = () => {
-    const context = useReferenceFieldContext();
-
-    if (context.isPending) {
-        return <p>Loading...</p>;
-    }
-
-    if (context.error) {
-        return <p style={{ color: 'red' }}>{context.error.toString()}</p>;
-    }
-
-    return (
-        <span>
-            {context.referenceRecord ? context.referenceRecord.ISBN : ''}
-        </span>
     );
 };

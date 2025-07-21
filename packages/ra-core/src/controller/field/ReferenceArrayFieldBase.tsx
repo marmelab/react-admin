@@ -74,6 +74,9 @@ export const ReferenceArrayFieldBase = <
     const {
         children,
         render,
+        error,
+        loading,
+        empty,
         filter,
         page = 1,
         perPage,
@@ -105,6 +108,48 @@ export const ReferenceArrayFieldBase = <
         );
     }
 
+    if (controllerProps.isPending && loading) {
+        return (
+            <ResourceContextProvider value={reference}>
+                {loading}
+            </ResourceContextProvider>
+        );
+    }
+    if (controllerProps.error && error) {
+        return (
+            <ResourceContextProvider value={reference}>
+                <ListContextProvider value={controllerProps}>
+                    {error}
+                </ListContextProvider>
+            </ResourceContextProvider>
+        );
+    }
+    if (
+        // there is an empty page component
+        empty &&
+        // there is no error
+        !controllerProps.error &&
+        // the list is not loading data for the first time
+        !controllerProps.isPending &&
+        // the API returned no data (using either normal or partial pagination)
+        (controllerProps.total === 0 ||
+            (controllerProps.total == null &&
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
+                controllerProps.hasPreviousPage === false &&
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
+                controllerProps.hasNextPage === false &&
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
+                controllerProps.data.length === 0)) &&
+        // the user didn't set any filters
+        !Object.keys(controllerProps.filterValues).length
+    ) {
+        return (
+            <ResourceContextProvider value={reference}>
+                {empty}
+            </ResourceContextProvider>
+        );
+    }
+
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
@@ -120,6 +165,9 @@ export interface ReferenceArrayFieldBaseProps<
 > extends BaseFieldProps<RecordType> {
     children?: ReactNode;
     render?: (props: ListControllerResult<ReferenceRecordType>) => ReactElement;
+    error?: ReactNode;
+    loading?: ReactNode;
+    empty?: ReactNode;
     filter?: FilterPayload;
     page?: number;
     perPage?: number;

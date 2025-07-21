@@ -9,7 +9,8 @@ storybook_path: ra-core-fields-referencearrayfieldbase--basic
 Use `<ReferenceArrayFieldBase>` to display a list of related records, via a one-to-many relationship materialized by an array of foreign keys.
 
 `<ReferenceArrayFieldBase>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). This component is headless, and its children need to use the data from this context to render the desired ui.
-For a component handling the UI too use [the `<ReferenceArrayField>` component](./ReferenceArrayField.md) instead.
+
+**Tip**: For a rendering a list of chips by default, use [the `<ReferenceArrayField>` component](./ReferenceArrayField.md) instead.
 
 **Tip**: If the relationship is materialized by a foreign key on the referenced resource, use [the `<ReferenceManyFieldBase>` component](./ReferenceManyFieldBase.md) instead.
 
@@ -41,12 +42,22 @@ A typical `post` record therefore looks like this:
 }
 ```
 
-In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as Chips as follows:
+In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a list of chips, as follows:
 
 ```jsx
 import { ListBase, ListIterator, ReferenceArrayFieldBase } from 'react-admin';
 
-const MyTagsView = (props: { children: React.ReactNode }) => {
+export const PostList = () => (
+    <ListBase>
+        <ListIterator>
+            <ReferenceArrayFieldBase reference="tags" source="tag_ids">
+                <TagList />
+            </ReferenceArrayFieldBase>
+        </ListIterator>
+    </ListBase>
+);
+
+const TagList = (props: { children: React.ReactNode }) => {
     const context = useListContext();
 
     if (context.isPending) {
@@ -64,16 +75,6 @@ const MyTagsView = (props: { children: React.ReactNode }) => {
         </p>
     );
 };
-
-export const PostList = () => (
-    <ListBase>
-        <ListIterator>
-            <ReferenceArrayFieldBase reference="tags" source="tag_ids">
-                <MyTagsView />
-            </ReferenceArrayFieldBase>
-        </ListIterator>
-    </ListBase>
-);
 ```
 
 `<ReferenceArrayFieldBase>` expects a `reference` attribute, which specifies the resource to fetch for the related records. It also expects a `source` attribute, which defines the field containing the list of ids to look for in the referenced resource.
@@ -100,17 +101,14 @@ You can change how the list of related records is rendered by passing a custom c
 
 ## `children`
 
-You can pass any component of your own as child, to render the list of related records as you wish.
-You can access the list context using the `useListContext` hook.
+You can pass any React component as child, to render the list of related records based on the `ListContext`.
 
 ```jsx
-
 <ReferenceArrayFieldBase label="Tags" reference="tags" source="tag_ids">
-    <MyTagList />
+    <TagList />
 </ReferenceArrayFieldBase>
 
-// With MyTagList like:
-const MyTagList = (props: { children: React.ReactNode }) => {
+const TagList = (props: { children: React.ReactNode }) => {
     const { isPending, error, data } = useListContext();
 
     if (isPending) {
@@ -132,8 +130,7 @@ const MyTagList = (props: { children: React.ReactNode }) => {
 
 ## `render`
 
-Alternatively to children you can pass a `render` function prop to `<ReferenceArrayFieldBase>`. The `render` prop will receive the `ListContext` as its argument, allowing to inline the `render` logic.
-When receiving a `render` prop the `<ReferenceArrayFieldBase>` component will ignore the children property.
+Alternatively to `children`, you can pass a `render` function prop to `<ReferenceArrayFieldBase>`. The `render` prop will receive the `ListContext` as its argument, allowing to inline the rendering logic.
 
 
 ```jsx
@@ -158,6 +155,8 @@ When receiving a `render` prop the `<ReferenceArrayFieldBase>` component will ig
     }}
 />
 ```
+
+**Tip**: When receiving a `render` prop, the `<ReferenceArrayFieldBase>` component will ignore the `children` property.
 
 ## `filter`
 

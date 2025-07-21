@@ -1,21 +1,20 @@
 ---
 layout: default
 title: "The ReferenceManyFieldBase Component"
-storybook_path: ra-ui-materialui-fields-referencemanyfieldbase--basic
+storybook_path: ra-core-controller-field-referencemanyfieldbase--basic
 ---
 
 # `<ReferenceManyFieldBase>`
 
 `<ReferenceManyFieldBase>` is useful for displaying a list of related records via a one-to-many relationship, when the foreign key is carried by the referenced resource. 
 
-This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). This component is headless, and its children need to use the data from this context to render the desired ui.
-For a component handling the UI too use [the `<ReferenceManyField>` component](./ReferenceManyField.md) instead.
+This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). 
+
+This component is headless. It relies on its `children` or a `render` prop to render the desired ui.
 
 **Tip**: If the relationship is materialized by an array of ids in the initial record, use [the `<ReferenceArrayFieldBase>` component](./ReferenceArrayFieldBase.md) instead.
 
 ## Usage
-
-### With children
 
 For instance, if an `author` has many `books`, and each book resource exposes an `author_id` field:
 
@@ -34,6 +33,14 @@ For instance, if an `author` has many `books`, and each book resource exposes an
 
 ```jsx
 import { ShowBase, ReferenceManyFieldBase } from 'react-admin';
+
+const AuthorShow = () => (
+    <ShowBase>
+        <ReferenceManyFieldBase reference="books" target="author_id" >
+            <BookList source="title" />
+        </ReferenceManyFieldBase>
+    </ShowBase>
+);
 
 const BookList = ({
     source,
@@ -58,14 +65,6 @@ const BookList = ({
         </p>
     );
 };
-
-const AuthorShow = () => (
-    <ShowBase>
-        <ReferenceManyFieldBase reference="books" target="author_id" >
-            <BookList source="title" />
-        </ReferenceManyFieldBase>
-    </ShowBase>
-);
 ```
 
 `<ReferenceManyFieldBase>` accepts a `reference` attribute, which specifies the resource to fetch for the related record. It also accepts a `source` attribute which defines the field containing the value to look for in the `target` field of the referenced resource. By default, this is the `id` of the resource (`authors.id` in the previous example).
@@ -91,7 +90,7 @@ export const PostList = () => (
 | Prop           | Required | Type                                                                              | Default                          | Description                                                                         |
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
 | `children`     | Optional | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
-| `render`     | Optional\* | `(ListContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and render elements      |
+| `render`     | Optional\* | `(ListContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and returns an element      |
 | `debounce`     | Optional\* | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
@@ -116,7 +115,7 @@ export const PostList = () => (
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
 - [`<Calendar>`](./Calendar.md)
 
-For instance, use a `<DataTable>` to render the related records in a table:
+For instance, use a `<ListIterator>` to render the related records:
 
 ```jsx
 import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'react-admin';
@@ -124,12 +123,13 @@ import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'react-admin';
 export const AuthorShow = () => (
     <ShowBase>
         <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-            <ListIterator render={(book) => (
-                <div>
-                    <p>{book.title}</p>
-                    <p>{book.published_at}</p>
-                </div>
-            )}/>
+            <ul>
+                <ListIterator render={(book) => (
+                    <li key={book.id}>
+                        <i>{book.title}</i>, published on{' '}{book.published_at}
+                    </li>
+                )}/>
+            </ul>
         </ReferenceManyFieldBase>
     </ShowBase>
 );
@@ -159,14 +159,13 @@ const AuthorShow = () => (
                         return <p className="error">{error.toString()}</p>;
                     }
                     return (
-                        <p>
+                        <ul>
                             {data.map((book, index) => (
-                                <div key={index}>
-                                    <p>{book.title}</p>
-                                    <p>{book.published_at}</p>
-                                </div>
+                                <li key={index}>
+                                    <i>{book.title}</i>, published on{' '}{book.published_at}
+                                </li>
                             ))}
-                        </p>
+                        </ul>
                     );
                 }
             }
@@ -278,12 +277,7 @@ For instance, if you want to display the `books` of a given `author`, the `refer
 
 ```jsx
 <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-    <ListIterator render={(book) => (
-        <div>
-            <p>{book.title}</p>
-            <p>{book.published_at}</p>
-        </div>
-    )} />
+    ...
 </ReferenceManyFieldBase>
 ```
 
@@ -361,13 +355,6 @@ Name of the field carrying the relationship on the referenced resource. For inst
 
 ```jsx
 <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-    <ListIterator
-        render={(book) => (
-            <div>
-                <p>{book.title}</p>
-                <p>{book.published_at}</p>
-            </div>
-        )}
-    />
+    ...
 </ReferenceManyFieldBase>
 ```

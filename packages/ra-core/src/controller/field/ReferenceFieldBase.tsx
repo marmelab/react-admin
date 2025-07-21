@@ -47,7 +47,7 @@ export const ReferenceFieldBase = <
 >(
     props: ReferenceFieldBaseProps<ReferenceRecordType>
 ) => {
-    const { children, render, empty = null } = props;
+    const { children, render, loading, error, empty = null } = props;
     const id = useFieldValue(props);
 
     const controllerProps =
@@ -59,6 +59,22 @@ export const ReferenceFieldBase = <
         );
     }
 
+    if (controllerProps.isPending && loading) {
+        return (
+            <ResourceContextProvider value={props.reference}>
+                {loading}
+            </ResourceContextProvider>
+        );
+    }
+    if (controllerProps.error && error) {
+        return (
+            <ResourceContextProvider value={props.reference}>
+                <ReferenceFieldContextProvider value={controllerProps}>
+                    {error}
+                </ReferenceFieldContextProvider>
+            </ResourceContextProvider>
+        );
+    }
     if (
         (empty &&
             // no foreign key value
@@ -68,7 +84,11 @@ export const ReferenceFieldBase = <
             !controllerProps.isPending &&
             !controllerProps.referenceRecord)
     ) {
-        return empty;
+        return (
+            <ResourceContextProvider value={props.reference}>
+                {empty}
+            </ResourceContextProvider>
+        );
     }
 
     return (
@@ -92,6 +112,7 @@ export interface ReferenceFieldBaseProps<
     className?: string;
     empty?: ReactNode;
     error?: ReactNode;
+    loading?: ReactNode;
     queryOptions?: Partial<
         UseQueryOptions<ReferenceRecordType[], Error> & {
             meta?: any;
