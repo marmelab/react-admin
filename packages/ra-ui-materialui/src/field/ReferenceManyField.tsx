@@ -62,21 +62,22 @@ export const ReferenceManyField = <
     props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const translate = useTranslate();
+    const { children, pagination, empty, ...controllerProps } = props;
     return (
         <ReferenceManyFieldBase<RecordType, ReferenceRecordType>
-            {...props}
+            {...controllerProps}
             empty={
-                typeof props.empty === 'string' ? (
+                typeof empty === 'string' ? (
                     <Typography component="span" variant="body2">
-                        {translate(props.empty, { _: props.empty })}
+                        {translate(empty, { _: empty })}
                     </Typography>
                 ) : (
-                    props.empty
+                    empty
                 )
             }
         >
-            {props.children}
-            {!props.render && props.pagination}
+            {children}
+            {pagination}
         </ReferenceManyFieldBase>
     );
 };
