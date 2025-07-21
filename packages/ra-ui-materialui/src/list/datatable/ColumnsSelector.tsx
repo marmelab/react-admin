@@ -58,9 +58,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
         };
     }, [elementId, container]);
 
-    const [columnFilter, setColumnFilter] = React.useState<
-        string | undefined
-    >();
+    const [columnFilter, setColumnFilter] = React.useState<string>('');
 
     if (!container) return null;
 
