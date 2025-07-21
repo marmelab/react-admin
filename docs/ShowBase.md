@@ -62,7 +62,8 @@ const App = () => (
 
 | Prop             | Required | Type              | Default | Description
 |------------------|----------|-------------------|---------|--------------------------------------------------------
-| `children`       | Required | `ReactNode`       |         | The components rendering the record fields
+| `children`       | Optional | `ReactNode`       |         | The components rendering the record fields
+| `render`       | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode`       |         | Alternative to children, a function that takes the ShowController context and renders the form
 | `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
 | `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading
 | `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL
@@ -102,6 +103,33 @@ const BookShow = () => (
             </Grid>
         </Grid>
     </ShowBase>
+);
+```
+{% endraw %}
+
+## `render`
+
+Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ShowContext` as argument. 
+
+{% raw %}
+```jsx
+import { ShowBase, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
+
+const BookShow = () => (
+    <ShowBase render={({ isPending, error, record }) => {
+        if (isPending) {
+            return <p>Loading...</p>;
+        }
+
+        if (error) {
+            return (
+                <p className="error">
+                    {error.message}
+                </p>
+            );
+        }
+        return <p>{record.title}</p>;
+    }}/>
 );
 ```
 {% endraw %}

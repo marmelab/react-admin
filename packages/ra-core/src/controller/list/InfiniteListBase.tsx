@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import {
     useInfiniteListController,
     InfiniteListControllerProps,
+    InfiniteListControllerResult,
 } from './useInfiniteListController';
 import { OptionalResourceContextProvider } from '../../core';
 import { RaRecord } from '../../types';
@@ -46,6 +47,7 @@ import { useIsAuthPending } from '../../auth';
  */
 export const InfiniteListBase = <RecordType extends RaRecord = any>({
     children,
+    render,
     loading = null,
     ...props
 }: InfiniteListBaseProps<RecordType>) => {
@@ -57,6 +59,12 @@ export const InfiniteListBase = <RecordType extends RaRecord = any>({
 
     if (isAuthPending && !props.disableAuthentication) {
         return loading;
+    }
+
+    if (!render && !children) {
+        throw new Error(
+            "<InfiniteListBase> requires either a 'render' prop or 'children' prop"
+        );
     }
 
     return (
@@ -74,7 +82,7 @@ export const InfiniteListBase = <RecordType extends RaRecord = any>({
                             controllerProps.isFetchingPreviousPage,
                     }}
                 >
-                    {children}
+                    {render ? render(controllerProps) : children}
                 </InfinitePaginationContext.Provider>
             </ListContextProvider>
         </OptionalResourceContextProvider>
@@ -83,6 +91,7 @@ export const InfiniteListBase = <RecordType extends RaRecord = any>({
 
 export interface InfiniteListBaseProps<RecordType extends RaRecord = any>
     extends InfiniteListControllerProps<RecordType> {
-    children: ReactNode;
     loading?: ReactNode;
+    children?: ReactNode;
+    render?: (props: InfiniteListControllerResult<RecordType>) => ReactNode;
 }

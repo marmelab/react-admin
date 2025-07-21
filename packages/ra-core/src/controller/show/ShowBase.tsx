@@ -1,7 +1,11 @@
 import * as React from 'react';
 
 import { RaRecord } from '../../types';
-import { useShowController, ShowControllerProps } from './useShowController';
+import {
+    useShowController,
+    ShowControllerProps,
+    ShowControllerResult,
+} from './useShowController';
 import { ShowContextProvider } from './ShowContextProvider';
 import { OptionalResourceContextProvider } from '../../core';
 import { useIsAuthPending } from '../../auth';
@@ -37,6 +41,7 @@ import { useIsAuthPending } from '../../auth';
  */
 export const ShowBase = <RecordType extends RaRecord = any>({
     children,
+    render,
     loading = null,
     ...props
 }: ShowBaseProps<RecordType>) => {
@@ -51,11 +56,17 @@ export const ShowBase = <RecordType extends RaRecord = any>({
         return loading;
     }
 
+    if (!render && !children) {
+        throw new Error(
+            '<ShowBase> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <ShowContextProvider value={controllerProps}>
-                {children}
+                {render ? render(controllerProps) : children}
             </ShowContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -63,6 +74,7 @@ export const ShowBase = <RecordType extends RaRecord = any>({
 
 export interface ShowBaseProps<RecordType extends RaRecord = RaRecord>
     extends ShowControllerProps<RecordType> {
-    children: React.ReactNode;
+    children?: React.ReactNode;
+    render?: (props: ShowControllerResult<RecordType>) => React.ReactNode;
     loading?: React.ReactNode;
 }

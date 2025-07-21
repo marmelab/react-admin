@@ -148,6 +148,28 @@ export const AccessControl = ({
     </CoreAdminContext>
 );
 
+export const WithRenderProp = ({
+    dataProvider = defaultDataProvider,
+    callTimeOptions,
+}: {
+    dataProvider?: DataProvider;
+    callTimeOptions?: SaveHandlerCallbacks;
+} & Partial<CreateBaseProps>) => (
+    <CoreAdminContext dataProvider={dataProvider}>
+        <CreateBase
+            {...defaultProps}
+            render={({ save }) => {
+                const handleClick = () => {
+                    if (!save) return;
+                    save({ test: 'test' }, callTimeOptions);
+                };
+
+                return <button onClick={handleClick}>save</button>;
+            }}
+        />
+    </CoreAdminContext>
+);
+
 const defaultDataProvider = testDataProvider({
     // @ts-ignore
     create: (_, { data }) => Promise.resolve({ data: { id: 1, ...data } }),

@@ -246,6 +246,74 @@ DefaultTitle.argTypes = {
     },
 };
 
+export const WithRenderProps = () => (
+    <CoreAdminContext dataProvider={defaultDataProvider}>
+        <InfiniteListBase
+            resource="books"
+            perPage={5}
+            render={context => {
+                const {
+                    hasNextPage,
+                    fetchNextPage,
+                    isFetchingNextPage,
+                    hasPreviousPage,
+                    fetchPreviousPage,
+                    isFetchingPreviousPage,
+                    setFilters,
+                    isPending,
+                    setSort,
+                    sort,
+                    filterValues,
+                    data,
+                } = context;
+
+                if (isPending) {
+                    return <div>Loading...</div>;
+                }
+                const toggleSort = () => {
+                    setSort({
+                        field: sort.field === 'title' ? 'id' : 'title',
+                        order: 'ASC',
+                    });
+                };
+                const toggleFilter = () => {
+                    setFilters(filterValues.q ? {} : { q: 'The ' });
+                };
+
+                return (
+                    <div>
+                        <div>
+                            {hasPreviousPage && (
+                                <button
+                                    onClick={() => fetchPreviousPage()}
+                                    disabled={isFetchingPreviousPage}
+                                >
+                                    Previous
+                                </button>
+                            )}
+                            {hasNextPage && (
+                                <button
+                                    onClick={() => fetchNextPage()}
+                                    disabled={isFetchingNextPage}
+                                >
+                                    Next
+                                </button>
+                            )}
+                        </div>
+                        <button onClick={toggleSort}>Toggle Sort</button>
+                        <button onClick={toggleFilter}>Toggle Filter</button>
+                        <ul>
+                            {data?.map((record: any) => (
+                                <li key={record.id}>{record.title}</li>
+                            ))}
+                        </ul>
+                    </div>
+                );
+            }}
+        />
+    </CoreAdminContext>
+);
+
 const Title = () => {
     const { defaultTitle } = useListContext();
     const [locale, setLocale] = useLocaleState();

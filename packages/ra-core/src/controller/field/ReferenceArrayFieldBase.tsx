@@ -1,90 +1,96 @@
-import React, { ReactNode } from 'react';
+import * as React from 'react';
+import { type ReactElement, type ReactNode } from 'react';
+
+import type { UseQueryOptions } from '@tanstack/react-query';
+import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { useRecordContext } from '../record';
+import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { ResourceContextProvider } from '../../core';
-import { ListContextProvider } from '../list/ListContextProvider';
-import {
-    useReferenceManyFieldController,
-    type UseReferenceManyFieldControllerParams,
-} from './useReferenceManyFieldController';
-import type { RaRecord } from '../../types';
-import { ListControllerResult } from '../list';
+import { ListContextProvider, ListControllerResult } from '../list';
+import { BaseFieldProps } from './types';
 
 /**
- * Render related records to the current one.
+ * A container component that fetches records from another resource specified
+ * by an array of *ids* in current record.
  *
  * You must define the fields to be passed to the iterator component as children.
  *
- * @example Display all the comments of the current post as a datagrid
- * <ReferenceManyFieldBase reference="comments" target="post_id">
+ * @example Display all the products of the current order as datagrid
+ * // order = {
+ * //   id: 123,
+ * //   product_ids: [456, 457, 458],
+ * // }
+ * <ReferenceArrayFieldBase label="Products" reference="products" source="product_ids">
  *     <Datagrid>
  *         <TextField source="id" />
- *         <TextField source="body" />
- *         <DateField source="created_at" />
+ *         <TextField source="description" />
+ *         <NumberField source="price" options={{ style: 'currency', currency: 'USD' }} />
  *         <EditButton />
  *     </Datagrid>
- * </ReferenceManyFieldBase>
+ * </ReferenceArrayFieldBase>
  *
- * @example Display all the books by the current author, only the title
- * <ReferenceManyFieldBase reference="books" target="author_id">
+ * @example Display all the categories of the current product as a list of chips
+ * // product = {
+ * //   id: 456,
+ * //   category_ids: [11, 22, 33],
+ * // }
+ * <ReferenceArrayFieldBase label="Categories" reference="categories" source="category_ids">
  *     <SingleFieldList>
- *         <ChipField source="title" />
+ *         <ChipField source="name" />
  *     </SingleFieldList>
- * </ReferenceManyFieldBase>
+ * </ReferenceArrayFieldBase>
  *
- * By default, restricts the displayed values to 25. You can extend this limit
+ * By default, restricts the displayed values to 1000. You can extend this limit
  * by setting the `perPage` prop.
  *
  * @example
- * <ReferenceManyFieldBase perPage={10} reference="comments" target="post_id">
+ * <ReferenceArrayFieldBase perPage={10} reference="categories" source="category_ids">
  *    ...
- * </ReferenceManyFieldBase>
+ * </ReferenceArrayFieldBase>
  *
- * By default, orders the possible values by id desc. You can change this order
+ * By default, the field displays the results in the order in which they are referenced
+ * (i.e. in the order of the list of ids). You can change this order
  * by setting the `sort` prop (an object with `field` and `order` properties).
  *
  * @example
- * <ReferenceManyFieldBase sort={{ field: 'created_at', order: 'DESC' }} reference="comments" target="post_id">
+ * <ReferenceArrayFieldBase sort={{ field: 'name', order: 'ASC' }} reference="categories" source="category_ids">
  *    ...
- * </ReferenceManyFieldBase>
+ * </ReferenceArrayFieldBase>
  *
- * Also, you can filter the query used to populate the possible values. Use the
+ * Also, you can filter the results to display only a subset of values. Use the
  * `filter` prop for that.
  *
  * @example
- * <ReferenceManyFieldBase filter={{ is_published: true }} reference="comments" target="post_id">
+ * <ReferenceArrayFieldBase filter={{ is_published: true }} reference="categories" source="category_ids">
  *    ...
- * </ReferenceManyFieldBase>
+ * </ReferenceArrayFieldBase>
  */
-export const ReferenceManyFieldBase = <
+export const ReferenceArrayFieldBase = <
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
 >(
-    props: ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType>
+    props: ReferenceArrayFieldBaseProps<RecordType, ReferenceRecordType>
 ) => {
     const {
         children,
         render,
-        debounce,
-        empty,
         error,
         loading,
-        filter = defaultFilter,
+        empty,
+        filter,
         page = 1,
-        perPage = 25,
-        record,
+        perPage,
         reference,
         resource,
-        sort = defaultSort,
-        source = 'id',
-        storeKey,
-        target,
+        sort,
+        source,
         queryOptions,
     } = props;
-
-    const controllerProps = useReferenceManyFieldController<
+    const record = useRecordContext(props);
+    const controllerProps = useReferenceArrayFieldController<
         RecordType,
         ReferenceRecordType
     >({
-        debounce,
         filter,
         page,
         perPage,
@@ -93,14 +99,12 @@ export const ReferenceManyFieldBase = <
         resource,
         sort,
         source,
-        storeKey,
-        target,
         queryOptions,
     });
 
     if (!render && !children) {
         throw new Error(
-            "<ReferenceManyFieldBase> requires either a 'render' prop or 'children' prop"
+            "<ReferenceArrayFieldBase> requires either a 'render' prop or 'children' prop"
         );
     }
 
@@ -155,19 +159,22 @@ export const ReferenceManyFieldBase = <
     );
 };
 
-export interface ReferenceManyFieldBaseProps<
-    RecordType extends Record<string, any> = Record<string, any>,
+export interface ReferenceArrayFieldBaseProps<
+    RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends UseReferenceManyFieldControllerParams<
-        RecordType,
-        ReferenceRecordType
-    > {
+> extends BaseFieldProps<RecordType> {
     children?: ReactNode;
-    render?: (props: ListControllerResult<ReferenceRecordType>) => ReactNode;
-    empty?: ReactNode;
+    render?: (props: ListControllerResult<ReferenceRecordType>) => ReactElement;
     error?: ReactNode;
     loading?: ReactNode;
+    empty?: ReactNode;
+    filter?: FilterPayload;
+    page?: number;
+    perPage?: number;
+    reference: string;
+    sort?: SortPayload;
+    queryOptions?: Omit<
+        UseQueryOptions<ReferenceRecordType[], Error>,
+        'queryFn' | 'queryKey'
+    >;
 }
-
-const defaultFilter = {};
-const defaultSort = { field: 'id', order: 'DESC' as const };

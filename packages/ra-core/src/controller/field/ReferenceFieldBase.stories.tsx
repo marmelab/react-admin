@@ -94,10 +94,10 @@ const dataProviderWithAuthorsError = {
                 year: 1869,
             },
         }),
-    getMany: _resource => Promise.reject('Error'),
+    getMany: _resource => Promise.reject(new Error('Error')),
 } as any;
 
-export const Error = ({ dataProvider = dataProviderWithAuthorsError }) => (
+export const Errored = ({ dataProvider = dataProviderWithAuthorsError }) => (
     <TestMemoryRouter initialEntries={['/books/1/show']}>
         <CoreAdmin
             dataProvider={dataProvider}
@@ -347,6 +347,50 @@ export const Meta = ({
             }
         >
             <Resource name="books" show={BookShowMeta} />
+        </CoreAdmin>
+    </TestMemoryRouter>
+);
+
+export const WithRenderProp = ({ dataProvider = dataProviderWithAuthors }) => (
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <CoreAdmin
+            dataProvider={dataProvider}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: {
+                            retry: false,
+                        },
+                    },
+                })
+            }
+        >
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                show={
+                    <ShowBase>
+                        <ReferenceFieldBase
+                            source="author"
+                            reference="authors"
+                            render={({ error, isPending }) => {
+                                if (isPending) {
+                                    return <p>Loading...</p>;
+                                }
+
+                                if (error) {
+                                    return (
+                                        <p style={{ color: 'red' }}>
+                                            {error.message}
+                                        </p>
+                                    );
+                                }
+                                return <TextField source="first_name" />;
+                            }}
+                        />
+                    </ShowBase>
+                }
+            />
         </CoreAdmin>
     </TestMemoryRouter>
 );
