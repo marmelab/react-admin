@@ -6,7 +6,7 @@ storybook_path: ra-core-controller-list-listbase--no-auth-provider
 
 # `<ListBase>`
 
-`<ListBase>` is a headless variant of [`<List>`](./List.md). It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), and renders its children. Use it to build a custom list layout.
+`<ListBase>` is a headless List page component. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), and renders its children. Use it to build a custom list layout.
 
 Contrary to [`<List>`](./List.md), it does not render the page layout, so no title, no actions, no `<Card>`, and no pagination.
 
@@ -14,47 +14,73 @@ Contrary to [`<List>`](./List.md), it does not render the page layout, so no tit
 
 ## Usage
 
-You can use `ListBase` to create your own custom reusable List component, like this one:
+You can use `ListBase` to create your own custom List page component, like this one:
 
 ```jsx
 import { 
-    ListBase,
-    Title,
-    ListToolbar,
-    Pagination,
     DataTable,
+    ListBase,
+    ListToolbar,
+    DataTable,
+    Pagination,
+    Title,
 } from 'react-admin';
 import { Card } from '@mui/material';
 
-const MyList = ({ children, actions, filters, title, ...props }) => (
-    <ListBase {...props}>
-        <Title title={title}/>
+const PostList = () => (
+    <ListBase>
+        <Title title="Post List"/>
         <ListToolbar
-            filters={filters}
-            actions={actions}
+            filters={[
+                { source: 'q', label: 'Search', alwaysOn: true },
+                { source: 'published', label: 'Published', type: 'boolean' },
+            ]}
         />
         <Card>
-            {children}
+            <DataTable>
+                <DataTable.Col source="title" />
+                <DataTable.Col source="author" />
+                <DataTable.Col source="published_at" />
+            </DataTable>
         </Card>
         <Pagination />
     </ListBase>
 );
+```
 
+Alternatively, you can pass a `render` function prop instead of `children`. This function will receive the `ListContext` as argument.
+
+```jsx
 const PostList = () => (
-    <MyList title="Post List">
-        <DataTable>
-            ...
-        </DataTable>
-    </MyList>
+    <ListBase render={({ data, total, isPending, error }) => (
+        <Card>
+            <Title title="Post List" />
+            <ListToolbar
+                filters={[
+                    { source: 'q', label: 'Search', alwaysOn: true },
+                    { source: 'published', label: 'Published', type: 'boolean' },
+                ]}
+            />
+            <DataTable>
+                {data?.map(record => (
+                    <DataTable.Row key={record.id}>
+                        <DataTable.Col source="title" record={record} />
+                        <DataTable.Col source="author" record={record} />
+                        <DataTable.Col source="published_at" record={record} />
+                    </DataTable.Row>
+                ))}
+            </DataTable>
+            <Pagination total={total} />
+        </Card>
+    )} />
 );
 ```
 
-This custom List component has no aside component - it's up to you to add it in pure React.
-
 ## Props
 
-The `<ListBase>` component accepts the same props as [`useListController`](./useListController.md):
+The `<ListBase>` component accepts the following props:
 
+* `children`
 * [`debounce`](./List.md#debounce)
 * [`disableAuthentication`](./List.md#disableauthentication)
 * [`disableSyncWithLocation`](./List.md#disablesyncwithlocation)
@@ -63,11 +89,12 @@ The `<ListBase>` component accepts the same props as [`useListController`](./use
 * [`filterDefaultValues`](./List.md#filterdefaultvalues)
 * [`perPage`](./List.md#perpage)
 * [`queryOptions`](./List.md#queryoptions)
+* `render`
 * [`resource`](./List.md#resource)
 * [`sort`](./List.md#sort)
 
 In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children) for usage examples.
-Alternatively, you can pass a `render` function prop instead of `children`. This function will receive the `ListContext` as argument. 
+
 
 ## Security
 
