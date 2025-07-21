@@ -56,9 +56,7 @@ export const Basic = ({
                             source="members"
                             reference="artists"
                         >
-                            <MyReferenceArrayField>
-                                <List source="name" />
-                            </MyReferenceArrayField>
+                            <ArtistList />
                         </ReferenceArrayFieldBase>
                     </ShowBase>
                 }
@@ -66,6 +64,25 @@ export const Basic = ({
         </CoreAdmin>
     </TestMemoryRouter>
 );
+
+const ArtistList = () => {
+    const { isPending, error, data } = useListContext();
+
+    if (isPending) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p style={{ color: 'red' }}>{error.toString()}</p>;
+    }
+    return (
+        <p>
+            {data.map((datum, index) => (
+                <li key={index}>{datum.name}</li>
+            ))}
+        </p>
+    );
+};
 
 const erroredDataProvider = {
     ...defaultDataProvider,
@@ -137,27 +154,3 @@ export const WithRenderProp = ({
         </CoreAdmin>
     </TestMemoryRouter>
 );
-
-const MyReferenceArrayField = (props: { children: React.ReactNode }) => {
-    const context = useListContext();
-
-    if (context.isPending) {
-        return <p>Loading...</p>;
-    }
-
-    if (context.error) {
-        return <p style={{ color: 'red' }}>{context.error.toString()}</p>;
-    }
-    return props.children;
-};
-
-const List = ({ source }: { source: string }) => {
-    const listContext = useListContext();
-    return (
-        <p>
-            {listContext.data?.map((datum, index) => (
-                <li key={index}>{datum[source]}</li>
-            ))}
-        </p>
-    );
-};

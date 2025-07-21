@@ -45,25 +45,20 @@ const books = [
 ];
 
 export const dataProviderWithAuthors = {
-    getOne: () =>
-        Promise.resolve({
-            data: author,
-        }),
-    getMany: (_resource, params) =>
-        Promise.resolve({
-            data: books.filter(book => params.ids.includes(book.author)),
-        }),
-    getManyReference: (_resource, params) => {
+    getOne: async () => ({ data: author }),
+    getMany: async (_resource, params) => ({
+        data: books.filter(book => params.ids.includes(book.author)),
+    }),
+    getManyReference: async (_resource, params) => {
         const result = books.filter(book => book.author === params.id);
-
-        return Promise.resolve({
+        return {
             data: result.slice(
                 (params.pagination.page - 1) * params.pagination.perPage,
                 (params.pagination.page - 1) * params.pagination.perPage +
                     params.pagination.perPage
             ),
             total: result.length,
-        });
+        };
     },
 } as any;
 
@@ -91,9 +86,7 @@ export const Basic = ({ dataProvider = dataProviderWithAuthors }) => (
                             source="id"
                             reference="books"
                         >
-                            <MyReferenceManyField>
-                                <List source="title" />
-                            </MyReferenceManyField>
+                            <AuthorList source="title" />
                         </ReferenceManyFieldBase>
                     </ShowBase>
                 }
@@ -150,9 +143,7 @@ export const InAList = ({ dataProvider = dataProviderWithAuthorList }) => (
                                         source="id"
                                         reference="books"
                                     >
-                                        <MyReferenceManyField>
-                                            <List source="title" />
-                                        </MyReferenceManyField>
+                                        <AuthorList source="title" />
                                     </ReferenceManyFieldBase>
                                 </div>
                             )}
@@ -207,9 +198,7 @@ export const Errored = ({ dataProvider = dataProviderWithAuthorsError }) => (
                             target="id"
                             source="author"
                         >
-                            <MyReferenceManyField>
-                                <List source="first_name" />
-                            </MyReferenceManyField>
+                            <AuthorList source="first_name" />
                         </ReferenceManyFieldBase>
                     </ShowBase>
                 }
@@ -255,9 +244,7 @@ export const Loading = ({ dataProvider = dataProviderWithAuthorsLoading }) => (
                             target="id"
                             source="author"
                         >
-                            <MyReferenceManyField>
-                                <List source="first_name" />
-                            </MyReferenceManyField>
+                            <AuthorList source="first_name" />
                         </ReferenceManyFieldBase>
                     </ShowBase>
                 }
@@ -321,26 +308,19 @@ export const WithRenderProp = ({
     </TestMemoryRouter>
 );
 
-const MyReferenceManyField = ({ children }: { children: React.ReactNode }) => {
-    const context = useListContext();
+const AuthorList = ({ source }) => {
+    const { isPending, error, data } = useListContext();
 
-    if (context.isPending) {
+    if (isPending) {
         return <p>Loading...</p>;
     }
 
-    if (context.error) {
-        return <p style={{ color: 'red' }}>{context.error.toString()}</p>;
+    if (error) {
+        return <p style={{ color: 'red' }}>{error.toString()}</p>;
     }
-    return children;
-};
-
-const List = ({ source }: { source: string }) => {
-    const listContext = useListContext();
     return (
         <p>
-            {listContext.data?.map((datum, index) => (
-                <li key={index}>{datum[source]}</li>
-            ))}
+            {data?.map((datum, index) => <li key={index}>{datum[source]}</li>)}
         </p>
     );
 };
