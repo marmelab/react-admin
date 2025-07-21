@@ -1,29 +1,12 @@
-import JsonGraphqlServer from 'json-graphql-server';
+import { http } from 'msw';
+import { setupWorker } from 'msw/browser';
+import { getMswHandler } from 'fakerest';
 import generateData from 'data-generator-retail';
-import fetchMock from 'fetch-mock';
 
-export default () => {
-    const data = generateData();
-    const restServer = JsonGraphqlServer({ data });
-    const handler = restServer.getHandler();
-    const handlerWithLogs = (url: string, opts: any) =>
-        handler(url, opts).then((res: any) => {
-            const req = JSON.parse(opts.body);
-            const parsedRes = JSON.parse(res.body);
-            console.groupCollapsed(`GraphQL ${req.operationName}`);
-            console.group('request');
-            console.log('operationName', req.operationName);
-            console.log(req.query);
-            console.log('variables', req.variables);
-            console.groupEnd();
-            console.group('response');
-            console.log('data', parsedRes.data);
-            console.log('errors', parsedRes.errors);
-            console.groupEnd();
-            console.groupEnd();
-            return res;
-        });
+const data = generateData();
+const handler = getMswHandler({
+    baseUrl: 'http://localhost:4000',
+    data,
+});
 
-    fetchMock.mock('begin:http://localhost:4000', handlerWithLogs);
-    return () => fetchMock.restore();
-};
+export const worker = setupWorker(http.all(/http:\/\/localhost:4000/, handler));
