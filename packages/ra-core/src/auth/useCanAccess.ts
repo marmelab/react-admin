@@ -93,7 +93,7 @@ export const useCanAccess = <
 
     return authProviderHasCanAccess
         ? result
-        : (emptyQueryObserverResult as UseCanAccessResult<ErrorType>);
+        : (emptyQueryObserverResult as unknown as UseCanAccessResult<ErrorType>);
 };
 
 const emptyQueryObserverResult = {
