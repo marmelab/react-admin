@@ -57,8 +57,8 @@ You can customize the `<Create>` component using the following props:
 
 | Prop                | Required | Type                | Default        | Description                                                                                      |
 |---------------------|----------|---------------------|----------------|--------------------------------------------------------------------------------------------------|
-| `children`          | Optional* | `ReactNode`         | -              | The components that render the form                                                              |
-| `render`            | Optional* | `function`          | -              | Alternative to children. Function that renders the form, receives the create context as argument |
+| `children`          | Optional&nbsp;* | `ReactNode`         | -              | The components that render the form                                                              |
+| `render`            | Optional&nbsp;* | `function`          | -              | Alternative to children. Function that renders the form, receives the create context as argument |
 | `actions`           | Optional | `ReactNode`         | Default toolbar| Override the actions toolbar with a custom component                                             |
 | `aside`             | Optional | `ReactNode`         | -              | Component to render aside to the main content                                                    |
 | `className`         | Optional | `string`            | -              | Passed to the root component                                                                     |
@@ -371,7 +371,7 @@ const PostCreate = () => ()
 
 {% endraw %}
 
-**Tip**: When receiving a render prop the `<Create>` component will ignore the children property.
+**Tip**: When receiving a `render` prop, the `<Create>` component will ignore the `children` prop.
 
 ## `resource`
 

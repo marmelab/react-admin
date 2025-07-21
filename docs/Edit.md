@@ -65,8 +65,8 @@ You can customize the `<Edit>` component using the following props:
 
 | Prop                  | Required  | Type                | Default      | Description                                                                                   |
 |-----------------------|-----------|---------------------|--------------|-----------------------------------------------------------------------------------------------|
-| `children`            | Optional *  | `ReactNode`         | -            | The components that render the form                                                            |
-| `render`              | Optional * | `function`          | -            | Function to render the form, receives the editContext as argument                              |
+| `children`            | Optional&nbsp;*  | `ReactNode`         | -            | The components that render the form                                                            |
+| `render`              | Optional&nbsp;* | `function`          | -            | Function to render the form, receives the editContext as argument                              |
 | `actions`             | Optional  | `ReactNode`         | -            | Override the actions toolbar with a custom component                                           |
 | `aside`               | Optional  | `ReactNode`         | -            | Component to render aside to the main content                                                  |
 | `className`           | Optional  | `string`            | -            | Passed to the root component                                                                  |
@@ -631,7 +631,7 @@ export const PostEdit = () => (
 
 {% endraw %}
 
-**Tip**: When receiving a `render` prop, the `<Edit>` component will ignore the `children` property.
+**Tip**: When receiving a `render` prop, the `<Edit>` component will ignore the `children` prop.
 
 ## `resource`
 
