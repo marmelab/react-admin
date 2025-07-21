@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.10.0
+
+- Upgraded `@tanstack/react-query` to `5.83.0`. You might have duplicate versions if you already had it in your dependencies. Should you have an error mentioning the `QueryContext`, make sure you only have one version in your package manager lock file.
+
 ## 5.9.1
 
 * Fix `<Datagrid>` empty throws error when used in standalone mode ([#10812](https://github.com/marmelab/react-admin/pull/10812)) ([fzaninotto](https://github.com/fzaninotto))
