@@ -41,12 +41,22 @@ A typical `post` record therefore looks like this:
 }
 ```
 
-In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as Chips as follows:
+In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a list of chips, as follows:
 
 ```jsx
 import { ListBase, ListIterator, ReferenceArrayFieldBase } from 'react-admin';
 
-const MyTagsView = (props: { children: React.ReactNode }) => {
+export const PostList = () => (
+    <ListBase>
+        <ListIterator>
+            <ReferenceArrayFieldBase reference="tags" source="tag_ids">
+                <TagList />
+            </ReferenceArrayFieldBase>
+        </ListIterator>
+    </ListBase>
+);
+
+const TagList = (props: { children: React.ReactNode }) => {
     const context = useListContext();
 
     if (context.isPending) {
@@ -64,16 +74,6 @@ const MyTagsView = (props: { children: React.ReactNode }) => {
         </p>
     );
 };
-
-export const PostList = () => (
-    <ListBase>
-        <ListIterator>
-            <ReferenceArrayFieldBase reference="tags" source="tag_ids">
-                <MyTagsView />
-            </ReferenceArrayFieldBase>
-        </ListIterator>
-    </ListBase>
-);
 ```
 
 `<ReferenceArrayFieldBase>` expects a `reference` attribute, which specifies the resource to fetch for the related records. It also expects a `source` attribute, which defines the field containing the list of ids to look for in the referenced resource.
@@ -106,11 +106,10 @@ You can access the list context using the `useListContext` hook.
 ```jsx
 
 <ReferenceArrayFieldBase label="Tags" reference="tags" source="tag_ids">
-    <MyTagList />
+    <TagList />
 </ReferenceArrayFieldBase>
 
-// With MyTagList like:
-const MyTagList = (props: { children: React.ReactNode }) => {
+const TagList = (props: { children: React.ReactNode }) => {
     const { isPending, error, data } = useListContext();
 
     if (isPending) {

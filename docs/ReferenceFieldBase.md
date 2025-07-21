@@ -24,29 +24,25 @@ For instance, let's consider a model where a `post` has one author from the `use
 └──────────────┘
 ```
 
-In that case, use `<ReferenceFieldBase>` to display the post author's as follows:
+In that case, use `<ReferenceFieldBase>` to display the post's author as follows:
 
 ```jsx
-import { Show, SimpleShowLayout, ReferenceField, TextField, DateField } from 'react-admin';
+import { Show, SimpleShowLayout, ReferenceField, TextField, RecordRepresentation } from 'react-admin';
 
-export const UserList = () => (
-    <ReferenceFieldBase source="user_id" reference="users" >
-        <CustomUIRenderer />
-    </ReferenceFieldBase>
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <ReferenceFieldBase source="user_id" reference="users" >
+                <UserView />
+            </ReferenceFieldBase>
+        </SimpleShowLayout>
+    </Show>
 );
-```
-
-`<ReferenceFieldBase>` fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and its up to its children to handle the rendering by accessing the ReferencingContext using the useReferenceFieldContext hook.
-
-This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to the `ReferenceFieldContext`.
-
-```tsx
-import { Show, SimpleShowLayout, ReferenceField, TextField, DateField } from 'react-admin';
 
 export const UserView = () => {
     const context = useReferenceFieldContext();
 
-    const value = useFieldValue({ source });
     if (context.isPending) {
         return <p>Loading...</p>;
     }
@@ -55,15 +51,11 @@ export const UserView = () => {
         return <p className="error">{context.error.toString()}</p>;
     }
 
-    return <p>{value}</p>;
+    return <RecordRepresentation />;
 };
-
-export const MyReferenceField = () => (
-    <ReferenceFieldBase source="user_id" reference="users">
-        <UserView />
-    </ReferenceFieldBase>
-);
 ```
+
+`<ReferenceFieldBase>` fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and its up to its children to handle the rendering by accessing the `ReferencingContext` using the `useReferenceFieldContext` hook.
 
 It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceFieldBase>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row.
 
@@ -74,7 +66,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `source`    | Required | `string`            | -        | Name of the property to display |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
 | `children`  | Optional | `ReactNode`         | -        | React component to render the referenced record. |
-| `render`  | Optional |  `(context) => ReactNode`         | -        | Function that takes the referenceFieldContext and render the referenced record. |
+| `render`  | Optional |  `(context) => ReactNode`         | -        | Function that takes the referenceFieldContext and renders the referenced record. |
 | `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
@@ -88,18 +80,17 @@ You can access the list context using the `useReferenceFieldContext` hook.
 import { ReferenceFieldBase } from 'react-admin';
 
 export const UserView = () => {
-    const { isPending, error } = useReferenceFieldContext();
+    const { error, isPending, referenceRecord } = useReferenceFieldContext();
 
-    const value = useFieldValue({ source });
-    if (context.isPending) {
+    if (isPending) {
         return <p>Loading...</p>;
     }
 
-    if (context.error) {
-        return <p className="error">{context.error.toString()}</p>;
+    if (error) {
+        return <p className="error">{error.toString()}</p>;
     }
 
-    return <p>{value}</p>;
+    return <>{referenceRecord.name}</>;
 };
 
 export const MyReferenceField = () => (
@@ -164,37 +155,6 @@ You can pass either a React element or a string to the `empty` prop:
 </ReferenceFieldBase>
 ```
 
-## `link`
-
-To change the link from the `<Edit>` page to the `<Show>` page, set the `link` prop to "show".
-
-```jsx
-<ReferenceFieldBase source="user_id" reference="users" link="show" >
-    ...
-</ReferenceFieldBase>
-```
-
-You can also prevent `<ReferenceFieldBase>` from adding a link to children by setting `link` to `false`.
-
-```jsx
-// No link
-<ReferenceFieldBase source="user_id" reference="users" link={false} >
-    ...
-</ReferenceFieldBase>
-```
-
-You can also use a custom `link` function to get a custom path for the children. This function must accept `record` and `reference` as arguments.
-
-```jsx
-// Custom path
-<ReferenceFieldBase
-    source="user_id"
-    reference="users"
-    link={(record, reference) => `/my/path/to/${reference}/${record.id}`}
->
-    ...
-</ReferenceFieldBase>
-```
 ## `queryOptions`
 
 Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](./useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
@@ -225,6 +185,7 @@ For instance, if the `posts` resource has a `user_id` field, set the `reference`
     ...
 </ReferenceFieldBase>
 ```
+
 ## `sortBy`
 
 By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceFieldBase>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
@@ -234,6 +195,7 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
     ...
 </ReferenceFieldBase>
 ```
+
 ## Performance
 
 <iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
