@@ -73,7 +73,7 @@ You can customize the `<Create>` component using the following props:
 | `title`             | Optional | `string`/`ReactNode`| Translation    | Override the page title                                                                          |
 | `transform`         | Optional | `function`          | -              | Transform the form data before calling `dataProvider.create()`                                   |
 
-* You must provide either `children` or `render`.
+`*` You must provide either `children` or `render`.
 
 ## `actions`
 
@@ -127,7 +127,7 @@ const PostCreate = () => (
 
 ## `children`
 
-The `<Create>` component will render its children inside a `CreateContext` provider, which the `save` function. Children can be any React node, but are usually a form component like [`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or the headless [`<Form>`](./Form.md) component.
+The `<Create>` component will render its children inside a [`CreateContext`](./useCreateContext.md#return-value). Children can be any React node, but are usually a form component like [`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or the headless [`<Form>`](./Form.md) component.
 
 ```tsx
 import { Create, SimpleForm, TextInput, DateInput, required } from 'react-admin';
@@ -344,7 +344,7 @@ If you want to allow the user to enter several records one after the other, sett
 
 ## `render`
 
-Alternatively to `children`, you can pass a `render` prop to `<Create>`. It will receive the `CreateContext` as its argument, and should return a React node.
+Alternatively to `children`, you can pass a `render` prop to `<Create>`. It will receive the [`CreateContext`](./useCreateContext.md#return-value) as its argument, and should return a React node.
 
 This allows to inline the render logic for the create page.
 
