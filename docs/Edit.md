@@ -600,7 +600,7 @@ Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop]
 
 ## `render`
 
-Alternatively to `children`, you can use a `render` prop. It will receive the [`EditContext`](./useEditContext.md#return-value) as its argument,  and should return a React node.
+Alternatively to `children`, you can use a `render` prop. It will receive the [`EditContext`](./useEditContext.md#return-value) as its argument, and should return a React node.
 
 This allows to inline the render logic for the edition page.
 

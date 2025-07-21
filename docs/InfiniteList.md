@@ -85,42 +85,16 @@ Check the [`<List>` component](./List.md) for details about each prop.
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
 
-## `render`
-
-Alternatively to children you can pass a render prop to `<InfiniteList>`. The render prop will receive the list context as its argument, allowing to inline the render logic for the list content.
-When receiving a render prop the `<InfiniteList>` component will ignore the children property.
-
-{% raw %}
-```tsx
-<InfiniteList
-    render={({ error, isPending }) => {
-        if (isPending) {
-            return <div>Loading...</div>;
-        }
-        if (error) {
-            return <div>Error: {error.message}</div>;
-        }
-        return (
-            <SimpleList
-                primaryText="%{title} (%{year})"
-                secondaryText="%{summary}"
-                tertiaryText={record => record.year}
-            />
-        );
-    }}
-/>
-```
-{% endraw %}
-
 ## `pagination`
 
-You can replace the default "load on scroll" pagination (triggered by a component named `<InfinitePagination>`) by a custom pagination component. To get the pagination state and callbacks, you'll need to read the `InfinitePaginationContext`. 
+You can replace the default "load on scroll" pagination (triggered by a component named `<InfinitePagination>`) by a custom pagination component. To get the pagination state and callbacks, you'll need to read the `InfinitePaginationContext`.
 
 ![load more button](./img/infinite-pagination-load-more.webp)
 
 For example, here is a custom infinite pagination component displaying a "Load More" button at the bottom of the list:
 
 {% raw %}
+
 ```jsx
 import { InfiniteList, useInfinitePaginationContext, DataTable } from 'react-admin';
 import { Box, Button } from '@mui/material';
@@ -153,6 +127,7 @@ export const BookList = () => (
     </InfiniteList>
 );
 ```
+
 {% endraw %}
 
 ## Showing The Record Count
@@ -162,6 +137,7 @@ One drawback of the `<InfiniteList>` component is that it doesn't show the numbe
 ![Infinite list with total number of results](./img/infinite-pagination-count.webp)
 
 {% raw %}
+
 ```jsx
 import { useListContext, InfinitePagination, InfiniteList } from 'react-admin';
 import { Box, Card, Typography } from '@mui/material';
@@ -191,15 +167,17 @@ export const BookList = () => (
     </InfiniteList>
 );
 ```
+
 {% endraw %}
 
 ## Controlled Mode
 
-`<InfiniteList>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself. 
+`<InfiniteList>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself.
 
 In that case, use the [`resource`](./List.md#resource), [`sort`](./List.md#sort), and [`filter`](./List.md#filter-permanent-filter) props to set the list parameters.
 
 {% raw %}
+
 ```jsx
 import { InfiniteList, InfinitePagination, SimpleList } from 'react-admin';
 import { Container, Typography } from '@mui/material';
@@ -236,6 +214,7 @@ const Dashboard = () => (
     </Container>
 )
 ```
+
 {% endraw %}
 
 ## Headless Version
