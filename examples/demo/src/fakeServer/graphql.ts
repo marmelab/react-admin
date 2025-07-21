@@ -10,3 +10,5 @@ const handler = getMswHandler({
 });
 
 export const worker = setupWorker(http.all(/http:\/\/localhost:4000/, handler));
+
+export default () => worker;
