@@ -1,0 +1,30 @@
+@layer base, starlight, theme, components, utilities;
+
+@import '@astrojs/starlight-tailwind';
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+img.icon {
+    display: inline;
+    box-shadow: none;
+    margin: 0;
+    width: 26px;
+    height: 26px;
+    transform: translate(0, 40%);
+    margin-top: -16px;
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+.ee-badge {
+    background-color: transparent;
+    border: none;
+    background-image: url('/img/premium.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    top: 2px;
+    position: relative;
+}
