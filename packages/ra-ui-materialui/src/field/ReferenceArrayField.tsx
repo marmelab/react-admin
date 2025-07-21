@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { memo, type ReactElement, type ReactNode } from 'react';
+import { memo } from 'react';
 import {
-    ListContextProvider,
     useListContext,
     type ListControllerProps,
-    useReferenceArrayFieldController,
-    type SortPayload,
-    type FilterPayload,
-    ResourceContextProvider,
-    useRecordContext,
+    ReferenceArrayFieldBase,
     type RaRecord,
+    ReferenceArrayFieldBaseProps,
 } from 'ra-core';
 import {
     type ComponentsOverrides,
@@ -18,7 +14,6 @@ import {
     type Theme,
     useThemeProps,
 } from '@mui/material/styles';
-import type { UseQueryOptions } from '@tanstack/react-query';
 
 import type { FieldProps } from './types';
 import { LinearProgress } from '../layout';
@@ -90,60 +85,34 @@ export const ReferenceArrayField = <
         props: inProps,
         name: PREFIX,
     });
-    const {
-        filter,
-        page = 1,
-        perPage,
-        reference,
-        resource,
-        sort,
-        source,
-        queryOptions,
-    } = props;
-    const record = useRecordContext(props);
-    const controllerProps = useReferenceArrayFieldController<
-        RecordType,
-        ReferenceRecordType
-    >({
-        filter,
-        page,
-        perPage,
-        record,
-        reference,
-        resource,
-        sort,
-        source,
-        queryOptions,
-    });
+    const { pagination, children, className, sx, ...controllerProps } = props;
     return (
-        <ResourceContextProvider value={reference}>
-            <ListContextProvider value={controllerProps}>
-                <PureReferenceArrayFieldView {...props} />
-            </ListContextProvider>
-        </ResourceContextProvider>
+        <ReferenceArrayFieldBase {...controllerProps}>
+            <PureReferenceArrayFieldView
+                pagination={pagination}
+                className={className}
+                sx={sx}
+            >
+                {children}
+            </PureReferenceArrayFieldView>
+        </ReferenceArrayFieldBase>
     );
 };
 export interface ReferenceArrayFieldProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
-> extends FieldProps<RecordType> {
-    children?: ReactNode;
-    filter?: FilterPayload;
-    page?: number;
-    pagination?: ReactElement;
-    perPage?: number;
-    reference: string;
-    sort?: SortPayload;
+> extends ReferenceArrayFieldBaseProps<RecordType, ReferenceRecordType>,
+        FieldProps<RecordType> {
     sx?: SxProps<Theme>;
-    queryOptions?: Omit<
-        UseQueryOptions<ReferenceRecordType[], Error>,
-        'queryFn' | 'queryKey'
-    >;
+    pagination?: React.ReactElement;
 }
 
-export interface ReferenceArrayFieldViewProps
-    extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
-        Omit<ListControllerProps, 'queryOptions'> {}
+export interface ReferenceArrayFieldViewProps {
+    pagination?: React.ReactElement;
+    children?: React.ReactNode;
+    className?: string;
+    sx?: SxProps<Theme>;
+}
 
 export const ReferenceArrayFieldView = (
     props: ReferenceArrayFieldViewProps

@@ -108,7 +108,7 @@ const defaultFilter = {};
 const defaultLoading = <Loading />;
 
 export interface InfiniteListProps<RecordType extends RaRecord = any>
-    extends InfiniteListBaseProps<RecordType>,
+    extends Omit<InfiniteListBaseProps<RecordType>, 'children'>,
         ListViewProps {}
 
 const PREFIX = 'RaInfiniteList';

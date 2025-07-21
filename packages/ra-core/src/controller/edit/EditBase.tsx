@@ -2,7 +2,11 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 
 import { RaRecord } from '../../types';
-import { useEditController, EditControllerProps } from './useEditController';
+import {
+    useEditController,
+    EditControllerProps,
+    EditControllerResult,
+} from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 import { OptionalResourceContextProvider } from '../../core';
 import { useIsAuthPending } from '../../auth';
@@ -38,6 +42,7 @@ import { useIsAuthPending } from '../../auth';
  */
 export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
     children,
+    render,
     loading = null,
     ...props
 }: EditBaseProps<RecordType, ErrorType>) => {
@@ -52,11 +57,17 @@ export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
         return loading;
     }
 
+    if (!render && !children) {
+        throw new Error(
+            "<EditBase> requires either a 'render' prop or 'children' prop"
+        );
+    }
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <EditContextProvider value={controllerProps}>
-                {children}
+                {render ? render(controllerProps) : children}
             </EditContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -66,6 +77,7 @@ export interface EditBaseProps<
     RecordType extends RaRecord = RaRecord,
     ErrorType = Error,
 > extends EditControllerProps<RecordType, ErrorType> {
-    children: ReactNode;
+    children?: ReactNode;
+    render?: (props: EditControllerResult<RecordType, ErrorType>) => ReactNode;
     loading?: ReactNode;
 }

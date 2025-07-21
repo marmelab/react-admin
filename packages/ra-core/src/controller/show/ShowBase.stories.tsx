@@ -145,6 +145,23 @@ export const AccessControl = ({
     </CoreAdminContext>
 );
 
+export const WithRenderProp = ({
+    dataProvider = defaultDataProvider,
+    ...props
+}: {
+    dataProvider?: DataProvider;
+} & Partial<ShowBaseProps>) => (
+    <CoreAdminContext dataProvider={dataProvider}>
+        <ShowBase
+            {...defaultProps}
+            {...props}
+            render={({ record }) => {
+                return <p>{record?.test}</p>;
+            }}
+        />
+    </CoreAdminContext>
+);
+
 const defaultDataProvider = testDataProvider({
     getOne: () =>
         // @ts-ignore

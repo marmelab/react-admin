@@ -1,62 +1,27 @@
 import { ReactElement } from 'react';
 import { TableCellProps } from '@mui/material/TableCell';
-import { ExtractRecordPaths, HintedString } from 'ra-core';
+import { BaseFieldProps, ExtractRecordPaths, HintedString } from 'ra-core';
 
 type TextAlign = TableCellProps['align'];
 type SortOrder = 'ASC' | 'DESC';
 
 export interface FieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-> {
+> extends BaseFieldProps<RecordType> {
     /**
-     * The field to use for sorting when users click this column head, if sortable.
-     *
-     * @see https://marmelab.com/react-admin/Fields.html#sortby
-     * @example
-     * const PostList = () => (
-     *     <List>
-     *         <Datagrid>
-     *             <TextField source="title" />
-     *             <ReferenceField source="author_id" sortBy="author.name">
-     *                 <TextField source="name" />
-     *             </ReferenceField>
-     *         </Datagrid>
-     *     </List>
-     * );
+     * A class name to apply to the root div element
      */
-    sortBy?: HintedString<ExtractRecordPaths<RecordType>>;
+    className?: string;
 
     /**
-     * The order used for sorting when users click this column head, if sortable.
-     *
-     * @see https://marmelab.com/react-admin/Fields.html#sortbyorder
-     * @example
-     * const PostList = () => (
-     *     <List>
-     *         <Datagrid>
-     *             <TextField source="title" />
-     *             <DateField source="updated_at" sortByOrder="DESC" />
-     *         </Datagrid>
-     *     </List>
-     * );
+     * A class name to apply to the cell element when used inside <Datagrid>.
      */
-    sortByOrder?: SortOrder;
+    cellClassName?: string;
 
     /**
-     * Name of the property to display.
-     *
-     * @see https://marmelab.com/react-admin/Fields.html#source
-     * @example
-     * const CommentList = () => (
-     *     <List>
-     *         <Datagrid>
-     *             <TextField source="author.name" />
-     *             <TextField source="body" />
-     *         </Datagrid>
-     *     </List>
-     * );
+     * A class name to apply to the header cell element when used inside <Datagrid>.
      */
-    source: ExtractRecordPaths<RecordType>;
+    headerClassName?: string;
 
     /**
      * Label to use as column header when using <Datagrid> or <SimpleShowLayout>.
@@ -94,19 +59,54 @@ export interface FieldProps<
     sortable?: boolean;
 
     /**
-     * A class name to apply to the root div element
+     * The text to display when the field value is empty. Defaults to empty string.
+     *
+     * @see https://marmelab.com/react-admin/Fields.html#emptytext
+     * @example
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid>
+     *             <TextField source="title" />
+     *             <TextField source="author" emptyText="missing data" />
+     *         </Datagrid>
+     *     </List>
+     * );
      */
-    className?: string;
+    emptyText?: string;
 
     /**
-     * A class name to apply to the cell element when used inside <Datagrid>.
+     * The field to use for sorting when users click this column head, if sortable.
+     *
+     * @see https://marmelab.com/react-admin/Fields.html#sortby
+     * @example
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid>
+     *             <TextField source="title" />
+     *             <ReferenceField source="author_id" sortBy="author.name">
+     *                 <TextField source="name" />
+     *             </ReferenceField>
+     *         </Datagrid>
+     *     </List>
+     * );
      */
-    cellClassName?: string;
+    sortBy?: HintedString<ExtractRecordPaths<RecordType>>;
 
     /**
-     * A class name to apply to the header cell element when used inside <Datagrid>.
+     * The order used for sorting when users click this column head, if sortable.
+     *
+     * @see https://marmelab.com/react-admin/Fields.html#sortbyorder
+     * @example
+     * const PostList = () => (
+     *     <List>
+     *         <Datagrid>
+     *             <TextField source="title" />
+     *             <DateField source="updated_at" sortByOrder="DESC" />
+     *         </Datagrid>
+     *     </List>
+     * );
      */
-    headerClassName?: string;
+    sortByOrder?: SortOrder;
 
     /**
      * The text alignment for the cell content, when used inside <Datagrid>.
@@ -128,35 +128,7 @@ export interface FieldProps<
     textAlign?: TextAlign;
 
     /**
-     * The text to display when the field value is empty. Defaults to empty string.
-     *
-     * @see https://marmelab.com/react-admin/Fields.html#emptytext
-     * @example
-     * const PostList = () => (
-     *     <List>
-     *         <Datagrid>
-     *             <TextField source="title" />
-     *             <TextField source="author" emptyText="missing data" />
-     *         </Datagrid>
-     *     </List>
-     * );
-     */
-    emptyText?: string;
-
-    /**
      * @deprecated
      */
     fullWidth?: boolean;
-
-    /**
-     * The current record to use. Defaults to the `RecordContext` value.
-     *
-     * @see https://marmelab.com/react-admin/Fields.html#record
-     */
-    record?: RecordType;
-
-    /**
-     * The resource name. Defaults to the `ResourceContext` value.
-     */
-    resource?: string;
 }

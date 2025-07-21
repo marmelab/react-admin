@@ -62,24 +62,30 @@ export const ReferenceManyField = <
     props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const translate = useTranslate();
+    const { children, pagination, empty, ...controllerProps } = props;
     return (
         <ReferenceManyFieldBase<RecordType, ReferenceRecordType>
-            {...props}
+            {...controllerProps}
             empty={
-                typeof props.empty === 'string' ? (
+                typeof empty === 'string' ? (
                     <Typography component="span" variant="body2">
-                        {translate(props.empty, { _: props.empty })}
+                        {translate(empty, { _: empty })}
                     </Typography>
                 ) : (
-                    props.empty
+                    empty
                 )
             }
-        />
+        >
+            {children}
+            {pagination}
+        </ReferenceManyFieldBase>
     );
 };
 
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source'>,
-        ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType> {}
+        ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType> {
+    pagination?: React.ReactElement;
+}
