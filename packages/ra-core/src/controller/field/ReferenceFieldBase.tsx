@@ -60,10 +60,20 @@ export const ReferenceFieldBase = <
     }
 
     if (controllerProps.isPending && loading) {
-        return loading;
+        return (
+            <ResourceContextProvider value={props.reference}>
+                {loading}
+            </ResourceContextProvider>
+        );
     }
     if (controllerProps.error && error) {
-        return error;
+        return (
+            <ResourceContextProvider value={props.reference}>
+                <ReferenceFieldContextProvider value={controllerProps}>
+                    {error}
+                </ReferenceFieldContextProvider>
+            </ResourceContextProvider>
+        );
     }
     if (
         (empty &&
@@ -74,7 +84,11 @@ export const ReferenceFieldBase = <
             !controllerProps.isPending &&
             !controllerProps.referenceRecord)
     ) {
-        return empty;
+        return (
+            <ResourceContextProvider value={props.reference}>
+                {empty}
+            </ResourceContextProvider>
+        );
     }
 
     return (

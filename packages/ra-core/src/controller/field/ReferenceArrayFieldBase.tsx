@@ -109,10 +109,20 @@ export const ReferenceArrayFieldBase = <
     }
 
     if (controllerProps.isPending && loading) {
-        return loading;
+        return (
+            <ResourceContextProvider value={reference}>
+                {loading}
+            </ResourceContextProvider>
+        );
     }
     if (controllerProps.error && error) {
-        return error;
+        return (
+            <ResourceContextProvider value={reference}>
+                <ListContextProvider value={controllerProps}>
+                    {error}
+                </ListContextProvider>
+            </ResourceContextProvider>
+        );
     }
     if (
         // there is an empty page component
@@ -133,7 +143,11 @@ export const ReferenceArrayFieldBase = <
         // the user didn't set any filters
         !Object.keys(controllerProps.filterValues).length
     ) {
-        return empty;
+        return (
+            <ResourceContextProvider value={reference}>
+                {empty}
+            </ResourceContextProvider>
+        );
     }
 
     return (

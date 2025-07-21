@@ -79,16 +79,30 @@ export const ReferenceOneFieldBase = <
 
     const recordFromContext = useRecordContext<RecordType>(props);
     if (controllerProps.isPending && loading) {
-        return loading;
+        return (
+            <ResourceContextProvider value={reference}>
+                {loading}
+            </ResourceContextProvider>
+        );
     }
     if (controllerProps.error && error) {
-        return error;
+        return (
+            <ResourceContextProvider value={reference}>
+                <ReferenceFieldContextProvider value={context}>
+                    {error}
+                </ReferenceFieldContextProvider>
+            </ResourceContextProvider>
+        );
     }
     if (
         !recordFromContext ||
         (!controllerProps.isPending && controllerProps.referenceRecord == null)
     ) {
-        return empty;
+        return (
+            <ResourceContextProvider value={reference}>
+                {empty}
+            </ResourceContextProvider>
+        );
     }
 
     return (
