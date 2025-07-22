@@ -8499,7 +8499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diacritic@npm:0.0.2":
+"diacritic@npm:0.0.2, diacritic@npm:^0.0.2":
   version: 0.0.2
   resolution: "diacritic@npm:0.0.2"
   checksum: 1d9dd0a1188a8186d4fce4a695fc8cb0d65c31a8b3c59cd926636e49a05b30d6bb3f4144018be40bdf0a4937d16bb6705f3b1d1ff9684a426d922fb039f8d8ae
@@ -16316,6 +16316,7 @@ __metadata:
     cross-env: "npm:^5.2.0"
     css-mediaquery: "npm:^0.1.2"
     csstype: "npm:^3.1.3"
+    diacritic: "npm:^0.0.2"
     dompurify: "npm:^3.2.4"
     expect: "npm:^27.4.6"
     file-api: "npm:~0.10.4"
