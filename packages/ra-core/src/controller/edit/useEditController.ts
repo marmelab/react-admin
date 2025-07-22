@@ -3,16 +3,11 @@ import { useParams } from 'react-router-dom';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
-import {
-    useRedirect,
-    RedirectionSideEffect,
-    useCreatePath,
-} from '../../routing';
+import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useGetOne,
     useUpdate,
-    useRefresh,
     UseGetOneHookValue,
     HttpError,
     UseGetOneOptions,
@@ -86,9 +81,7 @@ export const useEditController = <
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
-    const createPath = useCreatePath();
     const redirect = useRedirect();
-    const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
     if (!routeId && !propsId) {
         throw new Error(
@@ -126,16 +119,7 @@ export const useEditController = <
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
-                // We need to flushSync to ensure the redirect happens before the refresh
-                // Otherwise this can cause an infinite loop when the record is not found
-                redirect(() => ({
-                    pathname: createPath({
-                        resource,
-                        type: 'list',
-                    }),
-                    flushSync: true,
-                }));
-                refresh();
+                redirect('list', resource);
             },
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
