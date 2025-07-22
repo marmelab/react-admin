@@ -1,5 +1,4 @@
 import { DataProvider } from 'react-admin';
-import fakeServerFactory from '../fakeServer';
 
 export default (type: string) => {
     // The fake servers require to generate data, which can take some time.
@@ -29,7 +28,6 @@ export default (type: string) => {
 };
 
 const getDataProvider = async (type: string): Promise<DataProvider> => {
-    await fakeServerFactory(process.env.REACT_APP_DATA_PROVIDER || '');
     /**
      * This demo can work with either a fake REST server, or a fake GraphQL server.
      *

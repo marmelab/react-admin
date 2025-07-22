@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
-import { worker } from './fakeServer/graphql';
+import fakeServerWorker from './fakeServer';
 
 const container = document.getElementById('root');
 if (!container) {
@@ -9,6 +9,8 @@ if (!container) {
 }
 const root = createRoot(container);
 
-worker.start({ onUnhandledRequest: 'bypass' }).then(() => {
-    root.render(<App />);
-});
+fakeServerWorker(process.env.REACT_APP_DATA_PROVIDER ?? '')
+    .then(worker => worker.start({ onUnhandledRequest: 'bypass' }))
+    .then(() => {
+        root.render(<App />);
+    });

@@ -1,12 +1,21 @@
-import { http } from 'msw';
-import { setupWorker } from 'msw/browser';
 import JsonGraphqlServer from 'json-graphql-server';
 import generateData from 'data-generator-retail';
+import { HttpResponse, HttpResponseResolver } from 'msw';
 
-const data = generateData();
-const restServer = JsonGraphqlServer({ data });
-const handler = restServer.getHandler();
+export default (): HttpResponseResolver => {
+    const data = generateData();
+    const server = JsonGraphqlServer({ data });
+    const graphqlHandler = server.getHandler();
 
-export const worker = setupWorker(http.all(/http:\/\/localhost:4000/, handler));
+    // Temporary workaround for MSW's graphql handler because json-graphql-server is not yet compatible with MSW
+    const handler: HttpResponseResolver = async ({ request }) => {
+        const body = await request.text();
+        const result = await graphqlHandler({
+            requestBody: body,
+        });
 
-export default () => worker;
+        return HttpResponse.json(JSON.parse(result.body));
+    };
+
+    return handler;
+};
