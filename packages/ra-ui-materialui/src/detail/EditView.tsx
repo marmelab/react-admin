@@ -62,12 +62,10 @@ export const EditView = (props: EditViewProps) => {
                 })}
             >
                 <Content className={EditClasses.card}>
-                    {record ? (
-                        render ? (
-                            render(editContext)
-                        ) : (
-                            children
-                        )
+                    {render ? (
+                        render(editContext)
+                    ) : record ? (
+                        children
                     ) : (
                         <CardContent>&nbsp;</CardContent>
                     )}
