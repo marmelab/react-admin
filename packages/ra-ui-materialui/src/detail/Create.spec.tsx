@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { CoreAdminContext, testDataProvider } from 'ra-core';
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 
 import { Create } from './Create';
 import {
@@ -12,6 +12,7 @@ import {
     NotificationDefault,
     NotificationTranslated,
     Themed,
+    WithRenderProp,
 } from './Create.stories';
 
 describe('<Create />', () => {
@@ -55,6 +56,13 @@ describe('<Create />', () => {
         expect(screen.queryByTestId('themed-view').classList).toContain(
             'custom-class'
         );
+    });
+
+    it('should support a render prop', async () => {
+        render(<WithRenderProp />);
+        await waitFor(() => {
+            expect(screen.queryByText('Create new books')).not.toBeNull();
+        });
     });
 
     describe('title', () => {

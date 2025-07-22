@@ -20,6 +20,7 @@ import { Loading } from '../layout';
  * - actions
  * - aside: Side Component
  * - children: List Layout
+ * - render: alternative to children Function to render the List Layout, receive the list context as argument
  * - component
  * - disableAuthentication
  * - disableSyncWithLocation
@@ -72,11 +73,18 @@ export const List = <RecordType extends RaRecord = any>(
         resource,
         sort,
         storeKey,
+        render,
         ...rest
     } = useThemeProps({
         props: props,
         name: PREFIX,
     });
+
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<List> requires either a `render` prop or `children` prop'
+        );
+    }
 
     return (
         <ListBase<RecordType>
@@ -93,13 +101,13 @@ export const List = <RecordType extends RaRecord = any>(
             sort={sort}
             storeKey={storeKey}
         >
-            <ListView<RecordType> {...rest} />
+            <ListView<RecordType> {...rest} render={render} />
         </ListBase>
     );
 };
 
 export interface ListProps<RecordType extends RaRecord = any>
-    extends Omit<ListBaseProps<RecordType>, 'children'>,
+    extends Omit<ListBaseProps<RecordType>, 'children' | 'render'>,
         ListViewProps {}
 
 const defaultFilter = {};

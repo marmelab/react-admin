@@ -89,18 +89,21 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 
 | Prop           | Required | Type                                                                              | Default                          | Description                                                                         |
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`     | Required | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
+| `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
+| `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+| `children`     | Optional&nbsp;* | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
+| `render`     | Optional&nbsp;* | `(listContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and render elements      |
 | `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                       |
-| `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 | `source`       | Optional | `string`                                                                          | `id`                             | Target field carrying the relationship on the source record (usually 'id')          |
 | `storeKey`     | Optional | `string`                                                                          | -                                | The key to use to store the records selection state                                 |
-| `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+
+`*` You must provide either `children` or `render`.
 
 `<ReferenceManyField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
@@ -138,10 +141,10 @@ export const AuthorShow = () => (
 );
 ```
 
-Or [`<WithListContext>`](./WithListContext.md) to render the related records in a custom way:
+Alternatively, you can use [the `render` prop](#render) to render the related records in a custom way:
 
 ```jsx
-import { Show, SimpleShowLayout, TextField, ReferenceManyField, WithListContext, DateField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, ReferenceManyField, DateField } from 'react-admin';
 
 export const AuthorShow = () => (
   <Show>
@@ -149,15 +152,18 @@ export const AuthorShow = () => (
       <TextField source="first_name" />
       <TextField source="last_name" />
       <DateField label="Born" source="dob" />
-      <ReferenceManyField label="Books" reference="books" target="author_id">
-        <WithListContext render={({ data }) => (
+      <ReferenceManyField
+        label="Books"
+        reference="books"
+        target="author_id"
+        render={({ data }) => (
           <ul>
             {data.map(book => (
               <li key={book.id}>{book.title}</li>
             ))}
           </ul>
-        )} />
-      </ReferenceManyField>
+        )}
+      />
     </SimpleShowLayout>
   </Show>
 );
@@ -348,6 +354,35 @@ For instance, if you want to display the `books` of a given `author`, the `refer
     <DataTable.Col source="published_at" field={DateField} />
   </DataTable>
 </ReferenceManyField>
+```
+
+## `render`
+
+Alternatively to `children`, you can pass a `render` prop to `<ReferenceManyField>`. It will receive the [`ListContext`](./useListContext.md#return-value) as its argument, and should return a React node.
+
+This allows to inline the render logic for the list of related records.
+
+```jsx
+<ReferenceManyField
+    reference="books"
+    target="author_id"
+    render={({ isPending, error, data }) => {
+        if (isPending) {
+            return <p>Loading...</p>;
+        }
+
+        if (error) {
+            return <p className="error">{error.toString()}</p>;
+        }
+        return (
+            <p>
+                {data.map((author, index) => (
+                    <li key={index}>{author.name}</li>
+                ))}
+            </p>
+        );
+    }}
+/>
 ```
 
 ## `sort`

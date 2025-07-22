@@ -83,6 +83,12 @@ export const InfiniteList = <RecordType extends RaRecord = any>(
         name: PREFIX,
     });
 
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<InfiniteList> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         <InfiniteListBase<RecordType>
             debounce={debounce}
@@ -108,7 +114,7 @@ const defaultFilter = {};
 const defaultLoading = <Loading />;
 
 export interface InfiniteListProps<RecordType extends RaRecord = any>
-    extends Omit<InfiniteListBaseProps<RecordType>, 'children'>,
+    extends Omit<InfiniteListBaseProps<RecordType>, 'children' | 'render'>,
         ListViewProps {}
 
 const PREFIX = 'RaInfiniteList';

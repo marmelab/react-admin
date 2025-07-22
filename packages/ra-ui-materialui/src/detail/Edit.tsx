@@ -21,6 +21,8 @@ import { Loading } from '../layout';
  *
  * The <Edit> component accepts the following props:
  *
+ * - children: Component rendering  the Form Layout
+ * - render: Alternative to children. A function to render the Form Layout. Receives the edit context as its argument.
  * - actions
  * - aside
  * - component
@@ -63,7 +65,6 @@ export const Edit = <RecordType extends RaRecord = any>(
         name: PREFIX,
     });
 
-    useCheckMinimumRequiredProps('Edit', ['children'], props);
     const {
         resource,
         id,
@@ -76,6 +77,13 @@ export const Edit = <RecordType extends RaRecord = any>(
         loading = defaultLoading,
         ...rest
     } = props;
+
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<Edit> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         <EditBase<RecordType>
             resource={resource}
@@ -95,7 +103,7 @@ export const Edit = <RecordType extends RaRecord = any>(
 
 export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
     extends EditBaseProps<RecordType, ErrorType>,
-        Omit<EditViewProps, 'children'> {}
+        Omit<EditViewProps, 'children' | 'render'> {}
 
 const defaultLoading = <Loading />;
 

@@ -7,6 +7,7 @@ import {
     SortPayload,
     RaRecord,
     ReferenceOneFieldBase,
+    UseReferenceResult,
 } from 'ra-core';
 
 import { FieldProps } from './types';
@@ -37,6 +38,7 @@ export const ReferenceOneField = <
 
     const {
         children,
+        render,
         reference,
         source = 'id',
         target,
@@ -75,6 +77,7 @@ export const ReferenceOneField = <
             <ReferenceFieldView
                 reference={reference}
                 source={source}
+                render={render}
                 {...sanitizeFieldRestProps(rest)}
             >
                 {children}
@@ -88,6 +91,7 @@ export interface ReferenceOneFieldProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source' | 'emptyText'> {
     children?: ReactNode;
+    render?: (record: UseReferenceResult<ReferenceRecordType>) => ReactElement;
     reference: string;
     target: string;
     sort?: SortPayload;

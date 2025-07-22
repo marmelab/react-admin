@@ -286,3 +286,30 @@ export const FullApp = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const WithRenderProp = () => (
+    <Wrapper>
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            render={({ error, isPending, data }) => {
+                if (isPending) {
+                    return <p>Loading...</p>;
+                }
+
+                if (error) {
+                    return <p style={{ color: 'red' }}>{error.message}</p>;
+                }
+                return (
+                    <>
+                        {data?.map((datum, index) => (
+                            <li role="listitem" key={index}>
+                                {datum.title}
+                            </li>
+                        ))}
+                    </>
+                );
+            }}
+        />
+    </Wrapper>
+);

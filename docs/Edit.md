@@ -63,22 +63,27 @@ export default App;
 
 You can customize the `<Edit>` component using the following props:
 
-* [`actions`](#actions): override the actions toolbar with a custom component
-* [`aside`](#aside): component to render aside to the main content
-* `children`: the components that renders the form
-* `className`: passed to the root component
-* [`component`](#component): override the root component
-* [`disableAuthentication`](#disableauthentication): disable the authentication check
-* [`emptyWhileLoading`](#emptywhileloading): Set to `true` to return `null` while the edit is loading.
-* [`id`](#id): the id of the record to edit
-* [`mutationMode`](#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
-* [`mutationOptions`](#mutationoptions): options for the `dataProvider.update()` call
-* [`queryOptions`](#queryoptions): options for the `dataProvider.getOne()` call
-* [`redirect`](#redirect): change the redirect location after successful creation
-* [`resource`](#resource): override the name of the resource to create
-* [`sx`](#sx-css-api): Override the styles
-* [`title`](#title): override the page title
-* [`transform`](#transform): transform the form data before calling `dataProvider.update()`
+| Prop                  | Required  | Type                | Default      | Description                                                                                   |
+|-----------------------|-----------|---------------------|--------------|-----------------------------------------------------------------------------------------------|
+| `children`            | Optional&nbsp;*  | `ReactNode`         | -            | The components that render the form                                                            |
+| `render`              | Optional&nbsp;* | `function`          | -            | Function to render the form, receives the editContext as argument                              |
+| `actions`             | Optional  | `ReactNode`         | -            | Override the actions toolbar with a custom component                                           |
+| `aside`               | Optional  | `ReactNode`         | -            | Component to render aside to the main content                                                  |
+| `className`           | Optional  | `string`            | -            | Passed to the root component                                                                  |
+| `component`           | Optional  | `elementType`/`string` | `Card`     | Override the root component                                                                   |
+| `disableAuthentication`| Optional | `boolean`           | `false`      | Disable the authentication check                                                              |
+| `emptyWhileLoading`   | Optional  | `boolean`           | `false`      | Set to `true` to return `null` while the edit is loading                                      |
+| `id`                  | Optional  | `string`/`number`   | -            | The id of the record to edit                                                                  |
+| `mutationMode`        | Optional  | `'undoable' \| 'optimistic' \| 'pessimistic'` | `'undoable'` | Switch to optimistic or pessimistic mutations                                                 |
+| `mutationOptions`     | Optional  | `object`            | -            | Options for the `dataProvider.update()` call                                                  |
+| `queryOptions`        | Optional  | `object`            | -            | Options for the `dataProvider.getOne()` call                                                  |
+| `redirect`            | Optional  | `'list' \| 'show' \| false \| function` | `'list'` | Change the redirect location after successful update                                           |
+| `resource`            | Optional  | `string`            | -            | Override the name of the resource to edit                                                     |
+| `sx`                  | Optional  | `object`            | -            | Override the styles                                                                           |
+| `title`               | Optional  | `string`/`ReactNode`/`false` | -      | Override the page title                                                                       |
+| `transform`           | Optional  | `function`          | -            | Transform the form data before calling `dataProvider.update()`                                |
+
+`*` You must provide either `children` or `render`.
 
 ## `actions`
 
@@ -107,11 +112,11 @@ export const PostEdit = () => (
 
 Common buttons used as Edit actions are:
 
-- [`<CreateButton>`](./Buttons.md#createbutton) to create a new record
-- [`<ListButton>`](./Buttons.md#listbutton) to go back to the list
-- [`<ShowButton>`](./Buttons.md#showbutton) to go to the show page
-- [`<UpdateButton>`](./UpdateButton.md) to trigger a change in the data
-- [`<CloneButton>`](./Buttons.md#clonebutton) to clone the current record
+* [`<CreateButton>`](./Buttons.md#createbutton) to create a new record
+* [`<ListButton>`](./Buttons.md#listbutton) to go back to the list
+* [`<ShowButton>`](./Buttons.md#showbutton) to go to the show page
+* [`<UpdateButton>`](./UpdateButton.md) to trigger a change in the data
+* [`<CloneButton>`](./Buttons.md#clonebutton) to clone the current record
 
 And you can add your own button, leveraging the `useRecordContext()` hook:
 
@@ -150,6 +155,7 @@ const ResetViewsButton = () => {
 You may want to display additional information on the side of the form. Use the `aside` prop for that, passing the component of your choice:
 
 {% raw %}
+
 ```jsx
 const Aside = () => (
     <Box sx={{ width: '200px', margin: '1em' }}>
@@ -166,11 +172,13 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
 
 The aside component renders in the same `RecordContext` as the `Edit` child component. That means you can display non-editable details of the current `record` in the aside component:
 
 {% raw %}
+
 ```jsx
 const Aside = () => {
     const record = useRecordContext();
@@ -186,9 +194,39 @@ const Aside = () => {
     );
 };
 ```
+
 {% endraw %}
 
 **Tip**: Always test the record is defined before using it, as react-admin starts rendering the UI before the `dataProvider.getOne()` call is over.
+
+## `children`
+
+The `<Edit>` component will render its children inside a `EditContext` provider, which the `save` function. Children can be any React node, but are usually a form component like [`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or the headless [`<Form>`](./Form.md) component.
+
+```tsx
+import { 
+    Edit,
+    DateInput,
+    SimpleForm,
+    TextInput,
+    required
+} from 'react-admin';
+import RichTextInput from 'ra-input-rich-text';
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput disabled label="Id" source="id" />
+            <TextInput source="title" validate={required()} />
+            <TextInput multiline source="teaser" validate={required()} />
+            <RichTextInput source="body" validate={required()} />
+            <DateInput label="Publication date" source="published_at" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+**Tip**: Alternatively to `children`, you can pass a [`render`](#render) prop to `<Edit>`.
 
 ## `component`
 
@@ -295,11 +333,11 @@ const PostEdit = () => (
 
 The `<Edit>` view exposes two buttons, Save and Delete, which perform "mutations" (i.e. they alter the data). React-admin offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
 
-- `pessimistic`: The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed. 
-- `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown. 
-- `undoable` (default): The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
+* `pessimistic`: The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed.
+* `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
+* `undoable` (default): The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
 
-By default, pages using `<Edit>` use the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes user interactions more reactive. 
+By default, pages using `<Edit>` use the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes user interactions more reactive.
 
 You can change this default by setting the `mutationMode` prop - and this affects both the Save and Delete buttons. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
 
@@ -321,11 +359,12 @@ const PostEdit = () => (
 );
 ```
 
-**Tip**: When using any other mode than `undoable`, the `<DeleteButton>` displays a confirmation dialog before calling the dataProvider. 
+**Tip**: When using any other mode than `undoable`, the `<DeleteButton>` displays a confirmation dialog before calling the dataProvider.
 
 **Tip**: If you want a [confirmation dialog](./Confirm.md) for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](./SimpleForm.md#toolbar) to the form, as follows:
 
 {% raw %}
+
 ```jsx
 import * as React from "react";
 import {
@@ -351,6 +390,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
 
 ## `mutationOptions`
@@ -358,6 +398,7 @@ const PostEdit = () => (
 `<Edit>` calls `dataProvider.update()` via react-query's `useMutation` hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
 
 {% raw %}
+
 ```jsx
 import { Edit, SimpleForm } from 'react-admin';
 
@@ -369,6 +410,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
 
 You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
@@ -376,6 +418,7 @@ You can also use `mutationOptions` to override success or error side effects, by
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
@@ -400,6 +443,7 @@ const PostEdit = () => {
     );
 }
 ```
+
 {% endraw %}
 
 The default `onSuccess` function is:
@@ -416,9 +460,10 @@ The default `onSuccess` function is:
 
 **Tip**: If you just want to customize the redirect behavior, you can use [the `redirect` prop](#redirect) instead.
 
-**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#update)). You can use that response in the success side effects: 
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#update)). You can use that response in the success side effects:
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
@@ -443,6 +488,7 @@ const PostEdit = () => {
     );
 }
 ```
+
 {% endraw %}
 
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on [the `<SaveButton>` component](./SaveButton.md), too.
@@ -450,6 +496,7 @@ const PostEdit = () => {
 Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows a notification error.
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
@@ -474,6 +521,7 @@ const PostEdit = () => {
     );
 }
 ```
+
 {% endraw %}
 
 The `onError` function receives the error from the `dataProvider.update()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
@@ -498,6 +546,7 @@ The default `onError` function is:
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
 
 {% raw %}
+
 ```jsx
 import { Edit, SimpleForm } from 'react-admin';
 
@@ -509,11 +558,13 @@ export const PostShow = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
 
 You can also use `queryOptions` to force a refetch on reconnect:
 
 {% raw %}
+
 ```jsx
 const PostEdit = () => (
     <Edit queryOptions={{ refetchOnReconnect: true }}>
@@ -521,6 +572,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
 
 Refer to the [useQuery documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) in the react-query website for a list of the possible options.
@@ -531,10 +583,10 @@ By default, submitting the form in the `<Edit>` view redirects to the `<List>` v
 
 You can customize the redirection by setting the `redirect` prop to one of the following values:
 
-- `'list'`: redirect to the List view (the default)
-- `'show'`: redirect to the Show view
-- `false`: do not redirect
-- A function `(resource, id, data) => string` to redirect to different targets depending on the record
+* `'list'`: redirect to the List view (the default)
+* `'show'`: redirect to the Show view
+* `false`: do not redirect
+* A function `(resource, id, data) => string` to redirect to different targets depending on the record
 
 ```jsx
 const PostEdit = () => (
@@ -544,7 +596,42 @@ const PostEdit = () => (
 );
 ```
 
-Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case. 
+Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case.
+
+## `render`
+
+Alternatively to `children`, you can use a `render` prop. It will receive the [`EditContext`](./useEditContext.md#return-value) as its argument, and should return a React node.
+
+This allows to inline the render logic for the edition page.
+
+{% raw %}
+
+```tsx
+export const PostEdit = () => (
+    <Edit
+        render={({ isPending, record, save, saving }) => (
+            <div>
+                <h1>Edit Post</h1>
+                {!isPending && (
+                    <form onSubmit={save}>
+                        <input type="text" name="title" defaultValue={record.title} required />
+                        <textarea name="teaser" defaultValue={record.teaser} rows={3} />
+                        <textarea name="body" defaultValue={record.body} rows={5} />
+                        <input type="date" name="published_at" defaultValue={redord.published_at} />
+                        <button type="submit" disabled={saving}>
+                            {saving ? 'Saving...' : 'Save'}
+                        </button>
+                    </form>
+                )}
+            </div>
+        )}
+    />
+);
+```
+
+{% endraw %}
+
+**Tip**: When receiving a `render` prop, the `<Edit>` component will ignore the `children` prop.
 
 ## `resource`
 
@@ -732,10 +819,11 @@ As an alternative, you can clean up empty values at the input level, using [the 
 
 You can pass a custom `meta` to the `dataProvider` call, using either `queryOptions`, or `mutationOptions`:
 
-- Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
-- Use [the `mutationOptions` prop](#mutationoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
+* Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getOne()` call.
+* Use [the `mutationOptions` prop](#mutationoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
 
 {% raw %}
+
 ```jsx
 import { Edit, SimpleForm } from 'react-admin';
 
@@ -747,18 +835,19 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
 
 ## Changing The Notification Message
 
 ![Edit notification](./img/EditSuccess.png)
 
-Once the `dataProvider.update()` request returns successfully, users see a generic notification ("Element updated"). 
+Once the `dataProvider.update()` request returns successfully, users see a generic notification ("Element updated").
 
 `<Edit>` uses two successive translation keys to build the success message:
 
-- `resources.{resource}.notifications.updated` as a first choice
-- `ra.notification.updated` as a fallback
+* `resources.{resource}.notifications.updated` as a first choice
+* `ra.notification.updated` as a fallback
 
 To customize the notification message, you can set custom translation for these keys in your i18nProvider.
 
@@ -780,6 +869,7 @@ const englishMessages = {
 Alternately, you can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { useNotify, useRedirect, Edit, SimpleForm } from 'react-admin';
@@ -802,6 +892,7 @@ const PostEdit = () => {
     );
 }
 ```
+
 {% endraw %}
 
 **Tip**: In `optimistic` and `undoable` mutation modes, react-admin calls the `onSuccess` callback method with no argument. In `pessimistic` mode, it calls it with the response returned by the dataProvider as argument.
@@ -819,6 +910,7 @@ By default, the `<Edit>` view starts with the current `record`. However, if the 
 That means that if you want to create a link to an edition view, modifying immediately *some* values, all you have to do is to set the `state` prop of the `<EditButton>`:
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { EditButton, DataTable, List } from 'react-admin';
@@ -842,11 +934,13 @@ export default PostList = () => (
     </List>
 )
 ```
+
 {% endraw %}
 
 **Tip**: The `<Edit>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `ApproveButton` could also be written as:
 
 {% raw %}
+
 ```jsx
 import * as React from 'react';
 import { EditButton } from 'react-admin';
@@ -861,13 +955,14 @@ const ApproveButton = () => {
     );
 };
 ```
+
 {% endraw %}
 
 Should you use the location `state` or the location `search`? The latter modifies the URL, so it's only necessary if you want to build cross-application links (e.g. from one admin to the other). In general, using the location `state` is a safe bet.
 
 ## Editing A Record In A Modal
 
-`<Edit>` is designed to be a page component, passed to the `edit` prop of the `<Resource>` component. But you may want to let users edit a record from another page. 
+`<Edit>` is designed to be a page component, passed to the `edit` prop of the `<Resource>` component. But you may want to let users edit a record from another page.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/edit-dialog.mp4" type="video/mp4" />
@@ -946,7 +1041,7 @@ export default OrderEdit;
 
 ## Navigating Through Records
 
-[`<PrevNextButtons>`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view. 
+[`<PrevNextButtons>`](./PrevNextButtons.md) renders a navigation with two buttons, allowing users to navigate through records without leaving an `<Edit>` view.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/prev-next-buttons-edit.webm" type="video/webm" />
@@ -974,7 +1069,7 @@ export const PostEdit = () => (
 
 ## Controlled Mode
 
-`<Edit>` deduces the resource and the record id from the URL. This is fine for an edition page, but if you need to let users edit records from another page, you probably want to define the edit parameters yourself. 
+`<Edit>` deduces the resource and the record id from the URL. This is fine for an edition page, but if you need to let users edit records from another page, you probably want to define the edit parameters yourself.
 
 In that case, use the [`resource`](#resource) and [`id`](#id) props to set the edit parameters regardless of the URL.
 

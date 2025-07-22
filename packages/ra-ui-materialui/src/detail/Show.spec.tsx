@@ -25,6 +25,7 @@ import {
     TitleFalse,
     TitleElement,
     Themed,
+    WithRenderProp,
 } from './Show.stories';
 import { Show } from './Show';
 
@@ -132,9 +133,16 @@ describe('<Show />', () => {
 
     it('should be customized by a theme', async () => {
         render(<Themed />);
-        expect(screen.queryByTestId('themed-view').classList).toContain(
+        expect(screen.queryByTestId('themed-view')?.classList).toContain(
             'custom-class'
         );
+    });
+
+    it('should allow to use render prop instead of children', async () => {
+        render(<WithRenderProp />);
+        await waitFor(() => {
+            expect(screen.queryByText('War and Peace')).not.toBeNull();
+        });
     });
 
     describe('title', () => {

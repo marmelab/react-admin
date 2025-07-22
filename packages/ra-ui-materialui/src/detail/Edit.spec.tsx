@@ -29,6 +29,7 @@ import {
     NotificationTranslated,
     EmptyWhileLoading,
     Themed,
+    WithRenderProp,
 } from './Edit.stories';
 
 describe('<Edit />', () => {
@@ -337,6 +338,13 @@ describe('<Edit />', () => {
                 // side effects applied
                 expect(onSuccess).toHaveBeenCalledTimes(1);
             });
+        });
+    });
+
+    it('should allow to use render prop instead of children', async () => {
+        render(<WithRenderProp />);
+        await waitFor(() => {
+            expect(screen.queryAllByText('War and Peace')).toHaveLength(1);
         });
     });
 

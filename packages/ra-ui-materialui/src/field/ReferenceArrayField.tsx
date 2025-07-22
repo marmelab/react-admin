@@ -85,13 +85,15 @@ export const ReferenceArrayField = <
         props: inProps,
         name: PREFIX,
     });
-    const { pagination, children, className, sx, ...controllerProps } = props;
+    const { pagination, children, className, sx, render, ...controllerProps } =
+        props;
     return (
         <ReferenceArrayFieldBase {...controllerProps}>
             <PureReferenceArrayFieldView
                 pagination={pagination}
                 className={className}
                 sx={sx}
+                render={render}
             >
                 {children}
             </PureReferenceArrayFieldView>
@@ -110,6 +112,7 @@ export interface ReferenceArrayFieldProps<
 export interface ReferenceArrayFieldViewProps {
     pagination?: React.ReactElement;
     children?: React.ReactNode;
+    render?: (props: ListControllerProps) => React.ReactNode;
     className?: string;
     sx?: SxProps<Theme>;
 }
@@ -117,8 +120,10 @@ export interface ReferenceArrayFieldViewProps {
 export const ReferenceArrayFieldView = (
     props: ReferenceArrayFieldViewProps
 ) => {
-    const { children, pagination, className, sx } = props;
-    const { isPending, total } = useListContext();
+    const { children, render, pagination, className, sx } = props;
+    const listContext = useListContext();
+
+    const { isPending, total } = listContext;
 
     return (
         <Root className={className} sx={sx}>
@@ -128,7 +133,9 @@ export const ReferenceArrayFieldView = (
                 />
             ) : (
                 <span>
-                    {children || <SingleFieldList />}
+                    {(render ? render(listContext) : children) || (
+                        <SingleFieldList />
+                    )}
                     {pagination && total !== undefined ? pagination : null}
                 </span>
             )}
