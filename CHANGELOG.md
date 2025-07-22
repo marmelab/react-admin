@@ -11,6 +11,12 @@
 * Add support for `empty` in Reference fields ([#10817](https://github.com/marmelab/react-admin/pull/10817)) ([fzaninotto](https://github.com/fzaninotto))
 * Add `<ReferenceManyCountBase>` ([#10808](https://github.com/marmelab/react-admin/pull/10808)) ([fzaninotto](https://github.com/fzaninotto))
 * Add support for keyboard shortcuts to `<MenuItemLink>` ([#10790](https://github.com/marmelab/react-admin/pull/10790)) ([djhi](https://github.com/djhi))
+* Fix `useEditController` does not pass all variables to useUpdate ([#10839](https://github.com/marmelab/react-admin/pull/10839)) by ([djhi](https://github.com/djhi))
+* Fix typo in `<Create>` documentation ([#10840](https://github.com/marmelab/react-admin/pull/10840)) by ([rkfg](https://github.com/rkfg))
+* [Doc] Backport RBAC's doc ([#10846](https://github.com/marmelab/react-admin/pull/10846)) by ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Backport DatagridAg's doc update ([#10845](https://github.com/marmelab/react-admin/pull/10845)) by ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Backport Tree's doc ([#10847](https://github.com/marmelab/react-admin/pull/10847)) by ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [chore] Fix release script milestone description ([#10849](https://github.com/marmelab/react-admin/pull/10849)) by ([slax57](https://github.com/slax57))
 
 ## 5.9.2
 
