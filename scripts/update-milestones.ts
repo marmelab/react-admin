@@ -115,7 +115,7 @@ const main = async () => {
                 title: next_patch_version,
                 state: 'open',
                 due_on: formatISO(addWeeks(new Date(), 1)),
-                description: 'this is a test milestone, do not use',
+                description: 'patch version, for bug fixes',
             });
         }
     }
@@ -152,7 +152,7 @@ const main = async () => {
                 title: next_minor_version,
                 state: 'open',
                 due_on: formatISO(addMonths(new Date(), 1)),
-                description: 'this is a test milestone, do not use',
+                description: 'minor version, for new features',
             });
         }
     }
