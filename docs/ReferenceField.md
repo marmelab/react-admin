@@ -74,39 +74,30 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | `source`    | Required | `string`            | -        | Name of the property to display |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
-| `children`  | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
-| `render`  | Optional | (referenceFieldContext) => `ReactNode`         | -        | A function used to render the referenced record, receive the reference field context as its argument |
+| `children`  | Optional&nbsp;* | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
+| `render`  | Optional&nbsp;* | (referenceFieldContext) => `ReactNode`         | -        | A function used to render the referenced record, receive the reference field context as its argument |
 | `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
+`*` You must provide either `children` or `render`.
+
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-## `render`
+## `children`
 
-Alternatively you can pass a render prop instead of children to be able to inline the rendering. The render function will then receive the reference field context directly.
+By default, `<ReferenceField>` renders the `recordRepresentation` of the referenced record (the `id` field by default). You can customize this by passing one or more child components. Since `<referenceField>` creates a `RecordContext` for the referenced record, you can use any field component as a child, such as `<TextField>`, `<DateField>`, `<FunctionField>`, etc.
 
-```jsx
-export const MyReferenceField = () => (
-    <ReferenceField source="user_id" reference="users"  render={({ error, isPending, referenceRecord }) => {
-        if (isPending) {
-            return <p>Loading...</p>;
-        }
-
-        if (error) {
-            return (
-                <p className="error">
-                    {error.message}
-                </p>
-            );
-        }
-        return <p>{referenceRecord.name}</p>;
-    }} />
-);
+```tsx
+<ReferenceField source="user_id" reference="users">
+    <TextField source="first_name" />
+    <TextField source="last_name" />
+</ReferenceField>
 ```
 
+Alternatively, you can use [the `render` prop](#render) to render the referenced record in a custom way. 
 ## `empty`
 
 `<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `empty` prop.
@@ -207,6 +198,28 @@ For instance, if the `posts` resource has a `user_id` field, set the `reference`
 
 ```jsx
 <ReferenceField source="user_id" reference="users" />
+```
+
+## `render`
+
+Alternatively to `children`, you can pass a `render` prop to `<ReferenceField>`. It will receive the `ReferenceFieldContext` as its argument, and should return a React node.
+
+This allows to inline the render logic for the list of related records.
+
+```jsx
+<ReferenceField
+    source="user_id"
+    reference="users"
+    render={({ error, isPending, referenceRecord }) => {
+        if (isPending) {
+            return <p>Loading...</p>;
+        }
+        if (error) {
+            return <p className="error">{error.message}</p>;
+        }
+        return <p>{referenceRecord.name}</p>;
+    }}
+/>
 ```
 
 ## `sortBy`
