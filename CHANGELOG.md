@@ -2,7 +2,15 @@
 
 ## 5.10.0
 
-- Upgraded `@tanstack/react-query` to `5.83.0`. You might have duplicate versions if you already had it in your dependencies. Should you have an error mentioning the `QueryContext`, make sure you only have one version in your package manager lock file.
+* Add filter input to `<ColumnsButton>` when there are many columns ([#10848](https://github.com/marmelab/react-admin/pull/10848)) ([slax57](https://github.com/slax57))
+* Update `react-query` dependency to require at least v5.83 ([#10838](https://github.com/marmelab/react-admin/pull/10838)) ([djhi](https://github.com/djhi)). You might have duplicate versions if you already had it in your dependencies. Should you have an error mentioning the `QueryContext`, make sure you only have one version in your package manager lock file.
+* Add render prop page and reference MUI components ([#10837](https://github.com/marmelab/react-admin/pull/10837)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Introduce `<ReferenceArrayInputBase>` ([#10833](https://github.com/marmelab/react-admin/pull/10833)) ([djhi](https://github.com/djhi))
+* Add render prop to page and reference base components ([#10832](https://github.com/marmelab/react-admin/pull/10832)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Add disable support for `<RadioButtonGroupInput>` and `<CheckboxGroupInput>` choices ([#10821](https://github.com/marmelab/react-admin/pull/10821)) ([WiXSL](https://github.com/WiXSL))
+* Add support for `empty` in Reference fields ([#10817](https://github.com/marmelab/react-admin/pull/10817)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<ReferenceManyCountBase>` ([#10808](https://github.com/marmelab/react-admin/pull/10808)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for keyboard shortcuts to `<MenuItemLink>` ([#10790](https://github.com/marmelab/react-admin/pull/10790)) ([djhi](https://github.com/djhi))
 
 ## 5.9.2
 
