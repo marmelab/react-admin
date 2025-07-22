@@ -77,6 +77,7 @@ export const ReferenceOneField = <
             <ReferenceFieldView
                 reference={reference}
                 source={source}
+                render={render}
                 {...sanitizeFieldRestProps(rest)}
             >
                 {children}
