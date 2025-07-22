@@ -1,20 +1,23 @@
 // only install the mocks once
 // this is necessary with react@18 in StrictMode
 let fakeServer: any;
+import { http } from 'msw';
+import { setupWorker } from 'msw/browser';
 
-export default (type: string) => {
+export default async (type: string) => {
     if (!fakeServer) {
         switch (type) {
             case 'graphql':
-                fakeServer = import('./graphql').then(factory =>
+                fakeServer = await import('./graphql').then(factory =>
                     factory.default()
                 );
                 break;
             default:
-                fakeServer = import('./rest').then(factory =>
+                fakeServer = await import('./rest').then(factory =>
                     factory.default()
                 );
         }
     }
-    return fakeServer;
+    const worker = setupWorker(http.all(/http:\/\/localhost:4000/, fakeServer));
+    return worker;
 };

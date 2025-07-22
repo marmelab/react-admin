@@ -1,29 +1,21 @@
 import JsonGraphqlServer from 'json-graphql-server';
 import generateData from 'data-generator-retail';
-import fetchMock from 'fetch-mock';
+import { HttpResponse, HttpResponseResolver } from 'msw';
 
-export default () => {
+export default (): HttpResponseResolver => {
     const data = generateData();
-    const restServer = JsonGraphqlServer({ data });
-    const handler = restServer.getHandler();
-    const handlerWithLogs = (url: string, opts: any) =>
-        handler(url, opts).then((res: any) => {
-            const req = JSON.parse(opts.body);
-            const parsedRes = JSON.parse(res.body);
-            console.groupCollapsed(`GraphQL ${req.operationName}`);
-            console.group('request');
-            console.log('operationName', req.operationName);
-            console.log(req.query);
-            console.log('variables', req.variables);
-            console.groupEnd();
-            console.group('response');
-            console.log('data', parsedRes.data);
-            console.log('errors', parsedRes.errors);
-            console.groupEnd();
-            console.groupEnd();
-            return res;
+    const server = JsonGraphqlServer({ data });
+    const graphqlHandler = server.getHandler();
+
+    // Temporary workaround for MSW's graphql handler because json-graphql-server is not yet compatible with MSW
+    const handler: HttpResponseResolver = async ({ request }) => {
+        const body = await request.text();
+        const result = await graphqlHandler({
+            requestBody: body,
         });
 
-    fetchMock.mock('begin:http://localhost:4000', handlerWithLogs);
-    return () => fetchMock.restore();
+        return HttpResponse.json(JSON.parse(result.body));
+    };
+
+    return handler;
 };
