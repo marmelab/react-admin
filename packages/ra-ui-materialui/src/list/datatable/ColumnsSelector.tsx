@@ -12,7 +12,7 @@ import { Box, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { Button } from '../../button';
-import { ResettableTextField } from '../../input';
+import { ResettableTextField } from '../../input/ResettableTextField';
 
 /**
  * Render DataTable.Col elements in the ColumnsButton selector using a React Portal.
