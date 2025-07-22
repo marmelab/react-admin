@@ -62,11 +62,15 @@ export const useCanAccess = <
         );
     }
     const record = useRecordContext<RecordType>(params);
-
+    const { record: _record, ...restParams } = params;
     const authProviderHasCanAccess = !!authProvider?.canAccess;
 
     const queryResult = useQuery({
-        queryKey: ['auth', 'canAccess', { ...params, record, resource }],
+        queryKey: [
+            'auth',
+            'canAccess',
+            { ...restParams, recordId: record?.id, resource },
+        ],
         queryFn: async ({ signal }) => {
             if (!authProvider || !authProvider.canAccess) {
                 return true;

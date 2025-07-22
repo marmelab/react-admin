@@ -1,14 +1,58 @@
 import * as React from 'react';
-import { Card, CardHeader, CardContent } from '@mui/material';
-import * as echarts from 'echarts';
-import { useTranslate } from 'react-admin';
+import * as echarts from 'echarts/core';
+// Import bar charts, all suffixed with Chart
+import { LineChart } from 'echarts/charts';
+
+// Import the title, tooltip, rectangular coordinate system, dataset and transform components
+import {
+    TitleComponent,
+    TooltipComponent,
+    GridComponent,
+    DatasetComponent,
+    TransformComponent,
+} from 'echarts/components';
+// Features like Universal Transition and Label Layout
+import { LabelLayout, UniversalTransition } from 'echarts/features';
+
+// Import the Canvas renderer
+// Note that including the CanvasRenderer or SVGRenderer is a required step
+import { SVGRenderer } from 'echarts/renderers';
+
 import { format, subDays, addDays } from 'date-fns';
 
 import { Order } from '../types';
+import type {
+    DatasetComponentOption,
+    GridComponentOption,
+    LineSeriesOption,
+    TitleComponentOption,
+    TooltipComponentOption,
+} from 'echarts';
 
 const lastDay = new Date();
 const lastMonthDays = Array.from({ length: 30 }, (_, i) => subDays(lastDay, i));
 const aMonthAgo = subDays(new Date(), 30);
+
+// Create an Option type with only the required components and charts via ComposeOption
+type ECOption = echarts.ComposeOption<
+    | LineSeriesOption
+    | TitleComponentOption
+    | TooltipComponentOption
+    | GridComponentOption
+    | DatasetComponentOption
+>;
+
+echarts.use([
+    TitleComponent,
+    TooltipComponent,
+    GridComponent,
+    DatasetComponent,
+    TransformComponent,
+    LineChart,
+    LabelLayout,
+    UniversalTransition,
+    SVGRenderer,
+]);
 
 const dateFormatter = (date: number): string =>
     new Date(date).toLocaleDateString();
@@ -38,7 +82,6 @@ const getRevenuePerDay = (orders: Order[]): TotalByDay[] => {
 
 const OrderChart = (props: { orders?: Order[] }) => {
     const { orders } = props;
-    const translate = useTranslate();
     const chartRef = React.useRef<HTMLDivElement>(null);
     const chartInstance = React.useRef<echarts.ECharts | null>(null);
 
@@ -53,7 +96,7 @@ const OrderChart = (props: { orders?: Order[] }) => {
             const revenueData = getRevenuePerDay(orders);
 
             // Configure the chart
-            const option = {
+            const option: ECOption = {
                 xAxis: {
                     type: 'time',
                     min: addDays(aMonthAgo, 1).getTime(),
@@ -90,8 +133,7 @@ const OrderChart = (props: { orders?: Order[] }) => {
                     axisPointer: {
                         type: 'line',
                         lineStyle: {
-                            type: 'dashed',
-                            dashArray: [3, 3],
+                            type: [3, 3],
                         },
                     },
                 },
@@ -156,14 +198,7 @@ const OrderChart = (props: { orders?: Order[] }) => {
         };
     }, [orders]);
 
-    return (
-        <Card>
-            <CardHeader title={translate('pos.dashboard.month_history')} />
-            <CardContent>
-                <div ref={chartRef} style={{ width: '100%', height: 300 }} />
-            </CardContent>
-        </Card>
-    );
+    return <div ref={chartRef} style={{ width: '100%', height: 300 }} />;
 };
 
 interface TotalByDay {

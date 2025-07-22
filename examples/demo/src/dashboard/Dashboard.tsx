@@ -1,6 +1,13 @@
-import React, { useMemo, CSSProperties } from 'react';
-import { useGetList } from 'react-admin';
-import { useMediaQuery, Theme } from '@mui/material';
+import React, { useMemo, CSSProperties, Suspense } from 'react';
+import { Translate, useGetList } from 'react-admin';
+import {
+    useMediaQuery,
+    Theme,
+    Skeleton,
+    Card,
+    CardHeader,
+    CardContent,
+} from '@mui/material';
 import { subDays, startOfDay } from 'date-fns';
 
 import Welcome from './Welcome';
@@ -9,7 +16,6 @@ import NbNewOrders from './NbNewOrders';
 import PendingOrders from './PendingOrders';
 import PendingReviews from './PendingReviews';
 import NewCustomers from './NewCustomers';
-import OrderChart from './OrderChart';
 
 import { Order } from '../types';
 
@@ -36,6 +42,8 @@ const styles = {
 
 const Spacer = () => <span style={{ width: '1em' }} />;
 const VerticalSpacer = () => <span style={{ height: '1em' }} />;
+
+const OrderChart = React.lazy(() => import('./OrderChart'));
 
 const Dashboard = () => {
     const isXSmall = useMediaQuery((theme: Theme) =>
@@ -109,7 +117,18 @@ const Dashboard = () => {
                 <NbNewOrders value={nbNewOrders} />
             </div>
             <div style={styles.singleCol}>
-                <OrderChart orders={recentOrders} />
+                <Card>
+                    <CardHeader
+                        title={
+                            <Translate i18nKey="pos.dashboard.month_history" />
+                        }
+                    />
+                    <CardContent>
+                        <Suspense fallback={<Skeleton height={300} />}>
+                            <OrderChart orders={recentOrders} />
+                        </Suspense>
+                    </CardContent>
+                </Card>
             </div>
             <div style={styles.singleCol}>
                 <PendingOrders orders={pendingOrders} />
@@ -126,7 +145,18 @@ const Dashboard = () => {
                         <NbNewOrders value={nbNewOrders} />
                     </div>
                     <div style={styles.singleCol}>
-                        <OrderChart orders={recentOrders} />
+                        <Card>
+                            <CardHeader
+                                title={
+                                    <Translate i18nKey="pos.dashboard.month_history" />
+                                }
+                            />
+                            <CardContent>
+                                <Suspense fallback={<Skeleton height={300} />}>
+                                    <OrderChart orders={recentOrders} />
+                                </Suspense>
+                            </CardContent>
+                        </Card>
                     </div>
                     <div style={styles.singleCol}>
                         <PendingOrders orders={pendingOrders} />

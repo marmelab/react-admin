@@ -3,12 +3,20 @@ import { useState, useCallback, ReactElement } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
-import { useReferenceInputController } from './useReferenceInputController';
+import {
+    useReferenceInputController,
+    UseReferenceInputControllerParams,
+} from './useReferenceInputController';
 import { CoreAdminContext } from '../../core';
-import { Form, useInput } from '../../form';
+import { ChoicesContextValue, Form, useInput } from '../../form';
 import { testDataProvider } from '../../dataProvider';
+import { SortPayload } from '../../types';
 
-const ReferenceInputController = props => {
+const ReferenceInputController = (
+    props: UseReferenceInputControllerParams & {
+        children: (options: ChoicesContextValue) => React.ReactNode;
+    }
+) => {
     const { children, ...rest } = props;
     const inputProps = useInput({
         ...rest,
@@ -160,7 +168,6 @@ describe('useReferenceInputController', () => {
                 <Form defaultValues={{ post_id: 1 }}>
                     <ReferenceInputController
                         {...defaultProps}
-                        loading
                         sort={{ field: 'title', order: 'ASC' }}
                     >
                         {children}
@@ -210,7 +217,10 @@ describe('useReferenceInputController', () => {
     it('should refetch reference getList when its props change', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         const Component = () => {
-            const [sort, setSort] = useState({ field: 'title', order: 'ASC' });
+            const [sort, setSort] = useState<SortPayload>({
+                field: 'title',
+                order: 'ASC',
+            });
             const handleClick = useCallback(
                 () => setSort({ field: 'body', order: 'DESC' }),
                 [setSort]

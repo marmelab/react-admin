@@ -228,7 +228,7 @@ describe('<SelectArrayInput />', () => {
         expect(screen.queryByText('Programming')).not.toBeNull();
     });
 
-    it('should render disable choices marked so', () => {
+    it('should render disable choices marked as so', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
@@ -239,6 +239,37 @@ describe('<SelectArrayInput />', () => {
                                 { id: 'ang', name: 'Angular' },
                                 { id: 'rea', name: 'React', disabled: true },
                             ]}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.categories')
+        );
+        const option1 = screen.getByText('Angular');
+        expect(option1.getAttribute('aria-disabled')).toBeNull();
+
+        const option2 = screen.getByText('React');
+        expect(option2.getAttribute('aria-disabled')).toEqual('true');
+    });
+
+    it('should render disabled choices marked as so by disableValue prop', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectArrayInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 'ang', name: 'Angular' },
+                                {
+                                    id: 'rea',
+                                    name: 'React',
+                                    not_available: true,
+                                },
+                            ]}
+                            disableValue="not_available"
                         />
                     </SimpleForm>
                 </ResourceContextProvider>

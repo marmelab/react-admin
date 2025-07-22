@@ -76,7 +76,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -118,7 +120,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -132,7 +136,6 @@ describe('EditBase', () => {
             getOne: () =>
                 // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            // @ts-ignore
             update: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
@@ -154,7 +157,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -166,7 +171,6 @@ describe('EditBase', () => {
             getOne: () =>
                 // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            // @ts-ignore
             update: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
@@ -190,7 +194,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );

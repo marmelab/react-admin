@@ -4319,10 +4319,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-devtools@npm:5.47.0":
+  version: 5.47.0
+  resolution: "@tanstack/query-devtools@npm:5.47.0"
+  checksum: b6223395794d08f96d57395c0dcdfbc7cc73c311e82f1a7a13b8685ad8f0e4f10b537df46f7e7e4b65bc29f480a915f246937310d650e01d7db915f4c4757ada
+  languageName: node
+  linkType: hard
+
 "@tanstack/query-devtools@npm:5.81.2":
   version: 5.81.2
   resolution: "@tanstack/query-devtools@npm:5.81.2"
   checksum: f942cba7bd3ecb471063cd472eeebb2ec76005feeb7e0f357b191da5ab9f769aa767bc88d4da82b2b39c4fcbb16dfed38ce3c77b6eea4d4c30405368c1120207
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.21.7":
+  version: 5.47.0
+  resolution: "@tanstack/react-query-devtools@npm:5.47.0"
+  dependencies:
+    "@tanstack/query-devtools": "npm:5.47.0"
+  peerDependencies:
+    "@tanstack/react-query": ^5.47.0
+    react: ^18 || ^19
+  checksum: 1c2a5916b8ac3c580263114c6ff5bf780f655d777ddd1027187f200f6a29703e28be98fadd0918537eb3f07cbfe283013f4212eafa7facde25116ab42b38d4e9
   languageName: node
   linkType: hard
 
@@ -8185,14 +8204,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-generator-retail@npm:^5.0.0, data-generator-retail@npm:^5.9.1, data-generator-retail@workspace:examples/data-generator":
+"data-generator-retail@npm:^5.0.0, data-generator-retail@npm:^5.9.2, data-generator-retail@workspace:examples/data-generator":
   version: 0.0.0-use.local
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
     cross-env: "npm:^5.2.0"
     date-fns: "npm:^3.6.0"
     faker: "npm:^4.1.0"
-    ra-core: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -16022,12 +16041,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@npm:^5.9.1, ra-core@workspace:packages/ra-core":
+"ra-core@npm:^5.9.2, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
     "@hookform/resolvers": "npm:^3.2.0"
     "@tanstack/react-query": "npm:^5.83.0"
+    "@tanstack/react-query-devtools": "npm:^5.21.7"
     "@testing-library/react": "npm:^15.0.7"
     "@types/jest": "npm:^29.5.2"
     "@types/jscodeshift": "npm:^0.11.11"
@@ -16065,7 +16085,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@npm:^5.3.0, ra-data-fakerest@npm:^5.9.1, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@npm:^5.3.0, ra-data-fakerest@npm:^5.9.2, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
@@ -16073,7 +16093,7 @@ __metadata:
     cross-env: "npm:^5.2.0"
     expect: "npm:^27.4.6"
     fakerest: "npm:^4.0.1"
-    ra-core: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -16091,7 +16111,7 @@ __metadata:
     graphql-ast-types-browser: "npm:~1.0.2"
     lodash: "npm:~4.17.5"
     pluralize: "npm:~7.0.0"
-    ra-data-graphql: "npm:^5.9.1"
+    ra-data-graphql: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -16100,7 +16120,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-graphql@npm:^5.0.0, ra-data-graphql@npm:^5.9.1, ra-data-graphql@workspace:packages/ra-data-graphql":
+"ra-data-graphql@npm:^5.0.0, ra-data-graphql@npm:^5.9.2, ra-data-graphql@workspace:packages/ra-data-graphql":
   version: 0.0.0-use.local
   resolution: "ra-data-graphql@workspace:packages/ra-data-graphql"
   dependencies:
@@ -16124,7 +16144,7 @@ __metadata:
   dependencies:
     cross-env: "npm:^5.2.0"
     query-string: "npm:^7.1.3"
-    ra-core: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
@@ -16137,7 +16157,7 @@ __metadata:
     cross-env: "npm:^5.2.0"
     localforage: "npm:^1.7.1"
     lodash: "npm:~4.17.5"
-    ra-data-fakerest: "npm:^5.9.1"
+    ra-data-fakerest: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -16145,13 +16165,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-local-storage@npm:^5.0.0, ra-data-local-storage@npm:^5.9.1, ra-data-local-storage@workspace:packages/ra-data-local-storage":
+"ra-data-local-storage@npm:^5.0.0, ra-data-local-storage@npm:^5.9.2, ra-data-local-storage@workspace:packages/ra-data-local-storage":
   version: 0.0.0-use.local
   resolution: "ra-data-local-storage@workspace:packages/ra-data-local-storage"
   dependencies:
     cross-env: "npm:^5.2.0"
     lodash: "npm:~4.17.5"
-    ra-data-fakerest: "npm:^5.9.1"
+    ra-data-fakerest: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -16165,7 +16185,7 @@ __metadata:
   dependencies:
     cross-env: "npm:^5.2.0"
     query-string: "npm:^7.1.3"
-    ra-core: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   peerDependencies:
@@ -16181,9 +16201,9 @@ __metadata:
     i18next: "npm:^23.5.1"
     i18next-resources-to-backend: "npm:^1.1.4"
     lodash: "npm:^4.17.21"
-    ra-core: "npm:^5.9.1"
-    ra-language-english: "npm:^5.9.1"
-    ra-language-french: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
+    ra-language-english: "npm:^5.9.2"
+    ra-language-french: "npm:^5.9.2"
     react-i18next: "npm:^14.1.1"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
@@ -16192,19 +16212,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-i18n-polyglot@npm:^5.0.0, ra-i18n-polyglot@npm:^5.9.1, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
+"ra-i18n-polyglot@npm:^5.0.0, ra-i18n-polyglot@npm:^5.9.2, ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot":
   version: 0.0.0-use.local
   resolution: "ra-i18n-polyglot@workspace:packages/ra-i18n-polyglot"
   dependencies:
     cross-env: "npm:^5.2.0"
     node-polyglot: "npm:^2.2.2"
-    ra-core: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@npm:^5.0.0, ra-input-rich-text@npm:^5.9.1, ra-input-rich-text@workspace:packages/ra-input-rich-text":
+"ra-input-rich-text@npm:^5.0.0, ra-input-rich-text@npm:^5.9.2, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
@@ -16226,10 +16246,10 @@ __metadata:
     "@tiptap/starter-kit": "npm:^2.0.3"
     "@tiptap/suggestion": "npm:^2.0.3"
     clsx: "npm:^2.1.1"
-    data-generator-retail: "npm:^5.9.1"
-    ra-core: "npm:^5.9.1"
-    ra-data-fakerest: "npm:^5.9.1"
-    ra-ui-materialui: "npm:^5.9.1"
+    data-generator-retail: "npm:^5.9.2"
+    ra-core: "npm:^5.9.2"
+    ra-data-fakerest: "npm:^5.9.2"
+    ra-ui-materialui: "npm:^5.9.2"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.53.0"
@@ -16246,21 +16266,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-language-english@npm:^5.0.0, ra-language-english@npm:^5.9.1, ra-language-english@workspace:packages/ra-language-english":
+"ra-language-english@npm:^5.0.0, ra-language-english@npm:^5.9.2, ra-language-english@workspace:packages/ra-language-english":
   version: 0.0.0-use.local
   resolution: "ra-language-english@workspace:packages/ra-language-english"
   dependencies:
-    ra-core: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
   linkType: soft
 
-"ra-language-french@npm:^5.0.0, ra-language-french@npm:^5.9.1, ra-language-french@workspace:packages/ra-language-french":
+"ra-language-french@npm:^5.0.0, ra-language-french@npm:^5.9.2, ra-language-french@workspace:packages/ra-language-french":
   version: 0.0.0-use.local
   resolution: "ra-language-french@workspace:packages/ra-language-french"
   dependencies:
-    ra-core: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
     rimraf: "npm:^3.0.2"
     typescript: "npm:^5.1.3"
   languageName: unknown
@@ -16279,9 +16299,9 @@ __metadata:
     inflection: "npm:^3.0.0"
     lodash: "npm:~4.17.5"
     papaparse: "npm:^5.3.0"
-    ra-data-local-storage: "npm:^5.9.1"
+    ra-data-local-storage: "npm:^5.9.2"
     react: "npm:^18.3.1"
-    react-admin: "npm:^5.9.1"
+    react-admin: "npm:^5.9.2"
     react-dom: "npm:^18.3.1"
     react-dropzone: "npm:^14.2.3"
     react-router: "npm:^6.22.0"
@@ -16296,7 +16316,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@npm:^5.9.1, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@npm:^5.9.2, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
@@ -16325,9 +16345,9 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     lodash: "npm:~4.17.5"
     query-string: "npm:^7.1.3"
-    ra-core: "npm:^5.9.1"
-    ra-i18n-polyglot: "npm:^5.9.1"
-    ra-language-english: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
+    ra-i18n-polyglot: "npm:^5.9.2"
+    ra-language-english: "npm:^5.9.2"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-dropzone: "npm:^14.2.3"
@@ -16507,7 +16527,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-admin@npm:^5.0.0, react-admin@npm:^5.3.0, react-admin@npm:^5.9.1, react-admin@workspace:packages/react-admin":
+"react-admin@npm:^5.0.0, react-admin@npm:^5.3.0, react-admin@npm:^5.9.2, react-admin@workspace:packages/react-admin":
   version: 0.0.0-use.local
   resolution: "react-admin@workspace:packages/react-admin"
   dependencies:
@@ -16518,10 +16538,10 @@ __metadata:
     "@tanstack/react-query": "npm:^5.83.0"
     cross-env: "npm:^5.2.0"
     expect: "npm:^27.4.6"
-    ra-core: "npm:^5.9.1"
-    ra-i18n-polyglot: "npm:^5.9.1"
-    ra-language-english: "npm:^5.9.1"
-    ra-ui-materialui: "npm:^5.9.1"
+    ra-core: "npm:^5.9.2"
+    ra-i18n-polyglot: "npm:^5.9.2"
+    ra-language-english: "npm:^5.9.2"
+    ra-ui-materialui: "npm:^5.9.2"
     react-hook-form: "npm:^7.53.0"
     react-router: "npm:^6.28.1"
     react-router-dom: "npm:^6.28.1"
@@ -17867,13 +17887,13 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     little-state-machine: "npm:^4.8.1"
     lodash: "npm:~4.17.5"
-    ra-data-fakerest: "npm:^5.9.1"
-    ra-i18n-polyglot: "npm:^5.9.1"
-    ra-input-rich-text: "npm:^5.9.1"
-    ra-language-english: "npm:^5.9.1"
-    ra-language-french: "npm:^5.9.1"
+    ra-data-fakerest: "npm:^5.9.2"
+    ra-i18n-polyglot: "npm:^5.9.2"
+    ra-input-rich-text: "npm:^5.9.2"
+    ra-language-english: "npm:^5.9.2"
+    ra-language-french: "npm:^5.9.2"
     react: "npm:^18.3.1"
-    react-admin: "npm:^5.9.1"
+    react-admin: "npm:^5.9.2"
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.53.0"
     react-router: "npm:^6.28.1"

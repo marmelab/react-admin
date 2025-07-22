@@ -88,7 +88,7 @@ Check [the `ra-tree` documentation](https://react-admin-ee.marmelab.com/document
 | `showLine`           | Optional | `boolean`              | `false`    | Shows a connecting line                                                                          |
 | `sx`                 | Optional | `SxProps`              | -          | Material UI shortcut for defining custom styles                                                  |
 | `title`              | Optional | `string`               | -          | The title to display in the `<AppBar>`                                                           |
-| `titleField`         | Optional | `string`               | `title`    | Set the record field to display in the tree                                                      |
+| `titleField`         | Optional | `string`               | -          | Set the record field to display in the tree                                                      |
 
 `<TreeWithDetails>` also accepts the [`<Tree>`](./Tree.md#props) props.
 
@@ -443,7 +443,7 @@ The title can be either a string or an element of your own.
 
 ## `titleField`
 
-Use the `titleField` prop to specify the name of the field holding the node title:
+The default node title uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the resource. Use the `titleField` prop to specify the name of the field holding the node title:
 
 ```tsx
 // in src/posts.js

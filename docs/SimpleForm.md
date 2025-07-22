@@ -846,3 +846,47 @@ const ProductEdit = () => (
     </Edit>
 );
 ```
+
+`@react-admin/ra-rbac` `<SimpleForm>` also accepts a `showReadOnly` prop. If set to `true`, inputs for which users have only `read` access will be displayed but will be read only:
+
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { SimpleForm } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                // 'delete' is missing
+                { action: ['list', 'edit'], resource: 'products' },
+                { action: 'write', resource: 'products.reference' },
+                { action: 'write', resource: 'products.width' },
+                { action: 'write', resource: 'products.height' },
+                // 'products.description' is read-only
+                { action: 'read', resource: 'products.description' },
+                { action: 'write', resource: 'products.thumbnail' },
+                // 'products.image' is missing
+            ]
+            action,
+            record,
+            resource,
+        }),
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="reference" />
+            <TextInput source="width" />
+            <TextInput source="height" />
+            {/* read-only */}
+            <TextInput source="description" />
+            {/* not displayed */}
+            <TextInput source="image" />
+            <TextInput source="thumbnail" />
+            {/* no delete button */}
+        </SimpleForm>
+    </Edit>
+);
+```

@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
-import type { UseQueryOptions } from '@tanstack/react-query';
+import { keepPreviousData, type UseQueryOptions } from '@tanstack/react-query';
 
 import { useGetList } from '../../dataProvider';
 import { useReference } from '../useReference';
 import { useReferenceParams } from './useReferenceParams';
 import { useWrappedSource } from '../../core';
-import type { FilterPayload, RaRecord, SortPayload } from '../../types';
+import type {
+    FilterPayload,
+    GetListResult,
+    RaRecord,
+    SortPayload,
+} from '../../types';
 import type { ChoicesContextValue } from '../../form';
 
 /**
@@ -45,7 +50,7 @@ import type { ChoicesContextValue } from '../../form';
  * });
  */
 export const useReferenceInputController = <RecordType extends RaRecord = any>(
-    props: UseReferenceInputControllerParams
+    props: UseReferenceInputControllerParams<RecordType>
 ): ChoicesContextValue<RecordType> => {
     const {
         debounce,
@@ -100,8 +105,10 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
         {
             enabled: isGetMatchingEnabled,
-            placeholderData: previousData => previousData,
-            ...otherQueryOptions,
+            placeholderData: keepPreviousData,
+            ...(otherQueryOptions as UseQueryOptions<
+                GetListResult<RecordType>
+            >),
         }
     );
 
@@ -205,14 +212,11 @@ export interface UseReferenceInputControllerParams<
     debounce?: number;
     filter?: FilterPayload;
     queryOptions?: Omit<
-        UseQueryOptions<{
-            data: RecordType[];
-            total?: number;
-            pageInfo?: {
-                hasNextPage?: boolean;
-                hasPreviousPage?: boolean;
-            };
-        }>,
+        UseQueryOptions<
+            | GetListResult<RecordType>
+            // useReference calls getManyAggregate, which returns a an array of records
+            | RecordType[]
+        >,
         'queryFn' | 'queryKey'
     > & { meta?: any };
     page?: number;

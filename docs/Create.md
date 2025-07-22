@@ -518,8 +518,8 @@ Once the `dataProvider.create()` request returns successfully, users see a gener
 
 `<Create>` uses two successive translation keys to build the success message:
 
-* `resources.{resource}.notifications.create` as a first choice
-* `ra.notification.create` as a fallback
+* `resources.{resource}.notifications.created` as a first choice
+* `ra.notification.created` as a fallback
 
 To customize the notification message, you can set custom translation for these keys in your i18nProvider.
 
