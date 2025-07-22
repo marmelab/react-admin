@@ -196,6 +196,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         ErrorType,
         Partial<UseUpdateMutateParams<RecordType>>
     >({
+        mutationKey: [resource, 'update', params],
         mutationFn: ({
             resource: callTimeResource = resource,
             id: callTimeId = paramsRef.current.id,

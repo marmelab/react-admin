@@ -194,6 +194,7 @@ export const useDelete = <
         MutationError,
         Partial<UseDeleteMutateParams<RecordType>>
     >({
+        mutationKey: [resource, 'delete', params],
         mutationFn: ({
             resource: callTimeResource = resource,
             id: callTimeId = paramsRef.current.id,

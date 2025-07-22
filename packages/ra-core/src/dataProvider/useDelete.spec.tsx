@@ -19,7 +19,7 @@ import {
     ErrorCase as ErrorCaseUndoable,
     SuccessCase as SuccessCaseUndoable,
 } from './useDelete.undoable.stories';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
@@ -134,6 +134,47 @@ describe('useDelete', () => {
                 meta: { hello: 'world' },
             });
         });
+    });
+
+    it('sets the mutationKey', async () => {
+        const dataProvider = testDataProvider({
+            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        });
+        let localDeleteOne;
+        const Dummy = () => {
+            const [deleteOne] = useDelete('foo');
+            localDeleteOne = deleteOne;
+            return <span />;
+        };
+        const Observe = () => {
+            const mutation = useMutationState({
+                filters: {
+                    mutationKey: ['foo', 'delete'],
+                },
+            });
+
+            return <span>mutations: {mutation.length}</span>;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+                <Observe />
+            </CoreAdminContext>
+        );
+        localDeleteOne('foo', {
+            id: 1,
+            previousData: { id: 1, bar: 'bar' },
+            meta: { hello: 'world' },
+        });
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
+                id: 1,
+                previousData: { id: 1, bar: 'bar' },
+                meta: { hello: 'world' },
+            });
+        });
+        await screen.findByText('mutations: 1');
     });
 
     it('returns data typed based on the parametric type', async () => {
