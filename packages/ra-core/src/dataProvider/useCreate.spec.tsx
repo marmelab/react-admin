@@ -236,7 +236,8 @@ describe('useCreate', () => {
             });
         });
         it('when optimistic, displays result and success side effects right away', async () => {
-            render(<SuccessCaseOptimistic timeout={10} />);
+            render(<SuccessCaseOptimistic timeout={50} />);
+            await screen.findByText('nothing yet');
             screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
