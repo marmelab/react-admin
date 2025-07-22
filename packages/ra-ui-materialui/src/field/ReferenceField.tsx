@@ -69,21 +69,19 @@ import { visuallyHidden } from '@mui/utils';
 export const ReferenceField = <
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord,
->({
-    children,
-    render,
-    ...inProps
-}: ReferenceFieldProps<RecordType, ReferenceRecordType>) => {
+>(
+    inProps: ReferenceFieldProps<RecordType, ReferenceRecordType>
+) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
     });
-    const { emptyText, empty } = props;
+    const { children, render, emptyText, empty, ...rest } = props;
     const translate = useTranslate();
 
     return (
         <ReferenceFieldBase<ReferenceRecordType>
-            {...props}
+            {...rest}
             empty={
                 emptyText ? (
                     <Typography component="span" variant="body2">
@@ -99,10 +97,11 @@ export const ReferenceField = <
             }
         >
             <PureReferenceFieldView<RecordType, ReferenceRecordType>
-                {...props}
+                {...rest}
                 render={render}
-                children={children}
-            />
+            >
+                {children}
+            </PureReferenceFieldView>
         </ReferenceFieldBase>
     );
 };
