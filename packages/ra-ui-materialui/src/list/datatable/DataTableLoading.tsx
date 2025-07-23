@@ -26,8 +26,9 @@ export const DataTableLoading = memo(function DataTableLoading({
     nbChildren,
     nbFakeLines = 5,
     size,
+    timeout = 1000,
 }: DataTableLoadingProps) {
-    const oneSecondHasPassed = useTimeout(1000);
+    const oneSecondHasPassed = useTimeout(timeout);
     if (!oneSecondHasPassed) return null;
     return (
         <div className={DataTableClasses.root}>
@@ -128,4 +129,5 @@ export interface DataTableLoadingProps<RecordType extends RaRecord = any> {
     nbChildren: number;
     nbFakeLines?: number;
     size?: 'small' | 'medium';
+    timeout?: number;
 }
