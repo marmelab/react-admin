@@ -2184,6 +2184,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expressive-code/plugin-collapsible-sections@npm:^0.41.3":
+  version: 0.41.3
+  resolution: "@expressive-code/plugin-collapsible-sections@npm:0.41.3"
+  dependencies:
+    "@expressive-code/core": "npm:^0.41.3"
+  checksum: 28050a5822c15f7ac24f857bf975662671a9097805fc9f7cf049c41be73a7da2211fa927b2638a2aad1357830171624fe7d0049e2cea8ce46d1636786429a2e9
+  languageName: node
+  linkType: hard
+
 "@expressive-code/plugin-frames@npm:^0.41.3":
   version: 0.41.3
   resolution: "@expressive-code/plugin-frames@npm:0.41.3"
@@ -19159,6 +19168,7 @@ __metadata:
     "@astrojs/mdx": "npm:^4.3.1"
     "@astrojs/starlight": "npm:^0.34.8"
     "@astrojs/starlight-tailwind": "npm:^4.0.1"
+    "@expressive-code/plugin-collapsible-sections": "npm:^0.41.3"
     "@tailwindcss/vite": "npm:^4.1.11"
     astro: "npm:^5.6.1"
     astro-expressive-code: "npm:^0.41.3"

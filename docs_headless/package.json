@@ -13,6 +13,7 @@
     "@astrojs/mdx": "^4.3.1",
     "@astrojs/starlight": "^0.34.8",
     "@astrojs/starlight-tailwind": "^4.0.1",
+    "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.6.1",
     "astro-expressive-code": "^0.41.3",

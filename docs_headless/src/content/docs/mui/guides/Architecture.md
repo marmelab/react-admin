@@ -139,14 +139,18 @@ React-admin avoids components that accept an overwhelming number of props, which
 
 For example, while you cannot directly pass a list of actions to the `<Edit>` component, you can achieve the same result by passing an `actions` component:
 
-```jsx
+```jsx "actions={<PostEditActions />}" collapse={1-4, 8-11}
 // File name: src/PostEdit.tsx
 import { Button } from '@mui/material';
-import { TopToolbar, ShowButton } from 'react-admin';
+import { ShowButton, TextInput, TopToolbar } from 'react-admin';
+import { RichTextInput } from 'ra-input-rich-text'; 
 
 export const PostEdit = () => (
     <Edit actions={<PostEditActions />}>
-        ...
+        <SimpleForm>
+            <TextInput source="title" />
+            <RichTextInput source="body" />
+        </SimpleForm>
     </Edit>
 );
 
@@ -163,7 +167,7 @@ This approach enables you to override specific parts of the logic of a component
 The trade-off with this approach is that sometimes react-admin may require you to override several components just to enable one specific feature. For instance, to override the Menu, you must first create a custom layout using your menu as the `<Layout menu>` prop, then pass it as the `<Admin layout>` prop:
 
 ::: code-group labels=[src/MyLayout.tsx, src/App.tsx]
-```tsx
+```tsx "import { Menu } from './Menu';" "menu={Menu}"
 import { Layout } from 'react-admin';
 import { Menu } from './Menu';
 
@@ -173,7 +177,7 @@ export const MyLayout = ({ children }) => (
     </Layout>
 );
 ```
-```tsx
+```tsx "import { MyLayout }  from './MyLayout';" "layout={MyLayout}"
 import { Admin } from 'react-admin';
 import { MyLayout }  from './MyLayout';
 
