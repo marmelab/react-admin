@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightSidebarTopics from 'starlight-sidebar-topics';
 import tailwindcss from '@tailwindcss/vite';
+import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,6 +25,10 @@ export default defineConfig({
                         link: '/mui/guides/architecture',
                         icon: 'open-book',
                         items: [
+                            {
+                                label: 'Getting Started',
+                                slug: 'mui/guides/createreactadmin',
+                            },
                             {
                                 label: 'Guides & Concepts',
                                 items: [
@@ -635,6 +640,7 @@ export default defineConfig({
                 Sidebar: './src/components/CustomSidebar.astro',
             },
         }),
+        mdx(),
     ],
 
     vite: {
