@@ -15,6 +15,8 @@
     "@astrojs/starlight-tailwind": "^4.0.1",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.6.1",
+    "astro-expressive-code": "^0.41.3",
+    "rehype-code-group": "^0.2.4",
     "sharp": "^0.34.2",
     "starlight-package-managers": "^0.11.0",
     "starlight-sidebar-topics": "^0.6.0",

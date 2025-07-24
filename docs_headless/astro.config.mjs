@@ -4,6 +4,8 @@ import starlight from '@astrojs/starlight';
 import starlightSidebarTopics from 'starlight-sidebar-topics';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
+import rehypeCodeGroup from 'rehype-code-group';
+import expressiveCode from 'astro-expressive-code';
 
 // https://astro.build/config
 export default defineConfig({
@@ -640,9 +642,12 @@ export default defineConfig({
                 Sidebar: './src/components/CustomSidebar.astro',
             },
         }),
+        expressiveCode(),
         mdx(),
     ],
-
+    markdown: {
+        rehypePlugins: [rehypeCodeGroup],
+    },
     vite: {
         plugins: [tailwindcss()],
     },

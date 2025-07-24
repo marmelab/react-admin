@@ -17,6 +17,7 @@ To achieve this, react-admin utilizes an internal router, powered by `react-rout
 For example, the following react-admin application:
 
 ```jsx
+// File name: src/App.tsx
 import { CoreAdminContext, CoreAdminUI, Resource, CustomRoutes } from 'ra-core';
 import { Route } from 'react-router-dom';
 
@@ -139,6 +140,7 @@ React-admin avoids components that accept an overwhelming number of props, which
 For example, while you cannot directly pass a list of actions to the `<Edit>` component, you can achieve the same result by passing an `actions` component:
 
 ```jsx
+// File name: src/PostEdit.tsx
 import { Button } from '@mui/material';
 import { TopToolbar, ShowButton } from 'react-admin';
 
@@ -160,8 +162,8 @@ This approach enables you to override specific parts of the logic of a component
 
 The trade-off with this approach is that sometimes react-admin may require you to override several components just to enable one specific feature. For instance, to override the Menu, you must first create a custom layout using your menu as the `<Layout menu>` prop, then pass it as the `<Admin layout>` prop:
 
-```jsx
-// in src/MyLayout.js
+::: code-group labels=[src/MyLayout.tsx, src/App.tsx]
+```tsx
 import { Layout } from 'react-admin';
 import { Menu } from './Menu';
 
@@ -170,8 +172,8 @@ export const MyLayout = ({ children }) => (
         {children}
     </Layout>
 );
-
-// in src/App.js
+```
+```tsx
 import { Admin } from 'react-admin';
 import { MyLayout }  from './MyLayout';
 
@@ -181,6 +183,7 @@ const App = () => (
     </Admin>
 );
 ```
+:::
 
 Although this drawback exists, we accept it because the use of composition in react-admin makes the components highly extensible, and it significantly improves the readability and maintainability of the code.
 
