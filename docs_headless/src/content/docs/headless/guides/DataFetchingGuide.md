@@ -9,7 +9,7 @@ You can build a react-admin app on top of any API, whether it uses REST, GraphQL
 
 In a react-admin app, you don't write API calls using `fetch` or `axios`. Instead, you communicate with your API through an object called the `dataProvider`.
 
-![Backend agnostic](../../../assets/data-provider.png)
+![Backend agnostic](../../../../assets/data-provider.png)
 
 The `dataProvider` exposes a predefined interface that allows react-admin to query any API in a normalized way.
 

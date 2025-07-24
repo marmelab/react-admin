@@ -19163,6 +19163,7 @@ __metadata:
     prettier: "npm:^3.2.5"
     prettier-plugin-astro: "npm:^0.14.1"
     sharp: "npm:^0.34.2"
+    starlight-sidebar-topics: "npm:^0.6.0"
     tailwindcss: "npm:^4.1.11"
   languageName: unknown
   linkType: soft
@@ -21837,6 +21838,17 @@ __metadata:
   dependencies:
     escape-string-regexp: "npm:^2.0.0"
   checksum: 651c9f87667e077584bbe848acaecc6049bc71979f1e9a46c7b920cad4431c388df0f51b8ad7cfd6eed3db97a2878d0fc8b3122979439ea8bac29c61c95eec8a
+  languageName: node
+  linkType: hard
+
+"starlight-sidebar-topics@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "starlight-sidebar-topics@npm:0.6.0"
+  dependencies:
+    picomatch: "npm:^4.0.2"
+  peerDependencies:
+    "@astrojs/starlight": ">=0.32.0"
+  checksum: cdcbb03ba11d492581723552f1c7f47fe76b3336af80bbc9a6c4023d3a85750e9c508521a804a71cb05726fe153a3ee06e7dce6cb541d94b06bcb2d8c149d254
   languageName: node
   linkType: hard
 

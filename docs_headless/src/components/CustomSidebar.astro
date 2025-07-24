@@ -1,31 +1,34 @@
 ---
-import MobileMenuFooter from "@astrojs/starlight/components/MobileMenuFooter.astro";
-import SidebarPersister from "@astrojs/starlight/components/SidebarPersister.astro";
-import SidebarSublist from "@astrojs/starlight/components/SidebarSublist.astro";
+import MobileMenuFooter from '@astrojs/starlight/components/MobileMenuFooter.astro';
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+import StarlightSidebarTopicsSidebar from 'starlight-sidebar-topics/components/Sidebar.astro';
 
 const { sidebar } = Astro.locals.starlightRoute;
 ---
 
 <script is:inline aria-hidden="true">
-  // This script scrolls the sidebar to the link matching the current page when the page loads
-  window.addEventListener("load", () => {
-    const sidebarContainer = document.getElementById("starlight__sidebar");
-    const currentItem = sidebarContainer.querySelector(
-      "a[aria-current='page']"
-    );
-    if (currentItem) {
-      sidebarContainer.scrollTo({
-        top: currentItem.offsetTop - sidebarContainer.offsetTop,
-        behavior: "smooth",
-      });
-    }
-  });
+    // This script scrolls the sidebar to the link matching the current page when the page loads
+    window.addEventListener('load', () => {
+        const sidebarContainer = document.getElementById('starlight__sidebar');
+        const currentItem = sidebarContainer.querySelector(
+            "a[aria-current='page']"
+        );
+        if (currentItem) {
+            sidebarContainer.scrollTo({
+                top: currentItem.offsetTop - sidebarContainer.offsetTop,
+                behavior: 'smooth',
+            });
+        }
+    });
 </script>
 
+<StarlightSidebarTopicsSidebar />
+
 <SidebarPersister>
-  <SidebarSublist sublist={sidebar} />
+    <SidebarSublist sublist={sidebar} />
 </SidebarPersister>
 
 <div class="md:sl-hidden">
-  <MobileMenuFooter />
+    <MobileMenuFooter />
 </div>
