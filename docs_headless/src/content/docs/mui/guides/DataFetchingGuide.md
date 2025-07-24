@@ -104,6 +104,11 @@ const BanUserButton = ({ userId }) => {
 };
 ```
 
+<iframe
+  src="https://react-admin-storybook-mxutjpobn-marmelab.vercel.app/?path=/story/ra-core-dataprovider-useupdate-optimistic--success-case&full=1&singleStory=true"
+  style="height: 400px; width: 100%"
+></iframe>
+
 The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each.
 
 ## React Query
