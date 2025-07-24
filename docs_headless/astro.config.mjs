@@ -6,6 +6,8 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import rehypeCodeGroup from 'rehype-code-group';
 import expressiveCode from 'astro-expressive-code';
+import { pluginFullscreen } from 'expressive-code-fullscreen';
+import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
 
 // https://astro.build/config
 export default defineConfig({
@@ -642,7 +644,9 @@ export default defineConfig({
                 Sidebar: './src/components/CustomSidebar.astro',
             },
         }),
-        expressiveCode(),
+        expressiveCode({
+            plugins: [pluginFullscreen(), pluginCollapsibleSections()],
+        }),
         mdx(),
     ],
     markdown: {

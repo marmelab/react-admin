@@ -11360,6 +11360,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expressive-code-fullscreen@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "expressive-code-fullscreen@npm:1.0.0"
+  peerDependencies:
+    "@astrojs/starlight": ">=0.34"
+    "@expressive-code/core": ^0.41.3
+  checksum: ca3f2d318296978296fefd6c704791c930718142e416416b86e13e207cf94a0030f4eb0a8d92ea563de89eb7838375eac5f19354c10a298e7db64f80831d592c
+  languageName: node
+  linkType: hard
+
 "expressive-code@npm:^0.41.3":
   version: 0.41.3
   resolution: "expressive-code@npm:0.41.3"
@@ -19172,6 +19182,7 @@ __metadata:
     "@tailwindcss/vite": "npm:^4.1.11"
     astro: "npm:^5.6.1"
     astro-expressive-code: "npm:^0.41.3"
+    expressive-code-fullscreen: "npm:^1.0.0"
     prettier: "npm:^3.2.5"
     prettier-plugin-astro: "npm:^0.14.1"
     rehype-code-group: "npm:^0.2.4"
