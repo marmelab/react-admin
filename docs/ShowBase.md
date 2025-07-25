@@ -203,6 +203,7 @@ export const PostShow = () => (
         <IsOffline>
             No network. The post data may be outdated.
         </IsOffline>
+        ...
     </ShowBase>
 );
 ```
