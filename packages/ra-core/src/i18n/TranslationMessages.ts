@@ -168,6 +168,7 @@ export interface TranslationMessages extends StringMap {
             logged_out: string;
             not_authorized: string;
             application_update_available: string;
+            offline: string;
         };
         validation: {
             [key: string]: StringMap | string;

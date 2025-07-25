@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType, ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 import {
     Card,
     type ComponentsOverrides,
@@ -16,8 +16,10 @@ import {
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
 import { ShowProps } from './Show';
+import { Offline } from '../Offline';
 
 const defaultActions = <ShowActions />;
+const defaultOffline = <Offline />;
 
 export const ShowView = (props: ShowViewProps) => {
     const {
@@ -28,20 +30,32 @@ export const ShowView = (props: ShowViewProps) => {
         className,
         component: Content = Card,
         emptyWhileLoading = false,
+        offline = defaultOffline,
         title,
         ...rest
     } = props;
 
     const showContext = useShowContext();
-    const { resource, defaultTitle, record } = showContext;
+    const { resource, defaultTitle, isPaused, record } = showContext;
     const { hasEdit } = useResourceDefinition();
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
 
+    if (!record && offline !== false && isPaused) {
+        return (
+            <Root className={clsx('show-page', className)} {...rest}>
+                <div className={clsx(ShowClasses.main, ShowClasses.noActions)}>
+                    <Content className={ShowClasses.card}>{offline}</Content>
+                    {aside}
+                </div>
+            </Root>
+        );
+    }
     if (!record && emptyWhileLoading) {
         return null;
     }
+
     return (
         <Root className={clsx('show-page', className)} {...rest}>
             {title !== false && (
@@ -68,11 +82,12 @@ export const ShowView = (props: ShowViewProps) => {
 
 export interface ShowViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
+    actions?: ReactNode | false;
+    aside?: ReactNode;
     component?: ElementType;
     emptyWhileLoading?: boolean;
-    title?: string | ReactElement | false;
+    offline?: ReactNode;
+    title?: ReactNode;
     sx?: SxProps<Theme>;
     render?: (showContext: ShowControllerResult) => ReactNode;
 }

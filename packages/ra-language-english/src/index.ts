@@ -172,6 +172,7 @@ const englishMessages: TranslationMessages = {
             logged_out: 'Your session has ended, please reconnect.',
             not_authorized: "You're not authorized to access this resource.",
             application_update_available: 'A new version is available.',
+            offline: 'No connectivity. Could not fetch data.',
         },
         validation: {
             required: 'Required',

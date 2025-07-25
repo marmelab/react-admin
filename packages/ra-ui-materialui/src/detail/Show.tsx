@@ -90,6 +90,8 @@ export const Show = <RecordType extends RaRecord = any>(
             queryOptions={queryOptions}
             resource={resource}
             loading={loading}
+            // Disable offline support from ShowBase as it is handled by ShowView to keep the ShowView container
+            offline={false}
         >
             <ShowView {...rest} />
         </ShowBase>
