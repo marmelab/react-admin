@@ -43,12 +43,12 @@ import { useForkRef } from '@mui/material';
  *
  * @example
  * // If you want to manipulate the value from the field to adjust its timezone, use the format prop
- * <DateInput source="published_at" format={value => new Date(value).toISOString().split("T")[0} />
+ * <DateInput source="published_at" format={value => new Date(value).toISOString().split("T")[0]} />
  * // The input will display the UTC day regardless of the browser timezone.
  *
  * @example
  * // If you want the returned value to be a Date, you must pass a custom parse method
- * to convert the form value (which is always a date string) back to a Date object.
+ * // to convert the form value (which is always a date string) back to a Date object.
  * <DateInput source="published_at" parse={val => new Date(val)} />
  */
 export const DateInput = (props: DateInputProps) => {
