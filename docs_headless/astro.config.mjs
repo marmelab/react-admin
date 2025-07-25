@@ -1,9 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import starlightSidebarTopics from 'starlight-sidebar-topics';
-import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
+import tailwindcss from '@tailwindcss/vite';
+import starlightSidebarTopics from 'starlight-sidebar-topics';
 import rehypeCodeGroup from 'rehype-code-group';
 import expressiveCode from 'astro-expressive-code';
 import { pluginFullscreen } from 'expressive-code-fullscreen';
@@ -647,6 +648,7 @@ export default defineConfig({
         expressiveCode({
             plugins: [pluginFullscreen(), pluginCollapsibleSections()],
         }),
+        react(),
         mdx(),
     ],
     markdown: {

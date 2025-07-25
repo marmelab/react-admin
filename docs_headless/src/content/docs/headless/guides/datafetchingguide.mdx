@@ -1,7 +1,7 @@
 ---
-layout: default
 title: "Data Fetching"
 ---
+import { SuccessCase } from '../../../../../../packages/ra-core/src/dataProvider/useUpdate.optimistic.stories.tsx'
 
 You can build a react-admin app on top of any API, whether it uses REST, GraphQL, RPC, or even SOAP, regardless of the dialect it uses. This works because react-admin doesn't use `fetch` directly. Instead, it uses a Data Provider object to interface with your API and [React Query](https://tanstack.com/query/v5/docs/react/overview) to handle data fetching.
 
@@ -104,10 +104,7 @@ const BanUserButton = ({ userId }) => {
 };
 ```
 
-<iframe
-  src="https://react-admin-storybook-mxutjpobn-marmelab.vercel.app/?path=/story/ra-core-dataprovider-useupdate-optimistic--success-case&full=1&singleStory=true"
-  style="height: 400px; width: 100%"
-></iframe>
+<SuccessCase client:only />
 
 The [Querying the API](./Actions.md) documentation lists all the hooks available for querying the API, as well as the options and return values for each.
 
