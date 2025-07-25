@@ -180,6 +180,7 @@ const frenchMessages: TranslationMessages = {
             not_authorized:
                 "Vous n'êtes pas autorisé(e) à accéder à cette ressource.",
             application_update_available: 'Une mise à jour est disponible.',
+            offline: 'Pas de connexion. Impossible de charger les données.',
         },
         validation: {
             required: 'Ce champ est requis',
