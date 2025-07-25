@@ -70,7 +70,7 @@ export const DefaultTitle = ({
     translations?: 'default' | 'resource specific';
 }) => (
     <CoreAdminContext
-        dataProvider={defaultDataProvider()}
+        dataProvider={defaultDataProvider}
         i18nProvider={i18nProvider}
     >
         <ShowBase {...defaultProps}>
@@ -90,7 +90,7 @@ DefaultTitle.argTypes = {
 };
 
 export const NoAuthProvider = ({
-    dataProvider = defaultDataProvider(),
+    dataProvider = defaultDataProvider,
     ...props
 }: {
     dataProvider?: DataProvider;
@@ -109,7 +109,7 @@ export const WithAuthProviderNoAccessControl = ({
         checkError: () => Promise.resolve(),
         checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
     },
-    dataProvider = defaultDataProvider(),
+    dataProvider = defaultDataProvider,
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
@@ -132,7 +132,7 @@ export const AccessControl = ({
         checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
         canAccess: () => new Promise(resolve => setTimeout(resolve, 300, true)),
     },
-    dataProvider = defaultDataProvider(),
+    dataProvider = defaultDataProvider,
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
@@ -148,7 +148,7 @@ export const AccessControl = ({
 );
 
 export const WithRenderProp = ({
-    dataProvider = defaultDataProvider(),
+    dataProvider = defaultDataProvider,
     ...props
 }: {
     dataProvider?: DataProvider;
@@ -165,7 +165,7 @@ export const WithRenderProp = ({
 );
 
 export const Offline = ({
-    dataProvider = defaultDataProvider(),
+    dataProvider = defaultDataProvider,
     isOnline = true,
     ...props
 }: {
@@ -198,17 +198,16 @@ Offline.argTypes = {
     },
 };
 
-const defaultDataProvider = (delay = 300) =>
-    fakeRestDataProvider(
-        {
-            posts: [
-                { id: 12, test: 'Hello', title: 'Hello' },
-                { id: 13, test: 'World', title: 'World' },
-            ],
-        },
-        process.env.NODE_ENV !== 'test',
-        process.env.NODE_ENV !== 'test' ? delay : 0
-    );
+const defaultDataProvider = fakeRestDataProvider(
+    {
+        posts: [
+            { id: 12, test: 'Hello', title: 'Hello' },
+            { id: 13, test: 'World', title: 'World' },
+        ],
+    },
+    process.env.NODE_ENV !== 'test',
+    process.env.NODE_ENV !== 'test' ? 300 : 0
+);
 
 const defaultProps = {
     id: 12,
