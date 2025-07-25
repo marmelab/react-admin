@@ -2,19 +2,21 @@ import * as React from 'react';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     AuthProvider,
     CoreAdminContext,
     ShowBase,
     ShowBaseProps,
     DataProvider,
-    testDataProvider,
-    useRecordContext,
     mergeTranslations,
     I18nProvider,
     useShowContext,
     useLocaleState,
+    IsOffline,
+    WithRecord,
 } from '../..';
+import { onlineManager } from '@tanstack/react-query';
 
 export default {
     title: 'ra-core/controller/ShowBase',
@@ -68,7 +70,7 @@ export const DefaultTitle = ({
     translations?: 'default' | 'resource specific';
 }) => (
     <CoreAdminContext
-        dataProvider={defaultDataProvider}
+        dataProvider={defaultDataProvider()}
         i18nProvider={i18nProvider}
     >
         <ShowBase {...defaultProps}>
@@ -88,7 +90,7 @@ DefaultTitle.argTypes = {
 };
 
 export const NoAuthProvider = ({
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
     ...props
 }: {
     dataProvider?: DataProvider;
@@ -107,7 +109,7 @@ export const WithAuthProviderNoAccessControl = ({
         checkError: () => Promise.resolve(),
         checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
     },
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
@@ -130,7 +132,7 @@ export const AccessControl = ({
         checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
         canAccess: () => new Promise(resolve => setTimeout(resolve, 300, true)),
     },
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
@@ -146,7 +148,7 @@ export const AccessControl = ({
 );
 
 export const WithRenderProp = ({
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
     ...props
 }: {
     dataProvider?: DataProvider;
@@ -162,11 +164,51 @@ export const WithRenderProp = ({
     </CoreAdminContext>
 );
 
-const defaultDataProvider = testDataProvider({
-    getOne: () =>
-        // @ts-ignore
-        Promise.resolve({ data: { id: 12, test: 'Hello', title: 'Hello' } }),
-});
+export const Offline = ({
+    dataProvider = defaultDataProvider(),
+    isOnline = true,
+    ...props
+}: {
+    dataProvider?: DataProvider;
+    isOnline?: boolean;
+} & Partial<ShowBaseProps>) => {
+    React.useEffect(() => {
+        onlineManager.setOnline(isOnline);
+    }, [isOnline]);
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <ShowBase
+                {...defaultProps}
+                {...props}
+                offline={<p>You are offline, cannot load data</p>}
+            >
+                <Child />
+            </ShowBase>
+        </CoreAdminContext>
+    );
+};
+
+Offline.args = {
+    isOnline: true,
+};
+
+Offline.argTypes = {
+    isOnline: {
+        control: { type: 'boolean' },
+    },
+};
+
+const defaultDataProvider = (delay = 300) =>
+    fakeRestDataProvider(
+        {
+            posts: [
+                { id: 12, test: 'Hello', title: 'Hello' },
+                { id: 13, test: 'World', title: 'World' },
+            ],
+        },
+        process.env.NODE_ENV !== 'test',
+        process.env.NODE_ENV !== 'test' ? delay : 0
+    );
 
 const defaultProps = {
     id: 12,
@@ -174,9 +216,17 @@ const defaultProps = {
 };
 
 const Child = () => {
-    const record = useRecordContext();
-
-    return <p>{record?.test}</p>;
+    return (
+        <>
+            <p>Use the story controls to simulate offline mode:</p>
+            <IsOffline>
+                <p style={{ color: 'orange' }}>
+                    You are offline, the data may be outdated
+                </p>
+            </IsOffline>
+            <WithRecord render={record => <p>{record?.test}</p>} />
+        </>
+    );
 };
 
 const Title = () => {

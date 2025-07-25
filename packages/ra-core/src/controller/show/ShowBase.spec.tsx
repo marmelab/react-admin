@@ -7,6 +7,7 @@ import {
     AccessControl,
     DefaultTitle,
     NoAuthProvider,
+    Offline,
     WithAuthProviderNoAccessControl,
     WithRenderProp,
 } from './ShowBase.stories';
@@ -117,5 +118,17 @@ describe('ShowBase', () => {
         render(<WithRenderProp dataProvider={dataProvider} />);
         expect(dataProvider.getOne).toHaveBeenCalled();
         await screen.findByText('Hello');
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        const { rerender } = render(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, cannot load data');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('Hello');
+        expect(
+            screen.queryByText('You are offline, cannot load data')
+        ).toBeNull();
+        rerender(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, the data may be outdated');
     });
 });

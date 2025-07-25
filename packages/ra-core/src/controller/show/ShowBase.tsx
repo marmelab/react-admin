@@ -42,7 +42,8 @@ import { useIsAuthPending } from '../../auth';
 export const ShowBase = <RecordType extends RaRecord = any>({
     children,
     render,
-    loading = null,
+    loading,
+    offline,
     ...props
 }: ShowBaseProps<RecordType>) => {
     const controllerProps = useShowController<RecordType>(props);
@@ -52,21 +53,37 @@ export const ShowBase = <RecordType extends RaRecord = any>({
         action: 'show',
     });
 
-    if (isAuthPending && !props.disableAuthentication) {
-        return loading;
-    }
-
     if (!render && !children) {
         throw new Error(
             '<ShowBase> requires either a `render` prop or `children` prop'
         );
     }
 
+    const { isPaused, record } = controllerProps;
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <ShowContextProvider value={controllerProps}>
-                {render ? render(controllerProps) : children}
+                {(() => {
+                    if (
+                        isAuthPending &&
+                        !props.disableAuthentication &&
+                        loading !== false &&
+                        loading !== undefined
+                    ) {
+                        return loading;
+                    }
+                    if (
+                        isPaused &&
+                        !record &&
+                        offline !== false &&
+                        offline !== undefined
+                    ) {
+                        return offline;
+                    }
+                    return render ? render(controllerProps) : children;
+                })()}
             </ShowContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -77,4 +94,5 @@ export interface ShowBaseProps<RecordType extends RaRecord = RaRecord>
     children?: React.ReactNode;
     render?: (props: ShowControllerResult<RecordType>) => React.ReactNode;
     loading?: React.ReactNode;
+    offline?: React.ReactNode;
 }
