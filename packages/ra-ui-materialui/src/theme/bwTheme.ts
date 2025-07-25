@@ -179,7 +179,11 @@ const createBWTheme = (mode: 'light' | 'dark'): ThemeOptions => {
             MuiListItemButton: {
                 defaultProps: { disableRipple: true },
             },
-            MuiInputBase: {
+            MuiFormControl: {
+                defaultProps: {
+                    margin: 'dense' as const,
+                    fullWidth: true,
+                },
                 styleOverrides: {
                     root: {
                         backgroundColor: isDarkMode ? commonBlack : commonWhite,
@@ -274,12 +278,6 @@ const createBWTheme = (mode: 'light' | 'dark'): ThemeOptions => {
             },
             MuiAutocomplete: {
                 defaultProps: {
-                    fullWidth: true,
-                },
-            },
-            MuiFormControl: {
-                defaultProps: {
-                    margin: 'dense' as const,
                     fullWidth: true,
                 },
             },
