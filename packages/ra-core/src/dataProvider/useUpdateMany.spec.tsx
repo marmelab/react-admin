@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { screen, render, waitFor, act } from '@testing-library/react';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 import expect from 'expect';
 
 import { testDataProvider } from './testDataProvider';
@@ -115,6 +115,46 @@ describe('useUpdateMany', () => {
                 meta: { hello: 'world' },
             });
         });
+    });
+
+    it('sets the mutationKey', async () => {
+        const dataProvider = testDataProvider({
+            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+        });
+        let localUpdateMany;
+        const Dummy = () => {
+            const [updateMany] = useUpdateMany('foo');
+            localUpdateMany = updateMany;
+            return <span />;
+        };
+        const Observe = () => {
+            const mutation = useMutationState({
+                filters: {
+                    mutationKey: ['foo', 'updateMany'],
+                },
+            });
+
+            return <span>mutations: {mutation.length}</span>;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+                <Observe />
+            </CoreAdminContext>
+        );
+        localUpdateMany('foo', {
+            ids: [1, 2],
+            data: { bar: 'baz' },
+            meta: { hello: 'world' },
+        });
+        await waitFor(() => {
+            expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+                ids: [1, 2],
+                data: { bar: 'baz' },
+                meta: { hello: 'world' },
+            });
+        });
+        await screen.findByText('mutations: 1');
     });
 
     describe('query cache', () => {

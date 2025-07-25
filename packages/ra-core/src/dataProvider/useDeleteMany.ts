@@ -220,6 +220,7 @@ export const useDeleteMany = <
         MutationError,
         Partial<UseDeleteManyMutateParams<RecordType>>
     >({
+        mutationKey: [resource, 'deleteMany', params],
         mutationFn: ({
             resource: callTimeResource = resource,
             ids: callTimeIds = paramsRef.current.ids,
