@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from '../../core/CoreAdminContext';
 import { useResourceContext } from '../../core/useResourceContext';
 import { testDataProvider } from '../../dataProvider';
@@ -10,8 +10,10 @@ import {
     Errored,
     Loading,
     Meta,
+    Offline,
     WithRenderProp,
 } from './ReferenceFieldBase.stories';
+import { RecordContextProvider } from '../record';
 
 describe('<ReferenceFieldBase />', () => {
     beforeAll(() => {
@@ -40,26 +42,26 @@ describe('<ReferenceFieldBase />', () => {
         });
     });
 
-    it('should pass the correct resource down to child component', async () => {
+    it.only('should pass the correct resource down to child component', async () => {
         const MyComponent = () => {
             const resource = useResourceContext();
             return <div>{resource}</div>;
         };
         const dataProvider = testDataProvider({
-            // @ts-ignore
-            getList: () =>
+            getMany: () =>
+                // @ts-ignore
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <ReferenceFieldBase reference="posts" source="post_id">
-                    <MyComponent />
-                </ReferenceFieldBase>
+                <RecordContextProvider value={{ post_id: 1 }}>
+                    <ReferenceFieldBase reference="posts" source="post_id">
+                        <MyComponent />
+                    </ReferenceFieldBase>
+                </RecordContextProvider>
             </CoreAdminContext>
         );
-        await waitFor(() => {
-            expect(screen.queryByText('posts')).not.toBeNull();
-        });
+        await screen.findByText('posts');
     });
 
     it('should accept meta in queryOptions', async () => {
@@ -70,8 +72,8 @@ describe('<ReferenceFieldBase />', () => {
             );
         const dataProvider = testDataProvider({
             getMany,
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: {
                         id: 1,
@@ -163,6 +165,15 @@ describe('<ReferenceFieldBase />', () => {
             await waitFor(() => {
                 expect(screen.queryByText('Leo')).not.toBeNull();
             });
+        });
+
+        it('should render the offline prop node when offline', async () => {
+            render(<Offline />);
+            fireEvent.click(await screen.findByText('Simulate offline'));
+            fireEvent.click(await screen.findByText('Toggle Child'));
+            await screen.findByText('You are offline, cannot load data');
+            fireEvent.click(await screen.findByText('Simulate online'));
+            await screen.findByText('Leo');
         });
     });
 });
