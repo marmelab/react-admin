@@ -42,9 +42,10 @@ import { useIsAuthPending } from '../../auth';
  */
 export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
     children,
-    render,
+    disableAuthentication,
     loading,
     offline,
+    render,
     ...props
 }: EditBaseProps<RecordType, ErrorType>) => {
     const controllerProps = useEditController<RecordType, ErrorType>(props);
@@ -62,29 +63,26 @@ export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
 
     const { isPaused, record } = controllerProps;
 
+    const shouldRenderLoading =
+        isAuthPending &&
+        !disableAuthentication &&
+        loading !== false &&
+        loading !== undefined;
+
+    const shouldRenderOffline =
+        isPaused && !record && offline !== false && offline !== undefined;
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <EditContextProvider value={controllerProps}>
-                {(() => {
-                    if (
-                        isAuthPending &&
-                        !props.disableAuthentication &&
-                        loading !== false &&
-                        loading !== undefined
-                    ) {
-                        return loading;
-                    }
-                    if (
-                        isPaused &&
-                        !record &&
-                        offline !== false &&
-                        offline !== undefined
-                    ) {
-                        return offline;
-                    }
-                    return render ? render(controllerProps) : children;
-                })()}
+                {shouldRenderLoading
+                    ? loading
+                    : shouldRenderOffline
+                      ? offline
+                      : render
+                        ? render(controllerProps)
+                        : children}
             </EditContextProvider>
         </OptionalResourceContextProvider>
     );
