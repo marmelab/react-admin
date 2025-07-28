@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 
 import { RaRecord } from '../types';
 import { testDataProvider } from './testDataProvider';
@@ -25,7 +26,7 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useCreate.undoable.stories';
-import { QueryClient, useMutationState } from '@tanstack/react-query';
+import { MutationMode, Params } from './useCreate.stories';
 
 describe('useCreate', () => {
     it('returns a callback that can be used with create arguments', async () => {
@@ -74,6 +75,44 @@ describe('useCreate', () => {
                 data: { bar: 'baz' },
             });
         });
+    });
+
+    it('uses the latest declaration time mutationMode', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        // This story uses the pessimistic mode by default
+        render(<MutationMode />);
+        fireEvent.click(screen.getByText('Change mutation mode to optimistic'));
+        fireEvent.click(screen.getByText('Create post'));
+        // Should display the optimistic result right away if the change was handled
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).not.toBeNull();
+        });
+        await waitFor(() => {
+            expect(screen.queryByText('mutating')).toBeNull();
+        });
+        expect(screen.queryByText('success')).not.toBeNull();
+        expect(screen.queryByText('Hello World')).not.toBeNull();
+    });
+
+    it('uses the latest declaration time params', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        // This story sends the Hello World title by default
+        render(<Params />);
+        fireEvent.click(screen.getByText('Change params'));
+        fireEvent.click(screen.getByText('Create post'));
+        // Should have changed the title to Goodbye World
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Goodbye World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).not.toBeNull();
+        });
+        await waitFor(() => {
+            expect(screen.queryByText('mutating')).toBeNull();
+        });
+        expect(screen.queryByText('success')).not.toBeNull();
+        expect(screen.queryByText('Goodbye World')).not.toBeNull();
     });
 
     it('uses call time params over hook time params', async () => {
