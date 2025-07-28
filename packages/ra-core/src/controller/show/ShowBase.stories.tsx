@@ -182,7 +182,7 @@ export const Offline = ({
                 {...props}
                 offline={<p>You are offline, cannot load data</p>}
             >
-                <Child />
+                <OfflineChild />
             </ShowBase>
         </CoreAdminContext>
     );
@@ -215,6 +215,10 @@ const defaultProps = {
 };
 
 const Child = () => {
+    return <WithRecord render={record => <p>{record?.test}</p>} />;
+};
+
+const OfflineChild = () => {
     return (
         <>
             <p>Use the story controls to simulate offline mode:</p>
