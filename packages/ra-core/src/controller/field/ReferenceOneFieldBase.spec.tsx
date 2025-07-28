@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     Basic,
     Loading,
+    Offline,
     WithRenderProp,
 } from './ReferenceOneFieldBase.stories';
 
@@ -60,5 +61,14 @@ describe('ReferenceOneFieldBase', () => {
                 expect(screen.queryByText('9780393966473')).not.toBeNull();
             });
         });
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('Offline');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('9780393966473');
     });
 });
