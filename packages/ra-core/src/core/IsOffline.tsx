@@ -1,7 +1,7 @@
 import React from 'react';
-import { useIsOffine } from './useIsOffline';
+import { useIsOffline } from './useIsOffline';
 
 export const IsOffline = ({ children }: { children: React.ReactNode }) => {
-    const isOffline = useIsOffine();
+    const isOffline = useIsOffline();
     return isOffline ? children : null;
 };

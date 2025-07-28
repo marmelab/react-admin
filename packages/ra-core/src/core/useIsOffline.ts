@@ -7,7 +7,7 @@ import { onlineManager } from '@tanstack/react-query';
  * It returns true if the application is offline, false otherwise.
  * @returns {boolean} - True if offline, false if online.
  */
-export const useIsOffine = () => {
+export const useIsOffline = () => {
     const [isOnline, setIsOnline] = React.useState(onlineManager.isOnline());
 
     React.useEffect(() => {
