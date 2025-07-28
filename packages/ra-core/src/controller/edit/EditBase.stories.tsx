@@ -2,6 +2,7 @@ import * as React from 'react';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     AuthProvider,
     CoreAdminContext,
@@ -9,15 +10,16 @@ import {
     EditBaseProps,
     DataProvider,
     SaveHandlerCallbacks,
-    testDataProvider,
     useSaveContext,
-    useRecordContext,
     I18nProvider,
     mergeTranslations,
     useEditContext,
     useLocaleState,
     MutationMode,
+    WithRecord,
+    IsOffline,
 } from '../..';
+import { onlineManager, useMutationState } from '@tanstack/react-query';
 
 export default {
     title: 'ra-core/controller/EditBase',
@@ -179,11 +181,51 @@ export const WithRenderProps = ({
     </CoreAdminContext>
 );
 
-const defaultDataProvider = testDataProvider({
-    getOne: () =>
-        // @ts-ignore
-        Promise.resolve({ data: { id: 12, test: 'Hello', title: 'Hello' } }),
-});
+export const Offline = ({
+    dataProvider = defaultDataProvider,
+    isOnline = true,
+    ...props
+}: {
+    dataProvider?: DataProvider;
+    isOnline?: boolean;
+} & Partial<EditBaseProps>) => {
+    React.useEffect(() => {
+        onlineManager.setOnline(isOnline);
+    }, [isOnline]);
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <EditBase
+                {...defaultProps}
+                {...props}
+                mutationMode="pessimistic"
+                offline={<p>You are offline, cannot load data</p>}
+            >
+                <OfflineChild />
+            </EditBase>
+        </CoreAdminContext>
+    );
+};
+
+Offline.args = {
+    isOnline: true,
+};
+
+Offline.argTypes = {
+    isOnline: {
+        control: { type: 'boolean' },
+    },
+};
+
+const defaultDataProvider = fakeRestDataProvider(
+    {
+        posts: [
+            { id: 12, test: 'Hello', title: 'Hello' },
+            { id: 13, test: 'World', title: 'World' },
+        ],
+    },
+    process.env.NODE_ENV !== 'test',
+    process.env.NODE_ENV !== 'test' ? 300 : 0
+);
 
 const defaultProps = {
     id: 12,
@@ -196,7 +238,6 @@ const Child = ({
     callTimeOptions?: SaveHandlerCallbacks;
 }) => {
     const saveContext = useSaveContext();
-    const record = useRecordContext();
 
     const handleClick = () => {
         if (!saveContext || !saveContext.save) return;
@@ -205,9 +246,57 @@ const Child = ({
 
     return (
         <>
-            <p>{record?.test}</p>
+            <WithRecord render={record => <p>{record?.test}</p>} />
             <button onClick={handleClick}>save</button>
         </>
+    );
+};
+
+const OfflineChild = ({
+    callTimeOptions,
+}: {
+    callTimeOptions?: SaveHandlerCallbacks;
+}) => {
+    const saveContext = useSaveContext();
+    const { saving } = useEditContext();
+
+    const handleClick = () => {
+        if (!saveContext || !saveContext.save) return;
+        saveContext.save({ test: 'test' }, callTimeOptions);
+    };
+
+    return (
+        <>
+            <p>Use the story controls to simulate offline mode:</p>
+            <IsOffline>
+                <p style={{ color: 'orange' }}>
+                    You are offline, the data may be outdated
+                </p>
+            </IsOffline>
+            <WithRecord render={record => <p>{record?.test}</p>} />
+            <button onClick={handleClick}>
+                {saving ? 'Saving...' : 'Save'}
+            </button>
+            <MutationsState />
+        </>
+    );
+};
+
+const MutationsState = () => {
+    const pendingMutations = useMutationState({
+        filters: {
+            status: 'pending',
+        },
+    });
+
+    return (
+        <IsOffline>
+            {pendingMutations.length > 0 ? (
+                <p>You have pending mutations</p>
+            ) : (
+                <p>No pending mutations</p>
+            )}
+        </IsOffline>
     );
 };
 
