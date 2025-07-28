@@ -352,7 +352,7 @@ const CustomOffline = () => {
 
 Offline.args = {
     isOnline: true,
-    offline: false,
+    offline: 'default',
 };
 
 Offline.argTypes = {
