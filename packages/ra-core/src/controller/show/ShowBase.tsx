@@ -41,9 +41,10 @@ import { useIsAuthPending } from '../../auth';
  */
 export const ShowBase = <RecordType extends RaRecord = any>({
     children,
-    render,
+    disableAuthentication,
     loading,
     offline,
+    render,
     ...props
 }: ShowBaseProps<RecordType>) => {
     const controllerProps = useShowController<RecordType>(props);
@@ -61,29 +62,26 @@ export const ShowBase = <RecordType extends RaRecord = any>({
 
     const { isPaused, record } = controllerProps;
 
+    const shouldRenderLoading =
+        isAuthPending &&
+        !disableAuthentication &&
+        loading !== false &&
+        loading !== undefined;
+
+    const shouldRenderOffline =
+        isPaused && !record && offline !== false && offline !== undefined;
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <ShowContextProvider value={controllerProps}>
-                {(() => {
-                    if (
-                        isAuthPending &&
-                        !props.disableAuthentication &&
-                        loading !== false &&
-                        loading !== undefined
-                    ) {
-                        return loading;
-                    }
-                    if (
-                        isPaused &&
-                        !record &&
-                        offline !== false &&
-                        offline !== undefined
-                    ) {
-                        return offline;
-                    }
-                    return render ? render(controllerProps) : children;
-                })()}
+                {shouldRenderLoading
+                    ? loading
+                    : shouldRenderOffline
+                      ? offline
+                      : render
+                        ? render(controllerProps)
+                        : children}
             </ShowContextProvider>
         </OptionalResourceContextProvider>
     );
