@@ -10,6 +10,7 @@ import {
     Empty,
     Themed,
     WithRenderProp,
+    Offline,
 } from './ReferenceOneField.stories';
 
 describe('ReferenceOneField', () => {
@@ -85,5 +86,14 @@ describe('ReferenceOneField', () => {
     it('should be customized by a theme', async () => {
         render(<Themed />);
         expect(await screen.findByTestId('themed')).toBeDefined();
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('No connectivity. Could not fetch data.');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('9780393966473');
     });
 });

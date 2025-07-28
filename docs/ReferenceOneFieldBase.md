@@ -78,6 +78,7 @@ const BookDetails = () => {
 | `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `offline`      | Optional | `ReactNode`                         | -                                | The text or element to display when there is no network connectivity                   |
 | `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
 
@@ -120,39 +121,6 @@ const BookDetails = () => {
         </div>
     );
 }
-```
-
-## `render`
-
-Alternatively to children you can pass a `render` function prop to `<ReferenceOneFieldBase>`. The `render` function prop will receive the `ReferenceFieldContext` as its argument, allowing to inline the render logic.
-When receiving a `render` function prop the `<ReferenceOneFieldBase>` component will ignore the children property.
-
-```jsx
-const BookShow = () => (
-    <ReferenceOneFieldBase
-        reference="book_details"
-        target="book_id"
-        render={({ isPending, error, referenceRecord }) => {
-            if (isPending) {
-                return <p>Loading...</p>;
-            }
-
-            if (error) {
-                return <p className="error" >{error.toString()}</p>;
-            }
-
-            if (!referenceRecord) {
-                return <p>No details found</p>;
-            }
-            return (
-                <div>
-                    <p>{referenceRecord.genre}</p>
-                    <p>{referenceRecord.ISBN}</p>
-                </div>
-            );
-        }}
-    />
-);
 ```
 
 ## `empty`
@@ -228,6 +196,29 @@ You can also set the `link` prop to a string, which will be used as the link typ
 ```
 {% endraw %}
 
+## `offline`
+
+Use `offline` to customize the text displayed when the related record is empty because there is no network connectivity.
+
+```jsx
+<ReferenceOneFieldBase label="Details" reference="book_details" target="book_id" offline="No network, could not fetch data">
+    ...
+</ReferenceOneFieldBase>
+```
+
+`offline` also accepts a `ReactNode`.
+
+```jsx
+<ReferenceOneFieldBase
+    label="Details"
+    reference="book_details"
+    target="book_id"
+    offline={<p>No network, could not fetch data</p>}
+>
+    ...
+</ReferenceOneFieldBase>
+```
+
 ## `queryOptions`
 
 `<ReferenceOneFieldBase>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v5/docs/react/reference/useQuery) via the `queryOptions` prop.
@@ -246,6 +237,39 @@ For instance, if you want to disable the refetch on window focus for this query,
 </ReferenceOneFieldBase>
 ```
 {% endraw %}
+
+## `render`
+
+Alternatively to children you can pass a `render` function prop to `<ReferenceOneFieldBase>`. The `render` function prop will receive the `ReferenceFieldContext` as its argument, allowing to inline the render logic.
+When receiving a `render` function prop the `<ReferenceOneFieldBase>` component will ignore the children property.
+
+```jsx
+const BookShow = () => (
+    <ReferenceOneFieldBase
+        reference="book_details"
+        target="book_id"
+        render={({ isPending, error, referenceRecord }) => {
+            if (isPending) {
+                return <p>Loading...</p>;
+            }
+
+            if (error) {
+                return <p className="error" >{error.toString()}</p>;
+            }
+
+            if (!referenceRecord) {
+                return <p>No details found</p>;
+            }
+            return (
+                <div>
+                    <p>{referenceRecord.genre}</p>
+                    <p>{referenceRecord.ISBN}</p>
+                </div>
+            );
+        }}
+    />
+);
+```
 
 ## `reference`
 
