@@ -166,14 +166,14 @@ describe('<ReferenceFieldBase />', () => {
                 expect(screen.queryByText('Leo')).not.toBeNull();
             });
         });
+    });
 
-        it('should render the offline prop node when offline', async () => {
-            render(<Offline />);
-            fireEvent.click(await screen.findByText('Simulate offline'));
-            fireEvent.click(await screen.findByText('Toggle Child'));
-            await screen.findByText('You are offline, cannot load data');
-            fireEvent.click(await screen.findByText('Simulate online'));
-            await screen.findByText('Leo');
-        });
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('You are offline, cannot load data');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('Leo');
     });
 });
