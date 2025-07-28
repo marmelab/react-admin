@@ -42,7 +42,7 @@ describe('<ReferenceFieldBase />', () => {
         });
     });
 
-    it.only('should pass the correct resource down to child component', async () => {
+    it('should pass the correct resource down to child component', async () => {
         const MyComponent = () => {
             const resource = useResourceContext();
             return <div>{resource}</div>;
