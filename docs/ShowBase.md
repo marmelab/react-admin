@@ -108,33 +108,6 @@ const BookShow = () => (
 ```
 {% endraw %}
 
-## `render`
-
-Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ShowContext` as argument. 
-
-{% raw %}
-```jsx
-import { ShowBase, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
-
-const BookShow = () => (
-    <ShowBase render={({ isPending, error, record }) => {
-        if (isPending) {
-            return <p>Loading...</p>;
-        }
-
-        if (error) {
-            return (
-                <p className="error">
-                    {error.message}
-                </p>
-            );
-        }
-        return <p>{record.title}</p>;
-    }}/>
-);
-```
-{% endraw %}
-
 ## `disableAuthentication`
 
 By default, the `<ShowBase>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
@@ -252,6 +225,33 @@ The default `onError` function is:
     refresh();
 }
 ```
+
+## `render`
+
+Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ShowContext` as argument. 
+
+{% raw %}
+```jsx
+import { ShowBase, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
+
+const BookShow = () => (
+    <ShowBase render={({ isPending, error, record }) => {
+        if (isPending) {
+            return <p>Loading...</p>;
+        }
+
+        if (error) {
+            return (
+                <p className="error">
+                    {error.message}
+                </p>
+            );
+        }
+        return <p>{record.title}</p>;
+    }}/>
+);
+```
+{% endraw %}
 
 ## `resource`
 
