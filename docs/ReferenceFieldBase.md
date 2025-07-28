@@ -68,6 +68,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `children`  | Optional | `ReactNode`         | -        | React component to render the referenced record. |
 | `render`  | Optional |  `(context) => ReactNode`         | -        | Function that takes the referenceFieldContext and renders the referenced record. |
 | `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
+| `offline`   | Optional | `ReactNode`         | -        | What to render when there is no network connectivity when loading the record |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
@@ -100,35 +101,6 @@ export const MyReferenceField = () => (
 );
 ```
 
-## `render`
-
-Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ReferenceFieldContext` as argument.
-
-```jsx
-export const MyReferenceField = () => (
-    <ReferenceFieldBase
-        source="user_id"
-        reference="users"
-        render={({ error, isPending, referenceRecord }) => {
-            if (isPending) {
-                return <p>Loading...</p>;
-            }
-
-            if (error) {
-                return (
-                    <p className="error">
-                        {error.message}
-                    </p>
-                );
-            }
-            return <p>{referenceRecord.name}</p>;
-        }}
-    />
-);
-```
-
-The `render` function prop will take priority on `children` props if both are set.
-
 ## `empty`
 
 `<ReferenceFieldBase>` can display a custom message when the referenced record is missing, thanks to the `empty` prop.
@@ -151,6 +123,32 @@ You can pass either a React element or a string to the `empty` prop:
     ...
 </ReferenceFieldBase>
 <ReferenceFieldBase source="user_id" reference="users" empty="Missing user" >
+    ...
+</ReferenceFieldBase>
+```
+
+## `offline`
+
+`<ReferenceFieldBase>` can display a custom message when the referenced record is missing because there is no network connectivity, thanks to the `offline` prop.
+
+```jsx
+<ReferenceFieldBase source="user_id" reference="users" offline="No network, could not fetch data" >
+    ...
+</ReferenceFieldBase>
+```
+
+`<ReferenceFieldBase>` renders the `empty` element when:
+
+- the referenced record is missing (no record in the `users` table with the right `user_id`), and
+- there is no network connectivity
+
+You can pass either a React element or a string to the `offline` prop:
+
+```jsx
+<ReferenceFieldBase source="user_id" reference="users" empty={<span>No network, could not fetch data</span>} >
+    ...
+</ReferenceFieldBase>
+<ReferenceFieldBase source="user_id" reference="users" empty="No network, could not fetch data" >
     ...
 </ReferenceFieldBase>
 ```
@@ -185,6 +183,36 @@ For instance, if the `posts` resource has a `user_id` field, set the `reference`
     ...
 </ReferenceFieldBase>
 ```
+
+
+## `render`
+
+Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ReferenceFieldContext` as argument.
+
+```jsx
+export const MyReferenceField = () => (
+    <ReferenceFieldBase
+        source="user_id"
+        reference="users"
+        render={({ error, isPending, referenceRecord }) => {
+            if (isPending) {
+                return <p>Loading...</p>;
+            }
+
+            if (error) {
+                return (
+                    <p className="error">
+                        {error.message}
+                    </p>
+                );
+            }
+            return <p>{referenceRecord.name}</p>;
+        }}
+    />
+);
+```
+
+The `render` function prop will take priority on `children` props if both are set.
 
 ## `sortBy`
 

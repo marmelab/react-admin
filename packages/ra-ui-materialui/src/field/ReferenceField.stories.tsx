@@ -12,13 +12,14 @@ import {
     Resource,
     TestMemoryRouter,
     AuthProvider,
+    useIsOffline,
 } from 'ra-core';
 
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { createTheme, Stack, ThemeOptions } from '@mui/material';
-import { QueryClient } from '@tanstack/react-query';
+import { onlineManager, QueryClient } from '@tanstack/react-query';
 import { deepmerge } from '@mui/utils';
 
 import { TextField } from '../field';
@@ -971,3 +972,42 @@ export const WithRenderProp = () => (
         ></ReferenceField>
     </Wrapper>
 );
+
+export const Offline = () => (
+    <Wrapper>
+        <I18nContextProvider value={i18nProvider}>
+            <div>
+                <RenderChildOnDemand>
+                    <ReferenceField source="detail_id" reference="book_details">
+                        <TextField source="ISBN" />
+                    </ReferenceField>
+                </RenderChildOnDemand>
+            </div>
+            <SimulateOfflineButton />
+        </I18nContextProvider>
+    </Wrapper>
+);
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};
