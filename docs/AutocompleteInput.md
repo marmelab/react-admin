@@ -67,6 +67,7 @@ The form value for the source must be the selected value, e.g.
 | `isPending`                | Optional | `boolean`             | `false`                                                             | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`            | `-`                                                                 | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
+| `offline`                  | Optional | `ReactNode`         | -        | What to render when there is no network connectivity when fetching the choices |
 | `onChange`                 | Optional | `Function`            | `-`                                                                 | A function called with the new value, along with the selected record, when the input value changes |
 | `onCreate`                 | Optional | `Function`            | `-`                                                                 | A function called with the current filter value when users choose to create a new choice.                                                                                                                           |
 | `optionText`               | Optional | `string` &#124; `Function` &#124; `Component` |  `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument                                                                                                              |
@@ -338,6 +339,27 @@ const UserCountry = () => {
         />
     );
 }
+```
+
+## `offline`
+
+`<AutocompleteInput>` can display a custom message when it can't fetch the choices because there is no network connectivity, thanks to the `offline` prop.
+
+```jsx
+<ReferenceInput source="user_id" reference="users">
+    <AutocompleteInput offline={<span>No network, could not fetch data</span>} />
+</ReferenceInput>
+```
+
+You can pass either a React element or a string to the `offline` prop:
+
+```jsx
+<ReferenceInput source="user_id" reference="users">
+    <AutocompleteInput offline={<span>No network, could not fetch data</span>} />
+</ReferenceInput>
+<ReferenceInput source="user_id" reference="users">
+    <AutocompleteInput offline="No network, could not fetch data" />
+</ReferenceInput>
 ```
 
 ## `onChange`

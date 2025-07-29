@@ -110,6 +110,7 @@ See the [`children`](#children) section for more details.
 | `label`            | Optional | `string`                                    | -                                | Useful only when `ReferenceInput` is in a Filter array, the label is used as the Filter label. |
 | `page`             | Optional | `number`                                    | 1                                | The current page number                                                                        |
 | `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                                  |
+| `offline`          | Optional | `ReactNode`         | -        | What to render when there is no network connectivity when loading the record |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field:'id', order:'DESC' }` | How to order the list of suggestions                                                           |
 
@@ -189,6 +190,26 @@ const filters = [
         <AutocompleteInput label="Employer" />
     </ReferenceInput>,
 ];
+```
+
+## `offline`
+
+`<ReferenceInput>` can display a custom message when the referenced record is missing because there is no network connectivity, thanks to the `offline` prop.
+
+```jsx
+<ReferenceInput source="user_id" reference="users" offline="No network, could not fetch data" />
+```
+
+`<ReferenceInput>` renders the `offline` element when:
+
+- the referenced record is missing (no record in the `users` table with the right `user_id`), and
+- there is no network connectivity
+
+You can pass either a React element or a string to the `offline` prop:
+
+```jsx
+<ReferenceInput source="user_id" reference="users" offline={<span>No network, could not fetch data</span>} />
+<ReferenceInput source="user_id" reference="users" offline="No network, could not fetch data" />
 ```
 
 ## `parse`
