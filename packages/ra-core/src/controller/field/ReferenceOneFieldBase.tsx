@@ -41,6 +41,7 @@ export const ReferenceOneFieldBase = <
         sort,
         filter,
         link,
+        offline,
         queryOptions,
     } = props;
 
@@ -78,38 +79,46 @@ export const ReferenceOneFieldBase = <
     }
 
     const recordFromContext = useRecordContext<RecordType>(props);
-    if (controllerProps.isPending && loading) {
-        return (
-            <ResourceContextProvider value={reference}>
-                {loading}
-            </ResourceContextProvider>
-        );
-    }
-    if (controllerProps.error && error) {
-        return (
-            <ResourceContextProvider value={reference}>
-                <ReferenceFieldContextProvider value={context}>
-                    {error}
-                </ReferenceFieldContextProvider>
-            </ResourceContextProvider>
-        );
-    }
-    if (
-        !recordFromContext ||
-        (!controllerProps.isPending && controllerProps.referenceRecord == null)
-    ) {
-        return (
-            <ResourceContextProvider value={reference}>
-                {empty}
-            </ResourceContextProvider>
-        );
-    }
+    const {
+        error: controllerError,
+        isPending,
+        isPaused,
+        referenceRecord,
+    } = controllerProps;
+
+    const shouldRenderLoading =
+        !isPaused && isPending && loading !== false && loading !== undefined;
+    const shouldRenderOffline =
+        isPaused &&
+        !referenceRecord &&
+        offline !== false &&
+        offline !== undefined;
+    const shouldRenderError =
+        !!controllerError && error !== false && error !== undefined;
+    const shouldRenderEmpty =
+        (!recordFromContext ||
+            (!isPaused &&
+                referenceRecord == null &&
+                !controllerError &&
+                !isPending)) &&
+        empty !== false &&
+        empty !== undefined;
 
     return (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
-                <RecordContextProvider value={context.referenceRecord}>
-                    {render ? render(controllerProps) : children}
+                <RecordContextProvider value={referenceRecord}>
+                    {shouldRenderLoading
+                        ? loading
+                        : shouldRenderOffline
+                          ? offline
+                          : shouldRenderError
+                            ? error
+                            : shouldRenderEmpty
+                              ? empty
+                              : render
+                                ? render(controllerProps)
+                                : children}
                 </RecordContextProvider>
             </ReferenceFieldContextProvider>
         </ResourceContextProvider>
@@ -127,6 +136,7 @@ export interface ReferenceOneFieldBaseProps<
     loading?: ReactNode;
     error?: ReactNode;
     empty?: ReactNode;
+    offline?: ReactNode;
     render?: (props: UseReferenceResult<ReferenceRecordType>) => ReactNode;
     link?: LinkToType<ReferenceRecordType>;
     resource?: string;

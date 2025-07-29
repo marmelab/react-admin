@@ -9,11 +9,12 @@ import {
     ReferenceOneFieldBase,
     UseReferenceResult,
 } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
 
 import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { useThemeProps } from '@mui/material/styles';
+import { Offline } from '../Offline';
 
 /**
  * Render the related record in a one-to-one relationship
@@ -47,6 +48,7 @@ export const ReferenceOneField = <
         sort,
         filter,
         link,
+        offline = defaultOffline,
         queryOptions,
         ...rest
     } = props;
@@ -73,6 +75,7 @@ export const ReferenceOneField = <
                     empty ?? null
                 )
             }
+            offline={offline}
         >
             <ReferenceFieldView
                 reference={reference}
@@ -85,6 +88,8 @@ export const ReferenceOneField = <
         </ReferenceOneFieldBase>
     );
 };
+
+const defaultOffline = <Offline variant="inline" />;
 
 export interface ReferenceOneFieldProps<
     RecordType extends RaRecord = RaRecord,
@@ -103,6 +108,7 @@ export interface ReferenceOneFieldProps<
      */
     emptyText?: string | ReactElement;
     empty?: ReactNode;
+    offline?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];
