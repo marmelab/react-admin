@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    EditBase,
-    useCheckMinimumRequiredProps,
-    RaRecord,
-    EditBaseProps,
-} from 'ra-core';
+import { EditBase, RaRecord, EditBaseProps } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
 import { EditView, EditViewProps } from './EditView';

@@ -6,7 +6,6 @@ import { ShowBase } from '../../controller/show/ShowBase';
 import { TestMemoryRouter } from '../../routing';
 import { ReferenceManyFieldBase } from './ReferenceManyFieldBase';
 import { ListBase, ListIterator, useListContext } from '../list';
-import { DataTableBase } from '../../dataTable';
 import fakeRestDataProvider from 'ra-data-fakerest';
 
 export default {
