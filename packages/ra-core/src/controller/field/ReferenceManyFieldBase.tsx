@@ -68,6 +68,7 @@ export const ReferenceManyFieldBase = <
         error,
         loading,
         filter = defaultFilter,
+        offline,
         page = 1,
         perPage = 25,
         record,
@@ -104,52 +105,54 @@ export const ReferenceManyFieldBase = <
         );
     }
 
-    if (controllerProps.isPending && loading) {
-        return (
-            <ResourceContextProvider value={reference}>
-                {loading}
-            </ResourceContextProvider>
-        );
-    }
-    if (controllerProps.error && error) {
-        return (
-            <ResourceContextProvider value={reference}>
-                <ListContextProvider value={controllerProps}>
-                    {error}
-                </ListContextProvider>
-            </ResourceContextProvider>
-        );
-    }
-    if (
-        // there is an empty page component
-        empty &&
+    const {
+        data,
+        error: controllerError,
+        filterValues,
+        hasNextPage,
+        hasPreviousPage,
+        isPaused,
+        isPending,
+        total,
+    } = controllerProps;
+
+    const showLoading =
+        isPending && !isPaused && loading !== false && loading !== undefined;
+    const showOffline = isPaused && offline !== false && offline !== undefined;
+    const showError = controllerError && error !== false && error !== undefined;
+    const showEmpty =
+        empty !== false &&
+        empty !== undefined &&
         // there is no error
-        !controllerProps.error &&
+        !error &&
         // the list is not loading data for the first time
-        !controllerProps.isPending &&
+        !isPending &&
         // the API returned no data (using either normal or partial pagination)
-        (controllerProps.total === 0 ||
-            (controllerProps.total == null &&
+        (total === 0 ||
+            (total == null &&
                 // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
-                controllerProps.hasPreviousPage === false &&
+                hasPreviousPage === false &&
                 // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
-                controllerProps.hasNextPage === false &&
+                hasNextPage === false &&
                 // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
-                controllerProps.data.length === 0)) &&
+                data.length === 0)) &&
         // the user didn't set any filters
-        !Object.keys(controllerProps.filterValues).length
-    ) {
-        return (
-            <ResourceContextProvider value={reference}>
-                {empty}
-            </ResourceContextProvider>
-        );
-    }
+        !Object.keys(filterValues).length;
 
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                {render ? render(controllerProps) : children}
+                {showLoading
+                    ? loading
+                    : showOffline
+                      ? offline
+                      : showError
+                        ? error
+                        : showEmpty
+                          ? empty
+                          : render
+                            ? render(controllerProps)
+                            : children}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -167,6 +170,7 @@ export interface ReferenceManyFieldBaseProps<
     empty?: ReactNode;
     error?: ReactNode;
     loading?: ReactNode;
+    offline?: ReactNode;
 }
 
 const defaultFilter = {};
