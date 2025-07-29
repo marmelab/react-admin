@@ -292,7 +292,7 @@ export const PostShow = () => (
 
 ## `offline`
 
-By default, `<ShowBase>` renders nothing when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
+By default, `<Show>` renders the `<Offline>` component when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
 import { Show } from 'react-admin';
