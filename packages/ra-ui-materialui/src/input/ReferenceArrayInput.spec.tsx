@@ -22,7 +22,7 @@ import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
-import { DifferentIdTypes } from './ReferenceArrayInput.stories';
+import { AsFilters, DifferentIdTypes } from './ReferenceArrayInput.stories';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -291,5 +291,16 @@ describe('<ReferenceArrayInput />', () => {
                 selector: '.MuiChip-label',
             })
         ).toBeNull();
+    });
+
+    it('can be used as a list filter', async () => {
+        render(<AsFilters />);
+        await screen.findByText('band_2');
+        fireEvent.click(screen.getByText('Members'));
+        fireEvent.click(screen.getByText('artist_2'));
+        await waitFor(() => {
+            expect(screen.queryByText('band_2')).toBeNull();
+        });
+        await screen.findByText('band_1');
     });
 });
