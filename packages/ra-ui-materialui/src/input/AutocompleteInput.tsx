@@ -48,6 +48,7 @@ import {
 import type { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { Offline } from '../Offline';
 
 const defaultFilterOptions = createFilterOptions();
 
@@ -161,6 +162,7 @@ export const AutocompleteInput = <
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
+        loadingText = 'ra.message.loading',
         matchSuggestion,
         margin,
         fieldState: fieldStateOverride,
@@ -168,6 +170,7 @@ export const AutocompleteInput = <
         formState: formStateOverride,
         multiple = false,
         noOptionsText,
+        offline = defaultOffline,
         onBlur,
         onChange,
         onCreate,
@@ -196,7 +199,9 @@ export const AutocompleteInput = <
 
     const {
         allChoices,
+        isPaused,
         isPending,
+        isPlaceholderData,
         error: fetchError,
         resource,
         source,
@@ -627,6 +632,15 @@ If you provided a React element for the optionText prop, you must also provide t
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 clearText={translate(clearText, { _: clearText })}
                 closeText={translate(closeText, { _: closeText })}
+                loadingText={
+                    isPaused && isPlaceholderData
+                        ? offline
+                        : typeof loadingText === 'string'
+                          ? translate(loadingText, {
+                                _: loadingText,
+                            })
+                          : loadingText
+                }
                 openOnFocus
                 openText={translate(openText, { _: openText })}
                 id={id}
@@ -728,18 +742,21 @@ If you provided a React element for the optionText prop, you must also provide t
                 handleHomeEndKeys={!!create || !!onCreate}
                 filterOptions={filterOptions}
                 options={
-                    shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
-                    shouldRenderSuggestions(filterValue)
-                        ? suggestions
-                        : []
+                    isPaused && isPlaceholderData
+                        ? []
+                        : shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
+                            shouldRenderSuggestions(filterValue)
+                          ? suggestions
+                          : []
                 }
                 getOptionKey={(option: any) => option?.id}
                 getOptionLabel={getOptionLabelString}
                 inputValue={filterValue}
                 loading={
-                    isPending &&
-                    (!finalChoices || finalChoices.length === 0) &&
-                    oneSecondHasPassed
+                    (isPending &&
+                        (!finalChoices || finalChoices.length === 0) &&
+                        oneSecondHasPassed) ||
+                    (isPaused && isPlaceholderData)
                 }
                 value={selectedChoice}
                 onChange={handleAutocompleteChange}
@@ -810,6 +827,7 @@ export interface AutocompleteInputProps<
     emptyValue?: any;
     filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
+    offline?: ReactNode;
     onChange?: (
         // We can't know upfront what the value type will be
         value: Multiple extends true ? any[] : any,
@@ -924,6 +942,7 @@ const areSelectedItemsEqual = (
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });
+const defaultOffline = <Offline variant="inline" />;
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
