@@ -184,7 +184,7 @@ You can also use a custom `link` function to get a custom path for the children.
 </ReferenceField>
 ```
 
-`<ReferenceField>` renders the `empty` element when:
+`<ReferenceField>` renders the `offline` element when:
 
 - the referenced record is missing (no record in the `users` table with the right `user_id`), and
 - there is no network connectivity
@@ -192,10 +192,10 @@ You can also use a custom `link` function to get a custom path for the children.
 You can pass either a React element or a string to the `offline` prop:
 
 ```jsx
-<ReferenceField source="user_id" reference="users" empty={<span>No network, could not fetch data</span>} >
+<ReferenceField source="user_id" reference="users" offline={<span>No network, could not fetch data</span>} >
     ...
 </ReferenceField>
-<ReferenceField source="user_id" reference="users" empty="No network, could not fetch data" >
+<ReferenceField source="user_id" reference="users" offline="No network, could not fetch data" >
     ...
 </ReferenceField>
 ```
