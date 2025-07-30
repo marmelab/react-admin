@@ -113,7 +113,7 @@ const BookShow = () => (
 By default, the `<ShowBase>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
 
 ```jsx
-import { ShowBase } from 'ra-core';
+import { ShowBase } from 'react-admin';
 
 const PostShow = () => (
     <ShowBase disableAuthentication>
@@ -127,7 +127,7 @@ const PostShow = () => (
 By default, `<ShowBase>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
 
 ```jsx
-import { ShowBase } from 'ra-core';
+import { ShowBase } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase id="123">
@@ -143,7 +143,7 @@ export const PostShow = () => (
 By default, `<ShowBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `loading` prop:
 
 ```jsx
-import { ShowBase } from 'ra-core';
+import { ShowBase } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase loading={<p>Checking for permissions...</p>}>
@@ -157,7 +157,7 @@ export const PostShow = () => (
 By default, `<ShowBase>` renders nothing when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
-import { ShowBase } from 'ra-core';
+import { ShowBase } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase offline={<p>No network. Could not load the post.</p>}>
@@ -169,7 +169,7 @@ export const PostShow = () => (
 **Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
 
 ```jsx
-import { ShowBase, IsOffline } from 'ra-core';
+import { ShowBase, IsOffline } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase offline={<p>No network. Could not load the post.</p>}>
@@ -258,7 +258,7 @@ const BookShow = () => (
 By default, `<ShowBase>` operates on the current `ResourceContext` (defined at the routing level), so under the `/posts/1/show` path, the `resource` prop will be `posts`. You may want to force a different resource. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
 
 ```jsx
-import { ShowBase } from 'ra-core';
+import { ShowBase } from 'react-admin';
 
 export const UsersShow = () => (
     <ShowBase resource="users">
