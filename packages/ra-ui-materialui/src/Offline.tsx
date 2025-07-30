@@ -17,17 +17,15 @@ export const Offline = (props: Offline) => {
     const { icon, message: messageProp, variant = 'standard', ...rest } = props;
     const resource = useResourceContext(props);
     const getResourceLabel = useGetResourceLabel();
-    if (!resource) {
-        throw new Error(
-            '<Offline> must be used inside a <Resource> component or provided a resource prop'
-        );
-    }
+
     const message = useResourceTranslation({
         baseI18nKey: 'ra.notification.offline',
-        resourceI18nKey: `resources.${resource}.notification.offline`,
+        resourceI18nKey: resource
+            ? `resources.${resource}.notification.offline`
+            : undefined,
         userText: messageProp,
         options: {
-            name: getResourceLabel(resource, 0),
+            name: resource ? getResourceLabel(resource, 0) : undefined,
             _: 'No connectivity. Could not fetch data.',
         },
     });
