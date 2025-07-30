@@ -20,7 +20,7 @@ import { worker } from './fakeServer';
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
-worker.start({ onUnhandledRequest: 'bypass' }).then(() => {
+worker.start({ onUnhandledRequest: 'bypass', quiet: true }).then(() => {
     root.render(
         <React.StrictMode>
             <Admin

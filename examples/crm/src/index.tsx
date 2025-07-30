@@ -7,7 +7,7 @@ import { worker } from './providers/fakerest/fakeServer';
 const container = document.getElementById('root');
 const root = createRoot(container!);
 
-worker.start({ onUnhandledRequest: 'bypass' }).then(() => {
+worker.start({ onUnhandledRequest: 'bypass', quiet: true }).then(() => {
     root.render(
         <React.StrictMode>
             <App />
