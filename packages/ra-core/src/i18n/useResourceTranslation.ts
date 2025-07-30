@@ -13,17 +13,18 @@ export const useResourceTranslation = (
         }
         return translate(userText, { _: userText, ...options });
     }
+    if (!resourceI18nKey) {
+        return translate(baseI18nKey, options);
+    }
 
-    const translatedText = translate(resourceI18nKey, {
+    return translate(resourceI18nKey, {
         ...options,
         _: translate(baseI18nKey, options),
     });
-
-    return translatedText;
 };
 
 export interface UseResourceTranslationOptions {
-    resourceI18nKey: string;
+    resourceI18nKey?: string;
     baseI18nKey: string;
     userText?: ReactNode;
     options?: Record<string, any>;

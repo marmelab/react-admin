@@ -1,15 +1,21 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, useRecordContext, TestMemoryRouter } from 'ra-core';
-import { Box, Card, Stack, ThemeOptions } from '@mui/material';
+import {
+    Resource,
+    useRecordContext,
+    TestMemoryRouter,
+    IsOffline,
+} from 'ra-core';
+import { Alert, Box, Card, Stack, ThemeOptions } from '@mui/material';
+import { deepmerge } from '@mui/utils';
+import { onlineManager } from '@tanstack/react-query';
 
 import { TextField } from '../field';
 import { Labeled } from '../Labeled';
 import { SimpleShowLayout } from './SimpleShowLayout';
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
-import { Show } from './Show';
-import { deepmerge } from '@mui/utils';
+import { Show, ShowProps } from './Show';
 import { defaultLightTheme } from '../theme';
 
 export default { title: 'ra-ui-materialui/detail/Show' };
@@ -299,3 +305,67 @@ export const WithRenderProp = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const Offline = ({
+    isOnline = true,
+    offline,
+}: {
+    isOnline?: boolean;
+    offline?: React.ReactNode;
+}) => {
+    React.useEffect(() => {
+        onlineManager.setOnline(isOnline);
+    }, [isOnline]);
+    return (
+        <TestMemoryRouter initialEntries={['/books/1/show']}>
+            <Admin dataProvider={dataProvider}>
+                <Resource
+                    name="books"
+                    show={<BookShowOffline offline={offline} />}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+const BookShowOffline = (props: ShowProps) => {
+    return (
+        <Show emptyWhileLoading {...props}>
+            <IsOffline>
+                <Alert severity="warning">
+                    You are offline, the data may be outdated
+                </Alert>
+            </IsOffline>
+            <SimpleShowLayout>
+                <TextField source="title" />
+                <TextField source="author" />
+                <TextField source="summary" />
+                <TextField source="year" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+
+const CustomOffline = () => {
+    return <Alert severity="warning">You are offline!</Alert>;
+};
+
+Offline.args = {
+    isOnline: true,
+    offline: 'default',
+};
+
+Offline.argTypes = {
+    isOnline: {
+        control: { type: 'boolean' },
+    },
+    offline: {
+        name: 'Offline component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomOffline />,
+        },
+    },
+};

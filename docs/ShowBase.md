@@ -63,10 +63,11 @@ const App = () => (
 | Prop             | Required | Type              | Default | Description
 |------------------|----------|-------------------|---------|--------------------------------------------------------
 | `children`       | Optional | `ReactNode`       |         | The components rendering the record fields
-| `render`       | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode`       |         | Alternative to children, a function that takes the ShowController context and renders the form
+| `render`         | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode`       |         | Alternative to children, a function that takes the ShowController context and renders the form
 | `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
-| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the list is loading
 | `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL
+| `loading`        | Optional | `ReactNode`       |         | The component to render while checking for authentication and permissions
+| `offline`        | Optional | `ReactNode`       |         | The component to render when there is no connectivity and the record isn't in the cache
 | `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 
@@ -107,38 +108,13 @@ const BookShow = () => (
 ```
 {% endraw %}
 
-## `render`
-
-Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ShowContext` as argument. 
-
-{% raw %}
-```jsx
-import { ShowBase, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
-
-const BookShow = () => (
-    <ShowBase render={({ isPending, error, record }) => {
-        if (isPending) {
-            return <p>Loading...</p>;
-        }
-
-        if (error) {
-            return (
-                <p className="error">
-                    {error.message}
-                </p>
-            );
-        }
-        return <p>{record.title}</p>;
-    }}/>
-);
-```
-{% endraw %}
-
 ## `disableAuthentication`
 
 By default, the `<ShowBase>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
 
 ```jsx
+import { ShowBase } from 'react-admin';
+
 const PostShow = () => (
     <ShowBase disableAuthentication>
         ...
@@ -151,6 +127,8 @@ const PostShow = () => (
 By default, `<ShowBase>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
 
 ```jsx
+import { ShowBase } from 'react-admin';
+
 export const PostShow = () => (
     <ShowBase id="123">
         ...
@@ -159,6 +137,49 @@ export const PostShow = () => (
 ```
 
 **Tip**: Pass both a custom `id` and a custom `resource` prop to use `<ShowBase>` independently of the current URL. This even allows you to use more than one `<ShowBase>` component in the same page.
+
+## `loading`
+
+By default, `<ShowBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `loading` prop:
+
+```jsx
+import { ShowBase } from 'react-admin';
+
+export const PostShow = () => (
+    <ShowBase loading={<p>Checking for permissions...</p>}>
+        ...
+    </ShowBase>
+);
+```
+
+## `offline`
+
+By default, `<ShowBase>` renders nothing when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
+
+```jsx
+import { ShowBase } from 'react-admin';
+
+export const PostShow = () => (
+    <ShowBase offline={<p>No network. Could not load the post.</p>}>
+        ...
+    </ShowBase>
+);
+```
+
+**Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+import { ShowBase, IsOffline } from 'react-admin';
+
+export const PostShow = () => (
+    <ShowBase offline={<p>No network. Could not load the post.</p>}>
+        <IsOffline>
+            No network. The post data may be outdated.
+        </IsOffline>
+        ...
+    </ShowBase>
+);
+```
 
 ## `queryOptions`
 
@@ -205,11 +226,40 @@ The default `onError` function is:
 }
 ```
 
+## `render`
+
+Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ShowContext` as argument. 
+
+{% raw %}
+```jsx
+import { ShowBase, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
+
+const BookShow = () => (
+    <ShowBase render={({ isPending, error, record }) => {
+        if (isPending) {
+            return <p>Loading...</p>;
+        }
+
+        if (error) {
+            return (
+                <p className="error">
+                    {error.message}
+                </p>
+            );
+        }
+        return <p>{record.title}</p>;
+    }}/>
+);
+```
+{% endraw %}
+
 ## `resource`
 
 By default, `<ShowBase>` operates on the current `ResourceContext` (defined at the routing level), so under the `/posts/1/show` path, the `resource` prop will be `posts`. You may want to force a different resource. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
 
 ```jsx
+import { ShowBase } from 'react-admin';
+
 export const UsersShow = () => (
     <ShowBase resource="users">
         ...

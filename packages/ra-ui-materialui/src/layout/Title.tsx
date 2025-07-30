@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState, ReactElement } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { RaRecord, TitleComponent, warning } from 'ra-core';
 
@@ -50,6 +50,6 @@ export interface TitleProps {
     className?: string;
     defaultTitle?: TitleComponent;
     record?: Partial<RaRecord>;
-    title?: string | ReactElement;
+    title?: React.ReactNode;
     preferenceKey?: string | false;
 }

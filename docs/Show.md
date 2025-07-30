@@ -70,6 +70,7 @@ That's enough to display the post show view above.
 | `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
 | `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the show is loading
 | `id`             | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the URL
+| `offline`        | Optional | `ReactNode`       |         | The component to render when there is no connectivity and the record isn't in the cache
 | `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 | `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
@@ -83,7 +84,7 @@ By default, `<Show>` includes an action toolbar with an `<EditButton>` if the `<
 
 ```jsx
 import Button from '@mui/material/Button';
-import { EditButton, TopToolbar } from 'react-admin';
+import { EditButton, Show, TopToolbar } from 'react-admin';
 
 const PostShowActions = () => (
     <TopToolbar>
@@ -158,6 +159,8 @@ React-admin provides 2 built-in show layout components:
 To use an alternative layout, switch the `<Show>` child component:
 
 ```diff
+import { Show } from 'react-admin';
+
 export const PostShow = () => (
     <Show>
 -       <SimpleShowLayout>
@@ -188,6 +191,7 @@ You can override the main area container by passing a `component` prop:
 
 {% raw %}
 ```jsx
+import { Show } from 'react-admin';
 import { Box } from '@mui/material';
 
 const ShowWrapper = ({ children }) => (
@@ -210,6 +214,8 @@ const PostShow = () => (
 By default, the `<Show>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
 
 ```jsx
+import { Show } from 'react-admin';
+
 const PostShow = () => (
     <Show disableAuthentication>
         ...
@@ -273,6 +279,8 @@ const BookShow = () => (
 By default, `<Show>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
 
 ```jsx
+import { Show } from 'react-admin';
+
 export const PostShow = () => (
     <Show id="123">
         ...
@@ -281,6 +289,38 @@ export const PostShow = () => (
 ```
 
 **Tip**: Pass both a custom `id` and a custom `resource` prop to use `<Show>` independently of the current URL. This even allows you to use more than one `<Show>` component in the same page.
+
+## `offline`
+
+By default, `<Show>` renders the `<Offline>` component when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
+
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show offline={<p>No network. Could not load the post.</p>}>
+        ...
+    </Show>
+);
+```
+
+**Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+import { Show, IsOffline } from 'react-admin';
+import { Alert } from '@mui/material';
+
+export const PostShow = () => (
+    <Show offline={<p>No network. Could not load the post.</p>}>
+        <IsOffline>
+           <Alert severity="warning">
+                You are offline, the data may be outdated
+            </Alert>
+        </IsOffline>
+        ...
+    </Show>
+);
+```
 
 ## `queryOptions`
 
@@ -372,6 +412,8 @@ export const PostShow = () => (
 By default, `<Show>` operates on the current `ResourceContext` (defined at the routing level), so under the `/posts/1/show` path, the `resource` prop will be `posts`. You may want to force a different resource. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
 
 ```jsx
+import { Show } from 'react-admin';
+
 export const UsersShow = () => (
     <Show resource="users">
         ...
