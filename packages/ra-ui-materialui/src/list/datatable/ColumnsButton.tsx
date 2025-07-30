@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { useTranslate, useResourceContext } from 'ra-core';
 import {
-    Box,
     Button,
     type ButtonProps,
-    Menu,
     useMediaQuery,
     Theme,
     Tooltip,
     IconButton,
+    Popover,
+    MenuList,
+    PopoverOrigin,
 } from '@mui/material';
+import { useRtl } from '@mui/system/RtlProvider';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 import {
     type ComponentsOverrides,
@@ -49,7 +51,7 @@ export const ColumnsButton = (inProps: ColumnsButtonProps) => {
     const storeKey = props.storeKey || `${resource}.datatable`;
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-
+    const isRtl = useRtl();
     const translate = useTranslate();
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -89,21 +91,35 @@ export const ColumnsButton = (inProps: ColumnsButtonProps) => {
                     {title}
                 </Button>
             )}
-            <Menu
+            <Popover
                 open={Boolean(anchorEl)}
                 keepMounted
                 anchorEl={anchorEl}
                 onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: isRtl ? 'right' : 'left',
+                }}
+                transformOrigin={isRtl ? RTL_ORIGIN : LTR_ORIGIN}
             >
                 {/* ColumnsSelector will be rendered here via Portal  */}
-                <Box
-                    component="ul"
+                <MenuList
                     sx={{ px: 1, my: 0, minWidth: 200 }}
                     id={`${storeKey}-columnsSelector`}
                 />
-            </Menu>
+            </Popover>
         </Root>
     );
+};
+
+const RTL_ORIGIN: PopoverOrigin = {
+    vertical: 'top',
+    horizontal: 'right',
+};
+
+const LTR_ORIGIN: PopoverOrigin = {
+    vertical: 'top',
+    horizontal: 'left',
 };
 
 const PREFIX = 'RaColumnsButton';
