@@ -39,7 +39,6 @@
     },
     "msw": {
         "workerDirectory": [
-            "assets",
             "public"
         ]
     }
