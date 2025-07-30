@@ -36,16 +36,18 @@ function isValidationErrorMessageWithArgs(
     return error ? error.hasOwnProperty('message') : false;
 }
 
-interface MessageFuncParams {
+export interface GetValidationMessageParams {
     args: any;
     value: any;
     values: any;
 }
 
-type MessageFunc = (params: MessageFuncParams) => ValidationErrorMessage;
+export type GetValidationMessage = (
+    params: GetValidationMessageParams
+) => ValidationErrorMessage;
 
 const getMessage = (
-    message: string | MessageFunc,
+    message: string | GetValidationMessage,
     messageArgs: any,
     value: any,
     values: any
@@ -292,7 +294,7 @@ export const email = memoize((message = 'ra.validation.email') =>
     regex(EMAIL_REGEX, message)
 );
 
-const oneOfTypeMessage: MessageFunc = ({ args }) => ({
+const oneOfTypeMessage: GetValidationMessage = ({ args }) => ({
     message: 'ra.validation.oneOf',
     args,
 });
