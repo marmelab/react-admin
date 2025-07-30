@@ -181,6 +181,24 @@ export const DisabledChoice = () => (
     </Wrapper>
 );
 
+export const InputLabelProps = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            InputLabelProps={{
+                shrink: true,
+                required: true,
+            }}
+        />
+    </Wrapper>
+);
+
 export const ReadOnly = () => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create
