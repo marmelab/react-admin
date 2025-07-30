@@ -99,7 +99,7 @@ const BookEdit = () => (
 By default, the `<EditBase>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
 
 ```jsx
-import { EditBase } from 'ra-core';
+import { EditBase } from 'react-admin';
 
 const PostEdit = () => (
     <EditBase disableAuthentication>
@@ -113,7 +113,7 @@ const PostEdit = () => (
 By default, `<EditBase>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
 
 ```jsx
-import { EditBase } from 'ra-core';
+import { EditBase } from 'react-admin';
 
 export const PostEdit = () => (
     <EditBase id="123">
@@ -129,7 +129,7 @@ export const PostEdit = () => (
 By default, `<EditBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `loading` prop:
 
 ```jsx
-import { EditBase } from 'ra-core';
+import { EditBase } from 'react-admin';
 
 export const PostEdit = () => (
     <EditBase loading={<p>Checking for permissions...</p>}>
@@ -151,6 +151,8 @@ By default, pages using `<EditBase>` use the `undoable` mutation mode. This is p
 You can change this default by setting the `mutationMode` prop - and this affects both the Save and Delete buttons. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
 
 ```jsx
+import { EditBase } from 'react-admin';
+
 const PostEdit = () => (
     <EditBase mutationMode="optimistic">
         // ...
@@ -161,6 +163,8 @@ const PostEdit = () => (
 And to make the Save action blocking, and wait for the dataProvider response to continue, use the `pessimistic` mode:
 
 ```jsx
+import { EditBase } from 'react-admin';
+
 const PostEdit = () => (
     <EditBase mutationMode="pessimistic">
         // ...
@@ -319,7 +323,7 @@ The default `onError` function is:
 By default, `<EditBase>` renders nothing when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
-import { EditBase } from 'ra-core';
+import { EditBase } from 'react-admin';
 
 export const PostEdit = () => (
     <EditBase offline={<p>No network. Could not load the post.</p>}>
@@ -331,7 +335,7 @@ export const PostEdit = () => (
 **Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
 
 ```jsx
-import { EditBase, IsOffline } from 'ra-core';
+import { EditBase, IsOffline } from 'react-admin';
 
 export const PostEdit = () => (
     <EditBase offline={<p>No network. Could not load the post.</p>}>
@@ -439,7 +443,7 @@ const BookEdit = () => (
 By default, `<EditBase>` operates on the current `ResourceContext` (defined at the routing level), so under the `/posts/1/show` path, the `resource` prop will be `posts`. You may want to force a different resource. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
 
 ```jsx
-import { EditBase } from 'ra-core';
+import { EditBase } from 'react-admin';
 
 export const UsersEdit = () => (
     <EditBase resource="users">

@@ -558,11 +558,14 @@ export const PostEdit = () => (
 
 ```jsx
 import { Edit, IsOffline } from 'react-admin';
+import { Alert } from '@mui/material';
 
 export const PostEdit = () => (
     <Edit offline={<p>No network. Could not load the post.</p>}>
         <IsOffline>
-            No network. The post data may be outdated.
+            <Alert severity="warning">
+                You are offline, the data may be outdated
+            </Alert>
         </IsOffline>
         ...
     </Edit>
