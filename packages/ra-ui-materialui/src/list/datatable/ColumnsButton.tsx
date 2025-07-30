@@ -8,8 +8,8 @@ import {
     Tooltip,
     IconButton,
     Popover,
-    MenuList,
     PopoverOrigin,
+    Box,
 } from '@mui/material';
 import { useRtl } from '@mui/system/RtlProvider';
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
@@ -103,9 +103,9 @@ export const ColumnsButton = (inProps: ColumnsButtonProps) => {
                 transformOrigin={isRtl ? RTL_ORIGIN : LTR_ORIGIN}
             >
                 {/* ColumnsSelector will be rendered here via Portal  */}
-                <MenuList
-                    sx={{ px: 1, my: 0, minWidth: 200 }}
+                <Box
                     id={`${storeKey}-columnsSelector`}
+                    sx={{ px: 1, my: 0, minWidth: 200 }}
                 />
             </Popover>
         </Root>
