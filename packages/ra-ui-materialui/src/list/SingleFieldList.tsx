@@ -12,9 +12,9 @@ import {
     useListContextWithProps,
     useResourceContext,
     type RaRecord,
-    RecordContextProvider,
     RecordRepresentation,
     useCreatePath,
+    ListIterator,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout/LinearProgress';
@@ -54,7 +54,9 @@ import { Link } from '../Link';
  *     </SingleFieldList>
  * </ReferenceManyField>
  */
-export const SingleFieldList = (inProps: SingleFieldListProps) => {
+export const SingleFieldList = <RecordType extends RaRecord = any>(
+    inProps: SingleFieldListProps<RecordType>
+) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -77,11 +79,7 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
     }
 
     if (data == null || data.length === 0 || total === 0) {
-        if (empty) {
-            return empty;
-        }
-
-        return null;
+        return empty ?? null;
     }
 
     return (
@@ -91,21 +89,21 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
             className={className}
             {...sanitizeListRestProps(rest)}
         >
-            {data.map((record, rowIndex) => {
-                const resourceLinkPath = !linkType
-                    ? false
-                    : createPath({
-                          resource,
-                          type: linkType,
-                          id: record.id,
-                      });
+            <ListIterator<RecordType>
+                data={data}
+                total={total}
+                isPending={isPending}
+                render={record => {
+                    const resourceLinkPath = !linkType
+                        ? false
+                        : createPath({
+                              resource,
+                              type: linkType,
+                              id: record.id,
+                          });
 
-                if (resourceLinkPath) {
-                    return (
-                        <RecordContextProvider
-                            value={record}
-                            key={record.id ?? `row${rowIndex}`}
-                        >
+                    if (resourceLinkPath) {
+                        return (
                             <Link
                                 className={SingleFieldListClasses.link}
                                 to={resourceLinkPath}
@@ -115,19 +113,12 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
                                     <DefaultChildComponent clickable />
                                 )}
                             </Link>
-                        </RecordContextProvider>
-                    );
-                }
+                        );
+                    }
 
-                return (
-                    <RecordContextProvider
-                        value={record}
-                        key={record.id ?? `row${rowIndex}`}
-                    >
-                        {children || <DefaultChildComponent />}
-                    </RecordContextProvider>
-                );
-            })}
+                    return children || <DefaultChildComponent />;
+                }}
+            />
         </Root>
     );
 };
@@ -135,7 +126,7 @@ export const SingleFieldList = (inProps: SingleFieldListProps) => {
 export interface SingleFieldListProps<RecordType extends RaRecord = any>
     extends StackProps {
     className?: string;
-    empty?: React.ReactElement;
+    empty?: React.ReactNode;
     linkType?: string | false;
     children?: React.ReactNode;
     // can be injected when using the component without context

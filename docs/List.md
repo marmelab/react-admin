@@ -55,7 +55,8 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 
 | Prop                      | Required | Type           | Default        | Description                                                                                  |
 |---------------------------|----------|----------------|----------------|----------------------------------------------------------------------------------------------|
-| `children`                | Required | `ReactNode`    | -              | The components rendering the list of records.                                          |
+| `children`                | Optional&nbsp;* | `ReactNode`    | -              | The components rendering the list of records.                                          |
+| `render`                | Optional&nbsp;* | `(listContext) => ReactNode`    | -              | A function to render the list of records. Receive the list context as its argument                                          |
 | `actions`                 | Optional | `ReactElement` | -              | The actions to display in the toolbar.                                                       |
 | `aside`                   | Optional | `ReactElement` | -              | The component to display on the side of the list.                                            |
 | `component`               | Optional | `Component`    | `Card`         | The component to render as the root element.                                                 |
@@ -76,6 +77,8 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `storeKey`                | Optional | `string | false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
 | `title`                   | Optional | `string | ReactElement | false` | -              | The title to display in the App Bar.                                                         |
 | `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
+
+`*` You must provide either `children` or `render`.
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
 
@@ -179,6 +182,7 @@ The default `<List>` layout lets you render the component of your choice on the 
 Pass a React element as the `aside` prop for that purpose:
 
 {% raw %}
+
 ```jsx
 const Aside = () => (
     <div style={{ width: 200, margin: '4em 1em' }}>
@@ -195,11 +199,13 @@ const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 The `aside` component can call the `useListContext()` hook to receive the same props as the `<List>` child component. This means you can display additional details of the current list in the aside component. For instance, you can display the total number of views of all posts in the list:
 
 {% raw %}
+
 ```jsx
 import { Typography } from '@mui/material';
 import { useListContext } from 'react-admin';
@@ -217,11 +223,13 @@ const Aside = () => {
     );
 };
 ```
+
 {% endraw %}
 
 The `aside` prop is also the preferred way to add a [Filter Sidebar](./FilteringTutorial.md#the-filterlist-sidebar) to a list view:
 
 {% raw %}
+
 ```jsx
 // in src/PostFilterSidebar.js
 import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
@@ -248,6 +256,7 @@ export const PostFilterSidebar = () => (
     </Card>
 );
 ```
+
 {% endraw %}
 
 ```jsx
@@ -336,30 +345,7 @@ export const PostList = () => {
 };
 ```
 
-You can also render the list of records using a custom React component. You'll need to grab the data from the `ListContext` using [`<WithListContext>`](./WithListContext.md):
-
-{% raw %}
-```tsx
-import { List, WithListContext } from 'react-admin';
-import { Stack, Typography } from '@mui/material';
-
-const BookList = () => (
-    <List>
-        <WithListContext render={({ data }) => (
-            <Stack spacing={2} sx={{ padding: 2 }}>
-                {data?.map(book => (
-                    <Typography key={book.id}>
-                        <i>{book.title}</i>, by {book.author} ({book.year})
-                    </Typography>
-                ))}
-            </Stack>
-        )} />
-    </List>
-);
-```
-{% endraw %}
-
-Check [Building a custom List Iterator](./ListTutorial.md#building-a-custom-iterator) for more details.
+You can also render the list of records using a custom React component thanks to [the `render` prop](#render). Check [Building a custom List Iterator](./ListTutorial.md#building-a-custom-iterator) for more details.
 
 ## `component`
 
@@ -423,6 +409,7 @@ By default, react-admin synchronizes the `<List>` parameters (sort, pagination, 
 When you use a `<List>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. To do so, pass the `disableSyncWithLocation` prop. The drawback is that a hit on the "back" button doesn't restore the previous list parameters.
 
 {% raw %}
+
 ```jsx
 const Dashboard = () => (
     <div>
@@ -448,6 +435,7 @@ const Dashboard = () => (
     </div>
 )
 ```
+
 {% endraw %}
 
 **Tip**: `disableSyncWithLocation` also disables the persistence of the list parameters in the Store by default. To enable the persistence of the list parameters in the Store, you can pass a custom `storeKey` prop.
@@ -491,6 +479,7 @@ When there is no result, and there is no active filter, and the resource has a c
 You can use the `empty` prop to replace that page by a custom component:
 
 {% raw %}
+
 ```jsx
 import { Box, Button, Typography } from '@mui/material';
 import { CreateButton, List } from 'react-admin';
@@ -514,6 +503,7 @@ const ProductList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 The `empty` component can call the `useListContext()` hook to receive the same props as the `List` child component.
@@ -703,7 +693,6 @@ export const PostList = () => {
   Your browser does not support the video tag.
 </video>
 
-
 You can add an array of filter Inputs to the List using the `filters` prop:
 
 ```jsx
@@ -733,7 +722,6 @@ You can also display filters as a sidebar:
   Your browser does not support the video tag.
 </video>
 
-
 For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) documentation.
 
 ## `filter`: Permanent Filter
@@ -741,6 +729,7 @@ For more details about customizing filters, see the [Filtering the List](./Filte
 You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the data provider in the `filter` props:
 
 {% raw %}
+
 ```jsx
 // in src/posts.js
 export const PostList = () => (
@@ -749,6 +738,7 @@ export const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 The actual filter parameter sent to the data provider is the result of the combination of the *user* filters (the ones set through the `filters` component form), and the *permanent* filter. The user cannot override the permanent filters set by way of `filter`.
@@ -760,6 +750,7 @@ To set default values to filters, you can either pass an object literal as the `
 There is one exception: inputs with `alwaysOn` don't accept `defaultValue`. You have to use the `filterDefaultValues` for those.
 
 {% raw %}
+
 ```jsx
 // in src/posts.js
 const postFilters = [
@@ -774,6 +765,7 @@ export const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 **Tip**: The `filter` and `filterDefaultValues` props have one key difference: the `filterDefaultValues` can be overridden by the user, while the `filter` values are always sent to the data provider. Or, to put it otherwise:
@@ -842,6 +834,7 @@ export const PostList = () => (
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
 
 {% raw %}
+
 ```jsx
 import { List } from 'react-admin';
 
@@ -851,6 +844,7 @@ const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 With this option, react-admin will call `dataProvider.getList()` on mount with the `meta: { foo: 'bar' }` option.
@@ -858,6 +852,7 @@ With this option, react-admin will call `dataProvider.getList()` on mount with t
 You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getList()` call fails, react-admin shows an error notification. Here is how to show a custom notification instead:
 
 {% raw %}
+
 ```jsx
 import { useNotify, useRedirect, List } from 'react-admin';
 
@@ -877,9 +872,48 @@ const PostList = () => {
     );
 }
 ```
+
 {% endraw %}
 
 The `onError` function receives the error from the dataProvider call (`dataProvider.getList()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+
+## `render`
+
+Alternatively to `children`, you can pass a `render` prop to `<List>`. It will receive the [`ListContext`](./useListContext.md#return-value) as its argument, and should return a React node.
+
+This allows to inline the render logic for the list page.
+
+When receiving a render prop the `<List>` component will ignore the children property.
+
+{% raw %}
+
+```tsx
+const PostList = () => (
+    <List
+        render={({ isPending, error, data }) => {
+            if (isPending) {
+                return <div>Loading...</div>;
+            }
+            if (error) {
+                return <div>Error: {error.message}</div>;
+            }
+            return (
+                <ul>
+                    {data.map(post => (
+                        <li key={post.id}>
+                            <strong>{post.title}</strong> - {post.author}
+                        </li>
+                    ))}
+                </ul>
+            );
+        }}
+    />
+);
+```
+
+**Tip**: When receiving a `render` prop, the `<List>` component will ignore the `children` prop.
+
+{% endraw %}
 
 ## `resource`
 
@@ -898,6 +932,7 @@ export const UsersList = () => (
 Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
 
 {% raw %}
+
 ```jsx
 export const PostList = () => (
     <List sort={{ field: 'published_at', order: 'DESC' }}>
@@ -905,6 +940,7 @@ export const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
@@ -920,6 +956,7 @@ If you want to display multiple lists of the same resource and keep distinct sto
 In the example below, both lists `NewerBooks` and `OlderBooks` use the same resource ('books'), but their list parameters are stored separately (under the store keys `'newerBooks'` and `'olderBooks'` respectively). This allows to use both components in the same app, each having its own state (filters, sorting and pagination).
 
 {% raw %}
+
 ```jsx
 import {
     Admin,
@@ -972,6 +1009,7 @@ const Admin = () => {
     );
 };
 ```
+
 {% endraw %}
 
 **Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
@@ -1030,6 +1068,7 @@ The `<List>` component accepts the usual `className` prop, but you can override 
 Here is an example:
 
 {% raw %}
+
 ```jsx
 const PostList = () => (
     <List
@@ -1044,6 +1083,7 @@ const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 **Tip**: The `List` component `classes` can also be customized for all instances of the component with its global css name `RaList` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
@@ -1131,6 +1171,7 @@ The list will automatically update when a new record is created, or an existing 
 Use [the `queryOptions` prop](#queryoptions) to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
 
 {% raw %}
+
 ```jsx
 import { List } from 'react-admin';
 
@@ -1140,6 +1181,7 @@ const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 ## Rendering An Empty List
@@ -1173,6 +1215,44 @@ const ProductList = () => (
     </List>
 )
 ```
+
+## Enabling Data Fetching Conditionally
+
+You might want to allow data to be fetched only when at least some filters have been set. You can leverage TanStack react-query `enabled` option for that. It accepts a function that receives the query as its only parameter. As react-admin always format the `queryKey` as `[ResourceName, DataProviderMethod, DataProviderParams]`, you can check that there is at least a filter in this function:
+
+{% raw %}
+
+```tsx
+export const PostList = () => (
+    <List
+        filters={postFilter}
+        queryOptions={{
+            enabled: query => {
+                const listParams = query.queryKey[2] as GetListParams;
+                return listParams.filter.q?.length > 2;
+            }
+        }}
+    >
+        <WithListContext
+            render={context =>
+                context.filterValues.q?.length > 2 ? (
+                    <CardContentInner>
+                        Type a search term to fetch data
+                    </CardContentInner>
+                ) : (
+                    <Datagrid>
+                        {/* your fields */}
+                    </Datagrid>
+                )
+            }
+        />
+    </List>
+)
+```
+
+{% endraw %}
+
+**Note**: Notice we display some custom UI when there is no filter. This is because otherwise, users would see the loading UI as Tanstack Query will set the `isPending` property of the underlying query to `true` if the query isn't enabled.
 
 ## Accessing Extra Response Data
 
@@ -1236,11 +1316,12 @@ const Facets = () => {
 
 ## Controlled Mode
 
-`<List>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself. 
+`<List>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself.
 
 In that case, use the [`resource`](#resource), [`sort`](#sort), [`filter`](#filter-permanent-filter), and [`perPage`](#perpage) props to set the list parameters.
 
 {% raw %}
+
 ```jsx
 import { List, SimpleList } from 'react-admin';
 import { Container, Typography } from '@mui/material';
@@ -1274,6 +1355,7 @@ const Dashboard = () => (
     </Container>
 )
 ```
+
 {% endraw %}
 
 **Note**: If you need to set the list parameters to render a list of records *related to another record*, there are better components than `<List>` for that. Check out the following components, specialized in fetching and displaying a list of related records:
@@ -1285,6 +1367,7 @@ const Dashboard = () => (
 If the `<List>` children allow to *modify* the list state (i.e. if they let users change the sort order, the filters, the selection, or the pagination), then you should also use the [`disableSyncWithLocation`](#disablesyncwithlocation) prop to prevent react-admin from changing the URL. This is the case e.g. if you use a `<DataTable>`, which lets users sort the list by clicking on column headers.
 
 {% raw %}
+
 ```jsx
 import { List, DataTable, DateField } from 'react-admin';
 import { Container, Typography } from '@mui/material';
@@ -1320,6 +1403,7 @@ const Dashboard = () => (
     </Container>
 )
 ```
+
 {% endraw %}
 
 **Note**: If you render more than one `<DataTable>` for the same resource in the same page, they will share the selection state (i.e. the checked checkboxes). This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. You can get rid of the checkboxes by setting `<DataTable bulkActionButtons={false}>`.
@@ -1443,9 +1527,9 @@ For finer access control of the list action buttons, use the `<List>` component 
 
 This component adds the following [RBAC](./AuthRBAC.md) controls:
 
--   Users must have the `'create'` permission on the resource to see the `<CreateButton>`.
--   Users must have the `'export'` permission on the resource to see the `<ExportButton>`.
--   Users must have the `'read'` permission on a resource column to see it in the export:
+- Users must have the `'create'` permission on the resource to see the `<CreateButton>`.
+- Users must have the `'export'` permission on the resource to see the `<ExportButton>`.
+- Users must have the `'read'` permission on a resource column to see it in the export:
 
 ```jsx
 { action: "read", resource: `${resource}.${source}` }.

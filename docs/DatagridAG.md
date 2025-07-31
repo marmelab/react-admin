@@ -1734,6 +1734,112 @@ export const PostList = () => {
 
 **Tip:** `<DatagridAG>` registers the following [modules](https://www.ag-grid.com/react-data-grid/modules/) by default: `ClientSideRowModelModule`, `AllCommunityModule` and `CsvExportModule`. If you add other modules, make sure to have at least the `ClientSideRowModelModule`.
 
+### Creating New Records
+
+There are multiple options to create new records:
+
+- The simple [`create` view](./Create.md) that redirects users to a dedicated create page:
+
+```tsx
+// in src/posts.tsx
+import * as React from 'react';
+import { Create, SimpleForm, TextInput, DateInput, required } from 'react-admin';
+import RichTextInput from 'ra-input-rich-text';
+
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="title" validate={[required()]} />
+            <TextInput source="teaser" multiline={true} label="Short description" />
+            <RichTextInput source="body" />
+            <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
+        </SimpleForm>
+    </Create>
+);
+
+// in src/App.tsx
+import * as React from 'react';
+import { Admin, Resource } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+import { PostCreate, PostList } from './posts';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" list={PostList} create={PostCreate} />
+    </Admin>
+);
+
+export default App;
+```
+
+- The [`<CreateDialog>` component from `@react-admin/ra-form-layout`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createdialog-editdialog--showdialog) that opens a dialog without leaving the list page:
+
+```tsx
+// In src/posts.tsx
+import { List, ListActions, SimpleForm, TextInput, DateInput } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+import { CreateDialog } from '@react-admin/ra-form-layout';
+
+const columnDefs = [
+    { field: 'id', editable: false },
+    { field: 'title' },
+    { field: 'published_at', headerName: 'Publication Date' },
+    { field: 'body' },
+];
+
+export const PostList = () => (
+    <>
+        <List actions={<ListActions hasCreate />}>
+            <DatagridAG columnDefs={columnDefs} />
+        </List>
+        <CreateDialog>
+            <SimpleForm>
+                <TextInput source="title" />
+                <DateInput source="published_at" />
+                <TextInput source="body" />
+            </SimpleForm>
+        </CreateDialog>
+    </>
+);
+```
+
+> **Note**: You can't use the `<CreateDialog>` and have a standard `<Edit>` specified on your `<Resource>`, because the `<Routes>` declarations would conflict. If you need this, use the `<CreateInDialogButton>` instead.
+
+- The [`<CreateInDialogButton>` component from `@react-admin/ra-form-layout`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createdialog-editdialog--showdialog) that opens a dialog without leaving the list page but does not add a `/create` route:
+
+```tsx
+// In src/posts.tsx
+import { List, ListActions, SimpleForm, TextInput, DateInput, TopToolbar } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+import { CreateInDialogButton } from '@react-admin/ra-form-layout';
+
+const columnDefs = [
+    { field: 'id', editable: false },
+    { field: 'title' },
+    { field: 'published_at', headerName: 'Publication Date' },
+    { field: 'body' },
+];
+
+const PostListActions = () => (
+    <TopToolbar>
+        <CreateInDialogButton>
+            <SimpleForm>
+                <TextInput source="title" />
+                <DateInput source="published_at" />
+                <TextInput source="body" />
+            </SimpleForm>
+        </CreateInDialogButton>
+    </TopToolbar>
+)
+
+export const PostList = () => (·
+    <List actions={<PostListActions />}>
+        <DatagridAG columnDefs={columnDefs} />
+    </List>
+);
+```
+
 ## `<DatagridAGClient>`
 
 `<DatagridAGClient>` is an alternative datagrid component with advanced features, based on [ag-grid](https://www.ag-grid.com/). It is designed for small datasets that can be entirely loaded client-side (around a few thousand records). It supports infinite scrolling, grouping, multi-column sorting, and advanced filtering.
@@ -3035,3 +3141,109 @@ export const PostList = () => {
 {% endraw %}
 
 **Tip:** `<DatagridAGClient>` registers the following [modules](https://www.ag-grid.com/react-data-grid/modules/) by default: `ClientSideRowModelModule`, `AllCommunityModule` and `CsvExportModule`. If you add other modules, make sure to have at least the `ClientSideRowModelModule`.
+
+### Creating New Records
+
+There are multiple options to create new records:
+
+- The simple [`create` view](./Create.md) that redirects users to a dedicated create page:
+
+```tsx
+// in src/posts.tsx
+import * as React from 'react';
+import { Create, SimpleForm, TextInput, DateInput, required } from 'react-admin';
+import RichTextInput from 'ra-input-rich-text';
+
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="title" validate={[required()]} />
+            <TextInput source="teaser" multiline={true} label="Short description" />
+            <RichTextInput source="body" />
+            <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
+        </SimpleForm>
+    </Create>
+);
+
+// in src/App.tsx
+import * as React from 'react';
+import { Admin, Resource } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+import { PostCreate, PostList } from './posts';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" list={PostList} create={PostCreate} />
+    </Admin>
+);
+
+export default App;
+```
+
+- The [`<CreateDialog>` component from `@react-admin/ra-form-layout`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createdialog-editdialog--showdialog) that opens a dialog without leaving the list page:
+
+```tsx
+// In src/posts.tsx
+import { List, ListActions, SimpleForm, TextInput, DateInput } from 'react-admin';
+import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+import { CreateDialog } from '@react-admin/ra-form-layout';
+
+const columnDefs = [
+    { field: 'id', editable: false },
+    { field: 'title' },
+    { field: 'published_at', headerName: 'Publication Date' },
+    { field: 'body' },
+];
+
+export const PostList = () => (
+    <>
+        <List actions={<ListActions hasCreate />} perPage={10000} pagination={false}>
+            <DatagridAGClient columnDefs={columnDefs} />
+        </List>
+        <CreateDialog>
+            <SimpleForm>
+                <TextInput source="title" />
+                <DateInput source="published_at" />
+                <TextInput source="body" />
+            </SimpleForm>
+        </CreateDialog>
+    </>
+);
+```
+
+> **Note**: You can't use the `<CreateDialog>` and have a standard `<Edit>` specified on your `<Resource>`, because the `<Routes>` declarations would conflict. If you need this, use the `<CreateInDialogButton>` instead.
+
+- The [`<CreateInDialogButton>` component from `@react-admin/ra-form-layout`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createdialog-editdialog--showdialog) that opens a dialog without leaving the list page but does not add a `/create` route:
+
+```tsx
+// In src/posts.tsx
+import { List, ListActions, SimpleForm, TextInput, DateInput, TopToolbar } from 'react-admin';
+import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+import { CreateInDialogButton } from '@react-admin/ra-form-layout';
+
+const columnDefs = [
+    { field: 'id', editable: false },
+    { field: 'title' },
+    { field: 'published_at', headerName: 'Publication Date' },
+    { field: 'body' },
+];
+
+const PostListActions = () => (
+    <TopToolbar>
+        <CreateInDialogButton>
+            <SimpleForm>
+                <TextInput source="title" />
+                <DateInput source="published_at" />
+                <TextInput source="body" />
+            </SimpleForm>
+        </CreateInDialogButton>
+    </TopToolbar>
+)
+
+export const PostList = () => (·
+    <List actions={<PostListActions />} perPage={10000} pagination={false}>
+        <DatagridAGClient columnDefs={columnDefs} />
+    </List>
+);
+```

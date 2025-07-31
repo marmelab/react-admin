@@ -123,6 +123,25 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const Empty = () => (
+    <Wrapper
+        dataProvider={fakeDataProvider(
+            { authors, books: [] },
+            process.env.NODE_ENV === 'development'
+        )}
+    >
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            empty="no books"
+        >
+            <DataTable>
+                <DataTable.Col source="title" />
+            </DataTable>
+        </ReferenceManyField>
+    </Wrapper>
+);
+
 export const WithSingleFieldList = () => (
     <Wrapper>
         <ReferenceManyField reference="books" target="author_id">
@@ -266,4 +285,31 @@ export const FullApp = () => (
             <Resource name="books" list={ListGuesser} />
         </Admin>
     </TestMemoryRouter>
+);
+
+export const WithRenderProp = () => (
+    <Wrapper>
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            render={({ error, isPending, data }) => {
+                if (isPending) {
+                    return <p>Loading...</p>;
+                }
+
+                if (error) {
+                    return <p style={{ color: 'red' }}>{error.message}</p>;
+                }
+                return (
+                    <>
+                        {data?.map((datum, index) => (
+                            <li role="listitem" key={index}>
+                                {datum.title}
+                            </li>
+                        ))}
+                    </>
+                );
+            }}
+        />
+    </Wrapper>
 );

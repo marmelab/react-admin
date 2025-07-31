@@ -28,6 +28,7 @@ const frenchMessages: TranslationMessages = {
             select_all_button: 'Tout sélectionner',
             select_row: 'Sélectionner cette ligne',
             search: 'Rechercher',
+            search_columns: 'Filtrer les colonnes',
             show: 'Afficher',
             sort: 'Trier',
             undo: 'Annuler',

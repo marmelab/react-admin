@@ -114,7 +114,7 @@ See the [`children`](#children) section for more details.
 
 ## `children`
 
-By default, `<ReferenceInput>` renders an [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) to let end users select the reference record.
+By default, `<ReferenceArrayInput>` renders an [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) to let end users select the reference record.
 
 You can pass a child component to customize the way the reference selector is displayed.
 

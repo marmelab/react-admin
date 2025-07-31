@@ -66,6 +66,7 @@ The form value for the source must be an array of the selected values, e.g.
 | `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value   |
 | `row`             | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                       |
 | `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                          |
+| `disableValue`    | Optional | `string`                   | `disabled` | The custom field name used in `choices` to disable some choices                                                                     |
 
 `<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -91,6 +92,17 @@ You can also use an array of objects with different properties for the label and
     { _id: 'u002', label: 'Moderator' },
     { _id: 'u003', label: 'Reviewer' },
 ]} optionValue="_id" optionText="label" />
+```
+
+You can render some options as disabled by setting the `disabled` field in some choices:
+
+```jsx
+const choices = [
+    { id: 'tech', name: 'Tech' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'people', name: 'People', disabled: true },
+];
+<RadioButtonGroupInput source="category" choices={choices} />
 ```
 
 The choices are translated by default, so you can use translation identifiers as choices:
@@ -254,6 +266,30 @@ However, in some cases (e.g. inside a `<ReferenceArrayInput>`), you may not want
 
 ```jsx
 <CheckboxGroupInput source="roles" choices={choices} translateChoice={false}/>
+```
+
+## `disableValue`
+
+By default, `<CheckboxGroupInput>` renders the choices with the field `disabled: true` as disabled.
+
+```jsx
+const choices = [
+    { id: 'tech', name: 'Tech' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'people', name: 'People', disabled: true },
+];
+<CheckboxGroupInput source="category" choices={choices} />
+```
+
+If you want to use another field to denote disabled options, set the `disableValue` prop.
+
+```jsx
+const choices = [
+    { id: 'tech', name: 'Tech' },
+    { id: 'lifestyle', name: 'Lifestyle' },
+    { id: 'people', name: 'People', not_available: true },
+];
+<CheckboxGroupInput source="category" choices={choices} disableValue="not_available" />
 ```
 
 ## Fetching Choices

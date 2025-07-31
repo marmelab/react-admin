@@ -233,13 +233,107 @@ export const EmptyText = () => (
     </TestMemoryRouter>
 );
 
-export const EmptyWithTranslate = () => (
+export const EmptyTextWithTranslate = () => (
     <Wrapper dataProvider={emptyDataProvider}>
         <I18nContextProvider value={i18nProvider}>
             <ReferenceOneField
                 reference="book_details"
                 target="book_id"
                 emptyText="resources.books.not_found"
+            >
+                <TextField source="ISBN" />
+            </ReferenceOneField>
+        </I18nContextProvider>
+    </Wrapper>
+);
+
+export const Empty = () => (
+    <TestMemoryRouter>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={() => (
+                        <List>
+                            <DataTable>
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="title" />
+                                <DataTable.Col source="year" />
+                                <DataTable.Col source="Genre" />
+                                <DataTable.Col label="ISBN">
+                                    <ReferenceOneField
+                                        reference="book_details"
+                                        target="book_id"
+                                        empty="no detail"
+                                    >
+                                        <TextField source="ISBN" />
+                                    </ReferenceOneField>
+                                </DataTable.Col>
+                            </DataTable>
+                        </List>
+                    )}
+                    show={() => (
+                        <Show>
+                            <SimpleShowLayout>
+                                <TextField source="id" />
+                                <TextField source="title" />
+                                <TextField source="year" />
+                                <TextField source="Genre" />
+                                <ReferenceOneField
+                                    reference="book_details"
+                                    target="book_id"
+                                    label="ISBN"
+                                    empty={
+                                        <CreateButton to="/book_details/create" />
+                                    }
+                                >
+                                    <TextField source="ISBN" />
+                                </ReferenceOneField>
+                            </SimpleShowLayout>
+                        </Show>
+                    )}
+                />
+                <Resource
+                    name="book_details"
+                    list={() => (
+                        <List>
+                            <DataTable>
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="ISBN" />
+                                <DataTable.Col source="book_id">
+                                    <ReferenceField
+                                        source="book_id"
+                                        reference="books"
+                                    />
+                                </DataTable.Col>
+                            </DataTable>
+                        </List>
+                    )}
+                    create={() => (
+                        <Create>
+                            <SimpleForm>
+                                <TextInput source="ISBN" />
+                                <ReferenceInput
+                                    source="book_id"
+                                    reference="books"
+                                    label="Book"
+                                />
+                            </SimpleForm>
+                        </Create>
+                    )}
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const EmptyWithTranslate = () => (
+    <Wrapper dataProvider={emptyDataProvider}>
+        <I18nContextProvider value={i18nProvider}>
+            <ReferenceOneField
+                reference="book_details"
+                target="book_id"
+                empty="resources.books.not_found"
             >
                 <TextField source="ISBN" />
             </ReferenceOneField>
@@ -472,5 +566,27 @@ export const Themed = () => (
         <ReferenceOneField reference="book_details" target="book_id">
             <TextField source="ISBN" />
         </ReferenceOneField>
+    </Wrapper>
+);
+
+export const WithRenderProp = () => (
+    <Wrapper>
+        <ReferenceOneField
+            reference="book_details"
+            target="book_id"
+            render={({ isPending, error, referenceRecord }) => {
+                if (isPending) {
+                    return <p>Loading...</p>;
+                }
+
+                if (error) {
+                    return <p style={{ color: 'red' }}>{error.toString()}</p>;
+                }
+
+                return (
+                    <span>{referenceRecord ? referenceRecord.ISBN : ''}</span>
+                );
+            }}
+        />
     </Wrapper>
 );

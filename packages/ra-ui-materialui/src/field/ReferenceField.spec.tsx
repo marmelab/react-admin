@@ -20,8 +20,10 @@ import {
     LinkDefaultShowView,
     LinkMissingView,
     LinkFalse,
-    MissingReferenceIdEmptyTextTranslation,
     MissingReferenceEmptyText,
+    MissingReferenceIdEmptyTextTranslation,
+    MissingReferenceIdEmpty,
+    MissingReferenceIdEmptyTranslation,
     SXLink,
     SXNoLink,
     SlowAccessControl,
@@ -293,29 +295,48 @@ describe('<ReferenceField />', () => {
         });
     });
 
-    it('should display the emptyText if the field is empty', () => {
-        render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <ReferenceField
-                        record={{ id: 123 }}
-                        resource="comments"
-                        // @ts-expect-error source prop does not have a valid value
-                        source="postId"
-                        reference="posts"
-                        emptyText="EMPTY"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        expect(screen.getByText('EMPTY')).not.toBeNull();
+    describe('emptyText', () => {
+        it('should display the emptyText if the field is empty', () => {
+            render(
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <ReferenceField
+                            record={{ id: 123 }}
+                            resource="comments"
+                            // @ts-expect-error source prop does not have a valid value
+                            source="postId"
+                            reference="posts"
+                            emptyText="EMPTY"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </CoreAdminContext>
+                </ThemeProvider>
+            );
+            expect(screen.getByText('EMPTY')).not.toBeNull();
+        });
+
+        it('should display the emptyText if there is no reference', async () => {
+            render(<MissingReferenceEmptyText />);
+            await screen.findByText('no detail');
+        });
+
+        it('should translate emptyText', async () => {
+            render(<MissingReferenceIdEmptyTextTranslation />);
+
+            expect(await screen.findByText('Not found')).not.toBeNull();
+        });
     });
 
-    it('should display the emptyText if there is no reference', async () => {
-        render(<MissingReferenceEmptyText />);
-        await screen.findByText('no detail');
+    describe('empty', () => {
+        it('should render the empty prop when the record is not found', async () => {
+            render(<MissingReferenceIdEmpty />);
+            await screen.findByText('no detail');
+        });
+        it('should translate empty if it is a string', async () => {
+            render(<MissingReferenceIdEmptyTranslation />);
+            await screen.findByText('Not found');
+        });
     });
 
     it('should use record from RecordContext', async () => {
@@ -485,6 +506,46 @@ describe('<ReferenceField />', () => {
         await screen.findByText('boo');
     });
 
+    it('should render its child using render prop when given', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                                render={({ referenceRecord }) =>
+                                    referenceRecord?.title || 'No title'
+                                }
+                            />
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        expect(screen.getByText('foo')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
+
     describe('link', () => {
         it('should render a link to specified link type', async () => {
             render(<LinkShow />);
@@ -580,12 +641,6 @@ describe('<ReferenceField />', () => {
         render(<Children />);
         expect(await screen.findByText('9780393966473')).not.toBeNull();
         expect(await screen.findByText('novel')).not.toBeNull();
-    });
-
-    it('should translate emptyText', async () => {
-        render(<MissingReferenceIdEmptyTextTranslation />);
-
-        expect(await screen.findByText('Not found')).not.toBeNull();
     });
 
     it('should accept a queryOptions prop', async () => {

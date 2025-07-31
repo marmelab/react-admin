@@ -74,27 +74,54 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
 | `source`    | Required | `string`            | -        | Name of the property to display |
 | `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
-| `children`  | Optional | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
-| `emptyText` | Optional | `string`            | ''       | Defines a text to be shown when the field has no value or when the reference is missing |
+| `children`  | Optional&nbsp;* | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
+| `render`  | Optional&nbsp;* | (referenceFieldContext) => `ReactNode`         | -        | A function used to render the referenced record, receive the reference field context as its argument |
+| `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
 | `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
 | `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
+`*` You must provide either `children` or `render`.
+
 `<ReferenceField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-## `emptyText`
+## `children`
 
-`<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `emptyText` prop.
+By default, `<ReferenceField>` renders the `recordRepresentation` of the referenced record (the `id` field by default). You can customize this by passing one or more child components. Since `<referenceField>` creates a `RecordContext` for the referenced record, you can use any field component as a child, such as `<TextField>`, `<DateField>`, `<FunctionField>`, etc.
 
-```jsx
-<ReferenceField source="user_id" reference="users" emptyText="Missing user" />
+```tsx
+<ReferenceField source="user_id" reference="users">
+    <TextField source="first_name" />
+    <TextField source="last_name" />
+</ReferenceField>
 ```
 
-`<ReferenceField>` renders the `emptyText`:
+Alternatively, you can use [the `render` prop](#render) to render the referenced record in a custom way. 
+## `empty`
 
-- when the referenced record is missing (no record in the `users` table with the right `user_id`), or
-- when the field is empty (no `user_id` in the record).
+`<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `empty` prop.
+
+```jsx
+<ReferenceField source="user_id" reference="users" empty="Missing user" />
+```
+
+`<ReferenceField>` renders the `empty` element when:
+
+- the referenced record is missing (no record in the `users` table with the right `user_id`), or
+- the field is empty (no `user_id` in the record).
+
+When `empty` is a string, `<ReferenceField>` renders it as a `<Typography>` and passes the text through the i18n system, so you can use translation keys to have one message for each language supported by the interface:
+
+```jsx
+<ReferenceField source="user_id" reference="users" empty="resources.users.missing" />
+```
+
+You can also pass a React element to the `empty` prop:
+
+```jsx
+<ReferenceField source="user_id" reference="users" empty={<span>Missing user</span>} />
+```
 
 ## `label`
 
@@ -171,6 +198,28 @@ For instance, if the `posts` resource has a `user_id` field, set the `reference`
 
 ```jsx
 <ReferenceField source="user_id" reference="users" />
+```
+
+## `render`
+
+Alternatively to `children`, you can pass a `render` prop to `<ReferenceField>`. It will receive the `ReferenceFieldContext` as its argument, and should return a React node.
+
+This allows to inline the render logic for the list of related records.
+
+```jsx
+<ReferenceField
+    source="user_id"
+    reference="users"
+    render={({ error, isPending, referenceRecord }) => {
+        if (isPending) {
+            return <p>Loading...</p>;
+        }
+        if (error) {
+            return <p className="error">{error.message}</p>;
+        }
+        return <p>{referenceRecord.name}</p>;
+    }}
+/>
 ```
 
 ## `sortBy`

@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "5.9.2",
+    "version": "5.10.0",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -58,8 +58,7 @@
         "react-router-dom": "^6.28.1 || ^7.1.1"
     },
     "dependencies": {
-        "@tanstack/react-query": "^5.21.7",
-        "clsx": "^2.1.1",
+        "@tanstack/react-query": "^5.83.0",
         "date-fns": "^3.6.0",
         "eventemitter3": "^5.0.1",
         "inflection": "^3.0.0",

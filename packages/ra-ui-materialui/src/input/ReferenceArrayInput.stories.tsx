@@ -2,15 +2,16 @@ import * as React from 'react';
 import {
     DataProvider,
     Form,
+    Resource,
     testDataProvider,
     TestMemoryRouter,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Admin, Resource } from 'react-admin';
 import fakeRestProvider from 'ra-data-fakerest';
 
 import { AdminContext } from '../AdminContext';
+import { AdminUI } from '../AdminUI';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { DatagridInput, TextInput } from '../input';
@@ -19,6 +20,7 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
+import { List, Datagrid } from '../list';
 
 export default { title: 'ra-ui-materialui/input/ReferenceArrayInput' };
 
@@ -31,8 +33,8 @@ const tags = [
 ];
 
 const dataProvider = testDataProvider({
-    // @ts-ignore
     getList: () =>
+        // @ts-ignore
         Promise.resolve({
             data: tags,
             total: tags.length,
@@ -50,29 +52,76 @@ const i18nProvider = polyglotI18nProvider(() => englishMessages);
 
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/posts/create']}>
-        <Admin dataProvider={dataProvider}>
-            <Resource name="tags" recordRepresentation={'name'} />
-            <Resource
-                name="posts"
-                create={() => (
-                    <Create
-                        resource="posts"
-                        record={{ tags_ids: [1, 3] }}
-                        sx={{ width: 600 }}
-                    >
-                        <SimpleForm>
-                            <ReferenceArrayInput
-                                reference="tags"
-                                resource="posts"
-                                source="tags_ids"
-                            />
-                        </SimpleForm>
-                    </Create>
-                )}
-            />
-        </Admin>
+        <AdminContext dataProvider={dataProvider}>
+            <AdminUI>
+                <Resource name="tags" recordRepresentation={'name'} />
+                <Resource
+                    name="posts"
+                    create={() => (
+                        <Create
+                            resource="posts"
+                            record={{ tags_ids: [1, 3] }}
+                            sx={{ width: 600 }}
+                        >
+                            <SimpleForm>
+                                <ReferenceArrayInput
+                                    reference="tags"
+                                    resource="posts"
+                                    source="tags_ids"
+                                />
+                            </SimpleForm>
+                        </Create>
+                    )}
+                />
+            </AdminUI>
+        </AdminContext>
     </TestMemoryRouter>
 );
+
+export const AsFilters = () => {
+    const fakeData = {
+        bands: [
+            { id: 1, name: 'band_1', members: [2] },
+            { id: 2, name: 'band_2', members: [3] },
+        ],
+        artists: [
+            { id: 1, name: 'artist_1' },
+            { id: 2, name: 'artist_2' },
+            { id: 3, name: 'artist_3' },
+        ],
+    };
+    return (
+        <TestMemoryRouter initialEntries={['/bands']}>
+            <AdminContext
+                dataProvider={fakeRestProvider(fakeData, false)}
+                i18nProvider={i18nProvider}
+            >
+                <AdminUI>
+                    <Resource name="tags" recordRepresentation={'name'} />
+                    <Resource
+                        name="bands"
+                        list={() => (
+                            <List
+                                filters={[
+                                    <ReferenceArrayInput
+                                        alwaysOn
+                                        key="test"
+                                        reference="artists"
+                                        source="members"
+                                    />,
+                                ]}
+                            >
+                                <Datagrid>
+                                    <TextField source="name" />
+                                </Datagrid>
+                            </List>
+                        )}
+                    />
+                </AdminUI>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
 
 export const WithAutocompleteInput = () => (
     <AdminContext

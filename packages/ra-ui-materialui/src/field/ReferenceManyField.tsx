@@ -1,14 +1,13 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React from 'react';
 import {
-    useReferenceManyFieldController,
-    ListContextProvider,
-    ResourceContextProvider,
-    useRecordContext,
-    RaRecord,
-    UseReferenceManyFieldControllerParams,
+    ReferenceManyFieldBase,
+    useTranslate,
+    type ReferenceManyFieldBaseProps,
+    type RaRecord,
 } from 'ra-core';
 
-import { FieldProps } from './types';
+import { Typography } from '@mui/material';
+import type { FieldProps } from './types';
 
 /**
  * Render related records to the current one.
@@ -62,59 +61,31 @@ export const ReferenceManyField = <
 >(
     props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
 ) => {
-    const {
-        children,
-        debounce,
-        filter = defaultFilter,
-        page = 1,
-        pagination = null,
-        perPage = 25,
-        reference,
-        resource,
-        sort = defaultSort,
-        source = 'id',
-        storeKey,
-        target,
-        queryOptions,
-    } = props;
-    const record = useRecordContext(props);
-
-    const controllerProps = useReferenceManyFieldController<
-        RecordType,
-        ReferenceRecordType
-    >({
-        debounce,
-        filter,
-        page,
-        perPage,
-        record,
-        reference,
-        resource,
-        sort,
-        source,
-        storeKey,
-        target,
-        queryOptions,
-    });
-
+    const translate = useTranslate();
+    const { children, pagination, empty, ...controllerProps } = props;
     return (
-        <ResourceContextProvider value={reference}>
-            <ListContextProvider value={controllerProps}>
-                {children}
-                {pagination}
-            </ListContextProvider>
-        </ResourceContextProvider>
+        <ReferenceManyFieldBase<RecordType, ReferenceRecordType>
+            {...controllerProps}
+            empty={
+                typeof empty === 'string' ? (
+                    <Typography component="span" variant="body2">
+                        {translate(empty, { _: empty })}
+                    </Typography>
+                ) : (
+                    empty
+                )
+            }
+        >
+            {children}
+            {pagination}
+        </ReferenceManyFieldBase>
     );
 };
 
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source'>,
-        UseReferenceManyFieldControllerParams<RecordType, ReferenceRecordType> {
-    children: ReactNode;
-    pagination?: ReactElement;
+        ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType> {
+    pagination?: React.ReactElement;
 }
-
-const defaultFilter = {};
-const defaultSort = { field: 'id', order: 'DESC' as const };

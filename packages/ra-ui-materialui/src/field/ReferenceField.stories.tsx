@@ -157,6 +157,32 @@ export const MissingReferenceIdEmptyTextTranslation = () => (
     </Wrapper>
 );
 
+export const MissingReferenceIdEmpty = () => (
+    <Wrapper record={{ id: 1, title: 'War and Peace' }}>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            empty={<b>no detail</b>}
+        >
+            <TextField source="ISBN" />
+        </ReferenceField>
+    </Wrapper>
+);
+
+export const MissingReferenceIdEmptyTranslation = () => (
+    <Wrapper record={{ id: 1, title: 'War and Peace' }}>
+        <I18nContextProvider value={i18nProvider}>
+            <ReferenceField
+                source="detail_id"
+                reference="book_details"
+                empty="resources.books.not_found"
+            >
+                <TextField source="ISBN" />
+            </ReferenceField>
+        </I18nContextProvider>
+    </Wrapper>
+);
+
 const missingReferenceDataProvider = {
     getMany: () =>
         Promise.resolve({
@@ -925,3 +951,23 @@ export const Themed = () => {
         </Wrapper>
     );
 };
+
+export const WithRenderProp = () => (
+    <Wrapper>
+        <ReferenceField
+            source="detail_id"
+            reference="book_details"
+            render={({ error, isPending, referenceRecord }) => {
+                console.log({ error, isPending, referenceRecord });
+                if (isPending) {
+                    return <p>Loading...</p>;
+                }
+
+                if (error) {
+                    return <p style={{ color: 'red' }}>{error.message}</p>;
+                }
+                return referenceRecord.ISBN;
+            }}
+        ></ReferenceField>
+    </Wrapper>
+);

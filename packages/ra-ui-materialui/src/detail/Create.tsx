@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import {
-    CreateBase,
-    CreateBaseProps,
-    Identifier,
-    RaRecord,
-    useCheckMinimumRequiredProps,
-} from 'ra-core';
+import { CreateBase, CreateBaseProps, Identifier, RaRecord } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
 import { CreateView, CreateViewProps } from './CreateView';
@@ -22,6 +16,8 @@ import { Loading } from '../layout';
  *
  * The <Create> component accepts the following props:
  *
+ * - children: Component rendering the Form Layout
+ * - render: Alternative to children. A function to render the Form Layout. Receives the create context as its argument.
  * - actions
  * - aside
  * - component
@@ -66,7 +62,6 @@ export const Create = <
         name: PREFIX,
     });
 
-    useCheckMinimumRequiredProps('Create', ['children'], props);
     const {
         resource,
         record,
@@ -80,6 +75,13 @@ export const Create = <
         loading = defaultLoading,
         ...rest
     } = props;
+
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<Create> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         <CreateBase<RecordType, ResultRecordType>
             resource={resource}
@@ -102,8 +104,11 @@ export interface CreateProps<
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationOptionsError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
-> extends CreateBaseProps<RecordType, ResultRecordType, MutationOptionsError>,
-        Omit<CreateViewProps, 'children'> {}
+> extends Omit<
+            CreateBaseProps<RecordType, ResultRecordType, MutationOptionsError>,
+            'children' | 'render'
+        >,
+        CreateViewProps {}
 
 const defaultLoading = <Loading />;
 

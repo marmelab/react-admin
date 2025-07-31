@@ -148,7 +148,6 @@ const toLocaleStringSupportsLocales = (() => {
 })();
 
 const PREFIX = 'RaDateField';
-
 const StyledTypography = styled(Typography, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,

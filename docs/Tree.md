@@ -57,7 +57,7 @@ The `<Tree>` component accepts the [rc-tree's `<Tree>`](https://github.com/react
 | `onSelect`            | Optional | `function`     | -       | The function to execute when a node is selected.                                               |
 | `selectedKeys`        | Optional | `Identifier[]` | -       | An array of identifiers defining the records that should be selected (controlled mode).        |
 | `sx`                  | Optional | `SxProps`      | -       | Material UI shortcut for defining custom styles.                                               |
-| `titleField`          | Optional | `string`       | `title` | Set the record field to display in the tree.                                                   |
+| `titleField`          | Optional | `string`       | -       | Set the record field to display in the tree.                                                   |
 
 ### `className`
 
@@ -364,7 +364,7 @@ export const SimpleTree = () => (
 
 ### `titleField`
 
-Use the `titleField` prop to specify the name of the field holding the node title:
+The default node title uses the [`recordRepresentation`](./Resource.md#recordrepresentation) of the resource. Use the `titleField` prop to specify the name of the field holding the node title:
 
 ```tsx
 import { Tree } from '@react-admin/ra-tree';

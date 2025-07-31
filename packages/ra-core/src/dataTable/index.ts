@@ -1,6 +1,7 @@
 export * from './DataTableBase';
 export * from './DataTableCallbacksContext';
 export * from './DataTableColumnRankContext';
+export * from './DataTableColumnFilterContext';
 export * from './DataTableConfigContext';
 export * from './DataTableDataContext';
 export * from './DataTableRenderContext';

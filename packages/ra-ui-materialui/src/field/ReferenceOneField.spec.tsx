@@ -4,10 +4,12 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     RecordRepresentation,
     Basic,
-    EmptyWithTranslate,
+    EmptyTextWithTranslate,
     QueryOptions,
     EmptyText,
+    Empty,
     Themed,
+    WithRenderProp,
 } from './ReferenceOneField.stories';
 
 describe('ReferenceOneField', () => {
@@ -22,7 +24,7 @@ describe('ReferenceOneField', () => {
     });
 
     it('should translate emptyText', async () => {
-        render(<EmptyWithTranslate />);
+        render(<EmptyTextWithTranslate />);
 
         await screen.findByText('Not found');
     });
@@ -53,13 +55,31 @@ describe('ReferenceOneField', () => {
         });
     });
 
-    it('should render the "emptyContent" prop when the record is not found', async () => {
-        render(<EmptyText />);
-        await waitFor(() => {
-            expect(screen.queryAllByText('no detail')).toHaveLength(3);
+    it('should allow to render the referenceRecord using a render prop', async () => {
+        render(<WithRenderProp />);
+        await screen.findByText('9780393966473');
+    });
+
+    describe('emptyText', () => {
+        it('should render the emptyText prop when the record is not found', async () => {
+            render(<EmptyText />);
+            await waitFor(() => {
+                expect(screen.queryAllByText('no detail')).toHaveLength(3);
+            });
+            fireEvent.click(screen.getByText('War and Peace'));
+            await screen.findByText('Create');
         });
-        fireEvent.click(screen.getByText('War and Peace'));
-        await screen.findByText('Create');
+    });
+
+    describe('empty', () => {
+        it('should render the empty prop when the record is not found', async () => {
+            render(<Empty />);
+            await waitFor(() => {
+                expect(screen.queryAllByText('no detail')).toHaveLength(3);
+            });
+            fireEvent.click(screen.getByText('War and Peace'));
+            await screen.findByText('Create');
+        });
     });
 
     it('should be customized by a theme', async () => {

@@ -61,7 +61,8 @@ That's enough to display the post show view above.
 
 | Prop             | Required | Type              | Default | Description
 |------------------|----------|-------------------|---------|--------------------------------------------------------
-| `children`       | Required | `ReactNode`       |         | The components rendering the record fields
+| `children`       | Optional&nbsp;* | `ReactNode`       |         | The components rendering the record fields
+| `render`       | Optional&nbsp;* | `(showContext) => ReactNode`       |         | A function rendering the record fields, receive the show context as its argument
 | `actions`        | Optional | `ReactElement`    |         | The actions to display in the toolbar
 | `aside`          | Optional | `ReactElement`    |         | The component to display on the side of the list
 | `className`      | Optional | `string`          |         | passed to the root component
@@ -73,6 +74,8 @@ That's enough to display the post show view above.
 | `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
 | `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
 | `title`          | Optional | `string | ReactElement | false` |   | The title to display in the App Bar
+
+`*` You must provide either `children` or `render`.
 
 ## `actions`
 
@@ -172,6 +175,8 @@ export const PostShow = () => (
 ```
 
 You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
+
+You can also use [the `render` prop](#render) to define a custom render function for the show view.
 
 **Tip**: Use [`<ShowGuesser>`](./ShowGuesser.md) instead of `<Show>` to let react-admin guess the fields to display based on the dataProvider response.
 
@@ -338,6 +343,28 @@ The default `onError` function is:
     redirect('list', resource);
     refresh();
 }
+```
+
+## `render`
+
+Instead of passing a `children` prop, you can pass a `render` prop, which is a function that receives the [`ShowContext`](./useShowContext.md#return-value) as an argument and returns the React element to render. This allows you to access the `record`, `isPending`, and other properties from the `showContext`.
+
+```tsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show render={({ record, error, isPending }) => {
+        if (isPending) return <p>Loading...</p>;
+        if (error) return <p>Error: {error.message}</p>;
+        if (!record) return <p>No record found</p>;
+        return (
+            <div>
+                <h1>{record.title}</h1>
+                <p>{record.body}</p>
+            </div>
+        );
+    }} />
+);
 ```
 
 ## `resource`

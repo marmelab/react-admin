@@ -177,7 +177,7 @@ export type DatagridInputProps = Omit<
     CommonInputProps,
     'fullWidth' | 'source' | 'readOnly' | 'disabled'
 > &
-    ChoicesProps &
+    Omit<ChoicesProps, 'disableValue'> &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     DatagridProps & {
         children?: ReactNode;

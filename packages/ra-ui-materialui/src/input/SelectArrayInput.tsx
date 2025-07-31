@@ -380,7 +380,6 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
         options?: SelectProps;
-        disableValue?: string;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };

@@ -16,7 +16,7 @@ import {
     type RaRecord,
     ReferenceFieldBase,
     useReferenceFieldContext,
-    useFieldValue,
+    UseReferenceFieldControllerResult,
 } from 'ra-core';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -39,6 +39,14 @@ import { visuallyHidden } from '@mui/utils';
  * @example // using a Field component to represent the record
  * <ReferenceField label="User" source="userId" reference="users">
  *     <TextField source="name" />
+ * </ReferenceField>
+ *
+ * @example // using a render prop to render the record
+ * <ReferenceField label="User" source="userId" reference="users" render={
+ *     (context) => (
+ *         <p>{context.referenceRecord?.name}</p>
+ *     )
+ * }>
  * </ReferenceField>
  *
  * @example // By default, includes a link to the <Edit> page of the related record
@@ -68,23 +76,32 @@ export const ReferenceField = <
         props: inProps,
         name: PREFIX,
     });
-    const { emptyText } = props;
+    const { children, render, emptyText, empty, ...rest } = props;
     const translate = useTranslate();
-    const id = useFieldValue(props);
-
-    if (id == null) {
-        return emptyText ? (
-            <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : null;
-    }
 
     return (
-        <ReferenceFieldBase<ReferenceRecordType> {...props}>
+        <ReferenceFieldBase<ReferenceRecordType>
+            {...rest}
+            empty={
+                emptyText ? (
+                    <Typography component="span" variant="body2">
+                        {emptyText && translate(emptyText, { _: emptyText })}
+                    </Typography>
+                ) : typeof empty === 'string' ? (
+                    <Typography component="span" variant="body2">
+                        {empty && translate(empty, { _: empty })}
+                    </Typography>
+                ) : (
+                    empty ?? null
+                )
+            }
+        >
             <PureReferenceFieldView<RecordType, ReferenceRecordType>
-                {...props}
-            />
+                {...rest}
+                render={render}
+            >
+                {children}
+            </PureReferenceFieldView>
         </ReferenceFieldBase>
     );
 };
@@ -94,6 +111,14 @@ export interface ReferenceFieldProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends FieldProps<RecordType> {
     children?: ReactNode;
+    render?: (
+        context: UseReferenceFieldControllerResult<ReferenceRecordType>
+    ) => ReactNode;
+    /**
+     * @deprecated Use the empty prop instead
+     */
+    emptyText?: string;
+    empty?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<ReferenceRecordType[], Error>,
         'queryFn' | 'queryKey'
@@ -113,16 +138,15 @@ export const ReferenceFieldView = <
 >(
     props: ReferenceFieldViewProps<RecordType, ReferenceRecordType>
 ) => {
-    const { children, className, emptyText, reference, sx, ...rest } =
+    const { children, render, className, emptyText, reference, sx, ...rest } =
         useThemeProps({
             props: props,
             name: PREFIX,
         });
-    const { error, link, isLoading, referenceRecord } =
-        useReferenceFieldContext();
+    const referenceFieldContext = useReferenceFieldContext();
+    const { error, link, isLoading, referenceRecord } = referenceFieldContext;
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
-    const translate = useTranslate();
 
     if (error) {
         return (
@@ -140,15 +164,8 @@ export const ReferenceFieldView = <
     if (isLoading) {
         return <LinearProgress />;
     }
-    if (!referenceRecord) {
-        return emptyText ? (
-            <Typography component="span" variant="body2">
-                {emptyText && translate(emptyText, { _: emptyText })}
-            </Typography>
-        ) : null;
-    }
 
-    const child = children || (
+    const child = (render ? render(referenceFieldContext) : children) || (
         <Typography component="span" variant="body2">
             {getRecordRepresentation(referenceRecord)}
         </Typography>
@@ -190,6 +207,9 @@ export interface ReferenceFieldViewProps<
 > extends FieldProps<RecordType>,
         Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'link'> {
     children?: ReactNode;
+    render?: (
+        context: UseReferenceFieldControllerResult<RaRecord>
+    ) => ReactNode;
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;

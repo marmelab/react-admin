@@ -19,19 +19,22 @@ export const RadioButtonGroupInputItem = (
         optionValue,
         source,
         translateChoice,
+        disableValue = 'disabled',
         ...rest
     } = useThemeProps({
         props: props,
         name: PREFIX,
     });
 
-    const { getChoiceText, getChoiceValue } = useChoices({
+    const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
         optionValue,
         translateChoice,
+        disableValue,
     });
     const label = getChoiceText(choice);
     const value = getChoiceValue(choice);
+    const disabled = getDisableValue(choice);
 
     const nodeId = `${source}_${value}`;
 
@@ -40,6 +43,7 @@ export const RadioButtonGroupInputItem = (
             label={label}
             htmlFor={nodeId}
             value={value}
+            disabled={disabled}
             control={<Radio id={nodeId} color="primary" />}
             {...sanitizeInputRestProps(rest)}
         />
@@ -50,7 +54,10 @@ export default RadioButtonGroupInputItem;
 
 export interface RadioButtonGroupInputItemProps
     extends Omit<FormControlLabelProps, 'control' | 'label'>,
-        Pick<ChoicesProps, 'optionValue' | 'optionText' | 'translateChoice'> {
+        Pick<
+            ChoicesProps,
+            'optionValue' | 'optionText' | 'translateChoice' | 'disableValue'
+        > {
     choice: any;
     source: any;
 }

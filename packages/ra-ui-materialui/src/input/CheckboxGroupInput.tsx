@@ -95,6 +95,23 @@ import { LinearProgress } from '../layout';
  * <CheckboxGroupInput source="tags" choices={choices} translateChoice={false}/>
  *
  * The object passed as `options` props is passed to the Material UI <Checkbox> components
+ *
+ * You can disable some choices by providing a `disableValue` field which name is `disabled` by default
+ * @example
+ * const choices = [
+ *    { id: 'programming', name: 'myroot.category.programming' },
+ *    { id: 'lifestyle', name: 'myroot.category.lifestyle' },
+ *    { id: 'photography', name: 'myroot.category.photography', disabled: true },
+ * ];
+ *
+ *  @example
+ * const choices = [
+ *    { id: 'programming', name: 'myroot.category.programming' },
+ *    { id: 'lifestyle', name: 'myroot.category.lifestyle' },
+ *    { id: 'photography', name: 'myroot.category.photography', not_available: true },
+ * ];
+ * <CheckboxGroupInput source="tags" choices={choices} disableValue="not_available" />
+ *
  */
 export const CheckboxGroupInput = (inProps: CheckboxGroupInputProps) => {
     const props = useThemeProps({
@@ -124,6 +141,7 @@ export const CheckboxGroupInput = (inProps: CheckboxGroupInputProps) => {
         source: sourceProp,
         translateChoice,
         validate,
+        disableValue = 'disabled',
         disabled,
         readOnly,
         ...rest
@@ -262,6 +280,7 @@ export const CheckboxGroupInput = (inProps: CheckboxGroupInputProps) => {
                         value={value}
                         labelPlacement={labelPlacement}
                         inputRef={index === 0 ? ref : undefined}
+                        disableValue={disableValue}
                         disabled={disabled || readOnly}
                         readOnly={readOnly}
                         {...sanitizeRestProps(rest)}

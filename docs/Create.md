@@ -55,20 +55,25 @@ export default App;
 
 You can customize the `<Create>` component using the following props:
 
-* [`actions`](#actions): override the actions toolbar with a custom component
-* [`aside`](#aside): component to render aside to the main content
-* `children`: the components that renders the form
-* `className`: passed to the root component
-* [`component`](#component): override the root component
-* [`disableAuthentication`](#disableauthentication): disable the authentication check
-* [`mutationMode`](#mutationmode): switch to optimistic or undoable mutations (pessimistic by default)
-* [`mutationOptions`](#mutationoptions): options for the `dataProvider.create()` call
-* [`record`](#record): initialize the form with a record
-* [`redirect`](#redirect): change the redirect location after successful creation
-* [`resource`](#resource): override the name of the resource to create
-* [`sx`](#sx-css-api): Override the styles
-* [`title`](#title): override the page title
-* [`transform`](#transform): transform the form data before calling `dataProvider.create()`
+| Prop                | Required | Type                | Default        | Description                                                                                      |
+|---------------------|----------|---------------------|----------------|--------------------------------------------------------------------------------------------------|
+| `children`          | Optional&nbsp;* | `ReactNode`         | -              | The components that render the form                                                              |
+| `render`            | Optional&nbsp;* | `function`          | -              | Alternative to children. Function that renders the form, receives the create context as argument |
+| `actions`           | Optional | `ReactNode`         | Default toolbar| Override the actions toolbar with a custom component                                             |
+| `aside`             | Optional | `ReactNode`         | -              | Component to render aside to the main content                                                    |
+| `className`         | Optional | `string`            | -              | Passed to the root component                                                                     |
+| `component`         | Optional | `string`/`Component`| `Card`         | Override the root component                                                                      |
+| `disableAuthentication` | Optional | `boolean`      | `false`         | Disable the authentication check                                                                 |
+| `mutationMode`      | Optional | `string`            | `pessimistic`  | Switch to optimistic or undoable mutations                                                       |
+| `mutationOptions`   | Optional | `object`            | -              | Options for the `dataProvider.create()` call                                                     |
+| `record`            | Optional | `object`            | `{}`           | Initialize the form with a record                                                                |
+| `redirect`          | Optional | `string`/`function` | `'edit'`       | Change the redirect location after successful creation                                           |
+| `resource`          | Optional | `string`            | From URL       | Override the name of the resource to create                                                      |
+| `sx`                | Optional | `object`            | -              | Override the styles                                                                              |
+| `title`             | Optional | `string`/`ReactNode`| Translation    | Override the page title                                                                          |
+| `transform`         | Optional | `function`          | -              | Transform the form data before calling `dataProvider.create()`                                   |
+
+`*` You must provide either `children` or `render`.
 
 ## `actions`
 
@@ -120,6 +125,28 @@ const PostCreate = () => (
 
 {% endraw %}
 
+## `children`
+
+The `<Create>` component will render its children inside a [`CreateContext`](./useCreateContext.md#return-value). Children can be any React node, but are usually a form component like [`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or the headless [`<Form>`](./Form.md) component.
+
+```tsx
+import { Create, SimpleForm, TextInput, DateInput, required } from 'react-admin';
+import RichTextInput from 'ra-input-rich-text';
+
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="title" validate={[required()]} />
+            <TextInput source="teaser" multiline={true} label="Short description" />
+            <RichTextInput source="body" />
+            <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
+        </SimpleForm>
+    </Create>
+);
+```
+
+**Tip**: Alternatively to `children`, you can pass a [`render`](#render) prop to `<Create>`.
+
 ## `component`
 
 By default, the `<Create>` view render the main form inside a Material UI `<Card>` element. The actual layout of the form depends on the `Form` component you're using ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or a custom form component).
@@ -160,9 +187,9 @@ const PostCreate = () => (
 
 The `<Create>` view exposes a Save button, which perform a "mutation" (i.e. it creates the data). React-admin offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
 
-- `pessimistic` (default): The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed. 
-- `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown. 
-- `undoable`: The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
+* `pessimistic` (default): The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed.
+* `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
+* `undoable`: The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
 
 By default, pages using `<Create>` use the `pessimistic` mutation mode as the new record identifier is often generated on the backend. However, should you decide to generate this identifier client side, you can change the `mutationMode` to either `optimistic` or `undoable`:
 
@@ -314,6 +341,37 @@ const PostCreate = () => (
 Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case.
 
 If you want to allow the user to enter several records one after the other, setting `redirect` to `false` won't make it, as the form isn't emptied by default. You'll have to empty the form using the `mutationOptions`, and this option disables the `redirect` prop. Check [the Save And Add Another section](#save-and-add-another) for more details.
+
+## `render`
+
+Alternatively to `children`, you can pass a `render` prop to `<Create>`. It will receive the [`CreateContext`](./useCreateContext.md#return-value) as its argument, and should return a React node.
+
+This allows to inline the render logic for the create page.
+
+{% raw %}
+
+```tsx
+const PostCreate = () => ()
+    <Create render={({ save, saving }) => (
+        <div>
+            <h1>Create new Post</h1>
+            <form onSubmit={save}>
+                <input type="text" name="title" placeholder="Title" required />
+                <textarea name="teaser" placeholder="Short description" rows={3} />
+                <textarea name="body" placeholder="Body" rows={5} />
+                <input type="date" name="published_at" defaultValue={new Date().toISOString().split('T')[0]} />
+                <button type="submit" disabled={saving}>
+                    {saving ? 'Saving...' : 'Save'}
+                </button>
+            </form>
+        </div>
+    )} />
+);
+```
+
+{% endraw %}
+
+**Tip**: When receiving a `render` prop, the `<Create>` component will ignore the `children` prop.
 
 ## `resource`
 

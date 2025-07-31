@@ -16,12 +16,14 @@ import { useRecordContext } from './useRecordContext';
  */
 export const WithRecord = <RecordType extends Record<string, any> = any>({
     render,
+    empty = null,
 }: WithRecordProps<RecordType>) => {
     const record = useRecordContext<RecordType>();
-    return record ? <>{render(record)}</> : null;
+    return record ? <>{render(record)}</> : empty;
 };
 
 export interface WithRecordProps<RecordType extends Record<string, any> = any> {
     render: (record: RecordType) => ReactNode;
+    empty?: ReactNode;
     label?: string;
 }

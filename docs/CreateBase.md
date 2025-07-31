@@ -46,6 +46,7 @@ export const BookCreate = () => (
 You can customize the `<CreateBase>` component using the following props, documented in the `<Create>` component:
 
 * `children`: the components that renders the form
+* `render`: alternative to children, a function that takes the `CreateController` context and renders the form
 * [`disableAuthentication`](./Create.md#disableauthentication): disable the authentication check
 * [`mutationMode`](./Create.md#mutationmode): Switch to optimistic or undoable mutations (pessimistic by default)
 * [`mutationOptions`](./Create.md#mutationoptions): options for the `dataProvider.create()` call

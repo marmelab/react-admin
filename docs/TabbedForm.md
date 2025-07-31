@@ -1024,3 +1024,56 @@ const ProductEdit = () => (
     </Edit>
 );
 ```
+
+`@react-admin/ra-rbac` `<TabbedForm>` also accepts a `showReadOnly` prop. If set to `true`, inputs for which users have only `read` access will be displayed but will be read only:
+
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { TabbedForm } from '@react-admin/ra-rbac';
+
+const authProvider = {
+    // ...
+    canAccess: async ({ action, record, resource }) =>
+        canAccessWithPermissions({
+            permissions: [
+                { action: ['list', 'edit'], resource: 'products' },
+                { action: 'write', resource: 'products.reference' },
+                { action: 'write', resource: 'products.width' },
+                { action: 'write', resource: 'products.height' },
+                // 'products.description' is read-only
+                { action: 'read', resource: 'products.description' },
+                { action: 'write', resource: 'products.thumbnail' },
+                // 'products.image' is missing
+                { action: 'write', resource: 'products.tab.description' },
+                // 'products.tab.stock' is missing
+                { action: 'write', resource: 'products.tab.images' },
+            ],
+            action,
+            record,
+            resource,
+        })
+};
+
+const ProductEdit = () => (
+    <Edit>
+        <TabbedForm showReadOnly>
+            <TabbedForm.Tab label="Description" name="description">
+                <TextInput source="reference" />
+                <TextInput source="width" />
+                <TextInput source="height" />
+                {/* Input Description is read-only */}
+                <TextInput source="description" />
+            </TabbedForm.Tab>
+            {/* Tab Stock is not displayed */}
+            <TabbedForm.Tab label="Stock" name="stock">
+                <TextInput source="stock" />
+            </TabbedForm.Tab>
+            <TabbedForm.Tab label="Images" name="images">
+                {/* Input Image is not displayed */}
+                <TextInput source="image" />
+                <TextInput source="thumbnail" />
+            </TabbedForm.Tab>
+        </TabbedForm>
+    </Edit>
+);
+```

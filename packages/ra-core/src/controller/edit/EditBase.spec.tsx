@@ -8,6 +8,7 @@ import {
     DefaultTitle,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
+    WithRenderProps,
 } from './EditBase.stories';
 
 describe('EditBase', () => {
@@ -381,5 +382,33 @@ describe('EditBase', () => {
         await screen.findByText('Update article Hello (en)');
         fireEvent.click(screen.getByText('FR'));
         await screen.findByText("Modifier l'article Hello (fr)");
+    });
+
+    it('should allow renderProp', async () => {
+        const dataProvider = testDataProvider({
+            getOne: () =>
+                // @ts-ignore
+                Promise.resolve({ data: { id: 12, test: 'Hello' } }),
+            update: jest.fn((_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } })
+            ),
+        });
+        render(
+            <WithRenderProps
+                dataProvider={dataProvider}
+                mutationMode="pessimistic"
+            />
+        );
+        await screen.findByText('12');
+        await screen.findByText('Hello');
+        fireEvent.click(screen.getByText('save'));
+
+        await waitFor(() => {
+            expect(dataProvider.update).toHaveBeenCalledWith('posts', {
+                id: 12,
+                data: { test: 'test' },
+                previousData: { id: 12, test: 'Hello' },
+            });
+        });
     });
 });

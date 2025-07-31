@@ -322,3 +322,17 @@ export const SetFocus = () => (
         <SetFocusButton source="roles" />
     </Wrapper>
 );
+
+export const DisabledChoice = () => (
+    <Wrapper>
+        <CheckboxGroupInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer', disabled: true },
+            ]}
+        />
+    </Wrapper>
+);

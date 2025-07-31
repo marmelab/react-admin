@@ -11,8 +11,10 @@ import { SingleFieldList } from '../list/SingleFieldList';
 import { Pagination } from '../list/pagination/Pagination';
 import {
     Basic,
+    Empty,
     WithPagination,
     WithPaginationAndSelectAllLimit,
+    WithRenderProp,
 } from './ReferenceManyField.stories';
 
 const theme = createTheme();
@@ -205,6 +207,20 @@ describe('<ReferenceManyField />', () => {
         });
     });
 
+    it('should use render prop when provides', async () => {
+        render(<WithRenderProp />);
+        await waitFor(() => {
+            expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
+        });
+        const items = await screen.findAllByRole('listitem');
+        expect(items).toHaveLength(5);
+        expect(items[0].textContent).toEqual('War and Peace');
+        expect(items[1].textContent).toEqual('Anna Karenina');
+        expect(items[2].textContent).toEqual('Resurrection');
+        expect(items[3].textContent).toEqual('The Idiot');
+        expect(items[4].textContent).toEqual('The Last Day of a Condemned');
+    });
+
     describe('pagination', () => {
         it('should render pagination based on total from getManyReference', async () => {
             const data = [
@@ -271,6 +287,13 @@ describe('<ReferenceManyField />', () => {
             await screen.findByText('ra.navigation.partial_page_range_info');
             await screen.findByLabelText('ra.navigation.previous');
             await screen.findByLabelText('ra.navigation.next');
+        });
+    });
+
+    describe('empty', () => {
+        it('should render the empty prop when the record is not found', async () => {
+            render(<Empty />);
+            await screen.findByText('no books');
         });
     });
 

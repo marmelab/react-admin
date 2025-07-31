@@ -85,13 +85,16 @@ You can change how the list of related records is rendered by passing a custom c
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `source`       | Required | `string`                                                                          | -                                | Name of the property to display                                                                        |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'tags'                                       |
-| `children`     | Optional | `Element`                                                                         | `<SingleFieldList>`              | One or several elements that render a list of records based on a `ListContext`                         |
+| `children`     | Optional&nbsp;* | `Element`                                                                         | `<SingleFieldList>`              | One or several elements that render a list of records based on a `ListContext`                         |
+| `render`     | Optional&nbsp;* | `(listContext) => Element`                                                                         | `<SingleFieldList>`              | A function that takes a list context and render a list of records                         |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
 | `sortBy`       | Optional | `string | Function`                                                               | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
+
+`*` You must provide either `children` or `render`.
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
@@ -154,25 +157,38 @@ export const PostShow = () => (
 );
 ```
 
-Or [`<WithListContext>`](./WithListContext.md) to render the related records in a custom way:
+Alternatively, you can use [the `render` prop](#render) to render the related records in a custom way:
 
-```jsx
-import { Show, SimpleShowLayout, TextField, ReferenceArrayField, WithListContext } from 'react-admin';
+```tsx
+import { Show, SimpleShowLayout, TextField, ReferenceArrayField } from 'react-admin';
 
 export const PostShow = () => (
     <Show>
         <SimpleShowLayout>
             <TextField source="id" />
             <TextField source="title" />
-            <ReferenceArrayField label="Tags" reference="tags" source="tag_ids">
-                <WithListContext render={({ data }) => (
+            <ReferenceArrayField
+                label="Tags"
+                reference="tags"
+                source="tag_ids"
+                render={({ data }) => (
                     <ul>
-                        {data.map(tag => (
+                        {data?.map(tag => (
                             <li key={tag.id}>{tag.name}</li>
                         ))}
                     </ul>
+                )}
+            />
+            <EditButton />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+## `filter`
+
+`<ReferenceArrayField>` fetches all the related records, and displays them all, too. You can use the `filter` prop to filter the list of related records to display (this works by filtering the records client-side, after the fetch).
                 )} />
-            </ReferenceArrayField>
             <EditButton />
         </SimpleShowLayout>
     </Show>
@@ -261,6 +277,34 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 ```
 {% endraw %}
 
+## `render`
+
+Alternatively to `children`, you can pass a `render` prop to `<ReferenceArrayField>`. It will receive the [`ListContext`](./useListContext.md#return-value) as its argument, and should return a React node.
+
+This allows to inline the render logic for the list of related records.
+
+```jsx
+<ReferenceArrayField
+    label="Tags"
+    reference="tags"
+    source="tag_ids"
+    render={({ isPending, error, data }) => {
+        if (isPending) {
+            return <p>Loading...</p>;
+        }
+        if (error) {
+            return <p className="error">{error.toString()}</p>;
+        }
+        return (
+            <ul>
+                {data.map((tag, index) => (
+                    <li key={index}>{tag.name}</li>
+                ))}
+            </ul>
+        );
+    }}
+/>
+```
 
 ## `reference`
 
