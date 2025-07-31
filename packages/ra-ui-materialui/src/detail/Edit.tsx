@@ -90,7 +90,7 @@ export const Edit = <RecordType extends RaRecord = any>(
             transform={transform}
             disableAuthentication={disableAuthentication}
             loading={loading}
-            // Disable offline support from ShowBase as it is handled by ShowView to keep the ShowView container
+            // Disable offline support from EditBase as it is handled by EditView to keep the EditView container
             offline={false}
         >
             <EditView {...rest} />
