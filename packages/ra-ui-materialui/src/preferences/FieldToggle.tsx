@@ -102,6 +102,7 @@ export const FieldToggle = (props: FieldToggleProps) => {
     return (
         <Root
             key={source}
+            role="option"
             draggable={onMove ? 'true' : undefined}
             onDrag={onMove ? handleDrag : undefined}
             onDragStart={onMove ? handleDragStart : undefined}
