@@ -454,12 +454,7 @@ export const Offline = ({
 
 const BookEditOffline = (props: EditProps) => {
     return (
-        <Edit
-            emptyWhileLoading
-            {...props}
-            redirect={false}
-            mutationMode="pessimistic"
-        >
+        <Edit {...props} redirect={false} mutationMode="pessimistic">
             <OfflineIndicator />
             <SimpleForm>
                 <TextInput source="title" />
