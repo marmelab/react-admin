@@ -61,17 +61,18 @@ The form value for the source must be an array of the selected values, e.g.
 
 ## Props
 
-| Prop              | Required | Type                       | Default            | Description                                                                                                                            |
-|-------------------|----------|----------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `choices`         | Optional | `Object[]`                 | -                  | List of items to show as options. Required unless inside a ReferenceArray Input.                                                                                                       |
-| `create`          | Optional | `Element`                  | -                  | A React Element to render when users want to create a new choice                                                                       |
-| `createLabel`     | Optional | `string`                   | `ra.action. create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
-| `disableValue`    | Optional | `string`                   | 'disabled'         | The custom field name used in `choices` to disable some choices                                                                        |
-| `onCreate`        | Optional | `Function`                 | -                  | A function called with the current filter value when users choose to create a new choice.                                              |
-| `options`         | Optional | `Object`                   | -                  | Props to pass to the underlying `<SelectInput>` element                                                                                |
-| `optionText`      | Optional | `string` &#124; `Function` | `name`             | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
-| `optionValue`     | Optional | `string`                   | `id`               | Field name of record containing the value to use as input value                                                                        |
-| `translateChoice` | Optional | `boolean`                  | `true`             | Whether the choices should be translated                                                                                               |
+| Prop              | Required | Type                       | Default               | Description                                                                                                                            |
+|-------------------|----------|----------------------------|---------------   -----|----------------------------------------------------------------------------------------------------------------------------------------|
+| `choices`         | Optional | `Object[]`                 | -                     | List of items to show as options. Required unless inside a ReferenceArray Input.                                                       |
+| `create`          | Optional | `Element`                  | -                     | A React Element to render when users want to create a new choice                                                                       |
+| `createLabel`     | Optional | `string`                   | `ra.action. create`   | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
+| `disableValue`    | Optional | `string`                   | 'disabled'            | The custom field name used in `choices` to disable some choices                                                                        |
+| `InputLabelProps` | Optional | `Object`                   | -                     | Props to pass to the underlying `<InputLabel>` element                                                                                 |
+| `onCreate`        | Optional | `Function`                 | -                     | A function called with the current filter value when users choose to create a new choice.                                              |
+| `options`         | Optional | `Object`                   | -                     | Props to pass to the underlying `<SelectInput>` element                                                                                |
+| `optionText`      | Optional | `string` &#124; `Function` | `name`                | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
+| `optionValue`     | Optional | `string`                   | `id`                  | Field name of record containing the value to use as input value                                                                        |
+| `translateChoice` | Optional | `boolean`                  | `true`                | Whether the choices should be translated                                                                                               |
 
 `<SelectArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -264,6 +265,16 @@ const choices = [
 ];
 <SelectArrayInput source="roles" choices={choices} disableValue="not_available" />
 ```
+
+## `InputLabelProps`
+
+Use the `options` attribute if you want to override Material UI's `<InputLabel>` attributes:
+
+{% raw %}
+```jsx
+<SelectArrayInput source="category_ids" choices={choices} InputLabelProps={{ shrink: true }} />
+```
+{% endraw %}
 
 ## `onCreate`
 
