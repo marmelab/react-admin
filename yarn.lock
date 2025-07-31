@@ -181,9 +181,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/starlight@npm:^0.34.8":
-  version: 0.34.8
-  resolution: "@astrojs/starlight@npm:0.34.8"
+"@astrojs/starlight@npm:0.35.2":
+  version: 0.35.2
+  resolution: "@astrojs/starlight@npm:0.35.2"
   dependencies:
     "@astrojs/markdown-remark": "npm:^6.3.1"
     "@astrojs/mdx": "npm:^4.2.3"
@@ -214,7 +214,7 @@ __metadata:
     vfile: "npm:^6.0.2"
   peerDependencies:
     astro: ^5.5.0
-  checksum: 51e3ab2a428a0b70605a42b8079c1ed7899ec46d02cb87974e5f3444f00acf16abfd4c6fc452c55919ea0c31ff173ce07a0672cc388277f5c1eee0951a32e857
+  checksum: d9e2508dde94bf00d471a72f4b1ea257be0f553aba8ef42b287a8eb1a4cb334f1e083e311b6114a38a1903229ad6124bffcd6ce6dd035a859174d3490b0f80e2
   languageName: node
   linkType: hard
 
@@ -7769,9 +7769,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^5.6.1":
-  version: 5.12.0
-  resolution: "astro@npm:5.12.0"
+"astro@npm:5.12.6":
+  version: 5.12.6
+  resolution: "astro@npm:5.12.6"
   dependencies:
     "@astrojs/compiler": "npm:^2.12.2"
     "@astrojs/internal-helpers": "npm:0.6.1"
@@ -7833,7 +7833,7 @@ __metadata:
     xxhash-wasm: "npm:^1.1.0"
     yargs-parser: "npm:^21.1.1"
     yocto-spinner: "npm:^0.2.1"
-    zod: "npm:^3.24.2"
+    zod: "npm:^3.24.4"
     zod-to-json-schema: "npm:^3.24.5"
     zod-to-ts: "npm:^1.2.0"
   dependenciesMeta:
@@ -7841,7 +7841,7 @@ __metadata:
       optional: true
   bin:
     astro: astro.js
-  checksum: d90659aa1d41865201a31196766cec88ef47498573b0ae011309c55d41bf792e80e2eead99ea696bfcdba70798b955a28af311afb8b39b5c295cee2d71d44cbe
+  checksum: dfdb5f6fbf02bca3ffbc8eb9ac67a942b8f43f4be1d00860dc4cb2e29f22e7054d36d723a4ecf0abb9bbf1032b87fffa90f9e627f8605e18db4ce9254a7f18d8
   languageName: node
   linkType: hard
 
@@ -19433,13 +19433,13 @@ __metadata:
   dependencies:
     "@astrojs/mdx": "npm:^4.3.1"
     "@astrojs/react": "npm:^4.3.0"
-    "@astrojs/starlight": "npm:^0.34.8"
+    "@astrojs/starlight": "npm:0.35.2"
     "@astrojs/starlight-tailwind": "npm:^4.0.1"
     "@expressive-code/plugin-collapsible-sections": "npm:^0.41.3"
     "@tailwindcss/vite": "npm:^4.1.11"
     "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
-    astro: "npm:^5.6.1"
+    astro: "npm:5.12.6"
     astro-expressive-code: "npm:^0.41.3"
     expressive-code-fullscreen: "npm:^1.0.0"
     prettier: "npm:^3.2.5"
@@ -24701,7 +24701,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.1, zod@npm:^3.24.2":
+"zod@npm:^3.22.1, zod@npm:^3.24.2, zod@npm:^3.24.4":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
