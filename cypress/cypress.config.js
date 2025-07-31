@@ -29,6 +29,5 @@ export default defineConfig({
         baseUrl: 'http://localhost:8080',
         specPattern: 'e2e/**/*.cy.{js,jsx,ts,tsx}',
         supportFile: 'support/index.js',
-        defaultCommandTimeout: 10000,
     },
 });
