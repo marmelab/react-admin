@@ -10,6 +10,7 @@ export * from './ReferenceInputBase';
 export * from './ReferenceArrayInputBase';
 export * from './ArrayInputContext';
 export * from './useArrayInput';
+export * from './sanitizeInputRestProps';
 
 export {
     getStatusForInput,
