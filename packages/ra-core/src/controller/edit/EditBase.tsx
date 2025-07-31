@@ -42,8 +42,10 @@ import { useIsAuthPending } from '../../auth';
  */
 export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
     children,
+    disableAuthentication,
+    loading,
+    offline,
     render,
-    loading = null,
     ...props
 }: EditBaseProps<RecordType, ErrorType>) => {
     const controllerProps = useEditController<RecordType, ErrorType>(props);
@@ -53,21 +55,34 @@ export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
         action: 'edit',
     });
 
-    if (isAuthPending && !props.disableAuthentication) {
-        return loading;
-    }
-
     if (!render && !children) {
         throw new Error(
             "<EditBase> requires either a 'render' prop or 'children' prop"
         );
     }
 
+    const { isPaused, record } = controllerProps;
+
+    const shouldRenderLoading =
+        isAuthPending &&
+        !disableAuthentication &&
+        loading !== false &&
+        loading !== undefined;
+
+    const shouldRenderOffline =
+        isPaused && !record && offline !== false && offline !== undefined;
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <EditContextProvider value={controllerProps}>
-                {render ? render(controllerProps) : children}
+                {shouldRenderLoading
+                    ? loading
+                    : shouldRenderOffline
+                      ? offline
+                      : render
+                        ? render(controllerProps)
+                        : children}
             </EditContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -80,4 +95,5 @@ export interface EditBaseProps<
     children?: ReactNode;
     render?: (props: EditControllerResult<RecordType, ErrorType>) => ReactNode;
     loading?: ReactNode;
+    offline?: ReactNode;
 }

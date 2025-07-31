@@ -6,18 +6,29 @@ import {
     useRecordContext,
     TestMemoryRouter,
     useEditContext,
+    IsOffline,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Box, Card, Stack, ThemeOptions, Typography } from '@mui/material';
+import fakeRestDataProvider from 'ra-data-fakerest';
+
+import {
+    Alert,
+    Box,
+    Card,
+    Stack,
+    ThemeOptions,
+    Typography,
+} from '@mui/material';
 
 import { TextInput } from '../input';
 import { SimpleForm } from '../form/SimpleForm';
 import { ShowButton, SaveButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
-import { Edit } from './Edit';
+import { Edit, EditProps } from './Edit';
 import { deepmerge } from '@mui/utils';
 import { defaultLightTheme } from '../theme';
+import { onlineManager, useMutationState } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/detail/Edit' };
 
@@ -30,9 +41,9 @@ const book = {
     year: 1869,
 };
 
-const dataProvider = {
-    getOne: () => Promise.resolve({ data: book }),
-} as any;
+const dataProvider = fakeRestDataProvider({
+    books: [book],
+});
 
 const BookTitle = () => {
     const record = useRecordContext();
@@ -418,3 +429,86 @@ export const WithRenderProp = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const Offline = ({
+    isOnline = true,
+    offline,
+}: {
+    isOnline?: boolean;
+    offline?: React.ReactNode;
+}) => {
+    React.useEffect(() => {
+        onlineManager.setOnline(isOnline);
+    }, [isOnline]);
+    return (
+        <TestMemoryRouter initialEntries={['/books/1/show']}>
+            <Admin dataProvider={dataProvider}>
+                <Resource
+                    name="books"
+                    show={<BookEditOffline offline={offline} />}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+const BookEditOffline = (props: EditProps) => {
+    return (
+        <Edit {...props} redirect={false} mutationMode="pessimistic">
+            <OfflineIndicator />
+            <SimpleForm>
+                <TextInput source="title" />
+                <TextInput source="author" />
+                <TextInput source="summary" />
+                <TextInput source="year" />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+const OfflineIndicator = () => {
+    const pendingMutations = useMutationState({
+        filters: {
+            status: 'pending',
+        },
+    });
+
+    if (pendingMutations.length === 0) {
+        return (
+            <IsOffline>
+                <Alert severity="warning">
+                    You are offline, the data may be outdated
+                </Alert>
+            </IsOffline>
+        );
+    }
+    return (
+        <IsOffline>
+            <Alert severity="warning">You have pending mutations</Alert>
+        </IsOffline>
+    );
+};
+
+const CustomOffline = () => {
+    return <Alert severity="warning">You are offline!</Alert>;
+};
+
+Offline.args = {
+    isOnline: true,
+    offline: 'default',
+};
+
+Offline.argTypes = {
+    isOnline: {
+        control: { type: 'boolean' },
+    },
+    offline: {
+        name: 'Offline component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomOffline />,
+        },
+    },
+};

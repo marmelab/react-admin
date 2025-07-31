@@ -76,6 +76,7 @@ You can customize the `<Edit>` component using the following props:
 | `id`                  | Optional  | `string`/`number`   | -            | The id of the record to edit                                                                  |
 | `mutationMode`        | Optional  | `'undoable' \| 'optimistic' \| 'pessimistic'` | `'undoable'` | Switch to optimistic or pessimistic mutations                                                 |
 | `mutationOptions`     | Optional  | `object`            | -            | Options for the `dataProvider.update()` call                                                  |
+| `offline`             | Optional | `ReactNode`          |              | The component to render when there is no connectivity and the record isn't in the cache
 | `queryOptions`        | Optional  | `object`            | -            | Options for the `dataProvider.getOne()` call                                                  |
 | `redirect`            | Optional  | `'list' \| 'show' \| false \| function` | `'list'` | Change the redirect location after successful update                                           |
 | `resource`            | Optional  | `string`            | -            | Override the name of the resource to edit                                                     |
@@ -539,6 +540,38 @@ The default `onError` function is:
 
 **Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `mutationOptions` prop on the `<SaveButton>` component, too.
 
+## `offline`
+
+By default, `<EditBase>` renders nothing when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
+
+```jsx
+import { Edit } from 'react-admin';
+
+export const PostEdit = () => (
+    <Edit offline={<p>No network. Could not load the post.</p>}>
+        ...
+    </Edit>
+);
+```
+
+**Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+import { Edit, IsOffline } from 'react-admin';
+import { Alert } from '@mui/material';
+
+export const PostEdit = () => (
+    <Edit offline={<p>No network. Could not load the post.</p>}>
+        <IsOffline>
+            <Alert severity="warning">
+                You are offline, the data may be outdated
+            </Alert>
+        </IsOffline>
+        ...
+    </Edit>
+);
+```
+
 ## `queryOptions`
 
 `<Edit>` calls `dataProvider.getOne()` on mount via react-query's `useQuery` hook. You can customize the options you pass to this hook by setting the `queryOptions` prop.
@@ -550,7 +583,7 @@ This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) t
 ```jsx
 import { Edit, SimpleForm } from 'react-admin';
 
-export const PostShow = () => (
+export const PostEdit = () => (
     <Edit queryOptions={{ meta: { foo: 'bar' } }}>
         <SimpleForm>
             ...

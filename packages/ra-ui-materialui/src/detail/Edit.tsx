@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    EditBase,
-    useCheckMinimumRequiredProps,
-    RaRecord,
-    EditBaseProps,
-} from 'ra-core';
+import { EditBase, RaRecord, EditBaseProps } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
 import { EditView, EditViewProps } from './EditView';
@@ -95,6 +90,8 @@ export const Edit = <RecordType extends RaRecord = any>(
             transform={transform}
             disableAuthentication={disableAuthentication}
             loading={loading}
+            // Disable offline support from EditBase as it is handled by EditView to keep the EditView container
+            offline={false}
         >
             <EditView {...rest} />
         </EditBase>
