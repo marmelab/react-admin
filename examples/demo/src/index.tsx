@@ -10,7 +10,13 @@ if (!container) {
 const root = createRoot(container);
 
 fakeServerWorker(process.env.REACT_APP_DATA_PROVIDER ?? '')
-    .then(worker => worker.start({ onUnhandledRequest: 'bypass', quiet: true }))
+    .then(worker =>
+        worker.start({
+            onUnhandledRequest: 'bypass',
+            quiet: true,
+            serviceWorker: { url: './mockServiceWorker.js' },
+        })
+    )
     .then(() => {
         root.render(<App />);
     });
