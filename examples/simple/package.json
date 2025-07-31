@@ -14,9 +14,10 @@
         "@mui/material": "^5.16.12",
         "@tanstack/react-query": "^5.83.0",
         "@tanstack/react-query-devtools": "^5.83.0",
+        "fakerest": "^4.1.3",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
-        "ra-data-fakerest": "^5.10.0",
+        "ra-data-simple-rest": "^5.10.0",
         "ra-i18n-polyglot": "^5.10.0",
         "ra-input-rich-text": "^5.10.0",
         "ra-language-english": "^5.10.0",
@@ -35,5 +36,10 @@
         "react-simple-animate": "^3.5.3",
         "typescript": "^5.1.3",
         "vite": "^6.2.6"
+    },
+    "msw": {
+        "workerDirectory": [
+            "public"
+        ]
     }
 }
