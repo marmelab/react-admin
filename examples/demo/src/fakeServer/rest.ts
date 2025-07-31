@@ -7,7 +7,7 @@ export default () => {
         baseUrl: 'http://localhost:4000',
         data,
         loggingEnabled: true,
-        middlewares: [withDelay(500)],
+        middlewares: [withDelay(300)],
     });
     if (window) {
         window.restServer = adapter.server; // give way to update data in the console
