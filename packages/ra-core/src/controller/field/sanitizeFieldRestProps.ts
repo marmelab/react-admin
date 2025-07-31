@@ -1,0 +1,21 @@
+export const sanitizeFieldRestProps: (props: any) => any = ({
+    cellClassName,
+    className,
+    emptyText,
+    fullWidth,
+    headerClassName,
+    label,
+    linkType,
+    link,
+    locale,
+    record,
+    refetch,
+    resource,
+    sortable,
+    sortBy,
+    sortByOrder,
+    source,
+    textAlign,
+    translateChoice,
+    ...props
+}) => props;
