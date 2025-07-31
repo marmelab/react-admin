@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { QueryClient } from '@tanstack/react-query';
+import { onlineManager, QueryClient } from '@tanstack/react-query';
 import { CoreAdmin } from '../../core/CoreAdmin';
 import { Resource } from '../../core/Resource';
 import { ShowBase } from '../../controller/show/ShowBase';
 import { TestMemoryRouter } from '../../routing';
 import { ReferenceManyFieldBase } from './ReferenceManyFieldBase';
 import { ListBase, ListIterator, useListContext } from '../list';
-import { DataTableBase } from '../../dataTable';
 import fakeRestDataProvider from 'ra-data-fakerest';
+import { useIsOffline } from '../../core';
 
 export default {
     title: 'ra-core/controller/field/ReferenceManyFieldBase',
@@ -308,11 +308,100 @@ export const WithRenderProp = ({
     </TestMemoryRouter>
 );
 
-const AuthorList = ({ source }) => {
-    const { isPending, error, data } = useListContext();
+export const Offline = ({ offline }) => {
+    return (
+        <TestMemoryRouter initialEntries={['/authors/1/show']}>
+            <CoreAdmin
+                dataProvider={dataProviderWithAuthors}
+                queryClient={
+                    new QueryClient({
+                        defaultOptions: {
+                            queries: {
+                                retry: false,
+                            },
+                        },
+                    })
+                }
+            >
+                <Resource name="books" />
+                <Resource
+                    name="authors"
+                    show={
+                        <ShowBase>
+                            <RenderChildOnDemand>
+                                <ReferenceManyFieldBase
+                                    target="author"
+                                    source="id"
+                                    reference="books"
+                                    offline={offline}
+                                >
+                                    <AuthorList source="title" />
+                                </ReferenceManyFieldBase>
+                            </RenderChildOnDemand>
+                            <p>
+                                <SimulateOfflineButton />
+                            </p>
+                        </ShowBase>
+                    }
+                />
+            </CoreAdmin>
+        </TestMemoryRouter>
+    );
+};
 
-    if (isPending) {
+Offline.args = {
+    offline: 'let children handle offline state',
+};
+
+Offline.argTypes = {
+    offline: {
+        control: { type: 'radio' },
+        options: [
+            'let children handle offline state',
+            'handle offline state in ReferenceManyFieldBase',
+        ],
+        mapping: {
+            'let children handle offline state': undefined,
+            'handle offline state in ReferenceManyFieldBase': (
+                <p>You are offline, cannot load data</p>
+            ),
+        },
+    },
+};
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};
+
+const AuthorList = ({ source }) => {
+    const { isPaused, isPending, error, data } = useListContext();
+
+    if (isPending && !isPaused) {
         return <p>Loading...</p>;
+    }
+
+    if (isPaused) {
+        return <p>AuthorList: Offline. Could not load data</p>;
     }
 
     if (error) {

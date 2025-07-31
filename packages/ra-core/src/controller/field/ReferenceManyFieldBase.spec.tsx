@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     Basic,
     Errored,
     Loading,
+    Offline,
     WithRenderProp,
 } from './ReferenceManyFieldBase.stories';
 
@@ -137,5 +138,22 @@ describe('ReferenceManyFieldBase', () => {
                 ).not.toBeNull();
             });
         });
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline offline={<p>You are offline, cannot load data</p>} />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('You are offline, cannot load data');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('War and Peace');
+    });
+    it('should allow children to handle the offline state', async () => {
+        render(<Offline offline={undefined} />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('AuthorList: Offline. Could not load data');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('War and Peace');
     });
 });

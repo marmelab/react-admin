@@ -94,6 +94,7 @@ export const PostList = () => (
 | `debounce`     | Optional\* | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                       |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
@@ -135,6 +136,127 @@ export const AuthorShow = () => (
 );
 ```
 
+## `debounce`
+
+By default, `<ReferenceManyFieldBase>` does not refresh the data as soon as the user enters data in the filter form. Instead, it waits for half a second of user inactivity (via `lodash.debounce`) before calling the `dataProvider` on filter change. This is to prevent repeated (and useless) calls to the API.
+
+You can customize the debounce duration in milliseconds - or disable it completely - by passing a `debounce` prop to the `<ReferenceManyFieldBase>` component:
+
+```jsx
+// wait 1 seconds instead of 500 milliseconds before calling the dataProvider
+const PostCommentsField = () => (
+    <ReferenceManyFieldBase debounce={1000}>
+        ...
+    </ReferenceManyFieldBase>
+);
+```
+
+## `empty`
+
+Use `empty` to customize the text displayed when there are no related records.
+
+```jsx
+<ReferenceManyFieldBase
+    reference="books"
+    target="author_id"
+    empty="no books"
+>
+    ...
+</ReferenceManyFieldBase>
+```
+
+`empty` also accepts a `ReactNode`.
+
+```jsx
+<ReferenceManyFieldBase
+    reference="books"
+    target="author_id"
+    empty={<button onClick={...}>Create</button>}
+>
+    ...
+</ReferenceManyFieldBase>
+```
+
+## `filter`: Permanent Filter
+
+You can filter the query used to populate the possible values. Use the `filter` prop for that.
+
+{% raw %}
+
+```jsx
+<ReferenceManyFieldBase
+  reference="comments"
+  target="post_id"
+  filter={{ is_published: true }}
+>
+   ...
+</ReferenceManyFieldBase>
+```
+
+{% endraw %}
+
+## `offline`
+
+Use `offline` to customize the text displayed when there are no related records because of lack of network connectivity.
+
+```jsx
+<ReferenceManyFieldBase
+    reference="books"
+    target="author_id"
+    offline="Offline, could not load data"
+>
+    ...
+</ReferenceManyFieldBase>
+```
+
+`offline` also accepts a `ReactNode`.
+
+```jsx
+<ReferenceManyFieldBase
+    reference="books"
+    target="author_id"
+    empty={<p>Offline, could not load data</p>}
+>
+    ...
+</ReferenceManyFieldBase>
+```
+
+## `perPage`
+
+By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
+
+```jsx
+<ReferenceManyFieldBase perPage={10} reference="comments" target="post_id">
+   ...
+</ReferenceManyFieldBase>
+```
+
+## `queryOptions`
+
+Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](./useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
+
+For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
+
+{% raw %}
+```jsx
+<ReferenceManyFieldBase queryOptions={{ meta: { foo: 'bar' } }}>
+    ...
+</ReferenceManyFieldBase>
+```
+{% endraw %}
+
+## `reference`
+
+The name of the resource to fetch for the related records.
+
+For instance, if you want to display the `books` of a given `author`, the `reference` name should be `books`:
+
+```jsx
+<ReferenceManyFieldBase label="Books" reference="books" target="author_id">
+    ...
+</ReferenceManyFieldBase>
+```
+
 ## `render`
 
 Alternatively, you can pass a `render` function prop instead of children. The `render` prop will receive the `ListContext` as arguments, allowing to inline the render logic.
@@ -172,113 +294,6 @@ const AuthorShow = () => (
         />
     </ShowBase>
 );
-```
-
-## `debounce`
-
-By default, `<ReferenceManyFieldBase>` does not refresh the data as soon as the user enters data in the filter form. Instead, it waits for half a second of user inactivity (via `lodash.debounce`) before calling the `dataProvider` on filter change. This is to prevent repeated (and useless) calls to the API.
-
-You can customize the debounce duration in milliseconds - or disable it completely - by passing a `debounce` prop to the `<ReferenceManyFieldBase>` component:
-
-```jsx
-// wait 1 seconds instead of 500 milliseconds before calling the dataProvider
-const PostCommentsField = () => (
-    <ReferenceManyFieldBase debounce={1000}>
-        ...
-    </ReferenceManyFieldBase>
-);
-```
-
-## `empty`
-
-Use `empty` to customize the text displayed when the related record is empty.
-
-```jsx
-<ReferenceManyFieldBase
-    reference="books"
-    target="author_id"
-    empty="no books"
->
-    ...
-</ReferenceManyFieldBase>
-```
-
-`empty` also accepts a translation key.
-
-```jsx
-<ReferenceManyFieldBase
-    reference="books"
-    target="author_id"
-    empty="resources.authors.fields.books.empty"
->
-    ...
-</ReferenceManyFieldBase>
-```
-
-`empty` also accepts a `ReactNode`.
-
-```jsx
-<ReferenceManyFieldBase
-    reference="books"
-    target="author_id"
-    empty={<button onClick={...}>Create</button>}
->
-    ...
-</ReferenceManyFieldBase>
-```
-
-## `filter`: Permanent Filter
-
-You can filter the query used to populate the possible values. Use the `filter` prop for that.
-
-{% raw %}
-
-```jsx
-<ReferenceManyFieldBase
-  reference="comments"
-  target="post_id"
-  filter={{ is_published: true }}
->
-   ...
-</ReferenceManyFieldBase>
-```
-
-{% endraw %}
-
-## `perPage`
-
-By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
-
-```jsx
-<ReferenceManyFieldBase perPage={10} reference="comments" target="post_id">
-   ...
-</ReferenceManyFieldBase>
-```
-
-## `queryOptions`
-
-Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](./useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
-
-For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
-
-{% raw %}
-```jsx
-<ReferenceManyFieldBase queryOptions={{ meta: { foo: 'bar' } }}>
-    ...
-</ReferenceManyFieldBase>
-```
-{% endraw %}
-
-## `reference`
-
-The name of the resource to fetch for the related records.
-
-For instance, if you want to display the `books` of a given `author`, the `reference` name should be `books`:
-
-```jsx
-<ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-    ...
-</ReferenceManyFieldBase>
 ```
 
 ## `sort`
