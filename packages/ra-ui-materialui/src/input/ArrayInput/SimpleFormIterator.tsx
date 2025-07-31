@@ -21,12 +21,12 @@ import {
     FormDataConsumer,
     type RaRecord,
     useRecordContext,
+    useArrayInput,
     useTranslate,
     useWrappedSource,
 } from 'ra-core';
 import { type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 
-import { useArrayInput } from './useArrayInput';
 import {
     SimpleFormIteratorClasses,
     SimpleFormIteratorPrefix as PREFIX,
