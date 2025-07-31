@@ -11,6 +11,6 @@ export * from './RemoveItemButton';
 export * from './ReOrderButtons';
 
 /**
- * @deprecated Use `ra-core` instead
+ * @deprecated Import from `ra-core` or `react-admin` instead
  */
 export { ArrayInputContext, useArrayInput } from 'ra-core';
