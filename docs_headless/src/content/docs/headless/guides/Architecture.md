@@ -136,61 +136,34 @@ Whenever you need to communicate with a server, you will use these providers. Si
 
 React-admin avoids components that accept an overwhelming number of props, which are often referred to as "God Components." Instead, react-admin encourages the use of composition, where components accept subcomponents (either through children or specific props) to handle a share of the logic.
 
-For example, while you cannot directly pass a list of actions to the `<Edit>` component, you can achieve the same result by passing an `actions` component:
-
-```jsx
-import { Button } from '@mui/material';
-import { TopToolbar, ShowButton } from 'react-admin';
-
-export const PostEdit = () => (
-    <Edit actions={<PostEditActions />}>
-        ...
-    </Edit>
-);
-
-const PostEditActions = () => (
-    <TopToolbar>
-        <ShowButton />
-        <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </TopToolbar>
-);
-```
-
 This approach enables you to override specific parts of the logic of a component by composing it with another component.
 
-The trade-off with this approach is that sometimes react-admin may require you to override several components just to enable one specific feature. For instance, to override the Menu, you must first create a custom layout using your menu as the `<Layout menu>` prop, then pass it as the `<Admin layout>` prop:
+For instance, the `<CanAccess>` component accepts an `accessDenied` prop that allows you to define what to render when users don't have the required permissions:
 
 ```jsx
-// in src/MyLayout.js
-import { Layout } from 'react-admin';
-import { Menu } from './Menu';
+import { CanAccess } from 'ra-core';
+import { PremiumStatsFeature } from './PremiumStatsFeature';
+import { UpgradeToPremium } from './UpgradeToPremium';
 
-export const MyLayout = ({ children }) => (
-    <Layout menu={Menu}>
-        {children}
-    </Layout>
-);
-
-// in src/App.js
-import { Admin } from 'react-admin';
-import { MyLayout }  from './MyLayout';
-
-const App = () => (
-    <Admin layout={MyLayout} dataProvider={...}>
-        // ...
-    </Admin>
+export const Dashboard = ({ children }) => (
+    <div>
+        <CanAccess accessDenied={<UpgradeToPremium />}>
+            <PremiumStatsFeature />
+        </CanAccess>
+    </div>
 );
 ```
-
-Although this drawback exists, we accept it because the use of composition in react-admin makes the components highly extensible, and it significantly improves the readability and maintainability of the code.
 
 ## Hooks
 
-When you find that you cannot tweak a react-admin component using props, you can always turn to the lower-level API: hooks. In fact, the core of react-admin is a headless library called `ra-core`, which primarily consists of hooks. These hooks hide the framework's implementation details, allowing you to focus on your business logic. It's perfectly normal to use react-admin hooks in your own components if the default UI doesn't meet your specific requirements.
+`ra-core` consists of hooks and headless components that hide the framework's implementation details, allowing you to focus on your business logic.
 
-For example, the `<DeleteButton>` button used in `pessimistic` mode renders a confirmation dialog when clicked and then calls the `dataProvider.delete()` method for the current record. If you want the same feature but with a different UI, you can use the `useDeleteWithConfirmController` hook:
+For example, the `useDeleteWithConfirmController` button used in `pessimistic` mode renders a confirmation dialog when clicked and then calls the `dataProvider.delete()` method for the current record. If you want the same feature but with a different UI, you can use the `useDeleteWithConfirmController` hook:
 
 ```jsx
+import { useDeleteWithConfirmController, useRecordContext, useResourceContext } from 'ra-core';
+import { Button, Confirm } from 'my-awesome-ui-library';
+
 const DeleteButton = () => {
     const resource = useResourceContext();
     const record = useRecordContext();
@@ -230,11 +203,11 @@ const DeleteButton = () => {
 
 The fact that hook names often end with `Controller` is intentional and reflects the use of [the Model-View-Controller (MVC) pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) for complex components in react-admin. 
 
-- The Controller logic is handled by React hooks (e.g. `useListController`).
-- The view logic is managed by React components (e.g. `<List>`).
+- The Controller logic is handled by React hooks (e.g. `useDeleteWithConfirmController`).
+- The view logic is managed by React components (e.g. `<DeleteButton>`).
 - The model logic is left to the developer, and react-admin simply defines the interface that the model must expose through its Providers.
 
-React-admin exposes [dozens of hooks](./Reference.md#hooks) to assist you in building your own components. You can even construct an entire react-admin application without relying on the Material UI components and use a different UI kit if desired (see for instance [shadcn-admin-kit](https://github.com/marmelab/shadcn-admin-kit), a library for building admin apps with Shadcn UI). This flexibility allows you to tailor the application to your specific needs and preferences.
+React-admin exposes [dozens of hooks](./Reference.md#hooks) to assist you in building your own components. You can construct an entire react-admin application by using one of our UI packages such as `ra-ui-materialui` for Material UI components or [shadcn-admin-kit](https://github.com/marmelab/shadcn-admin-kit) for Shadcn UI or build your own UI layer. This flexibility allows you to tailor the application to your specific needs and preferences.
 
 ## Context: Pull, Don't Push
 
@@ -242,15 +215,20 @@ Communication between components can be challenging, especially in large React a
 
 Whenever a react-admin component fetches data or defines a callback, it creates a context and places the data and callback in it.
 
-For instance, the `<Admin>` component creates an `I18NProviderContext`, which exposes the `translate` function. All components in the application can utilize the `useTranslate` hook, which reads the `I18NProviderContext`, for translating labels and messages. 
+For instance, the `<CoreAdminContext>` component creates an `I18NProviderContext`, which exposes the `translate` function. All components in the application can use the `useTranslate` hook or the `<Translate>` component, which reads the `I18NProviderContext`, for translating labels and messages. 
 
 ```jsx
-import { useTranslate } from 'ra-core';
+import { Translate, useTranslate } from 'ra-core';
 
-export const MyHelloButton = ({ handleClick }) => {
+export const MyHelloButton = () => {
     const translate = useTranslate();
+    const handleClick = () => {
+        alert(translate('root.button.hello_world.message'))
+    }
     return (
-        <button onClick={handleClick}>{translate('root.hello.world')}</button>
+        <button onClick={handleClick}>
+            <Translate i18nKey="root.button.hello_world.label">
+        </button>
     );
 };
 ```
@@ -301,4 +279,4 @@ React-admin provides the **best-in-class documentation**, demo apps, and support
 
 That probably explains why more than 3,000 new apps are published every month using react-admin.
 
-So react-admin is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/), and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
+So react-admin is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/) and [react-router](https://reacttraining.com/react-router/). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
