@@ -583,7 +583,7 @@ This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) t
 ```jsx
 import { Edit, SimpleForm } from 'react-admin';
 
-export const PostShow = () => (
+export const PostEdit = () => (
     <Edit queryOptions={{ meta: { foo: 'bar' } }}>
         <SimpleForm>
             ...
