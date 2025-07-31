@@ -542,6 +542,8 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     hasPreviousPage?: boolean;
     isFetching?: boolean;
     isLoading?: boolean;
+    isPaused?: boolean;
+    isPlaceholderData?: boolean;
 }
 
 export interface ListControllerLoadingResult<RecordType extends RaRecord = any>

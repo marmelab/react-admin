@@ -161,6 +161,7 @@ export const useReferenceManyFieldController = <
         }
     }, [filter]);
 
+    const recordValue = get(record, source) as Identifier;
     const {
         data,
         total,
@@ -169,20 +170,22 @@ export const useReferenceManyFieldController = <
         error,
         isFetching,
         isLoading,
+        isPaused,
         isPending,
+        isPlaceholderData,
         refetch,
     } = useGetManyReference<ReferenceRecordType, ErrorType>(
         reference,
         {
             target,
-            id: get(record, source) as Identifier,
+            id: recordValue,
             pagination: { page, perPage },
             sort,
             filter: filterValues,
             meta,
         },
         {
-            enabled: get(record, source) != null,
+            enabled: recordValue != null,
             placeholderData: previousData => previousData,
             onError: error =>
                 notify(
@@ -271,7 +274,9 @@ export const useReferenceManyFieldController = <
         hideFilter,
         isFetching,
         isLoading,
+        isPaused,
         isPending,
+        isPlaceholderData,
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
