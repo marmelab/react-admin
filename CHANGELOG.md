@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.10.1
+
+* Fix `<ColumnsButton>` cannot be used with keyboard ([#10869](https://github.com/marmelab/react-admin/pull/10869)) ([djhi](https://github.com/djhi))
+* Fix unused imports ([#10866](https://github.com/marmelab/react-admin/pull/10866)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix `<ReferenceArrayInput>` does not accept `alwaysOn` prop ([#10863](https://github.com/marmelab/react-admin/pull/10863)) ([djhi](https://github.com/djhi))
+* Fix `DateInput` JSDoc formatting and example ([#10855](https://github.com/marmelab/react-admin/pull/10855)) ([ogroppo](https://github.com/ogroppo))
+* Fix B&W theme label is invisible for inputs with `standard` variant ([#10854](https://github.com/marmelab/react-admin/pull/10854)) ([djhi](https://github.com/djhi))
+* Fix Show and Edit controllers can trigger a redirect loop with react-router v7 if getOne rejects ([#10850](https://github.com/marmelab/react-admin/pull/10850)) ([slax57](https://github.com/slax57))
+* [Demo] Migrate from `fetch-mock` to `msw` ([#10844](https://github.com/marmelab/react-admin/pull/10844)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Bump linkifyjs from 4.1.1 to 4.3.2 ([#10868](https://github.com/marmelab/react-admin/pull/10868)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.10.0
 
 * Add filter input to `<ColumnsButton>` when there are many columns ([#10848](https://github.com/marmelab/react-admin/pull/10848)) ([slax57](https://github.com/slax57))
