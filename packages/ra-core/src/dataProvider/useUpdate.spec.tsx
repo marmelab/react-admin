@@ -1,6 +1,13 @@
 import * as React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import { RaRecord } from '../types';
@@ -24,7 +31,7 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useUpdate.undoable.stories';
-import { QueryClient, useMutationState } from '@tanstack/react-query';
+import { MutationMode, Params } from './useUpdate.stories';
 
 describe('useUpdate', () => {
     describe('mutate', () => {
@@ -90,6 +97,45 @@ describe('useUpdate', () => {
                     previousData: { id: 1, bar: 'bar' },
                 });
             });
+        });
+
+        it('uses the latest declaration time mutationMode', async () => {
+            // This story uses the pessimistic mode by default
+            render(<MutationMode timeout={10} />);
+            fireEvent.click(
+                screen.getByText('Change mutation mode to optimistic')
+            );
+            fireEvent.click(screen.getByText('Update title'));
+            // Should display the optimistic result right away if the change was handled
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+
+        it('uses the latest declaration time params', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            // This story sends the Hello World title by default
+            render(<Params />);
+            fireEvent.click(screen.getByText('Change params'));
+            fireEvent.click(screen.getByText('Update title'));
+            // Should have changed the title to Goodbye World
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Goodbye World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Goodbye World')).not.toBeNull();
         });
 
         it('accepts falsy value that are not null nor undefined as the record id', async () => {
