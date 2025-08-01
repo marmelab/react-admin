@@ -7,18 +7,18 @@ import {
 } from '@mui/material/styles';
 import clsx from 'clsx';
 
-import { UseMutationOptions } from '@tanstack/react-query';
 import {
-    MutationMode,
     RaRecord,
-    DeleteParams,
-    useDeleteWithConfirmController,
     useRecordContext,
     useResourceContext,
     useTranslate,
-    RedirectionSideEffect,
     useGetRecordRepresentation,
     useResourceTranslation,
+    useDeleteController,
+    useNotify,
+    useUnselect,
+    useRedirect,
+    UseDeleteControllerParams,
 } from 'ra-core';
 import { humanize, singularize } from 'inflection';
 
@@ -42,7 +42,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         label: labelProp,
         mutationMode = 'pessimistic',
         onClick,
-        redirect = 'list',
+        redirect: redirectTo = 'list',
         translateOptions = {},
         titleTranslateOptions = translateOptions,
         contentTranslateOptions = translateOptions,
@@ -54,27 +54,84 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     const translate = useTranslate();
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
+    const notify = useNotify();
+    const unselect = useUnselect(resource);
+    const redirect = useRedirect();
+    const [open, setOpen] = React.useState(false);
     if (!resource) {
         throw new Error(
             '<DeleteWithConfirmButton> components should be used inside a <Resource> component or provided with a resource prop. (The <Resource> component set the resource prop for all its children).'
         );
     }
 
-    const {
-        open,
-        isPending,
-        handleDialogOpen,
-        handleDialogClose,
-        handleDelete,
-    } = useDeleteWithConfirmController({
+    const { onSuccess, onError, ...otherMutationOptions } =
+        mutationOptions || {};
+
+    const { isPending, handleDelete } = useDeleteController({
         record,
-        redirect,
+        redirect: redirectTo,
         mutationMode,
-        onClick,
-        mutationOptions,
+        mutationOptions: {
+            ...otherMutationOptions,
+            onSuccess: (data, variables, context) => {
+                setOpen(false);
+                if (onSuccess) {
+                    onSuccess(data, variables, context);
+                } else {
+                    notify(
+                        successMessage ??
+                            `resources.${resource}.notifications.deleted`,
+                        {
+                            type: 'info',
+                            messageArgs: {
+                                smart_count: 1,
+                                _: translate('ra.notification.deleted', {
+                                    smart_count: 1,
+                                }),
+                            },
+                            undoable: mutationMode === 'undoable',
+                        }
+                    );
+                    record && unselect([record.id]);
+                    redirect(redirectTo, resource);
+                }
+            },
+            onError: (error, variables, context) => {
+                setOpen(false);
+                if (onError) {
+                    onError(error, variables, context);
+                } else {
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : (error as Error)?.message ||
+                                  'ra.notification.http_error',
+                        {
+                            type: 'error',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : (error as Error)?.message
+                                          ? (error as Error).message
+                                          : undefined,
+                            },
+                        }
+                    );
+                }
+            },
+        },
         resource,
         successMessage,
     });
+
+    const handleDialogOpen: ReactEventHandler<any> = () => {
+        setOpen(true);
+    };
+    const handleDialogClose: ReactEventHandler<any> = () => {
+        setOpen(false);
+    };
+
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
@@ -156,12 +213,12 @@ const defaultIcon = <ActionDelete />;
 export interface DeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps {
+> extends ButtonProps,
+        UseDeleteControllerParams<RecordType, MutationOptionsError> {
     confirmTitle?: React.ReactNode;
     confirmContent?: React.ReactNode;
     icon?: React.ReactNode;
     confirmColor?: 'primary' | 'warning';
-    mutationMode?: MutationMode;
     onClick?: ReactEventHandler<any>;
     // May be injected by Toolbar - sanitized in Button
     /**
@@ -170,15 +227,6 @@ export interface DeleteWithConfirmButtonProps<
     translateOptions?: object;
     titleTranslateOptions?: object;
     contentTranslateOptions?: object;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        DeleteParams<RecordType>
-    >;
-    record?: RecordType;
-    redirect?: RedirectionSideEffect;
-    resource?: string;
-    successMessage?: string;
 }
 
 const PREFIX = 'RaDeleteWithConfirmButton';
