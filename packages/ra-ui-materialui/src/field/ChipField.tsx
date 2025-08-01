@@ -25,7 +25,7 @@ const ChipFieldImpl = <
     const value = useFieldValue(props);
     const translate = useTranslate();
 
-    if (!value) {
+    if (value == null || value === '') {
         if (!emptyText || emptyText.length === 0) {
             return null;
         }

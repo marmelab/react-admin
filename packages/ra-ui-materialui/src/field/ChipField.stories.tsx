@@ -27,10 +27,11 @@ export const Basic = ({
 
 Basic.argTypes = {
     value: {
-        options: ['filled', 'empty', 'undefined'],
+        options: ['filled', 'empty', 'zero', 'undefined'],
         mapping: {
             filled: 'Bazinga',
             empty: '',
+            zero: 0,
             undefined: undefined,
         },
         control: { type: 'select' },
