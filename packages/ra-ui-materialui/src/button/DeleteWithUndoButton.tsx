@@ -2,17 +2,15 @@ import * as React from 'react';
 import { ReactNode, ReactEventHandler } from 'react';
 import ActionDelete from '@mui/icons-material/Delete';
 import clsx from 'clsx';
-import { UseMutationOptions } from '@tanstack/react-query';
 import {
     RaRecord,
-    useDeleteWithUndoController,
-    DeleteParams,
+    useDeleteController,
     useRecordContext,
     useResourceContext,
-    RedirectionSideEffect,
     useTranslate,
     useGetRecordRepresentation,
     useResourceTranslation,
+    UseDeleteControllerParams,
 } from 'ra-core';
 import { humanize, singularize } from 'inflection';
 
@@ -50,14 +48,21 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
             '<DeleteWithUndoButton> components should be used inside a <Resource> component or provided with a resource prop. (The <Resource> component set the resource prop for all its children).'
         );
     }
-    const { isPending, handleDelete } = useDeleteWithUndoController({
+    const { isPending, handleDelete } = useDeleteController({
         record,
         resource,
         redirect,
-        onClick,
+        mutationMode: 'undoable',
         mutationOptions,
         successMessage,
     });
+    const handleClick: ReactEventHandler<any> = event => {
+        handleDelete();
+        if (onClick) {
+            onClick(event);
+        }
+    };
+
     const translate = useTranslate();
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
@@ -87,7 +92,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
 
     return (
         <StyledButton
-            onClick={handleDelete}
+            onClick={handleClick}
             disabled={isPending}
             // avoid double translation
             label={<>{label}</>}
@@ -108,18 +113,10 @@ const defaultIcon = <ActionDelete />;
 export interface DeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps {
+> extends ButtonProps,
+        UseDeleteControllerParams<RecordType, MutationOptionsError> {
     icon?: ReactNode;
     onClick?: ReactEventHandler<any>;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        DeleteParams<RecordType>
-    >;
-    record?: RecordType;
-    redirect?: RedirectionSideEffect;
-    resource?: string;
-    successMessage?: string;
 }
 
 const PREFIX = 'RaDeleteWithUndoButton';
