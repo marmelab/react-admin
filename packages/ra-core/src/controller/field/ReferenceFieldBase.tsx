@@ -47,7 +47,7 @@ export const ReferenceFieldBase = <
 >(
     props: ReferenceFieldBaseProps<ReferenceRecordType>
 ) => {
-    const { children, render, loading, error, empty = null } = props;
+    const { children, render, loading, error, empty, offline } = props;
     const id = useFieldValue(props);
 
     const controllerProps =
@@ -59,43 +59,48 @@ export const ReferenceFieldBase = <
         );
     }
 
-    if (controllerProps.isPending && loading) {
-        return (
-            <ResourceContextProvider value={props.reference}>
-                {loading}
-            </ResourceContextProvider>
-        );
-    }
-    if (controllerProps.error && error) {
-        return (
-            <ResourceContextProvider value={props.reference}>
-                <ReferenceFieldContextProvider value={controllerProps}>
-                    {error}
-                </ReferenceFieldContextProvider>
-            </ResourceContextProvider>
-        );
-    }
-    if (
-        (empty &&
-            // no foreign key value
-            !id) ||
-        // no reference record
-        (!controllerProps.error &&
-            !controllerProps.isPending &&
-            !controllerProps.referenceRecord)
-    ) {
-        return (
-            <ResourceContextProvider value={props.reference}>
-                {empty}
-            </ResourceContextProvider>
-        );
-    }
-
+    const {
+        error: controllerError,
+        isPending,
+        isPaused,
+        referenceRecord,
+    } = controllerProps;
+    const shouldRenderLoading =
+        id != null &&
+        !isPaused &&
+        isPending &&
+        loading !== false &&
+        loading !== undefined;
+    const shouldRenderOffline =
+        isPaused &&
+        !referenceRecord &&
+        offline !== false &&
+        offline !== undefined;
+    const shouldRenderError =
+        !!controllerError && error !== false && error !== undefined;
+    const shouldRenderEmpty =
+        !isPaused &&
+        (!id ||
+            (!referenceRecord &&
+                !controllerError &&
+                !isPending &&
+                empty !== false &&
+                empty !== undefined));
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceFieldContextProvider value={controllerProps}>
-                <RecordContextProvider value={controllerProps.referenceRecord}>
-                    {render ? render(controllerProps) : children}
+                <RecordContextProvider value={referenceRecord}>
+                    {shouldRenderLoading
+                        ? loading
+                        : shouldRenderOffline
+                          ? offline
+                          : shouldRenderError
+                            ? error
+                            : shouldRenderEmpty
+                              ? empty
+                              : render
+                                ? render(controllerProps)
+                                : children}
                 </RecordContextProvider>
             </ReferenceFieldContextProvider>
         </ResourceContextProvider>
@@ -113,6 +118,7 @@ export interface ReferenceFieldBaseProps<
     empty?: ReactNode;
     error?: ReactNode;
     loading?: ReactNode;
+    offline?: ReactNode;
     queryOptions?: Partial<
         UseQueryOptions<ReferenceRecordType[], Error> & {
             meta?: any;
