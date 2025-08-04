@@ -61,20 +61,19 @@ It uses all the available horizontal and vertical space in the layout's content 
 
 In addition to the props accepted by [Bryntum Scheduler](https://www.bryntum.com/products/scheduler/docs/guide/Scheduler/quick-start/react/), `<Scheduler>` accepts the following props:
 
-| Prop                | Required | Type      | Default     | Description                                                                              |
-| ------------------- | -------- | --------- | ----------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `actions`           | Optional | ReactNode |             | A component displayed on top of the scheduler, usually to display a toolbar with action buttons |
-| `converters`        | Optional | object    |             | An object containing converters from dataProvider records to Bryntum models and vice-versa |
-| `CreateDialogProps` | Optional | object    |             | Props to pass to the `<CreateDialog>` used to create new events |
-| `EditDialogProps`   | Optional | object    |             |  Props to pass to the `<EditDialog>` used to edit existing events |
-| `eventCreate`       | Optional | ReactNode |             | The form used to create new events |
-| `eventEdit`         | Optional | ReactNode |             | The form used to edit existing events |
-| `eventName`         | Optional | string |                | The name of the resource for _Events_ |
-| `mutationOptions`   | Optional | object    |             | The mutation options sent when updating _Events_ via drag/drop or resize and _Resources_ via the inline editor |
-| `resourcesName`     | Optional | string    | 'resources' | The name of the resource for _Resources_  |
-| `queryOptions`      | Optional | object    |             | The query options sent when fetching _Events_ and _Resources_ |
-| `sx`                | Optional | object    |             | The sx prop passed down to the wrapping `<div>` element |
-| `title`             | Optional | object    |             | The title to display in the `<AppBar>` |
+| Prop                | Required | Type      | Default                                        | Description                                                                                                    |
+|---------------------| -------- | --------- |------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| `actions`           | Optional | ReactNode |                                                | A component displayed on top of the scheduler, usually to display a toolbar with action buttons                |
+| `converters`        | Optional | object    |                                                | An object containing converters from dataProvider records to Bryntum models and vice-versa                     |
+| `CreateDialogProps` | Optional | object    |                                                | Props to pass to the `<CreateDialog>` used to create new events                                                |
+| `EditDialogProps`   | Optional | object    |                                                | Props to pass to the `<EditDialog>` used to edit existing events                                               |
+| `eventCreate`       | Optional | ReactNode |                                                | The form used to create new events                                                                             |
+| `eventEdit`         | Optional | ReactNode |                                                | The form used to edit existing events                                                                          |
+| `mutationOptions`   | Optional | object    |                                                | The mutation options sent when updating _Events_ via drag/drop or resize and _Resources_ via the inline editor |
+| `resources`         | Optional | object    | `{ resources: "resources", events: "events" }` | The resources names to use for _Events_ and _Resources_                                                        |
+| `queryOptions`      | Optional | object    |                                                | The query options sent when fetching _Events_ and _Resources_                                                  |
+| `sx`                | Optional | object    |                                                | The sx prop passed down to the wrapping `<div>` element                                                        |
+| `title`             | Optional | object    |                                                | The title to display in the `<AppBar>`                                                                         |
 
 ## `actions`
 
