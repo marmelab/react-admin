@@ -28,16 +28,16 @@ export const WithListContext = <RecordType extends RaRecord>({
     const context = useListContext<RecordType>();
     const { data, total, isPending, error } = context;
 
-    if (isPending === true) {
-        return loading ? loading : null;
+    if (isPending === true && loading) {
+        return loading;
     }
 
-    if (error) {
-        return errorElement ? errorElement : null;
+    if (error && errorElement) {
+        return errorElement;
     }
 
-    if (data == null || data.length === 0 || total === 0) {
-        return empty ? empty : null;
+    if ((data == null || data.length === 0 || total === 0) && empty) {
+        return empty;
     }
 
     return render(context) || null;
