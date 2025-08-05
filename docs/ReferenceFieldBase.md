@@ -223,7 +223,7 @@ When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced reco
 For instance, with this code:
 
 ```jsx
-import { ListBase, WithListContext, ReferenceFieldBase, RecordContextProvider } from 'react-admin';
+import { ListBase, ReferenceFieldBase, RecordContextProvider } from 'react-admin';
 
 export const PostList = () => (
     <ListBase
