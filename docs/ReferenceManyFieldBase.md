@@ -135,14 +135,15 @@ export const AuthorShow = () => (
     <ShowBase>
         <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
             <WithListContext
-                render={({ isPending, data }) => (
+                loading={<p>Loading...</p>}
+                render={({ data }) => (
                     <ul>
-                        {!isPending &&
-                            data.map(book => (
-                                <li key={book.id}>
-                                    <i>{book.title}</i>, published on {book.published_at}
-                                </li>
-                            ))}
+                        {data.map(book => (
+                            <li key={book.id}>
+                                <i>{book.title}</i>, published on
+                                {book.published_at}
+                            </li>
+                        ))}
                     </ul>
                 )}
             />
@@ -360,12 +361,12 @@ In the example below, both lists use the same reference ('books'), but their sel
         }}
     >
         <WithListContext
-            render={({ isPending, data }) => (
+            loading={<p>Loading...</p>}
+            render={({ data }) => (
                 <>
-                    {!isPending &&
-                        data.map(book => (
-                            <p key={book.id}>{book.title}</p>
-                        ))}
+                    {data.map(book => (
+                        <p key={book.id}>{book.title}</p>
+                    ))}
                 </>
             )}
         />
