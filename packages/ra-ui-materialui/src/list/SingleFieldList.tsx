@@ -94,7 +94,7 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
                 render={({ isPending, data }) =>
                     !isPending && (
                         <>
-                            {data?.map(record => {
+                            {data?.map((record, index) => {
                                 const resourceLinkPath = !linkType
                                     ? false
                                     : createPath({
@@ -107,7 +107,7 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
                                     return (
                                         <RecordContextProvider
                                             value={record}
-                                            key={record.id}
+                                            key={record.id || index}
                                         >
                                             <Link
                                                 className={
@@ -129,7 +129,7 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
                                 return (
                                     <RecordContextProvider
                                         value={record}
-                                        key={record.id}
+                                        key={record.id || index}
                                     >
                                         {children || <DefaultChildComponent />}
                                     </RecordContextProvider>
