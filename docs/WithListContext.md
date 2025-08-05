@@ -148,7 +148,9 @@ As a reminder, the [`ListContext`](./useListContext.md) is an object with the fo
 
 ## `empty`
 
-Use `empty` to display a dedicated component when the related record is empty.
+Use `empty` to display a message when the list is empty.
+
+If `empty` is not provided, the render function will be called with empty data.
 
 ```jsx
 <WithListContext
@@ -169,7 +171,9 @@ Use `empty` to display a dedicated component when the related record is empty.
 
 ## `error`
 
-Use `error` to display a dedicated component when an error is thrown.
+Use `error` to display a message when an error is thrown.
+
+If `error` is not provided, the render function will be called with the error.
 
 ```jsx
 <WithListContext
@@ -190,7 +194,9 @@ Use `error` to display a dedicated component when an error is thrown.
 
 ## `loading`
 
-Use `loading` to display a dedicated component while checking for users' permissions.
+Use `loading` to display a loader while data is loading.
+
+If `loading` is not provided, the render function will be called with `isPending` as true and no data.
 
 ```jsx
 <WithListContext
