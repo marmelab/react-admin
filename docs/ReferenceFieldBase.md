@@ -223,15 +223,27 @@ When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced reco
 For instance, with this code:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceFieldBase } from 'react-admin';
+import { ListBase, WithListContext, ReferenceFieldBase, RecordContextProvider } from 'react-admin';
 
 export const PostList = () => (
     <ListBase>
-        <ListIterator>
-            <ReferenceFieldBase source="user_id" reference="users">
-                <AuthorView />
-            </ReferenceFieldBase>
-        </ListIterator>
+        <WithListContext
+            render={({ data, isPending }) => (
+                <>
+                    {!isPending &&
+                        data.map(author => (
+                            <RecordContextProvider
+                                value={author}
+                                key={author.id}
+                            >
+                                <ReferenceFieldBase source="user_id" reference="users">
+                                    <AuthorView />
+                                </ReferenceFieldBase>
+                            </RecordContextProvider>
+                        ))}
+                </>
+            )}
+        />
     </ListBase>
 );
 ```
@@ -270,14 +282,19 @@ For example, the following code prefetches the authors referenced by the posts:
 ```jsx
 const PostList = () => (
     <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <ListIterator
-            render={({ title, author_id }) => (
-                <div>
-                    <h3>{title}</h3>
-                    <ReferenceFieldBase source="author_id" reference="authors">
-                        <AuthorView />
-                    </ReferenceFieldBase>
-                </div>
+        <WithListContext
+            render={({ data, isPending }) => (
+                <>
+                    {!isPending &&
+                        data.map({ title, author_id }) => (
+                            <div>
+                                <h3>{title}</h3>
+                                <ReferenceFieldBase source="author_id" reference="authors">
+                                    <AuthorView />
+                                </ReferenceFieldBase>
+                            </div>
+                        )}
+                </>
             )}
         />
     </ListBase>

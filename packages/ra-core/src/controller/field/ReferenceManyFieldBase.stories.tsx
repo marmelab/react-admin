@@ -160,7 +160,7 @@ export const InAList = ({ dataProvider = dataProviderWithAuthorList }) => (
                                         ))}
                                 </>
                             )}
-                        ></WithListContext>
+                        />
                     </ListBase>
                 }
             />
