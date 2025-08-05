@@ -72,28 +72,26 @@ const BookList = ({
 You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import { ListBase, WithListContext, ReferenceManyFieldBase } from 'react-admin';
+import { ListBase, ReferenceManyFieldBase } from 'react-admin';
 
 export const PostList = () => (
-    <ListBase>
-        <WithListContext
-            render={({ data, isPending }) => (
-                <>
-                    {!isPending &&
-                        data.map(record => (
-                            <RecordContextProvider
-                                value={record}
-                                key={record.id}
-                            >
-                                <ReferenceManyFieldBase reference="comments" target="post_id">
-                                    <CustomAuthorView source="name"/>
-                                </ReferenceManyFieldBase>
-                            </RecordContextProvider>
-                        ))}
-                </>
-            )}
-        />
-    </ListBase>
+    <ListBase
+        render={({ data, isPending }) => (
+            <>
+                {!isPending &&
+                    data.map(record => (
+                        <RecordContextProvider
+                            value={record}
+                            key={record.id}
+                        >
+                            <ReferenceManyFieldBase reference="comments" target="post_id">
+                                <CustomAuthorView source="name"/>
+                            </ReferenceManyFieldBase>
+                        </RecordContextProvider>
+                    ))}
+            </>
+        )}
+    />
 );
 ```
 
