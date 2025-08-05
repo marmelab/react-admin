@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { RaRecord } from '../../types';
 import { ListControllerResult } from './useListController';
 import { useListContext } from './useListContext';
@@ -20,15 +20,37 @@ import { useListContext } from './useListContext';
  * );
  */
 export const WithListContext = <RecordType extends RaRecord>({
+    empty,
+    loading,
+    error: errorElement,
     render,
-}: WithListContextProps<RecordType>) =>
-    render(useListContext<RecordType>()) || null;
+}: WithListContextProps<RecordType>) => {
+    const context = useListContext<RecordType>();
+    const { data, total, isPending, error } = context;
+
+    if (isPending === true) {
+        return loading ? loading : null;
+    }
+
+    if (error) {
+        return errorElement ? errorElement : null;
+    }
+
+    if (data == null || data.length === 0 || total === 0) {
+        return empty ? empty : null;
+    }
+
+    return render(context) || null;
+};
 
 export interface WithListContextProps<RecordType extends RaRecord> {
     render: (
         context: ListControllerResult<RecordType>
     ) => ReactElement | false | null;
     label?: string;
+    empty?: React.ReactElement;
+    loading?: React.ReactElement;
+    error?: React.ReactElement;
 }
 
 /**
