@@ -101,8 +101,6 @@ export const SimpleList = <RecordType extends RaRecord = any>(
     const { data, isPending, total } =
         useListContextWithProps<RecordType>(props);
 
-    console.log('SimpleList');
-
     if (isPending === true) {
         return (
             <SimpleListLoading
