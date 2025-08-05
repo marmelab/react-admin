@@ -84,6 +84,13 @@ Whether you use `<WithListContext>` or `useListContext` is a matter of coding st
 
 `<WithListContext>` accepts a single `render` prop, which should be a function.
 
+| Prop       | Required | Type           | Default | Description                                             |
+|------------|----------|----------------|---------|---------------------------------------------------------|
+| `empty`    | Optional | `ReactElement` |         | The component to display when the data is empty.       |
+| `error`    | Optional | `ReactElement` |         | The component to display in case of error.              |
+| `loading`  | Optional | `ReactElement` |         | The component to display while checking authorizations. |
+| `render`   | Required | `function`     |         | The function to render the data                         |
+
 ## `render`
 
 A function which will be called with the current [`ListContext`](./useListContext.md) as argument. It should return a React element.
@@ -137,6 +144,74 @@ As a reminder, the [`ListContext`](./useListContext.md) is an object with the fo
     resource, // the resource name, deduced from the location. e.g. 'posts'
     refetch, // callback for fetching the list data again
 }) => ( ... )}>
+```
+
+## `empty`
+
+Use `empty` to display a message when the list is empty.
+
+If `empty` is not provided, the render function will be called with empty data.
+
+```jsx
+<WithListContext
+  empty={<p>no books</p>}
+  render={({ data }) => (
+      <ul>
+          {data.map(book => (
+              <li key={book.id}>
+                  <i>{book.title}</i>, published on
+                  {book.published_at}
+              </li>
+          ))}
+      </ul>
+  )}
+  loading={<p>Loading...</p>}
+/>
+```
+
+## `error`
+
+Use `error` to display a message when an error is thrown.
+
+If `error` is not provided, the render function will be called with the error.
+
+```jsx
+<WithListContext
+  error={<p>Error while loading books...</p>}
+  render={({ data }) => (
+      <ul>
+          {data.map(book => (
+              <li key={book.id}>
+                  <i>{book.title}</i>, published on
+                  {book.published_at}
+              </li>
+          ))}
+      </ul>
+  )}
+  loading={<p>Loading...</p>}
+/>
+```
+
+## `loading`
+
+Use `loading` to display a loader while data is loading.
+
+If `loading` is not provided, the render function will be called with `isPending` as true and no data.
+
+```jsx
+<WithListContext
+  loading={<p>loading...</p>}
+  render={({ data }) => (
+      <ul>
+          {data.map(book => (
+              <li key={book.id}>
+                  <i>{book.title}</i>, published on
+                  {book.published_at}
+              </li>
+          ))}
+      </ul>
+  )}
+/>
 ```
 
 ## Availability

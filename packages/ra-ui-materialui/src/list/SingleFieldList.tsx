@@ -14,7 +14,8 @@ import {
     type RaRecord,
     RecordRepresentation,
     useCreatePath,
-    ListIterator,
+    WithListContext,
+    RecordContextProvider,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout/LinearProgress';
@@ -89,35 +90,54 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
             className={className}
             {...sanitizeListRestProps(rest)}
         >
-            <ListIterator<RecordType>
-                data={data}
-                total={total}
-                isPending={isPending}
-                render={record => {
-                    const resourceLinkPath = !linkType
-                        ? false
-                        : createPath({
-                              resource,
-                              type: linkType,
-                              id: record.id,
-                          });
+            <WithListContext<RecordType>
+                render={({ isPending, data }) =>
+                    !isPending && (
+                        <>
+                            {data?.map((record, index) => {
+                                const resourceLinkPath = !linkType
+                                    ? false
+                                    : createPath({
+                                          resource,
+                                          type: linkType,
+                                          id: record.id,
+                                      });
 
-                    if (resourceLinkPath) {
-                        return (
-                            <Link
-                                className={SingleFieldListClasses.link}
-                                to={resourceLinkPath}
-                                onClick={stopPropagation}
-                            >
-                                {children || (
-                                    <DefaultChildComponent clickable />
-                                )}
-                            </Link>
-                        );
-                    }
+                                if (resourceLinkPath) {
+                                    return (
+                                        <RecordContextProvider
+                                            value={record}
+                                            key={record.id || index}
+                                        >
+                                            <Link
+                                                className={
+                                                    SingleFieldListClasses.link
+                                                }
+                                                to={resourceLinkPath}
+                                                onClick={stopPropagation}
+                                            >
+                                                {children || (
+                                                    <DefaultChildComponent
+                                                        clickable
+                                                    />
+                                                )}
+                                            </Link>
+                                        </RecordContextProvider>
+                                    );
+                                }
 
-                    return children || <DefaultChildComponent />;
-                }}
+                                return (
+                                    <RecordContextProvider
+                                        value={record}
+                                        key={record.id || index}
+                                    >
+                                        {children || <DefaultChildComponent />}
+                                    </RecordContextProvider>
+                                );
+                            })}
+                        </>
+                    )
+                }
             />
         </Root>
     );
