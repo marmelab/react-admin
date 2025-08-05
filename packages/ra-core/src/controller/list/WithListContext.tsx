@@ -30,3 +30,8 @@ export interface WithListContextProps<RecordType extends RaRecord> {
     ) => ReactElement | false | null;
     label?: string;
 }
+
+/**
+ * @deprecated use WithListContext instead
+ */
+export const ListIterator = WithListContext;
