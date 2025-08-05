@@ -114,7 +114,10 @@ const fruitsData = fruitscsv.split('\n').map((line, id) => {
     };
 });
 
-const dataProvider = fakerestDataProvider({ fruits: fruitsData }, true);
+const dataProvider = fakerestDataProvider(
+    { fruits: fruitsData },
+    process.env.NODE_ENV !== 'test'
+);
 
 type Fruit = {
     id: number;
@@ -223,13 +226,16 @@ export const Chart = () => (
     </CoreAdminContext>
 );
 
-const emptyDataProvider = fakerestDataProvider({ fruits: [] }, true);
+const emptyDataProvider = fakerestDataProvider(
+    { fruits: [] },
+    process.env.NODE_ENV !== 'test'
+);
 
 export const Empty = () => (
     <CoreAdminContext dataProvider={emptyDataProvider}>
         <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
             <WithListContext<Fruit>
-                empty={<div>No fruits available</div>}
+                empty={<div>No fruits found</div>}
                 render={({ isPending, data, total }) =>
                     isPending ? (
                         <>Loading...</>
@@ -317,7 +323,7 @@ export const Error = () => (
     <CoreAdminContext dataProvider={erroredDataProvider}>
         <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
             <WithListContext<Fruit>
-                error={<p>Error</p>}
+                error={<p>Error loading data</p>}
                 render={({ isPending, data, total }) =>
                     isPending ? (
                         <>Loading...</>
