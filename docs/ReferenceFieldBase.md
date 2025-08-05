@@ -286,14 +286,20 @@ const PostList = () => (
             render={({ data, isPending }) => (
                 <>
                     {!isPending &&
-                        data.map({ title, author_id }) => (
-                            <div>
-                                <h3>{title}</h3>
-                                <ReferenceFieldBase source="author_id" reference="authors">
-                                    <AuthorView />
-                                </ReferenceFieldBase>
-                            </div>
-                        )}
+                        data.map(author => (
+                            <RecordContextProvider
+                                value={author}
+                                key={author.id}
+                            >
+                                <div>
+                                    <h3>{author.title}</h3>
+                                    <ReferenceFieldBase source="author_id" reference="authors">
+                                        <AuthorView />
+                                    </ReferenceFieldBase>
+                                </div>
+                            </RecordContextProvider>
+                        ))
+                    }
                 </>
             )}
         />
