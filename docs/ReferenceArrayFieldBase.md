@@ -45,7 +45,7 @@ A typical `post` record therefore looks like this:
 In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a list of chips, as follows:
 
 ```jsx
-import { ListBase, WithListContext, ReferenceArrayFieldBase, RecordContextProvider } from 'react-admin';
+import { ListBase, ReferenceArrayFieldBase, RecordContextProvider } from 'react-admin';
 
 export const PostList = () => (
     <ListBase
