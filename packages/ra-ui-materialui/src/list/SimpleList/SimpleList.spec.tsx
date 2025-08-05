@@ -262,7 +262,8 @@ describe('<SimpleList />', () => {
 
     it('should be customized by a theme', async () => {
         render(<Themed />);
-        expect(screen.queryByTestId('themed-list').classList).toContain(
+        await screen.findByText('War and Peace');
+        expect(screen.getByTestId('themed-list').classList).toContain(
             'custom-class'
         );
     });
