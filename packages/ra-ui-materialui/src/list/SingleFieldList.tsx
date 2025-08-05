@@ -93,7 +93,7 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
             <WithListContext<RecordType>
                 render={({ isPending, data }) =>
                     !isPending && (
-                        <Stack direction="row" spacing={1}>
+                        <>
                             {data?.map(record => {
                                 const resourceLinkPath = !linkType
                                     ? false
@@ -135,7 +135,7 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
                                     </RecordContextProvider>
                                 );
                             })}
-                        </Stack>
+                        </>
                     )
                 }
             />
