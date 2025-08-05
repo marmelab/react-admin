@@ -6,7 +6,6 @@ export * from './ListContext';
 export * from './ListContextProvider';
 export * from './ListController';
 export * from './ListFilterContext';
-export * from './ListIterator';
 export * from './ListPaginationContext';
 export * from './ListSortContext';
 export * from './queryReducer';
