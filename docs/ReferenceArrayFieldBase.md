@@ -48,25 +48,23 @@ In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a
 import { ListBase, WithListContext, ReferenceArrayFieldBase, RecordContextProvider } from 'react-admin';
 
 export const PostList = () => (
-    <ListBase>
-        <WithListContext
-            render={({ data, isPending }) => (
-                <>
-                    {!isPending &&
-                        data.map(record => (
-                            <RecordContextProvider
-                                value={record}
-                                key={record.id}
-                            >
-                                <ReferenceArrayFieldBase reference="tags" source="tag_ids">
-                                    <TagList />
-                                </ReferenceArrayFieldBase>
-                            </RecordContextProvider>
-                        ))}
-                </>
-            )}
-        />
-    </ListBase>
+    <ListBase
+        render={({ data, isPending }) => (
+            <>
+                {!isPending &&
+                    data.map(record => (
+                        <RecordContextProvider
+                            value={record}
+                            key={record.id}
+                        >
+                            <ReferenceArrayFieldBase reference="tags" source="tag_ids">
+                                <TagList />
+                            </ReferenceArrayFieldBase>
+                        </RecordContextProvider>
+                    ))}
+            </>
+        )}
+    />
 );
 
 const TagList = (props: { children: React.ReactNode }) => {
