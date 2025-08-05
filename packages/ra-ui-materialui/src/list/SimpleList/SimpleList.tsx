@@ -21,7 +21,6 @@ import {
     useRecordContext,
     useResourceContext,
     useTranslate,
-    WithListContext,
 } from 'ra-core';
 import * as React from 'react';
 import { isValidElement, type ReactElement } from 'react';
@@ -123,41 +122,30 @@ export const SimpleList = <RecordType extends RaRecord = any>(
 
     return (
         <Root className={className} {...sanitizeListRestProps(rest)}>
-            <WithListContext<RecordType>
-                render={({ isPending, data }) =>
-                    !isPending && (
-                        <>
-                            {data?.map((record, rowIndex) => (
-                                <RecordContextProvider
-                                    value={record}
-                                    key={record.id}
-                                >
-                                    <SimpleListItem
-                                        key={record.id}
-                                        rowIndex={rowIndex}
-                                        linkType={linkType}
-                                        rowClick={rowClick}
-                                        rowSx={rowSx}
-                                        rowStyle={rowStyle}
-                                        resource={resource}
-                                    >
-                                        <SimpleListItemContent
-                                            leftAvatar={leftAvatar}
-                                            leftIcon={leftIcon}
-                                            primaryText={primaryText}
-                                            rightAvatar={rightAvatar}
-                                            rightIcon={rightIcon}
-                                            secondaryText={secondaryText}
-                                            tertiaryText={tertiaryText}
-                                            rowIndex={rowIndex}
-                                        />
-                                    </SimpleListItem>
-                                </RecordContextProvider>
-                            ))}
-                        </>
-                    )
-                }
-            />
+            {data?.map((record, rowIndex) => (
+                <RecordContextProvider value={record} key={record.id}>
+                    <SimpleListItem
+                        key={record.id}
+                        rowIndex={rowIndex}
+                        linkType={linkType}
+                        rowClick={rowClick}
+                        rowSx={rowSx}
+                        rowStyle={rowStyle}
+                        resource={resource}
+                    >
+                        <SimpleListItemContent
+                            leftAvatar={leftAvatar}
+                            leftIcon={leftIcon}
+                            primaryText={primaryText}
+                            rightAvatar={rightAvatar}
+                            rightIcon={rightIcon}
+                            secondaryText={secondaryText}
+                            tertiaryText={tertiaryText}
+                            rowIndex={rowIndex}
+                        />
+                    </SimpleListItem>
+                </RecordContextProvider>
+            ))}
         </Root>
     );
 };

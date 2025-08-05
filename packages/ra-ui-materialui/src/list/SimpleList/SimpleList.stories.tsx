@@ -33,7 +33,7 @@ import { defaultLightTheme } from '../../theme';
 
 export default { title: 'ra-ui-materialui/list/SimpleList' };
 
-const myDataProvider = fakeRestDataProvider({
+const data = {
     books: [
         {
             id: 1,
@@ -114,7 +114,9 @@ const myDataProvider = fakeRestDataProvider({
             year: 1956,
         },
     ],
-});
+};
+
+const myDataProvider = fakeRestDataProvider(data);
 
 export const Basic = () => (
     <TestMemoryRouter>
@@ -383,23 +385,24 @@ export const FullAppInError = () => (
 
 export const Standalone = () => (
     <TestMemoryRouter>
-        <AdminContext dataProvider={myDataProvider}>
-            <ListBase resource="books" perPage={15}>
+        <AdminContext>
+            <ResourceContextProvider value="books">
                 <SimpleList
+                    data={data.books}
                     primaryText={record => record.title}
                     secondaryText={record => record.author}
                     tertiaryText={record => record.year}
                     linkType={false}
                 />
-            </ListBase>
+            </ResourceContextProvider>
         </AdminContext>
     </TestMemoryRouter>
 );
 
 export const StandaloneEmpty = () => (
     <TestMemoryRouter>
-        <AdminContext dataProvider={myDataProvider}>
-            <ListBase resource="books" perPage={15}>
+        <AdminContext>
+            <ResourceContextProvider value="books">
                 <SimpleList<any>
                     data={[]}
                     primaryText={record => record.title}
@@ -407,7 +410,7 @@ export const StandaloneEmpty = () => (
                     tertiaryText={record => record.year}
                     linkType={false}
                 />
-            </ListBase>
+            </ResourceContextProvider>
         </AdminContext>
     </TestMemoryRouter>
 );
