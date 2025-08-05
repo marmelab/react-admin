@@ -80,10 +80,10 @@ export const PostList = () => (
             render={({ data, isPending }) => (
                 <>
                     {!isPending &&
-                        data.map(author => (
+                        data.map(record => (
                             <RecordContextProvider
-                                value={author}
-                                key={author.id}
+                                value={record}
+                                key={record.id}
                             >
                                 <ReferenceManyFieldBase reference="comments" target="post_id">
                                     <CustomAuthorView source="name"/>
