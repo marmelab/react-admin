@@ -226,25 +226,23 @@ For instance, with this code:
 import { ListBase, WithListContext, ReferenceFieldBase, RecordContextProvider } from 'react-admin';
 
 export const PostList = () => (
-    <ListBase>
-        <WithListContext
-            render={({ data, isPending }) => (
-                <>
-                    {!isPending &&
-                        data.map(author => (
-                            <RecordContextProvider
-                                value={author}
-                                key={author.id}
-                            >
-                                <ReferenceFieldBase source="user_id" reference="users">
-                                    <AuthorView />
-                                </ReferenceFieldBase>
-                            </RecordContextProvider>
-                        ))}
-                </>
-            )}
-        />
-    </ListBase>
+    <ListBase
+        render={({ data, isPending }) => (
+            <>
+                {!isPending &&
+                    data.map(author => (
+                        <RecordContextProvider
+                            value={author}
+                            key={author.id}
+                        >
+                            <ReferenceFieldBase source="user_id" reference="users">
+                                <AuthorView />
+                            </ReferenceFieldBase>
+                        </RecordContextProvider>
+                    ))}
+            </>
+        )}
+    />
 );
 ```
 
@@ -281,29 +279,28 @@ For example, the following code prefetches the authors referenced by the posts:
 {% raw %}
 ```jsx
 const PostList = () => (
-    <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <WithListContext
-            render={({ data, isPending }) => (
-                <>
-                    {!isPending &&
-                        data.map(author => (
-                            <RecordContextProvider
-                                value={author}
-                                key={author.id}
-                            >
-                                <div>
-                                    <h3>{author.title}</h3>
-                                    <ReferenceFieldBase source="author_id" reference="authors">
-                                        <AuthorView />
-                                    </ReferenceFieldBase>
-                                </div>
-                            </RecordContextProvider>
-                        ))
-                    }
-                </>
-            )}
-        />
-    </ListBase>
+    <ListBase 
+        queryOptions={{ meta: { prefetch: ['author'] } }}
+        render={({ data, isPending }) => (
+            <>
+                {!isPending &&
+                    data.map(author => (
+                        <RecordContextProvider
+                            value={author}
+                            key={author.id}
+                        >
+                            <div>
+                                <h3>{author.title}</h3>
+                                <ReferenceFieldBase source="author_id" reference="authors">
+                                    <AuthorView />
+                                </ReferenceFieldBase>
+                            </div>
+                        </RecordContextProvider>
+                    ))
+                }
+            </>
+        )}
+    />
 );
 ```
 {% endraw %}
