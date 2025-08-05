@@ -72,15 +72,27 @@ const BookList = ({
 You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceManyFieldBase } from 'react-admin';
+import { ListBase, WithListContext, ReferenceManyFieldBase } from 'react-admin';
 
 export const PostList = () => (
     <ListBase>
-        <ListIterator>
-            <ReferenceManyFieldBase reference="comments" target="post_id">
-                <CustomAuthorView source="name"/>
-            </ReferenceManyFieldBase>
-        </ListIterator>
+        <WithListContext
+            render={({ data, isPending }) => (
+                <>
+                    {!isPending &&
+                        data.map(author => (
+                            <RecordContextProvider
+                                value={author}
+                                key={author.id}
+                            >
+                                <ReferenceManyFieldBase reference="comments" target="post_id">
+                                    <CustomAuthorView source="name"/>
+                                </ReferenceManyFieldBase>
+                            </RecordContextProvider>
+                        ))}
+                </>
+            )}
+        />
     </ListBase>
 );
 ```
@@ -116,21 +128,26 @@ export const PostList = () => (
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
 - [`<Calendar>`](./Calendar.md)
 
-For instance, use a `<ListIterator>` to render the related records:
+For instance, use a `<WithListContext>` to render the related records:
 
 ```jsx
-import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'react-admin';
+import { ShowBase, ReferenceManyFieldBase, WithListContext } from 'react-admin';
 
 export const AuthorShow = () => (
     <ShowBase>
         <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
-            <ul>
-                <ListIterator render={(book) => (
-                    <li key={book.id}>
-                        <i>{book.title}</i>, published on{' '}{book.published_at}
-                    </li>
-                )}/>
-            </ul>
+            <WithListContext
+                render={({ isPending, data }) => (
+                    <ul>
+                        {!isPending &&
+                            data.map(book => (
+                                <li key={book.id}>
+                                    <i>{book.title}</i>, published on {book.published_at}
+                                </li>
+                            ))}
+                    </ul>
+                )}
+            />
         </ReferenceManyFieldBase>
     </ShowBase>
 );
@@ -344,9 +361,16 @@ In the example below, both lists use the same reference ('books'), but their sel
             meta: { foo: 'bar' },
         }}
     >
-        <ListIterator render={(book) => (
-            <p>{book.title}</p>
-        )} />
+        <WithListContext
+            render={({ isPending, data }) => (
+                <>
+                    {!isPending &&
+                        data.map(book => (
+                            <p key={book.id}>{book.title}</p>
+                        ))}
+                </>
+            )}
+        />
     </ReferenceManyFieldBase>
     <ReferenceManyFieldBase
         reference="books"
