@@ -89,6 +89,7 @@ export const useEditController = <
         );
     }
     const id = propsId ?? routeId;
+
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
         meta: mutationMeta,
@@ -96,6 +97,17 @@ export const useEditController = <
         onError,
         ...otherMutationOptions
     } = mutationOptions;
+
+    if (
+        (queryMeta || mutationMeta) &&
+        JSON.stringify(queryMeta) !== JSON.stringify(mutationMeta) &&
+        redirectTo === false
+    ) {
+        console.warn(
+            'When not redirecting after editing, query meta and mutation meta should be the same, or you will have data update issues.'
+        );
+    }
+
     const {
         registerMutationMiddleware,
         getMutateWithMiddlewares,
@@ -302,6 +314,7 @@ export interface EditControllerProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
+
     [key: string]: any;
 }
 
@@ -322,6 +335,7 @@ export interface EditControllerLoadingResult<RecordType extends RaRecord = any>
     error: null;
     isPending: true;
 }
+
 export interface EditControllerLoadingErrorResult<
     RecordType extends RaRecord = any,
     TError = Error,
@@ -330,6 +344,7 @@ export interface EditControllerLoadingErrorResult<
     error: TError;
     isPending: false;
 }
+
 export interface EditControllerRefetchErrorResult<
     RecordType extends RaRecord = any,
     TError = Error,
@@ -338,6 +353,7 @@ export interface EditControllerRefetchErrorResult<
     error: TError;
     isPending: false;
 }
+
 export interface EditControllerSuccessResult<RecordType extends RaRecord = any>
     extends EditControllerBaseResult<RecordType> {
     record: RecordType;

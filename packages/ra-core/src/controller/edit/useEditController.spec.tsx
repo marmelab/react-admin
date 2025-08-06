@@ -217,6 +217,35 @@ describe('useEditController', () => {
         });
     });
 
+    it('should emit a warning when providing a different meta in query options and mutation options without redirecting', async () => {
+        const warnFn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+        const getOne = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: { id: 0, title: 'hello' } })
+            );
+        const dataProvider = { getOne } as unknown as DataProvider;
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <EditController
+                    {...defaultProps}
+                    resource="posts"
+                    queryOptions={{ meta: { foo: 'bar' } }}
+                    mutationOptions={{ meta: { foo: 'baz' } }}
+                    redirect={false}
+                >
+                    {() => <div />}
+                </EditController>
+            </CoreAdminContext>
+        );
+
+        expect(warnFn).toHaveBeenCalledWith(
+            'When not redirecting after editing, query meta and mutation meta should be the same, or you will have data update issues.'
+        );
+    });
+
     it('should call the dataProvider.update() function on save', async () => {
         const update = jest
             .fn()
