@@ -600,7 +600,7 @@ const PostEdit = () => (
 );
 ```
 
-Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case.
+Note that the `redirect` prop is ignored if you set an `onSuccess` callback of [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case.
 
 **Warning**: If you set [`queryOptions`](#queryoptions) meta without redirecting, make sure that [`mutationOptions`](#mutationoptions) meta is the same, or you will have data update issues.
 
