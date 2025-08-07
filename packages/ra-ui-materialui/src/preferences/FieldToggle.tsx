@@ -109,6 +109,7 @@ export const FieldToggle = (props: FieldToggleProps) => {
             onDragEnd={onMove ? handleDragEnd : undefined}
             onDragOver={onMove ? handleDragOver : undefined}
             data-index={index}
+            tabIndex={0}
         >
             <label htmlFor={`switch_${index}`}>
                 <Switch
@@ -164,6 +165,12 @@ const Root = styled('li', {
     '&.drag-active': {
         background: 'transparent',
         color: 'transparent',
+        outline: `1px solid ${(theme.vars || theme).palette.action.selected}`,
+        '& .MuiSwitch-root, & svg': {
+            visibility: 'hidden',
+        },
+    },
+    '&.drag-active-keyboard': {
         outline: `1px solid ${(theme.vars || theme).palette.action.selected}`,
         '& .MuiSwitch-root, & svg': {
             visibility: 'hidden',
