@@ -20,6 +20,7 @@ import {
     TranslateChoice,
     FetchChoices,
     CreateLabel,
+    CreateLabelRendered,
 } from './SelectInput.stories';
 
 describe('<SelectInput />', () => {
@@ -729,6 +730,20 @@ describe('<SelectInput />', () => {
                 expect(promptSpy).toHaveBeenCalled();
             });
             promptSpy.mockRestore();
+        });
+
+        it('should support using a custom rendered createLabel', async () => {
+            render(<CreateLabelRendered />);
+            const input = (await screen.findByLabelText(
+                'Category'
+            )) as HTMLInputElement;
+            fireEvent.mouseDown(input);
+            // Expect the custom create label to be displayed
+            const newCategoryLabel =
+                await screen.findByTestId('new-category-label');
+            expect(newCategoryLabel.textContent).toBe('Create a new category');
+            fireEvent.click(newCategoryLabel);
+            await screen.findByText('New category name');
         });
 
         it('should support using a custom createLabel with optionText being a string', async () => {
