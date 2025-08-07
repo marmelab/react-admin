@@ -7,6 +7,7 @@ import {
     DialogTitle,
     IconButton,
     TextField,
+    Typography,
 } from '@mui/material';
 import {
     CreateBase,
@@ -409,6 +410,21 @@ CreateLabel.argTypes = {
         control: { type: 'inline-radio' },
     },
 };
+
+export const CreateLabelRendered = () => (
+    <Wrapper>
+        <SelectInput
+            createLabel={
+                <Typography data-testid="new-category-label">
+                    Create a new <strong>category</strong>
+                </Typography>
+            }
+            create={<CreateCategory />}
+            source="category"
+            choices={categories}
+        />
+    </Wrapper>
+);
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 

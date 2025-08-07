@@ -18,6 +18,7 @@ import {
     InsideReferenceArrayInput,
     InsideReferenceArrayInputDefaultValue,
     CreateLabel,
+    CreateLabelRendered,
 } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
@@ -627,6 +628,19 @@ describe('<SelectArrayInput />', () => {
         fireEvent.click(await screen.findByText('Create a new role'));
         // Expect a dialog to have opened
         await screen.findByLabelText('Role name');
+    });
+
+    it('should support using a custom rendered createLabel', async () => {
+        render(<CreateLabelRendered />);
+        const input = (await screen.findByLabelText(
+            'Roles'
+        )) as HTMLInputElement;
+        fireEvent.mouseDown(input);
+        // Expect the custom create label to be displayed
+        const newRoleLabel = await screen.findByTestId('new-role-label');
+        expect(newRoleLabel.textContent).toBe('Create a new role');
+        fireEvent.click(newRoleLabel);
+        await screen.findByText('Role name');
     });
 
     it('should receive an event object on change', async () => {

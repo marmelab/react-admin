@@ -16,8 +16,8 @@ import set from 'lodash/set';
  *
  * @param options The hook option
  * @param {ReactElement} options.create A react element which will be rendered when users choose to create a new choice. This component must call the `useCreateSuggestionContext` hook which provides `onCancel`, `onCreate` and `filter`. See the examples.
- * @param {String} options.createLabel Optional. The label for the choice item allowing users to create a new choice. Can be a translation key. Defaults to `ra.action.create`.
- * @param {String} options.createItemLabel Optional. The label for the choice item allowing users to create a new choice when they already entered a filter. Can be a translation key. The translation will receive an `item` parameter. Providing this option will turn the create label when there is no filter to be a hint (i.e. a disabled item).
+ * @param {React.ReactNode|string} options.createLabel Optional. The label for the choice item allowing users to create a new choice. Can be a translation key. Defaults to `ra.action.create`.
+ * @param {React.ReactNode|string} options.createItemLabel Optional. The label for the choice item allowing users to create a new choice when they already entered a filter. Can be a translation key. The function and ttranslation will receive an `item` parameter. Providing this option will turn the create label when there is no filter to be a hint (i.e. a disabled item).
  * @param {any} options.createValue Optional. The value for the choice item allowing users to create a new choice. Defaults to `@@ra-create`.
  * @param {any} options.createHintValue Optional. The value for the (disabled) item hinting users on how to create a new choice. Defaults to `@@ra-create-hint`.
  * @param {String} options.filter Optional. The filter users may have already entered. Useful for autocomplete inputs for example.
@@ -64,11 +64,15 @@ export const useSupportCreateSuggestion = (
                 },
                 typeof optionText === 'string' ? optionText : 'name',
                 filter && createItemLabel
-                    ? translate(createItemLabel, {
-                          item: filter,
-                          _: createItemLabel,
-                      })
-                    : translate(createLabel, { _: createLabel })
+                    ? typeof createItemLabel === 'string'
+                        ? translate(createItemLabel, {
+                              item: filter,
+                              _: createItemLabel,
+                          })
+                        : createItemLabel(filter)
+                    : typeof createLabel === 'string'
+                      ? translate(createLabel, { _: createLabel })
+                      : createLabel
             );
         },
         handleChange: async (eventOrValue: MouseEvent | any) => {
@@ -120,8 +124,8 @@ export interface SupportCreateSuggestionOptions {
     create?: ReactElement;
     createValue?: string;
     createHintValue?: string;
-    createLabel?: string;
-    createItemLabel?: string;
+    createLabel?: React.ReactNode;
+    createItemLabel?: string | ((filter: string) => React.ReactNode);
     filter?: string;
     handleChange: (value: any) => void;
     onCreate?: OnCreateHandler;
@@ -149,6 +153,7 @@ interface CreateSuggestionContextValue {
     onCreate: (choice: any) => void;
     onCancel: () => void;
 }
+
 export const useCreateSuggestionContext = () => {
     const context = useContext(CreateSuggestionContext);
     if (!context) {

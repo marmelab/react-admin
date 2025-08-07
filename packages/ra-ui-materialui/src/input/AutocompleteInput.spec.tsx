@@ -29,6 +29,7 @@ import {
     OnCreateSlow,
     CreateLabel,
     CreateItemLabel,
+    CreateItemLabelRendered,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -1989,4 +1990,40 @@ describe('<AutocompleteInput />', () => {
             screen.getByText('Victor Hugo');
         });
     });
+
+    it('should allow to pass rendered createLabel and createItemLabel', async () => {
+        render(<CreateItemLabelRendered />);
+
+        const input = await screen.findByRole('combobox');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: '' } });
+
+        expect((await screen.findByTestId('new-choice-hint')).textContent).toBe(
+            'Start typing to create a new author'
+        );
+
+        fireEvent.change(input, { target: { value: 'Gustave Flaubert' } });
+
+        expect((await screen.findByTestId('new-choice-chip')).textContent).toBe(
+            'Gustave Flaubert'
+        );
+    });
+    it('should not use the rendered createItemLabel as the value of the input', async () => {
+        render(<CreateItemLabelRendered delay={1500} />);
+        const input = (await screen.findByLabelText('Author', undefined, {
+            timeout: 2000,
+        })) as HTMLInputElement;
+        await waitFor(() => {
+            expect(input.value).toBe('Leo Tolstoy');
+        });
+        fireEvent.focus(input);
+        expect(screen.getAllByRole('option')).toHaveLength(4);
+        fireEvent.change(input, { target: { value: 'x' } });
+        await waitFor(() => {
+            expect(screen.getAllByRole('option')).toHaveLength(1);
+        });
+        fireEvent.click(screen.getByText('Create'));
+        expect(input.value).not.toBe('Create x');
+        expect(input.value).toBe('');
+    }, 10000);
 });

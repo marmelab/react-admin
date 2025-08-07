@@ -4,12 +4,14 @@ import { Admin } from 'react-admin';
 import CloseIcon from '@mui/icons-material/Close';
 import {
     Button,
+    Chip,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     IconButton,
     TextField,
+    Typography,
 } from '@mui/material';
 
 import {
@@ -311,6 +313,27 @@ export const CreateItemLabel = () => (
             sx={{ width: 400 }}
             create={<CreateRole />}
             createItemLabel="Add a new role: %{item}"
+        />
+    </Wrapper>
+);
+
+export const CreateItemLabelRendered = () => (
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={choices}
+            sx={{ width: 400 }}
+            create={<CreateRole />}
+            createLabel={
+                <Typography data-testid="new-role-hint">
+                    Start typing to create a new <strong>role</strong>
+                </Typography>
+            }
+            createItemLabel={item => (
+                <Typography component="div">
+                    Create <Chip label={item} data-testid="new-role-chip" />
+                </Typography>
+            )}
         />
     </Wrapper>
 );

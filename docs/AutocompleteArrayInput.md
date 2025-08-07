@@ -57,25 +57,25 @@ The form value for the source must be an array of the selected values, e.g.
 
 ## Props
 
-| Prop                       | Required | Type                  | Default                  | Description                                                                                                                                                                                                                                                                                                      |
-|----------------------------|----------|-----------------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `choices`                  | Required | `Object[]`            | -                        | List of choices                                                   |
-| `create`                   | Optional | `Element`             | `-`                      | A React Element to render when users want to create a new choice                                                                       |
-| `createLabel`              | Optional | `string`              | -                        | The label used as hint to let users know they can create a new choice. Displayed when the filter is empty.                                       |
-| `createItemLabel`          | Optional | `string`              | `ra.action .create_item` | The label for the menu item allowing users to create a new choice. Used when the filter is not empty.                                                    |
-| `debounce`                 | Optional | `number`              | `250`                    | The delay to wait before calling the setFilter function injected when used in a ReferenceArray Input.                                                         |
-| `emptyValue`               | Optional | `any`                 | `''`                     | The value to use for the empty element                                                                                                                  |
-| `filterToQuery`            | Optional | `string` => `Object`  | `q => ({ q })`           | How to transform the searchText into a parameter for the data provider                                                                                  |
-| `inputText`                | Optional | `Function`            | `-`                      | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                 |
-| `matchSuggestion`          | Optional | `Function`            | `-`                      | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
-| `onChange`                 | Optional | `Function`            | `-`                      | A function called with the new value, along with the selected records, when the input value changes |
-| `onCreate`                 | Optional | `Function`            | `-`                      | A function called with the current filter value when users choose to create a new choice.                                                               |
-| `optionText`               | Optional | `string` &#124; `Function` &#124; `Component` | `name` | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`)           |
-| `optionValue`              | Optional | `string`              | `id`                     | Field name of record containing the value to use as input value                                                                                         |
-| `setFilter`                | Optional | `Function`            | `null`                   | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically set up when using `ReferenceArray Input`. |
-| `shouldRender Suggestions` | Optional | `Function`            | `() => true`             | A function that returns a `boolean` to determine whether or not suggestions are rendered.  |
-| `suggestionLimit`          | Optional | `number`              | `null`                   | Limits the numbers of suggestions that are shown in the dropdown list                                                                                   |
-| `translateChoice` | Optional | `boolean`                  | `true`             | Whether the choices should be translated                                                                                               |
+| Prop                       | Required | Type                                            | Default                  | Description                                                                                                                                                                                                                                                                                                      |
+|----------------------------|----------|-------------------------------------------------|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `choices`                  | Required | `Object[]`                                      | -                        | List of choices                                                   |
+| `create`                   | Optional | `Element`                                       | `-`                      | A React Element to render when users want to create a new choice                                                                       |
+| `createLabel`              | Optional | `string` &#124; `ReactNode`                     | -                        | The label used as hint to let users know they can create a new choice. Displayed when the filter is empty.                                       |
+| `createItemLabel`          | Optional | `string` &#124; `(filter: string) => ReactNode` | `ra.action .create_item` | The label for the menu item allowing users to create a new choice. Used when the filter is not empty.                                                    |
+| `debounce`                 | Optional | `number`                                        | `250`                    | The delay to wait before calling the setFilter function injected when used in a ReferenceArray Input.                                                         |
+| `emptyValue`               | Optional | `any`                                           | `''`                     | The value to use for the empty element                                                                                                                  |
+| `filterToQuery`            | Optional | `string` => `Object`                            | `q => ({ q })`           | How to transform the searchText into a parameter for the data provider                                                                                  |
+| `inputText`                | Optional | `Function`                                      | `-`                      | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                 |
+| `matchSuggestion`          | Optional | `Function`                                      | `-`                      | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
+| `onChange`                 | Optional | `Function`                                      | `-`                      | A function called with the new value, along with the selected records, when the input value changes |
+| `onCreate`                 | Optional | `Function`                                      | `-`                      | A function called with the current filter value when users choose to create a new choice.                                                               |
+| `optionText`               | Optional | `string` &#124; `Function` &#124; `Component`   | `name` | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`)           |
+| `optionValue`              | Optional | `string`                                        | `id`                     | Field name of record containing the value to use as input value                                                                                         |
+| `setFilter`                | Optional | `Function`                                      | `null`                   | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically set up when using `ReferenceArray Input`. |
+| `shouldRender Suggestions` | Optional | `Function`                                      | `() => true`             | A function that returns a `boolean` to determine whether or not suggestions are rendered.  |
+| `suggestionLimit`          | Optional | `number`                                        | `null`                   | Limits the numbers of suggestions that are shown in the dropdown list                                                                                   |
+| `translateChoice` | Optional | `boolean`                                       | `true`             | Whether the choices should be translated                                                                                               |
 
 
 `<AutocompleteArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -236,6 +236,21 @@ You can use the `createLabel` prop to render an additional (disabled) menu item 
 />
 ```
 
+You can also use any React node as the create label.
+
+```jsx
+<AutocompleteArrayInput
+    source="roles"
+    choices={choices}
+    create={<CreateRole />}
+    createLabel={
+        <Typography className="custom">
+            Start typing to create a new <strong>role</strong>
+        </Typography>
+    }
+/>
+```
+
 ## `createItemLabel`
 
 If you set the `create` or `onCreate` prop, `<AutocompleteArrayInput>` lets users create new options. When the text entered by the user doesn't match any option, the input renders a "Create XXX" menu item at the bottom of the list.
@@ -250,6 +265,21 @@ Or, if you want to customize it just for this `<AutocompleteArrayInput>`, use th
     choices={choices}
     create={<CreateRole />}
     createItemLabel="Add a new role: %{item}"
+/>
+```
+
+You can also define a function returning any rendered React node.
+
+```jsx
+<AutocompleteArrayInput
+    source="roles"
+    choices={choices}
+    create={<CreateRole />}
+    createItemLabel={item => (
+        <Typography className="custom">
+            Create <Chip label={item} />
+        </Typography>
+    )}
 />
 ```
 
