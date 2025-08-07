@@ -1871,3 +1871,18 @@ npx jscodeshift ./path/to/src/ \
     --parser=tsx \
     --transform=./node_modules/ra-core/codemods/replace-Datagrid-DataTable.ts
 ```
+
+Here is what the codemod will transform for you:
+
+- Replace `<Datagrid>` with `<DataTable>`.
+- Replace `rowStyle` with `rowSx`.
+- Rename the keys in `sx` prop from `"& .RaDatagrid-xxxx"` to `"& .RaDataTable-xxxx"`.
+- Replace simple `<TextField>` with `<DataTable.Col>`.
+- Replace simple `<NumberField>` with `<DataTable.NumberCol>`.
+- Wrap all other fields in `<DataTable.Col>`, keeping `source` and `label` properties in `<DataTable.Col>`.
+- Replace `Datagrid` imports by `DataTable`, and remove unused `TextField` and `NumberField` imports if they are now all replaced.
+
+However, the codemod will **not**:
+
+- Replace `<DatagridConfigurable>`.
+- Replace `<Datagrid>` from `@react-admin/ra-rbac` (and all its children). Refer to [Access Control section](#access-control) to use `<DataTable>` with `<CanAccess>`.
