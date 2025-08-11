@@ -28,7 +28,7 @@ import { Link } from '../Link';
  *     <SingleFieldList />
  * </ReferenceManyField>
 
-* @example Choose the field to be used as text label
+ * @example Choose the field to be used as text label
  * <ReferenceManyField reference="orders" target="customer_id">
  *     <SingleFieldList>
  *         <ChipField source="reference" />

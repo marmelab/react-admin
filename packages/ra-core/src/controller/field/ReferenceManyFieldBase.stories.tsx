@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { onlineManager, QueryClient } from '@tanstack/react-query';
-import { RecordContextProvider } from 'ra-core';
+import { RecordsIterator } from 'ra-core';
 import { CoreAdmin } from '../../core/CoreAdmin';
 import { Resource } from '../../core/Resource';
 import { ShowBase } from '../../controller/show/ShowBase';
 import { TestMemoryRouter } from '../../routing';
 import { ReferenceManyFieldBase } from './ReferenceManyFieldBase';
-import { ListBase, useListContext, WithListContext } from '../list';
+import { ListBase, useListContext } from '../list';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { useIsOffline } from '../../core';
 
@@ -134,34 +134,31 @@ export const InAList = ({ dataProvider = dataProviderWithAuthorList }) => (
             <Resource
                 name="authors"
                 list={
-                    <ListBase>
-                        <WithListContext
-                            render={({ data, isPending }) => (
-                                <>
-                                    {!isPending &&
-                                        data.map(author => (
-                                            <RecordContextProvider
-                                                value={author}
-                                                key={author.id}
-                                            >
-                                                <div>
-                                                    <h3>
-                                                        {author.last_name} Books
-                                                    </h3>
-                                                    <ReferenceManyFieldBase
-                                                        target="author"
-                                                        source="id"
-                                                        reference="books"
-                                                    >
-                                                        <AuthorList source="title" />
-                                                    </ReferenceManyFieldBase>
-                                                </div>
-                                            </RecordContextProvider>
-                                        ))}
-                                </>
-                            )}
-                        />
-                    </ListBase>
+                    <ListBase
+                        render={({ data, isPending }) => (
+                            <>
+                                {!isPending && (
+                                    <RecordsIterator
+                                        data={data}
+                                        render={author => (
+                                            <div>
+                                                <h3>
+                                                    {author.last_name} Books
+                                                </h3>
+                                                <ReferenceManyFieldBase
+                                                    target="author"
+                                                    source="id"
+                                                    reference="books"
+                                                >
+                                                    <AuthorList source="title" />
+                                                </ReferenceManyFieldBase>
+                                            </div>
+                                        )}
+                                    />
+                                )}
+                            </>
+                        )}
+                    />
                 }
             />
         </CoreAdmin>
