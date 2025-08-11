@@ -323,7 +323,7 @@ export const Error = () => (
     <CoreAdminContext dataProvider={erroredDataProvider}>
         <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
             <WithListContext<Fruit>
-                error={<p>Error loading data</p>}
+                errorElement={<p>Error loading data</p>}
                 render={({ isPending, data, total }) =>
                     isPending ? (
                         <>Loading...</>
