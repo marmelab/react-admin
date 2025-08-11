@@ -8,6 +8,7 @@ export * from './ListController';
 export * from './ListFilterContext';
 export * from './ListPaginationContext';
 export * from './ListSortContext';
+export * from './RecordsIterator';
 export * from './queryReducer';
 export * from './useExpanded';
 export * from './useFilterContext';

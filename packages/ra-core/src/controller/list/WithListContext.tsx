@@ -1,10 +1,10 @@
 import React, { ReactElement } from 'react';
 import { RaRecord } from '../../types';
 import { ListControllerResult } from './useListController';
-import { useListContext } from './useListContext';
+import { useListContextWithProps } from './useListContextWithProps';
 
 /**
- * Render prop version of useListContext
+ * Render prop version of useListContextWithProps
  *
  * @example
  * const BookList = () => (
@@ -24,8 +24,9 @@ export const WithListContext = <RecordType extends RaRecord>({
     loading,
     error: errorElement,
     render,
+    ...props
 }: WithListContextProps<RecordType>) => {
-    const context = useListContext<RecordType>();
+    const context = useListContextWithProps<RecordType>(props);
     const { data, total, isPending, error } = context;
 
     if (isPending === true && loading) {
@@ -43,17 +44,16 @@ export const WithListContext = <RecordType extends RaRecord>({
     return render(context) || null;
 };
 
-export interface WithListContextProps<RecordType extends RaRecord> {
+export type WithListContextProps<RecordType extends RaRecord> = Partial<
+    Pick<
+        ListControllerResult<RecordType>,
+        'data' | 'total' | 'isPending' | 'error'
+    >
+> & {
     render: (
-        context: ListControllerResult<RecordType>
+        context: Partial<ListControllerResult<RecordType>>
     ) => ReactElement | false | null;
-    label?: string;
-    empty?: React.ReactElement;
-    loading?: React.ReactElement;
-    error?: React.ReactElement;
-}
-
-/**
- * @deprecated use WithListContext instead
- */
-export const ListIterator = WithListContext;
+    empty?: React.ReactNode;
+    loading?: React.ReactNode;
+    error?: React.ReactNode;
+};
