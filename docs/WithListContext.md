@@ -84,67 +84,12 @@ Whether you use `<WithListContext>` or `useListContext` is a matter of coding st
 
 `<WithListContext>` accepts a single `render` prop, which should be a function.
 
-| Prop       | Required | Type           | Default | Description                                             |
-|------------|----------|----------------|---------|---------------------------------------------------------|
-| `empty`    | Optional | `ReactElement` |         | The component to display when the data is empty.       |
-| `error`    | Optional | `ReactElement` |         | The component to display in case of error.              |
-| `loading`  | Optional | `ReactElement` |         | The component to display while checking authorizations. |
-| `render`   | Required | `function`     |         | The function to render the data                         |
-
-## `render`
-
-A function which will be called with the current [`ListContext`](./useListContext.md) as argument. It should return a React element.
-
-The [`ListContext`](./useListContext.md) contains the fetched array of records under the `data` key. You can use it to render a list of records:
-
-```jsx
-<WithListContext render={({ data }) => (
-    <ul>
-        {data.map(record => (
-            <li key={record.id}>{record.title}</li>
-        ))}
-    </ul>
-)}>
-```
-
-As a reminder, the [`ListContext`](./useListContext.md) is an object with the following properties:
-
-```jsx
-<WithListContext render={({
-    // fetched data
-    data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
-    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23
-    meta, // Additional information about the list, like facets & statistics
-    isPending, // boolean that is true until the data is available for the first time
-    isLoading, // boolean that is true until the data is fetched for the first time
-    isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
-    // pagination
-    page, // the current page. Starts at 1
-    perPage, // the number of results per page. Defaults to 25
-    setPage, // a callback to change the page, e.g. setPage(3)
-    setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
-    hasPreviousPage, // boolean, true if the current page is not the first one
-    hasNextPage, // boolean, true if the current page is not the last one
-    // sorting
-    sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
-    setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
-    // filtering
-    filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
-    displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
-    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
-    showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
-    hideFilter, // a callback to hide one of the filters, e.g. hideFilter('title')
-    // record selection
-    selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
-    onSelect, // callback to change the list of selected rows, e.g. onSelect([456, 789])
-    onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
-    onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
-    // misc
-    defaultTitle, // the translated title based on the resource, e.g. 'Posts'
-    resource, // the resource name, deduced from the location. e.g. 'posts'
-    refetch, // callback for fetching the list data again
-}) => ( ... )}>
-```
+| Prop      | Required | Type           | Default | Description                                             |
+|-----------|----------|----------------|---------|---------------------------------------------------------|
+| `empty`   | Optional | `ReactElement` |         | The component to display when the data is empty.        |
+| `error`   | Optional | `ReactElement` |         | The component to display in case of error.              |
+| `loading` | Optional | `ReactElement` |         | The component to display while checking authorizations. |
+| `render`  | Required | `function`     |         | The function to render the data                         |
 
 ## `empty`
 
@@ -212,6 +157,61 @@ If `loading` is not provided, the render function will be called with `isPending
       </ul>
   )}
 />
+```
+
+## `render`
+
+A function which will be called with the current [`ListContext`](./useListContext.md) as argument. It should return a React element.
+
+The [`ListContext`](./useListContext.md) contains the fetched array of records under the `data` key. You can use it to render a list of records:
+
+```jsx
+<WithListContext render={({ data }) => (
+    <ul>
+        {data.map(record => (
+            <li key={record.id}>{record.title}</li>
+        ))}
+    </ul>
+)}>
+```
+
+As a reminder, the [`ListContext`](./useListContext.md) is an object with the following properties:
+
+```jsx
+<WithListContext render={({
+    // fetched data
+    data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
+    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23
+    meta, // Additional information about the list, like facets & statistics
+    isPending, // boolean that is true until the data is available for the first time
+    isLoading, // boolean that is true until the data is fetched for the first time
+    isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
+    // pagination
+    page, // the current page. Starts at 1
+    perPage, // the number of results per page. Defaults to 25
+    setPage, // a callback to change the page, e.g. setPage(3)
+    setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
+    hasPreviousPage, // boolean, true if the current page is not the first one
+    hasNextPage, // boolean, true if the current page is not the last one
+    // sorting
+    sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+    setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
+    // filtering
+    filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+    displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
+    showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
+    hideFilter, // a callback to hide one of the filters, e.g. hideFilter('title')
+    // record selection
+    selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
+    onSelect, // callback to change the list of selected rows, e.g. onSelect([456, 789])
+    onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
+    onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
+    // misc
+    defaultTitle, // the translated title based on the resource, e.g. 'Posts'
+    resource, // the resource name, deduced from the location. e.g. 'posts'
+    refetch, // callback for fetching the list data again
+}) => ( ... )}>
 ```
 
 ## Availability
