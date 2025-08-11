@@ -14,13 +14,13 @@ import {
 } from '@mui/material/styles';
 import {
     type RaRecord,
-    RecordContextProvider,
+    RecordsIterator,
     sanitizeListRestProps,
     useGetRecordRepresentation,
-    useListContextWithProps,
     useRecordContext,
     useResourceContext,
     useTranslate,
+    WithListContext,
 } from 'ra-core';
 import * as React from 'react';
 import { isValidElement, type ReactElement } from 'react';
@@ -97,56 +97,50 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         resource,
         ...rest
     } = props;
-    const { data, isPending, total } =
-        useListContextWithProps<RecordType>(props);
-
-    if (isPending === true) {
-        return (
-            <SimpleListLoading
-                className={className}
-                hasLeftAvatarOrIcon={!!leftIcon || !!leftAvatar}
-                hasRightAvatarOrIcon={!!rightIcon || !!rightAvatar}
-                hasSecondaryText={!!secondaryText}
-                hasTertiaryText={!!tertiaryText}
-            />
-        );
-    }
-
-    if (data == null || data.length === 0 || total === 0) {
-        if (empty) {
-            return empty;
-        }
-
-        return null;
-    }
 
     return (
-        <Root className={className} {...sanitizeListRestProps(rest)}>
-            {data?.map((record, rowIndex) => (
-                <RecordContextProvider value={record} key={record.id}>
-                    <SimpleListItem
-                        key={record.id}
-                        rowIndex={rowIndex}
-                        linkType={linkType}
-                        rowClick={rowClick}
-                        rowSx={rowSx}
-                        rowStyle={rowStyle}
-                        resource={resource}
-                    >
-                        <SimpleListItemContent
-                            leftAvatar={leftAvatar}
-                            leftIcon={leftIcon}
-                            primaryText={primaryText}
-                            rightAvatar={rightAvatar}
-                            rightIcon={rightIcon}
-                            secondaryText={secondaryText}
-                            tertiaryText={tertiaryText}
-                            rowIndex={rowIndex}
-                        />
-                    </SimpleListItem>
-                </RecordContextProvider>
-            ))}
-        </Root>
+        <WithListContext
+            {...props}
+            loading={
+                <SimpleListLoading
+                    className={className}
+                    hasLeftAvatarOrIcon={!!leftIcon || !!leftAvatar}
+                    hasRightAvatarOrIcon={!!rightIcon || !!rightAvatar}
+                    hasSecondaryText={!!secondaryText}
+                    hasTertiaryText={!!tertiaryText}
+                />
+            }
+            empty={empty ?? <></>}
+            render={({ data }) => (
+                <Root className={className} {...sanitizeListRestProps(rest)}>
+                    <RecordsIterator
+                        data={data}
+                        render={(record, rowIndex) => (
+                            <SimpleListItem
+                                key={record.id}
+                                rowIndex={rowIndex}
+                                linkType={linkType}
+                                rowClick={rowClick}
+                                rowSx={rowSx}
+                                rowStyle={rowStyle}
+                                resource={resource}
+                            >
+                                <SimpleListItemContent
+                                    leftAvatar={leftAvatar}
+                                    leftIcon={leftIcon}
+                                    primaryText={primaryText}
+                                    rightAvatar={rightAvatar}
+                                    rightIcon={rightIcon}
+                                    secondaryText={secondaryText}
+                                    tertiaryText={tertiaryText}
+                                    rowIndex={rowIndex}
+                                />
+                            </SimpleListItem>
+                        )}
+                    />
+                </Root>
+            )}
+        />
     );
 };
 
