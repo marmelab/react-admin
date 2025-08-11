@@ -22,7 +22,7 @@ import { useListContextWithProps } from './useListContextWithProps';
 export const WithListContext = <RecordType extends RaRecord>({
     empty,
     loading,
-    error: errorElement,
+    errorElement,
     render,
     ...props
 }: WithListContextProps<RecordType>) => {
@@ -55,5 +55,5 @@ export type WithListContextProps<RecordType extends RaRecord> = Partial<
     ) => ReactElement | false | null;
     empty?: React.ReactNode;
     loading?: React.ReactNode;
-    error?: React.ReactNode;
+    errorElement?: React.ReactNode;
 };
