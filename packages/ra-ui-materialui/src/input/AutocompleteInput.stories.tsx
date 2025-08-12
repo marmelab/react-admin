@@ -19,6 +19,7 @@ import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import {
     Box,
     Button,
+    Chip,
     Dialog,
     DialogActions,
     DialogContent,
@@ -41,6 +42,7 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { delayedDataProvider } from './common';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -594,6 +596,48 @@ const CreateItemLabelInput = () => {
 export const CreateItemLabel = () => (
     <Wrapper>
         <CreateItemLabelInput />
+    </Wrapper>
+);
+
+const CreateItemLabelRenderedInput = () => {
+    const [choices, setChoices] = useState(choicesForCreationSupport);
+    return (
+        <AutocompleteInput
+            source="author"
+            choices={choices}
+            createLabel={
+                <Typography data-testid="new-choice-hint">
+                    Start typing to create a new <strong>author</strong>
+                </Typography>
+            }
+            createItemLabel={item => (
+                <Typography component="div">
+                    Create <Chip label={item} data-testid="new-choice-chip" />
+                </Typography>
+            )}
+            onCreate={async filter => {
+                const newAuthor = {
+                    id: choices.length + 1,
+                    name: filter,
+                };
+                setChoices(authors => [...authors, newAuthor]);
+                // Wait until next tick to give some time for React to update the state
+                await new Promise(resolve => setTimeout(resolve));
+                return newAuthor;
+            }}
+            TextFieldProps={{
+                placeholder: 'Start typing to create a new item',
+            }}
+            // Disable clearOnBlur because opening the prompt blurs the input
+            // and creates a flicker
+            clearOnBlur={false}
+        />
+    );
+};
+
+export const CreateItemLabelRendered = ({ delay = 0 }: { delay?: number }) => (
+    <Wrapper dataProvider={delayedDataProvider(dataProviderDefault, delay)}>
+        <CreateItemLabelRenderedInput />
     </Wrapper>
 );
 

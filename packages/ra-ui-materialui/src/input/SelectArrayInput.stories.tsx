@@ -9,6 +9,7 @@ import {
     IconButton,
     Stack,
     TextField,
+    Typography,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -367,6 +368,22 @@ export const CreateLabel = () => (
             defaultValue={['u001', 'u003']}
             create={<CreateRole />}
             createLabel="Create a new role"
+        />
+    </Wrapper>
+);
+
+export const CreateLabelRendered = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={choices}
+            defaultValue={['u001', 'u003']}
+            create={<CreateRole />}
+            createLabel={
+                <Typography data-testid="new-role-label">
+                    Create a new <strong>role</strong>
+                </Typography>
+            }
         />
     </Wrapper>
 );

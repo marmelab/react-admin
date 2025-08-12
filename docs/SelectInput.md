@@ -56,20 +56,20 @@ The form value for the source must be the selected value, e.g.
 
 ## Props
 
-| Prop              | Required | Type                       | Default            | Description                                                                                                                            |
-|-------------------|----------|----------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `choices`         | Optional | `Object[]`                 | -                  | List of items to show as options. Required unless inside a ReferenceInput.                                                             |
-| `create`          | Optional | `Element`                  | `-`                | A React Element to render when users want to create a new choice                                                                       |
-| `createLabel`     | Optional | `string`                   | `ra.action.create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
-| `disableValue`    | Optional | `string`                   | 'disabled'         | The custom field name used in `choices` to disable some choices                                                                        |
-| `emptyText`       | Optional | `string`                   | ''                 | The text to display for the empty option                                                                                               |
-| `emptyValue`      | Optional | `any`                      | ''                 | The value to use for the empty option                                                                                                  |
-| `isPending`       | Optional | `boolean`                  | `false`            | If `true`, the component will display a loading indicator.                                                                             |
-| `onCreate`        | Optional | `Function`                 | `-`                | A function called with the current filter value when users choose to create a new choice.                                              |
+| Prop              | Required | Type                                      | Default            | Description                                                                                                                            |
+|-------------------|----------|-------------------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `choices`         | Optional | `Object[]`                                | -                  | List of items to show as options. Required unless inside a ReferenceInput.                                                             |
+| `create`          | Optional | `Element`                                 | `-`                | A React Element to render when users want to create a new choice                                                                       |
+| `createLabel`     | Optional | `string` &#124; `ReactNode`               | `ra.action.create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
+| `disableValue`    | Optional | `string`                                  | 'disabled'         | The custom field name used in `choices` to disable some choices                                                                        |
+| `emptyText`       | Optional | `string`                                  | ''                 | The text to display for the empty option                                                                                               |
+| `emptyValue`      | Optional | `any`                                     | ''                 | The value to use for the empty option                                                                                                  |
+| `isPending`       | Optional | `boolean`                                 | `false`            | If `true`, the component will display a loading indicator.                                                                             |
+| `onCreate`        | Optional | `Function`                                | `-`                | A function called with the current filter value when users choose to create a new choice.                                              |
 | `optionText`      | Optional | `string` &#124; `Function` &#124; `Component` | `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument |
-| `optionValue`     | Optional | `string`                   | `id`               | Field name of record containing the value to use as input value                                                                        |
-| `resettable`      | Optional | `boolean`                  | `false`            | If `true`, display a button to reset the changes in this input value                                                                   |
-| `translateChoice` | Optional | `boolean`                  | `true`             | Whether the choices should be translated                                                                                               |
+| `optionValue`     | Optional | `string`                                  | `id`               | Field name of record containing the value to use as input value                                                                        |
+| `resettable`      | Optional | `boolean`                                 | `false`            | If `true`, display a button to reset the changes in this input value                                                                   |
+| `translateChoice` | Optional | `boolean`                                 | `true`             | Whether the choices should be translated                                                                                               |
 
 `<SelectInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -242,6 +242,21 @@ Or, if you want to customize it just for this `<SelectInput>`, use the `createLa
     choices={categories}
     onCreate={onCreate}
     createLabel="Add a new category"
+/>
+```
+
+You can also use any React node as the create label.
+
+```jsx
+<SelectInput
+    source="category"
+    choices={categories}
+    onCreate={onCreate}
+    createLabel={
+        <Typography className="custom">
+            Add a new <strong>category</strong>
+        </Typography>
+    }
 />
 ```
 
