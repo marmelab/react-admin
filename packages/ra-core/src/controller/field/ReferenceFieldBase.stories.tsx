@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QueryClient } from '@tanstack/react-query';
+import { onlineManager, QueryClient } from '@tanstack/react-query';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { CoreAdmin } from '../../core/CoreAdmin';
 import { Resource } from '../../core/Resource';
@@ -9,6 +9,7 @@ import { ReferenceFieldBase } from './ReferenceFieldBase';
 import { useFieldValue } from '../../util/useFieldValue';
 import { useReferenceFieldContext } from './ReferenceFieldContext';
 import { DataProvider } from '../../types';
+import { useIsOffline } from '../../core/useIsOffline';
 
 export default {
     title: 'ra-core/controller/field/ReferenceFieldBase',
@@ -394,6 +395,77 @@ export const WithRenderProp = ({ dataProvider = dataProviderWithAuthors }) => (
         </CoreAdmin>
     </TestMemoryRouter>
 );
+
+export const Offline = () => {
+    return (
+        <TestMemoryRouter initialEntries={['/books/1/show']}>
+            <CoreAdmin
+                dataProvider={dataProviderWithAuthors}
+                queryClient={
+                    new QueryClient({
+                        defaultOptions: {
+                            queries: {
+                                retry: false,
+                            },
+                        },
+                    })
+                }
+            >
+                <Resource name="authors" />
+                <Resource
+                    name="books"
+                    show={
+                        <ShowBase>
+                            <div>
+                                <RenderChildOnDemand>
+                                    <ReferenceFieldBase
+                                        source="author"
+                                        reference="authors"
+                                        offline={
+                                            <p>
+                                                You are offline, cannot load
+                                                data
+                                            </p>
+                                        }
+                                    >
+                                        <MyReferenceField>
+                                            <TextField source="first_name" />
+                                        </MyReferenceField>
+                                    </ReferenceFieldBase>
+                                </RenderChildOnDemand>
+                            </div>
+                            <SimulateOfflineButton />
+                        </ShowBase>
+                    }
+                />
+            </CoreAdmin>
+        </TestMemoryRouter>
+    );
+};
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};
 
 const MyReferenceField = (props: { children: React.ReactNode }) => {
     const context = useReferenceFieldContext();

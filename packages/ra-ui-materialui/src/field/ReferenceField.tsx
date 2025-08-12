@@ -26,6 +26,7 @@ import { Link } from '../Link';
 import type { FieldProps } from './types';
 import { genericMemo } from './genericMemo';
 import { visuallyHidden } from '@mui/utils';
+import { Offline } from '../Offline';
 
 /**
  * Fetch reference record, and render its representation, or delegate rendering to child component.
@@ -76,7 +77,14 @@ export const ReferenceField = <
         props: inProps,
         name: PREFIX,
     });
-    const { children, render, emptyText, empty, ...rest } = props;
+    const {
+        children,
+        render,
+        emptyText,
+        empty,
+        offline = defaultOffline,
+        ...rest
+    } = props;
     const translate = useTranslate();
 
     return (
@@ -95,6 +103,7 @@ export const ReferenceField = <
                     empty ?? null
                 )
             }
+            offline={offline}
         >
             <PureReferenceFieldView<RecordType, ReferenceRecordType>
                 {...rest}
@@ -105,6 +114,8 @@ export const ReferenceField = <
         </ReferenceFieldBase>
     );
 };
+
+const defaultOffline = <Offline variant="inline" />;
 
 export interface ReferenceFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
@@ -126,6 +137,7 @@ export interface ReferenceFieldProps<
     reference: string;
     translateChoice?: Function | boolean;
     link?: LinkToType<ReferenceRecordType>;
+    offline?: ReactNode;
     sx?: SxProps<Theme>;
 }
 
