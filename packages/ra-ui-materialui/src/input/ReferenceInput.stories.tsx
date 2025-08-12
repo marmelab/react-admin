@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { Admin, DataTable, List } from 'react-admin';
-import { QueryClient } from '@tanstack/react-query';
+import { onlineManager, QueryClient } from '@tanstack/react-query';
 import {
     Resource,
     Form,
     testDataProvider,
     useRedirect,
     TestMemoryRouter,
+    useIsOffline,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -726,3 +727,109 @@ export const InArrayInput = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const Offline = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin
+            dataProvider={fakeRestDataProvider(
+                {
+                    books: [
+                        {
+                            id: 1,
+                            title: 'War and Peace',
+                            author: 1,
+                            summary:
+                                "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                            year: 1869,
+                        },
+                    ],
+                    authors: [
+                        {
+                            id: 1,
+                            first_name: 'Leo',
+                            last_name: 'Tolstoy',
+                            language: 'Russian',
+                        },
+                        {
+                            id: 2,
+                            first_name: 'Victor',
+                            last_name: 'Hugo',
+                            language: 'French',
+                        },
+                        {
+                            id: 3,
+                            first_name: 'William',
+                            last_name: 'Shakespeare',
+                            language: 'English',
+                        },
+                        {
+                            id: 4,
+                            first_name: 'Charles',
+                            last_name: 'Baudelaire',
+                            language: 'French',
+                        },
+                        {
+                            id: 5,
+                            first_name: 'Marcel',
+                            last_name: 'Proust',
+                            language: 'French',
+                        },
+                    ],
+                },
+                process.env.NODE_ENV === 'development'
+            )}
+            i18nProvider={i18nProvider}
+        >
+            <Resource
+                name="authors"
+                recordRepresentation={record =>
+                    `${record.first_name} ${record.last_name}`
+                }
+            />
+            <Resource
+                name="books"
+                edit={
+                    <>
+                        <Edit mutationMode="pessimistic">
+                            <SimpleForm>
+                                <RenderChildOnDemand>
+                                    <ReferenceInput
+                                        reference="authors"
+                                        source="author"
+                                    />
+                                </RenderChildOnDemand>
+                            </SimpleForm>
+                        </Edit>
+                        <p>
+                            <SimulateOfflineButton />
+                        </p>
+                    </>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button type="button" onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};
