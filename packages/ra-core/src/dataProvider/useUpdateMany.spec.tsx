@@ -1,12 +1,23 @@
 import * as React from 'react';
-import { screen, render, waitFor, act } from '@testing-library/react';
+import {
+    screen,
+    render,
+    waitFor,
+    act,
+    fireEvent,
+} from '@testing-library/react';
 import { QueryClient, useMutationState } from '@tanstack/react-query';
 import expect from 'expect';
 
 import { testDataProvider } from './testDataProvider';
 import { CoreAdminContext } from '../core';
 import { useUpdateMany } from './useUpdateMany';
-import { UndefinedValues, WithMiddlewares } from './useUpdateMany.stories';
+import {
+    MutationMode,
+    Params,
+    UndefinedValues,
+    WithMiddlewares,
+} from './useUpdateMany.stories';
 
 describe('useUpdateMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
@@ -57,6 +68,45 @@ describe('useUpdateMany', () => {
                 ids: [1, 2],
                 data: { bar: 'baz' },
             });
+        });
+    });
+
+    it('uses the latest declaration time mutationMode', async () => {
+        // This story uses the pessimistic mode by default
+        render(<MutationMode />);
+        await screen.findByText(
+            '[{"id":1,"title":"foo"},{"id":2,"title":"bar"}]'
+        );
+        fireEvent.click(screen.getByText('Change mutation mode to optimistic'));
+        fireEvent.click(screen.getByText('Update title'));
+        await screen.findByText(
+            '[{"id":1,"title":"world"},{"id":2,"title":"world"}]'
+        ); // and not [{"title":"world"},{"title":"world"}]
+    });
+
+    it('uses the latest declaration time params', async () => {
+        const data = [
+            { id: 1, title: 'foo' },
+            { id: 2, title: 'bar' },
+        ];
+        const dataProvider = {
+            getList: async () => ({ data, total: 2 }),
+            updateMany: jest.fn(() => new Promise(() => {})), // never resolve to see only optimistic update
+        } as any;
+        // This story sends no meta by default
+        render(<Params dataProvider={dataProvider} />);
+        await screen.findByText(
+            '[{"id":1,"title":"foo"},{"id":2,"title":"bar"}]'
+        );
+        fireEvent.click(screen.getByText('Change params'));
+        fireEvent.click(screen.getByText('Update title'));
+        await screen.findByText(
+            '[{"id":1,"title":"world"},{"id":2,"title":"world"}]'
+        ); // and not [{"title":"world"},{"title":"world"}]
+        expect(dataProvider.updateMany).toHaveBeenCalledWith('posts', {
+            ids: [1, 2],
+            data: { title: 'world' },
+            meta: 'test',
         });
     });
 
