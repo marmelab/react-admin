@@ -60,59 +60,187 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
 
     const [columnFilter, setColumnFilter] = React.useState<string>('');
 
-    if (!container) return null;
-
     const childrenArray = Children.toArray(children);
     const paddedColumnRanks = padRanks(columnRanks ?? [], childrenArray.length);
     const shouldDisplaySearchInput = childrenArray.length > 5;
 
-    return createPortal(
-        <MenuList>
-            {shouldDisplaySearchInput ? (
-                <Box component="li" tabIndex={-1}>
-                    <ResettableTextField
-                        hiddenLabel
-                        label=""
-                        value={columnFilter}
-                        onChange={e => {
-                            if (typeof e === 'string') {
-                                setColumnFilter(e);
-                                return;
+    const handleMove = (index1, index2) => {
+        const colRanks = !columnRanks
+            ? padRanks([], Math.max(index1, index2) + 1)
+            : Math.max(index1, index2) > columnRanks.length - 1
+              ? padRanks(columnRanks, Math.max(index1, index2) + 1)
+              : columnRanks;
+        const index1Pos = colRanks.findIndex(
+            // eslint-disable-next-line eqeqeq
+            index => index == index1
+        );
+        const index2Pos = colRanks.findIndex(
+            // eslint-disable-next-line eqeqeq
+            index => index == index2
+        );
+        if (index1Pos === -1 || index2Pos === -1) {
+            return;
+        }
+        let newColumnRanks;
+        if (index1Pos > index2Pos) {
+            newColumnRanks = [
+                ...colRanks.slice(0, index2Pos),
+                colRanks[index1Pos],
+                ...colRanks.slice(index2Pos, index1Pos),
+                ...colRanks.slice(index1Pos + 1),
+            ];
+        } else {
+            newColumnRanks = [
+                ...colRanks.slice(0, index1Pos),
+                ...colRanks.slice(index1Pos + 1, index2Pos + 1),
+                colRanks[index1Pos],
+                ...colRanks.slice(index2Pos + 1),
+            ];
+        }
+        setColumnRanks(newColumnRanks);
+        return index2Pos;
+    };
+
+    const list = React.useRef<HTMLUListElement | null>(null);
+    const draggedItem = React.useRef<HTMLLIElement | null>(null);
+    const dropItem = React.useRef<HTMLLIElement | null>(null);
+
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        // Use setTimeout to let MenuList handle the focus management
+        setTimeout(() => {
+            if (document.activeElement?.tagName !== 'LI') {
+                return;
+            }
+
+            if (event.key === ' ') {
+                if (!draggedItem.current) {
+                    // Start dragging the currently focused item
+                    draggedItem.current =
+                        document.activeElement as HTMLLIElement;
+                    draggedItem.current.classList.add('drag-active-keyboard');
+                } else {
+                    if (!dropItem.current) {
+                        return;
+                    }
+                    // Drop the dragged item
+                    draggedItem.current.classList.remove(
+                        'drag-active-keyboard'
+                    );
+                    const itemToFocusIndex = handleMove(
+                        draggedItem.current.dataset.index,
+                        dropItem.current?.dataset.index
+                    );
+                    setTimeout(() => {
+                        // We wait for the DOM to update before focusing
+                        // the item that was moved.
+                        // We use the actual position it was moved to and not the data-index which may not be updated yet
+                        if (itemToFocusIndex && list.current) {
+                            const itemToFocus =
+                                list.current.querySelectorAll('li')[
+                                    itemToFocusIndex
+                                ];
+                            if (itemToFocus) {
+                                (itemToFocus as HTMLLIElement).focus();
                             }
-                            setColumnFilter(e.target.value);
-                        }}
-                        placeholder={translate('ra.action.search_columns', {
-                            _: 'Search columns',
-                        })}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <SearchIcon color="disabled" />
-                                </InputAdornment>
-                            ),
-                        }}
-                        resettable
-                        autoFocus
-                        size="small"
-                        sx={{ mb: 1 }}
-                    />
-                </Box>
+                        }
+                        draggedItem.current = null;
+                    });
+                }
+            }
+            if (!draggedItem.current) {
+                return;
+            }
+            if (event.key === 'ArrowDown') {
+                // Swap the dragged item with the next one
+                const nextItem = draggedItem.current.nextElementSibling;
+                if (nextItem) {
+                    draggedItem.current.parentNode?.insertBefore(
+                        draggedItem.current,
+                        nextItem.nextSibling
+                    );
+                    dropItem.current = nextItem as HTMLLIElement;
+                    draggedItem.current.focus();
+                } else {
+                    // Start of the list, move the dragged item as the first item
+                    draggedItem.current.parentNode?.insertBefore(
+                        draggedItem.current,
+                        draggedItem.current?.parentNode?.firstChild
+                    );
+                    dropItem.current = draggedItem.current?.parentNode
+                        ?.firstChild as HTMLLIElement;
+                    draggedItem.current.focus();
+                }
+            } else if (event.key === 'ArrowUp') {
+                // Swap the dragged item with the previous one
+                const prevItem = draggedItem.current.previousElementSibling;
+                if (prevItem) {
+                    draggedItem.current?.parentNode?.insertBefore(
+                        draggedItem.current,
+                        prevItem
+                    );
+                    dropItem.current = prevItem as HTMLLIElement;
+                    draggedItem.current.focus();
+                } else {
+                    // End of the list, move the dragged item as the last item
+                    draggedItem.current?.parentNode?.appendChild(
+                        draggedItem.current
+                    );
+                    dropItem.current = draggedItem.current?.parentNode
+                        ?.lastChild as HTMLLIElement;
+                    draggedItem.current.focus();
+                }
+            }
+        });
+    };
+
+    if (!container) return null;
+
+    return createPortal(
+        <>
+            {shouldDisplaySearchInput ? (
+                <ResettableTextField
+                    hiddenLabel
+                    label=""
+                    value={columnFilter}
+                    onChange={e => {
+                        if (typeof e === 'string') {
+                            setColumnFilter(e);
+                            return;
+                        }
+                        setColumnFilter(e.target.value);
+                    }}
+                    placeholder={translate('ra.action.search_columns', {
+                        _: 'Search columns',
+                    })}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <SearchIcon color="disabled" />
+                            </InputAdornment>
+                        ),
+                    }}
+                    resettable
+                    autoFocus
+                    size="small"
+                    sx={{ my: 1 }}
+                />
             ) : null}
-            {paddedColumnRanks.map((position, index) => (
-                <DataTableColumnRankContext.Provider
-                    value={position}
-                    key={index}
-                >
-                    <DataTableColumnFilterContext.Provider
-                        value={columnFilter}
+            <MenuList onKeyDown={handleKeyDown} ref={list}>
+                {paddedColumnRanks.map((position, index) => (
+                    <DataTableColumnRankContext.Provider
+                        value={position}
                         key={index}
                     >
-                        {childrenArray[position]}
-                    </DataTableColumnFilterContext.Provider>
-                </DataTableColumnRankContext.Provider>
-            ))}
+                        <DataTableColumnFilterContext.Provider
+                            value={columnFilter}
+                            key={index}
+                        >
+                            {childrenArray[position]}
+                        </DataTableColumnFilterContext.Provider>
+                    </DataTableColumnRankContext.Provider>
+                ))}
+            </MenuList>
             <Box
-                component="li"
                 className="columns-selector-actions"
                 sx={{ textAlign: 'center', mt: 1 }}
             >
@@ -125,7 +253,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
                     Reset
                 </Button>
             </Box>
-        </MenuList>,
+        </>,
         container
     );
 };
