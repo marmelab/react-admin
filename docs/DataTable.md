@@ -1876,6 +1876,7 @@ Here is what the codemod will transform for you:
 
 - Replace `<Datagrid>` with `<DataTable>`.
 - Replace `rowStyle` with `rowSx`.
+- Remove the `optimized` prop (which isn't necessary anymore)
 - Rename the keys in `sx` prop from `"& .RaDatagrid-xxxx"` to `"& .RaDataTable-xxxx"`.
 - Replace simple `<TextField>` with `<DataTable.Col>`.
 - Replace simple `<NumberField>` with `<DataTable.NumberCol>`.
@@ -1884,5 +1885,9 @@ Here is what the codemod will transform for you:
 
 However, the codemod will **not**:
 
-- Replace `<DatagridConfigurable>`.
+- Replace `<DatagridConfigurable>` with `<DataTable>` (column selection is now natively supported by `<DataTable>`).
+- Remove the `sortBy` and `sortable` props on fields (sorting is now managed by `<DataTable.Col source>`)
+- Move the `sortByOrder` prop from the field to `<DataTable.Col>`
+- Replace a `<FunctionField>` child with `<DataTable.Col render>`
 - Replace `<Datagrid>` from `@react-admin/ra-rbac` (and all its children). Refer to [Access Control section](#access-control) to use `<DataTable>` with `<CanAccess>`.
+- Move the column styles from `<Datagrid sx>` to the individual `<DataTable.Col sx>`
