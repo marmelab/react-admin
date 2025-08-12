@@ -176,20 +176,9 @@ You can also use a custom `link` function to get a custom path for the children.
 
 ## `offline`
 
-`<ReferenceField>` can display a custom message when the referenced record is missing because there is no network connectivity, thanks to the `offline` prop.
+When the user is offline, `<ReferenceField>` is smart enough to display the referenced record if it was previously fetched. However, if the referenced record has never been fetched before, `<ReferenceField>` displays an error message explaining that the app has lost network connectivity.
 
-```jsx
-<ReferenceField source="user_id" reference="users" offline="No network, could not fetch data" >
-    ...
-</ReferenceField>
-```
-
-`<ReferenceField>` renders the `offline` element when:
-
-- the referenced record is missing (no record in the `users` table with the right `user_id`), and
-- there is no network connectivity
-
-You can pass either a React element or a string to the `offline` prop:
+You can customize this error message by passing a React element or a string to the `offline` prop:
 
 ```jsx
 <ReferenceField source="user_id" reference="users" offline={<span>No network, could not fetch data</span>} >
