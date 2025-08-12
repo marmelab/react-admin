@@ -64,6 +64,7 @@ const BookShow = () => (
 | `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `offline`      | Optional | `ReactNode`                         | -                                | The text or element to display when there is no network connectivity                   |
 | `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
 
@@ -153,6 +154,29 @@ You can also set the `link` prop to a string, which will be used as the link typ
     link={record => `/custom/${record.id}`}
 >
     <TextField source="genre" />
+</ReferenceOneField>
+```
+
+
+## `offline`
+
+When the user is offline, `<ReferenceOneField>` is smart enough to display the referenced record if it was previously fetched. However, if the referenced record has never been fetched before, `<ReferenceOneField>` displays an error message explaining that the app has lost network connectivity.
+
+You can customize this error message by passing a React element or a string to the `offline` prop:
+
+```jsx
+<ReferenceOneField
+    reference="book_details"
+    target="book_id"
+    offline={<p>No network, could not fetch data</p>}
+>
+    ...
+</ReferenceOneField>
+<ReferenceOneField 
+    reference="book_details"
+    target="book_id"
+    offline="No network, could not fetch data">
+    ...
 </ReferenceOneField>
 ```
 

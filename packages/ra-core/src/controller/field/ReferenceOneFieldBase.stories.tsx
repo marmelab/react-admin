@@ -6,8 +6,10 @@ import {
     ReferenceOneFieldBase,
     ResourceContextProvider,
     TestMemoryRouter,
+    useIsOffline,
     useReferenceFieldContext,
 } from '../..';
+import { onlineManager } from '@tanstack/react-query';
 
 export default { title: 'ra-core/controller/field/ReferenceOneFieldBase' };
 
@@ -98,5 +100,48 @@ export const WithRenderProp = ({
                 }}
             />
         </Wrapper>
+    );
+};
+
+export const Offline = () => {
+    return (
+        <Wrapper>
+            <div>
+                <RenderChildOnDemand>
+                    <ReferenceOneFieldBase
+                        reference="book_details"
+                        target="book_id"
+                        offline={<span>Offline</span>}
+                    >
+                        <BookDetails />
+                    </ReferenceOneFieldBase>
+                </RenderChildOnDemand>
+            </div>
+            <SimulateOfflineButton />
+        </Wrapper>
+    );
+};
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
     );
 };
