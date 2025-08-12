@@ -28,7 +28,10 @@ import {
     CanAccess,
     DisableAuthentication,
 } from './useEditController.security.stories';
-import { EncodedId } from './useEditController.stories';
+import {
+    EncodedId,
+    WarningLogWithDifferentMeta,
+} from './useEditController.stories';
 
 const Confirm = () => {
     const takeMutation = useTakeUndoableMutation();
@@ -49,6 +52,10 @@ describe('useEditController', () => {
         id: 12,
         resource: 'posts',
     };
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
     it('should call the dataProvider.getOne() function on mount', async () => {
         const getOne = jest
@@ -220,26 +227,7 @@ describe('useEditController', () => {
     it('should emit a warning when providing a different meta in query options and mutation options without redirecting', async () => {
         const warnFn = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
-        const getOne = jest
-            .fn()
-            .mockImplementationOnce(() =>
-                Promise.resolve({ data: { id: 0, title: 'hello' } })
-            );
-        const dataProvider = { getOne } as unknown as DataProvider;
-
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <EditController
-                    {...defaultProps}
-                    resource="posts"
-                    queryOptions={{ meta: { foo: 'bar' } }}
-                    mutationOptions={{ meta: { foo: 'baz' } }}
-                    redirect={false}
-                >
-                    {() => <div />}
-                </EditController>
-            </CoreAdminContext>
-        );
+        render(<WarningLogWithDifferentMeta />);
 
         expect(warnFn).toHaveBeenCalledWith(
             'When not redirecting after editing, query meta and mutation meta should be the same, or you will have data update issues.'
@@ -290,6 +278,7 @@ describe('useEditController', () => {
     });
 
     it('should return an undoable save callback by default', async () => {
+        window.confirm = jest.fn().mockReturnValue(true);
         let post = { id: 12, test: 'previous' };
         const update = jest
             .fn()
@@ -322,7 +311,7 @@ describe('useEditController', () => {
         await waitFor(() => {
             screen.getByText('previous');
         });
-        screen.getByLabelText('save').click();
+        fireEvent.click(screen.getByLabelText('save'));
         await waitFor(() => {
             screen.getByText('updated');
         });
@@ -331,7 +320,7 @@ describe('useEditController', () => {
             data: { test: 'updated' },
             previousData: { id: 12, test: 'previous' },
         });
-        screen.getByLabelText('confirm').click();
+        fireEvent.click(screen.getByLabelText('confirm'));
         await waitFor(() => {
             screen.getByText('updated');
         });
@@ -365,8 +354,7 @@ describe('useEditController', () => {
                 </EditController>
             </CoreAdminContext>
         );
-        await new Promise(resolve => setTimeout(resolve, 10));
-        screen.getByText('{"id":12}');
+        await screen.findByText('{"id":12}');
         await act(async () => saveCallback({ foo: 'bar' }));
         await screen.findByText('{"id":12,"foo":"bar"}');
         expect(update).toHaveBeenCalledWith('posts', {
