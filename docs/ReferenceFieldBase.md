@@ -205,16 +205,21 @@ When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced reco
 For instance, with this code:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceFieldBase } from 'react-admin';
+import { ListBase, ReferenceFieldBase, RecordContextProvider } from 'react-admin';
 
 export const PostList = () => (
-    <ListBase>
-        <ListIterator>
-            <ReferenceFieldBase source="user_id" reference="users">
-                <AuthorView />
-            </ReferenceFieldBase>
-        </ListIterator>
-    </ListBase>
+    <ListBase
+        render={({ data, isPending }) => (
+            <>
+                {!isPending &&
+                    <RecordsIterator data={data}>
+                        <ReferenceFieldBase source="user_id" reference="users">
+                            <AuthorView />
+                        </ReferenceFieldBase>
+                    </RecordsIterator>
+            </>
+        )}
+    />
 );
 ```
 
@@ -251,18 +256,23 @@ For example, the following code prefetches the authors referenced by the posts:
 {% raw %}
 ```jsx
 const PostList = () => (
-    <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <ListIterator
-            render={({ title, author_id }) => (
-                <div>
-                    <h3>{title}</h3>
-                    <ReferenceFieldBase source="author_id" reference="authors">
-                        <AuthorView />
-                    </ReferenceFieldBase>
-                </div>
-            )}
-        />
-    </ListBase>
+    <ListBase 
+        queryOptions={{ meta: { prefetch: ['author'] } }}
+        render={({ data, isPending }) => (
+            <>
+                {!isPending &&
+                    <RecordsIterator render={(author) => (
+                        <div>
+                            <h3>{author.title}</h3>
+                            <ReferenceFieldBase source="author_id" reference="authors">
+                                <AuthorView />
+                            </ReferenceFieldBase>
+                        </div>
+                    )} />
+                }
+            </>
+        )}
+    />
 );
 ```
 {% endraw %}

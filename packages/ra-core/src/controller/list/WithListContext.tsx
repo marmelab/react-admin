@@ -1,10 +1,10 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { RaRecord } from '../../types';
 import { ListControllerResult } from './useListController';
-import { useListContext } from './useListContext';
+import { useListContextWithProps } from './useListContextWithProps';
 
 /**
- * Render prop version of useListContext
+ * Render prop version of useListContextWithProps
  *
  * @example
  * const BookList = () => (
@@ -20,13 +20,40 @@ import { useListContext } from './useListContext';
  * );
  */
 export const WithListContext = <RecordType extends RaRecord>({
+    empty,
+    loading,
+    errorElement,
     render,
-}: WithListContextProps<RecordType>) =>
-    render(useListContext<RecordType>()) || null;
+    ...props
+}: WithListContextProps<RecordType>) => {
+    const context = useListContextWithProps<RecordType>(props);
+    const { data, total, isPending, error } = context;
 
-export interface WithListContextProps<RecordType extends RaRecord> {
+    if (isPending === true && loading) {
+        return loading;
+    }
+
+    if (error && errorElement) {
+        return errorElement;
+    }
+
+    if ((data == null || data.length === 0 || total === 0) && empty) {
+        return empty;
+    }
+
+    return render(context) || null;
+};
+
+export type WithListContextProps<RecordType extends RaRecord> = Partial<
+    Pick<
+        ListControllerResult<RecordType>,
+        'data' | 'total' | 'isPending' | 'error'
+    >
+> & {
     render: (
-        context: ListControllerResult<RecordType>
+        context: Partial<ListControllerResult<RecordType>>
     ) => ReactElement | false | null;
-    label?: string;
-}
+    empty?: React.ReactNode;
+    loading?: React.ReactNode;
+    errorElement?: React.ReactNode;
+};
