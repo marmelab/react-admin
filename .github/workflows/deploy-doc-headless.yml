@@ -46,6 +46,7 @@ jobs:
               run: |
                   cd docs_headless
                   yarn build
+                  touch dist/.nojekyll
                   cd ..
 
             - name: 📡 Deploy GitHub pages
