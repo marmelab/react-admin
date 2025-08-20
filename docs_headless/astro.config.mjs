@@ -134,4 +134,7 @@ export default defineConfig({
     },
     base: '/ra-core/',
     site: 'https://marmelab.com',
+    build: {
+        assets: 'assets',
+    },
 });
