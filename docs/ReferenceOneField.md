@@ -59,12 +59,16 @@ const BookShow = () => (
 | -------------- | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
 | `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
 | `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
-| `children`     | Optional | `Element`                                   | -                                | The Field element used to render the referenced record                              |
+| `children`     | Optional&nbsp;* | `Element`                                   | -                                | The Field element used to render the referenced record                              |
+| `render`     | Optional&nbsp;* | `(ReferenceFieldContext) => Element`                                   | -                                | A function that takes the `ReferenceFieldContext` and returns a React element                              |
 | `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `offline`      | Optional | `ReactNode`                         | -                                | The text or element to display when there is no network connectivity                   |
 | `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
+
+`*` You must provide either `children` or `render`.
 
 `<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -153,6 +157,29 @@ You can also set the `link` prop to a string, which will be used as the link typ
 </ReferenceOneField>
 ```
 
+
+## `offline`
+
+When the user is offline, `<ReferenceOneField>` is smart enough to display the referenced record if it was previously fetched. However, if the referenced record has never been fetched before, `<ReferenceOneField>` displays an error message explaining that the app has lost network connectivity.
+
+You can customize this error message by passing a React element or a string to the `offline` prop:
+
+```jsx
+<ReferenceOneField
+    reference="book_details"
+    target="book_id"
+    offline={<p>No network, could not fetch data</p>}
+>
+    ...
+</ReferenceOneField>
+<ReferenceOneField 
+    reference="book_details"
+    target="book_id"
+    offline="No network, could not fetch data">
+    ...
+</ReferenceOneField>
+```
+
 ## `queryOptions`
 
 `<ReferenceOneField>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v5/docs/react/reference/useQuery) via the `queryOptions` prop.
@@ -182,6 +209,38 @@ For instance, if you want to display the details of a given book, the `reference
 <ReferenceOneField label="Genre" reference="book_details" target="book_id">
     <TextField source="genre" />
 </ReferenceOneField>
+```
+
+## `render`
+
+Alternatively to `children`, you can pass a `render` prop to `<ReferenceOneField>`. It will receive the `ReferenceFieldContext` as its argument, and should return a React node.
+
+This allows to inline the render logic for the related record.
+
+```tsx
+<ReferenceOneField
+    reference="book_details"
+    target="book_id"
+    render={({ isPending, error, referenceRecord }) => {
+        if (isPending) {
+            return <p>Loading...</p>;
+        }
+        if (error) {
+            return <p className="error" >{error.toString()}</p>;
+        }
+        if (!referenceRecord) {
+            return <p className="error">No details found</p>;
+        }
+        return (
+            <dl>
+                <dt>Genre</dt>
+                <dd>{referenceRecord.genre}</dd>
+                <dt>ISBN</dt>
+                <dd>{referenceRecord.ISBN}</dd>
+            </dl>
+        );
+    }}
+/>
 ```
 
 ## `sort`

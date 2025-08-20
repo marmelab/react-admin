@@ -478,3 +478,47 @@ export const Themed = () => (
         />
     </Admin>
 );
+
+export const WithRenderProp = () => (
+    <Admin
+        dataProvider={{
+            ...dataProvider,
+            getList: (resource, params) =>
+                dataProvider
+                    .getList(resource, params)
+                    .then(({ data, total }) => ({
+                        data,
+                        pageInfo: {
+                            hasNextPage:
+                                total! >
+                                params.pagination.page *
+                                    params.pagination.perPage,
+                            hasPreviousPage: params.pagination.page > 1,
+                        },
+                    })),
+        }}
+    >
+        <Resource
+            name="books"
+            list={() => (
+                <InfiniteList
+                    render={({ error, isPending }) => {
+                        if (isPending) {
+                            return <div>Loading...</div>;
+                        }
+                        if (error) {
+                            return <div>Error: {error.message}</div>;
+                        }
+                        return (
+                            <SimpleList
+                                primaryText="%{title}"
+                                secondaryText="%{author}"
+                                tertiaryText={record => record.year}
+                            />
+                        );
+                    }}
+                />
+            )}
+        />
+    </Admin>
+);

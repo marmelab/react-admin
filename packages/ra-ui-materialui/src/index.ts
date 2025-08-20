@@ -9,6 +9,7 @@ export * from './Labeled';
 export * from './layout';
 export * from './Link';
 export * from './list';
+export * from './Offline';
 export * from './preferences';
 export * from './AdminUI';
 export * from './AdminContext';

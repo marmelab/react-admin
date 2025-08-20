@@ -45,7 +45,9 @@ import { Loading } from '../layout';
  * );
  * export default App;
  *
+ * @typedef {(showContext: Object) => ReactNode} RenderProp
  * @param {ShowProps} inProps
+ * @param {RenderProp} inProps.render A function rendering the page content, receive the show context as its argument.
  * @param {ReactElement|false} inProps.actions An element to display above the page content, or false to disable actions.
  * @param {string} inProps.className A className to apply to the page content.
  * @param {ElementType} inProps.component The component to use as root component (div by default).
@@ -75,6 +77,12 @@ export const Show = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
 
+    if (!props.render && !props.children) {
+        throw new Error(
+            '<Show> requires either a `render` prop or `children` prop'
+        );
+    }
+
     return (
         <ShowBase<RecordType>
             id={id}
@@ -82,6 +90,8 @@ export const Show = <RecordType extends RaRecord = any>(
             queryOptions={queryOptions}
             resource={resource}
             loading={loading}
+            // Disable offline support from ShowBase as it is handled by ShowView to keep the ShowView container
+            offline={false}
         >
             <ShowView {...rest} />
         </ShowBase>
@@ -90,7 +100,7 @@ export const Show = <RecordType extends RaRecord = any>(
 
 export interface ShowProps<RecordType extends RaRecord = any>
     extends ShowBaseProps<RecordType>,
-        Omit<ShowViewProps, 'children'> {}
+        Omit<ShowViewProps, 'children' | 'render'> {}
 
 const defaultLoading = <Loading />;
 

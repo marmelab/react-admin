@@ -14,6 +14,7 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
     CreateItemLabel,
+    CreateItemLabelRendered,
     CreateLabel,
     InsideReferenceArrayInput,
     InsideReferenceArrayInputOnChange,
@@ -1289,4 +1290,40 @@ describe('<AutocompleteArrayInput />', () => {
         });
         expect(screen.getByDisplayValue('French')).not.toBeNull();
     });
+
+    it('should allow to pass rendered createLabel and createItemLabel', async () => {
+        render(<CreateItemLabelRendered />);
+
+        const input = await screen.findByRole('combobox');
+        fireEvent.focus(input);
+        fireEvent.change(input, { target: { value: '' } });
+
+        expect((await screen.findByTestId('new-role-hint')).textContent).toBe(
+            'Start typing to create a new role'
+        );
+
+        fireEvent.change(input, { target: { value: 'Guest' } });
+
+        expect((await screen.findByTestId('new-role-chip')).textContent).toBe(
+            'Guest'
+        );
+    });
+    it('should not use the rendered createItemLabel as the value of the input', async () => {
+        render(<CreateItemLabelRendered />);
+        const input = (await screen.findByLabelText('Roles', undefined, {
+            timeout: 2000,
+        })) as HTMLInputElement;
+        await waitFor(() => {
+            expect(input.value).toBe('');
+        });
+        fireEvent.focus(input);
+        expect(screen.getAllByRole('option')).toHaveLength(3);
+        fireEvent.change(input, { target: { value: 'x' } });
+        await waitFor(() => {
+            expect(screen.getAllByRole('option')).toHaveLength(1);
+        });
+        fireEvent.click(screen.getByText('Create'));
+        expect(input.value).not.toBe('Create x');
+        expect(input.value).toBe('');
+    }, 10000);
 });

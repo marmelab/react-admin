@@ -152,6 +152,7 @@ export const useCreate = <
         MutationError,
         Partial<UseCreateMutateParams<RecordType>>
     >({
+        mutationKey: [resource, 'create', params],
         mutationFn: ({
             resource: callTimeResource = resource,
             data: callTimeData = paramsRef.current.data,

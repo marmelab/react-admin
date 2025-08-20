@@ -65,3 +65,39 @@ export const Basic = () => (
         </DataTable>
     </Wrapper>
 );
+
+export const FewColumns = () => (
+    <Wrapper aside={<ColumnsButton />} actions={null}>
+        <DataTable bulkActionButtons={false}>
+            <DataTable.Col source="col0" label="c_0" />
+            <DataTable.Col source="col1" label="c_1" />
+            <DataTable.Col source="col2" label="c_2" />
+            <DataTable.Col source="col3" label="c_3" />
+            <DataTable.Col source="col4" label="c_4" />
+        </DataTable>
+    </Wrapper>
+);
+
+export const LabelTypes = () => (
+    <Wrapper aside={<ColumnsButton />} actions={null}>
+        <DataTable bulkActionButtons={false} hiddenColumns={['col5']}>
+            <DataTable.Col source="col0" />
+            <DataTable.Col source="col1" label="column 1" />
+            <DataTable.Col source="col2" label="Testing Label Case" />
+            <DataTable.Col source="col3" label="Téstïng diàcritics" />
+            <DataTable.Col
+                source="col4"
+                label={
+                    <span>
+                        Testing React <i>Element</i>
+                    </span>
+                }
+            />
+            <DataTable.Col source="col5" />
+            <HideMe>
+                <DataTable.Col source="col6" />
+            </HideMe>
+            <DataTable.Col source="col7" />
+        </DataTable>
+    </Wrapper>
+);

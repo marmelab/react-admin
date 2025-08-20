@@ -3,7 +3,10 @@ import { ReactNode } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { ReferenceFieldContextProvider } from './ReferenceFieldContext';
 import { RaRecord } from '../../types';
-import { useReferenceFieldController } from './useReferenceFieldController';
+import {
+    useReferenceFieldController,
+    UseReferenceFieldControllerResult,
+} from './useReferenceFieldController';
 import { ResourceContextProvider } from '../../core';
 import { RecordContextProvider } from '../record';
 import { useFieldValue } from '../../util';
@@ -15,25 +18,25 @@ import { useFieldValue } from '../../util';
  * added as <Admin> child.
  *
  * @example // using recordRepresentation
- * <ReferenceFieldBase label="User" source="userId" reference="users" />
+ * <ReferenceFieldBase source="userId" reference="users" />
  *
  * @example // using a Field component to represent the record
- * <ReferenceFieldBase label="User" source="userId" reference="users">
+ * <ReferenceFieldBase source="userId" reference="users">
  *     <TextField source="name" />
  * </ReferenceFieldBase>
  *
  * @example // By default, includes a link to the <Edit> page of the related record
  * // (`/users/:userId` in the previous example).
  * // Set the `link` prop to "show" to link to the <Show> page instead.
- * <ReferenceFieldBase label="User" source="userId" reference="users" link="show" />
+ * <ReferenceFieldBase source="userId" reference="users" link="show" />
  *
  * @example // You can also prevent `<ReferenceFieldBase>` from adding link to children
  * // by setting `link` to false.
- * <ReferenceFieldBase label="User" source="userId" reference="users" link={false} />
+ * <ReferenceFieldBase source="userId" reference="users" link={false} />
  *
  * @example // Alternatively, you can also pass a custom function to `link`.
  * // It must take reference and record as arguments and return a string
- * <ReferenceFieldBase label="User" source="userId" reference="users" link={(record, reference) => "/path/to/${reference}/${record}"} />
+ * <ReferenceFieldBase source="userId" reference="users" link={(record, reference) => "/path/to/${reference}/${record}"} />
  *
  * @default
  * In previous versions of React-Admin, the prop `linkType` was used. It is now deprecated and replaced with `link`. However
@@ -44,27 +47,60 @@ export const ReferenceFieldBase = <
 >(
     props: ReferenceFieldBaseProps<ReferenceRecordType>
 ) => {
-    const { children, empty = null } = props;
+    const { children, render, loading, error, empty, offline } = props;
     const id = useFieldValue(props);
+
     const controllerProps =
         useReferenceFieldController<ReferenceRecordType>(props);
 
-    if (
-        (empty &&
-            // no foreign key value
-            !id) ||
-        // no reference record
-        (!controllerProps.error &&
-            !controllerProps.isPending &&
-            !controllerProps.referenceRecord)
-    ) {
-        return empty;
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceFieldBase> requires either a 'render' prop or 'children' prop"
+        );
     }
+
+    const {
+        error: controllerError,
+        isPending,
+        isPaused,
+        referenceRecord,
+    } = controllerProps;
+    const shouldRenderLoading =
+        id != null &&
+        !isPaused &&
+        isPending &&
+        loading !== false &&
+        loading !== undefined;
+    const shouldRenderOffline =
+        isPaused &&
+        !referenceRecord &&
+        offline !== false &&
+        offline !== undefined;
+    const shouldRenderError =
+        !!controllerError && error !== false && error !== undefined;
+    const shouldRenderEmpty =
+        !isPaused &&
+        (!id ||
+            (!referenceRecord &&
+                !controllerError &&
+                !isPending &&
+                empty !== false &&
+                empty !== undefined));
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceFieldContextProvider value={controllerProps}>
-                <RecordContextProvider value={controllerProps.referenceRecord}>
-                    {children}
+                <RecordContextProvider value={referenceRecord}>
+                    {shouldRenderLoading
+                        ? loading
+                        : shouldRenderOffline
+                          ? offline
+                          : shouldRenderError
+                            ? error
+                            : shouldRenderEmpty
+                              ? empty
+                              : render
+                                ? render(controllerProps)
+                                : children}
                 </RecordContextProvider>
             </ReferenceFieldContextProvider>
         </ResourceContextProvider>
@@ -75,9 +111,14 @@ export interface ReferenceFieldBaseProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > {
     children?: ReactNode;
+    render?: (
+        props: UseReferenceFieldControllerResult<ReferenceRecordType>
+    ) => ReactNode;
     className?: string;
     empty?: ReactNode;
     error?: ReactNode;
+    loading?: ReactNode;
+    offline?: ReactNode;
     queryOptions?: Partial<
         UseQueryOptions<ReferenceRecordType[], Error> & {
             meta?: any;

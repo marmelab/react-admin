@@ -113,7 +113,9 @@ export const useEditController = <
         error,
         isLoading,
         isFetching,
+        isPaused,
         isPending,
+        isPlaceholderData,
         refetch,
     } = useGetOne<RecordType, ErrorType>(
         resource,
@@ -262,6 +264,7 @@ export const useEditController = <
                             id,
                             data,
                             meta: metaFromSave ?? mutationMeta,
+                            previousData: record,
                         },
                         {
                             onError: onErrorFromSave,
@@ -277,6 +280,7 @@ export const useEditController = <
         [
             id,
             mutationMeta,
+            record,
             resource,
             transform,
             update,
@@ -289,7 +293,9 @@ export const useEditController = <
         error,
         isFetching,
         isLoading,
+        isPaused,
         isPending,
+        isPlaceholderData,
         mutationMode,
         record,
         redirect: redirectTo,
@@ -324,6 +330,8 @@ export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
+    isPaused: boolean;
+    isPlaceholderData: boolean;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;

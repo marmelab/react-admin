@@ -29,6 +29,7 @@ import {
     NotificationTranslated,
     EmptyWhileLoading,
     Themed,
+    WithRenderProp,
 } from './Edit.stories';
 
 describe('<Edit />', () => {
@@ -108,7 +109,7 @@ describe('<Edit />', () => {
         });
     });
 
-    it("shoudln't display the Edit aside while loading with the emptyWhileLoading prop", async () => {
+    it("shouldn't display the Edit aside while loading with the emptyWhileLoading prop", async () => {
         let resolveGetOne;
         const RenderedComponent = () => {
             const myDataProvider = {
@@ -340,6 +341,13 @@ describe('<Edit />', () => {
         });
     });
 
+    it('should allow to use render prop instead of children', async () => {
+        render(<WithRenderProp />);
+        await waitFor(() => {
+            expect(screen.queryAllByText('War and Peace')).toHaveLength(1);
+        });
+    });
+
     describe('onSuccess prop', () => {
         it('should allow to override the default success side effects', async () => {
             const dataProvider = {
@@ -390,7 +398,9 @@ describe('<Edit />', () => {
                     {
                         id: '123',
                         data: { id: 123, title: 'ipsum' },
+                        previousData: { id: 123, title: 'lorem' },
                         resource: 'foo',
+                        meta: undefined,
                     },
                     { snapshot: [] }
                 );
@@ -453,7 +463,9 @@ describe('<Edit />', () => {
                     {
                         id: '123',
                         data: { id: 123, title: 'ipsum' },
+                        previousData: { id: 123, title: 'lorem' },
                         resource: 'foo',
+                        meta: undefined,
                     },
                     { snapshot: [] }
                 );
@@ -510,7 +522,9 @@ describe('<Edit />', () => {
                     {
                         id: '123',
                         data: { id: 123, title: 'ipsum' },
+                        previousData: { id: 123, title: 'lorem' },
                         resource: 'foo',
+                        meta: undefined,
                     },
                     { snapshot: [] }
                 );
@@ -573,7 +587,9 @@ describe('<Edit />', () => {
                     {
                         id: '123',
                         data: { id: 123, title: 'ipsum' },
+                        previousData: { id: 123, title: 'lorem' },
                         resource: 'foo',
+                        meta: undefined,
                     },
                     { snapshot: [] }
                 );

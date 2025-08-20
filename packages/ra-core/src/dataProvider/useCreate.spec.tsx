@@ -25,6 +25,7 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useCreate.undoable.stories';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 
 describe('useCreate', () => {
     it('returns a callback that can be used with create arguments', async () => {
@@ -99,7 +100,7 @@ describe('useCreate', () => {
         });
     });
 
-    it('accepts a meta paramater', async () => {
+    it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
             create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
@@ -122,6 +123,47 @@ describe('useCreate', () => {
                 meta: { hello: 'world' },
             });
         });
+    });
+
+    it('sets the mutationKey', async () => {
+        const queryClient = new QueryClient();
+        queryClient.setMutationDefaults(['foo', 'create'], {
+            meta: { hello: 'world' },
+        });
+
+        const dataProvider = testDataProvider({
+            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        });
+        let localCreate;
+        const Dummy = () => {
+            const [create] = useCreate('foo');
+            localCreate = create;
+            return <span />;
+        };
+        const Observe = () => {
+            const mutation = useMutationState({
+                filters: {
+                    mutationKey: ['foo', 'create'],
+                },
+            });
+
+            return <span>mutations: {mutation.length}</span>;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+                <Observe />
+            </CoreAdminContext>
+        );
+        localCreate('foo', { data: { bar: 'baz' }, meta: { hello: 'world' } });
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('foo', {
+                data: { bar: 'baz' },
+                meta: { hello: 'world' },
+            });
+        });
+        await screen.findByText('mutations: 1');
     });
 
     it('returns a state typed based on the parametric type', async () => {
@@ -236,7 +278,8 @@ describe('useCreate', () => {
             });
         });
         it('when optimistic, displays result and success side effects right away', async () => {
-            render(<SuccessCaseOptimistic timeout={10} />);
+            render(<SuccessCaseOptimistic timeout={50} />);
+            await screen.findByText('nothing yet');
             screen.getByText('Create post').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();

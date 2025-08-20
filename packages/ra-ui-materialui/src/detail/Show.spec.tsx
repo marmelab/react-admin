@@ -25,8 +25,11 @@ import {
     TitleFalse,
     TitleElement,
     Themed,
+    WithRenderProp,
+    Offline,
 } from './Show.stories';
 import { Show } from './Show';
+import { Alert } from '@mui/material';
 
 describe('<Show />', () => {
     beforeEach(async () => {
@@ -132,9 +135,16 @@ describe('<Show />', () => {
 
     it('should be customized by a theme', async () => {
         render(<Themed />);
-        expect(screen.queryByTestId('themed-view').classList).toContain(
+        expect(screen.queryByTestId('themed-view')?.classList).toContain(
             'custom-class'
         );
+    });
+
+    it('should allow to use render prop instead of children', async () => {
+        render(<WithRenderProp />);
+        await waitFor(() => {
+            expect(screen.queryByText('War and Peace')).not.toBeNull();
+        });
     });
 
     describe('title', () => {
@@ -217,5 +227,30 @@ describe('<Show />', () => {
             );
             await screen.findByText('Foo lorem');
         });
+    });
+    it('should render the default offline component node when offline', async () => {
+        const { rerender } = render(<Offline isOnline={false} />);
+        await screen.findByText('No connectivity. Could not fetch data.');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('War and Peace');
+        expect(
+            screen.queryByText('No connectivity. Could not fetch data.')
+        ).toBeNull();
+        rerender(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, the data may be outdated');
+    });
+    it('should render the custom offline component node when offline', async () => {
+        const CustomOffline = () => {
+            return <Alert severity="warning">You are offline!</Alert>;
+        };
+        const { rerender } = render(
+            <Offline isOnline={false} offline={<CustomOffline />} />
+        );
+        await screen.findByText('You are offline!');
+        rerender(<Offline isOnline={true} offline={<CustomOffline />} />);
+        await screen.findByText('War and Peace');
+        expect(screen.queryByText('You are offline!')).toBeNull();
+        rerender(<Offline isOnline={false} offline={<CustomOffline />} />);
+        await screen.findByText('You are offline, the data may be outdated');
     });
 });

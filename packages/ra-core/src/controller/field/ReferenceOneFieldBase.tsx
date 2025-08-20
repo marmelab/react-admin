@@ -10,6 +10,7 @@ import { useGetPathForRecord } from '../../routing';
 import type { UseReferenceFieldControllerResult } from './useReferenceFieldController';
 import type { RaRecord } from '../../types';
 import type { LinkToType } from '../../routing';
+import { UseReferenceResult } from '../useReference';
 
 /**
  * Render the related record in a one-to-one relationship
@@ -29,14 +30,18 @@ export const ReferenceOneFieldBase = <
 ) => {
     const {
         children,
+        render,
         record,
         reference,
         source = 'id',
         target,
         empty,
+        error,
+        loading,
         sort,
         filter,
         link,
+        offline,
         queryOptions,
     } = props;
 
@@ -67,19 +72,53 @@ export const ReferenceOneFieldBase = <
         [controllerProps, path]
     );
 
-    const recordFromContext = useRecordContext<RecordType>(props);
-    if (
-        !recordFromContext ||
-        (!controllerProps.isPending && controllerProps.referenceRecord == null)
-    ) {
-        return empty;
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceOneFieldBase> requires either a 'render' prop or 'children' prop"
+        );
     }
+
+    const recordFromContext = useRecordContext<RecordType>(props);
+    const {
+        error: controllerError,
+        isPending,
+        isPaused,
+        referenceRecord,
+    } = controllerProps;
+
+    const shouldRenderLoading =
+        !isPaused && isPending && loading !== false && loading !== undefined;
+    const shouldRenderOffline =
+        isPaused &&
+        !referenceRecord &&
+        offline !== false &&
+        offline !== undefined;
+    const shouldRenderError =
+        !!controllerError && error !== false && error !== undefined;
+    const shouldRenderEmpty =
+        (!recordFromContext ||
+            (!isPaused &&
+                referenceRecord == null &&
+                !controllerError &&
+                !isPending)) &&
+        empty !== false &&
+        empty !== undefined;
 
     return (
         <ResourceContextProvider value={reference}>
             <ReferenceFieldContextProvider value={context}>
-                <RecordContextProvider value={context.referenceRecord}>
-                    {children}
+                <RecordContextProvider value={referenceRecord}>
+                    {shouldRenderLoading
+                        ? loading
+                        : shouldRenderOffline
+                          ? offline
+                          : shouldRenderError
+                            ? error
+                            : shouldRenderEmpty
+                              ? empty
+                              : render
+                                ? render(controllerProps)
+                                : children}
                 </RecordContextProvider>
             </ReferenceFieldContextProvider>
         </ResourceContextProvider>
@@ -94,7 +133,11 @@ export interface ReferenceOneFieldBaseProps<
         ReferenceRecordType
     > {
     children?: ReactNode;
-    link?: LinkToType<ReferenceRecordType>;
+    loading?: ReactNode;
+    error?: ReactNode;
     empty?: ReactNode;
+    offline?: ReactNode;
+    render?: (props: UseReferenceResult<ReferenceRecordType>) => ReactNode;
+    link?: LinkToType<ReferenceRecordType>;
     resource?: string;
 }

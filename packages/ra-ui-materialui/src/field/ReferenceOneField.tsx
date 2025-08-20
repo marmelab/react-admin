@@ -7,12 +7,14 @@ import {
     SortPayload,
     RaRecord,
     ReferenceOneFieldBase,
+    UseReferenceResult,
 } from 'ra-core';
+import { useThemeProps } from '@mui/material/styles';
 
 import { FieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
-import { useThemeProps } from '@mui/material/styles';
+import { Offline } from '../Offline';
 
 /**
  * Render the related record in a one-to-one relationship
@@ -37,6 +39,7 @@ export const ReferenceOneField = <
 
     const {
         children,
+        render,
         reference,
         source = 'id',
         target,
@@ -45,6 +48,7 @@ export const ReferenceOneField = <
         sort,
         filter,
         link,
+        offline = defaultOffline,
         queryOptions,
         ...rest
     } = props;
@@ -71,10 +75,12 @@ export const ReferenceOneField = <
                     empty ?? null
                 )
             }
+            offline={offline}
         >
             <ReferenceFieldView
                 reference={reference}
                 source={source}
+                render={render}
                 {...sanitizeFieldRestProps(rest)}
             >
                 {children}
@@ -83,11 +89,14 @@ export const ReferenceOneField = <
     );
 };
 
+const defaultOffline = <Offline variant="inline" />;
+
 export interface ReferenceOneFieldProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source' | 'emptyText'> {
     children?: ReactNode;
+    render?: (record: UseReferenceResult<ReferenceRecordType>) => ReactElement;
     reference: string;
     target: string;
     sort?: SortPayload;
@@ -99,6 +108,7 @@ export interface ReferenceOneFieldProps<
      */
     emptyText?: string | ReactElement;
     empty?: ReactNode;
+    offline?: ReactNode;
     queryOptions?: Omit<
         UseQueryOptions<{
             data: ReferenceRecordType[];

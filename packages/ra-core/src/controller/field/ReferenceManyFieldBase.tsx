@@ -6,6 +6,7 @@ import {
     type UseReferenceManyFieldControllerParams,
 } from './useReferenceManyFieldController';
 import type { RaRecord } from '../../types';
+import { ListControllerResult } from '../list';
 
 /**
  * Render related records to the current one.
@@ -61,11 +62,14 @@ export const ReferenceManyFieldBase = <
 ) => {
     const {
         children,
+        render,
         debounce,
         empty,
+        error,
+        loading,
         filter = defaultFilter,
+        offline,
         page = 1,
-        pagination = null,
         perPage = 25,
         record,
         reference,
@@ -95,33 +99,60 @@ export const ReferenceManyFieldBase = <
         queryOptions,
     });
 
-    if (
-        // there is an empty page component
-        empty &&
-        // there is no error
-        !controllerProps.error &&
-        // the list is not loading data for the first time
-        !controllerProps.isPending &&
-        // the API returned no data (using either normal or partial pagination)
-        (controllerProps.total === 0 ||
-            (controllerProps.total == null &&
-                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
-                controllerProps.hasPreviousPage === false &&
-                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
-                controllerProps.hasNextPage === false &&
-                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
-                controllerProps.data.length === 0)) &&
-        // the user didn't set any filters
-        !Object.keys(controllerProps.filterValues).length
-    ) {
-        return empty;
+    if (!render && !children) {
+        throw new Error(
+            "<ReferenceManyFieldBase> requires either a 'render' prop or 'children' prop"
+        );
     }
+
+    const {
+        data,
+        error: controllerError,
+        filterValues,
+        hasNextPage,
+        hasPreviousPage,
+        isPaused,
+        isPending,
+        total,
+    } = controllerProps;
+
+    const showLoading =
+        isPending && !isPaused && loading !== false && loading !== undefined;
+    const showOffline = isPaused && offline !== false && offline !== undefined;
+    const showError = controllerError && error !== false && error !== undefined;
+    const showEmpty =
+        empty !== false &&
+        empty !== undefined &&
+        // there is no error
+        !error &&
+        // the list is not loading data for the first time
+        !isPending &&
+        // the API returned no data (using either normal or partial pagination)
+        (total === 0 ||
+            (total == null &&
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
+                hasPreviousPage === false &&
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
+                hasNextPage === false &&
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
+                data.length === 0)) &&
+        // the user didn't set any filters
+        !Object.keys(filterValues).length;
 
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                {children}
-                {pagination}
+                {showLoading
+                    ? loading
+                    : showOffline
+                      ? offline
+                      : showError
+                        ? error
+                        : showEmpty
+                          ? empty
+                          : render
+                            ? render(controllerProps)
+                            : children}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -129,14 +160,17 @@ export const ReferenceManyFieldBase = <
 
 export interface ReferenceManyFieldBaseProps<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = RaRecord,
 > extends UseReferenceManyFieldControllerParams<
         RecordType,
         ReferenceRecordType
     > {
-    children: ReactNode;
+    children?: ReactNode;
+    render?: (props: ListControllerResult<ReferenceRecordType>) => ReactNode;
     empty?: ReactNode;
-    pagination?: ReactNode;
+    error?: ReactNode;
+    loading?: ReactNode;
+    offline?: ReactNode;
 }
 
 const defaultFilter = {};

@@ -58,9 +58,10 @@ The props are the same as [the `<List>` component](./List.md):
 
 | Prop                       | Required | Type           | Default                 | Description                                                                                  |
 |----------------------------|----------|----------------|-------------------------|----------------------------------------------------------------------------------------------|
-| `children`                 | Required | `ReactNode`    | -                       | The component to use to render the list of records.                                          |
+| `children`                 | Required if no render | `ReactNode`    | -                       | The component to use to render the list of records.                                          |
+| `render`                 | Required if no children | `ReactNode`    | -                       | A function that render the list of records, receives the list context as argument.                                          |
 | `actions`                  | Optional | `ReactElement` | -                       | The actions to display in the toolbar.                                                       |
-| `aside`                    | Optional | `ReactElement` | -                       | The component to display on the side of the list.                                            |
+| `aside`                    | Optional | `(listContext) => ReactElement` | -                       | The component to display on the side of the list.                                            |
 | `component`                | Optional | `Component`    | `Card`                  | The component to render as the root element.                                                 |
 | `debounce`                 | Optional | `number`       | `500`                   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
 | `disable Authentication`   | Optional | `boolean`      | `false`                 | Set to `true` to disable the authentication check.                                           |
@@ -86,13 +87,14 @@ Additional props are passed down to the root component (a MUI `<Card>` by defaul
 
 ## `pagination`
 
-You can replace the default "load on scroll" pagination (triggered by a component named `<InfinitePagination>`) by a custom pagination component. To get the pagination state and callbacks, you'll need to read the `InfinitePaginationContext`. 
+You can replace the default "load on scroll" pagination (triggered by a component named `<InfinitePagination>`) by a custom pagination component. To get the pagination state and callbacks, you'll need to read the `InfinitePaginationContext`.
 
 ![load more button](./img/infinite-pagination-load-more.webp)
 
 For example, here is a custom infinite pagination component displaying a "Load More" button at the bottom of the list:
 
 {% raw %}
+
 ```jsx
 import { InfiniteList, useInfinitePaginationContext, DataTable } from 'react-admin';
 import { Box, Button } from '@mui/material';
@@ -125,6 +127,7 @@ export const BookList = () => (
     </InfiniteList>
 );
 ```
+
 {% endraw %}
 
 ## Showing The Record Count
@@ -134,6 +137,7 @@ One drawback of the `<InfiniteList>` component is that it doesn't show the numbe
 ![Infinite list with total number of results](./img/infinite-pagination-count.webp)
 
 {% raw %}
+
 ```jsx
 import { useListContext, InfinitePagination, InfiniteList } from 'react-admin';
 import { Box, Card, Typography } from '@mui/material';
@@ -163,15 +167,17 @@ export const BookList = () => (
     </InfiniteList>
 );
 ```
+
 {% endraw %}
 
 ## Controlled Mode
 
-`<InfiniteList>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself. 
+`<InfiniteList>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself.
 
 In that case, use the [`resource`](./List.md#resource), [`sort`](./List.md#sort), and [`filter`](./List.md#filter-permanent-filter) props to set the list parameters.
 
 {% raw %}
+
 ```jsx
 import { InfiniteList, InfinitePagination, SimpleList } from 'react-admin';
 import { Container, Typography } from '@mui/material';
@@ -208,6 +214,7 @@ const Dashboard = () => (
     </Container>
 )
 ```
+
 {% endraw %}
 
 ## Headless Version

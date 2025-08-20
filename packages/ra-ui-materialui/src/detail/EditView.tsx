@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType } from 'react';
+import type { ReactElement, ElementType, ReactNode } from 'react';
 import {
     Card,
     CardContent,
@@ -9,32 +9,54 @@ import {
     type Theme,
 } from '@mui/material';
 import clsx from 'clsx';
-import { useEditContext, useResourceDefinition } from 'ra-core';
+import {
+    EditControllerResult,
+    useEditContext,
+    useResourceDefinition,
+} from 'ra-core';
 
 import { EditActions } from './EditActions';
 import { Title } from '../layout';
 import { EditProps } from './Edit';
+import { Offline } from '../Offline';
 
 const defaultActions = <EditActions />;
+const defaultOffline = <Offline />;
 
 export const EditView = (props: EditViewProps) => {
     const {
         actions,
         aside,
         children,
+        render,
         className,
         component: Content = Card,
         emptyWhileLoading = false,
+        offline = defaultOffline,
         title,
         ...rest
     } = props;
 
     const { hasShow } = useResourceDefinition();
-    const { resource, defaultTitle, record, isPending } = useEditContext();
+    const editContext = useEditContext();
+
+    const { resource, defaultTitle, record, isPaused, isPending } = editContext;
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
-    if (!children || (!record && isPending && emptyWhileLoading)) {
+
+    if (!record && offline !== false && isPaused) {
+        return (
+            <Root className={clsx('edit-page', className)} {...rest}>
+                <div className={clsx(EditClasses.main, EditClasses.noActions)}>
+                    <Content className={EditClasses.card}>{offline}</Content>
+                    {aside}
+                </div>
+            </Root>
+        );
+    }
+
+    if (!record && isPending && emptyWhileLoading) {
         return null;
     }
 
@@ -54,7 +76,13 @@ export const EditView = (props: EditViewProps) => {
                 })}
             >
                 <Content className={EditClasses.card}>
-                    {record ? children : <CardContent>&nbsp;</CardContent>}
+                    {render ? (
+                        render(editContext)
+                    ) : record ? (
+                        children
+                    ) : (
+                        <CardContent>&nbsp;</CardContent>
+                    )}
                 </Content>
                 {aside}
             </div>
@@ -68,8 +96,10 @@ export interface EditViewProps
     aside?: ReactElement;
     component?: ElementType;
     emptyWhileLoading?: boolean;
+    offline?: ReactNode;
     title?: string | ReactElement | false;
     sx?: SxProps<Theme>;
+    render?: (editContext: EditControllerResult) => ReactNode;
 }
 
 const PREFIX = 'RaEdit';

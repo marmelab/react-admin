@@ -28,6 +28,7 @@ import {
     SXNoLink,
     SlowAccessControl,
     Themed,
+    Offline,
 } from './ReferenceField.stories';
 import { TextField } from './TextField';
 
@@ -506,6 +507,46 @@ describe('<ReferenceField />', () => {
         await screen.findByText('boo');
     });
 
+    it('should render its child using render prop when given', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ResourceDefinitionContextProvider
+                        definitions={{
+                            posts: {
+                                name: 'posts',
+                                hasEdit: true,
+                            },
+                        }}
+                    >
+                        <RecordContextProvider value={record}>
+                            <ReferenceField
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                                render={({ referenceRecord }) =>
+                                    referenceRecord?.title || 'No title'
+                                }
+                            />
+                        </RecordContextProvider>
+                    </ResourceDefinitionContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        expect(screen.getByText('foo')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link')?.getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
+
     describe('link', () => {
         it('should render a link to specified link type', async () => {
             render(<LinkShow />);
@@ -722,5 +763,14 @@ describe('<ReferenceField />', () => {
     it('should be customized by a theme', async () => {
         render(<Themed />);
         expect(await screen.findByTestId('themed')).toBeDefined();
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('No connectivity. Could not fetch data.');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('9780393966473');
     });
 });

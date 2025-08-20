@@ -2,7 +2,29 @@
 
 ## 5.10.0
 
-- Upgraded `@tanstack/react-query` to `5.83.0`. You might have duplicate versions if you already had it in your dependencies. Should you have an error mentioning the `QueryContext`, make sure you only have one version in your package manager lock file.
+* Add filter input to `<ColumnsButton>` when there are many columns ([#10848](https://github.com/marmelab/react-admin/pull/10848)) ([slax57](https://github.com/slax57))
+* Update `react-query` dependency to require at least v5.83 ([#10838](https://github.com/marmelab/react-admin/pull/10838)) ([djhi](https://github.com/djhi)). You might have duplicate versions if you already had it in your dependencies. Should you have an error mentioning the `QueryContext`, make sure you only have one version in your package manager lock file.
+* Add render prop page and reference MUI components ([#10837](https://github.com/marmelab/react-admin/pull/10837)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Introduce `<ReferenceArrayInputBase>` ([#10833](https://github.com/marmelab/react-admin/pull/10833)) ([djhi](https://github.com/djhi))
+* Add render prop to page and reference base components ([#10832](https://github.com/marmelab/react-admin/pull/10832)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Add disable support for `<RadioButtonGroupInput>` and `<CheckboxGroupInput>` choices ([#10821](https://github.com/marmelab/react-admin/pull/10821)) ([WiXSL](https://github.com/WiXSL))
+* Add support for `empty` in Reference fields ([#10817](https://github.com/marmelab/react-admin/pull/10817)) ([fzaninotto](https://github.com/fzaninotto))
+* Add `<ReferenceManyCountBase>` ([#10808](https://github.com/marmelab/react-admin/pull/10808)) ([fzaninotto](https://github.com/fzaninotto))
+* Add support for keyboard shortcuts to `<MenuItemLink>` ([#10790](https://github.com/marmelab/react-admin/pull/10790)) ([djhi](https://github.com/djhi))
+* Fix `useEditController` does not pass all variables to useUpdate ([#10839](https://github.com/marmelab/react-admin/pull/10839)) by ([djhi](https://github.com/djhi))
+* Fix typo in `<Create>` documentation ([#10840](https://github.com/marmelab/react-admin/pull/10840)) by ([rkfg](https://github.com/rkfg))
+* [Doc] Backport RBAC's doc ([#10846](https://github.com/marmelab/react-admin/pull/10846)) by ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Backport DatagridAg's doc update ([#10845](https://github.com/marmelab/react-admin/pull/10845)) by ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Backport Tree's doc ([#10847](https://github.com/marmelab/react-admin/pull/10847)) by ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [chore] Fix release script milestone description ([#10849](https://github.com/marmelab/react-admin/pull/10849)) by ([slax57](https://github.com/slax57))
+
+## 5.9.2
+
+* Fix `fullWidth` is not propagated anymore ([#10827](https://github.com/marmelab/react-admin/pull/10827)) ([djhi](https://github.com/djhi))
+* [Doc] Mention the codemod in `<Datagrid>` documentation ([#10823](https://github.com/marmelab/react-admin/pull/10823)) ([djhi](https://github.com/djhi))
+* [Doc] Update storybook link when switching documentation page ([#10822](https://github.com/marmelab/react-admin/pull/10822)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Storybook] Add `SelectInput` and `SelectArrayInput` disable choices test and story ([#10831](https://github.com/marmelab/react-admin/pull/10831)) ([WiXSL](https://github.com/WiXSL))
+* [chore] Fix a failing test not showing up in useDeleteWithUndoController ([#10818](https://github.com/marmelab/react-admin/pull/10818)) ([Madeorsk](https://github.com/Madeorsk))
 
 ## 5.9.1
 

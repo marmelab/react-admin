@@ -16,6 +16,7 @@ import {
     type FormControlProps,
     Chip,
     OutlinedInput,
+    InputLabelProps,
 } from '@mui/material';
 import {
     type ChoicesProps,
@@ -106,6 +107,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         format,
         helperText,
         label,
+        InputLabelProps,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
         isPending: isPendingProp,
@@ -308,6 +310,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     ref={inputLabel}
                     id={`${id}-outlined-label`}
                     htmlFor={id}
+                    {...InputLabelProps}
                 >
                     <FieldTitle
                         label={label}
@@ -380,6 +383,7 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
         options?: SelectProps;
+        InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };

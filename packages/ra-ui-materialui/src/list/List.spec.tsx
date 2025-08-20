@@ -23,6 +23,7 @@ import {
     Default,
     SelectAllLimit,
     Themed,
+    WithRenderProp,
 } from './List.stories';
 
 const theme = createTheme(defaultTheme);
@@ -323,6 +324,19 @@ describe('<List />', () => {
         await waitFor(() => {
             expect(screen.getByText('Lorem ipsum'));
         });
+    });
+
+    it('should render a list page using render prop', async () => {
+        render(<WithRenderProp />);
+        expect(screen.getByText('Loading...')).toBeDefined();
+
+        await waitFor(() => {
+            screen.getByText('1-10 of 13');
+        });
+        screen.getByText('War and Peace (1869)');
+        screen.getByText(
+            'A historical novel that intertwines the lives of Russian aristocrats with the events of the Napoleonic wars.'
+        );
     });
 
     describe('title', () => {

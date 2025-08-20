@@ -8,7 +8,7 @@ import {
 import type { ReactElement, ReactNode, ElementType } from 'react';
 import Card from '@mui/material/Card';
 import clsx from 'clsx';
-import { useListContext, type RaRecord } from 'ra-core';
+import { ListControllerResult, useListContext, type RaRecord } from 'ra-core';
 
 import { Title } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
@@ -36,8 +36,10 @@ export const ListView = <RecordType extends RaRecord = any>(
         component: Content = DefaultComponent,
         title,
         empty = defaultEmpty,
+        render,
         ...rest
     } = props;
+    const listContext = useListContext<RecordType>();
     const {
         defaultTitle,
         data,
@@ -48,9 +50,9 @@ export const ListView = <RecordType extends RaRecord = any>(
         total,
         hasNextPage,
         hasPreviousPage,
-    } = useListContext<RecordType>();
+    } = listContext;
 
-    if (!children || (!data && isPending && emptyWhileLoading)) {
+    if ((!children && !render) || (!data && isPending && emptyWhileLoading)) {
         return null;
     }
 
@@ -63,7 +65,9 @@ export const ListView = <RecordType extends RaRecord = any>(
                     actions={actions}
                 />
             )}
-            <Content className={ListClasses.content}>{children}</Content>
+            <Content className={ListClasses.content}>
+                {render ? render(listContext) : children}
+            </Content>
             {!error && pagination !== false && pagination}
         </div>
     );
@@ -102,7 +106,7 @@ export const ListView = <RecordType extends RaRecord = any>(
     );
 };
 
-export interface ListViewProps {
+export interface ListViewProps<RecordType extends RaRecord = any> {
     /**
      * The actions to display in the toolbar. defaults to Filter + Create + Export.
      *
@@ -191,7 +195,31 @@ export interface ListViewProps {
      *     </List>
      * );
      */
-    children: ReactNode;
+    children?: ReactNode;
+
+    /**
+     * A function rendering the list of records. Take the list controller as argument.
+     *
+     * @see https://marmelab.com/react-admin/List.html#children
+     * @example
+     * import { List } from 'react-admin';
+     *
+     * export const BookList = () => (
+     *     <List>
+     *         {(listContext) =>
+     *             listContext.data.map(record => (
+     *                 <div key={record.id}>
+     *                     <p>{record.id}</p>
+     *                     <p>{record.title}</p>
+     *                     <p>{record.published_at}</p>
+     *                     <p>{record.nb_views}</p>
+     *                 </div>
+     *             )
+     *         }
+     *     </List>
+     * );
+     */
+    render?: (props: ListControllerResult<RecordType, Error>) => ReactNode;
 
     /**
      * The component used to display the list. Defaults to <Card>.

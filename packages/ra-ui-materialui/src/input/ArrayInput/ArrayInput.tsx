@@ -30,7 +30,7 @@ import type { CommonInputProps } from '../CommonInputProps';
 import { InputHelperText } from '../InputHelperText';
 import { sanitizeInputRestProps } from '../sanitizeInputRestProps';
 import { Labeled } from '../../Labeled';
-import { ArrayInputContext } from './ArrayInputContext';
+import { ArrayInputContext } from 'ra-core';
 
 /**
  * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.

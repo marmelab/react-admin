@@ -5,6 +5,7 @@ import {
     DefaultTitle,
     NoAuthProvider,
     WithAuthProviderNoAccessControl,
+    WithRenderProps,
 } from './InfiniteListBase.stories';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { testDataProvider } from '../../dataProvider';
@@ -126,5 +127,11 @@ describe('InfiniteListBase', () => {
         await screen.findByText('Book list (en)');
         fireEvent.click(screen.getByText('FR'));
         await screen.findByText('Liste des livres (fr)');
+    });
+
+    it('should allow render props', async () => {
+        render(<WithRenderProps />);
+        await screen.findByText('War and Peace');
+        expect(screen.queryByText('Loading...')).toBeNull();
     });
 });

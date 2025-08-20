@@ -24,7 +24,7 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useUpdate.undoable.stories';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 
 describe('useUpdate', () => {
     describe('mutate', () => {
@@ -189,6 +189,48 @@ describe('useUpdate', () => {
                 });
             });
         });
+    });
+    it('sets the mutationKey', async () => {
+        const dataProvider = {
+            update: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        } as any;
+        let localUpdate;
+        const Dummy = () => {
+            const [update] = useUpdate('foo');
+            localUpdate = update;
+            return <span />;
+        };
+        const Observe = () => {
+            const mutation = useMutationState({
+                filters: {
+                    mutationKey: ['foo', 'update'],
+                },
+            });
+
+            return <span>mutations: {mutation.length}</span>;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+                <Observe />
+            </CoreAdminContext>
+        );
+        localUpdate('foo', {
+            id: 1,
+            data: { bar: 'baz' },
+            previousData: { id: 1, bar: 'bar' },
+            meta: { hello: 'world' },
+        });
+        await waitFor(() => {
+            expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+                meta: { hello: 'world' },
+            });
+        });
+        await screen.findByText('mutations: 1');
     });
     describe('data', () => {
         it('returns a data typed based on the parametric type', async () => {

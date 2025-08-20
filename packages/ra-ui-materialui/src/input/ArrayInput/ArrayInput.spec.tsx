@@ -5,6 +5,7 @@ import {
     RecordContextProvider,
     ResourceContextProvider,
     testDataProvider,
+    useArrayInput,
 } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';
@@ -25,7 +26,6 @@ import {
     Focus,
     Reset,
 } from './ArrayInput.stories';
-import { useArrayInput } from './useArrayInput';
 
 describe('<ArrayInput />', () => {
     it('should pass array functions to child', async () => {

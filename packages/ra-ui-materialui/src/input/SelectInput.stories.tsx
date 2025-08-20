@@ -7,6 +7,7 @@ import {
     DialogTitle,
     IconButton,
     TextField,
+    Typography,
 } from '@mui/material';
 import {
     CreateBase,
@@ -108,6 +109,19 @@ export const Disabled = () => (
             ]}
             defaultValue="P"
             disabled
+        />
+    </Wrapper>
+);
+
+export const DisabledChoice = () => (
+    <Wrapper>
+        <SelectInput
+            source="city"
+            choices={[
+                { id: 'P', name: 'Paris' },
+                { id: 'L', name: 'London' },
+                { id: 'N', name: 'New York', disabled: true },
+            ]}
         />
     </Wrapper>
 );
@@ -396,6 +410,21 @@ CreateLabel.argTypes = {
         control: { type: 'inline-radio' },
     },
 };
+
+export const CreateLabelRendered = () => (
+    <Wrapper>
+        <SelectInput
+            createLabel={
+                <Typography data-testid="new-category-label">
+                    Create a new <strong>category</strong>
+                </Typography>
+            }
+            create={<CreateCategory />}
+            source="category"
+            choices={categories}
+        />
+    </Wrapper>
+);
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages);
 

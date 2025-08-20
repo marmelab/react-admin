@@ -7,14 +7,16 @@ import {
     AccessControl,
     DefaultTitle,
     NoAuthProvider,
+    Offline,
     WithAuthProviderNoAccessControl,
+    WithRenderProps,
 } from './EditBase.stories';
 
 describe('EditBase', () => {
     it('should give access to the save function', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -44,8 +46,8 @@ describe('EditBase', () => {
 
     it('should allow to override the onSuccess function', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -75,7 +77,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -84,8 +88,8 @@ describe('EditBase', () => {
 
     it('should allow to override the onSuccess function at call time', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -117,7 +121,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -128,10 +134,9 @@ describe('EditBase', () => {
     it('should allow to override the onError function', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            // @ts-ignore
             update: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
@@ -153,7 +158,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -162,10 +169,9 @@ describe('EditBase', () => {
 
     it('should allow to override the onError function at call time', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
-            // @ts-ignore
             update: jest.fn(() => Promise.reject({ message: 'test' })),
         });
         const onError = jest.fn();
@@ -189,7 +195,9 @@ describe('EditBase', () => {
                 {
                     id: 12,
                     data: { test: 'test' },
+                    previousData: { id: 12, test: 'previous' },
                     resource: 'posts',
+                    meta: undefined,
                 },
                 { snapshot: [] }
             );
@@ -199,8 +207,8 @@ describe('EditBase', () => {
 
     it('should allow to override the transform function', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -239,8 +247,8 @@ describe('EditBase', () => {
 
     it('should allow to override the transform function at call time', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({ data: { id: 12, test: 'previous' } }),
             update: jest.fn((_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } })
@@ -375,5 +383,45 @@ describe('EditBase', () => {
         await screen.findByText('Update article Hello (en)');
         fireEvent.click(screen.getByText('FR'));
         await screen.findByText("Modifier l'article Hello (fr)");
+    });
+
+    it('should allow renderProp', async () => {
+        const dataProvider = testDataProvider({
+            getOne: () =>
+                // @ts-ignore
+                Promise.resolve({ data: { id: 12, test: 'Hello' } }),
+            update: jest.fn((_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } })
+            ),
+        });
+        render(
+            <WithRenderProps
+                dataProvider={dataProvider}
+                mutationMode="pessimistic"
+            />
+        );
+        await screen.findByText('12');
+        await screen.findByText('Hello');
+        fireEvent.click(screen.getByText('save'));
+
+        await waitFor(() => {
+            expect(dataProvider.update).toHaveBeenCalledWith('posts', {
+                id: 12,
+                data: { test: 'test' },
+                previousData: { id: 12, test: 'Hello' },
+            });
+        });
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        const { rerender } = render(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, cannot load data');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('Hello');
+        expect(
+            screen.queryByText('You are offline, cannot load data')
+        ).toBeNull();
+        rerender(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, the data may be outdated');
     });
 });

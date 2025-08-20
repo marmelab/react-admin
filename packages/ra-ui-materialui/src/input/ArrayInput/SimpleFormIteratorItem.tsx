@@ -3,6 +3,7 @@ import { ReactElement, ReactNode, useMemo } from 'react';
 import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
+    ArrayInputContextValue,
     RaRecord,
     RecordContextProvider,
     SourceContextProvider,
@@ -12,7 +13,6 @@ import {
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
-import { ArrayInputContextValue } from './ArrayInputContext';
 import {
     SimpleFormIteratorItemContext,
     SimpleFormIteratorItemContextValue,

@@ -28,6 +28,7 @@ export interface TranslationMessages extends StringMap {
             remove: string;
             save: string;
             search: string;
+            search_columns: string;
             select_all: string;
             select_all_button: string;
             select_row: string;
@@ -167,6 +168,7 @@ export interface TranslationMessages extends StringMap {
             logged_out: string;
             not_authorized: string;
             application_update_available: string;
+            offline: string;
         };
         validation: {
             [key: string]: StringMap | string;

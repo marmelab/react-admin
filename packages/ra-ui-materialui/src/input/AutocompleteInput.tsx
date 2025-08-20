@@ -447,6 +447,14 @@ If you provided a React element for the optionText prop, you must also provide t
             emptyValue,
         ]
     );
+    const getOptionLabelString = useCallback(
+        (option: any, isListItem: boolean = false) => {
+            const optionLabel = getOptionLabel(option, isListItem);
+            // Can be a ReactNode when it's the create option.
+            return typeof optionLabel === 'string' ? optionLabel : '';
+        },
+        [getOptionLabel]
+    );
 
     const finalOnBlur = useCallback(
         (event): void => {
@@ -493,10 +501,13 @@ If you provided a React element for the optionText prop, you must also provide t
             event?.type === 'change' ||
             !doesQueryMatchSelection(newInputValue)
         ) {
-            const createOptionLabel = translate(createItemLabel, {
-                item: filterValue,
-                _: createItemLabel,
-            });
+            const createOptionLabel =
+                typeof createItemLabel === 'string'
+                    ? translate(createItemLabel, {
+                          item: filterValue,
+                          _: createItemLabel,
+                      })
+                    : undefined;
             const isCreate = newInputValue === createOptionLabel;
             const valueToSet = isCreate ? filterValue : newInputValue;
             setFilterValue(valueToSet);
@@ -722,7 +733,8 @@ If you provided a React element for the optionText prop, you must also provide t
                         ? suggestions
                         : []
                 }
-                getOptionLabel={getOptionLabel}
+                getOptionKey={(option: any) => option?.id}
+                getOptionLabel={getOptionLabelString}
                 inputValue={filterValue}
                 loading={
                     isPending &&

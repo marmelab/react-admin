@@ -9,6 +9,7 @@ import {
     IconButton,
     Stack,
     TextField,
+    Typography,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -165,6 +166,38 @@ export const Disabled = () => (
             </SimpleForm>
         </Create>
     </AdminContext>
+);
+
+export const DisabledChoice = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator', disabled: true },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+        />
+    </Wrapper>
+);
+
+export const InputLabelProps = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            InputLabelProps={{
+                shrink: true,
+                required: true,
+            }}
+        />
+    </Wrapper>
 );
 
 export const ReadOnly = () => (
@@ -335,6 +368,22 @@ export const CreateLabel = () => (
             defaultValue={['u001', 'u003']}
             create={<CreateRole />}
             createLabel="Create a new role"
+        />
+    </Wrapper>
+);
+
+export const CreateLabelRendered = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={choices}
+            defaultValue={['u001', 'u003']}
+            create={<CreateRole />}
+            createLabel={
+                <Typography data-testid="new-role-label">
+                    Create a new <strong>role</strong>
+                </Typography>
+            }
         />
     </Wrapper>
 );

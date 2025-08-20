@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useListController, ListControllerProps } from './useListController';
+import {
+    useListController,
+    ListControllerProps,
+    ListControllerResult,
+} from './useListController';
 import { OptionalResourceContextProvider } from '../../core';
 import { RaRecord } from '../../types';
 import { ListContextProvider } from './ListContextProvider';
@@ -42,6 +46,7 @@ import { useIsAuthPending } from '../../auth';
  */
 export const ListBase = <RecordType extends RaRecord = any>({
     children,
+    render,
     loading = null,
     ...props
 }: ListBaseProps<RecordType>) => {
@@ -54,12 +59,17 @@ export const ListBase = <RecordType extends RaRecord = any>({
     if (isAuthPending && !props.disableAuthentication) {
         return loading;
     }
+    if (!render && !children) {
+        throw new Error(
+            "<ListBase> requires either a 'render' prop or 'children' prop"
+        );
+    }
 
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <ListContextProvider value={controllerProps}>
-                {children}
+                {render ? render(controllerProps) : children}
             </ListContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -67,6 +77,7 @@ export const ListBase = <RecordType extends RaRecord = any>({
 
 export interface ListBaseProps<RecordType extends RaRecord = any>
     extends ListControllerProps<RecordType> {
-    children: ReactNode;
+    children?: ReactNode;
+    render?: (props: ListControllerResult<RecordType, Error>) => ReactNode;
     loading?: ReactNode;
 }

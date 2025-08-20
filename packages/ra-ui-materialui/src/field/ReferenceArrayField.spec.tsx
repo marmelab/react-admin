@@ -28,6 +28,7 @@ import { AdminContext } from '../AdminContext';
 import {
     DifferentIdTypes,
     WithPagination,
+    WithRenderProp,
 } from './ReferenceArrayField.stories';
 
 const theme = createTheme({});
@@ -331,6 +332,20 @@ describe('<ReferenceArrayField />', () => {
         expect(await screen.findByText('artist_1')).not.toBeNull();
         expect(await screen.findByText('artist_2')).not.toBeNull();
         expect(await screen.findByText('artist_3')).not.toBeNull();
+    });
+
+    it('should support renderProp', async () => {
+        render(<WithRenderProp />);
+        await waitFor(() => {
+            expect(screen.queryByText('John Lennon')).not.toBeNull();
+            expect(screen.queryByText('Paul McCartney')).not.toBeNull();
+            expect(screen.queryByText('Ringo Star')).not.toBeNull();
+            expect(screen.queryByText('George Harrison')).not.toBeNull();
+            expect(screen.queryByText('Mick Jagger')).not.toBeNull();
+            expect(screen.queryByText('Keith Richards')).not.toBeNull();
+            expect(screen.queryByText('Ronnie Wood')).not.toBeNull();
+            expect(screen.queryByText('Charlie Watts')).not.toBeNull();
+        });
     });
 
     describe('"Select all" button', () => {

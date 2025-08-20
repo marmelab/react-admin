@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType } from 'react';
+import type { ElementType, ReactNode } from 'react';
 import {
     Card,
     type ComponentsOverrides,
@@ -8,34 +8,54 @@ import {
     type Theme,
 } from '@mui/material';
 import clsx from 'clsx';
-import { useShowContext, useResourceDefinition } from 'ra-core';
+import {
+    useShowContext,
+    useResourceDefinition,
+    ShowControllerResult,
+} from 'ra-core';
 import { ShowActions } from './ShowActions';
 import { Title } from '../layout';
 import { ShowProps } from './Show';
+import { Offline } from '../Offline';
 
 const defaultActions = <ShowActions />;
+const defaultOffline = <Offline />;
 
 export const ShowView = (props: ShowViewProps) => {
     const {
         actions,
         aside,
         children,
+        render,
         className,
         component: Content = Card,
         emptyWhileLoading = false,
+        offline = defaultOffline,
         title,
         ...rest
     } = props;
 
-    const { resource, defaultTitle, record } = useShowContext();
+    const showContext = useShowContext();
+    const { resource, defaultTitle, isPaused, record } = showContext;
     const { hasEdit } = useResourceDefinition();
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
 
-    if (!children || (!record && emptyWhileLoading)) {
+    if (!record && offline !== false && isPaused) {
+        return (
+            <Root className={clsx('show-page', className)} {...rest}>
+                <div className={clsx(ShowClasses.main, ShowClasses.noActions)}>
+                    <Content className={ShowClasses.card}>{offline}</Content>
+                    {aside}
+                </div>
+            </Root>
+        );
+    }
+    if (!record && emptyWhileLoading) {
         return null;
     }
+
     return (
         <Root className={clsx('show-page', className)} {...rest}>
             {title !== false && (
@@ -51,7 +71,9 @@ export const ShowView = (props: ShowViewProps) => {
                     [ShowClasses.noActions]: !finalActions,
                 })}
             >
-                <Content className={ShowClasses.card}>{children}</Content>
+                <Content className={ShowClasses.card}>
+                    {render ? render(showContext) : children}
+                </Content>
                 {aside}
             </div>
         </Root>
@@ -60,12 +82,14 @@ export const ShowView = (props: ShowViewProps) => {
 
 export interface ShowViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
+    actions?: ReactNode | false;
+    aside?: ReactNode;
     component?: ElementType;
     emptyWhileLoading?: boolean;
-    title?: string | ReactElement | false;
+    offline?: ReactNode;
+    title?: ReactNode;
     sx?: SxProps<Theme>;
+    render?: (showContext: ShowControllerResult) => ReactNode;
 }
 
 const PREFIX = 'RaShow';

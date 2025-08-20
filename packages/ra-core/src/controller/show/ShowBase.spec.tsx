@@ -7,7 +7,9 @@ import {
     AccessControl,
     DefaultTitle,
     NoAuthProvider,
+    Offline,
     WithAuthProviderNoAccessControl,
+    WithRenderProp,
 } from './ShowBase.stories';
 
 describe('ShowBase', () => {
@@ -104,5 +106,29 @@ describe('ShowBase', () => {
         await screen.findByText('Details of article Hello (en)');
         fireEvent.click(screen.getByText('FR'));
         await screen.findByText("Détails de l'article Hello (fr)");
+    });
+
+    it('should support render prop', async () => {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getOne: jest.fn(() =>
+                Promise.resolve({ data: { id: 12, test: 'Hello' } })
+            ),
+        });
+        render(<WithRenderProp dataProvider={dataProvider} />);
+        expect(dataProvider.getOne).toHaveBeenCalled();
+        await screen.findByText('Hello');
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        const { rerender } = render(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, cannot load data');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('Hello');
+        expect(
+            screen.queryByText('You are offline, cannot load data')
+        ).toBeNull();
+        rerender(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, the data may be outdated');
     });
 });

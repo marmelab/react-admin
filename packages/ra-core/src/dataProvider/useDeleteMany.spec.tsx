@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { waitFor, render } from '@testing-library/react';
+import { waitFor, render, screen } from '@testing-library/react';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from './testDataProvider';
 import { useDeleteMany } from './useDeleteMany';
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 
 describe('useDeleteMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
@@ -80,6 +80,64 @@ describe('useDeleteMany', () => {
         });
     });
 
+    it('accepts a meta parameter', async () => {
+        const dataProvider = testDataProvider({
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+        });
+        let localDeleteMany;
+        const Dummy = () => {
+            const [deleteMany] = useDeleteMany();
+            localDeleteMany = deleteMany;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localDeleteMany('foo', { ids: [1, 2], meta: { hello: 'world' } });
+        await waitFor(() => {
+            expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
+                ids: [1, 2],
+                meta: { hello: 'world' },
+            });
+        });
+    });
+    it('sets the mutationKey', async () => {
+        const dataProvider = testDataProvider({
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+        });
+        let localDeleteMany;
+        const Dummy = () => {
+            const [deleteMany] = useDeleteMany('foo');
+            localDeleteMany = deleteMany;
+            return <span />;
+        };
+        const Observe = () => {
+            const mutation = useMutationState({
+                filters: {
+                    mutationKey: ['foo', 'deleteMany'],
+                },
+            });
+
+            return <span>mutations: {mutation.length}</span>;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+                <Observe />
+            </CoreAdminContext>
+        );
+        localDeleteMany('foo', { ids: [1, 2] });
+        await waitFor(() => {
+            expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
+                ids: [1, 2],
+            });
+        });
+        await screen.findByText('mutations: 1');
+    });
     it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
             deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),

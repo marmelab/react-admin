@@ -2,7 +2,11 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 
 import { RaRecord } from '../../types';
-import { useEditController, EditControllerProps } from './useEditController';
+import {
+    useEditController,
+    EditControllerProps,
+    EditControllerResult,
+} from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 import { OptionalResourceContextProvider } from '../../core';
 import { useIsAuthPending } from '../../auth';
@@ -38,7 +42,10 @@ import { useIsAuthPending } from '../../auth';
  */
 export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
     children,
-    loading = null,
+    disableAuthentication,
+    loading,
+    offline,
+    render,
     ...props
 }: EditBaseProps<RecordType, ErrorType>) => {
     const controllerProps = useEditController<RecordType, ErrorType>(props);
@@ -48,15 +55,34 @@ export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
         action: 'edit',
     });
 
-    if (isAuthPending && !props.disableAuthentication) {
-        return loading;
+    if (!render && !children) {
+        throw new Error(
+            "<EditBase> requires either a 'render' prop or 'children' prop"
+        );
     }
+
+    const { isPaused, record } = controllerProps;
+
+    const shouldRenderLoading =
+        isAuthPending &&
+        !disableAuthentication &&
+        loading !== false &&
+        loading !== undefined;
+
+    const shouldRenderOffline =
+        isPaused && !record && offline !== false && offline !== undefined;
 
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <EditContextProvider value={controllerProps}>
-                {children}
+                {shouldRenderLoading
+                    ? loading
+                    : shouldRenderOffline
+                      ? offline
+                      : render
+                        ? render(controllerProps)
+                        : children}
             </EditContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -66,6 +92,8 @@ export interface EditBaseProps<
     RecordType extends RaRecord = RaRecord,
     ErrorType = Error,
 > extends EditControllerProps<RecordType, ErrorType> {
-    children: ReactNode;
+    children?: ReactNode;
+    render?: (props: EditControllerResult<RecordType, ErrorType>) => ReactNode;
     loading?: ReactNode;
+    offline?: ReactNode;
 }
