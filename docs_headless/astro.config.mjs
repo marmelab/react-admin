@@ -123,7 +123,7 @@ export default defineConfig({
             [
                 rehypeAstroRelativeMarkdownLinks,
                 {
-                    // Do not apply a base segment to the transformed URL path
+                    base: '/ra-core/',
                     collectionBase: false,
                 },
             ],
@@ -132,4 +132,5 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()],
     },
+    base: '/ra-core/',
 });
