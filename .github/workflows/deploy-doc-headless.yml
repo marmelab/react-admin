@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - master
+            - next # TODO remove
     pull_request: # TODO remove
 
 concurrency:
