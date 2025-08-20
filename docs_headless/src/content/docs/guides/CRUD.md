@@ -414,7 +414,7 @@ const App = () => (
 
 Guesser components start by fetching data from the API, analyzing the shape of the response, and then picking up Field and Input components that match the data type. They also dump the generated code in the console to let you start customizing the UI.
 
-![ListGuesser](../../../../assets/tutorial_guessed_list.png)
+![ListGuesser](../../../assets/tutorial_guessed_list.png)
 
 Check the following components to learn more about guessers:
 

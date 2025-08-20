@@ -2,7 +2,6 @@
 import MobileMenuFooter from '@astrojs/starlight/components/MobileMenuFooter.astro';
 import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
 import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
-import StarlightSidebarTopicsSidebar from 'starlight-sidebar-topics/components/Sidebar.astro';
 
 const { sidebar } = Astro.locals.starlightRoute;
 ---
@@ -22,8 +21,6 @@ const { sidebar } = Astro.locals.starlightRoute;
         }
     });
 </script>
-
-<StarlightSidebarTopicsSidebar />
 
 <SidebarPersister>
     <SidebarSublist sublist={sidebar} />

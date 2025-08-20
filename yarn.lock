@@ -19593,7 +19593,6 @@ __metadata:
     rehype-code-group: "npm:^0.2.4"
     sharp: "npm:^0.34.2"
     starlight-package-managers: "npm:^0.11.0"
-    starlight-sidebar-topics: "npm:^0.6.0"
     tailwindcss: "npm:^4.1.11"
   languageName: unknown
   linkType: soft
@@ -22315,17 +22314,6 @@ __metadata:
   peerDependencies:
     "@astrojs/starlight": ">=0.22.0"
   checksum: 3dee89f8a9317799108bbc53f45d918cc2e75c7a44bee63994788256ebc115143b44316a540082414fbb792eb7d55b888bab7c20c8b914609322f49f6540a8a5
-  languageName: node
-  linkType: hard
-
-"starlight-sidebar-topics@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "starlight-sidebar-topics@npm:0.6.0"
-  dependencies:
-    picomatch: "npm:^4.0.2"
-  peerDependencies:
-    "@astrojs/starlight": ">=0.32.0"
-  checksum: cdcbb03ba11d492581723552f1c7f47fe76b3336af80bbc9a6c4023d3a85750e9c508521a804a71cb05726fe153a3ee06e7dce6cb541d94b06bcb2d8c149d254
   languageName: node
   linkType: hard
 

@@ -19,7 +19,7 @@ img.icon {
 .ee-badge {
     background-color: transparent;
     border: none;
-    background-image: url('/img/premium.svg');
+    background-image: url('/ra-core/img/premium.svg');
     background-repeat: no-repeat;
     background-size: contain;
     width: 20px;
