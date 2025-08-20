@@ -19,7 +19,7 @@ jobs:
         runs-on: ubuntu-latest
 
         env:
-            PRODUCTION_REMOTE: https://git:${{ secrets.DEPLOY_TOKEN || secrets.GITHUB_TOKEN }}@github.com/${{ vars.DEPLOY_REPOSITORY || github.repository }}
+            PRODUCTION_REMOTE: https://git:${{ secrets.DEPLOY_TOKEN }}@github.com/${{ vars.DEPLOY_REPOSITORY }}
 
         steps:
             - name: 📥 Checkout repo
@@ -43,9 +43,12 @@ jobs:
               run: yarn install --frozen-lockfile
 
             - name: 🔨 Build
-              run: cd docs_headless && yarn build
+              run: |
+                  cd docs_headless
+                  yarn build
+                  cd ..
 
             - name: 📡 Deploy GitHub pages
-              run: npx gh-pages --remote production -d dist -b ${{ vars.DEPLOY_BRANCH || 'gh-pages' }}
+              run: yarn gh-pages --remote production -d docs_headless/dist -b ${{ vars.DEPLOY_BRANCH || 'gh-pages' }}
               env:
-                  GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN || secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
