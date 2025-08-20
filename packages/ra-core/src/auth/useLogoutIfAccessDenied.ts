@@ -55,78 +55,77 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
         [navigate]
     );
 
-    const logoutIfAccessDenied = useCallback(
-        (error?: any) => {
+    const logoutIfAccessDenied = useCallback<LogoutIfAccessDenied>(
+        async (error?: any) => {
             if (!authProvider) {
                 return logoutIfAccessDeniedWithoutProvider();
             }
-            return authProvider
-                .checkError(error)
-                .then(() => false)
-                .catch(async e => {
-                    const logoutUser = e?.logoutUser ?? true;
-                    //manual debounce
-                    if (timer) {
-                        // side effects already triggered in this tick, exit
-                        return true;
-                    }
-                    timer = setTimeout(() => {
-                        timer = undefined;
-                    }, 0);
+            try {
+                await authProvider.checkError(error);
+                return false;
+            } catch (e: any) {
+                const logoutUser = e?.logoutUser ?? true;
+                // manual debounce
+                if (timer) {
+                    return true; // side effects already triggered in this tick, exit
+                }
+                timer = setTimeout(() => {
+                    timer = undefined;
+                }, 0);
 
-                    const redirectTo =
-                        e && e.redirectTo != null
-                            ? e.redirectTo
-                            : error && error.redirectTo
-                              ? error.redirectTo
-                              : undefined;
+                const redirectTo =
+                    e && e.redirectTo != null
+                        ? e.redirectTo
+                        : error && error.redirectTo
+                          ? error.redirectTo
+                          : undefined;
 
-                    const shouldNotify = !(
-                        (e && e.message === false) ||
-                        (error && error.message === false) ||
-                        redirectTo?.startsWith('http')
-                    );
-                    if (shouldNotify) {
+                const shouldNotify = !(
+                    (e && e.message === false) ||
+                    (error && error.message === false) ||
+                    redirectTo?.startsWith('http')
+                );
+                if (shouldNotify) {
+                    try {
                         // notify only if not yet logged out
-                        authProvider
-                            .checkAuth({})
-                            .then(() => {
-                                if (logoutUser) {
-                                    notify(
-                                        getErrorMessage(
-                                            e,
-                                            'ra.notification.logged_out'
-                                        ),
-                                        { type: 'error' }
-                                    );
-                                } else {
-                                    notify(
-                                        getErrorMessage(
-                                            e,
-                                            'ra.notification.not_authorized'
-                                        ),
-                                        { type: 'error' }
-                                    );
-                                }
-                            })
-                            .catch(() => {});
+                        await authProvider.checkAuth({});
+                        if (logoutUser) {
+                            notify(
+                                getErrorMessage(
+                                    e,
+                                    'ra.notification.logged_out'
+                                ),
+                                { type: 'error' }
+                            );
+                        } else {
+                            notify(
+                                getErrorMessage(
+                                    e,
+                                    'ra.notification.not_authorized'
+                                ),
+                                { type: 'error' }
+                            );
+                        }
+                    } catch {
+                        // ignore
                     }
+                }
 
-                    if (logoutUser) {
-                        logout({}, redirectTo);
-                    } else if (redirectTo) {
-                        handleRedirect(redirectTo);
-                    }
+                if (logoutUser) {
+                    logout({}, redirectTo);
+                } else if (redirectTo) {
+                    handleRedirect(redirectTo);
+                }
 
-                    return true;
-                });
+                return true;
+            }
         },
         [authProvider, logout, notify, handleRedirect]
     );
     return logoutIfAccessDenied;
 };
 
-const logoutIfAccessDeniedWithoutProvider = () => Promise.resolve(false);
+const logoutIfAccessDeniedWithoutProvider = async () => false;
 
 /**
  * Call the authProvider.authError() method, using the error passed as argument.
