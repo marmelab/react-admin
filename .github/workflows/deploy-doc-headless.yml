@@ -2,7 +2,7 @@ name: 📕 Deploy headless docs
 on:
     push:
         branches:
-            - main
+            - master
     pull_request: # TODO remove
 
 concurrency:
