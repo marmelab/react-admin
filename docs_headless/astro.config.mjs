@@ -133,4 +133,5 @@ export default defineConfig({
         plugins: [tailwindcss()],
     },
     base: '/ra-core/',
+    site: 'https://marmelab.com',
 });
