@@ -9,6 +9,7 @@ import rehypeCodeGroup from 'rehype-code-group';
 import expressiveCode from 'astro-expressive-code';
 import { pluginFullscreen } from 'expressive-code-fullscreen';
 import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
+import rehypeAstroRelativeMarkdownLinks from 'astro-rehype-relative-markdown-links';
 
 // https://astro.build/config
 export default defineConfig({
@@ -117,7 +118,16 @@ export default defineConfig({
         mdx(),
     ],
     markdown: {
-        rehypePlugins: [rehypeCodeGroup],
+        rehypePlugins: [
+            rehypeCodeGroup,
+            [
+                rehypeAstroRelativeMarkdownLinks,
+                {
+                    // Do not apply a base segment to the transformed URL path
+                    collectionBase: false,
+                },
+            ],
+        ],
     },
     vite: {
         plugins: [tailwindcss()],

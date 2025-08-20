@@ -7769,6 +7769,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"astro-rehype-relative-markdown-links@npm:^0.18.1":
+  version: 0.18.1
+  resolution: "astro-rehype-relative-markdown-links@npm:0.18.1"
+  dependencies:
+    catch-unknown: "npm:^2.0.0"
+    debug: "npm:^4.4.0"
+    github-slugger: "npm:^2.0.0"
+    gray-matter: "npm:^4.0.3"
+    is-absolute-url: "npm:^4.0.1"
+    unified: "npm:^11.0.5"
+    unist-util-visit: "npm:^5.0.0"
+    zod: "npm:^3.23.8"
+  peerDependencies:
+    astro: ">=2 <6"
+  checksum: f1819464b8ba0d27dcb7656c7b1115ea750b3e0968bbee0d1eb2a6d7b96217dc98822fbbe20a3b43cc7ffaf6957cf44e99d6332702b7b3bf5204c7319976b399
+  languageName: node
+  linkType: hard
+
 "astro@npm:5.12.6":
   version: 5.12.6
   resolution: "astro@npm:5.12.6"
@@ -8596,6 +8614,13 @@ __metadata:
   version: 0.12.0
   resolution: "caseless@npm:0.12.0"
   checksum: ccf64bcb6c0232cdc5b7bd91ddd06e23a4b541f138336d4725233ac538041fb2f29c2e86c3c4a7a61ef990b665348db23a047060b9414c3a6603e9fa61ad4626
+  languageName: node
+  linkType: hard
+
+"catch-unknown@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "catch-unknown@npm:2.0.0"
+  checksum: eee47640c39949ab732885f7962dafed4cb61d42502d04719045ebdca30e31e361e703df9c4db4061dd3e5977612cc72e404d117fbeabfbf17f1fa14e0d8e7eb
   languageName: node
   linkType: hard
 
@@ -11638,6 +11663,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"extend-shallow@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "extend-shallow@npm:2.0.1"
+  dependencies:
+    is-extendable: "npm:^0.1.0"
+  checksum: ee1cb0a18c9faddb42d791b2d64867bd6cfd0f3affb711782eb6e894dd193e2934a7f529426aac7c8ddb31ac5d38000a00aa2caf08aa3dfc3e1c8ff6ba340bd9
+  languageName: node
+  linkType: hard
+
 "extend@npm:^3.0.0, extend@npm:~3.0.2":
   version: 3.0.2
   resolution: "extend@npm:3.0.2"
@@ -12831,6 +12865,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gray-matter@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "gray-matter@npm:4.0.3"
+  dependencies:
+    js-yaml: "npm:^3.13.1"
+    kind-of: "npm:^6.0.2"
+    section-matter: "npm:^1.0.0"
+    strip-bom-string: "npm:^1.0.0"
+  checksum: e38489906dad4f162ca01e0dcbdbed96d1a53740cef446b9bf76d80bec66fa799af07776a18077aee642346c5e1365ed95e4c91854a12bf40ba0d4fb43a625a6
+  languageName: node
+  linkType: hard
+
 "h3@npm:^1.15.3":
   version: 1.15.3
   resolution: "h3@npm:1.15.3"
@@ -13853,6 +13899,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-absolute-url@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "is-absolute-url@npm:4.0.1"
+  checksum: 6f8f603945bd9f2c6031758bbc12352fc647bd5d807cad10d96cc6300fd0e15240cc091521a61db767e4ec0bacff257b4f1015fd5249c147bbb4a4497356c72e
+  languageName: node
+  linkType: hard
+
 "is-alphabetical@npm:^2.0.0":
   version: 2.0.1
   resolution: "is-alphabetical@npm:2.0.1"
@@ -14036,6 +14089,13 @@ __metadata:
   bin:
     is-docker: cli.js
   checksum: d2c4f8e6d3e34df75a5defd44991b6068afad4835bb783b902fa12d13ebdb8f41b2a199dcb0b5ed2cb78bfee9e4c0bbdb69c2d9646f4106464674d3e697a5856
+  languageName: node
+  linkType: hard
+
+"is-extendable@npm:^0.1.0":
+  version: 0.1.1
+  resolution: "is-extendable@npm:0.1.1"
+  checksum: dd5ca3994a28e1740d1e25192e66eed128e0b2ff161a7ea348e87ae4f616554b486854de423877a2a2c171d5f7cd6e8093b91f54533bc88a59ee1c9838c43879
   languageName: node
   linkType: hard
 
@@ -15403,7 +15463,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"kind-of@npm:^6.0.2, kind-of@npm:^6.0.3":
+"kind-of@npm:^6.0.0, kind-of@npm:^6.0.2, kind-of@npm:^6.0.3":
   version: 6.0.3
   resolution: "kind-of@npm:6.0.3"
   checksum: 61cdff9623dabf3568b6445e93e31376bee1cdb93f8ba7033d86022c2a9b1791a1d9510e026e6465ebd701a6dd2f7b0808483ad8838341ac52f003f512e0b4c4
@@ -19441,6 +19501,7 @@ __metadata:
     "@types/react-dom": "npm:^19.1.6"
     astro: "npm:5.12.6"
     astro-expressive-code: "npm:^0.41.3"
+    astro-rehype-relative-markdown-links: "npm:^0.18.1"
     expressive-code-fullscreen: "npm:^1.0.0"
     prettier: "npm:^3.2.5"
     prettier-plugin-astro: "npm:^0.14.1"
@@ -21361,6 +21422,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"section-matter@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "section-matter@npm:1.0.0"
+  dependencies:
+    extend-shallow: "npm:^2.0.1"
+    kind-of: "npm:^6.0.0"
+  checksum: 8007f91780adc5aaa781a848eaae50b0f680bbf4043b90cf8a96778195b8fab690c87fe7a989e02394ce69890e330811ec8dab22397d384673ce59f7d750641d
+  languageName: node
+  linkType: hard
+
 "semver-compare@npm:^1.0.0":
   version: 1.0.0
   resolution: "semver-compare@npm:1.0.0"
@@ -22393,6 +22464,13 @@ __metadata:
   dependencies:
     ansi-regex: "npm:^6.0.1"
   checksum: a198c3762e8832505328cbf9e8c8381de14a4fa50a4f9b2160138158ea88c0f5549fb50cb13c651c3088f47e63a108b34622ec18c0499b6c8c3a5ddf6b305ac4
+  languageName: node
+  linkType: hard
+
+"strip-bom-string@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "strip-bom-string@npm:1.0.0"
+  checksum: 5c5717e2643225aa6a6d659d34176ab2657037f1fe2423ac6fcdb488f135e14fef1022030e426d8b4d0989e09adbd5c3288d5d3b9c632abeefd2358dfc512bca
   languageName: node
   linkType: hard
 
@@ -24701,7 +24779,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.1, zod@npm:^3.24.2, zod@npm:^3.24.4":
+"zod@npm:^3.22.1, zod@npm:^3.23.8, zod@npm:^3.24.2, zod@npm:^3.24.4":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c

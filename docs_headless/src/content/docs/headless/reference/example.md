@@ -8,5 +8,5 @@ Less concerned with telling a story or addressing a specific use case, they shou
 
 ## Tests
 
-- [General Concepts](/guides/architecture)
-- [Data Fetching](/guides/datafetchingguide)
+- [General Concepts](../guides/Architecture.md)
+- [Data Fetching](../guides/datafetchingguide.mdx)

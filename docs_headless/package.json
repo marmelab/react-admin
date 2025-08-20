@@ -20,6 +20,7 @@
     "@types/react-dom": "^19.1.6",
     "astro": "5.12.6",
     "astro-expressive-code": "^0.41.3",
+    "astro-rehype-relative-markdown-links": "^0.18.1",
     "expressive-code-fullscreen": "^1.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
