@@ -1,63 +1,59 @@
 ---
-layout: default
-title: "The useGetRecordRepresentation Hook"
+title: "useGetRecordRepresentation"
 ---
 
-# `useGetRecordRepresentation`
-
-Get a function that returns the record representation, leveraging the [`<Record recordRepresentation>`](./Resource.md#recordrepresentation) prop.
+Get a function that returns the record representation, leveraging the [`<Record recordRepresentation>`](../app-configuration/Resource.md#recordrepresentation) prop.
 
 You can also use the component version: [`<RecordRepresentation>`](./RecordRepresentation.md).
 
 ## Usage
 
-{% raw %}
 ```tsx
 // in src/posts/PostBreadcrumbs.tsx
 import * as React from 'react';
-import { Breadcrumbs, Typography } from '@mui/material';
-import { Link, useGetRecordRepresentation, useRecordContext } from 'react-admin';
+import { Link } from 'react-router-dom';
+import { useGetRecordRepresentation, useRecordContext } from 'ra-core';
 
 export const PostBreadcrumbs = () => {
     const record = useRecordContext();
     const getRecordRepresentation = useGetRecordRepresentation('posts');
     return (
-        <div role="presentation">
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" to="/">
-                    Home
-                </Link>
-                <Link underline="hover" color="inherit" to="/posts">
-                    Posts
-                </Link>
-                <Typography sx={{ color: "text.primary" }}>
+        <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+                <li className="breadcrumb-item">
+                    <Link to="/">Home</Link>
+                </li>
+                <li className="breadcrumb-item">
+                    <Link to="/posts">Posts</Link>
+                </li>
+                <li className="breadcrumb-item active" aria-current="page">
                     {getRecordRepresentation(record)}
-                </Typography>
-            </Breadcrumbs>
-        </div>
+                </li>
+            </ol>
+        </nav>
     );
 }
 
 // in src/posts/PostEdit.tsx
-import { EditBase, EditView, SimpleForm, TextInput } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
 import { PostBreadcrumbs } from './PostBreadcrumbs';
 
 const PostEdit = () => (
     <EditBase>
         <PostBreadcrumbs />
-        <EditView>
-            <SimpleForm>
+        <div>
+            <Form>
                 <TextInput source="title" />
-            </SimpleForm>
-        </EditView>
+            </Form>
+        </div>
     </EditBase>
 )
 ```
-{% endraw %}
 
 ## Default Representation
 
-When [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) is not defined, `useGetRecordRepresentation` will return the first non-empty field from this list:  
+When [`<Resource recordRepresentation>`](../app-configuration/Resource.md#recordrepresentation) is not defined, `useGetRecordRepresentation` will return the first non-empty field from this list:  
 1. `name`
 2. `title`
 3. `label`

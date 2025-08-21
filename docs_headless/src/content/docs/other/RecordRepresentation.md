@@ -1,62 +1,58 @@
 ---
-layout: default
-title: "The RecordRepresentation Component"
+title: "<RecordRepresentation>"
 storybook_path: ra-core-controller-record-recordrepresentation--no-record-representation
 ---
 
-# `<RecordRepresentation>`
-
-Render the current record as text, leveraging the [`<Resource recordRepresentation>`](./Resource.md#recordrepresentation) prop.
+Render the current record as text, leveraging the [`<Resource recordRepresentation>`](../app-configuration/Resource.md#recordrepresentation) prop.
 
 You can also use its hook version: [`useGetRecordRepresentation`](./useGetRecordRepresentation.md).
 
 ## Usage
 
-`<RecordRepresentation>` doesn't require any argument. It reads the current record from the parent [`RecordContext`](./useRecordContext.md) and the current resource from the parent `ResourceContext`.
+`<RecordRepresentation>` doesn't require any argument. It reads the current record from the parent [`RecordContext`](../common/useRecordContext.md) and the current resource from the parent `ResourceContext`.
 
 The component uses the [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) hook and the same [rules](./useGetRecordRepresentation.md#default-representation) are therefore applied.
 
-{% raw %}
 ```tsx
 // in src/posts/PostBreadcrumbs.tsx
 import * as React from 'react';
-import { Breadcrumbs, Typography } from '@mui/material';
-import { Link, RecordRepresentation } from 'react-admin';
+import { Link } from 'react-router-dom';
+import { RecordRepresentation } from 'ra-core';
 
 export const PostBreadcrumbs = () => {
     return (
-        <div role="presentation">
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link underline="hover" color="inherit" to="/">
-                    Home
-                </Link>
-                <Link underline="hover" color="inherit" to="/posts">
-                    Posts
-                </Link>
-                <Typography sx={{ color: "text.primary" }}>
+        <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+                <li className="breadcrumb-item">
+                    <Link to="/">Home</Link>
+                </li>
+                <li className="breadcrumb-item">
+                    <Link to="/posts">Posts</Link>
+                </li>
+                <li className="breadcrumb-item active" aria-current="page">
                     <RecordRepresentation />
-                </Typography>
-            </Breadcrumbs>
-        </div>
+                </li>
+            </ol>
+        </nav>
     );
 }
 
 // in src/posts/PostEdit.tsx
-import { EditBase, EditView, SimpleForm, TextInput } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
 import { PostBreadcrumbs } from './PostBreadcrumbs';
 
 const PostEdit = () => (
     <EditBase>
         <PostBreadcrumbs />
-        <EditView>
-            <SimpleForm>
+        <div>
+            <Form>
                 <TextInput source="title" />
-            </SimpleForm>
-        </EditView>
+            </Form>
+        </div>
     </EditBase>
 )
 ```
-{% endraw %}
 
 ## Props
 

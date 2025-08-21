@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "The useCheckForApplicationUpdate Hook"
+title: "useCheckForApplicationUpdate"
 ---
 
 TODO
