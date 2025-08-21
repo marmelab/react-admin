@@ -117,6 +117,9 @@ build: build-ra-core build-ra-data-fakerest build-ra-ui-materialui build-ra-data
 doc: ## compile doc as html and launch doc web server
 	@yarn doc
 
+doc-headless: ## launch headless doc web server
+	@cd docs_headless && yarn dev
+
 docker-doc: ## run the doc website in a docker container
 	@docker run -it --rm \
 		-p 4000:4000 \
