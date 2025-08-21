@@ -3,47 +3,45 @@ layout: default
 title: "Unit Testing"
 ---
 
-# Unit Testing
-
 React-admin relies heavily on unit tests (powered by [Jest](https://facebook.github.io/jest/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)) to ensure that its code is working as expected.
 
 That means that each individual component and hook can be tested in isolation. That also means that if you have to test your own components and hooks based on react-admin, this should be straightforward.
 
-## AdminContext Wrapper
+## CoreAdminContext Wrapper
 
-Some of react-admin's components depend on a context for translation, theming, data fetching, etc. If you write a component that depends on a react-admin component, chances are the test runner will complain about a missing context.
+Some of react-admin's components depend on a context for translation, data fetching, etc. If you write a component that depends on a react-admin component, chances are the test runner will complain about a missing context.
 
-Wrap your tested component inside `<AdminContext>` to avoid this problem:
+Wrap your tested component inside `<CoreAdminContext>` to avoid this problem:
 
 ```jsx
 import React from 'react';
-import { AdminContext } from 'react-admin';
+import { CoreAdminContext } from 'ra-core';
 import { render, screen } from '@testing-library/react';
 
 import MyComponent from './MyComponent';
 
 test('<MyComponent>', async () => {
     render(
-        <AdminContext>
+        <CoreAdminContext>
             <MyComponent />
-        </AdminContext>
+        </CoreAdminContext>
     );
     const items = await screen.findAllByText(/Item #[0-9]: /)
     expect(items).toHaveLength(10)
 })
 ```
 
-**Tip**: you can also pass `AdminContext` as the `wrapper` option to the `render()` function:
+**Tip**: you can also pass `CoreAdminContext` as the `wrapper` option to the `render()` function:
 
 ```jsx
 import React from 'react';
-import { AdminContext } from 'react-admin';
+import { CoreAdminContext } from 'ra-core';
 import { render, screen } from '@testing-library/react';
 
 import MyComponent from './MyComponent';
 
 test('<MyComponent>', async () => {
-    render(<MyComponent />, { wrapper: AdminContext });
+    render(<MyComponent />, { wrapper: CoreAdminContext });
 
 const items = await screen.findAllByText(/Item #[0-9]: /)
     expect(items).toHaveLength(10)
@@ -52,25 +50,25 @@ const items = await screen.findAllByText(/Item #[0-9]: /)
 
 ## Mocking Providers
 
-`<AdminContext>` accepts the same props as `<Admin>`, so you can pass a custom `dataProvider`, `authProvider`, or `i18nProvider` for testing purposes. 
+`<CoreAdminContext>` accepts the same props as `<Admin>`, so you can pass a custom `dataProvider`, `authProvider`, or `i18nProvider` for testing purposes. 
 
 For instance, if the component to test calls the `useGetOne` hook:
 
 {% raw %}
 ```jsx
 import React from 'react';
-import { AdminContext } from 'react-admin';
+import { CoreAdminContext } from 'ra-core';
 import { render, screen } from '@testing-library/react';
 
 import MyComponent from './MyComponent';
 
 test('<MyComponent>', async () => {
     render(
-        <AdminContext dataProvider={{
+        <CoreAdminContext dataProvider={{
             getOne: () => Promise.resolve({ data: { id: 1, name: 'foo' } }),
         }}>
             <MyComponent />
-        </AdminContext>
+        </CoreAdminContext>
     );
     const items = await screen.findAllByText(/Item #[0-9]: /)
     expect(items).toHaveLength(10)
@@ -82,18 +80,18 @@ test('<MyComponent>', async () => {
 
 ```jsx
 import React from 'react';
-import { AdminContext, testDataProvider } from 'react-admin';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
 import { render, screen } from '@testing-library/react';
 
 import MyComponent from './MyComponent';
 
 test('<MyComponent>', async () => {
     render(
-        <AdminContext dataProvider={testDataProvider({
+        <CoreAdminContext dataProvider={testDataProvider({
             getOne: () => Promise.resolve({ data: { id: 1, name: 'foo' } }),
         })}>
             <MyComponent />
-        </AdminContext>
+        </CoreAdminContext>
     );
     const items = await screen.findAllByText(/Item #[0-9]: /)
     expect(items).toHaveLength(10)
@@ -102,28 +100,28 @@ test('<MyComponent>', async () => {
 
 ## Resetting The Store
 
-The react-admin Store is persistent. This means that if a test modifies an item in the store, the updated value will be changed in the next test. This will cause seemingly random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. `<DataTable>` row selection, sidebar state, language selection).
+The react-admin Store is persistent. This means that if a test modifies an item in the store, the updated value will be changed in the next test. This will cause seemingly random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. row selection, sidebar state, language selection).
 
 To isolate your unit tests, pass a new `memoryStore` at each test:
 
 ```jsx
-import { memoryStore } from 'react-admin';
+import { memoryStore } from 'ra-core';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(
-        <AdminContext store={memoryStore()}>
+        <CoreAdminContext store={memoryStore()}>
             <MyComponent />
-        </AdminContext>
+        </CoreAdminContext>
     );
     const items = await screen.findAllByText(/Item #[0-9]: /);
     expect(items).toHaveLength(10);
 })
 ```
 
-If you don't need `<AdminContext>`, you can just wrap your component with a `<StoreContextProvider>`:
+If you don't need `<CoreAdminContext>`, you can just wrap your component with a `<StoreContextProvider>`:
 
 ```jsx
-import { StoreContextProvider, memoryStore } from 'react-admin';
+import { StoreContextProvider, memoryStore } from 'ra-core';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(
@@ -148,7 +146,7 @@ Here is an example with Jest and TestingLibrary, which is testing the [`UserShow
 // UserShow.spec.js
 import * as React from "react";
 import { render, fireEvent } from '@testing-library/react';
-import { AdminContext } from 'react-admin';
+import { CoreAdminContext } from 'ra-core';
 
 import UserShow from './UserShow';
 
@@ -169,9 +167,9 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <AdminContext dataProvider={dataProvider}>
+                <CoreAdminContext dataProvider={dataProvider}>
                     <UserShow permissions="user" id="1" />
-                </AdminContext>
+                </CoreAdminContext>
             );
 
             expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
@@ -195,9 +193,9 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <AdminContext dataProvider={dataProvider}>
+                <CoreAdminContext dataProvider={dataProvider}>
                     <UserShow permissions="user" id="1" />
-                </AdminContext>
+                </CoreAdminContext>
             );
 
             expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
@@ -213,9 +211,9 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <AdminContext dataProvider={dataProvider}>
+                <CoreAdminContext dataProvider={dataProvider}>
                     <UserShow permissions="user" id="1" />
-                </AdminContext>
+                </CoreAdminContext>
             );
 
             fireEvent.click(testUtils.getByText('Security'));

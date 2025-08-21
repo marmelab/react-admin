@@ -3,8 +3,6 @@ layout: default
 title: "Caching"
 ---
 
-# Caching
-
 Not hitting the server is the best way to improve a web app performance, and its ecological footprint too (network and datacenter usage account for about 40% of the CO2 emissions in IT). React-admin comes with a built-in cache-first approach called *optimistic rendering*, and it supports caching both at the HTTP level and the application level. 
 
 ## Optimistic Rendering
@@ -86,11 +84,11 @@ Finally, if your API uses GraphQL, it probably doesn't offer HTTP caching.
 
 ## Application Cache
 
-React-admin uses react-query for data fetching. React-query comes with its own caching system, allowing you to skip API calls completely. React-admin calls this the *application cache*. It's a good way to overcome the limitations if the HTTP cache. **This cache is opt-in** - you have to enable it by setting a custom `queryClient` in your `<Admin>` with a specific `staleTime` option. 
+React-admin uses react-query for data fetching. React-query comes with its own caching system, allowing you to skip API calls completely. React-admin calls this the *application cache*. It's a good way to overcome the limitations if the HTTP cache. **This cache is opt-in** - you have to enable it by setting a custom `queryClient` in your `<CoreAdminContext>` with a specific `staleTime` option. 
 
 ```jsx
 import { QueryClient } from '@tanstack/react-query';
-import { Admin, Resource } from 'react-admin';
+import { CoreAdminContext, CoreAdminUI } from 'ra-core';
 
 const App = () => {
     const queryClient = new QueryClient({
@@ -101,9 +99,11 @@ const App = () => {
         },
     });
     return (
-        <Admin dataProvider={dataProvider} queryClient={queryClient}>
-            <Resource name="posts" />
-        </Admin>
+        <CoreAdminContext dataProvider={dataProvider} queryClient={queryClient}>
+            <CoreAdminUI>
+                <Resource name="posts" />
+            </CoreAdminUI>
+        </CoreAdminContext>
     );
 }
 ```
