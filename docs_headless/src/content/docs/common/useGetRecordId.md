@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useGetRecordId"
 ---
-
-# `useGetRecordId`
 
 Accessing the current `recordId` can sometimes be tricky, because it depends on the context in which your component is used.
 
@@ -17,7 +14,7 @@ It will try to obtain it from these 3 sources, in this order:
 This hook accepts a single parameter, `recordId`, which is optional if used inside a `RecordContextProvider` or if `recordId` can be guessed from the URL.
 
 ```jsx
-import { useGetRecordId } from 'react-admin';
+import { useGetRecordId } from 'ra-core';
 
 const DisplayRecordCurrentId = () => {
     const recordId = useGetRecordId();

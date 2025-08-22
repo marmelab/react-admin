@@ -1,14 +1,11 @@
 ---
-layout: default
 title: "useRefresh"
 ---
-
-# `useRefresh`
 
 This hook returns a function that forces a refetch of all the active queries, and a rerender of the current view when the data has changed.
 
 ```jsx
-import { useRefresh } from 'react-admin';
+import { useRefresh } from 'ra-core';
 
 const RefreshButton = () => {
     const refresh = useRefresh();
@@ -23,7 +20,7 @@ It is common to use it after a mutation, e.g. after deleting a record.
 
 ```jsx
 import * as React from 'react';
-import { useDelete, useNotify, useRefresh, useRecordContext, Button } from 'react-admin';
+import { useDelete, useNotify, useRefresh, useRecordContext } from 'ra-core';
 
 const DeleteCommentButton = () => {
     const refresh = useRefresh();
@@ -43,6 +40,6 @@ const DeleteCommentButton = () => {
         }
     );
     
-    return <Button label="delete" onClick={() => deleteOne()} disabled={isPending} />;
+    return <button onClick={() => deleteOne()} disabled={isPending}>Delete</button>;
 };
 ```

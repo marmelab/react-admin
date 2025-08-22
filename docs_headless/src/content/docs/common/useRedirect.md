@@ -1,17 +1,13 @@
 ---
-layout: default
 title: "useRedirect"
-storybook_path: ra-core-routing--use-redirect
 ---
-
-# `useRedirect`
 
 This hook returns a function that redirects the user to another page.
 
 ## Usage
 
 ```jsx
-import { useRedirect } from 'react-admin';
+import { useRedirect } from 'ra-core';
 
 const DashboardButton = () => {
     const redirect = useRedirect();

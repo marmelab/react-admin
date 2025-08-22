@@ -1,11 +1,8 @@
 ---
-layout: default
 title: "useRecordContext"
 ---
 
-# `useRecordContext`
-
-`useRecordContext` grabs the current record. It's available anywhere react-admin manipulates a record, e.g. in a Show page, in a `<DataTable>` row, or in a Reference Field.
+`useRecordContext` grabs the current record. It's available anywhere react-admin manipulates a record, e.g. in a Show page, in a DataTable row, or in a Reference Field.
 
 <iframe src="https://www.youtube-nocookie.com/embed/YLwx-EZfGFk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
@@ -14,7 +11,7 @@ title: "useRecordContext"
 The most common use case for `useRecordContext` is to build a custom field. For instance, an author field for a book Show view. 
 
 ```jsx
-import { useRecordContext, Show, SimpleShowLayout } from 'react-admin';
+import { useRecordContext, ShowBase } from 'ra-core';
 
 const BookAuthor = () => {
     const record = useRecordContext();
@@ -23,18 +20,16 @@ const BookAuthor = () => {
 };
 
 const BookShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <BookAuthor />
-            ...
-        </SimpleShowLayout>
-    </Show>
+    <ShowBase>
+        <BookAuthor />
+        ...
+    </ShowBase>
 )
 ```
 
 ## Optimistic Rendering
 
-As react-admin uses optimistic rendering, `useRecordContext` may be `undefined` or a cached version of the record on load (see also [Caching](./Caching.md#optimistic-rendering)). Make sure you prepare for that! 
+As react-admin uses optimistic rendering, `useRecordContext` may be `undefined` or a cached version of the record on load (see also [Caching](../recipes/Caching.md#optimistic-rendering)). Make sure you prepare for that! 
 
 ```jsx
 const BookAuthor = () => {
@@ -55,12 +50,11 @@ if (!record) return null;
 
 As soon as there is a record available, react-admin puts it in a `RecordContext`. This means that `useRecordContext` works out of the box:
 
-- in descendants of the `<Show>` and `<ShowBase>` component
-- in descendants of the `<Edit>` and `<EditBase>` component
-- in descendants of the `<Create>` and `<CreateBase>` component
-- in descendants of the `<DataTable>` component
-- in descendants of the `<SimpleList>` component
-- in descendants of the `<ReferenceField>` component
+- in descendants of the `<ShowBase>` component
+- in descendants of the `<EditBase>` component
+- in descendants of the `<CreateBase>` component
+- in descendants of the `<ListIterator>` component
+- in descendants of the `<ReferenceFieldBase>` component
 
 ## Inside A Form
 
@@ -71,8 +65,10 @@ If you want to react to the data entered by the user, use [react-hook-form's `us
 For instance if you want to display an additional input when a user marks an order as returned, you can do the following:
 
 ```jsx
-import { Edit, SimpleForm, BooleanInput, TextInput } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 import { useWatch } from 'react-hook-form';
+import { TextInput } from './TextInput';
+import { BooleanInput } from './BooleanInput';
 
 const ReturnedReason = () => {
     const isReturned = useWatch({ name: 'returned' });
@@ -80,14 +76,14 @@ const ReturnedReason = () => {
 };
 
 const OrderEdit = () => (
-    <Edit>
-        <SimpleForm>
+    <EditBase>
+        <Form>
             <TextInput source="reference" />
             <BooleanInput source="returned" />
             <ReturnedReason />
             ...
-        </SimpleForm>
-    </Edit>
+        </Form>
+    </EditBase>
 )
 ```
 
@@ -96,7 +92,7 @@ const OrderEdit = () => (
 If you have fetched a `record` and you want to make it available to descendants, place it inside a `<RecordContextProvider>` component.
 
 ```jsx
-import { useGetOne, RecordContextProvider } from 'react-admin';
+import { useGetOne, RecordContextProvider } from 'ra-core';
 
 const RecordFetcher = ({ id, resource, children }) => {
     const { data, isPending, error } = useGetOne(resource, { id });
@@ -116,7 +112,6 @@ Some react-admin components accept an optional record prop. These components can
 
 You can do the same: just accept a `record` component prop, and pass the props as parameter to the hook. If the record is undefined, `useRecordContext` will return the record from the context. If it is defined, `useRecordContext` will return the record from the props.
 
-{% raw %}
 ```jsx
 const BookAuthor = (props) => {
     const record = useRecordContext(props);
@@ -127,7 +122,6 @@ const BookAuthor = (props) => {
 // you can now pass a custom record
 <BookAuthor record={{ id: 123, author: 'Leo Tolstoy' }}>
 ```
-{% endraw %}
 
 ## TypeScript
 
@@ -150,7 +144,7 @@ const BookAuthor = () => {
 ## See Also
 
 * [`WithRecord`](./WithRecord.md) is the render prop version of the `useRecordContext` hook.
-* [`useListContext`](./useListContext.md) is the equivalent for lists.
+* [`useListContext`](../list/useListContext.md) is the equivalent for lists.
 
 ## API
 

@@ -1,10 +1,6 @@
 ---
-layout: default
 title: "useNotify"
-storybook_path: ra-core-usenotify--basic
 ---
-
-# `useNotify`
 
 This hook returns a function that displays a notification at the bottom of the page.
 
@@ -13,7 +9,7 @@ This hook returns a function that displays a notification at the bottom of the p
 ## Usage
 
 ```jsx
-import { useNotify } from 'react-admin';
+import { useNotify } from 'ra-core';
 
 const NotifyButton = () => {
     const notify = useNotify();
@@ -51,30 +47,19 @@ The `options` is an object that can have the following properties:
 
 | Name               | Type      | Default | Description                                                                                                                                                                                         |
 | ------------------ | --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `anchorOrigin`     | `object`  | -       | The position of the notification. The default is `{ vertical: 'bottom', horizontal: 'center' }`. See [the Material UI documentation](https://mui.com/material-ui/react-snackbar/) for more details. |
 | `autoHideDuration` | `number   | null`   | `4000`                                                                                                                                                                                              | Duration (in milliseconds) after which the notification hides. Set it to `null` if the notification should not be dismissible. |
 | `messageArgs`      | `object`  | -       | options to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.          |
 | `multiLine`        | `boolean` | -       | Set it to `true` if the notification message should be shown in more than one line.                                                                                                                 |
 | `undoable`         | `boolean` | -       | Set it to `true` if the notification should contain an "undo" button                                                                                                                                |
 | `type`             | `string`  | `info`  | The notification type (`info`, `success`, `error` or `warning` - the default is `info`)                                                                                                             |
 
-## `anchorOrigin`
-
-You can change the default position of the notification by passing an `anchorOrigin` option. The value is passed to [the Material UI `<Snackbar anchorOrigin>`](https://mui.com/material-ui/react-snackbar/) prop.
-
-```jsx
-notify(
-    'Form submitted successfully',
-    { anchorOrigin: { vertical: 'top', horizontal: 'right' }
-});
-```
 
 ## `autoHideDuration`
 
 You can define a custom delay for hiding a given notification.
 
 ```jsx
-import { useNotify } from 'react-admin';
+import { useNotify } from 'ra-core';
 
 const LogoutButton = () => {
     const notify = useNotify();
@@ -90,11 +75,10 @@ const LogoutButton = () => {
 };
 ```
 
-To change the default delay for all notifications, check [the `<Admin notification>` documentation](./Admin.md#notification).
 
 ## `messageArgs`
 
-`useNotify` calls [the `translate` function](./useTranslate.md) to translate the notification message. You often need to pass variables to the `translate` function. The `messageArgs` option allows you to do that.
+`useNotify` calls [the `translate` function](../i18n/useTranslate.md) to translate the notification message. You often need to pass variables to the `translate` function. The `messageArgs` option allows you to do that.
 
 For instance, if you want to display a notification message like "Post 123 created", you need to pass the post id to the translation function. 
 
@@ -118,7 +102,7 @@ Then, in your translation files, you can use the `id` variable:
 notify('post.created', { messageArgs: { _: 'Post created' } });
 ```
 
-Finally, `messageArgs` lets you define a `smart_count` variable, which is useful for [pluralization](./useTranslate.md#using-pluralization-and-interpolation):
+Finally, `messageArgs` lets you define a `smart_count` variable, which is useful for [pluralization](../i18n/useTranslate.md#using-pluralization-and-interpolation):
 
 ```jsx
 notify('post.created', { messageArgs: { smart_count: 2 } });
@@ -160,10 +144,9 @@ notify('This is an error', { type: 'error' });
 
 When using `useNotify` as a side effect for an `undoable` mutation, you MUST set the `undoable` option to `true`, otherwise the "undo" button will not appear, and the actual update will never occur.
 
-{% raw %}
 ```jsx
 import * as React from 'react';
-import { useNotify, Edit, SimpleForm } from 'react-admin';
+import { useNotify, EditBase, Form } from 'ra-core';
 
 const PostEdit = () => {
     const notify = useNotify();
@@ -173,28 +156,22 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit mutationMode="undoable" mutationOptions={{ onSuccess }}>
-            <SimpleForm>
+        <EditBase mutationMode="undoable" mutationOptions={{ onSuccess }}>
+            <Form>
                 ...
-            </SimpleForm>
-        </Edit>
+            </Form>
+        </EditBase>
     );
 }
 ```
-{% endraw %}
 
 ## Custom Notification Content
 
 You may want a notification message that contains HTML or other React components. To do so, you can pass a React node as the first argument of the `notify` function.
 
-This allows e.g. using [Material UI's `<Alert>` component](https://mui.com/material-ui/react-snackbar/#customization) to display a notification with a custom icon, color, or action.
-
-![useNotify with node](../img/use-notify-node.png)
-
 ```tsx
 import { useSubscribe } from "@react-admin/ra-realtime";
-import { useNotify, useDataProvider } from "react-admin";
-import { Alert } from "@mui/material";
+import { useNotify, useDataProvider } from "ra-core";
 
 export const ConnectionWatcher = () => {
   const notify = useNotify();
@@ -205,10 +182,10 @@ export const ConnectionWatcher = () => {
         .getOne("agents", { id: event.payload.agentId })
         .then(({ data }) => {
           notify(
-            <Alert severity="info">
+            <div className="notification info">
                 Agent ${data.firstName} ${data.lastName} just logged in
-            </Alert>
-            );
+            </div>
+          );
         });
     }
     if (event.type === "disconnected") {
@@ -216,9 +193,9 @@ export const ConnectionWatcher = () => {
         .getOne("agents", { id: event.payload.agentId })
         .then(({ data }) => {
           notify(
-            <Alert severity="info">
+            <div className="notification info">
                 Agent ${data.firstName} ${data.lastName} just logged out
-            </Alert>
+            </div>
           );
         });
     }
@@ -227,15 +204,14 @@ export const ConnectionWatcher = () => {
 };
 ```
 
-Note that if you use this ability to pass a React node, the message will not be translated - you'll have to translate it yourself using [`useTranslate`](./useTranslate.md).
+Note that if you use this ability to pass a React node, the message will not be translated - you'll have to translate it yourself using [`useTranslate`](../i18n/useTranslate.md).
 
 ## Closing The Notification
 
 If you have custom actions in your notification element, you can leverage the `useCloseNotification` hook to close the notification programmatically:
 
 ```tsx
-import { useCheckForApplicationUpdate, useCloseNotification, useNotify } from 'react-admin';
-import { Button, SnackbarContent } from '@mui/material';
+import { useCheckForApplicationUpdate, useCloseNotification, useNotify } from 'ra-core';
 
 export const CheckForApplicationUpdate = () => {
     const notify = useNotify();
@@ -253,17 +229,16 @@ const ApplicationUpdateNotification = ({ reset }: { reset:() => void }) => {
     const closeNotification = useCloseNotification();
 
     return (
-        <SnackbarContent
-            message="A new application version is available. Refresh your browser tab to update"
-            action={
-                <Button
-                    onClick={() => {
-                        closeNotification();
-                    }}
-                    label="Dismiss"
-                />
-            }
-        />
+        <div className="notification-content">
+            <span>A new application version is available. Refresh your browser tab to update</span>
+            <button
+                onClick={() => {
+                    closeNotification();
+                }}
+            >
+                Dismiss
+            </button>
+        </div>
     );
 };
 ```
