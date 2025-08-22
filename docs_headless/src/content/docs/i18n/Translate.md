@@ -1,9 +1,6 @@
 ---
-layout: default
-title: "The Translate Component"
+title: "Translate"
 ---
-
-# `<Translate>`
 
 The `<Translate>` component renders a translated message based on a translation key.
 
@@ -12,7 +9,7 @@ The `<Translate>` component renders a translated message based on a translation 
 The component will look up the translation for the `i18nKey` in the `i18nProvider` and render it. If not found, it will render the `children` prop.
 
 ```tsx
-import { Translate, useRecord, useUpdate } from 'react-admin';
+import { Translate, useRecord, useUpdate } from 'ra-core';
 
 const MarkAsUnreadButton = () => {
     const record = useRecord();
@@ -74,8 +71,6 @@ const messages = {
 
 Use the `options` props to pass additional options to the `translate` function, e.g. for [pluralization or interpolation](./TranslationTranslating.md#interpolation-pluralization-and-default-translation).
 
-{% raw %}
-
 ```tsx
 const messages = {
     custom: {
@@ -87,11 +82,7 @@ const messages = {
 // Hello, John!
 ```
 
-{% endraw %}
-
 One particular option is `smart_count`, which is used for pluralization.
-
-{% raw %}
 
 ```tsx
 const messages = {
@@ -105,5 +96,3 @@ const messages = {
 <Translate i18nKey="ra.notification.deleted" options={{ smart_count: 2 }} />
 // 2 items deleted
 ```
-
-{% endraw %}

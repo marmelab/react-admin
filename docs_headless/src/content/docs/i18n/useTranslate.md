@@ -3,8 +3,6 @@ layout: default
 title: "useTranslate"
 ---
 
-# `useTranslate`
-
 If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function.
 
 ## Syntax
@@ -21,7 +19,7 @@ const translatedMessage = translate(translationKey, options);
 ```jsx
 // in src/MyHelloButton.js
 import * as React from "react";
-import { useTranslate } from 'react-admin';
+import { useTranslate } from 'ra-core';
 
 const MyHelloButton = () => {
     const translate = useTranslate();

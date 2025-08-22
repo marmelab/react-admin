@@ -3,8 +3,6 @@ layout: default
 title: "Writing An I18nProvider"
 ---
 
-# Writing An I18nProvider
-
 An `i18nProvider` should be an object with three required methods and one optional method:
 
 ```ts

@@ -3,8 +3,6 @@ layout: default
 title: "Supported Locales"
 ---
 
-## Supported Locales
-
 You can find translation packages for the following languages:
 
 - 🇦🇪 Arabic (`ar`): [developerium/ra-language-arabic](https://github.com/developerium/ra-language-arabic)

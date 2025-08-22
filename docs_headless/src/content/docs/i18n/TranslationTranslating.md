@@ -1,9 +1,6 @@
 ---
-layout: default
-title: "Translating"
+title: "Translating UI Components"
 ---
-
-# Translating UI Components
 
 The messages returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
@@ -29,7 +26,7 @@ All react-admin core components use keys starting with the `ra` prefix, to preve
 The default (English) messages are available in [the `ra-language-english` package source](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
 
 
-**Tip**: You can see the raw translation keys in the UI by passing a dummy `i18nProvider` to the `<Admin>` component:
+**Tip**: You can see the raw translation keys in the UI by passing a dummy `i18nProvider` to the `<CoreAdminContext>` component:
 
 ```jsx
 const i18nProvider = {
@@ -39,12 +36,12 @@ const i18nProvider = {
 }
 
 const App = () => (
-    <Admin 
+    <CoreAdminContext 
         dataProvider={dataProvider}
         i18nProvider={i18nProvider}
     >
         {/* ... */}
-    </Admin>
+    </CoreAdminContext>
 );
 ```
 
@@ -102,7 +99,7 @@ Imagine a translation key for the text to translate, e.g. 'myroot.hello.world' f
 ```jsx
 // in src/MyHelloButton.js
 import * as React from "react";
-import { useTranslate } from 'react-admin';
+import { useTranslate } from 'ra-core';
 
 export const MyHelloButton = () => {
     const translate = useTranslate();
@@ -147,7 +144,7 @@ export const en = {
 
 ## Translating Form Validation Errors
 
-In Create and Edit views, forms can use [custom validators](./Validation.md#per-input-validation-custom-function-validator). These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function.
+In Create and Edit views, forms can use [custom validators](../create-edit/Validation.md#per-input-validation-custom-function-validator). These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function.
 
 For instance, here is a validator function that only allows numbers greater than 10:
 
@@ -160,12 +157,12 @@ const greaterThanTen = (value, allValues, props) =>
 
 // in PersonEdit.js
 const PersonEdit = () => (
-    <Edit>
-        <SimpleForm>
+    <EditBase>
+        <Form>
             <TextInput source="name" />
             <TextInput source="age" validate={greaterThanTen} />
-        </SimpleForm>
-    </Edit>
+        </Form>
+    </EditBase>
 );
 
 // in i18n/en.json
@@ -199,7 +196,7 @@ export default {
 
 ## Translating Notification Messages
 
-If you use [the `useNotify` hook](./useNotify.md) to display a notification to the user, you can use a translation key for the notification text. React-admin will translate it automatically - no need to call `translate`.
+If you use [the `useNotify` hook](../common/useNotify.md) to display a notification to the user, you can use a translation key for the notification text. React-admin will translate it automatically - no need to call `translate`.
 
 ```jsx
 const ValidateCommentButton = ({ id }) => {
@@ -218,7 +215,7 @@ const ValidateCommentButton = ({ id }) => {
 
 ## Interpolation, Pluralization and Default Translation
 
-If you're using [`ra-i18n-polyglot`](./Translation.md#ra-i18n-polyglot) (the default `i18nProvider`), you can leverage the advanced features of its `translate` function. [Polyglot.js](https://airbnb.io/polyglot.js/), the library behind `ra-i18n-polyglot`, provides some nice features such as interpolation and pluralization, that you can use in react-admin.
+If you're using [`ra-i18n-polyglot`](../guides/Translation.md#ra-i18n-polyglot) (the default `i18nProvider`), you can leverage the advanced features of its `translate` function. [Polyglot.js](https://airbnb.io/polyglot.js/), the library behind `ra-i18n-polyglot`, provides some nice features such as interpolation and pluralization, that you can use in react-admin.
 
 ```js
 const messages = {
@@ -244,41 +241,7 @@ translate('not_yet_translated', { _: 'Default translation' });
 
 Check out the [Polyglot.js documentation](https://airbnb.io/polyglot.js/) for more information.
 
-## Translating Record Content
 
-Some of your records may contain data with multiple versions - one for each locale. 
-
-For instance, a product may have one reference, but several names. A `product` record would look like this:
-
-```jsx
-{
-    id: 123,
-    reference: 'GURSIKSO',
-    name: {
-        en: 'Evening dress',
-        fr: 'Robe du soir',
-    }
-}
-```
-
-React-admin provides a specialized component to display such translatable data ([`<TranslatableFields>`](./TranslatableFields.md)), and another specialized component to edit it ([`<TranslatableInputs>`](./TranslatableInputs.md)):
-
-```jsx
-import { Edit, SimpleForm, TextInput, TranslatableInputs } from 'react-admin';
-
-export const ProductEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="reference" />
-            <TranslatableInputs locales={['en', 'fr']}>
-                <TextInput source="name" />
-            </TranslatableInputs>
-        </SimpleForm>
-    </Edit>
-);
-```
-
-Check the documentation for each of these components for details. 
 
 ## Forcing The Case in Confirm messages and Empty Page
 

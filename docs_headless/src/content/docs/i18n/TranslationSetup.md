@@ -1,24 +1,22 @@
 ---
-layout: default
-title: "Setup"
+title: "Setting Up Translations"
 ---
-
-# Setting Up Translations
 
 If you want to add or update translations, you'll have to provide your own `i18nProvider`.
 
-Just like for the `dataProvider` and the `authProvider`, you can inject the `i18nProvider` to your react-admin app using the `<Admin i18nProvider>` prop:
+Just like for the `dataProvider` and the `authProvider`, you can inject the `i18nProvider` to your react-admin app using the `<CoreAdminContext i18nProvider>` prop:
 
 ```jsx
+import { CoreAdminContext } from 'ra-core';
 import { i18nProvider } from './i18nProvider';
 
 const App = () => (
-    <Admin 
+    <CoreAdminContext 
         dataProvider={dataProvider}
         i18nProvider={i18nProvider}
     >
         {/* ... */}
-    </Admin>
+    </CoreAdminContext>
 );
 ```
 
@@ -64,25 +62,25 @@ export const i18nProvider = polyglotI18nProvider(
 );
 ```
 
-The second argument to the `polyglotI18nProvider` function is the default locale. The third is the list of supported locales - and is used by the [`<LocaleMenuButton>`](./LocalesMenuButton.md) component to display a list of languages.
+The second argument to the `polyglotI18nProvider` function is the default locale. The third is the list of supported locales - and is used by the [`<LocaleMenuButton>`](https://marmelab.com/react-admin/LocalesMenuButton.html) component to display a list of languages.
 
-Next, pass the custom `i18nProvider` to your `<Admin>`:
+Next, pass the custom `i18nProvider` to your `<CoreAdminContext>`:
 
 ```jsx
-import { Admin } from 'react-admin';
+import { CoreAdminContext } from 'ra-core';
 import { i18nProvider } from './i18nProvider';
 
 const App = () => (
-    <Admin
+    <CoreAdminContext
         i18nProvider={i18nProvider}
         dataProvider={dataProvider}
     >
         ...
-    </Admin>
+    </CoreAdminContext>
 );
 ```
 
-That's all it takes to have a multilingual UI. As an added benefit, once a user has chosen a locale different from the default one, the react-admin app will always render using that locale (thanks to [the Store](./Store.md)).
+That's all it takes to have a multilingual UI. As an added benefit, once a user has chosen a locale different from the default one, the react-admin app will always render using that locale (thanks to [the Store](../guides/Store.md)).
 
 ## Using The Browser Locale
 
@@ -90,7 +88,7 @@ React-admin provides a helper function named `resolveBrowserLocale()`, which det
 
 ```jsx
 // in src/i18nProvider.js
-import { resolveBrowserLocale } from 'react-admin';
+import { resolveBrowserLocale } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import en from 'ra-language-english';
 import fr from 'ra-language-french';

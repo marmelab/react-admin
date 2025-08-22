@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useLocaleState"
 ---
-
-# `useLocaleState`
 
 The `useLocaleState` hook allows to read and update the locale. It uses a syntax similar to react's `useState` hook.
 
@@ -19,26 +16,25 @@ const [locale, setLocale] = useLocaleState();
 
 ```jsx
 import * as React from "react";
-import Button from '@mui/material/Button';
-import { useLocaleState } from 'react-admin';
+import { useLocaleState } from 'ra-core';
 
 const LocaleSwitcher = () => {
     const [locale, setLocale] = useLocaleState();
     return (
         <div>
             <div>Language</div>
-            <Button 
+            <button 
                 disabled={locale === 'fr'}
                 onClick={() => setLocale('fr')}
             >
                 English
-            </Button>
-            <Button
+            </button>
+            <button
                 disabled={locale === 'en'}
                 onClick={() => setLocale('en')}
             >
                 French
-            </Button>
+            </button>
         </div>
     );
 };
@@ -46,4 +42,4 @@ const LocaleSwitcher = () => {
 export default LocaleSwitcher;
 ```
 
-As this is a very common need, react-admin provides the [`<LocalesMenuButton>`](./LocalesMenuButton.md) component.
+
