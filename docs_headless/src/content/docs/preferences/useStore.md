@@ -1,17 +1,14 @@
 ---
-layout: default
 title: "useStore"
 storybook_path: ra-core-store-usestore--basic
 ---
 
-# `useStore`
-
-This hook allows to read and write from the [Store](./Store.md). Stored values are available globally and are persisted between page reloads.
+This hook allows to read and write from the [Store](../guides/Store.md). Stored values are available globally and are persisted between page reloads.
 
 ## Syntax
 
 ```jsx
-import { useStore } from 'react-admin';
+import { useStore } from 'ra-core';
 
 const [value, setValue] = useStore(key, defaultValue);
 ```
@@ -34,23 +31,22 @@ When one component calls `setValue` on a key, all the components that read the s
 ## Example
 
 ```jsx
-import { List, DataTable } from 'react-admin';
+import { ListBase } from 'ra-core';
 
 const PostList = () => {
     const [density] = useStore('posts.list.density', 'small');
 
     return (
-        <List>
-            <DataTable size={density}>
+        <ListBase>
+            <div style={{ padding: density === 'small' ? '0.5em' : '1em' }}>
                 ...
-            </DataTable>
-        </List>
+            </div>
+        </ListBase>
     );
 }
 
 // anywhere else in the app
-import { useStore } from 'react-admin';
-import { Button } from '@mui/material';
+import { useStore } from 'ra-core';
 
 const ChangeDensity = () => {
     const [density, setDensity] = useStore('posts.list.density', 'small');
@@ -61,9 +57,9 @@ const ChangeDensity = () => {
     };
 
     return (
-        <Button onClick={changeDensity}>
+        <button onClick={changeDensity}>
             Change density (current {density})
-        </Button>
+        </button>
     );
 };
 ```

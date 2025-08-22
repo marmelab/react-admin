@@ -1,16 +1,13 @@
 ---
-layout: default
 title: "useResetStore"
 ---
 
-# `useResetStore`
-
-This hook allows to empty the [Store](./Store.md). React-admin uses it at logout.
+This hook allows to empty the [Store](../guides/Store.md). React-admin uses it at logout.
 
 ## Syntax
 
 ```jsx
-import { useResetStore } from 'react-admin';
+import { useResetStore } from 'ra-core';
 
 const reset = useResetStore();
 reset();
@@ -19,14 +16,14 @@ reset();
 ## Example
 
 ```jsx
-import { useResetStore, Button } from 'react-admin';
+import { useResetStore } from 'ra-core';
 
 const ResetButton = () => {
     const reset = useResetStore();
     return (
-        <Button onClick={() => reset()}>
+        <button onClick={() => reset()}>
             Reset store
-        </Button>
+        </button>
     );
 };
 ```

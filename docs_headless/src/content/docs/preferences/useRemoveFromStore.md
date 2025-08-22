@@ -1,16 +1,13 @@
 ---
-layout: default
 title: "useRemoveFromStore"
 ---
 
-# `useRemoveFromStore`
-
-This hook allows to remove a value from the [Store](./Store.md). 
+This hook allows to remove a value from the [Store](../guides/Store.md). 
 
 ## Syntax
 
 ```jsx
-import { useRemoveFromStore } from 'react-admin';
+import { useRemoveFromStore } from 'ra-core';
 
 const remove = useRemoveFromStore();
 remove(key);
@@ -26,22 +23,21 @@ remove();
 ## Example
 
 ```jsx
-import { useRemoveFromStore } from 'react-admin';
-import { Button } from '@mui/material';
+import { useRemoveFromStore } from 'ra-core';
 
 const ResetPreferences = () => {
     const removeItem = useRemoveFromStore();
     return (
         <>
-            <Button onClick={() => removeItem('sidebar.open')}>
+            <button onClick={() => removeItem('sidebar.open')}>
                 Reset sidebar
-            </Button>
-            <Button onClick={() => removeItem('locale')}>
+            </button>
+            <button onClick={() => removeItem('locale')}>
                 Reset locale
-            </Button>
-            <Button onClick={() => removeItem('theme')}>
+            </button>
+            <button onClick={() => removeItem('theme')}>
                 Reset theme
-            </Button>
+            </button>
         </>
     );
 };
