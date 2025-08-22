@@ -1,10 +1,6 @@
 ---
-layout: default
-title: "The ReferenceOneFieldBase Component"
-storybook_path: ra-ui-materialui-fields-referenceonefieldbase--basic
+title: "<ReferenceOneFieldBase>"
 ---
-
-# `<ReferenceOneFieldBase>`
 
 This field fetches a one-to-one relationship, e.g. the details of a book, when using a foreign key on the distant resource.
 
@@ -23,8 +19,6 @@ This field fetches a one-to-one relationship, e.g. the details of a book, when u
 
 `<ReferenceOneFieldBase>` is a headless component, handling only the logic and relying on its `children` or `render` prop  to render the UI.
 
-**Tip**: For a version based on MUI, see [`<ReferenceOneField>`](/ReferenceOneField.html)
-
 **Tip**: For the inverse relationships (the book linked to a book_detail), you can use a [`<ReferenceFieldBase>`](./ReferenceFieldBase.md).
 
 ## Usage
@@ -32,6 +26,8 @@ This field fetches a one-to-one relationship, e.g. the details of a book, when u
 Here is how to render a field of the `book_details` resource inside a Show view for the `books` resource:
 
 ```jsx
+import { ShowBase, ReferenceOneFieldBase, useReferenceFieldContext } from 'ra-core';
+
 const BookShow = () => (
     <ShowBase>
         <ReferenceOneFieldBase reference="book_details" target="book_id">
@@ -82,7 +78,6 @@ const BookDetails = () => {
 | `queryOptions` | Optional   | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                            | `react-query` client options                                                      |
 | `sort`         | Optional   | `{ field: String, order: 'ASC' or 'DESC' }`                                      | `{ field: 'id', order: 'ASC' }` | Used to order referenced records                                                  |
 
-`<ReferenceOneFieldBase>` also accepts the [common field props](./Fields.md#common-field-props).
 
 \* Either one of children or render is required.
 
@@ -148,7 +143,7 @@ Use `empty` to customize the text displayed when the related record is empty.
     label="Details"
     reference="book_details"
     target="book_id"
-    empty={<CreateButton to="/book_details/create" />}
+    empty={<a href="/book_details/create">Create</a>}
 >
     ...
 </ReferenceOneFieldBase>
@@ -160,7 +155,6 @@ You can also use `<ReferenceOneFieldBase>` in a one-to-many relationship. In tha
 
 For instance, if a product has prices in many currencies, and you only want to render the price in euros, you can use:
 
-{% raw %}
 ```jsx
 <ReferenceOneFieldBase
     reference="product_prices"
@@ -170,7 +164,6 @@ For instance, if a product has prices in many currencies, and you only want to r
     ...
 </ReferenceOneFieldBase>
 ```
-{% endraw %}
 
 ## `link`
 
@@ -184,7 +177,6 @@ By default, `<ReferenceOneFieldBase>` populates the context with a `link` value 
 
 You can also set the `link` prop to a string, which will be used as the link type. It can be either `edit`, `show`, a route path, or a function returning a route path based on the given record.
 
-{% raw %}
 ```jsx
 <ReferenceOneFieldBase
     reference="book_details"
@@ -194,7 +186,6 @@ You can also set the `link` prop to a string, which will be used as the link typ
     ...
 </ReferenceOneFieldBase>
 ```
-{% endraw %}
 
 ## `offline`
 
@@ -224,7 +215,6 @@ You can customize this error message by passing a React element or a string to t
 
 For instance, if you want to disable the refetch on window focus for this query, you can use:
 
-{% raw %}
 ```jsx
 <ReferenceOneFieldBase
     label="Genre"
@@ -235,7 +225,6 @@ For instance, if you want to disable the refetch on window focus for this query,
     ...
 </ReferenceOneFieldBase>
 ```
-{% endraw %}
 
 ## `render`
 
@@ -290,7 +279,6 @@ You can also use `<ReferenceOneFieldBase>` in a one-to-many relationship. In tha
 
 For instance, if you want to display the latest message in a discussion, you can use:
 
-{% raw %}
 ```jsx
 <ReferenceOneFieldBase
     reference="messages"
@@ -300,7 +288,6 @@ For instance, if you want to display the latest message in a discussion, you can
     ...
 </ReferenceOneFieldBase>
 ```
-{% endraw %}
 
 ## `target`
 

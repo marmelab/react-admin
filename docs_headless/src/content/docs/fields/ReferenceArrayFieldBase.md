@@ -1,16 +1,12 @@
 ---
 layout: default
-title: "The ReferenceArrayFieldBase Component"
+title: "<ReferenceArrayFieldBase>"
 storybook_path: ra-core-fields-referencearrayfieldbase--basic
 ---
 
-# `<ReferenceArrayFieldBase>`
-
 Use `<ReferenceArrayFieldBase>` to display a list of related records, via a one-to-many relationship materialized by an array of foreign keys.
 
-`<ReferenceArrayFieldBase>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). This component is headless, and its children need to use the data from this context to render the desired ui.
-
-**Tip**: For a rendering a list of chips by default, use [the `<ReferenceArrayField>` component](./ReferenceArrayField.md) instead.
+`<ReferenceArrayFieldBase>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](../list/useListContext.md). This component is headless, and its children need to use the data from this context to render the desired ui.
 
 **Tip**: If the relationship is materialized by a foreign key on the referenced resource, use [the `<ReferenceManyFieldBase>` component](./ReferenceManyFieldBase.md) instead.
 
@@ -45,7 +41,7 @@ A typical `post` record therefore looks like this:
 In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a list of chips, as follows:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceArrayFieldBase } from 'react-admin';
+import { ListBase, ListIterator, ReferenceArrayFieldBase } from 'ra-core';
 
 export const PostList = () => (
     <ListBase>
@@ -81,7 +77,7 @@ const TagList = (props: { children: React.ReactNode }) => {
 
 `<ReferenceArrayFieldBase>` fetches the `tag` resources related to each `post` resource by matching `post.tag_ids` to `tag.id`.
 
-You can change how the list of related records is rendered by passing a custom child reading the `ListContext` (e.g. a [`<DataTable>`](./DataTable.md)) or a render function prop. See the [`children`](#children) and the [`render`](#render) sections for details.
+You can change how the list of related records is rendered by passing a custom child reading the `ListContext` (e.g. a `<DataTable>` component) or a render function prop. See the [`children`](#children) and the [`render`](#render) sections for details.
 
 ## Props
 
@@ -164,7 +160,6 @@ Alternatively to `children`, you can pass a `render` function prop to `<Referenc
 
 For instance, to render only tags that are 'published', you can use the following code:
 
-{% raw %}
 ```jsx
 <ReferenceArrayFieldBase
     label="Tags"
@@ -173,7 +168,6 @@ For instance, to render only tags that are 'published', you can use the followin
     filter={{ is_published: true }}
 />
 ```
-{% endraw %}
 
 ## `perPage`
 
@@ -187,15 +181,13 @@ For instance, to limit the display of related records to 10, you can use the fol
 
 ## `queryOptions`
 
-Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](./useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
+Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](../data-fetching/useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
 
-For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
+For instance, to pass [a custom `meta`](../data-fetching/Actions.md#meta-parameter):
 
-{% raw %}
 ```jsx
 <ReferenceArrayFieldBase queryOptions={{ meta: { foo: 'bar' } }} />
 ```
-{% endraw %}
 
 ## `reference`
 
@@ -215,7 +207,6 @@ By default, the related records are displayed in the order in which they appear 
 
 For instance, to sort tags by title in ascending order, you can use the following code:
 
-{% raw %}
 ```jsx
 <ReferenceArrayFieldBase
     label="Tags"
@@ -224,4 +215,3 @@ For instance, to sort tags by title in ascending order, you can use the followin
     sort={{ field: 'title', order: 'ASC' }}
 />
 ```
-{% endraw %}

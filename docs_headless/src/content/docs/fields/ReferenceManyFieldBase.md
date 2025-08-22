@@ -1,14 +1,11 @@
 ---
-layout: default
-title: "The ReferenceManyFieldBase Component"
-storybook_path: ra-core-controller-field-referencemanyfieldbase--basic
+title: "<ReferenceManyFieldBase>"
 ---
 
-# `<ReferenceManyFieldBase>`
 
 `<ReferenceManyFieldBase>` is useful for displaying a list of related records via a one-to-many relationship, when the foreign key is carried by the referenced resource. 
 
-This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](./useListContext.md). 
+This component fetches a list of referenced records by a reverse lookup of the current `record.id` in the `target` field of another resource (using the `dataProvider.getManyReference()` REST method), and puts them in a [`ListContext`](../data/useListContext.md). 
 
 This component is headless. It relies on its `children` or a `render` prop to render the desired ui.
 
@@ -32,7 +29,7 @@ For instance, if an `author` has many `books`, and each book resource exposes an
 `<ReferenceManyFieldBase>` can render the titles of all the books by a given author.
 
 ```jsx
-import { ShowBase, ReferenceManyFieldBase } from 'react-admin';
+import { ShowBase, ReferenceManyFieldBase } from 'ra-core';
 
 const AuthorShow = () => (
     <ShowBase>
@@ -72,7 +69,7 @@ const BookList = ({
 You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceManyFieldBase } from 'react-admin';
+import { ListBase, ListIterator, ReferenceManyFieldBase } from 'ra-core';
 
 export const PostList = () => (
     <ListBase>
@@ -107,19 +104,12 @@ export const PostList = () => (
 
 ## `children`
 
-`<ReferenceManyFieldBase>` renders its children inside a [`ListContext`](./useListContext.md). This means you can use any component that uses a `ListContext`:
-
-- [`<SingleFieldList>`](./SingleFieldList.md)
-- [`<DataTable>`](./DataTable.md)
-- [`<Datagrid>`](./Datagrid.md)
-- [`<SimpleList>`](./SimpleList.md)
-- [`<EditableDatagrid>`](./EditableDatagrid.md)
-- [`<Calendar>`](./Calendar.md)
+`<ReferenceManyFieldBase>` renders its children inside a [`ListContext`](../data/useListContext.md). This means you can use any list iterator component as child.
 
 For instance, use a `<ListIterator>` to render the related records:
 
 ```jsx
-import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'react-admin';
+import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'ra-core';
 
 export const AuthorShow = () => (
     <ShowBase>
@@ -181,7 +171,6 @@ Use `empty` to customize the text displayed when there are no related records.
 
 You can filter the query used to populate the possible values. Use the `filter` prop for that.
 
-{% raw %}
 
 ```jsx
 <ReferenceManyFieldBase
@@ -193,7 +182,6 @@ You can filter the query used to populate the possible values. Use the `filter` 
 </ReferenceManyFieldBase>
 ```
 
-{% endraw %}
 
 ## `offline`
 
@@ -233,17 +221,15 @@ By default, react-admin restricts the possible values to 25 and displays no pagi
 
 ## `queryOptions`
 
-Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](./useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
+Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](../data/useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
 
-For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
+For instance, to pass [a custom `meta`](../data/Actions.md#meta-parameter):
 
-{% raw %}
 ```jsx
 <ReferenceManyFieldBase queryOptions={{ meta: { foo: 'bar' } }}>
     ...
 </ReferenceManyFieldBase>
 ```
-{% endraw %}
 
 ## `reference`
 
@@ -300,7 +286,6 @@ const AuthorShow = () => (
 
 By default, it orders the possible values by id desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
-{% raw %}
 ```jsx
 <ReferenceManyFieldBase
     target="post_id"
@@ -310,7 +295,6 @@ By default, it orders the possible values by id desc. You can change this order 
     ...
 </ReferenceManyFieldBase>
 ```
-{% endraw %}
 
 ## `source`
 
@@ -334,7 +318,6 @@ If you want to display multiple lists of the same reference and keep distinct se
 
 In the example below, both lists use the same reference ('books'), but their selection states are stored separately (under the store keys `'authors.1.books.selectedIds'` and `'custom.selectedIds'` respectively). This allows to use both components in the same page, each having its own state.
 
-{% raw %}
 ```jsx
 <div>
     <ReferenceManyFieldBase
@@ -362,7 +345,6 @@ In the example below, both lists use the same reference ('books'), but their sel
     </ReferenceManyFieldBase>
 </div>
 ```
-{% endraw %}
 
 ## `target`
 

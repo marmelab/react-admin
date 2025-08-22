@@ -1,13 +1,9 @@
 ---
-layout: default
-title: "The ReferenceFieldBase Component"
-storybook_path: ra-core-controller-field-referencefieldbase--basic
+title: "<ReferenceFieldBase>"
 ---
 
-# `<ReferenceFieldBase>`
-
 `<ReferenceFieldBase>` is useful for displaying many-to-one and one-to-one relationships, e.g. the details of a user when rendering a post authored by that user.
-`<ReferenceFieldBase>` is a headless component, handling only the logic. This allows to use any UI library for the render. For a version based on MUI see [`<ReferenceField>`](/ReferenceField.html)
+`<ReferenceFieldBase>` is a headless component, handling only the logic. This allows to use any UI library for the render. For a version based on MUI see [`<ReferenceField>`](../components/ReferenceField.md)
 
 ## Usage
 
@@ -27,17 +23,18 @@ For instance, let's consider a model where a `post` has one author from the `use
 In that case, use `<ReferenceFieldBase>` to display the post's author as follows:
 
 ```jsx
-import { Show, SimpleShowLayout, ReferenceField, TextField, RecordRepresentation } from 'react-admin';
+import { ShowBase, ReferenceFieldBase } from 'ra-core';
+import { TextField } from './TextField';
 
 export const PostShow = () => (
-    <Show>
-        <SimpleShowLayout>
+    <ShowBase>
+        <div>
             <TextField source="title" />
             <ReferenceFieldBase source="user_id" reference="users" >
                 <UserView />
             </ReferenceFieldBase>
-        </SimpleShowLayout>
-    </Show>
+        </div>
+    </ShowBase>
 );
 
 export const UserView = () => {
@@ -55,7 +52,7 @@ export const UserView = () => {
 };
 ```
 
-`<ReferenceFieldBase>` fetches the data, puts it in a [`RecordContext`](./useRecordContext.md), and its up to its children to handle the rendering by accessing the `ReferencingContext` using the `useReferenceFieldContext` hook.
+`<ReferenceFieldBase>` fetches the data, puts it in a [`RecordContext`](../common/useRecordContext.md), and its up to its children to handle the rendering by accessing the `ReferencingContext` using the `useReferenceFieldContext` hook.
 
 It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceFieldBase>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row.
 
@@ -78,7 +75,7 @@ You can pass any component of your own as child, to render the related records a
 You can access the list context using the `useReferenceFieldContext` hook.
 
 ```tsx
-import { ReferenceFieldBase } from 'react-admin';
+import { ReferenceFieldBase } from 'ra-core';
 
 export const UserView = () => {
     const { error, isPending, referenceRecord } = useReferenceFieldContext();
@@ -146,9 +143,8 @@ You can customize this error message by passing a React element or a string to t
 
 Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` query](./useGetOne.md#aggregating-getone-calls) that fetches the referenced record.
 
-For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
+For instance, to pass [a custom `meta`](../data/Actions.md#meta-parameter):
 
-{% raw %}
 ```jsx
 <ReferenceFieldBase
     source="user_id"
@@ -159,7 +155,6 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
     ...
 </ReferenceFieldBase>
 ```
-{% endraw %}
 
 ## `reference`
 
@@ -215,14 +210,12 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
 
 ## Performance
 
-<iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
-
-When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
+When used in a list, `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
 
 For instance, with this code:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceFieldBase } from 'react-admin';
+import { ListBase, ListIterator, ReferenceFieldBase } from 'ra-core';
 
 export const PostList = () => (
     <ListBase>
@@ -265,7 +258,6 @@ When you know that a page will contain a `<ReferenceFieldBase>`, you can configu
 
 For example, the following code prefetches the authors referenced by the posts:
 
-{% raw %}
 ```jsx
 const PostList = () => (
     <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
@@ -282,15 +274,14 @@ const PostList = () => (
     </ListBase>
 );
 ```
-{% endraw %}
 
-**Note**: For prefetching to function correctly, your data provider must support [Prefetching Relationships](./DataProviders.md#prefetching-relationships). Refer to your data provider's documentation to verify if this feature is supported.
+**Note**: For prefetching to function correctly, your data provider must support [Prefetching Relationships](../data/DataProviders.md#prefetching-relationships). Refer to your data provider's documentation to verify if this feature is supported.
 
 **Note**: Prefetching is a frontend performance feature, designed to avoid flickers and repaints. It doesn't always prevent `<ReferenceFieldBase>` to fetch the data. For instance, when coming to a show view from a list view, the main record is already in the cache, so the page renders immediately, and both the page controller and the `<ReferenceFieldBase>` controller fetch the data in parallel. The prefetched data from the page controller arrives after the first render of the `<ReferenceFieldBase>`, so the data provider fetches the related data anyway. But from a user perspective, the page displays immediately, including the `<ReferenceFieldBase>`. If you want to avoid the `<ReferenceFieldBase>` to fetch the data, you can use the React Query Client's `staleTime` option.
 
 ## Access Control
 
-If your authProvider implements [the `canAccess` method](./AuthProviderWriting.md#canaccess), React-Admin will verify whether users have access to the Show and Edit views.
+If your authProvider implements [the `canAccess` method](../auth/AuthProviderWriting.md#canaccess), React-Admin will verify whether users have access to the Show and Edit views.
 
 For instance, given the following `ReferenceFieldBase`:
 

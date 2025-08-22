@@ -1,5 +1,5 @@
 ---
-title: "Translate"
+title: "<Translate>"
 ---
 
 The `<Translate>` component renders a translated message based on a translation key.
