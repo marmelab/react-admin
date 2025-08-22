@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useShowContext"
 ---
-
-# `useShowContext`
 
 `useShowContext` grabs the data computed by `useShowController` when inside a `<Show>` or a `<ShowBase>` component.
 
@@ -12,7 +9,8 @@ title: "useShowContext"
 You can use `useShowContext` inside show components to access the data computed by the controller. 
 
 ```jsx
-import { useShowContext, SimpleShowLayout, Show } from 'react-admin';
+import { useShowContext, ShowBase } from 'ra-core';
+import { TextField } from './TextField';
 
 const PostShowLayout = () => {
     const { defaultTitle, error, isPending } = useShowContext();
@@ -28,18 +26,18 @@ const PostShowLayout = () => {
     return (
         <>
             <h1>{defaultTitle}</h1>
-            <SimpleShowLayout>
+            <div>
                 <TextField source="title" />
                 ...
-            </SimpleShowLayout>
+            </div>
         </>
     );
 };
 
 const PostShow = () => (
-    <Show>
+    <ShowBase>
         <PostShowLayout />
-    </Show>
+    </ShowBase>
 )
 ```
 
@@ -65,8 +63,7 @@ const {
 The `useShowContext` hook accepts a generic parameter for the record type:
 
 ```tsx
-import { Show, useShowContext } from 'react-admin';
-import { Typography } from '@mui/material';
+import { ShowBase, useShowContext } from 'ra-core';
 
 type Post = {
     id: number;
@@ -75,9 +72,9 @@ type Post = {
 };
 
 export const PostShow = () => (
-    <Show aside={<Aside />}>
+    <ShowBase aside={<Aside />}>
         // ...
-    </Show>
+    </ShowBase>
 );
 
 const Aside = () => {
@@ -85,11 +82,11 @@ const Aside = () => {
     if (isPending) return null;
     return (
         <div>
-            <Typography variant="h6">Posts stats</Typography>
-            <Typography variant="body2">
+            <h6>Posts stats</h6>
+            <p>
                 {/* TypeScript knows that post is of type Post */}
                 Last edition: {post.updated_at}
-            </Typography>
+            </p>
         </div>
     );
 };

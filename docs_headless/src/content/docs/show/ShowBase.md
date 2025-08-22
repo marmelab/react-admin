@@ -1,14 +1,10 @@
 ---
-layout: default
-title: "The ShowBase Component"
-storybook_path: ra-core-controller-showbase--default-title
+title: "<ShowBase>"
 ---
 
-# `<ShowBase>`
+`<ShowBase>` fetches the record from the data provider via `dataProvider.getOne()`, puts it in a [`ShowContext`](./useShowContext.md), and renders its child. Use it to build a custom show page layout.
 
-`<ShowBase>` is a headless variant of [`<Show>`](./Show.md). It fetches the record from the data provider via `dataProvider.getOne()`, puts it in a [`ShowContext`](./useShowContext.md), and renders its child. Use it to build a custom show page layout.
-
-Contrary to [`<Show>`](./Show.md), it does not render the page layout, so no title, no actions, and no `<Card>`.
+As a headless component, it does not render any layout by default.
 
 `<ShowBase>` relies on the [`useShowController`](./useShowController.md) hook.
 
@@ -19,20 +15,20 @@ Use `<ShowBase>` instead of `<Show>` when you want a completely custom page layo
 ```jsx
 // in src/posts.jsx
 import * as React from "react";
-import { ShowBase } from 'react-admin';
+import { ShowBase } from 'ra-core';
 
 const PostShow = () => (
     <ShowBase resource="posts">
-        <Grid container>
-            <Grid item xs={8}>
-                <SimpleShowLayout>
+        <div style={{ display: 'flex' }}>
+            <div style={{ flex: 2 }}>
+                <div>
                     ...
-                </SimpleShowLayout>
-            </Grid>
-            <Grid item xs={4}>
+                </div>
+            </div>
+            <div style={{ flex: 1 }}>
                 Show instructions...
-            </Grid>
-        </Grid>
+            </div>
+        </div>
         <div>
             Post related links...
         </div>
@@ -44,15 +40,17 @@ Components using `<ShowBase>` can be used as the `show` prop of a `<Resource>` c
 
 ```jsx
 // in src/App.jsx
-import { Admin, Resource } from 'react-admin';
+import { CoreAdminContext, CoreAdminUI, Resource } from 'ra-core';
 
 import { dataProvider } from './dataProvider';
 import { PostShow } from './posts';
 
 const App = () => (
-    <Admin dataProvider={dataProvider}>
-        <Resource name="posts" show={PostShow} />
-    </Admin>
+    <CoreAdminContext dataProvider={dataProvider}>
+        <CoreAdminUI>
+            <Resource name="posts" show={PostShow} />
+        </CoreAdminUI>
+    </CoreAdminContext>
 );
 ```
 
@@ -73,47 +71,51 @@ const App = () => (
 
 ## `children`
 
-`<ShowBase>` renders its children wrapped by a `RecordContext`, so you can use any component that depends on such a context to be defined - including all [Field components](./Fields.md).
+`<ShowBase>` renders its children wrapped by a `RecordContext`, so you can use any component that depends on such a context to be defined.
 
-For instance, to display several fields in a single line, you can use Material UI’s `<Grid>` component:
+For instance, to display several fields in a grid layout:
 
-{% raw %}
 ```jsx
-import { ShowBase, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
-import { Grid } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
+import { ShowBase, ReferenceFieldBase, WithRecord } from 'ra-core';
+import { TextField } from './TextField';
+import { DateField } from './DateField';
 
 const BookShow = () => (
     <ShowBase>
-        <Grid container spacing={2} sx={{ margin: 2 }}>
-            <Grid item xs={12} sm={6}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem', margin: '1rem' }}>
+            <div>
                 <TextField label="Title" source="title" />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <ReferenceField label="Author" source="author_id" reference="authors">
+            </div>
+            <div>
+                <ReferenceFieldBase label="Author" source="author_id" reference="authors">
                     <TextField source="name" />
-                </ReferenceField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
+                </ReferenceFieldBase>
+            </div>
+            <div>
                 <DateField label="Publication Date" source="published_at" />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <WithRecord label="Rating" render={record => <>
-                    {[...Array(record.rating)].map((_, index) => <StarIcon key={index} />)}
-                </>} />
-            </Grid>
-        </Grid>
+            </div>
+            <div>
+                <WithRecord render={record => (
+                    <span>
+                        {record.rating >= 1 ? '⭐' : '☆'}
+                        {record.rating >= 2 ? '⭐' : '☆'}
+                        {record.rating >= 3 ? '⭐' : '☆'}
+                        {record.rating >= 4 ? '⭐' : '☆'}
+                        {record.rating >= 5 ? '⭐' : '☆'}
+                    </span>
+                )} />
+            </div>
+        </div>
     </ShowBase>
 );
 ```
-{% endraw %}
 
 ## `disableAuthentication`
 
 By default, the `<ShowBase>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
 
 ```jsx
-import { ShowBase } from 'react-admin';
+import { ShowBase } from 'ra-core';
 
 const PostShow = () => (
     <ShowBase disableAuthentication>
@@ -127,7 +129,7 @@ const PostShow = () => (
 By default, `<ShowBase>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
 
 ```jsx
-import { ShowBase } from 'react-admin';
+import { ShowBase } from 'ra-core';
 
 export const PostShow = () => (
     <ShowBase id="123">
@@ -143,7 +145,7 @@ export const PostShow = () => (
 By default, `<ShowBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `loading` prop:
 
 ```jsx
-import { ShowBase } from 'react-admin';
+import { ShowBase } from 'ra-core';
 
 export const PostShow = () => (
     <ShowBase loading={<p>Checking for permissions...</p>}>
@@ -157,7 +159,7 @@ export const PostShow = () => (
 By default, `<ShowBase>` renders nothing when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
-import { ShowBase } from 'react-admin';
+import { ShowBase } from 'ra-core';
 
 export const PostShow = () => (
     <ShowBase offline={<p>No network. Could not load the post.</p>}>
@@ -169,7 +171,7 @@ export const PostShow = () => (
 **Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
 
 ```jsx
-import { ShowBase, IsOffline } from 'react-admin';
+import { ShowBase, IsOffline } from 'ra-core';
 
 export const PostShow = () => (
     <ShowBase offline={<p>No network. Could not load the post.</p>}>
@@ -191,7 +193,7 @@ You can override this behavior and pass custom side effects by providing a custo
 
 ```jsx
 import * as React from 'react';
-import { useNotify, useRefresh, useRedirect, ShowBase, SimpleShowLayout } from 'react-admin';
+import { useNotify, useRefresh, useRedirect, ShowBase } from 'ra-core';
 
 const PostShow = () => {
     const notify = useNotify();
@@ -206,15 +208,13 @@ const PostShow = () => {
 
     return (
         <ShowBase queryOptions={{ onError }}>
-            <SimpleShowLayout>
                 ...
-            </SimpleShowLayout>
         </ShowBase>
     );
 }
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](../data-fetching/DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
@@ -230,9 +230,8 @@ The default `onError` function is:
 
 Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ShowContext` as argument. 
 
-{% raw %}
 ```jsx
-import { ShowBase, TextField, DateField, ReferenceField, WithRecord } from 'react-admin';
+import { ShowBase } from 'ra-core';
 
 const BookShow = () => (
     <ShowBase render={({ isPending, error, record }) => {
@@ -251,14 +250,13 @@ const BookShow = () => (
     }}/>
 );
 ```
-{% endraw %}
 
 ## `resource`
 
 By default, `<ShowBase>` operates on the current `ResourceContext` (defined at the routing level), so under the `/posts/1/show` path, the `resource` prop will be `posts`. You may want to force a different resource. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
 
 ```jsx
-import { ShowBase } from 'react-admin';
+import { ShowBase } from 'ra-core';
 
 export const UsersShow = () => (
     <ShowBase resource="users">
@@ -271,23 +269,22 @@ export const UsersShow = () => (
 
 ## Security
 
-The `<ShowBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Show.md#disableauthentication) prop.
+The `<ShowBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) prop.
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<ShowBase>`  will only render if the user has the "show" access to the related resource.
+If your `authProvider` implements [Access Control](../security/Permissions.md#access-control), `<ShowBase>`  will only render if the user has the "show" access to the related resource.
 
 For instance, for the `<PostShow>`page below:
 
 ```tsx
-import { ShowBase, SimpleShowLayout, TextField } from 'react-admin';
+import { ShowBase } from 'ra-core';
+import { TextField } from './TextField';
 
 // Resource name is "posts"
 const PostShow = () => (
     <ShowBase>
-        <SimpleShowLayout>
-            <TextField source="title" />
-            <TextField source="author" />
-            <TextField source="published_at" />
-        </SimpleShowLayout>
+        <TextField source="title" />
+        <TextField source="author" />
+        <TextField source="published_at" />
     </ShowBase>
 );
 ```
@@ -298,6 +295,6 @@ const PostShow = () => (
 { action: "show", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdminUI.md#accessdenied).
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Show.md#disableauthentication).
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](#disableauthentication).

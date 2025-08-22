@@ -1,23 +1,20 @@
 ---
-layout: default
 title: "useShowController"
-storybook_path: ra-core-controller-useshowcontroller--authenticated
 ---
 
-# `useShowController`
-
-`useShowController` contains the headless logic of the [`<Show>`](./Show.md) component. It's useful to create a custom Show view. It's also the base hook when building a custom view with another UI kit than Material UI. 
+`useShowController` contains the headless logic for displaying a record. It's useful to create a custom Show view with your own UI components.
 
 `useShowController` reads the resource name and id from the resource context and browser location, fetches the record from the data provider via `dataProvider.getOne()`, computes the default page title, and returns them. Its return value matches the [`ShowContext`](./useShowContext.md) shape. 
 
-`useShowController` is used internally by [`<Show>`](./Show.md) and [`<ShowBase>`](./ShowBase.md). If your Show view uses react-admin components like `<TextField>`, prefer [`<ShowBase>`](./ShowBase.md) to `useShowController` as it takes care of creating a `<ShowContext>`.
+`useShowController` is used internally by [`<ShowBase>`](./ShowBase.md). If your Show view uses field components, prefer [`<ShowBase>`](./ShowBase.md) to `useShowController` as it takes care of creating a `<ShowContext>`.
 
 ## Usage
 
 You can use `useShowController` to create your own custom Show view, like this one:
 
 ```jsx
-import { useShowController, RecordContextProvider, SimpleShowLayout } from 'react-admin';
+import { useShowController, RecordContextProvider } from 'ra-core';
+import { TextField } from './TextField';
 
 const PostShow = () => {
     const { defaultTitle, error, isPending, record } = useShowController();
@@ -31,10 +28,10 @@ const PostShow = () => {
     return (
         <RecordContextProvider value={record}>
             <h1>{defaultTitle}</h1>
-            <SimpleShowLayout>
+            <div>
                 <TextField source="title" />
                 ...
-            </SimpleShowLayout>
+            </div>
         </RecordContextProvider>
     );
 };
@@ -50,7 +47,7 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 
 * [`disableAuthentication`](#disableauthentication): Boolean, set to `true` to disable the authentication check.
 * [`id`](#id): Record identifier. If not provided, it will be deduced from the URL.
-* [`queryOptions`](#queryoptions): Options object to pass to the [`useQuery`](./Actions.md#usequery-and-usemutation) hook.
+* [`queryOptions`](#queryoptions): Options object to pass to the [`useQuery`](../data-fetching/Actions.md#usequery-and-usemutation) hook.
 * [`resource`](#resource): Resource name, e.g. `posts`
 
 
@@ -59,7 +56,7 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 By default, the `useShowController` hook will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
 
 ```jsx
-import { useShowController } from 'react-admin';
+import { useShowController } from 'ra-core';
 
 const PostShow = () => {
     const { record } = useShowController({ disableAuthentication: true });
@@ -98,9 +95,10 @@ This can be useful e.g. to override the default error side effect. By default, w
 
 You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 
+
 ```jsx
-import * as React from 'react';
-import { useNotify, useRefresh, useRedirect, ShowBase, SimpleShowLayout } from 'react-admin';
+import { useNotify, useRefresh, useRedirect, RecordContextProvider } from 'ra-core';
+import { TextField } from './TextField';
 
 const PostShow = props => {
     const notify = useNotify();
@@ -129,16 +127,15 @@ const PostShow = props => {
     return (
         <RecordContextProvider value={record}>
             <h1>{defaultTitle}</h1>
-            <SimpleShowLayout>
+            <div>
                 <TextField source="title" />
                 ...
-            </SimpleShowLayout>
+            </div>
         </RecordContextProvider>
     );
-}
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](../data-fetching/DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
@@ -190,7 +187,7 @@ By default, `useShowController` reads the resource name from the resource contex
 But by passing `resource` and `id` props, you can run the controller logic outside these contexts:
 
 ```jsx
-import { useShowController } from 'react-admin';
+import { useShowController } from 'ra-core';
 import ShowView from './ShowView';
 
 const MyShow = () => {
@@ -201,25 +198,26 @@ const MyShow = () => {
 
 ## Security
 
-`useShowController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Show.md#disableauthentication) prop.
+`useShowController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the `disableAuthentication` prop.
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useShowController` will only render if the user has the "show" access to the related resource.
+If your `authProvider` implements [Access Control](../security/Permissions.md#access-control), `useShowController` will only render if the user has the "show" access to the related resource.
 
 For instance, for the `<PostShow>` page below:
 
 ```tsx
-import { useShowController, SimpleShowLayout, TextField } from 'react-admin';
+import { useShowController } from 'ra-core';
+import { TextField } from './TextField';
 
 const PostShow = ({ id }) => {
   const { isPending, error, data } = useShowController({ resource: 'posts', id })
   if (error) return <div>Error!</div>;
   if (isPending) return <div>Loading...</div>;
   return (
-      <SimpleShowLayout record={data}>
+      <div>
         <TextField source="title" />
         <TextField source="author" />
         <TextField source="published_at" />
-      </SimpleShowLayout>
+      </div>
   );
 }
 ```
@@ -230,6 +228,6 @@ const PostShow = ({ id }) => {
 { action: "show", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+Users without access will be redirected to the Access Denied page.
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Show.md#disableauthentication).
+**Note**: Access control is disabled when you use the `disableAuthentication` prop.
