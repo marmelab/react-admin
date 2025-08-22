@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "The ReferenceArrayInput Component"
+title: "<ReferenceArrayInputBase>"
 storybook_path: ra-ui-materialui-input-referencearrayinput--basic
 ---
 
-# `<ReferenceArrayInput>`
+TODO
 
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 

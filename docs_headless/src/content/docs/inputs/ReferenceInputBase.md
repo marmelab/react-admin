@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "The ReferenceInput Component"
+title: "<ReferenceInputBase>"
 storybook_path: ra-ui-materialui-input-referenceinput--basic
 ---
 
-# `<ReferenceInput>`
+TODO
 
 Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `company_id` of a `contact` resource. 
 
