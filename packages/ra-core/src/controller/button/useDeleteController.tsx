@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useDelete } from '../../dataProvider';
@@ -10,34 +10,31 @@ import { useResourceContext } from '../../core';
 import { useTranslate } from '../../i18n';
 
 /**
- * Prepare a set of callbacks for a delete button guarded by confirmation dialog
+ * Prepare a set of callbacks for a delete button
  *
  * @example
- *
  * const DeleteButton = ({
  *     resource,
  *     record,
  *     redirect,
- *     onClick,
  *     ...rest
  * }) => {
  *     const {
- *         open,
  *         isPending,
- *         handleDialogOpen,
- *         handleDialogClose,
  *         handleDelete,
- *     } = useDeleteWithConfirmController({
+ *     } = useDeleteController({
+ *         mutationMode: 'pessimistic',
  *         resource,
  *         record,
  *         redirect,
- *         onClick,
  *     });
+ *
+ *     const [open, setOpen] = useState(false);
  *
  *     return (
  *         <Fragment>
  *             <Button
- *                 onClick={handleDialogOpen}
+ *                 onClick={() => setOpen(true)}
  *                 label="ra.action.delete"
  *                 {...rest}
  *             >
@@ -56,8 +53,8 @@ import { useTranslate } from '../../i18n';
  *                     name: resource,
  *                     id: record.id,
  *                 }}
- *                 onConfirm={handleDelete}
- *                 onClose={handleDialogClose}
+ *                 onConfirm={() => handleDelete()}
+ *                 onClose={() => setOpen(false)}
  *             />
  *         </Fragment>
  *     );
@@ -69,13 +66,13 @@ export const useDeleteController = <
 >(
     props: UseDeleteControllerParams<RecordType, ErrorType>
 ): UseDeleteControllerReturn => {
-    const { mutationMode } = props;
     const {
         record,
         redirect: redirectTo = 'list',
+        mutationMode,
         mutationOptions = {},
         successMessage,
-    } = props as UseDeleteControllerParams<RecordType, ErrorType>;
+    } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
     const resource = useResourceContext(props);
     const notify = useNotify();
@@ -154,11 +151,14 @@ export const useDeleteController = <
         resource,
     ]);
 
-    return {
-        isPending,
-        isLoading: isPending,
-        handleDelete,
-    };
+    return useMemo(
+        () => ({
+            isPending,
+            isLoading: isPending,
+            handleDelete,
+        }),
+        [isPending, handleDelete]
+    );
 };
 
 export interface UseDeleteControllerParams<
