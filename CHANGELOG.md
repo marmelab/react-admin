@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.10.2
+
+* Add ability to use a `ReactNode` as create label in `<AutocompleteInput>` and `<SelectInput>` ([#10883](https://github.com/marmelab/react-admin/pull/10883)) ([Madeorsk](https://github.com/Madeorsk))
+* Add warning when using `queryOptions` to add a `meta` in `<Edit>` and `<EditBase>` ([#10882](https://github.com/marmelab/react-admin/pull/10882)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix error when authProvider check methods are not async ([#10890](https://github.com/marmelab/react-admin/pull/10890)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `ChipField` consider zero to be empty ([#10877](https://github.com/marmelab/react-admin/pull/10877)) ([djhi](https://github.com/djhi))
+* [Doc] Add Apisix OIDC auth provider ([#10888](https://github.com/marmelab/react-admin/pull/10888)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add details about Datagrid to DataTable migration ([#10884](https://github.com/marmelab/react-admin/pull/10884)) ([Madeorsk](https://github.com/Madeorsk))
+
 ## 5.10.1
 
 * Fix `<ColumnsButton>` cannot be used with keyboard ([#10869](https://github.com/marmelab/react-admin/pull/10869)) ([djhi](https://github.com/djhi))
