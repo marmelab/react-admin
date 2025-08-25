@@ -129,26 +129,15 @@ You can pass either a React element or a string to the `empty` prop:
 
 ## `offline`
 
-`<ReferenceFieldBase>` can display a custom message when the referenced record is missing because there is no network connectivity, thanks to the `offline` prop.
+When the user is offline, `<ReferenceFieldBase>` is smart enough to display the referenced record if it was previously fetched. However, if the referenced record has never been fetched before, `<ReferenceFieldBase>` displays an error message explaining that the app has lost network connectivity.
+
+You can customize this error message by passing a React element or a string to the `offline` prop:
 
 ```jsx
+<ReferenceFieldBase source="user_id" reference="users" offline={<span>No network, could not fetch data</span>} >
+    ...
+</ReferenceFieldBase>
 <ReferenceFieldBase source="user_id" reference="users" offline="No network, could not fetch data" >
-    ...
-</ReferenceFieldBase>
-```
-
-`<ReferenceFieldBase>` renders the `empty` element when:
-
-- the referenced record is missing (no record in the `users` table with the right `user_id`), and
-- there is no network connectivity
-
-You can pass either a React element or a string to the `offline` prop:
-
-```jsx
-<ReferenceFieldBase source="user_id" reference="users" empty={<span>No network, could not fetch data</span>} >
-    ...
-</ReferenceFieldBase>
-<ReferenceFieldBase source="user_id" reference="users" empty="No network, could not fetch data" >
     ...
 </ReferenceFieldBase>
 ```

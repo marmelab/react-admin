@@ -1,0 +1,31 @@
+---
+import MobileMenuFooter from '@astrojs/starlight/components/MobileMenuFooter.astro';
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+
+const { sidebar } = Astro.locals.starlightRoute;
+---
+
+<script is:inline aria-hidden="true">
+    // This script scrolls the sidebar to the link matching the current page when the page loads
+    window.addEventListener('load', () => {
+        const sidebarContainer = document.getElementById('starlight__sidebar');
+        const currentItem = sidebarContainer.querySelector(
+            "a[aria-current='page']"
+        );
+        if (currentItem) {
+            sidebarContainer.scrollTo({
+                top: currentItem.offsetTop - sidebarContainer.offsetTop,
+                behavior: 'smooth',
+            });
+        }
+    });
+</script>
+
+<SidebarPersister>
+    <SidebarSublist sublist={sidebar} />
+</SidebarPersister>
+
+<div class="md:sl-hidden">
+    <MobileMenuFooter />
+</div>

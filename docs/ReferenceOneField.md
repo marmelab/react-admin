@@ -160,23 +160,22 @@ You can also set the `link` prop to a string, which will be used as the link typ
 
 ## `offline`
 
-Use `offline` to customize the text displayed when the related record is empty because there is no network connectivity.
+When the user is offline, `<ReferenceOneField>` is smart enough to display the referenced record if it was previously fetched. However, if the referenced record has never been fetched before, `<ReferenceOneField>` displays an error message explaining that the app has lost network connectivity.
 
-```jsx
-<ReferenceOneField label="Details" reference="book_details" target="book_id" offline="No network, could not fetch data">
-    ...
-</ReferenceOneField>
-```
-
-`offline` also accepts a `ReactNode`.
+You can customize this error message by passing a React element or a string to the `offline` prop:
 
 ```jsx
 <ReferenceOneField
-    label="Details"
     reference="book_details"
     target="book_id"
     offline={<p>No network, could not fetch data</p>}
 >
+    ...
+</ReferenceOneField>
+<ReferenceOneField 
+    reference="book_details"
+    target="book_id"
+    offline="No network, could not fetch data">
     ...
 </ReferenceOneField>
 ```

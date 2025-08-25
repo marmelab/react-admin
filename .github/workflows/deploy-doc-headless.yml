@@ -1,0 +1,55 @@
+name: 📕 Deploy headless docs
+on:
+    push:
+        branches:
+            - master
+            - next # TODO remove
+    pull_request: # TODO remove
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    pages: write
+    contents: write
+
+jobs:
+    deploy:
+        name: 📕 Deploy headless docs
+        runs-on: ubuntu-latest
+
+        env:
+            PRODUCTION_REMOTE: https://git:${{ secrets.DEPLOY_TOKEN }}@github.com/${{ vars.DEPLOY_REPOSITORY }}
+
+        steps:
+            - name: 📥 Checkout repo
+              uses: actions/checkout@v4
+
+            - name: ⚙️ Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: yarn
+
+            - name: ⚙️ Setup git
+              run: |
+                  echo Deploying to pages to $PRODUCTION_REMOTE
+                  git remote set-url origin https://git:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}
+                  git remote add production $PRODUCTION_REMOTE
+                  git config --global user.email support+actions@github.com
+                  git config --global user.name github-actions-bot
+
+            - name: 📥 Download deps
+              run: yarn install --frozen-lockfile
+
+            - name: 🔨 Build
+              run: |
+                  cd docs_headless
+                  yarn build
+                  cd ..
+
+            - name: 📡 Deploy GitHub pages
+              run: yarn gh-pages --remote production -d docs_headless/dist -b ${{ vars.DEPLOY_BRANCH || 'gh-pages' }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
