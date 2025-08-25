@@ -1,10 +1,6 @@
 ---
-layout: default
-title: "The Resource Component"
-storybook_path: ra-core-core-resource--basic
+title: "<Resource>"
 ---
-
-# The `<Resource>` component
 
 `<Resource>` components define the CRUD routes of a react-admin application. 
 
@@ -18,7 +14,7 @@ A `<Resource>` component has 3 responsibilities:
 - It creates a context that lets every descendant component know the current resource name (this context is called `ResourceContext`).
 - It stores the resource definition (its name, icon, and label) inside a shared context (this context is called `ResourceDefinitionContext`).
 
-`<Resource>` components can only be used as children of [the `<Admin>` component](./Admin.md).
+`<Resource>` components can only be used as children of [the `<CoreAdmin>` component](./CoreAdmin.md).
 
 ## Usage
 
@@ -26,7 +22,7 @@ For instance, the following admin app offers an interface to the resources expos
 
 ```jsx
 import * as React from "react";
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList, PostCreate, PostEdit, PostShow, PostIcon } from './posts';
@@ -34,14 +30,14 @@ import { UserList } from './posts';
 import { CommentList, CommentEdit, CommentCreate, CommentIcon } from './comments';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+    <CoreAdmin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         {/* complete CRUD pages for posts */}
         <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
         {/* read-only user list */}
         <Resource name="users" list={UserList} />
         {/* no show page for the comments resource */}
         <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} icon={CommentIcon} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -52,7 +48,7 @@ The routes call the following `dataProvider` methods:
 * `edit` calls `getOne()` on mount, and `update()` or `delete()` on submission
 * `create` calls `create()` on submission
 
-**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
+**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](../data-fetching/DataProviders.md) to define it.
 
 ## Props
 
@@ -87,16 +83,16 @@ The routing will map the component as follows:
 * `/posts/:id` maps to `PostEdit`
 * `/posts/:id/show` maps to `PostShow`
 
-**Tip**: If you want to use a special API endpoint (e.g. 'https://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the react-admin application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`dataProvider`](./Admin.md#dataprovider).
+**Tip**: If you want to use a special API endpoint (e.g. 'https://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the react-admin application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`dataProvider`](./CoreAdmin.md#dataprovider).
 
 ## `list`, `create`, `edit`, `show`
 
 `<Resource>` allows you to define a component for each CRUD route, using the following prop names:
 
-* `list` (usually using [the `<List>` component](./List.md)) (if defined, the resource is displayed on the Menu)
-* `create` (usually using [the `<Create>` component](./Create.md))
-* `edit` (usually using [the `<Edit>` component](./Edit.md))
-* `show` (usually using [the `<Show>` component](./Show.md))
+* `list` (usually using [the `<ListBase>` component](../list/ListBase.md)) (if defined, the resource is displayed on the Menu)
+* `create` (usually using [the `<CreateBase>` component](../create-edit/CreateBase.md))
+* `edit` (usually using [the `<EditBase>` component](../create-edit/EditBase.md))
+* `show` (usually using [the `<ShowBase>` component](../show/ShowBase.md))
 
 **Tip**: Under the hood, `<Resource>` uses [react-router](https://reactrouter.com/web/guides/quick-start) to create several routes:
 
@@ -115,74 +111,81 @@ For instance, the following code creates an `authors` resource, and adds an `/au
 
 ```jsx
 // in src/App.jsx
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 import { Route } from 'react-router-dom';
 
 import { AuthorList } from './AuthorList';
 import { BookList } from './BookList';
 
 export const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="authors" list={AuthorList}>
             <Route path=":authorId/books" element={<BookList />} />
         </Resource>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 The `BookList` component can grab the `authorId` parameter from the URL using the `useParams` hook, and pass it as a `<List filter>` parameter to display a list of books for the given author:
 
-{% raw %}
 ```jsx
 // in src/BookList.jsx
-import { List, DataTable } from 'react-admin';
+import { ListBase, ListIterator } from 'ra-core';
 import { useParams } from 'react-router-dom';
 
 export const BookList = () => {
     const { authorId } = useParams();
     return (
-        <List resource="books" filter={{ authorId }}>
-            <DataTable>
-                <DataTable.Col source="id" />
-                <DataTable.Col source="title" />
-                <DataTable.Col source="year" />
-            </DataTable>
-        </List>
+        <ListBase resource="books" filter={{ authorId }}>
+            <div>
+                <h1>Books</h1>
+                <ul>
+                    <ListIterator
+                        render={book => (
+                            <li key={book.id}>
+                                {book.title} ({book.year})
+                            </li>
+                        )}
+                    />
+                </ul>
+            </div>
+        </ListBase>
     );
 };
 ```
-{% endraw %}
 
-**Tip**: In the above example, the `resource="books"` prop is required in `<List>` because the `ResourceContext` defaults to `authors` inside the `<Resource name="authors">`.
+**Tip**: In the above example, the `resource="books"` prop is required in `<ListBase>` because the `ResourceContext` defaults to `authors` inside the `<Resource name="authors">`.
 
 It's your responsibility to route to the `/authors/:id/books` route, e.g. from each line of the `AuthorList` component:
 
 ```jsx
 // in src/AuthorList.jsx
+import { useRecordContext, ListBase, ListIterator } from 'ra-core';
+import { Link } from 'react-router-dom';
+
 const BooksButton = () => {
     const record = useRecordContext();
     return (
-        <Button
-            component={Link}
-            to={`/authors/${record.id}/books`}
-            color="primary"
-        >
+        <Link to={`/authors/${record.id}/books`}>
             Books
-        </Button>
+        </Link>
     );
 };
 
 export const AuthorList = () => (
-    <List>
-        <DataTable.Col>
-            <DataTable.Col source="id" />
-            <DataTable.Col source="firstName" />
-            <DataTable.Col source="lastName" />
-            <DataTable.Col>
-                <BooksButton />
-            </DataTable.Col>
-        </DataTable.Col>
-    </List>
+    <ListBase>
+        <div>
+            <h1>Authors</h1>
+            <ListIterator
+                render={author => (
+                    <div key={author.id} style={{ padding: '1rem', border: '1px solid #ddd', margin: '0.5rem' }}>
+                        <span>{author.firstName} {author.lastName}</span>
+                        <BooksButton />
+                    </div>
+                )}
+            />
+        </div>
+    </ListBase>
 );
 ```
 
@@ -195,18 +198,18 @@ React-admin will render the `icon` prop component in the menu:
 ```jsx
 // in src/App.js
 import * as React from "react";
-import PostIcon from '@mui/icons-material/Book';
-import UserIcon from '@mui/icons-material/People';
-import { Admin, Resource } from 'react-admin';
+import PostIcon from './icons/BookIcon';
+import UserIcon from './icons/PeopleIcon';
+import { CoreAdmin, Resource } from 'ra-core';
 import jsonServerProvider from 'ra-data-json-server';
 
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+    <CoreAdmin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} icon={PostIcon} />
         <Resource name="users" list={UserList} icon={UserIcon} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -214,11 +217,9 @@ const App = () => (
 
 `options.label` allows to customize the display name of a given resource in the menu.
 
-{% raw %}
 ```jsx
 <Resource name="v2/posts" options={{ label: 'Posts' }} list={PostList} />
 ```
-{% endraw %}
 
 ## `recordRepresentation`
 
@@ -245,41 +246,42 @@ For instance, to change the default representation of "users" records to render 
 
 - a string (e.g. `'title'`) to specify the field to use as representation
 - a function (e.g. `(record) => record.title`) to specify a custom string representation
-- a React component (e.g. `<MyCustomRecordRepresentation />`). In such components, use [`useRecordContext`](./useRecordContext.md) to access the record.
+- a React component (e.g. `<MyCustomRecordRepresentation />`). In such components, use [`useRecordContext`](../common/useRecordContext.md) to access the record.
 
-If you want to display this record representation somewhere, you can leverage the [`useGetRecordRepresentation`](./useGetRecordRepresentation.md) hook or the [`<RecordRepresentation>`](./RecordRepresentation.md) component.
+If you want to display this record representation somewhere, you can leverage the [`useGetRecordRepresentation`](../other/useGetRecordRepresentation.md) hook or the [`<RecordRepresentation>`](../other/RecordRepresentation.md) component.
 
 ## `hasCreate`, `hasEdit`, `hasShow`
 
-Some components, like [`<CreateDialog>`](./CreateDialog.md), [`<EditDialog>`](./EditDialog.md) or [`<ShowDialog>`](./ShowDialog.md) need to declare the CRUD components outside of the `<Resource>` component. In such cases, you can use the `hasCreate`, `hasEdit` and `hasShow` props to tell react-admin which CRUD components are available for a given resource.
-
-This is useful, for instance, to have the `<ReferenceField>` component display a link to the edit or show view of the referenced record.
+You can use the `hasCreate`, `hasEdit` and `hasShow` props to tell react-admin which CRUD components are available for a given resource. This is useful for components that need to know about available actions without the CRUD components being declared in the `<Resource>`.
 
 ```jsx
 // in src/App.js
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 import { dataProvider } from './dataProvider';
 
 import { PostList } from './posts';
 import { CommentEdit } from './commentEdit';
 
 const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} hasEdit />
         <Resource name="comment" edit={CommentEdit} />
-    </Admin>
+    </CoreAdmin>
 );
 
 // in src/commentEdit.js
-import { Edit, SimpleForm, ReferenceField } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
+import { ReferenceField } from './ReferenceField';
 
 const CommentEdit = () => (
-    <Edit>
-        <SimpleForm>
+    <EditBase>
+        <Form>
             {/* renders a link to the edit view only because `hasEdit` has been set on `<Resource>` */}
             <ReferenceField source="post_id" reference="posts" />
-        </SimpleForm>
-    </Edit>
+            <TextInput source="body" />
+        </Form>
+    </EditBase>
 );
 ```
 
@@ -293,7 +295,7 @@ For instance, the following component displays the name of the current resource:
 
 ```jsx
 import * as React from 'react';
-import { DataTable, DateField, List, useResourceContext } from 'react-admin';
+import { ListBase, ListIterator, useResourceContext } from 'ra-core';
 
 const ResourceName = () => {
     const resource = useResourceContext();
@@ -301,15 +303,19 @@ const ResourceName = () => {
 }
 
 const PostList = () => (
-    <List>
-        <>
+    <ListBase>
+        <div>
             <ResourceName /> {/* renders 'posts' */}
-            <DataTable>
-                <DataTable.Col source="title" />
-                <DataTable.Col source="published_at" field={DateField} />
-            </DataTable>
-        </>
-    </List>
+            <ListIterator
+                render={record => (
+                    <div key={record.id}>
+                        <h3>{record.title}</h3>
+                        <p>{record.published_at}</p>
+                    </div>
+                )}
+            />
+        </div>
+    </ListBase>
 )
 ```
 
@@ -329,16 +335,16 @@ const MyComponent = () => (
 React-admin doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of songs for a given artist:
 
 ```jsx
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 import { Route } from 'react-router-dom';
 
 export const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="artists" list={ArtistList} edit={ArtistDetail}>
             <Route path=":id/songs" element={<SongList />} />
             <Route path=":id/songs/:songId" element={<SongDetail />} />
         </Resource>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -356,72 +362,74 @@ This setup creates four routes:
 
 In order to display a list of songs for the selected artist, `<SongList>` should filter the songs by the `id` parameter. To do so, use the `useParams` hook from `react-router-dom`:
 
-{% raw %}
 ```jsx
 // in src/SongList.jsx
-import { List, DataTable, useRecordContext, DateField } from 'react-admin';
-import { useParams } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { ListBase, ListIterator, useRecordContext } from 'ra-core';
+import { useParams, Link } from 'react-router-dom';
 
 export const SongList = () => {
     const { id } = useParams();
     return (
-        <List resource="songs" filter={{ artistId: id }}>
-            <DataTable>
-                <DataTable.Col source="title" />
-                <DataTable.Col source="released" field={DateField} />
-                <DataTable.Col source="writer" />
-                <DataTable.Col source="producer" />
-                <DataTable.Col source="recordCompany" label="Label" />
-                <DataTable.Col>
-                    <EditSongButton />
-                </DataTable.Col>
-            </DataTable>
-        </List>
+        <ListBase resource="songs" filter={{ artistId: id }}>
+            <div>
+                <h1>Songs</h1>
+                <ListIterator
+                    render={song => (
+                        <div key={song.id} style={{ padding: '1rem', border: '1px solid #ddd', margin: '0.5rem' }}>
+                            <h3>{song.title}</h3>
+                            <p><strong>Released:</strong> {song.released}</p>
+                            <p><strong>Writer:</strong> {song.writer}</p>
+                            <p><strong>Producer:</strong> {song.producer}</p>
+                            <p><strong>Label:</strong> {song.recordCompany}</p>
+                            <EditSongButton />
+                        </div>
+                    )}
+                />
+            </div>
+        </ListBase>
     );
 };
 
 const EditSongButton = () => {
     const song = useRecordContext();
     return (
-        <Button
-            component={Link}
-            to={`/artists/${song?.artist_id}/songs/${song?.id}`}
-            startIcon={<EditIcon />}
-        >
+        <Link to={`/artists/${song?.artist_id}/songs/${song?.id}`}>
             Edit
-        </Button>
+        </Link>
     );
 };
 ```
-{% endraw %}
 
 In the `<SongDetail>` component, you must also use the `useParams` hook to get the `songId` parameter and display the song with the corresponding `id`:
 
-{% raw %}
 ```jsx
 // in src/SongDetail.jsx
-import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 import { useParams } from 'react-router-dom';
+import { TextInput } from './TextInput';
+import { DateInput } from './DateInput';
 
 export const SongDetail = () => {
     const { id, songId } = useParams();
     return (
-        <Edit resource="posts" id={songId} redirect={`/artists/${id}/songs`}>
-            <SimpleForm>
-                <TextInput source="title" />
-                <DateInput source="released" />
-                <TextInput source="writer" />
-                <TextInput source="producer" />
-                <TextInput source="recordCompany" label="Label" />
-            </SimpleForm>
-        </Edit>
+        <EditBase resource="songs" id={songId} redirect={`/artists/${id}/songs`}>
+            <div>
+                <h1>Edit Song</h1>
+                <Form>
+                    <TextInput source="title" />
+                    <DateInput source="released" />
+                    <TextInput source="writer" />
+                    <TextInput source="producer" />
+                    <TextInput source="recordCompany" label="Label" />
+                    <button type="submit">Save</button>
+                </Form>
+            </div>
+        </EditBase>
     );
 };
 ```
-{% endraw %}
 
-**Tip**: As seen in the screencast above, when browsing to nested resources, users can get lost unless they have a breadcrumb path displayed on screen. Check [the `<Breadcrumb>` component](./Breadcrumb.md#nested-resources) for more details about how to set up this navigation element.
+**Tip**: When browsing to nested resources, users can get lost unless they have a navigation system in place. Consider implementing a custom breadcrumb or navigation component in your headless application to help users understand their current location in the hierarchy.
 
 ## Lazy Loading
 
@@ -430,7 +438,7 @@ If you need to speed up the initial loading of your application, you may want to
 ```jsx
 // in src/App.js
 import * as React from 'react';
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 
 import { dataProvider } from './dataProvider';
 import { users } from './users';
@@ -439,10 +447,10 @@ const PostList = React.lazy(() => import('./posts/PostList'));
 const PostEdit = React.lazy(() => import('./posts/PostEdit'));
 
 const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="users" {...users} />
         <Resource name="posts" list={PostList} edit={PostEdit} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -452,11 +460,11 @@ When users navigate to the `/posts` route, react-admin will display a loading in
 
 ## Anonymous Access
 
-The usual components for the `<Resource>` routes ( `<List>`, `<Create>`, `<Edit>`, `<Show>`) require authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop on the component.
+The usual components for the `<Resource>` routes (`<ListBase>`, `<CreateBase>`, `<EditBase>`, `<ShowBase>`) require authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](../list/ListBase.md#disableauthentication) prop on the component.
 
 ## Access Control
 
-In addition, if your `authProvider` implements [Access Control](./Permissions.md#access-control), these components will only render if the user has the right permission (e.g., `{ action: 'list', resource: 'posts' }` for the `list` page of the `posts` resource).
+In addition, if your `authProvider` implements [Access Control](../security/Permissions.md#access-control), these components will only render if the user has the right permission (e.g., `{ action: 'list', resource: 'posts' }` for the `list` page of the `posts` resource).
 
 For instance, given the following resource:
 
