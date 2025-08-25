@@ -16337,7 +16337,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-simple-rest@npm:^5.0.0, ra-data-simple-rest@npm:^5.10.2, ra-data-simple-rest@npm:^5.3.0, ra-data-simple-rest@workspace:packages/ra-data-simple-rest":
+"ra-data-simple-rest@npm:^5.0.0, ra-data-simple-rest@npm:^5.3.0, ra-data-simple-rest@workspace:packages/ra-data-simple-rest":
   version: 0.0.0-use.local
   resolution: "ra-data-simple-rest@workspace:packages/ra-data-simple-rest"
   dependencies:
@@ -18047,7 +18047,7 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     little-state-machine: "npm:^4.8.1"
     lodash: "npm:~4.17.5"
-    ra-data-simple-rest: "npm:^5.10.2"
+    ra-data-fakerest: "npm:^5.10.2"
     ra-i18n-polyglot: "npm:^5.10.2"
     ra-input-rich-text: "npm:^5.10.2"
     ra-language-english: "npm:^5.10.2"
