@@ -2,7 +2,9 @@ import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { Octokit } from '@octokit/core';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { OctokitResponse } from '@octokit/types';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { components } from '@octokit/openapi-types';
 
 const prOrder = [
@@ -118,10 +120,6 @@ const writeChangelog = (changelogContent: string) => {
 };
 
 const main = async () => {
-    if (process.env.RELEASE_DRY_RUN) {
-        console.log('Dry run mode is enabled');
-    }
-
     if (!process.env.GITHUB_ACCESS_TOKEN) {
         console.error(
             'Please provide the GITHUB_ACCESS_TOKEN variable in the .env file'
@@ -148,12 +146,7 @@ const main = async () => {
 
     const changelogContent = generateChangelogContent(milestone_number, items);
 
-    if (process.env.RELEASE_DRY_RUN) {
-        console.log('Would have added the following entries to the changelog');
-        console.log(changelogContent);
-    } else {
-        writeChangelog(changelogContent);
-    }
+    writeChangelog(changelogContent);
 
     console.log('Changelog updated successfully.');
 };
