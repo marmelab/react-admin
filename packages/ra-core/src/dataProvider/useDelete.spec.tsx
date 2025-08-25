@@ -77,7 +77,6 @@ describe('useDelete', () => {
     });
 
     it('uses the latest declaration time mutationMode', async () => {
-        jest.spyOn(console, 'log').mockImplementation(() => {});
         // This story uses the pessimistic mode by default
         render(<MutationMode />);
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
@@ -99,21 +98,18 @@ describe('useDelete', () => {
     });
 
     it('uses the latest declaration time params', async () => {
-        jest.spyOn(console, 'log').mockImplementation(() => {});
         const posts = [
             { id: 1, title: 'Hello' },
             { id: 2, title: 'World' },
         ];
         const dataProvider = {
-            getList: (resource, params) => {
-                console.log('getList', resource, params);
+            getList: () => {
                 return Promise.resolve({
                     data: posts,
                     total: posts.length,
                 });
             },
-            delete: jest.fn((resource, params) => {
-                console.log('delete', resource, params);
+            delete: jest.fn((_, params) => {
                 return new Promise(resolve => {
                     setTimeout(() => {
                         const index = posts.findIndex(p => p.id === params.id);
@@ -384,7 +380,6 @@ describe('useDelete', () => {
 
     describe('mutationMode', () => {
         it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCasePessimistic />);
             screen.getByText('Delete first post').click();
             await waitFor(() => {
@@ -401,7 +396,6 @@ describe('useDelete', () => {
             expect(screen.queryByText('World')).not.toBeNull();
         });
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCasePessimistic />);
             screen.getByText('Delete first post').click();
@@ -450,7 +444,6 @@ describe('useDelete', () => {
             ).not.toBeNull();
         });
         it('when optimistic, displays result and success side effects right away', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseOptimistic />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -468,7 +461,6 @@ describe('useDelete', () => {
             });
         });
         it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseOptimistic />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
@@ -490,7 +482,6 @@ describe('useDelete', () => {
             });
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -518,7 +509,6 @@ describe('useDelete', () => {
             );
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -536,7 +526,6 @@ describe('useDelete', () => {
             });
         });
         it('when undoable, displays result and success side effects right away and reverts on error', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
