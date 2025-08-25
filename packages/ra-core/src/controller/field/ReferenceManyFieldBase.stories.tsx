@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { RecordsIterator } from 'ra-core';
 import { QueryClient } from '@tanstack/react-query';
 import { CoreAdmin } from '../../core/CoreAdmin';
 import { Resource } from '../../core/Resource';
 import { ShowBase } from '../../controller/show/ShowBase';
 import { TestMemoryRouter } from '../../routing';
 import { ReferenceManyFieldBase } from './ReferenceManyFieldBase';
-import { ListBase, ListIterator, useListContext } from '../list';
+import { ListBase, useListContext } from '../list';
 import fakeRestDataProvider from 'ra-data-fakerest';
 
 export default {
@@ -132,22 +133,31 @@ export const InAList = ({ dataProvider = dataProviderWithAuthorList }) => (
             <Resource
                 name="authors"
                 list={
-                    <ListBase>
-                        <ListIterator
-                            render={author => (
-                                <div>
-                                    <h3>{author.last_name} Books</h3>
-                                    <ReferenceManyFieldBase
-                                        target="author"
-                                        source="id"
-                                        reference="books"
-                                    >
-                                        <AuthorList source="title" />
-                                    </ReferenceManyFieldBase>
-                                </div>
-                            )}
-                        ></ListIterator>
-                    </ListBase>
+                    <ListBase
+                        render={({ data, isPending }) => (
+                            <>
+                                {!isPending && (
+                                    <RecordsIterator
+                                        data={data}
+                                        render={author => (
+                                            <div>
+                                                <h3>
+                                                    {author.last_name} Books
+                                                </h3>
+                                                <ReferenceManyFieldBase
+                                                    target="author"
+                                                    source="id"
+                                                    reference="books"
+                                                >
+                                                    <AuthorList source="title" />
+                                                </ReferenceManyFieldBase>
+                                            </div>
+                                        )}
+                                    />
+                                )}
+                            </>
+                        )}
+                    />
                 }
             />
         </CoreAdmin>

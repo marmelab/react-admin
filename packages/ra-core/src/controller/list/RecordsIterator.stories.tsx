@@ -1,11 +1,12 @@
 import React from 'react';
 import { useList, UseListOptions } from './useList';
 import { ListContextProvider } from './ListContextProvider';
-import { ListIterator } from './ListIterator';
+import { RecordsIterator } from './RecordsIterator';
 import { useRecordContext } from '../record';
+import { WithListContext } from './WithListContext';
 
 export default {
-    title: 'ra-core/controller/list/ListIterator',
+    title: 'ra-core/controller/list/RecordsIterator',
 };
 
 const data = [
@@ -33,26 +34,30 @@ export const UsingRender = ({
 
     return (
         <ListContextProvider value={value}>
-            <ul
-                style={{
-                    listStyleType: 'none',
-                }}
-            >
-                <ListIterator
-                    loading={<div>Loading...</div>}
-                    empty={<div>No data</div>}
-                    render={record => (
-                        <li
-                            style={{
-                                padding: '10px',
-                                border: '1px solid #ccc',
-                            }}
-                        >
-                            {record.title}
-                        </li>
-                    )}
-                />
-            </ul>
+            <WithListContext
+                loading={<div>Loading...</div>}
+                empty={<div>No data</div>}
+                render={() => (
+                    <ul
+                        style={{
+                            listStyleType: 'none',
+                        }}
+                    >
+                        <RecordsIterator
+                            render={record => (
+                                <li
+                                    style={{
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                    }}
+                                >
+                                    {record.title}
+                                </li>
+                            )}
+                        />
+                    </ul>
+                )}
+            />
         </ListContextProvider>
     );
 };
@@ -93,18 +98,21 @@ export const UsingChildren = ({
 
     return (
         <ListContextProvider value={value}>
-            <ul
-                style={{
-                    listStyleType: 'none',
-                }}
-            >
-                <ListIterator
-                    loading={<div>Loading...</div>}
-                    empty={<div>No data</div>}
-                >
-                    <ListItem />
-                </ListIterator>
-            </ul>
+            <WithListContext
+                loading={<div>Loading...</div>}
+                empty={<div>No data</div>}
+                render={() => (
+                    <ul
+                        style={{
+                            listStyleType: 'none',
+                        }}
+                    >
+                        <RecordsIterator>
+                            <ListItem />
+                        </RecordsIterator>
+                    </ul>
+                )}
+            />
         </ListContextProvider>
     );
 };
