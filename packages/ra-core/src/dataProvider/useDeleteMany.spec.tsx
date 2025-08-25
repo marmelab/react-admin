@@ -58,7 +58,6 @@ describe('useDeleteMany', () => {
     });
 
     it('uses the latest declaration time mutationMode', async () => {
-        jest.spyOn(console, 'log').mockImplementation(() => {});
         // This story uses the pessimistic mode by default
         render(<MutationMode />);
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
@@ -80,21 +79,18 @@ describe('useDeleteMany', () => {
     });
 
     it('uses the latest declaration time params', async () => {
-        jest.spyOn(console, 'log').mockImplementation(() => {});
         let posts = [
             { id: 1, title: 'Hello' },
             { id: 2, title: 'World' },
         ];
         const dataProvider = {
-            getList: (resource, params) => {
-                console.log('getList', resource, params);
+            getList: () => {
                 return Promise.resolve({
                     data: posts,
                     total: posts.length,
                 });
             },
-            deleteMany: jest.fn((resource, params) => {
-                console.log('deleteMany', resource, params);
+            deleteMany: jest.fn((_, params) => {
                 return new Promise(resolve => {
                     setTimeout(() => {
                         posts = posts.filter(

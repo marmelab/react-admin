@@ -15,15 +15,13 @@ export const MutationMode = () => {
         { id: 2, title: 'World' },
     ];
     const dataProvider = {
-        getList: (resource, params) => {
-            console.log('getList', resource, params);
+        getList: () => {
             return Promise.resolve({
                 data: posts,
                 total: posts.length,
             });
         },
-        deleteMany: (resource, params) => {
-            console.log('delete', resource, params);
+        deleteMany: (_, params) => {
             return new Promise(resolve => {
                 setTimeout(() => {
                     posts = posts.filter(post => !params.ids.includes(post.id));
@@ -92,15 +90,13 @@ export const Params = ({ dataProvider }: { dataProvider?: DataProvider }) => {
         { id: 2, title: 'World' },
     ];
     const defaultDataProvider = {
-        getList: (resource, params) => {
-            console.log('getList', resource, params);
+        getList: () => {
             return Promise.resolve({
                 data: posts,
                 total: posts.length,
             });
         },
-        deleteMany: (resource, params) => {
-            console.log('deleteMany', resource, params);
+        deleteMany: (_, params) => {
             return new Promise(resolve => {
                 setTimeout(() => {
                     posts = posts.filter(post => !params.ids.includes(post.id));
