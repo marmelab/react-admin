@@ -1,6 +1,9 @@
 ---
+layout: default
 title: "CRUD Pages"
 ---
+
+# CRUD pages
 
 Most admin and B2B apps start with a few basic screens to manipulate records:
 
@@ -14,8 +17,8 @@ We call this type of interface a "CRUD" interface because it allows us to Create
 React-admin started as an engine to generate such CRUD interfaces, and it still does it very well. **Building CRUD interfaces with react-admin requires little to no effort**, and it's very easy to customize them.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="./img/CRUD.webm" type="video/webm" />
-  <source src="./img/CRUD.mp4" type="video/mp4" />
+  <source src="../img/CRUD.webm" type="video/webm" />
+  <source src="../img/CRUD.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -179,13 +182,13 @@ You can use any of the following components to build the list page:
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
         <a title="<DataTable>" href="./DataTable.html">
-            <img src="./img/Datagrid.jpg">
+            <img src="../img/Datagrid.jpg">
         </a>
         <a href="./DataTable.html" style="display: block;transform: translateY(-10px);"><code>&lt;DataTable&gt;</code></a>
     </td>
     <td style="width:50%;border:none;text-align:center">
          <a title="<DatagridAG>" href="./DatagridAG.html">
-            <img src="./img/DatagridAG.jpg">
+            <img src="../img/DatagridAG.jpg">
         </a>
         <a href="./DatagridAG.html" style="display: block;transform: translateY(-10px);"><code>&lt;DatagridAG&gt;</code></a>
     </td>
@@ -193,13 +196,13 @@ You can use any of the following components to build the list page:
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
         <a title="SimpleList" href="./SimpleList.html">
-            <img src="./img/SimpleList.jpg">
+            <img src="../img/SimpleList.jpg">
         </a>
         <a href="./SimpleList.html" style="display: block;transform: translateY(-10px);"><code>&lt;SimpleList&gt;</code></a>
     </td>
     <td style="width:50%;border:none;text-align:center">
         <a title="Calendar" href="./Calendar.html">
-            <img src="./img/Calendar.jpg">
+            <img src="../img/Calendar.jpg">
         </a>
         <a href="./Calendar.html" style="display: block;transform: translateY(-10px);"><code>&lt;Calendar&gt;</code></a>
     </td>
@@ -214,13 +217,13 @@ Inside these list layouts, you can use any of react-admin’s Field components t
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
         <a title="Filter Button/Form Combo" href="./FilteringTutorial.html#the-filter-buttonform-combo">
-            <img src="./img/FilterButtonFormCombo.jpg">
+            <img src="../img/FilterButtonFormCombo.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-filter-buttonform-combo" style="display: block;transform: translateY(-10px);">Filter Button/Form Combo</a>
     </td>
     <td style="width:50%;border:none;text-align:center">
         <a title="FilterList sidebar" href="./FilteringTutorial.html#the-filterlist-sidebar">
-            <img src="./img/FilterList.jpg">
+            <img src="../img/FilterList.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-filterlist-sidebar" style="display: block;transform: translateY(-10px);"><code>&lt;FilterList&gt;</code> Sidebar</a>
     </td>
@@ -228,13 +231,13 @@ Inside these list layouts, you can use any of react-admin’s Field components t
 <tr style="border:none;background-color:#fff;">
     <td style="width:50%;border:none;text-align:center">
         <a title="Stacked Filters" href="./FilteringTutorial.html#the-stackedfilters-component">
-            <img src="./img/StackedFilters.jpg">
+            <img src="../img/StackedFilters.jpg">
         </a>
         <a href="./FilteringTutorial.html#the-stackedfilters-component" style="display: block;transform: translateY(-10px);"><code>&lt;StackedFilters&gt;</code> Dialog</a>
     </td>
     <td style="width:50%;border:none;text-align:center;vertical-align:top;">
             <a title="<Search> input" href="./FilteringTutorial.html#global-search">
-            <img src="./img/Search.jpg">
+            <img src="../img/Search.jpg">
         </a>
         <a href="./FilteringTutorial.html#global-search" style="display: block;transform: translateY(-10px);">Global <code>&lt;Search&gt;</code></a>
     </td>
@@ -295,13 +298,13 @@ You can use any of the following components to build the show page:
 <tr style="border:none">
     <td style="width:50%;border:none;text-align:center">
         <a title="<SimpleShowLayout>" href="./SimpleShowLayout.html">
-            <img src="./img/SimpleShowLayout_small.png">
+            <img src="../img/SimpleShowLayout_small.png">
         </a>
         <a href="./SimpleShowLayout.html" style="display: block;transform: translateY(-10px);"><code>&lt;SimpleShowLayout&gt;</code></a>
     </td>
     <td style="width:50%;border:none;text-align:center">
          <a title="<TabbedShowLayout>" href="./TabbedShowLayout.html">
-            <img src="./img/TabbedShowLayout_small.png">
+            <img src="../img/TabbedShowLayout_small.png">
         </a>
         <a href="./TabbedShowLayout.html" style="display: block;transform: translateY(-10px);"><code>&lt;TabbedShowLayout&gt;</code></a>
     </td>
@@ -348,7 +351,7 @@ You can use any of the following components to build the edit and create pages:
 
 <figure>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1179 620" preserveAspectRatio="xMinYMin meet">
-        <image width="1179" height="620" xlink:href="./img/form-layouts.png" />
+        <image width="1179" height="620" xlink:href="../img/form-layouts.png" />
         <g opacity="0">
             <a href="./Form.html" aria-label="Form">
                 <rect x="0" y="0" width="348" height="290"/>
@@ -414,7 +417,7 @@ const App = () => (
 
 Guesser components start by fetching data from the API, analyzing the shape of the response, and then picking up Field and Input components that match the data type. They also dump the generated code in the console to let you start customizing the UI.
 
-![ListGuesser](../../../assets/tutorial_guessed_list.png)
+![ListGuesser](../img/tutorial_guessed_list.png)
 
 Check the following components to learn more about guessers:
 
