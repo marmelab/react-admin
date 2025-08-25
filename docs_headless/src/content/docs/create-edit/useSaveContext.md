@@ -1,27 +1,21 @@
 ---
-layout: default
 title: "useSaveContext"
 ---
 
-# `useSaveContext`
-
-`useSaveContext` grabs the `save` callback prepared either by [`useEditController`](./useEditController.md) or [`useCreateController`](./useCreateController.md). It is used by [`<SaveButton>`](./SaveButton.md) to submit the form.
-
-`useSaveContext` is necessary because the `<SaveButton>` doesn't know if it is used in a `<Create>` or an `<Edit>` page.
+`useSaveContext` grabs the `save` callback prepared either by [`useEditController`](./useEditController.md) or [`useCreateController`](./useCreateController.md). It is used by [`<Form>`](./Form.md) to provide a default submit handler.
 
 ## Usage
 
 ```jsx
-import { useSaveContext } from 'react-admin';
+import { useSaveContext } from 'ra-core';
 
 const { save, saving, mutationMode } = useSaveContext();
 ```
 
 You can create a custom `SaveContext` to override the default `save` callback:
 
-{% raw %}
 ```jsx
-import { SaveContextProvider } from 'react-admin';
+import { SaveContextProvider } from 'ra-core';
 
 const MyComponent = () => {
     const save = data => {
@@ -36,7 +30,6 @@ const MyComponent = () => {
     );
 }
 ```
-{% endraw %}
 
 ## Return Value
 

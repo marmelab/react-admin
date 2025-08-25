@@ -1,10 +1,6 @@
 ---
-layout: default
-title: "Form"
-storybook_path: ra-core-form-form--basic
+title: "<Form>"
 ---
-
-# `<Form>`
 
 `<Form>` is a headless component that creates a `<form>` to edit a record, and renders its children. Use it to build a custom form layout, or to use another UI kit than Material UI. 
 
@@ -14,31 +10,31 @@ storybook_path: ra-core-form-form--basic
 
 ## Usage
 
-Use `<Form>` to build completely custom form layouts. Don't forget to include a submit button (or react-admin's [`<SaveButton>`](./SaveButton.md)) to actually save the record.
+Use `<Form>` to build completely custom form layouts. Don't forget to include a submit button to actually save the record.
 
 ```jsx
-import { Create, Form, TextInput, RichTextInput, SaveButton } from 'react-admin';
-import { Grid } from '@mui/material';
+import { CreateBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
 
 export const PostCreate = () => (
-    <Create>
+    <CreateBase>
         <Form>
-            <Grid container>
-                <Grid item xs={6}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
                     <TextInput source="title" />
-                </Grid>
-                <Grid item xs={6}>
+                </div>
+                <div>
                     <TextInput source="author" />
-                </Grid>
-                <Grid item xs={12}>
-                    <RichTextInput source="body" />
-                </Grid>
-                <Grid item xs={12}>
-                    <SaveButton />
-                </Grid>
-            </Grid>
+                </div>
+                <div style={{ gridColumn: 'span 2' }}>
+                    <TextInput source="body" multiline />
+                </div>
+                <div style={{ gridColumn: 'span 2' }}>
+                    <button type="submit">Save</button>
+                </div>
+            </div>
         </Form>
-    </Create>
+    </CreateBase>
 );
 ```
 
@@ -66,25 +62,28 @@ Additional props are passed to [the `useForm` hook](https://react-hook-form.com/
 The value of the form `defaultValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
+import { CreateBase, Form } from 'ra-core';
+import { TextInput, RichTextInput, NumberInput } from './inputs';
+
 const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
 
 export const PostCreate = () => (
-    <Create>
+    <CreateBase>
         <Form defaultValues={postDefaultValue}>
-            <Stack>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
                 <TextInput source="title" />
                 <RichTextInput source="body" />
                 <NumberInput source="nb_views" />
-                <SaveButton />
-            </Stack>
+                <button type="submit">Save</button>
+            </div>
         </Form>
-    </Create>
+    </CreateBase>
 );
 ```
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
+**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](../guides/Form.md#default-values) section.
 
 ## `id`
 
@@ -93,17 +92,20 @@ Normally, a submit button only works when placed inside a `<form>` tag. However,
 Set this form `id` via the `id` prop.
 
 ```jsx
+import { CreateBase, Form } from 'ra-core';
+import { TextInput, RichTextInput, NumberInput } from './inputs';
+
 export const PostCreate = () => (
-    <Create>
+    <CreateBase>
         <Form defaultValues={postDefaultValue} id="post_create_form">
-            <Stack>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
                 <TextInput source="title" />
                 <RichTextInput source="body" />
                 <NumberInput source="nb_views" />
-            </Stack>
+            </div>
         </Form>
-        <SaveButton form="post_create_form" />
-    </Create>
+        <button type="submit" form="post_create_form">Save</button>
+    </CreateBase>
 );
 ```
 
@@ -112,12 +114,14 @@ export const PostCreate = () => (
 The `<form novalidate>` attribute prevents the browser from validating the form. This is useful if you don't want to use the browser's default validation, or if you want to customize the error messages. To set this attribute on the underlying `<form>` tag, set the `noValidate` prop to `true`.
 
 ```jsx
+import { CreateBase, Form } from 'ra-core';
+
 const PostCreate = () => (
-    <Create>
+    <CreateBase>
         <Form noValidate>
             ...
         </Form>
-    </Create>
+    </CreateBase>
 );
 ```
 
@@ -126,17 +130,19 @@ const PostCreate = () => (
 By default, the `<Form>` calls the `save` callback passed to it by the edit or create controller, via the `SaveContext`. You can override this behavior by setting a callback as the `onSubmit` prop manually.
 
 ```jsx
+import { CreateBase, Form, useCreate } from 'ra-core';
+
 export const PostCreate = () => {
     const [create] = useCreate();
     const postSave = (data) => {
         create('posts', { data });
     };
     return (
-        <Create>
+        <CreateBase>
             <Form onSubmit={postSave}>
                 ...
             </Form>
-        </Create>
+        </CreateBase>
     );
 };
 ```
@@ -160,12 +166,14 @@ But for your own input components based on react-hook-form, this is not the defa
 If you prefer to omit the keys for empty values, set the `sanitizeEmptyValues` prop to `true`. This will sanitize the form data before passing it to the `dataProvider`, i.e. remove empty strings from the form state, unless the record actually had a value for that field before edition.
 
 ```jsx
+import { CreateBase, Form } from 'ra-core';
+
 const PostCreate = () =>  (
-    <Create>
+    <CreateBase>
         <Form sanitizeEmptyValues>
             ...
         </Form>
-    </Create>
+    </CreateBase>
 );
 ```
 
@@ -178,17 +186,18 @@ For the previous example, the data sent to the `dataProvider` will be:
 }
 ```
 
-**Note:** Setting the `sanitizeEmptyValues` prop to `true` will also have a (minor) impact on react-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.): empty values (i.e. values equal to `null`) will be removed from the form state on submit, unless the record actually had a value for that field.
+**Note** Even with `sanitizeEmptyValues` set to `true`, deeply nested fields won't be set to `null` nor removed. If you need to sanitize those fields, use [the `transform` prop](./EditBase.md#transform) of `<EditBase>` or `<CreateBase>` components.
 
-**Note** Even with `sanitizeEmptyValues` set to `true`, deeply nested fields won't be set to `null` nor removed. If you need to sanitize those fields, use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components.
-
-If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./Edit.md#transform) of `<Edit>` or `<Create>` components, or [the `parse` prop](./Inputs.md#parse) of individual inputs.
+If you need a more fine-grained control over the sanitization, you can use [the `transform` prop](./EditBase.md#transform) of `<EditBase>` or `<CreateBase>` components, or [the `parse` prop](../inputs/useInput.md#parse) of individual inputs.
 
 ## `validate`
 
 The value of the form `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by field. For instance:
 
 ```jsx
+import { CreateBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
+
 const validateUserCreation = (values) => {
     const errors = {};
     if (!values.firstName) {
@@ -208,12 +217,12 @@ const validateUserCreation = (values) => {
 };
 
 export const UserCreate = () => (
-    <Create>
+    <CreateBase>
         <Form validate={validateUserCreation}>
             <TextInput label="First Name" source="firstName" />
             <TextInput label="Age" source="age" />
         </Form>
-    </Create>
+    </CreateBase>
 );
 ```
 
@@ -230,12 +239,14 @@ React-admin keeps track of the form state, so it can detect when the user leaves
 Warning about unsaved changes is an opt-in feature: you must set the `warnWhenUnsavedChanges` prop in the form component to enable it:
 
 ```jsx
+import { EditBase, Form } from 'ra-core';
+
 export const TagEdit = () => (
-    <Edit>
+    <EditBase>
         <Form warnWhenUnsavedChanges>
             ...
         </Form>
-    </Edit>
+    </EditBase>
 );
 ```
 
@@ -252,75 +263,6 @@ const { isDirty } = useFormState(); // ✅
 const formState = useFormState(); // ❌ should deconstruct the formState      
 ```
 
-## AutoSave
-
-In forms where users may spend a lot of time, it's a good idea to save the form automatically after a few seconds of inactivity. You can auto save the form content by using [the `<AutoSave>` component](./AutoSave.md).
-
-<video controls autoplay playsinline muted loop>
-  <source src="../img/AutoSave.webm" type="video/webm"/>
-  <source src="../img/AutoSave.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-{% raw %}
-```tsx
-import { AutoSave } from '@react-admin/ra-form-layout';
-import { Edit, Form, TextInput, DateInput, SelectInput } from 'react-admin';
-import { Stack } from '@mui/material';
-
-const PersonEdit = () => (
-    <Edit mutationMode="optimistic">
-        <Form resetOptions={{ keepDirtyValues: true }}>
-            <Stack>
-                <TextInput source="first_name" />
-                <TextInput source="last_name" />
-                <DateInput source="dob" />
-                <SelectInput source="sex" choices={[
-                    { id: 'male', name: 'Male' },
-                    { id: 'female', name: 'Female' },
-                ]}/>
-            </Stack>
-             <AutoSave />
-        </Form>
-    </Edit>
-);
-```
-{% endraw %}
-
-Note that you **must** set the `<Form resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
-
-If you're using it in an `<Edit>` page, you must also use a `pessimistic` or `optimistic` [`mutationMode`](https://marmelab.com/react-admin/Edit.html#mutationmode) - `<AutoSave>` doesn't work with the default `mutationMode="undoable"`.
-
-Check [the `<AutoSave>` component](./AutoSave.md) documentation for more details.
-
-An alternative to the `<AutoSave>` component is to use [the `<AutoPersistInStore>` component](./AutoPersistInStore.md). This component saves the form values in the local storage of the browser. This way, if the user navigates away without saving, the form values are reapplied when the user comes back to the page. This is useful for long forms where users may spend a lot of time.
-
-<video controls autoplay playsinline muted loop>
-  <source src="../img/AutoPersistInStore.mp4" type="video/mp4"/>
-  Your browser does not support the video tag.
-</video>
-
-To enable this behavior, add the `<AutoPersistInStore>` component inside the form component:
-
-```tsx
-import { AutoPersistInStore } from '@react-admin/ra-form-layout';
-import { Edit, Form, TextInput } from 'react-admin';
-
-const PostEdit = () => (
-    <Edit>
-        <Form>
-            <Stack>
-                <TextInput source="title" />
-                <TextInput source="teaser" />
-            </Stack>
-            <AutoPersistInStore />
-        </Form>
-    </Edit>
-);
-```
-
-Check [the `<AutoPersistInStore>` component](./AutoPersistInStore.md) documentation for more details.
-
 ## Linking Two Inputs
 
 <iframe src="https://www.youtube-nocookie.com/embed/YkqjydtmfcU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
@@ -331,7 +273,8 @@ React-admin relies on [react-hook-form](https://react-hook-form.com/) for form h
 
 ```jsx
 import * as React from 'react';
-import { Edit, SimpleForm, SelectInput } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
+import { SelectInput } from './SelectInput';
 import { useWatch } from 'react-hook-form';
 
 const countries = ['USA', 'UK', 'France'];
@@ -353,15 +296,17 @@ const CityInput = () => {
 };
 
 const OrderEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <SelectInput source="country" choices={toChoices(countries)} />
-            <CityInput />
-        </SimpleForm>
-    </Edit>
+    <EditBase>
+        <Form>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+                <SelectInput source="country" choices={toChoices(countries)} />
+                <CityInput />
+            </div>
+        </Form>
+    </EditBase>
 );
 
 export default OrderEdit;
 ```
 
-**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs) component as an alternative.
+**Tip:** If you'd like to avoid creating an intermediate component like `<CityInput>`, or are using an `<ArrayInput>`, you can use the [`<FormDataConsumer>`](../inputs/Inputs.md#linking-two-inputs) component as an alternative.

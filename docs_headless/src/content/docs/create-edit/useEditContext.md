@@ -1,32 +1,27 @@
 ---
-layout: default
-title: "The useEditContext hook"
+title: "useEditContext"
 ---
-
-# `useEditContext`
 
 Whenever react-admin displays an edition page, it creates an `EditContext` to store the record, the submit callback, and other data.
 
 The `EditContext` is available to descendants of:
 
-- `<Edit>`,
-- `<EditGuesser>`,
 - `<EditBase>`,
 
 All descendant components can therefore access the Edit context, using the `useEditContext` hook. 
 
 ## Usage
 
-Use `useEditContext` in a component that is a descendant of an `Edit` component, e.g. to display a sidebar with info about the record:
+Use `useEditContext` in a component that is a descendant of an `EditBase` component, e.g. to display a sidebar with info about the record:
 
 ```jsx
-import { Edit, useEditContext } from 'react-admin';
-import { Typography } from '@mui/material';
+import { EditBase, useEditContext } from 'ra-core';
 
 export const PostEdit = () => (
-    <Edit aside={<Aside />}>
+    <EditBase>
+        <Aside />
         // ...
-    </Edit>
+    </EditBase>
 );
 
 const Aside = () => {
@@ -34,10 +29,10 @@ const Aside = () => {
     if (isPending) return null;
     return (
         <div>
-            <Typography variant="h6">Posts stats</Typography>
-            <Typography variant="body2">
+            <h3>Posts stats</h3>
+            <p>
                 Last edition: {record.updated_at}
-            </Typography>
+            </p>
         </div>
     );
 };
@@ -68,8 +63,7 @@ const {
 The `useEditContext` hook accepts a generic parameter for the record type:
 
 ```tsx
-import { Edit, useEditContext } from 'react-admin';
-import { Typography } from '@mui/material';
+import { EditBase, useEditContext } from 'ra-core';
 
 type Post = {
     id: number;
@@ -78,9 +72,10 @@ type Post = {
 };
 
 export const PostEdit = () => (
-    <Edit aside={<Aside />}>
+    <EditBase>
+        <Aside />
         // ...
-    </Edit>
+    </EditBase>
 );
 
 const Aside = () => {
@@ -88,11 +83,11 @@ const Aside = () => {
     if (isPending) return null;
     return (
         <div>
-            <Typography variant="h6">Posts stats</Typography>
-            <Typography variant="body2">
+            <h3>Posts stats</h3>
+            <p>
                 {/* TypeScript knows that post is of type Post */}
                 Last edition: {post.updated_at}
-            </Typography>
+            </p>
         </div>
     );
 };

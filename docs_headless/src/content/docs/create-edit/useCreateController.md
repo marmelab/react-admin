@@ -1,33 +1,29 @@
 ---
-layout: default
-title: "The useCreateController hook"
-storybook_path: ra-core-controller-usecreatecontroller--authenticated
+title: "useCreateController"
 ---
 
-# `useCreateController`
-
-`useCreateController` contains the headless logic of the [`<Create>`](./Create.md) component. It's useful to create a custom creation view. It's also the base hook when building a custom view with another UI kit than Material UI. 
+`useCreateController` contains the headless logic of the [`<CreateBase>`](./CreateBase.md) component. It's useful to create a custom creation view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
 `useCreateController` reads the resource name from the resource context and browser location, computes the form default values, prepares a form submit handler based on `dataProvider.create()`, computes the default page title, and returns them. Its return value matches the [`CreateContext`](./useCreateContext.md) shape. 
 
-`useCreateController` is used internally by [`<Create>`](./Create.md) and [`<CreateBase>`](./CreateBase.md). If your Create view uses react-admin components like [`<SimpleForm>`](./SimpleForm.md), prefer [`<CreateBase>`](./CreateBase.md) to `useCreateController` as it takes care of creating a `<CreateContext>`.
+`useCreateController` is used internally by [`<CreateBase>`](./CreateBase.md). If your Create view uses ra-core components like [`<Form>`](./Form.md), prefer [`<CreateBase>`](./CreateBase.md) to `useCreateController` as it takes care of creating a `<CreateContext>`.
 
 ## Usage
 
 Use `useCreateController` to create a custom creation view, with exactly the content you need. 
 
 ```tsx
-import { useCreateController, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
-import { Card, CardContent, Container } from "@mui/material";
+import { useCreateController, Form } from "ra-core";
+import { SelectInput, TextInput } from "./inputs";
 
 export const BookCreate = () => {
     const { save } = useCreateController();
     return (
-        <Container>
-            <Title title="Create book" />
-            <Card>
-                <CardContent>
-                    <SimpleForm onSubmit={save}>
+        <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+            <h1>Create book</h1>
+            <div style={{ backgroundColor: '#f5f5f5', padding: '1.5rem', borderRadius: '8px' }}>
+                <Form onSubmit={save}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <TextInput source="title" />
                         <TextInput source="author" />
                         <SelectInput source="availability" choices={[
@@ -35,10 +31,13 @@ export const BookCreate = () => {
                             { id: "out_of_stock", name: "Out of stock" },
                             { id: "out_of_print", name: "Out of print" },
                         ]} />
-                    </SimpleForm>
-                </CardContent>
-            </Card>
-        </Container>
+                        <button type="submit" style={{ padding: '0.5rem 1rem', marginTop: '1rem' }}>
+                            Save
+                        </button>
+                    </div>
+                </Form>
+            </div>
+        </div>
     );
 };
 ```
@@ -50,15 +49,15 @@ export const BookCreate = () => {
 
 `useCreateController` accepts an object with the following keys, all optional:
 
-* [`disableAuthentication`](./Create.md#disableauthentication): Disable the authentication check
-* [`mutationMode`](./Create.md#mutationmode): Switch to optimistic or undoable mutations (pessimistic by default)
-* [`mutationOptions`](./Create.md#mutationoptions): Options for the `dataProvider.create()` call
-* [`record`](./Create.md#record): Use the provided record as base instead of fetching it
-* [`redirect`](./Create.md#redirect): Change the redirect location after successful creation
-* [`resource`](./Create.md#resource): Override the name of the resource to create
-* [`transform`](./Create.md#transform): Transform the form data before calling `dataProvider.create()`
+* [`disableAuthentication`](./CreateBase.md#disableauthentication): Disable the authentication check
+* [`mutationMode`](./CreateBase.md#mutationmode): Switch to optimistic or undoable mutations (pessimistic by default)
+* [`mutationOptions`](./CreateBase.md#mutationoptions): Options for the `dataProvider.create()` call
+* [`record`](./CreateBase.md#record): Use the provided record as base instead of fetching it
+* [`redirect`](./CreateBase.md#redirect): Change the redirect location after successful creation
+* [`resource`](./CreateBase.md#resource): Override the name of the resource to create
+* [`transform`](./CreateBase.md#transform): Transform the form data before calling `dataProvider.create()`
 
-These fields are documented in [the `<Create>` component](./Create.md) documentation.
+These fields are documented in [the `<CreateBase>` component](./CreateBase.md) documentation.
 
 ## Return Value
 
@@ -78,37 +77,39 @@ const {
 
 ## Security
 
-`<useCreateController>` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Create.md#disableauthentication) prop.
+`<useCreateController>` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./CreateBase.md#disableauthentication) prop.
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useCreateController` will only render if the user has the "create" access to the related resource.
+If your `authProvider` implements [Access Control](../security/Permissions.md#access-control), `useCreateController` will only render if the user has the "create" access to the related resource.
 
 For instance, for the `<PostCreate>` page below:
 
-{% raw %}
 ```tsx
-import { useCreateController, SimpleForm, TextInput } from 'react-admin';
+import { useCreateController, Form } from 'ra-core';
+import { TextInput } from './TextInput';
 
 const PostCreate = ({ id }) => {
   const { isPending, error, save } = useCreateController({ resource: 'posts' })
   if (error) return <div>Error!</div>;
   if (isPending) return <div>Loading...</div>;
   return (
-      <SimpleForm record={{}} onSubmit={save}>
-        <TextInput source="title" />
-        <TextInput source="author" />
-        <TextInput source="published_at" />
-      </SimpleShowLayout>
+      <Form record={{}} onSubmit={save}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="published_at" />
+            <button type="submit">Save</button>
+        </div>
+      </Form>
   );
 }
 ```
-{% endraw %}
 
-`useEditController` will call `authProvider.canAccess()` using the following parameters:
+`useCreateController` will call `authProvider.canAccess()` using the following parameters:
 
 ```jsx
 { action: "create", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdmin.md#accessdenied).
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Create.md#disableauthentication).
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./CreateBase.md#disableauthentication).

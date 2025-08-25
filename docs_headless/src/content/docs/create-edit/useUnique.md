@@ -1,14 +1,10 @@
 ---
-layout: default
 title: "useUnique"
-storybook_path: ra-core-form-validation-useunique--create
 ---
-
-# `useUnique`
 
 Validating the uniqueness of a field is a common requirement so React-admin provides the `useUnique` hook that returns a validator for this use case.
 
-It will call the [`dataProvider.getList`](./DataProviderWriting.md#getlist) method with a filter to check whether a record exists with the current value of the input for the field matching the input source.
+It will call the [`dataProvider.getList`](../data-fetching/DataProviderWriting.md#getlist) method with a filter to check whether a record exists with the current value of the input for the field matching the input source.
 
 <video controls autoplay playsinline muted loop>
   <source src="../img/useUnique.webm" type="video/webm"/>
@@ -19,14 +15,17 @@ It will call the [`dataProvider.getList`](./DataProviderWriting.md#getlist) meth
 ## Usage
 
 ```js
-import { SimpleForm, TextInput, useUnique } from 'react-admin';
+import { Form, useUnique } from 'ra-core';
+import { TextInput } from '../components';
 
 const UserCreateForm = () => {
     const unique = useUnique();
     return (
-        <SimpleForm>
-            <TextInput source="username" validate={unique()} />
-        </SimpleForm>
+        <Form>
+            <div>
+                <TextInput source="username" validate={unique()} />
+            </div>
+        </Form>
     );
 };
 ```
@@ -45,13 +44,14 @@ const UserCreateForm = () => {
 ## `message`
 
 A custom message to display when the validation fails. Defaults to `Must be unique` (translation key: `ra.validation.unique`).
-It accepts a translation key. The [`translate` function](./useTranslate.md) will be called with the following parameters:
+It accepts a translation key. The [`translate` function](../i18n/useTranslate.md) will be called with the following parameters:
 - `source`: the input name
 - `label`: the translated input label
 - `value`: the current input value
 
 ```jsx
-import { SimpleForm, TextInput, useUnique } from 'react-admin';
+import { Form, useUnique } from 'ra-core';
+import { TextInput } from '../components';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 const i18nProvider = polyglotI18nProvider(() =>
@@ -67,76 +67,87 @@ const i18nProvider = polyglotI18nProvider(() =>
 const UserCreateForm = () => {
     const unique = useUnique();
     return (
-        <SimpleForm>
-            <TextInput source="username" validate={unique({ message: 'myapp.validation.unique' })} />
-        </SimpleForm>
+        <Form>
+            <div>
+                <TextInput source="username" validate={unique({ message: 'myapp.validation.unique' })} />
+            </div>
+        </Form>
     );
 };
 ```
 
 ## `debounce`
 
-The number of milliseconds to wait for new changes before actually calling the [`dataProvider.getList`](./DataProviderWriting.md#getlist) method.
+The number of milliseconds to wait for new changes before actually calling the [`dataProvider.getList`](../data-fetching/DataProviderWriting.md#getlist) method.
 
 
 ```jsx
-import { SimpleForm, TextInput, useUnique } from 'react-admin';
+import { Form, useUnique } from 'ra-core';
+import { TextInput } from '../components';
 
 const UserCreateForm = () => {
     const unique = useUnique();
     return (
-        <SimpleForm>
-            <TextInput source="username" validate={unique({ debounce: 2000 })} />
-        </SimpleForm>
+        <Form>
+            <div>
+                <TextInput source="username" validate={unique({ debounce: 2000 })} />
+            </div>
+        </Form>
     );
 };
 ```
 
 ## `resource`
 
-The resource targeted by the [`dataProvider.getList`](./DataProviderWriting.md#getlist) call. Defaults to the resource from the nearest [`ResourceContext`](./Resource.md#resource-context).
+The resource targeted by the [`dataProvider.getList`](../data-fetching/DataProviderWriting.md#getlist) call. Defaults to the resource from the nearest [`ResourceContext`](../app-configuration/Resource.md#resource-context).
 
-This can be useful for custom pages instead of setting up a [`ResourceContext`](./Resource.md#resource-context).
+This can be useful for custom pages instead of setting up a [`ResourceContext`](../app-configuration/Resource.md#resource-context).
 
 ```jsx
-import { PasswordInput, SimpleForm, TextInput, useUnique } from 'react-admin';
+import { Form, useUnique } from 'ra-core';
+import { PasswordInput, TextInput } from '../components';
 
 const UserCreateForm = () => {
     const unique = useUnique();
     return (
-        <SimpleForm>
-            <TextInput source="username" validate={unique({ resource: 'users' })} />
-            <PasswordInput source="password" />
-        </SimpleForm>
+        <Form>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <TextInput source="username" validate={unique({ resource: 'users' })} />
+                <PasswordInput source="password" />
+            </div>
+        </Form>
     );
 };
 ```
 
 ## `filter`
 
-Additional filters to pass to the [`dataProvider.getList`](./DataProviderWriting.md#getlist) method. This is useful when the value should be unique across a subset of the resource records, for instance, usernames in an organization:
+Additional filters to pass to the [`dataProvider.getList`](../data-fetching/DataProviderWriting.md#getlist) method. This is useful when the value should be unique across a subset of the resource records, for instance, usernames in an organization:
 
 ```jsx
-import { FormDataConsumer, ReferenceInput, SimpleForm, TextInput, useUnique } from 'react-admin';
+import { FormDataConsumer, Form, useUnique } from 'ra-core';
+import { ReferenceInput, TextInput } from '../components';
 
 const UserCreateForm = () => {
     const unique = useUnique();
     return (
-        <SimpleForm>
-            <ReferenceInput source="organization_id" reference="organizations" />
-            <FormDataConsumer>
-                {({ formData }) => (
-                    <TextInput
-                        source="username"
-                        validate={unique({
-                            filter: {
-                                organization_id: formData.organization_id,
-                            },
-                        })}
-                    />
-                )}
-            </FormDataConsumer>
-        </SimpleForm>
+        <Form>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <ReferenceInput source="organization_id" reference="organizations" />
+                <FormDataConsumer>
+                    {({ formData }) => (
+                        <TextInput
+                            source="username"
+                            validate={unique({
+                                filter: {
+                                    organization_id: formData.organization_id,
+                                },
+                            })}
+                        />
+                    )}
+                </FormDataConsumer>
+            </div>
+        </Form>
     );
 };
 ```

@@ -1,38 +1,41 @@
 ---
-layout: default
-title: "The useRecordFromLocation Hook"
+title: "useRecordFromLocation"
 ---
-
-# `useRecordFromLocation`
 
 Return a record that was passed through either [the location query or the location state](https://reactrouter.com/6.28.0/start/concepts#locations).
 
-You may use it to know whether the form values of the current create or edit view have been overridden from the location as supported by the [`Create`](./Create.md#prefilling-the-form) and [`Edit`](./Edit.md#prefilling-the-form) components.
+You may use it to know whether the form values of the current create or edit view have been overridden from the location as supported by the [`CreateBase`](./CreateBase.md#prefilling-the-form) and [`EditBase`](./EditBase.md#prefilling-the-form) components.
 
 ## Usage
 
 ```tsx
 // in src/posts/PostEdit.tsx
 import * as React from 'react';
-import { Alert } from '@mui/material';
-import { Edit, SimpleForm, TextInput, useRecordFromLocation } from 'react-admin';
+import { EditBase, Form, useRecordFromLocation } from 'ra-core';
+import { TextInput } from '../components';
 
 export const PostEdit = () => {
     const recordFromLocation = useRecordFromLocation();
     return (
-        <Edit>
-            {recordFromLocation
-                ? (
-                    <Alert variant="filled" severity="info">
-                        The record has been modified.
-                    </Alert>
-                )
-                : null
-            }
-            <SimpleForm>
+        <EditBase>
+            {recordFromLocation && (
+                <div 
+                    style={{
+                        padding: '12px 16px',
+                        backgroundColor: '#e3f2fd',
+                        border: '1px solid #2196f3',
+                        borderRadius: '4px',
+                        marginBottom: '16px',
+                        color: '#0d47a1'
+                    }}
+                >
+                    The record has been modified.
+                </div>
+            )}
+            <Form>
                 <TextInput source="title" />
-            </SimpleForm>
-        </Edit>
+            </Form>
+        </EditBase>
     );
 }
 ```

@@ -1,43 +1,37 @@
 ---
-layout: default
-title: "The EditBase Component"
-storybook_path: ra-core-controller-editbase--default-title
+title: "<EditBase>"
 ---
 
-# `<EditBase>`
-
-`<EditBase>` is a headless variant of [`<Edit>`](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and renders its children inside an [`EditContext`](./useEditContext.md). Use it to build a custom edition page layout.
-
-Contrary to [`<Edit>`](./Edit.md), it does not render the page layout, so no title, no actions, and no `<Card>`.
+`<EditBase>` is a headless coFor instance, to display several fields in a single line, you can use native HTML layout:ponent that fetches a record based on the URL, prepares a form submit handler, and renders its children inside an [`EditContext`](./useEditContext.md). Use it to build a custom edition page layout.
 
 `<EditBase>` relies on the [`useEditController`](./useEditController.md) hook.
 
 ## Usage
 
-Use `<EditBase>` to create a custom Edition view, with exactly the content you add as child and nothing else (no title, Card, or list of actions as in the `<Edit>` component). 
+Use `<EditBase>` to create a custom Edition view, with exactly the content you add as child and nothing else (no title, card, or list of actions as in the Edit component).
 
 ```jsx
-import { EditBase, SelectInput, SimpleForm, TextInput, Title } from "react-admin";
-import { Card, CardContent, Container } from "@mui/material";
+import * as React from "react";
+import { EditBase, Form } from "ra-core";
+import { TextInput } from './TextInput';
+import { SelectInput } from './SelectInput';
 
 export const BookEdit = () => (
     <EditBase>
-        <Container>
-            <Title title="Book Edition" />
-            <Card>
-                <CardContent>
-                    <SimpleForm>
-                        <TextInput source="title" />
-                        <TextInput source="author" />
-                        <SelectInput source="availability" choices={[
-                            { id: "in_stock", name: "In stock" },
-                            { id: "out_of_stock", name: "Out of stock" },
-                            { id: "out_of_print", name: "Out of print" },
-                        ]} />
-                    </SimpleForm>
-                </CardContent>
-            </Card>
-        </Container>
+        <div>
+            <h1>Book Edition</h1>
+            <div>
+                <Form>
+                    <TextInput source="title" />
+                    <TextInput source="author" />
+                    <SelectInput source="availability" choices={[
+                        { id: "in_stock", name: "In stock" },
+                        { id: "out_of_stock", name: "Out of stock" },
+                        { id: "out_of_print", name: "Out of print" },
+                    ]} />
+                </Form>
+            </div>
+        </div>
     </EditBase>
 );
 ```
@@ -60,50 +54,47 @@ export const BookEdit = () => (
 
 ## `children`
 
-`<EditBase>` renders its children wrapped by a `RecordContext`, so you can use any component that depends on such a context to be defined - including all [Inputs components](./Inputs.md).
+`<EditBase>` renders its children wrapped by a `RecordContext`, so you can use any component that depends on such a context to be defined, for example inputs leveraging the [`useInput`](../inputs/useInput.md) hook.
 
-For instance, to display several fields in a single line, you can use Material UI’s `<Grid>` component:
-
-{% raw %}
 ```jsx
-import { EditBase, Form, DateInput, ReferenceInput, SaveButton, TextInput } from 'react-admin';
-import { Grid } from '@mui/material';
+import { EditBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
+import { DateInput } from './DateInput';
 
 const BookEdit = () => (
     <EditBase>
         <Form>
-            <Grid container spacing={2} sx={{ margin: 2 }}>
-                <Grid item xs={12} sm={6}>
+            <div style={{ display: 'flex', gap: '1rem', margin: '1rem' }}>
+                <div style={{ flex: 1 }}>
                     <TextInput label="Title" source="title" />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <ReferenceInput label="Author" source="author_id" reference="authors">
-                        <TextInput source="name" />
-                    </ReferenceInput>
-                </Grid>
-                <Grid item xs={12} sm={6}>
+                </div>
+                <div style={{ flex: 1 }}>
+                    <TextInput label="Author" source="author" />
+                </div>
+                <div style={{ flex: 1 }}>
                     <DateInput label="Publication Date" source="published_at" />
-                </Grid>
-                <Grid item xs={12}>
-                    <SaveButton />
-                </Grid>
-            </Grid>
+                </div>
+            </div>
+            <div style={{ margin: '1rem' }}>
+                <button type="submit">Save</button>
+            </div>
         </Form>
     </EditBase>
 );
 ```
-{% endraw %}
 
 ## `disableAuthentication`
 
 By default, the `<EditBase>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a show page, set the `disableAuthentication` prop to `true`.
 
 ```jsx
-import { EditBase } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 
 const PostEdit = () => (
     <EditBase disableAuthentication>
-        ...
+        <Form>
+            {/* form content */}
+        </Form>
     </EditBase>
 );
 ```
@@ -113,11 +104,13 @@ const PostEdit = () => (
 By default, `<EditBase>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
 
 ```jsx
-import { EditBase } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 
 export const PostEdit = () => (
     <EditBase id="123">
-        ...
+        <Form>
+            {/* form content */}
+        </Form>
     </EditBase>
 );
 ```
@@ -129,11 +122,13 @@ export const PostEdit = () => (
 By default, `<EditBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `loading` prop:
 
 ```jsx
-import { EditBase } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 
 export const PostEdit = () => (
     <EditBase loading={<p>Checking for permissions...</p>}>
-        ...
+        <Form>
+            {/* form content */}
+        </Form>
     </EditBase>
 );
 ```
@@ -151,11 +146,13 @@ By default, pages using `<EditBase>` use the `undoable` mutation mode. This is p
 You can change this default by setting the `mutationMode` prop - and this affects both the Save and Delete buttons. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
 
 ```jsx
-import { EditBase } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 
 const PostEdit = () => (
     <EditBase mutationMode="optimistic">
-        // ...
+        <Form>
+            {/* form content */}
+        </Form>
     </EditBase>
 );
 ```
@@ -163,44 +160,40 @@ const PostEdit = () => (
 And to make the Save action blocking, and wait for the dataProvider response to continue, use the `pessimistic` mode:
 
 ```jsx
-import { EditBase } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 
 const PostEdit = () => (
     <EditBase mutationMode="pessimistic">
-        // ...
+        <Form>
+            {/* form content */}
+        </Form>
     </EditBase>
 );
 ```
 
 ## `mutationOptions`
 
-`<EditBase>` calls `dataProvider.update()` via react-query's `useMutation` hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.update()` call.
-
-{% raw %}
+`<EditBase>` calls `dataProvider.update()` via react-query's `useMutation` hook. You can customize the options you pass to this hook, e.g. to pass [a custom `meta`](../data-fetching/Actions.md#meta-parameter) to the `dataProvider.update()` call.
 
 ```jsx
-import { EditBase, SimpleForm } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 
 const PostEdit = () => (
     <EditBase mutationOptions={{ meta: { foo: 'bar' } }}>
-        <SimpleForm>
-            ...
-        </SimpleForm>
+        <Form>
+            {/* form content */}
+        </Form>
     </EditBase>
 );
 ```
-
-{% endraw %}
 
 You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
-{% raw %}
-
 ```jsx
 import * as React from 'react';
-import { useNotify, useRefresh, useRedirect, EditBase, SimpleForm } from 'react-admin';
+import { useNotify, useRefresh, useRedirect, EditBase, Form } from 'ra-core';
 
 const PostEdit = () => {
     const notify = useNotify();
@@ -215,15 +208,13 @@ const PostEdit = () => {
 
     return (
         <EditBase mutationOptions={{ onSuccess }}>
-            <SimpleForm>
-                ...
-            </SimpleForm>
+            <Form>
+                {/* form content */}
+            </Form>
         </EditBase>
     );
 }
 ```
-
-{% endraw %}
 
 The default `onSuccess` function is:
 
@@ -239,13 +230,12 @@ The default `onSuccess` function is:
 
 **Tip**: If you just want to customize the redirect behavior, you can use [the `redirect` prop](#redirect) instead.
 
-**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#update)). You can use that response in the success side effects:
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the created/edited record (see [the dataProvider documentation for details](../data-fetching/DataProviderWriting.md#update)). You can use that response in the success side effects:
 
-{% raw %}
 
 ```jsx
 import * as React from 'react';
-import { useNotify, useRefresh, useRedirect, EditBase, SimpleForm } from 'react-admin';
+import { useNotify, useRefresh, useRedirect, EditBase, Form } from 'ra-core';
 
 const PostEdit = () => {
     const notify = useNotify();
@@ -260,25 +250,20 @@ const PostEdit = () => {
 
     return (
         <EditBase mutationOptions={{ onSuccess }} mutationMode="pessimistic">
-            <SimpleForm>
-                ...
-            </SimpleForm>
+            <Form>
+                {/* form content */}
+            </Form>
         </EditBase>
     );
 }
 ```
 
-{% endraw %}
-
-**Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on [the `<SaveButton>` component](./SaveButton.md), too.
-
 Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows a notification error.
 
-{% raw %}
 
 ```jsx
 import * as React from 'react';
-import { useNotify, useRefresh, useRedirect, EditBase, SimpleForm } from 'react-admin';
+import { useNotify, useRefresh, useRedirect, EditBase, Form } from 'ra-core';
 
 const PostEdit = () => {
     const notify = useNotify();
@@ -293,17 +278,16 @@ const PostEdit = () => {
 
     return (
         <EditBase mutationOptions={{ onError }}>
-            <SimpleForm>
-                ...
-            </SimpleForm>
+            <Form>
+                {/* form content */}
+            </Form>
         </EditBase>
     );
 }
 ```
 
-{% endraw %}
 
-The `onError` function receives the error from the `dataProvider.update()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
+The `onError` function receives the error from the `dataProvider.update()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](../data-fetching/DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
@@ -316,14 +300,12 @@ The default `onError` function is:
 }
 ```
 
-**Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `mutationOptions` prop on the `<SaveButton>` component, too.
-
 ## `offline`
 
 By default, `<EditBase>` renders nothing when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
-import { EditBase } from 'react-admin';
+import { EditBase } from 'ra-core';
 
 export const PostEdit = () => (
     <EditBase offline={<p>No network. Could not load the post.</p>}>
@@ -335,7 +317,7 @@ export const PostEdit = () => (
 **Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
 
 ```jsx
-import { EditBase, IsOffline } from 'react-admin';
+import { EditBase, IsOffline } from 'ra-core';
 
 export const PostEdit = () => (
     <EditBase offline={<p>No network. Could not load the post.</p>}>
@@ -357,7 +339,7 @@ You can override this behavior and pass custom side effects by providing a custo
 
 ```jsx
 import * as React from 'react';
-import { useNotify, useRefresh, useRedirect, EditBase, SimpleForm } from 'react-admin';
+import { useNotify, useRefresh, useRedirect, EditBase, Form } from 'ra-core';
 
 const PostEdit = () => {
     const notify = useNotify();
@@ -372,9 +354,9 @@ const PostEdit = () => {
 
     return (
         <EditBase queryOptions={{ onError }}>
-            <SimpleForm>
-                ...
-            </SimpleForm>
+            <Form>
+                {/* form content */}
+            </Form>
         </EditBase>
     );
 }
@@ -396,9 +378,10 @@ The default `onError` function is:
 
 Alternatively, you can pass a `render` function prop instead of children. This function will receive the `EditContext` as argument. 
 
-{% raw %}
 ```jsx
-import { EditBase, Form, DateInput, ReferenceInput, SaveButton, TextInput } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
+import { DateInput } from './DateInput';
 
 const BookEdit = () => (
     <EditBase render={({ isPending, error }) => {
@@ -415,64 +398,86 @@ const BookEdit = () => (
         }
         return (
             <Form>
-                <Grid container spacing={2} sx={{ margin: 2 }}>
-                    <Grid item xs={12} sm={6}>
+                <div style={{ display: 'flex', gap: '1rem', margin: '1rem' }}>
+                    <div style={{ flex: 1 }}>
                         <TextInput label="Title" source="title" />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <ReferenceInput label="Author" source="author_id" reference="authors">
-                            <TextInput source="name" />
-                        </ReferenceInput>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                        <TextInput label="Author" source="author" />
+                    </div>
+                    <div style={{ flex: 1 }}>
                         <DateInput label="Publication Date" source="published_at" />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <SaveButton />
-                    </Grid>
-                </Grid>
+                    </div>
+                </div>
+                <div style={{ margin: '1rem' }}>
+                    <button type="submit">Save</button>
+                </div>
             </Form>
         );
     }}/>
 );
 ```
-{% endraw %}
 
 ## `resource`
 
 By default, `<EditBase>` operates on the current `ResourceContext` (defined at the routing level), so under the `/posts/1/show` path, the `resource` prop will be `posts`. You may want to force a different resource. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
 
 ```jsx
-import { EditBase } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
 
 export const UsersEdit = () => (
     <EditBase resource="users">
-        ...
+        <Form>
+            {/* form content */}
+        </Form>
     </EditBase>
 );
 ```
 
 **Tip**: Pass both a custom `id` and a custom `resource` prop to use `<EditBase>` independently of the current URL. This even allows you to use more than one `<EditBase>` component in the same page.
 
+## `transform`
+
+To transform a record after the user has submitted the form but before the record is passed to `dataProvider.update()`, use the `transform` prop. It expects a function taking a record as argument, and returning a modified record. For instance, to add a computed field upon update:
+
+```jsx
+export const UserEdit = () => {
+    const transform = data => ({
+        ...data,
+        fullName: `${data.firstName} ${data.lastName}`
+    });
+    return (
+        <EditBase transform={transform}>
+            <Form>
+                {/* form content */}
+            </Form>
+        </EditBase>
+    );
+}
+```
+
+The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
+
 ## Security
 
-The `<EditBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Edit.md#disableauthentication) prop.
+The `<EditBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the `disableAuthentication` prop.
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<EditBase>`  will only render if the user has the "edit" access to the related resource.
+If your `authProvider` implements [Access Control](../security/Permissions.md#access-control), `<EditBase>` will only render if the user has the "edit" access to the related resource.
 
 For instance, for the `<PostEdit>`page below:
 
 ```tsx
-import { EditBase, SimpleForm, TextInput } from 'react-admin';
+import { EditBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
 
 // Resource name is "posts"
 const PostEdit = () => (
     <EditBase>
-        <SimpleForm>
+        <Form>
             <TextInput source="title" />
             <TextInput source="author" />
             <TextInput source="published_at" />
-        </SimpleForm>
+        </Form>
     </EditBase>
 );
 ```
@@ -483,6 +488,99 @@ const PostEdit = () => (
 { action: "edit", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdminUI.md#accessdenied).
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Edit.md#disableauthentication).
+**Note**: Access control is disabled when you use the [`disableAuthentication`](#disableauthentication) prop.
+
+## Prefilling the Form
+
+You sometimes need to pre-populate the form changes to a record. For instance, to revert a record to a previous version, or to make some changes while letting users modify other fields as well.
+
+By default, the `<EditBase>` view starts with the current `record`. However, if the `location` object (injected by [react-router-dom](https://reactrouter.com/6.28.0/start/concepts#locations)) contains a `record` in its `state`, the `<EditBase>` view uses that `record` to prefill the form.
+
+That means that if you want to create a link to an edition view, modifying immediately *some* values, all you have to do is to set the `state` when navigating to the edit route:
+
+```jsx
+import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecordContext } from 'ra-core';
+
+const ApproveButton = () => {
+    const record = useRecordContext();
+    const navigate = useNavigate();
+    
+    const handleClick = () => {
+        navigate(`/posts/${record.id}`, {
+            state: { record: { status: 'approved' } }
+        });
+    };
+
+    return (
+        <button onClick={handleClick}>
+            Approve
+        </button>
+    );
+};
+```
+
+**Tip**: The `<EditBase>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `ApproveButton` could also be written as:
+
+```jsx
+import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecordContext } from 'ra-core';
+
+const ApproveButton = () => {
+    const record = useRecordContext();
+    const navigate = useNavigate();
+    
+    const handleClick = () => {
+        navigate(`/posts/${record.id}?source=${JSON.stringify({ status: 'approved' })}`);
+    };
+
+    return (
+        <button onClick={handleClick}>
+            Approve
+        </button>
+    );
+};
+```
+
+Should you use the location `state` or the location `search`? The latter modifies the URL, so it's only necessary if you want to build cross-application links (e.g. from one admin to the other). In general, using the location `state` is a safe bet.
+
+You can detect prefilled values by leveraging the [`useRecordFromLocation`](./useRecordFromLocation.md) hook:
+
+```jsx
+import { EditBase, Form, useRecordFromLocation } from 'ra-core';
+import { TextInput } from './TextInput';
+
+const PostEdit = () => {
+    const recordFromLocation = useRecordFromLocation();
+    
+    return (
+        <EditBase>
+            {recordFromLocation && (
+                <div 
+                    style={{
+                        padding: '12px 16px',
+                        backgroundColor: '#fff3cd',
+                        border: '1px solid #ffeaa7',
+                        borderRadius: '4px',
+                        marginBottom: '16px',
+                        color: '#856404'
+                    }}
+                >
+                    Some fields have been pre-filled. You can modify them before saving.
+                </div>
+            )}
+            <Form>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <TextInput source="title" />
+                    <TextInput source="author" />
+                    <TextInput source="status" />
+                </div>
+            </Form>
+        </EditBase>
+    );
+};
+```

@@ -1,11 +1,8 @@
 ---
-layout: default
-title: "The Creation and Edition Pages"
+title: "Introduction"
 ---
 
-# The Creation and Edition Pages
-
-React-admin provides many hooks and components to let you build custom user experiences for editing and creating records, leveraging Material UI and react-hook-form.
+React-admin headless (`ra-core`) provides hooks and components to let you build custom user experiences for editing and creating records, leveraging react-hook-form.
 
 ![Edit view example](../img/edit-view-example.png)
 
@@ -13,18 +10,15 @@ React-admin provides many hooks and components to let you build custom user expe
 
 Edition views are very common in single-page apps. The most usual way to allow a user to update a record is to fetch the record from an API based on the URL parameters, initialize a form with the record, update the inputs as the user changes the values, and call the API to update the record with the new values upon submission. 
 
-[![From Pure React To React-Admin](../img/edit-from-react-to-react-admin.webp)](../img/edit-from-react-to-react-admin.webp)
-
 To better understand how to use the various react-admin hooks and components dedicated to editing and creating, let's start by building such an edition view by hand.
 
-Here is how you could write a book edition view in pure React, leveraging react-admin's [data fetching hooks](./Actions.md), and [react-hook-form](https://react-hook-form.com/) to bind form inputs with a record object:
+Here is how you could write a book edition view in pure React, leveraging react-admin's [data fetching hooks](../data-fetching/Actions.md), and [react-hook-form](https://react-hook-form.com/) to bind form inputs with a record object:
 
 ```jsx
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useGetOne, useUpdate, Title } from "react-admin";
-import { Card, TextField, Button, Stack, MenuItem } from "@mui/material";
+import { useGetOne, useUpdate } from "ra-core";
 
 export const BookEdit = () => {
   const { id } = useParams();
@@ -47,37 +41,47 @@ export const BookEdit = () => {
   if (isPending) return null;
   return (
     <div>
-      <Title title="Book Edition" />
-      <Card>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={2}>
-            <Controller
-              name="title"
-              render={({ field }) => <TextField label="Title" {...field} />}
-              control={control}
-            />
-            <Controller
-              name="author"
-              render={({ field }) => <TextField label="Author" {...field} />}
-              control={control}
-            />
-            <Controller
-              name="availability"
-              render={({ field }) => (
-                <TextField select label="Availability" {...field}>
-                  <MenuItem value="in_stock">In stock</MenuItem>
-                  <MenuItem value="out_of_stock">Out of stock</MenuItem>
-                  <MenuItem value="out_of_print">Out of print</MenuItem>
-                </TextField>
-              )}
-              control={control}
-            />
-            <Button type="submit" disabled={isSubmitting}>
-              Save
-            </Button>
-          </Stack>
-        </form>
-      </Card>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <Controller
+            name="title"
+            render={({ field }) => (
+              <div>
+                <label htmlFor="title">Title</label>
+                <input id="title" {...field} />
+              </div>
+            )}
+            control={control}
+          />
+          <Controller
+            name="author"
+            render={({ field }) => (
+              <div>
+                <label htmlFor="author">Author</label>
+                <input id="author" {...field} />
+              </div>
+            )}
+            control={control}
+          />
+          <Controller
+            name="availability"
+            render={({ field }) => (
+              <div>
+                <label htmlFor="availability">Availability</label>
+                <select id="availability" {...field}>
+                  <option value="in_stock">In stock</option>
+                  <option value="out_of_stock">Out of stock</option>
+                  <option value="out_of_print">Out of print</option>
+                </select>
+              </div>
+            )}
+            control={control}
+          />
+          <button type="submit" disabled={isSubmitting}>
+            Save
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
@@ -89,18 +93,17 @@ It's a super common component. In fact, many of its features could be extracted 
 
 ## `<Form>`: Form Logic
 
-To use `react-hook-form` with Material UI inputs, the previous example leverages the `<Controller>` tag, which expects a `control` object generated by the `useForm` hook ([see the related `react-hook-form` doc](https://react-hook-form.com/get-started#IntegratingControlledInputs)).
+The previous example leverages the `<Controller>` tag, which expects a `control` object generated by the `useForm` hook ([see the related `react-hook-form` doc](https://react-hook-form.com/get-started#IntegratingControlledInputs)).
 
-We can avoid the call to `useForm` by putting its logic inside a custom component. That's exaclty what react-admin's [`<Form>` component](./Form.md) does. `<Form>` also creates a react-hook-form `<FormProvider>`, so we no longer need to pass the `control` prop to each `<Controller>` element. 
+We can avoid the call to `useForm` by putting its logic inside a custom component. That's exactly what react-admin's [`<Form>` component](./Form.md) does. `<Form>` also creates a react-hook-form `<FormProvider>`, so we no longer need to pass the `control` prop to each `<Controller>` element. 
 
 ```diff
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 -import { useForm, Controller } from "react-hook-form";
 +import { Controller } from "react-hook-form";
--import { useGetOne, useUpdate, Title } from "react-admin";
-+import { useGetOne, useUpdate, Title, Form } from "react-admin";
-import { Card, TextField, Stack, MenuItem } from "@mui/material";
+-import { useGetOne, useUpdate } from "ra-core";
++import { useGetOne, useUpdate, Form } from "ra-core";
 
 export const BookEdit = () => {
   const { id } = useParams();
@@ -123,121 +126,216 @@ export const BookEdit = () => {
   if (isPending) return null;
   return (
     <div>
-      <Title title="Book Edition" />
-      <Card>
 -       <form onSubmit={handleSubmit(onSubmit)}>
 +       <Form record={data} onSubmit={onSubmit}>
-          <Stack spacing={2}>
+          <div>
             <Controller
               name="title"
-              render={({ field }) => <TextField label="Title" {...field} />}
+              render={({ field }) => (
+                <div>
+                  <label htmlFor="title">Title</label>
+                  <input id="title" {...field} />
+                </div>
+              )}
 -             control={control}
             />
             <Controller
               name="author"
-              render={({ field }) => <TextField label="Author" {...field} />}
+              render={({ field }) => (
+                <div>
+                  <label htmlFor="author">Author</label>
+                  <input id="author" {...field} />
+                </div>
+              )}
 -             control={control}
             />
             <Controller
               name="availability"
               render={({ field }) => (
-                <TextField select label="Availability" {...field}>
-                  <MenuItem value="in_stock">In stock</MenuItem>
-                  <MenuItem value="out_of_stock">Out of stock</MenuItem>
-                  <MenuItem value="out_of_print">Out of print</MenuItem>
-                </TextField>
+                <div>
+                  <label htmlFor="availability">Availability</label>
+                  <select id="availability" {...field}>
+                    <option value="in_stock">In stock</option>
+                    <option value="out_of_stock">Out of stock</option>
+                    <option value="out_of_print">Out of print</option>
+                  </select>
+                </div>
               )}
 -             control={control}
             />
-            <Button type="submit" disabled={isSubmitting}>
+            <button type="submit" disabled={isSubmitting}>
               Save
-            </Button>
-          </Stack>
+            </button>
+          </div>
 -       </form>
 +       </Form>
-      </Card>
     </div>
   );
 };
 ```
 
-## `<SimpleForm>`: Stacked Layout
+## `useInput`: Form Logic Made Easy
 
-Displaying inputs in a Stack is a common UI pattern. [The `<SimpleForm>` component](./SimpleForm.md) is a convenience wrapper around `<Form>` that provides this stacked layout. It also includes a submit button, so the `BookEdit` component code is now more focused on business logic.
-
-```diff
-import * as React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Controller } from "react-hook-form";
--import { useGetOne, useUpdate, Title, Form } from "react-admin";
-+import { useGetOne, useUpdate, Title, SimpleForm } from "react-admin";
--import { Card, TextField, Stack, MenuItem } from "@mui/material";
-+import { Card, TextField, MenuItem } from "@mui/material";
-
-export const BookEdit = () => {
-  const { id } = useParams();
-  const { isPending, data } = useGetOne("books", { id });
-  const [update, { isPending: isSubmitting }] = useUpdate();
-  const navigate = useNavigate();
-  const onSubmit = (data) => {
-    update(
-        "books",
-        { id, data },
-        { onSuccess: () => { navigate('/books'); } }
-    );
-  };
-  if (isPending) return null;
-  return (
-    <div>
-      <Title title="Book Edition" />
-      <Card>
--       <Form record={data} onSubmit={onSubmit}>
-+       <SimpleForm record={data} onSubmit={onSubmit}>
--         <Stack spacing={2}>
-          <Controller
-            name="title"
-            render={({ field }) => <TextField label="Title" {...field} />}
-          />
-          <Controller
-            name="author"
-            render={({ field }) => <TextField label="Author" {...field} />}
-          />
-          <Controller
-            name="availability"
-            render={({ field }) => (
-              <TextField select label="Availability" {...field}>
-                <MenuItem value="in_stock">In stock</MenuItem>
-                <MenuItem value="out_of_stock">Out of stock</MenuItem>
-                <MenuItem value="out_of_print">Out of print</MenuItem>
-              </TextField>
-            )}
-          />
--         <Button type="submit" disabled={isSubmitting}>
--           Save
--         </Button>
--       </Stack>
--       </Form>
-+       </SimpleForm>
-      </Card>
-    </div>
-  );
-};
-```
-
-React-admin proposes alternative form layouts ([`<TabbedForm>`](./TabbedForm.md), [`<AccordionForm>`](./AccordionForm.md), [`<WizardForm>`](./WizardForm.md), [`<CreateDialog>, <EditDialog> & <ShowDialog>`](https://react-admin-ee.marmelab.com/documentation/ra-form-layout#createdialog-editdialog--showdialog) as well as a headless [`<Form>`](./Form.md) component.
-
-## Using Input Components
-
-Wrapping form inputs with a `<Controller>` tag is a common pattern, so react-admin provides a shortcut for all the common input types: [Input components](./Inputs.md). This means the `BookEdit` component doesn't need to use `react-hook-form`'s `<Controller>` directly:
+Instead of using `<Controller>`, you can use the [`useInput`](../inputs/useInput.md) hook to bind your inputs to the form values. This hook provides all the necessary props for your input components:
 
 ```diff
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 -import { Controller } from "react-hook-form";
--import { useGetOne, useUpdate, Title, SimpleForm } from "react-admin";
-+import { useGetOne, useUpdate, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
--import { Card, TextField, MenuItem } from "@mui/material";
-+import { Card } from "@mui/material";
+-import { useGetOne, useUpdate, Form } from "ra-core";
++import {
++  useGetOne,
++  useUpdate,
++  Form,
++  useInput
++} from "ra-core";
+
++ const TitleInput = () => {
++   const { field } = useInput({ source: 'title' });
++   return (
++     <div>
++       <label htmlFor="title">Title</label>
++       <input id="title" {...field} />
++     </div>
++   );
++ };
++ const AuthorInput = () => {
++   const { field } = useInput({ source: 'author' });
++   return (
++     <div>
++       <label htmlFor="author">Author</label>
++       <input id="author" {...field} />
++     </div>
++   );
++ };
++ const AvailabilityInput = () => {
++   const { field } = useInput({ source: 'availability' });
++   return (
++     <div>
++       <label htmlFor="availability">Availability</label>
++       <select id="availability" {...field}>
++         <option value="in_stock">In stock</option>
++         <option value="out_of_stock">Out of stock</option>
++         <option value="out_of_print">Out of print</option>
++       </select>
++     </div>
++   );
++ };
+
+export const BookEdit = () => {
+  const { id } = useParams();
+  const { isPending, data } = useGetOne(
+    "books",
+    { id }
+  );
+  const [update, { isPending: isSubmitting }] = useUpdate();
+  const navigate = useNavigate();
+  const onSubmit = (data) => {
+    update(
+        "books",
+        { id, data },
+        { onSuccess: () => { navigate('/books'); } }
+    );
+  };
+
+  if (isPending) return null;
+  return (
+    <div>
+       <Form record={data} onSubmit={onSubmit}>
+          <div>
+-           <Controller
+-             name="title"
+-             render={({ field }) => (
+-               <div>
+-                 <label htmlFor="title">Title</label>
+-                 <input id="title" {...field} />
+-               </div>
+-             )}
+-           />
+-           <Controller
+-             name="author"
+-             render={({ field }) => (
+-               <div>
+-                 <label htmlFor="author">Author</label>
+-                 <input id="author" {...field} />
+-               </div>
+-             )}
+-           />
+-           <Controller
+-             name="availability"
+-             render={({ field }) => (
+-               <div>
+-                 <label htmlFor="availability">Availability</label>
+-                 <select id="availability" {...field}>
+-                   <option value="in_stock">In stock</option>
+-                   <option value="out_of_stock">Out of stock</option>
+-                   <option value="out_of_print">Out of print</option>
+-                 </select>
+-               </div>
+-             )}
+-           />
++           <TitleInput />
++           <AuthorInput />
++           <AvailabilityInput />
+            <button type="submit" disabled={isSubmitting}>
+              Save
+            </button>
+          </div>
+      </Form>
+    </div>
+  );
+};
+```
+
+The `useInput` hook provides form logic in a more declarative way than `<Controller>`. It takes care of:
+
+- Binding the input to the form values
+- Handling validation
+- Managing the form and input state
+
+## Input Components
+
+To save time and avoid repetition, you can extract common form input patterns into reusable components. This is a great way to maintain consistency across your forms and reduce boilerplate:
+
+```jsx {57-67}
+// in src/common/inputs/TextInput.tsx
+import { useInput } from 'ra-core';
+
+export const TextInput = ({ source, label }) => {
+  const { field } = useInput({ source });
+  return (
+    <div>
+      <label htmlFor={source}>{label}</label>
+      <input id={source} {...field} />
+    </div>
+  );
+};
+
+// in src/common/inputs/SelectInput.tsx
+import { useInput } from 'ra-core';
+
+export const SelectInput = ({ source, label, choices }) => {
+  const { field } = useInput({ source });
+  return (
+    <div>
+      <label htmlFor={source}>{label}</label>
+      <select id={source} {...field}>
+        {choices.map(choice => (
+          <option key={choice.id} value={choice.id}>
+            {choice.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+// in src/books/BookEdit.tsx
+import * as React from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useGetOne, useUpdate, Form } from "ra-core";
+import { TextInput } from "../common/inputs/TextInput";
+import { SelectInput } from "../common/inputs/SelectInput";
 
 export const BookEdit = () => {
   const { id } = useParams();
@@ -254,36 +352,24 @@ export const BookEdit = () => {
   if (isPending) return null;
   return (
     <div>
-      <Title title="Book Edition" />
-      <Card>
-        <SimpleForm record={data} onSubmit={onSubmit}>
--         <Controller
--           name="title"
--           render={({ field }) => <TextField label="Title" {...field} />}
--         />
-+         <TextInput source="title" />
--         <Controller
--           name="author"
--           render={({ field }) => <TextField label="Author" {...field} />}
--         />
-+         <TextInput source="author" />
--         <Controller
--           name="availability"
--           render={({ field }) => (
--             <TextField select label="Availability" {...field}>
--               <MenuItem value="in_stock">In stock</MenuItem>
--               <MenuItem value="out_of_stock">Out of stock</MenuItem>
--               <MenuItem value="out_of_print">Out of print</MenuItem>
--             </TextField>
--           )}
--         />
-+         <SelectInput source="availability" choices={[
-+           { id: "in_stock", name: "In stock" },
-+           { id: "out_of_stock", name: "Out of stock" },
-+           { id: "out_of_print", name: "Out of print" },
-+         ]} />
-        </SimpleForm>
-      </Card>
+       <Form record={data} onSubmit={onSubmit}>
+          <div>
+            <TextInput source="title" label="Title" />
+            <TextInput source="author" label="Author" />
+            <SelectInput 
+              source="availability" 
+              label="Availability"
+              choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+              ]}
+            />
+            <button type="submit" disabled={isSubmitting}>
+              Save
+            </button>
+          </div>
+      </Form>
     </div>
   );
 };
@@ -291,15 +377,15 @@ export const BookEdit = () => {
 
 ## `<EditContext>` Exposes Data And Callbacks
 
-Instead of passing the `record` and `onSubmit` callback to the `<SimpleForm>` element, react-admin prefers putting them in an [`<EditContext>`](./useEditContext.md) context. This allows any descendant element to "pull" the data and callback from the context.
+Instead of passing the `record` and `onSubmit` callback directly to the `<Form>` element, react-admin provides an [`<EditContext>`](./useEditContext.md) context. This allows any descendant element to access the data and callback from the context.
 
-{% raw %}
 ```diff
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
--import { useGetOne, useUpdate, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
-+import { useGetOne, useUpdate, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
-import { Card } from "@mui/material";
+-import { useGetOne, useUpdate, Form } from "ra-core";
++import { useGetOne, useUpdate, EditContextProvider, Form } from "ra-core";
+import { TextInput } from "../common/inputs/TextInput";
+import { SelectInput } from "../common/inputs/SelectInput";
 
 export const BookEdit = () => {
   const { id } = useParams();
@@ -322,39 +408,44 @@ export const BookEdit = () => {
 +     saving: isSubmitting,
 +   }}>
       <div>
-        <Title title="Book Edition" />
-        <Card>
--         <SimpleForm record={data} onSubmit={onSubmit}>
-+         <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="author" />
-            <SelectInput source="availability" choices={[
-              { id: "in_stock", name: "In stock" },
-              { id: "out_of_stock", name: "Out of stock" },
-              { id: "out_of_print", name: "Out of print" },
-            ]} />
-          </SimpleForm>
-        </Card>
+-       <Form record={data} onSubmit={onSubmit}>
++       <Form>
+          <div>
+            <TextInput source="title" label="Title" />
+            <TextInput source="author" label="Author" />
+            <SelectInput 
+              source="availability" 
+              label="Availability"
+              choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+              ]}
+            />
+            <button type="submit" disabled={isSubmitting}>
+              Save
+            </button>
+          </div>
+        </Form>
       </div>
 +   </EditContextProvider>
   );
 };
 ```
-{% endraw %}
 
-Thanks to `<EditContextProvider>`, the `<SimpleForm>` component no longer needs explicit props. This may look a bit more verbose, but standardizing the `EditContext` value gives react-admin components a simplified API. And it enables further simplifications, explained below. 
+Thanks to `<EditContextProvider>`, the `<Form>` component and its child inputs no longer need explicit props. This may look more verbose at first, but having a standardized `EditContext` value simplifies the API and enables further improvements, explained below.
 
 ## `useEditController`: The Controller Logic
 
-The initial logic that grabs the id from the location, fetches the record from the API, and prepares the `save` callback is also common, and react-admin exposes [the `useEditController` hook](./useEditController.md) to do it:
+The initial logic that grabs the ID from the location, fetches the record from the API, and prepares the `save` callback is common across edit views. React-admin exposes [the `useEditController` hook](./useEditController.md) to handle this logic:
 
-{% raw %}
 ```diff
 import * as React from "react";
 -import { useParams, useNavigate } from "react-router-dom";
--import { useGetOne, useUpdate, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
-+import { useEditController, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
-import { Card } from "@mui/material";
+-import { useGetOne, useUpdate, EditContextProvider, Form } from "ra-core";
++import { useEditController, EditContextProvider, Form } from "ra-core";
+import { TextInput } from "../common/inputs/TextInput";
+import { SelectInput } from "../common/inputs/SelectInput";
 
 export const BookEdit = () => {
 - const { id } = useParams();
@@ -380,36 +471,42 @@ export const BookEdit = () => {
 -   }}>
 +   <EditContextProvider value={editContext}>
       <div>
-        <Title title="Book Edition" />
-        <Card>
-          <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="author" />
-            <SelectInput source="availability" choices={[
-              { id: "in_stock", name: "In stock" },
-              { id: "out_of_stock", name: "Out of stock" },
-              { id: "out_of_print", name: "Out of print" },
-            ]} />
-          </SimpleForm>
-        </Card>
+        <Form>
+          <div>
+            <TextInput source="title" label="Title" />
+            <TextInput source="author" label="Author" />
+            <SelectInput 
+              source="availability" 
+              label="Availability"
+              choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+              ]}
+            />
+            <button type="submit" disabled={editContext.saving}>
+              Save
+            </button>
+          </div>
+        </Form>
       </div>
     </EditContextProvider>
   );
 };
 ```
-{% endraw %}
 
 Notice that `useEditController` doesn’t need the ‘books’ resource name - it relies on the `ResourceContext`, set by the `<Resource>` component, to guess it.
 
 ## `<EditBase>`: Component Version Of The Controller
 
-As calling the `useEditController` hook and putting its result into a context is also common, react-admin provides [the `<EditBase>` component](./EditBase.md) to do it. So the example can be further simplified to the following:
+Since calling `useEditController` and putting its result into a context is a common pattern, react-admin provides [the `<EditBase>` component](./EditBase.md) to do it. This allows us to further simplify the example:
 
 ```diff
 import * as React from "react";
--import { useEditController, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
-+import { EditBase, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
-import { Card } from "@mui/material";
+-import { useEditController, EditContextProvider, Form } from "ra-core";
++import { EditBase, Form } from "ra-core";
+import { TextInput } from "../common/inputs/TextInput";
+import { SelectInput } from "../common/inputs/SelectInput";
 
 export const BookEdit = () => {
 - const editContext = useEditController();
@@ -418,18 +515,22 @@ export const BookEdit = () => {
 -   <EditContextProvider value={editContext}>
 +   <EditBase>
       <div>
-        <Title title="Book Edition" />
-        <Card>
-          <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="author" />
-            <SelectInput source="availability" choices={[
-              { id: "in_stock", name: "In stock" },
-              { id: "out_of_stock", name: "Out of stock" },
-              { id: "out_of_print", name: "Out of print" },
-            ]} />
-          </SimpleForm>
-        </Card>
+        <Form>
+          <div>
+            <TextInput source="title" label="Title" />
+            <TextInput source="author" label="Author" />
+            <SelectInput 
+              source="availability" 
+              label="Availability"
+              choices={[
+                { id: "in_stock", name: "In stock" },
+                { id: "out_of_stock", name: "Out of stock" },
+                { id: "out_of_print", name: "Out of print" },
+              ]}
+            />
+            <button type="submit">Save</button>
+          </div>
+        </Form>
       </div>
 -   </EditContextProvider>
 +   </EditBase>
@@ -437,62 +538,47 @@ export const BookEdit = () => {
 };
 ```
 
-## `<Edit>` Renders Title, Fields, And Actions
+## A Complete Edit View
 
-`<EditBase>` is a headless component: it renders only its children. But almost every edition view needs a wrapping `<div>`, a title, and a `<Card>`. That’s why react-admin provides [the `<Edit>` component](./Edit.md), which includes the `<EditBase>` component, a title built from the resource name, and even a "Show" button if the resource has a show component:
-
-```diff
-import * as React from "react";
--import { EditBase, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
-+import { Edit, SimpleForm, TextInput, SelectInput } from "react-admin";
-
-export const BookEdit = () => (
-- <EditBase>
--   <div>
--     <Title title="Book Edition" />
--     <Card>
-+ <Edit>
-    <SimpleForm>
-      <TextInput source="title" />
-      <TextInput source="author" />
-      <SelectInput source="availability" choices={[
-        { id: "in_stock", name: "In stock" },
-        { id: "out_of_stock", name: "Out of stock" },
-        { id: "out_of_print", name: "Out of print" },
-      ]} />
-    </SimpleForm>
--     </Card>
--   </div>
-- </EditBase>
-+ </Edit>
-);
-```
-
-And that’s it! Now, the code is concise, expressive, and easier to maintain. 
-
-## A Typical React-Admin Edit View
-
-The react example had almost 60 lines of code, the react-admin one only has a quarter of that:
+With all these components, we can build a complete, maintainable edit view:
 
 ```jsx
+// in src/books/BookEdit.tsx
 import * as React from "react";
-import { Edit, SimpleForm, TextInput, SelectInput } from "react-admin";
+import { EditBase, Form, useEditController } from "ra-core";
+import { TextInput } from "../common/inputs/TextInput";
+import { SelectInput } from "../common/inputs/SelectInput";
 
 export const BookEdit = () => (
-  <Edit>
-    <SimpleForm>
-      <TextInput source="title" />
-      <TextInput source="author" />
-      <SelectInput source="availability" choices={[
-        { id: "in_stock", name: "In stock" },
-        { id: "out_of_stock", name: "Out of stock" },
-        { id: "out_of_print", name: "Out of print" },
-      ]} />
-    </SimpleForm>
-  </Edit>
+  <EditBase>
+    <div>
+      <h1>Edit Book</h1>
+      <Form>
+        <div>
+          <TextInput source="title" label="Title" />
+          <TextInput source="author" label="Author" />
+          <SelectInput 
+            source="availability" 
+            label="Availability"
+            choices={[
+              { id: "in_stock", name: "In stock" },
+              { id: "out_of_stock", name: "Out of stock" },
+              { id: "out_of_print", name: "Out of print" },
+            ]}
+          />
+          <button type="submit">Save</button>
+        </div>
+      </Form>
+    </div>
+  </EditBase>
 );
 ```
 
-React-admin components are not magic, they are React components designed to let you focus on the business logic and avoid repetitive tasks. 
+The code is now concise, maintainable, and contains all the necessary logic for:
+- Fetching the record from the API
+- Populating the form with the record data
+- Handling form submission and validation
+- Managing loading and error states
+- Redirecting after success
 
-**Tip:** Actually, `<Edit>` does more than the code it replaces in the previous example: it handles notification and redirection upon submission, it sets the page title, and handles the error logic.
+React-admin's headless components provide a robust foundation for building custom user interfaces while taking care of the complex data management logic under the hood.

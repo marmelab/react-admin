@@ -1,10 +1,6 @@
 ---
-layout: default
 title: "useRegisterMutationMiddleware"
-storybook_path: ra-core-form-useregistermutationmiddleware--basic
 ---
-
-# `useRegisterMutationMiddleware`
 
 React-admin lets you hook into the save logic of the forms in Creation and Edition pages using middleware functions. These functions "wrap" the main mutation (`dataProvider.create()` in a Creation page, `dataProvider.update()` in an Edition page), so you can add your own code to be executed before and after it. This allows you to perform various advanced form use cases, such as:
 
@@ -30,7 +26,7 @@ import {
     useRegisterMutationMiddleware,
     CreateParams,
     CreateMutationFunction
-} from 'react-admin';
+} from 'ra-core';
 
 const MyComponent = () => {
     const createMiddleware = async (
@@ -54,7 +50,7 @@ const MyComponent = () => {
 }
 ```
 
-Then, render that component as a descendent of the page controller component (`<Create>` or `<Edit>`).
+Then, render that component as a descendent of the page controller component (`<CreateBase>` or `<EditBase>`).
 
 React-admin will wrap each call to the `dataProvider.create()` mutation with the `createMiddleware` function as long as the `MyComponent` component is mounted.
 
@@ -93,10 +89,10 @@ The following example shows a custom `<ImageInput>` that converts its images to 
 import { useCallback } from 'react';
 import { 
     CreateMutationFunction,
-    ImageInput,
     Middleware,
     useRegisterMutationMiddleware
-} from 'react-admin';
+} from 'ra-core';
+import { ImageInput } from '../components';
 
 const ThumbnailInput = () => {
     const middleware = useCallback(async (
@@ -137,13 +133,15 @@ Use the `<ThumbnailInput>` component in a creation form just like any regular In
 
 ```jsx
 const PostCreate = () => (
-    <Create>
-        <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="body" multiline />
-            <ThumbnailInput />
-        </SimpleForm>
-    </Create>
+    <CreateBase>
+        <Form>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <TextInput source="title" />
+                <TextInput source="body" multiline />
+                <ThumbnailInput />
+            </div>
+        </Form>
+    </CreateBase>
 );
 ```
 

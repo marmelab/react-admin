@@ -1,28 +1,26 @@
 ---
-layout: default
 title: "useCreateContext"
 ---
-
-# `useCreateContext`
 
 Whenever react-admin displays a creation page, it creates a `CreateContext` to store the submit callback.
 
 The `CreateContext` is available to descendants of:
 
-- `<Create>`,
 - `<CreateBase>`,
 
 All descendant components can therefore access the Create context, using the `useCreateContext` hook.
 
 ## Usage
 
-Call `useCreateContext` in a component that is a descendant of a `Create` component.
+Call `useCreateContext` in a component that is a descendant of a `CreateBase` component.
 
 ```jsx
-import { Create, useCreateContext, SimpleForm, TextInput } from 'react-admin';
+import { CreateBase, useCreateContext, Form } from 'ra-core';
+import { TextInput } from './TextInput';
 
 export const PostCreate = ({ id }) => (
-    <CreateBase resource="posts" id={id} aside={<Aside />}>
+    <CreateBase resource="posts" id={id}>
+       <Aside />
        <PostCreateForm />
     </CreateBase>
 );
@@ -30,10 +28,13 @@ export const PostCreate = ({ id }) => (
 const PostCreateForm = () => {
     const { save } = useCreateContext();
     return (
-         <SimpleForm onSubmit={save}>
-            <TextInput source="title" />
-            <TextInput source="views" />
-        </SimpleForm>
+         <Form onSubmit={save}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+                <TextInput source="title" />
+                <TextInput source="views" />
+                <button type="submit">Save</button>
+            </div>
+        </Form>
     );
 };
 ```

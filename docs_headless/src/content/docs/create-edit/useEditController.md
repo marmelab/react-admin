@@ -1,16 +1,12 @@
 ---
-layout: default
-title: "The useEditController hook"
-storybook_path: ra-core-controller-useeditcontroller--authenticated
+title: "useEditController"
 ---
 
-# `useEditController`
-
-`useEditController` contains the headless logic of the [`<Edit>`](./Edit.md) component. It's useful to create a custom edition view. It's also the base hook when building a custom view with another UI kit than Material UI. 
+`useEditController` contains the headless logic of the [`<EditBase>`](./EditBase.md) component. It's useful to create a custom edition view. It's also the base hook when building a custom view with another UI kit than Material UI. 
 
 `useEditController` reads the resource name and id from the resource context and browser location, fetches the record via `dataProvider.getOne()` to initialize the form, prepares a form submit handler based on `dataProvider.update()`, computes the default page title, and returns them. Its return value matches the [`EditContext`](./useEditContext.md) shape. 
 
-`useEditController` is used internally by [`<Edit>`](./Edit.md) and [`<EditBase>`](./EditBase.md). If your Edit view uses react-admin components like [`<SimpleForm>`](./SimpleForm.md), prefer [`<EditBase>`](./EditBase.md) to `useEditController` as it takes care of creating a `<EditContext>`.
+`useEditController` is used internally by [`<EditBase>`](./EditBase.md). If your Edit view uses ra-core components like [`<Form>`](./Form.md), prefer [`<EditBase>`](./EditBase.md) to `useEditController` as it takes care of creating a `<EditContext>`.
 
 ## Usage
 
@@ -18,27 +14,32 @@ Use `useEditController` to create a custom Edition view, with exactly the conten
 
 ```jsx
 import { useParams } from "react-router-dom";
-import { useEditController, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
-import { Card } from "@mui/material";
+import { useEditController, Form } from "ra-core";
+import { TextInput, SelectInput } from "./inputs";
 
 export const BookEdit = () => {
   const { id } = useParams();
   const { record, save, isPending } = useEditController({ resource: 'books', id });
   if (isPending) return null;
   return (
-      <div>
-        <Title title="Book Edition" />
-        <Card>
-          <SimpleForm record={record} onSubmit={save}>
-            <TextInput source="title" />
-            <TextInput source="author" />
-            <SelectInput source="availability" choices={[
-              { id: "in_stock", name: "In stock" },
-              { id: "out_of_stock", name: "Out of stock" },
-              { id: "out_of_print", name: "Out of print" },
-            ]} />
-          </SimpleForm>
-        </Card>
+      <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+        <h1>Book Edition</h1>
+        <div style={{ backgroundColor: '#f5f5f5', padding: '1.5rem', borderRadius: '8px' }}>
+          <Form record={record} onSubmit={save}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <TextInput source="title" />
+                <TextInput source="author" />
+                <SelectInput source="availability" choices={[
+                  { id: "in_stock", name: "In stock" },
+                  { id: "out_of_stock", name: "Out of stock" },
+                  { id: "out_of_print", name: "Out of print" },
+                ]} />
+                <button type="submit" style={{ padding: '0.5rem 1rem', marginTop: '1rem' }}>
+                    Save
+                </button>
+            </div>
+          </Form>
+        </div>
       </div>
   );
 };
@@ -51,16 +52,16 @@ export const BookEdit = () => {
 
 `useEditController` accepts an object with the following keys, all optional:
 
-* [`disableAuthentication`](./Edit.md#disableauthentication): Disable the authentication check
-* [`id`](./Edit.md#id): The id of the record to edit
-* [`mutationMode`](./Edit.md#mutationmode): Switch to optimistic or pessimistic mutations (undoable by default)
-* [`mutationOptions`](./Edit.md#mutationoptions): Options for the `dataProvider.update()` call
-* [`queryOptions`](./Edit.md#queryoptions): Options for the `dataProvider.getOne()` call
-* [`redirect`](./Edit.md#redirect): Change the redirect location after successful creation
-* [`resource`](./Edit.md#resource): Override the name of the resource to create
-* [`transform`](./Edit.md#transform): Transform the form data before calling `dataProvider.update()`
+* [`disableAuthentication`](./EditBase.md#disableauthentication): Disable the authentication check
+* [`id`](./EditBase.md#id): The id of the record to edit
+* [`mutationMode`](./EditBase.md#mutationmode): Switch to optimistic or pessimistic mutations (undoable by default)
+* [`mutationOptions`](./EditBase.md#mutationoptions): Options for the `dataProvider.update()` call
+* [`queryOptions`](./EditBase.md#queryoptions): Options for the `dataProvider.getOne()` call
+* [`redirect`](./EditBase.md#redirect): Change the redirect location after successful creation
+* [`resource`](./EditBase.md#resource): Override the name of the resource to create
+* [`transform`](./EditBase.md#transform): Transform the form data before calling `dataProvider.update()`
 
-These fields are documented in [the `<Edit>` component](./Edit.md) documentation.
+These fields are documented in [the `<EditBase>` component](./EditBase.md) documentation.
 
 ## Return Value
 
@@ -84,25 +85,29 @@ const {
 
 ## Security
 
-`useEditController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./Edit.md#disableauthentication) prop.
+`useEditController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./EditBase.md#disableauthentication) prop.
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useEditController` will only render if the user has the "edit" access to the related resource.
+If your `authProvider` implements [Access Control](../security/Permissions.md#access-control), `useEditController` will only render if the user has the "edit" access to the related resource.
 
 For instance, for the `<PostEdit>` page below:
 
 ```tsx
-import { useEditController, SimpleForm, TextInput } from 'react-admin';
+import { useEditController, Form } from 'ra-core';
+import { TextInput } from './TextInput';
 
 const PostEdit = ({ id }) => {
-  const { isPending, error, data, save } = useEditController({ resource: 'posts', id })
+  const { isPending, error, record, save } = useEditController({ resource: 'posts', id })
   if (error) return <div>Error!</div>;
   if (isPending) return <div>Loading...</div>;
   return (
-      <SimpleForm record={data} onSubmit={save}>
-        <TextInput source="title" />
-        <TextInput source="author" />
-        <TextInput source="published_at" />
-      </SimpleShowLayout>
+      <Form record={record} onSubmit={save}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem' }}>
+            <TextInput source="title" />
+            <TextInput source="author" />
+            <TextInput source="published_at" />
+            <button type="submit">Save</button>
+        </div>
+      </Form>
   );
 }
 ```
@@ -113,6 +118,6 @@ const PostEdit = ({ id }) => {
 { action: "edit", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdmin.md#accessdenied).
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./Edit.md#disableauthentication).
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./EditBase.md#disableauthentication).

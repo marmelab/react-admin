@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "Form Validation"
 ---
-
-# Form Validation
 
 ![Validation example](../img/validation.png)
 
@@ -24,11 +21,13 @@ Since [`<Form>`](./Form.md) actually passes all additional props to react-hook-f
 
 ```jsx
 export const UserCreate = () => (
-    <Create>
-        <SimpleForm mode="onBlur" reValidateMode="onBlur">
-            <TextInput label="First Name" source="firstName" validate={required()} />
-        </SimpleForm>
-    </Create>
+    <CreateBase>
+        <Form mode="onBlur" reValidateMode="onBlur">
+            <div>
+                <TextInput label="First Name" source="firstName" validate={required()} />
+            </div>
+        </Form>
+    </CreateBase>
 );
 ```
 
@@ -72,26 +71,28 @@ const validateUserCreation = (values) => {
 };
 
 export const UserCreate = () => (
-    <Create>
-        <SimpleForm validate={validateUserCreation}>
-            {/* 
-                We need to add `validate={required()}` on required fields to append a '*' symbol 
-                to the label, but the real validation still happens in `validateUserCreation`
-            */}
-            <TextInput label="First Name" source="firstName" validate={required()} />
-            <TextInput label="Age" source="age" validate={required()} />
-            <ArrayInput label="Children" source="children" fullWidth validate={required()}>
-                <SimpleFormIterator>
-                    <TextInput label="First Name" source="firstName" validate={required()} />
-                    <TextInput label="Age" source="age" validate={required()} />
-                </SimpleFormIterator>
-            </ArrayInput>
-        </SimpleForm>
-    </Create>
+    <CreateBase>
+        <Form validate={validateUserCreation}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* 
+                    We need to add `validate={required()}` on required fields to append a '*' symbol 
+                    to the label, but the real validation still happens in `validateUserCreation`
+                */}
+                <TextInput label="First Name" source="firstName" validate={required()} />
+                <TextInput label="Age" source="age" validate={required()} />
+                <ArrayInput label="Children" source="children" validate={required()}>
+                    <SimpleFormIterator>
+                        <TextInput label="First Name" source="firstName" validate={required()} />
+                        <TextInput label="Age" source="age" validate={required()} />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </div>
+        </Form>
+    </CreateBase>
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [useForm hook](https://react-hook-form.com/docs/useform) of `react-hook-form`.
+**Tip**: The props you pass to `<Form>` are passed to the [useForm hook](https://react-hook-form.com/docs/useform) of `react-hook-form`.
 
 **Tip**: The `validate` function can return a promise for asynchronous validation. See [the Server-Side Validation section](#server-side-validation) below.
 
@@ -123,7 +124,7 @@ import {
     regex,
     email,
     choices
-} from 'react-admin';
+} from 'ra-core';
 
 const validateFirstName = [required(), minLength(2), maxLength(15)];
 const validateEmail = email();
@@ -132,19 +133,21 @@ const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
 const validateGender = choices(['m', 'f', 'nc'], 'Please choose one of the values');
 
 export const UserCreate = () => (
-    <Create>
-        <SimpleForm>
-            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
-            <TextInput label="Email" source="email" validate={validateEmail} />
-            <TextInput label="Age" source="age" validate={validateAge}/>
-            <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
-            <SelectInput label="Gender" source="gender" choices={[
-                { id: 'm', name: 'Male' },
-                { id: 'f', name: 'Female' },
-                { id: 'nc', name: 'Prefer not say' },
-            ]} validate={validateGender}/>
-        </SimpleForm>
-    </Create>
+    <CreateBase>
+        <Form>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <TextInput label="First Name" source="firstName" validate={validateFirstName} />
+                <TextInput label="Email" source="email" validate={validateEmail} />
+                <TextInput label="Age" source="age" validate={validateAge}/>
+                <TextInput label="Zip Code" source="zip" validate={validateZipCode}/>
+                <SelectInput label="Gender" source="gender" choices={[
+                    { id: 'm', name: 'Male' },
+                    { id: 'f', name: 'Female' },
+                    { id: 'nc', name: 'Prefer not say' },
+                ]} validate={validateGender}/>
+            </div>
+        </Form>
+    </CreateBase>
 );
 ```
 
@@ -184,12 +187,14 @@ const validateFirstName = [required(), maxLength(15)];
 const validateAge = [required(), number(), ageValidation];
 
 export const UserCreate = () => (
-    <Create>
-        <SimpleForm>
-            <TextInput label="First Name" source="firstName" validate={validateFirstName} />
-            <TextInput label="Age" source="age" validate={validateAge}/>
-        </SimpleForm>
-    </Create>
+    <CreateBase>
+        <Form>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <TextInput label="First Name" source="firstName" validate={validateFirstName} />
+                <TextInput label="Age" source="age" validate={validateAge}/>
+            </div>
+        </Form>
+    </CreateBase>
 );
 ```
 
@@ -235,28 +240,26 @@ export default {
 }
 ```
 
-See the [Translation documentation](./TranslationTranslating.md#translating-form-validation-errors) for details.
+See the [Translation documentation](../i18n/TranslationTranslating.md#translating-form-validation-errors) for details.
 
 **Tip**: Make sure to define validation functions or array of functions in a variable outside your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 
-{% raw %}
 ```jsx
 const validateStock = [required(), number(), minValue(0)];
 
 export const ProductEdit = () => (
-    <Edit>
-        <SimpleForm defaultValues={{ stock: 0 }}>
-            ...
-            {/* do this */}
-            <NumberInput source="stock" validate={validateStock} />
-            {/* don't do that */}
-            <NumberInput source="stock" validate={[required(), number(), minValue(0)]} />
-            ...
-        </SimpleForm>
-    </Edit>
+    <EditBase>
+        <Form defaultValues={{ stock: 0 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* do this */}
+                <NumberInput source="stock" validate={validateStock} />
+                {/* don't do that */}
+                <NumberInput source="stock" validate={[required(), number(), minValue(0)]} />
+            </div>
+        </Form>
+    </EditBase>
 );
 ```
-{% endraw %}
 
 **Tip**: The props of your Input components are passed to a `react-hook-form` [useController](https://react-hook-form.com/docs/usecontroller) hook.
 
@@ -294,13 +297,15 @@ const validateUserCreation = async (values) => {
 };
 
 export const UserCreate = () => (
-    <Create>
-        <SimpleForm validate={validateUserCreation}>
-            <TextInput label="First Name" source="firstName" />
-            <TextInput label="Email" source="email" />
-            <TextInput label="Age" source="age" />
-        </SimpleForm>
-    </Create>
+    <CreateBase>
+        <Form validate={validateUserCreation}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <TextInput label="First Name" source="firstName" />
+                <TextInput label="Email" source="email" />
+                <TextInput label="Age" source="age" />
+            </div>
+        </Form>
+    </CreateBase>
 );
 ```
 
@@ -326,13 +331,13 @@ const validateEmailUnicity = async (value) => {
 const emailValidators = [required(), validateEmailUnicity];
 
 export const UserCreate = () => (
-    <Create>
-        <SimpleForm>
-            ...
-            <TextInput label="Email" source="email" validate={emailValidators} />
-            ...
-        </SimpleForm>
-    </Create>
+    <CreateBase>
+        <Form>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <TextInput label="Email" source="email" validate={emailValidators} />
+            </div>
+        </Form>
+    </CreateBase>
 );
 ```
 
@@ -360,7 +365,8 @@ To use schema validation, use the `resolver` prop following [react-hook-form's r
 ```jsx
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { SimpleForm, TextInput, NumberInput } from 'react-admin';
+import { Form, CreateBase } from 'ra-core';
+import { TextInput, NumberInput } from '../components';
 
 const schema = yup
     .object()
@@ -371,12 +377,14 @@ const schema = yup
     .required();
 
 const CustomerCreate = () => (
-    <Create>
-        <SimpleForm resolver={yupResolver(schema)}>
-            <TextInput source="name" />
-            <NumberInput source="age" />
-        </SimpleForm>
-    </Create>
+    <CreateBase>
+        <Form resolver={yupResolver(schema)}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <TextInput source="name" />
+                <NumberInput source="age" />
+            </div>
+        </Form>
+    </CreateBase>
 );
 ```
 
@@ -403,10 +411,10 @@ Server-side validation is supported out of the box for `pessimistic` mode only. 
 
 **Tip**: The returned validation errors might have any validation format we support (simple strings, translation strings or translation objects with a `message` attribute) for each key. However `root.serverError` does not accept translation objects.
 
-**Tip**: If your data provider leverages React Admin's [`httpClient`](https://marmelab.com/react-admin/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
+**Tip**: If your data provider leverages React Admin's [`httpClient`](../data-fetching/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
 
 ```js
-import { fetchUtils } from "react-admin";
+import { fetchUtils } from "ra-core";
 
 const httpClient = fetchUtils.fetchJson;
 
@@ -438,7 +446,7 @@ const myDataProvider = {
 **Tip:** If you are not using React Admin's `httpClient`, you can still wrap errors in an `HttpError` to return them with the correct shape:
 
 ```js
-import { HttpError } from 'react-admin'
+import { HttpError } from 'ra-core'
 
 const myDataProvider = {
     create: async (resource, { data }) => {
