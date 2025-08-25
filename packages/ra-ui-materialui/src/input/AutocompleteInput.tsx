@@ -626,6 +626,23 @@ If you provided a React element for the optionText prop, you must also provide t
     const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     const handleInputRef = useForkRef(field.ref, TextFieldProps?.inputRef);
+    // When there is no network connectivity and we weren't even able to load the current value
+    if (
+        isPaused &&
+        offline !== false &&
+        offline !== undefined &&
+        ((field.value != null && selectedChoice == null) ||
+            suggestions.length === 0)
+    ) {
+        return offline;
+    }
+
+    const finalLoadingText =
+        typeof loadingText === 'string'
+            ? translate(loadingText, {
+                  _: loadingText,
+              })
+            : loadingText;
     return (
         <>
             <StyledAutocomplete
@@ -634,12 +651,10 @@ If you provided a React element for the optionText prop, you must also provide t
                 closeText={translate(closeText, { _: closeText })}
                 loadingText={
                     isPaused && isPlaceholderData
-                        ? offline
-                        : typeof loadingText === 'string'
-                          ? translate(loadingText, {
-                                _: loadingText,
-                            })
-                          : loadingText
+                        ? offline !== false && offline !== undefined
+                            ? offline
+                            : finalLoadingText
+                        : finalLoadingText
                 }
                 openOnFocus
                 openText={translate(openText, { _: openText })}

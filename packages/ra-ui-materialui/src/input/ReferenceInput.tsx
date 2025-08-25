@@ -2,7 +2,6 @@ import React from 'react';
 import { ReferenceInputBase, ReferenceInputBaseProps } from 'ra-core';
 
 import { AutocompleteInput } from './AutocompleteInput';
-import { Offline } from '../Offline';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -65,11 +64,7 @@ import { Offline } from '../Offline';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const {
-        children = defaultChildren,
-        offline = defaultOffline,
-        ...rest
-    } = props;
+    const { children = defaultChildren, ...rest } = props;
 
     if (props.validate && process.env.NODE_ENV !== 'production') {
         throw new Error(
@@ -77,15 +72,10 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
         );
     }
 
-    return (
-        <ReferenceInputBase {...rest} offline={offline}>
-            {children}
-        </ReferenceInputBase>
-    );
+    return <ReferenceInputBase {...rest}>{children}</ReferenceInputBase>;
 };
 
 const defaultChildren = <AutocompleteInput />;
-const defaultOffline = <Offline variant="inline" />;
 
 export interface ReferenceInputProps extends ReferenceInputBaseProps {
     /**

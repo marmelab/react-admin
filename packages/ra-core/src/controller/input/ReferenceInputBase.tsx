@@ -83,7 +83,8 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
 
     const shouldRenderOffline =
         isPaused &&
-        allChoices == null &&
+        // TODO v6: we can't rely on isPlaceHolderData here because useReferenceInputController always return at least an empty array
+        allChoices?.length === 0 &&
         offline !== false &&
         offline !== undefined;
 

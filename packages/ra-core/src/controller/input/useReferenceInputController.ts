@@ -197,8 +197,11 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         () =>
             ({
                 sort: currentSort,
-                allChoices: finalData,
-                availableChoices: possibleValuesData,
+                // TODO v6: we shouldn't return a default empty array. This is actually enforced at the type level in other hooks such as useListController
+                allChoices: finalData ?? [],
+                // TODO v6: same as above
+                availableChoices: possibleValuesData ?? [],
+                // TODO v6: same as above
                 selectedChoices: referenceRecord ? [referenceRecord] : [],
                 displayedFilters: params.displayedFilters,
                 error: errorReference || errorPossibleValues,
