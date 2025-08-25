@@ -40,17 +40,15 @@ Components using `<ShowBase>` can be used as the `show` prop of a `<Resource>` c
 
 ```jsx
 // in src/App.jsx
-import { CoreAdminContext, CoreAdminUI, Resource } from 'ra-core';
+import { CoreAdmin, Resource } from 'ra-core';
 
 import { dataProvider } from './dataProvider';
 import { PostShow } from './posts';
 
 const App = () => (
-    <CoreAdminContext dataProvider={dataProvider}>
-        <CoreAdminUI>
-            <Resource name="posts" show={PostShow} />
-        </CoreAdminUI>
-    </CoreAdminContext>
+    <CoreAdmin dataProvider={dataProvider}>
+        <Resource name="posts" show={PostShow} />
+    </CoreAdmin>
 );
 ```
 
@@ -295,6 +293,6 @@ const PostShow = () => (
 { action: "show", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdminUI.md#accessdenied).
+Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdmin.md#accessdenied).
 
 **Note**: Access control is disabled when you use [the `disableAuthentication` prop](#disableauthentication).

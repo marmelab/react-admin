@@ -88,7 +88,7 @@ React-admin uses react-query for data fetching. React-query comes with its own c
 
 ```jsx
 import { QueryClient } from '@tanstack/react-query';
-import { CoreAdminContext, CoreAdminUI } from 'ra-core';
+import { CoreAdmin, Resource } from 'ra-core';
 
 const App = () => {
     const queryClient = new QueryClient({
@@ -99,11 +99,9 @@ const App = () => {
         },
     });
     return (
-        <CoreAdminContext dataProvider={dataProvider} queryClient={queryClient}>
-            <CoreAdminUI>
-                <Resource name="posts" />
-            </CoreAdminUI>
-        </CoreAdminContext>
+        <CoreAdmin dataProvider={dataProvider} queryClient={queryClient}>
+            <Resource name="posts" />
+        </CoreAdmin>
     );
 }
 ```

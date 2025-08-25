@@ -321,7 +321,7 @@ const PostCreate = () => (
 { action: "create", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdminUI.md#accessdenied).
+Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdmin.md#accessdenied).
 
 **Note**: Access control is disabled when you use the [`disableAuthentication`](#disableauthentication) prop.
 
