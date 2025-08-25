@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { screen, render, waitFor } from '@testing-library/react';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import { RaRecord } from '../types';
@@ -19,7 +20,7 @@ import {
     ErrorCase as ErrorCaseUndoable,
     SuccessCase as SuccessCaseUndoable,
 } from './useDelete.undoable.stories';
-import { QueryClient, useMutationState } from '@tanstack/react-query';
+import { MutationMode, Params } from './useDelete.stories';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
@@ -72,6 +73,75 @@ describe('useDelete', () => {
                 id: 1,
                 previousData: { id: 1, bar: 'bar' },
             });
+        });
+    });
+
+    it('uses the latest declaration time mutationMode', async () => {
+        // This story uses the pessimistic mode by default
+        render(<MutationMode />);
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+        fireEvent.click(screen.getByText('Change mutation mode to optimistic'));
+        fireEvent.click(screen.getByText('Delete first post'));
+        // Should display the optimistic result right away if the change was handled
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).not.toBeNull();
+        });
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).toBeNull();
+        });
+    });
+
+    it('uses the latest declaration time params', async () => {
+        const posts = [
+            { id: 1, title: 'Hello' },
+            { id: 2, title: 'World' },
+        ];
+        const dataProvider = {
+            getList: () => {
+                return Promise.resolve({
+                    data: posts,
+                    total: posts.length,
+                });
+            },
+            delete: jest.fn((_, params) => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        const index = posts.findIndex(p => p.id === params.id);
+                        posts.splice(index, 1);
+                        resolve({ data: params.previousData });
+                    }, 1000);
+                });
+            }),
+        } as any;
+        // This story has no meta by default
+        render(<Params dataProvider={dataProvider} />);
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+        fireEvent.click(screen.getByText('Change params'));
+        fireEvent.click(screen.getByText('Delete first post'));
+        // Should display the optimistic result right away if the change was handled
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).not.toBeNull();
+        });
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).toBeNull();
+        });
+
+        expect(dataProvider.delete).toHaveBeenCalledWith('posts', {
+            id: 1,
+            previousData: { id: 1, title: 'Hello' },
+            meta: 'test',
         });
     });
 
@@ -310,7 +380,6 @@ describe('useDelete', () => {
 
     describe('mutationMode', () => {
         it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCasePessimistic />);
             screen.getByText('Delete first post').click();
             await waitFor(() => {
@@ -327,7 +396,6 @@ describe('useDelete', () => {
             expect(screen.queryByText('World')).not.toBeNull();
         });
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCasePessimistic />);
             screen.getByText('Delete first post').click();
@@ -376,7 +444,6 @@ describe('useDelete', () => {
             ).not.toBeNull();
         });
         it('when optimistic, displays result and success side effects right away', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseOptimistic />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -394,7 +461,6 @@ describe('useDelete', () => {
             });
         });
         it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseOptimistic />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
@@ -416,7 +482,6 @@ describe('useDelete', () => {
             });
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -444,7 +509,6 @@ describe('useDelete', () => {
             );
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             render(<SuccessCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
             screen.getByText('Delete first post').click();
@@ -462,7 +526,6 @@ describe('useDelete', () => {
             });
         });
         it('when undoable, displays result and success side effects right away and reverts on error', async () => {
-            jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseUndoable />);
             await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));

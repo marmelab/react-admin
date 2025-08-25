@@ -16,15 +16,13 @@ export const SuccessCase = () => {
         { id: 2, title: 'World' },
     ];
     const dataProvider = {
-        getList: (resource, params) => {
-            console.log('getList', resource, params);
+        getList: () => {
             return Promise.resolve({
                 data: posts,
                 total: posts.length,
             });
         },
-        delete: (resource, params) => {
-            console.log('delete', resource, params);
+        delete: (_, params) => {
             return new Promise(resolve => {
                 setTimeout(() => {
                     const index = posts.findIndex(p => p.id === params.id);
@@ -181,15 +179,13 @@ export const ErrorCase = () => {
         { id: 2, title: 'World' },
     ];
     const dataProvider = {
-        getList: (resource, params) => {
-            console.log('getList', resource, params);
+        getList: () => {
             return Promise.resolve({
                 data: posts,
                 total: posts.length,
             });
         },
-        delete: (resource, params) => {
-            console.log('delete', resource, params);
+        delete: () => {
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     reject(new Error('something went wrong'));

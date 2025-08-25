@@ -5,10 +5,11 @@ import { QueryClient, useIsMutating } from '@tanstack/react-query';
 import { CoreAdminContext } from '../core';
 import { useDelete } from './useDelete';
 import { useGetList } from './useGetList';
+import type { DataProvider, MutationMode as MutationModeType } from '../types';
 
-export default { title: 'ra-core/dataProvider/useDelete/optimistic' };
+export default { title: 'ra-core/dataProvider/useDelete' };
 
-export const SuccessCase = () => {
+export const MutationMode = () => {
     const posts = [
         { id: 1, title: 'Hello' },
         { id: 2, title: 'World' },
@@ -35,28 +36,32 @@ export const SuccessCase = () => {
             queryClient={new QueryClient()}
             dataProvider={dataProvider}
         >
-            <SuccessCore />
+            <MutationModeCore />
         </CoreAdminContext>
     );
 };
 
-const SuccessCore = () => {
+const MutationModeCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetList('posts');
-    const [deleteOne, { isPending }] = useDelete();
+    const [mutationMode, setMutationMode] =
+        React.useState<MutationModeType>('pessimistic');
+
+    const [deleteOne, { isPending }] = useDelete(
+        'posts',
+        {
+            id: 1,
+            previousData: { id: 1, title: 'Hello' },
+        },
+        {
+            mutationMode,
+            onSuccess: () => setSuccess('success'),
+        }
+    );
+
     const handleClick = () => {
-        deleteOne(
-            'posts',
-            {
-                id: 1,
-                previousData: { id: 1, title: 'Hello' },
-            },
-            {
-                mutationMode: 'optimistic',
-                onSuccess: () => setSuccess('success'),
-            }
-        );
+        deleteOne();
     };
     return (
         <>
@@ -64,6 +69,13 @@ const SuccessCore = () => {
             <div>
                 <button onClick={handleClick} disabled={isPending}>
                     Delete first post
+                </button>
+                &nbsp;
+                <button
+                    onClick={() => setMutationMode('optimistic')}
+                    disabled={isPending}
+                >
+                    Change mutation mode to optimistic
                 </button>
                 &nbsp;
                 <button onClick={() => refetch()}>Refetch</button>
@@ -74,22 +86,24 @@ const SuccessCore = () => {
     );
 };
 
-export const ErrorCase = () => {
+export const Params = ({ dataProvider }: { dataProvider?: DataProvider }) => {
     const posts = [
         { id: 1, title: 'Hello' },
         { id: 2, title: 'World' },
     ];
-    const dataProvider = {
+    const defaultDataProvider = {
         getList: () => {
             return Promise.resolve({
                 data: posts,
                 total: posts.length,
             });
         },
-        delete: () => {
-            return new Promise((resolve, reject) => {
+        delete: (_, params) => {
+            return new Promise(resolve => {
                 setTimeout(() => {
-                    reject(new Error('something went wrong'));
+                    const index = posts.findIndex(p => p.id === params.id);
+                    posts.splice(index, 1);
+                    resolve({ data: params.previousData });
                 }, 1000);
             });
         },
@@ -97,36 +111,34 @@ export const ErrorCase = () => {
     return (
         <CoreAdminContext
             queryClient={new QueryClient()}
-            dataProvider={dataProvider}
+            dataProvider={dataProvider ?? defaultDataProvider}
         >
-            <ErrorCore />
+            <ParamsCore />
         </CoreAdminContext>
     );
 };
 
-const ErrorCore = () => {
+const ParamsCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
-    const [error, setError] = useState<any>();
     const { data, refetch } = useGetList('posts');
-    const [deleteOne, { isPending }] = useDelete();
+    const [params, setParams] = React.useState<any>({});
+
+    const [deleteOne, { isPending }] = useDelete(
+        'posts',
+        {
+            id: 1,
+            previousData: { id: 1, title: 'Hello' },
+            meta: params.meta,
+        },
+        {
+            mutationMode: 'optimistic',
+            onSuccess: () => setSuccess('success'),
+        }
+    );
+
     const handleClick = () => {
-        setError(undefined);
-        deleteOne(
-            'posts',
-            {
-                id: 1,
-                previousData: { id: 1, title: 'Hello World' },
-            },
-            {
-                mutationMode: 'optimistic',
-                onSuccess: () => setSuccess('success'),
-                onError: e => {
-                    setError(e);
-                    setSuccess('');
-                },
-            }
-        );
+        deleteOne();
     };
     return (
         <>
@@ -136,9 +148,15 @@ const ErrorCore = () => {
                     Delete first post
                 </button>
                 &nbsp;
+                <button
+                    onClick={() => setParams({ meta: 'test' })}
+                    disabled={isPending}
+                >
+                    Change params
+                </button>
+                &nbsp;
                 <button onClick={() => refetch()}>Refetch</button>
             </div>
-            {error && <div>{error.message}</div>}
             {success && <div>{success}</div>}
             {isMutating !== 0 && <div>mutating</div>}
         </>
