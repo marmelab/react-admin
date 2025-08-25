@@ -413,6 +413,8 @@ const PostEdit = () => (
 
 {% endraw %}
 
+**Warning**: If you set `mutationOptions` meta without [redirecting](#redirect), make sure that [`queryOptions`](#queryoptions) meta is the same, or you will have data update issues.
+
 You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
@@ -561,6 +563,8 @@ export const PostShow = () => (
 
 {% endraw %}
 
+**Warning**: If you set `queryOptions` meta without [redirecting](#redirect), make sure that [`mutationOptions`](#mutationoptions) meta is the same, or you will have data update issues.
+
 You can also use `queryOptions` to force a refetch on reconnect:
 
 {% raw %}
@@ -596,7 +600,9 @@ const PostEdit = () => (
 );
 ```
 
-Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case.
+Note that the `redirect` prop is ignored if you set an `onSuccess` callback of [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case.
+
+**Warning**: If you set [`queryOptions`](#queryoptions) meta without redirecting, make sure that [`mutationOptions`](#mutationoptions) meta is the same, or you will have data update issues.
 
 ## `render`
 
