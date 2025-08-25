@@ -1,10 +1,11 @@
-import simpleRestProvider from 'ra-data-simple-rest';
+import simpleRestProvider from 'ra-data-fakerest';
 import { DataProvider, withLifecycleCallbacks, HttpError } from 'react-admin';
 import get from 'lodash/get';
 import addUploadFeature from './addUploadFeature';
 import { queryClient } from './queryClient';
+import data from './data';
 
-const defaultDataProvider = simpleRestProvider('http://localhost:4000');
+const defaultDataProvider = simpleRestProvider(data);
 
 const dataProvider = withLifecycleCallbacks(defaultDataProvider, [
     {
