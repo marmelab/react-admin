@@ -70,6 +70,7 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         reference,
         sort = { field: 'id', order: 'DESC' },
         filter = {},
+        offline,
     } = props;
 
     const controllerProps = useReferenceInputController({
@@ -78,10 +79,19 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         filter,
     });
 
+    const { isPaused, allChoices } = controllerProps;
+
+    const shouldRenderOffline =
+        isPaused &&
+        // TODO v6: we can't rely on isPlaceHolderData here because useReferenceInputController always return at least an empty array
+        allChoices?.length === 0 &&
+        offline !== false &&
+        offline !== undefined;
+
     return (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
-                {children}
+                {shouldRenderOffline ? offline : children}
             </ChoicesContextProvider>
         </ResourceContextProvider>
     );
@@ -91,4 +101,5 @@ export interface ReferenceInputBaseProps
     extends InputProps,
         UseReferenceInputControllerParams {
     children?: ReactNode;
+    offline?: ReactNode;
 }

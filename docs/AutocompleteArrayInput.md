@@ -68,6 +68,7 @@ The form value for the source must be an array of the selected values, e.g.
 | `filterToQuery`            | Optional | `string` => `Object`                            | `q => ({ q })`           | How to transform the searchText into a parameter for the data provider                                                                                  |
 | `inputText`                | Optional | `Function`                                      | `-`                      | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                 |
 | `matchSuggestion`          | Optional | `Function`                                      | `-`                      | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean` |
+| `offline`                  | Optional | `ReactNode`                                     | -                        | What to render when there is no network connectivity when fetching the choices                                                                                                                                      |
 | `onChange`                 | Optional | `Function`                                      | `-`                      | A function called with the new value, along with the selected records, when the input value changes |
 | `onCreate`                 | Optional | `Function`                                      | `-`                      | A function called with the current filter value when users choose to create a new choice.                                                               |
 | `optionText`               | Optional | `string` &#124; `Function` &#124; `Component`   | `name` | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`)           |
@@ -320,6 +321,27 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 
 <ReferenceArrayInput source="tag_ids" reference="tags">
     <AutocompleteArrayInput filterToQuery={filterToQuery} />
+</ReferenceArrayInput>
+```
+
+## `offline`
+
+`<AutocompleteArrayInput>` can display a custom message when it can't fetch the choices because there is no network connectivity, thanks to the `offline` prop.
+
+```jsx
+<ReferenceArrayInput source="user_id" reference="users">
+    <AutocompleteArrayInput offline={<span>No network, could not fetch data</span>} />
+</ReferenceArrayInput>
+```
+
+You can pass either a React element or a string to the `offline` prop:
+
+```jsx
+<ReferenceArrayInput source="user_id" reference="users">
+    <AutocompleteArrayInput offline={<span>No network, could not fetch data</span>} />
+</ReferenceArrayInput>
+<ReferenceArrayInput source="user_id" reference="users">
+    <AutocompleteArrayInput offline="No network, could not fetch data" />
 </ReferenceArrayInput>
 ```
 

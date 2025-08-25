@@ -17,6 +17,7 @@ import {
     SelfReference,
     QueryOptions,
     Meta,
+    Offline,
 } from './ReferenceInputBase.stories';
 
 describe('<ReferenceInputBase />', () => {
@@ -68,8 +69,8 @@ describe('<ReferenceInputBase />', () => {
             return <div>{resource}</div>;
         };
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getList: () =>
+                // @ts-ignore
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(
@@ -92,8 +93,8 @@ describe('<ReferenceInputBase />', () => {
             return <div aria-label="total">{total}</div>;
         };
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getList: () =>
+                // @ts-ignore
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(
@@ -186,6 +187,15 @@ describe('<ReferenceInputBase />', () => {
         });
         screen.getByText('Save').click();
         await screen.findByText('Proust', undefined, { timeout: 5000 });
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('You are offline, cannot load data');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('lorem');
     });
 });
 
