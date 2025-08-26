@@ -141,8 +141,6 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         isPendingPossibleValues;
 
     const isPaused = isPausedReference || isPausedPossibleValues;
-    const isPlaceholderData =
-        isPlaceholderDataReference || isPlaceholderDataPossibleValues;
 
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
@@ -212,7 +210,9 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
                 isLoading: isLoadingReference || isLoadingPossibleValues,
                 isPaused: isPausedReference || isPausedPossibleValues,
                 isPending,
-                isPlaceholderData,
+                isPlaceholderData:
+                    isPlaceholderDataReference ||
+                    isPlaceholderDataPossibleValues,
                 page: params.page,
                 perPage: params.perPage,
                 refetch,
@@ -248,7 +248,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             isPausedPossibleValues,
             isPausedReference,
             isPending,
-            isPlaceholderData,
+            isPlaceholderDataReference,
+            isPlaceholderDataPossibleValues,
             pageInfo,
             params.displayedFilters,
             params.filter,

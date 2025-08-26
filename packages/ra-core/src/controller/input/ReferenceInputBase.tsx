@@ -79,14 +79,12 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         filter,
     });
 
-    const { isPaused, allChoices } = controllerProps;
-
+    const { isPaused, isPending } = controllerProps;
+    // isPending is true: there's no cached data and no query attempt was finished yet
+    // isPaused is true: the query was paused (e.g. due to a network issue)
+    // Both true: we're offline and have no data to show
     const shouldRenderOffline =
-        isPaused &&
-        // TODO v6: we can't rely on isPlaceHolderData here because useReferenceInputController always return at least an empty array
-        allChoices?.length === 0 &&
-        offline !== false &&
-        offline !== undefined;
+        isPaused && isPending && offline !== undefined && offline !== false;
 
     return (
         <ResourceContextProvider value={reference}>

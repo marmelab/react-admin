@@ -28,7 +28,7 @@ import {
 } from '../..';
 
 export default {
-    title: 'ra-core/input/ReferenceInputBase',
+    title: 'ra-core/controller/input/ReferenceInputBase',
     excludeStories: ['dataProviderWithAuthors'],
 };
 
@@ -526,7 +526,7 @@ export const Meta = ({
 
 export const Offline = () => (
     <CoreAdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [5] }}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: 5 }}>
             <div
                 style={{
                     width: '200px',

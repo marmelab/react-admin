@@ -626,14 +626,11 @@ If you provided a React element for the optionText prop, you must also provide t
     const renderHelperText = !!fetchError || helperText !== false || invalid;
 
     const handleInputRef = useForkRef(field.ref, TextFieldProps?.inputRef);
-    // When there is no network connectivity and we weren't even able to load the current value
-    if (
-        isPaused &&
-        offline !== false &&
-        offline !== undefined &&
-        ((field.value != null && selectedChoice == null) ||
-            suggestions.length === 0)
-    ) {
+    // isPending is true: there's no cached data and no query attempt was finished yet
+    // isPaused is true: the query was paused (e.g. due to a network issue)
+    // Both true: we're offline, have no data to show
+    // If the component that provides the ChoicesContext does not handle this case, we should should render the offline element
+    if (isPending && isPaused && offline !== false && offline !== undefined) {
         return offline;
     }
 
