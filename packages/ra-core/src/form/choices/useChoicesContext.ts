@@ -41,8 +41,8 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
                 hasPreviousPage:
                     options.hasPreviousPage ?? list.hasPreviousPage,
                 hideFilter: options.hideFilter ?? list.hideFilter,
-                isFetching: list.isFetching ?? false, // same
-                isLoading: list.isLoading ?? false, // we must take the one for useList, otherwise the loading state isn't synchronized with the data
+                isFetching: list.isFetching ?? false, // we must take the one for useList, otherwise the loading state isn't synchronized with the data
+                isLoading: list.isLoading ?? false, // same
                 isPaused: list.isPaused ?? false, // same
                 isPending: list.isPending ?? false, // same
                 isPlaceholderData: list.isPlaceholderData ?? false, // same

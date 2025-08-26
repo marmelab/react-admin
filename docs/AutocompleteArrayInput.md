@@ -329,7 +329,7 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 `<AutocompleteArrayInput>` can display a custom message when it can't fetch the choices because there is no network connectivity, thanks to the `offline` prop.
 
 ```jsx
-<ReferenceArrayInput source="user_id" reference="users">
+<ReferenceArrayInput source="tag_ids" reference="tags">
     <AutocompleteArrayInput offline={<span>No network, could not fetch data</span>} />
 </ReferenceArrayInput>
 ```
@@ -337,10 +337,10 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 You can pass either a React element or a string to the `offline` prop:
 
 ```jsx
-<ReferenceArrayInput source="user_id" reference="users">
+<ReferenceArrayInput source="tag_ids" reference="tags">
     <AutocompleteArrayInput offline={<span>No network, could not fetch data</span>} />
 </ReferenceArrayInput>
-<ReferenceArrayInput source="user_id" reference="users">
+<ReferenceArrayInput source="tag_ids" reference="tags">
     <AutocompleteArrayInput offline="No network, could not fetch data" />
 </ReferenceArrayInput>
 ```
