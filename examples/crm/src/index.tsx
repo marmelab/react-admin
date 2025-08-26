@@ -7,13 +7,19 @@ import { worker } from './providers/fakerest/fakeServer';
 const container = document.getElementById('root');
 const root = createRoot(container!);
 
-worker.start({ onUnhandledRequest: 'bypass', quiet: true }).then(() => {
-    root.render(
-        <React.StrictMode>
-            <App />
-        </React.StrictMode>
-    );
-});
+worker
+    .start({
+        onUnhandledRequest: 'bypass',
+        quiet: true,
+        serviceWorker: { url: './mockServiceWorker.js' },
+    })
+    .then(() => {
+        root.render(
+            <React.StrictMode>
+                <App />
+            </React.StrictMode>
+        );
+    });
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
