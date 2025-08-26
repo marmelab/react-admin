@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "addRefreshAuthToAuthProvider"
 ---
-
-# `addRefreshAuthToAuthProvider`
 
 This helper function wraps an existing [`authProvider`](./Authentication.md) to support authentication token refreshing mechanisms.
 
@@ -28,7 +25,7 @@ export const refreshAuth = () => {
 }
 
 // in src/authProvider.js
-import { addRefreshAuthToAuthProvider } from 'react-admin';
+import { addRefreshAuthToAuthProvider } from 'ra-core';
 import { refreshAuth } from 'refreshAuth';
 
 const myAuthProvider = {
@@ -38,18 +35,18 @@ const myAuthProvider = {
 export const authProvider = addRefreshAuthToAuthProvider(myAuthProvider, refreshAuth);
 ```
 
-Then, pass the decorated provider to the `<Admin>` component
+Then, pass the decorated provider to the `<CoreAdmin>` component
 
 ```jsx
 // in src/App.js
-import { Admin } from 'react-admin';
+import { CoreAdmin } from 'ra-core';
 import { dataProvider } from './dataProvider';
 import { authProvider } from './authProvider';
 
 export const App = () => (
-    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+    <CoreAdmin dataProvider={dataProvider} authProvider={authProvider}>
         {/* ... */}
-    </Admin>
+    </CoreAdmin>
 )
 ```
 
@@ -61,7 +58,7 @@ The first argument must be a valid `authProvider` object - for instance, [any th
 
 ```jsx
 // in src/authProvider.js
-import { addRefreshAuthToAuthProvider } from 'react-admin';
+import { addRefreshAuthToAuthProvider } from 'ra-core';
 
 const myAuthProvider = {
     // ...Usual AuthProvider methods

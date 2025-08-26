@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "Writing An Auth Provider"
 ---
-
-# Writing An Auth Provider
 
 React-admin can use any authentication backend, but you have to write an adapter for it. This adapter is called an `authProvider`. The `authProvider` is a simple object with methods that react-admin calls to handle authentication and authorization.
 
@@ -29,7 +26,7 @@ const authProvider = {
 **Tip**: If you're a TypeScript user, you can check that your `authProvider` is correct at compile-time using the `AuthProvider` type.
 
 ```tsx
-import type { AuthProvider } from 'react-admin';
+import type { AuthProvider } from 'ra-core';
 
 const authProvider: AuthProvider = {
     // ...
@@ -271,7 +268,7 @@ const authProvider = {
 
 ### `logout`
 
-If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data stored in [the react-admin Store](./Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire.
+If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data stored in [the react-admin Store](../guides/Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire.
 
 <video controls autoplay playsinline muted loop>
   <source src="../img/logout.mp4" type="video/mp4"/>
@@ -329,7 +326,7 @@ React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri
 **Tip**: You can use the `id` field to identify the current user in your code, by calling the `useGetIdentity` hook:
 
 ```jsx
-import { useGetIdentity, useGetOne } from 'react-admin';
+import { useGetIdentity, useGetOne } from 'ra-core';
 
 const PostDetail = ({ id }) => {
     const { data: post, isPending: postLoading } = useGetOne('posts', { id });
@@ -354,7 +351,7 @@ So `handleCallback` lets you process query parameters passed by the third-party 
 Here's an example using Auth0:
 
 ```tsx
-import { PreviousLocationStorageKey } from 'react-admin';
+import { PreviousLocationStorageKey } from 'ra-core';
 import { Auth0Client } from './Auth0Client';
 
 const authProvider = {

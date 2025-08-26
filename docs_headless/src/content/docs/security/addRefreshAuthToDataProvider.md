@@ -1,11 +1,8 @@
 ---
-layout: default
 title: "addRefreshAuthToDataProvider"
 ---
 
-# `addRefreshAuthToDataProvider`
-
-This helper function wraps an existing [`dataProvider`](./DataProviders.md) to support authentication token refreshing mechanisms.
+This helper function wraps an existing [`dataProvider`](../data-fetching/DataProviders.md) to support authentication token refreshing mechanisms.
 
 ## Usage
 
@@ -28,7 +25,7 @@ export const refreshAuth = () => {
 }
 
 // in src/dataProvider.js
-import { addRefreshAuthToDataProvider } from 'react-admin';
+import { addRefreshAuthToDataProvider } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { refreshAuth } from 'refreshAuth';
 
@@ -37,17 +34,17 @@ const baseDataProvider = simpleRestProvider('http://path.to.my.api/');
 export const dataProvider = addRefreshAuthToDataProvider(baseDataProvider, refreshAuth);
 ```
 
-Then, pass the decorated provider to the `<Admin>` component
+Then, pass the decorated provider to the `<CoreAdmin>` component
 
 ```jsx
 // in src/App.js
-import { Admin } from 'react-admin';
+import { CoreAdmin } from 'ra-core';
 import { dataProvider } from './dataProvider';
 
 export const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         {/* ... */}
-    </Admin>
+    </CoreAdmin>
 )
 ```
 
@@ -55,11 +52,11 @@ export const App = () => (
 
 ## `provider`
 
-The first argument must be a valid `dataProvider` object - for instance, [any third-party data provider](./DataProviderList.md). 
+The first argument must be a valid `dataProvider` object - for instance, [any third-party data provider](../data-fetching/DataProviderList.md). 
 
 ```jsx
 // in src/dataProvider.js
-import { addRefreshAuthToDataProvider } from 'react-admin';
+import { addRefreshAuthToDataProvider } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const baseDataProvider = simpleRestProvider('http://path.to.my.api/');

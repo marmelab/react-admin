@@ -1,13 +1,10 @@
 ---
-layout: default
 title: "Authorization"
 ---
 
-# Authorization
-
 <iframe src="https://www.youtube-nocookie.com/embed/2loA65et3JU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;"></iframe>
 
-Once a user is authenticated, your application may need to check if the user has the right to access a specific resource or perform a particular action. React-admin provides two ways to do so:
+Once a user is authenticated, your application may need to check if the user has the right to access a specific resource or perform a particular action. ra-core provides two ways to do so:
 
 1. **Access control** relies on `authProvider.canAccess({ resource, action })`, which returns whether the user can access the given resource and action.
 2. **Permissions** rely on `authProvider.getPermissions()`, which returns a list of permissions that your components can inspect.
@@ -22,7 +19,7 @@ With Access Control, the `authProvider`is responsible for checking if the user c
 - Attribute-Based Access Control (ABAC)
 - Access Control List (ACL).
 
-Use the `authProvider` to integrate react-admin with popular authorization solutions like Okta, Casbin, Cerbos, and more.
+Use the `authProvider` to integrate ra-core with popular authorization solutions like Okta, Casbin, Cerbos, and more.
 
 <video controls autoplay muted loop>
   <source src="../img/AccessControl.mp4" type="video/mp4"/>
@@ -69,7 +66,7 @@ const authProvider = {
 
 `canAccess` can be asynchronous, so if the `authProvider` needs to fetch the permissions from a server or refresh a token, it can return a promise.
 
-**Tip**: React-admin calls `dataProvider.canAccess()` before rendering all page components, so if the call is slow, user navigation may be delayed. If you can, fetch user permissions on login and store them locally to keep access control fast.
+**Tip**: ra-core calls `dataProvider.canAccess()` before rendering all page components, so if the call is slow, user navigation may be delayed. If you can, fetch user permissions on login and store them locally to keep access control fast.
 
 ### Access Control Strategies
 
@@ -145,11 +142,10 @@ const authProvider= {
 const { canAccess } = useCanAccess({ action: 'list', resource: 'companies' }); // true
 ```
 
-**Tip**: Building granular access control manually can be tedious. The [RBAC module](./AuthRBAC.md) provides built-in primitives for advanced access control with roles, groups, wildcard permissions, and explicit deny.
 
 ### Built-In Access Control
 
-The **page components** (`<List>`, `<Create>`, `<Edit>`, and `<Show>`) have built-in access control. Before rendering them, react-admin calls `authProvider.canAccess()` with the appropriate `action` and `resource` parameters.
+The **page components** (`<ListBase>`, `<CreateBase>`, `<EditBase>`, and `<ShowBase>`) have built-in access control. Before rendering them, ra-core calls `authProvider.canAccess()` with the appropriate `action` and `resource` parameters.
 
 ```tsx
 <Resource
@@ -165,7 +161,7 @@ The **page components** (`<List>`, `<Create>`, `<Edit>`, and `<Show>`) have buil
 />
 ```
 
-If the `authProvider` doesn't implement the `canAccess` method, react-admin assumes the user can access all pages.
+If the `authProvider` doesn't implement the `canAccess` method, ra-core assumes the user can access all pages.
 
 If the current user tries to access a page they don't have access to, they are redirected to an "Access Denied" page. You can customize this page by adding a custom route on the `/accessDenied` path.
 
@@ -173,33 +169,14 @@ If the current user tries to access a page they don't have access to, they are r
 
 If the `authProvider.canAccess()` method returns an error, the user is redirected to an "Access Control Error" page. You can customize this page by adding a custom route on the `/accessControlError` path.
 
-The **action buttons** (`<EditButton>`, `<CreateButton>`, `<DeleteButton>`, `<ShowButton>`, and `<ListButton>`) also have built-in access control. They are only displayed if the user can access the corresponding action on the resource.
-
-```tsx
-const MyToolbar = () => (
-    <Toolbar>
-        {/* only displayed if canAccess({ action: 'edit', resource: 'posts' }) returns true */}
-        <EditButton />
-        {/* only displayed if canAccess({ action: 'create', resource: 'posts' }) returns true */}
-        <CreateButton />
-        {/* only displayed if canAccess({ action: 'delete', resource: 'posts' }) returns true */}
-        <DeleteButton />
-        {/* only displayed if canAccess({ action: 'show', resource: 'posts' }) returns true */}
-        <ShowButton />
-        {/* only displayed if canAccess({ action: 'list', resource: 'posts' }) returns true */}
-        <ListButton />
-    </Toolbar>
-);
-```
-
-The **list components** (`<Datagrid>`), **show components** (`<SimpleShowLayout>`, `<TabbedShowLayout>`), and **edit components** (`<SimpleForm>`, `<Tabbedform>`) also support access control provided you use the version from the `@react-admin/ra-rbac` Enterprise package. Check the [RBAC documentation](./AuthRBAC.md#components) for more information.
 
 ### `useCanAccess`
 
 If you need to control access on mount in your own components, use [the `useCanAccess()` hook](./useCanAccess.md). Since `authProvider.canAccess()` is asynchronous, the hook returns an object with an `isPending` property set to `true` until the promise resolves. Make sure you don't use the result until `isPending` is `false`.
 
 ```tsx
-import { useCanAccess, DeleteButton } from 'react-admin';
+import { useCanAccess } from 'ra-core';
+import { DeleteButton } from './DeleteButton';
 
 const DeleteCommentButton = ({ record }) => {
     const { isPending, error, canAccess } = useCanAccess({
@@ -214,7 +191,8 @@ const DeleteCommentButton = ({ record }) => {
 **Tip**: If you need to control access for several resources, use the `useCanAccessResources` hook, which performs several checks simultaneously.
 
 ```jsx
-import { useCanAccessResources, SimpleList } from 'react-admin';
+import { useCanAccessResources } from 'ra-core';
+import { SimpleList } from './SimpleList';
 
 const UserList = () => {
     const { isPending, canAccess } = useCanAccessResources({
@@ -239,11 +217,10 @@ const UserList = () => {
 As an alternative to the `useCanAccess()` hook, you can use [the `<CanAccess>` component](./CanAccess.md). It calls `dataProvider.canAccess()` on mount and renders its children only if the user can access the resource and action.
 
 ```tsx
-import Stack from '@mui/material/Stack';
-import { CanAccess } from 'react-admin';
+import { CanAccess } from 'ra-core';
 
 const CommentsToolbar = ({ record }) => (
-    <Stack direction="row" spacing={2}>
+    <div style={{ display: 'flex', gap: '16px' }}>
         <CanAccess action="approve" resource="comments" record={record}>
             <ApproveCommentButton record={record} />
         </CanAccess>
@@ -253,7 +230,7 @@ const CommentsToolbar = ({ record }) => (
         <CanAccess action="delete" resource="comments" record={record}>
             <DeleteCommentButton record={record} />
         </CanAccess>
-    </Stack>
+    </div>
 );
 ```
 
@@ -262,7 +239,8 @@ const CommentsToolbar = ({ record }) => (
 By default, there is no authentication or authorization control on custom routes. If you need to restrict access to a custom route, you can use the `<CanAccess>` component. Remember to check the authentication status before with `<Authenticated>`:
 
 ```tsx
-import { Authenticated, CanAccess, AccessDenied } from 'react-admin';
+import { Authenticated, CanAccess } from 'ra-core';
+import { AccessDenied } from './AccessDenied';
 
 export const LogsPage = () => (
     <Authenticated>
@@ -273,45 +251,42 @@ export const LogsPage = () => (
 );
 ```
 
-Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to your admin.
+Use the [`<CustomRoutes>`](../app-configuration/CustomRoutes.md) component to add custom routes to your admin.
 
 ```tsx
-import { Admin, CustomRoutes, Authenticated, CanAccess, AccessDenied, Layout } from 'react-admin';
+import { CoreAdmin, CustomRoutes, Authenticated, CanAccess } from 'ra-core';
+import { AccessDenied } from './AccessDenied';
 import { Route } from 'react-router-dom';
-
 import { LogsPage } from './LogsPage';
-import { MyMenu } from './MyMenu';
-
-const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
 
 const App = () => (
-    <Admin authProvider={authProvider} layout={MyLayout}>
+    <CoreAdmin authProvider={authProvider}>
         <CustomRoutes>
             <Route path="/logs" element={<LogsPage />} />
         </CustomRoutes>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
-Remember to also wrap your [custom menu items](./Menu.md) with `<CanAccess>` to hide the menu items if the user doesn't have access to the resource.
+Remember to also wrap your custom menu items with `<CanAccess>` to hide the menu items if the user doesn't have access to the resource.
 
 ```tsx
-import { Menu, CanAccess } from "react-admin";
-import SsidChartIcon from "@mui/icons-material/SsidChart";
+import { CanAccess } from "ra-core";
+import { Menu } from './Menu';
 
 export const MyMenu = () => (
     <Menu>
         <Menu.ResourceItems />
         <CanAccess resource="logs" action="read">
-            <Menu.Item primaryText="Logs" to="/logs" leftIcon={<SsidChartIcon />} />
+            <Menu.Item primaryText="Logs" to="/logs" />
         </CanAccess>
     </Menu>
 );
 ```
 
-**Note**: You don't need to use `<CanAccess>` on the core react-admin page components (`<List>`, `<Create>`, `<Edit>`, `<Show>`) because they already have built-in access control.
+**Note**: You don't need to use `<CanAccess>` on the core ra-core page components (`<ListBase>`, `<CreateBase>`, `<EditBase>`, `<ShowBase>`) because they already have built-in access control.
 
-**Note**: You don't need to use `<Authenticated>` on custom pages if your admin uses [`requireAuth`](./Admin.md#requireauth).
+**Note**: You don't need to use `<Authenticated>` on custom pages if your admin uses [`requireAuth`](../app-configuration/CoreAdmin.md#requireauth) in CoreAdmin configuration.
 
 ## Permissions
 
@@ -332,11 +307,10 @@ Permissions can be stored in various formats:
 - an object with fine-grained permissions (e.g. `{ postList: { read: true, write: false, delete: false } }`)
 - or even a function
 
-The permissions format is free because react-admin never actually uses the permissions itself. You can use them in your code to hide or display content, redirect the user to another page, or display warnings.
+The permissions format is free because ra-core never actually uses the permissions itself. You can use them in your code to hide or display content, redirect the user to another page, or display warnings.
 
 Following is an example where the `authProvider` stores the user's permissions in `localStorage` upon authentication, and returns these permissions when called with `getPermissions`:
 
-{% raw %}
 ```jsx
 // in src/authProvider.js
 import decodeJwt from 'jwt-decode';
@@ -382,40 +356,40 @@ const authProvider = {
     }
 };
 ```
-{% endraw %}
 
 ### `usePermissions`
 
-If you need to check the permissions in any of the default react-admin views or on a custom page, you can use the [`usePermissions()`](./usePermissions.md) hook. It calls the `authProvider.getPermissions()` method on mount and returns the permissions.
+If you need to check the permissions in any of the default ra-core views or on a custom page, you can use the [`usePermissions()`](./usePermissions.md) hook. It calls the `authProvider.getPermissions()` method on mount and returns the permissions.
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
-{% raw %}
 ```jsx
+import { usePermissions, CreateBase, Form } from 'ra-core';
+import { TextInput, EmailInput, SelectInput } from './inputs';
+
 export const UserCreate = () => {
     const { isPending, permissions } = usePermissions();
     return (
-        <Create>
-            <SimpleForm>
+        <CreateBase>
+            <Form>
                 <TextInput source="username" />
                 <EmailInput source="email" />
                 {permissions === 'admin' && (
                     <SelectInput source="role" choices={roles} />
                 )}
-            </SimpleForm>
-        </Create>
+            </Form>
+        </CreateBase>
     )
 }
 ```
-{% endraw %}
 
 ### Restricting Access to Resources or Views
 
-If you pass a function as a child of the `<Admin>` component, react-admin will call this function with the permissions returned by `authProvider.getPermissions()`. This lets you conditionally include resources or views based on the user's permissions.
+If you pass a function as a child of the `<CoreAdmin>` component, ra-core will call this function with the permissions returned by `authProvider.getPermissions()`. This lets you conditionally include resources or views based on the user's permissions.
 
 ```jsx
 export const App = () => (
-    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+    <CoreAdmin dataProvider={dataProvider} authProvider={authProvider}>
         {permissions => (
             <>
                 {/* Restrict access to the edit view to admin only */}
@@ -443,8 +417,10 @@ You might want to display some inputs conditionally, only to users with specific
 
 Here is an example of a comment edition form with access control on the comment moderation status:
 
-{% raw %}
 ```jsx
+import { useCanAccess, EditBase, Form } from 'ra-core';
+import { TextInput, SelectInput } from './inputs';
+
 export const CommentEdit = () => {
     const { isPending, error, canAccess } = useCanAccess({
         action: 'moderate',
@@ -452,23 +428,25 @@ export const CommentEdit = () => {
     });
     const statuses = ['pending', 'accepted', 'rejected']
     return (
-        <Edit>
-            <SimpleForm>
+        <EditBase>
+            <Form>
                 <TextInput source="author" />
                 <TextInput source="body" multiline />
                 {canAccess &&
                     <SelectInput source="status" choices={statuses} />
                 }
-            </SimpleForm>
-        </Edit>
+            </Form>
+        </EditBase>
     );
 }
 ```
-{% endraw %}
 
 **Note**: `authProvider.canAccess()` is asynchronous, so `canAccess` may be `undefined` on mount. The component will re-render when the `authProvider` resolves the promise. This may cause surprises when using `canAccess` in props that are not reactive, e.g. `defaultValue`:
 
 ```jsx
+import { useCanAccess, CreateBase, Form } from 'ra-core';
+import { TextInput, SelectInput } from './inputs';
+
 export const CommentCreate = () => {
     const { isPending, error, canAccess } = useCanAccess({
         action: 'moderate',
@@ -476,8 +454,8 @@ export const CommentCreate = () => {
     });
     const statuses = ['pending', 'accepted', 'rejected']
     return (
-        <Create>
-            <SimpleForm>
+        <CreateBase>
+            <Form>
                 <TextInput source="author" />
                 <TextInput source="body" multiline />
                 <SelectInput 
@@ -486,8 +464,8 @@ export const CommentCreate = () => {
                     // This will not work as expected
                     defaultValue={canAccess ? 'accepted' : 'pending'}
                 />
-            </SimpleForm>
-        </Create>
+            </Form>
+        </CreateBase>
     );
 }
 ```
@@ -495,6 +473,9 @@ export const CommentCreate = () => {
 The solution is to delay the rendering of the input until the `authProvider` call resolves:
 
 ```jsx
+import { useCanAccess, CreateBase, Form } from 'ra-core';
+import { TextInput, SelectInput } from './inputs';
+
 export const CommentCreate = () => {
     const { isPending, error, canAccess } = useCanAccess({
         action: 'moderate',
@@ -502,8 +483,8 @@ export const CommentCreate = () => {
     });
     const statuses = ['pending', 'accepted', 'rejected']
     return (
-        <Create>
-            <SimpleForm>
+        <CreateBase>
+            <Form>
                 <TextInput source="author" />
                 <TextInput source="body" multiline />
                 {!isPending && (
@@ -513,12 +494,9 @@ export const CommentCreate = () => {
                         defaultValue={canAccess ? 'accepted' : 'pending'}
                     />
                 )}
-            </SimpleForm>
-        </Create>
+            </Form>
+        </CreateBase>
     );
 }
 ```
 
-## Role-Based Access Control
-
-If you need more complex permissions with roles and groups, the principle of least privilege, record-level permissions, explicit deny, and more, check the next section for the [Role-Based Access Control](./AuthRBAC.md).

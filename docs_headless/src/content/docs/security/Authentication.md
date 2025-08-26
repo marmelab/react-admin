@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "Auth Provider Setup"
 ---
-
-# Auth Provider Setup
 
 <video controls autoplay playsinline muted loop>
   <source src="../img/login.mp4" type="video/mp4"/>
@@ -16,16 +13,16 @@ React-admin supports both authentication and authorization, allowing you to secu
 
 ## Enabling Authentication
 
-By default, react-admin apps do not require authentication. To restrict access to the admin, pass an `authProvider` to the `<Admin>` component.
+By default, react-admin apps do not require authentication. To restrict access to the admin, pass an `authProvider` to the `<CoreAdmin>` component.
 
 ```jsx
 // in src/App.js
 import authProvider from './authProvider';
 
 const App = () => (
-    <Admin authProvider={authProvider}>
+    <CoreAdmin authProvider={authProvider}>
         ...
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -60,12 +57,12 @@ const authProvider = {
 
 The `authProvider` handles authentication logic, but the `dataProvider` must include the user credentials in requests to the API.
 
-As explained in the [Data providers documentation](./DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` accept an `httpClient` as a second parameter. Here, you can customize request headers, cookies, etc.
+As explained in the [Data providers documentation](../data-fetching/DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` accept an `httpClient` as a second parameter. Here, you can customize request headers, cookies, etc.
 
 For instance, if the `authProvider` stores an authentication token in `localStorage`, you can tweak the `dataProvider` to pass this token as an `Authorization` header:
 
 ```jsx
-import { fetchUtils, Admin, Resource } from 'react-admin';
+import { fetchUtils, CoreAdmin, Resource } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const httpClient = (url, options = {}) => {
@@ -79,9 +76,9 @@ const httpClient = (url, options = {}) => {
 const dataProvider = simpleRestProvider('http://localhost:3000', httpClient);
 
 const App = () => (
-    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+    <CoreAdmin dataProvider={dataProvider} authProvider={authProvider}>
         ...
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -94,7 +91,7 @@ If you have a custom REST client, don't forget to add credentials yourself.
 When you add custom pages, they are accessible to anonymous users by default. To make them accessible only to authenticated users, use the [`useAuthenticated` hook](./useAuthenticated.md) in the custom page:
 
 ```jsx
-import { Admin, CustomRoutes, useAuthenticated } from 'react-admin';
+import { CoreAdmin, CustomRoutes, useAuthenticated } from 'ra-core';
 import { Route } from 'react-router-dom';
 
 const RestrictedPage = () => {
@@ -114,19 +111,19 @@ const AnonymousPage = () => (
 );
 
 const App = () => (
-    <Admin authProvider={authProvider}>
+    <CoreAdmin authProvider={authProvider}>
         <CustomRoutes>
             <Route path="/foo" element={<RestrictedPage />} />
             <Route path="/anonymous" element={<AnonymousPage />} />
         </CustomRoutes>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 Alternatively, use the [`<Authenticated>` component](./Authenticated.md) to display its children only if the user is authenticated:
 
 ```jsx
-import { Admin, CustomRoutes, Authenticated } from 'react-admin';
+import { CoreAdmin, CustomRoutes, Authenticated } from 'ra-core';
 import { Route } from 'react-router-dom';
 
 const RestrictedPage = () => (
@@ -144,24 +141,24 @@ const AnonymousPage = () => (
 );
 
 const App = () => (
-    <Admin authProvider={authProvider}>
+    <CoreAdmin authProvider={authProvider}>
         <CustomRoutes>
             <Route path="/restricted" element={<RestrictedPage/>} />
             <Route path="/anonymous" element={<AnonymousPage />} />
         </CustomRoutes>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 ## Disabling Anonymous Access
 
-Securing custom pages one by one can be tedious. If your app will never accept anonymous access, you can force the app to wait for `authProvider.checkAuth()` to resolve before rendering the page layout by setting the `<Admin requireAuth>` prop.
+Securing custom pages one by one can be tedious. If your app will never accept anonymous access, you can force the app to wait for `authProvider.checkAuth()` to resolve before rendering the page layout by setting the `<CoreAdmin requireAuth>` prop.
 
 For example, the following app will require authentication to access all pages, including the `/settings` and `/profile` pages:
 
 ```jsx
 const App = () => (
-    <Admin
+    <CoreAdmin
         dataProvider={dataProvider}
         authProvider={authProvider}
         requireAuth
@@ -172,7 +169,7 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
         </CustomRoutes>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -182,7 +179,7 @@ const App = () => (
 
 ```jsx
 const App = () => (
-    <Admin
+    <CoreAdmin
         dataProvider={dataProvider}
         authProvider={authProvider}
         requireAuth
@@ -196,7 +193,7 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
         </CustomRoutes>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -208,116 +205,38 @@ For example, to let anonymous users access the post list view:
 
 ```jsx
 const PostList = () => (
-    <List disableAuthentication>
+    <ListBase disableAuthentication>
         // ...
-    </List>
+    </ListBase>
 );
 
 const App = () => (
-    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+    <CoreAdmin dataProvider={dataProvider} authProvider={authProvider}>
         <Resource name="posts" list={PostList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 `disableAuthentication` is available on the following components and hooks:
 
-- `<Create>`, `<CreateBase>`, `<CreateController>` and `useCreateController`
-- `<Edit>`, `<EditBase>`, `<EditController>` and `useEditController`
-- `<List>`, `<ListBase>`, `<ListController>` and `useListController`
-- `<Show>`, `<ShowBase>`, `<ShowController>` and `useShowController`
+- `<CreateBase>`, `<CreateController>` and `useCreateController`
+- `<EditBase>`, `<EditController>` and `useEditController`
+- `<ListBase>`, `<ListController>` and `useListController`
+- `<ShowBase>`, `<ShowController>` and `useShowController`
 
-## Customizing The Login Component
+## Adding A Login Page
 
-Using an `authProvider` is enough to secure your app if authentication relies on a username and password. But for cases like using an email instead of a username, Single-Sign-On (SSO), or two-factor authentication, you can use a custom login page by setting the [`<Admin loginPage>`](./Admin.md#loginpage) prop.
+You can add a login page by setting the [`<CoreAdmin loginPage>`](./CoreAdmin.md#loginpage) prop.
 
-For example, to use an email field instead of a username field, use the `LoginWithEmail` component:
-
-```tsx
-import { Admin, LoginWithEmail } from 'react-admin';
-import authProvider from './authProvider';
-
-const App = () => (
-    <Admin loginPage={LoginWithEmail} authProvider={authProvider}>
-        ...
-    </Admin>
-);
-```
-
-![Login with email](../img/LoginWithEmail.jpg)
-
-The default login page component is the `Login` component, which delegates the rendering of the login form to its child, usually a `LoginForm` component. This means you can create a custom login page by adding your own content to the `Login` component.
-
-For instance, to add a "forgot password" link to the login page:
-
-```jsx
-import { Box, Link } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import { Login, LoginForm } from 'react-admin';
-
-const MyLogin = () => (
-    <Login>
-        <LoginForm />
-        <Box textAlign="center" mb={1}>
-            <Link component={RouterLink} to="/forgot-password">
-                Forgot password?
-            </Link>
-        </Box>
-    </Login>
-);
-```
-
-![Login with content](../img/LoginWithContent.jpg)
-
-You can also customize the login form fields, by setting the `LoginForm` children:
-
-```jsx
-import { Link as RouterLink } from 'react-router-dom';
-import { Login, LoginForm, TextInput, PasswordInput, required } from 'react-admin';
-
-const MyLogin = () => (
-    <Login>
-        <LoginForm>
-            <TextInput
-                autoFocus
-                source="email"
-                label="Email"
-                autoComplete="email"
-                type="email"
-                validate={required()}
-            />
-            <PasswordInput
-                source="password"
-                label="Password"
-                autoComplete="current-password"
-                validate={required()}
-            />
-        </LoginForm>
-    </Login>
-);
-```
-
-By default, the login page displays a gradient background. To change it, use the default Login component and pass an image URL as the `backgroundImage` prop.
-
-```jsx
-// in src/MyLoginPage.js
-import { Login } from 'react-admin';
-
-const MyLoginPage = () => (
-    <Login backgroundImage="https://acme.com/img/background.png" />
-);
-```
-
-![Custom login page](../img/LoginCustomBackground.jpg)
-
-You can also build your login page from scratch, leveraging the [`useLogin` hook](./useLogin.md) to handle the login form submission.
+For headless applications, you should build custom login pages using the [`useLogin` hook](./useLogin.md) to handle the login form submission. Here's an example:
 
 ```jsx
 // in src/MyLoginPage.js
 import { useState } from 'react';
-import { useLogin, useNotify, Notification } from 'react-admin';
+import { useLogin, useNotify } from 'ra-core';
+import { Notification } from './Notification';
 
-const MyLoginPage = ({ theme }) => {
+const MyLoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const login = useLogin();
@@ -332,18 +251,36 @@ const MyLoginPage = ({ theme }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                name="email"
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-            />
-            <input
-                name="password"
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-            />
+            <h1>Login</h1>
+            <div>
+                <label htmlFor="email">Email:</label>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    autoComplete="email"
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="password">Password:</label>
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    required
+                />
+            </div>
+            <button type="submit">Sign in</button>
+            <div>
+                <a href="/forgot-password">Forgot password?</a>
+            </div>
+            <Notification />
         </form>
     );
 };
@@ -351,18 +288,31 @@ const MyLoginPage = ({ theme }) => {
 export default MyLoginPage;
 ```
 
-## Logging Out The User
-
-Users can log out by clicking on the user menu in the AppBar. To allow log out from a custom button or under specific conditions, use the [`useLogout`](./useLogout.md) hook.
+Then, pass this custom login page to your `<CoreAdmin>` component:
 
 ```jsx
-import { useLogout } from 'react-admin';
-import Button from '@mui/material/Button';
+import { CoreAdmin } from 'ra-core';
+import MyLoginPage from './MyLoginPage';
+import authProvider from './authProvider';
+
+const App = () => (
+    <CoreAdmin loginPage={MyLoginPage} authProvider={authProvider}>
+        ...
+    </CoreAdmin>
+);
+```
+
+## Logging Out The User
+
+For headless applications, you can create custom logout functionality using the [`useLogout`](./useLogout.md) hook:
+
+```jsx
+import { useLogout } from 'ra-core';
 
 const MyLogoutButton = () => {
     const logout = useLogout();
     const handleClick = () => logout();
-    return <Button onClick={handleClick}>Logout</Button>;
+    return <button onClick={handleClick}>Logout</button>;
 };
 ```
 
@@ -451,7 +401,7 @@ export const refreshAuth = () => {
 }
 
 // in src/authProvider.js
-import { addRefreshAuthToAuthProvider } from 'react-admin';
+import { addRefreshAuthToAuthProvider } from 'ra-core';
 import { refreshAuth } from './refreshAuth';
 const myAuthProvider = {
     // ...AuthProvider methods
@@ -459,7 +409,7 @@ const myAuthProvider = {
 export const authProvider = addRefreshAuthToAuthProvider(myAuthProvider, refreshAuth);
 
 // in src/dataProvider.js
-import { addRefreshAuthToDataProvider } from 'react-admin';
+import { addRefreshAuthToDataProvider } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { refreshAuth } from './refreshAuth';
 const baseDataProvider = simpleRestProvider('http://path.to.my.api/');

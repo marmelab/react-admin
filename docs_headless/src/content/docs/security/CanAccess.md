@@ -1,10 +1,7 @@
 ---
-layout: default
-title: "CanAccess"
+title: "<CanAccess>"
 storybook_path: ra-core-auth-canaccess--basic
 ---
-
-# `<CanAccess>`
 
 This component calls the `authProvider.canAccess()` method on mount for a provided resource and action (and optionally a record). It will only display its children when users are authorized. By default, it will redirect users to `/authentication-error` if an error occurs.
 
@@ -13,18 +10,20 @@ This component calls the `authProvider.canAccess()` method on mount for a provid
 The following form only displays the `role` field if the user has the permission to perform the `edit` action on the `users.role` resource:
 
 ```jsx
-import { CanAccess, Edit, SelectInput, SimpleForm, TextInput } from 'react-admin';
+import { CanAccess, EditBase, Form } from 'ra-core';
+import { TextInput } from './TextInput';
+import { SelectInput } from './SelectInput';
 
 const UserEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <TextInput source="lastName">
-            <TextInput source="firstName">
+    <EditBase>
+        <Form>
+            <TextInput source="lastName" />
+            <TextInput source="firstName" />
             <CanAccess action="edit" resource="users.role">
-                <SelectInput source="role" choices={['admin', 'user']}>
+                <SelectInput source="role" choices={['admin', 'user']} />
             </CanAccess>
-        </SimpleForm>
-    </Edit>
+        </Form>
+    </EditBase>
 );
 ```
 
@@ -48,7 +47,14 @@ const UserEdit = () => (
 By default, there is no authentication or authorization control on custom routes. If you need to restrict access to a custom route, wrap the content with `<CanAccess>`. Remember to check the authentication status before with `<Authenticated>`:
 
 ```tsx
-import { Authenticated, CanAccess, AccessDenied } from 'react-admin';
+import { Authenticated, CanAccess } from 'ra-core';
+
+const AccessDenied = () => (
+    <div>
+        <h2>Access Denied</h2>
+        <p>You don't have permission to access this resource.</p>
+    </div>
+);
 
 export const LogsPage = () => (
     <Authenticated>
@@ -59,45 +65,45 @@ export const LogsPage = () => (
 );
 ```
 
-Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to your admin.
+Use the [`<CustomRoutes>`](../app-configuration/CustomRoutes.md) component to add custom routes to your admin.
 
 ```tsx
-import { Admin, CustomRoutes, Authenticated, CanAccess, AccessDenied, Layout } from 'react-admin';
+import { CoreAdmin, CustomRoutes } from 'ra-core';
 import { Route } from 'react-router-dom';
 
 import { LogsPage } from './LogsPage';
-import { MyMenu } from './MyMenu';
-
-const MyLayout = (props) => <Layout {...props} menu={MyMenu} />;
 
 const App = () => (
-    <Admin authProvider={authProvider} layout={MyLayout}>
+    <CoreAdmin authProvider={authProvider}>
         <CustomRoutes>
             <Route path="/logs" element={<LogsPage />} />
         </CustomRoutes>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
-Remember to also wrap your [custom menu items](./Menu.md) with `<CanAccess>` to hide the menu items if the user doesn't have access to the resource.
+Remember to also wrap your custom menu items with `<CanAccess>` to hide the menu items if the user doesn't have access to the resource.
 
 ```tsx
-import { Menu, CanAccess } from "react-admin";
-import SsidChartIcon from "@mui/icons-material/SsidChart";
+import { CanAccess } from "ra-core";
 
 export const MyMenu = () => (
-    <Menu>
-        <Menu.ResourceItems />
-        <CanAccess resource="logs" action="read">
-            <Menu.Item primaryText="Logs" to="/logs" leftIcon={<SsidChartIcon />} />
-        </CanAccess>
-    </Menu>
+    <nav>
+        <ul>
+            {/* Other menu items */}
+            <CanAccess resource="logs" action="read">
+                <li>
+                    <a href="/logs">Logs</a>
+                </li>
+            </CanAccess>
+        </ul>
+    </nav>
 );
 ```
 
-**Note**: You don't need to use `<CanAccess>` on the core react-admin page components (`<List>`, `<Create>`, `<Edit>`, `<Show>`) because they already have built-in access control.
+**Note**: You don't need to use `<CanAccess>` on the core react-admin page components (`<ListBase>`, `<CreateBase>`, `<EditBase>`, `<ShowBase>`) because they already have built-in access control.
 
-**Note**: You don't need to use `<Authenticated>` on custom pages if your admin uses [`requireAuth`](./Admin.md#requireauth).
+**Note**: You don't need to use `<Authenticated>` on custom pages if your admin uses [`requireAuth`](../app-configuration/CoreAdmin.md#requireauth).
 
 ## Access Denied Message
 
@@ -106,7 +112,14 @@ By default, `<CanAccess>` renders nothing when the user doesn't have access to t
 On custom pages, it's preferable to show an error message instead. Set the `accessDenied` prop to render a custom component in case of access denial:
 
 ```tsx
-import { Authenticated, CanAccess, AccessDenied } from 'react-admin';
+import { Authenticated, CanAccess } from 'ra-core';
+
+const AccessDenied = () => (
+    <div>
+        <h2>Access Denied</h2>
+        <p>You don't have permission to access this resource.</p>
+    </div>
+);
 
 export const LogsPage = () => (
     <Authenticated>
@@ -116,5 +129,3 @@ export const LogsPage = () => (
     </Authenticated>
 );
 ```
-
-![Access Denied](../img/accessDenied.png)

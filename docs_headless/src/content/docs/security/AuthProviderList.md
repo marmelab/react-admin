@@ -3,8 +3,6 @@ layout: default
 title: "Supported Auth Provider Backends"
 ---
 
-# Supported Auth Provider Backends
-
 It's very common that your auth logic is so specific that you'll need to write your own `authProvider`. However, the community has built a few open-source Auth Providers that may fit your need:
 
 <div class="providers-list" markdown="1">
