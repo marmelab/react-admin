@@ -70,6 +70,7 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         reference,
         sort = { field: 'id', order: 'DESC' },
         filter = {},
+        offline,
     } = props;
 
     const controllerProps = useReferenceInputController({
@@ -78,10 +79,17 @@ export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
         filter,
     });
 
+    const { isPaused, isPending } = controllerProps;
+    // isPending is true: there's no cached data and no query attempt was finished yet
+    // isPaused is true: the query was paused (e.g. due to a network issue)
+    // Both true: we're offline and have no data to show
+    const shouldRenderOffline =
+        isPaused && isPending && offline !== undefined && offline !== false;
+
     return (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
-                {children}
+                {shouldRenderOffline ? offline : children}
             </ChoicesContextProvider>
         </ResourceContextProvider>
     );
@@ -91,4 +99,5 @@ export interface ReferenceInputBaseProps
     extends InputProps,
         UseReferenceInputControllerParams {
     children?: ReactNode;
+    offline?: ReactNode;
 }
