@@ -105,6 +105,7 @@ See the [`children`](#children) section for more details.
 | `enableGet Choices` | Optional | `({q: string}) => boolean`                  | `() => true`                       | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                           |
 | `filter`           | Optional | `Object`                                    | `{}`                               | Permanent filters to use for getting the suggestion list                                                            |
 | `label`            | Optional | `string`                                    | -                                  | Useful only when `ReferenceArrayInput` is in a Filter array, the label is used as the Filter label.                 |
+| `offline`          | Optional | `ReactNode`                                 | -                                  | What to render when there is no network connectivity when loading the record |
 | `page`             | Optional | `number`                                    | 1                                  | The current page number                                                                                             |
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options     |
@@ -215,6 +216,26 @@ const filters = [
         <AutocompleteArrayInput label="Post tags" />
     </ReferenceArrayInput>,
 ];
+```
+
+## `offline`
+
+`<ReferenceArrayInput>` can display a custom message when the referenced record is missing because there is no network connectivity, thanks to the `offline` prop.
+
+```jsx
+<ReferenceArrayInput source="tags_ids" reference="tags" offline="No network, could not fetch data" />
+```
+
+`<ReferenceArrayInput>` renders the `offline` element when:
+
+- the referenced record is missing (no record in the `tags` table with the right `tags_ids`), and
+- there is no network connectivity
+
+You can pass either a React element or a string to the `offline` prop:
+
+```jsx
+<ReferenceArrayInput source="tags_ids" reference="tags" offline={<span>No network, could not fetch data</span>} />
+<ReferenceArrayInput source="tags_ids" reference="tags" offline="No network, could not fetch data" />
 ```
 
 ## `parse`
