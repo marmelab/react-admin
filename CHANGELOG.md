@@ -2,7 +2,6 @@
 
 ## 5.10.2
 
-* Add ability to use a `ReactNode` as create label in `<AutocompleteInput>` and `<SelectInput>` ([#10883](https://github.com/marmelab/react-admin/pull/10883)) ([Madeorsk](https://github.com/Madeorsk))
 * Add warning when using `queryOptions` to add a `meta` in `<Edit>` and `<EditBase>` ([#10882](https://github.com/marmelab/react-admin/pull/10882)) ([Madeorsk](https://github.com/Madeorsk))
 * Fix error when authProvider check methods are not async ([#10890](https://github.com/marmelab/react-admin/pull/10890)) ([fzaninotto](https://github.com/fzaninotto))
 * Fix `ChipField` consider zero to be empty ([#10877](https://github.com/marmelab/react-admin/pull/10877)) ([djhi](https://github.com/djhi))
