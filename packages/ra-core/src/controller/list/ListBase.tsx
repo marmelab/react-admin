@@ -46,8 +46,10 @@ import { useIsAuthPending } from '../../auth';
  */
 export const ListBase = <RecordType extends RaRecord = any>({
     children,
+    disableAuthentication,
     render,
-    loading = null,
+    loading,
+    offline,
     ...props
 }: ListBaseProps<RecordType>) => {
     const controllerProps = useListController<RecordType>(props);
@@ -56,20 +58,38 @@ export const ListBase = <RecordType extends RaRecord = any>({
         action: 'list',
     });
 
-    if (isAuthPending && !props.disableAuthentication) {
-        return loading;
-    }
     if (!render && !children) {
         throw new Error(
             "<ListBase> requires either a 'render' prop or 'children' prop"
         );
     }
 
+    const showLoading =
+        isAuthPending &&
+        !disableAuthentication &&
+        loading !== undefined &&
+        loading !== false;
+
+    const { isPaused, isPending, isPlaceholderData } = controllerProps;
+    const showOffline =
+        isPaused &&
+        // If isPending and isPaused are true, we are offline and couldn't even load the initial data
+        // If isPaused and isPlaceholderData are true, we are offline and couldn't even load data with different parameters on the same useQuery observer
+        (isPending || isPlaceholderData) &&
+        offline !== undefined &&
+        offline !== false;
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <ListContextProvider value={controllerProps}>
-                {render ? render(controllerProps) : children}
+                {showLoading
+                    ? loading
+                    : showOffline
+                      ? offline
+                      : render
+                        ? render(controllerProps)
+                        : children}
             </ListContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -80,4 +100,5 @@ export interface ListBaseProps<RecordType extends RaRecord = any>
     children?: ReactNode;
     render?: (props: ListControllerResult<RecordType, Error>) => ReactNode;
     loading?: ReactNode;
+    offline?: ReactNode;
 }

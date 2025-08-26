@@ -100,6 +100,8 @@ export const List = <RecordType extends RaRecord = any>(
             resource={resource}
             sort={sort}
             storeKey={storeKey}
+            // Disable offline support from ShowBase as it is handled by ShowView to keep the ShowView container
+            offline={false}
         >
             <ListView<RecordType> {...rest} render={render} />
         </ListBase>

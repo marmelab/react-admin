@@ -16,11 +16,13 @@ import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
 import { ListProps } from './List';
+import { Offline } from '../Offline';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
 const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
+const defaultOffline = <Offline />;
 
 export const ListView = <RecordType extends RaRecord = any>(
     props: ListViewProps
@@ -37,6 +39,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         title,
         empty = defaultEmpty,
         render,
+        offline = defaultOffline,
         ...rest
     } = props;
     const listContext = useListContext<RecordType>();
@@ -44,7 +47,9 @@ export const ListView = <RecordType extends RaRecord = any>(
         defaultTitle,
         data,
         error,
+        isPaused,
         isPending,
+        isPlaceholderData,
         filterValues,
         resource,
         total,
@@ -52,21 +57,38 @@ export const ListView = <RecordType extends RaRecord = any>(
         hasPreviousPage,
     } = listContext;
 
-    if ((!children && !render) || (!data && isPending && emptyWhileLoading)) {
+    const showOffline =
+        isPaused &&
+        (isPending || isPlaceholderData) &&
+        offline !== false &&
+        offline !== undefined;
+
+    if (
+        (!children && !render) ||
+        (!data && isPending && !isPaused && emptyWhileLoading)
+    ) {
         return null;
     }
 
     const renderList = () => (
-        <div className={ListClasses.main}>
-            {(filters || actions) && (
+        <div
+            className={clsx(ListClasses.main, {
+                [ListClasses.noActions]: !(filters || actions),
+            })}
+        >
+            {filters || actions ? (
                 <ListToolbar
                     className={ListClasses.actions}
                     filters={filters}
                     actions={actions}
                 />
-            )}
+            ) : null}
             <Content className={ListClasses.content}>
-                {render ? render(listContext) : children}
+                {showOffline
+                    ? offline
+                    : render
+                      ? render(listContext)
+                      : children}
             </Content>
             {!error && pagination !== false && pagination}
         </div>
@@ -302,6 +324,24 @@ export interface ListViewProps<RecordType extends RaRecord = any> {
     filters?: ReactElement | ReactElement[];
 
     /**
+     * The offline component to display. defaults to <Offline />
+     *
+     * @see https://marmelab.com/react-admin/List.html#offline
+     * @example
+     * import { List } from 'react-admin';
+     * import { Alert } from '@mui/material';
+     *
+     * const offline = <Alert severity="warning">No internet connection. Could not load data.</Alert>;
+     *
+     * export const PostList = () => (
+     *     <List offline={offline}>
+     *         ...
+     *     </List>
+     * );
+     */
+    offline?: ReactNode | false;
+
+    /**
      * The pagination component to display. defaults to <Pagination />
      *
      * @see https://marmelab.com/react-admin/List.html#pagination
@@ -360,6 +400,7 @@ export const ListClasses = {
     main: `${PREFIX}-main`,
     content: `${PREFIX}-content`,
     actions: `${PREFIX}-actions`,
+    noActions: `${PREFIX}-noActions`,
     noResults: `${PREFIX}-noResults`,
 };
 
@@ -383,6 +424,9 @@ const Root = styled('div', {
         overflow: 'inherit',
     },
 
+    [`& .${ListClasses.noActions}`]: {
+        marginTop: '1em',
+    },
     [`& .${ListClasses.actions}`]: {},
 
     [`& .${ListClasses.noResults}`]: {

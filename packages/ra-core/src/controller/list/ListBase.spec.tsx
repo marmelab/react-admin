@@ -4,6 +4,7 @@ import {
     AccessControl,
     DefaultTitle,
     NoAuthProvider,
+    Offline,
     WithAuthProviderNoAccessControl,
     WithRenderProps,
 } from './ListBase.stories';
@@ -115,5 +116,25 @@ describe('ListBase', () => {
         render(<WithRenderProps dataProvider={dataProvider} />);
         expect(dataProvider.getList).toHaveBeenCalled();
         await screen.findByText('Hello');
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        const { rerender } = render(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, cannot load data');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('War and Peace');
+        expect(
+            screen.queryByText('You are offline, cannot load data')
+        ).toBeNull();
+        rerender(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, the data may be outdated');
+        fireEvent.click(screen.getByText('next'));
+        await screen.findByText('You are offline, cannot load data');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('And Then There Were None');
+        rerender(<Offline isOnline={false} />);
+        fireEvent.click(screen.getByText('previous'));
+        await screen.findByText('War and Peace');
+        await screen.findByText('You are offline, the data may be outdated');
     });
 });
