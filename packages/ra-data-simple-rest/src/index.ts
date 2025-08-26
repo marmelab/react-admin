@@ -45,11 +45,19 @@ export default (
         const rangeStart = (page - 1) * perPage;
         const rangeEnd = page * perPage - 1;
 
-        const query = {
+        const query: {
+            sort: string;
+            range: string;
+            filter: string;
+            embed?: string;
+        } = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([rangeStart, rangeEnd]),
             filter: JSON.stringify(params.filter),
         };
+        if (params.meta && params.meta.embed) {
+            query.embed = JSON.stringify(params.meta.embed);
+        }
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const options =
             countHeader === 'Content-Range'
