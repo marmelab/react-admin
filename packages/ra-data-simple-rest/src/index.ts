@@ -90,17 +90,26 @@ export default (
         });
     },
 
-    getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${encodeURIComponent(params.id)}`, {
-            signal: params?.signal,
-        }).then(({ json }) => ({
-            data: json,
-        })),
+    getOne: async (resource, params) => {
+        let query: string = '';
+        if (params.meta && params.meta.embed) {
+            query =
+                '?' + stringify({ embed: JSON.stringify(params.meta.embed) });
+        }
+        const { json } = await httpClient(
+            `${apiUrl}/${resource}/${encodeURIComponent(params.id)}${query}`,
+            { signal: params?.signal }
+        );
+        return { data: json };
+    },
 
     getMany: (resource, params) => {
-        const query = {
+        const query: { filter: string; embed?: string } = {
             filter: JSON.stringify({ id: params.ids }),
         };
+        if (params.meta && params.meta.embed) {
+            query.embed = JSON.stringify(params.meta.embed);
+        }
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url, { signal: params?.signal }).then(({ json }) => ({
             data: json,
@@ -114,7 +123,12 @@ export default (
         const rangeStart = (page - 1) * perPage;
         const rangeEnd = page * perPage - 1;
 
-        const query = {
+        const query: {
+            sort: string;
+            range: string;
+            filter: string;
+            embed?: string;
+        } = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify({
@@ -122,6 +136,9 @@ export default (
                 [params.target]: params.id,
             }),
         };
+        if (params.meta && params.meta.embed) {
+            query.embed = JSON.stringify(params.meta.embed);
+        }
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const options =
             countHeader === 'Content-Range'
