@@ -4,7 +4,7 @@ on:
         branches:
             - master
             - next # TODO remove
-    pull_request: # TODO remove
+            - headless-doc-content # TODO remove
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
