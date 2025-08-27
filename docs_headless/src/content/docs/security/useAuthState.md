@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useAuthState"
 ---
-
-# `useAuthState`
 
 If you want to check if the user is authenticated and decide what to render based on the result, use the `useAuthState` hook. It calls the `authProvider.checkAuth()` method on mount and returns a state object.
 
@@ -19,7 +16,8 @@ Contrary to [`useAuthenticated()`](./useAuthenticated.md), `useAuthState` does n
 Use `useAuthState()` to render different content depending on the authenticated state.
 
 ```jsx
-import { useAuthState, Loading } from 'react-admin';
+import { useAuthState } from 'ra-core';
+import { Loading } from './Loading';
 
 const MyPage = () => {
     const { isPending, authenticated } = useAuthState();

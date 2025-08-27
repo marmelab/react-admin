@@ -1,33 +1,28 @@
 ---
-layout: default
 title: "usePermissions"
 storybook_path: ra-core-auth-usepermissions--no-auth-provider
 ---
 
-# `usePermissions`
-
-You might want to check user permissions inside a [custom page](./CustomRoutes.md). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available.
+You might want to check user permissions inside a [custom page](../app-configuration/CustomRoutes.md). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available.
 
 ## Usage
 
 ```jsx
 // in src/MyPage.js
 import * as React from "react";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { usePermissions } from 'react-admin';
+import { usePermissions } from 'ra-core';
 
 const MyPage = () => {
     const { isPending, permissions } = usePermissions();
     return isPending
         ? (<div>Waiting for permissions...</div>)
         : (
-            <Card>
-                <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+            <div className="card">
+                <div className="card-content">Lorem ipsum sic dolor amet...</div>
                 {permissions === 'admin' &&
-                    <CardContent>Sensitive data</CardContent>
+                    <div className="card-content">Sensitive data</div>
                 }
-            </Card>
+            </div>
         );
 }
 
@@ -52,12 +47,12 @@ const MyPage = () => {
     const { isPending, permissions } = usePermissions();
     if (isPending) return null;
     return (
-        <Card>
-            <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+        <div className="card">
+            <div className="card-content">Lorem ipsum sic dolor amet...</div>
             {permissions === 'admin' &&
-                <CardContent>Sensitive data</CardContent>
+                <div className="card-content">Sensitive data</div>
             }
-        </Card>
+        </div>
     );
 }
 ```
@@ -66,7 +61,6 @@ const MyPage = () => {
 
 Permissions are loaded when the app loads and then cached. If your application requires permissions to be refreshed, for example after a change modifying user permissions, you can use `refetch` function to trigger reload.
 
-{% raw %}
 ```jsx
 const GrantAdminPermissionsButton = () => {
     const record = useRecordContext();
@@ -82,38 +76,9 @@ const GrantAdminPermissionsButton = () => {
     }
 
     return (
-        <Button onClick={handleClick}>
+        <button onClick={handleClick}>
             Make user an admin
-        </Button>
+        </button>
     )
 }
 ```
-{% endraw %}
-
-## RBAC
-
-When using [the ra-rbac module](https://react-admin-ee.marmelab.com/documentation/ra-rbac)<img class="icon" src="../img/premium.svg" alt="React Admin Enterprise Edition icon" />, the `usePermissions` hook returns an array of permissions.
-
-```jsx
-import { usePermissions } from "react-admin";
-
-const authProvider = {
-    // ...
-    getPermissions: () => Promise.resolve([
-        { action: "read", resource: "*" },
-        { action: ["read", "write"], resource: "users", record: { "id": "123" } },
-    ])
-};
-
-const { isPending, permissions } = usePermissions();
-// {
-//      isPending: false,
-//      permissions: [
-//          { action: "read", resource: "*" },
-//          { action: ["read", "write"], resource: "users", record: { "id": "123" } },
-//      ],
-// };
-```
-
-`usePermissions` is used internally by most `ra-rbac` components, but you will probably not need to use it directly as react-admin provides [high-level RBAC components](./AuthRBAC.md#components).
-

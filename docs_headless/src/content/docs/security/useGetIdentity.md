@@ -1,12 +1,9 @@
 ---
-layout: default
 title: "useGetIdentity"
 storybook_path: ra-core-auth-usegetidentity--basic
 ---
 
-# `useGetIdentity`
-
-React-admin calls `authProvider.getIdentity()` to retrieve and display the current logged-in username and avatar. The logic for calling this method is packaged into a custom hook, `useGetIdentity`, which you can use in your own code.
+Ra-core calls `authProvider.getIdentity()` to retrieve and display the current logged-in username and avatar. The logic for calling this method is packaged into a custom hook, `useGetIdentity`, which you can use in your own code.
 
 ![identity](../img/identity.png)
 
@@ -31,7 +28,7 @@ const { id, fullName, avatar } = data;
 Here is an example Edit component, which falls back to a Show component if the record is locked for edition by another user:
 
 ```jsx
-import { useGetIdentity, useGetOne } from 'react-admin';
+import { useGetIdentity, useGetOne } from 'ra-core';
 
 const PostDetail = ({ id }) => {
     const { data: post, isPending: isPendingPost } = useGetOne('posts', { id });

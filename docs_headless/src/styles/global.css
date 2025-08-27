@@ -36,3 +36,19 @@ img.icon {
 .expressive-code button.cb-fullscreen__button {
     color: var(--ec-frm-inlBtnFg);
 }   
+
+/* Auth and Data Provider icons */
+
+.providers-list img {
+    width: 25px !important;
+    margin: 2px 10px 2px 0px !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+    display: inline;
+}
+.providers-list ul {
+    padding-left: 0;
+}
+.providers-list ul > li {
+    list-style-type: none;
+}

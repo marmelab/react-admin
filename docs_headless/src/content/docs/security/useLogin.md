@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useLogin"
 ---
-
-# `useLogin`
 
 This hook returns a callback allowing to call `authProvider.login()`. It's used in Login forms.
 
@@ -15,7 +12,7 @@ Here is how to build a custom Login page based on email rather than username:
 // in src/MyLoginPage.js
 import * as React from 'react';
 import { useState } from 'react';
-import { useLogin, useNotify, Notification } from 'react-admin';
+import { useLogin, useNotify } from 'ra-core';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -52,18 +49,18 @@ const MyLoginPage = ({ theme }) => {
 export default MyLoginPage;
 ```
 
-Then pass the custom Login form to `<Admin>`, as follows:
+Then pass the custom Login form to `<CoreAdmin>`, as follows:
 
 ```jsx
 // in src/App.js
 import * as React from "react";
-import { Admin } from 'react-admin';
+import { CoreAdmin } from 'ra-core';
 
 import MyLoginPage from './MyLoginPage';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage} authProvider={authProvider}>
+    <CoreAdmin loginPage={MyLoginPage} authProvider={authProvider}>
     ...
-    </Admin>
+    </CoreAdmin>
 );
 ```

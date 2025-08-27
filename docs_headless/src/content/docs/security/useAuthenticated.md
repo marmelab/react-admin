@@ -1,21 +1,18 @@
 ---
-layout: default
 title: "useAuthenticated"
 ---
 
-# `useAuthenticated`
-
 This hook checks if the current user is authenticated by calling the [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) method on mount, and redirects to login if the method throws an error.
 
-React-admin uses this hook in page components (e.g., the `<Edit>` component) to forbid access to unauthenticated users.
+Ra-core uses this hook in page components (e.g., the `<EditBase>` component) to forbid access to unauthenticated users.
 
 ## Usage
 
-If you add [custom pages](./Admin.md#adding-custom-pages), and you want to restrict access to authenticated users, use `useAuthenticated()` as follows:
+If you add [custom pages](../app-configuration/CoreAdmin.md#adding-custom-pages), and you want to restrict access to authenticated users, use `useAuthenticated()` as follows:
 
 ```tsx
 // in src/MyPage.js
-import { useAuthenticated } from 'react-admin';
+import { useAuthenticated } from 'ra-core';
 
 const MyPage = () => {
     const { isPending } = useAuthenticated(); // redirects to login if not authenticated
@@ -63,7 +60,7 @@ The [`<Authenticated>`](./Authenticated.md) component wraps the `useAuthenticate
 It is useful when you can't use hooks, for instance because of the rules of hooks.
 
 ```jsx
-import { Authenticated } from 'react-admin';
+import { Authenticated } from 'ra-core';
 
 const MyAuthenticatedPage = () => (
     <Authenticated>

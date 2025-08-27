@@ -1,11 +1,8 @@
 ---
-layout: default
 title: "useAuthProvider"
 ---
 
-# `useAuthProvider`
-
-React-admin stores the `authProvider` object in a React context, so it's available from anywhere in your application code. The `useAuthProvider` hook reads this context to let you call the `authProvider` directly.
+Ra-core stores the `authProvider` object in a React context, so it's available from anywhere in your application code. The `useAuthProvider` hook reads this context to let you call the `authProvider` directly.
 
 ## Usage
 
@@ -13,7 +10,7 @@ For instance, here is how to call the Auth Provider to get the identity of the c
 
 ```jsx
 import { useState, useEffect } from 'react';
-import { useAuthProvider } from 'react-admin';
+import { useAuthProvider } from 'ra-core';
 
 import { Loading, Error } from './MyComponents';
 
@@ -46,7 +43,7 @@ But the recommended way to query the Data Provider is to use the authProvider me
 
 ```jsx
 import { useState, useEffect } from 'react';
-import { useGetIdentity } from 'react-admin';
+import { useGetIdentity } from 'ra-core';
 
 import { Loading, Error } from './MyComponents';
 
@@ -67,7 +64,7 @@ The `useAuthProvider` hook accepts a generic parameter for the `authProvider` ty
 
 ```tsx
 // In src/authProvider.ts
-import { AuthProvider } from 'react-admin';
+import { AuthProvider } from 'ra-core';
 
 export interface CustomAuthProviderMethods extends AuthProvider {
     refreshToken: () => Promise<any>
@@ -81,7 +78,7 @@ export const authProvider: CustomAuthProviderMethods = {
 }
 
 // In src/RefreshToken.tsx
-import { useAuthProvider } from 'react-admin';
+import { useAuthProvider } from 'ra-core';
 import { CustomAuthProviderMethods } from './src/authProvider';
 
 const THIRTY_MINUTES = 1000 * 60 * 30;

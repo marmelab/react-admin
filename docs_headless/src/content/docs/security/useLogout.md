@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useLogout"
 ---
-
-# `useLogout`
 
 `useLogout()` returns a callback that logs the user out by calling `authProvider.logout()`.
 
@@ -14,56 +11,55 @@ Use it to build a custom Logout button and use it in a custom UserMenu, like the
 ```jsx
 // in src/MyLayout.js
 import * as React from 'react';
-import { forwardRef } from 'react';
-import { AppBar, Layout, UserMenu, useLogout } from 'react-admin';
-import { MenuItem } from '@mui/material';
-import ExitIcon from '@mui/icons-material/PowerSettingsNew';
+import { useLogout } from 'ra-core';
 
-// It's important to pass the ref to allow Material UI to manage the keyboard navigation
-const MyLogoutButton = forwardRef((props, ref) => {
+const MyLogoutButton = (props) => {
     const logout = useLogout();
     const handleClick = () => logout();
     return (
-        <MenuItem
+        <button
             onClick={handleClick}
-            ref={ref}
-            // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
         >
-            <ExitIcon /> Logout
-        </MenuItem>
+            Logout
+        </button>
     );
-});
+};
 
 const MyUserMenu = () => (
-    <UserMenu>
+    <div className="user-menu">
         <MyLogoutButton />
-    </UserMenu>
+    </div>
 );
 
-const MyAppBar = () => <AppBar userMenu={<UserMenu />} />;
+const MyAppBar = () => (
+    <header className="app-bar">
+        <MyUserMenu />
+    </header>
+);
 
 const MyLayout = ({ children }) => (
-    <Layout appBar={MyAppBar}>
-        {children}
-    </Layout>
+    <div className="layout">
+        <MyAppBar />
+        <main>{children}</main>
+    </div>
 );
 
 export default MyLayout;
 ```
 
-Then pass the layout to you admin:
+Then pass the layout to your admin:
 
 ```jsx
 // in src/App.js
 import * as React from "react";
-import { Admin } from 'react-admin';
+import { CoreAdmin } from 'ra-core';
 
 import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin layout={MyLayout} authProvider={authProvider}>
+    <CoreAdmin layout={MyLayout} authProvider={authProvider}>
     ...
-    </Admin>
+    </CoreAdmin>
 );
 ```

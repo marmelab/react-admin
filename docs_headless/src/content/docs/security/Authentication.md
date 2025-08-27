@@ -226,7 +226,7 @@ const App = () => (
 
 ## Adding A Login Page
 
-You can add a login page by setting the [`<CoreAdmin loginPage>`](./CoreAdmin.md#loginpage) prop.
+You can add a login page by setting the [`<CoreAdmin loginPage>`](../app-configuration/CoreAdmin.md#loginpage) prop.
 
 For headless applications, you should build custom login pages using the [`useLogin` hook](./useLogin.md) to handle the login form submission. Here's an example:
 
@@ -378,7 +378,7 @@ export const authProvider = {
 };
 ```
 
-You can choose when to redirect users to the third-party authentication service, such as directly in the `AuthProvider.checkAuth()` method or when they click a button on a [custom login page](#customizing-the-login-component).
+You can choose when to redirect users to the third-party authentication service, such as directly in the `AuthProvider.checkAuth()` method or when they click a button on a [custom login page](#adding-a-login-page).
 
 ## Handling Refresh Tokens
 

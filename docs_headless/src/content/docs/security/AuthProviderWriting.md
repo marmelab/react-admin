@@ -446,9 +446,6 @@ const authProvider = {
 
 Check the [Access Control documentation](./Permissions.md#access-control) for more information on how to use the `canAccess` method.
 
-**Tip**: [The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps leveraging the `canAccess` method. Check [the RBAC documentation](./AuthRBAC.md) for more information.
-
-
 ### `getPermissions`
 
 As an alternative to `canAccess()`, `getPermissions()` lets you return an arbitrary permissions object. This object can be used by React components to enable or disable UI elements based on the user's role.
@@ -490,12 +487,12 @@ React-admin calls the `authProvider` methods with the following params:
 
 | Method           | Resolve if                          | Response format |
 | ---------------- | ----------------------------------- | --------------- |
-| `login`          | Login credentials were accepted     | `void           | { redirectTo?: string                         | boolean  }` route to redirect to after login                  |
+| `login`          | Login credentials were accepted     | `void           \| { redirectTo?: string                         \| boolean  }` route to redirect to after login                  |
 | `checkError`     | Error is not an auth error          | `void`          |
 | `checkAuth`      | User is authenticated               | `void`          |
-| `logout`         | Auth backend acknowledged logout    | `string         | false                                         | void` route to redirect to after logout, defaults to `/login` |
-| `getIdentity`    | Auth backend returned identity      | `{ id: string   | number, fullName?: string, avatar?: string }` |
-| `handleCallback` | User is authenticated               | `void           | { redirectTo?: string                         | boolean  }` route to redirect to after login                  |
+| `logout`         | Auth backend acknowledged logout    | `string         \| false                                         \| void` route to redirect to after logout, defaults to `/login` |
+| `getIdentity`    | Auth backend returned identity      | `{ id: string   \| number, fullName?: string, avatar?: string }` |
+| `handleCallback` | User is authenticated               | `void           \| { redirectTo?: string                         \| boolean  }` route to redirect to after login                  |
 | `canAccess`      | Auth backend returned authorization | `boolean`       |
 | `getPermissions` | Auth backend returned permissions   | Free format.    |
 
@@ -505,12 +502,12 @@ When the auth backend returns an error, the Auth Provider should return a reject
 
 | Method           | Reject if                                      | Error format                                                                                                           |
 | ---------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `login`          | Login credentials weren't accepted             | `string                                                                                                                | { message?: string }` error message to display                                                           |
-| `checkError`     | Error is an auth error                         | `void                                                                                                                  | { redirectTo?: string, message?: string                                                                  | boolean  }` route to redirect to after logout, message to notify the user or `false` to disable notification |
-| `checkAuth`      | User is not authenticated                      | `void                                                                                                                  | { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user |
+| `login`          | Login credentials weren't accepted             | `string                                                                                                                \| { message?: string }` error message to display                                                           |
+| `checkError`     | Error is an auth error                         | `void                                                                                                                  \| { redirectTo?: string, message?: string                                                                  \| boolean  }` route to redirect to after logout, message to notify the user or `false` to disable notification |
+| `checkAuth`      | User is not authenticated                      | `void                                                                                                                  \| { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user |
 | `logout`         | Auth backend failed to log the user out        | `void`                                                                                                                 |
 | `getIdentity`    | Auth backend failed to return identity         | `Object` free format - returned as `error` when `useGetIdentity()` is called                                           |
-| `handleCallback` | Failed to authenticate users after redirection | `void                                                                                                                  | { redirectTo?: string, logoutOnFailure?: boolean, message?: string }`                                    |
+| `handleCallback` | Failed to authenticate users after redirection | `void                                                                                                                  \| { redirectTo?: string, logoutOnFailure?: boolean, message?: string }`                                    |
 | `canAccess`      | Auth backend failed to return authorization    | `Object` free format - returned as `error` when `useCanAccess()` is called.                                            |
 | `getPermissions` | Auth backend failed to return permissions      | `Object` free format - returned as `error` when `usePermissions()` is called. The error will be passed to `checkError` |
 

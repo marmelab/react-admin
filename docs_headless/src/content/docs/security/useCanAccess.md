@@ -1,21 +1,19 @@
 ---
-layout: default
 title: "useCanAccess"
 storybook_path: ra-core-auth-usecanaccess--basic
 ---
 
-# `useCanAccess`
-
 This hook controls access to a resource and action (and, optionally, a record). It calls the `authProvider.canAccess()` method on mount and returns an object containing a `canAccess` boolean set to `true` if users can access the resource and action.
 
-It is part of the [Access Control](./Permissions.md#access-control) mechanism in react-admin.
+It is part of the [Access Control](./Permissions.md#access-control) mechanism in ra-core.
 
 ## Usage
 
 `useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the request. As calls to the `authProvider` are asynchronous, the hook returns a `isPending` state in addition to the `canAccess` key.
 
 ```jsx
-import { useCanAccess, useRecordContext, DeleteButton } from 'react-admin';
+import { useCanAccess, useRecordContext } from 'ra-core';
+import { DeleteButton } from './DeleteButton';
 
 const DeleteUserButton = () => {
     const record = useRecordContext();
@@ -47,7 +45,8 @@ const DeleteUserButton = () => {
 The `checkAccess` function expects an argument with the shape `{ action, resource, record }`. This function resolves to a boolean indicating whether users can access the provided resource and action.
 
 ```jsx
-import { DataTable, List, useCanAccessCallback } from 'react-admin';
+import { useCanAccessCallback, ListBase } from 'ra-core';
+import { DataTable } from './DataTable';
 
 export const UserList = () => {
     const checkAccess = useCanAccessCallback();
@@ -60,13 +59,13 @@ export const UserList = () => {
         }
     };
     return (
-        <List>
+        <ListBase>
             <DataTable onClick={handleRowClick}>
                 <DataTable.Col source="id" />
                 <DataTable.Col source="name" />
                 <DataTable.Col source="email" />
             </DataTable>
-        </List>
+        </ListBase>
     );
 };
 ```
@@ -78,11 +77,12 @@ export const UserList = () => {
 It takes an object `{ action, resources, record }` as argument. The `resources` parameter is an array of resource names for which to check the access permission. In addition to react-query result properties, it returns a `canAccess` object with a property for each provided resource, determining whether the user can access it.
 
 ```jsx
-import { useCanAccessResources, SimpleList } from 'react-admin';
+import { useCanAccessResources } from 'ra-core';
+import { SimpleList } from './SimpleList';
 
 const UserList = () => {
     const { isPending, canAccess } = useCanAccessResources({
-        action: 'delete',
+        action: 'read',
         resources: ['users.id', 'users.name', 'users.email'],
     });
     if (isPending) {
@@ -102,10 +102,10 @@ const UserList = () => {
 
 `useRequireAccess` is an alternative to `useCanAccess` that logs out the user if the access check fails. It takes the same parameters as `useCanAccess`.
 
-For instance, here's how you can protect a [custom route](./CustomRoutes.md) for editing users settings:
+For instance, here's how you can protect a [custom route](../app-configuration/CustomRoutes.md) for editing users settings:
 
 ```tsx
-import { useRequireAccess } from 'react-admin';
+import { useRequireAccess } from 'ra-core';
 
 export export const SettingsPage = () => {
     const { isPending } = useRequireAccess({
