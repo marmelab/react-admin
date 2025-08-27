@@ -1,10 +1,7 @@
 ---
-layout: default
-title: "WithListContext"
+title: "<WithListContext>"
 storybook_path: ra-core-controller-list-withlistcontext--basic
 ---
-
-# `<WithListContext>`
 
 `<WithListContext>` executes its `render` function using the current `ListContext` as parameter. It's the render prop version of [the `useListContext` hook](./useListContext.md).
 
@@ -14,32 +11,34 @@ Use it to render a list of records already fetched.
 
 The most common use case for `<WithListContext>` is to build a custom list view on-the-fly, without creating a new component, in a place where records are available inside a `ListContext`. 
 
-For instance, a list of book tags fetched via [`<ReferenceArrayField>`](./ReferenceArrayField.md): 
+For instance, a list of book tags fetched via [`<ReferenceArrayFieldBase>`](../fields/ReferenceArrayFieldBase.md): 
 
 ```jsx
-import { List, DataTable, ReferenceArrayField, WithListContext } from 'react-admin';
-import { Chip, Stack } from '@mui/material';
+import { ListBase, WithListContext, ReferenceArrayFieldBase } from 'ra-core';
+import { DataTable } from './components';
 
 const BookList = () => (
-    <List>
+    <ListBase>
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
             <DataTable.Col source="tag_ids" label="Tags">
-                <ReferenceArrayField reference="tags" source="tag_ids">
+                <ReferenceArrayFieldBase reference="tags" source="tag_ids">
                     <WithListContext render={({ isPending, data }) => (
                         !isPending && (
-                            <Stack direction="row" spacing={1}>
+                            <div className="stack">
                                 {data.map(tag => (
-                                    <Chip key={tag.id} label={tag.name} />
+                                    <span key={tag.id} className="chip">
+                                        {tag.name}
+                                    </span>
                                 ))}
-                            </Stack>
+                            </div>
                         )
                     )} />
-                </ReferenceArrayField>
+                </ReferenceArrayFieldBase>
             </DataTable.Col>
         </DataTable>
-    </List>
+    </ListBase>
 );
 ```
 
@@ -48,20 +47,21 @@ const BookList = () => (
 The equivalent with `useListContext` would require an intermediate component:
 
 ```jsx
-import { List, DataTable, ReferenceArrayField, WithListContext } from 'react-admin';
+import { ListBase, useListContext, ReferenceArrayFieldBase } from 'ra-core';
+import { DataTable } from './components';
 
 const BookList = () => (
-    <List>
+    <ListBase>
         <DataTable>
             <DataTable.Col source="id" />
             <DataTable.Col source="title" />
             <DataTable.Col label="Tags" source="tag_ids">
-                <ReferenceArrayField reference="tags" source="tag_ids">
+                <ReferenceArrayFieldBase reference="tags" source="tag_ids">
                     <TagList />
-                </ReferenceArrayField>
+                </ReferenceArrayFieldBase>
             </DataTable.Col>
         </DataTable>
-    </List>
+    </ListBase>
 );
 
 const TagList = () => {
@@ -69,11 +69,13 @@ const TagList = () => {
     return isPending 
         ? null
         : (
-            <Stack direction="row" spacing={1}>
+            <div className="stack">
                 {data.map(tag => (
-                    <Chip key={tag.id} label={tag.name} />
+                    <span key={tag.id} className="chip">
+                        {tag.name}
+                    </span>
                 ))}
-            </Stack>
+            </div>
         );
 };
 ```
@@ -141,12 +143,10 @@ As a reminder, the [`ListContext`](./useListContext.md) is an object with the fo
 
 ## Availability
 
-Whenever you use a react-admin component to fetch a list of records, react-admin stores the data in a [`ListContext`](./useListContext.md). Consequently, `<WithListContext>` works in any component that is a descendant of:
+Whenever you use a ra-core component to fetch a list of records, ra-core stores the data in a [`ListContext`](./useListContext.md). Consequently, `<WithListContext>` works in any component that is a descendant of:
 
-- the [`<List>`](./ListBase.md), [`<InfiniteList>`](./InfiniteList.md), and [`<ListBase>`](./ListBase.md) components
-- the [`<ArrayField>`](./ArrayField.md) component
-- the [`<ReferenceManyField>`](./ReferenceManyField.md) component
-- the [`<ReferenceArrayField>`](./ReferenceArrayField.md) component
+- the [`<ListBase>`](./ListBase.md) component
+- the [`<ReferenceArrayFieldBase>`](../fields/ReferenceArrayFieldBase.md) component
 
 ## Building a Chart
 
@@ -154,9 +154,8 @@ A common use case is to build a chart based on the list data. For instance, the 
 
 ![Chart based on ListContext](../img/WithListContext-chart.png)
 
-{% raw %}
 ```jsx
-import { ListBase, WithListContext } from 'react-admin';
+import { ListBase, WithListContext } from 'ra-core';
 import * as echarts from 'echarts';
 
 const FruitChart = () => (
@@ -216,14 +215,13 @@ const LineChart = ({ data }) => {
     return <div ref={chartRef} style={{ height: 300, width: 700 }} />;
 };
 ```
-{% endraw %}
 
 ## Building a Refresh Button
 
 Another use case is to create a button that refreshes the current list. As the [`ListContext`](./useListContext.md) exposes the `refetch` function, it's as simple as:
 
 ```jsx
-import { WithListContext } from 'react-admin'; 
+import { WithListContext } from 'ra-core'; 
 
 const RefreshListButton = () => (
     <WithListContext render={({ refetch }) => (

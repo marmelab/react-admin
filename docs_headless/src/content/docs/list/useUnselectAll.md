@@ -1,14 +1,11 @@
 ---
-layout: default
 title: "useUnselectAll"
 ---
 
-# `useUnselectAll`
-
-This hook returns a function that unselects all lines in the current `<DataTable>`. Pass the name of the resource as argument.
+This hook returns a function that unselects all lines in the current data table (see [`<DataTableBase>`](./DataTableBase.md)). Pass the name of the resource as argument.
 
 ```jsx
-import { useUnselectAll } from 'react-admin';
+import { useUnselectAll } from 'ra-core';
 
 const UnselectAllButton = () => {
     const unselectAll = useUnselectAll('posts');

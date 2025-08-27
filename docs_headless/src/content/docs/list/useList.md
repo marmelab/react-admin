@@ -1,13 +1,10 @@
 ---
-layout: default
 title: "useList"
 ---
 
-# `useList`
-
 The `useList` hook allows to create a `ListContext` based on local data. `useList` creates callbacks for sorting, paginating, filtering, and selecting records from an array.
 
-Thanks to it, you can display your data inside a [`<DataTable>`](./DataTable.md), a [`<SimpleList>`](./SimpleList.md) or an [`<EditableDatagrid>`](./EditableDatagrid.md).
+Thanks to it, you can display your data inside your own list components.
 
 ## Usage
 
@@ -17,8 +14,8 @@ Thanks to it, you can display your data inside a [`<DataTable>`](./DataTable.md)
 import {
     useList,
     ListContextProvider,
-    DataTable,
-} from 'react-admin';
+} from 'ra-core';
+import { DataTable } from './DataTable';
 
 const data = [
     { id: 1, name: 'Arnold' },
@@ -42,7 +39,8 @@ const MyComponent = () => {
 If you use it with data coming from the `dataProvider`, don't forget to pass the `isPending` prop so that it only manipulates the data once it's available:
 
 ```jsx
-import { useGetList, useList } from 'react-admin';
+import { useGetList, useList, ListContextProvider } from 'ra-core';
+import { DataTable } from './DataTable';
 
 const MyComponent = () => {
     const { data, isPending } = useGetList(
@@ -140,10 +138,11 @@ const { data } = useList({
 
 ## `isFetching`
 
-This value ends up in the return value. It is used by list iterators (like `<DataTable>`) to know when to display a loading indicator.
+This value ends up in the return value. It is used by list iterators to know when to display a loading indicator.
 
 ```jsx
-import { useGetList, useList } from 'react-admin';
+import { useGetList, useList, ListContextProvider } from 'ra-core';
+import { DataTable } from './DataTable';
 
 const MyComponent = () => {
     const { data, isFetching } = useGetList(
@@ -164,15 +163,15 @@ const MyComponent = () => {
 
 ## `isPending`
 
-This value ends up in the return value. It is used by list iterators (like `<DataTable>`) to know when to display a loading indicator.
+This value ends up in the return value. It is used by list iterators to know when to display a loading indicator.
 
 ```jsx
 import {
     useGetList,
     useList,
     ListContextProvider,
-    DataTable,
-} from 'react-admin';
+} from 'ra-core';
+import { DataTable } from './DataTable';
 
 const MyComponent = () => {
     const { data, isPending } = useGetList(

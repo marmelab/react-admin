@@ -1,18 +1,15 @@
 ---
-layout: default
 title: "useListController"
 storybook_path: ra-core-controller-list-uselistcontroller--authenticated
 ---
 
-# `useListController`
-
-`useListController` contains the headless logic of the [`<List>`](./List.md) component. It's useful to create a custom List view. It's also the base hook when building a custom view with another UI kit than Material UI. 
+`useListController` contains the headless logic of list components. It's useful to create a custom List view. It's also the base hook when building a custom view with another UI kit. 
 
 ![List view built with Ant Design](../img/list_ant_design.png)
 
 `useListController` reads the list parameters from the URL, calls `dataProvider.getList()`, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them together with the data. Its return value matches the [`ListContext`](./useListContext.md) shape. 
 
-`useListController` is used internally by [`<List>`](./List.md) and [`<ListBase>`](./ListBase.md). If your list view uses react-admin components like [`<DataTable>`](./DataTable.md), prefer [`<ListBase>`](./ListBase.md) to `useListController` as it takes care of creating a `<ListContext>`.
+`useListController` is used internally by [`<ListBase>`](./ListBase.md). If your list view uses ra-core components, prefer [`<ListBase>`](./ListBase.md) to `useListController` as it takes care of creating a `<ListContext>`.
 
 ## Usage
 
@@ -20,9 +17,8 @@ storybook_path: ra-core-controller-list-uselistcontroller--authenticated
 
 Here the code for the post list view above, built with [Ant Design](https://ant.design/):
 
-{% raw %}
 ```jsx
-import { useListController } from 'react-admin'; 
+import { useListController } from 'ra-core'; 
 import { Card, Table, Button } from 'antd';
 import {
   CheckCircleOutlined,
@@ -86,15 +82,14 @@ const columns = [
 
 export default PostList;
 ```
-{% endraw %}
 
-When using react-admin components, it's common to call `useListController()` without parameters, and to put the result in a `ListContext` to make it available to the rest of the component tree.
+When using ra-core components, it's common to call `useListController()` without parameters, and to put the result in a `ListContext` to make it available to the rest of the component tree.
 
 ```jsx
 import { 
     useListController,
     ListContextProvider
-} from 'react-admin';
+} from 'ra-core';
 
 const MyList = () => {
     const listContext = useListController();
@@ -110,16 +105,16 @@ const MyList = () => {
 
 `useListController` expects an object as parameter. All keys are optional.
 
-* [`debounce`](./List.md#debounce): Debounce time in ms for the setFilters callbacks
-* [`disableAuthentication`](./List.md#disableauthentication): Set to true to allow anonymous access to the list
-* [`disableSyncWithLocation`](./List.md#disablesyncwithlocation): Set to true to have more than one list per page
-* [`exporter`](./List.md#exporter): Exporter function
-* [`filter`](./List.md#filter-permanent-filter): Permanent filter, forced over the user filter
-* [`filterDefaultValues`](./List.md#filterdefaultvalues): Default values for the filter form
-* [`perPage`](./List.md#perpage): Number of results per page
-* [`queryOptions`](./List.md#queryoptions): React-query options for the useQuery call
-* [`resource`](./List.md#resource): Resource name, e.g. 'posts' ; defaults to the current resource context
-* [`sort`](./List.md#sort): Current sort value, e.g. `{ field: 'published_at', order: 'DESC' }`
+* [`debounce`](./ListBase.md#debounce): Debounce time in ms for the setFilters callbacks
+* [`disableAuthentication`](./ListBase.md#disableauthentication): Set to true to allow anonymous access to the list
+* [`disableSyncWithLocation`](./ListBase.md#disablesyncwithlocation): Set to true to have more than one list per page
+* [`exporter`](./ListBase.md#exporter): Exporter function
+* [`filter`](./ListBase.md#filter-permanent-filter): Permanent filter, forced over the user filter
+* [`filterDefaultValues`](./ListBase.md#filterdefaultvalues): Default values for the filter form
+* [`perPage`](./ListBase.md#perpage): Number of results per page
+* [`queryOptions`](./ListBase.md#queryoptions): React-query options for the useQuery call
+* [`resource`](./ListBase.md#resource): Resource name, e.g. 'posts' ; defaults to the current resource context
+* [`sort`](./ListBase.md#sort): Current sort value, e.g. `{ field: 'published_at', order: 'DESC' }`
 * [`storeKey`](#storekey): Key used to differentiate the list from another sharing the same resource, in store managed states
 
 Here are their default values:
@@ -129,7 +124,7 @@ import {
     useListController,
     defaultExporter,
     ListContextProvider
-} from 'react-admin';
+} from 'ra-core';
 
 const MyList = ({
     debounce = 500,
@@ -171,15 +166,14 @@ To display multiple lists of the same resource and keep distinct store states fo
 
 In case no `storeKey` is provided, the states will be stored with the following key: `${resource}.listParams`.
 
-**Note:** Please note that selection state will remain linked to a resource-based key as described [here](./List.md#disablesyncwithlocation).
+**Note:** Please note that selection state will remain linked to a resource-based key as described [here](./ListBase.md#disablesyncwithlocation).
 
-If you want to disable the storage of list parameters altogether for a given list, you can use [the `disableSyncWithLocation` prop](./List.md#disablesyncwithlocation).
+If you want to disable the storage of list parameters altogether for a given list, you can use [the `disableSyncWithLocation` prop](./ListBase.md#disablesyncwithlocation).
 
 In the example below, both lists `TopPosts` and `FlopPosts` use the same resource ('posts'), but their controller states are stored separately (under the store keys `'top'` and `'flop'` respectively).
 
-{% raw %}
 ```jsx
-import { useListController } from 'react-admin';
+import { useListController } from 'ra-core';
 
 const OrderedPostList = ({
     storeKey,
@@ -211,7 +205,6 @@ const FlopPosts = (
     <OrderedPostList storeKey="flop" sort={{ field: 'votes', order: 'ASC' }} />
 );
 ```
-{% endraw %}
 
 You can disable this feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
 
@@ -268,7 +261,7 @@ You can use it to update the list filters:
 
 ```jsx
 import { useState } from 'react';
-import { useListController } from 'react-admin';
+import { useListController } from 'ra-core';
 
 const OfficeList = () => {
     const { filterValues, setFilters, data, isPending } = useListController({ resource: 'offices' });
@@ -308,14 +301,15 @@ const OfficeList = () => {
 
 ## Security
 
-`useListController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop.
+`useListController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./ListBase.md#disableauthentication) prop.
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `useListController` will only render if the user has the "list" access to the related resource.
+If your `authProvider` implements [Access Control](../security/Permissions.md#access-control), `useListController` will only render if the user has the "list" access to the related resource.
 
 For instance, for the `<PostList>` page below:
 
 ```tsx
-import { useListController, SimpleList } from 'react-admin';
+import { useListController } from 'ra-core';
+import { SimpleList } from './SimpleList';
 
 const PostList = () => {
   const { isPending, error, data, total } = useListController({ resource: 'posts'})
@@ -337,6 +331,6 @@ const PostList = () => {
 { action: "list", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+Users without access will be redirected to the [Access Denied page](../app-configuration/CoreAdmin.md#accessdenied).
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./ListBase.md#disableauthentication).
