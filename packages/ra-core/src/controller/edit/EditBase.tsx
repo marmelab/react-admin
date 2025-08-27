@@ -61,7 +61,7 @@ export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
         );
     }
 
-    const { isPaused, record } = controllerProps;
+    const { isPaused, isPending } = controllerProps;
 
     const shouldRenderLoading =
         isAuthPending &&
@@ -70,7 +70,7 @@ export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
         loading !== undefined;
 
     const shouldRenderOffline =
-        isPaused && !record && offline !== false && offline !== undefined;
+        isPaused && isPending && offline !== false && offline !== undefined;
 
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided

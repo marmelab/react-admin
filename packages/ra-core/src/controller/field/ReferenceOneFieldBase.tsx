@@ -89,10 +89,7 @@ export const ReferenceOneFieldBase = <
     const shouldRenderLoading =
         !isPaused && isPending && loading !== false && loading !== undefined;
     const shouldRenderOffline =
-        isPaused &&
-        !referenceRecord &&
-        offline !== false &&
-        offline !== undefined;
+        isPaused && isPending && offline !== false && offline !== undefined;
     const shouldRenderError =
         !!controllerError && error !== false && error !== undefined;
     const shouldRenderEmpty =

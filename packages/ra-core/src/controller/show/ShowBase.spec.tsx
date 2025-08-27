@@ -130,5 +130,8 @@ describe('ShowBase', () => {
         ).toBeNull();
         rerender(<Offline isOnline={false} />);
         await screen.findByText('You are offline, the data may be outdated');
+        // Ensure the data is still displayed when going offline after it was loaded
+        await screen.findByText('You are offline, the data may be outdated');
+        await screen.findByText('Hello');
     });
 });

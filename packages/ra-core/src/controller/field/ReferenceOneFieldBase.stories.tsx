@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import {
     CoreAdminContext,
+    IsOffline,
     RecordContextProvider,
     ReferenceOneFieldBase,
     ResourceContextProvider,
@@ -111,8 +112,17 @@ export const Offline = () => {
                     <ReferenceOneFieldBase
                         reference="book_details"
                         target="book_id"
-                        offline={<span>Offline</span>}
+                        offline={
+                            <span style={{ color: 'orange' }}>
+                                You are offline, cannot load data
+                            </span>
+                        }
                     >
+                        <IsOffline>
+                            <p style={{ color: 'orange' }}>
+                                You are offline, the data may be outdated
+                            </p>
+                        </IsOffline>
                         <BookDetails />
                     </ReferenceOneFieldBase>
                 </RenderChildOnDemand>

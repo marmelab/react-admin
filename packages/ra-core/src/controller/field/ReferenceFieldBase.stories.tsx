@@ -10,6 +10,7 @@ import { useFieldValue } from '../../util/useFieldValue';
 import { useReferenceFieldContext } from './ReferenceFieldContext';
 import { DataProvider } from '../../types';
 import { useIsOffline } from '../../core/useIsOffline';
+import { IsOffline } from '../..';
 
 export default {
     title: 'ra-core/controller/field/ReferenceFieldBase',
@@ -422,13 +423,19 @@ export const Offline = () => {
                                         source="author"
                                         reference="authors"
                                         offline={
-                                            <p>
+                                            <p style={{ color: 'orange' }}>
                                                 You are offline, cannot load
                                                 data
                                             </p>
                                         }
                                     >
                                         <MyReferenceField>
+                                            <IsOffline>
+                                                <p style={{ color: 'orange' }}>
+                                                    You are offline, the data
+                                                    may be outdated
+                                                </p>
+                                            </IsOffline>
                                             <TextField source="first_name" />
                                         </MyReferenceField>
                                     </ReferenceFieldBase>
