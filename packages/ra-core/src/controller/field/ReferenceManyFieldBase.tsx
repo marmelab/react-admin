@@ -113,14 +113,20 @@ export const ReferenceManyFieldBase = <
         hasPreviousPage,
         isPaused,
         isPending,
+        isPlaceholderData,
         total,
     } = controllerProps;
 
-    const showLoading =
+    const shouldRenderLoading =
         isPending && !isPaused && loading !== false && loading !== undefined;
-    const showOffline = isPaused && offline !== false && offline !== undefined;
-    const showError = controllerError && error !== false && error !== undefined;
-    const showEmpty =
+    const showOffline =
+        isPaused &&
+        (isPending || isPlaceholderData) &&
+        offline !== false &&
+        offline !== undefined;
+    const shouldRenderError =
+        controllerError && error !== false && error !== undefined;
+    const shouldRenderEmpty =
         empty !== false &&
         empty !== undefined &&
         // there is no error
@@ -142,13 +148,13 @@ export const ReferenceManyFieldBase = <
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                {showLoading
+                {shouldRenderLoading
                     ? loading
                     : showOffline
                       ? offline
-                      : showError
+                      : shouldRenderError
                         ? error
-                        : showEmpty
+                        : shouldRenderEmpty
                           ? empty
                           : render
                             ? render(controllerProps)
