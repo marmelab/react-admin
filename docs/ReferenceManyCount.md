@@ -68,6 +68,7 @@ export const PostList = () => (
 | `target`    | Required | string                                     | -                                 | Name of the field in the related resource that points to the current one. |
 | `filter`    | Optional | Object                                     | -                                 | Filter to apply to the query.                                             |
 | `link`      | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the filtered list view.    |
+| `offline`   | Optional | `ReactNode`                                |                                   | The component to render when there is no connectivity and the record isn't in the cache
 | `resource`  | Optional | string                                     | -                                 | Resource to count. Default to the current `ResourceContext`               |
 | `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getManyReference`                                |
 | `timeout`   | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator.   |
@@ -117,6 +118,22 @@ When used in conjunction to the `filter` prop, the link will point to the list v
 />
 ```
 {% endraw %}
+
+## `offline`
+
+By default, `<ReferenceManyCount>` renders the `<Offline variant="inline">` component when there is no connectivity and the count hasn't been cached yet. You can provide your own component via the `offline` prop:
+
+```jsx
+<ReferenceManyCount
+    reference="comments"
+    target="post_id"
+    offline={
+        <Alert severity="warning">
+            You are offline, data cannot be loaded
+        </Alert>
+    }
+/>
+```
 
 ## `reference`
 

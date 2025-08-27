@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import {
+    QueryClientProvider,
+    QueryClient,
+    onlineManager,
+} from '@tanstack/react-query';
 import {
     DataProviderContext,
     RecordContextProvider,
     ResourceContextProvider,
     TestMemoryRouter,
+    useIsOffline,
 } from 'ra-core';
 import { deepmerge } from '@mui/utils';
 import { createTheme, ThemeOptions } from '@mui/material';
@@ -238,3 +243,44 @@ export const Themed = () => (
         <ReferenceManyCount reference="comments" target="post_id" />
     </Wrapper>
 );
+
+export const Offline = () => (
+    <Wrapper
+        dataProvider={{
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [comments.filter(c => c.post_id === 1)[0]],
+                    total: comments.filter(c => c.post_id === 1).length,
+                }),
+        }}
+    >
+        <RenderChildOnDemand>
+            <ReferenceManyCount reference="comments" target="post_id" />
+        </RenderChildOnDemand>
+        <SimulateOfflineButton />
+    </Wrapper>
+);
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};
