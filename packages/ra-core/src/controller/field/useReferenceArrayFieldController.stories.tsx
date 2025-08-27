@@ -95,5 +95,5 @@ export const Basic = ({ children = defaultRenderProp }) => (
 );
 
 export default {
-    title: 'ra-core/controller/useReferenceArrayFieldController',
+    title: 'ra-core/controller/field/useReferenceArrayFieldController',
 };
