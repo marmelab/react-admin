@@ -14,6 +14,7 @@ import { useEvent } from '../../util';
 
 /**
  * Prepare a set of callbacks for a delete button guarded by confirmation dialog
+ * @deprecated prefer the useDeleteController hook instead
  *
  * @example
  *

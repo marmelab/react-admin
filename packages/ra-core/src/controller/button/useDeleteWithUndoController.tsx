@@ -10,7 +10,7 @@ import { useEvent } from '../../util';
 
 /**
  * Prepare callback for a Delete button with undo support
- *
+ * @deprecated prefer the useDeleteController hook instead
  * @example
  *
  * import React from 'react';
