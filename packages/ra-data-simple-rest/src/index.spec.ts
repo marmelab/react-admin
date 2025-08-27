@@ -67,6 +67,28 @@ describe('Data Simple REST Client', () => {
 
             expect(result.total).toEqual(42);
         });
+        it('should support embeds via meta', async () => {
+            const httpClient = jest.fn(() =>
+                Promise.resolve({
+                    headers: new Headers({
+                        'content-range': '0/4-8',
+                    }),
+                })
+            );
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.getList('posts', {
+                filter: {},
+                pagination: { page: 1, perPage: 10 },
+                sort: { field: 'title', order: 'DESC' },
+                meta: { embed: ['author'] },
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts?embed=%5B%22author%22%5D&filter=%7B%7D&range=%5B0%2C9%5D&sort=%5B%22title%22%2C%22DESC%22%5D',
+                { headers: { map: { range: 'posts=0-9' } } }
+            );
+        });
     });
     describe('getOne', () => {
         it('should allow numeric id in path', async () => {
@@ -88,6 +110,20 @@ describe('Data Simple REST Client', () => {
 
             expect(httpClient).toHaveBeenCalledWith(
                 'http://localhost:3000/posts/Post%23123',
+                expect.any(Object)
+            );
+        });
+        it('should support embeds via meta', async () => {
+            const httpClient = jest.fn().mockResolvedValue({ id: 'Post#123' });
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.getOne('posts', {
+                id: 'Post#123',
+                meta: { embed: ['author'] },
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/posts/Post%23123?embed=%5B%22author%22%5D',
                 expect.any(Object)
             );
         });
