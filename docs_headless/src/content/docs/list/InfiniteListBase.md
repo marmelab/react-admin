@@ -1,19 +1,15 @@
 ---
-layout: default
-title: "The InfiniteListBase Component"
-storybook_path: ra-ui-materialui-list-infinitelist--aside
+title: "<InfiniteListBase>"
 ---
 
-# `<InfiniteListBase>`
-
-The `<InfiniteList>` component is an alternative to [the `<List>` component](./List.md) that allows user to load more records when they scroll to the bottom of the list. It's useful when you have a large number of records, or when users are using a mobile device.
+The `<InfiniteListBase>` component is a headless version of the infinite list functionality. It fetches records from the data provider and provides infinite scrolling capabilities through a [`ListContext`](./useListContext.md), but doesn't render any UI by itself. This allows you to create fully custom list layouts with infinite loading.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="../img/infinite-book-list.webm" poster="../img/infinite-book-list.webp" type="video/webm">
   Your browser does not support the video tag.
 </video>
 
-`<InfiniteList>` fetches the list of records from the data provider, and renders the default list layout (title, buttons, filters). It delegates the rendering of the list of records to its child component. Usually, it's a [`<DataTable>`](./DataTable.md) or a [`<SimpleList>`](./SimpleList.md), responsible for displaying a table with one row for each record.
+`<InfiniteListBase>` fetches the list of records from the data provider using the `useInfiniteListController` hook and provides the data through a context. You have complete control over how to render the list of records.
 
 ## Usage
 
@@ -21,83 +17,115 @@ Here is the minimal code necessary to display a list of books with infinite scro
 
 ```jsx
 // in src/books.js
-import { InfiniteList, DataTable, DateField } from 'react-admin';
+import { InfiniteListBase, useListContext, useInfinitePaginationContext } from 'ra-core';
+
+const BookTable = () => {
+    const { data, isPending } = useListContext();
+    
+    if (isPending) {
+        return <div>Loading...</div>;
+    }
+    
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody>
+                {data.map(book => (
+                    <tr key={book.id}>
+                        <td>{book.id}</td>
+                        <td>{book.title}</td>
+                        <td>{book.author}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
+
+const InfinitePagination = () => {
+    const { hasNextPage, fetchNextPage, isFetchingNextPage } = useInfinitePaginationContext();
+    
+    if (!hasNextPage) {
+        return null;
+    }
+    
+    return (
+        <div style={{ textAlign: 'center', margin: '1rem' }}>
+            <button 
+                disabled={isFetchingNextPage}
+                onClick={() => fetchNextPage()}
+            >
+                {isFetchingNextPage ? 'Loading...' : 'Load more'}
+            </button>
+        </div>
+    );
+};
 
 export const BookList = () => (
-    <InfiniteList>
-        <DataTable>
-            <DataTable.Col source="id" />
-            <DataTable.Col source="title" />
-            <DataTable.Col source="author" field={DateField} />
-        </DataTable>
-    </InfiniteList>
+    <InfiniteListBase>
+        <div>
+            <h1>Books</h1>
+            <BookTable />
+            <InfinitePagination />
+        </div>
+    </InfiniteListBase>
 );
 
 // in src/App.js
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 import jsonServerProvider from 'ra-data-json-server';
 
 import { BookList } from './books';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+    <CoreAdmin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="books" list={BookList} />
-    </Admin>
+    </CoreAdmin>
 );
 
 export default App;
 ```
 
-That's enough to display a basic post list, that users can sort and filter, and load additional records when they reach the bottom of the list.
-
-**Tip**: `<DataTable>` has a sticky header by default, so the user can always see the column names when they scroll down.
+That's enough to display a basic list with infinite scroll functionality. When users click the "Load more" button, additional records are fetched and appended to the list.
 
 ## Props
 
-The props are the same as [the `<List>` component](./List.md):
+`<InfiniteListBase>` accepts the same props as [`<ListBase>`](./ListBase.md), but configured for infinite loading:
 
 | Prop                       | Required                | Type                            | Default                 | Description                                                                                  |
 | -------------------------- | ----------------------- | ------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------- |
 | `children`                 | Required if no render   | `ReactNode`                     | -                       | The component to use to render the list of records.                                          |
 | `render`                   | Required if no children | `ReactNode`                     | -                       | A function that render the list of records, receives the list context as argument.           |
-| `actions`                  | Optional                | `ReactElement`                  | -                       | The actions to display in the toolbar.                                                       |
-| `aside`                    | Optional                | `(listContext) => ReactElement` | -                       | The component to display on the side of the list.                                            |
-| `component`                | Optional                | `Component`                     | `Card`                  | The component to render as the root element.                                                 |
 | `debounce`                 | Optional                | `number`                        | `500`                   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
 | `disable Authentication`   | Optional                | `boolean`                       | `false`                 | Set to `true` to disable the authentication check.                                           |
 | `disable SyncWithLocation` | Optional                | `boolean`                       | `false`                 | Set to `true` to disable the synchronization of the list parameters with the URL.            |
-| `empty`                    | Optional                | `ReactElement`                  | -                       | The component to display when the list is empty.                                             |
-| `empty WhileLoading`       | Optional                | `boolean`                       | `false`                 | Set to `true` to return `null` while the list is loading.                                    |
 | `exporter`                 | Optional                | `function`                      | -                       | The function to call to export the list.                                                     |
-| `filters`                  | Optional                | `ReactElement`                  | -                       | The filters to display in the toolbar.                                                       |
 | `filter`                   | Optional                | `object`                        | -                       | The permanent filter values.                                                                 |
 | `filter DefaultValues`     | Optional                | `object`                        | -                       | The default filter values.                                                                   |
-| `pagination`               | Optional                | `ReactElement`                  | `<Infinite Pagination>` | The pagination component to use.                                                             |
 | `perPage`                  | Optional                | `number`                        | `10`                    | The number of records to fetch per page.                                                     |
 | `queryOptions`             | Optional                | `object`                        | -                       | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                 | Optional                | `string`                        | -                       | The resource name, e.g. `posts`.                                                             |
 | `sort`                     | Optional                | `object`                        | -                       | The initial sort parameters.                                                                 |
 | `storeKey`                 | Optional                | `string`                        | -                       | The key to use to store the current filter & sort.                                           |
-| `title`                    | Optional                | `string`                        | -                       | The title to display in the App Bar.                                                         |
-| `sx`                       | Optional                | `object`                        | -                       | The CSS styles to apply to the component.                                                    |
 
-Check the [`<List>` component](./List.md) for details about each prop.
+Check the [`<ListBase>` component](./ListBase.md) for details about each prop.
 
-Additional props are passed down to the root component (a MUI `<Card>` by default).
+## Pagination
 
-## `pagination`
-
-You can replace the default "load on scroll" pagination (triggered by a component named `<InfinitePagination>`) by a custom pagination component. To get the pagination state and callbacks, you'll need to read the `InfinitePaginationContext`.
+Since `<InfiniteListBase>` is headless, you need to implement your own pagination component. You can use the `useInfinitePaginationContext` hook to get the pagination state and callbacks.
 
 ![load more button](../img/infinite-pagination-load-more.webp)
 
 For example, here is a custom infinite pagination component displaying a "Load More" button at the bottom of the list:
 
-{% raw %}
-
 ```jsx
-import { InfiniteList, useInfinitePaginationContext, DataTable } from 'react-admin';
-import { Box, Button } from '@mui/material';
+import { InfiniteListBase, useInfinitePaginationContext, useListContext } from 'ra-core';
 
 const LoadMore = () => {
     const {
@@ -105,87 +133,164 @@ const LoadMore = () => {
         fetchNextPage,
         isFetchingNextPage,
     } = useInfinitePaginationContext();
+    
     return hasNextPage ? (
-        <Box sx={{ mt: 1, textAlign: "center" }}>
-            <Button
+        <div style={{ marginTop: '1rem', textAlign: "center" }}>
+            <button
                 disabled={isFetchingNextPage}
                 onClick={() => fetchNextPage()}
             >
                 Load more
-            </Button>
-        </Box>
+            </button>
+        </div>
     ) : null;
 };
 
-export const BookList = () => (
-    <InfiniteList pagination={<LoadMore />}>
-        <DataTable>
-            <DataTable.Col source="id" />
-            <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
-        </DataTable>
-    </InfiniteList>
-);
-```
-
-{% endraw %}
-
-## Showing The Record Count
-
-One drawback of the `<InfiniteList>` component is that it doesn't show the number of results. To fix this, you can use `useListContext` to access the `total` property of the list, and render the total number of results in a sticky footer:
-
-![Infinite list with total number of results](../img/infinite-pagination-count.webp)
-
-{% raw %}
-
-```jsx
-import { useListContext, InfinitePagination, InfiniteList } from 'react-admin';
-import { Box, Card, Typography } from '@mui/material';
-
-const CustomPagination = () => {
-    const { total } = useListContext();
+const BookTable = () => {
+    const { data } = useListContext();
+    
     return (
-        <>
-            <InfinitePagination />
-            {total > 0 && (
-                <Box sx={{ position: "sticky", bottom: 0, textAlign: "center" }}>
-                    <Card
-                        elevation={2}
-                        sx={{ px: 2, py: 1, mb: 1, display: 'inline-block' }}
-                    >
-                        <Typography variant="body2">{total} results</Typography>
-                    </Card>
-                </Box>
-            )}
-        </>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody>
+                {data.map(book => (
+                    <tr key={book.id}>
+                        <td>{book.id}</td>
+                        <td>{book.title}</td>
+                        <td>{book.author}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
     );
 };
 
 export const BookList = () => (
-    <InfiniteList pagination={<CustomPagination />}>
-        // ...
-    </InfiniteList>
+    <InfiniteListBase>
+        <div>
+            <BookTable />
+            <LoadMore />
+        </div>
+    </InfiniteListBase>
 );
 ```
 
-{% endraw %}
+## Showing The Record Count
+
+You can use `useListContext` to access the `total` property of the list, and render the total number of results in a sticky footer:
+
+![Infinite list with total number of results](../img/infinite-pagination-count.webp)
+
+```jsx
+import { useListContext, useInfinitePaginationContext, InfiniteListBase } from 'ra-core';
+
+const CustomPagination = () => {
+    const { total } = useListContext();
+    const { hasNextPage, fetchNextPage, isFetchingNextPage } = useInfinitePaginationContext();
+    
+    return (
+        <div>
+            {hasNextPage && (
+                <div style={{ textAlign: 'center', margin: '1rem' }}>
+                    <button
+                        disabled={isFetchingNextPage}
+                        onClick={() => fetchNextPage()}
+                    >
+                        {isFetchingNextPage ? 'Loading...' : 'Load more'}
+                    </button>
+                </div>
+            )}
+            {total > 0 && (
+                <div style={{ 
+                    position: "sticky", 
+                    bottom: 0, 
+                    textAlign: "center",
+                    backgroundColor: 'white',
+                    border: '1px solid #ccc',
+                    padding: '0.5rem',
+                    margin: '0.5rem',
+                    borderRadius: '4px'
+                }}>
+                    <span>{total} results</span>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export const BookList = () => (
+    <InfiniteListBase>
+        <div>
+            {/* Your list content here */}
+            <CustomPagination />
+        </div>
+    </InfiniteListBase>
+);
+```
 
 ## Controlled Mode
 
-`<InfiniteList>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself.
+`<InfiniteListBase>` deduces the resource and the list parameters from the URL. This is fine for a page showing a single list of records, but if you need to display more than one list in a page, you probably want to define the list parameters yourself.
 
-In that case, use the [`resource`](./List.md#resource), [`sort`](./List.md#sort), and [`filter`](./List.md#filter-permanent-filter) props to set the list parameters.
-
-{% raw %}
+In that case, use the [`resource`](./ListBase.md#resource), [`sort`](./ListBase.md#sort), and [`filter`](./ListBase.md#filter-permanent-filter) props to set the list parameters.
 
 ```jsx
-import { InfiniteList, InfinitePagination, SimpleList } from 'react-admin';
-import { Container, Typography } from '@mui/material';
+import { InfiniteListBase, useListContext, useInfinitePaginationContext } from 'ra-core';
+
+const SimpleList = ({ primaryText, secondaryText, tertiaryText }) => {
+    const { data } = useListContext();
+    
+    return (
+        <div>
+            {data.map(item => (
+                <div key={item.id} style={{ 
+                    padding: '1rem', 
+                    borderBottom: '1px solid #eee' 
+                }}>
+                    <div style={{ fontWeight: 'bold' }}>
+                        {primaryText(item)}
+                    </div>
+                    {secondaryText && (
+                        <div style={{ color: '#666' }}>
+                            {secondaryText(item)}
+                        </div>
+                    )}
+                    {tertiaryText && (
+                        <div style={{ fontSize: '0.875rem', color: '#999' }}>
+                            {tertiaryText(item)}
+                        </div>
+                    )}
+                </div>
+            ))}
+        </div>
+    );
+};
+
+const InfinitePagination = () => {
+    const { hasNextPage, fetchNextPage, isFetchingNextPage } = useInfinitePaginationContext();
+    
+    return hasNextPage ? (
+        <div style={{ textAlign: 'center', margin: '1rem' }}>
+            <button
+                disabled={isFetchingNextPage}
+                onClick={() => fetchNextPage()}
+            >
+                {isFetchingNextPage ? 'Loading...' : 'Load more'}
+            </button>
+        </div>
+    ) : null;
+};
 
 const Dashboard = () => (
-    <Container>
-        <Typography>Latest posts</Typography>
-        <InfiniteList 
+    <div style={{ padding: '2rem' }}>
+        <h2>Latest posts</h2>
+        <InfiniteListBase 
             resource="posts"
             sort={{ field: 'published_at', order: 'DESC' }}
             filter={{ is_published: true }}
@@ -196,9 +301,10 @@ const Dashboard = () => (
                 secondaryText={record => `${record.views} views`}
             />
             <InfinitePagination />
-        </InfiniteList>
-        <Typography>Latest comments</Typography>
-        <InfiniteList
+        </InfiniteListBase>
+        
+        <h2>Latest comments</h2>
+        <InfiniteListBase
             resource="comments"
             sort={{ field: 'published_at', order: 'DESC' }}
             perPage={10}
@@ -210,104 +316,106 @@ const Dashboard = () => (
                 tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
             />
             <InfinitePagination />
-        </InfiniteList>
-    </Container>
+        </InfiniteListBase>
+    </div>
 )
 ```
 
-{% endraw %}
+## Using the Hook Directly
 
-## Headless Version
-
-Besides fetching a list of records from the data provider, `<InfiniteList>` renders the default list page layout (title, buttons, filters, a Material-UI `<Card>`, infinite pagination) and its children. If you need a custom list layout, you may prefer the `<InfiniteListBase>` component, which only renders its children in a [`ListContext`](./useListContext.md).
+If you don't need the `ListContext`, you can use the `useInfiniteListController` hook directly, which does the same data fetching as `<InfiniteListBase>` but lets you render the content however you want.
 
 ```jsx
-import { InfiniteListBase, InfinitePagination, WithListContext } from 'react-admin';
-import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
-
-const ProductList = () => (
-    <InfiniteListBase>
-        <Container>
-            <Typography variant="h4">All products</Typography>
-            <WithListContext render={({ isPending, data }) => (
-                    !isPending && (
-                        <Stack spacing={1}>
-                            {data.map(product => (
-                                <Card key={product.id}>
-                                    <CardContent>
-                                        <Typography>{product.name}</Typography>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </Stack>
-                    )
-                )} />
-            <InfinitePagination />
-        </Container>
-    </InfiniteListBase>
-);
-```
-
-The previous example leverages [`<WithListContext>`](./WithListContext.md) to grab the data that `<ListBase>` stores in the `ListContext`.
-
-If you don't need the `ListContext`, you can use the `useInfiniteListController` hook, which does the same data fetching as `<InfiniteListBase>` but lets you render the content.
-
-```jsx
-import { useInfiniteListController } from 'react-admin';
-import { Card, CardContent, Container, Stack, Typography } from '@mui/material';
+import { useInfiniteListController } from 'ra-core';
 
 const ProductList = () => {
-    const { isPending, data } = useInfiniteListController();
+    const { isPending, data, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteListController({
+        resource: 'products'
+    });
+    
     return (
-        <Container>
-            <Typography variant="h4">All products</Typography>
-                {!isPending && (
-                    <Stack spacing={1}>
-                        {data.map(product => (
-                            <Card key={product.id}>
-                                <CardContent>
-                                    <Typography>{product.name}</Typography>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </Stack>
-                )}
-        </Container>
+        <div style={{ padding: '2rem' }}>
+            <h1>All products</h1>
+            {!isPending && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {data.map(product => (
+                        <div key={product.id} style={{ 
+                            border: '1px solid #ccc', 
+                            padding: '1rem',
+                            borderRadius: '4px'
+                        }}>
+                            <h3>{product.name}</h3>
+                        </div>
+                    ))}
+                </div>
+            )}
+            {hasNextPage && (
+                <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                    <button
+                        disabled={isFetchingNextPage}
+                        onClick={() => fetchNextPage()}
+                    >
+                        {isFetchingNextPage ? 'Loading...' : 'Load more'}
+                    </button>
+                </div>
+            )}
+        </div>
     );
 };
 ```
 
-`useInfiniteListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete List page.
+`useInfiniteListController` returns callbacks to sort, filter, and paginate the list, so you can build a complete infinite list page.
 
 ## Security
 
-The `<InfiniteList>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./List.md#disableauthentication) prop.
+The `<InfiniteListBase>` component requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./ListBase.md#disableauthentication) prop.
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<InfiniteList>` will only render if the user has the "list" access to the related resource.
+If your `authProvider` implements [Access Control](../security/Permissions.md#access-control), `<InfiniteListBase>` will only render if the user has the "list" access to the related resource.
 
 For instance, for the `<PostList>` page below:
 
 ```tsx
-import { InfiniteList, DataTable } from 'react-admin';
+import { InfiniteListBase, useListContext } from 'ra-core';
+
+const PostTable = () => {
+    const { data } = useListContext();
+    
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Published At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {data.map(post => (
+                    <tr key={post.id}>
+                        <td>{post.title}</td>
+                        <td>{post.author}</td>
+                        <td>{post.published_at}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
 
 // Resource name is "posts"
 const PostList = () => (
-    <InfiniteList>
-        <DataTable>
-            <DataTable.Col source="title" />
-            <DataTable.Col source="author" />
-            <DataTable.Col source="published_at" />
-        </DataTable>
-    </InfiniteList>
+    <InfiniteListBase>
+        <PostTable />
+    </InfiniteListBase>
 );
 ```
 
-`<InfiniteList>` will call `authProvider.canAccess()` using the following parameters:
+`<InfiniteListBase>` will call `authProvider.canAccess()` using the following parameters:
 
 ```js
 { action: "list", resource: "posts" }
 ```
 
-Users without access will be redirected to the [Access Denied page](./Admin.md#accessdenied).
+Users without access will be redirected to the [Access Denied page](../app-configuration/Admin.md#accessdenied).
 
-**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./List.md#disableauthentication).
+**Note**: Access control is disabled when you use [the `disableAuthentication` prop](./ListBase.md#disableauthentication).

@@ -1,18 +1,13 @@
 ---
-layout: default
-title: "ListIterator"
-storybook_path: ra-core-controller-list-listiterator--using-render
+title: "<ListIterator>"
 ---
-
-# `<ListIterator>`
 
 ## Usage
 
 Use the `<ListIterator>` component to render a list of records in a custom way. Pass a `render` function to customize how each record is displayed.
 
-{% raw %}
 ```jsx
-import { ListBase, ListIterator } from 'react-admin';
+import { ListBase, ListIterator } from 'ra-core';
 
 const MostVisitedPosts = () => (
     <ListBase
@@ -28,21 +23,14 @@ const MostVisitedPosts = () => (
     </ListBase>
 );
 ```
-{% endraw %}
 
 You can use `<ListIterator>` as a child of any component that provides a [`ListContext`](./useListContext.md), such as:
 
-- [`<List>`](./List.md),
-- [`<ListGuesser>`](./ListGuesser.md),
-- [`<ListBase>`](./ListBase.md),
-- [`<ReferenceArrayField>`](./ReferenceArrayField.md),
-- [`<ReferenceManyField>`](./ReferenceManyField.md)
+- [`<ListBase>`](./ListBase.md)
+- [`<InfiniteListBase>`](./InfiniteListBase.md)
+- [`<ReferenceArrayFieldBase>`](./ReferenceArrayFieldBase.md)
 
-**Tip**: React-admin provides several list components that use `<ListIterator>` internally, that you should prefer if you want to render a list of records in a standard way:
-
-- [`<DataTable>`](./DataTable.md) renders a list of records in a table format.
-- [`<SimpleList>`](./SimpleList.md) renders a list of records in a simple format, suitable for mobile devices.
-- [`<SingleFieldList>`](./SingleFieldList.md) renders a list of records with a single field.
+**Tip**: Since this is the headless version, you have full control over how to render lists. `<ListIterator>` is a low-level component that helps you iterate over records while respecting the loading and error states from the `ListContext`.
 
 ## Props
 
@@ -63,11 +51,10 @@ Additional props are passed to `react-hook-form`'s [`useForm` hook](https://reac
 
 ## `children`
 
-If provided, `ListIterator` will render the `children` prop once for each record, inside a [`RecordContext`](./useRecordContext.md).
+If provided, `ListIterator` will render the `children` prop once for each record, inside a [`RecordContext`](../common/useRecordContext.md).
 
-{% raw %}
 ```tsx
-import { ListIterator, useRecordContext } from 'react-admin';
+import { ListIterator, useRecordContext } from 'ra-core';
 
 const PostList = () => (
     <ul>
@@ -83,7 +70,6 @@ const PostItem = () => {
     return <li>{record.title} - {record.views}</li>;
 };
 ```
-{% endraw %}
 
 **Note**: You can't provide both the `children` and the `render` props. If both are provided, `<ListIterator>` will use the `render` prop.
 
@@ -91,9 +77,8 @@ const PostItem = () => {
 
 Although `<ListIterator>` reads the data from the closest [`<ListContext>`](./useListContext), you may provide it yourself when no such context is available:
 
-{% raw %}
 ```jsx
-import { ListIterator } from 'react-admin';
+import { ListIterator } from 'ra-core';
 import { customerSegments } from './customerSegments.json';
 
 const PostList = () => (
@@ -106,15 +91,13 @@ const PostList = () => (
     </ul>
 );
 ```
-{% endraw %}
 
 ## `empty`
 
 To provide a custom UI when there is no data, use the `empty` prop.
 
-{% raw %}
 ```jsx
-import { ListBase, ListIterator } from 'react-admin';
+import { ListBase, ListIterator } from 'ra-core';
 
 const PostList = () => (
     <ul>
@@ -125,15 +108,13 @@ const PostList = () => (
     </ul>
 );
 ```
-{% endraw %}
 
 ## `error`
 
 To provide a custom UI when the data fetching fails, use the `error` prop.
 
-{% raw %}
 ```jsx
-import { ListIterator } from 'react-admin';
+import { ListIterator } from 'ra-core';
 
 const PostList = () => (
     <ul>
@@ -144,15 +125,13 @@ const PostList = () => (
     </ul>
 );
 ```
-{% endraw %}
 
 ## `isPending`
 
 Although `<ListIterator>` reads the `isPending` from the closest [`<ListContext>`](./useListContext), you may provide it yourself when no such context is available. This is useful when dealing with data not coming from the `dataProvider`:
 
-{% raw %}
 ```tsx
-import { ListIterator } from 'react-admin';
+import { ListIterator } from 'ra-core';
 import { useQuery } from '@tanstack/react-query';
 import { fetchPostAnalytics } from './fetchPostAnalytics';
 
@@ -173,36 +152,31 @@ const DashboardMostVisitedPosts = () => {
     );
 }
 ```
-{% endraw %}
 
 
 ## `loading`
 
 To provide a custom UI while the data is loading, use the `loading` prop.
 
-{% raw %}
 ```jsx
-import { ListIterator } from 'react-admin';
-import { Skeleton } from 'my-favorite-ui-lib';
+import { ListIterator } from 'ra-core';
 
 const PostList = () => (
     <ul>
         <ListIterator
-            loading={<Skeleton />}
+            loading={<li>Loading posts...</li>}
             render={record => <li>{record.title} - {record.views}</li>}
         />
     </ul>
 );
 ```
-{% endraw %}
 
 ## `render`
 
 If provided, `ListIterator` will call the `render` prop for each record. This is useful when the components you render need the record data to render themselves, or when you want to pass additional props to the rendered component.
 
-{% raw %}
 ```tsx
-import { ListBase, ListIterator } from 'react-admin';
+import { ListIterator } from 'ra-core';
 
 const PostList = () => (
     <ul>
@@ -212,7 +186,6 @@ const PostList = () => (
     </ul>
 );
 ```
-{% endraw %}
 
 **Note**: You can't provide both the `children` and the `render` props. If both are provided, `<ListIterator>` will use the `render` prop.
 
@@ -220,9 +193,8 @@ const PostList = () => (
 
 Although `<ListIterator>` reads the total from the closest [`<ListContext>`](./useListContext), you may provide it yourself when no such context is available:
 
-{% raw %}
 ```jsx
-import { ListIterator } from 'react-admin';
+import { ListIterator } from 'ra-core';
 import { customerSegments } from './customerSegments.json';
 
 const PostList = () => (
@@ -235,5 +207,4 @@ const PostList = () => (
     </ul>
 );
 ```
-{% endraw %}
 

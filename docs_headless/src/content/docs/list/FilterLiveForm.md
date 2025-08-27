@@ -1,14 +1,10 @@
 ---
-layout: default
-title: "FilterLiveForm"
-storybook_path: ra-ui-materialui-list-filter-filterliveform--with-filter-list-section
+title: "<FilterLiveForm>"
 ---
-
-# `<FilterLiveForm>`
 
 This component offers a convenient way to create a form that automatically updates the filters when the user changes its child input values.
 
-It fits nicely alongside a [`<FilterList>`](./FilterList.md) component, but you can also use it at other places to create your own filter UI.
+It fits nicely alongside a filter list component, but you can also use it at other places to create your own filter UI.
 
 <video controls autoplay playsinline muted loop>
   <source src="../img/FilterLiveForm.mp4" type="video/mp4"/>
@@ -17,84 +13,87 @@ It fits nicely alongside a [`<FilterList>`](./FilterList.md) component, but you 
 
 ## Usage
 
-Use `<FilterLiveForm>` inside a component that provides a [`ListContext`](./useListContext.md), such as [`<List>`](./List.md). Use any React Admin [input component](./Inputs.md) as its children.
+Use `<FilterLiveForm>` inside a component that provides a [`ListContext`](./useListContext.md), such as [`<ListBase>`](./ListBase.md). Use any React Admin input component (i.e. leveraging [`useInput`](../inputs/useInput.md)) as its children.
 
-Here is an example showing how you can use `<FilterLiveForm>` in a sidebar for the `<List>` view, alongside a [`<FilterList>`](./FilterList.md):
+Here is an example showing how you can use `<FilterLiveForm>` with input components:
 
-{% raw %}
 ```tsx
 import * as React from 'react';
-import CategoryIcon from '@mui/icons-material/LocalOffer';
-import Person2Icon from '@mui/icons-material/Person2';
-import TitleIcon from '@mui/icons-material/Title';
-import { Card, CardContent } from '@mui/material';
 import {
-    AutocompleteInput,
     FilterLiveForm,
-    DataTable,
-    FilterList,
-    FilterListItem,
-    FilterListSection,
-    List,
-    ReferenceField,
-    ReferenceInput,
-    TextInput,
-} from 'react-admin';
+    ListBase,
+    ReferenceFieldBase,
+    ReferenceInputBase,
+    useListContext,
+} from 'ra-core';
+import { TextInput } from './TextInput';
+import { AutocompleteInput } from './AutocompleteInput';
 
 const BookListAside = () => (
-    <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
-        <CardContent>
-            <FilterList label="Century" icon={<CategoryIcon />}>
-                <FilterListItem
-                    label="21st"
-                    value={{ year_gte: 2000, year_lte: undefined }}
-                />
-                <FilterListItem
-                    label="20th"
-                    value={{ year_gte: 1900, year_lte: 1999 }}
-                />
-                <FilterListItem
-                    label="19th"
-                    value={{ year_gte: 1800, year_lte: 1899 }}
-                />
-            </FilterList>
-            <FilterListSection label="Title" icon={<TitleIcon />}>
+    <div style={{ marginRight: '1rem', marginTop: '3rem', width: '250px' }}>
+        <div>
+            <div>
+                <h4>Title</h4>
                 <FilterLiveForm>
-                    <TextInput source="title" resettable helperText={false} />
+                    <TextInput source="title" />
                 </FilterLiveForm>
-            </FilterListSection>
-            <FilterListSection label="Author" icon={<Person2Icon />}>
+            </div>
+            <div>
+                <h4>Author</h4>
                 <FilterLiveForm>
-                    <ReferenceInput source="authorId" reference="authors">
-                        <AutocompleteInput helperText={false} />
-                    </ReferenceInput>
+                    <ReferenceInputBase source="authorId" reference="authors">
+                        <AutocompleteInput />
+                    </ReferenceInputBase>
                 </FilterLiveForm>
-            </FilterListSection>
-        </CardContent>
-    </Card>
+            </div>
+        </div>
+    </div>
 );
+
+const BookTable = () => {
+    const { data } = useListContext();
+    
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {data.map(record => (
+                    <tr key={record.id}>
+                        <td>{record.title}</td>
+                        <td>
+                            <ReferenceFieldBase 
+                                source="authorId" 
+                                reference="authors"
+                                render={({ record: author }) => author?.name || record.authorId}
+                            />
+                        </td>
+                        <td>{record.year}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
 
 export const BookList = () => (
-    <List aside={<BookListAside />}>
-        <DataTable>
-            <DataTable.Col source="title" />
-            <DataTable.Col label="Autor" source="authorId">
-                <ReferenceField source="authorId" reference="authors" />
-            </DataTable.Col>
-            <DataTable.Col source="year" />
-        </DataTable>
-    </List>
+    <ListBase>
+        <div style={{ display: 'flex' }}>
+            <BookListAside />
+            <BookTable />
+        </div>
+    </ListBase>
 );
 ```
-{% endraw %}
-
-**Tip:** This example leverages `<FilterListSection>`, the wrapper used internally by `<FilterList>`, in order to obtain a consistent look and feel for the filters.
 
 ![FilterLiveForm](../img/FilterLiveForm.png)
 
 **Tip:** `<FilterLiveForm>` accepts multiple children, but you can also use several `<FilterLiveForm>` components in the same filter UI, just like we did above.
-
-**Tip:** For simple cases where you only need a text input, you can use the [`<FilterLiveSearch>`](./FilterLiveSearch.md) component, which combines that logic in a single component.
 
 ## Props
 
@@ -114,37 +113,51 @@ Additional props are passed to `react-hook-form`'s [`useForm` hook](https://reac
 `<FilterLiveForm>` accepts any children. It simply provides the required contexts for the inputs to work as filters.
 
 ```tsx
+import { FilterLiveForm } from 'ra-core';
+import { TextInput } from './TextInput';
+
 <FilterLiveForm>
-    <TextInput source="title" resettable helperText={false} />
-    <TextInput source="author" resettable helperText={false} />
+    <TextInput source="title" />
+    <TextInput source="author" />
 </FilterLiveForm>
 ```
+
+**Tip:** Input components must be react-admin inputs, i.e. inputs that leverage the [`useInput`](../inputs/useInput.md) hook.
 
 ## `debounce`
 
 You can use the `debounce` prop to customize the delay before the filters are applied. The default value is `500` milliseconds.
 
 ```tsx
+import { FilterLiveForm } from 'ra-core';
+import { TextInput } from './TextInput';
+
 <FilterLiveForm debounce={1000}>
-    <TextInput source="title" resettable helperText={false} />
-    <TextInput source="author" resettable helperText={false} />
+    <TextInput source="title" />
+    <TextInput source="author" />
 </FilterLiveForm>
 ```
 
 You can also disable the debounce by setting the `debounce` prop to `false`.
 
 ```tsx
+import { FilterLiveForm } from 'ra-core';
+import { TextInput } from './TextInput';
+
 <FilterLiveForm debounce={false}>
-    <TextInput source="title" resettable helperText={false} />
-    <TextInput source="author" resettable helperText={false} />
+    <TextInput source="title" />
+    <TextInput source="author" />
 </FilterLiveForm>
 ```
 
 ## `validate`
 
-Just like for [`<Form>`](./Form.md), you can provide a `validate` function to validate the form values.
+Just like for [`<Form>`](../create-edit/Form.md), you can provide a `validate` function to validate the form values.
 
 ```tsx
+import { FilterLiveForm } from 'ra-core';
+import { TextInput } from './TextInput';
+
 const validateFilters = values => {
     const errors: any = {};
     if (!values.author) {
@@ -155,8 +168,8 @@ const validateFilters = values => {
 
 const GlobalValidation = () => (
     <FilterLiveForm validate={validateFilters}>
-        <TextInput source="title" resettable helperText={false} />
-        <TextInput source="author" resettable helperText={false} />
+        <TextInput source="title" />
+        <TextInput source="author" />
     </FilterLiveForm>
 );
 ```
