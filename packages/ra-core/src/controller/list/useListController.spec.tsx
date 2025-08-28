@@ -7,7 +7,6 @@ import {
     screen,
     act,
 } from '@testing-library/react';
-import { onlineManager } from '@tanstack/react-query';
 import { testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
 import { CoreAdminContext } from '../../core';
@@ -23,11 +22,7 @@ import {
     CanAccess,
     DisableAuthentication,
 } from './useListController.security.stories';
-import {
-    Basic,
-    defaultDataProvider,
-    Offline,
-} from './useListController.stories';
+import { Basic, defaultDataProvider } from './useListController.stories';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -35,10 +30,6 @@ describe('useListController', () => {
         resource: 'posts',
         debounce: 200,
     };
-
-    beforeEach(() => {
-        onlineManager.setOnline(true);
-    });
 
     describe('queryOptions', () => {
         it('should accept custom client query options', async () => {
@@ -691,37 +682,6 @@ describe('useListController', () => {
                     })
                 );
             });
-        });
-    });
-
-    describe('offline', () => {
-        it('should display a warning if showing placeholder data when offline', async () => {
-            render(<Offline />);
-            fireEvent.click(await screen.findByText('Go online'));
-            await screen.findByText('1 - Morbi suscipit malesuada');
-            fireEvent.click(await screen.findByText('Go offline'));
-            fireEvent.click(await screen.findByText('Page 2'));
-            await screen.findByText(
-                'ra.message.placeholder_data_warning - warning'
-            );
-        });
-
-        it('should not display a warning if showing stale data when offline', async () => {
-            render(<Offline />);
-            fireEvent.click(await screen.findByText('Go online'));
-            await screen.findByText('1 - Morbi suscipit malesuada');
-            fireEvent.click(await screen.findByText('Page 2'));
-            await screen.findByText('4 - Integer commodo est');
-            fireEvent.click(await screen.findByText('Page 1'));
-            await screen.findByText('1 - Morbi suscipit malesuada');
-            fireEvent.click(await screen.findByText('Go offline'));
-            fireEvent.click(await screen.findByText('Page 2'));
-            await screen.findByText('4 - Integer commodo est');
-            expect(
-                screen.queryByText(
-                    'ra.message.placeholder_data_warning - warning'
-                )
-            ).toBeNull();
         });
     });
 

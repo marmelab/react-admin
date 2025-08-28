@@ -87,6 +87,7 @@ The `<ListBase>` component accepts the following props:
 * [`exporter`](./List.md#exporter)
 * [`filter`](./List.md#filter-permanent-filter)
 * [`filterDefaultValues`](./List.md#filterdefaultvalues)
+* [`offline`](./List.md#offline)
 * [`perPage`](./List.md#perpage)
 * [`queryOptions`](./List.md#queryoptions)
 * `render`

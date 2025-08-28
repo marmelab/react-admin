@@ -8,6 +8,7 @@ import {
     DataProvider,
     GetListParams,
     WithListContext,
+    IsOffline,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
@@ -17,6 +18,7 @@ import {
     Button,
     Link as MuiLink,
     ThemeOptions,
+    Alert,
 } from '@mui/material';
 import { List } from './List';
 import { SimpleList } from './SimpleList';
@@ -29,8 +31,9 @@ import { BulkDeleteButton, ListButton, SelectAllButton } from '../button';
 import { ShowGuesser } from '../detail';
 import TopToolbar from '../layout/TopToolbar';
 import { BulkActionsToolbar } from './BulkActionsToolbar';
-import { deepmerge } from '@mui/utils';
 import { defaultLightTheme } from '../theme';
+import { onlineManager } from '@tanstack/react-query';
+import { deepmerge } from '@mui/utils';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -194,6 +197,21 @@ export const Actions = () => (
                             </Box>
                         }
                     >
+                        <BookList />
+                    </List>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const NoActions = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={defaultDataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <List actions={false}>
                         <BookList />
                     </List>
                 )}
@@ -917,3 +935,77 @@ export const WithRenderProp = () => (
         </Admin>
     </TestMemoryRouter>
 );
+
+export const Offline = ({
+    isOnline = true,
+    offline,
+}: {
+    isOnline?: boolean;
+    offline?: React.ReactNode;
+}) => {
+    React.useEffect(() => {
+        onlineManager.setOnline(isOnline);
+    }, [isOnline]);
+    return (
+        <TestMemoryRouter initialEntries={['/books']}>
+            <Admin dataProvider={defaultDataProvider}>
+                <Resource
+                    name="books"
+                    list={() => (
+                        <List offline={offline}>
+                            <BookListOffline />
+                        </List>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+const BookListOffline = () => {
+    const { error, isPending } = useListContext();
+    if (isPending) {
+        return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+    return (
+        <>
+            <IsOffline>
+                <Alert severity="warning">
+                    You are offline, the data may be outdated
+                </Alert>
+            </IsOffline>
+            <SimpleList
+                primaryText="%{title} (%{year})"
+                secondaryText="%{summary}"
+                tertiaryText={record => record.year}
+            />
+        </>
+    );
+};
+
+const CustomOffline = () => {
+    return <Alert severity="warning">You are offline!</Alert>;
+};
+
+Offline.args = {
+    isOnline: true,
+    offline: 'default',
+};
+
+Offline.argTypes = {
+    isOnline: {
+        control: { type: 'boolean' },
+    },
+    offline: {
+        name: 'Offline component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomOffline />,
+        },
+    },
+};

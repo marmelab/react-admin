@@ -7,8 +7,16 @@ import {
     useListContext,
     useInfinitePaginationContext,
     TestMemoryRouter,
+    IsOffline,
 } from 'ra-core';
-import { Box, Button, Card, ThemeOptions, Typography } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    Card,
+    ThemeOptions,
+    Typography,
+} from '@mui/material';
 import { InfiniteList } from './InfiniteList';
 import { SimpleList } from './SimpleList';
 import { DataTable, type DataTableProps } from './datatable';
@@ -24,6 +32,7 @@ import { TopToolbar, Layout } from '../layout';
 import { BulkActionsToolbar } from './BulkActionsToolbar';
 import { deepmerge } from '@mui/utils';
 import { defaultLightTheme } from '../theme';
+import { onlineManager } from '@tanstack/react-query';
 
 export default {
     title: 'ra-ui-materialui/list/InfiniteList',
@@ -522,3 +531,82 @@ export const WithRenderProp = () => (
         />
     </Admin>
 );
+
+export const Offline = ({
+    isOnline = true,
+    offline,
+    pagination,
+}: {
+    isOnline?: boolean;
+    offline?: React.ReactNode;
+    pagination?: React.ReactNode;
+}) => {
+    React.useEffect(() => {
+        onlineManager.setOnline(isOnline);
+    }, [isOnline]);
+    return (
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                list={() => (
+                    <InfiniteList offline={offline} pagination={pagination}>
+                        <BookListOffline />
+                    </InfiniteList>
+                )}
+            />
+        </Admin>
+    );
+};
+
+const BookListOffline = () => {
+    const { error, isPending } = useListContext();
+    if (isPending) {
+        return <div>Loading...</div>;
+    }
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+    return (
+        <>
+            <IsOffline>
+                <Alert severity="warning">
+                    You are offline, the data may be outdated
+                </Alert>
+            </IsOffline>
+            <SimpleList primaryText="%{title}" secondaryText="%{author}" />
+        </>
+    );
+};
+
+const CustomOffline = () => {
+    return <Alert severity="warning">You are offline!</Alert>;
+};
+
+Offline.args = {
+    isOnline: true,
+    offline: 'default',
+    pagination: 'infinite',
+};
+
+Offline.argTypes = {
+    isOnline: {
+        control: { type: 'boolean' },
+    },
+    pagination: {
+        control: { type: 'radio' },
+        options: ['infinite', 'classic'],
+        mapping: {
+            infinite: <InfinitePagination />,
+            classic: <DefaultPagination />,
+        },
+    },
+    offline: {
+        name: 'Offline component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomOffline />,
+        },
+    },
+};

@@ -1,12 +1,10 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
-import { onlineManager } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../../core';
 import { ListController } from './ListController';
 import type { DataProvider } from '../../types';
 import type { ListControllerResult } from './useListController';
-import { useNotificationContext } from '../../notification';
 import { TestMemoryRouter } from '../..';
 
 export default {
@@ -99,95 +97,6 @@ export const Basic = ({
     <TestMemoryRouter>
         <CoreAdminContext dataProvider={dataProvider}>
             <ListController resource="posts">{children}</ListController>
-        </CoreAdminContext>
-    </TestMemoryRouter>
-);
-
-const OnlineManager = () => {
-    const [online, setOnline] = React.useState(onlineManager.isOnline());
-    React.useEffect(() => {
-        const unsubscribe = onlineManager.subscribe(isOnline => {
-            setOnline(isOnline);
-        });
-        return unsubscribe;
-    }, []);
-    return (
-        <div>
-            <button
-                onClick={() => {
-                    onlineManager.setOnline(true);
-                }}
-            >
-                Go online
-            </button>
-            <button
-                onClick={() => {
-                    onlineManager.setOnline(false);
-                }}
-            >
-                Go offline
-            </button>
-            <p>{online ? 'Online' : 'Offline'}</p>
-        </div>
-    );
-};
-
-const Notifications = () => {
-    const { notifications, takeNotification } = useNotificationContext();
-    return (
-        <div>
-            <p>NOTIFICATIONS</p>
-            <ul>
-                {notifications.map(({ message, type }, id) => (
-                    <li key={id}>
-                        {message} - {type}
-                    </li>
-                ))}
-            </ul>
-            <button onClick={takeNotification}>Take notification</button>
-        </div>
-    );
-};
-
-export const Offline = () => (
-    <TestMemoryRouter>
-        <CoreAdminContext dataProvider={defaultDataProvider}>
-            <OnlineManager />
-            <ListController resource="posts" perPage={3}>
-                {params => (
-                    <div>
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                            }}
-                        >
-                            <button onClick={() => params.setPage(1)}>
-                                Page 1
-                            </button>
-                            <button onClick={() => params.setPage(2)}>
-                                Page 2
-                            </button>
-                            <button onClick={() => params.setPage(3)}>
-                                Page 3
-                            </button>
-                        </div>
-                        <ul
-                            style={{
-                                listStyleType: 'none',
-                            }}
-                        >
-                            {params.data?.map(record => (
-                                <li key={record.id}>
-                                    {record.id} - {record.title}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-            </ListController>
-            <Notifications />
         </CoreAdminContext>
     </TestMemoryRouter>
 );

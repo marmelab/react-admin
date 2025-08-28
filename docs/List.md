@@ -69,6 +69,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
 | `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
 | `filter DefaultValues`    | Optional | `object`       | -              | The default filter values.                                                                   |
+| `offline`                 | Optional | `ReactNode`    | `<Offline>`    | The component to render when there is no connectivity and there is no data in the cache      |
 | `pagination`              | Optional | `ReactElement` | `<Pagination>` | The pagination component to use.                                                             |
 | `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
 | `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
@@ -772,6 +773,43 @@ export const PostList = () => (
 
 ```js
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
+```
+
+## `offline`
+
+By default, `<List>` renders the `<Offline>` component when there is no connectivity and there are no records in the cache yet for the current parameters (page, sort, etc.). You can provide your own component via the `offline` prop:
+
+```jsx
+import { List } from 'react-admin';
+import { Alert } from '@mui/material';
+
+const offline = <Alert severity="warning">No network. Could not load the posts.</Alert>;
+
+export const PostList = () => (
+    <List offline={offline}>
+        ...
+    </List>
+);
+```
+
+**Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+import { List, IsOffline } from 'react-admin';
+import { Alert } from '@mui/material';
+
+const offline = <Alert severity="warning">No network. Could not load the posts.</Alert>;
+
+export const PostList = () => (
+    <List offline={offline}>
+        <IsOffline>
+           <Alert severity="warning">
+                You are offline, the data may be outdated
+            </Alert>
+        </IsOffline>
+        ...
+    </List>
+);
 ```
 
 ## `pagination`

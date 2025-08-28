@@ -148,16 +148,6 @@ export const useListController = <
             ...otherQueryOptions,
         }
     );
-    useEffect(() => {
-        if (isPaused && isPlaceholderData) {
-            notify('ra.message.placeholder_data_warning', {
-                type: 'warning',
-                messageArgs: {
-                    _: 'Network issue: Data refresh failed.',
-                },
-            });
-        }
-    }, [isPaused, isPlaceholderData, notify]);
 
     // change page if there is no data
     useEffect(() => {
@@ -216,7 +206,9 @@ export const useListController = <
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
+        isPaused,
         isPending,
+        isPlaceholderData,
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,

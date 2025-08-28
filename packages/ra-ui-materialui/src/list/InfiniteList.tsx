@@ -103,6 +103,8 @@ export const InfiniteList = <RecordType extends RaRecord = any>(
             resource={resource}
             sort={sort}
             storeKey={storeKey}
+            // Disable offline support from InfiniteListBase as it is handled by ListView to keep the ListView container
+            offline={false}
         >
             <ListView<RecordType> {...rest} pagination={pagination} />
         </InfiniteListBase>

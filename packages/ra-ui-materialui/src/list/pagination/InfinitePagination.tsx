@@ -6,6 +6,7 @@ import {
     useEvent,
 } from 'ra-core';
 import { Box, CircularProgress, type SxProps, type Theme } from '@mui/material';
+import { Offline } from '../../Offline';
 
 /**
  * A pagination component that loads more results when the user scrolls to the bottom of the list.
@@ -25,10 +26,11 @@ import { Box, CircularProgress, type SxProps, type Theme } from '@mui/material';
  * );
  */
 export const InfinitePagination = ({
+    offline = defaultOffline,
     options = defaultOptions,
     sx,
 }: InfinitePaginationProps) => {
-    const { isPending } = useListContext();
+    const { isPaused, isPending } = useListContext();
     const { fetchNextPage, hasNextPage, isFetchingNextPage } =
         useInfinitePaginationContext();
 
@@ -38,16 +40,25 @@ export const InfinitePagination = ({
         );
     }
 
+    const [hasRequestedNextPage, setHasRequestedNextPage] =
+        React.useState(false);
     const observerElem = useRef(null);
-
     const handleObserver = useEvent<[IntersectionObserverEntry[]], void>(
         entries => {
             const [target] = entries;
             if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+                setHasRequestedNextPage(true);
                 fetchNextPage();
             }
         }
     );
+
+    useEffect(() => {
+        // Whenever the query is unpaused, reset the requested next page state
+        if (!isPaused) {
+            setHasRequestedNextPage(false);
+        }
+    }, [isPaused]);
 
     useEffect(() => {
         const element = observerElem.current;
@@ -66,6 +77,13 @@ export const InfinitePagination = ({
 
     if (isPending) return null;
 
+    const showOffline =
+        isPaused &&
+        hasNextPage &&
+        hasRequestedNextPage &&
+        offline !== false &&
+        offline !== undefined;
+
     return (
         <Box
             ref={observerElem}
@@ -77,16 +95,20 @@ export const InfinitePagination = ({
                 ...(Array.isArray(sx) ? sx : [sx]),
             ]}
         >
-            {isFetchingNextPage && hasNextPage && (
+            {showOffline ? (
+                offline
+            ) : isFetchingNextPage && hasNextPage ? (
                 <CircularProgress size="1.5em" />
-            )}
+            ) : null}
         </Box>
     );
 };
 
 const defaultOptions = { threshold: 0 };
+const defaultOffline = <Offline />;
 
 export interface InfinitePaginationProps {
+    offline?: React.ReactNode;
     options?: IntersectionObserverInit;
     sx?: SxProps<Theme>;
 }
