@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReferenceArrayInputBase, ReferenceArrayInputBaseProps } from 'ra-core';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import { Offline } from '../Offline';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -70,7 +71,11 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
  * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
-    const { children = defaultChildren, ...rest } = props;
+    const {
+        children = defaultChildren,
+        offline = defaultOffline,
+        ...rest
+    } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInput> only accepts a single child (like <AutocompleteArrayInput>)'
@@ -78,11 +83,14 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
     }
 
     return (
-        <ReferenceArrayInputBase {...rest}>{children}</ReferenceArrayInputBase>
+        <ReferenceArrayInputBase {...rest} offline={offline}>
+            {children}
+        </ReferenceArrayInputBase>
     );
 };
 
 const defaultChildren = <AutocompleteArrayInput />;
+const defaultOffline = <Offline variant="inline" />;
 
 export interface ReferenceArrayInputProps extends ReferenceArrayInputBaseProps {
     label?: string;

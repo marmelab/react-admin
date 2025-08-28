@@ -79,7 +79,14 @@ import { ChoicesContextValue } from '../../form';
 export const ReferenceArrayInputBase = <RecordType extends RaRecord = any>(
     props: ReferenceArrayInputBaseProps<RecordType>
 ) => {
-    const { children, filter = defaultFilter, reference, render, sort } = props;
+    const {
+        children,
+        filter = defaultFilter,
+        offline,
+        reference,
+        render,
+        sort,
+    } = props;
     if (children && React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInputBase> only accepts a single child (like <AutocompleteArrayInput>)'
@@ -97,11 +104,21 @@ export const ReferenceArrayInputBase = <RecordType extends RaRecord = any>(
         sort,
         filter,
     });
+    const { isPaused, isPending } = controllerProps;
+    // isPending is true: there's no cached data and no query attempt was finished yet
+    // isPaused is true: the query was paused (e.g. due to a network issue)
+    // Both true: we're offline and have no data to show
+    const shouldRenderOffline =
+        isPaused && isPending && offline !== undefined && offline !== false;
 
     return (
         <ResourceContextProvider value={reference}>
             <ChoicesContextProvider value={controllerProps}>
-                {render ? render(controllerProps) : children}
+                {shouldRenderOffline
+                    ? offline
+                    : render
+                      ? render(controllerProps)
+                      : children}
             </ChoicesContextProvider>
         </ResourceContextProvider>
     );
@@ -114,4 +131,5 @@ export interface ReferenceArrayInputBaseProps<RecordType extends RaRecord = any>
         UseReferenceArrayInputParams<RecordType> {
     children?: React.ReactNode;
     render?: (context: ChoicesContextValue<RecordType>) => React.ReactNode;
+    offline?: React.ReactNode;
 }
