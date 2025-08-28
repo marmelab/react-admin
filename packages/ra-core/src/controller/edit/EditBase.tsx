@@ -42,7 +42,6 @@ import { useIsAuthPending } from '../../auth';
  */
 export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
     children,
-    disableAuthentication,
     loading,
     offline,
     render,
@@ -65,7 +64,7 @@ export const EditBase = <RecordType extends RaRecord = any, ErrorType = Error>({
 
     const shouldRenderLoading =
         isAuthPending &&
-        !disableAuthentication &&
+        !props.disableAuthentication &&
         loading !== false &&
         loading !== undefined;
 

@@ -110,13 +110,16 @@ export const WithAuthProviderNoAccessControl = ({
         checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
     },
     dataProvider = defaultDataProvider,
+    ShowProps,
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
+    ShowProps?: Partial<ShowBaseProps>;
 }) => (
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <ShowBase
             {...defaultProps}
+            {...ShowProps}
             loading={<div>Authentication loading...</div>}
         >
             <Child />
