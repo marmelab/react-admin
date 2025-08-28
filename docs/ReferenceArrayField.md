@@ -85,10 +85,11 @@ You can change how the list of related records is rendered by passing a custom c
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `source`       | Required | `string`                                                                          | -                                | Name of the property to display                                                                        |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'tags'                                       |
-| `children`     | Optional&nbsp;* | `Element`                                                                         | `<SingleFieldList>`              | One or several elements that render a list of records based on a `ListContext`                         |
+| `children`     | Optional&nbsp;* | `ReactNode`                                                                         | `<SingleFieldList>`              | One or several elements that render a list of records based on a `ListContext`                         |
 | `render`     | Optional&nbsp;* | `(listContext) => Element`                                                                         | `<SingleFieldList>`              | A function that takes a list context and render a list of records                         |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
-| `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
+| `offline`      | Optional | `ReactNode`                                                              | `<Offline variant="inline" />` | The component to render when there is no connectivity and the record isn't in the cache |
+| `pagination`   | Optional | `ReactNode`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
@@ -233,6 +234,47 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
 
 ```jsx
 <ReferenceArrayField label="resource.posts.fields.tags" source="tag_ids" reference="tags" />
+```
+
+## `offline`
+
+By default, `<ReferenceArrayField>` renders the `<Offline variant="inline">` when there is no connectivity and the records haven't been cached yet. You can provide your own component via the `offline` prop:
+
+```jsx
+import { ReferenceArrayField, Show } from 'react-admin';
+import { Alert } from '@mui/material';
+
+export const PostShow = () => (
+    <Show>
+        <ReferenceArrayField
+            source="tag_ids"
+            reference="tags"
+            offline={<Alert severity="warning">No network. Could not load the tags.</Alert>}
+        >
+            ...
+        </ReferenceArrayField>
+    </Show>
+);
+```
+
+**Tip**: If the records are in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+import { IsOffline, ReferenceArrayField, Show } from 'react-admin';
+import { Alert } from '@mui/material';
+
+export const PostShow = () => (
+    <Show>
+        <ReferenceArrayField source="tag_ids" reference="tags">
+            <IsOffline>
+                <Alert severity="warning">
+                    You are offline, tags may be outdated
+                </Alert>
+            </IsOffline>
+            ...
+        </ReferenceArrayField>
+    </Show>
+);
 ```
 
 ## `pagination`

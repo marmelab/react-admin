@@ -92,6 +92,7 @@ You can change how the list of related records is rendered by passing a custom c
 | `children`     | Optional\* | `Element`                                                                         |               | One or several elements that render a list of records based on a `ListContext`                         |
 | `render`     | Optional\* | `(ListContext) => Element`                                                                         |               | A function that takes a list context and renders a list of records                        |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
+| `offline`      | Optional | `ReactNode`                                                              |              | The component to render when there is no connectivity and the record isn't in the cache |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
@@ -174,6 +175,49 @@ For instance, to render only tags that are 'published', you can use the followin
 />
 ```
 {% endraw %}
+
+## `offline`
+
+By default, `<ReferenceArrayFieldBase>` renders nothing when there is no connectivity and the records haven't been cached yet. You can provide your own component via the `offline` prop:
+
+```jsx
+import { ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase
+            source="tag_ids"
+            reference="tags"
+            offline={<p>No network. Could not load the tags.</p>}
+        >
+            ...
+        </ReferenceArrayFieldBase>
+    </ShowBase>
+);
+```
+
+**Tip**: If the records are in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+import { IsOffline, ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase
+            source="tag_ids"
+            reference="tags"
+            offline={<p>No network. Could not load the tags.</p>}
+        >
+            <IsOffline>
+                <p>
+                    You are offline, tags may be outdated
+                </p>
+            </IsOffline>
+            ...
+        </ReferenceArrayFieldBase>
+    </ShowBase>
+);
+```
 
 ## `perPage`
 

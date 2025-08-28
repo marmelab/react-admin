@@ -542,7 +542,7 @@ The default `onError` function is:
 
 ## `offline`
 
-By default, `<EditBase>` renders nothing when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
+By default, `<Edit>` renders the `<Offline>` component when there is no connectivity and the record hasn't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
 import { Edit } from 'react-admin';

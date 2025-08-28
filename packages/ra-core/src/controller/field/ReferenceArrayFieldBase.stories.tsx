@@ -5,12 +5,15 @@ import { ReferenceArrayFieldBase } from './ReferenceArrayFieldBase';
 import {
     CoreAdmin,
     DataProvider,
+    IsOffline,
     Resource,
     ShowBase,
     TestMemoryRouter,
+    useIsOffline,
     useListContext,
+    WithRecord,
 } from '../..';
-import { QueryClient } from '@tanstack/react-query';
+import { onlineManager, QueryClient } from '@tanstack/react-query';
 
 export default { title: 'ra-core/controller/field/ReferenceArrayFieldBase' };
 
@@ -154,3 +157,104 @@ export const WithRenderProp = ({
         </CoreAdmin>
     </TestMemoryRouter>
 );
+
+export const Offline = () => (
+    <TestMemoryRouter initialEntries={['/bands/1/show']}>
+        <CoreAdmin
+            dataProvider={defaultDataProvider}
+            queryClient={
+                new QueryClient({
+                    defaultOptions: {
+                        queries: {
+                            retry: false,
+                        },
+                    },
+                })
+            }
+        >
+            <Resource
+                name="bands"
+                show={
+                    <ShowBase>
+                        <div>
+                            <WithRecord render={band => <p>{band.name}</p>} />
+                            <RenderChildOnDemand>
+                                <ReferenceArrayFieldBase
+                                    source="members"
+                                    reference="artists"
+                                    offline={
+                                        <p style={{ color: 'orange' }}>
+                                            You are offline, cannot load data
+                                        </p>
+                                    }
+                                    render={({ data, isPending, error }) => {
+                                        if (isPending) {
+                                            return <p>Loading...</p>;
+                                        }
+
+                                        if (error) {
+                                            return (
+                                                <p style={{ color: 'red' }}>
+                                                    {error.toString()}
+                                                </p>
+                                            );
+                                        }
+
+                                        return (
+                                            <>
+                                                <IsOffline>
+                                                    <p
+                                                        style={{
+                                                            color: 'orange',
+                                                        }}
+                                                    >
+                                                        You are offline, the
+                                                        data may be outdated
+                                                    </p>
+                                                </IsOffline>
+                                                <p>
+                                                    {data?.map(
+                                                        (datum, index) => (
+                                                            <li key={index}>
+                                                                {datum.name}
+                                                            </li>
+                                                        )
+                                                    )}
+                                                </p>
+                                            </>
+                                        );
+                                    }}
+                                />
+                            </RenderChildOnDemand>
+                        </div>
+                        <SimulateOfflineButton />
+                    </ShowBase>
+                }
+            />
+        </CoreAdmin>
+    </TestMemoryRouter>
+);
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};
