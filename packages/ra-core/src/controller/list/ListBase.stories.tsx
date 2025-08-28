@@ -147,15 +147,18 @@ export const WithAuthProviderNoAccessControl = ({
         checkError: () => Promise.resolve(),
     },
     dataProvider = defaultDataProvider,
+    ListProps,
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
+    ListProps?: Partial<ListBaseProps>;
 }) => (
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <ListBase
             resource="books"
             perPage={5}
             loading={<div>Authentication loading...</div>}
+            {...ListProps}
         >
             <BookListView />
         </ListBase>

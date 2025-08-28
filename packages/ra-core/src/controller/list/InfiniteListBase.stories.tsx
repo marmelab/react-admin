@@ -143,15 +143,18 @@ export const WithAuthProviderNoAccessControl = ({
         checkError: () => Promise.resolve(),
     },
     dataProvider = defaultDataProvider,
+    InfiniteListProps,
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
+    InfiniteListProps?: Partial<InfiniteListBaseProps>;
 }) => (
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <InfiniteListBase
             resource="books"
             perPage={5}
             loading={<div>Authentication loading...</div>}
+            {...InfiniteListProps}
         >
             <BookListView />
         </InfiniteListBase>
