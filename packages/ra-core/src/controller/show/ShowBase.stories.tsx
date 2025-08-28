@@ -180,7 +180,11 @@ export const Offline = ({
             <ShowBase
                 {...defaultProps}
                 {...props}
-                offline={<p>You are offline, cannot load data</p>}
+                offline={
+                    <p style={{ color: 'orange' }}>
+                        You are offline, cannot load data
+                    </p>
+                }
             >
                 <OfflineChild />
             </ShowBase>

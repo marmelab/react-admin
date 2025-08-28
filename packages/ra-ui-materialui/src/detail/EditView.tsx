@@ -45,7 +45,7 @@ export const EditView = (props: EditViewProps) => {
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
 
-    if (!record && offline !== false && isPaused) {
+    if (isPaused && isPending && offline !== undefined && offline !== false) {
         return (
             <Root className={clsx('edit-page', className)} {...rest}>
                 <div className={clsx(EditClasses.main, EditClasses.noActions)}>
