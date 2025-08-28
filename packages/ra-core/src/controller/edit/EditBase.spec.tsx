@@ -301,6 +301,31 @@ describe('EditBase', () => {
         expect(dataProvider.getOne).toHaveBeenCalled();
         await screen.findByText('Hello');
     });
+
+    it('should not wait for the authentication resolution before loading data when disableAuthentication is true', async () => {
+        const authProvider = {
+            login: () => Promise.resolve(),
+            logout: () => Promise.resolve(),
+            checkError: () => Promise.resolve(),
+            checkAuth: jest.fn(),
+        };
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getOne: jest.fn(() =>
+                Promise.resolve({ data: { id: 12, test: 'Hello' } })
+            ),
+        });
+        render(
+            <WithAuthProviderNoAccessControl
+                authProvider={authProvider}
+                dataProvider={dataProvider}
+                EditProps={{ disableAuthentication: true }}
+            />
+        );
+        await screen.findByText('Hello');
+        expect(authProvider.checkAuth).not.toHaveBeenCalled();
+    });
+
     it('should wait for the authentication resolution before loading data', async () => {
         let resolveAuth: () => void;
         const authProvider = {
