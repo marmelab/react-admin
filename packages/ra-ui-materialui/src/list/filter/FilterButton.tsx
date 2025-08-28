@@ -5,7 +5,6 @@ import {
     useRef,
     type ReactNode,
     type HtmlHTMLAttributes,
-    useContext,
 } from 'react';
 import {
     Menu,
@@ -24,13 +23,17 @@ import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ContentFilter from '@mui/icons-material/FilterList';
 import isEqual from 'lodash/isEqual';
-import { useListContext, useResourceContext, useTranslate } from 'ra-core';
+import {
+    useFilterContext,
+    useListContext,
+    useResourceContext,
+    useTranslate,
+} from 'ra-core';
 import { stringify } from 'query-string';
 import { useNavigate } from 'react-router';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { Button } from '../../button';
-import { FilterContext } from '../FilterContext';
 import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
@@ -48,7 +51,7 @@ export const FilterButton = (inProps: FilterButtonProps) => {
         variant,
         ...rest
     } = props;
-    const filters = useContext(FilterContext) || filtersProp;
+    const filters = useFilterContext() || filtersProp;
     const resource = useResourceContext(props);
     const translate = useTranslate();
     if (!resource && !disableSaveQuery) {

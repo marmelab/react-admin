@@ -1,3 +1,4 @@
+export * from './FilterContext';
 export * from './InfiniteListBase';
 export * from './InfinitePaginationContext';
 export * from './ListBase';
@@ -10,6 +11,7 @@ export * from './ListPaginationContext';
 export * from './ListSortContext';
 export * from './queryReducer';
 export * from './useExpanded';
+export * from './useFilterContext';
 export * from './useInfiniteListController';
 export * from './useInfinitePaginationContext';
 export * from './useList';
