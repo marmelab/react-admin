@@ -27,6 +27,5 @@ export * from './Title';
 export * from './TitlePortal';
 export * from './TopToolbar';
 export * from './UserMenu';
-export * from './UserMenuContext';
 export * from './useSidebarState';
-export * from './useUserMenu';
+export { UserMenuContext, UserMenuContextProvider, useUserMenu } from 'ra-core';
