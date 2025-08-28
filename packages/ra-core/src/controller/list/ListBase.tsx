@@ -46,7 +46,6 @@ import { useIsAuthPending } from '../../auth';
  */
 export const ListBase = <RecordType extends RaRecord = any>({
     children,
-    disableAuthentication,
     render,
     loading,
     offline,
@@ -66,7 +65,7 @@ export const ListBase = <RecordType extends RaRecord = any>({
 
     const showLoading =
         isAuthPending &&
-        !disableAuthentication &&
+        !props.disableAuthentication &&
         loading !== undefined &&
         loading !== false;
 
