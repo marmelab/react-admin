@@ -50,7 +50,7 @@ export interface LinkProps
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        [PREFIX]: 'root' | 'link';
+        [PREFIX]: 'root';
     }
 
     interface ComponentsPropsList {
