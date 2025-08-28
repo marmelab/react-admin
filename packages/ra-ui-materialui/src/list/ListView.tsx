@@ -356,7 +356,7 @@ export interface ListViewProps<RecordType extends RaRecord = any> {
      *     </List>
      * );
      */
-    pagination?: ReactElement | false;
+    pagination?: ReactNode | false;
 
     /**
      * The page title (main title) to display above the data. Defaults to the humanized resource name.
