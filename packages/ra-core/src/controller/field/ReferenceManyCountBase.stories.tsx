@@ -1,8 +1,12 @@
 import * as React from 'react';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import {
+    QueryClientProvider,
+    QueryClient,
+    onlineManager,
+} from '@tanstack/react-query';
 import { RecordContextProvider } from '../record';
 import { DataProviderContext } from '../../dataProvider';
-import { ResourceContextProvider } from '../../core';
+import { ResourceContextProvider, useIsOffline } from '../../core';
 import { TestMemoryRouter } from '../../routing';
 import { ReferenceManyCountBase } from './ReferenceManyCountBase';
 
@@ -141,3 +145,57 @@ export const Slow = () => (
         />
     </Wrapper>
 );
+
+export const Offline = () => {
+    return (
+        <Wrapper
+            dataProvider={{
+                getManyReference: () =>
+                    Promise.resolve({
+                        data: [comments.filter(c => c.post_id === 1)[0]],
+                        total: comments.filter(c => c.post_id === 1).length,
+                    }),
+            }}
+        >
+            <div>
+                <RenderChildOnDemand>
+                    <ReferenceManyCountBase
+                        reference="comments"
+                        target="post_id"
+                        loading="Loading..."
+                        offline={
+                            <span style={{ color: 'orange' }}>
+                                You are offline, cannot load data
+                            </span>
+                        }
+                    />
+                </RenderChildOnDemand>
+            </div>
+            <SimulateOfflineButton />
+        </Wrapper>
+    );
+};
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};

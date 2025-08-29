@@ -17,10 +17,11 @@ import { useTimeout } from '../../util/hooks';
  * <ReferenceManyCountBase reference="comments" target="post_id" filter={{ is_published: true }} />
  */
 export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
-    const { loading = null, error = null, timeout = 1000, ...rest } = props;
+    const { loading, error, offline, timeout = 1000, ...rest } = props;
     const oneSecondHasPassed = useTimeout(timeout);
 
     const {
+        isPaused,
         isPending,
         error: fetchError,
         total,
@@ -30,15 +31,24 @@ export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
         perPage: 1,
     });
 
+    const shouldRenderLoading =
+        isPending && !isPaused && loading !== undefined && loading !== false;
+    const shouldRenderOffline =
+        isPending && isPaused && offline !== undefined && offline !== false;
+    const shouldRenderError =
+        !isPending && fetchError && error !== undefined && error !== false;
+
     return (
         <>
-            {isPending
+            {shouldRenderLoading
                 ? oneSecondHasPassed
                     ? loading
                     : null
-                : fetchError
-                  ? error
-                  : total}
+                : shouldRenderOffline
+                  ? offline
+                  : shouldRenderError
+                    ? error
+                    : total}
         </>
     );
 };
@@ -48,4 +58,5 @@ export interface ReferenceManyCountBaseProps
     timeout?: number;
     loading?: React.ReactNode;
     error?: React.ReactNode;
+    offline?: React.ReactNode;
 }
