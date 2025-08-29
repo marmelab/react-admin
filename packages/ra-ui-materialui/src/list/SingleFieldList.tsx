@@ -9,12 +9,12 @@ import {
 } from '@mui/material';
 import {
     sanitizeListRestProps,
-    useListContextWithProps,
     useResourceContext,
     type RaRecord,
     RecordRepresentation,
     useCreatePath,
-    ListIterator,
+    WithListContext,
+    RecordsIterator,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout/LinearProgress';
@@ -28,7 +28,7 @@ import { Link } from '../Link';
  *     <SingleFieldList />
  * </ReferenceManyField>
 
-* @example Choose the field to be used as text label
+ * @example Choose the field to be used as text label
  * <ReferenceManyField reference="orders" target="customer_id">
  *     <SingleFieldList>
  *         <ChipField source="reference" />
@@ -70,56 +70,52 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
         direction = 'row',
         ...rest
     } = props;
-    const { data, total, isPending } = useListContextWithProps(props);
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
 
-    if (isPending === true) {
-        return <LinearProgress />;
-    }
-
-    if (data == null || data.length === 0 || total === 0) {
-        return empty ?? null;
-    }
-
     return (
-        <Root
-            gap={gap}
-            direction={direction}
-            className={className}
-            {...sanitizeListRestProps(rest)}
-        >
-            <ListIterator<RecordType>
-                data={data}
-                total={total}
-                isPending={isPending}
-                render={record => {
-                    const resourceLinkPath = !linkType
-                        ? false
-                        : createPath({
-                              resource,
-                              type: linkType,
-                              id: record.id,
-                          });
+        <WithListContext
+            loading={<LinearProgress />}
+            empty={empty ?? <></>}
+            render={({ data }) => (
+                <Root
+                    gap={gap}
+                    direction={direction}
+                    className={className}
+                    {...sanitizeListRestProps(rest)}
+                >
+                    <RecordsIterator
+                        data={data}
+                        render={record => {
+                            const resourceLinkPath = !linkType
+                                ? false
+                                : createPath({
+                                      resource,
+                                      type: linkType,
+                                      id: record.id,
+                                  });
 
-                    if (resourceLinkPath) {
-                        return (
-                            <Link
-                                className={SingleFieldListClasses.link}
-                                to={resourceLinkPath}
-                                onClick={stopPropagation}
-                            >
-                                {children || (
-                                    <DefaultChildComponent clickable />
-                                )}
-                            </Link>
-                        );
-                    }
+                            if (resourceLinkPath) {
+                                return (
+                                    <Link
+                                        className={SingleFieldListClasses.link}
+                                        to={resourceLinkPath}
+                                        onClick={stopPropagation}
+                                    >
+                                        {children || (
+                                            <DefaultChildComponent clickable />
+                                        )}
+                                    </Link>
+                                );
+                            }
 
-                    return children || <DefaultChildComponent />;
-                }}
-            />
-        </Root>
+                            return children || <DefaultChildComponent />;
+                        }}
+                    />
+                </Root>
+            )}
+            {...props}
+        />
     );
 };
 

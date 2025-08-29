@@ -7,7 +7,7 @@ import {
     TestMemoryRouter,
     ResourceContextProvider,
     ResourceProps,
-    ResourceDefinitionContextProvider,
+    ListBase,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -116,17 +116,18 @@ const data = {
     ],
 };
 
+const myDataProvider = fakeRestDataProvider(data);
+
 export const Basic = () => (
     <TestMemoryRouter>
-        <AdminContext>
-            <ResourceContextProvider value="books">
+        <AdminContext dataProvider={myDataProvider}>
+            <ListBase resource="books" perPage={15}>
                 <SimpleList
-                    data={data.books}
                     primaryText={record => record.title}
                     secondaryText={record => record.author}
                     tertiaryText={record => record.year}
                 />
-            </ResourceContextProvider>
+            </ListBase>
         </AdminContext>
     </TestMemoryRouter>
 );
@@ -139,28 +140,16 @@ export const LinkType = ({
     locationCallback?: (l: Location) => void;
 }) => (
     <TestMemoryRouter locationCallback={locationCallback}>
-        <AdminContext>
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    books: {
-                        name: 'books',
-                        hasList: true,
-                        hasEdit: true,
-                        hasShow: false,
-                    },
-                }}
-            >
-                <ResourceContextProvider value="books">
-                    <Alert color="info">Inferred should target edit</Alert>
-                    <SimpleList
-                        data={data.books}
-                        primaryText={record => record.title}
-                        secondaryText={record => record.author}
-                        tertiaryText={record => record.year}
-                        linkType={linkType}
-                    />
-                </ResourceContextProvider>
-            </ResourceDefinitionContextProvider>
+        <AdminContext dataProvider={myDataProvider}>
+            <ListBase resource="books" perPage={15}>
+                <Alert color="info">Inferred should target edit</Alert>
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                    linkType={linkType}
+                />
+            </ListBase>
         </AdminContext>
     </TestMemoryRouter>
 );
@@ -191,28 +180,16 @@ export const RowClick = ({
     rowClick: string | RowClickFunction | false;
 }) => (
     <TestMemoryRouter locationCallback={locationCallback}>
-        <AdminContext>
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    books: {
-                        name: 'books',
-                        hasList: true,
-                        hasEdit: true,
-                        hasShow: false,
-                    },
-                }}
-            >
-                <ResourceContextProvider value="books">
-                    <Alert color="info">Inferred should target edit</Alert>
-                    <SimpleList
-                        data={data.books}
-                        primaryText={record => record.title}
-                        secondaryText={record => record.author}
-                        tertiaryText={record => record.year}
-                        rowClick={rowClick}
-                    />
-                </ResourceContextProvider>
-            </ResourceDefinitionContextProvider>
+        <AdminContext dataProvider={myDataProvider}>
+            <ListBase resource="books" perPage={15}>
+                <Alert color="info">Inferred should target edit</Alert>
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => record.author}
+                    tertiaryText={record => record.year}
+                    rowClick={rowClick}
+                />
+            </ListBase>
         </AdminContext>
     </TestMemoryRouter>
 );
@@ -236,8 +213,6 @@ RowClick.argTypes = {
         control: { type: 'select' },
     },
 };
-
-const myDataProvider = fakeRestDataProvider(data);
 
 const Wrapper = ({
     children,
@@ -443,6 +418,7 @@ export const StandaloneEmpty = () => (
 export const Themed = () => (
     <TestMemoryRouter>
         <AdminContext
+            dataProvider={myDataProvider}
             theme={deepmerge(defaultLightTheme, {
                 components: {
                     RaSimpleList: {
@@ -463,15 +439,14 @@ export const Themed = () => (
                 },
             } as ThemeOptions)}
         >
-            <ResourceContextProvider value="books">
+            <ListBase resource="books" perPage={15}>
                 <SimpleList
                     data-testid={'themed-list'}
-                    data={data.books}
                     primaryText={record => record.title}
                     secondaryText={record => record.author}
                     tertiaryText={record => record.year}
                 />
-            </ResourceContextProvider>
+            </ListBase>
         </AdminContext>
     </TestMemoryRouter>
 );
