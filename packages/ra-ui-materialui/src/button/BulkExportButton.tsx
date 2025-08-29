@@ -2,12 +2,9 @@ import * as React from 'react';
 import { useCallback } from 'react';
 import DownloadIcon from '@mui/icons-material/GetApp';
 import {
-    fetchRelatedRecords,
-    useDataProvider,
-    useNotify,
-    Exporter,
-    useListContext,
+    useBulkExport,
     useResourceContext,
+    UseBulkExportOptions,
 } from 'ra-core';
 import {
     ComponentsOverrides,
@@ -55,35 +52,20 @@ export const BulkExportButton = (inProps: BulkExportButtonProps) => {
         ...rest
     } = props;
     const resource = useResourceContext(props);
-    const { exporter: exporterFromContext, selectedIds } = useListContext();
-    const exporter = customExporter || exporterFromContext;
-    const dataProvider = useDataProvider();
-    const notify = useNotify();
+    const bulkExport = useBulkExport({
+        exporter: customExporter,
+        resource,
+        meta,
+    });
     const handleClick = useCallback(
         event => {
-            if (exporter && resource) {
-                dataProvider
-                    .getMany(resource, { ids: selectedIds, meta })
-                    .then(({ data }) =>
-                        exporter(
-                            data,
-                            fetchRelatedRecords(dataProvider),
-                            dataProvider,
-                            resource
-                        )
-                    )
-                    .catch(error => {
-                        console.error(error);
-                        notify('ra.notification.http_error', {
-                            type: 'error',
-                        });
-                    });
-            }
+            bulkExport();
+
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [dataProvider, exporter, notify, onClick, resource, selectedIds, meta]
+        [bulkExport, onClick]
     );
 
     return (
@@ -104,16 +86,13 @@ const sanitizeRestProps = ({
     ...rest
 }: Omit<BulkExportButtonProps, 'exporter' | 'label' | 'meta'>) => rest;
 
-interface Props {
-    exporter?: Exporter;
+export interface BulkExportButtonProps
+    extends ButtonProps,
+        UseBulkExportOptions {
     icon?: React.ReactNode;
-    label?: string;
-    onClick?: (e: Event) => void;
     resource?: string;
     meta?: any;
 }
-
-export type BulkExportButtonProps = Props & ButtonProps;
 
 const PREFIX = 'RaBulkExportButton';
 
