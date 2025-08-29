@@ -6,7 +6,7 @@ storybook_path: ra-ui-materialui-fields-referencefield--basic
 
 # `<ReferenceField>`
 
-`<ReferenceField>` is useful for displaying many-to-one and one-to-one relationships, e.g. the details of a user when rendering a post authored by that user. 
+`<ReferenceField>` is useful for displaying many-to-one and one-to-one relationships, e.g. the details of a user when rendering a post authored by that user.
 
 <iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
@@ -46,7 +46,7 @@ export const PostShow = () => (
 
 ![ReferenceField](./img/reference_field_show.png)
 
-So it's a good idea to configure the `<Resource recordRepresentation>` to render related records in a meaningul way. For instance, for the `users` resource, if you want the `<ReferenceField>` to display the full name of the author:
+So it's a good idea to configure the `<Resource recordRepresentation>` to render related records in a meaningful way. For instance, for the `users` resource, if you want the `<ReferenceField>` to display the full name of the author:
 
 ```jsx
 <Resource
@@ -64,9 +64,9 @@ Alternately, if you pass a child component, `<ReferenceField>` will render it in
 </ReferenceField>
 ```
 
-This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. 
+This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child.
 
-It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row. 
+It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row.
 
 ## Props
 
@@ -97,7 +97,8 @@ By default, `<ReferenceField>` renders the `recordRepresentation` of the referen
 </ReferenceField>
 ```
 
-Alternatively, you can use [the `render` prop](#render) to render the referenced record in a custom way. 
+Alternatively, you can use [the `render` prop](#render) to render the referenced record in a custom way.
+
 ## `empty`
 
 `<ReferenceField>` can display a custom message when the referenced record is missing, thanks to the `empty` prop.
@@ -179,6 +180,7 @@ Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` que
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
+
 ```jsx
 <ReferenceField 
     source="user_id"
@@ -188,6 +190,7 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
     <TextField source="name" />
 </ReferenceField>
 ```
+
 {% endraw %}
 
 ## `reference`
@@ -246,7 +249,7 @@ To override the style of all instances of `<ReferenceField>` using the [applicat
 
 <iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-When used in a `<DataTable>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
+When used in a `<DataTable>`, `<ReferenceField>` fetches the referenced record only once for the entire table.
 
 ![ReferenceField](./img/reference-field.png)
 
@@ -302,6 +305,7 @@ When you know that a page will contain a `<ReferenceField>`, you can configure t
 For example, the following code prefetches the authors referenced by the posts:
 
 {% raw %}
+
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { prefetch: ['author'] } }}>
@@ -315,6 +319,7 @@ const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 **Note**: For prefetching to function correctly, your data provider must support [Prefetching Relationships](./DataProviders.md#prefetching-relationships). Refer to your data provider's documentation to verify if this feature is supported.
@@ -406,5 +411,6 @@ For instance, given the following `ReferenceField`:
 ```
 
 React-Admin will call `canAccess` with the following parameters:
+
 - If the `users` resource has a Show view: `{ action: "show", resource: 'posts', record: Object }`
 - If the `users` resource has an Edit view: `{ action: "edit", resource: 'posts', record: Object }`
