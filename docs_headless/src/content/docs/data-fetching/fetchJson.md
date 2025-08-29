@@ -1,12 +1,8 @@
 ---
-layout: default
 title: "fetchJson"
-storybook_path: ra-core-dataprovider-fetch--fetch-json
 ---
 
-# `fetchJson`
-
-React-admin includes a `fetchJson` utility function to make HTTP calls. It's a wrapper around the browser's `fetch` function, that adds the following features:
+Ra-core includes a `fetchJson` utility function to make HTTP calls. It's a wrapper around the browser's `fetch` function, that adds the following features:
 
 -   It adds the `Content-Type='application/json'` header to all non GET requests
 -   It adds the `Authorization` header with optional parameters
@@ -19,7 +15,7 @@ React-admin includes a `fetchJson` utility function to make HTTP calls. It's a w
 You can use it to make HTTP calls directly, to build a custom [`dataProvider`](./DataProviders.md), or pass it directly to any `dataProvider` that supports it, such as [`ra-data-simple-rest`](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest).
 
 ```jsx
-import { fetchUtils, Admin, Resource } from 'react-admin';
+import { fetchUtils, CoreAdmin, Resource } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { PostList } from './posts';
 
@@ -31,13 +27,13 @@ const httpClient = async (url, options = {}) => {
 const dataProvider = simpleRestProvider('http://path.to.my.api/', httpClient);
 
 const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
-**Tip:** `fetchJson` is included in the `fetchUtils` object exported by the `react-admin` package.
+**Tip:** `fetchJson` is included in the `fetchUtils` object exported by the `ra-core` package.
 
 ## Parameters
 
@@ -64,7 +60,7 @@ const App = () => (
 Here is an example of how to add custom headers to all requests:
 
 ```jsx
-import { fetchUtils, Admin, Resource } from 'react-admin';
+import { fetchUtils, CoreAdmin, Resource } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 import { PostList } from './posts';
 
@@ -79,9 +75,9 @@ const httpClient = (url, options = {}) => {
 const dataProvider = simpleRestProvider('http://path.to.my.api/', httpClient);
 
 const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -90,7 +86,7 @@ const App = () => (
 For TypeScript users, here is a typed example of a custom `httpClient` that adds custom headers to all requests:
 
 ```ts
-import { fetchUtils } from 'react-admin';
+import { fetchUtils } from 'ra-core';
 
 const httpClient = (url: string, options: fetchUtils.Options = {}) => {
     const customHeaders = (options.headers ||
@@ -109,7 +105,7 @@ const httpClient = (url: string, options: fetchUtils.Options = {}) => {
 Here is an example of how to add the `Authorization` header to all requests, using a token stored in the browser's local storage:
 
 ```jsx
-import { fetchUtils } from 'react-admin';
+import { fetchUtils } from 'ra-core';
 
 const httpClient = (url, options = {}) => {
     const token = localStorage.getItem('token');
@@ -125,7 +121,7 @@ const httpClient = (url, options = {}) => {
 The `fetchJson` function rejects with an `HttpError` when the HTTP response status code is not in the 2xx range.
 
 ```jsx
-import { fetchUtils } from 'react-admin';
+import { fetchUtils } from 'ra-core';
 
 fetchUtils.fetchJson('https://jsonplaceholder.typicode.com/posts/1')
     .then(({ json }) => console.log('HTTP call succeeded. Return value:', json))

@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "Querying the API"
 ---
-
-# Querying the API
 
 React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [React Query](https://tanstack.com/query/v5/) to call the `dataProvider` and cache the results.
 
@@ -19,7 +16,7 @@ For instance, here is how to query the Data Provider for a User record on mount,
 
 ```jsx
 import { useState, useEffect } from 'react';
-import { useDataProvider } from 'react-admin';
+import { useDataProvider } from 'ra-core';
 import { Loading, Error } from './MyComponents';
 
 const UserProfile = ({ userId }) => {
@@ -75,7 +72,7 @@ const { isPending, error, data } = useGetOne(resource, { id });
 For instance, here is how to fetch one User record on mount using the `useGetOne` hook:
 
 ```jsx
-import { useGetOne } from 'react-admin';
+import { useGetOne } from 'ra-core';
 import { Loading, Error } from './MyComponents';
 
 const UserProfile = ({ userId }) => {
@@ -152,25 +149,21 @@ In addition to the `useQuery` options, react-admin query hooks also accept callb
 
 See the [Success and Error Side Effects](#success-and-error-side-effects) below for more details.
 
-**Tip**: In react-admin components that use the query hooks, you can override the query options using the `queryOptions` prop. For instance, to log the dataProvider calls, in the `<List>` component, you can do the following:
+**Tip**: In react-admin components that use the query hooks, you can override the query options using the `queryOptions` prop. For instance, to log the dataProvider calls, in the `<ListBase>` component, you can do the following:
 
-{% raw %}
 ```jsx
-import { List, DataTable } from 'react-admin';
+import { ListBase } from 'ra-core';
 
 const PostList = () => (
-    <List
+    <ListBase
         queryOptions={{ onSettled: (data, error) => console.log(data, error) }}
     >
-        <DataTable>
-            <DataTable.Col source="id" />
-            <DataTable.Col source="title" />
-            <DataTable.Col source="body" />
-        </DataTable>
-    </List>
+        <div>
+            {/* Custom list content */}
+        </div>
+    </ListBase>
 );
 ```
-{% endraw %}
 
 ## Mutation Hooks
 
@@ -195,7 +188,7 @@ For instance, here is a button that updates a comment record when clicked, using
 
 ```jsx
 import * as React from 'react';
-import { useUpdate, useRecordContext, Button } from 'react-admin';
+import { useUpdate, useRecordContext } from 'ra-core';
 
 const ApproveButton = () => {
     const record = useRecordContext();
@@ -204,7 +197,7 @@ const ApproveButton = () => {
         data: { isApproved: true },
         previousData: record
     });
-    return <Button label="Approve" onClick={() => approve()} disabled={isPending} />;
+    return <button onClick={() => approve()} disabled={isPending}>Approve</button>;
 };
 ```
 
@@ -264,32 +257,33 @@ See [Optimistic Rendering and Undo](#optimistic-rendering-and-undo) below for mo
 
 For instance, here is a button to approve the current comment that notifies the user of success or failure using the bottom notification banner:
 
-{% raw %}
 ```jsx
 import * as React from 'react';
-import { UpdateButton, useNotify, useRedirect } from 'react-admin';
+import { useUpdate, useNotify, useRedirect, useRecordContext } from 'ra-core';
 
 const ApproveButton = () => {
+    const record = useRecordContext();
     const notify = useNotify();
     const redirect = useRedirect();
-    return <UpdateButton
-        label="Approve"
-        data={{ isApproved: true }}
-        mutationOptions={{
-            onSuccess: (data) => {
-                // success side effects go here
-                redirect('/comments');
-                notify('Comment approved');
-            },
-            onError: (error) => {
-                // failure side effects go here 
-                notify(`Comment approval error: ${error.message}`, { type: 'error' });
-            },
-        }}
-    />;
+    const [approve, { isPending }] = useUpdate('comments', {
+        id: record.id,
+        data: { isApproved: true },
+        previousData: record
+    }, {
+        onSuccess: (data) => {
+            // success side effects go here
+            redirect('/comments');
+            notify('Comment approved');
+        },
+        onError: (error) => {
+            // failure side effects go here 
+            notify(`Comment approval error: ${error.message}`, { type: 'error' });
+        },
+    });
+    
+    return <button onClick={() => approve()} disabled={isPending}>Approve</button>;
 };
 ```
-{% endraw %}
 
 ## `meta` Parameter
 
@@ -316,11 +310,9 @@ To execute some logic after a query or a mutation is complete, use the `onSucces
 
 **Tip**: React-admin provides the various hooks to handle the most common side effects:
 
-- [`useNotify`](./useNotify.md): Return a function to display a notification.
-- [`useRedirect`](./useRedirect.md): Return a function to redirect the user to another page.
-- [`useRefresh`](./useRefresh.md): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
-- [`useUnselect`](./useUnselect.md): Return a function to unselect lines in the current `<DataTable>` based on the ids passed to it.
-- [`useUnselectAll`](./useUnselectAll.md): Return a function to unselect all lines in the current `<DataTable>`.
+- [`useNotify`](../common/useNotify.md): Return a function to display a notification.
+- [`useRedirect`](../common/useRedirect.md): Return a function to redirect the user to another page.
+- [`useRefresh`](../common/useRefresh.md): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
 
 ### `onSuccess`
 
@@ -333,7 +325,7 @@ onSuccess(data, variables, context) { /* ... */ }
 This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
 
 ```tsx
-import { useGetList } from 'react-admin';
+import { useGetList } from 'ra-core';
 import { useQueryClient } from '@tanstack/react-query';
 import { ListView } from './ListView';
 
@@ -366,8 +358,10 @@ onError(error, variables, context) { /* ... */ }
 
 This is useful to notify users about the error for instance.
 
-```tsx
-import { useGetOne, useNotify, useRecordContext } from 'react-admin';
+```jsx
+import { useGetOne, useNotify, useRecordContext } from 'ra-core';
+
+const Loading = () => <div>Loading...</div>;
 
 const UserProfile = () => {
     const record = useRecordContext();
@@ -394,7 +388,9 @@ onSettled(data, error, variables, context) { /* ... */ }
 This can be useful e.g. to log all calls to the dataProvider:
 
 ```jsx
-import { useGetOne, useRecordContext } from 'react-admin';
+import { useGetOne, useRecordContext } from 'ra-core';
+
+const Loading = () => <div>Loading...</div>;
 
 const UserProfile = () => {
     const record = useRecordContext();
@@ -435,7 +431,10 @@ For instance, the initial code snippet of this chapter can be rewritten with `us
 ```jsx
 import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useDataProvider, Loading, Error } from 'react-admin';
+import { useDataProvider } from 'ra-core';
+
+const Loading = () => <div>Loading...</div>;
+const Error = () => <div>Error occurred</div>;
 
 const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
@@ -464,7 +463,7 @@ To illustrate the usage of `useMutation`, here is an implementation of an "Appro
 ```jsx
 import * as React from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useDataProvider, useRecordContext, Button } from 'react-admin';
+import { useDataProvider, useRecordContext } from 'ra-core';
 
 const ApproveButton = () => {
     const record = useRecordContext();
@@ -472,7 +471,9 @@ const ApproveButton = () => {
     const { mutate, isPending } = useMutation({
         mutationFn: () => dataProvider.update('comments', { id: record.id, data: { isApproved: true } })
     });
-    return <Button label="Approve" onClick={() => mutate()} disabled={isPending} />;
+    return <button onClick={() => mutate()} disabled={isPending}>
+        {isPending ? 'Approving...' : 'Approve'}
+    </button>;
 };
 ```
 
@@ -505,7 +506,9 @@ Let's see how what these variables contain in a typical usage scenario:
 Components use the pending state to show a loading indicator when there is no data to show. In the example above, the loading indicator is necessary for step 2, but not in step 4, because you can display the stale data while fresh data is being loaded.
 
 ```jsx
-import { useGetOne, useRecordContext } from 'react-admin';
+import { useGetOne, useRecordContext } from 'ra-core';
+
+const Loading = () => <div>Loading...</div>;
 
 const UserProfile = () => {
     const record = useRecordContext();
@@ -552,7 +555,9 @@ const BanUserButton = ({ userId }) => {
     const { mutate, isPending } = useMutation({
         mutationFn: () => dataProvider.banUser(userId)
     });
-    return <Button label="Ban" onClick={() => mutate()} disabled={isPending} />;
+    return <button onClick={() => mutate()} disabled={isPending}>
+        {isPending ? 'Banning...' : 'Ban'}
+    </button>;
 };
 ```
 
@@ -585,7 +590,7 @@ In the following example, after clicking on the "Approve" button, a loading spin
 
 ```jsx
 import * as React from 'react';
-import { useUpdate, useNotify, useRedirect, useRecordContext, Button } from 'react-admin';
+import { useUpdate, useNotify, useRedirect, useRecordContext } from 'ra-core';
 
 const ApproveButton = () => {
     const record = useRecordContext();
@@ -605,7 +610,9 @@ const ApproveButton = () => {
         }
     );
     
-    return <Button label="Approve" onClick={() => approve()} disabled={isPending} />;
+    return <button onClick={() => approve()} disabled={isPending}>
+        {isPending ? 'Approving...' : 'Approve'}
+    </button>;
 };
 ```
 
@@ -635,7 +642,7 @@ You can benefit from optimistic and undoable modes when you call the `useUpdate`
 
 ```diff
 import * as React from 'react';
-import { useUpdate, useNotify, useRedirect, useRecordContext, Button } from 'react-admin';
+import { useUpdate, useNotify, useRedirect, useRecordContext } from 'ra-core';
 
 const ApproveButton = () => {
     const record = useRecordContext();
@@ -655,7 +662,9 @@ const ApproveButton = () => {
             onError: (error) => notify(`Error: ${error.message}`, { type: 'error' }),
         }
     );
-    return <Button label="Approve" onClick={() => approve()} disabled={isPending} />;
+    return <button onClick={() => approve()} disabled={isPending}>
+        {isPending ? 'Approving...' : 'Approve'}
+    </button>;
 };
 ```
 
@@ -677,20 +686,17 @@ If you need to refresh part of the UI after a user action, you can use TanStack 
 For example, the following button deletes an order and refreshes the list of orders so that the deleted order disappears:
 
 ```jsx
-import { useDataProvider, useNotify } from "react-admin";
+import { useDataProvider, useNotify } from "ra-core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { IconButton, Tooltip } from "@mui/material";
-import CancelIcon from "@mui/icons-material/Cancel";
-import type { Order } from "data-generator-retail";
 
-export const OrderCancelButton = ({ order }: Props) => {
+export const OrderCancelButton = ({ order }) => {
   const notify = useNotify();
   const queryClient = useQueryClient();
 
   const dataProvider = useDataProvider();
 
   const mutation = useMutation({
-    mutationFn: (order: Order) =>
+    mutationFn: (order) =>
       dataProvider.update("orders", {
         id: order.id,
         data: { status: "cancelled" },
@@ -705,21 +711,18 @@ export const OrderCancelButton = ({ order }: Props) => {
     },
   });
 
-  const handleCancel = (order: Order) => {
+  const handleCancel = (order) => {
     mutation.mutate(order);
   };
 
   return (
-    <Tooltip title="Cancel order" placement="left">
-      <IconButton
-        color="error"
-        aria-label="Cancel order"
-        onClick={() => handleCancel(order)}
-        disabled={mutation.isPending}
-      >
-        <CancelIcon />
-      </IconButton>
-    </Tooltip>
+    <button
+      title="Cancel order"
+      onClick={() => handleCancel(order)}
+      disabled={mutation.isPending}
+    >
+      {mutation.isPending ? 'Cancelling...' : 'Cancel order'}
+    </button>
   );
 };
 ```
@@ -736,7 +739,7 @@ There is no special react-admin sauce in that case. Here is an example implement
 // in src/comments/ApproveButton.js
 import * as React from 'react';
 import { useState } from 'react';
-import { useNotify, useRedirect, useRecordContext, Button } from 'react-admin';
+import { useNotify, useRedirect, useRecordContext } from 'ra-core';
 
 const ApproveButton = () => {
     const record = useRecordContext();
@@ -758,7 +761,9 @@ const ApproveButton = () => {
                 setLoading(false);
             });
     };
-    return <Button label="Approve" onClick={handleClick} disabled={loading} />;
+    return <button onClick={handleClick} disabled={loading}>
+        {loading ? 'Approving...' : 'Approve'}
+    </button>;
 };
 
 export default ApproveButton;

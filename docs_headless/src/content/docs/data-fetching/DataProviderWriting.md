@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "Writing A Data Provider"
 ---
-
-# Writing A Data Provider
 
 APIs are so diverse that quite often, none of [the available Data Providers](./DataProviderList.md) suit you API. In such cases, you'll have to write your own Data Provider. Don't worry, it usually takes only a couple of hours. 
 
@@ -39,7 +36,7 @@ const dataProvider = {
 }
 ```
 
-To call the data provider, react-admin combines a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.
+To call the data provider, ra-core combines a *method* (e.g. `getOne`), a *resource* (e.g. 'posts') and a set of *parameters*.
 
 **Tip**: In comparison, HTTP requests require a *verb* (e.g. 'GET'), an *url* (e.g. 'http://myapi.com/posts'), a list of *headers* (like `Content-Type`) and a *body*.
 
@@ -47,7 +44,7 @@ In the rest of this documentation, the term `Record` designates an object litera
 
 ## `getList`
 
-React-admin calls `dataProvider.getList()` to search records.
+Ra-core calls `dataProvider.getList()` to search records.
 
 **Interface**
 ```tsx
@@ -101,7 +98,7 @@ dataProvider.getList('posts', {
 
 ## `getOne`
 
-React-admin calls `dataProvider.getOne()` to fetch a single record by `id`.
+Ra-core calls `dataProvider.getOne()` to fetch a single record by `id`.
 
 **Interface**
 
@@ -130,7 +127,7 @@ dataProvider.getOne('posts', { id: 123 })
 
 ## `getMany`
 
-React-admin calls `dataProvider.getMany()` to fetch several records at once using their `id`.
+Ra-core calls `dataProvider.getMany()` to fetch several records at once using their `id`.
 
 **Interface**
 
@@ -163,7 +160,7 @@ dataProvider.getMany('posts', { ids: [123, 124, 125] })
 
 ## `getManyReference`
 
-React-admin calls `dataProvider.getManyReference()` to fetch the records related to another record. Although similar to `getList`, this method is designed for relationships. It is necessary because some APIs require a different query to fetch related records (e.g. `GET /posts/123/comments` to fetch comments related to post 123).
+Ra-core calls `dataProvider.getManyReference()` to fetch the records related to another record. Although similar to `getList`, this method is designed for relationships. It is necessary because some APIs require a different query to fetch related records (e.g. `GET /posts/123/comments` to fetch comments related to post 123).
 
 **Interface**
 
@@ -212,7 +209,7 @@ dataProvider.getManyReference('comments', {
 
 ## `create`
 
-React-admin calls `dataProvider.create()` to create a new record.
+Ra-core calls `dataProvider.create()` to create a new record.
 
 **Interface**
 
@@ -241,7 +238,7 @@ dataProvider.create('posts', { data: { title: "hello, world" } })
 
 ## `update`
 
-React-admin calls `dataProvider.update()` to update a record.
+Ra-core calls `dataProvider.update()` to update a record.
 
 **Interface**
 
@@ -275,7 +272,7 @@ dataProvider.update('posts', {
 
 ## `updateMany`
 
-React-admin calls `dataProvider.updateMany()` to update several records by `id` with a unified changeset.
+Ra-core calls `dataProvider.updateMany()` to update several records by `id` with a unified changeset.
 
 **Interface**
 
@@ -307,7 +304,7 @@ dataProvider.updateMany('posts', {
 
 ## `delete`
 
-React-admin calls `dataProvider.delete()` to delete a record by `id`.
+Ra-core calls `dataProvider.delete()` to delete a record by `id`.
 
 **Interface**
 
@@ -339,7 +336,7 @@ dataProvider.delete('posts', {
 
 ## `deleteMany`
 
-React-admin calls `dataProvider.deleteMany()` to delete several records by `id`.
+Ra-core calls `dataProvider.deleteMany()` to delete several records by `id`.
 
 **Interface**
 
@@ -391,18 +388,16 @@ dataProvider.getList('posts', {
 // }
 ```
 
-React-admin's `<Pagination>` component will automatically handle the `pageInfo` object and display the appropriate pagination controls.
-
 ## Error Format
 
-When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). React-admin inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, react-admin displays the error `message` on screen in a temporary notification.
+When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Ra-core inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, ra-core displays the error `message` on screen in a temporary notification.
 
 If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by react-admin.
 
 If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
 
 ```js
-import { HttpError } from 'react-admin';
+import { HttpError } from 'ra-core';
 
 export default {
     getList: (resource, params) => {
@@ -444,31 +439,31 @@ export default {
 
 ## Handling Authentication
 
-Your API probably requires some form of authentication (e.g. a token in the `Authorization` header). It's the responsibility of [the `authProvider`](./Authentication.md) to log the user in and obtain the authentication data. React-admin doesn't provide any particular way of communicating this authentication data to the Data Provider. Most of the time, storing the authentication data in the  `localStorage` is the best choice - and allows uses to open multiple tabs without having to log in again.
+Your API probably requires some form of authentication (e.g. a token in the `Authorization` header). It's the responsibility of [the `authProvider`](../security/Authentication.md) to log the user in and obtain the authentication data. Ra-core doesn't provide any particular way of communicating this authentication data to the Data Provider. Most of the time, storing the authentication data in the  `localStorage` is the best choice - and allows uses to open multiple tabs without having to log in again.
 
 Check the [Handling Authentication](./DataProviders.md#handling-authentication) section in the Data Providers introduction for an example of such a setup.
 
 ## Testing Data Provider Methods
 
-A good way to test your data provider is to build a react-admin app with components that depend on it. Here is a list of components calling the data provider methods:
+A good way to test your data provider is to build a ra-core app with components that depend on it. Here is a list of components calling the data provider methods:
 
 | Method             | Components |
 | ------------------ | --------- |
-| `getList`          | [`<List>`](./List.md), [`<ListGuesser>`](./ListGuesser.md), [`<ListBase>`](./ListBase.md), [`<InfiniteList>`](./InfiniteList.md), [`<Count>`](./Count.md), [`<Calendar>`](./Calendar.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md), [`<ExportButton>`](./Buttons.md#exportbutton), [`<PrevNextButtons>`](./PrevNextButtons.md) |
-| `getOne`           | [`<Show>`](./Show.md), [`<ShowGuesser>`](./ShowGuesser.md), [`<ShowBase>`](./ShowBase.md), [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md) |
-| `getMany`          | [`<ReferenceField>`](./ReferenceField.md), [`<ReferenceArrayField>`](./ReferenceArrayField.md), [`<ReferenceInput>`](./ReferenceInput.md), [`<ReferenceArrayInput>`](./ReferenceArrayInput.md) |
-| `getManyReference` | [`<ReferenceManyField>`](./ReferenceManyField.md), [`<ReferenceOneField>`](./ReferenceOneField.md), [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md) |
-| `create`           | [`<Create>`](./Create.md), [`<CreateBase>`](./CreateBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<CreateInDialogButton>`](./CreateInDialogButton.md) |
-| `update`           | [`<Edit>`](./Edit.md), [`<EditGuesser>`](./EditGuesser.md), [`<EditBase>`](./EditBase.md), [`<EditableDatagrid>`](./EditableDatagrid.md), [`<EditInDialogButton>`](./EditInDialogButton.md), [`<UpdateButton>`](./UpdateButton.md) |
-| `updateMany`       | [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton) |
-| `delete`           | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<EditableDatagrid>`](./EditableDatagrid.md) |
-| `deleteMany`       | [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton) |
+| `getList`          | [`<ListBase>`](../list/ListBase.md), [`<ReferenceInputBase>`](../inputs/ReferenceInputBase.md), [`<ReferenceArrayInputBase>`](../inputs/ReferenceArrayInputBase.md) |
+| `getOne`           | [`<ShowBase>`](../show/ShowBase.md), [`<EditBase>`](../create-edit/EditBase.md) |
+| `getMany`          | [`<ReferenceFieldBase>`](../fields/ReferenceFieldBase.md), [`<ReferenceArrayFieldBase>`](../fields/ReferenceArrayFieldBase.md), [`<ReferenceInputBase>`](../inputs/ReferenceInputBase.md), [`<ReferenceArrayInputBase>`](../inputs/ReferenceArrayInputBase.md) |
+| `getManyReference` | [`<ReferenceManyFieldBase>`](../fields/ReferenceManyFieldBase.md), [`<ReferenceOneFieldBase>`](../fields/ReferenceOneFieldBase.md) |
+| `create`           | [`<CreateBase>`](../create-edit/CreateBase.md) |
+| `update`           | [`<EditBase>`](../create-edit/EditBase.md) |
+| `updateMany`       | Requires a custom implementation |
+| `delete`           | Requires a custom implementation |
+| `deleteMany`       | Requires a custom implementation |
 
-A simple react-admin app with one `<Resource>` using [guessers](./Features.md#guessers--scaffolding) for the `list`, `edit`, and `show` pages is a good start.
+A simple ra-core app with one `<Resource>` using the Base components for the `list`, `edit`, and `show` pages is a good start.
 
 ## The `meta` Parameter
 
-All data provider methods accept a `meta` query parameter and can return a `meta` response key. React-admin core components never set the query `meta`. It's designed to let you pass additional parameters to your data provider.
+All data provider methods accept a `meta` query parameter and can return a `meta` response key. Ra-core components never set the query `meta`. It's designed to let you pass additional parameters to your data provider.
 
 For instance, you could pass an option to embed related records in the response (see [Embedded data](#embedded-data) below):
 
@@ -523,7 +518,7 @@ const dataProvider = {
 }
 ```
 
-As embedding is an optional feature, react-admin doesn't use it by default. It's up to you to implement it in your data provider to reduce the number of requests to the API.
+As embedding is an optional feature, ra-core doesn't use it by default. It's up to you to implement it in your data provider to reduce the number of requests to the API.
 
 ## Prefetching
 
@@ -625,7 +620,7 @@ You can also benefit from this feature if you wrap your calls to the dataProvide
 ```jsx
 import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useDataProvider, Loading, Error } from 'react-admin';
+import { useDataProvider, Loading, Error } from 'ra-core';
 
 const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
@@ -653,7 +648,7 @@ You can find example implementations in the [Query Cancellation guide](https://t
 
 ## `getList` and `getOne` Shared Cache
 
-A Data Provider should return the same shape in `getList` and `getOne` for a given resource. This is because react-admin uses "optimistic rendering", and renders the Edit and Show view *before* calling `dataProvider.getOne()` by reusing the response from `dataProvider.getList()` if the user has displayed the List view before. If your API has different shapes for a query for a unique record and for a query for a list of records, your Data Provider should make these records consistent in shape before returning them to react-admin.
+A Data Provider should return the same shape in `getList` and `getOne` for a given resource. This is because ra-core uses "optimistic rendering", and renders the Edit and Show view *before* calling `dataProvider.getOne()` by reusing the response from `dataProvider.getList()` if the user has displayed the List view before. If your API has different shapes for a query for a unique record and for a query for a list of records, your Data Provider should make these records consistent in shape before returning them to ra-core.
 
 For instance, the following Data Provider returns more details in `getOne` than in `getList`:
 
@@ -686,14 +681,14 @@ This also explains why using [Embedding relationships](./DataProviders.md#embedd
 
 ## `fetchJson`: Built-In HTTP Client
 
-Although your Data Provider can use any HTTP client (`fetch`, `axios`, etc.), react-admin suggests using a helper function called `fetchJson` that it provides.
+Although your Data Provider can use any HTTP client (`fetch`, `axios`, etc.), ra-core suggests using a helper function called `fetchJson` that it provides.
 
 `fetchJson` is a wrapper around the `fetch` API that automatically handles JSON deserialization, rejects when the HTTP response isn't 2XX or 3XX, and throws a particular type of error that allows the UI to display a meaningful notification. `fetchJson` also lets you add an `Authorization` header if you pass a `user` option.
 
 Here is how you can use it in your Data Provider:
 
 ```diff
-+import { fetchUtils } from 'react-admin';
++import { fetchUtils } from 'ra-core';
 
 +const fetchJson = (url, options = {}) => {
 +   options.user = {
@@ -724,7 +719,7 @@ const dataProvider = {
 
 ## Example REST Implementation
 
-Let's say that you want to map the react-admin requests to a REST backend exposing the following API:
+Let's say that you want to map the ra-core requests to a REST backend exposing the following API:
 
 **getList**
 
@@ -837,7 +832,7 @@ Content-Type: application/json
 Here is an example implementation, that you can use as a base for your own Data Providers:
 
 ```js
-import { fetchUtils } from 'react-admin';
+import { fetchUtils } from 'ra-core';
 import { stringify } from 'query-string';
 
 const apiUrl = 'https://my.api.com/';
@@ -1334,7 +1329,7 @@ If you need to add custom business logic to a generic `dataProvider` for a speci
 
 ```jsx
 // in src/dataProvider.js
-import { withLifecycleCallbacks } from 'react-admin';
+import { withLifecycleCallbacks } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const baseDataProvider = simpleRestProvider('http://path.to.my.api/');

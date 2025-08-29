@@ -1,15 +1,12 @@
 ---
-layout: default
 title: "Data Provider Setup"
 ---
 
-# Data Provider Setup
+The Data Provider is the interface between ra-core and your API. It's where you write the API calls to fetch and save data.
 
-The Data Provider is the interface between react-admin and your API. It's where you write the API calls to fetch and save data.
+## `<CoreAdmin dataProvider>`
 
-## `<Admin dataProvider>`
-
-The first step to using a Data Provider is to pass it to [the `<Admin>` component](./Admin.md) via the `dataProvider` prop.
+The first step to using a Data Provider is to pass it to [the `<CoreAdmin>` component](../app-configuration/CoreAdmin.md) via the `dataProvider` prop.
 
 For example, let's use [the Simple REST data provider](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest). This provider is suitable for REST APIs using simple GET parameters for filters and sorting.
 
@@ -19,12 +16,12 @@ First, install the `ra-data-simple-rest` package:
 yarn add ra-data-simple-rest
 ```
 
-Then, initialize the provider with the REST backend URL, and pass it as the `<Admin dataProvider>`:
+Then, initialize the provider with the REST backend URL, and pass it as the `<CoreAdmin dataProvider>`:
 
 ```jsx
 // in src/App.js
 import * as React from "react";
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 import { PostList } from './posts';
@@ -32,9 +29,9 @@ import { PostList } from './posts';
 const dataProvider = simpleRestProvider('http://path.to.my.api/');
 
 const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
-    </Admin>
+    </CoreAdmin>
 );
 
 export default App;
@@ -58,7 +55,7 @@ For your own API, look for a compatible data provider in the list of [supported 
 
 ## React-Query Options
 
-React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache, and update data. Internally, the `<Admin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
+React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache, and update data. Internally, the `<CoreAdmin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:
@@ -71,10 +68,10 @@ React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache, 
 * Queries that fail are silently retried 3 times, with exponential backoff delay before capturing and displaying an error notification to the UI.
 * Query results by default are structurally shared to detect if data has actually changed, and if not, the data reference remains unchanged to better help with value stabilization in regard to `useMemo` and `useCallback`.
 
-If you want to override the react-query default query and mutation options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<Admin queryClient>` prop:
+If you want to override the react-query default query and mutation options, or use a specific client or mutation cache, you can create your own `QueryClient` instance and pass it to the `<CoreAdmin queryClient>` prop:
 
 ```jsx
-import { Admin } from 'react-admin';
+import { CoreAdmin } from 'ra-core';
 import { QueryClient } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
@@ -90,9 +87,9 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-    <Admin queryClient={queryClient} dataProvider={...}>
+    <CoreAdmin queryClient={queryClient} dataProvider={...}>
         ...
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -143,21 +140,17 @@ const [update] = useUpdate(
 
 Refer to the documentation of each data provider hook for more details on the options you can pass.
 
-React-admin components using the data provider also accept a `queryOptions` prop to pass options to the underlying react-query hooks. For instance, specify a custom `staleTime` for a `<List>` component:
-
-{% raw %}
+React-admin components using the data provider also accept a `queryOptions` prop to pass options to the underlying react-query hooks. For instance, specify a custom `staleTime` for a `<ListBase>` component:
 
 ```jsx
-import { List } from 'react-admin';
+import { ListBase } from 'ra-core';
 
 const PostList = () => (
-    <List queryOptions={{ staleTime: 60000 }}>
+    <ListBase queryOptions={{ staleTime: 60000 }}>
         ...
-    </List>
+    </ListBase>
 );
 ```
-
-{% endraw %}
 
 Look for the `queryOptions` and `mutationOptions` props in the documentation of each react-admin component to know which options you can pass.
 
@@ -170,29 +163,28 @@ React-admin uses `react-query` to call the Data Provider. You can view all `reac
 To enable these devtools, install `@tanstack/react-query-devtools` and add the `<ReactQueryDevtools>` component to a custom layout:
 
 ```jsx
-import { Layout } from 'react-admin';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export const MyLayout = ({ children }) => (
-    <Layout>
+    <div>
         {children}
         <ReactQueryDevtools initialIsOpen={false} />
-    </Layout>
+    </div>
 );
 ```
 
-Then use this layout in `<Admin>`:
+Then use this layout in `<CoreAdmin>`:
 
 ```jsx
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 
 import { dataProvider } from './dataProvider';
 import { MyLayout } from './MyLayout';
 
 export const App = () => (
-    <Admin dataProvider={dataProvider} layout={MyLayout}>
+    <CoreAdmin dataProvider={dataProvider} layout={MyLayout}>
         <Resource name="posts" list={PostList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -203,21 +195,21 @@ export const App = () => (
 ```jsx
 // in src/App.js
 import * as React from "react";
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 import fakeDataProvider from 'ra-data-fakerest';
 
 const dataProvider = fakeDataProvider({ /* data here */ }, true);
 
 const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         // ...
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 ## Handling Authentication
 
-React-admin uses the `dataProvider` to fetch data and the [`authProvider`](./Authentication.md) to handle authentication. The `authProvider` typically stores an authentication token, shares it with the `dataProvider` (often via `localStorage`), which then adds it to HTTP headers for API requests.
+React-admin uses the `dataProvider` to fetch data and the [`authProvider`](../security/Authentication.md) to handle authentication. The `authProvider` typically stores an authentication token, shares it with the `dataProvider` (often via `localStorage`), which then adds it to HTTP headers for API requests.
 
 For example, here's how to use a token returned during the login process to authenticate all requests to the API via a Bearer token, using the Simple REST data provider:
 
@@ -246,7 +238,7 @@ const authProvider = {
 };
 
 // in dataProvider.js
-import { fetchUtils } from 'react-admin';
+import { fetchUtils } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const fetchJson = (url, options = {}) => {
@@ -277,7 +269,7 @@ For instance, the `simpleRestProvider` function accepts an HTTP client function 
 To add custom headers to your requests, you can *wrap* the `fetchJson()` call inside your own function:
 
 ```jsx
-import { fetchUtils, Admin, Resource } from 'react-admin';
+import { fetchUtils, CoreAdmin, Resource } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const fetchJson = (url, options = {}) => {
@@ -291,16 +283,16 @@ const fetchJson = (url, options = {}) => {
 const dataProvider = simpleRestProvider('http://path.to.my.api/', fetchJson);
 
 const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 **Tip**: For TypeScript users, here is a typed version of the `fetchJson` function:
 
 ```ts
-import { fetchUtils } from "react-admin";
+import { fetchUtils } from "ra-core";
 
 const fetchJson = (url: string, options: fetchUtils.Options = {}) => {
     const customHeaders = (options.headers ||
@@ -356,28 +348,24 @@ const { data } = useGetOne('posts', { id: 123, meta: { embed: ['author'] } });
 
 Leveraging embeds can reduce the number of requests made by react-admin to the API, and thus improve the app's performance.
 
-For example, this allows you to display data from a related resource without making an additional request (and without using a `<ReferenceField>`).
-
-{% raw %}
+For example, this allows you to display data from a related resource without making an additional request (and without using a `<ReferenceFieldBase>`).
 
 ```diff
 const PostList = () => (
--   <List>
-+   <List queryOptions={{ meta: { embed: ["author"] } }}>
+-   <ListBase>
++   <ListBase queryOptions={{ meta: { embed: ["author"] } }}>
         <DataTable>
             <DataTable.Col source="title" />
 -           <DataTable.Col source="author_id">
--               <ReferenceField source="author_id" reference="authors>
+-               <ReferenceFieldBase source="author_id" reference="authors>
 -                   <TextField source="name" />
--               </ReferenceField>
+-               </ReferenceFieldBase>
 -           </DataTable.Col>
 +           <DataTable.Col source="author.name" />
         </DataTable>
-    </List>
+    </ListBase>
 );
 ```
-
-{% endraw %}
 
 Refer to your data provider's documentation to verify if it supports this feature. If you're writing your own data provider, check the [Writing a Data Provider](./DataProviderWriting.md#embedded-data) documentation for more details.
 
@@ -412,23 +400,21 @@ React-admin can use this feature to populate its cache with related records, and
 
 For example, you can use prefetching to display the author's name in a post list without making an additional request:
 
-{% raw %}
-
 ```jsx
 const PostList = () => (
-    <List queryOptions={{ meta: { prefetch: ['author'] }}}>
+    <ListBase queryOptions={{ meta: { prefetch: ['author'] }}}>
         <DataTable>
             <DataTable.Col source="title" />
             <DataTable.Col source="author_id">
                 {/** renders without an additional request */}
-                <ReferenceField source="author_id" reference="authors" />
+                <ReferenceFieldBase source="author_id" reference="authors">
+                    <TextField source="name" />
+                </ReferenceFieldBase>
             </DataTable.Col>
         </DataTable>
-    </List>
+    </ListBase>
 );
 ```
-
-{% endraw %}
 
 The way to *ask* for embedded resources isn't normalized and depends on the API. The above example uses the `meta.prefetch` query parameter. Some APIs may use [the `embed` query parameter](#embedding-relationships) to indicate prefetching.
 
@@ -500,7 +486,7 @@ const dataProvider = {
 But the `dataProvider` code quickly becomes hard to read and maintain. React-admin provides a helper function to make it easier to add lifecycle callbacks to the dataProvider: `withLifecycleCallbacks`:
 
 ```jsx
-import { withLifecycleCallbacks } from 'react-admin';
+import { withLifecycleCallbacks } from 'ra-core';
 
 const dataProvider = withLifecycleCallbacks(baseDataProvider, [
     {
@@ -526,7 +512,7 @@ Check the [withLifecycleCallbacks](./withLifecycleCallbacks.md) documentation fo
 
 ## Combining Data Providers
 
-If you need to build an app relying on more than one API, you may face a problem: the `<Admin>` component accepts only one `dataProvider` prop. You can combine multiple data providers into one using the `combineDataProviders` helper. It expects a function as a parameter accepting a resource name and returning a data provider for that resource.
+If you need to build an app relying on more than one API, you may face a problem: the `<CoreAdmin>` component accepts only one `dataProvider` prop. You can combine multiple data providers into one using the `combineDataProviders` helper. It expects a function as a parameter accepting a resource name and returning a data provider for that resource.
 
 <iframe src="https://www.youtube-nocookie.com/embed/x9EZk0i6VHw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
@@ -535,7 +521,7 @@ For instance, the following app uses `ra-data-simple-rest` for the `posts` and `
 ```jsx
 import buildRestProvider from 'ra-data-simple-rest';
 import buildStorageProvider from 'ra-data-local-storage';
-import { Admin, Resource, combineDataProviders } from 'react-admin';
+import { CoreAdmin, Resource, combineDataProviders } from 'ra-core';
 
 const dataProvider1 = buildRestProvider('http://path.to.my.api/');
 const dataProvider2 = buildStorageProvider();
@@ -553,11 +539,11 @@ const dataProvider = combineDataProviders((resource) => {
 });
 
 export const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="posts" list={PostList} />
         <Resource name="comments" list={CommentList} />
         <Resource name="users" list={UserList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -568,7 +554,7 @@ For instance, you can prefix your resource names to facilitate the API selection
 ```jsx
 import buildRestProvider from 'ra-data-simple-rest';
 import buildStorageProvider from 'ra-data-local-storage';
-import { Admin, Resource, defaultDataProvider } from 'react-admin';
+import { CoreAdmin, Resource, defaultDataProvider } from 'ra-core';
 
 const dataProvider1 = buildRestProvider('http://path.to.my.api/');
 const dataProvider2 = buildStorageProvider();
@@ -590,11 +576,11 @@ const dataProvider = new Proxy(defaultDataProvider, {
 });
 
 export const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="api1/posts" list={PostList} />
         <Resource name="api1/comments" list={CommentList} />
         <Resource name="api2/users" list={UserList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -611,7 +597,7 @@ When a user submits a form with a file input, the `dataProvider` method (`create
 This `dataProvider` extends an existing provider to convert images passed to `dataProvider.update('posts')` into Base64 strings. It uses [`withLifecycleCallbacks`](#adding-lifecycle-callbacks) to modify the `dataProvider.update()` method for the `posts` resource only.
 
 ```tsx
-import { withLifecycleCallbacks, DataProvider } from 'react-admin';
+import { withLifecycleCallbacks, DataProvider } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const dataProvider = withLifecycleCallbacks(simpleRestProvider('http://path.to.my.api/'), [
@@ -688,7 +674,7 @@ import {
   UpdateParams,
   DataProvider,
   fetchUtils,
-} from "react-admin";
+} from "ra-core";
 
 const endpoint = "http://path.to.my.api";
 const baseDataProvider = simpleRestDataProvider(endpoint);
@@ -789,7 +775,7 @@ The `dataProvider` example below modifies the `create` and `update` methods for 
 
 ```ts
 // dataProvider.ts
-import { DataProvider, withLifecycleCallbacks } from "react-admin";
+import { DataProvider, withLifecycleCallbacks } from "ra-core";
 import simpleRestProvider from "ra-data-simple-rest";
 
 type CloudinaryFile = {
@@ -859,7 +845,7 @@ For instance, the `ra-data-hasura` data provider needs to be initialized:
 ```jsx
 import React, { useState, useEffect } from 'react';
 import buildHasuraProvider from 'ra-data-hasura';
-import { Admin, Resource } from 'react-admin';
+import { CoreAdmin, Resource } from 'ra-core';
 
 import { PostCreate, PostEdit, PostList } from './posts';
 
@@ -878,9 +864,9 @@ const App = () => {
     if (!dataProvider) return <p>Loading...</p>;
 
     return (
-        <Admin dataProvider={dataProvider}>
+        <CoreAdmin dataProvider={dataProvider}>
             <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
-        </Admin>
+        </CoreAdmin>
     );
 };
 
