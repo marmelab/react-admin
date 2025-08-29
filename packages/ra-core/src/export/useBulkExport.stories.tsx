@@ -10,7 +10,7 @@ import {
 } from '..';
 
 export default {
-    title: 'ra-core/controller/list/useBulkExport',
+    title: 'ra-core/export/useBulkExport',
 };
 
 const data = {
