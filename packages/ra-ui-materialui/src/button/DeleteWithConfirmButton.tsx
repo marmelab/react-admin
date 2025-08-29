@@ -125,7 +125,8 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         successMessage,
     });
 
-    const handleDialogOpen: ReactEventHandler<any> = () => {
+    const handleDialogOpen: ReactEventHandler<any> = event => {
+        event.stopPropagation();
         setOpen(true);
     };
     const handleDialogClose: ReactEventHandler<any> = () => {

@@ -57,6 +57,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         successMessage,
     });
     const handleClick: ReactEventHandler<any> = event => {
+        event.stopPropagation();
         handleDelete();
         if (onClick) {
             onClick(event);
