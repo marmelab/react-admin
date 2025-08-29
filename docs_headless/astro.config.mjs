@@ -26,35 +26,91 @@ export default defineConfig({
             ],
             sidebar: [
                 {
-                    label: 'Guides & Concepts',
-                    items: [
-                        // Each item here is one entry in the navigation menu.
-                        {
-                            label: 'General Concepts',
-                            slug: 'guides/architecture',
-                        },
-                        {
-                            label: 'Data Fetching',
-                            slug: 'guides/datafetchingguide',
-                        },
-                        {
-                            label: 'CRUD pages',
-                            slug: 'guides/crud',
-                            attrs: {
-                                class: 'flex items-center',
-                            },
-                            badge: {
-                                text: '',
-                                variant: 'default',
-                                class: 'ee-badge',
-                            },
-                        },
-                    ],
+                    label: 'Getting Started',
+                    slug: 'getting-started',
                 },
                 {
-                    label: 'Reference',
+                    label: 'Guides & Concepts',
                     autogenerate: {
-                        directory: 'reference',
+                        directory: 'guides',
+                    },
+                },
+                {
+                    label: 'App Configuration',
+                    autogenerate: {
+                        directory: 'app-configuration',
+                    },
+                },
+                {
+                    label: 'Data Fetching',
+                    autogenerate: {
+                        directory: 'data-fetching',
+                    },
+                },
+                {
+                    label: 'Security',
+                    autogenerate: {
+                        directory: 'security',
+                    },
+                },
+                {
+                    label: 'List Page',
+                    autogenerate: {
+                        directory: 'list',
+                    },
+                },
+                {
+                    label: 'Creation & Edition Pages',
+                    autogenerate: {
+                        directory: 'create-edit',
+                    },
+                },
+                {
+                    label: 'Show Page',
+                    autogenerate: {
+                        directory: 'show',
+                    },
+                },
+                {
+                    label: 'Common',
+                    autogenerate: {
+                        directory: 'common',
+                    },
+                },
+                {
+                    label: 'Fields',
+                    autogenerate: {
+                        directory: 'fields',
+                    },
+                },
+                {
+                    label: 'Inputs',
+                    autogenerate: {
+                        directory: 'inputs',
+                    },
+                },
+                {
+                    label: 'Preferences',
+                    autogenerate: {
+                        directory: 'preferences',
+                    },
+                },
+                {
+                    label: 'I18N Provider & Translations',
+                    autogenerate: {
+                        directory: 'i18n',
+                    },
+                },
+                {
+                    label: 'Other Hooks & Components',
+                    autogenerate: {
+                        directory: 'other',
+                    },
+                },
+                {
+                    label: 'Recipes',
+                    autogenerate: {
+                        directory: 'recipes',
                     },
                 },
             ],
