@@ -8,6 +8,7 @@ import {
 
 import { Typography } from '@mui/material';
 import type { FieldProps } from './types';
+import { Offline } from '../Offline';
 
 /**
  * Render related records to the current one.
@@ -62,7 +63,15 @@ export const ReferenceManyField = <
     props: ReferenceManyFieldProps<RecordType, ReferenceRecordType>
 ) => {
     const translate = useTranslate();
-    const { children, pagination, empty, ...controllerProps } = props;
+    const {
+        children,
+        pagination,
+        empty,
+        offline = defaultOffline,
+        render,
+        ...controllerProps
+    } = props;
+
     return (
         <ReferenceManyFieldBase<RecordType, ReferenceRecordType>
             {...controllerProps}
@@ -75,17 +84,35 @@ export const ReferenceManyField = <
                     empty
                 )
             }
-        >
-            {children}
-            {pagination}
-        </ReferenceManyFieldBase>
+            render={props => {
+                const { isPaused, isPending, isPlaceholderData } = props;
+                const shouldRenderOffline =
+                    isPaused &&
+                    (isPending || isPlaceholderData) &&
+                    offline !== undefined &&
+                    offline !== false;
+
+                return (
+                    <>
+                        {shouldRenderOffline
+                            ? offline
+                            : render
+                              ? render(props)
+                              : children}
+                        {pagination}
+                    </>
+                );
+            }}
+        />
     );
 };
+
+const defaultOffline = <Offline variant="inline" />;
 
 export interface ReferenceManyFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source'>,
         ReferenceManyFieldBaseProps<RecordType, ReferenceRecordType> {
-    pagination?: React.ReactElement;
+    pagination?: React.ReactNode;
 }

@@ -12,10 +12,12 @@ import { Pagination } from '../list/pagination/Pagination';
 import {
     Basic,
     Empty,
+    Offline,
     WithPagination,
     WithPaginationAndSelectAllLimit,
     WithRenderProp,
 } from './ReferenceManyField.stories';
+import { Alert } from '@mui/material';
 
 const theme = createTheme();
 
@@ -207,7 +209,7 @@ describe('<ReferenceManyField />', () => {
         });
     });
 
-    it('should use render prop when provides', async () => {
+    it('should use render prop when provided', async () => {
         render(<WithRenderProp />);
         await waitFor(() => {
             expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
@@ -436,5 +438,42 @@ describe('<ReferenceManyField />', () => {
                 'There are too many elements to select them all. Only the first 6 elements were selected.'
             );
         });
+    });
+    it('should render the default offline component node when offline', async () => {
+        render(<Offline />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('No connectivity. Could not fetch data.');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText("Harry Potter and the Philosopher's Stone");
+        expect(
+            screen.queryByText('No connectivity. Could not fetch data.')
+        ).toBeNull();
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        await screen.findByText('You are offline, the data may be outdated');
+        fireEvent.click(screen.getByLabelText('Go to page 2'));
+        await screen.findByText('No connectivity. Could not fetch data.');
+        fireEvent.click(screen.getByLabelText('Go to page 1'));
+        await screen.findByText("Harry Potter and the Philosopher's Stone");
+        fireEvent.click(await screen.findByText('Simulate online'));
+    });
+    it('should render the custom offline component node when offline', async () => {
+        const CustomOffline = () => {
+            return <Alert severity="warning">You are offline!</Alert>;
+        };
+        render(<Offline offline={<CustomOffline />} />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('You are offline!');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText("Harry Potter and the Philosopher's Stone");
+        expect(screen.queryByText('You are offline!')).toBeNull();
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        await screen.findByText('You are offline, the data may be outdated');
+        fireEvent.click(screen.getByLabelText('Go to page 2'));
+        await screen.findByText('You are offline!');
+        fireEvent.click(screen.getByLabelText('Go to page 1'));
+        await screen.findByText("Harry Potter and the Philosopher's Stone");
+        fireEvent.click(await screen.findByText('Simulate online'));
     });
 });

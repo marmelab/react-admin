@@ -5,10 +5,12 @@ import {
     RecordContextProvider,
     ResourceContextProvider,
     TestMemoryRouter,
+    useIsOffline,
+    IsOffline,
 } from 'ra-core';
 import { Admin, ListGuesser, Resource } from 'react-admin';
 import type { AdminProps } from 'react-admin';
-import { ThemeProvider, Box, Stack } from '@mui/material';
+import { Alert, ThemeProvider, Box, Stack } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import fakeDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -29,6 +31,7 @@ import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { SelectAllButton, BulkDeleteButton } from '../button';
+import { onlineManager } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
 
@@ -313,3 +316,75 @@ export const WithRenderProp = () => (
         />
     </Wrapper>
 );
+
+export const Offline = ({ offline }: { offline?: React.ReactNode }) => (
+    <Wrapper
+        i18nProvider={polyglotI18nProvider(() => englishMessages)}
+        dataProvider={defaultDataProvider}
+        record={authors[3]}
+    >
+        <RenderChildOnDemand>
+            <ReferenceManyField
+                reference="books"
+                target="author_id"
+                pagination={<Pagination />}
+                perPage={5}
+                offline={offline}
+            >
+                <IsOffline>
+                    <Alert severity="warning">
+                        You are offline, the data may be outdated
+                    </Alert>
+                </IsOffline>
+                <DataTable>
+                    <DataTable.Col source="title" />
+                </DataTable>
+            </ReferenceManyField>
+        </RenderChildOnDemand>
+        <SimulateOfflineButton />
+    </Wrapper>
+);
+
+const CustomOffline = () => {
+    return <Alert severity="warning">You are offline!</Alert>;
+};
+
+Offline.args = {
+    offline: 'default',
+};
+
+Offline.argTypes = {
+    offline: {
+        name: 'Offline component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomOffline />,
+        },
+    },
+};
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};
