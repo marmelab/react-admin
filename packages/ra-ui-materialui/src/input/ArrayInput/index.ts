@@ -8,6 +8,7 @@ export * from './ReOrderButtons';
 
 /**
  * @deprecated Import from `ra-core` or `react-admin` instead
+ * FIXME: remove the re-export in v6
  */
 export {
     ArrayInputContext,

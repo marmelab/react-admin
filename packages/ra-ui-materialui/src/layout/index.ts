@@ -28,4 +28,9 @@ export * from './TitlePortal';
 export * from './TopToolbar';
 export * from './UserMenu';
 export * from './useSidebarState';
+
+/**
+ * @deprecated Import from `ra-core` or `react-admin` instead
+ * FIXME: remove the re-export in v6
+ */
 export { UserMenuContext, UserMenuContextProvider, useUserMenu } from 'ra-core';
