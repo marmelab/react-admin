@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Children, ReactNode } from 'react';
+import { FilterContext } from 'ra-core';
 
 import { FilterForm } from './FilterForm';
 import { FilterButton } from './FilterButton';
-import { FilterContext } from '../FilterContext';
 
 /**
  * Filter button/form combo

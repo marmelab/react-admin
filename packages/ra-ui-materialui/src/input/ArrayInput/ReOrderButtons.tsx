@@ -1,10 +1,9 @@
 import * as React from 'react';
 import clsx from 'clsx';
-import { IconButtonWithTooltip } from '../../button';
+import { useSimpleFormIterator, useSimpleFormIteratorItem } from 'ra-core';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowCircleUp';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowCircleDown';
-import { useSimpleFormIteratorItem } from './useSimpleFormIteratorItem';
-import { useSimpleFormIterator } from './useSimpleFormIterator';
+import { IconButtonWithTooltip } from '../../button';
 
 export const ReOrderButtons = ({ className }: { className?: string }) => {
     const { index, total, reOrder } = useSimpleFormIteratorItem();

@@ -4,17 +4,20 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import get from 'lodash/get';
-import { FilterLiveForm, useListContext, useResourceContext } from 'ra-core';
+import {
+    FilterLiveForm,
+    useFilterContext,
+    useListContext,
+    useResourceContext,
+} from 'ra-core';
 import * as React from 'react';
 import {
     type HtmlHTMLAttributes,
     type ReactNode,
     useCallback,
-    useContext,
     useEffect,
 } from 'react';
 
-import { FilterContext } from '../FilterContext';
 import { FilterFormInput } from './FilterFormInput';
 
 export const FilterForm = (inProps: FilterFormProps) => {
@@ -23,7 +26,7 @@ export const FilterForm = (inProps: FilterFormProps) => {
         name: PREFIX,
     });
     const { filters: filtersProps, ...rest } = props;
-    const filters = useContext(FilterContext) || filtersProps;
+    const filters = useFilterContext() || filtersProps;
 
     return (
         <FilterLiveForm formComponent={StyledForm} {...sanitizeRestProps(rest)}>

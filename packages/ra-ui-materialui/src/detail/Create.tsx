@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import {
-    CreateBase,
-    CreateBaseProps,
-    Identifier,
-    RaRecord,
-    useCheckMinimumRequiredProps,
-} from 'ra-core';
+import { CreateBase, CreateBaseProps, Identifier, RaRecord } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
 import { CreateView, CreateViewProps } from './CreateView';

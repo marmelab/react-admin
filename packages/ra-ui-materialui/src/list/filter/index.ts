@@ -14,3 +14,8 @@ export * from './RemoveSavedQueryIconButton';
 export * from './SavedQueriesList';
 export * from './SavedQueryFilterListItem';
 export * from './useSavedQueries';
+/**
+ * @deprecated Import from `ra-core` or `react-admin` instead
+ * FIXME: remove the re-export in v6
+ */
+export { FilterContext } from 'ra-core';

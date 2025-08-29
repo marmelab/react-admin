@@ -1,7 +1,7 @@
 import * as React from 'react';
 import AddIcon from '@mui/icons-material/AddCircleOutline';
 import clsx from 'clsx';
-import { useSimpleFormIterator } from './useSimpleFormIterator';
+import { useSimpleFormIterator } from 'ra-core';
 import { IconButtonWithTooltip, ButtonProps } from '../../button';
 
 export const AddItemButton = (props: ButtonProps) => {

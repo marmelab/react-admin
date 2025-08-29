@@ -6,10 +6,9 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import type { ToolbarProps } from '@mui/material';
-import type { Exporter } from 'ra-core';
+import { type Exporter, FilterContext } from 'ra-core';
 
 import { FilterForm } from './filter';
-import { FilterContext } from './FilterContext';
 
 export const ListToolbar: FC<ListToolbarProps> = memo(inProps => {
     const props = useThemeProps({

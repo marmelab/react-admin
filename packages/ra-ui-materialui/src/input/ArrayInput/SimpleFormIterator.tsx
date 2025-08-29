@@ -20,6 +20,7 @@ import get from 'lodash/get';
 import {
     FormDataConsumer,
     type RaRecord,
+    SimpleFormIteratorContext,
     useRecordContext,
     useArrayInput,
     useTranslate,
@@ -31,7 +32,6 @@ import {
     SimpleFormIteratorClasses,
     SimpleFormIteratorPrefix as PREFIX,
 } from './useSimpleFormIteratorStyles';
-import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 import {
     DisableRemoveFunction,
     SimpleFormIteratorItem,
