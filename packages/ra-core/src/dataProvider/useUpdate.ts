@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
     useMutation,
     useQueryClient,
@@ -98,8 +98,17 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         getMutateWithMiddlewares,
         ...mutationOptions
     } = options;
+
     const mode = useRef<MutationMode>(mutationMode);
+    useEffect(() => {
+        mode.current = mutationMode;
+    }, [mutationMode]);
+
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
+    useEffect(() => {
+        paramsRef.current = params;
+    }, [params]);
+
     const snapshot = useRef<Snapshot>([]);
     // Ref that stores the mutation with middlewares to avoid losing them if the calling component is unmounted
     const mutateWithMiddlewares = useRef(dataProvider.update);
