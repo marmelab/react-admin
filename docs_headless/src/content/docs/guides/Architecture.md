@@ -1,9 +1,6 @@
 ---
-layout: default
-title: "Key Concepts"
+title: "General Concepts"
 ---
-
-# Key Concepts
 
 React-admin relies on a several design decisions that structure its codebase.
 
@@ -15,16 +12,16 @@ React-admin is specifically designed to build [Single-Page Applications (SPA)](h
 
 The SPA architecture ensures that react-admin apps are [exceptionally fast](./Features.md#fast), easy to host, and compatible with existing APIs without requiring a dedicated backend. 
 
-To achieve this, react-admin utilizes an internal router, powered by `react-router`, to display the appropriate screen when the user clicks on a link. Developers can define routes using the [`<Resource>`](./Resource.md) component for CRUD routes and the [`<CustomRoutes>`](./CustomRoutes.md) component for other routes.
+To achieve this, react-admin utilizes an internal router, powered by `react-router`, to display the appropriate screen when the user clicks on a link. Developers can define routes using the [`<Resource>`](../app-configuration/Resource.md) component for CRUD routes and the [`<CustomRoutes>`](../app-configuration/CustomRoutes.md) component for other routes.
 
 For example, the following react-admin application:
 
 ```jsx
-import { Admin, Resource, CustomRoutes } from 'react-admin';
+import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
 import { Route } from 'react-router-dom';
 
 export const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         <Resource name="labels" list={LabelList} edit={LabelEdit} show={LabelShow} />
         <Resource label="genres" list={GenreList} />
         <Resource name="artists" list={ArtistList} edit={ArtistDetail} create={ArtistCreate}>
@@ -35,7 +32,7 @@ export const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/organization" element={<Organization />} />
         </CustomRoutes>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -100,22 +97,22 @@ Content-Range: posts 0-4/27
 ]
 ```
 
-React-admin comes with [more than 50 data providers](./DataProviderList.md) for various backends, including REST, GraphQL, Firebase, Django REST Framework, API Platform, and more. If these providers do not suit your API, you have the flexibility to [develop a custom provider](./DataProviderWriting.md).
+React-admin comes with [more than 50 data providers](../data-fetching/DataProviderList.md) for various backends, including REST, GraphQL, Firebase, Django REST Framework, API Platform, and more. If these providers do not suit your API, you have the flexibility to [develop a custom provider](../data-fetching/DataProviderWriting.md).
 
-This approach is why react-admin components do not call `fetch` or `axios` directly. Instead, they rely on the data provider to fetch data from the API. Similarly, it is recommended that your custom components follow the same pattern and utilize [data provider hooks](./Actions.md), such as [`useGetList`](./useGetList.md):
+This approach is why react-admin components do not call `fetch` or `axios` directly. Instead, they rely on the data provider to fetch data from the API. Similarly, it is recommended that your custom components follow the same pattern and utilize [data provider hooks](../data-fetching/Actions.md), such as [`useGetList`](../data-fetching/useGetList.md):
 
 ```jsx
-import { useGetList } from 'react-admin';
+import { useGetList } from 'ra-core';
 
 const MyComponent = () => {
-    const { data, total, loading, error } = useGetList('posts', {
+    const { data, total, isLoading, error } = useGetList('posts', {
         pagination: { page: 1, perPage: 5 },
         sort: { field: 'title', order: 'ASC' },
         filter: { author_id: 12 },
     });
 
-    if (loading) return <Loading />;
-    if (error) return <Error />;
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
     return (
         <div>
             <h1>Found {total} posts matching your query</h1>
@@ -133,98 +130,58 @@ By using `useGetList`, you gain various benefits beyond a simple `fetch`: it han
 
 Whenever you need to communicate with a server, you will use these providers. Since they are specialized for their respective domains and tightly integrated with react-admin, they will save you a significant amount of time and effort.
 
-## Smart Components
-
-React-admin was built to avoid rewriting the same code and over again, because most web applications use the same basic building blocks. It provides a library of React components ([more than 150 components to date](./Reference.md#components)). Most of these are **smart components** as they not only handle rendering HTML but also take care of data fetching, state management, and interaction within the application.
-
-<a href="../img/components.webp"><img class="no-shadow" src="../img/components.webp" alt="Smart components" /></a>
-
-It's important to note that react-admin is not merely a UI Kit like Material UI or Bootstrap. It goes beyond presentation to offer building blocks specifically tailored for data-driven applications. While it is built on top of Material UI, you don't need to be familiar with Material UI to use react-admin effectively.
-
-For example, to create a custom menu for your application, you can utilize the `<Menu>` component:
-
-```jsx
-// in src/MyMenu.js
-import { Menu } from 'react-admin';
-import LabelIcon from '@mui/icons-material/Label';
-
-export const MyMenu = () => (
-    <Menu>
-        <Menu.DashboardItem />
-        <Menu.ResourceItem name="posts" />
-        <Menu.ResourceItem name="comments" />
-        <Menu.ResourceItem name="users" />
-        <Menu.Item to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
-    </Menu>
-);
-```
-
-In this example, `<Menu.DashboardItem>` links to the `/dashboard` route, `<Menu.ResourceItem>` links to the `list` page defined in the resource configuration from the `<Resource>` component, and `<Menu.Item>` is a generic component that you can use to link to any route in your application. The `<Menu>` component automatically responds to changes on the application location and highlights the current route. Additionally, if you use [Role-Based Access Control](./AuthRBAC.md), users will only see the menu items they have access to.
-
-Before creating your custom component, it's a good practice to check if react-admin already provides a suitable component with a generic name for your purpose. In many cases, react-admin can save you hours, if not days, of development effort.
-
-Some of the other useful react-admin components include those for guided tours, sub-forms, login screens, action buttons, calendars, and much more. Each react-admin component can be customized using props, children, and [theme](./AppTheme.md) to fit your application's specific needs.
-
 ## Composition
 
 React-admin avoids components that accept an overwhelming number of props, which are often referred to as "God Components." Instead, react-admin encourages the use of composition, where components accept subcomponents (either through children or specific props) to handle a share of the logic.
 
-For example, while you cannot directly pass a list of actions to the `<Edit>` component, you can achieve the same result by passing an `actions` component:
+For example, while you cannot directly pass a custom menu to the `<CoreAdmin>` component, you can achieve the same result by passing a `layout` component, containing the menu:
 
 ```jsx
-import { Button } from '@mui/material';
-import { TopToolbar, ShowButton } from 'react-admin';
+// in src/MyLayout.js
+import { useResourceDefinitions } from 'ra-core';
 
-export const PostEdit = () => (
-    <Edit actions={<PostEditActions />}>
-        ...
-    </Edit>
-);
+export const MyLayout = ({ children }) => {
+    const resources = useResourceDefinitions();
+    
+    return (
+        <div className="admin-layout">
+            <nav>
+                {Object.keys(resources).map(name => (
+                    <a key={name} href={`/${name}`}>{name}</a>
+                ))}
+            </nav>
+            <main>{children}</main>
+        </div>
+    );
+};
 
-const PostEditActions = () => (
-    <TopToolbar>
-        <ShowButton />
-        <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </TopToolbar>
+// in src/App.js
+import { CoreAdmin } from 'ra-core';
+import { MyLayout }  from './MyLayout';
+
+const App = () => (
+    <CoreAdmin layout={MyLayout} dataProvider={...}>
+        // ...
+    </CoreAdmin>
 );
 ```
 
 This approach enables you to override specific parts of the logic of a component by composing it with another component.
 
-The trade-off with this approach is that sometimes react-admin may require you to override several components just to enable one specific feature. For instance, to override the Menu, you must first create a custom layout using your menu as the `<Layout menu>` prop, then pass it as the `<Admin layout>` prop:
-
-```jsx
-// in src/MyLayout.js
-import { Layout } from 'react-admin';
-import { Menu } from './Menu';
-
-export const MyLayout = ({ children }) => (
-    <Layout menu={Menu}>
-        {children}
-    </Layout>
-);
-
-// in src/App.js
-import { Admin } from 'react-admin';
-import { MyLayout }  from './MyLayout';
-
-const App = () => (
-    <Admin layout={MyLayout} dataProvider={...}>
-        // ...
-    </Admin>
-);
-```
+The trade-off with this approach is that sometimes react-admin may require you to override several components just to enable one specific feature.
 
 Although this drawback exists, we accept it because the use of composition in react-admin makes the components highly extensible, and it significantly improves the readability and maintainability of the code.
 
 ## Hooks
 
-When you find that you cannot tweak a react-admin component using props, you can always turn to the lower-level API: hooks. In fact, the core of react-admin is a headless library called `ra-core`, which primarily consists of hooks. These hooks hide the framework's implementation details, allowing you to focus on your business logic. It's perfectly normal to use react-admin hooks in your own components if the default UI doesn't meet your specific requirements.
+The `ra-core` library consists primarily of hooks. These hooks hide the framework's implementation details, allowing you to focus on your business logic. They play a central role in any UI implementation of ra-core, but they can also come in handy to users if the default UI doesn't meet their specific requirements. 
 
-For example, the `<DeleteButton>` button used in `pessimistic` mode renders a confirmation dialog when clicked and then calls the `dataProvider.delete()` method for the current record. If you want the same feature but with a different UI, you can use the `useDeleteWithConfirmController` hook:
+For example, in React Admin, the [`<DeleteButton>`](https://marmelab.com/react-admin/DeleteButton.html) used in `pessimistic` mode renders a confirmation dialog when clicked and then calls the `dataProvider.delete()` method for the current record. If you want the same feature but with a different UI, you can use the `useDeleteWithConfirmController` hook:
 
-{% raw %}
 ```jsx
+import { useResourceContext, useRecordContext, useDeleteWithConfirmController } from 'ra-core';
+import { Fragment } from 'react';
+
 const DeleteButton = () => {
     const resource = useResourceContext();
     const record = useRecordContext();
@@ -238,38 +195,26 @@ const DeleteButton = () => {
 
     return (
         <Fragment>
-            <Button onClick={handleDialogOpen} label="ra.action.delete">
-                {icon}
-            </Button>
-            <Confirm
-                isOpen={open}
-                loading={isPending}
-                title="ra.message.delete_title"
-                content="ra.message.delete_content"
-                titleTranslateOptions={{
-                    name: resource,
-                    id: record.id,
-                }}
-                contentTranslateOptions={{
-                    name: resource,
-                    id: record.id,
-                }}
-                onConfirm={handleDelete}
-                onClose={handleDialogClose}
-            />
+            <button onClick={handleDialogOpen}>
+                Delete
+            </button>
+            {open && (
+                <div className="confirm-dialog">
+                    <p>Are you sure you want to delete this {resource}?</p>
+                    <button onClick={handleDelete} disabled={isPending}>
+                        {isPending ? 'Deleting...' : 'Confirm'}
+                    </button>
+                    <button onClick={handleDialogClose}>Cancel</button>
+                </div>
+            )}
         </Fragment>
     );
 };
 ```
-{% endraw %}
 
 The fact that hook names often end with `Controller` is intentional and reflects the use of [the Model-View-Controller (MVC) pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) for complex components in react-admin. 
 
-- The Controller logic is handled by React hooks (e.g. `useListController`).
-- The view logic is managed by React components (e.g. `<List>`).
-- The model logic is left to the developer, and react-admin simply defines the interface that the model must expose through its Providers.
-
-React-admin exposes [dozens of hooks](./Reference.md#hooks) to assist you in building your own components. You can even construct an entire react-admin application without relying on the Material UI components and use a different UI kit if desired (see for instance [shadcn-admin-kit](https://github.com/marmelab/shadcn-admin-kit), a library for building admin apps with Shadcn UI). This flexibility allows you to tailor the application to your specific needs and preferences.
+Ra-core exposes dozens of hooks to assist you in building your own components. You can construct an entire admin application using only the headless ra-core package and any UI library of your choice (see for instance [shadcn-admin-kit](https://github.com/marmelab/shadcn-admin-kit), a library for building admin apps with Shadcn UI). This flexibility allows you to tailor the application to your specific needs and preferences.
 
 ## Context: Pull, Don't Push
 
@@ -277,10 +222,10 @@ Communication between components can be challenging, especially in large React a
 
 Whenever a react-admin component fetches data or defines a callback, it creates a context and places the data and callback in it.
 
-For instance, the `<Admin>` component creates an `I18NProviderContext`, which exposes the `translate` function. All components in the application can utilize the `useTranslate` hook, which reads the `I18NProviderContext`, for translating labels and messages. 
+For instance, the `<CoreAdmin>` component creates an `I18NProviderContext`, which exposes the `translate` function. All components in the application can utilize the `useTranslate` hook, which reads the `I18NProviderContext`, for translating labels and messages. 
 
 ```jsx
-import { useTranslate } from 'react-admin';
+import { useTranslate } from 'ra-core';
 
 export const MyHelloButton = ({ handleClick }) => {
     const translate = useTranslate();
@@ -290,14 +235,16 @@ export const MyHelloButton = ({ handleClick }) => {
 };
 ```
 
-Similarly, the `<Show>` component fetches a record and exposes it via a `RecordContext`. Inside the `<Show>` component, you can use the `useRecordContext` hook to access the record data. For example, you can use it to display a map of the record's location.
+Similarly, the `<ShowBase>` component fetches a record and exposes it via a `RecordContext`. Inside the `<ShowBase>` component, you can use the `useRecordContext` hook to access the record data. For example, you can use it to display a map of the record's location.
 
 ```jsx
-import { useRecordContext } from 'react-admin';
+import { ShowBase, useRecordContext } from 'ra-core';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { TextField } from './TextField';
 
 const LocationField = ({ source }) => {
-    const record = useRecordContext(props); // use the RecordContext created by <Show>
+    // use the RecordContext created by <ShowBase>
+    const record = useRecordContext(props);
     if (!record) return null;
 
     return (
@@ -312,12 +259,12 @@ const LocationField = ({ source }) => {
 };
 
 const StoreShowPage = () => (
-    <Show> {/* create a RecordContext */}
-        <SimpleShowLayout>
+    <ShowBase> {/* create a RecordContext */}
+        <div>
             <TextField source="name" />
             <LocationField source="location" />
-        </SimpleShowLayout>
-    </Show>
+        </div>
+    </ShowBase>
 )
 ```
 
@@ -326,93 +273,3 @@ This approach eliminates the need for a dependency injection system and provides
 So when you write a component that needs to access data or callbacks defined higher in the render tree, you can always find a context to get it. 
 
 Contexts are fundamental concepts in React Admin. If you are not familiar with them, don't hesitate to read the [React documentation on Context](https://react.dev/learn/passing-data-deeply-with-context). Understanding contexts will greatly enhance your understanding of how react-admin leverages them to create a powerful and flexible framework.
-
-## Batteries Included But Removable
-
-React-admin allows you to build sophisticated web applications using only its built-in components, assuming that its design choices align with your needs. However, if you find that a component's existing capabilities don't meet your specific requirements, you're free to replace it with a custom component.
-
-For example, if [`<SimpleShowLayout>`](./SimpleShowLayout.md) doesn't allow you to arrange the details of a contact as depicted in the image below:
-
-![contact details](../img/atomic-crm.png)
-
-You can create and use your own layout component:
-
-{% raw %}
-```tsx
-export const ContactShow = () => (
-    <ShowBase>
-        <ContactShowContent />
-    </ShowBase>
-);
-
-const ContactShowContent = () => {
-    const { record, isPending } = useShowContext<Contact>();
-    if (isPending || !record) return null;
-    return (
-        <Box sx={{ mt: 2, display: "flex" }}>
-            <Box sx={{ flex: "1" }}>
-                <Card>
-                    <CardContent>
-                        <Box sx={{ display: "flex" }}>
-                            <Avatar />
-                            <Box sx={{ ml: 2, flex: "1" }}>
-                                <Typography variant="h5">
-                                    {record.first_name} {record.last_name}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {record.title} at{' '}
-                                    <ReferenceField
-                                        source="company_id"
-                                        reference="companies"
-                                        link="show"
-                                    >
-                                        <TextField source="name" />
-                                    </ReferenceField>
-                                </Typography>
-                            </Box>
-                            <Box>
-                                <ReferenceField
-                                    source="company_id"
-                                    reference="companies"
-                                    link="show"
-                                >
-                                    <LogoField />
-                                </ReferenceField>
-                            </Box>
-                        </Box>
-                        <ReferenceManyField
-                            target="contact_id"
-                            reference="contactNotes"
-                            sort={{ field: 'date', order: 'DESC' }}
-                        >
-                            <NotesIterator showStatus reference="contacts" />
-                        </ReferenceManyField>
-                    </CardContent>
-                </Card>
-            </Box>
-            <ContactAside />
-        </Box>
-    );
-};
-```
-{% endraw %}
-
-This particular example is sourced from [Atomic CRM](https://marmelab.com/react-admin-crm/#/contacts), one of the many [demo applications](./Demos.md) available for react-admin. 
-
-Never hesitate to replace a react-admin component with one of your own design. React-admin does not aim to cover all possible use cases, instead, it provides hooks for incorporating custom components. After all, "It's just React"™.
-
-With react-admin, you'll never find yourself backed into a corner.
-
-## Awesome Developer Experience
-
-With react-admin, developers assemble application components without having to worry about low-level details. They need less code for the same result, and they can **focus on the business logic** of their app.
-
-[![List view without and with react-admin](../img/list-from-react-to-react-admin.webp)](../img/list-from-react-to-react-admin.webp)
-
-We've crafted the API of react-admin's components and hooks to be as **intuitive** as possible. The react-admin core team uses react-admin every day, and we're always looking for ways to improve the developer experience.
-
-React-admin provides the **best-in-class documentation**, demo apps, and support. Error messages are clear and actionable. Thanks to extensive TypeScript types and JSDoc, it's easy to use react-admin in any IDE. The API is stable and **breaking changes are very rare**. You can debug your app with the [query](./DataProviders.md#enabling-query-logs) and [form](https://react-hook-form.com/dev-tools) developer tools, and inspect the react-admin code right in your browser.
-
-That probably explains why more than 3,000 new apps are published every month using react-admin.
-
-So react-admin is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), [react-router](https://reacttraining.com/react-router/), [Material UI](https://mui.com/material-ui/getting-started/), and [Emotion](https://github.com/emotion-js/emotion). It's a **framework** made to speed up and facilitate the development of single-page apps in React.
